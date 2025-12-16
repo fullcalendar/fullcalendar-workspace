@@ -1,34 +1,27 @@
 import React from 'react'
 import { useCalendarController } from '@fullcalendar/react'
 import { type CalendarOptions } from '@fullcalendar/core'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import listPlugin from '@fullcalendar/list'
-import multiMonthPlugin from '@fullcalendar/multimonth'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import { EventCalendarToolbar } from './event-calendar-toolbar.js'
-import { EventCalendarViews } from './event-calendar-views.js'
+import adaptivePlugin from '@fullcalendar/adaptive'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import timelinePlugin from '@fullcalendar/timeline'
 import { EventCalendarContainer } from './event-calendar-container.js'
-import { EventCalendarCloseIcon } from './event-calendar-icons.js'
+import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons.js'
+import { EventCalendarToolbar } from './event-calendar-toolbar.js'
+import { SchedulerViews } from './scheduler-views.js'
 
 const plugins = [
-  dayGridPlugin,
-  timeGridPlugin,
-  listPlugin,
-  interactionPlugin,
-  multiMonthPlugin,
+  adaptivePlugin,
+  timelinePlugin,
+  resourceTimelinePlugin,
 ]
 const defaultAvailableViews = [
-  'dayGridMonth',
-  'timeGridWeek',
-  'timeGridDay',
-  'listWeek',
-  'multiMonthYear',
+  'resourceTimelineDay',
+  'resourceTimelineWeek',
 ]
-const navLinkDayClick = 'timeGridDay'
-const navLinkWeekClick = 'timeGridWeek'
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimelineProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
   availableViews?: string[]
   addButton?: {
@@ -39,7 +32,7 @@ export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'cla
   }
 }
 
-export function EventCalendar({
+export function ResourceTimeline({
   availableViews = defaultAvailableViews,
   addButton,
   className,
@@ -48,7 +41,7 @@ export function EventCalendar({
   direction,
   plugins: userPlugins = [],
   ...restOptions
-}: EventCalendarProps) {
+}: ResourceTimelineProps) {
   const controller = useCalendarController()
 
   return (
@@ -65,7 +58,7 @@ export function EventCalendar({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <EventCalendarViews
+      <SchedulerViews
         controller={controller}
         liquidHeight={height !== undefined}
         height={contentHeight}
@@ -75,6 +68,9 @@ export function EventCalendar({
         plugins={[...plugins, ...userPlugins]}
         popoverCloseContent={() => (
           <EventCalendarCloseIcon />
+        )}
+        resourceExpanderContent={(data) => (
+          <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
         )}
         {...restOptions}
       />

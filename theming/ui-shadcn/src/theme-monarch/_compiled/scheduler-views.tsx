@@ -1,107 +1,27 @@
 import React from 'react'
 import { type CalendarOptions } from '@fullcalendar/core'
-import { useCalendarController } from '@fullcalendar/react'
-import adaptivePlugin from '@fullcalendar/adaptive'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import { ChevronDownIcon } from 'lucide-react'
+import type {} from '@fullcalendar/timeline'
+import type {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/resource-daygrid'
+import type {} from '@fullcalendar/resource-timegrid'
+import { EventCalendarViewProps, EventCalendarViews } from './event-calendar-views.js'
 import { cn } from '../../lib/utils.js'
-import { EventCalendarView, eventCalendarPlugins, EventCalendarToolbar, mutedFgPressableGroupClass } from './event-calendar.js'
-
-const schedulerOnlyPlugins = [
-  adaptivePlugin,
-  scrollGridPlugin,
-  timelinePlugin,
-  resourceTimelinePlugin,
-  resourceTimeGridPlugin,
-  resourceDayGridPlugin,
-]
-
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
-]
-const navLinkDayClick = 'resourceTimelineDay'
-const navLinkWeekClick = 'resourceTimelineWeek'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',
   dayHeaderDividerClass: 'border-b',
 }
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
+export type SchedulerViewsProps =
+  EventCalendarViewProps &
+  Required<Pick<CalendarOptions, 'resourceExpanderContent'>> // ensure callers define icons
 
-export function Scheduler({
-  availableViews = schedulerAvailableViews,
-  addButton,
-  className,
-  height,
-  contentHeight,
-  direction,
-  plugins: userPlugins,
-  ...restOptions
-}: SchedulerProps) {
-  const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
-
-  return (
-    <div
-      className={cn(
-        className,
-        'flex flex-col bg-background',
-        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-        !borderlessX && 'border-x',
-        !borderlessTop && 'border-t',
-        !borderlessBottom && 'border-b',
-      )}
-      style={{ height }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
-    >
-      <EventCalendarToolbar
-        className='p-4'
-        controller={controller}
-        availableViews={availableViews}
-        addButton={addButton}
-      />
-      <div className='grow min-h-0'>
-        <SchedulerView
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          navLinkDayClick={navLinkDayClick}
-          navLinkWeekClick={navLinkWeekClick}
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </div>
-    </div>
-  )
-}
-
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
-}: CalendarOptions) {
+}: SchedulerViewsProps) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
@@ -128,14 +48,6 @@ export function SchedulerView({
       resourceCellInnerClass='p-2 text-sm'
       resourceIndentClass='ms-1 -me-1.5 justify-center'
       resourceExpanderClass="group p-1 rounded-full hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
-      resourceExpanderContent={(data) => (
-        <ChevronDownIcon
-          className={cn(
-            `size-4 m-px ${mutedFgPressableGroupClass}`,
-            !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
-          )}
-        />
-      )}
       resourceHeaderRowClass='border'
       resourceRowClass='border'
       resourceColumnDividerClass='border-e border-foreground/20'

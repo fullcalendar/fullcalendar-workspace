@@ -1,0 +1,501 @@
+import React from 'react'
+import FullCalendar from '@fullcalendar/react'
+import { type CalendarOptions, type DayCellData } from '@fullcalendar/core'
+import '@fullcalendar/core/global.css'
+import type {} from '@fullcalendar/daygrid'
+import type {} from '@fullcalendar/timegrid'
+import type {} from '@fullcalendar/list'
+import type {} from '@fullcalendar/multimonth'
+import { cn } from '../../lib/utils.js'
+
+const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
+
+const blockPointerResizerClass = 'absolute hidden group-hover:block'
+const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
+const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
+
+const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color) bg-background rounded-full'
+const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
+const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
+
+const tallDayCellBottomClass = 'min-h-3'
+const getShortDayCellBottomClass = (data: DayCellData) => cn(
+  !data.isNarrow && 'min-h-0.5'
+)
+
+const dayRowCommonClasses: CalendarOptions = {
+
+  /* Day Row > List-Item Event
+  ----------------------------------------------------------------------------------------------- */
+
+  listItemEventClass: (data) => cn(
+    'mb-px p-px rounded-sm',
+    data.isNarrow ? 'mx-0.5' : 'mx-1',
+    data.isSelected
+      ? 'bg-foreground/5'
+      : 'hover:bg-foreground/5',
+  ),
+  listItemEventInnerClass: (data) => cn(
+    'flex flex-row items-center justify-between',
+    data.isNarrow
+      ? `py-px ${xxsTextClass}`
+      : 'py-0.5 text-xs',
+  ),
+  listItemEventTimeClass: (data) => cn(
+    data.isNarrow ? 'px-px' : 'px-0.5',
+    'order-1 whitespace-nowrap overflow-hidden shrink-1',
+  ),
+  listItemEventTitleClass: (data) => cn(
+    data.isNarrow ? 'px-px' : 'px-0.5',
+    'font-medium whitespace-nowrap overflow-hidden shrink-100',
+    data.timeText && 'text-ellipsis',
+  ),
+
+  /* Day Row > Row Event
+  ----------------------------------------------------------------------------------------------- */
+
+  rowEventClass: (data) => cn(
+    data.isStart && (data.isNarrow ? 'ms-0.5' : 'ms-1'),
+    data.isEnd && (data.isNarrow ? 'me-0.5' : 'me-1'),
+  ),
+  rowEventInnerClass: (data) => cn(data.isNarrow ? 'py-px' : 'py-0.5'),
+
+  /* Day Row > More-Link
+  ----------------------------------------------------------------------------------------------- */
+
+  rowMoreLinkClass: (data) => cn(
+    'mb-px border rounded-sm',
+    data.isNarrow
+      ? 'mx-0.5 border-primary hover:bg-foreground/5'
+      : 'self-start mx-1 border-transparent bg-foreground/5 hover:bg-foreground/10',
+  ),
+  rowMoreLinkInnerClass: (data) => cn(
+    data.isNarrow
+      ? `p-px ${xxsTextClass}`
+      : 'p-0.5 text-xs',
+  ),
+}
+
+export type EventCalendarViewProps =
+  CalendarOptions &
+  Required<Pick<CalendarOptions, 'popoverCloseContent'>> & { // ensure callers define icons
+    liquidHeight?: boolean
+  }
+
+export function EventCalendarViews({
+  views: userViews,
+  liquidHeight,
+  height,
+  ...restOptions
+}: EventCalendarViewProps) {
+  return (
+    <div className={cn(liquidHeight && 'grow min-h-0')}>
+      <FullCalendar
+        height={liquidHeight ? '100%' : height}
+
+        /* Abstract Event
+        ------------------------------------------------------------------------------------------- */
+
+        eventShortHeight={50}
+        eventColor='var(--primary)'
+        eventContrastColor='var(--primary-foreground)'
+        eventClass={(data) => cn(
+          data.isSelected
+            ? ['outline-3', data.isDragging && 'shadow-lg']
+            : 'focus-visible:outline-3',
+          'outline-ring/50',
+        )}
+
+        /* Background Event
+        ------------------------------------------------------------------------------------------- */
+
+        backgroundEventColor='var(--foreground)'
+        backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
+        backgroundEventTitleClass={(data) => cn(
+          'opacity-50 italic',
+          (data.isNarrow || data.isShort)
+            ? `p-1 ${xxsTextClass}`
+            : 'p-2 text-xs',
+        )}
+
+        /* List-Item Event
+        ------------------------------------------------------------------------------------------- */
+
+        listItemEventTimeClass='text-muted-foreground'
+
+        /* Block Event
+        ------------------------------------------------------------------------------------------- */
+
+        blockEventClass={(data) => cn(
+          'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
+          data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
+          (data.isDragging && !data.isSelected) && 'opacity-75',
+        )}
+        blockEventInnerClass='text-(--fc-event-contrast-color) print:text-black'
+        blockEventTimeClass='whitespace-nowrap overflow-hidden shrink-1'
+        blockEventTitleClass='whitespace-nowrap overflow-hidden shrink-100'
+
+        /* Row Event
+        ------------------------------------------------------------------------------------------- */
+
+        rowEventClass={(data) => cn(
+          'mb-px border-y',
+          data.isStart && 'rounded-s-sm border-s',
+          data.isEnd && 'rounded-e-sm border-e',
+        )}
+        rowEventBeforeClass={(data) => cn(
+          data.isStartResizable && [
+            data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+            '-start-1',
+          ]
+        )}
+        rowEventAfterClass={(data) => cn(
+          data.isEndResizable && [
+            data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+            '-end-1',
+          ]
+        )}
+        rowEventInnerClass={(data) => cn(
+          'flex flex-row items-center',
+          data.isNarrow ? xxsTextClass : 'text-xs',
+        )}
+        rowEventTimeClass={(data) => cn(
+          data.isNarrow ? 'ps-0.5' : 'ps-1'
+        )}
+        rowEventTitleClass={(data) => cn(
+          data.isNarrow ? 'px-0.5' : 'px-1',
+          'font-medium',
+        )}
+
+        /* Column Event
+        ------------------------------------------------------------------------------------------- */
+
+        columnEventClass={(data) => cn(
+          'border-x ring ring-background',
+          data.isStart && ['border-t rounded-t-lg', data.isNarrow ? 'mt-px' : 'mt-0.5'],
+          data.isEnd && ['border-b rounded-b-lg', data.isNarrow ? 'mb-px' : 'mb-0.5'],
+        )}
+        columnEventBeforeClass={(data) => cn(
+          data.isStartResizable && [
+            data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+            '-top-1',
+          ]
+        )}
+        columnEventAfterClass={(data) => cn(
+          data.isEndResizable && [
+            data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+            '-bottom-1',
+          ]
+        )}
+        columnEventInnerClass={(data) => cn(
+          'flex',
+          data.isShort
+            ? 'flex-row items-center gap-1 p-1'
+            : ['flex-col', data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1'],
+          (data.isNarrow || data.isShort) ? xxsTextClass : 'text-xs',
+        )}
+        columnEventTimeClass={(data) => cn(
+          !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1')
+        )}
+        columnEventTitleClass={(data) => cn(
+          !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
+          'font-medium',
+        )}
+
+        /* More-Link
+        ------------------------------------------------------------------------------------------- */
+
+        moreLinkClass="focus-visible:outline-3 outline-ring/50"
+        moreLinkInnerClass='whitespace-nowrap overflow-hidden'
+        columnMoreLinkClass="my-0.5 border border-transparent print:border-black rounded-md bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background"
+        columnMoreLinkInnerClass={(data) => cn(
+          data.isNarrow
+            ? `p-0.5 ${xxsTextClass}`
+            : 'p-1 text-xs',
+        )}
+
+        /* Day Header
+        ------------------------------------------------------------------------------------------- */
+
+        dayHeaderClass={(data) => cn(
+          'justify-center',
+          data.inPopover ? 'border-b bg-foreground/5' :
+            data.isMajor && 'border border-foreground/20',
+        )}
+        dayHeaderInnerClass={(data) => cn(
+          'flex flex-row items-center',
+          data.isNarrow ? 'text-xs' : 'text-sm',
+          data.inPopover ? [
+            'm-1.5 px-1 py-0.5 rounded-sm font-semibold',
+            data.hasNavLink && 'hover:bg-foreground/5',
+          ] : !data.dayNumberText ? [
+            'mx-0.5 my-1.5 py-0.5 px-1.5 rounded-sm text-muted-foreground',
+            data.hasNavLink && 'hover:bg-foreground/5',
+          ] : !data.isToday ? [
+            'mx-2 my-2.5 h-6 px-1.5 rounded-sm text-muted-foreground',
+            data.hasNavLink && 'hover:bg-foreground/5',
+          ] : (
+            'group mx-2 my-2 h-7 outline-none'
+          )
+        )}
+        dayHeaderContent={(data) => (
+          (data.inPopover || !data.dayNumberText || !data.isToday) ? (
+            <>{data.text}</>
+          ) : (
+            <>
+              {data.textParts.map((textPart, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    'whitespace-pre',
+                    (textPart.type === 'day' && data.isToday)
+                      ? [
+                          'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold flex flex-row items-center justify-center bg-primary/20 dark:bg-primary/30',
+                          data.hasNavLink && 'group-hover:bg-primary/40 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                        ]
+                      : 'text-muted-foreground',
+                  )}
+                >{textPart.value}</span>
+              ))}
+            </>
+          )
+        )}
+
+        /* Day Cell
+        ------------------------------------------------------------------------------------------- */
+
+        dayCellClass={(data) => cn(
+          'border',
+          data.isMajor && 'border-foreground/20',
+        )}
+        dayCellTopClass={(data) => cn(
+          data.isNarrow ? 'min-h-0.5' : 'min-h-1',
+          'flex flex-row justify-end',
+        )}
+        dayCellTopInnerClass={(data) => cn(
+          'flex flex-row items-center',
+          data.isNarrow
+            ? `my-px h-5 ${xxsTextClass}`
+            : 'my-1 h-6 text-sm',
+          !data.isToday
+            ? [
+                'rounded-s-sm whitespace-nowrap',
+                !data.isOther && 'font-semibold',
+                data.isNarrow ? 'px-1' : 'px-2',
+                !data.monthText && 'text-muted-foreground',
+                data.hasNavLink && 'hover:bg-foreground/5',
+              ]
+            : [
+                'group outline-none',
+                data.isNarrow
+                  ? 'mx-px'
+                  : 'mx-2',
+              ]
+        )}
+        dayCellTopContent={(data) => (
+          !data.isToday ? (
+            <>{data.text}</>
+          ) : (
+            <>
+              {data.textParts.map((textPart, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    'whitespace-pre',
+                    (textPart.type === 'day' && data.isToday)
+                      ? [
+                          'rounded-full font-semibold flex flex-row items-center justify-center bg-primary/20 dark:bg-primary/30',
+                          data.hasNavLink && 'group-hover:bg-primary/40 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                          data.isNarrow
+                            ? 'size-5'
+                            : 'size-6 first:-ms-1 last:-me-1',
+                        ]
+                      : (!data.monthText && 'text-muted-foreground'),
+                  )}
+                >{textPart.value}</span>
+              ))}
+            </>
+          )
+        )}
+        dayCellInnerClass={(data) => cn(data.inPopover && 'p-2')}
+
+        /* Popover
+        ------------------------------------------------------------------------------------------- */
+
+        popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-55'
+        popoverCloseClass="group absolute top-1.5 end-1.5 p-0.5 rounded-sm hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
+
+        /* Lane
+        ------------------------------------------------------------------------------------------- */
+
+        dayLaneClass={(data) => cn(
+          'border',
+          data.isMajor && 'border-foreground/20',
+          data.isDisabled && 'bg-foreground/3',
+        )}
+        dayLaneInnerClass={(data) => (
+          data.isStack
+            ? 'm-1'
+            : data.isNarrow ? 'mx-px' : 'mx-0.5'
+        )}
+        slotLaneClass={(data) => cn(
+          'border',
+          data.isMinor && 'border-dotted',
+        )}
+
+        /* List Day
+        ------------------------------------------------------------------------------------------- */
+
+        listDayClass='group/day flex flex-col'
+        listDayHeaderClass="border-b bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))] flex flex-row items-center justify-between"
+        listDayHeaderInnerClass={(data) => cn(
+          'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
+          !data.level && 'font-semibold',
+          (!data.level && data.isToday)
+            ? [
+                'bg-primary/20 dark:bg-primary/30',
+                data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+              ]
+            : data.hasNavLink && 'hover:bg-foreground/5',
+        )}
+        listDayEventsClass='group-not-last/day:border-b px-1.5 py-2 gap-2'
+
+        /* Single Month (in Multi-Month)
+        ------------------------------------------------------------------------------------------- */
+
+        singleMonthClass='m-3'
+        singleMonthHeaderClass={(data) => cn(
+          data.isSticky && 'border-b bg-background',
+          data.colCount > 1 ? 'pb-2' : 'py-1',
+          'items-center',
+        )}
+        singleMonthHeaderInnerClass={(data) => cn(
+          'px-1.5 py-0.5 rounded-sm text-base font-semibold',
+          data.hasNavLink && 'hover:bg-foreground/5',
+        )}
+
+        /* Misc Table
+        ------------------------------------------------------------------------------------------- */
+
+        tableHeaderClass={(data) => cn(data.isSticky && 'bg-background')}
+        fillerClass='border opacity-50'
+        dayNarrowWidth={100}
+        dayHeaderRowClass='border'
+        dayRowClass='border'
+        slotHeaderRowClass='border'
+        slotHeaderInnerClass='text-muted-foreground'
+
+        /* Misc Content
+        ------------------------------------------------------------------------------------------- */
+
+        navLinkClass="focus-visible:outline-3 outline-ring/50"
+        inlineWeekNumberClass={(data) => cn(
+          'absolute start-0 whitespace-nowrap rounded-e-sm text-muted-foreground',
+          data.isNarrow
+            ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
+            : 'top-1 p-1 text-xs',
+          data.hasNavLink && 'hover:bg-foreground/5',
+        )}
+        highlightClass='bg-primary/10'
+        nonBusinessClass='bg-foreground/3'
+        nowIndicatorLineClass='-m-px border-1 border-destructive'
+        nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
+
+        /* View-Specific Options
+        ------------------------------------------------------------------------------------------- */
+
+        views={{
+          ...userViews,
+          dayGrid: {
+            ...dayRowCommonClasses,
+            dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
+            dayHeaderDividerClass: 'border-b',
+            dayCellBottomClass: getShortDayCellBottomClass,
+            ...userViews?.dayGrid,
+          },
+          multiMonth: {
+            ...dayRowCommonClasses,
+            dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
+            dayHeaderDividerClass: (data) => cn(data.isSticky && 'border-b'),
+            dayCellBottomClass: getShortDayCellBottomClass,
+            viewClass: 'bg-foreground/3',
+            tableBodyClass: 'border bg-background rounded-sm overflow-hidden',
+            ...userViews?.multiMonth,
+          },
+          timeGrid: {
+            ...dayRowCommonClasses,
+            dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
+            dayHeaderDividerClass: (data) => cn(
+              'border-b',
+              !data.options.allDaySlot && 'border-foreground/20 shadow-sm',
+            ),
+            dayCellBottomClass: tallDayCellBottomClass,
+
+            /* TimeGrid > Week Number Header
+            --------------------------------------------------------------------------------------- */
+
+            weekNumberHeaderClass: 'items-center justify-end',
+            weekNumberHeaderInnerClass: (data) => cn(
+              'mx-0.5 h-6 px-1.5 text-muted-foreground flex flex-row items-center rounded-sm',
+              data.isNarrow ? 'text-xs' : 'text-sm',
+              data.hasNavLink && 'hover:bg-foreground/5',
+            ),
+
+            /* TimeGrid > All-Day Header
+            --------------------------------------------------------------------------------------- */
+
+            allDayHeaderClass: 'items-center',
+            allDayHeaderInnerClass: (data) => cn(
+              'p-2 text-muted-foreground',
+              data.isNarrow ? xxsTextClass : 'text-xs',
+            ),
+            allDayDividerClass: 'border-b border-foreground/20 shadow-sm',
+
+            /* TimeGrid > Slot Header
+            --------------------------------------------------------------------------------------- */
+
+            slotHeaderClass: 'justify-end',
+            slotHeaderInnerClass: (data) => cn(
+              'relative p-2',
+              data.isNarrow
+                ? `-top-3.5 ${xxsTextClass}`
+                : '-top-4 text-xs',
+              data.isFirst && 'hidden',
+            ),
+            slotHeaderDividerClass: 'border-e',
+
+            ...userViews?.timeGrid,
+          },
+          list: {
+
+            /* List-View > List-Item Event
+            --------------------------------------------------------------------------------------- */
+
+            listItemEventClass: (data) => cn(
+              'group py-1 rounded-sm hover:bg-muted/50',
+              data.isInteractive && 'focus-visible:bg-muted/50 -outline-offset-3',
+            ),
+            listItemEventBeforeClass: 'w-1.5 bg-(--fc-event-color) rounded-full',
+            listItemEventInnerClass: '[display:contents]',
+            listItemEventTimeClass: "-order-1 shrink-0 w-1/2 max-w-60 px-4 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-sm",
+            listItemEventTitleClass: (data) => cn(
+              'grow min-w-0 px-4 py-2 whitespace-nowrap overflow-hidden text-sm',
+              data.event.url && 'group-hover:underline',
+            ),
+
+            /* No-Events Screen
+            --------------------------------------------------------------------------------------- */
+
+            noEventsClass: 'grow flex flex-col items-center justify-center',
+            noEventsInnerClass: 'py-15',
+
+            ...userViews?.list,
+          },
+        }}
+
+        {...restOptions}
+      />
+    </div>
+  )
+}
+

@@ -1,102 +1,24 @@
 import React from 'react'
-import { CalendarOptions } from '@fullcalendar/core'
-import { useCalendarController } from '@fullcalendar/react'
-import adaptivePlugin from '@fullcalendar/adaptive'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import { ChevronDownIcon } from 'lucide-react'
+import { type CalendarOptions } from '@fullcalendar/core'
+import type {} from '@fullcalendar/timeline'
+import type {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/resource-daygrid'
+import type {} from '@fullcalendar/resource-timegrid'
+import { type EventCalendarViewProps, EventCalendarViews, xxsTextClass } from './event-calendar-views.js'
 import { cn } from '../../lib/utils.js'
-import { EventCalendarView, eventCalendarPlugins, EventCalendarToolbar, mutedFgPressableGroupClass, xxsTextClass } from './event-calendar.js'
-
-const schedulerOnlyPlugins = [
-  adaptivePlugin,
-  scrollGridPlugin,
-  timelinePlugin,
-  resourceTimelinePlugin,
-  resourceTimeGridPlugin,
-  resourceDayGridPlugin,
-]
-
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
-]
-const navLinkDayClick = 'resourceTimelineDay'
-const navLinkWeekClick = 'resourceTimelineWeek'
 
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
+export type SchedulerViewsProps =
+  EventCalendarViewProps &
+  Required<Pick<CalendarOptions, 'resourceExpanderContent'>> // ensure callers define icons
 
-export function Scheduler({
-  availableViews = schedulerAvailableViews,
-  addButton,
-  className,
-  height,
-  contentHeight,
-  direction,
-  plugins: userPlugins,
-  ...restOptions
-}: SchedulerProps) {
-  const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
-
-  return (
-    <div
-      className={cn(className, 'flex flex-col gap-5')}
-      style={{ height }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
-    >
-      <EventCalendarToolbar
-        className={borderlessX ? 'px-3' : ''}
-        controller={controller}
-        availableViews={availableViews}
-        addButton={addButton}
-      />
-      <div className='grow min-h-0'>
-        <SchedulerView
-          className={cn(
-            'bg-background border-t',
-            !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
-            !borderlessX && 'border-x',
-            !borderlessBottom && 'border-b',
-          )}
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          navLinkDayClick={navLinkDayClick}
-          navLinkWeekClick={navLinkWeekClick}
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </div>
-    </div>
-  )
-}
-
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
-}: CalendarOptions) {
+}: SchedulerViewsProps) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
@@ -123,14 +45,6 @@ export function SchedulerView({
       resourceCellInnerClass='p-2 text-sm'
       resourceIndentClass='ms-2 -me-1 justify-center'
       resourceExpanderClass="group focus-visible:outline-3 outline-ring/50"
-      resourceExpanderContent={(data) => (
-        <ChevronDownIcon
-          className={cn(
-            `size-4 m-px ${mutedFgPressableGroupClass}`,
-            !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
-          )}
-        />
-      )}
       resourceHeaderRowClass='border'
       resourceRowClass='border'
       resourceColumnDividerClass='border-x ps-0.5 bg-foreground/5'

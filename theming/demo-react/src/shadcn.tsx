@@ -10,15 +10,15 @@ import './lib/ui-shadcn-fonts.js'
 import './lib/ui-shadcn.css'
 
 import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/event-calendar'
-import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/scheduler'
+import { ResourceTimeline as BreezyScheduler } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/resource-timeline'
 import { EventCalendar as ClassicEventCalendar } from '@fullcalendar/ui-shadcn/theme-classic/_compiled/event-calendar'
-import { Scheduler as ClassicScheduler } from '@fullcalendar/ui-shadcn/theme-classic/_compiled/scheduler'
+import { ResourceTimeline as ClassicScheduler } from '@fullcalendar/ui-shadcn/theme-classic/_compiled/resource-timeline'
 import { EventCalendar as FormaEventCalendar } from '@fullcalendar/ui-shadcn/theme-forma/_compiled/event-calendar'
-import { Scheduler as FormaScheduler } from '@fullcalendar/ui-shadcn/theme-forma/_compiled/scheduler'
+import { ResourceTimeline as FormaScheduler } from '@fullcalendar/ui-shadcn/theme-forma/_compiled/resource-timeline'
 import { EventCalendar as MonarchEventCalendar } from '@fullcalendar/ui-shadcn/theme-monarch/_compiled/event-calendar'
-import { Scheduler as MonarchScheduler } from '@fullcalendar/ui-shadcn/theme-monarch/_compiled/scheduler'
+import { ResourceTimeline as MonarchScheduler } from '@fullcalendar/ui-shadcn/theme-monarch/_compiled/resource-timeline'
 import { EventCalendar as PulseEventCalendar } from '@fullcalendar/ui-shadcn/theme-pulse/_compiled/event-calendar'
-import { Scheduler as PulseScheduler } from '@fullcalendar/ui-shadcn/theme-pulse/_compiled/scheduler'
+import { ResourceTimeline as PulseScheduler } from '@fullcalendar/ui-shadcn/theme-pulse/_compiled/resource-timeline'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
