@@ -31,13 +31,13 @@ export default function EventCalendarToolbar({
 
   return (
     <Box
-      className={borderlessX ? 'px-3' : '' /* NOTE: strange to use className instead of sx here */}
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
+        px: borderlessX ? 1.5 : undefined,
       }}
     >
       <Box
