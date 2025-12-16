@@ -8,7 +8,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { EventCalendarToolbar } from './event-calendar-toolbar.js'
 import { SchedulerViews } from './scheduler-views.js'
 import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons.js'
-import { cn } from '../../lib/utils.js'
+import { EventCalendarContainer } from './event-calendar-container.js'
 
 const plugins = [
   adaptivePlugin,
@@ -45,28 +45,16 @@ export function ResourceTimeline({
   ...restOptions
 }: ResourceTimelineProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
-    <div
-      dir={direction === 'rtl' ? 'rtl' : undefined}
-      className={cn('flex flex-col gap-5', className)}
-      style={{ height }}
-    >
+    <EventCalendarContainer direction={direction} className={className} height={height}>
       <EventCalendarToolbar
-        className={borderlessX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
+        borderlessX={restOptions.borderlessX ?? restOptions.borderless}
       />
       <SchedulerViews
-        className={cn(
-          'bg-background border-t',
-          !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
-          !borderlessX && 'border-x',
-          !borderlessBottom && 'border-b',
-        )}
         liquidHeight={height !== undefined}
         height={contentHeight}
         initialView={availableViews[0]}
@@ -82,6 +70,6 @@ export function ResourceTimeline({
         )}
         {...restOptions}
       />
-    </div>
+    </EventCalendarContainer>
   )
 }

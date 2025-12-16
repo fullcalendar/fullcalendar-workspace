@@ -86,13 +86,26 @@ export type EventCalendarViewProps =
   }
 
 export function EventCalendarViews({
-  views: userViews,
+  className,
   liquidHeight,
   height,
+  views: userViews,
   ...restOptions
 }: EventCalendarViewProps) {
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
   return (
-    <div className={cn(liquidHeight && 'grow min-h-0')}>
+    <div
+      className={cn(
+        className,
+        'bg-background border-t',
+        !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
+        !borderlessX && 'border-x',
+        !borderlessBottom && 'border-b',
+        liquidHeight && 'grow min-h-0',
+      )}
+    >
       <FullCalendar
         height={liquidHeight ? '100%' : height}
 

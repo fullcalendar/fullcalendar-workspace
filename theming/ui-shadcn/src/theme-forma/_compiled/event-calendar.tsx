@@ -56,6 +56,7 @@ export function EventCalendar({
       direction={direction}
       className={className}
       height={height}
+      borderless={restOptions.borderless}
       borderlessX={restOptions.borderlessX}
       borderlessTop={restOptions.borderlessTop}
       borderlessBottom={restOptions.borderlessBottom}
