@@ -6,7 +6,6 @@ import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
 import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
-import { flattenClassName } from './lib/utils.js'
 
 import '@fullcalendar/core/global.css'
 import './lib/tailwind.css'
@@ -59,13 +58,13 @@ function App() {
         <MuiCssBaseline />
         <DemoGenerator
           renderEventCalendar={(props) => (
-            <EventCalendar {...props} className={flattenClassName(props)} />
+            <EventCalendar {...props} />
           )}
           renderResourceTimeline={(props) => (
-            <Scheduler {...props} className={flattenClassName(props)} />
+            <Scheduler {...props} />
           )}
           renderResourceTimeGrid={(props) => (
-            <Scheduler {...props} className={flattenClassName(props)} />
+            <Scheduler {...props} />
           )}
         />
       </MuiThemeProvider>
