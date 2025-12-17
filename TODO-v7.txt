@@ -23,7 +23,6 @@ build note:
     manually before `pn dev`
 
 
-don't warn on unknown props anymore
 Use feed urls for shadcn examples
 Rename CSS endpoints to skeleton.css and theme.css?
 Make separate full-ui packages?
@@ -470,6 +469,7 @@ EventDisplayData.isInteractive
 changelog: nice tab-focus effects on everything
 essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
 listDayFormat/listDaySideFormat defaults are different. depend on view duration
+no more console.warn on unknown options
 
 
 Docs
