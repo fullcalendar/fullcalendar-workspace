@@ -48,6 +48,7 @@ export default function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
+  const autoHeight = height === 'auto' || contentHeight === 'auto'
 
   return (
     <EventCalendarContainer
@@ -65,8 +66,8 @@ export default function EventCalendar({
         addButton={addButton}
       />
       <EventCalendarViews
-        liquidHeight={height !== undefined}
-        height={contentHeight}
+        liquidHeight={!autoHeight && height !== undefined}
+        height={autoHeight ? 'auto' : contentHeight}
         initialView={availableViews[0]}
         navLinkDayClick={navLinkDayClick}
         navLinkWeekClick={navLinkWeekClick}

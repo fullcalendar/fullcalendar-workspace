@@ -41,6 +41,7 @@ export default function ResourceTimeline({
   ...restOptions
 }: ResourceTimelineProps) {
   const controller = useCalendarController()
+  const autoHeight = height === 'auto' || contentHeight === 'auto'
 
   return (
     <EventCalendarContainer
@@ -58,8 +59,8 @@ export default function ResourceTimeline({
         addButton={addButton}
       />
       <SchedulerViews
-        liquidHeight={height !== undefined}
-        height={contentHeight}
+        liquidHeight={!autoHeight && height !== undefined}
+        height={autoHeight ? 'auto' : contentHeight}
         initialView={availableViews[0]}
         navLinkDayClick={navLinkDayClick}
         navLinkWeekClick={navLinkWeekClick}
