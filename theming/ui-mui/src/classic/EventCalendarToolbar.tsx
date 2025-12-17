@@ -3,11 +3,10 @@ import { CalendarController } from '@fullcalendar/core'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import Typography from '@mui/material/Typography'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
+import { EventCalendarPrevIcon, EventCalendarNextIcon } from './icons.js'
 
 export interface EventCalendarToolbarProps {
   controller: CalendarController
@@ -71,14 +70,14 @@ export default function EventCalendarToolbar({
             disabled={buttons.prev.isDisabled}
             aria-label={buttons.prev.hint}
           >
-            <ChevronLeftIcon className='[[dir=rtl]_&]:rotate-180' />
+            <EventCalendarPrevIcon />
           </IconButton>
           <IconButton
             onClick={() => controller.next()}
             disabled={buttons.next.isDisabled}
             aria-label={buttons.next.hint}
           >
-            <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
+            <EventCalendarNextIcon />
           </IconButton>
         </Box>
         <Typography variant="h5">{controller.view?.title}</Typography>

@@ -6,7 +6,7 @@ import type {} from '@fullcalendar/timegrid'
 import type {} from '@fullcalendar/list'
 import type {} from '@fullcalendar/multimonth'
 import { Box } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { EventCalendarCloseIcon } from './icons.js'
 
 // outline
 export const outlineWidthClass = 'outline-3'
@@ -37,9 +37,6 @@ export const faintBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0
 const faintBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
 const faintBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
 export const faintHoverPressableClass = `${faintBgHoverClass} ${faintBgFocusClass} ${mutedBgActiveClass}`
-
-// how MUI does icon color
-const pressableIconClass = 'text-(--mui-palette-action-active) group-hover:text-(--mui-palette-text-primary) group-focus-visible:text-(--mui-palette-text-primary)'
 
 // usually 11px font / 12px line-height
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
@@ -313,12 +310,7 @@ export default function EventCalendarViews({
 
         popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 reset-root"
         popoverCloseClass={`group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
-        popoverCloseContent={() => (
-          <CloseIcon
-            sx={{ fontSize: 18, margin: '1px' }}
-            className={pressableIconClass}
-          />
-        )}
+        popoverCloseContent={() => <EventCalendarCloseIcon />}
 
         /* Lane
         ----------------------------------------------------------------------------------------- */

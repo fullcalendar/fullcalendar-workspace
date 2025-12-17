@@ -4,7 +4,6 @@ import type {} from '@fullcalendar/timeline'
 import type {} from '@fullcalendar/resource-timeline'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timegrid'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarViews, {
   EventCalendarViewsProps,
   mutedBgClass,
@@ -14,6 +13,7 @@ import EventCalendarViews, {
   rowTouchResizerClass,
   strongSolidPressableClass,
 } from './EventCalendarViews.js'
+import { EventCalendarExpanderIcon } from './icons.js'
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
@@ -55,10 +55,7 @@ export default function SchedulerViews({
       resourceIndentClass="ms-2 -me-1 justify-center"
       resourceExpanderClass={`group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => (
-        <ExpandMoreIcon
-          sx={{ fontSize: 18, margin: '1px' }}
-          className={!data.isExpanded ? '-rotate-90 [[dir=rtl]_&]:rotate-90' : ''}
-        />
+        <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
       )}
       resourceHeaderRowClass="border border-(--mui-palette-divider)"
       resourceRowClass="border border-(--mui-palette-divider)"

@@ -5,8 +5,8 @@ import type {} from '@fullcalendar/daygrid'
 import type {} from '@fullcalendar/timegrid'
 import type {} from '@fullcalendar/list'
 import type {} from '@fullcalendar/multimonth'
-import CloseIcon from '@mui/icons-material/Close'
 import { Box } from '@mui/material'
+import { EventCalendarCloseIcon } from './icons.js'
 
 // outline
 export const outlineWidthClass = 'outline-3'
@@ -55,9 +55,6 @@ export const eventFaintPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--mui-palette-background-paper))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--mui-palette-background-paper))]',
 )
-
-// how MUI does icon color
-export const pressableIconClass = 'text-(--mui-palette-action-active) group-hover:text-(--mui-palette-text-primary) group-focus-visible:text-(--mui-palette-text-primary)'
 
 // usually 11px font / 12px line-height
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
@@ -374,12 +371,7 @@ export default function EventCalendarViews({
         dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
         popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 reset-root"
         popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
-        popoverCloseContent={() => (
-          <CloseIcon
-            sx={{ fontSize: 18, margin: '1px' }}
-            className={pressableIconClass}
-          />
-        )}
+        popoverCloseContent={() => <EventCalendarCloseIcon />}
         dayLaneClass={(data) => joinClassNames(
           'border',
           data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)',
