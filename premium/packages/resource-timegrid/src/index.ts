@@ -1,7 +1,8 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import resourcePlugin from '@fullcalendar/resource'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import resourcePlugin from '@fullcalendar/resource'
+import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import { ResourceTimeGridView } from './components/ResourceTimeGridView.js'
 import './ambient.js'
 
@@ -10,8 +11,9 @@ export default createPlugin({
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
-    resourcePlugin,
     timeGridPlugin,
+    resourcePlugin,
+    resourceDayGridPlugin,
   ],
   initialView: 'resourceTimeGridDay',
   views: {

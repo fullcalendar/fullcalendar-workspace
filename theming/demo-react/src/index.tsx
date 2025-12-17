@@ -66,7 +66,33 @@ function App() {
             />
           )
         }}
-        renderScheduler={({
+        renderResourceTimeline={({
+          availableViews = schedulerAvailableViews,
+          addButton,
+          plugins: userPlugins = [],
+          buttons: userButtons,
+          ...restUserProps
+        }) => {
+          const { buttons: newButtons, ...restNewProps } = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
+          return (
+            <FullCalendar
+              initialView={availableViews[0]}
+              plugins={[
+                themePlugin,
+                ...eventCalendarPlugins,
+                ...schedulerOnlyPlugins,
+                ...userPlugins,
+              ]}
+              buttons={{
+                ...newButtons,
+                ...userButtons,
+              }}
+              {...restNewProps}
+              {...restUserProps}
+            />
+          )
+        }}
+        renderResourceTimeGrid={({ // TODO: DRY
           availableViews = schedulerAvailableViews,
           addButton,
           plugins: userPlugins = [],
