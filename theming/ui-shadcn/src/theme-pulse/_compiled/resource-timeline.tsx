@@ -57,6 +57,7 @@ export function ResourceTimeline({
       <SchedulerViews
         liquidHeight={!autoHeight && height !== undefined}
         height={autoHeight ? 'auto' : contentHeight}
+        initialView={availableViews[0]}
         navLinkDayClick={navLinkDayClick}
         navLinkWeekClick={navLinkWeekClick}
         controller={controller}

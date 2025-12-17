@@ -23,24 +23,8 @@ build note:
     manually before `pn dev`
 
 
-Use feed urls for shadcn examples
 Rename CSS endpoints to skeleton.css and theme.css?
 Make separate full-ui packages?
-shadcn create registry.json because of mcp https://ui.shadcn.com/docs/mcp
-shadcn files and types:
-  @fullcalendar-breezy/event-calendar
-    - ui: event-calendar-views
-    - ui: event-calendar-container
-    - component: event-calendar-toolbar
-    - component: event-calendar-icons
-    - component: event-calendar
-    - block: event-calendar-demo
-  @fullcalendar-breezy/scheduler
-    - ui: scheduler-views
-    - component: resource-timegrid
-    - component: resource-timeline
-    - block: resource-timegrid-demo
-    - block: resource-timeline-demo
 
 
 ASAP
@@ -327,6 +311,7 @@ Tests for replacments for buttonIcons (iconClass/iconContent?)
 Is timeline slot label inner padding too fat?
 bug: when height|contentHeight='auto',
   Monarch displays tableHeader with bottom border because thinks "isSticky"
+bug: Pulse multimonth view still displays "EventTitle...9pm" but very squished. thought we hid time?
 
 
 Changelog

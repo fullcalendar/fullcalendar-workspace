@@ -670,7 +670,7 @@ importers:
         version: 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.8.4)
       '@angular/cli':
         specifier: ~15.0.0
-        version: 15.0.5(chokidar@3.5.3)
+        version: 15.0.5(chokidar@3.6.0)
       '@angular/compiler-cli':
         specifier: ^15.0.0
         version: 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
@@ -779,13 +779,13 @@ importers:
         version: 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/schematics':
         specifier: ^15.0.0
-        version: 15.2.1(@angular/cli@15.0.5(chokidar@3.6.0))(eslint@7.32.0)(typescript@4.8.4)
+        version: 15.2.1(@angular/cli@15.0.5(chokidar@3.5.3))(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/template-parser':
         specifier: ^15.0.0
         version: 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular/cli':
         specifier: ^15.0.0
-        version: 15.0.5(chokidar@3.6.0)
+        version: 15.0.5(chokidar@3.5.3)
       '@angular/compiler':
         specifier: ^15.0.0
         version: 15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))
@@ -800,7 +800,7 @@ importers:
         version: 4.7.1
       '@ionic/angular-toolkit':
         specifier: ^8.0.0
-        version: 8.1.0(chokidar@3.6.0)
+        version: 8.1.0(chokidar@3.5.3)
       '@types/jasmine':
         specifier: ~4.0.0
         version: 4.0.3
@@ -25502,7 +25502,7 @@ snapshots:
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
       webpack-dev-middleware: 6.1.2(webpack@5.76.1(esbuild@0.17.8))
-      webpack-dev-server: 4.11.1(webpack@5.76.1(esbuild@0.17.8))
+      webpack-dev-server: 4.11.1(webpack@5.97.0)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.17.8))
     optionalDependencies:
@@ -25583,7 +25583,7 @@ snapshots:
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
       webpack-dev-middleware: 6.1.2(webpack@5.76.1(esbuild@0.17.8))
-      webpack-dev-server: 4.11.1(webpack@5.97.0)
+      webpack-dev-server: 4.11.1(webpack@5.76.1(esbuild@0.17.8))
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.17.8))
     optionalDependencies:
@@ -26078,16 +26078,6 @@ snapshots:
     optionalDependencies:
       chokidar: 3.5.3
 
-  '@angular-devkit/core@15.2.11(chokidar@3.6.0)':
-    dependencies:
-      ajv: 8.12.0
-      ajv-formats: 2.1.1(ajv@8.12.0)
-      jsonc-parser: 3.2.0
-      rxjs: 6.6.7
-      source-map: 0.7.4
-    optionalDependencies:
-      chokidar: 3.6.0
-
   '@angular-devkit/core@16.0.6(chokidar@3.5.3)':
     dependencies:
       ajv: 8.12.0
@@ -26182,9 +26172,9 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/schematics@15.2.11(chokidar@3.6.0)':
+  '@angular-devkit/schematics@15.2.11(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
       jsonc-parser: 3.2.0
       magic-string: 0.29.0
       ora: 5.4.1
@@ -26261,11 +26251,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@angular-eslint/schematics@15.2.1(@angular/cli@15.0.5(chokidar@3.6.0))(eslint@7.32.0)(typescript@4.8.4)':
+  '@angular-eslint/schematics@15.2.1(@angular/cli@15.0.5(chokidar@3.5.3))(eslint@7.32.0)(typescript@4.8.4)':
     dependencies:
       '@angular-eslint/eslint-plugin': 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/eslint-plugin-template': 15.2.1(eslint@7.32.0)(typescript@4.8.4)
-      '@angular/cli': 15.0.5(chokidar@3.6.0)
+      '@angular/cli': 15.0.5(chokidar@3.5.3)
       ignore: 5.2.4
       strip-json-comments: 3.1.1
       tmp: 0.2.1
@@ -34058,11 +34048,11 @@ snapshots:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13(typescript@4.8.4)
 
-  '@ionic/angular-toolkit@8.1.0(chokidar@3.6.0)':
+  '@ionic/angular-toolkit@8.1.0(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
-      '@angular-devkit/schematics': 15.2.11(chokidar@3.6.0)
-      '@schematics/angular': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
+      '@angular-devkit/schematics': 15.2.11(chokidar@3.5.3)
+      '@schematics/angular': 15.2.11(chokidar@3.5.3)
     transitivePeerDependencies:
       - chokidar
 
@@ -37081,10 +37071,10 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@schematics/angular@15.2.11(chokidar@3.6.0)':
+  '@schematics/angular@15.2.11(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
-      '@angular-devkit/schematics': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
+      '@angular-devkit/schematics': 15.2.11(chokidar@3.5.3)
       jsonc-parser: 3.2.0
     transitivePeerDependencies:
       - chokidar
