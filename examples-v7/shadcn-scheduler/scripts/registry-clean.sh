@@ -3,11 +3,9 @@
 set -e
 cd "`dirname $0`/.."
 
-rm -rf src/components/ui
-git checkout -- src/App.tsx
+rm -rf src/components
 git checkout -- package.json
 
-# go to monorepo root
-cd ../..
-git checkout -- pnpm-lock.yaml
-pnpm install
+echo
+echo "Go to monorepo root and run pnpm-install"
+echo

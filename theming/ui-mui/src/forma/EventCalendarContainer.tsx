@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 import Box from '@mui/material/Box'
 
 export interface EventCalendarContainerProps {

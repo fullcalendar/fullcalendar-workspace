@@ -47,6 +47,7 @@ export function ResourceTimeGridDemo() {
       editable
       nowIndicator
       navLinks
+      dayMinWidth={200}
       events={events}
       resources={resources}
       addButton={{

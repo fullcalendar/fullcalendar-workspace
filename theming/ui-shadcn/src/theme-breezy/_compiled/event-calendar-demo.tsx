@@ -28,7 +28,7 @@ const events = [
   },
 ]
 
-export function ResourceTimelineDemo() {
+export function EventCalendarDemo() {
   return (
     <EventCalendar
       className='max-w-300 my-10 mx-auto'

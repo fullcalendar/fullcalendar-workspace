@@ -19,6 +19,10 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@fullcalendar": "http://localhost:3000/{name}.json"
+    "@fullcalendar-breezy": "http://localhost:3000/breezy/{name}.json",
+    "@fullcalendar-classic": "http://localhost:3000/classic/{name}.json",
+    "@fullcalendar-forma": "http://localhost:3000/forma/{name}.json",
+    "@fullcalendar-monarch": "http://localhost:3000/monarch/{name}.json",
+    "@fullcalendar-pulse": "http://localhost:3000/pulse/{name}.json"
   }
 }
