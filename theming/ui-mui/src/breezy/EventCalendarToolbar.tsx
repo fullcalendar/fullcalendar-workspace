@@ -98,10 +98,9 @@ export default function EventCalendarToolbar({
             aria-label={buttons[availableView]?.hint}
             color="primary"
           >
-            {/* add extra spacing. better way to do this idiomatically in MUI */}
-            <span style={{ paddingLeft: 8, paddingRight: 8 }}>
+            <Box sx={{ px: 1 }}>
               {buttons[availableView]?.text}
-            </span>
+            </Box>
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
