@@ -12,7 +12,7 @@ export default function transformClassNamesPlugin(minify: boolean, isPublicMui: 
       const themeName = getThemeName(id, isPublicMui)
       if (themeName) {
         if (id.endsWith('.js')) {
-          if (isPublicMui && !id.endsWith('View.js')) {
+          if (isPublicMui && !id.endsWith('Views.js') && !id.endsWith('icons.js')) {
             return null // don't transform EventCalendar/Scheduler.js, which contains sx props
           }
           return transformJs(themeName, isPublicMui, minify, code, this.parse(code))

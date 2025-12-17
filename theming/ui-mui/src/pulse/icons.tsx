@@ -34,7 +34,7 @@ export function EventCalendarExpanderIcon({ isExpanded }: EventCalendarExpanderI
       sx={{ fontSize: 18, margin: '1px' }}
       className={joinClassNames(
         pressableIconClass,
-        !isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
+        !isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
       )}
     />
   )
