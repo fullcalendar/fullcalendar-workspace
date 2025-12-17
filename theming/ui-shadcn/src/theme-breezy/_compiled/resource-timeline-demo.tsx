@@ -1,58 +1,23 @@
 import React from 'react'
 import { ResourceTimeline } from './resource-timeline.js'
 
-const msInHour = 1000 * 60 * 60
-const nowDate = new Date()
-
-const events = [
-  {
-    title: 'Event 1',
-    resourceId: 'a',
-    start: new Date(nowDate.getTime() - msInHour * 4),
-    end: new Date(nowDate.getTime() - msInHour)
-  },
-  {
-    title: 'Event 2',
-    resourceId: 'b',
-    start: new Date(nowDate.getTime() - msInHour * 2),
-    end: new Date(nowDate.getTime() + msInHour * 2)
-  },
-  {
-    title: 'Event 3',
-    resourceId: 'c',
-    start: new Date(nowDate.getTime() + msInHour * 1),
-    end: new Date(nowDate.getTime() + msInHour * 6)
-  },
-]
-
-const resources = [
-  {
-    id: 'a',
-    title: 'Resource A',
-  },
-  {
-    id: 'b',
-    title: 'Resource B',
-  },
-  {
-    id: 'c',
-    title: 'Resource C'
-  },
-]
-
 export function ResourceTimelineDemo() {
   return (
     <ResourceTimeline
       className='max-w-300 my-10 mx-auto'
       editable
+      selectable
       nowIndicator
       navLinks
-      events={events}
-      resources={resources}
+      aspectRatio={1.5}
+      timeZone='UTC'
+      resourceColumnHeaderContent='Rooms'
+      resources='https://fullcalendar.io/api/demo-feeds/resources.json?with-nesting&with-colors'
+      events='https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
       addButton={{
-        text: 'Add Resource',
+        text: 'Add Room',
         click() {
-          alert('add resource...')
+          alert('add room...')
         }
       }}
     />
