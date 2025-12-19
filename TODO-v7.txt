@@ -25,7 +25,6 @@ build note:
     manually before `pn dev`
 
 
-Rename CSS endpoints to skeleton.css and theme.css?
 Make separate full-ui packages?
 
 

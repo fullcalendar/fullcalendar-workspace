@@ -32,7 +32,7 @@ function getThemeName(pathId: string, isPublicMui: boolean): string | undefined 
     if (match) {
       return match[1]
     }
-    match = pathId.match(/\/ui-mui\/src\/([A-Za-z]+)\/global\.css/) // brittle
+    match = pathId.match(/\/ui-mui\/src\/([A-Za-z]+)\/theme\.css/) // brittle
     if (match) {
       return match[1]
     }

@@ -304,7 +304,7 @@ function buildModulePlugins(
       entryStructsToContentMap(entryStructMap),
     ),
     ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minifyCss, isPublicMui)] : []),
-    ...buildJsPlugins(pkgBundleStruct, /* extractCss = */ false),
+    ...buildJsPlugins(pkgBundleStruct, /* extractCss = */ false, minifyCss),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -345,6 +345,7 @@ async function buildIifePlugins(
             ? true // keep given name
             : 'skeleton.css' // core css
         : false,
+      minify,
     ),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(extractCss ? [await extractCssSeparatelyPlugin(minify, isPublicTheme, isPublicMui)] : []),
@@ -371,17 +372,17 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minify: boolean): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, extractCss)
+    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minify)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string): Plugin[] {
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minify: boolean): Plugin[] {
   const { pkgJson } = pkgBundleStruct
 
   return [
@@ -390,6 +391,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     }),
     cssPlugin({
       extract: extractCss,
+      minify,
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'],
