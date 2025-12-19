@@ -35,7 +35,7 @@
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/theme-breezy": "workspace:*",
     "@fullcalendar/theme-breezy-tailwind": "workspace:*",
-    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.5",
+    "@fullcalendar/theme-classic": "workspace:*",
     "@fullcalendar/theme-classic-tailwind": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-forma": "workspace:*",

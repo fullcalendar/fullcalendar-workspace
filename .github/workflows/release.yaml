@@ -61,6 +61,11 @@ jobs:
             --filter '!@fullcalendar-tests/*' \
             install
 
+          pnpm run meta:update
+        # ^this hides the nested repo's pnpm meta files
+        # required to prevent package scripts from getting confused
+        # when was this supposed to be called anyway?
+
       - name: Lint
         # DISABLED!
         if: false

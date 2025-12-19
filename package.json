@@ -46,7 +46,7 @@
     ]
   },
   "engines": {
-    "pnpm": ">=9.5.0"
+    "pnpm": ">=10.15.0"
   },
   "pnpm": {
     "peerDependencyRules": {
