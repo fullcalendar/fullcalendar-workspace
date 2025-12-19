@@ -7,8 +7,8 @@ import interactionPlugin from '@fullcalendar/interaction'
 import classicThemePlugin from '@fullcalendar/theme-classic'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
 import '@fullcalendar/theme-classic/palette.css'
 
 export default function DemoApp() {

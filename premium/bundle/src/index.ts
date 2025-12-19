@@ -1,4 +1,4 @@
-import '@fullcalendar/core/global.css'
+import '@fullcalendar/core/skeleton.css'
 
 import { globalPlugins } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'

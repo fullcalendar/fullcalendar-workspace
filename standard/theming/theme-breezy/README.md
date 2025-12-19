@@ -20,8 +20,8 @@ import { Calendar } from '@fullcalendar/core'
 import breezyThemePlugin from '@fullcalendar/theme-breezy'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-breezy/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-breezy/theme.css'
 import '@fullcalendar/theme-breezy/palettes/indigo.css'
 
 const calendarEl = document.getElementById('calendar')

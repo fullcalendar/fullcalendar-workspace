@@ -27,8 +27,8 @@ import iCalendarPlugin from '@fullcalendar/icalendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import classicThemePlugin from '@fullcalendar/theme-classic'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
 import '@fullcalendar/theme-classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')

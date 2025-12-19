@@ -21,8 +21,8 @@ import adaptivePlugin from '@fullcalendar/adaptive'
 import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
 import '@fullcalendar/theme-classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')

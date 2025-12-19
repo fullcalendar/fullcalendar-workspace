@@ -20,8 +20,8 @@ import { Calendar } from '@fullcalendar/core'
 import pulseThemePlugin from '@fullcalendar/theme-pulse'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-pulse/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-pulse/theme.css'
 import '@fullcalendar/theme-pulse/palettes/red.css'
 
 const calendarEl = document.getElementById('calendar')

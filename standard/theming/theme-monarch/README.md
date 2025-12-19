@@ -20,8 +20,8 @@ import { Calendar } from '@fullcalendar/core'
 import monarchThemePlugin from '@fullcalendar/theme-monarch'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-monarch/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-monarch/theme.css'
 import '@fullcalendar/theme-monarch/palettes/purple.css'
 
 const calendarEl = document.getElementById('calendar')

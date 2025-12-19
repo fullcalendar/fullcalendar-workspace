@@ -7,7 +7,7 @@ import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 
-import '@fullcalendar/core/global.css'
+import '@fullcalendar/core/skeleton.css'
 import './lib/tailwind.css'
 
 import BreezyEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/EventCalendar'

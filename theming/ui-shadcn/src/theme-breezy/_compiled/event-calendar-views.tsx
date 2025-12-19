@@ -1,7 +1,7 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import { type CalendarOptions, type DayCellData, type DayHeaderData } from '@fullcalendar/core'
-import '@fullcalendar/core/global.css'
+import '@fullcalendar/core/skeleton.css'
 import type {} from '@fullcalendar/daygrid'
 import type {} from '@fullcalendar/timegrid'
 import type {} from '@fullcalendar/list'

@@ -20,8 +20,8 @@ import { Calendar } from '@fullcalendar/core'
 import formaThemePlugin from '@fullcalendar/theme-forma'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-import '@fullcalendar/core/global.css'
-import '@fullcalendar/theme-forma/global.css'
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-forma/theme.css'
 import '@fullcalendar/theme-forma/palettes/blue.css'
 
 const calendarEl = document.getElementById('calendar')

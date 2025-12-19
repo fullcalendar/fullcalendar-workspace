@@ -29,7 +29,7 @@ Next, decide whether you're using FullCalendar "standard" (aka "EventCalendar") 
 ```jsx
 import EventCalendar from '@fullcalendar/mui/monarch/EventCalendar'
 
-import '@fullcalendar/core/global.css'
+import '@fullcalendar/core/skeleton.css'
 import '@fullcalendar/mui/monarch/global.css'
 
 <EventCalendar
@@ -61,7 +61,7 @@ Then write your component code:
 ```jsx
 import Scheduler from '@fullcalendar/mui/monarch/Scheduler'
 
-import '@fullcalendar/core/global.css'
+import '@fullcalendar/core/skeleton.css'
 import '@fullcalendar/mui/monarch/global.css'
 
 <EventCalendar
