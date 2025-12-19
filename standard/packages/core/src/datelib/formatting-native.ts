@@ -8,10 +8,10 @@ import {
   ZonedMarker,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
+  trimEnd,
 } from '@full-ui/headless-calendar'
 import { memoize } from '../util/memoize.js'
 import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
-import { trimEnd } from '../util/misc.js'
 
 const EXTENDED_SETTINGS_AND_SEVERITIES = {
   week: 3,

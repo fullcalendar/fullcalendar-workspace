@@ -1,6 +1,4 @@
 
-// TODO: DRY
-
 export function isInt(n) {
   return n % 1 === 0
 }

@@ -1,6 +1,9 @@
 import { ScrollerSyncerClass } from "./ScrollerSyncerInterface.js"
 
-export type CssDimValue = string | number // TODO: move to more general file
+/*
+TODO: dedup with @full-ui/headless-grid somehow
+*/
+export type CssDimValue = string | number
 
 export function getIsHeightAuto(options: {
   height?: CssDimValue,

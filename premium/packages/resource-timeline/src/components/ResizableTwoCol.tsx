@@ -2,7 +2,7 @@ import { CssDimValue, joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
+import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
 
 export interface ResizableTwoColProps {
   className?: string
@@ -24,7 +24,7 @@ const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
   // memo
-  parseWidthConfig = memoize(parseDimConfig)
+  parseWidthConfig: typeof parseDimConfig = memoize(parseDimConfig)
 
   // ref
   rootEl: null | HTMLDivElement = null

@@ -48,13 +48,8 @@ import {
   TimelineSlats,
   timeToCoord
 } from '@fullcalendar/timeline/internal'
+import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
 import { buildResourceLayouts, GenericLayout } from '../resource-layout.js'
-import {
-  computeHeights,
-  computeTopsFromHeights,
-  findEntityByCoord,
-  ROW_BORDER_WIDTH,
-} from '../resource-positioning.js'
 import { ColSpec } from '../structs.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -942,6 +937,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         bodyTops,
         bodyHeights,
         y,
+        createEntityId,
       )
 
       if (coordRes) {
@@ -1009,6 +1005,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       bodyTops,
       bodyHeights,
       positionTop,
+      createEntityId,
     )
 
     if (coordRes) {

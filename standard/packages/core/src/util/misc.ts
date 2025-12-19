@@ -134,15 +134,6 @@ export function flexibleCompare(a, b) {
 /* String Utilities
 ----------------------------------------------------------------------------------------------------------------------*/
 
-export function padStart(val, len) { // doesn't work with total length more than 3
-  let s = String(val)
-  return '000'.substr(0, len - s.length) + s
-}
-
-export function trimEnd(s: string): string {
-  return s.replace(/\s+$/, '')
-}
-
 export function formatWithOrdinals<Args extends any[]>(
   formatter: string | ((...formatterArgs: Args) => string),
   args: Args,
@@ -164,10 +155,6 @@ export function formatWithOrdinals<Args extends any[]>(
 
 export function compareNumbers(a, b) { // for .sort()
   return a - b
-}
-
-export function isInt(n) {
-  return n % 1 === 0
 }
 
 /* Weird Utilities

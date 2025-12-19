@@ -1,3 +1,4 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   DateComponent,
   DateMarker,
@@ -23,11 +24,10 @@ import {
   computeSlotWidth,
   TimelineLaneSlicer
 } from '@fullcalendar/timeline/internal'
+import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '@full-ui/headless-grid'
 import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal.js'
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
 import { processColOptions } from '../col-options.js'
-import { CssDimValue } from '@fullcalendar/core'
-import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '../col-positioning.js'
 import { ResourceExpander } from './spreadsheet/ResourceExpander.js'
 
 interface ResourceTimelineViewState {

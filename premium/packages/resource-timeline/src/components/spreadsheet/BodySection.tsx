@@ -3,11 +3,11 @@ import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { createGroupId } from "@fullcalendar/resource/internal"
+import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
 import { ResourceSubrow } from "./ResourceSubrow.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
-import { ROW_BORDER_WIDTH } from '../../resource-positioning.js'
 import { ColSpec } from '../../structs.js'
 
 export interface BodySectionProps {

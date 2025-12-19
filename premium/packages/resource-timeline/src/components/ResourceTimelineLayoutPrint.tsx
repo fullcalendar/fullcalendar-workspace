@@ -29,6 +29,7 @@ import {
   TimelineRange,
   TimelineSlats
 } from '@fullcalendar/timeline/internal'
+import { flexifyDimConfigs, SiblingDimConfig } from '@full-ui/headless-grid'
 import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -38,7 +39,6 @@ import { ResourceSubrow } from './spreadsheet/ResourceSubrow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows.js'
 import { CssDimValue } from '@fullcalendar/core'
-import { flexifyDimConfigs, SiblingDimConfig } from '../col-positioning.js'
 import { ColSpec } from '../structs.js'
 
 export interface ResourceTimelineLayoutPrintProps {
