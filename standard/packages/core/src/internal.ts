@@ -116,8 +116,6 @@ export {
 export { unpromisify } from './util/promise.js'
 
 export { Emitter } from './common/Emitter.js'
-export type { DateRange } from './datelib/date-range.js'
-export { rangeContainsMarker, intersectRanges, rangesEqual, rangesIntersect, rangeContainsRange } from './datelib/date-range.js'
 export { PositionCache } from './common/PositionCache.js'
 export { ScrollController, ElementScrollController, WindowScrollController } from './common/scroll-controller.js'
 export type { ViewContext } from './ViewContext.js'
@@ -132,38 +130,6 @@ export { DateProfileGenerator, computeMajorUnit, isMajorUnit } from './DateProfi
 export type { ViewSpec } from './structs/view-spec.js'
 export type { DateSpan } from './structs/date-span.js'
 export { isDateSpansEqual } from './structs/date-span.js'
-
-export type { DateMarker } from './datelib/marker.js'
-export {
-  addDays,
-  startOfDay,
-  addMs,
-  addWeeks,
-  diffWeeks,
-  diffWholeWeeks,
-  diffWholeDays,
-  diffDayAndTime,
-  diffDays,
-  isValidDate,
-} from './datelib/marker.js'
-export {
-  createDuration,
-  asCleanDays, multiplyDuration, addDurations,
-  asRoughMinutes, asRoughSeconds, asRoughMs,
-  wholeDivideDurations, greatestDurationDenominator,
-} from './datelib/duration.js'
-export { DateEnv } from './datelib/env.js'
-
-export { createFormatter } from './datelib/formatting.js'
-export type { DateFormatter, VerboseFormattingData } from './datelib/DateFormatter.js'
-export {
-  formatIsoTimeString,
-  formatDayString,
-  buildIsoString,
-  formatIsoMonthStr,
-} from './datelib/formatting-utils.js'
-export { NamedTimeZoneImpl } from './datelib/timezone.js'
-export { parse as parseMarker } from './datelib/parsing.js'
 
 export type { EventSourceDef } from './structs/event-source-def.js'
 export type { EventSourceRefined } from './structs/event-source-parse.js'
@@ -286,3 +252,42 @@ export {
 } from './coord-range.js'
 
 export { FooterScrollbar } from './common/FooterScrollbar.js'
+
+export { createFormatter } from './datelib/formatting.js'
+
+export type { DateRange } from '@full-ui/headless-calendar'
+export { rangeContainsMarker, intersectRanges, rangesEqual, rangesIntersect, rangeContainsRange } from '@full-ui/headless-calendar'
+export type { DateMarker } from '@full-ui/headless-calendar'
+export {
+  addDays,
+  startOfDay,
+  addMs,
+  addWeeks,
+  diffWeeks,
+  diffWholeWeeks,
+  diffWholeDays,
+  diffDayAndTime,
+  diffDays,
+  isValidDate,
+} from '@full-ui/headless-calendar'
+export {
+  createDuration,
+  asCleanDays,
+  multiplyDuration,
+  addDurations,
+  asRoughMinutes,
+  asRoughSeconds,
+  asRoughMs,
+  wholeDivideDurations,
+  greatestDurationDenominator,
+} from '@full-ui/headless-calendar'
+export { DateEnv } from '@full-ui/headless-calendar'
+export type { DateFormatter, VerboseFormattingData } from '@full-ui/headless-calendar'
+export {
+  formatIsoTimeString,
+  formatDayString,
+  buildIsoString,
+  formatIsoMonthStr,
+} from '@full-ui/headless-calendar'
+export { NamedTimeZoneImpl } from '@full-ui/headless-calendar'
+export { parse as parseMarker } from '@full-ui/headless-calendar'

@@ -1,4 +1,4 @@
-import { DateEnv } from '../datelib/env.js'
+import { DateEnv } from '@full-ui/headless-calendar'
 import { CalendarData } from '../reducers/data-types.js'
 import { CalendarApi } from './CalendarApi.js'
 import { ViewApi } from './ViewApi.js'

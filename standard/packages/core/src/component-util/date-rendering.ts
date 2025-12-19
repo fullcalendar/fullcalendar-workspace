@@ -1,6 +1,4 @@
-import { DateRange, rangeContainsMarker } from '../datelib/date-range.js'
-import { DateEnv } from '../datelib/env.js'
-import { DateMarker } from '../datelib/marker.js'
+import { DateRange, rangeContainsMarker, DateEnv, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator.js'
 
 export interface DateMeta {

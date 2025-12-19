@@ -2,8 +2,7 @@ import { CalendarApi } from './api/CalendarApi.js'
 import { Calendar } from './Calendar.js'
 import { ViewApi} from './api/ViewApi.js'
 import { ButtonStateMap, NavButtonState } from './structs/button-state.js'
-import { DateInput } from './datelib/env.js'
-import { DurationInput } from './datelib/duration.js'
+import { DateInput, DurationInput } from '@full-ui/headless-calendar'
 
 const blankButtonState: NavButtonState = {
   text: '', hint: '', isDisabled: false,

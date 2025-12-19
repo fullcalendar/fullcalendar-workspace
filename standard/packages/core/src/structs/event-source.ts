@@ -1,5 +1,5 @@
 import { EventInput, EventInputTransformer } from './event-parse.js'
-import { DateRange } from '../datelib/date-range.js'
+import { DateRange } from '@full-ui/headless-calendar'
 import { EventUi } from '../component-util/event-ui.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { CalendarImpl } from '../api/CalendarImpl.js'

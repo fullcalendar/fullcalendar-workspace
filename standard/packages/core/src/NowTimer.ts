@@ -1,8 +1,6 @@
-import { DateMarker, addMs, startOfDay, addDays } from './datelib/marker.js'
-import { createDuration } from './datelib/duration.js'
+import { DateMarker, addMs, startOfDay, addDays, createDuration, DateRange } from '@full-ui/headless-calendar'
 import { ViewContext, ViewContextType } from './ViewContext.js'
 import { ComponentChildren, Component } from './preact.js'
-import { DateRange } from './datelib/date-range.js'
 import { getNow } from './reducers/current-date.js'
 
 export interface NowTimerProps {

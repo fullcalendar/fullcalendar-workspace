@@ -1,7 +1,16 @@
-import { DateMarker, startOfDay, addDays, diffDays, diffDayAndTime } from '../datelib/marker.js'
-import { Duration, asRoughMs, createDuration } from '../datelib/duration.js'
-import { DateEnv } from '../datelib/env.js'
-import { DateRange, OpenDateRange } from '../datelib/date-range.js'
+import {
+  DateMarker,
+  startOfDay,
+  addDays,
+  diffDays,
+  diffDayAndTime,
+  Duration,
+  asRoughMs,
+  createDuration,
+  DateEnv,
+  DateRange,
+  OpenDateRange,
+} from '@full-ui/headless-calendar'
 
 /* Date stuff that doesn't belong in datelib core
 ----------------------------------------------------------------------------------------------------------------------*/

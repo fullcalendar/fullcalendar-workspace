@@ -1,7 +1,7 @@
 import { EventSource, EventSourceHash } from '../structs/event-source.js'
 import { parseEventSource, buildEventSourceRefiners } from '../structs/event-source-parse.js'
 import { arrayToHash, filterHash } from '../util/object.js'
-import { DateRange } from '../datelib/date-range.js'
+import { DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Action } from './Action.js'
 import { guid } from '../util/misc.js'

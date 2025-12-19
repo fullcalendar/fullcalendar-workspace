@@ -3,7 +3,7 @@ import { buildDateSpanApi, DateSpanApi, DatePointApi, DateSpan } from './structs
 import { CalendarContext } from './CalendarContext.js'
 import { ViewApi } from './api/ViewApi.js'
 import { ViewImpl } from './api/ViewImpl.js'
-import { DateMarker, startOfDay } from './datelib/marker.js'
+import { DateMarker, startOfDay } from '@full-ui/headless-calendar'
 
 export interface DateClickApi extends DatePointApi {
   dayEl: HTMLElement

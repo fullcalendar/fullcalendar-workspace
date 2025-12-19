@@ -4,7 +4,7 @@ import { EventUiHash } from './event-ui.js'
 import { sliceEventStore, EventRenderRange } from './event-rendering.js'
 import { DateSpan } from '../structs/date-span.js'
 import { EventInteractionState } from '../interactions/event-interaction-state.js'
-import { Duration } from '../datelib/duration.js'
+import { Duration } from '@full-ui/headless-calendar'
 
 export interface ViewProps {
   className?: string

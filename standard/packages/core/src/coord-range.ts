@@ -1,5 +1,5 @@
 import { EventRangeProps } from './component-util/event-rendering.js'
-import { DateMarker } from './datelib/marker.js'
+import { DateMarker } from '@full-ui/headless-calendar'
 
 /*
 TODO: try to move everything to CoordRange

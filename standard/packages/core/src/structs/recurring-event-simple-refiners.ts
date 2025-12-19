@@ -1,5 +1,4 @@
-import { createDuration } from '../datelib/duration.js'
-import { DateInput } from '../datelib/env.js'
+import { createDuration, DateInput } from '@full-ui/headless-calendar'
 import { identity, Identity } from '../options.js'
 
 export const SIMPLE_RECURRING_REFINERS = {

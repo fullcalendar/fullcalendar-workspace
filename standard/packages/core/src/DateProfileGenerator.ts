@@ -1,6 +1,14 @@
-import { DateMarker, startOfDay, addDays, diffWholeWeeks, diffWholeDays } from './datelib/marker.js'
-import { Duration, createDuration, asRoughDays, asRoughMs, greatestDurationDenominator } from './datelib/duration.js'
 import {
+  DateMarker,
+  startOfDay,
+  addDays,
+  diffWholeWeeks,
+  diffWholeDays,
+  Duration,
+  createDuration,
+  asRoughDays,
+  asRoughMs,
+  greatestDurationDenominator,
   DateRange,
   OpenDateRange,
   constrainMarkerToRange,
@@ -9,8 +17,9 @@ import {
   rangesIntersect,
   parseRange,
   DateRangeInput,
-} from './datelib/date-range.js'
-import { DateEnv, DateInput } from './datelib/env.js'
+  DateEnv,
+  DateInput,
+} from '@full-ui/headless-calendar'
 import { computeVisibleDayRange } from './util/date.js'
 import { getNow } from './reducers/current-date.js'
 import { CalendarImpl } from './api/CalendarImpl.js'

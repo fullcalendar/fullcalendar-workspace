@@ -11,6 +11,7 @@ IMPORTANT
     https://shadcn-registry.fullcalendar.io/monarch/event-calendar.json
     https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
   Publish themes.fullcalendar.io
+  Adjust @full-ui publish keys in NPM
 
 clean+build all:
   pn clean --all

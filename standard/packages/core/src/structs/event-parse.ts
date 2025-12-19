@@ -1,6 +1,5 @@
 import { guid } from '../util/misc.js'
-import { DateInput } from '../datelib/env.js'
-import { startOfDay } from '../datelib/marker.js'
+import { DateInput, startOfDay } from '@full-ui/headless-calendar'
 import { parseRecurring } from './recurring-event.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { EventDef } from './event-def.js'

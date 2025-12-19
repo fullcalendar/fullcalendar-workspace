@@ -1,4 +1,4 @@
-import { DateRange, intersectRanges } from '../datelib/date-range.js'
+import { DateRange, intersectRanges, Duration, DateMarker, addMs, addDays } from '@full-ui/headless-calendar'
 import { EventStore } from '../structs/event-store.js'
 import { EventUiHash } from '../component-util/event-ui.js'
 import { sliceEventStore, EventRenderRange, EventRangeProps } from '../component-util/event-rendering.js'
@@ -6,9 +6,7 @@ import { DateProfile } from '../DateProfileGenerator.js'
 import { EventSegUiInteractionState } from '../component/DateComponent.js' // TODO: rename EventSegUiInteractionState, move here
 import { DateSpan, fabricateEventRange } from '../structs/date-span.js'
 import { EventInteractionState } from '../interactions/event-interaction-state.js'
-import { Duration } from '../datelib/duration.js'
 import { memoize } from '../util/memoize.js'
-import { DateMarker, addMs, addDays } from '../datelib/marker.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { expandRecurring } from '../structs/recurring-event.js'
 

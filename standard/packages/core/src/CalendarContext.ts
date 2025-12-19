@@ -1,4 +1,4 @@
-import { DateEnv } from './datelib/env.js'
+import { DateEnv } from '@full-ui/headless-calendar'
 import { BaseOptionsRefined, CalendarListeners } from './options.js'
 import { PluginHooks } from './plugin-system-struct.js'
 import { Emitter } from './common/Emitter.js'

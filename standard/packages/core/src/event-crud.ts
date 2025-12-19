@@ -1,7 +1,7 @@
 import { EventStore } from './structs/event-store.js'
 import { CalendarData } from './reducers/data-types.js'
 import { EventImpl, buildEventApis } from './api/EventImpl.js'
-import { Duration } from './datelib/duration.js'
+import { Duration } from '@full-ui/headless-calendar'
 import { ViewApi } from './index.js'
 
 export interface EventAddData {

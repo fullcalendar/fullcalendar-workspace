@@ -1,8 +1,7 @@
 import { DateMeta } from './component-util/date-rendering.js'
-import { Duration } from './datelib/duration.js'
+import { Duration, DateMarker } from '@full-ui/headless-calendar'
 import { ViewApi } from './api/ViewApi.js'
 import { MountData } from './common/render-hook.js'
-import { DateMarker } from './datelib/marker.js'
 
 export interface SlotLaneData extends DateMeta {
   time?: Duration

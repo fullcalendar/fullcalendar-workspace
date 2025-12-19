@@ -1,4 +1,4 @@
-import { Duration } from '../datelib/duration.js'
+import { Duration } from '@full-ui/headless-calendar'
 import { EventUi } from '../component-util/event-ui.js'
 import { Dictionary } from '../options.js'
 

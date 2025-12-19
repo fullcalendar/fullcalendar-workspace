@@ -1,4 +1,4 @@
-import { createDuration, Duration } from '../datelib/duration.js'
+import { createDuration, Duration } from '@full-ui/headless-calendar'
 import { refineProps, RawOptionsFromRefiners, Dictionary } from '../options.js'
 
 /*

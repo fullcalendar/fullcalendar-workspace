@@ -1,4 +1,4 @@
-import { DateMarker } from '../datelib/marker.js'
+import { DateMarker } from '@full-ui/headless-calendar'
 import { joinArrayishClassNames } from '../internal.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { formatWithOrdinals } from '../util/misc.js'

@@ -1,6 +1,6 @@
 import { EventRangeProps } from './component-util/event-rendering.js'
 import { computeEarliestStart, CoordRange, doCoordRangesIntersect, getCoordRangeEnd, intersectCoordRanges, joinCoordRanges, SlicedCoordRange } from './coord-range.js'
-import { buildIsoString } from './datelib/formatting-utils.js'
+import { buildIsoString } from '@full-ui/headless-calendar'
 
 /*
 for INPUT

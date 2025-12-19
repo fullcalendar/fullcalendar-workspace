@@ -1,16 +1,23 @@
 import { EventDef, EventDefHash } from '../structs/event-def.js'
 import { EventTuple } from '../structs/event-parse.js'
 import { EventStore } from '../structs/event-store.js'
-import { DateRange, invertRanges, intersectRanges, rangeContainsMarker } from '../datelib/date-range.js'
-import { Duration } from '../datelib/duration.js'
+import {
+  DateRange,
+  invertRanges,
+  intersectRanges,
+  rangeContainsMarker,
+  Duration,
+  DateFormatter,
+  addMs,
+  DateMarker,
+  startOfDay,
+} from '@full-ui/headless-calendar'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc.js'
 import { computeVisibleDayRange } from '../util/date.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
 import { mapHash } from '../util/object.js'
 import { ViewContext } from '../ViewContext.js'
-import { DateFormatter } from '../datelib/DateFormatter.js'
-import { addMs, DateMarker, startOfDay } from '../datelib/marker.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { MountData } from '../common/render-hook.js'
 import { createAriaKeyboardAttrs } from '../util/dom-event.js'

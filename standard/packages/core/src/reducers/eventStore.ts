@@ -12,9 +12,8 @@ import {
 } from '../structs/event-store.js'
 import { Action } from './Action.js'
 import { EventSourceHash, EventSource } from '../structs/event-source.js'
-import { DateRange } from '../datelib/date-range.js'
+import { DateRange, DateEnv } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator.js'
-import { DateEnv } from '../datelib/env.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { expandRecurring } from '../structs/recurring-event.js'
 

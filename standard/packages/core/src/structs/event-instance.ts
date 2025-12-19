@@ -1,4 +1,4 @@
-import { DateRange } from '../datelib/date-range.js'
+import { DateRange } from '@full-ui/headless-calendar'
 import { guid } from '../util/misc.js'
 
 export interface EventInstance {

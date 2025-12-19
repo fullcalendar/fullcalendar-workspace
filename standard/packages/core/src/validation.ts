@@ -1,6 +1,6 @@
 import { EventStore, filterEventStoreDefs } from './structs/event-store.js'
 import { DateSpan } from './structs/date-span.js'
-import { rangeContainsRange, rangesIntersect, DateRange, OpenDateRange } from './datelib/date-range.js'
+import { rangeContainsRange, rangesIntersect, DateRange, OpenDateRange } from '@full-ui/headless-calendar'
 import { EventImpl } from './api/EventImpl.js'
 import { compileEventUis } from './component-util/event-rendering.js'
 import { excludeInstances } from './reducers/eventStore.js'

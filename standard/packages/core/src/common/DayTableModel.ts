@@ -1,9 +1,7 @@
 import { DaySeriesModel } from './DaySeriesModel.js'
-import { DateRange } from '../datelib/date-range.js'
-import { DateMarker } from '../datelib/marker.js'
+import { DateRange, DateMarker, DateEnv } from '@full-ui/headless-calendar'
 import { Dictionary } from '../options.js'
 import { SlicedCoordRange } from '../coord-range.js'
-import { DateEnv } from '../datelib/env.js'
 import { isMajorUnit } from '../DateProfileGenerator.js'
 
 export interface DayGridRange extends SlicedCoordRange {

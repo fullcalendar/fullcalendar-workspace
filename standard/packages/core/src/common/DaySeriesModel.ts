@@ -1,6 +1,5 @@
 import { DateProfileGenerator } from '../DateProfileGenerator.js'
-import { DateMarker, addDays, diffDays } from '../datelib/marker.js'
-import { DateRange } from '../datelib/date-range.js'
+import { DateMarker, addDays, diffDays, DateRange } from '@full-ui/headless-calendar'
 import { SlicedCoordRange } from '../coord-range.js'
 
 export class DaySeriesModel {

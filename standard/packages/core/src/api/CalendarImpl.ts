@@ -1,5 +1,5 @@
-import { createFormatter, FormatterInput } from '../datelib/formatting.js'
-import { createDuration } from '../datelib/duration.js'
+import { FormatterInput, createFormatter } from '../datelib/formatting.js'
+import { createDuration } from '@full-ui/headless-calendar'
 import { parseDateSpan } from '../structs/date-span.js'
 import { parseEventSource } from '../structs/event-source-parse.js'
 import { parseEvent } from '../structs/event-parse.js'

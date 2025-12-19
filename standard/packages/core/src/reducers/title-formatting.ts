@@ -1,8 +1,6 @@
 import { DateProfile } from '../DateProfileGenerator.js'
-import { diffWholeDays } from '../datelib/marker.js'
+import { diffWholeDays, DateRange, DateEnv } from '@full-ui/headless-calendar'
 import { createFormatter, FormatterInput } from '../datelib/formatting.js'
-import { DateRange } from '../datelib/date-range.js'
-import { DateEnv } from '../datelib/env.js'
 import { BaseOptions } from '../options.js'
 
 // Computes what the title at the top of the calendarApi should be for this view

@@ -63,7 +63,7 @@ import {
   DayCellData,
 } from './api/structs.js'
 import { TableHeaderData } from './common/TableAndSubsections.js'
-import { createDuration, Duration } from './datelib/duration.js'
+import { createDuration, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting.js'
 import { parseFieldSpecs } from './util/misc.js'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object.js'

@@ -4,7 +4,7 @@ import { ComponentType, Component, createElement } from '../preact.js'
 import { MountData } from '../common/render-hook.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { ViewOptions } from '../options.js'
-import { Duration } from '../datelib/duration.js'
+import { Duration } from '@full-ui/headless-calendar'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { BaseComponent } from '../vdom-util.js'
 

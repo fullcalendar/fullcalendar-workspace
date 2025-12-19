@@ -1,5 +1,5 @@
 import { MountData } from './render-hook.js'
-import { DateMarker } from '../datelib/marker.js'
+import { DateMarker } from '@full-ui/headless-calendar'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { createElement } from '../preact.js'
 import { ViewApi } from '../api/ViewApi.js'

@@ -1,6 +1,5 @@
 import { EventImpl } from '../api/EventImpl.js'
-import { DateRange } from '../datelib/date-range.js'
-import { addDays, DateMarker } from '../datelib/marker.js'
+import { DateRange, addDays, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Dictionary } from '../options.js'
 import { getUniqueDomId } from '../util/dom-manip.js'

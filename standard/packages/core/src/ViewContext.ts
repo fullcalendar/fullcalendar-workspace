@@ -1,6 +1,6 @@
 import { CalendarImpl } from './api/CalendarImpl.js'
 import { ViewImpl } from './api/ViewImpl.js'
-import { DateEnv } from './datelib/env.js'
+import { DateEnv } from '@full-ui/headless-calendar'
 import { PluginHooks } from './plugin-system-struct.js'
 import { createContext, Context } from './preact.js'
 import { DateProfileGenerator } from './DateProfileGenerator.js'

@@ -1,5 +1,5 @@
 import { ViewDef, compileViewDefs } from './view-def.js'
-import { Duration, createDuration, greatestDurationDenominator, DurationInput } from '../datelib/duration.js'
+import { Duration, createDuration, greatestDurationDenominator, DurationInput } from '@full-ui/headless-calendar'
 import { mapHash } from '../util/object.js'
 import { ViewOptions, CalendarOptions } from '../options.js'
 import { ViewConfigInputHash, parseViewConfigs, ViewConfigHash, ViewComponentType } from './view-config.js'

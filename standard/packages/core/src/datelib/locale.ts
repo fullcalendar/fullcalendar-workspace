@@ -1,20 +1,10 @@
 import { globalLocales } from '../global-locales.js'; // weird to be importing this
-import { CalendarOptions, CalendarOptionsRefined } from '../options.js'
-import { mergeCalendarOptions } from '../options-manip.js';
+import { CalendarOptions } from '../options.js'
+import { mergeCalendarOptions } from '../options-manip.js'
 
-export type LocaleCodeArg = string | string[]
+import { LocaleCodeArg, Locale } from '@full-ui/headless-calendar'
+
 export type LocaleSingularArg = LocaleCodeArg | LocaleInput
-
-/*
-Internal-only
-*/
-export interface Locale {
-  codeArg: LocaleCodeArg
-  codes: string[]
-  week: { dow: number, doy: number }
-  simpleNumberFormat: Intl.NumberFormat
-  options: CalendarOptionsRefined
-}
 
 export interface LocaleInput extends CalendarOptions {
   code: string

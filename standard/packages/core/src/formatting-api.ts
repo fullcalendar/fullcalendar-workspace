@@ -1,4 +1,4 @@
-import { DateEnv } from './datelib/env.js'
+import { DateEnv } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting.js'
 import { NativeFormatterOptions } from './datelib/formatting-native.js'
 import { organizeRawLocales, buildLocale } from './datelib/locale.js'

@@ -1,6 +1,4 @@
-import { DateRange, rangesEqual, OpenDateRange } from '../datelib/date-range.js'
-import { DateInput, DateEnv } from '../datelib/env.js'
-import { Duration } from '../datelib/duration.js'
+import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration } from '@full-ui/headless-calendar'
 import { createEventInstance } from './event-instance.js'
 import { parseEventDef, refineEventDef } from './event-parse.js'
 import { EventRenderRange, compileEventUi } from '../component-util/event-rendering.js'

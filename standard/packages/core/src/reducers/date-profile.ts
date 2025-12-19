@@ -1,6 +1,6 @@
 import { DateProfile, DateProfileGenerator } from '../DateProfileGenerator.js'
 import { Action } from './Action.js'
-import { DateMarker } from '../datelib/marker.js'
+import { DateMarker } from '@full-ui/headless-calendar'
 
 export function reduceDateProfile(
   currentDateProfile: DateProfile | null,
