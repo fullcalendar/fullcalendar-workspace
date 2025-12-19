@@ -80,8 +80,10 @@ export function externalizePkgsPlugin(
     resolveId(importId) {
       if (!isImportRelative(importId)) {
         for (const pkgName of pkgNames) {
-          if (importId === pkgName || importId.startsWith(pkgName + '/')) {
-            return { id: importId, external: true, moduleSideEffects }
+          if (!pkgName.startsWith('@full-ui/')) { // HACK
+            if (importId === pkgName || importId.startsWith(pkgName + '/')) {
+              return { id: importId, external: true, moduleSideEffects }
+            }
           }
         }
       }

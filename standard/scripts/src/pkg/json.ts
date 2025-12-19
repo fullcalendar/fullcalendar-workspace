@@ -43,6 +43,7 @@ export async function writeDistPkgJson(
   }
 
   const sideEffects: string[] = []
+  let hasAnyIife = false
 
   for (const entryName in entryConfigMap) {
     const entryConfig = entryConfigMap[entryName]
@@ -67,6 +68,8 @@ export async function writeDistPkgJson(
     }
 
     if (entryConfig.iife) {
+      hasAnyIife = true
+
       const iifePath = entrySubpath + iifeExtension
       const iifeMinPath = entrySubpath + '.min' + iifeExtension
 
@@ -106,17 +109,21 @@ export async function writeDistPkgJson(
     ...basePkgJson,
     ...pkgJson, // overrides base
     keywords:
-      pkgJson.name.includes('headless')
+      pkgJson.name.startsWith('@full-ui/') // HACK
         ? (pkgJson.keywords || basePkgJson.keywords || []) // don't merge
         : (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
     module: './esm/index' + esmExtension,
     main: './cjs/index' + cjsExtension,
-    ...cdnFields.reduce(
-      (props, cdnField) => Object.assign(props, {
-        [cdnField]: './global.min' + iifeExtension,
-      }),
-      {},
+    ...(
+      hasAnyIife
+        ? cdnFields.reduce(
+            (props, cdnField) => Object.assign(props, {
+              [cdnField]: './global.min' + iifeExtension,
+            }),
+            {},
+          )
+        : {}
     ),
     exports: exportsMap,
   }
