@@ -19,7 +19,7 @@
     "build": "standard-scripts pkg:build && pnpm run clean-dist",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint .",
-    "clean-dist": "rm -f dist/palette.js dist/palette.min.js dist/palette.css.js"
+    "clean-dist": "rm -f dist/palette.js dist/palette.min.js"
   },
   "type": "module",
   "tsConfig": {

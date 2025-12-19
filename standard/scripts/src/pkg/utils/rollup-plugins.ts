@@ -8,6 +8,7 @@ import {
 import { readFile } from 'fs/promises'
 import { Plugin } from 'rollup'
 import handlebars from 'handlebars'
+import cssnano from 'cssnano'
 import { execLive } from '../../utils/exec.js'
 import { strsToProps } from '../../utils/lang.js'
 import { standardScriptsDir } from '../../utils/script-runner.js'
@@ -187,18 +188,18 @@ function replaceDotAssignments(code: string): string {
 // Minify
 // -------------------------------------------------------------------------------------------------
 
-export function minifySeparatelyPlugin(): Plugin {
+export function minifyJsSeparatelyPlugin(): Plugin {
   return {
     name: 'minify-separately',
     async writeBundle(options, bundles) {
       const { file, dir } = options
 
       if (file) {
-        await minifySeparately(resolvePath(file))
+        await minifyJsSeparately(resolvePath(file))
       } else if (dir) {
         await Promise.all(
           Object.keys(bundles).map((bundlePath) => {
-            return minifySeparately(resolvePath(joinPaths(dir, bundlePath)))
+            return minifyJsSeparately(resolvePath(joinPaths(dir, bundlePath)))
           }),
         )
       } else {
@@ -208,7 +209,7 @@ export function minifySeparatelyPlugin(): Plugin {
   }
 }
 
-async function minifySeparately(path: string): Promise<void> {
+async function minifyJsSeparately(path: string): Promise<void> {
   const pathMatch = path.match(/^(.*)(\.[cm]?js)$/)
 
   if (!pathMatch) {
@@ -228,26 +229,46 @@ async function minifySeparately(path: string): Promise<void> {
 // Inject CSS as Style Tag, Separately
 // -------------------------------------------------------------------------------------------------
 
-export async function injectCssSeparatelyPlugin(): Promise<Plugin> {
+export async function extractCssSeparatelyPlugin(minify: boolean, isTheming: boolean): Promise<Plugin> {
   const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
   const templateText = await readFile(templatePath, 'utf8')
   const template = handlebars.compile(templateText)
 
   return {
     name: 'inject-css-separately',
-    generateBundle(options, bundle) {
-      for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+    async generateBundle(options, bundle) {
+      for (let [fileName, chunkOrAsset] of Object.entries(bundle)) {
         if (fileName.endsWith('.css') && chunkOrAsset.type === 'asset') {
-          const cssText =
+          let cssText =
             typeof chunkOrAsset.source === 'string'
               ? chunkOrAsset.source
               : Buffer.from(chunkOrAsset.source).toString('utf8')
 
-          this.emitFile({
-            type: 'asset',
-            fileName: fileName.replace(/\.css$/, '.css.js'),
-            source: template({ cssTextAsJson: JSON.stringify(cssText) })
-          })
+          cssText = (
+            await cssnano({
+              preset: ['default', {
+                calc: false, // bad for tailwind line heights
+              }],
+            }).process(cssText)
+          ).css
+
+          const isThemePalette = isTheming && fileName !== 'theme.css'
+
+          if (minify && !isThemePalette) {
+            this.emitFile({
+              type: 'asset',
+              fileName: fileName.replace(/\.css$/, '.min.css'),
+              source: cssText,
+            })
+          }
+
+          if (!isThemePalette) {
+            this.emitFile({
+              type: 'asset',
+              fileName: fileName.replace(/\.css$/, '.styles.js'),
+              source: template({ cssTextAsJson: JSON.stringify(cssText) })
+            })
+          }
         }
       }
     }

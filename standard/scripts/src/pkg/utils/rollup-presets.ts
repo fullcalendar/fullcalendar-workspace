@@ -39,11 +39,11 @@ import {
   externalizePathsPlugin,
   externalizePkgsPlugin,
   generatedContentPlugin,
-  minifySeparatelyPlugin,
+  minifyJsSeparatelyPlugin,
   massageDtsPlugin,
   rerootPlugin,
   simpleDotAssignment,
-  injectCssSeparatelyPlugin,
+  extractCssSeparatelyPlugin,
 } from './rollup-plugins.js'
 import transformClassNamesPlugin from './rollup-plugins-theming.js'
 import { HashGenerator } from './hash-generator.js'
@@ -109,7 +109,14 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: await buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, Boolean(entryConfig.css), minify),
+        plugins: await buildIifePlugins(
+          entryStruct,
+          pkgBundleStruct,
+          sourcemap,
+          /* extractCss = */ Boolean(entryConfig.css),
+          minify,
+          /* isPalette = */ /palettes?/.test(entryAlias), // brittle
+        ),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn(warning) {
           if (warning.code !== 'CIRCULAR_DEPENDENCY') {
@@ -297,7 +304,7 @@ function buildModulePlugins(
       entryStructsToContentMap(entryStructMap),
     ),
     ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minifyCss, isPublicMui)] : []),
-    ...buildJsPlugins(pkgBundleStruct, false, minifyCss),
+    ...buildJsPlugins(pkgBundleStruct, /* extractCss = */ false),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -311,9 +318,11 @@ async function buildIifePlugins(
   sourcemap: boolean,
   extractCss: boolean,
   minify: boolean,
+  isPalette: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const { isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
+  const { isTests, isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
+  const isTheming = isPublicTheme || isPublicMui
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -325,11 +334,22 @@ async function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
-    ...buildJsPlugins(pkgBundleStruct, extractCss, minify),
-    ...(extractCss ? [await injectCssSeparatelyPlugin()] : []),
+    ...(isTheming ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
+    ...buildJsPlugins(
+      pkgBundleStruct,
+      extractCss
+        ? isTheming
+          ? isPalette
+            ? true // keep same name
+            : 'theme.css'
+          : isTests
+            ? true // keep same name
+            : 'skeleton.css'
+        : false,
+    ),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
-    ...(minify ? [minifySeparatelyPlugin()] : []),
+    ...(extractCss ? [await extractCssSeparatelyPlugin(minify, isTheming)] : []),
+    ...(minify ? [minifyJsSeparatelyPlugin()] : []),
   ]
 }
 
@@ -352,19 +372,18 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, minifyCss: boolean): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minifyCss)
+    return buildNormalJsPlugins(pkgBundleStruct, extractCss)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, minifyCss: boolean): Plugin[] {
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string): Plugin[] {
   const { pkgJson } = pkgBundleStruct
-  const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   return [
     nodeResolvePlugin({
@@ -372,10 +391,6 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     }),
     cssPlugin({
       extract: extractCss,
-      minify: minifyCss &&
-        !pkgAnalysis.isPublicTheme,
-        // HACK to ensure color palettes don't get minified, because users might want to copy and paste
-        // but this turns off minification for ALL css files :( okay for now
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'],
@@ -417,7 +432,7 @@ function buildTestJsPlugins(): Plugin[] {
 // -------------------------------------------------------------------------------------------------
 
 function cssPlugin(options?: {
-  extract?: boolean,
+  extract?: boolean | string,
   minify?: boolean,
   inject?: boolean,
 }): Plugin {
@@ -437,11 +452,6 @@ function cssPlugin(options?: {
     },
     extract,
     inject: inject || false,
-    minimize: minify
-      ? { // cssnano options
-          preset: ['default', { calc: false }], // disable postcss-calc
-        }
-      : false
   })
 }
 
