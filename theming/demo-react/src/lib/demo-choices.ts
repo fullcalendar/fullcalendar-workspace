@@ -4,7 +4,7 @@ import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-m
 import { paletteMetaMap as fcFormaPaletteOptions } from '@fullcalendar/theme-forma-tailwind/ui-default-palettes-meta'
 import { paletteMetaMap as fcPulsePaletteOptions } from '@fullcalendar/theme-pulse-tailwind/ui-default-palettes-meta'
 import { paletteMetaMap as fcBreezyPaletteOptions } from '@fullcalendar/theme-breezy-tailwind/ui-default-palettes-meta'
-import { demoPaletteMap as shadcnPaletteOptions } from '@fullcalendar/shadcn/demo-palettes-meta'
+import { demoPaletteMap as shadcnPaletteOptions } from '@fullcalendar/ui-shadcn/demo-palettes-meta'
 import { demoPaletteMap as muiPaletteOptions } from '@fullcalendar/ui-mui-tailwind/demo-palettes-meta'
 import { themeOptions, colorSchemeOptions, ColorScheme, UIName, ThemeName } from './config.js'
 import { useLocalStorageState } from './hooks.js'
