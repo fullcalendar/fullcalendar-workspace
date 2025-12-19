@@ -26,6 +26,7 @@ build note:
 
 
 Make separate full-ui packages?
+  New READMEs
 
 
 ASAP

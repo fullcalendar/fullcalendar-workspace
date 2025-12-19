@@ -4,7 +4,8 @@
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
-    "preact": "~10.23.1"
+    "preact": "~10.23.1",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.5"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",

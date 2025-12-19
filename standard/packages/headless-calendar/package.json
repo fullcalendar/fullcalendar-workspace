@@ -1,0 +1,41 @@
+{
+  "name": "@full-ui/headless-calendar",
+  "version": "7.0.0-beta.5",
+  "keywords": [
+    "headless",
+    "calendar",
+    "event"
+  ],
+  "description": "Headless calendar library by the makers of FullCalendar",
+  "devDependencies": {
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "typescript": "^4.8.2"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": {
+        "module": true
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

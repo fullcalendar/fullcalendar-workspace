@@ -105,7 +105,10 @@ export async function writeDistPkgJson(
     ...pkgJson, // hack to prefer key order of original file
     ...basePkgJson,
     ...pkgJson, // overrides base
-    keywords: (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
+    keywords:
+      pkgJson.name.includes('headless')
+        ? (pkgJson.keywords || basePkgJson.keywords || []) // don't merge
+        : (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
     module: './esm/index' + esmExtension,
     main: './cjs/index' + cjsExtension,
