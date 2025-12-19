@@ -161,6 +161,7 @@ async function createSchedulerConfig(theme, themeTitle) {
     "dependencies": [
       "@fullcalendar/react",
       "@fullcalendar/core",
+      "@fullcalendar/interaction",
       "@fullcalendar/adaptive",
       "@fullcalendar/scrollgrid",
       "@fullcalendar/timeline",

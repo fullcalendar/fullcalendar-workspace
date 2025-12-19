@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-monorepos/root",
-  "version": "7.0.0-rc.0",
+  "version": "7.0.0-beta.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/fullcalendar/fullcalendar-workspace.git"

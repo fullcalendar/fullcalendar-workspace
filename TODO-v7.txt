@@ -7,8 +7,10 @@ IMPORTANT
   Ensure changesets uses the "beta" npm-tag
   Ensure shadcn @fullcalendar dependencies use @beta
   regsitry urls:
+    https://shadcn-registry.fullcalendar.io/monarch/registry.json
     https://shadcn-registry.fullcalendar.io/monarch/event-calendar.json
     https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
+  Publish themes.fullcalendar.io
 
 clean+build all:
   pn clean --all
@@ -312,6 +314,10 @@ Is timeline slot label inner padding too fat?
 bug: when height|contentHeight='auto',
   Monarch displays tableHeader with bottom border because thinks "isSticky"
 bug: Pulse multimonth view still displays "EventTitle...9pm" but very squished. thought we hid time?
+Get all examples/ using new dist files
+  was having trouble with deduping React versions
+In all docs, rename our `data` param to `state` like base-ui?
+  https://base-ui.com/react/handbook/styling
 
 
 Changelog
