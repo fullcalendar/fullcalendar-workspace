@@ -6,6 +6,7 @@
     "grid",
     "datagrid"
   ],
+  "title": "Headless DataGrid Library",
   "description": "Headless datagrid library by the makers of FullCalendar",
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",

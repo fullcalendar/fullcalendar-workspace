@@ -6,6 +6,7 @@
     "calendar",
     "event"
   ],
+  "title": "Headless Calendar Library",
   "description": "Headless calendar library by the makers of FullCalendar",
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
