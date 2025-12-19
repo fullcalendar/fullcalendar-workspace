@@ -71,22 +71,30 @@ export async function writeDistPkgJson(
       const iifeMinPath = entrySubpath + '.min' + iifeExtension
 
       // HACK (see clean-dist)
-      const simplified =
-        pkgAnalysis.isPublicMui ||
-        (pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette'))
-          // matches "./palettes/"" or "./palette.css" (classic)
+      const isTheming = pkgAnalysis.isPublicTheme || pkgAnalysis.isPublicMui
+      const isThemePalette = pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette') // matches "./palettes/"" or "./palette.css" (classic)
+      const disableIifeMinAndJsStyles = pkgAnalysis.isPublicMui || isThemePalette
 
-      if (!simplified) { // HACK (see clean-dist)
+      if (!disableIifeMinAndJsStyles) { // HACK (see clean-dist)
         sideEffects.push(iifePath, iifeMinPath)
       }
 
       if (entryConfig.css) { // only works for iife (for now)
-        const cssPath = entrySubpath + '.css'
+        let entrySubpathOverride = ''
+        if (isTheming) {
+          if (!isThemePalette) {
+            entrySubpathOverride = './theme'
+          }
+        } else {
+          entrySubpathOverride = './skeleton'
+        }
+
+        const cssPath = (entrySubpathOverride || entrySubpath) + '.css'
         exportsMap[cssPath] = cssPath
 
-        if (!simplified) { // HACK (see clean-dist)
-          const cssJsPath = entrySubpath + '.css.js'
-          exportsMap[cssJsPath] = cssJsPath
+        if (!disableIifeMinAndJsStyles) { // HACK (see clean-dist)
+          const cssJsPath = (entrySubpathOverride || entrySubpath) + '.styles.js'
+          exportsMap[(entrySubpathOverride || entrySubpath) + '.styles'] = cssJsPath
           sideEffects.push(cssJsPath)
         }
       }
