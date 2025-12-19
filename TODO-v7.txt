@@ -31,6 +31,9 @@ build note:
     manually before `pn dev`
 
 
+Update CHANGELOG.md
+
+
 ASAP
 ----
 
