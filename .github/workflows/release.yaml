@@ -23,7 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          submodules: recursive
           token: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for sync-repos pull/push later on
           fetch-depth: 0 # fetches ALL history. needed for sync-repos operations
 
