@@ -1,32 +1,34 @@
 
 Publishing:
   pnpm changeset publish --no-git-tag
-  using CI. steps:
-    ensure updated publish keys in NPM/Github (@full-ui too)
 IMPORTANT
+  ensure updated publish keys in NPM/Github (@full-ui too)
   beta/rc/latest notes
     adjust @beta/etc in theming/ui-shadcn/scripts/build-registry-items.js
     adjust @beta/etc and CDN URLs in install guide
-  registry urls:
+    in .github/release.yaml
+      undo # DISABLED!
+      undo Build step filter
+        --filter '!./examples-v7/**' \
+        --filter '!./contrib/angular' \
+        --filter '!./contrib/vue3' \
+      undo private:true on angular (both package.jsons) and vue3
+  Publish NPM packages
+  Publish themes.fullcalendar.io
+  Publish Shadcn registry. URLs:
     https://shadcn-registry.fullcalendar.io/monarch/registry.json
     https://shadcn-registry.fullcalendar.io/monarch/event-calendar.json
     https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
-  Publish themes.fullcalendar.io
 clean+build all:
   pn clean --all
   pn --filter "./theming/**" run clean
   mkdir -p contrib/angular/dist/lib
   pn install # important because writes tsconfigs
-  pn run postinstall # in case install didn't write tsconfigs
   pn build
 build note:
   The @fullcalendar/mui & @fullcalendar/ui-shadcn packages should formally rely on
     @fullcalendar/react in terms for `pn dev`; until they do, we need to build @fullcalendar/react
     manually before `pn dev`
-
-
-Test CI scripts. lint?
-Try changesets dry run?
 
 
 ASAP

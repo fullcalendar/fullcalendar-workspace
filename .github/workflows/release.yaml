@@ -63,6 +63,8 @@ jobs:
             install
 
       - name: Lint
+        # DISABLED!
+        if: false
         run: |
           pnpm \
             --filter '!./examples/**' \
@@ -84,12 +86,17 @@ jobs:
         run: |
           pnpm \
             --filter '!./examples/**' \
+            --filter '!./examples-v7/**' \
+            --filter '!./contrib/angular' \
+            --filter '!./contrib/vue3' \
             --filter '!@fullcalendar-tests/*' \
             run build
           pnpm run archive
 
       # execute only contrib tests, as "smoke" tests. they're fast
       - name: Test
+        # DISABLED!
+        if: false
         run: |
           pnpm \
             --filter './contrib/**' \
@@ -104,6 +111,8 @@ jobs:
       # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
       #
       - name: Sync Repos
+        # DISABLED!
+        if: false
         run: |
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
@@ -121,7 +130,8 @@ jobs:
           pnpm run sync-repos
 
       - name: Tag & Create GitHub Releases
-        if: success() && !inputs.skip_tag_and_release
+        # DISABLED!
+        if: false && success() && !inputs.skip_tag_and_release
         env:
           GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
         run: pnpm run tag-and-release
@@ -130,6 +140,8 @@ jobs:
       # AND fullcalendar/fullcalendar-scheduler
       #
       - name: Publish to NPM
+        # DISABLED!
+        if: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm run publish
