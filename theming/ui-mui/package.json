@@ -58,7 +58,7 @@
     "build": "standard-scripts pkg:build && pnpm run clean-dist",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint .",
-    "clean-dist": "rm -f dist/*/global.js dist/*/global.min.js dist/*/global.css.js"
+    "clean-dist": "rm -f dist/*/theme.js dist/*/theme.min.js"
   },
   "type": "module",
   "tsConfig": {
@@ -91,7 +91,7 @@
   },
   "buildConfig": {
     "exports": {
-      "./breezy/global": { "iife": true, "css": true },
+      "./breezy/theme": { "iife": true, "css": true },
       "./breezy/icons": { "module": true },
       "./breezy/EventCalendar": { "module": true },
       "./breezy/EventCalendarContainer": { "module": true },
@@ -100,7 +100,7 @@
       "./breezy/ResourceTimeline": { "module": true },
       "./breezy/ResourceTimeGrid": { "module": true },
       "./breezy/SchedulerViews": { "module": true },
-      "./classic/global": { "iife": true, "css": true },
+      "./classic/theme": { "iife": true, "css": true },
       "./classic/icons": { "module": true },
       "./classic/EventCalendar": { "module": true },
       "./classic/EventCalendarContainer": { "module": true },
@@ -109,7 +109,7 @@
       "./classic/ResourceTimeline": { "module": true },
       "./classic/ResourceTimeGrid": { "module": true },
       "./classic/SchedulerViews": { "module": true },
-      "./forma/global": { "iife": true, "css": true },
+      "./forma/theme": { "iife": true, "css": true },
       "./forma/icons": { "module": true },
       "./forma/EventCalendar": { "module": true },
       "./forma/EventCalendarContainer": { "module": true },
@@ -118,7 +118,7 @@
       "./forma/ResourceTimeline": { "module": true },
       "./forma/ResourceTimeGrid": { "module": true },
       "./forma/SchedulerViews": { "module": true },
-      "./monarch/global": { "iife": true, "css": true },
+      "./monarch/theme": { "iife": true, "css": true },
       "./monarch/icons": { "module": true },
       "./monarch/EventCalendar": { "module": true },
       "./monarch/EventCalendarContainer": { "module": true },
@@ -127,7 +127,7 @@
       "./monarch/ResourceTimeline": { "module": true },
       "./monarch/ResourceTimeGrid": { "module": true },
       "./monarch/SchedulerViews": { "module": true },
-      "./pulse/global": { "iife": true, "css": true },
+      "./pulse/theme": { "iife": true, "css": true },
       "./pulse/icons": { "module": true },
       "./pulse/EventCalendar": { "module": true },
       "./pulse/EventCalendarContainer": { "module": true },

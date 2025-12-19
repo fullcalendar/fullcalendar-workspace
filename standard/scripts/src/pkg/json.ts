@@ -71,8 +71,8 @@ export async function writeDistPkgJson(
       const iifeMinPath = entrySubpath + '.min' + iifeExtension
 
       // HACK (see clean-dist)
-      const isTheming = pkgAnalysis.isPublicTheme || pkgAnalysis.isPublicMui
-      const isThemePalette = pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette') // matches "./palettes/"" or "./palette.css" (classic)
+      // matches "./palettes/"" or "./palette.css" (classic)
+      const isThemePalette = pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette')
       const disableIifeMinAndJsStyles = pkgAnalysis.isPublicMui || isThemePalette
 
       if (!disableIifeMinAndJsStyles) { // HACK (see clean-dist)
@@ -81,11 +81,11 @@ export async function writeDistPkgJson(
 
       if (entryConfig.css) { // only works for iife (for now)
         let entrySubpathOverride = ''
-        if (isTheming) {
+        if (pkgAnalysis.isPublicTheme) {
           if (!isThemePalette) {
             entrySubpathOverride = './theme'
           }
-        } else {
+        } else if (!pkgAnalysis.isPublicMui) { // core css
           entrySubpathOverride = './skeleton'
         }
 

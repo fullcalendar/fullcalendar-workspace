@@ -322,7 +322,6 @@ async function buildIifePlugins(
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isTests, isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
-  const isTheming = isPublicTheme || isPublicMui
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -334,21 +333,21 @@ async function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...(isTheming ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
+    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
     ...buildJsPlugins(
       pkgBundleStruct,
       extractCss
-        ? isTheming
+        ? isPublicTheme
           ? isPalette
-            ? true // keep same name
+            ? true // keep given name
             : 'theme.css'
-          : isTests
-            ? true // keep same name
-            : 'skeleton.css'
+          : (isTests || isPublicMui)
+            ? true // keep given name
+            : 'skeleton.css' // core css
         : false,
     ),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
-    ...(extractCss ? [await extractCssSeparatelyPlugin(minify, isTheming)] : []),
+    ...(extractCss ? [await extractCssSeparatelyPlugin(minify, isPublicTheme, isPublicMui)] : []),
     ...(minify ? [minifyJsSeparatelyPlugin()] : []),
   ]
 }

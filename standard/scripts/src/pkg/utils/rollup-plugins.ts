@@ -229,7 +229,7 @@ async function minifyJsSeparately(path: string): Promise<void> {
 // Inject CSS as Style Tag, Separately
 // -------------------------------------------------------------------------------------------------
 
-export async function extractCssSeparatelyPlugin(minify: boolean, isTheming: boolean): Promise<Plugin> {
+export async function extractCssSeparatelyPlugin(minify: boolean, isPublicTheme: boolean, isPublicMui: boolean): Promise<Plugin> {
   const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
   const templateText = await readFile(templatePath, 'utf8')
   const template = handlebars.compile(templateText)
@@ -252,9 +252,9 @@ export async function extractCssSeparatelyPlugin(minify: boolean, isTheming: boo
             }).process(cssText)
           ).css
 
-          const isThemePalette = isTheming && fileName !== 'theme.css'
+          const isThemePalette = isPublicTheme && fileName !== 'theme.css'
 
-          if (minify && !isThemePalette) {
+          if (minify && !isThemePalette && !isPublicMui) {
             this.emitFile({
               type: 'asset',
               fileName: fileName.replace(/\.css$/, '.min.css'),
@@ -262,7 +262,7 @@ export async function extractCssSeparatelyPlugin(minify: boolean, isTheming: boo
             })
           }
 
-          if (!isThemePalette) {
+          if (!isThemePalette && !isPublicMui) {
             this.emitFile({
               type: 'asset',
               fileName: fileName.replace(/\.css$/, '.styles.js'),
