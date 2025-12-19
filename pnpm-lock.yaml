@@ -3112,6 +3112,9 @@ importers:
 
   premium/packages/resource-timeline:
     dependencies:
+      '@full-ui/headless-grid':
+        specifier: workspace:7.0.0-beta.5
+        version: link:../headless-grid/dist
       '@fullcalendar/premium-common':
         specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist

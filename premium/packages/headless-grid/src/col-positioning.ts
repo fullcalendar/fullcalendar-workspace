@@ -1,0 +1,197 @@
+import { CssDimValue, fracToCssDim } from './utils.js'
+
+export interface DimConfig {
+  pixels: number
+  frac: number
+  min: number
+}
+
+export interface SiblingDimConfig extends DimConfig {
+  grow: number
+}
+
+export function parseDimConfig(
+  input: CssDimValue | undefined,
+  minDim = 0,
+): DimConfig | undefined {
+  if (input != null) {
+    if (typeof input === 'string') {
+      let m = input.match(/^(.*)(%|px)$/)
+
+      if (m) {
+        const num = parseFloat(m[1])
+
+        if (!isNaN(num)) {
+          if (m[2] === '%') {
+            return { pixels: 0, frac: num / 100, min: minDim }
+          } else {
+            return { pixels: num, frac: 0, min: minDim }
+          }
+        }
+      }
+    } else if (typeof input === 'number' && !isNaN(input)) {
+      return { pixels: input, frac: 0, min: minDim }
+    }
+  }
+}
+
+export function parseSiblingDimConfig(
+  input: CssDimValue | undefined,
+  grow: number | undefined, // TODO: use (and sanitize)
+  minDim: number | undefined,
+): SiblingDimConfig {
+  const partialDimConfig = parseDimConfig(input, minDim)
+
+  return partialDimConfig
+    ? { ...partialDimConfig, grow: grow || 0 }
+    : { pixels: 0, frac: 0, grow: grow || 1, min: minDim }
+}
+
+/*
+Ensure at least one column can grow
+Mutates in-place
+*/
+export function ensureDimConfigsGrow(dimConfigs: SiblingDimConfig[]): void {
+  for (const dimConfig of dimConfigs) {
+    if (dimConfig.grow) {
+      return
+    }
+  }
+
+  // make all expand equally
+  for (const dimConfig of dimConfigs) {
+    dimConfig.grow = 1
+  }
+}
+
+export function pixelizeDimConfigs(
+  dimConfigs: SiblingDimConfig[],
+  clientDim: number,
+): [
+  pixelDims: number[],
+  minCanvasDim: number,
+] {
+  const pixelDims: number[] = []
+  let preGrowTotal = 0
+  let growDenom = 0
+
+  for (const dimConfig of dimConfigs) {
+    const constrainedPixels = Math.max(
+      dimConfig.pixels + (dimConfig.frac * clientDim),
+      dimConfig.min,
+    )
+
+    pixelDims.push(constrainedPixels)
+    preGrowTotal += constrainedPixels
+    growDenom += dimConfig.grow
+  }
+
+  if (preGrowTotal < clientDim) {
+    const remainder = clientDim - preGrowTotal
+
+    for (let i = 0; i < dimConfigs.length; i++) {
+      pixelDims[i] += remainder * (dimConfigs[i].grow / growDenom)
+    }
+  }
+
+  return [pixelDims, preGrowTotal]
+}
+
+export function flexifyDimConfigs(
+  dimConfigs: SiblingDimConfig[],
+  pixelDims: number[],
+): [
+  flexDims: number[],
+  flexGrows: number[],
+  minCanvasDim: CssDimValue,
+] {
+  const flexDims: number[] = []
+  const flexGrows: number[] = []
+
+  let pixelTotal = 0
+  let fracTotal = 0
+
+  for (let i = 0; i < dimConfigs.length; i++) {
+    const dimConfig = dimConfigs[i]
+    const constrainedPixels = Math.max(
+      dimConfig.pixels,
+      dimConfig.min,
+    )
+
+    flexDims.push(constrainedPixels)
+    flexGrows.push(pixelDims[i] - constrainedPixels) // a pixel value, but used as a proportion
+
+    pixelTotal += dimConfig.pixels + (dimConfig.grow ? dimConfig.min : 0)
+    fracTotal += dimConfig.frac // not possible to enforce min for percentage here
+  }
+
+  const minCanvasDim = serializeDimConfig({
+    pixels: pixelTotal,
+    frac: fracTotal,
+  })
+
+  return [flexDims, flexGrows, minCanvasDim]
+}
+
+export function serializeDimConfig(
+  { pixels, frac }: { pixels: number, frac: number }
+): CssDimValue {
+  if (!frac) {
+    return pixels
+  }
+  if (!pixels) {
+    return fracToCssDim(frac)
+  }
+  return `calc(${fracToCssDim(frac)} + ${pixels}px)`
+}
+
+export function resizeSiblingDimConfig(
+  dimConfigs: SiblingDimConfig[],
+  pixelDims: number[],
+  clientDim: number,
+  resizeIndex: number,
+  resizeDim: number,
+): SiblingDimConfig[] {
+  const newDimConfigs: SiblingDimConfig[] = []
+
+  for (let i = 0; i < resizeIndex; i++) {
+    newDimConfigs.push(resizeDimConfig(dimConfigs[i], pixelDims[i], clientDim))
+  }
+
+  newDimConfigs.push(resizeDimConfig(dimConfigs[resizeIndex], resizeDim, clientDim))
+
+  const len = dimConfigs.length
+  let anyGrow = false
+
+  for (let i = resizeIndex + 1; i < len; i++) {
+    const dimConfig = dimConfigs[i]
+    newDimConfigs.push(dimConfig)
+
+    if (dimConfig.grow) {
+      anyGrow = true
+    }
+  }
+
+  if (!anyGrow) {
+    for (let i = resizeIndex + 1; i < len; i++) {
+      newDimConfigs[i] = Object.assign({}, newDimConfigs[i], { grow: 1 })
+    }
+  }
+
+  return newDimConfigs
+}
+
+export function resizeDimConfig(
+  dimConfig: DimConfig,
+  newPixels: number,
+  clientDim: number,
+): SiblingDimConfig {
+  const { min } = dimConfig
+  newPixels = Math.max(min, newPixels)
+
+  if (dimConfig.pixels) {
+    return { pixels: newPixels, frac: 0, grow: 0, min }
+  }
+
+  return { pixels: 0, frac: newPixels / clientDim, grow: 0, min }
+}

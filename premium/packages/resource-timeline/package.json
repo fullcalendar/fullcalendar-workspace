@@ -12,7 +12,8 @@
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:7.0.0-beta.5",
     "@fullcalendar/scrollgrid": "workspace:7.0.0-beta.5",
-    "@fullcalendar/timeline": "workspace:7.0.0-beta.5"
+    "@fullcalendar/timeline": "workspace:7.0.0-beta.5",
+    "@full-ui/headless-grid": "workspace:7.0.0-beta.5"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:7.0.0-beta.5",

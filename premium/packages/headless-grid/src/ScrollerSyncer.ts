@@ -1,12 +1,14 @@
-import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from "@fullcalendar/core/internal"
 
-/*
-TODO: detangle and use from @full-ui/headless-grid
-*/
-export class ScrollerSyncer implements ScrollerSyncerInterface {
-  private emitter: Emitter<{
-    scrollEnd: (isUser: boolean) => void
-  }> = new Emitter()
+export interface Scroller {
+  scrollTo({ x, y }: { x?: number, y?: number }): void
+  x: number
+  y: number
+  listener: any // TODO
+  endScroll(): void
+}
+
+export class ScrollerSyncer {
+  private emitter: any // TODO
   private scrollers: Scroller[] = []
   private destroyFuncs: (() => void)[] = []
   private masterScroller: Scroller
@@ -62,11 +64,11 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   }
 
   addScrollEndListener(handler: (isUser: boolean) => void): void {
-    this.emitter.on('scrollEnd', handler)
+    this.emitter?.on('scrollEnd', handler)
   }
 
   removeScrollEndListener(handler: (isUser: boolean) => void): void {
-    this.emitter.off('scrollEnd', handler)
+    this.emitter?.off('scrollEnd', handler)
   }
 
   bindScroller(scroller: Scroller) {
@@ -113,17 +115,17 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
         }
 
         if (isMoved) {
-          this.emitter.trigger('scrollEnd', isUser)
+          this.emitter?.trigger('scrollEnd', isUser)
         }
       }
     }
 
-    scroller.listener.emitter.on('scroll', onScroll)
-    scroller.listener.emitter.on('scrollEnd', onScrollEnd)
+    scroller.listener.emitter?.on('scroll', onScroll)
+    scroller.listener.emitter?.on('scrollEnd', onScrollEnd)
 
     return () => {
-      scroller.listener.emitter.off('scroll', onScroll)
-      scroller.listener.emitter.off('scrollEnd', onScrollEnd)
+      scroller.listener.emitter?.off('scroll', onScroll)
+      scroller.listener.emitter?.off('scrollEnd', onScrollEnd)
     }
   }
 
@@ -136,4 +138,28 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
       }
     }
   }
+}
+
+function isArraysEqual(
+  array0: any[],
+  array1: any[],
+) {
+  if (array0 === array1) {
+    return true
+  }
+
+  let len = array0.length
+  let i
+
+  if (len !== array1.length) { // not array? or not same length?
+    return false
+  }
+
+  for (i = 0; i < len; i += 1) {
+    if (array0[i] === array1[i]) {
+      return false
+    }
+  }
+
+  return true
 }
