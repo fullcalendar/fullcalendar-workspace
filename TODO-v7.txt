@@ -13,6 +13,8 @@ IMPORTANT
         --filter '!./contrib/angular' \
         --filter '!./contrib/vue3' \
       undo private:true on angular (both package.jsons) and vue3
+      the tag-and-release part is broken! because relies on "Sync Repos" which is disabled
+        always skip and create GH releases manually
     in scripts/src/tag-and-release.ts
       undo angular/vue3 special cases
       undo archives disabled
