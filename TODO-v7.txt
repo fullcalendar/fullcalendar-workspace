@@ -15,6 +15,7 @@ IMPORTANT
       undo private:true on angular (both package.jsons) and vue3
     in scripts/src/tag-and-release.ts
       undo angular/vue3 special cases
+      undo archives disabled
   Publish NPM packages
   Publish themes.fullcalendar.io
   Publish Shadcn registry. URLs:
@@ -34,7 +35,6 @@ build note:
 
 
 Update CHANGELOG.md
-Archives generated okay?
 
 
 ASAP
@@ -62,6 +62,9 @@ project: ResizeObserver refactor
 AFTER BETA
 ----------
 
+fix ZIP archives
+  problematic because of how .html files reference theming/theme-classic directory
+  might need to rewrite paths in HTML like before :(
 Should themes define a default toolbar and style them responsively?
   how would we pass availableViews and addButton in there?
 Demo-App pulls in json-feed events, but doesn't have contrastColor, so looks bad in dark-mode

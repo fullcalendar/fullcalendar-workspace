@@ -108,6 +108,9 @@ async function createGithubRelease(
   filePath?: string | false,
   linkToStandard?: boolean,
 ): Promise<void> {
+  // temporary for v7, until archives fixed
+  filePath = false
+
   const execOpts = { cwd: monorepoDir }
   const releaseNotes = linkToStandard
     // TODO: make DRY by using package.json for repo URL
