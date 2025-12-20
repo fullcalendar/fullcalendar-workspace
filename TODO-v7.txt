@@ -13,6 +13,8 @@ IMPORTANT
         --filter '!./contrib/angular' \
         --filter '!./contrib/vue3' \
       undo private:true on angular (both package.jsons) and vue3
+    in scripts/src/tag-and-release.ts
+      undo angular/vue3 special cases
   Publish NPM packages
   Publish themes.fullcalendar.io
   Publish Shadcn registry. URLs:

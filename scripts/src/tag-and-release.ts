@@ -64,7 +64,12 @@ async function tagAndReleaseSubrepo(
   subrepo: any,
 ): Promise<void> {
   // HACK. TODO: filter away subrepos that don't have package.json
-  if (subrepoSubdir === 'examples') {
+  if (
+    subrepoSubdir === 'examples' ||
+    // just for v7-beta for now
+    subrepoSubdir === 'contrib/angular' ||
+    subrepoSubdir === 'contrib/vue3'
+  ) {
     return
   }
 
