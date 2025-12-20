@@ -1,28 +1,15 @@
 
-# next
+## v7.0.0-beta.5
 
-- put border on fc-view-outer div instead of fc-view div
-- removed classNames:
-  - fc-view-outer-liquid
-  - fc-view-outer-static
-  - fc-view-outer-aspect-ratio
+This is a long awaited release showcasing the new theme system. Links:
 
-### END next
+- [Installation Guide](https://github.com/fullcalendar/fullcalendar-docs/blob/v7/INSTALL-GUIDE.md)
+- [Justification &amp; progress tracker](https://github.com/fullcalendar/fullcalendar/issues/7907)
+- [Theme playground](https://v7-dev.fc-v7-theme-preview.pages.dev/)
 
-:speaker: **Update!** We have finally reached the release-candidate phase where no further code changes are expected. We will monitor for bug reports over the next week or two while improving the docs, restoring linting, updating the browser-support matrix, and improving the upgrade guide, including creating a className/HTML upgrade guide for those with advanced calendar styling.
+## v7.0.0-rc.0
 
-[**See the final compiled v7 changelog &raquo;**](CHANGELOG-v7.md)
-
-```sh
-# Installation options:
-
-# A) use NPM and append the @rc tag to all packages:
-npm install @fullcalendar/core@rc @fullcalendar/daygrid@rc
-
-# B) download the .ZIP archives at the footer of this release
-```
-
-## v7.0.0-rc.0 (changes from v7.0.0-beta.4 -> v7.0.0-rc.0)
+(changes from v7.0.0-beta.4 -> v7.0.0-rc.0)
 
 ### :watch: Performance
 

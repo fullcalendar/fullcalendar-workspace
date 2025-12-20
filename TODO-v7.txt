@@ -34,7 +34,9 @@ build note:
     manually before `pn dev`
 
 
-Update CHANGELOG.md
+In CHANGELOG.md and INSTALL-GUIDE.md
+  once DNS settles,
+    change https://v7-dev.fc-v7-theme-preview.pages.dev -> https://themes.fullcalendar.io
 
 
 ASAP
