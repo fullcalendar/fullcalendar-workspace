@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "fullcalendar-themes",
+  "compatibility_date": "2025-06-30",
+  "assets": {
+    "directory": "./dist"
+  }
+}

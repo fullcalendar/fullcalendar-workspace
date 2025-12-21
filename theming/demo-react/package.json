@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "clean": "rm -rf dist public/shoelace/assets",
     "preview": "vite preview",
-    "cloudflare": "wrangler pages deploy --commit-dirty=true",
+    "deploy": "wrangler deploy",
     "copy-shoelace-assets": "mkdir -p public/shoelace/assets && cp -R node_modules/@shoelace-style/shoelace/dist/assets/ public/shoelace/assets/",
     "postinstall": "pnpm run copy-shoelace-assets"
   },
@@ -76,6 +76,7 @@
     "tw-animate-css": "^1.3.4",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "wrangler": "^4.54.0"
   }
 }
