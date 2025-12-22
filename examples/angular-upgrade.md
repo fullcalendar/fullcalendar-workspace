@@ -2,8 +2,8 @@
 To initialize a new project:
 
 ```
-ng_version="19"
-npx -p "@angular/cli@${ng_version}" ng new "@fullcalendar-examples/angular${ng_version}" --directory "angular${ng_version}" --skip-install
+ng_version="21"
+pnpm --package "@angular/cli@${ng_version}" dlx ng new "@fullcalendar-examples/angular${ng_version}" --directory "angular${ng_version}" --skip-install
 ```
 
 Answer NO to routing. Answer CSS.
