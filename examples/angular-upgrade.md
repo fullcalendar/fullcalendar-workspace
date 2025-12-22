@@ -15,4 +15,11 @@ Npm-script:
 - "test:dev"
 - "clean"
 
+Update package.json
+  "dependenciesMeta": {
+    "@fullcalendar/angular": {
+      "injected": true
+    }
+  },
+
 Problems with tsconfig.json and .gitignore

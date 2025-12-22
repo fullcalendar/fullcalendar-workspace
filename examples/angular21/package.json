@@ -38,6 +38,11 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/angular": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "@angular/build": "^21.0.4",
     "@angular/cli": "^21.0.4",
