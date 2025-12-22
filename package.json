@@ -22,6 +22,7 @@
     "version-bump": "changeset version",
     "version-sync": "workspace-scripts version-sync",
     "sync-repos": "workspace-scripts sync-repos",
+    "pull-from-subrepos": "workspace-scripts pull-from-subrepos",
     "archive": "standard-scripts archive",
     "tag-and-release": "workspace-scripts tag-and-release",
     "publish": "changeset publish --no-git-tag"
