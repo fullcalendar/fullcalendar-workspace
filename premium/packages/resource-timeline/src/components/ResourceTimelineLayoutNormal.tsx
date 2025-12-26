@@ -133,6 +133,8 @@ interface ResourceTimelineViewState {
   timeBottomScrollbarWidth?: number
 }
 
+const defaultOwnCellHeight = 40
+
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
@@ -258,14 +260,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       bodyLayouts,
       createEntityId,
       (entityKey) => { // makes memoization impossible!
-        const entitySpreadsheetHeight = this.dataGridEntityInnerHeightMap.current.get(entityKey)
-        if (entitySpreadsheetHeight != null) {
-          return Math.max(
-            entitySpreadsheetHeight,
-            // map doesn't contain group-column-cell heights
-            this.timeEntityInnerHeightMap.current.get(entityKey) || 0,
-          )
-        }
+        const entitySpreadsheetHeight = this.dataGridEntityInnerHeightMap.current.get(entityKey) ?? defaultOwnCellHeight
+
+        // map doesn't contain group-column-cell heights, thus ||0
+        // TODO: better use defaultOwnCellHeight
+        const entityTimeHeight = this.timeEntityInnerHeightMap.current.get(entityKey) || 0
+
+        return Math.max(entitySpreadsheetHeight, entityTimeHeight)
       },
       /* minHeight = */ (verticalScrolling && options.expandRows)
         ? timeClientHeight
