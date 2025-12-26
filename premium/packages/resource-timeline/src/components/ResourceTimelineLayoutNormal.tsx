@@ -23,7 +23,8 @@ import {
   FooterScrollbar,
   ViewContainer,
   generateClassName,
-  joinArrayishClassNames
+  joinArrayishClassNames,
+  debounce
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
@@ -57,6 +58,7 @@ import { ResizableTwoCol } from './ResizableTwoCol.js'
 import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
+import { Virtualizer } from '../virtual/virtualizer.js'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -171,6 +173,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
+  private virtualizer = new Virtualizer()
 
   render() {
     let { props, state, context } = this
@@ -746,6 +749,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true
 
     this.updateScrollersSyncers()
+    this.updateWindowScrolling()
 
     if (props.initialScroll) {
       this.scroll = { ...props.initialScroll } // copy
@@ -758,6 +762,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
     this.bodyScroller.addScrollEndListener(this.handleEntityScrollEnd)
+    this.bodyScroller.addScrollListener(this.handleEntityScroll)
 
     context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
     context.emitter.on('_resourceScrollRequest', this.handleResourceScrollRequest)
@@ -768,6 +773,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const { options } = this.context
 
     this.updateScrollersSyncers()
+    this.updateWindowScrolling()
 
     const dateProfileChange = prevProps.dateProfile !== props.dateProfile
     const slotWidthChange = prevProps.slotWidth !== props.slotWidth
@@ -794,9 +800,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.timeScroller.destroy()
     this.bodyScroller.destroy()
     this.spreadsheetScroller.destroy()
+    this.destroyWindowScrolling()
 
     this.timeScroller.removeScrollEndListener(this.handleTimeScrollEnd)
     this.bodyScroller.removeScrollEndListener(this.handleEntityScrollEnd)
+    this.bodyScroller.removeScrollListener(this.handleEntityScroll)
 
     this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
     this.context.emitter.off('_resourceScrollRequest', this.handleResourceScrollRequest)
@@ -833,6 +841,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.setState({
       timeClientHeight,
     })
+    if (!getIsHeightAuto(this.context.options)) {
+      this.virtualizer.handleScrollerHeight(timeClientHeight)
+    }
   }
 
   private handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
@@ -848,6 +859,52 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       this.slotInnerWidth = headerSlotInnerWidth
       setRef(this.props.slotInnerWidthRef, headerSlotInnerWidth)
     }
+  }
+
+  // Window Scrolling
+  // -----------------------------------------------------------------------------------------------
+
+  private isTrackingWindowScroll = false
+  private bodyOffset = 0
+  private lastOffsetQuery = 0
+  private handleWindowResize: () => void
+  private cancelWindowResize: () => void
+
+  private updateWindowScrolling() {
+    if (getIsHeightAuto(this.context.options)) {
+      if (!this.isTrackingWindowScroll) {
+        this.isTrackingWindowScroll = true
+        this.virtualizer.handleScrollerHeight(window.innerHeight)
+        ;([this.handleWindowResize, this.cancelWindowResize] = debounce(() => {
+          this.virtualizer.handleScrollerHeight(window.innerHeight)
+        }, 1000))
+        window.addEventListener('resize', this.handleWindowResize)
+        window.addEventListener('scroll', this.handleWindowScroll, { passive: true })
+      }
+    } else {
+      this.destroyWindowScrolling()
+    }
+  }
+
+  private destroyWindowScrolling() {
+    if (this.isTrackingWindowScroll) {
+      this.isTrackingWindowScroll = false
+      this.cancelWindowResize()
+      window.removeEventListener('resize', this.handleWindowResize)
+      window.removeEventListener('scroll', this.handleWindowScroll, { passive: true } as any)
+    }
+  }
+
+  private handleWindowScroll = () => {
+    const scrollY = window.scrollY
+    const now = Date.now()
+
+    if (now - this.lastOffsetQuery > 1000) {
+      this.lastOffsetQuery = now
+      this.bodyOffset = this.bodyEl.getBoundingClientRect().top + scrollY
+    }
+
+    this.virtualizer.handleScroll(scrollY - this.bodyOffset)
   }
 
   // Scrolling
@@ -922,6 +979,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.scroll.entityId = resoureId
     this.scroll.fromBottom = undefined
     this.applyEntityScroll()
+  }
+
+  private handleEntityScroll = (isUser: boolean, scroll: number) => {
+    if (!getIsHeightAuto(this.context.options)) {
+      this.virtualizer.handleScroll(scroll)
+    }
   }
 
   /*

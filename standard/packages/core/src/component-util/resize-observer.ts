@@ -312,7 +312,7 @@ function initFallback(): [WatchSize, UpdateSizeSync] {
 
 const noop = () => {} // TODO: use elsewhere
 
-function debounce(fn: () => void, ms: number): [
+export function debounce(fn: () => void, ms: number): [
   request: () => void,
   cancel: () => void,
 ] {
