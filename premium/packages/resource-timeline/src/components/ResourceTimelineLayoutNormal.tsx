@@ -144,9 +144,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private queuedHeightChange = false
   handleHeightChange = () => {
     this.queuedHeightChange = true
-    afterSize(this.handleHeightChangeXXX)
+    afterSize(this.boundForceUpdate)
   }
-  handleHeightChangeXXX = () => {
+  boundForceUpdate = () => {
     this.forceUpdate()
   }
 
@@ -177,8 +177,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
 
   // virtualizers
-  private rowVirtualizer = new Virtualizer<Resource>(createEntityId)
-  private groupRowVirtualizer = new Virtualizer<Group>(createEntityId)
+  private rowVirtualizer = new Virtualizer<Resource>(createEntityId, this.boundForceUpdate)
+  private groupRowVirtualizer = new Virtualizer<Group>(createEntityId, this.boundForceUpdate)
   private groupColVirtualizers: Virtualizer<Group>[] = []
 
   render() {
@@ -229,7 +229,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const newLen = flatGroupColLayouts.length
     if (newLen > oldLen) {
       for (let i = oldLen; i < newLen; i++) {
-        groupColVirtualizers[i] = new Virtualizer<Group>(createEntityId)
+        groupColVirtualizers[i] = new Virtualizer<Group>(createEntityId, this.boundForceUpdate)
       }
     } else if (newLen < oldLen) {
       groupColVirtualizers = groupColVirtualizers.slice(0, newLen)

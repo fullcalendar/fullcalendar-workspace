@@ -9,15 +9,14 @@ export type VirtualizerItemPosition<Entity> = {
   size: number | undefined
 }
 
-/*
-TODO: needs ability to rerender component
-*/
 export class Virtualizer<Entity> {
   constructor(
-    private getEntityKey: (entity: Entity) => string
+    private getEntityKey: (entity: Entity) => string,
+    private requestRerender: () => void,
   ) {}
 
   handleViewportSize(size: number) {
+    this.requestRerender
     console.log('viewport size', size)
   }
 
