@@ -2,23 +2,22 @@ import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
-import { createGroupId } from "@fullcalendar/resource/internal"
+import { createGroupId, Group, Resource } from "@fullcalendar/resource/internal"
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
 import { ResourceSubrow } from "./ResourceSubrow.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ColSpec } from '../../structs.js'
+import { VirtualizerItemPosition } from "../../virtual/virtualizer.js"
 
 export interface BodySectionProps {
-  flatResourceLayouts: ResourceLayout[]
-  flatGroupRowLayouts: GroupRowLayout[]
-  flatGroupColLayouts: GroupCellLayout[][]
+  virtRowPositions: VirtualizerItemPosition<Resource>[]
+  virtGroupPositions: VirtualizerItemPosition<Group>[]
+  virtColPositions: VirtualizerItemPosition<Group>[][]
   colWidths: number[] | undefined
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
-  rowTops: Map<string, number>
-  rowHeights: Map<string, number>
   headerRowSpan: number
   hasNesting: boolean
   indentWidth: number | undefined
@@ -31,14 +30,14 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props } = this
-    const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan, hasNesting } = props
+    const { rowInnerHeightRefMap, headerRowSpan, hasNesting } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
-    const groupRowCnt = props.flatGroupRowLayouts.length
-    const resourceCnt = props.flatResourceLayouts.length
+    const groupRowCnt = props.virtGroupPositions.length
+    const resourceCnt = props.virtRowPositions.length
     const visibleRowCnt = groupRowCnt + resourceCnt
 
-    const groupColCnt = props.flatGroupColLayouts.length
+    const groupColCnt = props.virtColPositions.length
 
     const colWidths = props.colWidths || []
     const resourceX = sumArray(colWidths.slice(0, groupColCnt))
@@ -53,7 +52,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
       <div className={joinClassNames(classNames.flexRow, classNames.fill)}>
 
         {/* group columns */}
-        {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
+        {props.virtColPositions.map((virtCellPositions, colIndex) => (
           <div
             key={colIndex}
             role='rowgroup'
@@ -63,11 +62,12 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               width: colWidths[colIndex],
             }}
           >
-            {groupColLayouts.map((groupCellLayout, groupIndex) => {
+            {virtCellPositions.map((virtCellPosition, groupIndex) => {
+              const groupCellLayout = virtCellPosition.item as GroupCellLayout
               const group = groupCellLayout.entity
               const groupKey = createGroupId(group)
-              const isNotLast = groupIndex < groupColLayouts.length - 1
-              const rowHeight = rowHeights.get(groupKey)
+              const isNotLast = groupIndex < virtCellPositions.length - 1
+              const rowHeight = virtCellPosition.size
 
               return (
                 <ResourceGroupSubrow
@@ -82,7 +82,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  top={rowTops.get(groupKey)}
+                  top={virtCellPosition.position}
                   height={
                     (rowHeight != null && isNotLast)
                       ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
@@ -103,7 +103,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           }}
         >
           {/* group rows */}
-          {props.flatGroupRowLayouts.map((groupRowLayout) => {
+          {props.virtGroupPositions.map((virtGroupPosition) => {
+            const groupRowLayout = virtGroupPosition.item as GroupRowLayout
             const group = groupRowLayout.entity
             const groupKey = createGroupId(group)
             const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
@@ -119,8 +120,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                 colSpan={props.colSpecs.length}
                 borderBottom={isNotLast}
-                top={rowTops.get(groupKey)}
-                height={rowHeights.get(groupKey)}
+                top={virtGroupPosition.position}
+                height={virtGroupPosition.size}
                 indentWidth={props.indentWidth}
                 className={classNames.fillX}
               />
@@ -128,10 +129,11 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           })}
 
           {/* resource-specific cells */}
-          {props.flatResourceLayouts.map((resourceLayout) => {
+          {props.virtRowPositions.map((virtRowPosition) => {
+            const resourceLayout = virtRowPosition.item as ResourceLayout
             const resource = resourceLayout.entity
             const isNotLast = resourceLayout.visibleIndex < visibleRowCnt - 1
-            const rowHeight = rowHeights.get(resource.id)
+            const rowHeight = virtRowPosition.size
 
             return (
               <ResourceSubrow
@@ -141,7 +143,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 indent={resourceLayout.indent}
                 hasChildren={resourceLayout.hasChildren}
                 isExpanded={resourceLayout.isExpanded}
-                colStartIndex={props.flatGroupColLayouts.length}
+                colStartIndex={groupColCnt}
                 colSpecs={props.colSpecs}
                 colWidths={colWidths}
                 innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
@@ -152,7 +154,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                top={rowTops.get(resource.id)}
+                top={virtRowPosition.position}
                 height={
                   (rowHeight != null && isNotLast)
                     ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
