@@ -173,7 +173,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
-  private virtualizer = new Virtualizer()
+
+  // virtualizers
+  private rowVirtualizer = new Virtualizer()
+  private groupRowVirtualizer = new Virtualizer()
+  private groupColVirtualizers: Virtualizer[] = []
 
   render() {
     let { props, state, context } = this
@@ -217,6 +221,19 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     )
     this.bodyLayouts = bodyLayouts
 
+    // update groupColVirtualizers
+    let groupColVirtualizers = this.groupColVirtualizers
+    const oldLen = groupColVirtualizers.length
+    const newLen = flatGroupColLayouts.length
+    if (newLen > oldLen) {
+      for (let i = oldLen; i < newLen; i++) {
+        groupColVirtualizers[i] = new Virtualizer()
+      }
+    } else if (newLen < oldLen) {
+      groupColVirtualizers = groupColVirtualizers.slice(0, newLen)
+    }
+    this.groupColVirtualizers = groupColVirtualizers
+
     // TODO: less-weird way to get this! more DRY with BodySection
     const groupRowCnt = flatGroupRowLayouts.length
     const resourceCnt = flatResourceLayouts.length
@@ -254,8 +271,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         ? timeClientHeight
         : undefined,
     )
-    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights)
     this.bodyHeights = bodyHeights
+
+    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights)
     this.bodyTops = bodyTops
 
     const { timeCanvasWidth, slotWidth } = props
@@ -842,7 +860,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       timeClientHeight,
     })
     if (!getIsHeightAuto(this.context.options)) {
-      this.virtualizer.handleScrollerHeight(timeClientHeight)
+      this.setVirtualizerHeight(timeClientHeight)
     }
   }
 
@@ -861,6 +879,27 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
+  // Virtualizer Utils
+  // -----------------------------------------------------------------------------------------------
+
+  private setVirtualizerHeight(height: number) {
+    this.rowVirtualizer.handleScrollerHeight(height)
+    this.groupRowVirtualizer.handleScrollerHeight(height)
+
+    for (const groupColVirtualizer of this.groupColVirtualizers) {
+      groupColVirtualizer.handleScrollerHeight(height)
+    }
+  }
+
+  private setVirtualizerScroll(scroll: number) {
+    this.rowVirtualizer.handleScroll(scroll)
+    this.groupRowVirtualizer.handleScroll(scroll)
+
+    for (const groupColVirtualizer of this.groupColVirtualizers) {
+      groupColVirtualizer.handleScroll(scroll)
+    }
+  }
+
   // Window Scrolling
   // -----------------------------------------------------------------------------------------------
 
@@ -874,9 +913,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     if (getIsHeightAuto(this.context.options)) {
       if (!this.isTrackingWindowScroll) {
         this.isTrackingWindowScroll = true
-        this.virtualizer.handleScrollerHeight(window.innerHeight)
+        this.setVirtualizerHeight(window.innerHeight)
         ;([this.handleWindowResize, this.cancelWindowResize] = debounce(() => {
-          this.virtualizer.handleScrollerHeight(window.innerHeight)
+          this.setVirtualizerHeight(window.innerHeight)
         }, 1000))
         window.addEventListener('resize', this.handleWindowResize)
         window.addEventListener('scroll', this.handleWindowScroll, { passive: true })
@@ -904,7 +943,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       this.bodyOffset = this.bodyEl.getBoundingClientRect().top + scrollY
     }
 
-    this.virtualizer.handleScroll(scrollY - this.bodyOffset)
+    this.setVirtualizerScroll(scrollY - this.bodyOffset)
   }
 
   // Scrolling
@@ -983,7 +1022,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   private handleEntityScroll = (isUser: boolean, scroll: number) => {
     if (!getIsHeightAuto(this.context.options)) {
-      this.virtualizer.handleScroll(scroll)
+      this.setVirtualizerScroll(scroll)
     }
   }
 
