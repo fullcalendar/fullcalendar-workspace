@@ -36,9 +36,8 @@ build note:
     manually before `pn dev`
 
 
-In CHANGELOG.md and INSTALL-GUIDE.md
-  once DNS settles,
-    change https://v7-dev.fc-v7-theme-preview.pages.dev -> https://themes.fullcalendar.io
+Virtual
+  BUG: vertical lines don't render very responsively
 
 
 ASAP
