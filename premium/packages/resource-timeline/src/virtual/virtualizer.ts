@@ -7,32 +7,39 @@ export type VirtualizerItemPosition<Entity> = {
   item: VirtualizerItem<Entity>
   position: number | undefined
   size: number | undefined
+  // TODO: give key as well?
 }
 
 export class Virtualizer<Entity> {
+  private viewportSize = 0
+  private scroll = 0
+
   constructor(
     private getEntityKey: (entity: Entity) => string,
     private requestRerender: () => void,
   ) {}
 
   handleViewportSize(size: number) {
-    this.requestRerender
-    console.log('viewport size', size)
+    if (size !== this.viewportSize) {
+      this.viewportSize = size
+      this.requestRerender
+      console.log('viewport size', size)
+    }
   }
 
   handleScroll(scroll: number) {
-    console.log('scroll', scroll)
+    if (scroll !== this.scroll) {
+      this.scroll = scroll
+      console.log('scroll', scroll)
+    }
   }
 
   process(
     items: VirtualizerItem<Entity>[],
     entityPositions: Map<string, number>,
     entitySizes: Map<string, number>,
-  ): [
-    itemPositions: VirtualizerItemPosition<Entity>[],
-    scrollSize: number,
-  ] {
-    const itemPositions = items.map((item) => {
+  ): VirtualizerItemPosition<Entity>[] {
+    return items.map((item) => {
       const key = this.getEntityKey(item.entity)
       return {
         item,
@@ -40,10 +47,5 @@ export class Virtualizer<Entity> {
         size: entitySizes.get(key),
       }
     })
-    const len = itemPositions.length
-    return [
-      itemPositions,
-      len ? itemPositions[len - 1].position + itemPositions[len - 1].size : 0
-    ]
   }
 }

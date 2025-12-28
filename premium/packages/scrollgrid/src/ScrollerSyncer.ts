@@ -6,6 +6,7 @@ TODO: detangle and use from @full-ui/headless-grid
 export class ScrollerSyncer implements ScrollerSyncerInterface {
   private emitter: Emitter<{
     scroll: (isUser: boolean, scroll: number) => void
+    scrollStart: (isUser: boolean) => void
     scrollEnd: (isUser: boolean) => void
   }> = new Emitter()
   private scrollers: Scroller[] = []
@@ -70,6 +71,14 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     this.emitter.off('scroll', handler)
   }
 
+  addScrollStartListener(handler: (isUser: boolean) => void): void {
+    this.emitter.on('scrollStart', handler)
+  }
+
+  removeScrollStartListener(handler: (isUser: boolean) => void): void {
+    this.emitter.off('scrollStart', handler)
+  }
+
   addScrollEndListener(handler: (isUser: boolean) => void): void {
     this.emitter.on('scrollEnd', handler)
   }
@@ -83,6 +92,10 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
 
     const onScroll = (isUser: boolean) => {
       if (!this.isPaused) {
+        if (!this.masterScroller) {
+          this.emitter.trigger('scrollStart', isUser)
+        }
+
         if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
           this.assignMaster(scroller)
         }

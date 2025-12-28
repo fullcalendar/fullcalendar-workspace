@@ -172,6 +172,14 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     }
   }
 
+  addScrollStartListener(handler: (isUser: boolean) => void): void {
+    this.listener.emitter.on('scrollStart', handler)
+  }
+
+  removeScrollStartListener(handler: (isUser: boolean) => void): void {
+    this.listener.emitter.off('scrollStart', handler)
+  }
+
   addScrollEndListener(handler: (isUser: boolean) => void): void {
     this.listener.emitter.on('scrollEnd', handler)
   }

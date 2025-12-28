@@ -163,8 +163,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   })
   private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeightChange)
   private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeightChange)
-  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
-  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
+
+  // keyed by createEntityId
+  // NOTE: ignoring deletes can cause memory issues if resources constantly change and have new keys
+  // refactor in future. FWIW, TanStack Virtual doesn't garbage collect unnused dimensions either
+  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange, /* ignoreDeletes = */ true)
+  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange, /* ignoreDeletes = */ true)
+
   private bodyLayouts: GenericLayout<Resource | Group>[]
   private bodyTops?: Map<string, number> // keyed by createEntityId
   private bodyHeights?: Map<string, number> // keyed by createEntityId
@@ -279,12 +284,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* virtualize */
 
-    const [virtRowPositions, virtTotalHeight0] = this.rowVirtualizer.process(flatResourceLayouts, bodyTops, bodyHeights)
-    const [virtGroupPositions, virtTotalHeight1] = this.groupRowVirtualizer.process(flatGroupRowLayouts, bodyTops, bodyHeights)
+    const virtRowPositions = this.rowVirtualizer.process(flatResourceLayouts, bodyTops, bodyHeights)
+    const virtGroupPositions = this.groupRowVirtualizer.process(flatGroupRowLayouts, bodyTops, bodyHeights)
     const virtColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
-      return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights)[0]
+      return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights)
     })
-    const virtTotalHeight = Math.max(virtTotalHeight0, virtTotalHeight1)
 
     /* */
 
@@ -463,7 +467,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   )}
                   style={{
                     minWidth: spreadsheetCanvasWidth,
-                    paddingTop: virtTotalHeight, // to push down filler div at end, and give height
+                    paddingTop: totalBodyHeight, // to push down filler div at end, and give height
                   }}
                 >
                   <BodySection
@@ -680,7 +684,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     role='rowgroup'
                     className={classNames.rel /* for abs positioning of lanes */}
-                    style={{ height: virtTotalHeight }}
+                    style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}
                     {virtGroupPositions.map((virtGroupPosition) => {
@@ -793,6 +797,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     setRef(props.scrollRef, this.scroll)
 
     this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
+    this.bodyScroller.addScrollStartListener(this.handleEntityScrollStart)
     this.bodyScroller.addScrollEndListener(this.handleEntityScrollEnd)
     this.bodyScroller.addScrollListener(this.handleEntityScroll)
 
@@ -1037,6 +1042,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private handleEntityScroll = (isUser: boolean, scroll: number) => {
     if (!getIsHeightAuto(this.context.options)) {
       this.setVirtualizerScroll(scroll)
+    }
+  }
+
+  private handleEntityScrollStart = (isUser: boolean) => {
+    if (isUser) {
+      this.scroll.entityId = undefined
+      this.scroll.fromBottom = undefined
     }
   }
 

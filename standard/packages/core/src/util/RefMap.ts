@@ -8,7 +8,10 @@ export class RefMap<K, V> {
   public current = new Map<K, V>()
   private callbacks = new Map<K, (val: V | null) => void>
 
-  constructor(public masterCallback?: (val: V, key: K) => void) {
+  constructor(
+    public masterCallback?: (val: V, key: K) => void,
+    private ignoreDeletes = false
+  ) {
   }
 
   createRef(key: K) {
@@ -28,8 +31,10 @@ export class RefMap<K, V> {
     let { current, callbacks } = this
 
     if (val === null) {
-      current.delete(key)
-      callbacks.delete(key)
+      if (!this.ignoreDeletes) {
+        current.delete(key)
+        callbacks.delete(key)
+      }
     } else {
       current.set(key, val)
     }
