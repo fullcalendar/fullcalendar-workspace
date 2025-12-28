@@ -292,6 +292,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights, forcedEntityScroll)
     })
 
+    // Only paint vertical fills/lines that are in view
+    // Big performance impact for very tall virtualized lists
+    // HACK in terms for relying on unmanaged state
+    // needs 100px wiggle room because the scroll handler is debounced
+    let yFillTop = this.rowVirtualizer.scroll
+    let yFillBottom = yFillTop + this.rowVirtualizer.viewportSize
+    yFillTop = Math.max(0, yFillTop - 100)
+    yFillBottom = Math.min(totalBodyHeight, yFillBottom + 100)
+
     /* */
 
     const { timeCanvasWidth, slotWidth } = props
@@ -657,11 +666,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     className={classNames.fillX}
                     style={{
-                      // Only paint vertical fills/lines that are in view
-                      // Big performance impact for very tall virtualized lists
-                      // HACK in terms for relying on unmanaged state
-                      top: this.rowVirtualizer.scroll,
-                      height: this.rowVirtualizer.viewportSize,
+                      top: yFillTop,
+                      height: yFillBottom - yFillTop,
                     }}
                   >
                     <TimelineSlats

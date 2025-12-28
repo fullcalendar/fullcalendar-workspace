@@ -36,10 +36,6 @@ build note:
     manually before `pn dev`
 
 
-Virtual
-  BUG: vertical lines don't render very responsively
-
-
 ASAP
 ----
 
