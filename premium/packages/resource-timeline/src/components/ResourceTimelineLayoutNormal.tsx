@@ -940,7 +940,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         this.setVirtualizerViewportSize(window.innerHeight)
         ;([this.handleWindowResize, this.cancelWindowResize] = debounce(() => {
           this.setVirtualizerViewportSize(window.innerHeight)
-        }, 1000))
+        }, 200))
         window.addEventListener('resize', this.handleWindowResize)
         window.addEventListener('scroll', this.handleWindowScroll, { passive: true })
       }
@@ -962,7 +962,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const scrollY = window.scrollY
     const now = Date.now()
 
-    if (now - this.lastOffsetQuery > 1000) {
+    if (now - this.lastOffsetQuery > 200) {
       this.lastOffsetQuery = now
       this.bodyOffset = this.bodyEl.getBoundingClientRect().top + scrollY
     }
