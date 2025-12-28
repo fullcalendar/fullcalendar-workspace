@@ -14,8 +14,8 @@ export type VirtualizerItemPosition<Entity> = {
 const overscan = 1
 
 export class Virtualizer<Entity> {
-  private viewportSize = 0
-  private scroll = 0
+  scroll = 0
+  viewportSize = 0
   private items: VirtualizerItem<Entity>[] = []
   private entityStarts: Map<string, number>
   private entitySizes: Map<string, number>
@@ -41,9 +41,12 @@ export class Virtualizer<Entity> {
     if (!this.viewportSize) {
       return []
     }
-    return (
-      this.itemPositionsInRange = this.computeItemPositionsInRange(items)
-    )
+    const newPositions = this.computeItemPositionsInRange(items)
+    // if (newPositions.length) {
+    //   console.log('new range', newPositions[0].index, newPositions[newPositions.length - 1].index)
+    // }
+    this.itemPositionsInRange = newPositions
+    return newPositions
   }
 
   handleViewportSize(size: number) {

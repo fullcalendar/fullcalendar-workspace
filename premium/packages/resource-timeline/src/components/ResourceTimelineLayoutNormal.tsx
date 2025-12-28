@@ -654,7 +654,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   style={{ width: timeCanvasWidth }}
                   ref={this.handleBodyEl}
                 >
-                  <div className={classNames.fill}>
+                  <div
+                    className={classNames.fillX}
+                    style={{
+                      // Only paint vertical fills/lines that are in view
+                      // Big performance impact for very tall virtualized lists
+                      // HACK in terms for relying on unmanaged state
+                      top: this.rowVirtualizer.scroll,
+                      height: this.rowVirtualizer.viewportSize,
+                    }}
+                  >
                     <TimelineSlats
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
@@ -915,14 +924,23 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
+  private currentEntityScroll: number
+
   private setVirtualizerScroll(scroll: number) {
+    this.currentEntityScroll = scroll
+    this.updateVirtualizerScroll()
+  }
+
+  private updateVirtualizerScroll = debounce(() => {
+    const scroll = this.currentEntityScroll
+
     this.rowVirtualizer.handleScroll(scroll)
     this.groupRowVirtualizer.handleScroll(scroll)
 
     for (const groupColVirtualizer of this.groupColVirtualizers) {
       groupColVirtualizer.handleScroll(scroll)
     }
-  }
+  }, 10)[0]
 
   // Window Scrolling
   // -----------------------------------------------------------------------------------------------
