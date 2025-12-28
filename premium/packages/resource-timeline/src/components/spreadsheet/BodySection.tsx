@@ -2,7 +2,7 @@ import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
-import { createGroupId, Group, Resource } from "@fullcalendar/resource/internal"
+import { Group, Resource } from "@fullcalendar/resource/internal"
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
@@ -15,6 +15,11 @@ export interface BodySectionProps {
   virtRowPositions: VirtualizerItemPosition<Resource>[]
   virtGroupPositions: VirtualizerItemPosition<Group>[]
   virtColPositions: VirtualizerItemPosition<Group>[][]
+
+  resourceCnt: number
+  groupRowCnt: number
+  groupCellCnts: number[]
+
   colWidths: number[] | undefined
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
@@ -32,12 +37,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     const { props } = this
     const { rowInnerHeightRefMap, headerRowSpan, hasNesting } = props
 
-    // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
-    const groupRowCnt = props.virtGroupPositions.length
-    const resourceCnt = props.virtRowPositions.length
-    const visibleRowCnt = groupRowCnt + resourceCnt
-
-    const groupColCnt = props.virtColPositions.length
+    const visibleRowCnt = props.groupRowCnt + props.resourceCnt
+    const groupColCnt = props.groupCellCnts.length
 
     const colWidths = props.colWidths || []
     const resourceX = sumArray(colWidths.slice(0, groupColCnt))
@@ -65,7 +66,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             {virtCellPositions.map((virtCellPosition, groupIndex) => {
               const groupCellLayout = virtCellPosition.item as GroupCellLayout
               const group = groupCellLayout.entity
-              const groupKey = createGroupId(group)
+              const groupKey = virtCellPosition.key
               const isNotLast = groupIndex < virtCellPositions.length - 1
               const rowHeight = virtCellPosition.size
 
@@ -82,7 +83,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  top={virtCellPosition.position}
+                  top={virtCellPosition.start}
                   height={
                     (rowHeight != null && isNotLast)
                       ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
@@ -106,7 +107,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           {props.virtGroupPositions.map((virtGroupPosition) => {
             const groupRowLayout = virtGroupPosition.item as GroupRowLayout
             const group = groupRowLayout.entity
-            const groupKey = createGroupId(group)
+            const groupKey = virtGroupPosition.key
             const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
 
             return (
@@ -120,7 +121,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                 colSpan={props.colSpecs.length}
                 borderBottom={isNotLast}
-                top={virtGroupPosition.position}
+                top={virtGroupPosition.start}
                 height={virtGroupPosition.size}
                 indentWidth={props.indentWidth}
                 className={classNames.fillX}
@@ -137,7 +138,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
             return (
               <ResourceSubrow
-                key={resource.id}
+                key={resource.id /* TODO: use virtRowPosition.key? */}
                 resource={resource}
                 resourceFields={resourceLayout.resourceFields}
                 indent={resourceLayout.indent}
@@ -154,7 +155,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                top={virtRowPosition.position}
+                top={virtRowPosition.start}
                 height={
                   (rowHeight != null && isNotLast)
                     ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell

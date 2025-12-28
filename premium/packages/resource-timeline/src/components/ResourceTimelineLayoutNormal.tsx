@@ -30,7 +30,6 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
   createEntityId,
-  createGroupId,
   GenericNode,
   Group,
   isEntityGroup,
@@ -284,10 +283,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* virtualize */
 
-    const virtRowPositions = this.rowVirtualizer.process(flatResourceLayouts, bodyTops, bodyHeights)
-    const virtGroupPositions = this.groupRowVirtualizer.process(flatGroupRowLayouts, bodyTops, bodyHeights)
+    // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
+    const forcedEntityScroll = this.computeEntityScroll()
+
+    const virtRowPositions = this.rowVirtualizer.process(flatResourceLayouts, bodyTops, bodyHeights, forcedEntityScroll)
+    const virtGroupPositions = this.groupRowVirtualizer.process(flatGroupRowLayouts, bodyTops, bodyHeights, forcedEntityScroll)
     const virtColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
-      return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights)
+      return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights, forcedEntityScroll)
     })
 
     /* */
@@ -474,6 +476,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     virtRowPositions={virtRowPositions}
                     virtGroupPositions={virtGroupPositions}
                     virtColPositions={virtColPositions}
+                    resourceCnt={flatResourceLayouts.length}
+                    groupRowCnt={flatGroupRowLayouts.length}
+                    groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
                     colWidths={spreadsheetColWidths}
                     colSpecs={colSpecs}
                     rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
@@ -690,7 +695,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     {virtGroupPositions.map((virtGroupPosition) => {
                       const groupRowLayout = virtGroupPosition.item as GroupRowLayout
                       const group = groupRowLayout.entity
-                      const groupKey = createGroupId(group)
+                      const groupKey = virtGroupPosition.key
 
                       return (
                         <GroupLane
@@ -702,7 +707,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           expanded={groupRowLayout.isExpanded}
                           borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
                           innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                          top={virtGroupPosition.position}
+                          top={virtGroupPosition.start}
                           height={virtGroupPosition.size}
                         />
                       )
@@ -716,7 +721,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       return (
                         <ResourceLane
                           {...splitProps[resource.id]}
-                          key={resource.id}
+                          key={resource.id /* TODO: use virtRowPosition.key? */}
                           role='row'
                           className={classNames.fillX}
                           resource={resource}
@@ -737,7 +742,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           slotWidth={slotWidth}
 
                           // position
-                          top={virtRowPosition.position}
+                          top={virtRowPosition.start}
                           height={virtRowPosition.size}
                         />
                       )
@@ -1045,11 +1050,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
-  private handleEntityScrollStart = (isUser: boolean) => {
-    if (isUser) {
-      this.scroll.entityId = undefined
-      this.scroll.fromBottom = undefined
-    }
+  private handleEntityScrollStart = () => {
+    this.scroll.entityId = undefined
+    this.scroll.fromBottom = undefined
   }
 
   /*
@@ -1080,6 +1083,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private applyEntityScroll() {
+    const scrollTop = this.computeEntityScroll()
+    if (scrollTop !== undefined) {
+      this.bodyScroller.scrollTo({ y: scrollTop })
+    }
+  }
+
+  private computeEntityScroll(): number | undefined {
     const { bodyTops, bodyHeights, scroll } = this
     const { entityId, fromBottom } = scroll
 
@@ -1089,14 +1099,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
       if (top != null) {
         const bottom = top + height
-        const scrollTop = (
+        return (
           fromBottom != null ?
             bottom - fromBottom : // pixels from bottom edge
             top + // just use top edge
               (top ? 1 : 0) // overcome top border
         )
-
-        this.bodyScroller.scrollTo({ y: scrollTop })
       }
     }
   }

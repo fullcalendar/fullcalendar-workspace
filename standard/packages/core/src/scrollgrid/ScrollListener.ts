@@ -13,7 +13,7 @@ the scroll-master simply by who was the newest scroller? Does passive:true do th
 */
 export class ScrollListener {
   public emitter: Emitter<{
-    scrollStart: (isUser: boolean) => void
+    scrollStart: () => void
     scroll: (isUser: boolean) => void
     scrollEnd: (isUser: boolean) => void
   }> = new Emitter()
@@ -61,7 +61,8 @@ export class ScrollListener {
   private startScroll() {
     if (!this.isScroll) {
       this.isScroll = true
-      this.emitter.trigger('scrollStart', this.getIsUser())
+      this.emitter.trigger('scrollStart')
+      // NOTE: getIsUser() isn't ready here yet!
     }
   }
 
