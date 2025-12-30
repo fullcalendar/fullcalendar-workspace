@@ -16,7 +16,6 @@ export interface TimelineSlatsProps {
   todayRange: DateRange
 
   // virtualization (optional)
-  insetInlineStart?: number
   slatStartIndex?: number
   slatCount?: number
 
@@ -46,7 +45,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         style={{
           height: props.height,
           width: (props.slotWidth ?? 0) * slotDates.length,
-          insetInlineStart: props.insetInlineStart,
+          insetInlineStart: 0,
         }}
       >
         {slotDates.map((slotDate, i) => {

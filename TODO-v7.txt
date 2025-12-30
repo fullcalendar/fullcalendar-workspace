@@ -40,6 +40,8 @@ limit # of resource-timeline rows for print view
 bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
 todo: audit TimelineSlats for print-view, especially height
 test highlight non-resource-specific slots
+think about how virtualization would work with SSR (not having viewport dimensions yet)
+consider non-resource timeline
 
 
 ASAP

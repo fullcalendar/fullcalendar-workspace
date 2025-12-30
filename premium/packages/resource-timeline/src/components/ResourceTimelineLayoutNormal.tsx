@@ -340,18 +340,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
-    let yFillTop = 0
-    let yFillBottom = totalBodyHeight
     const rowPositionShift = computeShift(rowPositions)
-    if (rowPositionShift) {
-      yFillTop = Math.max(yFillTop, rowPositionShift[0])
-      yFillBottom = Math.min(yFillBottom, rowPositionShift[1])
-    }
     const groupRowPositionShift = computeShift(groupRowPositions)
-    if (groupRowPositionShift) {
-      yFillTop = Math.max(yFillTop, groupRowPositionShift[0])
-      yFillBottom = Math.min(yFillBottom, groupRowPositionShift[1])
-    }
+    const yFillTop = Math.min(...[
+      ...(rowPositionShift ? [rowPositionShift[0]] : []),
+      ...(groupRowPositionShift ? [groupRowPositionShift[0]] : []),
+    ])
+    const yFillBottom = Math.max(...[
+      ...(rowPositionShift ? [rowPositionShift[1]] : []),
+      ...(groupRowPositionShift ? [groupRowPositionShift[1]] : []),
+    ])
     const yFillHeight = yFillBottom - yFillTop
 
     const forcedTimeScroll = this.computeTimeScroll()
@@ -729,6 +727,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     style={{
                       top: yFillTop,
                       height: yFillHeight,
+                      insetInlineStart: slotDateShift?.[0],
                     }}
                   >
                     <TimelineSlats
@@ -736,7 +735,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       tDateProfile={tDateProfile}
                       nowDate={props.nowDate}
                       todayRange={props.todayRange}
-                      insetInlineStart={slotDateShift?.[0]}
                       slatStartIndex={slotDateShift?.[2]}
                       slatCount={slotDatePositions.length}
                       slotWidth={slotWidth}
@@ -754,6 +752,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
                       // dimensions
                       slotWidth={slotWidth}
+
+                      // virtualization
+                      clipStart={slotDateShift?.[0]}
+                      clipEnd={slotDateShift?.[1]}
                     />
                     {enableNowIndicator && (
                       <TimelineNowIndicatorLine
@@ -765,7 +767,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   <div
                     role='rowgroup'
-                    className={classNames.rel /* for abs positioning of lanes */}
+                    className={classNames.abs}
+                    style={{
+                      top: 0,
+                      insetInlineStart: slotDateShift?.[0],
+                      width: slotDateShift ? (slotDateShift[1] - slotDateShift[0]) : undefined,
+                    }}
                   >
                     {/* group rows */}
                     {groupRowPositions.map((groupRowPosition) => {
@@ -820,6 +827,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           // position
                           top={rowPosition.start}
                           height={rowPosition.size}
+
+                          // virtualization
+                          clipStart={slotDateShift?.[0]}
+                          clipEnd={slotDateShift?.[1]}
                         />
                       )
                     })}
