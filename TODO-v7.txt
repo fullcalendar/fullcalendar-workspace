@@ -36,6 +36,11 @@ build note:
     manually before `pn dev`
 
 
+limit # of resource-timeline rows for print view
+bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
+todo: audit TimelineSlats for print-view, especially height
+
+
 ASAP
 ----
 

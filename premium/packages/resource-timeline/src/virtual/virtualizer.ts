@@ -17,8 +17,8 @@ export class Virtualizer<Item> {
 
   constructor(
     private getItemKey: (item: Item) => string,
-    private getItemStart: (key: string) => number,
-    private getItemSize: (key: string) => number,
+    private getItemStart: (key: string, index: number) => number,
+    private getItemSize: (key: string, index: number) => number,
     private requestRerender: () => void,
   ) {}
 
@@ -72,8 +72,8 @@ export class Virtualizer<Item> {
     while (index < count) {
       const item = items[index]
       const key = this.getItemKey(item)
-      const start = this.getItemStart(key)
-      const size = this.getItemSize(key)
+      const start = this.getItemStart(key, index)
+      const size = this.getItemSize(key, index)
       if (start + size > scroll) {
         break
       }
@@ -85,8 +85,8 @@ export class Virtualizer<Item> {
     while (index < count) {
       const item = items[index]
       const key = this.getItemKey(item)
-      const start = this.getItemStart(key)
-      const size = this.getItemSize(key)
+      const start = this.getItemStart(key, index)
+      const size = this.getItemSize(key, index)
       if (start >= scroll + viewportSize) {
         break
       }
@@ -105,8 +105,8 @@ export class Virtualizer<Item> {
     while (index < indexEnd) {
       const item = items[index]
       const key = this.getItemKey(item)
-      const start = this.getItemStart(key)
-      const size = this.getItemSize(key)
+      const start = this.getItemStart(key, index)
+      const size = this.getItemSize(key, index)
       itemPositions.push({
         item,
         key,

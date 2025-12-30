@@ -197,6 +197,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.boundForceUpdate,
   )
   private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
+  private slotVirtualizer = new Virtualizer<DateMarker>(
+    (dateMarker) => dateMarker.toISOString(),
+    (_key, index) => index * (this.props.slotWidth ?? 0),
+    () => this.props.slotWidth ?? 0,
+    this.boundForceUpdate,
+  )
 
   render() {
     let { props, state, context } = this
@@ -325,6 +331,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       yFillBottom = Math.min(yFillBottom, groupRowPositionShift[1])
     }
     const yFillHeight = yFillBottom - yFillTop
+
+    const forcedTimeScroll = this.computeTimeScroll()
+    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, forcedTimeScroll)
+    const slotDateShift = computeShift(slotDatePositions)
 
     /* */
 
@@ -690,8 +700,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       tDateProfile={tDateProfile}
                       nowDate={props.nowDate}
                       todayRange={props.todayRange}
-
-                      // dimensions
+                      insetInlineStart={slotDateShift?.[0]}
+                      slatStartIndex={slotDateShift?.[2]}
+                      slatCount={slotDatePositions.length}
                       slotWidth={slotWidth}
                     />
                     <TimelineBg
@@ -831,10 +842,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
     setRef(props.scrollRef, this.scroll)
 
+    this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
+    this.timeScroller.addScrollListener(this.handleTimeScroll)
     this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
+
     this.bodyScroller.addScrollStartListener(this.handleEntityScrollStart)
-    this.bodyScroller.addScrollEndListener(this.handleEntityScrollEnd)
     this.bodyScroller.addScrollListener(this.handleEntityScroll)
+    this.bodyScroller.addScrollEndListener(this.handleEntityScrollEnd)
 
     context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
     context.emitter.on('_resourceScrollRequest', this.handleResourceScrollRequest)
@@ -907,6 +921,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.setState({
       timeClientWidth,
     })
+
+    this.slotVirtualizer.handleViewportSize(timeClientWidth)
   }
 
   private handleTimeClientHeight = (timeClientHeight: number) => {
@@ -1044,6 +1060,21 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.applyTimeScroll()
   }
 
+  private handleTimeScrollStart = () => {
+    this.scroll.x = undefined
+    this.scroll.time = undefined
+  }
+
+  // HACKY
+  private timeScroll = 0
+  private handleTimeScroll = (isUser: boolean, scroll: number) => {
+    this.timeScroll = scroll
+    this._handleTimeScroll()
+  }
+  private _handleTimeScroll = debounce(() => {
+    this.slotVirtualizer.handleScroll(this.timeScroll)
+  }, 10)[0]
+
   /*
   Captures current values
   */
@@ -1055,6 +1086,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private applyTimeScroll() {
+    const x = this.computeTimeScroll()
+    if (x != null) {
+      this.scroll.x = x // HACK: store raw pixel value
+      this.timeScroller.scrollTo({ x })
+    }
+  }
+
+  private computeTimeScroll(): number | undefined {
     const { props, context, scroll } = this
     const { tDateProfile, slotWidth } = props
     let { x, time } = scroll
@@ -1066,11 +1105,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         x += 1 // overcome border. TODO: DRY this up
       }
 
-      scroll.x = x // HACK: store raw pixel value
-    }
-
-    if (x != null) {
-      this.timeScroller.scrollTo({ x })
+      return x
     }
   }
 
