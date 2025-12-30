@@ -1,10 +1,6 @@
 
-export type VirtualizerItem<Entity> = {
-  entity: Entity
-}
-
-export type VirtualizerItemPosition<Entity> = {
-  item: VirtualizerItem<Entity>
+export type ItemPosition<Item> = {
+  item: Item
   key: string
   index: number
   start: number | undefined
@@ -13,40 +9,30 @@ export type VirtualizerItemPosition<Entity> = {
 
 const overscan = 1
 
-export class Virtualizer<Entity> {
-  scroll = 0
-  viewportSize = 0
-  private items: VirtualizerItem<Entity>[] = []
-  private entityStarts: Map<string, number>
-  private entitySizes: Map<string, number>
-  private itemPositionsInRange: VirtualizerItemPosition<Entity>[]
+export class Virtualizer<Item> {
+  private viewportSize = 0
+  private scroll = 0
+  private items: Item[] = []
+  private itemPositions: ItemPosition<Item>[]
 
   constructor(
-    private getEntityKey: (entity: Entity) => string,
+    private getItemKey: (item: Item) => string,
+    private getItemStart: (key: string) => number,
+    private getItemSize: (key: string) => number,
     private requestRerender: () => void,
   ) {}
 
-  process(
-    items: VirtualizerItem<Entity>[],
-    entityStarts: Map<string, number>,
-    entitySizes: Map<string, number>,
-    forcedScroll?: number,
-  ): VirtualizerItemPosition<Entity>[] {
+  computePositions(items: Item[], forcedScroll?: number): ItemPosition<Item>[] {
     this.items = items
-    this.entityStarts = entityStarts
-    this.entitySizes = entitySizes
     if (forcedScroll !== undefined) {
       this.scroll = forcedScroll
     }
     if (!this.viewportSize) {
       return []
     }
-    const newPositions = this.computeItemPositionsInRange(items)
-    // if (newPositions.length) {
-    //   console.log('new range', newPositions[0].index, newPositions[newPositions.length - 1].index)
-    // }
-    this.itemPositionsInRange = newPositions
-    return newPositions
+    return (
+      this.itemPositions = this.computePositionsInRange(items)
+    )
   }
 
   handleViewportSize(size: number) {
@@ -63,13 +49,13 @@ export class Virtualizer<Entity> {
     }
   }
 
-  _handleViewportChange() {
-    if (this.itemPositionsInRange) {
-      const testItemPositions = this.computeItemPositionsInRange(this.items)
+  private _handleViewportChange() {
+    if (this.itemPositions) {
+      const testItemPositions = this.computePositionsInRange(this.items)
       if (
-        testItemPositions.length !== this.itemPositionsInRange.length || (
+        testItemPositions.length !== this.itemPositions.length || (
           testItemPositions.length &&
-          testItemPositions[0].index !== this.itemPositionsInRange[0].index
+          testItemPositions[0].index !== this.itemPositions[0].index
         )
       ) {
         this.requestRerender()
@@ -77,18 +63,18 @@ export class Virtualizer<Entity> {
     }
   }
 
-  computeItemPositionsInRange(items: VirtualizerItem<Entity>[]) {
-    const { scroll, viewportSize, entityStarts, entitySizes } = this
+  private computePositionsInRange(items: Item[]): ItemPosition<Item>[] {
+    const { scroll, viewportSize } = this
     const count = items.length
-    let itemPositions: VirtualizerItemPosition<Entity>[] = []
+    let itemPositions: ItemPosition<Item>[] = []
     let index = 0
 
     while (index < count) {
       const item = items[index]
-      const key = this.getEntityKey(item.entity)
-      const position = entityStarts.get(key)
-      const size = entitySizes.get(key)
-      if (position + size > scroll) {
+      const key = this.getItemKey(item)
+      const start = this.getItemStart(key)
+      const size = this.getItemSize(key)
+      if (start + size > scroll) {
         break
       }
       index++
@@ -98,9 +84,9 @@ export class Virtualizer<Entity> {
 
     while (index < count) {
       const item = items[index]
-      const key = this.getEntityKey(item.entity)
-      const start = entityStarts.get(key)
-      const size = entitySizes.get(key)
+      const key = this.getItemKey(item)
+      const start = this.getItemStart(key)
+      const size = this.getItemSize(key)
       if (start >= scroll + viewportSize) {
         break
       }
@@ -118,9 +104,9 @@ export class Virtualizer<Entity> {
 
     while (index < indexEnd) {
       const item = items[index]
-      const key = this.getEntityKey(item.entity)
-      const start = entityStarts.get(key)
-      const size = entitySizes.get(key)
+      const key = this.getItemKey(item)
+      const start = this.getItemStart(key)
+      const size = this.getItemSize(key)
       itemPositions.push({
         item,
         key,
@@ -133,4 +119,18 @@ export class Virtualizer<Entity> {
 
     return itemPositions
   }
+}
+
+export function computeShift(itemPositions: ItemPosition<unknown>[]): [
+  start: number,
+  end: number,
+  firstIndex: number,
+] {
+  const count = itemPositions.length
+  if (!count) {
+    return [0, 0, 0]
+  }
+  const start = itemPositions[0].start
+  const end = itemPositions[count - 1].start + itemPositions[count - 1].size
+  return [start, end, itemPositions[0].index]
 }

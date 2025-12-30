@@ -30,6 +30,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
   createEntityId,
+  createGroupId,
   GenericNode,
   Group,
   isEntityGroup,
@@ -49,7 +50,7 @@ import {
   timeToCoord
 } from '@fullcalendar/timeline/internal'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
-import { buildResourceLayouts, GenericLayout, GroupRowLayout, ResourceLayout } from '../resource-layout.js'
+import { buildResourceLayouts, GenericLayout, GroupCellLayout, GroupRowLayout, ResourceLayout } from '../resource-layout.js'
 import { ColSpec } from '../structs.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -57,7 +58,7 @@ import { ResizableTwoCol } from './ResizableTwoCol.js'
 import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { Virtualizer } from '../virtual/virtualizer.js'
+import { Virtualizer, computeShift } from '../virtual/virtualizer.js'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -181,9 +182,21 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
 
   // virtualizers
-  private rowVirtualizer = new Virtualizer<Resource>(createEntityId, this.boundForceUpdate)
-  private groupRowVirtualizer = new Virtualizer<Group>(createEntityId, this.boundForceUpdate)
-  private groupColVirtualizers: Virtualizer<Group>[] = []
+  private getEntityTop = (key) => this.bodyTops.get(key)
+  private getEntityHeight = (key) => this.bodyHeights.get(key)
+  private rowVirtualizer = new Virtualizer<ResourceLayout>(
+    (resourceLayout) => resourceLayout.entity.id,
+    this.getEntityTop,
+    this.getEntityHeight,
+    this.boundForceUpdate,
+  )
+  private groupRowVirtualizer = new Virtualizer<GroupRowLayout>(
+    (groupRowLayout) => createGroupId(groupRowLayout.entity),
+    this.getEntityTop,
+    this.getEntityHeight,
+    this.boundForceUpdate,
+  )
+  private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
 
   render() {
     let { props, state, context } = this
@@ -233,7 +246,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const newLen = flatGroupColLayouts.length
     if (newLen > oldLen) {
       for (let i = oldLen; i < newLen; i++) {
-        groupColVirtualizers[i] = new Virtualizer<Group>(createEntityId, this.boundForceUpdate)
+        groupColVirtualizers[i] = new Virtualizer<GroupCellLayout>(
+          (groupCellLayout) => createGroupId(groupCellLayout.entity),
+          this.getEntityTop,
+          this.getEntityHeight,
+          this.boundForceUpdate,
+        )
       }
     } else if (newLen < oldLen) {
       groupColVirtualizers = groupColVirtualizers.slice(0, newLen)
@@ -286,20 +304,19 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
     const forcedEntityScroll = this.computeEntityScroll()
 
-    const virtRowPositions = this.rowVirtualizer.process(flatResourceLayouts, bodyTops, bodyHeights, forcedEntityScroll)
-    const virtGroupPositions = this.groupRowVirtualizer.process(flatGroupRowLayouts, bodyTops, bodyHeights, forcedEntityScroll)
-    const virtColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
-      return groupColVirtualizer.process(flatGroupColLayouts[i], bodyTops, bodyHeights, forcedEntityScroll)
+    const rowPositions = this.rowVirtualizer.computePositions(flatResourceLayouts, forcedEntityScroll)
+    const groupRowPositions = this.groupRowVirtualizer.computePositions(flatGroupRowLayouts, forcedEntityScroll)
+    const groupColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
+      return groupColVirtualizer.computePositions(flatGroupColLayouts[i], forcedEntityScroll)
     })
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
-    // HACK in terms for relying on unmanaged state
-    // needs 100px wiggle room because the scroll handler is debounced
-    let yFillTop = this.rowVirtualizer.scroll
-    let yFillBottom = yFillTop + this.rowVirtualizer.viewportSize
-    yFillTop = Math.max(0, yFillTop - 100)
-    yFillBottom = Math.min(totalBodyHeight, yFillBottom + 100)
+    const [rowTop, rowBottom] = computeShift(rowPositions)
+    const [groupRowTop, groupRowBottom] = computeShift(groupRowPositions)
+    const yFillTop = Math.min(rowTop, groupRowTop)
+    const yFillBottom = Math.max(rowBottom, groupRowBottom)
+    const yFillHeight = yFillBottom - yFillTop
 
     /* */
 
@@ -482,9 +499,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   }}
                 >
                   <BodySection
-                    virtRowPositions={virtRowPositions}
-                    virtGroupPositions={virtGroupPositions}
-                    virtColPositions={virtColPositions}
+                    rowPositions={rowPositions}
+                    groupRowPositions={groupRowPositions}
+                    groupColPositions={groupColPositions}
                     resourceCnt={flatResourceLayouts.length}
                     groupRowCnt={flatGroupRowLayouts.length}
                     groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
@@ -667,7 +684,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     className={classNames.fillX}
                     style={{
                       top: yFillTop,
-                      height: yFillBottom - yFillTop,
+                      height: yFillHeight,
                     }}
                   >
                     <TimelineSlats
@@ -707,10 +724,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}
-                    {virtGroupPositions.map((virtGroupPosition) => {
-                      const groupRowLayout = virtGroupPosition.item as GroupRowLayout
+                    {groupRowPositions.map((groupRowPosition) => {
+                      const groupRowLayout = groupRowPosition.item
                       const group = groupRowLayout.entity
-                      const groupKey = virtGroupPosition.key
+                      const groupKey = groupRowPosition.key
 
                       return (
                         <GroupLane
@@ -722,21 +739,21 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           expanded={groupRowLayout.isExpanded}
                           borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
                           innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                          top={virtGroupPosition.start}
-                          height={virtGroupPosition.size}
+                          top={groupRowPosition.start}
+                          height={groupRowPosition.size}
                         />
                       )
                     })}
 
                     {/* resource-specific cells */}
-                    {virtRowPositions.map((virtRowPosition) => {
-                      const resourceLayout = virtRowPosition.item as ResourceLayout
+                    {rowPositions.map((rowPosition) => {
+                      const resourceLayout = rowPosition.item
                       const resource = resourceLayout.entity
 
                       return (
                         <ResourceLane
                           {...splitProps[resource.id]}
-                          key={resource.id /* TODO: use virtRowPosition.key? */}
+                          key={resource.id /* TODO: use rowPosition.key? */}
                           role='row'
                           className={classNames.fillX}
                           resource={resource}
@@ -757,8 +774,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           slotWidth={slotWidth}
 
                           // position
-                          top={virtRowPosition.start}
-                          height={virtRowPosition.size}
+                          top={rowPosition.start}
+                          height={rowPosition.size}
                         />
                       )
                     })}

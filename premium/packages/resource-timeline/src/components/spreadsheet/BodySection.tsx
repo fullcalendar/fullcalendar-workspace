@@ -2,24 +2,21 @@ import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
-import { Group, Resource } from "@fullcalendar/resource/internal"
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
 import { ResourceSubrow } from "./ResourceSubrow.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ColSpec } from '../../structs.js'
-import { VirtualizerItemPosition } from "../../virtual/virtualizer.js"
+import { ItemPosition } from '../../virtual/virtualizer.js'
 
 export interface BodySectionProps {
-  virtRowPositions: VirtualizerItemPosition<Resource>[]
-  virtGroupPositions: VirtualizerItemPosition<Group>[]
-  virtColPositions: VirtualizerItemPosition<Group>[][]
-
+  rowPositions: ItemPosition<ResourceLayout>[]
+  groupRowPositions: ItemPosition<GroupRowLayout>[]
+  groupColPositions: ItemPosition<GroupCellLayout>[][]
   resourceCnt: number
   groupRowCnt: number
   groupCellCnts: number[]
-
   colWidths: number[] | undefined
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
@@ -53,7 +50,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
       <div className={joinClassNames(classNames.flexRow, classNames.fill)}>
 
         {/* group columns */}
-        {props.virtColPositions.map((virtCellPositions, colIndex) => (
+        {props.groupColPositions.map((groupCellPositions, colIndex) => (
           <div
             key={colIndex}
             role='rowgroup'
@@ -63,12 +60,12 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               width: colWidths[colIndex],
             }}
           >
-            {virtCellPositions.map((virtCellPosition, groupIndex) => {
-              const groupCellLayout = virtCellPosition.item as GroupCellLayout
+            {groupCellPositions.map((groupCellPosition, groupIndex) => {
+              const groupCellLayout = groupCellPosition.item
               const group = groupCellLayout.entity
-              const groupKey = virtCellPosition.key
-              const isNotLast = groupIndex < virtCellPositions.length - 1
-              const rowHeight = virtCellPosition.size
+              const groupKey = groupCellPosition.key
+              const isNotLast = groupIndex < groupCellPositions.length - 1
+              const rowHeight = groupCellPosition.size
 
               return (
                 <ResourceGroupSubrow
@@ -83,7 +80,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  top={virtCellPosition.start}
+                  top={groupCellPosition.start}
                   height={
                     (rowHeight != null && isNotLast)
                       ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
@@ -104,10 +101,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           }}
         >
           {/* group rows */}
-          {props.virtGroupPositions.map((virtGroupPosition) => {
-            const groupRowLayout = virtGroupPosition.item as GroupRowLayout
+          {props.groupRowPositions.map((groupRowPosition) => {
+            const groupRowLayout = groupRowPosition.item
             const group = groupRowLayout.entity
-            const groupKey = virtGroupPosition.key
+            const groupKey = groupRowPosition.key
             const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
 
             return (
@@ -121,8 +118,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                 colSpan={props.colSpecs.length}
                 borderBottom={isNotLast}
-                top={virtGroupPosition.start}
-                height={virtGroupPosition.size}
+                top={groupRowPosition.start}
+                height={groupRowPosition.size}
                 indentWidth={props.indentWidth}
                 className={classNames.fillX}
               />
@@ -130,15 +127,15 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           })}
 
           {/* resource-specific cells */}
-          {props.virtRowPositions.map((virtRowPosition) => {
-            const resourceLayout = virtRowPosition.item as ResourceLayout
+          {props.rowPositions.map((rowPosition) => {
+            const resourceLayout = rowPosition.item
             const resource = resourceLayout.entity
             const isNotLast = resourceLayout.visibleIndex < visibleRowCnt - 1
-            const rowHeight = virtRowPosition.size
+            const rowHeight = rowPosition.size
 
             return (
               <ResourceSubrow
-                key={resource.id /* TODO: use virtRowPosition.key? */}
+                key={resource.id /* TODO: use rowPosition.key? */}
                 resource={resource}
                 resourceFields={resourceLayout.resourceFields}
                 indent={resourceLayout.indent}
@@ -155,7 +152,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                top={virtRowPosition.start}
+                top={rowPosition.start}
                 height={
                   (rowHeight != null && isNotLast)
                     ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
