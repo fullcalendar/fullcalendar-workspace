@@ -125,12 +125,11 @@ export function computeShift(itemPositions: ItemPosition<unknown>[]): [
   start: number,
   end: number,
   firstIndex: number,
-] {
+] | undefined {
   const count = itemPositions.length
-  if (!count) {
-    return [0, 0, 0]
+  if (count) {
+    const start = itemPositions[0].start
+    const end = itemPositions[count - 1].start + itemPositions[count - 1].size
+    return [start, end, itemPositions[0].index]
   }
-  const start = itemPositions[0].start
-  const end = itemPositions[count - 1].start + itemPositions[count - 1].size
-  return [start, end, itemPositions[0].index]
 }

@@ -58,7 +58,7 @@ import { ResizableTwoCol } from './ResizableTwoCol.js'
 import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { Virtualizer, computeShift } from '../virtual/virtualizer.js'
+import { computeShift, Virtualizer } from '../virtual/virtualizer.js'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -312,10 +312,18 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
-    const [rowTop, rowBottom] = computeShift(rowPositions)
-    const [groupRowTop, groupRowBottom] = computeShift(groupRowPositions)
-    const yFillTop = Math.min(rowTop, groupRowTop)
-    const yFillBottom = Math.max(rowBottom, groupRowBottom)
+    let yFillTop = 0
+    let yFillBottom = totalBodyHeight
+    const rowPositionShift = computeShift(rowPositions)
+    if (rowPositionShift) {
+      yFillTop = Math.max(yFillTop, rowPositionShift[0])
+      yFillBottom = Math.min(yFillBottom, rowPositionShift[1])
+    }
+    const groupRowPositionShift = computeShift(groupRowPositions)
+    if (groupRowPositionShift) {
+      yFillTop = Math.max(yFillTop, groupRowPositionShift[0])
+      yFillBottom = Math.min(yFillBottom, groupRowPositionShift[1])
+    }
     const yFillHeight = yFillBottom - yFillTop
 
     /* */
