@@ -718,11 +718,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     // horizontal scrollbars when there normally wouldn't be any
                     props.slotLiquid && classNames.crop,
                   )}
-                  style={{ width: timeCanvasWidth }}
+                  style={{
+                    minWidth: timeCanvasWidth,
+                    minHeight: totalBodyHeight,
+                  }}
                   ref={this.handleBodyEl}
                 >
                   <div
-                    className={classNames.fillX}
+                    className={classNames.abs}
                     style={{
                       top: yFillTop,
                       height: yFillHeight,
@@ -763,7 +766,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     role='rowgroup'
                     className={classNames.rel /* for abs positioning of lanes */}
-                    style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}
                     {groupRowPositions.map((groupRowPosition) => {
