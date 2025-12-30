@@ -1,4 +1,3 @@
-import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
@@ -23,6 +22,8 @@ export interface BodySectionProps {
   headerRowSpan: number
   hasNesting: boolean
   indentWidth: number | undefined
+  canvasWidth: number | undefined
+  canvasHeight: number | undefined
 }
 
 /*
@@ -36,19 +37,16 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
     const visibleRowCnt = props.groupRowCnt + props.resourceCnt
     const groupColCnt = props.groupCellCnts.length
-
     const colWidths = props.colWidths || []
-    const resourceX = sumArray(colWidths.slice(0, groupColCnt))
 
-    /*
-    TODO: simplify DOM structure to be more like time-area?
-    where an actual DIV creates the mass, not a paddingTop
-
-    TODO: this outer div can be discarded and parent should be canvas directly
-    */
     return (
-      <div className={joinClassNames(classNames.flexRow, classNames.fill)}>
-
+      <div
+        className={classNames.flexRow}
+        style={{
+          minWidth: props.canvasWidth,
+          minHeight: props.canvasHeight,
+        }}
+      >
         {/* group columns */}
         {props.groupColPositions.map((groupCellPositions, colIndex) => (
           <div
@@ -56,6 +54,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             role='rowgroup'
             className={classNames.rel /* origin for abs-positioned rows */}
             style={{
+              height: 0,
               minWidth: 0,
               width: colWidths[colIndex],
             }}
@@ -94,10 +93,11 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
         <div
           role='rowgroup'
-          className={classNames.fillY}
+          className={classNames.rel}
           style={{
-            insetInlineStart: resourceX,
-            insetInlineEnd: 0,
+            height: 0,
+            minWidth: 0,
+            width: sumArray(colWidths.slice(groupColCnt)),
           }}
         >
           {/* group rows */}

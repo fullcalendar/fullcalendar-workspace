@@ -487,41 +487,31 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 clientWidthRef={this.handleSpreadsheetClientWidth}
                 bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               >
-                <div
-                  className={joinClassNames(
-                    classNames.rel, // origin for canvas?
-                    classNames.grow,
-                    classNames.flexCol,
-                  )}
-                  style={{
-                    minWidth: spreadsheetCanvasWidth,
-                    paddingTop: totalBodyHeight, // to push down filler div at end, and give height
-                  }}
-                >
-                  <BodySection
-                    rowPositions={rowPositions}
-                    groupRowPositions={groupRowPositions}
-                    groupColPositions={groupColPositions}
-                    resourceCnt={flatResourceLayouts.length}
-                    groupRowCnt={flatGroupRowLayouts.length}
-                    groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
-                    colWidths={spreadsheetColWidths}
-                    colSpecs={colSpecs}
-                    rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
-                    headerRowSpan={totalHeaderRowSpan}
-                    hasNesting={hasNesting}
-                    indentWidth={props.indentWidth}
+                <BodySection
+                  rowPositions={rowPositions}
+                  groupRowPositions={groupRowPositions}
+                  groupColPositions={groupColPositions}
+                  resourceCnt={flatResourceLayouts.length}
+                  groupRowCnt={flatGroupRowLayouts.length}
+                  groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
+                  colWidths={spreadsheetColWidths}
+                  colSpecs={colSpecs}
+                  rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
+                  headerRowSpan={totalHeaderRowSpan}
+                  hasNesting={hasNesting}
+                  indentWidth={props.indentWidth}
+                  canvasWidth={spreadsheetCanvasWidth}
+                  canvasHeight={totalBodyHeight}
+                />
+                {spreadsheetNeedsBottomFiller && (
+                  <div
+                    className={joinArrayishClassNames(
+                      generateClassName(options.fillerClass, { isHeader: false }),
+                      classNames.borderOnlyT,
+                    )}
+                    style={{ minHeight: spreadsheetBottomFiller }}
                   />
-                  {spreadsheetNeedsBottomFiller && (
-                    <div
-                      className={joinArrayishClassNames(
-                        generateClassName(options.fillerClass, { isHeader: false }),
-                        classNames.borderOnlyT,
-                      )}
-                      style={{ minHeight: spreadsheetBottomFiller }}
-                    />
-                  )}
-                </div>
+                )}
               </Scroller>
 
               {/* spreadsheet FOOTER scrollbar
