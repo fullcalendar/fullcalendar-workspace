@@ -7,8 +7,6 @@ export type ItemPosition<Item> = {
   size: number | undefined
 }
 
-const overscan = 1
-
 export class Virtualizer<Item> {
   // left exposed so they can be prepopulated :(
   viewportSize = 0
@@ -22,6 +20,7 @@ export class Virtualizer<Item> {
     private getItemStart: undefined | ((key: string, index: number, item: Item) => number),
     private getItemSize: (key: string, index: number, item: Item) => number,
     private requestRerender: () => void,
+    private overscan = 1,
   ) {}
 
   computePositions(items: Item[], forcedScroll?: number): ItemPosition<Item>[] {
@@ -66,7 +65,7 @@ export class Virtualizer<Item> {
   }
 
   private computePositionsInRange(items: Item[]): ItemPosition<Item>[] {
-    const { scroll, viewportSize, getItemKey, getItemStart, getItemSize } = this
+    const { scroll, viewportSize, getItemKey, getItemStart, getItemSize, overscan } = this
     const count = items.length
     let itemPositions: ItemPosition<Item>[] = []
     let index = 0

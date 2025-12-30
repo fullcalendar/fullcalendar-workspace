@@ -204,6 +204,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     (_key, index) => index * (this.props.slotWidth ?? defaultSlotWidth),
     () => this.props.slotWidth ?? defaultSlotWidth,
     this.boundForceUpdate,
+    /* overscan = */ 3,
   )
   private timeHeaderVirtualizers: Virtualizer<TimelineHeaderCellData>[] = []
 
