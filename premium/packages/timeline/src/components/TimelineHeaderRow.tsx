@@ -5,6 +5,7 @@ import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-pr
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
 
 export interface TimelineHeaderRowProps {
+  className?: string
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
@@ -12,12 +13,20 @@ export interface TimelineHeaderRowProps {
   rowLevel: number // 0 is closest to divider (like "ground floor")
   cells: TimelineHeaderCellData[]
 
+  // virtualization (optional)
+  insetInlineStart?: number // needs position:relative
+  cellStartIndex?: number
+  cellCount?: number
+  width?: number
+
   // ref
   innerHeighRef?: Ref<number>
   innerWidthRef?: Ref<number>
 
   // dimensions
-  slotWidth: number | undefined // TODO: rename to slatWidth
+  slotWidth: number | undefined
+    // pairs with each cell.colspan to determine header-cell width
+    // TODO: rename to slatWidth?
 }
 
 interface TimelineHeaderRowState {
@@ -36,10 +45,17 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
   render() {
     const { props, innerWidthRefMap, innerHeightRefMap, state, context } = this
     const { options } = context
+    let { cells, cellStartIndex, cellCount } = props
+
+    cellStartIndex = cellStartIndex || 0
+    if (cellStartIndex || cellCount !== undefined) {
+      cells = cells.slice(cellStartIndex, cellStartIndex + cellCount)
+    }
 
     return (
       <div
         className={joinArrayishClassNames(
+          props.className,
           options.slotHeaderRowClass,
           classNames.flexRow,
           classNames.grow,
@@ -48,12 +64,15 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
             : classNames.borderNone,
         )}
         style={{
+          insetInlineStart: props.insetInlineStart,
+          width: props.width,
+
           // we assign height because we allow cells to have distorted heights for visual effect
           // but we still want to keep the overall extrenal mass
           height: state.innerHeight,
         }}
       >
-        {props.cells.map((cell, cellI) => {
+        {cells.map((cell, cellI) => {
           // TODO: make this part of the cell obj?
           // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
           // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
@@ -69,7 +88,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
               tDateProfile={props.tDateProfile}
               todayRange={props.todayRange}
               nowDate={props.nowDate}
-              isFirst={cellI === 0}
+              isFirst={cellStartIndex + cellI === 0}
 
               // refs
               innerWidthRef={innerWidthRefMap.createRef(key)}

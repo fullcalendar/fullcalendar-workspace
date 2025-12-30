@@ -47,7 +47,8 @@ import {
   TimelineNowIndicatorLine,
   TimelineRange,
   TimelineSlats,
-  timeToCoord
+  timeToCoord,
+  TimelineHeaderCellData,
 } from '@fullcalendar/timeline/internal'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
 import { buildResourceLayouts, GenericLayout, GroupCellLayout, GroupRowLayout, ResourceLayout } from '../resource-layout.js'
@@ -134,6 +135,7 @@ interface ResourceTimelineViewState {
 }
 
 const defaultOwnCellHeight = 40
+const defaultSlotWidth = 50
 
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
@@ -199,10 +201,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
   private slotVirtualizer = new Virtualizer<DateMarker>(
     (dateMarker) => dateMarker.toISOString(),
-    (_key, index) => index * (this.props.slotWidth ?? 0),
-    () => this.props.slotWidth ?? 0,
+    (_key, index) => index * (this.props.slotWidth ?? defaultSlotWidth),
+    () => this.props.slotWidth ?? defaultSlotWidth,
     this.boundForceUpdate,
   )
+  private timeHeaderVirtualizers: Virtualizer<TimelineHeaderCellData>[] = []
 
   render() {
     let { props, state, context } = this
@@ -248,8 +251,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     // update groupColVirtualizers
     let groupColVirtualizers = this.groupColVirtualizers
-    const oldLen = groupColVirtualizers.length
-    const newLen = flatGroupColLayouts.length
+    let oldLen = groupColVirtualizers.length
+    let newLen = flatGroupColLayouts.length
     if (newLen > oldLen) {
       for (let i = oldLen; i < newLen; i++) {
         groupColVirtualizers[i] = new Virtualizer<GroupCellLayout>(
@@ -263,6 +266,25 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       groupColVirtualizers = groupColVirtualizers.slice(0, newLen)
     }
     this.groupColVirtualizers = groupColVirtualizers
+
+    // update timeHeaderVirtualizers
+    let timeHeaderVirtualizers = this.timeHeaderVirtualizers
+    oldLen = timeHeaderVirtualizers.length
+    newLen = cellRows.length
+    if (newLen > oldLen) {
+      for (let i = oldLen; i < newLen; i++) {
+        timeHeaderVirtualizers[i] = new Virtualizer<TimelineHeaderCellData>(
+          (cell) => cell.rowUnit + ':' + cell.date.toISOString(), // TODO: DRY with TimelineHeaderRow
+          undefined, // getItemStart (let Virtualizer compute it)
+          (key, index, cell) => cell.colspan * (this.props.slotWidth ?? defaultSlotWidth),
+          this.boundForceUpdate,
+        )
+        // HACK to prepopulate
+        timeHeaderVirtualizers[i].viewportSize = timeHeaderVirtualizers[0].viewportSize
+        timeHeaderVirtualizers[i].scroll = timeHeaderVirtualizers[0].scroll
+      }
+    }
+    this.timeHeaderVirtualizers = timeHeaderVirtualizers
 
     // TODO: less-weird way to get this! more DRY with BodySection
     const groupRowCnt = flatGroupRowLayouts.length
@@ -338,7 +360,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* */
 
-    const { timeCanvasWidth, slotWidth } = props
+    const { timeCanvasWidth } = props
+    const slotWidth = props.slotWidth ?? defaultSlotWidth
 
     const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
 
@@ -352,7 +375,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const enableNowIndicator = // TODO: DRY
       options.nowIndicator &&
-      slotWidth != null &&
       rangeContainsMarker(props.dateProfile.currentRange, props.nowDate)
 
     /* filler */
@@ -605,13 +627,21 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       // horizontal scrollbars when there normally wouldn't be any
                       props.slotLiquid && classNames.crop,
                     )}
-                    style={{ width: timeCanvasWidth }}
+                    style={{ minWidth: timeCanvasWidth }}
                   >
                     {cellRows.map((cells, rowIndex) => {
                       const rowLevel = cellRows.length - rowIndex - 1
+
+                      const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, forcedTimeScroll)
+                      const shift = computeShift(headerCellPositions) || []
+                      if (!shift.length) {
+                        timeHeaderVirtualizers[rowIndex].computePositions(cells, forcedTimeScroll)
+                      }
+
                       return (
                         <TimelineHeaderRow
                           key={rowIndex}
+                          className={classNames.rel}
                           dateProfile={props.dateProfile}
                           tDateProfile={tDateProfile}
                           nowDate={props.nowDate}
@@ -621,6 +651,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           slotWidth={slotWidth}
                           innerWidthRef={this.headerRowInnerWidthMap.createRef(rowIndex)}
                           innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
+                          insetInlineStart={shift[0]}
+                          cellStartIndex={shift[2]}
+                          cellCount={headerCellPositions.length}
                         />
                       )
                     })}
@@ -923,6 +956,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     })
 
     this.slotVirtualizer.handleViewportSize(timeClientWidth)
+    for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
+      timeHeaderVirtualizer.handleViewportSize(timeClientWidth)
+      // TODO: what about difference in scrollbar width?
+    }
   }
 
   private handleTimeClientHeight = (timeClientHeight: number) => {
@@ -1073,6 +1110,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
   private _handleTimeScroll = debounce(() => {
     this.slotVirtualizer.handleScroll(this.timeScroll)
+    for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
+      timeHeaderVirtualizer.handleScroll(this.timeScroll)
+    }
   }, 10)[0]
 
   /*
@@ -1095,10 +1135,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   private computeTimeScroll(): number | undefined {
     const { props, context, scroll } = this
-    const { tDateProfile, slotWidth } = props
+    const { tDateProfile } = props
+    const slotWidth = props.slotWidth ?? defaultSlotWidth
     let { x, time } = scroll
 
-    if (x == null && time && slotWidth != null) {
+    if (x == null && time) {
       x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
 
       if (x) {
@@ -1207,7 +1248,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   queryHit(isRtl: boolean, positionLeft: number, positionTop: number): Hit {
     let { props, context, bodyLayouts, bodyTops, bodyHeights } = this
-    const { dateProfile, tDateProfile, timeCanvasWidth, slotWidth } = props
+    const { dateProfile, tDateProfile, timeCanvasWidth } = props
+    const slotWidth = props.slotWidth ?? defaultSlotWidth
     const { dateEnv } = context
 
     let coordRes = findEntityByCoord(
@@ -1228,50 +1270,48 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         /*
         TODO: DRY-up ith TimelineView!!!
         */
-        if (slotWidth) {
-          const x = isRtl ? timeCanvasWidth - positionLeft : positionLeft
-          const slatIndex = Math.floor(x / slotWidth)
-          const slatLeft = slatIndex * slotWidth
-          const partial = (x - slatLeft) / slotWidth // floating point number between 0 and 1
-          const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+        const x = isRtl ? timeCanvasWidth - positionLeft : positionLeft
+        const slatIndex = Math.floor(x / slotWidth)
+        const slatLeft = slatIndex * slotWidth
+        const partial = (x - slatLeft) / slotWidth // floating point number between 0 and 1
+        const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
 
-          let start = dateEnv.add(
-            tDateProfile.slotDates[slatIndex],
-            multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-          )
-          let end = dateEnv.add(start, tDateProfile.snapDuration)
+        let start = dateEnv.add(
+          tDateProfile.slotDates[slatIndex],
+          multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
+        )
+        let end = dateEnv.add(start, tDateProfile.snapDuration)
 
-          // TODO: generalize this coord stuff to TimeGrid?
+        // TODO: generalize this coord stuff to TimeGrid?
 
-          let snapWidth = slotWidth / tDateProfile.snapsPerSlot
-          let startCoord = slatIndex * slotWidth + (snapWidth * localSnapIndex)
-          let endCoord = startCoord + snapWidth
-          let left: number, right: number
+        let snapWidth = slotWidth / tDateProfile.snapsPerSlot
+        let startCoord = slatIndex * slotWidth + (snapWidth * localSnapIndex)
+        let endCoord = startCoord + snapWidth
+        let left: number, right: number
 
-          if (isRtl) {
-            left = timeCanvasWidth - endCoord
-            right = timeCanvasWidth - startCoord
-          } else {
-            left = startCoord
-            right = endCoord
-          }
+        if (isRtl) {
+          left = timeCanvasWidth - endCoord
+          right = timeCanvasWidth - startCoord
+        } else {
+          left = startCoord
+          right = endCoord
+        }
 
-          return {
-            dateProfile,
-            dateSpan: {
-              range: { start, end },
-              allDay: !tDateProfile.isTimeScale,
-              resourceId: resource.id,
-            },
-            rect: {
-              left,
-              right,
-              top,
-              bottom,
-            },
-            getDayEl: () => getTimelineSlotEl(this.bodyEl, slatIndex),
-            layer: 0,
-          }
+        return {
+          dateProfile,
+          dateSpan: {
+            range: { start, end },
+            allDay: !tDateProfile.isTimeScale,
+            resourceId: resource.id,
+          },
+          rect: {
+            left,
+            right,
+            top,
+            bottom,
+          },
+          getDayEl: () => getTimelineSlotEl(this.bodyEl, slatIndex),
+          layer: 0,
         }
       }
     }

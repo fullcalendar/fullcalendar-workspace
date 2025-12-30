@@ -10,15 +10,17 @@ export type ItemPosition<Item> = {
 const overscan = 1
 
 export class Virtualizer<Item> {
-  private viewportSize = 0
-  private scroll = 0
+  // left exposed so they can be prepopulated :(
+  viewportSize = 0
+  scroll = 0
+
   private items: Item[] = []
   private itemPositions: ItemPosition<Item>[]
 
   constructor(
     private getItemKey: (item: Item) => string,
-    private getItemStart: (key: string, index: number) => number,
-    private getItemSize: (key: string, index: number) => number,
+    private getItemStart: undefined | ((key: string, index: number, item: Item) => number),
+    private getItemSize: (key: string, index: number, item: Item) => number,
     private requestRerender: () => void,
   ) {}
 
@@ -64,29 +66,39 @@ export class Virtualizer<Item> {
   }
 
   private computePositionsInRange(items: Item[]): ItemPosition<Item>[] {
-    const { scroll, viewportSize } = this
+    const { scroll, viewportSize, getItemKey, getItemStart, getItemSize } = this
     const count = items.length
     let itemPositions: ItemPosition<Item>[] = []
     let index = 0
+    let runningStart = 0
 
     while (index < count) {
       const item = items[index]
-      const key = this.getItemKey(item)
-      const start = this.getItemStart(key, index)
-      const size = this.getItemSize(key, index)
+      const key = getItemKey(item)
+      const start = getItemStart ? getItemStart(key, index, item) : runningStart
+      const size = getItemSize(key, index, item)
       if (start + size > scroll) {
         break
       }
       index++
+      runningStart += size
     }
 
-    index = Math.max(index - overscan, 0)
+    // back up for underscan
+    const startIndex = Math.max(index - overscan, 0)
+    while (index > startIndex) {
+      const item = items[index - 1]
+      const key = getItemKey(item)
+      const size = getItemSize(key, index - 1, item)
+      index--
+      runningStart -= size
+    }
 
     while (index < count) {
       const item = items[index]
-      const key = this.getItemKey(item)
-      const start = this.getItemStart(key, index)
-      const size = this.getItemSize(key, index)
+      const key = getItemKey(item)
+      const start = getItemStart ? getItemStart(key, index, item) : runningStart
+      const size = getItemSize(key, index, item)
       if (start >= scroll + viewportSize) {
         break
       }
@@ -98,15 +110,17 @@ export class Virtualizer<Item> {
         size,
       })
       index++
+      runningStart += size
     }
 
-    const indexEnd = Math.min(index + overscan, count)
+    const endIndex = Math.min(index + overscan, count)
 
-    while (index < indexEnd) {
+    // overshoot for overscan
+    while (index < endIndex) {
       const item = items[index]
-      const key = this.getItemKey(item)
-      const start = this.getItemStart(key, index)
-      const size = this.getItemSize(key, index)
+      const key = getItemKey(item)
+      const start = getItemStart ? getItemStart(key, index, item) : runningStart
+      const size = getItemSize(key, index, item)
       itemPositions.push({
         item,
         key,
@@ -115,6 +129,7 @@ export class Virtualizer<Item> {
         size,
       })
       index++
+      runningStart += size
     }
 
     return itemPositions
