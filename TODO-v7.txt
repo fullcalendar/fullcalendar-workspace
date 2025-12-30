@@ -36,12 +36,11 @@ build note:
     manually before `pn dev`
 
 
+test growRows
+test print-view
 limit # of resource-timeline rows for print view
-bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
-todo: audit TimelineSlats for print-view, especially height
-test highlight non-resource-specific slots
-think about how virtualization would work with SSR (not having viewport dimensions yet)
-consider non-resource timeline
+have ability to turn off virtualization
+test non-resource timeline (won't virtualize, but okay)
 
 
 ASAP
@@ -336,6 +335,9 @@ Get all examples/ using new dist files
   was having trouble with deduping React versions
 In all docs, rename our `data` param to `state` like base-ui?
   https://base-ui.com/react/handbook/styling
+bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
+virtualize non-resource timeline
+think about how virtualization would work with SSR (not having viewport dimensions yet)
 
 
 Changelog
