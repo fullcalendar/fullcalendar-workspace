@@ -2845,6 +2845,9 @@ importers:
       '@fullcalendar/interaction':
         specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/multimonth':
+        specifier: workspace:7.0.0-beta.5
+        version: link:../../standard/packages/multimonth/dist
       '@fullcalendar/theme-forma':
         specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-forma/dist
@@ -2857,6 +2860,9 @@ importers:
       '@primeuix/themes':
         specifier: ^2.0.2
         version: 2.0.2
+      primeicons:
+        specifier: ^7.0.0
+        version: 7.0.0
       primevue:
         specifier: ^4.5.4
         version: 4.5.4(vue@3.5.26(typescript@5.9.3))
@@ -21488,6 +21494,9 @@ packages:
     resolution: {integrity: sha512-973driJZvxiGOQ5ONsFhOF/DtzPMOMtgC11kCpUrPGMTgqp2q/1gwzCquocrN33is0VZ5GFHXZYMM9l6h67v2Q==}
     engines: {node: '>=10'}
 
+  primeicons@7.0.0:
+    resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
+
   primevue@4.5.4:
     resolution: {integrity: sha512-nTyEohZABFJhVIpeUxgP0EJ8vKcJAhD+Z7DYj95e7ie/MNUCjRNcGjqmE1cXtXi4z54qDfTSI9h2uJ51qz2DIw==}
     engines: {node: '>=12.11.0'}
@@ -25194,7 +25203,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -25254,8 +25263,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -25281,7 +25290,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -25341,8 +25350,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -25961,12 +25970,12 @@ snapshots:
       - vite
       - webpack-cli
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
     transitivePeerDependencies:
       - chokidar
 
@@ -50733,6 +50742,8 @@ snapshots:
     dependencies:
       parse-ms: 2.1.0
 
+  primeicons@7.0.0: {}
+
   primevue@4.5.4(vue@3.5.26(typescript@5.9.3)):
     dependencies:
       '@primeuix/styled': 0.7.4
@@ -54223,7 +54234,7 @@ snapshots:
       webpack: 5.97.0(webpack-cli@4.10.0)
       webpack-log: 2.0.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -54556,7 +54567,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -54586,7 +54597,7 @@ snapshots:
       spdy: 4.0.2
       strip-ansi: 7.1.0
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'

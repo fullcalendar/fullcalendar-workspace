@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { CalendarController } from '@fullcalendar/core'
 
 export function useCalendarController(): CalendarController {
-  const revisionRef = ref(1)
+  const revisionRef = ref(0)
   const calendarController = new CalendarController(() => {
     revisionRef.value++
   })
@@ -13,10 +13,24 @@ export function useCalendarController(): CalendarController {
       // will now depend on tick.
       void revisionRef.value
 
-      const value = Reflect.get(target, prop, receiver)
+      let value = Reflect.get(target, prop, receiver)
 
       // Bind methods so `this` stays correct
-      if (typeof value === "function") return value.bind(target)
+      if (typeof value === "function") {
+        value = value.bind(target)
+      }
+
+      if (prop === 'getButtonState') {
+        return () => {
+          return new Proxy({} as any, {
+            get(_target, prop, receiver) {
+              void revisionRef.value // see above technique
+              return Reflect.get(value(), prop, receiver)
+            }
+          })
+        }
+      }
+
       return value
     },
   })
