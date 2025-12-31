@@ -1,4 +1,10 @@
 
+## v7.0.0-beta.6
+
+- Virtual rendering for all axes in resource-timeline views ([#5673](https://github.com/fullcalendar/fullcalendar/issues/5673), [#6478](https://github.com/fullcalendar/fullcalendar/issues/6478))
+  - Must set `virtualization: true`
+- Restored Vue 3 support
+
 ## v7.0.0-beta.5
 
 This is a long awaited release showcasing the new theme system. Links:
