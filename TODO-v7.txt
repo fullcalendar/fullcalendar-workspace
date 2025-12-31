@@ -335,6 +335,7 @@ test print-view with virtualization
   limit # of resource-timeline rows for print view
   test expandRows
 Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
+should full-ui packages be put on v1?
 
 
 Changelog
