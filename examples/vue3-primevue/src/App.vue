@@ -15,12 +15,12 @@
 <template>
   <div data-color-scheme="dark" class="calendar-container">
     <div class="calendar-toolbar">
-      <Button>Prev</Button>
-      <Button>Next</Button>
+      <Button @click="calendarController.prev()">Prev</Button>
+      <Button @click="calendarController.next()">Next</Button>
     </div>
     <FullCalendar
       :options="{
-        controller: calendarController.value,
+        controller: calendarController,
         plugins: [
           themePlugin,
           dayGridPlugin,
