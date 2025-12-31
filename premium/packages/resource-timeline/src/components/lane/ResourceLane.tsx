@@ -37,6 +37,10 @@ export interface ResourceLaneProps {
   height?: number
   insetInlineStart?: number
 
+  // virtualization (optional)
+  clipStart?: number
+  clipEnd?: number
+
   // refs
   heightRef?: Ref<number>
 }
@@ -90,7 +94,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         style={{
           top: props.top,
           width: props.width,
-          insetInlineStart: props.insetInlineStart,
+          insetInlineStart: props.insetInlineStart ?? props.clipStart,
         }}
       >
         <ContentContainer
@@ -131,6 +135,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
                 // dimensions
                 slotWidth={props.slotWidth}
+
+                // virtualization
+                clipStart={props.clipStart}
+                clipEnd={props.clipEnd}
               />
               <ContentContainer
                 tag='div'
@@ -158,6 +166,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
                 // dimensions
                 slotWidth={props.slotWidth}
+
+                // virtualization
+                clipStart={props.clipStart}
+                clipEnd={props.clipEnd}
 
                 // ref
                 heightRef={this.handleEventsHeight}

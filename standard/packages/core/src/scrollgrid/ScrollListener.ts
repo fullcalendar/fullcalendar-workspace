@@ -13,7 +13,7 @@ the scroll-master simply by who was the newest scroller? Does passive:true do th
 */
 export class ScrollListener {
   public emitter: Emitter<{
-    scrollStart: (isUser: boolean) => void
+    scrollStart: () => void
     scroll: (isUser: boolean) => void
     scrollEnd: (isUser: boolean) => void
   }> = new Emitter()
@@ -36,7 +36,7 @@ export class ScrollListener {
     this.wheelWaiter = new DelayedRunner(this.handleWheelWait)
     this.scrollWaiter = new DelayedRunner(this.handleScrollWait)
 
-    el.addEventListener('scroll', this.handleScroll)
+    el.addEventListener('scroll', this.handleScroll, { passive: true })
     el.addEventListener('wheel', this.handleWheel, { passive: true })
     el.addEventListener('mousedown', this.handleMouseDown)
     el.addEventListener('mouseup', this.handleMouseUp)
@@ -47,7 +47,7 @@ export class ScrollListener {
   destroy() {
     let { el } = this
 
-    el.removeEventListener('scroll', this.handleScroll)
+    el.removeEventListener('scroll', this.handleScroll, { passive: true } as AddEventListenerOptions)
     el.removeEventListener('wheel', this.handleWheel, { passive: true } as AddEventListenerOptions)
     el.removeEventListener('mousedown', this.handleMouseDown)
     el.removeEventListener('mouseup', this.handleMouseUp)
@@ -61,7 +61,8 @@ export class ScrollListener {
   private startScroll() {
     if (!this.isScroll) {
       this.isScroll = true
-      this.emitter.trigger('scrollStart', this.getIsUser())
+      this.emitter.trigger('scrollStart')
+      // NOTE: getIsUser() isn't ready here yet!
     }
   }
 

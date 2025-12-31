@@ -15,6 +15,10 @@ export interface TimelineSlatsProps {
   nowDate: DateMarker
   todayRange: DateRange
 
+  // virtualization (optional)
+  slatStartIndex?: number
+  slatCount?: number
+
   // dimensions
   height?: number
   slotWidth: number | undefined
@@ -23,17 +27,26 @@ export interface TimelineSlatsProps {
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   render() {
     let { props } = this
-    let { tDateProfile, slotWidth } = props
+    let { tDateProfile, slotWidth, slatStartIndex, slatCount } = props
     let { slotDates, slotDatesMajor } = tDateProfile
+
+    slatStartIndex = props.slatStartIndex || 0
+    if (slatStartIndex || slatCount !== undefined) {
+      slotDates = slotDates.slice(slatStartIndex, slatStartIndex + slatCount)
+    }
 
     return (
       <div
         aria-hidden
         className={joinClassNames(
           classNames.flexRow,
-          classNames.fill
+          classNames.fillY,
         )}
-        style={{ height: props.height }}
+        style={{
+          height: props.height,
+          width: (props.slotWidth ?? 0) * slotDates.length,
+          insetInlineStart: 0,
+        }}
       >
         {slotDates.map((slotDate, i) => {
           let key = slotDate.toISOString()
@@ -46,8 +59,8 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               tDateProfile={tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
-              isMajor={slotDatesMajor[i]}
-              borderStart={Boolean(i)}
+              isMajor={slotDatesMajor[slatStartIndex + i]}
+              borderStart={Boolean(slatStartIndex + i)}
 
               // dimensions
               width={slotWidth}

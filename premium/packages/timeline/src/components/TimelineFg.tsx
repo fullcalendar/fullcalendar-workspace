@@ -35,6 +35,10 @@ export interface TimelineFgProps {
   // dimensions
   slotWidth: number | undefined
 
+  // virtualization (optional)
+  clipStart?: number
+  clipEnd?: number
+
   // ref
   heightRef?: Ref<number>
 }
@@ -76,7 +80,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     let fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     let fgSegHorizontals = props.slotWidth != null
-      ? computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
+      ? computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth, props.clipStart, props.clipEnd)
       : {}
 
     let [fgSegTops, hiddenGroups, hiddenGroupTops, totalHeight] = computeFgSegPlacements(
@@ -129,7 +133,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     hiddenGroupTops: Map<string, number>,
     isMirror: boolean,
   ) {
-    let { props, segHeightRefMap, moreLinkHeightRefMap } = this
+    const { props, segHeightRefMap, moreLinkHeightRefMap } = this
 
     return (
       <Fragment>

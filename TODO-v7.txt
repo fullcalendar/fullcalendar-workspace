@@ -36,14 +36,6 @@ build note:
     manually before `pn dev`
 
 
-
-Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
-
-In CHANGELOG.md and INSTALL-GUIDE.md
-  once DNS settles,
-    change https://v7-dev.fc-v7-theme-preview.pages.dev -> https://themes.fullcalendar.io
-
-
 ASAP
 ----
 
@@ -336,6 +328,14 @@ Get all examples/ using new dist files
   was having trouble with deduping React versions
 In all docs, rename our `data` param to `state` like base-ui?
   https://base-ui.com/react/handbook/styling
+bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
+virtualize non-resource timeline
+think about how virtualization would work with SSR (not having viewport dimensions yet)
+when not enough resources (and expandRows:false), resource area needs filler line at bottom
+test print-view with virtualization
+  limit # of resource-timeline rows for print view
+  test expandRows
+Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
 
 
 Changelog

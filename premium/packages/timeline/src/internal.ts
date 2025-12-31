@@ -9,5 +9,6 @@ export { TimelineLaneSlicer, TimelineRange } from './TimelineLaneSlicer.js'
 export { TimelineHeaderRow } from './components/TimelineHeaderRow.js'
 export { TimelineNowIndicatorArrow } from './components/TimelineNowIndicatorArrow.js'
 export { TimelineNowIndicatorLine } from './components/TimelineNowIndicatorLine.js'
+export { TimelineHeaderCellData } from './timeline-date-profile.js'
 
 export { getTimelineSlotEl } from './components/util.js'

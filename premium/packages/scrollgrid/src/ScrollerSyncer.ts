@@ -5,6 +5,8 @@ TODO: detangle and use from @full-ui/headless-grid
 */
 export class ScrollerSyncer implements ScrollerSyncerInterface {
   private emitter: Emitter<{
+    scrollStart: () => void
+    scroll: (isUser: boolean, scroll: number) => void
     scrollEnd: (isUser: boolean) => void
   }> = new Emitter()
   private scrollers: Scroller[] = []
@@ -61,6 +63,22 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     this.isPaused = false
   }
 
+  addScrollListener(handler: (isUser: boolean, scroll: number) => void): void {
+    this.emitter.on('scroll', handler)
+  }
+
+  removeScrollListener(handler: (isUser: boolean, scroll: number) => void): void {
+    this.emitter.off('scroll', handler)
+  }
+
+  addScrollStartListener(handler: () => void): void {
+    this.emitter.on('scrollStart', handler)
+  }
+
+  removeScrollStartListener(handler: () => void): void {
+    this.emitter.off('scrollStart', handler)
+  }
+
   addScrollEndListener(handler: (isUser: boolean) => void): void {
     this.emitter.on('scrollEnd', handler)
   }
@@ -74,6 +92,10 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
 
     const onScroll = (isUser: boolean) => {
       if (!this.isPaused) {
+        if (!this.masterScroller) {
+          this.emitter.trigger('scrollStart')
+        }
+
         if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
           this.assignMaster(scroller)
         }
@@ -89,6 +111,8 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
               }
             }
           }
+
+          this.emitter.trigger('scroll', isUser, isHorizontal ? scroller.x : scroller.y)
         }
       }
     }

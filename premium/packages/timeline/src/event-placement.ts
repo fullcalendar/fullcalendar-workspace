@@ -16,17 +16,24 @@ export function computeManySegHorizontals(
   dateEnv: DateEnv,
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
+  clipStart = 0, // uses it as a new origin!
+  clipEnd = Infinity,
 ): { [instanceId: string]: CoordSpan } {
   const res: { [instanceId: string]: CoordSpan } = {}
 
   for (const seg of segs) {
-    res[getEventKey(seg)] = computeSegHorizontals(
+    const horizontals = computeSegHorizontals(
       seg,
       segMinWidth,
       dateEnv,
       tDateProfile,
-      slotWidth
+      slotWidth,
+      clipStart,
+      clipEnd,
     )
+    if (horizontals) {
+      res[getEventKey(seg)] = horizontals
+    }
   }
 
   return res
@@ -38,16 +45,23 @@ export function computeSegHorizontals(
   dateEnv: DateEnv,
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
-): CoordSpan {
-  const startCoord = dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
-  const endCoord = dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
-  let size = endCoord - startCoord
+  clipStart = 0, // uses it as a new origin!
+  clipEnd = Infinity,
+): CoordSpan | undefined {
+  let startCoord = dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
+  let endCoord = dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
 
-  if (segMinWidth) {
-    size = Math.max(size, segMinWidth)
+  startCoord = Math.max(startCoord, clipStart)
+  endCoord = Math.min(endCoord, clipEnd)
+
+  if (startCoord < endCoord) {
+    let size = endCoord - startCoord
+    if (segMinWidth) {
+      size = Math.max(size, segMinWidth)
+    }
+
+    return { start: startCoord - clipStart, size }
   }
-
-  return { start: startCoord, size }
 }
 
 export function computeFgSegPlacements( // mostly horizontals
