@@ -93,7 +93,6 @@ jobs:
             --filter '!./examples/**' \
             --filter '!./examples-v7/**' \
             --filter '!./contrib/angular' \
-            --filter '!./contrib/vue3' \
             --filter '!@fullcalendar-tests/*' \
             run build
           pnpm run archive

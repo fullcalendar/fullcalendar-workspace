@@ -11,12 +11,11 @@ IMPORTANT
       undo Build step filter
         --filter '!./examples-v7/**' \
         --filter '!./contrib/angular' \
-        --filter '!./contrib/vue3' \
-      undo private:true on angular (both package.jsons) and vue3
+      undo private:true on angular (both package.jsons)
       the tag-and-release part is broken! because relies on "Sync Repos" which is disabled
         always skip and create GH releases manually
     in scripts/src/tag-and-release.ts
-      undo angular/vue3 special cases
+      undo angular special cases
       undo archives disabled
   Publish NPM packages
   Publish themes.fullcalendar.io

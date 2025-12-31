@@ -67,8 +67,7 @@ async function tagAndReleaseSubrepo(
   if (
     subrepoSubdir === 'examples' ||
     // just for v7-beta for now
-    subrepoSubdir === 'contrib/angular' ||
-    subrepoSubdir === 'contrib/vue3'
+    subrepoSubdir === 'contrib/angular'
   ) {
     return
   }
