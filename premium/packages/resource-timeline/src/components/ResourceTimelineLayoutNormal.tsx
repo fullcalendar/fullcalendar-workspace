@@ -330,13 +330,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* virtualize */
 
+    const virtualizationDisabled = !options.virtualization
+
     // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
     const forcedEntityScroll = this.computeEntityScroll()
 
-    const rowPositions = this.rowVirtualizer.computePositions(flatResourceLayouts, forcedEntityScroll)
-    const groupRowPositions = this.groupRowVirtualizer.computePositions(flatGroupRowLayouts, forcedEntityScroll)
+    const rowPositions = this.rowVirtualizer.computePositions(flatResourceLayouts, virtualizationDisabled, forcedEntityScroll)
+    const groupRowPositions = this.groupRowVirtualizer.computePositions(flatGroupRowLayouts, virtualizationDisabled, forcedEntityScroll)
     const groupColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
-      return groupColVirtualizer.computePositions(flatGroupColLayouts[i], forcedEntityScroll)
+      return groupColVirtualizer.computePositions(flatGroupColLayouts[i], virtualizationDisabled, forcedEntityScroll)
     })
 
     // Only paint vertical fills/lines that are in view
@@ -354,7 +356,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const yFillHeight = yFillBottom - yFillTop
 
     const forcedTimeScroll = this.computeTimeScroll()
-    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, forcedTimeScroll)
+    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, virtualizationDisabled, forcedTimeScroll)
     const slotDateShift = computeShift(slotDatePositions)
 
     /* */
@@ -631,10 +633,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     {cellRows.map((cells, rowIndex) => {
                       const rowLevel = cellRows.length - rowIndex - 1
 
-                      const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, forcedTimeScroll)
+                      const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
                       const shift = computeShift(headerCellPositions) || []
                       if (!shift.length) {
-                        timeHeaderVirtualizers[rowIndex].computePositions(cells, forcedTimeScroll)
+                        timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
                       }
 
                       return (

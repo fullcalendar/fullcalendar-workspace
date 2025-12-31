@@ -2,6 +2,7 @@ import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from "@fullcalenda
 
 export const OPTION_REFINERS = {
   schedulerLicenseKey: String,
+  virtualization: Boolean,
 }
 
 type PremiumCommonOptionRefiners = typeof OPTION_REFINERS

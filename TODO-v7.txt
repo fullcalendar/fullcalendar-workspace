@@ -36,13 +36,6 @@ build note:
     manually before `pn dev`
 
 
-test growRows
-test print-view
-limit # of resource-timeline rows for print view
-have ability to turn off virtualization
-test non-resource timeline (won't virtualize, but okay)
-
-
 ASAP
 ----
 
@@ -338,6 +331,10 @@ In all docs, rename our `data` param to `state` like base-ui?
 bug: resize resource-area, grouped columns have text that is NOT clipped on overflow
 virtualize non-resource timeline
 think about how virtualization would work with SSR (not having viewport dimensions yet)
+when not enough resources (and expandRows:false), resource area needs filler line at bottom
+test print-view with virtualization
+  limit # of resource-timeline rows for print view
+  test expandRows
 
 
 Changelog

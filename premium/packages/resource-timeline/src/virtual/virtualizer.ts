@@ -13,7 +13,7 @@ export class Virtualizer<Item> {
   scroll = 0
 
   private items: Item[] = []
-  private itemPositions: ItemPosition<Item>[]
+  private itemPositions: ItemPosition<Item>[] | undefined
 
   constructor(
     private getItemKey: (item: Item) => string,
@@ -23,7 +23,13 @@ export class Virtualizer<Item> {
     private overscan = 1,
   ) {}
 
-  computePositions(items: Item[], forcedScroll?: number): ItemPosition<Item>[] {
+  computePositions(items: Item[], disabled: boolean, forcedScroll?: number): ItemPosition<Item>[] {
+    if (disabled) {
+      this.items = []
+      this.itemPositions = undefined // affects _handleViewportChange
+      return this.computeAllPositions(items)
+    }
+
     this.items = items
     if (forcedScroll !== undefined) {
       this.scroll = forcedScroll
@@ -132,6 +138,25 @@ export class Virtualizer<Item> {
     }
 
     return itemPositions
+  }
+
+  private computeAllPositions(items: Item[]): ItemPosition<Item>[] {
+    const { getItemKey, getItemStart, getItemSize } = this
+    let runningStart = 0
+
+    return items.map((item, index) => {
+      const key = getItemKey(item)
+      const start = getItemStart ? getItemStart(key, index, item) : runningStart
+      const size = getItemSize(key, index, item)
+      runningStart += size
+      return {
+        item,
+        key,
+        index,
+        start,
+        size,
+      }
+    })
   }
 }
 
