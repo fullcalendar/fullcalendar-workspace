@@ -36,6 +36,9 @@ build note:
     manually before `pn dev`
 
 
+
+Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
+
 In CHANGELOG.md and INSTALL-GUIDE.md
   once DNS settles,
     change https://v7-dev.fc-v7-theme-preview.pages.dev -> https://themes.fullcalendar.io
