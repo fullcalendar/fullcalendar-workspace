@@ -12,8 +12,8 @@ const dayRowCommonClasses: CalendarOptions = {
     'fc-daygrid-day-number',
     data.monthText && 'fc-daygrid-month-start',
   ),
-  rowEventClass: 'fc-daygrid-event',
-  listItemEventClass: 'fc-daygrid-dot-event',
+  rowEventClass: 'fc-daygrid-event fc-daygrid-block-event',
+  listItemEventClass: 'fc-daygrid-event fc-daygrid-dot-event',
 }
 
 export default createPlugin({

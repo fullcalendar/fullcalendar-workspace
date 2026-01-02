@@ -44,13 +44,14 @@ describe('eventContent', () => {
 
   it('can inject text content', () => {
     let calendar = initCalendar({
+      eventInnerClass: 'the-event-inner',
       eventContent(info) {
         return info.timeText + ' - ' + info.event.title
       },
     })
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEl = dayGridWrapper.getEventEls()[0]
-    expect(eventEl.innerHTML).toBe('1a - my event')
+    expect(eventEl.querySelector('.the-event-inner').innerHTML).toBe('1a - my event')
   })
 
   it('will render blank content if nothing returned', () => {
