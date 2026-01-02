@@ -27,10 +27,6 @@ export class TimeGridWrapper {
     return findElements(this.el, '.fc-timegrid-day[data-date="' + formatIsoDay(date) + '"]')
   }
 
-  getSlotEls() {
-    return findElements(this.el, '.fc-timegrid-slot[data-time]')
-  }
-
   getAxisTexts() {
     return this.getSlotAxisEls().map((el) => $(el).text())
   }
@@ -344,7 +340,7 @@ export class TimeGridWrapper {
     }
 
     let $slotEl // used within loop, but we access last val
-    let slotEls = this.getSlotEls() // all slots
+    let slotEls = this.getSlotLaneEls() // all slots
     let slotTimeMs = null
     let prevSlotTimeMs = null
 
@@ -478,7 +474,7 @@ export class TimeGridWrapper {
   }
 
   private computeSlotInfo() {
-    let slotEls = this.getSlotEls()
+    let slotEls = this.getSlotLaneEls()
     let slots = slotEls.map((node) => {
       let rect = node.getBoundingClientRect()
       return $.extend({}, rect, {

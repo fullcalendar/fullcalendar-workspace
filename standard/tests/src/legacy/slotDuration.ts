@@ -10,7 +10,7 @@ describe('slotDuration', () => {
           initialView: 'timeGridWeek',
         })
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        let slotCount = timeGridWrapper.getSlotEls().length
+        let slotCount = timeGridWrapper.getSlotLaneEls().length
         expect(slotCount).toEqual(Math.ceil(minutesInADay / 30))
       })
     })
@@ -21,7 +21,7 @@ describe('slotDuration', () => {
           initialView: 'timeGridDay',
         })
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        let slotCount = timeGridWrapper.getSlotEls().length
+        let slotCount = timeGridWrapper.getSlotLaneEls().length
         expect(slotCount).toEqual(Math.ceil(minutesInADay / 30))
       })
     })
@@ -34,7 +34,7 @@ describe('slotDuration', () => {
           initialView: 'timeGridWeek',
         })
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        let slotCount = timeGridWrapper.getSlotEls().length
+        let slotCount = timeGridWrapper.getSlotLaneEls().length
         expect(slotCount).toEqual(Math.ceil(minutesInADay / 30))
       })
     })
@@ -45,7 +45,7 @@ describe('slotDuration', () => {
           initialView: 'timeGridDay',
         })
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        let slotCount = timeGridWrapper.getSlotEls().length
+        let slotCount = timeGridWrapper.getSlotLaneEls().length
         expect(slotCount).toEqual(Math.ceil(minutesInADay / 30))
       })
     })
@@ -62,7 +62,7 @@ describe('slotDuration', () => {
             slotDuration: { minutes: slotMinutes },
           })
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-          let slotCount = timeGridWrapper.getSlotEls().length
+          let slotCount = timeGridWrapper.getSlotLaneEls().length
           let expected = Math.ceil(minutesInADay / slotMinutes)
           expect(slotCount).toEqual(expected)
         })
@@ -77,7 +77,7 @@ describe('slotDuration', () => {
             slotDuration: { minutes: slotMinutes },
           })
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-          let slotCount = timeGridWrapper.getSlotEls().length
+          let slotCount = timeGridWrapper.getSlotLaneEls().length
           let expected = Math.ceil(minutesInADay / slotMinutes)
           expect(slotCount).toEqual(expected)
         })
