@@ -16,7 +16,7 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   get timeGrid() {
-    return new TimeGridWrapper(this.el.querySelector('.fc-timegrid-body'))
+    return new TimeGridWrapper(this.getScrollerEl())
   }
 
   get dayGrid() { // TODO: rename to allDaySection()
@@ -24,7 +24,7 @@ export class TimeGridViewWrapper extends ViewWrapper {
     return allDayHeaderEl ? new DayGridWrapper(allDayHeaderEl.parentElement) : null
   }
 
-  getScrollerEl() {
+  getScrollerEl(): HTMLElement {
     return this.el.querySelector(`.fc-timegrid-body .${internalClassNames.internalScroller}`)
   }
 

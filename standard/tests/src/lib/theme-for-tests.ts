@@ -121,6 +121,7 @@ export default createPlugin({
       listItemEventBeforeClass: 'fc-list-event-dot',
       listItemEventTitleClass: 'fc-list-event-title',
       listItemEventTimeClass: 'fc-list-event-time',
+      noEventsClass: 'fc-list-empty',
     }
   }
 }) as PluginDef
