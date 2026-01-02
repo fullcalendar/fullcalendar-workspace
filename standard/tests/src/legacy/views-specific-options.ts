@@ -1,5 +1,6 @@
 import { createPlugin } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 describe('view-specific options', () => {
@@ -128,6 +129,7 @@ describe('view-specific options', () => {
       plugins: [
         dayGridPlugin,
         classicThemePlugin,
+        themeForTestsPlugin,
         createPlugin({
           name: 'test-plugin',
           views: {

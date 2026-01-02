@@ -1,6 +1,7 @@
 import { createPlugin } from '@fullcalendar/core'
 import { sliceEvents } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('custom view class', () => { // TODO: rename file
@@ -52,6 +53,7 @@ describe('custom view class', () => { // TODO: rename file
     let calendar = initCalendar({
       plugins: [
         classicThemePlugin,
+        themeForTestsPlugin,
         createPlugin({
           name: 'test-plugin',
           views: {

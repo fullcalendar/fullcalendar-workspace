@@ -1,13 +1,14 @@
 import timeGridPlugin from '@fullcalendar/timegrid'
 import luxonPlugin from '@fullcalendar/luxon3'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 
 describe('timeZone change', () => {
   describe('with non-recurring timed events and luxon plugin', () => {
     it('adjusts timed event', () => {
       const timeTexts = []
       const calendar = initCalendar({
-        plugins: [timeGridPlugin, luxonPlugin, classicThemePlugin],
+        plugins: [timeGridPlugin, luxonPlugin, classicThemePlugin, themeForTestsPlugin],
         timeZone: 'America/New_York',
         initialView: 'timeGridWeek',
         initialDate: '2023-02-07',

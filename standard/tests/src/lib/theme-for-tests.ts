@@ -113,6 +113,7 @@ export default createPlugin({
     },
     list: {
       viewClass: 'fc-list',
+      listDayHeaderClass: 'fc-list-day',
       listDayHeaderInnerClass: (data) => (
         data.level ? 'fc-list-day-side-text' : 'fc-list-day-text'
       ),

@@ -1,5 +1,6 @@
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
@@ -22,7 +23,7 @@ describe('Google Calendar plugin', () => {
   const NUM_EVENTS = 3 // number of holidays
 
   pushOptions({
-    plugins: [googleCalendarPlugin, classicThemePlugin, dayGridPlugin],
+    plugins: [googleCalendarPlugin, classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
     initialView: 'dayGridMonth',
     initialDate: DEFAULT_MONTH + '-01',
   })

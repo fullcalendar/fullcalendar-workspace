@@ -1,6 +1,7 @@
 import { Calendar } from '@fullcalendar/core'
 import interactionPlugin, { ThirdPartyDraggable } from '@fullcalendar/interaction'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { ListenerCounter } from '../lib/ListenerCounter.js'
@@ -10,7 +11,7 @@ import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
 describe('external drag and drop with jquery UI', () => {
   pushOptions({
-    plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, classicThemePlugin],
+    plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, classicThemePlugin, themeForTestsPlugin],
     initialDate: '2014-08-23',
     initialView: 'dayGridMonth',
     droppable: true,

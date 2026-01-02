@@ -1,10 +1,11 @@
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('buttons', () => {
   pushOptions({
-    plugins: [classicThemePlugin, dayGridPlugin],
+    plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
   })
 
   it('can specify text', () => {

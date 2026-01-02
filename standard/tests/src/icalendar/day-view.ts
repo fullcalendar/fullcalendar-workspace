@@ -1,7 +1,8 @@
 import fetchMock from 'fetch-mock'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { EventSourceInput } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import oneHourMeeting from './data/oneHourMeeting.js'
 import recurringWeekly from './data/recurringWeekly.js'
@@ -18,7 +19,7 @@ describe('addICalEventSource with day view', () => {
   const ICAL_MIME_TYPE = 'text/calendar'
 
   pushOptions({
-    plugins: [iCalendarPlugin, classicThemePlugin, timeGridPlugin],
+    plugins: [iCalendarPlugin, classicThemePlugin, themeForTestsPlugin, timeGridPlugin],
     initialDate: '2019-04-15', // The start of the week for oneHourMeeting
     initialView: 'timeGridDay',
     timeZone: 'Europe/Paris',

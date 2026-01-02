@@ -1,5 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
@@ -338,7 +339,7 @@ describe('select callback', () => {
     let calendar = new Calendar(
       document.createElement('div'),
       {
-        plugins: [interactionPlugin, dayGridPlugin, classicThemePlugin],
+        plugins: [interactionPlugin, dayGridPlugin, classicThemePlugin, themeForTestsPlugin],
         now: '2018-12-25',
         select(info) {
           expect(info.startStr).toBe('2018-12-20')
