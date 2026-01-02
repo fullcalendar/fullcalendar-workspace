@@ -1,9 +1,16 @@
 import { CssDimValue, joinClassNames } from '@fullcalendar/core'
-import { buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
+import { afterSize, buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, DayTableCell, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, memoize, RefMap, setRef, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, dayMicroWidth } from '@fullcalendar/daygrid/internal'
 import { SingleMonthData, SingleMonthHeaderData } from '../structs.js'
+
+export interface SingleMonthHeights {
+  titleHeight: number
+  tableHeaderHeight: number
+  rowHeightMap: Map<string, number>
+  cellRows: DayTableCell[][] // HACK. not dimension-related
+}
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
@@ -13,6 +20,7 @@ export interface SingleMonthProps extends ViewProps {
   colCount?: number // # of MONTHS, not day columns
   borderlessBottom: boolean
   hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
+  heightsRef?: Ref<SingleMonthHeights>
 }
 
 interface SingleMonthState {
@@ -31,6 +39,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private gridElRef = createRef<HTMLDivElement>()
   private titleElRef = createRef<HTMLDivElement>()
   private tableHeaderElRef = createRef<HTMLDivElement>()
+  private rowHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleHeights)
+  })
 
   // internal
   private slicer = new DayTableSlicer()
@@ -40,6 +51,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private disconnectGridWidth?: () => void
   private disconnectTitleHeight?: () => void
   private disconnectTableHeaderHeight?: () => void
+  private cellRows: DayTableCell[][]
 
   render() {
     const { props, state, context } = this
@@ -61,6 +73,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       dayHeaderFormat,
       context,
     )
+
+    this.cellRows = dayTableModel.cellRows
 
     const isTitleAndHeaderSticky = !forPrint && props.colCount === 1
     const isAspectRatio = !forPrint || props.hasLateralSiblings
@@ -227,6 +241,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 visibleWidth={state.gridWidth}
                 cellIsNarrow={cellIsNarrow}
                 cellIsMicro={cellIsMicro}
+                rowHeightRefMap={this.rowHeightRefMap}
               />
             </div>
           </div>
@@ -248,15 +263,21 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     }
   }
 
+  // HACK for sync access
+  private tableHeaderHeight: number
+  private titleHeight: number
+
   componentDidMount(): void {
     this.disconnectGridWidth = watchWidth(this.gridElRef.current, (width) => {
       this.setState({ gridWidth: width })
     })
     this.disconnectTitleHeight = watchHeight(this.titleElRef.current, (height) => {
-      this.setState({ titleHeight: height })
+      this.setState({ titleHeight: this.titleHeight = height })
+      afterSize(this.handleHeights)
     })
     this.disconnectTableHeaderHeight = watchHeight(this.tableHeaderElRef.current, (height) => {
-      this.setState({ tableHeaderHeight: height })
+      this.setState({ tableHeaderHeight: this.tableHeaderHeight = height })
+      afterSize(this.handleHeights)
     })
   }
 
@@ -270,6 +291,15 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     options.singleMonthWillUnmount?.({
       el: this.rootEl,
       ...this.renderProps!,
+    })
+  }
+
+  private handleHeights = () => {
+    setRef(this.props.heightsRef, {
+      titleHeight: this.titleHeight,
+      tableHeaderHeight: this.tableHeaderHeight,
+      rowHeightMap: this.rowHeightRefMap.current,
+      cellRows: this.cellRows,
     })
   }
 }

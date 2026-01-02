@@ -20,8 +20,8 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
   }
 
   get dayGrid() {
-    let dayGridEl = this.el.querySelector('.fc-timegrid-allday') as HTMLElement
-    return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
+    let allDayHeaderEl = this.el.querySelector('.fc-timegrid-allday-header') as HTMLElement
+    return allDayHeaderEl ? new ResourceDayGridWrapper(allDayHeaderEl.parentElement) : null
   }
 
   getScrollEl() {

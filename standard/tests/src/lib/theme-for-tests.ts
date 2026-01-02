@@ -74,6 +74,9 @@ export default createPlugin({
   views: {
     dayGrid: {
       ...dayRowCommonClasses,
+      viewClass: 'fc-daygrid',
+      tableHeaderClass: 'fc-daygrid-header',
+      tableBodyClass: 'fc-daygrid-body',
       inlineWeekNumberClass: 'fc-daygrid-week-number',
     },
     timeGrid: {
@@ -83,7 +86,7 @@ export default createPlugin({
       tableBodyClass: 'fc-timegrid-body',
       moreLinkClass: 'fc-timegrid-more-link',
       weekNumberHeaderClass: 'fc-timegrid-axis',
-      allDayHeaderClass: 'fc-timegrid-allday fc-timegrid-axis',
+      allDayHeaderClass: 'fc-timegrid-allday-header fc-timegrid-axis',
       slotLabelClass: (data) => joinClassNames(
         'fc-timegrid-slot-label',
         'fc-timegrid-axis',

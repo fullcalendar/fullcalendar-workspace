@@ -1,6 +1,7 @@
 it('timegrid view rerenders well', (done) => {
   let dayHeaderRenderCnt = 0
   let dayCellRenderCnt = 0
+  let dayLaneRenderCnt = 0
   let slotHeaderRenderCnt = 0
   let slotLaneRenderCnt = 0
   let eventRenderCnt = 0
@@ -13,31 +14,39 @@ it('timegrid view rerenders well', (done) => {
     ],
     dayHeaderContent() {
       dayHeaderRenderCnt += 1
+      return true
     },
-    dayCellTopContent() {
+    dayCellDidMount() {
       dayCellRenderCnt += 1
+    },
+    dayLaneDidMount() {
+      dayLaneRenderCnt += 1
     },
     slotHeaderContent() {
       slotHeaderRenderCnt += 1
+      return true
     },
     slotLaneDidMount() {
       slotLaneRenderCnt += 1
     },
     eventContent() {
       eventRenderCnt += 1
+      return true
     },
   })
 
   function resetCounts() {
     dayHeaderRenderCnt = 0
     dayCellRenderCnt = 0
+    dayLaneRenderCnt = 0
     slotHeaderRenderCnt = 0
     slotLaneRenderCnt = 0
     eventRenderCnt = 0
   }
 
   expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(14) // all-day row AND time cols
+  expect(dayCellRenderCnt).toBe(7)
+  expect(dayLaneRenderCnt).toBe(7)
   expect(slotHeaderRenderCnt).toBe(24) // one slot per every 2 lanes
   expect(slotLaneRenderCnt).toBe(48)
   expect(eventRenderCnt).toBe(1)
@@ -45,7 +54,8 @@ it('timegrid view rerenders well', (done) => {
   resetCounts()
   calendar.next()
   expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(14)
+  expect(dayCellRenderCnt).toBe(7)
+  expect(dayLaneRenderCnt).toBe(7)
   expect(slotHeaderRenderCnt).toBe(0)
   expect(slotLaneRenderCnt).toBe(0)
   expect(eventRenderCnt).toBe(0) // event will be out of view
@@ -54,7 +64,8 @@ it('timegrid view rerenders well', (done) => {
   resetCounts()
   calendar.changeView('timeGridWeek') // return to view
   expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(14)
+  expect(dayCellRenderCnt).toBe(7)
+  expect(dayLaneRenderCnt).toBe(7)
   expect(slotHeaderRenderCnt).toBe(24)
   expect(slotLaneRenderCnt).toBe(48)
   expect(eventRenderCnt).toBe(0) // event still out of view
@@ -64,6 +75,7 @@ it('timegrid view rerenders well', (done) => {
   setTimeout(() => {
     expect(dayHeaderRenderCnt).toBe(0)
     expect(dayCellRenderCnt).toBe(0)
+    expect(dayLaneRenderCnt).toBe(0)
     expect(slotHeaderRenderCnt).toBe(0)
     expect(slotLaneRenderCnt).toBe(0)
     expect(eventRenderCnt).toBe(0)

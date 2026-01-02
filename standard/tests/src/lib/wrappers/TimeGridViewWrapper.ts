@@ -1,3 +1,4 @@
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { ViewWrapper } from './ViewWrapper.js'
 import { TimeGridWrapper } from './TimeGridWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'
@@ -19,12 +20,12 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   get dayGrid() { // TODO: rename to allDaySection()
-    let dayGridEl = this.el.querySelector('.fc-timegrid-allday') as HTMLElement
-    return dayGridEl ? new DayGridWrapper(dayGridEl) : null
+    let allDayHeaderEl = this.el.querySelector('.fc-timegrid-allday-header') as HTMLElement
+    return allDayHeaderEl ? new DayGridWrapper(allDayHeaderEl.parentElement) : null
   }
 
   getScrollerEl() {
-    return this.el.querySelector('.fc-timegrid-body') // it IS the scroller
+    return this.el.querySelector(`.fc-timegrid-body .${internalClassNames.internalScroller}`)
   }
 
   getHeaderAxisEl() {
@@ -40,7 +41,7 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   getAllDayAxisEl() {
-    return this.el.querySelector('.fc-timegrid-allday .fc-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-allday-header.fc-timegrid-axis')
   }
 
   getAllDayAxisElText() {

@@ -35,6 +35,21 @@ build note:
     manually before `pn dev`
 
 
+Why does font size like weird on virtualization examples?
+  https://github.com/fullcalendar/fullcalendar-workspace/releases/tag/v7.0.0-beta.6
+changelog:
+  standard/tests/src/datelib/formatting-api.ts
+    we now get "12:00AM" instead of "12:00 AM"
+deal with xdescribe for date-formatting!
+bug: standard/tests/src/legacy/custom-view-duration.ts has isStrong borders in header cells
+kill [data-date=] in DOM
+  will be hard for MultiMonth scrolling. depends on this
+what if single-month titles or table-headers are different heights? will cause uneven grid?
+scroll-to in multi-month doesn't consider padding around single-months!?
+  also, dumb, pixel-border hack
+  standard/tests/src/view-render/multimonth.ts
+
+
 ASAP
 ----
 

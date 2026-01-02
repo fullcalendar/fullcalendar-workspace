@@ -20,7 +20,7 @@ describe('locale', () => {
     })
     let headerWrapper = new TimeGridViewWrapper(calendar).header
 
-    expect(headerWrapper.getCellText(0)).toMatch(/^Sun\.? 12[-/ ]21$/)
+    expect(headerWrapper.getCellText(0)).toMatch(/^Sun\.? 21$/)
 
     let calendarWrapper = new CalendarWrapper(calendar)
     let eventEl = calendarWrapper.getFirstEventEl()

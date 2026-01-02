@@ -60,7 +60,7 @@ describe('multimonth view', () => {
     expect(monthWrappers[0].el).toBeAbove(monthWrappers[1].el)
   })
 
-  it('is scrolled to current date initially', () => {
+  it('is scrolled to current date initially', (callback) => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
@@ -71,17 +71,21 @@ describe('multimonth view', () => {
     const monthWrappers = viewWrapper.getMonths()
     const scrollerEl = viewWrapper.getScrollerEl()
 
-    expect(
-      Math.abs(
-        scrollerEl.getBoundingClientRect().top -
-        monthWrappers[5].el.getBoundingClientRect().top,
-      ),
-    ).toBeLessThan(2)
+    setTimeout(() => { // wait for sizing to settle
+      expect(
+        Math.abs(
+          scrollerEl.getBoundingClientRect().top -
+          monthWrappers[5].el.getBoundingClientRect().top,
+        ),
+      ).toBeLessThan(2)
 
-    expect(scrollerEl.scrollTop).not.toBe(0)
-    calendar.next()
-    calendar.prev()
-    expect(scrollerEl.scrollTop).toBe(0)
+      expect(scrollerEl.scrollTop).not.toBe(0)
+      calendar.next()
+      calendar.prev()
+      expect(scrollerEl.scrollTop).toBe(0)
+
+      callback()
+    }, 0)
   })
 
   it('renders events when weekends: false', () => {

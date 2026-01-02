@@ -47,11 +47,11 @@ export function computeTopFromDate(
   let top = 0
 
   for (const cells of cellRows) {
+    const key = cells[0].key
     const start = cells[0].date
     const end = cells[cells.length - 1].date
-    const key = start.toISOString()
 
-    if (date >= start && date <= end) {
+    if (date >= start && date < end) {
       return top
     }
 
