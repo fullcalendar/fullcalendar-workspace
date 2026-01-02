@@ -29,7 +29,7 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   getHeaderAxisEl() {
-    return this.el.querySelector('.fc-timegrid-header .fc-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-header [role=row] > *:first-child')
   }
 
   getHeaderWeekNumberLink() {

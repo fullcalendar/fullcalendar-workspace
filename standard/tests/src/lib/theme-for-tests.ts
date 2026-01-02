@@ -87,7 +87,7 @@ export default createPlugin({
       moreLinkClass: 'fc-timegrid-more-link',
       weekNumberHeaderClass: 'fc-timegrid-axis',
       allDayHeaderClass: 'fc-timegrid-allday-header fc-timegrid-axis',
-      slotLabelClass: (data) => joinClassNames(
+      slotHeaderClass: (data) => joinClassNames(
         'fc-timegrid-slot-label',
         'fc-timegrid-axis',
         ...getTimeGridSlotClass(data),
