@@ -51,6 +51,8 @@ scroll-to in multi-month doesn't consider padding around single-months!?
 changelog:
   daygrid dot can no longer be overridden by eventContent. its outside the eventContent
   "all-day" changed to "All-day"
+  weekText vs weekTextShort must be a breaking change
+aspectRatio xdescribes... punt
 
 
 ASAP

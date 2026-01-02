@@ -1,5 +1,5 @@
 import { addDays } from '@fullcalendar/core/internal'
-import { removeLtrCharCodes } from '../lib/string.js'
+import { removeLtrCharCodes, moveDayNumberLast } from '../lib/string.js'
 import { parseUtcDate } from '../lib/date-parsing.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
@@ -25,7 +25,9 @@ describe('day names', () => {
       CalendarWrapper.DOW_CLASSNAMES.forEach((dowClassName, index) => {
         let dayDate = addDays(sundayDate, index)
         let dayText = removeLtrCharCodes(
-          dayDate.toLocaleString('en', { weekday: 'long', timeZone: 'UTC' }),
+          moveDayNumberLast(
+            dayDate.toLocaleString('en', { weekday: 'long', day: 'numeric', timeZone: 'UTC' }),
+          )
         )
 
         it('should be ' + dayText, () => {
@@ -43,7 +45,9 @@ describe('day names', () => {
         CalendarWrapper.DOW_CLASSNAMES.forEach((dowClassName, index) => {
           let dayDate = addDays(sundayDate, index)
           let dayText = removeLtrCharCodes(
-            dayDate.toLocaleString(locale, { weekday: 'long', timeZone: 'UTC' }),
+            moveDayNumberLast(
+              dayDate.toLocaleString(locale, { weekday: 'long', day: 'numeric', timeZone: 'UTC' }),
+            )
           )
 
           it('should be the translation for ' + dayText, () => {

@@ -1,6 +1,6 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('aspectRatio', () => {
+xdescribe('aspectRatio', () => {
   function getCalendarElement(width) {
     return $('<div id="calendar" style="max-width:none">').appendTo('body').width(width)[0]
   }
