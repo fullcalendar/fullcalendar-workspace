@@ -123,14 +123,12 @@ export class TimeGridWrapper {
   }
 
   getTimeAxisInfo() {
-    return $('.fc-timegrid-slot[data-time]', this.el).map((i, rowEl) => {
-      const $rowEl = $(rowEl)
-      const $labelEl = $rowEl.find('.fc-timegrid-slot-label')
+    return this.getSlotAxisEls().map((slotAxisEl) => {
       return {
-        text: $labelEl.text(),
-        isMajor: !$rowEl.hasClass('fc-timegrid-slot-minor'),
+        text: slotAxisEl.innerText,
+        isMajor: !slotAxisEl.classList.contains('fc-timegrid-slot-minor'),
       }
-    }).get()
+    })
   }
 
   getLastMajorAxisInfo() {

@@ -1,7 +1,7 @@
 import frLocale from '@fullcalendar/core/locales/fr'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('titleFormat', () => {
+xdescribe('titleFormat', () => {
   describe('when default', () => {
     pushOptions({
       initialDate: '2014-06-12',

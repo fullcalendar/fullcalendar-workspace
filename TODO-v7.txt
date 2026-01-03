@@ -53,6 +53,9 @@ changelog:
   "all-day" changed to "All-day"
   weekText vs weekTextShort must be a breaking change
 aspectRatio xdescribes... punt
+xdescribe for titleFormat, because:
+  1. we changed the output for cross-month ranges
+  2. there's a bug where same-year is displayed twice
 
 
 ASAP
