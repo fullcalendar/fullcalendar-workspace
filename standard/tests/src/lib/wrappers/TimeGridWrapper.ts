@@ -31,12 +31,12 @@ export class TimeGridWrapper {
     return this.getSlotAxisEls().map((el) => $(el).text())
   }
 
-  getSlotAxisEls() { // TODO: rename to label
-    return findElements(this.el, '.fc-timegrid-slot[data-time].fc-timegrid-slot-label')
+  getSlotAxisEls() { // TODO: rename to label (or header?)
+    return findElements(this.el, '.fc-timegrid-slot.fc-timegrid-slot-label')
   }
 
   getSlotLaneEls() {
-    return findElements(this.el, '.fc-timegrid-slot[data-time].fc-timegrid-slot-lane')
+    return findElements(this.el, '.fc-timegrid-slot.fc-timegrid-slot-lane')
   }
 
   /*

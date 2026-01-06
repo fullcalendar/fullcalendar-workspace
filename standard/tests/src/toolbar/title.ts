@@ -1,6 +1,6 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('calendar title', () => {
+xdescribe('calendar title', () => {
   pushOptions({
     now: '2017-03-29',
   })

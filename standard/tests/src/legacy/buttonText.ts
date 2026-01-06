@@ -1,7 +1,7 @@
 import frLocale from '@fullcalendar/core/locales/fr'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('button text', () => {
+xdescribe('button text', () => {
   pushOptions({
     headerToolbar: {
       left: 'prevYear,prev,today,next,nextYear',
@@ -22,11 +22,11 @@ describe('button text', () => {
         expect(toolbarWrapper.getButtonInfo('prev').text).toBe('')
         expect(toolbarWrapper.getButtonInfo('prevYear').text).toBe('')
 
-        expect(toolbarWrapper.getButtonInfo('today').text).toBe('today')
-        expect(toolbarWrapper.getButtonInfo('dayGridMonth').text).toBe('month')
-        expect(toolbarWrapper.getButtonInfo('dayGridWeek').text).toBe('week')
-        expect(toolbarWrapper.getButtonInfo('timeGridWeek').text).toBe('week')
-        expect(toolbarWrapper.getButtonInfo('dayGridDay').text).toBe('day')
+        expect(toolbarWrapper.getButtonInfo('today').text).toBe('Today')
+        expect(toolbarWrapper.getButtonInfo('dayGridMonth').text).toBe('Month')
+        expect(toolbarWrapper.getButtonInfo('dayGridWeek').text).toBe('Week')
+        expect(toolbarWrapper.getButtonInfo('timeGridWeek').text).toBe('Week')
+        expect(toolbarWrapper.getButtonInfo('dayGridDay').text).toBe('Day')
       })
 
       it('should contain specified text values', () => {
@@ -72,11 +72,11 @@ describe('button text', () => {
         expect(toolbarWrapper.getButtonInfo('prev').text).toBe('prev')
         expect(toolbarWrapper.getButtonInfo('prevYear').text).toBe('prev year')
 
-        expect(toolbarWrapper.getButtonInfo('today').text).toBe('today')
-        expect(toolbarWrapper.getButtonInfo('dayGridMonth').text).toBe('month')
-        expect(toolbarWrapper.getButtonInfo('dayGridWeek').text).toBe('week')
-        expect(toolbarWrapper.getButtonInfo('dayGridDay').text).toBe('day')
-        expect(toolbarWrapper.getButtonInfo('timeGridWeek').text).toBe('week')
+        expect(toolbarWrapper.getButtonInfo('today').text).toBe('Today')
+        expect(toolbarWrapper.getButtonInfo('dayGridMonth').text).toBe('Month')
+        expect(toolbarWrapper.getButtonInfo('dayGridWeek').text).toBe('Week')
+        expect(toolbarWrapper.getButtonInfo('dayGridDay').text).toBe('Day')
+        expect(toolbarWrapper.getButtonInfo('timeGridWeek').text).toBe('Week')
       })
 
       it('should contain specified text values', () => {

@@ -1,12 +1,18 @@
 import { addDays } from '@fullcalendar/core/internal'
-import { removeLtrCharCodes, moveDayNumberLast } from '../lib/string.js'
+import { removeLtrCharCodes, moveDayNumberLast, removeCommas } from '../lib/string.js'
 import { parseUtcDate } from '../lib/date-parsing.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('day names', () => {
   let sundayDate = parseUtcDate('2019-03-17')
-  let locales = ['es', 'fr', 'de', 'zh-cn', 'nl']
+  let locales = [
+    'es',
+    'fr',
+    'de',
+    'zh-cn',
+    'nl',
+  ]
 
   pushOptions({
     now: sundayDate,
@@ -46,7 +52,9 @@ describe('day names', () => {
           let dayDate = addDays(sundayDate, index)
           let dayText = removeLtrCharCodes(
             moveDayNumberLast(
-              dayDate.toLocaleString(locale, { weekday: 'long', day: 'numeric', timeZone: 'UTC' }),
+              removeCommas(
+                dayDate.toLocaleString(locale, { weekday: 'long', day: 'numeric', timeZone: 'UTC' }),
+              )
             )
           )
 

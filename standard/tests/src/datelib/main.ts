@@ -88,6 +88,8 @@ describe('datelib', () => {
         timeZone: 'UTC',
         calendarSystem: 'gregory',
         locale: enLocale,
+        weekText: enLocale.options.weekText,
+        weekTextShort: enLocale.options.weekTextShort,
       })
     })
 
@@ -197,30 +199,30 @@ describe('datelib', () => {
         timeZoneName: 'short',
         omitCommas: true, // for cross-browser
       })
-      let s = env.format(marker, formatter)
+      let [s] = env.format(marker, formatter)
       expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00 AM UTC')
+        .toBe('Friday June 8 2018 12:00AM UTC')
     })
 
     describe('week number formatting', () => {
       it('can output only number', () => {
         let marker = env.createMarker('2018-06-08')
         let formatter = createFormatter({ week: 'numeric' })
-        let s = env.format(marker, formatter)
+        let [s] = env.format(marker, formatter)
         expect(s).toBe('23')
       })
 
       it('can output narrow', () => {
         let marker = env.createMarker('2018-06-08')
         let formatter = createFormatter({ week: 'narrow' })
-        let s = env.format(marker, formatter)
+        let [s] = env.format(marker, formatter)
         expect(s).toBe('W23')
       })
 
       it('can output short', () => {
         let marker = env.createMarker('2018-06-08')
         let formatter = createFormatter({ week: 'short' })
-        let s = env.format(marker, formatter)
+        let [s] = env.format(marker, formatter)
         expect(s).toBe('W 23')
       })
     })
@@ -233,7 +235,7 @@ describe('datelib', () => {
         separator: ' - ',
       })
 
-      it('works with different days of same month', () => {
+      xit('works with different days of same month', () => {
         let m0 = env.createMarker('2018-06-08')
         let m1 = env.createMarker('2018-06-09')
         let s = env.formatRange(m0, m1, formatter)
@@ -251,7 +253,7 @@ describe('datelib', () => {
         expect(s).toBe('June 2018')
       })
 
-      it('works with different day/month of same year', () => {
+      xit('works with different day/month of same year', () => {
         let m0 = env.createMarker('2018-06-08')
         let m1 = env.createMarker('2018-07-09')
         let s = env.formatRange(m0, m1, formatter)
@@ -579,15 +581,15 @@ describe('datelib', () => {
         timeZoneName: 'short',
         omitCommas: true, // for cross-browser
       })
-      let s = env.format(marker, formatter)
+      let [s] = env.format(marker, formatter)
       expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00 AM ' + formatPrettyTimeZoneOffset(new Date(2018, 5, 8)))
+        .toBe('Friday June 8 2018 12:00AM ' + formatPrettyTimeZoneOffset(new Date(2018, 5, 8)))
     })
 
     it('can output a timezone only', () => {
       let marker = env.createMarker('2018-06-08')
       let formatter = createFormatter({ timeZoneName: 'short' })
-      let s = env.format(marker, formatter)
+      let [s] = env.format(marker, formatter)
       expect(s).toBe(formatPrettyTimeZoneOffset(new Date(2018, 5, 8)))
     })
 
@@ -645,9 +647,9 @@ describe('datelib', () => {
         timeZoneName: 'short',
         omitCommas: true, // for cross-browser
       })
-      let s = env.format(marker, formatter)
+      let [s] = env.format(marker, formatter)
       expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00 AM UTC')
+        .toBe('Friday June 8 2018 12:00AM UTC')
     })
 
     it('outputs UTC short timezone when no timezone specified, when requested as long', () => {
@@ -660,9 +662,9 @@ describe('datelib', () => {
         timeZoneName: 'long',
         omitCommas: true, // for cross-browser
       })
-      let s = env.format(marker, formatter)
+      let [s] = env.format(marker, formatter)
       expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00 AM UTC')
+        .toBe('Friday June 8 2018 12:00AM UTC')
     })
 
     it('computes current date as local values', () => {

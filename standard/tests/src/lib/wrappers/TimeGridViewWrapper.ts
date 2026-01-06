@@ -19,7 +19,9 @@ export class TimeGridViewWrapper extends ViewWrapper {
     return new TimeGridWrapper(this.getScrollerEl())
   }
 
-  get dayGrid() { // TODO: rename to allDaySection()
+  // TODO: rename to allDaySection()
+  // TODO: only consider the row (not all-day-header) part of the "daygrid"?
+  get dayGrid() {
     let allDayHeaderEl = this.el.querySelector('.fc-timegrid-allday-header') as HTMLElement
     return allDayHeaderEl ? new DayGridWrapper(allDayHeaderEl.parentElement) : null
   }

@@ -5,7 +5,6 @@ NOTE: other classnames in theme-for-tests-premium.ts
 */
 
 const dayRowCommonClasses: CalendarOptions = {
-  moreLinkClass: 'fc-daygrid-more-link',
   dayCellClass: 'fc-daygrid-day',
   dayCellTopClass: 'fc-daygrid-day-header',
   dayCellTopInnerClass: (data) => joinClassNames(
@@ -14,6 +13,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
   rowEventClass: 'fc-daygrid-event fc-daygrid-block-event',
   listItemEventClass: 'fc-daygrid-event fc-daygrid-dot-event',
+  rowMoreLinkClass: 'fc-daygrid-more-link',
 }
 
 export default createPlugin({
@@ -44,7 +44,7 @@ export default createPlugin({
     nonBusinessClass: 'fc-non-business',
     highlightClass: 'fc-highlight',
     eventClass: (data) => joinClassNames(
-      data.event.display === 'background' && 'fc-bg-event',
+      (data.event.display === 'background' || data.event.display === 'inverse-background') && 'fc-bg-event',
       'fc-event',
       data.isMirror && 'fc-event-mirror',
       data.isStart && 'fc-event-start',
@@ -84,7 +84,7 @@ export default createPlugin({
       viewClass: 'fc-timegrid',
       tableHeaderClass: 'fc-timegrid-header',
       tableBodyClass: 'fc-timegrid-body',
-      moreLinkClass: 'fc-timegrid-more-link',
+      columnMoreLinkClass: 'fc-timegrid-more-link',
       weekNumberHeaderClass: 'fc-timegrid-axis',
       allDayHeaderClass: 'fc-timegrid-allday-header fc-timegrid-axis',
       slotHeaderClass: (data) => joinClassNames(

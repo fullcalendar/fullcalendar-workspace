@@ -39,7 +39,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 AM')
+          expectEventTimeText(calendar, '1:00AM')
         })
       })
 
@@ -53,7 +53,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 AM')
+          expectEventTimeText(calendar, '1:00AM')
         })
       })
     })
@@ -86,7 +86,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 AM')
+          expectEventTimeText(calendar, '1:00AM')
         })
       })
 
@@ -100,7 +100,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 AM')
+          expectEventTimeText(calendar, '1:00AM')
         })
       })
 
@@ -114,7 +114,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 AM - 2:00 AM')
+          expectEventTimeText(calendar, '1:00AM - 2:00AM')
         })
       })
     })

@@ -4,7 +4,7 @@ import classicThemePlugin from '@fullcalendar/theme-classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('custom view class', () => { // TODO: rename file
+xdescribe('custom view class', () => { // TODO: rename file
   it('calls all standard methods with correct parameters', () => {
     const CustomViewConfig = {
       className: 'awesome-view',

@@ -35,6 +35,8 @@ build note:
     manually before `pn dev`
 
 
+Bug when mirror dnd positioning
+  https://codepen.io/arshaw/pen/yyJYgJW?editors=0010
 Why does font size like weird on virtualization examples?
   https://github.com/fullcalendar/fullcalendar-workspace/releases/tag/v7.0.0-beta.6
 changelog:
@@ -56,6 +58,33 @@ aspectRatio xdescribes... punt
 xdescribe for titleFormat, because:
   1. we changed the output for cross-month ranges
   2. there's a bug where same-year is displayed twice
+  for standard/tests/src/event-data/Event.formatRange.ts too
+  for standard/tests/src/toolbar/title.ts too
+  standard/tests/src/datelib/main.ts
+    xit('works with different days of same month'
+    xit('works with different day/month of same year'
+unnecessary major border
+  standard/tests/src/legacy/columnHeaderFormat.ts
+  (last test)
+bug: dayGridDay dayHeaderFormat's default showing day number
+bug: xdescribe('button text'
+  button.whatever.text not taking effect!
+audit how color-mix will work in stock themes (like classic) when they output oklab
+bug: event-render hooks receiving event.display "auto" why?
+  standard/tests/src/legacy/background-events.ts
+  xit('can be activated when rendering set on the source' (and one other)
+bug: more-popover position is not aligned with cells sometimes
+  standard/tests/src/legacy/more-link-popover.ts
+todo: kill (for custom view) ViewOptions.className/didMount/willUnmount/content
+  -> use standard viewClass/viewDidMount/viewWillUnmount/viewContent
+  related BUG:
+    the className/didMount/willUnmount/content settings don't merge correctly with Options.viewClass
+    (thus calendarWrapper.getViewEl() returns null)
+    standard/tests/src/legacy/custom-view-class.ts
+changelog
+  dayHeaderContent no longer applies to list-view. use listDayHeaderContent instead
+bug: day-of-week headers when not day-specific, should not rerender
+  standard/tests/src/performance/daygrid-rerenders.ts
 
 
 ASAP
@@ -502,6 +531,7 @@ changelog: nice tab-focus effects on everything
 essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
 listDayFormat/listDaySideFormat defaults are different. depend on view duration
 no more console.warn on unknown options
+new dayHeaderFormat default not showing year
 
 
 Docs

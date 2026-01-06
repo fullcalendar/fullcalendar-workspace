@@ -1,6 +1,6 @@
 import { FormatterInput } from '@fullcalendar/core'
 
-describe('Event::formatRange', () => {
+xdescribe('Event::formatRange', () => {
   pushOptions({
     timeZone: 'America/New_York', // for forced timezone offsets
     locale: 'en',

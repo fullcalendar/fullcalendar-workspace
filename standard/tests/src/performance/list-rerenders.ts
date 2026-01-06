@@ -9,11 +9,12 @@ it('list view rerenders well', (done) => {
     events: [
       { title: 'event 0', start: '2017-10-04' },
     ],
-    dayHeaderContent() {
+    listDayHeaderContent() {
       dayRenderCnt += 1
     },
     eventContent() {
       eventRenderCnt += 1
+      return true
     },
     noEventsContent() {
       noEventsRenderCnt += 1
@@ -26,7 +27,7 @@ it('list view rerenders well', (done) => {
     noEventsRenderCnt = 0
   }
 
-  expect(dayRenderCnt).toBe(1)
+  expect(dayRenderCnt).toBe(2) // there are two "inner" contents
   expect(eventRenderCnt).toBe(1)
   expect(noEventsRenderCnt).toBe(0)
 

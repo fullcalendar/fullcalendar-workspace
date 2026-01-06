@@ -4,40 +4,40 @@ import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 describe('allDayText', () => {
   describe('when allDaySlots is not set', () => {
     describe('in week', () => {
-      it('should default allDayText to using \'all-day\'', () => {
+      it('should default allDayText to using \'All-day\'', () => {
         let calendar = initCalendar({
           initialView: 'timeGridWeek',
         })
-        expectAllDayTextToBe(calendar, 'all-day')
+        expectAllDayTextToBe(calendar, 'All-day')
       })
     })
     describe('in day', () => {
-      it('should default allDayText to using \'all-day\'', () => {
+      it('should default allDayText to using \'All-day\'', () => {
         let calendar = initCalendar({
           initialView: 'timeGridDay',
         })
-        expectAllDayTextToBe(calendar, 'all-day')
+        expectAllDayTextToBe(calendar, 'All-day')
       })
     })
   })
 
   describe('when allDaySlots is set true', () => {
     describe('in week', () => {
-      it('should default allDayText to using \'all-day\'', () => {
+      it('should default allDayText to using \'All-day\'', () => {
         let calendar = initCalendar({
           initialView: 'timeGridWeek',
           allDaySlot: true,
         })
-        expectAllDayTextToBe(calendar, 'all-day')
+        expectAllDayTextToBe(calendar, 'All-day')
       })
     })
     describe('in day', () => {
-      it('should default allDayText to using \'all-day\'', () => {
+      it('should default allDayText to using \'All-day\'', () => {
         let calendar = initCalendar({
           initialView: 'timeGridDay',
           allDaySlot: true,
         })
-        expectAllDayTextToBe(calendar, 'all-day')
+        expectAllDayTextToBe(calendar, 'All-day')
       })
     })
   })
@@ -50,7 +50,7 @@ describe('allDayText', () => {
           allDaySlot: true,
           locale: ptBrLocale,
         })
-        expectAllDayTextToBe(calendar, 'dia\ninteiro')
+        expectAllDayTextToBe(calendar, 'Dia\ninteiro')
       })
     })
     describe('in day', () => {
@@ -60,7 +60,7 @@ describe('allDayText', () => {
           allDaySlot: true,
           locale: ptBrLocale,
         })
-        expectAllDayTextToBe(calendar, 'dia\ninteiro')
+        expectAllDayTextToBe(calendar, 'Dia\ninteiro')
       })
     })
   })

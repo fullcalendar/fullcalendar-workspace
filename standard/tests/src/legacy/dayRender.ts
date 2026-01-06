@@ -1,7 +1,11 @@
 import { formatIsoDay } from '../lib/datelib-utils.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
-describe('dayCellDidMount', () => { // TODO: rename file
+/*
+TODO: rename file
+NOTE: about day cell AND day LANE
+*/
+describe('dayCellDidMount', () => {
   it('is triggered upon initialization of a view, with correct parameters', () => {
     let options = {
       initialView: 'dayGridMonth',
@@ -70,8 +74,7 @@ describe('dayCellDidMount', () => { // TODO: rename file
     let options = {
       initialView: 'timeGridWeek',
       initialDate: '2014-05-01',
-      allDaySlot: false, // turn off. fires its own dayCellDidMount
-      dayCellDidMount(data) {
+      dayLaneDidMount(data) {
         expect(data.date instanceof Date).toBe(true)
         expect(data.el instanceof HTMLElement).toBe(true)
         expect(typeof data.view).toBe('object')

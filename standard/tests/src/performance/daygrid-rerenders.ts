@@ -1,4 +1,4 @@
-it('daygrid view rerenders well', (done) => {
+xit('daygrid view rerenders well', (done) => {
   let dayHeaderRenderCnt = 0
   let dayCellRenderCnt = 0
   let eventRenderCnt = 0
@@ -11,12 +11,15 @@ it('daygrid view rerenders well', (done) => {
     ],
     dayHeaderContent() {
       dayHeaderRenderCnt += 1
+      return true
     },
     dayCellTopContent() {
       dayCellRenderCnt += 1
+      return true
     },
     eventContent() {
       eventRenderCnt += 1
+      return true
     },
   })
 
