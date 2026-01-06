@@ -5,7 +5,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar-tests/standard/lib/global-plugins'
-import themeForTests from './theme-for-tests-premium.js'
+import themeForTestsPremiumPlugin from './theme-for-tests-premium.js'
 
 const MORE_DEFAULT_PLUGINS: PluginDef[] = [
   scrollGridPlugin,
@@ -13,7 +13,7 @@ const MORE_DEFAULT_PLUGINS: PluginDef[] = [
   resourceTimelinePlugin,
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
-  themeForTests,
+  themeForTestsPremiumPlugin,
 ]
 
 pushOptions({

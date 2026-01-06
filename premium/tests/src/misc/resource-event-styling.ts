@@ -11,7 +11,7 @@ describe('event styling hooks', () => {
         title: 'Resource A',
         eventClass: 're1',
         eventColor: 'rgba(255,0,0,0.5)',
-        eventBorderColor: 'rgba(0,0,255,0.5)',
+        eventContrastColor: 'rgba(0,0,255,0.5)',
       },
       {
         id: 'b',
@@ -106,7 +106,6 @@ describe('event styling hooks', () => {
       })
       const el = $('.event1')
       expect(el.length).toBe(1)
-      expect(el.css('border-left-color')).toMatch(BLUE_RE)
       expect(el.find('.' + CalendarWrapper.EVENT_TITLE_CLASSNAME).css('color')).toMatch(BLUE_RE) // text color
     })
 

@@ -86,7 +86,9 @@ describe('timeline addResource', () => {
       expect(dataGridWrapper.isRowExpanded('a')).toBe(true)
 
       // one level of indentation, and one space where an arrow might be
-      expect(dataGridWrapper.getRowIndentation('a1')).toBe(2)
+      expect(dataGridWrapper.getRowIndentationWidth('a1')).toBe(
+        dataGridWrapper.getRowIndentationWidth('a') * 2,
+      )
     })
 
     it('correctly adds when parent contracted', () => {

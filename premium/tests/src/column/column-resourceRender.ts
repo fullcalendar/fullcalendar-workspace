@@ -1,4 +1,4 @@
-describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the file
+describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: rename the file
   pushOptions({
     now: '2016-02-13',
     resources: [
@@ -34,7 +34,7 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires once per resources', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(data) {
+            resourceDayHeaderDidMount(data) {
               if (data.resource.id === 'a') {
                 expect(data.el).toContainText('Resource A')
                 callCnt += 1
@@ -58,7 +58,7 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(data) {
+            resourceDayHeaderDidMount(data) {
               if (data.resource.id === 'a') {
                 expect(data.el).toContainText('Resource A')
                 callCnt += 1
@@ -77,7 +77,7 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(data) {
+            resourceDayHeaderDidMount(data) {
               if (data.resource.id === 'a') {
                 expect(data.el).toContainText('Resource A')
                 callCnt += 1

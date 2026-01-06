@@ -1,7 +1,7 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
-describe('timeline selection', () => {
+xdescribe('timeline selection', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',

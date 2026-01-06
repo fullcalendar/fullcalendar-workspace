@@ -86,7 +86,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         aria-expanded={props.expanded}
-        data-resource-id={resource.id}
         className={joinArrayishClassNames(
           props.className, // probably contains fillX
           classNames.flexRow,
@@ -102,6 +101,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           attrs={{
             role: 'gridcell',
             'aria-expanded': props.expanded,
+            'data-resource-id': resource.id,
           }}
           className={joinClassNames(
             classNames.liquid,

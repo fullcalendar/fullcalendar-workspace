@@ -85,6 +85,17 @@ changelog
   dayHeaderContent no longer applies to list-view. use listDayHeaderContent instead
 bug: day-of-week headers when not day-specific, should not rerender
   standard/tests/src/performance/daygrid-rerenders.ts
+question: really have resourceRowClass apply to resource-GROUP-row too?
+  what about having the resourceGroupHeader control its own bottom border?
+xdescribe in premium/tests/src/timeline/timeline-selection.ts
+  because timeline slats no longer span top-to-bottom
+    and no longer allow selection on non-resource? think about this
+    (also, visually bug of no filler line below lanes)
+are we really allowing dayCellClass to have [any] props in order to hold resource? bad for ts
+  other bad props like this? dayHeaderClass
+changelog: timline slot labels (and lanes) used to rely on *day* classnames like fc-day-past
+  this will change our upgrade guide for people using fc-day-past
+  see our changes in premium/tests/src/timeline/timeline-days.ts
 
 
 ASAP

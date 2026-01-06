@@ -57,7 +57,6 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         aria-expanded={props.expanded}
-        data-resource-id={resource.id}
         className={joinArrayishClassNames(
           options.resourceRowClass,
           props.className, // what for???

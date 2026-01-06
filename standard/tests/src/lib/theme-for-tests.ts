@@ -61,15 +61,15 @@ export default createPlugin({
       data.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
     ),
     dayHeaderClass: (data) => joinClassNames(
-      ...getDayClassNames(data),
+      getDayClass(data),
       data.inPopover && 'fc-popover-header',
     ),
     dayHeaderInnerClass: (data) => joinClassNames(
       data.inPopover && 'fc-popover-title',
     ),
-    dayCellClass: (data) => joinClassNames(...getDayClassNames(data)),
-    slotHeaderClass: (data) => joinClassNames(...getSlotClass(data)),
-    slotLaneClass: (data) => joinClassNames(...getSlotClass(data)),
+    dayCellClass: (data) => getDayClass(data),
+    slotHeaderClass: (data) => getSlotClass(data),
+    slotLaneClass: (data) => getSlotClass(data),
   },
   views: {
     dayGrid: {
@@ -86,15 +86,16 @@ export default createPlugin({
       tableBodyClass: 'fc-timegrid-body',
       columnMoreLinkClass: 'fc-timegrid-more-link',
       weekNumberHeaderClass: 'fc-timegrid-axis',
+      weekNumberHeaderInnerClass: 'fc-timegrid-axis-inner',
       allDayHeaderClass: 'fc-timegrid-allday-header fc-timegrid-axis',
       slotHeaderClass: (data) => joinClassNames(
         'fc-timegrid-slot-label',
         'fc-timegrid-axis',
-        ...getTimeGridSlotClass(data),
+        getTimeGridSlotClass(data),
       ),
       slotLaneClass: (data) => joinClassNames(
         'fc-timegrid-slot-lane',
-        ...getTimeGridSlotClass(data),
+        getTimeGridSlotClass(data),
       ),
       dayLaneClass: 'fc-timegrid-day',
       nowIndicatorHeaderClass: 'fc-timegrid-now-indicator-arrow',
@@ -131,39 +132,39 @@ export default createPlugin({
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-function getDayClassNames(data: any) {
+export function getDayClass(data: any): string {
   return data.isDisabled
-    ? [
-      'fc-day',
-      'fc-day-disabled',
-    ]
-    : [
-      'fc-day',
-      `fc-day-${DAY_IDS[data.dow]}`,
-      data.isToday && 'fc-day-today',
-      data.isPast && 'fc-day-past',
-      data.isFuture && 'fc-day-future',
-    ]
+    ? joinClassNames(
+        'fc-day',
+        'fc-day-disabled',
+      )
+    : joinClassNames(
+        'fc-day',
+        `fc-day-${DAY_IDS[data.dow]}`,
+        data.isToday && 'fc-day-today',
+        data.isPast && 'fc-day-past',
+        data.isFuture && 'fc-day-future',
+      )
 }
 
-function getSlotClass(data: any) {
+function getSlotClass(data: any): string {
   return data.isDisabled
-    ? [
-      'fc-slot',
-      'fc-slot-disabled',
-    ]
-    : [
-      'fc-slot',
-      `fc-slot-${DAY_IDS[data.dow]}`,
-      data.isToday && 'fc-slot-today',
-      data.isPast && 'fc-slot-past',
-      data.isFuture && 'fc-slot-future',
-    ]
+    ? joinClassNames(
+        'fc-slot',
+        'fc-slot-disabled',
+      )
+    : joinClassNames(
+        'fc-slot',
+        `fc-slot-${DAY_IDS[data.dow]}`,
+        data.isToday && 'fc-slot-today',
+        data.isPast && 'fc-slot-past',
+        data.isFuture && 'fc-slot-future',
+      )
 }
 
-function getTimeGridSlotClass(data: any) {
-  return [
+function getTimeGridSlotClass(data: any): string {
+  return joinClassNames(
     'fc-timegrid-slot',
     data.isMinor && 'fc-timegrid-slot-minor',
-  ]
+  )
 }

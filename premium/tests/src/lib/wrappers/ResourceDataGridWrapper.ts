@@ -16,11 +16,12 @@ export class ResourceDataGridWrapper {
     let infos = []
 
     for (let rowEl of rowEls) {
+      const rowHeaderEl = rowEl.querySelector('[role=rowheader]')
       let theInfo
 
-      if (rowEl.querySelector('.fc-resource')) {
+      if (rowHeaderEl.classList.contains('fc-resource')) {
         theInfo = buildResourceInfoFromRow(rowEl)
-      } else if (rowEl.querySelector('.fc-resource-group')) {
+      } else if (rowHeaderEl.classList.contains('fc-resource-group')) {
         theInfo = buildGroupInfoFromRow(rowEl)
       }
 
@@ -101,8 +102,8 @@ export class ResourceDataGridWrapper {
     throw new Error('Resource row is neither expanded or contracted.')
   }
 
-  getRowIndentation(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelectorAll('.fc-resource-indent').length
+  getRowIndentationWidth(resourceId) {
+    return this.getResourceCellEl(resourceId).querySelector('.fc-resource-indent').getBoundingClientRect().width
   }
 }
 
@@ -121,7 +122,7 @@ function buildGroupInfoFromRow(rowEl) {
   const cellEl = rowEl.firstElementChild
   return {
     type: 'group',
-    text: $(cellEl.querySelector('.fc-cell-main')).text(),
+    text: $(cellEl.querySelector('.fc-resource-group-inner')).text(),
     cellEl,
     rowEl,
   }

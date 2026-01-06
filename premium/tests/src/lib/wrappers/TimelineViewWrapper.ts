@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { TimelineGridWrapper } from './TimelineGridWrapper.js'
 import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
@@ -19,7 +20,7 @@ export class TimelineViewWrapper extends ViewWrapper {
   }
 
   getHeaderScrollEl() {
-    return this.el.querySelector('.fc-timeline-header') as HTMLElement // IS the scroller
+    return this.el.querySelector(`.fc-timeline-header .${internalClassNames.internalScroller}`) as HTMLElement
   }
 
   getBodyScrollerEl() {

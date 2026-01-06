@@ -1,8 +1,19 @@
 import { PluginDef, createPlugin, joinClassNames } from '@fullcalendar/core'
+import { getDayClass } from '@fullcalendar-tests/standard/lib/theme-for-tests'
 
 export default createPlugin({
   name: 'theme-for-tests-premium',
   optionDefaults: {
+    resourceDayHeaderClass: (data) => joinClassNames(
+      'fc-resource',
+      getDayClass(data),
+    ),
+    dayHeaderClass: (data) => joinClassNames(
+      data.resource && 'fc-resource',
+    ),
+    dayCellClass: (data) => joinClassNames(
+      data.resource && 'fc-resource',
+    ),
     resourceColumnResizerClass: 'fc-datagrid-col-resizer',
     resourceCellClass: 'fc-cell fc-resource',
     resourceCellInnerClass: 'fc-cell-main',
@@ -13,9 +24,9 @@ export default createPlugin({
         ? 'fc-resource-expander-expanded'
         : 'fc-resource-expander-collapsed',
     ),
-    resourceRowClass: 'fc-resource',
     resourceLaneClass: 'fc-timeline-lane fc-resource',
     resourceGroupHeaderClass: 'fc-resource-group',
+    resourceGroupHeaderInnerClass: 'fc-resource-group-inner',
     resourceGroupLaneClass: 'fc-timeline-lane fc-resource-group',
     resourceColumnDividerClass: 'fc-datagrid-divider',
   },
