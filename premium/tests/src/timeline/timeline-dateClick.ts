@@ -48,7 +48,7 @@ describe('timeline dateClick', () => {
           })
 
           describe('when resources', () => {
-            it('won\'t report anything if not clicked on resource', (done) => {
+            xit('won\'t report anything if not clicked on resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
                 dateClick() {

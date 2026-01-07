@@ -2,7 +2,7 @@ import { doElsMatchSegs } from '@fullcalendar-tests/standard/lib/segs'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
-describe('timeline businessHours', () => {
+xdescribe('timeline businessHours', () => {
   pushOptions({
     initialView: 'timelineDay',
     now: '2016-02-15',

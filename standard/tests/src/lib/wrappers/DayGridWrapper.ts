@@ -110,7 +110,9 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getMorePopoverEl() {
-    return document.querySelector('.fc-more-popover') as HTMLElement
+    return Array.from(document.querySelectorAll('.fc-more-popover'))
+      // must have a day-header, for discerning from license key message
+      .filter((el) => Boolean(el.querySelector('.fc-day')))[0] as HTMLElement
   }
 
   getMorePopoverHeaderEl() {

@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { ResourceTimeGridWrapper } from './ResourceTimeGridWrapper.js'
@@ -16,7 +17,7 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
   }
 
   get timeGrid() {
-    return new ResourceTimeGridWrapper(this.el.querySelector('.fc-timegrid-body'))
+    return new ResourceTimeGridWrapper(this.getScrollEl())
   }
 
   get dayGrid() {
@@ -24,8 +25,8 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
     return allDayHeaderEl ? new ResourceDayGridWrapper(allDayHeaderEl.parentElement) : null
   }
 
-  getScrollEl() {
-    return this.el.querySelector('.fc-timegrid-body') // is also the scroller
+  getScrollEl(): HTMLElement {
+    return this.el.querySelector(`.fc-timegrid-body .${internalClassNames.internalScroller}`)
   }
 
   /*

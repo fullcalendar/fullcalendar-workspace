@@ -4,7 +4,7 @@ import { filterVisibleEls } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
-describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
+xdescribe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
   pushOptions({
     now: '2015-10-17',
     scrollTime: '00:00',

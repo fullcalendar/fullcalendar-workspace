@@ -1,3 +1,4 @@
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { parseIsoAsUtc } from '@fullcalendar-tests/standard/lib/datelib-utils'
 import { parseUtcDate } from '@fullcalendar-tests/standard/lib/date-parsing'
@@ -13,13 +14,13 @@ export class TimelineHeaderWrapper {
   }
 
   getDateRowCnt() {
-    return this.el.firstElementChild // canvas
+    return this.getScrollerEl().firstElementChild // canvas
       .childElementCount // rows
   }
 
   getDateEls(dateRow = 0) {
     return findElements(
-      this.el.firstElementChild // canvas
+      this.getScrollerEl().firstElementChild // canvas
         .childNodes[dateRow] as HTMLElement,
       '.fc-timeline-slot-label'
     )
@@ -27,7 +28,7 @@ export class TimelineHeaderWrapper {
 
   getDateElByDate(dateStr, dateRow = 0) {
     return (
-      this.el.firstElementChild // canvas
+      this.getScrollerEl().firstElementChild // canvas
         .childNodes[dateRow] as HTMLElement
     ).querySelector(`.fc-timeline-slot-label[data-date="${dateStr}"]`)
   }
@@ -51,5 +52,9 @@ export class TimelineHeaderWrapper {
 
   getNowIndicatorEl() {
     return this.el.querySelector('.fc-timeline-now-indicator-arrow')
+  }
+
+  getScrollerEl() {
+    return this.el.querySelector(`.${internalClassNames.internalScroller}`)
   }
 }

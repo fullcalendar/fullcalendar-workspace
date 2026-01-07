@@ -91,11 +91,17 @@ xdescribe in premium/tests/src/timeline/timeline-selection.ts
   because timeline slats no longer span top-to-bottom
     and no longer allow selection on non-resource? think about this
     (also, visually bug of no filler line below lanes)
+  same with premium/tests/src/timeline/timeline-dateClick.ts
+    xit('won\'t report anything if not clicked on resource'
+  same with premium/tests/src/timeline/timeline-event-rendering.ts
+  same with premium/tests/src/timeline/timeline-businessHours.ts
 are we really allowing dayCellClass to have [any] props in order to hold resource? bad for ts
   other bad props like this? dayHeaderClass
 changelog: timline slot labels (and lanes) used to rely on *day* classnames like fc-day-past
   this will change our upgrade guide for people using fc-day-past
   see our changes in premium/tests/src/timeline/timeline-days.ts
+bug: timeline initial scroll off, prolly due to layout shifting
+  premium/tests/src/timeline/scrollTime.ts
 
 
 ASAP

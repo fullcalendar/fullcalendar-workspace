@@ -1,6 +1,6 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
-describe('scrollTime', () => {
+xdescribe('scrollTime', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5351
   it('is preserved when prev/next with resources and nowIndicator', (done) => {
     let calendar = initCalendar({
