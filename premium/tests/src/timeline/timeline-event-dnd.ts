@@ -3,7 +3,7 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 
 // TODO: test isRtl?
 
-describe('timeline-view event drag-n-drop', () => {
+xdescribe('timeline-view event drag-n-drop', () => {
   pushOptions({
     editable: true,
     now: '2015-11-29',

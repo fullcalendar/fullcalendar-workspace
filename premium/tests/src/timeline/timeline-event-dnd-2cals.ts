@@ -1,7 +1,9 @@
 import { Calendar } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import classicThemePlugin from '@fullcalendar/theme-classic'
+import themeForTests from '@fullcalendar-tests/standard/lib/theme-for-tests'
+import themeForTestsPremium from '../lib/theme-for-tests-premium.js'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline dragging events between calendars', () => {
@@ -36,10 +38,18 @@ describe('timeline dragging events between calendars', () => {
   })
 
   it('works when calendars have different resources', (done) => {
+    const plugins = [
+      classicThemePlugin,
+      themeForTests,
+      themeForTestsPremium,
+      resourceTimelinePlugin,
+      interactionPlugin,
+    ]
+
     // calendar we drag the event TO
     // important to have this first in the DOM so that dragElTo works
     calendar0 = new Calendar(el0, {
-      plugins: [classicThemePlugin, resourceTimelinePlugin, interactionPlugin],
+      plugins,
       timeZone: 'UTC',
       scrollTime: '00:00',
       initialDate: DEFAULT_DATE,
@@ -57,7 +67,7 @@ describe('timeline dragging events between calendars', () => {
 
     // calendar we drag the event FROM
     calendar1 = new Calendar(el1, {
-      plugins: [classicThemePlugin, resourceTimelinePlugin, interactionPlugin],
+      plugins,
       timeZone: 'UTC',
       scrollTime: '00:00',
       initialDate: DEFAULT_DATE,

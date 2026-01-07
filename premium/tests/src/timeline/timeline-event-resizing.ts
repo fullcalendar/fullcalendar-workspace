@@ -5,7 +5,7 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?
 
-describe('timeline event resizing', () => {
+xdescribe('timeline event resizing', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',

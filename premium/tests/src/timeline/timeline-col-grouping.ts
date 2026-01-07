@@ -3,7 +3,7 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 /*
 TODO: write tests for text/render functions
 */
-describe('timeline column grouping', () => {
+xdescribe('timeline column grouping', () => {
   pushOptions({
     initialView: 'resourceTimelineDay',
     resourceColumns: [

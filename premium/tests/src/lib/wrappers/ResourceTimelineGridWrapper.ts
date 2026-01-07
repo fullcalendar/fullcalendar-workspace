@@ -33,7 +33,7 @@ export class ResourceTimelineGridWrapper {
   }
 
   dragEventTo(eventEl: HTMLElement, resourceId: string, date) {
-    const MOVEOVER = 2
+    const MOVEOVER = 10 // overcome resource-area resizer
     let moveover = $(eventEl).css('direction') === 'ltr' ? MOVEOVER : -MOVEOVER
     let point = this.getPoint(resourceId, date)
 
