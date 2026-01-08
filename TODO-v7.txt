@@ -35,6 +35,15 @@ build note:
     manually before `pn dev`
 
 
+go ESM-only (keep global of course)
+  avoids "dual-package hazard"?
+  (we used to impore .cjs/.js files explicitly from CJS/ESM)
+investige Angular example project problem where "All Events" in sidebar don't initially populate
+  one of our events not emitting?
+changelog:
+  DateSelectArg -> DateSelectData
+  EventClickArg -> EventClickData
+  and others
 Bug when mirror dnd positioning
   https://codepen.io/arshaw/pen/yyJYgJW?editors=0010
 Why does font size like weird on virtualization examples?

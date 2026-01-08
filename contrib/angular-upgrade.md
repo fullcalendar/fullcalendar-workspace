@@ -14,7 +14,7 @@ versions. For example. Angular 15 outputs for >=14. More info:
 Create new lib with certain version of angular cli:
 
 ```
-npx -p "@angular/cli@13" ng new "@fullcalendar/angular-new" \
+npx -p "@angular/cli@16" ng new "@fullcalendar/angular-new" \
   --directory "angular-new" \
   --new-project-root . \
   --create-application=false \
@@ -29,8 +29,8 @@ pnpm ng generate application app --skip-install
 # then, install in root again
 ```
 
-Port over fullcalendar-related dependencies to `package.json`
-Port over `package.json::(scripts|publishConfig|dependenciesNote|versionNote)`
+Port fullcalendar-related dependencies to `package.json`
+Port `package.json::(scripts|publishConfig)`
 
 In `.gitignore` add "outer monorepo" line at end
 
@@ -43,21 +43,12 @@ Remove unnecessary `app` assets:
 
 1. In `angular.json` remove `"assets": [` arrays
 2. `rm -rf app/src/assets app/src/favicon.ico`
-3. Temporarily change all references of `@fullcalendar/angular` to `@fullcalendar/angular-new`
 
-Restore `lib` files:
+Port `lib` files
+Port `app` files
+Port README/LICENSE/CHANGELOG
 
-1. Take note if meta files or dir structure changed
-2. `rm -rf lib/src`
-3. `git checkout -- lib/src`
-
-Restore `app` files:
-
-1. Take note if meta files or dir structure changed
-2. `rm -rf app/src`
-3. `git checkout -- app/src`
-
-Port over README/LICENSE/CONTRIBUTORS/CHANGELOG
+Temporarily change all references of `@fullcalendar/angular` to `@fullcalendar/angular-new`
 
 Review
 

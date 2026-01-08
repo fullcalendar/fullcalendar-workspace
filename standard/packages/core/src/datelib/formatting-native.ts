@@ -151,13 +151,6 @@ export class NativeFormatter implements DateFormatter {
         return 'week'
       case 2:
         return 'day'
-      case 3:
-        return 'week'
-      case 4:
-        return 'month'
-      case 5:
-      case 6:
-        return 'year'
       default:
         return 'time' // really?
     }
