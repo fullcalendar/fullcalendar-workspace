@@ -38,20 +38,29 @@ export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterConte
   /*
   Templates
   */
-  @ContentChild('dayHeaderContent', { static: true }) dayHeaderContent?: CalendarTemplateRef<'dayHeaderContent'>;
-  @ContentChild('dayCellTopContent', { static: true }) dayCellTopContent?: CalendarTemplateRef<'dayCellTopContent'>;
-  @ContentChild('weekNumberContent', { static: true }) weekNumberContent?: CalendarTemplateRef<'weekNumberContent'>;
-  @ContentChild('nowIndicatorContent', { static: true }) nowIndicatorContent?: CalendarTemplateRef<'nowIndicatorContent'>;
-  @ContentChild('eventContent', { static: true }) eventContent?: CalendarTemplateRef<'eventContent'>;
-  @ContentChild('slotHeaderContent', { static: true }) slotHeaderContent?: CalendarTemplateRef<'slotHeaderContent'>;
   @ContentChild('allDayHeaderContent', { static: true }) allDayHeaderContent?: CalendarTemplateRef<'allDayHeaderContent'>;
+  @ContentChild('dayCellTopContent', { static: true }) dayCellTopContent?: CalendarTemplateRef<'dayCellTopContent'>;
+  @ContentChild('dayHeaderContent', { static: true }) dayHeaderContent?: CalendarTemplateRef<'dayHeaderContent'>;
+  @ContentChild('eventContent', { static: true }) eventContent?: CalendarTemplateRef<'eventContent'>;
+  @ContentChild('inlineWeekNumberContent', { static: true }) inlineWeekNumberContent?: CalendarTemplateRef<'inlineWeekNumberContent'>;
+  @ContentChild('listDayHeaderContent', { static: true }) listDayHeaderContent?: CalendarTemplateRef<'listDayHeaderContent'>;
   @ContentChild('moreLinkContent', { static: true }) moreLinkContent?: CalendarTemplateRef<'moreLinkContent'>;
   @ContentChild('noEventsContent', { static: true }) noEventsContent?: CalendarTemplateRef<'noEventsContent'>;
-  @ContentChild('resourceColumnHeaderContent', { static: true }) resourceColumnHeaderContent?: CalendarTemplateRef<'resourceColumnHeaderContent'>;
-  @ContentChild('resourceGroupHeaderContent', { static: true }) resourceGroupHeaderContent?: CalendarTemplateRef<'resourceGroupHeaderContent'>;
+  @ContentChild('nowIndicatorHeaderContent', { static: true }) nowIndicatorHeaderContent?: CalendarTemplateRef<'nowIndicatorHeaderContent'>;
+  @ContentChild('nowIndicatorLineContent', { static: true }) nowIndicatorLineContent?: CalendarTemplateRef<'nowIndicatorLineContent'>;
+  @ContentChild('popoverCloseContent', { static: true }) popoverCloseContent?: CalendarTemplateRef<'popoverCloseContent'>;
   @ContentChild('resourceCellContent', { static: true }) resourceCellContent?: CalendarTemplateRef<'resourceCellContent'>;
-  @ContentChild('resourceLaneContent', { static: true }) resourceLaneContent?: CalendarTemplateRef<'resourceLaneContent'>;
+  @ContentChild('resourceColumnHeaderContent', { static: true }) resourceColumnHeaderContent?: CalendarTemplateRef<'resourceColumnHeaderContent'>;
+  @ContentChild('resourceDayHeaderContent', { static: true }) resourceDayHeaderContent?: CalendarTemplateRef<'resourceDayHeaderContent'>;
+  @ContentChild('resourceExpanderContent', { static: true }) resourceExpanderContent?: CalendarTemplateRef<'resourceExpanderContent'>;
+  @ContentChild('resourceGroupHeaderContent', { static: true }) resourceGroupHeaderContent?: CalendarTemplateRef<'resourceGroupHeaderContent'>;
   @ContentChild('resourceGroupLaneContent', { static: true }) resourceGroupLaneContent?: CalendarTemplateRef<'resourceGroupLaneContent'>;
+  @ContentChild('resourceLaneBottomContent', { static: true }) resourceLaneBottomContent?: CalendarTemplateRef<'resourceLaneBottomContent'>;
+  @ContentChild('resourceLaneTopContent', { static: true }) resourceLaneTopContent?: CalendarTemplateRef<'resourceLaneTopContent'>;
+  @ContentChild('rowEventAfterContent', { static: true }) rowEventAfterContent?: CalendarTemplateRef<'rowEventAfterContent'>;
+  @ContentChild('rowEventBeforeContent', { static: true }) rowEventBeforeContent?: CalendarTemplateRef<'rowEventBeforeContent'>;
+  @ContentChild('slotHeaderContent', { static: true }) slotHeaderContent?: CalendarTemplateRef<'slotHeaderContent'>;
+  @ContentChild('weekNumberHeaderContent', { static: true }) weekNumberHeaderContent?: CalendarTemplateRef<'weekNumberHeaderContent'>;
 
   private calendar: Calendar | null = null;
   private optionSnapshot: Record<string, any> = {}; // for diffing
