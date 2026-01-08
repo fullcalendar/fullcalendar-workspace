@@ -1,5 +1,5 @@
 import { createElement, Fragment } from '../preact.js'
-import { BaseComponent } from '../vdom-util.js'
+import { BaseComponent, setRef } from '../vdom-util.js'
 import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayData, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering.js'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
@@ -11,6 +11,7 @@ import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import classNames from '../internal-classnames.js'
+import { isPropsEqualShallow } from '../util/object.js'
 
 export interface StandardEventProps {
   elRef?: ElRef
@@ -277,6 +278,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
   handleEl = (el: HTMLElement | null) => {
     this.el = el
 
+    setRef(this.props.elRef, el)
+
     if (el) {
       setElEventRange(el, this.props.eventRange)
     }
@@ -288,6 +291,10 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     }
   }
 }
+
+StandardEvent.addPropsEquality({
+  seg: isPropsEqualShallow,
+})
 
 function renderInnerContent(innerProps: EventDisplayData) {
   return (

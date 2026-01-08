@@ -1,6 +1,5 @@
 import { Component , signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/core';
 import classicThemePlugin from '@fullcalendar/theme-classic';
@@ -13,7 +12,7 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FullCalendarModule],
+  imports: [CommonModule, FullCalendarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

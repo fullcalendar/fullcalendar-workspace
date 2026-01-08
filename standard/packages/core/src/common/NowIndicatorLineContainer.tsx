@@ -29,15 +29,18 @@ export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps)
 
       return (
         <ContentContainer
-          {...props /* includes children */}
+          elRef={props.elRef}
           tag={props.tag || 'div'}
+          attrs={props.attrs}
+          className={props.className}
+          style={props.style}
           renderProps={renderProps}
           generatorName="nowIndicatorLineContent"
           customGenerator={options.nowIndicatorLineContent}
           classNameGenerator={options.nowIndicatorLineClass}
           didMount={options.nowIndicatorLineDidMount}
           willUnmount={options.nowIndicatorLineWillUnmount}
-        />
+        >{props.children}</ContentContainer>
       )
     }}
   </ViewContextType.Consumer>

@@ -4,11 +4,19 @@ import luxonPlugin, { toLuxonDateTime, toLuxonDuration } from '@fullcalendar/lux
 import dayGridPlugin from '@fullcalendar/daygrid'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import timeGridPlugin from '@fullcalendar/timegrid'
 import { testTimeZoneImpl } from '../lib/timeZoneImpl.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
 describe('luxon plugin', () => {
-  const PLUGINS = [luxonPlugin, dayGridPlugin, classicThemePlugin, themeForTestsPlugin] // for `new Calendar`
+  const PLUGINS = [ // for `new Calendar`
+    luxonPlugin,
+    dayGridPlugin,
+    timeGridPlugin,
+    classicThemePlugin,
+    themeForTestsPlugin,
+  ]
 
   pushOptions({ // for initCalendar
     plugins: PLUGINS,
@@ -194,6 +202,48 @@ describe('luxon plugin', () => {
         titleRangeSeparator: ' to ',
       })
       expect(currentCalendar.view.title).toBe('September 2 to 8 18 yup')
+    })
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5753
+  describe('now-date', () => {
+    it('adapts to switching timeZone', () => {
+      const calendar = initCalendar({
+        timeZone: 'America/Chicago',
+        initialView: 'timeGridDay',
+        now: '2025-03-20T01:00:00',
+        nowIndicator: true,
+      })
+      const timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+
+      let nowIndicatorLineEl = timeGridWrapper.getNowIndicatorLineEl()
+      let nowIndicatorY0 = nowIndicatorLineEl.getBoundingClientRect().top
+
+      calendar.setOption('timeZone', 'Europe/London')
+
+      nowIndicatorLineEl = timeGridWrapper.getNowIndicatorLineEl()
+      let nowIndicatorY1 = nowIndicatorLineEl.getBoundingClientRect().top
+
+      // must be different
+      expect(Math.abs(nowIndicatorY1 - nowIndicatorY0)).toBeGreaterThan(100)
+    })
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/7633
+  describe('date headers', () => {
+    it('don\'t fall into DST', () => {
+      const dayNumbers = []
+      initCalendar({
+        timeZone: 'Asia/Beirut',
+        initialView: 'timeGridWeek',
+        initialDate: '2024-03-31',
+        firstDay: 3,
+        dayHeaderContent(arg) {
+          dayNumbers.push(toLuxonDateTime(arg.date, arg.view.calendar).day)
+          return true // render default
+        },
+      })
+      expect(dayNumbers).toEqual([27, 28, 29, 30, 31, 1, 2])
     })
   })
 })

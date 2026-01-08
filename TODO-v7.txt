@@ -412,6 +412,8 @@ test print-view with virtualization
   test expandRows
 Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
 should full-ui packages be put on v1?
+if kill luxon/moment, remove this block:
+  // workaround for Luxon (and maybe moment)
 
 
 Changelog

@@ -14,9 +14,9 @@ import { memoize } from './util/memoize.js'
 import { DateMarker, rangeContainsMarker } from '@full-ui/headless-calendar'
 import { DateProfile, DateProfileGenerator } from './DateProfileGenerator.js'
 import { ViewSpec } from './structs/view-spec.js'
-import { getNow } from './reducers/current-date.js'
 import { NavButtonState, ButtonStateMap } from './structs/button-state.js'
 import { formatWithOrdinals } from './util/misc.js'
+import { NowTimer } from './NowTimer.js'
 
 /*
 Vanilla JS API
@@ -74,22 +74,28 @@ export class Calendar extends CalendarImpl {
               this.setClassName(className)
               this.setHeight(height)
 
-              const toolbarProps = this.toolbarProps = this.buildToolbarProps(
-                currentData.viewSpec,
-                currentData.dateProfile,
-                currentData.dateProfileGenerator,
-                currentData.currentDate,
-                getNow(currentData.options.now, currentData.dateEnv), // TODO: use NowTimer????
-                currentData.viewTitle,
-              )
-
               return (
                 <RenderId.Provider value={this.customContentRenderId}>
-                  <CalendarContent
-                    forPrint={forPrint}
-                    toolbarProps={toolbarProps}
-                    {...currentData}
-                  />
+                  <NowTimer unit="day">
+                    {(nowDate: DateMarker) => {
+                      const toolbarProps = this.toolbarProps = this.buildToolbarProps(
+                        currentData.viewSpec,
+                        currentData.dateProfile,
+                        currentData.dateProfileGenerator,
+                        currentData.currentDate,
+                        nowDate,
+                        currentData.viewTitle,
+                      )
+
+                      return (
+                        <CalendarContent
+                          forPrint={forPrint}
+                          toolbarProps={toolbarProps}
+                          {...currentData}
+                        />
+                      )
+                    }}
+                  </NowTimer>
                 </RenderId.Provider>
               )
             }}

@@ -58,7 +58,6 @@ export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterConte
   private handleCustomRendering: (customRendering: CustomRendering<any>) => void
   private customRenderingMap = new Map<string, CustomRendering<any>>()
   private customRenderingArray?: CustomRendering<any>[]
-  public templateMap: { [templateName: string]: TemplateRef<any> } = {}
 
   constructor(
     private element: ElementRef,
@@ -73,7 +72,6 @@ export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterConte
     });
 
     this.handleCustomRendering = customRenderingStore.handle.bind(customRenderingStore);
-    this.templateMap = this as any; // alias to this
   }
 
   ngAfterViewInit() {
@@ -209,7 +207,7 @@ export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterConte
   private buildExtraOptions(): CalendarOptions {
     return {
       handleCustomRendering: this.handleCustomRendering,
-      customRenderingMetaMap: this.templateMap,
+      customRenderingMetaMap: this as unknown as { [templateName: string]: TemplateRef<any> },
       customRenderingReplaces: true,
     };
   }

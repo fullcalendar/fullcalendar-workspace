@@ -15,12 +15,12 @@ import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
 
 const EXTENDED_SETTINGS_AND_SEVERITIES = {
   week: 3,
-  separator: 0, // 0 = not applicable
-  omitZeroMinute: 0,
-  meridiem: 0, // like am/pm
-  omitCommas: 0,
-  forceCommas: 0,
-  weekdayJustify: 0,
+  separator: 9, // 9 = not applicable
+  omitZeroMinute: 9,
+  meridiem: 9, // like am/pm
+  omitCommas: 9,
+  forceCommas: 9,
+  weekdayJustify: 9,
 }
 
 const STANDARD_DATE_PROP_SEVERITIES = {
@@ -53,36 +53,34 @@ export interface NativeFormatterOptions extends Intl.DateTimeFormatOptions {
 export class NativeFormatter implements DateFormatter {
   standardDateProps: any
   extendedSettings: any
-  minSeverity: number
+  smallestUnitNum: number
   private buildFormattingFunc: typeof buildFormattingFunc // caching for efficiency with same date env
 
   constructor(formatSettings: NativeFormatterOptions) {
     let standardDateProps: any = {}
     let extendedSettings: any = {}
-    let minSeverity = 7
+    let smallestUnitNum = 9 // the smallest unit in the formatter (9 is a sentinel, beyond max)
 
     for (let name in formatSettings) {
       if (name in EXTENDED_SETTINGS_AND_SEVERITIES) {
         extendedSettings[name] = formatSettings[name]
+
         const severity = EXTENDED_SETTINGS_AND_SEVERITIES[name]
-        if (severity) {
-          minSeverity = Math.min(severity, minSeverity)
+        if (severity < 9) {
+          smallestUnitNum = Math.min(EXTENDED_SETTINGS_AND_SEVERITIES[name], smallestUnitNum)
         }
       } else {
         standardDateProps[name] = formatSettings[name]
 
         if (name in STANDARD_DATE_PROP_SEVERITIES) { // TODO: what about hour12? no severity
-          const severity = STANDARD_DATE_PROP_SEVERITIES[name]
-          if (severity) {
-            minSeverity = Math.min(severity, minSeverity)
-          }
+          smallestUnitNum = Math.min(STANDARD_DATE_PROP_SEVERITIES[name], smallestUnitNum)
         }
       }
     }
 
     this.standardDateProps = standardDateProps
     this.extendedSettings = extendedSettings
-    this.minSeverity = minSeverity
+    this.smallestUnitNum = smallestUnitNum
 
     this.buildFormattingFunc = memoize(buildFormattingFunc)
   }
@@ -142,7 +140,15 @@ export class NativeFormatter implements DateFormatter {
   }
 
   getSmallestUnit() {
-    switch (this.minSeverity) {
+    switch (this.smallestUnitNum) {
+      case 7:
+      case 6:
+      case 5:
+        return 'year'
+      case 4:
+        return 'month'
+      case 3:
+        return 'week'
       case 2:
         return 'day'
       case 3:

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-tests/premium",
-  "version": "0.0.3-beta.1",
+  "version": "0.0.0",
   "dependencies": {
     "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
     "@fullcalendar/core": "workspace:*",

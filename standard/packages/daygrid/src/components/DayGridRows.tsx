@@ -58,7 +58,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
   // memo
   private splitBusinessHourSegs = memoize(splitSegsByRow)
-  private splitBgEventSegs = memoize(splitSegsByRow)
+  private splitBgEventSegs = memoize(splitAllDaySegsByRow)
   private splitFgEventSegs = memoize(splitSegsByRow)
   private splitDateSelectionSegs = memoize(splitSegsByRow)
   private splitEventDrag = memoize(splitInteractionByRow)
@@ -129,7 +129,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}
-            bgEventSegs={bgEventSegsByRow[row].filter(isSegAllDay) /* HACK */}
+            bgEventSegs={bgEventSegsByRow[row]}
             businessHourSegs={businessHourSegsByRow[row]}
             dateSelectionSegs={dateSelectionSegsByRow[row]}
             eventSelection={props.eventSelection}
@@ -213,6 +213,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
 function isSegAllDay(seg: EventRangeProps): boolean {
   return seg.eventRange.def.allDay
+}
+
+function splitAllDaySegsByRow<S extends DayGridRange & EventRangeProps>(segs: S[], rowCnt: number): S[][] {
+  return splitSegsByRow(segs.filter(isSegAllDay), rowCnt)
 }
 
 /*

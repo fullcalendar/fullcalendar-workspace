@@ -18,11 +18,10 @@ import {
   parseRange,
   DateRangeInput,
   DateEnv,
-  DateInput,
 } from '@full-ui/headless-calendar'
 import { computeVisibleDayRange } from './util/date.js'
-import { getNow } from './reducers/current-date.js'
 import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarNowManager } from './reducers/CalendarNowManager.js'
 
 export interface DateProfile {
   currentDate: DateMarker
@@ -40,6 +39,7 @@ export interface DateProfile {
 
 export interface DateProfileGeneratorProps extends DateProfileOptions {
   dateProfileGeneratorClass: DateProfileGeneratorClass // not used by DateProfileGenerator itself
+  nowManager: CalendarNowManager
   duration: Duration
   durationUnit: string
   usesMinMaxTime: boolean
@@ -56,7 +56,6 @@ export interface DateProfileOptions {
   dateIncrement?: Duration
   hiddenDays?: number[]
   weekends?: boolean
-  nowInput?: DateInput | (() => DateInput)
   validRangeInput?: DateRangeInput | ((this: CalendarImpl, nowDate: Date) => DateRangeInput)
   visibleRangeInput?: DateRangeInput | ((this: CalendarImpl, nowDate: Date) => DateRangeInput)
   fixedWeekCount?: boolean
@@ -67,12 +66,9 @@ export type DateProfileGeneratorClass = {
 }
 
 export class DateProfileGenerator { // only publicly used for isHiddenDay :(
-  nowDate: DateMarker
-
   isHiddenDayHash: boolean[]
 
   constructor(protected props: DateProfileGeneratorProps) {
-    this.nowDate = getNow(props.nowInput, props.dateEnv)
     this.initHiddenDays()
   }
 
@@ -192,7 +188,7 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
   buildValidRange(): OpenDateRange {
     let input = this.props.validRangeInput
     let simpleInput = typeof input === 'function'
-      ? input.call(this.props.calendarApi, this.nowDate)
+      ? input.call(this.props.calendarApi, this.props.dateEnv.toDate(this.props.nowManager.getDateMarker()))
       : input
 
     return this.refineRange(simpleInput) ||

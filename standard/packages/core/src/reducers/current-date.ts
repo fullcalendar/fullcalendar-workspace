@@ -1,6 +1,7 @@
-import { DateEnv, DateInput, DateMarker } from '@full-ui/headless-calendar'
+import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
 import { Action } from './Action.js'
-import { BaseOptionsRefined } from '../options.js'
+import { CalendarOptionsRefined } from '../options.js'
+import { CalendarNowManager } from './CalendarNowManager.js'
 
 export function reduceCurrentDate(currentDate: DateMarker, action: Action) {
   switch (action.type) {
@@ -11,24 +12,19 @@ export function reduceCurrentDate(currentDate: DateMarker, action: Action) {
   }
 }
 
-export function getInitialDate(options: BaseOptionsRefined, dateEnv: DateEnv) {
+// should be initialized once and stay constant
+// this will change too
+export function getInitialDate(
+  options: CalendarOptionsRefined,
+  dateEnv: DateEnv,
+  nowManager: CalendarNowManager,
+): DateMarker {
   let initialDateInput = options.initialDate
 
   // compute the initial ambig-timezone date
   if (initialDateInput != null) {
     return dateEnv.createMarker(initialDateInput)
   }
-  return getNow(options.now, dateEnv) // getNow already returns unzoned
-}
 
-export function getNow(nowInput: DateInput | (() => DateInput), dateEnv: DateEnv) {
-  if (typeof nowInput === 'function') {
-    nowInput = nowInput()
-  }
-
-  if (nowInput == null) {
-    return dateEnv.createNowMarker()
-  }
-
-  return dateEnv.createMarker(nowInput)
+  return nowManager.getDateMarker()
 }

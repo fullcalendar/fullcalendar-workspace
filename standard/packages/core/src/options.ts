@@ -160,6 +160,7 @@ export const BASE_OPTION_REFINERS = {
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountData>>,
 
   nowIndicator: Boolean,
+  nowIndicatorSnap: identity as Identity<boolean | 'auto'>,
 
   nowIndicatorHeaderClass: identity as Identity<ClassNameGenerator<NowIndicatorHeaderData>>,
   nowIndicatorHeaderContent: identity as Identity<CustomContentGenerator<NowIndicatorHeaderData>>,
@@ -495,6 +496,7 @@ export const BASE_OPTION_DEFAULTS = {
   dayHeaderSticky: true,
   rowEventTitleSticky: true,
   columnEventTitleSticky: true,
+  nowIndicatorSnap: 'auto',
 }
 
 // calendar listeners

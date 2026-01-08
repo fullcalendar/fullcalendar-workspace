@@ -120,4 +120,35 @@ describe('timeline now-indicator', () => {
       line.left,
     )).toBeLessThan(thresh)
   }
+
+  describeOptions('initialView', {
+    'when multiple-headers': 'timelineWeek',
+    'when single-header': 'timelineDay',
+  }, () => {
+    pushOptions({
+      slotDuration: { hours: 1 },
+      initialDate: '2025-01-05',
+      now: '2025-01-05T01:35:00',
+    })
+
+    // https://github.com/fullcalendar/fullcalendar/issues/6175
+
+    describe('when nowIndicatorSnap:auto', () => { // the default
+      it('renders now-indicator snapped to the hour (slot-duration)', () => {
+        initCalendar()
+        nowIndicatorRendersAt('2025-01-05T01:00:00', 5)
+      })
+    })
+
+    describe('when nowIndicatorSnap:false', () => {
+      pushOptions({
+        nowIndicatorSnap: false,
+      })
+
+      it('renders now-indicator with granular coordinates', () => {
+        initCalendar()
+        nowIndicatorRendersAt('2025-01-05T01:35:00', 5)
+      })
+    })
+  })
 })

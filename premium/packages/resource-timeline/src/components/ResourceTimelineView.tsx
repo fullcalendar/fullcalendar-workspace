@@ -71,7 +71,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       options,
       context.dateProfileGenerator,
     )
-    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let { unit: timerUnit, value: timeUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
 
     /* table settings */
 
@@ -137,7 +137,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     return (
       <Fragment>
-        <NowTimer unit={timerUnit}>
+        <NowTimer unit={timerUnit} unitValue={timeUnitValue}>
           {(nowDate: DateMarker, todayRange: DateRange) => {
             const baseProps = {
               className: props.className,

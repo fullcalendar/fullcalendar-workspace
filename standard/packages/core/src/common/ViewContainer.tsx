@@ -31,7 +31,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
 
     return (
       <ContentContainer
-        {...props}
+        elRef={props.elRef}
         tag={props.tag || 'div'}
         attrs={props.attrs}
         className={joinClassNames(
@@ -41,6 +41,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
           props.borderlessBottom && classNames.borderlessBottom,
           props.noEdgeEffects && classNames.noEdgeEffects,
         )}
+        style={props.style}
         renderProps={{
           view: context.viewApi,
         }}

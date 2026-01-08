@@ -1,6 +1,9 @@
 import { join as joinPaths } from 'path'
 import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
 
+/*
+Should be renamed to "push-to-subrepos"
+*/
 export default async function() {
   const monorepoDir = process.cwd()
   const gitSubrepoBin = joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh') // TODO: DRY

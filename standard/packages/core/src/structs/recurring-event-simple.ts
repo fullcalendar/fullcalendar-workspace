@@ -16,6 +16,7 @@ interface SimpleRecurringData {
   endTime: Duration | null
   startRecur: DateMarker | null
   endRecur: DateMarker | null
+  dateEnv: DateEnv // DateEnv when the recurring definition was created
 }
 
 let recurring: RecurringType<SimpleRecurringData> = {
@@ -28,6 +29,7 @@ let recurring: RecurringType<SimpleRecurringData> = {
         endTime: refined.endTime || null,
         startRecur: refined.startRecur ? dateEnv.createMarker(refined.startRecur) : null,
         endRecur: refined.endRecur ? dateEnv.createMarker(refined.endRecur) : null,
+        dateEnv,
       }
 
       let duration: Duration
@@ -59,8 +61,9 @@ let recurring: RecurringType<SimpleRecurringData> = {
       return expandRanges(
         typeData.daysOfWeek,
         typeData.startTime,
-        clippedFramingRange,
+        typeData.dateEnv,
         dateEnv,
+        clippedFramingRange,
       )
     }
     return []
@@ -77,13 +80,25 @@ export const simpleRecurringEventsPlugin = createPlugin({
 function expandRanges(
   daysOfWeek: number[] | null,
   startTime: Duration | null,
+  eventDateEnv: DateEnv,
+  calendarDateEnv: DateEnv,
   framingRange: DateRange,
-  dateEnv: DateEnv,
 ): DateMarker[] {
   let dowHash: { [num: string]: true } | null = daysOfWeek ? arrayToHash(daysOfWeek) : null
   let dayMarker = startOfDay(framingRange.start)
   let endMarker = framingRange.end
   let instanceStarts: DateMarker[] = []
+
+  // https://github.com/fullcalendar/fullcalendar/issues/7934
+  if (startTime) {
+    if (startTime.milliseconds < 0) {
+      // possible for next-day to have negative business hours that go into current day
+      endMarker = addDays(endMarker, 1)
+    } else if (startTime.milliseconds >= 1000 * 60 * 60 * 24) {
+      // possible for prev-day to have >24hr business hours that go into current day
+      dayMarker = addDays(dayMarker, -1)
+    }
+  }
 
   while (dayMarker < endMarker) {
     let instanceStart
@@ -91,12 +106,16 @@ function expandRanges(
     // if everyday, or this particular day-of-week
     if (!dowHash || dowHash[dayMarker.getUTCDay()]) {
       if (startTime) {
-        instanceStart = dateEnv.add(dayMarker, startTime)
+        instanceStart = calendarDateEnv.add(dayMarker, startTime)
       } else {
         instanceStart = dayMarker
       }
 
-      instanceStarts.push(instanceStart)
+      instanceStarts.push(
+        calendarDateEnv.createMarker(
+          eventDateEnv.toDate(instanceStart),
+        ),
+      )
     }
 
     dayMarker = addDays(dayMarker, 1)

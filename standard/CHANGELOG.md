@@ -275,6 +275,36 @@ Unfortunately we didn't have time to do these but will implement them in a follo
 
 - Improve resource timeline performance with virtual rendering ([#5673](https://github.com/fullcalendar/fullcalendar/issues/5673))
 
+## 6.1.20 (2025-12-22)
+
+- feature: Angular 21 support (#8015)
+
+## 6.1.19 (2025-08-08)
+
+- feature: Angular 20 support (#7946)
+- feature: setting to control how nowIndicator displays in all-day slots (#6175)
+  (`nowIndicatorSnap`. use `false` to ensure time-granularity always)
+- fix: allow business hours that START past midnight (#7934)
+
+## 6.1.18 (2025-06-29)
+
+- fix: Optimize custom content-injection rerendering performance (#3003, #7650)
+  (Especially important for event rerendering with `eventContent`)
+
+## 6.1.17 (2025-04-01)
+
+- fix: recurring event start/end time not updated when timezone changed  (#5273)
+- fix: nowIndicator not updated when timezone changed (#5753)
+- fix: nowIndicator lags after returning to suspended tab (#7806)
+- fix: "today" date does not update after current time crosses midnight (#3783)
+- fix: day header 1 day behind with Luxon & timezone with midnight DST (#7633)
+- fix: in timeline, incorrect navLink for granularities other than day/week (#4931)
+- fix: validRange in multiMonth view does not render all the days (#7287)
+
+### Angular
+
+- feature: Accept TempateRef for `resourceAreaColumns.cellContent` (#7894), thx @gongAll
+
 ## 6.1.16 (2024-12-04)
 
 ### Angular

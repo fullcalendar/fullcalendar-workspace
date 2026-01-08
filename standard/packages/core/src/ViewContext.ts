@@ -12,6 +12,7 @@ import { InteractionSettingsInput } from './interactions/interaction.js'
 import { DateComponent } from './component/DateComponent.js'
 import { CalendarContext } from './CalendarContext.js'
 import { ViewOptionsRefined, CalendarListeners } from './options.js'
+import { CalendarNowManager } from './reducers/CalendarNowManager.js'
 
 export const ViewContextType: Context<any> = createContext<ViewContext>({} as any) // for Components
 export type ResizeHandler = () => void
@@ -35,6 +36,7 @@ export function buildViewContext(
   viewOptions: ViewOptionsRefined,
   dateProfileGenerator: DateProfileGenerator,
   dateEnv: DateEnv,
+  nowManager: CalendarNowManager,
   pluginHooks: PluginHooks,
   dispatch: (action: Action) => void,
   getCurrentData: () => CalendarData,
@@ -45,6 +47,7 @@ export function buildViewContext(
 ): ViewContext {
   return {
     dateEnv,
+    nowManager,
     options: viewOptions,
     pluginHooks,
     emitter,

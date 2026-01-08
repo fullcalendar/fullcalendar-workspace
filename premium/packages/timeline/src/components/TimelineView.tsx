@@ -82,7 +82,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       context.dateProfileGenerator,
     )
     const { cellRows } = tDateProfile
-    const timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let { unit: timerUnit, value: timerUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
 
     /* table settings */
 
@@ -115,7 +115,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     )
 
     return (
-      <NowTimer unit={timerUnit}>
+      <NowTimer unit={timerUnit} unitValue={timerUnitValue}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           const enableNowIndicator = // TODO: DRY
             options.nowIndicator &&

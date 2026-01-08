@@ -42,6 +42,7 @@ import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData,
 import { TaskRunner } from '../util/TaskRunner.js'
 import { buildTitle } from './title-formatting.js'
 import { isArraysEqual } from '../util/array.js'
+import { CalendarNowManager } from './CalendarNowManager.js'
 
 export interface CalendarDataManagerProps {
   optionOverrides: CalendarOptions
@@ -75,6 +76,8 @@ export class CalendarDataManager {
   private parseContextBusinessHours = memoizeObjArg(parseContextBusinessHours)
   private buildTitle = memoize(buildTitle)
 
+  private nowManager = new CalendarNowManager()
+
   public emitter = new Emitter<CalendarListeners>()
   private actionRunner = new TaskRunner(this._handleAction.bind(this), this.updateData.bind(this))
   private props: CalendarDataManagerProps
@@ -96,6 +99,7 @@ export class CalendarDataManager {
   constructor(props: CalendarDataManagerProps) {
     this.props = props
     this.actionRunner.pause()
+    this.nowManager = new CalendarNowManager()
 
     let dynamicOptionOverrides: CalendarOptions = {}
     let optionsData = this.computeOptionsData(
@@ -127,14 +131,8 @@ export class CalendarDataManager {
       controllerOption._setApi(props.calendarApi)
     }
 
-    let currentDate = getInitialDate(optionsData.calendarOptions, optionsData.dateEnv)
-    let dateProfile = currentViewData.dateProfileGenerator.build(currentDate)
-
-    if (!rangeContainsMarker(dateProfile.activeRange, currentDate)) {
-      currentDate = dateProfile.currentRange.start
-    }
-
     let calendarContext: CalendarContext = {
+      nowManager: this.nowManager,
       dateEnv: optionsData.dateEnv,
       options: optionsData.calendarOptions,
       pluginHooks: optionsData.pluginHooks,
@@ -142,6 +140,17 @@ export class CalendarDataManager {
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
+    }
+
+    let currentDate = getInitialDate(
+      optionsData.calendarOptions,
+      optionsData.dateEnv,
+      this.nowManager,
+    )
+    let dateProfile = currentViewData.dateProfileGenerator.build(currentDate)
+
+    if (!rangeContainsMarker(dateProfile.activeRange, currentDate)) {
+      currentDate = dateProfile.currentRange.start
     }
 
     // needs to be after setThisContext
@@ -231,6 +240,7 @@ export class CalendarDataManager {
     emitter.setOptions(currentViewData.options)
 
     let calendarContext: CalendarContext = {
+      nowManager: this.nowManager,
       dateEnv: optionsData.dateEnv,
       options: optionsData.calendarOptions,
       pluginHooks: optionsData.pluginHooks,
@@ -329,6 +339,7 @@ export class CalendarDataManager {
     let viewTitle = this.buildTitle(state.dateProfile, currentViewData.options, optionsData.dateEnv)
     let data: CalendarData = this.data = {
       viewTitle,
+      nowManager: this.nowManager,
       calendarApi: props.calendarApi,
       dispatch: this.dispatch,
       emitter: this.emitter,
@@ -511,8 +522,11 @@ export class CalendarDataManager {
       dynamicOptionOverrides,
     )
 
+    this.nowManager.handleInput(optionsData.dateEnv, refinedOptions.now)
+
     let dateProfileGenerator = this.buildDateProfileGenerator({
       dateProfileGeneratorClass: viewSpec.optionDefaults.dateProfileGeneratorClass as any,
+      nowManager: this.nowManager,
       duration: viewSpec.duration,
       durationUnit: viewSpec.durationUnit,
       usesMinMaxTime: viewSpec.optionDefaults.usesMinMaxTime as any,
@@ -526,7 +540,6 @@ export class CalendarDataManager {
       dateIncrement: refinedOptions.dateIncrement,
       hiddenDays: refinedOptions.hiddenDays,
       weekends: refinedOptions.weekends,
-      nowInput: refinedOptions.now,
       validRangeInput: refinedOptions.validRange,
       visibleRangeInput: refinedOptions.visibleRange,
       fixedWeekCount: refinedOptions.fixedWeekCount,

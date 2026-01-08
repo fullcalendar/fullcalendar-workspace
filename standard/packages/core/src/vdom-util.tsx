@@ -2,7 +2,8 @@
 
 import { Component, Ref } from './preact.js'
 import { ViewContextType, ViewContext } from './ViewContext.js'
-import { isPropsEqualWithMap, getUnequalProps } from './util/object.js'
+import { isPropsEqualWithMap } from './util/object.js'
+// import { getUnequalProps } from './util/object.js'
 import { Dictionary } from './options.js'
 
 export type EqualityFunc<T> = (a: T, b: T) => boolean
@@ -19,13 +20,12 @@ export abstract class PureComponent<Props=Dictionary, State=Dictionary> extends 
   propEquality: EqualityFuncs<Props>
   stateEquality: EqualityFuncs<State>
 
-  debug: boolean
+  // debug: boolean
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    if (this.debug) {
-      // eslint-disable-next-line no-console
-      console.log(getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state))
-    }
+    // if (this.debug) {
+    //   console.log(getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state))
+    // }
 
     return !isPropsEqualWithMap(this.props, nextProps, this.propEquality) ||
       !isPropsEqualWithMap(this.state, nextState, this.stateEquality)

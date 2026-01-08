@@ -1,32 +1,26 @@
-import { DateMarker, addMs, startOfDay, addDays, createDuration, DateRange } from '@full-ui/headless-calendar'
+import { DateMarker, startOfDay, addDays, createDuration, DateRange } from '@full-ui/headless-calendar'
 import { ViewContext, ViewContextType } from './ViewContext.js'
 import { ComponentChildren, Component } from './preact.js'
-import { getNow } from './reducers/current-date.js'
 
 export interface NowTimerProps {
   unit: string // TODO: add type of unit
+  unitValue?: number // solely for nowIndicator:auto
   children: (now: DateMarker, todayRange: DateRange) => ComponentChildren
 }
 
 interface NowTimerState {
-  nowDate: DateMarker
+  nowDate: DateMarker // aligned to start of unit
   todayRange: DateRange
 }
 
 export class NowTimer extends Component<NowTimerProps, NowTimerState> {
   static contextType: any = ViewContextType
   context: ViewContext // do this for all components that use the context!!!
-  initialNowDate: DateMarker
-  initialNowQueriedMs: number
   timeoutId: any
 
   constructor(props: NowTimerProps, context: ViewContext) {
     super(props, context)
-
-    this.initialNowDate = getNow(context.options.now, context.dateEnv)
-    this.initialNowQueriedMs = new Date().valueOf()
-
-    this.state = this.computeTiming().currentState
+    this.state = this.computeTiming().state
   }
 
   render() {
@@ -36,6 +30,9 @@ export class NowTimer extends Component<NowTimerProps, NowTimerState> {
 
   componentDidMount() {
     this.setTimeout()
+    this.context.nowManager.addResetListener(this.handleRefresh)
+    // fired tab becomes visible after being hidden
+    document.addEventListener('visibilitychange', this.handleVisibilityChange)
   }
 
   componentDidUpdate(prevProps: NowTimerProps) {
@@ -47,32 +44,55 @@ export class NowTimer extends Component<NowTimerProps, NowTimerState> {
 
   componentWillUnmount() {
     this.clearTimeout()
+    this.context.nowManager.removeResetListener(this.handleRefresh)
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange)
   }
 
   private computeTiming() {
     let { props, context } = this
-    let unroundedNow = addMs(this.initialNowDate, new Date().valueOf() - this.initialNowQueriedMs)
-    let currentUnitStart = context.dateEnv.startOf(unroundedNow, props.unit)
-    let nextUnitStart = context.dateEnv.add(currentUnitStart, createDuration(1, props.unit))
-    let waitMs = nextUnitStart.valueOf() - unroundedNow.valueOf()
+    let unroundedNow = context.nowManager.getDateMarker()
+    let { nowIndicatorSnap } = context.options
+
+    if (nowIndicatorSnap === 'auto') {
+      nowIndicatorSnap =
+        // large unit?
+        /year|month|week|day/.test(props.unit) ||
+        // if slotDuration 30 mins for example, would NOT appear to snap (legacy behavior)
+        (props.unitValue || 1) === 1
+    }
+
+    let nowDate: DateMarker
+    let waitMs: number
+
+    if (nowIndicatorSnap) {
+      nowDate = context.dateEnv.startOf(unroundedNow, props.unit) // aka currentUnitStart
+      let nextUnitStart = context.dateEnv.add(nowDate, createDuration(1, props.unit))
+      waitMs = nextUnitStart.valueOf() - unroundedNow.valueOf()
+    } else {
+      nowDate = unroundedNow
+      waitMs = 1000 * 60 // 1 minute
+    }
 
     // there is a max setTimeout ms value (https://stackoverflow.com/a/3468650/96342)
     // ensure no longer than a day
     waitMs = Math.min(1000 * 60 * 60 * 24, waitMs)
 
     return {
-      currentState: { nowDate: currentUnitStart, todayRange: buildDayRange(currentUnitStart) } as NowTimerState,
-      nextState: { nowDate: nextUnitStart, todayRange: buildDayRange(nextUnitStart) } as NowTimerState,
+      state: { nowDate, todayRange: buildDayRange(nowDate) } as NowTimerState,
       waitMs,
     }
   }
 
-  private setTimeout() {
-    let { nextState, waitMs } = this.computeTiming()
-
+  private setTimeout(waitMs: number = this.computeTiming().waitMs) {
+    // NOTE: timeout could take longer than expected if tab sleeps,
+    // which is why we listen to 'visibilitychange'
     this.timeoutId = setTimeout(() => {
-      this.setState(nextState, () => {
-        this.setTimeout()
+      // NOTE: timeout could also return *earlier* than expected, and we need to wait 2 ms more
+      // This is why use use same waitMs from computeTiming, so we don't skip an interval while
+      // .setState() is executing
+      const timing = this.computeTiming()
+      this.setState(timing.state, () => {
+        this.setTimeout(timing.waitMs)
       })
     }, waitMs)
   }
@@ -80,6 +100,23 @@ export class NowTimer extends Component<NowTimerProps, NowTimerState> {
   private clearTimeout() {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
+    }
+  }
+
+  private handleRefresh = () => {
+    let timing = this.computeTiming()
+
+    if (timing.state.nowDate.valueOf() !== this.state.nowDate.valueOf()) {
+      this.setState(timing.state)
+    }
+
+    this.clearTimeout()
+    this.setTimeout(timing.waitMs)
+  }
+
+  private handleVisibilityChange = () => {
+    if (!document.hidden) {
+      this.handleRefresh()
     }
   }
 }
