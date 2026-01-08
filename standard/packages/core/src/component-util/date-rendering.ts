@@ -18,7 +18,7 @@ export function getDateMeta(
   todayRange?: DateRange,
   nowDate?: DateMarker,
 ): DateMeta {
-  const isDisabled = Boolean(dateProfile && (!dateProfile.activeRange || !rangeContainsMarker(dateProfile.activeRange, nowDate)))
+  const isDisabled = Boolean(dateProfile && (!dateProfile.activeRange || !rangeContainsMarker(dateProfile.activeRange, dateMarker)))
   return {
     date: dateEnv.toDate(dateMarker),
     dow: dateMarker.getUTCDay(),
