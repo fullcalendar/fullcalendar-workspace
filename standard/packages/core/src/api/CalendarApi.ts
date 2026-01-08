@@ -26,9 +26,9 @@ export interface CalendarApi {
   // Trigger
   // -----------------------------------------------------------------------------------------------------------------
 
-  on<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: CalendarListeners[ListenerName]): void
-  off<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: CalendarListeners[ListenerName]): void
-  trigger<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, ...args: Parameters<CalendarListeners[ListenerName]>): void
+  on<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void
+  off<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void
+  trigger<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, ...args: Parameters<Required<CalendarListeners>[ListenerName]>): void
 
   // View
   // -----------------------------------------------------------------------------------------------------------------

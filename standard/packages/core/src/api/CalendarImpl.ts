@@ -79,7 +79,7 @@ export class CalendarImpl implements CalendarApi {
   // Trigger
   // -----------------------------------------------------------------------------------------------------------------
 
-  on<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: CalendarListeners[ListenerName]): void {
+  on<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void {
     let { currentDataManager } = this
 
     if (currentDataManager.currentCalendarOptionsRefiners[handlerName]) {
@@ -89,12 +89,12 @@ export class CalendarImpl implements CalendarApi {
     }
   }
 
-  off<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: CalendarListeners[ListenerName]): void {
+  off<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void {
     this.currentDataManager!.emitter.off(handlerName, handler)
   }
 
   // not meant for public use
-  trigger<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, ...args: Parameters<CalendarListeners[ListenerName]>): void {
+  trigger<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, ...args: Parameters<Required<CalendarListeners>[ListenerName]>): void {
     this.currentDataManager!.emitter.trigger(handlerName, ...args)
   }
 

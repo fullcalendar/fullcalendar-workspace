@@ -77,18 +77,20 @@ export const BASE_OPTION_REFINERS = {
   navLinkWeekClick: identity as Identity<string | ((this: CalendarApi, weekStart: Date, jsEvent: UIEvent) => void)>,
   duration: createDuration,
 
-  buttons: identity as Identity<{
-    today?: ButtonInput
-    prev?: ButtonInput
-    next?: ButtonInput
-    prevYear?: ButtonInput
-    nextYear?: ButtonInput
-    year?: ButtonInput
-    month?: ButtonInput
-    week?: ButtonInput
-    day?: ButtonInput
-    [buttonName: string]: ButtonInput
-  }>,
+  buttons: identity as Identity<
+    Partial<{ // done this way to workaround newer TS claiming invalid
+      today: ButtonInput
+      prev: ButtonInput
+      next: ButtonInput
+      prevYear: ButtonInput
+      nextYear: ButtonInput
+      year: ButtonInput
+      month: ButtonInput
+      week: ButtonInput
+      day: ButtonInput
+      [buttonName: string]: ButtonInput
+    }>
+  >,
   toolbarElements: identity as Identity<{
     [elementName: string]: ToolbarElementInput
   }>,
