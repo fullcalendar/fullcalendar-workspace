@@ -10,6 +10,10 @@ import { createEventId } from './event-utils';
 import { CalendarFeature, selectEventsCount } from './reducer';
 import * as CalendarActions from './actions';
 
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
+import '@fullcalendar/theme-classic/palette.css'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

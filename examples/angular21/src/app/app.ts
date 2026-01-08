@@ -1,12 +1,17 @@
 import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import themePlugin from '@fullcalendar/theme-classic';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
+
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
+import '@fullcalendar/theme-classic/palette.css'
 
 @Component({
   selector: 'app-root',
@@ -23,6 +28,7 @@ export class App {
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
+      themePlugin,
     ],
     headerToolbar: {
       left: 'prev,next today',
@@ -61,7 +67,7 @@ export class App {
     }));
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
+  handleDateSelect(selectInfo: DateSelectData) {
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
 
@@ -78,7 +84,7 @@ export class App {
     }
   }
 
-  handleEventClick(clickInfo: EventClickArg) {
+  handleEventClick(clickInfo: EventClickData) {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove();
     }

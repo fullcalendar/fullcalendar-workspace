@@ -3,12 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic'
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import themePlugin from '@fullcalendar/theme-classic';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
+
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
+import '@fullcalendar/theme-classic/palette.css'
 
 @Component({
   selector: 'app-root',
@@ -21,11 +25,11 @@ export class AppComponent {
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
-      classicThemePlugin,
       interactionPlugin,
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
+      themePlugin,
     ],
     headerToolbar: {
       left: 'prev,next today',

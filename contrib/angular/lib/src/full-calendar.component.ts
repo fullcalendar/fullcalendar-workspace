@@ -20,7 +20,20 @@ import { deepEqual } from './utils/fast-deep-equal';
 
 @Component({
   selector: 'full-calendar',
-  templateUrl: './full-calendar.component.html',
+  template: `
+    <offscreen-fragment>
+      <transport-container *ngFor="let customRendering of customRenderings; trackBy:trackCustomRendering"
+        [inPlaceOf]="customRendering.containerEl"
+        [reportEl]="customRendering.reportNewContainerEl"
+        [tag]="customRendering.tag"
+        [attrs]="customRendering.attrs"
+        [className]="customRendering.className"
+        [style]="customRendering.style"
+        [template]="customRendering.generatorMeta"
+        [renderProps]="customRendering.renderProps"
+      ></transport-container>
+    </offscreen-fragment>
+  `,
   encapsulation: ViewEncapsulation.None // the styles are root-level, not scoped within the component
 })
 export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterContentChecked, OnDestroy {

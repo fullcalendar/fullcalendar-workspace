@@ -4,6 +4,10 @@ import classicThemePlugin from '@fullcalendar/theme-classic';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
+import '@fullcalendar/theme-classic/palette.css'
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',

@@ -12,4 +12,3 @@ packages:
   - './contrib/*'
   - './examples/*'
   - './examples-v7/*'
-  - '!./examples/angular18'

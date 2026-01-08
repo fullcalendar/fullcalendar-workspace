@@ -27,20 +27,18 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/src/test.ts",
             "tsConfig": "lib/tsconfig.spec.json",
-            "karmaConfig": "lib/karma.conf.js"
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }
     },
     "app": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:application": {
-          "strict": true
-        }
-      },
+      "schematics": {},
       "root": "app",
       "sourceRoot": "app/src",
       "prefix": "app",
@@ -51,7 +49,9 @@
             "outputPath": "dist/app",
             "index": "app/src/index.html",
             "main": "app/src/main.ts",
-            "polyfills": "app/src/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "app/tsconfig.app.json",
             "styles": [
               "app/src/styles.css"
@@ -70,12 +70,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "app/src/environments/environment.ts",
-                  "with": "app/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -112,10 +106,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "app/src/test.ts",
-            "polyfills": "app/src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "app/tsconfig.spec.json",
-            "karmaConfig": "app/karma.conf.js",
             "styles": [
               "app/src/styles.css"
             ],
@@ -124,6 +119,5 @@
         }
       }
     }
-  },
-  "defaultProject": "lib"
+  }
 }

@@ -1,11 +1,15 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
+
+import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/theme-classic/theme.css'
+import '@fullcalendar/theme-classic/palette.css'
 
 @Component({
   selector: 'app-root',

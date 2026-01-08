@@ -35,11 +35,17 @@ build note:
     manually before `pn dev`
 
 
-go ESM-only (keep global of course)
-  avoids "dual-package hazard"?
-  (we used to impore .cjs/.js files explicitly from CJS/ESM)
+angular/esm issues:
+  examples/angular18: baffling angular cli version mismatch error
+  examples/angular17-13: tsconfigs use "moduleResolution": "node",
+    which doesn't support exports map
+    solution: go all-ESM in top-level dist; is backwards-compat
+
+
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?
+  only happens in Angular 21 example
+  for v6 too? probably
 changelog:
   DateSelectArg -> DateSelectData
   EventClickArg -> EventClickData
