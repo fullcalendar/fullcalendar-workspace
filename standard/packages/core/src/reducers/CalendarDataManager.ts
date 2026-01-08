@@ -31,7 +31,7 @@ import {
   BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
   CalendarListeners, CALENDAR_LISTENER_REFINERS, Dictionary,
 } from '../options.js'
-import { mergeCalendarOptions } from '../options-manip.js'
+import { isMergedPropsEqual, mergeCalendarOptions } from '../options-manip.js'
 import { rangeContainsMarker } from '@full-ui/headless-calendar'
 import { ViewImpl } from '../api/ViewImpl.js'
 import { parseBusinessHours } from '../structs/business-hours.js'
@@ -41,7 +41,6 @@ import { CalendarContext } from '../CalendarContext.js'
 import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types.js'
 import { TaskRunner } from '../util/TaskRunner.js'
 import { buildTitle } from './title-formatting.js'
-import { isArraysEqual } from '../util/array.js'
 import { CalendarNowManager } from './CalendarNowManager.js'
 
 export interface CalendarDataManagerProps {
@@ -467,12 +466,7 @@ export class CalendarDataManager {
             COMPLEX_OPTION_COMPARATORS[optionName] &&
             (optionName in currentRaw) &&
             COMPLEX_OPTION_COMPARATORS[optionName](currentRaw[optionName], raw[optionName])
-          ) || (
-            // see options-manip
-            currentRaw[optionName] && currentRaw[optionName].parts &&
-            raw[optionName] && raw[optionName].parts &&
-            isArraysEqual(currentRaw[optionName].parts, raw[optionName].parts)
-          )
+          ) || isMergedPropsEqual(currentRaw[optionName], raw[optionName])
         )
       ) {
         refined[optionName] = currentRefined[optionName]
@@ -589,12 +583,7 @@ export class CalendarDataManager {
         raw[optionName] === currentRaw[optionName] || (
           COMPLEX_OPTION_COMPARATORS[optionName] &&
           COMPLEX_OPTION_COMPARATORS[optionName](raw[optionName], currentRaw[optionName])
-        ) || (
-          // see options-manip
-          currentRaw[optionName] && (currentRaw as any)[optionName].parts &&
-          raw[optionName] && raw[optionName].parts &&
-          isArraysEqual((currentRaw as any)[optionName].parts, raw[optionName].parts)
-        )
+        ) || isMergedPropsEqual(currentRaw[optionName], raw[optionName])
       ) {
         refined[optionName] = currentRefined[optionName]
       } else {

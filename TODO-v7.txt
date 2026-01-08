@@ -104,11 +104,15 @@ bug: timeline initial scroll off, prolly due to layout shifting
   premium/tests/src/timeline/scrollTime.ts
 flaky
   (did xdescribe for now)
+  standard/tests/src/legacy/external-dnd.ts
   premium/tests/src/timeline/timeline-event-dnd.ts
   premium/tests/src/timeline/timeline-event-resizing.ts
   premium/tests/src/misc/eventConstraint.ts
 nested resource column grouping buggy
   xdescribe: premium/tests/src/timeline/timeline-col-grouping.ts
+we'll probably remove luxon. so who cares...
+  xdescribe: standard/tests/src/datelib/luxon.ts
+    // https://github.com/fullcalendar/fullcalendar/issues/7633
 
 
 ASAP

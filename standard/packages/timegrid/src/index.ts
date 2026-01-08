@@ -1,4 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
+import dayGridPlugin from '@fullcalendar/daygrid'
 import { TimeGridView } from './components/TimeGridView.js'
 import { OPTION_REFINERS } from './options.js'
 import './ambient.js'
@@ -6,6 +7,7 @@ import './ambient.js'
 export default createPlugin({
   name: '<%= pkgName %>',
   initialView: 'timeGridWeek',
+  deps: [dayGridPlugin],
   optionRefiners: OPTION_REFINERS,
   views: {
     timeGrid: {

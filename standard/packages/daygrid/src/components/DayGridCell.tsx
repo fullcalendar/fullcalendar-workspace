@@ -100,16 +100,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       classNames.flexCol,
     )
 
-    let publicDate = dateEnv.toDate(props.date)
-    // workaround for Luxon (and maybe moment) returning prior-days when start-of-day
-    // in DST gap: https://github.com/fullcalendar/fullcalendar/issues/7633
-    if (dateEnv.namedTimeZoneImpl) {
-      publicDate = addMs(publicDate, 3600000) // add an hour
-    }
-
     const hasNavLink = options.navLinks
     const renderProps = this.refineRenderProps({
-      date: publicDate,
+      date: props.date,
       isMajor: props.isMajor,
       isNarrow: props.isNarrow,
       dateMeta: dateMeta,

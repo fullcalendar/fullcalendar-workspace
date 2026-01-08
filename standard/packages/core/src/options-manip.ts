@@ -141,3 +141,27 @@ export function isNonHandlerPropsEqual(obj0, obj1) {
 
   return true
 }
+
+export function isMergedPropsEqual(val0: any, val1: any): boolean {
+  const parts0 = val0 && val0.parts
+  const parts1 = val1 && val1.parts
+
+  if (parts0 && parts1) {
+    const count0 = parts0.length
+    const count1 = parts1.length
+
+    if (count0 !== count1) {
+      return false
+    }
+
+    for (let i = 0; i < count0; i++) {
+      if (!(parts0[i] === parts1[i] || isMergedPropsEqual(parts0[i], parts1[i]))) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  return false
+}

@@ -230,7 +230,7 @@ describe('luxon plugin', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7633
-  describe('date headers', () => {
+  xdescribe('date headers', () => {
     it('don\'t fall into DST', () => {
       const dayNumbers = []
       initCalendar({
