@@ -39,6 +39,8 @@ interface ResourceTimelineViewState {
 }
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
+  state = {} as ResourceTimelineViewState
+
   // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)

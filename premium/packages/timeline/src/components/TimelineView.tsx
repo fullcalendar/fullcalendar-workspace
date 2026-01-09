@@ -44,6 +44,8 @@ interface TimelineViewState {
 }
 
 export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
+  state = {} as TimelineViewState
+
   // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private computeSlotWidth = memoize(computeSlotWidth)

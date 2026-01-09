@@ -138,6 +138,8 @@ const defaultOwnCellHeight = 40
 const defaultSlotWidth = 50
 
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
+  state = {} as ResourceTimelineViewState
+
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
 

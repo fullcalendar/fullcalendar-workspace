@@ -41,6 +41,8 @@ interface TimelineHeaderCellState {
 }
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, TimelineHeaderCellState> {
+  state = {} as TimelineHeaderCellState
+
   // memo
   private getDateMeta = memoize(getDateMeta)
 

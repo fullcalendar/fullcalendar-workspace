@@ -23,6 +23,8 @@ interface ResizableTwoColState {
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
+  state = {} as ResizableTwoColState
+
   // memo
   parseWidthConfig: typeof parseDimConfig = memoize(parseDimConfig)
 

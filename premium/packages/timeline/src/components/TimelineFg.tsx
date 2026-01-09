@@ -49,6 +49,8 @@ interface TimelineFgState {
 }
 
 export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> {
+  state = {} as TimelineFgState
+
   // memo
   private sortEventSegs = memoize(sortEventSegs)
 

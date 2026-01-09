@@ -31,6 +31,8 @@ interface SingleMonthState {
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthState> {
+  state = {} as SingleMonthState
+
   // memo
   private buildDayTableModel = memoize(buildDayTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)

@@ -22,6 +22,8 @@ interface DayGridHeaderCellState {
 }
 
 export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>, DayGridHeaderCellState> {
+  state = {} as DayGridHeaderCellState
+
   // internal
   private disconnectSize?: () => void
   private align?: 'start' | 'center' | 'end'

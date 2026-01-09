@@ -67,6 +67,8 @@ interface TimeGridLayoutState {
 }
 
 export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProps, TimeGridLayoutState> {
+  state = {} as TimeGridLayoutState
+
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
     afterSize(this.handleAxisInnerWidths)

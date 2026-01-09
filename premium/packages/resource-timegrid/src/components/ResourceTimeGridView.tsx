@@ -33,6 +33,8 @@ interface ResourceTimeGridViewState {
 }
 
 export class ResourceTimeGridView extends DateComponent<ResourceViewProps, ResourceTimeGridViewState> {
+  state = {} as ResourceTimeGridViewState
+
   // memo
   private flattenResources = memoize(flattenResources)
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)

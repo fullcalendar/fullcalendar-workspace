@@ -58,6 +58,8 @@ interface DayGridViewState {
 }
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
+  state = {} as DayGridViewState
+
   render() {
     const { props, state, context } = this
     const { options } = context

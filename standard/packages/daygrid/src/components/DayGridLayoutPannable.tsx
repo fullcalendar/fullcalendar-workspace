@@ -65,6 +65,8 @@ interface DayGridViewState {
 }
 
 export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannableProps, DayGridViewState> {
+  state = {} as DayGridViewState
+
   headerScrollerRef = createRef<Scroller>()
   bodyScrollerRef = createRef<Scroller>()
   footerScrollerRef = createRef<Scroller>()

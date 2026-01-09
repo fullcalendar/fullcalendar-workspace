@@ -36,6 +36,8 @@ interface TimelineHeaderRowState {
 }
 
 export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, TimelineHeaderRowState> {
+  state = {} as TimelineHeaderRowState
+
   // refs
   private innerWidthRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleInnerWidths)

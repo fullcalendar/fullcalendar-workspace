@@ -32,6 +32,8 @@ interface MultiMonthViewState {
 }
 
 export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
+  state = {} as MultiMonthViewState
+
   // memo
   private splitDateProfileByMonth = memoize(splitDateProfileByMonth)
   private buildMonthFormat = memoize(buildMonthFormat)
