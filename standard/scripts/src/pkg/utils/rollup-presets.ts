@@ -389,17 +389,24 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     nodeResolvePlugin({
       ignoreSideEffectsForRoot: true,
     }),
+    commonjsPlugin(), // for React :(
     cssPlugin({
       extract: extractCss,
       minify,
     }),
     replacePlugin({
-      delimiters: ['<%= ', ' %>'],
+      delimiters: ['<%= ', ' %>'], // affect all "values" below
       preventAssignment: true,
       values: {
         releaseDate: new Date().toISOString().replace(/T.*/, ''), // just YYYY-MM-DD
         pkgName: pkgJson.name,
         pkgVersion: pkgJson.version,
+      },
+    }),
+    replacePlugin({
+      preventAssignment: true,
+      values: {
+        'process.env.NODE_ENV': JSON.stringify('development'), // for React... do conditionally!!!
       },
     }),
   ]
@@ -423,7 +430,7 @@ function buildTestJsPlugins(): Plugin[] {
     replacePlugin({
       preventAssignment: true,
       values: {
-        'process.env.NODE_ENV': '"development"',
+        'process.env.NODE_ENV': JSON.stringify('development'),
       },
     }),
   ]

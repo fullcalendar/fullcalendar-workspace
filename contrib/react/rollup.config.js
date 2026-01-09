@@ -36,7 +36,7 @@ export default [
       replace({ // important it goes first
         preventAssignment: true,
         values: {
-          'process.env.NODE_ENV': '"development"' // needed for @testing-library/react
+          'process.env.NODE_ENV': JSON.stringify('development') // needed for @testing-library/react
         }
       }),
       nodeResolve({

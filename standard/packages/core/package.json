@@ -74,7 +74,10 @@
     },
     "dependencyGlobalVars": {
       "preact": "",
-      "preact/compat": ""
+      "preact/compat": "",
+      "react": "",
+      "react-dom": "",
+      "react-dom/client": ""
     }
   },
   "publishConfig": {
