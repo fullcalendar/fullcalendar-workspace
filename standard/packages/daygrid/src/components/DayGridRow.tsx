@@ -165,7 +165,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             classNames.printSiblingRow,
         )}
         style={{
-          'flex-basis': props.basis,
+          flexBasis: props.basis,
         }}
         ref={this.handleRootEl}
       >
@@ -350,7 +350,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={key}
           className={classNames.fillY}
           style={{
-            visibility: isVisible ? '' : 'hidden',
+            visibility: (isVisible ? '' : 'hidden') as any,
             insetInlineStart,
             insetInlineEnd,
           }}

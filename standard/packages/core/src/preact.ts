@@ -32,3 +32,13 @@ export {
   createRoot,
 } from 'react-dom/client'
 
+// TODO: ensure this doesn't make it to build-time
+// Fixes JSX in other packages, which relies on global JSX namespace
+import type { JSX as ReactJSX } from 'react'
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ReactJSX.IntrinsicElements {}
+    interface IntrinsicAttributes extends ReactJSX.IntrinsicAttributes {}
+    interface IntrinsicClassAttributes<T> extends ReactJSX.IntrinsicClassAttributes<T> {}
+  }
+}

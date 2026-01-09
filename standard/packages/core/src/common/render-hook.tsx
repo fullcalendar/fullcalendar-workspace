@@ -7,10 +7,10 @@ export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountDa
 export type WillUnmountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
 
 export interface ObjCustomContent {
-  html: string
-  domNodes: any[]
+  html?: string
+  domNodes?: any[]
 }
 
 export type CustomContent = ComponentChildren | ObjCustomContent
-export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))
+export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true | void | undefined))
 export type ClassNameGenerator<RenderProps> = string | undefined | ((renderProps: RenderProps) => string | undefined)

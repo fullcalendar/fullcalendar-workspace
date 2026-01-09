@@ -444,7 +444,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     )}
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
-                        class={joinArrayishClassNames(
+                        className={joinArrayishClassNames(
                           generateClassName(options.fillerClass, { isHeader: false }),
                           classNames.borderOnlyT,
                           rowsNotExpanding && classNames.liquid,
@@ -551,7 +551,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       </div>
                       {rowsNotExpanding && (
                         <div
-                          class={joinArrayishClassNames(
+                          className={joinArrayishClassNames(
                             generateClassName(options.fillerClass, { isHeader: false }),
                             classNames.borderOnlyT,
                             classNames.liquid,

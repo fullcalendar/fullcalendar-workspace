@@ -45,10 +45,10 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     return (
       <div
         ref={this.handleRootEl}
-        class={joinClassNames(props.className, classNames.flexRow)}
+        className={joinClassNames(props.className, classNames.flexRow)}
       >
         <div
-          class={props.startClassName}
+          className={props.startClassName}
           style={{
             width: serializeDimConfig(widthConfig),
           }}
@@ -71,7 +71,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
             style={{ zIndex: 1 }} // TODO: className?
           />
         </div>
-        <div class={joinClassNames(props.endClassName, classNames.liquid)}>
+        <div className={joinClassNames(props.endClassName, classNames.liquid)}>
           {props.endContent}
         </div>
       </div>

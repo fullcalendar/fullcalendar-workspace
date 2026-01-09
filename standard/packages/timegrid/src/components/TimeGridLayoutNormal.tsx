@@ -421,7 +421,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
                   {rowsNotExpanding && (
                     <div
-                      class={joinArrayishClassNames(
+                      className={joinArrayishClassNames(
                         generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyT,
                         classNames.liquid,

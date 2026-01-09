@@ -68,8 +68,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         )}
         style={{
           ...props.style,
-          overflowX: props.horizontal ? 'auto' : fallbackOverflow,
-          overflowY: props.vertical ? 'auto' : fallbackOverflow,
+          overflowX: (props.horizontal ? 'auto' : fallbackOverflow) as any,
+          overflowY: (props.vertical ? 'auto' : fallbackOverflow) as any,
         }}
       >
         {props.children}
