@@ -16,7 +16,7 @@ import { generateClassName } from './internal.js'
 import { NowTimer } from './NowTimer.js'
 import { CalendarOptions } from './options.js'
 import { ViewPropsTransformerClass } from './plugin-system-struct.js'
-import { createElement, Fragment, render, flushSync, VNode } from './preact.js'
+import { createElement, Fragment, createRoot, flushSync, VNode } from './preact.js'
 import { Action } from './reducers/Action.js'
 import { CalendarDataManager } from './reducers/CalendarDataManager.js'
 import { CalendarData } from './reducers/data-types.js'
@@ -51,6 +51,7 @@ Vanilla JS API
 export class Calendar extends CalendarImpl {
   el: HTMLElement
 
+  private vdomRoot: { render: (vdomNode: any) => any } // TODO
   private buildToolbarProps = memoize(buildToolbarProps)
   private buildViewContext = memoize(buildViewContext)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
@@ -70,6 +71,7 @@ export class Calendar extends CalendarImpl {
     super()
 
     this.el = el
+    this.vdomRoot = createRoot(el)
     this.renderRunner = new DelayedRunner(this.handleRenderRequest)
 
     new CalendarDataManager({ // eslint-disable-line no-new
@@ -101,7 +103,7 @@ export class Calendar extends CalendarImpl {
       this.isRendered = true
 
       flushSync(() => {
-        render(
+        this.vdomRoot.render(
           <CalendarRoot options={currentData.calendarOptions} emitter={currentData.emitter}>
             {(isRtl: boolean, className: string, height: number, forPrint: boolean) => {
               this.setIsRtl(isRtl)
@@ -115,7 +117,6 @@ export class Calendar extends CalendarImpl {
               )
             }}
           </CalendarRoot>,
-          this.el,
         )
       })
 
@@ -130,7 +131,7 @@ export class Calendar extends CalendarImpl {
     } else if (this.isRendered) {
       this.isRendered = false
       this.handleContentUnmount()
-      render(null, this.el)
+      this.vdomRoot.render(null)
 
       this.setIsRtl(false)
       this.setClassName('')

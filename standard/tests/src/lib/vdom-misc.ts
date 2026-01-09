@@ -1,4 +1,4 @@
-import { render, createElement, flushSync } from '@fullcalendar/core/preact'
+import { createRoot, createElement, flushSync } from '@fullcalendar/core/preact'
 import { ListenerCounter } from './ListenerCounter.js'
 
 let standardElListenerCount
@@ -10,15 +10,16 @@ export function prepareStandardListeners() {
   return standardElListenerCount
 }
 
-export function _prepareStandardListeners() {
+function _prepareStandardListeners() {
   let el = document.createElement('div')
   document.body.appendChild(el)
 
   const elListenerCounter = new ListenerCounter(el)
   elListenerCounter.startWatching()
 
+  const root = createRoot(el)
   flushSync(() => {
-    render(createElement('div', {}), el)
+    root.render(createElement('div', {}))
   })
 
   return elListenerCounter.stopWatching()

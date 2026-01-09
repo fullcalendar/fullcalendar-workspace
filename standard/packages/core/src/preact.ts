@@ -1,6 +1,4 @@
 import * as preact from 'preact'
-export * from 'preact'
-export { createPortal } from 'preact/compat'
 
 /*
 Shim newer TS global libs
@@ -17,7 +15,7 @@ declare global {
 Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
 BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929
 */
-export function flushUpdates() {
+export function flushUpdates(): void {
   let oldDebounceRendering = preact.options.debounceRendering // orig
   let callbackQ = []
 
@@ -35,9 +33,10 @@ export function flushUpdates() {
   preact.options.debounceRendering = oldDebounceRendering
 }
 
-export function flushSync(f: () => void): void {
-  f()
+export function flushSync<R>(f: () => R): R {
+  const res = f()
   flushUpdates()
+  return res
 }
 
 /*
@@ -48,6 +47,32 @@ class FakeComponent extends preact.Component {
   componentDidMount() { this.setState({}) }
 }
 
-export const createContext = preact.createContext
+// HACK
+// for ResizeObserver fallback
+export const preactOptions: any = preact.options
 
-export const preactOptions = preact.options
+export {
+  type JSX,
+  type VNode,
+  type ComponentType,
+  type ComponentChild,
+  type ComponentChildren,
+  type Context,
+  type Ref,
+  type RefObject,
+  Component,
+  createElement,
+  createContext,
+  createRef,
+  Fragment,
+  isValidElement,
+  FunctionalComponent,
+} from 'preact'
+
+export {
+  createPortal,
+} from 'preact/compat'
+
+export {
+  createRoot
+} from 'preact/compat/client'
