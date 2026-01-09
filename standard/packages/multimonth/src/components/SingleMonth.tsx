@@ -158,7 +158,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 navLinkAttrs.className,
               )}
             >
-              {dateEnv.format(monthStartDate, props.titleFormat)}
+              {dateEnv.format(monthStartDate, props.titleFormat)[0]}
             </div>
           </div>
           <div // the daygrid table
