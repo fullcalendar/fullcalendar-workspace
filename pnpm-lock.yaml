@@ -467,6 +467,9 @@ importers:
       zone.js:
         specifier: ~0.11.4
         version: 0.11.8
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
@@ -504,9 +507,6 @@ importers:
       typescript:
         specifier: ~4.6.2
         version: 4.6.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular14:
     dependencies:
@@ -564,6 +564,9 @@ importers:
       zone.js:
         specifier: ~0.11.4
         version: 0.11.8
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^14.1.0
@@ -598,9 +601,6 @@ importers:
       typescript:
         specifier: ~4.7.2
         version: 4.7.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular15:
     dependencies:
@@ -658,6 +658,9 @@ importers:
       zone.js:
         specifier: ~0.12.0
         version: 0.12.0
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
@@ -692,9 +695,6 @@ importers:
       typescript:
         specifier: ~4.8.2
         version: 4.8.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular15-ionic:
     dependencies:
@@ -912,6 +912,9 @@ importers:
       zone.js:
         specifier: ~0.12.0
         version: 0.12.0
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
@@ -946,9 +949,6 @@ importers:
       typescript:
         specifier: ~4.8.2
         version: 4.8.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular16:
     dependencies:
@@ -1006,6 +1006,9 @@ importers:
       zone.js:
         specifier: ~0.13.0
         version: 0.13.3
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
@@ -1040,9 +1043,6 @@ importers:
       typescript:
         specifier: ~5.0.2
         version: 5.0.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular17:
     dependencies:
@@ -1100,6 +1100,9 @@ importers:
       zone.js:
         specifier: ~0.14.2
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.0.3
@@ -1134,9 +1137,6 @@ importers:
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular18:
     dependencies:
@@ -1194,6 +1194,9 @@ importers:
       zone.js:
         specifier: ~0.14.3
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
@@ -1228,9 +1231,6 @@ importers:
       typescript:
         specifier: ~5.4.2
         version: 5.4.5
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular19:
     dependencies:
@@ -1288,6 +1288,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.0
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^19.0.2
@@ -1322,9 +1325,6 @@ importers:
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular20:
     dependencies:
@@ -1376,6 +1376,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.0
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^20.0.4
@@ -1410,9 +1413,6 @@ importers:
       typescript:
         specifier: ~5.8.2
         version: 5.8.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular21:
     dependencies:
@@ -1461,6 +1461,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -1480,9 +1483,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@24.10.3)(jiti@2.4.2)(jsdom@27.4.0)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/locales:
     dependencies:
@@ -1919,6 +1919,9 @@ importers:
       react-dom:
         specifier: ^16.13.1
         version: 16.14.0(react@16.14.0)
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@babel/core':
         specifier: ^7.4.0
@@ -1962,9 +1965,6 @@ importers:
       webpack-dev-server:
         specifier: ^3.11.0
         version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react17:
     dependencies:
@@ -1989,6 +1989,9 @@ importers:
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@babel/core':
         specifier: ^7.4.0
@@ -2032,9 +2035,6 @@ importers:
       webpack-dev-server:
         specifier: ^3.11.0
         version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18:
     dependencies:
@@ -3584,9 +3584,21 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
+      '@types/react':
+        specifier: ^19.2.7
+        version: 19.2.7
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.7)
       preact:
         specifier: ~10.23.1
         version: 10.23.2
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -27190,6 +27202,7 @@ packages:
   whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
     engines: {node: '>=12'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@2.3.0:
     resolution: {integrity: sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==}
@@ -27878,7 +27891,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1)
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -27891,17 +27904,17 @@ snapshots:
       '@babel/runtime': 7.16.7
       '@babel/template': 7.16.7
       '@discoveryjs/json-ext': 0.5.6
-      '@ngtools/webpack': 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(typescript@4.6.4)(webpack@5.76.1)
+      '@ngtools/webpack': 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(typescript@4.6.4)(webpack@5.76.1(esbuild@0.14.22))
       ansi-colors: 4.1.1
-      babel-loader: 8.2.5(@babel/core@7.16.12)(webpack@5.76.1)
+      babel-loader: 8.2.5(@babel/core@7.16.12)(webpack@5.76.1(esbuild@0.14.22))
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.24.2
       cacache: 15.3.0
-      circular-dependency-plugin: 5.2.2(webpack@5.76.1)
-      copy-webpack-plugin: 10.2.1(webpack@5.76.1)
+      circular-dependency-plugin: 5.2.2(webpack@5.76.1(esbuild@0.14.22))
+      copy-webpack-plugin: 10.2.1(webpack@5.76.1(esbuild@0.14.22))
       core-js: 3.20.3
       critters: 0.0.16
-      css-loader: 6.5.1(webpack@5.76.1)
+      css-loader: 6.5.1(webpack@5.76.1(esbuild@0.14.22))
       esbuild-wasm: 0.14.22
       glob: 7.2.0
       https-proxy-agent: 5.0.0
@@ -27909,10 +27922,10 @@ snapshots:
       jsonc-parser: 3.0.0
       karma-source-map-support: 1.4.0
       less: 4.1.2
-      less-loader: 10.2.0(less@4.1.2)(webpack@5.76.1)
-      license-webpack-plugin: 4.0.2(webpack@5.76.1)
+      less-loader: 10.2.0(less@4.1.2)(webpack@5.76.1(esbuild@0.14.22))
+      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.14.22))
       loader-utils: 3.2.1
-      mini-css-extract-plugin: 2.5.3(webpack@5.76.1)
+      mini-css-extract-plugin: 2.5.3(webpack@5.76.1(esbuild@0.14.22))
       minimatch: 3.0.5
       open: 8.4.0
       ora: 5.4.1
@@ -27920,28 +27933,28 @@ snapshots:
       piscina: 3.2.0
       postcss: 8.4.5
       postcss-import: 14.0.2(postcss@8.4.5)
-      postcss-loader: 6.2.1(postcss@8.4.5)(webpack@5.76.1)
+      postcss-loader: 6.2.1(postcss@8.4.5)(webpack@5.76.1(esbuild@0.14.22))
       postcss-preset-env: 7.2.3(postcss@8.4.5)
       regenerator-runtime: 0.13.9
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.49.9
-      sass-loader: 12.4.0(sass@1.49.9)(webpack@5.76.1)
+      sass-loader: 12.4.0(sass@1.49.9)(webpack@5.76.1(esbuild@0.14.22))
       semver: 7.3.5
-      source-map-loader: 3.0.1(webpack@5.76.1)
+      source-map-loader: 3.0.1(webpack@5.76.1(esbuild@0.14.22))
       source-map-support: 0.5.21
       stylus: 0.56.0
-      stylus-loader: 6.2.0(stylus@0.56.0)(webpack@5.76.1)
+      stylus-loader: 6.2.0(stylus@0.56.0)(webpack@5.76.1(esbuild@0.14.22))
       terser: 5.14.2
       text-table: 0.2.0
       tree-kill: 1.2.2
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
       webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1)
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
       esbuild: 0.14.22
       karma: 6.3.20
@@ -28648,7 +28661,7 @@ snapshots:
       - vite
       - webpack-cli
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1)':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
@@ -39152,7 +39165,7 @@ snapshots:
       rxjs: 7.5.7
       tslib: 2.8.1
 
-  '@ngtools/webpack@13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(typescript@4.6.4)(webpack@5.76.1)':
+  '@ngtools/webpack@13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(typescript@4.6.4)(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       typescript: 4.6.4
@@ -40932,8 +40945,8 @@ snapshots:
       '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@4.8.4)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.6
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jest: 26.9.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1)(typescript@4.8.4)
       eslint-plugin-jest-dom: 4.0.3(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
@@ -42314,7 +42327,7 @@ snapshots:
 
   '@types/react-dom@18.3.1':
     dependencies:
-      '@types/react': 18.3.12
+      '@types/react': 19.2.7
 
   '@types/react-dom@19.1.6(@types/react@19.1.8)':
     dependencies:
@@ -43636,12 +43649,12 @@ snapshots:
   '@webpack-cli/configtest@1.2.0(webpack-cli@4.10.0)(webpack@5.97.0)':
     dependencies:
       webpack: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli: 4.10.0(webpack@5.97.0)
+      webpack-cli: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
 
   '@webpack-cli/info@1.5.0(webpack-cli@4.10.0)':
     dependencies:
       envinfo: 7.14.0
-      webpack-cli: 4.10.0(webpack@5.97.0)
+      webpack-cli: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
 
   '@webpack-cli/serve@1.7.0(webpack-cli@4.10.0)':
     dependencies:
@@ -44334,7 +44347,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-loader@8.2.5(@babel/core@7.16.12)(webpack@5.76.1):
+  babel-loader@8.2.5(@babel/core@7.16.12)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       '@babel/core': 7.16.12
       find-cache-dir: 3.3.2
@@ -45271,7 +45284,7 @@ snapshots:
 
   ci-info@4.1.0: {}
 
-  circular-dependency-plugin@5.2.2(webpack@5.76.1):
+  circular-dependency-plugin@5.2.2(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       webpack: 5.76.1(esbuild@0.14.22)
 
@@ -45610,7 +45623,7 @@ snapshots:
 
   copy-descriptor@0.1.1: {}
 
-  copy-webpack-plugin@10.2.1(webpack@5.76.1):
+  copy-webpack-plugin@10.2.1(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       fast-glob: 3.3.2
       glob-parent: 6.0.2
@@ -45940,7 +45953,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.20.1)
 
-  css-loader@6.5.1(webpack@5.76.1):
+  css-loader@6.5.1(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.6)
       postcss: 8.5.6
@@ -47733,7 +47746,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.2(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -47778,22 +47791,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1):
-    dependencies:
-      '@nolyfill/is-core-module': 1.0.39
-      debug: 4.3.7(supports-color@9.4.0)
-      enhanced-resolve: 5.17.1
-      eslint: 8.57.1
-      fast-glob: 3.3.2
-      get-tsconfig: 4.8.1
-      is-bun-module: 1.3.0
-      is-glob: 4.0.3
-      stable-hash: 0.0.4
-    optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
-    transitivePeerDependencies:
-      - supports-color
-
   eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
@@ -47806,7 +47803,7 @@ snapshots:
       is-glob: 4.0.3
       stable-hash: 0.0.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -47833,17 +47830,6 @@ snapshots:
       '@typescript-eslint/parser': 5.3.0(eslint@7.32.0)(typescript@4.8.4)
       eslint: 7.32.0
       eslint-import-resolver-node: 0.3.9
-    transitivePeerDependencies:
-      - supports-color
-
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
-    dependencies:
-      debug: 3.2.7(supports-color@6.1.0)
-    optionalDependencies:
-      '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@4.8.4)
-      eslint: 8.57.1
-      eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -47898,36 +47884,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
-    dependencies:
-      '@rtsao/scc': 1.1.0
-      array-includes: 3.1.8
-      array.prototype.findlastindex: 1.2.5
-      array.prototype.flat: 1.3.2
-      array.prototype.flatmap: 1.3.2
-      debug: 3.2.7(supports-color@6.1.0)
-      doctrine: 2.1.0
-      eslint: 8.57.1
-      eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
-      hasown: 2.0.2
-      is-core-module: 2.15.1
-      is-glob: 4.0.3
-      minimatch: 3.1.2
-      object.fromentries: 2.0.8
-      object.groupby: 1.0.3
-      object.values: 1.2.0
-      semver: 6.3.1
-      string.prototype.trimend: 1.0.8
-      tsconfig-paths: 3.15.0
-    optionalDependencies:
-      '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@4.8.4)
-    transitivePeerDependencies:
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - supports-color
-
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.8.4))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -49698,7 +49655,7 @@ snapshots:
   http-proxy-middleware@2.0.7(@types/express@4.17.21):
     dependencies:
       '@types/http-proxy': 1.17.15
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.3.7)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.8
@@ -49710,7 +49667,7 @@ snapshots:
   http-proxy-middleware@2.0.9(@types/express@4.17.21):
     dependencies:
       '@types/http-proxy': 1.17.15
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.3.7)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.8
@@ -51209,7 +51166,7 @@ snapshots:
       dom-serialize: 2.2.1
       glob: 7.2.3
       graceful-fs: 4.2.11
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.3.7)
       isbinaryfile: 4.0.10
       lodash: 4.17.21
       log4js: 6.9.1
@@ -51241,7 +51198,7 @@ snapshots:
       dom-serialize: 2.2.1
       glob: 7.2.3
       graceful-fs: 4.2.11
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.3.7)
       isbinaryfile: 4.0.10
       lodash: 4.17.21
       log4js: 6.9.1
@@ -51303,7 +51260,7 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  less-loader@10.2.0(less@4.1.2)(webpack@5.76.1):
+  less-loader@10.2.0(less@4.1.2)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       klona: 2.0.6
       less: 4.1.2
@@ -51415,6 +51372,12 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.14.22)):
+    dependencies:
+      webpack-sources: 3.2.3
+    optionalDependencies:
+      webpack: 5.76.1(esbuild@0.14.22)
+
   license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       webpack-sources: 3.2.3
@@ -51426,12 +51389,6 @@ snapshots:
       webpack-sources: 3.2.3
     optionalDependencies:
       webpack: 5.76.1(esbuild@0.17.8)
-
-  license-webpack-plugin@4.0.2(webpack@5.76.1):
-    dependencies:
-      webpack-sources: 3.2.3
-    optionalDependencies:
-      webpack: 5.76.1(esbuild@0.14.22)
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -52467,7 +52424,7 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  mini-css-extract-plugin@2.5.3(webpack@5.76.1):
+  mini-css-extract-plugin@2.5.3(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.14.22)
@@ -55123,7 +55080,7 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.49
 
-  postcss-loader@6.2.1(postcss@8.4.5)(webpack@5.76.1):
+  postcss-loader@6.2.1(postcss@8.4.5)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       cosmiconfig: 7.1.0
       klona: 2.0.6
@@ -57254,7 +57211,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@12.4.0(sass@1.49.9)(webpack@5.76.1):
+  sass-loader@12.4.0(sass@1.49.9)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
@@ -57922,7 +57879,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map-loader@3.0.1(webpack@5.76.1):
+  source-map-loader@3.0.1(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
@@ -58343,7 +58300,7 @@ snapshots:
 
   stylis@4.2.0: {}
 
-  stylus-loader@6.2.0(stylus@0.56.0)(webpack@5.76.1):
+  stylus-loader@6.2.0(stylus@0.56.0)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       fast-glob: 3.3.2
       klona: 2.0.6
@@ -60077,7 +60034,7 @@ snapshots:
       webpack: 5.97.0(webpack-cli@4.10.0)
       webpack-log: 2.0.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -60572,7 +60529,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1):
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       typed-assert: 1.0.9
       webpack: 5.76.1(esbuild@0.14.22)
@@ -60869,7 +60826,7 @@ snapshots:
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 4.10.0(webpack@5.97.0)
+      webpack-cli: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
