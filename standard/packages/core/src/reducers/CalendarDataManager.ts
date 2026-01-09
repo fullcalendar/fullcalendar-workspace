@@ -77,7 +77,7 @@ export class CalendarDataManager {
 
   private nowManager = new CalendarNowManager()
 
-  public emitter = new Emitter<CalendarListeners>()
+  public emitter = new Emitter<Required<CalendarListeners>>()
   private actionRunner = new TaskRunner(this._handleAction.bind(this), this.updateData.bind(this))
   private props: CalendarDataManagerProps
   private state: CalendarDataManagerState

@@ -41,6 +41,8 @@ angular/esm issues:
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
 
+get angular/react/vue tests up and running again, which all depend on preset classnames
+
 
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?

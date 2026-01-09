@@ -58,6 +58,6 @@ export interface CalendarData extends CalendarDataBase {
   viewTitle: string // based on current date
   calendarApi: CalendarImpl // TODO: try to remove this
   dispatch: (action: Action) => void
-  emitter: Emitter<CalendarListeners>
+  emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove
 }

@@ -40,7 +40,7 @@ export function buildViewContext(
   pluginHooks: PluginHooks,
   dispatch: (action: Action) => void,
   getCurrentData: () => CalendarData,
-  emitter: Emitter<CalendarListeners>,
+  emitter: Emitter<Required<CalendarListeners>>,
   calendarApi: CalendarImpl,
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void,
   unregisterInteractiveComponent: (component: DateComponent<any>) => void,

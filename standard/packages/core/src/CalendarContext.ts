@@ -12,7 +12,7 @@ export interface CalendarContext {
   dateEnv: DateEnv
   options: BaseOptionsRefined // does not have calendar-specific properties. aims to be compatible with ViewOptionsRefined
   pluginHooks: PluginHooks
-  emitter: Emitter<CalendarListeners>
+  emitter: Emitter<Required<CalendarListeners>>
   dispatch(action: Action): void
   getCurrentData(): CalendarData
   calendarApi: CalendarImpl
