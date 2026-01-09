@@ -42,6 +42,8 @@ import { DateMarker } from '@fullcalendar/core/internal'
 import { ViewContext } from '@fullcalendar/core/internal'
 
 export interface DayGridRowProps {
+  key?: string | number | null
+
   dateProfile: DateProfile
   todayRange: DateRange
   cells: DayTableCell[]

@@ -8,7 +8,7 @@ import { createElement, Fragment, ComponentChild, RefObject } from '../preact.js
 import { joinClassNames } from '../util/html.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
-import { ViewContext, ViewContextType } from '../ViewContext.js'
+import { ViewContextType } from '../ViewContext.js'
 import { MorePopover } from './MorePopover.js'
 import { MountData } from './render-hook.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
@@ -68,8 +68,8 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   render() {
     let { props, state } = this
     return (
-      <ViewContextType.Consumer>
-        {(context: ViewContext) => {
+      <ViewContextType.Consumer
+        children={(context) => {
           let { viewApi, options, calendarApi } = context
           let { moreLinkText } = options
           let moreCnt = props.hiddenSegs.length
@@ -163,14 +163,13 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   alignParentTop={props.alignParentTop}
                   forceTimed={props.forceTimed}
                   onClose={this.handlePopoverClose}
-                >
-                  {props.popoverContent()}
-                </MorePopover>
+                  children={props.popoverContent()}
+                />
               )}
             </Fragment>
           )
         }}
-      </ViewContextType.Consumer>
+      />
     )
   }
 

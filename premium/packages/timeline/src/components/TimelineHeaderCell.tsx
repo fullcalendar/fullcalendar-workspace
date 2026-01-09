@@ -18,6 +18,8 @@ import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-pr
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineHeaderCellProps {
+  key?: string | number | null
+
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   rowLevel: number // 0 is closest to divider (like "ground floor")

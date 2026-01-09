@@ -177,7 +177,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           ref={this.focusEndRef}
         />
       </div>,
-      getAppendableRoot(props.alignEl),
+      getAppendableRoot(props.alignEl) as HTMLElement,
     )
   }
 

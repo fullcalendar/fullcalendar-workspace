@@ -302,7 +302,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             style={{
               zIndex: 0,
             }}
-            ref={props.timeScrollerRef}
+            ref={props.timeScrollerRef as any} // HACK
             clientWidthRef={this.handleClientWidth}
             clientHeightRef={this.handleClientHeight}
           >

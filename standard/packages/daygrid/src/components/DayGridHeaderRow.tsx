@@ -5,6 +5,7 @@ import { DayGridHeaderCell } from './DayGridHeaderCell.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
+  key?: string | number | null
   cellIsNarrow: boolean
   cellIsMicro: boolean
   className?: string

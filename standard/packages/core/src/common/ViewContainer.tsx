@@ -11,7 +11,7 @@ import classNames from '../internal-classnames.js'
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
   attrs?: any // TODO
-  children: ComponentChildren
+  children?: ComponentChildren
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean

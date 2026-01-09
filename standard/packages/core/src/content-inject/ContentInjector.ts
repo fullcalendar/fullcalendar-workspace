@@ -1,4 +1,4 @@
-import { createElement, ComponentChild, JSX, Ref, isValidElement } from '../preact.js'
+import { createElement, ComponentChild, CSSProperties, Ref, isValidElement } from '../preact.js'
 import { CustomContentGenerator } from '../common/render-hook.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { guid } from '../util/misc.js'
@@ -9,12 +9,14 @@ import { isNonHandlerPropsEqual } from '../options-manip.js'
 import { joinClassNames } from '../util/html.js'
 
 export type ElRef = Ref<HTMLElement>
-export type ElAttrs = JSX.HTMLAttributes & JSX.SVGAttributes & { ref?: ElRef } & Record<string, any>
+
+// TODO: would want more specificity, but React and Preact can't agree on HTMLAttributes
+export type ElAttrs = { ref?: ElRef } & Record<string, any>
 
 export interface ElAttrsProps {
   attrs?: ElAttrs
   className?: string
-  style?: JSX.CSSProperties
+  style?: CSSProperties & Record<string, any> // React's types don't allow custom props?
   elRef?: ElRef
 }
 
@@ -35,6 +37,7 @@ export type ContentInjectorProps<RenderProps> =
   { renderId: number }
 
 export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorProps<RenderProps>> {
+  private el: HTMLElement | undefined
   private id = guid()
   private queuedDomNodes: Node[] = []
   private currentDomNodes: Node[] = []
@@ -71,7 +74,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
             : typeof customGeneratorRes !== 'function' // primitive value (like string or number)
         ) {
           // use in vdom
-          innerContent = customGeneratorRes
+          innerContent = customGeneratorRes as ComponentChild
         } else {
           // an exotic object for handleCustomRendering
           currentGeneratorMeta = customGeneratorRes
@@ -118,7 +121,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
         handleCustomRendering({
           id: this.id,
           isActive,
-          containerEl: this.base as HTMLElement,
+          containerEl: this.el,
           reportNewContainerEl: this.updateElRef, // front-end framework tells us about new container els
           generatorMeta,
           ...props,
@@ -128,6 +131,8 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
   }
 
   private handleEl = (el: HTMLElement | null) => {
+    this.el = el
+
     const { options } = this.context
     const { generatorName } = this.props
 
@@ -144,7 +149,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 
   private applyQueueudDomNodes() {
     const { queuedDomNodes, currentDomNodes } = this
-    const el = this.base
+    const { el } = this
 
     if (!isArraysEqual(queuedDomNodes, currentDomNodes)) {
       for (const domNode of currentDomNodes) {

@@ -5,7 +5,7 @@ import { ComponentChildren, Component } from './preact.js'
 export interface NowTimerProps {
   unit: string // TODO: add type of unit
   unitValue?: number // solely for nowIndicator:auto
-  children: (now: DateMarker, todayRange: DateRange) => ComponentChildren
+  children?: (now: DateMarker, todayRange: DateRange) => ComponentChildren
 }
 
 interface NowTimerState {

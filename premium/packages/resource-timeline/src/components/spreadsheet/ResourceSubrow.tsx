@@ -6,6 +6,8 @@ import { ResourceCell } from './ResourceCell.js'
 import { ColSpec } from '../../structs.js'
 
 export interface ResourceSubrowProps {
+  key?: string | number | null
+
   resource: Resource
   resourceFields: any
   colStartIndex: number

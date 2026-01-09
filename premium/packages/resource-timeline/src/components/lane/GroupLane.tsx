@@ -6,6 +6,8 @@ import { Group } from '@fullcalendar/resource/internal'
 import { GroupSpec, ResourceGroupLaneData } from '../../structs.js'
 
 export interface GroupLaneProps {
+  key?: string | number | null
+
   group: Group
   role?: string // aria
   rowIndex?: number // aria

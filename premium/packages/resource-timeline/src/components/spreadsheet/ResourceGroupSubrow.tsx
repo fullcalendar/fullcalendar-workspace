@@ -5,6 +5,8 @@ import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullca
 import { ColSpec, ResourceGroupHeaderData } from '../../structs.js'
 
 export interface ResourceGroupSubrowProps {
+  key?: string | number | null
+
   colSpec: ColSpec
   fieldValue: any
   rowSpan?: number

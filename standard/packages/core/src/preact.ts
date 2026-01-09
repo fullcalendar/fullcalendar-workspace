@@ -1,78 +1,34 @@
-import * as preact from 'preact'
 
-/*
-Shim newer TS global libs
-https://github.com/preactjs/preact/issues/4023
-*/
-declare global {
-  interface PictureInPictureEvent extends Event {
-  }
-  interface PictureInPictureEventInit extends EventInit {
-  }
-}
-
-/*
-Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
-BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929
-*/
 export function flushUpdates(): void {
-  let oldDebounceRendering = preact.options.debounceRendering // orig
-  let callbackQ = []
-
-  function execCallbackSync(callback) {
-    callbackQ.push(callback)
-  }
-
-  preact.options.debounceRendering = execCallbackSync
-  preact.render(preact.createElement(FakeComponent, {}), document.createElement('div'))
-
-  while (callbackQ.length) {
-    callbackQ.shift()()
-  }
-
-  preact.options.debounceRendering = oldDebounceRendering
+  // not possible
 }
 
-export function flushSync<R>(f: () => R): R {
-  const res = f()
-  flushUpdates()
-  return res
-}
-
-/*
-Triggers a state-change which unclogs the render queue? Needed?
-*/
-class FakeComponent extends preact.Component {
-  render() { return preact.createElement('div', {}) }
-  componentDidMount() { this.setState({}) }
-}
-
-// HACK
-// for ResizeObserver fallback
-export const preactOptions: any = preact.options
+export const preactOptions: any = {}
 
 export {
-  type JSX,
-  type VNode,
+  type ReactElement as VNode,
   type ComponentType,
-  type ComponentChild,
-  type ComponentChildren,
+  type ReactNode as ComponentChild,
+  type ReactNode as ComponentChildren,
   type Context,
   type Ref,
   type RefObject,
+  type CSSProperties,
   Component,
   createElement,
   createContext,
   createRef,
   Fragment,
   isValidElement,
-  FunctionalComponent,
-} from 'preact'
+  FC as FunctionalComponent,
+} from 'react'
 
 export {
   createPortal,
-} from 'preact/compat'
+  flushSync,
+} from 'react-dom'
 
 export {
-  createRoot
-} from 'preact/compat/client'
+  createRoot,
+} from 'react-dom/client'
+

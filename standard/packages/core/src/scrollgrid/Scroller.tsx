@@ -8,10 +8,12 @@ import { ScrollListener } from './ScrollListener.js'
 import classNames from '../internal-classnames.js'
 
 export interface ScrollerProps {
+  ref?: Ref<Scroller>
+
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
   horizontal?: boolean // (same)
   hideScrollbars?: boolean // default: false
-  children: ComponentChildren
+  children?: ComponentChildren
 
   // dimension refs
   clientWidthRef?: Ref<number>

@@ -2,7 +2,7 @@ import { ViewProps } from '../component-util/View.js'
 import { mapHash } from '../util/object.js'
 import { ComponentType, Component, createElement } from '../preact.js'
 import { MountData } from '../common/render-hook.js'
-import { ViewContext, ViewContextType } from '../ViewContext.js'
+import { ViewContextType } from '../ViewContext.js'
 import { ViewOptions } from '../options.js'
 import { Duration } from '@full-ui/headless-calendar'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
@@ -62,8 +62,8 @@ export type SpecificViewMountData = MountData<SpecificViewData>
 
 function createViewHookComponent(options: ViewOptions) {
   return (viewProps: ViewProps) => (
-    <ViewContextType.Consumer>
-      {(context: ViewContext) => (
+    <ViewContextType.Consumer
+      children={(context) => (
         <ContentContainer
           tag="div"
           className={
@@ -82,6 +82,6 @@ function createViewHookComponent(options: ViewOptions) {
           willUnmount={options.willUnmount as any}
         />
       )}
-    </ViewContextType.Consumer>
+    />
   )
 }

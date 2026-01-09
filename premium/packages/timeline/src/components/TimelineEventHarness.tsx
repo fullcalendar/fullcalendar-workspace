@@ -3,6 +3,7 @@ import { watchHeight, setRef } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineEventHarnessProps {
+  key?: string | number | null
   style: any // should set top/left/right/width
   children?: ComponentChildren
 

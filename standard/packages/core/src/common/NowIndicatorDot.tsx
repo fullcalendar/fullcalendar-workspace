@@ -1,4 +1,4 @@
-import { ViewContext, ViewContextType } from '../ViewContext.js'
+import { ViewContextType } from '../ViewContext.js'
 import { createElement } from '../preact.js'
 import { joinArrayishClassNames } from '../util/html.js'
 
@@ -8,8 +8,8 @@ export interface NowIndicatorDotProps {
 }
 
 export const NowIndicatorDot = (props: NowIndicatorDotProps) => (
-  <ViewContextType.Consumer>
-    {(context: ViewContext) => {
+  <ViewContextType.Consumer
+    children={(context) => {
       let { options } = context
 
       return (
@@ -22,5 +22,5 @@ export const NowIndicatorDot = (props: NowIndicatorDotProps) => (
         />
       )
     }}
-  </ViewContextType.Consumer>
+  />
 )

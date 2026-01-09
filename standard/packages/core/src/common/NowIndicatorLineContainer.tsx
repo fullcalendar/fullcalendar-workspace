@@ -1,6 +1,6 @@
 import { MountData } from './render-hook.js'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { ViewContext, ViewContextType } from '../ViewContext.js'
+import { ViewContextType } from '../ViewContext.js'
 import { createElement } from '../preact.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
@@ -19,8 +19,8 @@ export interface NowIndicatorLineData {
 export type NowIndicatorLineMountData = MountData<NowIndicatorLineData>
 
 export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps) => (
-  <ViewContextType.Consumer>
-    {(context: ViewContext) => {
+  <ViewContextType.Consumer
+    children={(context) => {
       let { options } = context
       let renderProps: NowIndicatorLineData = {
         date: context.dateEnv.toDate(props.date),
@@ -43,5 +43,5 @@ export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps)
         >{props.children}</ContentContainer>
       )
     }}
-  </ViewContextType.Consumer>
+  />
 )

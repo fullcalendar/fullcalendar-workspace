@@ -34,13 +34,12 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
     )
   }
 
-  renderSection(key: string, widgetGroups: ToolbarWidget[][]) {
+  renderSection(name: string, widgetGroups: ToolbarWidget[][]) {
     let { props } = this
 
     return (
       <ToolbarSection
-        key={key}
-        name={key}
+        name={name}
         widgetGroups={widgetGroups}
         title={props.title}
         titleId={props.titleId}

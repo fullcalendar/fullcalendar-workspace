@@ -10,7 +10,7 @@ import classNames from '../internal-classnames.js'
 export interface CalendarRootProps {
   options: CalendarOptions
   emitter: Emitter<Required<CalendarListeners>>
-  children: (isRtl: boolean, className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
+  children?: (isRtl: boolean, className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
 }
 
 interface CalendarRootState {
