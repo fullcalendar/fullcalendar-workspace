@@ -467,9 +467,6 @@ importers:
       zone.js:
         specifier: ~0.11.4
         version: 0.11.8
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
@@ -507,6 +504,9 @@ importers:
       typescript:
         specifier: ~4.6.2
         version: 4.6.4
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular14:
     dependencies:
@@ -564,9 +564,6 @@ importers:
       zone.js:
         specifier: ~0.11.4
         version: 0.11.8
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^14.1.0
@@ -601,6 +598,9 @@ importers:
       typescript:
         specifier: ~4.7.2
         version: 4.7.4
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular15:
     dependencies:
@@ -658,9 +658,6 @@ importers:
       zone.js:
         specifier: ~0.12.0
         version: 0.12.0
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
@@ -695,6 +692,9 @@ importers:
       typescript:
         specifier: ~4.8.2
         version: 4.8.4
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular15-ionic:
     dependencies:
@@ -912,9 +912,6 @@ importers:
       zone.js:
         specifier: ~0.12.0
         version: 0.12.0
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
@@ -949,6 +946,9 @@ importers:
       typescript:
         specifier: ~4.8.2
         version: 4.8.4
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular16:
     dependencies:
@@ -1006,9 +1006,6 @@ importers:
       zone.js:
         specifier: ~0.13.0
         version: 0.13.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
@@ -1043,6 +1040,9 @@ importers:
       typescript:
         specifier: ~5.0.2
         version: 5.0.4
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular17:
     dependencies:
@@ -1100,9 +1100,6 @@ importers:
       zone.js:
         specifier: ~0.14.2
         version: 0.14.10
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.0.3
@@ -1137,6 +1134,9 @@ importers:
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular18:
     dependencies:
@@ -1194,9 +1194,6 @@ importers:
       zone.js:
         specifier: ~0.14.3
         version: 0.14.10
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
@@ -1231,6 +1228,9 @@ importers:
       typescript:
         specifier: ~5.4.2
         version: 5.4.5
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular19:
     dependencies:
@@ -1288,9 +1288,6 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.0
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^19.0.2
@@ -1325,6 +1322,9 @@ importers:
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular20:
     dependencies:
@@ -1376,9 +1376,6 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.0
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^20.0.4
@@ -1413,6 +1410,9 @@ importers:
       typescript:
         specifier: ~5.8.2
         version: 5.8.3
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/angular21:
     dependencies:
@@ -1461,9 +1461,6 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -1483,6 +1480,9 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.16(@types/node@24.10.3)(jiti@2.4.2)(jsdom@27.4.0)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
 
   examples/locales:
     dependencies:
@@ -1919,9 +1919,6 @@ importers:
       react-dom:
         specifier: ^16.13.1
         version: 16.14.0(react@16.14.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
     devDependencies:
       '@babel/core':
         specifier: ^7.4.0
@@ -1965,6 +1962,9 @@ importers:
       webpack-dev-server:
         specifier: ^3.11.0
         version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
 
   examples/react17:
     dependencies:
@@ -1989,9 +1989,6 @@ importers:
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
     devDependencies:
       '@babel/core':
         specifier: ^7.4.0
@@ -2035,6 +2032,9 @@ importers:
       webpack-dev-server:
         specifier: ^3.11.0
         version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
 
   examples/react18:
     dependencies:
