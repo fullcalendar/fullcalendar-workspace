@@ -59,6 +59,9 @@ re-add keys to toolbarsections, so doesn't reuse elements
 ./src/global-types.d.ts
 
 
+test NextJS SSR
+
+
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?
   only happens in Angular 21 example

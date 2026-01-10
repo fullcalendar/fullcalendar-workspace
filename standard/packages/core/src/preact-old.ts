@@ -51,8 +51,9 @@ class FakeComponent extends preact.Component {
 // for ResizeObserver fallback
 export const preactOptions: any = preact.options
 
+export type CSSProperties = preact.JSX.CSSProperties
+
 export {
-  type JSX,
   type VNode,
   type ComponentType,
   type ComponentChild,
