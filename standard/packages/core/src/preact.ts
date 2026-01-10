@@ -21,6 +21,7 @@ export {
   Fragment,
   isValidElement,
   FC as FunctionalComponent,
+  StrictMode,
 } from 'react'
 
 export {

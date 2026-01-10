@@ -372,17 +372,17 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minify: boolean): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minifyCss: boolean): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minify)
+    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minifyCss)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minify: boolean): Plugin[] {
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minifyCss: boolean): Plugin[] {
   const { pkgJson } = pkgBundleStruct
 
   return [
@@ -392,7 +392,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     commonjsPlugin(), // for React :(
     cssPlugin({
       extract: extractCss,
-      minify,
+      minify: minifyCss,
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'], // affect all "values" below
@@ -406,7 +406,11 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     replacePlugin({
       preventAssignment: true,
       values: {
-        'process.env.NODE_ENV': JSON.stringify('production'), // for React... do conditionally!!!
+        'process.env.NODE_ENV': JSON.stringify(
+          minifyCss // FIX: unreliable standin for dev-mode
+            ? 'production'
+            : 'development'
+        ),
       },
     }),
   ]

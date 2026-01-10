@@ -17,6 +17,7 @@ import { NowTimer } from './NowTimer.js'
 import { CalendarOptions } from './options.js'
 import { ViewPropsTransformerClass } from './plugin-system-struct.js'
 import { createElement, Fragment, createRoot, flushSync, VNode } from './preact.js'
+// import { StrictMode } from './preact.js'
 import { Action } from './reducers/Action.js'
 import { CalendarDataManager } from './reducers/CalendarDataManager.js'
 import { CalendarData } from './reducers/data-types.js'
@@ -104,19 +105,21 @@ export class Calendar extends CalendarImpl {
 
       flushSync(() => {
         this.vdomRoot.render(
-          <CalendarRoot options={currentData.calendarOptions} emitter={currentData.emitter}>
-            {(isRtl: boolean, className: string, height: number, forPrint: boolean) => {
-              this.setIsRtl(isRtl)
-              this.setClassName(className)
-              this.setHeight(height)
+          // <StrictMode>
+            <CalendarRoot options={currentData.calendarOptions} emitter={currentData.emitter}>
+              {(isRtl: boolean, className: string, height: number, forPrint: boolean) => {
+                this.setIsRtl(isRtl)
+                this.setClassName(className)
+                this.setHeight(height)
 
-              return (
-                <RenderId.Provider value={this.customContentRenderId}>
-                  {this.renderContent(currentData, forPrint)}
-                </RenderId.Provider>
-              )
-            }}
-          </CalendarRoot>,
+                return (
+                  <RenderId.Provider value={this.customContentRenderId}>
+                    {this.renderContent(currentData, forPrint)}
+                  </RenderId.Provider>
+                )
+              }}
+            </CalendarRoot>
+          // </StrictMode>
         )
       })
 
