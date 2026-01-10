@@ -1,4 +1,4 @@
-import { preactOptions } from '../preact.js'
+import { preactOptions, flushSync } from '../preact.js'
 import { isDimsEqual } from './rendering-misc.js'
 
 const nativeEnabled = true
@@ -76,8 +76,10 @@ function checkConfigMap(): boolean {
       dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
     }
 
-    flushAfterSize()
-    isHandling = false
+    flushSync(() => {
+      flushAfterSize()
+      isHandling = false
+    })
   }
 
   return anyDirty
@@ -134,8 +136,10 @@ function initNative(): [WatchSize, UpdateSizeSync] {
       }
     }
 
-    flushAfterSize()
-    isHandling = false
+    flushSync(() => {
+      flushAfterSize()
+      isHandling = false
+    })
   })
 
   function watchSize(

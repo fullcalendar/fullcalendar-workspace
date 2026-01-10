@@ -406,7 +406,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     replacePlugin({
       preventAssignment: true,
       values: {
-        'process.env.NODE_ENV': JSON.stringify('development'), // for React... do conditionally!!!
+        'process.env.NODE_ENV': JSON.stringify('production'), // for React... do conditionally!!!
       },
     }),
   ]

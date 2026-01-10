@@ -44,6 +44,18 @@ angular/esm issues:
 get angular/react/vue tests up and running again, which all depend on preset classnames
 
 
+why is multi-month scrolling down so much?
+  file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
+
+
+transpiler project
+  React's KeyboardEvent<T> (and prolly others) is not compatible with native KeyboardEvent
+  (probably because React's is synthetic)
+
+
+./src/global-types.d.ts
+
+
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?
   only happens in Angular 21 example
