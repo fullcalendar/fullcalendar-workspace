@@ -7,7 +7,6 @@ import {
   DateProfile,
   BgEvent,
   renderFill,
-  buildEventRangeKey,
   sortEventSegs,
   DayTableCell,
   setRef,
@@ -345,7 +344,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const nodes: VNode[] = []
 
     for (const seg of segs) {
-      const key = buildEventRangeKey(seg.eventRange) // TODO: use different type of key than fg!?
+      const key = seg.start + ':' + seg.end // NOTE: don't use date, because could be multiple of same (w/ resources)
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
       const isVisible = !seg.standinFor
 
@@ -375,7 +374,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
     }
 
-    return createElement(Fragment, {}, ...nodes) // TODO: shouldn't this be an array, so keyed?
+    return createElement(Fragment, {}, nodes)
   }
 
   handleRootEl = (rootEl: HTMLElement) => {

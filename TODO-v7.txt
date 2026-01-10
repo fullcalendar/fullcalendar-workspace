@@ -145,6 +145,10 @@ nested resource column grouping buggy
 we'll probably remove luxon. so who cares...
   xdescribe: standard/tests/src/datelib/luxon.ts
     // https://github.com/fullcalendar/fullcalendar/issues/7633
+bug: resize-observer bad loop
+  premium/tests/src/column/agenda-nowIndicator.ts (xit)
+  happens because resources loading causes timegrid to switch to isNarrow,
+  which changes the header height, all-day-label width/height, and slot-label heights (b/c of font size)
 
 
 ASAP

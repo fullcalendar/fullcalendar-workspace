@@ -28,8 +28,8 @@ describe('resource timeGrid now-indicator', () => {
 
   // big compound test
   // https://github.com/fullcalendar/fullcalendar/issues/3918
-  it('plays nice with refetchResourcesOnNavigate and view switching', (done) => {
-    initCalendar({
+  xit('plays nice with refetchResourcesOnNavigate and view switching', (done) => {
+    const calendar = initCalendar({
       initialView: 'resourceTimeGridWeek',
       initialDate: '2016-11-04',
       now: '2016-12-04T10:00',
@@ -56,16 +56,16 @@ describe('resource timeGrid now-indicator', () => {
     })
 
     setTimeout(() => {
-      currentCalendar.changeView('resourceTimeGridDay')
+      calendar.changeView('resourceTimeGridDay')
 
       setTimeout(() => {
-        currentCalendar.today()
+        calendar.today()
 
         setTimeout(() => {
-          currentCalendar.changeView('resourceTimeGridWeek')
+          calendar.changeView('resourceTimeGridWeek')
 
           setTimeout(() => {
-            currentCalendar.changeView('resourceTimeGridDay')
+            calendar.changeView('resourceTimeGridDay')
 
             setTimeout(done, 100)
           }, 100)

@@ -345,16 +345,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
+    // NOTE: could be zero rows and groups!
     const rowPositionShift = computeShift(rowPositions)
     const groupRowPositionShift = computeShift(groupRowPositions)
-    const yFillTop = Math.min(...[
-      ...(rowPositionShift ? [rowPositionShift[0]] : []),
-      ...(groupRowPositionShift ? [groupRowPositionShift[0]] : []),
-    ])
-    const yFillBottom = Math.max(...[
-      ...(rowPositionShift ? [rowPositionShift[1]] : []),
-      ...(groupRowPositionShift ? [groupRowPositionShift[1]] : []),
-    ])
+
+    const yFillTop = rowPositionShift
+      ? groupRowPositionShift
+        ? Math.min(rowPositionShift[0], groupRowPositionShift[0])
+        : rowPositionShift[0]
+      : groupRowPositionShift
+        ? groupRowPositionShift[0]
+        : 0
+
+    const yFillBottom = rowPositionShift
+      ? groupRowPositionShift
+        ? Math.max(rowPositionShift[1], groupRowPositionShift[1])
+        : rowPositionShift[1]
+      : groupRowPositionShift
+        ? groupRowPositionShift[1]
+        : 0
+
     const yFillHeight = yFillBottom - yFillTop
 
     const forcedTimeScroll = this.computeTimeScroll()
