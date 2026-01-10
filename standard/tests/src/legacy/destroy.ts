@@ -36,7 +36,7 @@ describe('destroy', () => {
     'when in week view': 'timeGridWeek',
     'when in listWeek view': 'listWeek',
     'when in month view': 'dayGridMonth',
-  }, (viewName) => {
+  }, () => {
     it('leaves no handlers attached to DOM', () => {
       const standardElListenerCount = prepareStandardListeners()
       let $el = $('<div>').appendTo('body')
@@ -50,10 +50,8 @@ describe('destroy', () => {
       initCalendar({}, $el)
       currentCalendar.destroy()
 
-      if (viewName !== 'timeGridDay') { // hack for skipping 3rd one
-        expect(elHandlerCounter.stopWatching()).toBe(standardElListenerCount)
-        expect(docHandlerCounter.stopWatching()).toBe(0)
-      }
+      expect(elHandlerCounter.stopWatching()).toBe(standardElListenerCount)
+      expect(docHandlerCounter.stopWatching()).toBe(0)
 
       $el.remove()
     })

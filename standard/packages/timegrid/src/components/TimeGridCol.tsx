@@ -355,8 +355,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     // TODO: what if nowIndicator turned OFF??
-    return segs.map((seg) => (
+    return segs.map((seg, i) => (
       <TimeGridNowIndicatorLine
+        key={i}
         nowDate={seg.startDate}
         dayDate={props.date}
         dateProfile={props.dateProfile}

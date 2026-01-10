@@ -53,6 +53,9 @@ transpiler project
   (probably because React's is synthetic)
 
 
+re-add keys to toolbarsections, so doesn't reuse elements
+
+
 ./src/global-types.d.ts
 
 

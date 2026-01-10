@@ -3,6 +3,9 @@ import { ListenerCounter } from './ListenerCounter.js'
 
 let standardElListenerCount
 
+/*
+Returns the # of handlers remaining on a DOM node *event after a React-root unmounts*
+*/
 export function prepareStandardListeners() {
   if (standardElListenerCount === undefined) {
     standardElListenerCount = _prepareStandardListeners()
@@ -21,6 +24,7 @@ function _prepareStandardListeners() {
   flushSync(() => {
     root.render(createElement('div', {}))
   })
+  root.unmount()
 
-  return elListenerCounter.stopWatching()
+  return elListenerCounter.stopWatching() // returns # of handlers
 }

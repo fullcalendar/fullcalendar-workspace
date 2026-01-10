@@ -322,7 +322,7 @@ export function groupIntersectingSegs<R extends SlicedCoordRange>(segs: EventSeg
 
   return mergedGroups.map((mergedGroup) => {
     return {
-      key: buildIsoString(computeEarliestStart(segs)),
+      key: buildIsoString(computeEarliestStart(mergedGroup.segs)),
       ...mergedGroup
     }
   })

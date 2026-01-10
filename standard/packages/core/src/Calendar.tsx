@@ -52,7 +52,7 @@ Vanilla JS API
 export class Calendar extends CalendarImpl {
   el: HTMLElement
 
-  private vdomRoot: { render: (vdomNode: any) => any } // TODO
+  private vdomRoot: { render: (vdomNode: any) => any, unmount: () => void } // TODO
   private buildToolbarProps = memoize(buildToolbarProps)
   private buildViewContext = memoize(buildViewContext)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
@@ -134,7 +134,7 @@ export class Calendar extends CalendarImpl {
     } else if (this.isRendered) {
       this.isRendered = false
       this.handleContentUnmount()
-      this.vdomRoot.render(null)
+      this.vdomRoot.unmount()
 
       this.setIsRtl(false)
       this.setClassName('')

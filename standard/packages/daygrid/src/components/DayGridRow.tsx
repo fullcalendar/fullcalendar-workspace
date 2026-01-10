@@ -129,8 +129,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       let col = 0
       for (const cell of cells) { // uses headerHeightRefMap/maxMainTop/simpleHeightsByCol
         const cellHeaderHeight = headerHeightRefMap.current.get(cell.key)
-        const extraFgHeight = maxMainTop - cellHeaderHeight
-        heightsByCol.push(simpleHeightsByCol[col++] + extraFgHeight)
+        if (cellHeaderHeight != null) {
+          const extraFgHeight = maxMainTop - cellHeaderHeight
+          heightsByCol.push(simpleHeightsByCol[col++] + extraFgHeight)
+        } else {
+          heightsByCol.push(undefined)
+        }
       }
     }
 

@@ -15,10 +15,10 @@ describe('eventContent', () => {
     let calendar = initCalendar({
       eventContent(info, createElement) {
         return (
-          createElement('span', {}, [ // TODO: document how to use Fragment
+          createElement('span', {},
             createElement('b', {}, info.timeText),
             createElement('i', {}, info.event.title),
-          ])
+          )
         )
       },
     })
