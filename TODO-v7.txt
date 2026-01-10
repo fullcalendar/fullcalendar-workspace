@@ -152,6 +152,8 @@ bug: resize-observer bad loop
   premium/tests/src/column/agenda-nowIndicator.ts (xit)
   happens because resources loading causes timegrid to switch to isNarrow,
   which changes the header height, all-day-label width/height, and slot-label heights (b/c of font size)
+bug: resize-observer bad loop but only for Preact vdom
+  test: "vresource structure resyncs header row heights when horizontal scrolling and dynamic resources"
 
 
 ASAP

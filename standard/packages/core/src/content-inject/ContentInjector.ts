@@ -91,7 +91,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
     this.queuedDomNodes = queuedDomNodes
     this.currentGeneratorMeta = currentGeneratorMeta
 
-    return createElement(props.tag, attrs, innerContent)
+    return createElement(props.tag as any, attrs, innerContent)
   }
 
   componentDidMount(): void {

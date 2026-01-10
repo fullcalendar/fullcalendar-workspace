@@ -42,7 +42,7 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
       const children = props.children(this.InnerContent, props.renderProps, attrs)
 
       if (props.tag) {
-        return createElement(props.tag, attrs, children)
+        return createElement(props.tag as any, attrs, children)
       } else {
         return children
       }
