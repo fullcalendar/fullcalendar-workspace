@@ -1,3 +1,5 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
+
 describe('rerender performance for resource timeline', () => {
   pushOptions({
     initialDate: '2017-10-04',
@@ -12,7 +14,6 @@ describe('rerender performance for resource timeline', () => {
 
   it('calls methods a limited number of times', (done) => {
     let slotHeaderMountCnt = 0
-    // let slotHeaderClassNameCnt = 0
     let slotHeaderRenderCnt = 0
     let slotLaneRenderCnt = 0
     let resourceLabelRenderCnt = 0
@@ -20,24 +21,18 @@ describe('rerender performance for resource timeline', () => {
     let eventRenderCnt = 0
 
     initCalendar({
-
       slotHeaderDidMount() {
         slotHeaderMountCnt += 1
       },
-      // slotHeaderClass() {
-      //   slotHeaderClassNameCnt += 1
-      //   return []
-      // },
       slotHeaderContent() {
         slotHeaderRenderCnt += 1
       },
-
       slotLaneDidMount() {
         slotLaneRenderCnt += 1
       },
-
       resourceCellContent() {
         resourceLabelRenderCnt += 1
+        return true
       },
       resourceLaneDidMount() {
         resourceLaneRenderCnt += 1
@@ -49,7 +44,6 @@ describe('rerender performance for resource timeline', () => {
 
     function resetCounts() {
       slotHeaderMountCnt = 0
-      // slotHeaderClassNameCnt = 0
       slotHeaderRenderCnt = 0
       slotLaneRenderCnt = 0
       resourceLabelRenderCnt = 0
@@ -57,24 +51,22 @@ describe('rerender performance for resource timeline', () => {
       eventRenderCnt = 0
     }
 
-    expect(slotHeaderMountCnt).toBe(24)
-    // expect(slotHeaderClassNameCnt).toBe(24) // allow liberal calling now
-    expect(slotHeaderRenderCnt).toBe(24)
-    expect(slotLaneRenderCnt).toBe(48)
-    expect(resourceLabelRenderCnt).toBe(1)
-    expect(resourceLaneRenderCnt).toBe(1)
-    expect(eventRenderCnt).toBe(1)
+    expect(slotHeaderMountCnt).toBe(24 * strictModeFactor)
+    expect(slotHeaderRenderCnt).toBe(24 * strictModeFactor)
+    expect(slotLaneRenderCnt).toBe(48 * strictModeFactor)
+    expect(resourceLabelRenderCnt).toBe(1 * strictModeFactor)
+    expect(resourceLaneRenderCnt).toBe(1 * strictModeFactor)
+    expect(eventRenderCnt).toBe(1 * strictModeFactor)
 
     resetCounts()
     currentCalendar.next()
 
-    expect(slotHeaderMountCnt).toBe(24)
-    // expect(slotHeaderClassNameCnt).toBe(24)
-    expect(slotHeaderRenderCnt).toBe(24)
-    expect(slotLaneRenderCnt).toBe(48)
-    expect(resourceLabelRenderCnt).toBe(0)
-    expect(resourceLaneRenderCnt).toBe(0)
-    expect(eventRenderCnt).toBe(0) // out of view
+    expect(slotHeaderMountCnt).toBe(24 * strictModeFactor)
+    expect(slotHeaderRenderCnt).toBe(24 * strictModeFactor)
+    expect(slotLaneRenderCnt).toBe(48 * strictModeFactor)
+    expect(resourceLabelRenderCnt).toBe(0 * strictModeFactor)
+    expect(resourceLaneRenderCnt).toBe(0 * strictModeFactor)
+    expect(eventRenderCnt).toBe(0 * strictModeFactor) // out of view
 
     // FIRES UNNECESSARY RERENDERS WHEN WE SWITCH VIEWS LIKE THIS FOR SOME REASON
     //
@@ -90,24 +82,22 @@ describe('rerender performance for resource timeline', () => {
     resetCounts()
     currentCalendar.addResource({ title: 'Resource B' })
 
-    expect(slotHeaderMountCnt).toBe(0)
-    // expect(slotHeaderClassNameCnt).toBe(0)
-    expect(slotHeaderRenderCnt).toBe(0)
-    expect(slotLaneRenderCnt).toBe(0)
-    expect(resourceLabelRenderCnt).toBe(1) // new resource
-    expect(resourceLaneRenderCnt).toBe(1) // new resource
-    expect(eventRenderCnt).toBe(0)
+    expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
+    expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
+    expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
+    expect(resourceLabelRenderCnt).toBe(1 * strictModeFactor) // new resource
+    expect(resourceLaneRenderCnt).toBe(1 * strictModeFactor) // new resource
+    expect(eventRenderCnt).toBe(0 * strictModeFactor)
 
     resetCounts()
     $(window).simulate('resize')
     setTimeout(() => {
-      expect(slotHeaderMountCnt).toBe(0)
-      // expect(slotHeaderClassNameCnt).toBe(0)
-      expect(slotHeaderRenderCnt).toBe(0)
-      expect(slotLaneRenderCnt).toBe(0)
-      expect(resourceLabelRenderCnt).toBe(0)
-      expect(resourceLaneRenderCnt).toBe(0)
-      expect(eventRenderCnt).toBe(0)
+      expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
+      expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
+      expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
+      expect(resourceLabelRenderCnt).toBe(0 * strictModeFactor)
+      expect(resourceLaneRenderCnt).toBe(0 * strictModeFactor)
+      expect(eventRenderCnt).toBe(0 * strictModeFactor)
       done()
     }, 1)
   })

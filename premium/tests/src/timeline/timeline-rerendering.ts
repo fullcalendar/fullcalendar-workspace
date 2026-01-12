@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline view rerendering', () => {
@@ -82,13 +83,13 @@ describe('timeline view rerendering', () => {
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
       let initialInfos = dataGridWrapper.getResourceInfo()
 
-      expect(resourceRenderCnt).toBe(3)
+      expect(resourceRenderCnt).toBe(3 * strictModeFactor)
       expect(initialInfos.length).toBe(3)
 
       currentCalendar.next()
       const secondaryInfos = dataGridWrapper.getResourceInfo()
 
-      expect(resourceRenderCnt).toBe(3)
+      expect(resourceRenderCnt).toBe(3 * strictModeFactor)
       expect(secondaryInfos.length).toBe(3)
 
       expect(initialInfos[0].rowEl).toBe(secondaryInfos[0].rowEl)

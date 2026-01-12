@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { startOfDay } from '@fullcalendar/core/internal'
 import lvLocale from '@fullcalendar/core/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
@@ -62,7 +63,7 @@ describe('timeline rendering', () => {
       },
     })
 
-    expect(callCnt).toBe(7)
+    expect(callCnt).toBe(7 * strictModeFactor)
   })
 
   it('call slotHeaderDidMount for each hour', () => {
@@ -77,7 +78,7 @@ describe('timeline rendering', () => {
       },
     })
 
-    expect(callCnt).toBe(24)
+    expect(callCnt).toBe(24 * strictModeFactor)
   })
 
   it('includes a level property in slotHeaderContent', () => {

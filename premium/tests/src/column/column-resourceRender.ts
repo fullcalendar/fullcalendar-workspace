@@ -1,3 +1,5 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
+
 describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: rename the file
   pushOptions({
     now: '2016-02-13',
@@ -41,7 +43,7 @@ describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: renam
               }
             },
           })
-          expect(callCnt).toBe(1)
+          expect(callCnt).toBe(1 * strictModeFactor)
         })
       })
     })
@@ -65,7 +67,7 @@ describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: renam
               }
             },
           })
-          expect(callCnt).toBe(3)
+          expect(callCnt).toBe(3 * strictModeFactor)
         })
       })
 
@@ -84,7 +86,7 @@ describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: renam
               }
             },
           })
-          expect(callCnt).toBe(7) // 7 days of the week
+          expect(callCnt).toBe(7 * strictModeFactor) // 7 days of the week
         })
       })
     })

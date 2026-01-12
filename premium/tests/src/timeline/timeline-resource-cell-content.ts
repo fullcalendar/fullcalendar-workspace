@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline resource labels', () => {
@@ -8,8 +9,7 @@ describe('timeline resource labels', () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         resourceCellContent() {
-          renderCnt += 1
-          return { html: 'test' + renderCnt }
+          return { html: 'test' + Math.trunc(renderCnt++ / strictModeFactor) }
         },
         resources: [
           { id: 'a', title: 'Resource A' },
@@ -17,9 +17,9 @@ describe('timeline resource labels', () => {
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      expect(dataGridWrapper.getResourceInfo()[0].text).toBe('test1')
+      expect(dataGridWrapper.getResourceInfo()[0].text).toBe('test0')
       calendar.render()
-      expect(dataGridWrapper.getResourceInfo()[0].text).toBe('test2')
+      expect(dataGridWrapper.getResourceInfo()[0].text).toBe('test1')
     })
   })
 })
