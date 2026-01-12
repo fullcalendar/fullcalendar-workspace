@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { formatIsoDay } from '../lib/datelib-utils.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
@@ -20,7 +21,7 @@ describe('dayCellDidMount', () => {
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
     initCalendar(options)
-    expect(options.dayCellDidMount.calls.count()).toEqual(42)
+    expect(options.dayCellDidMount.calls.count()).toEqual(42 * strictModeFactor)
   })
 
   it('is called when date range is changed', () => {
@@ -34,7 +35,7 @@ describe('dayCellDidMount', () => {
     initCalendar(options)
     options.dayCellDidMount.calls.reset()
     currentCalendar.gotoDate('2014-05-04') // a day in the next week
-    expect(options.dayCellDidMount.calls.count()).toEqual(7)
+    expect(options.dayCellDidMount.calls.count()).toEqual(7 * strictModeFactor)
   })
 
   it('won\'t be called when date is navigated but remains in the current visible range', () => {
@@ -48,7 +49,7 @@ describe('dayCellDidMount', () => {
     initCalendar(options)
     options.dayCellDidMount.calls.reset()
     currentCalendar.gotoDate('2014-05-02') // a day in the same week
-    expect(options.dayCellDidMount.calls.count()).toEqual(0)
+    expect(options.dayCellDidMount.calls.count()).toEqual(0 * strictModeFactor)
   })
 
   it('allows you to modify the element', () => {
@@ -83,6 +84,6 @@ describe('dayCellDidMount', () => {
     }
 
     initCalendar(options)
-    expect(callCnt).toBe(7)
+    expect(callCnt).toBe(7 * strictModeFactor)
   })
 })

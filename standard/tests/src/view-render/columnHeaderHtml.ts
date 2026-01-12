@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
@@ -38,8 +39,8 @@ describe('dayHeaderContent as html', () => { // TODO: rename file
         },
       })
 
-      expect(dates.length).toBe(1)
-      expect(dates[0]).toEqualDate(tz.parseDate('2014-05-11'))
+      expect(dates.length).toBe(1 * strictModeFactor)
+      expect(dates[0 * strictModeFactor]).toEqualDate(tz.parseDate('2014-05-11'))
     })
   })
 })

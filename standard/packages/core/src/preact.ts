@@ -43,3 +43,5 @@ declare global {
     interface IntrinsicClassAttributes<T> extends ReactJSX.IntrinsicClassAttributes<T> {}
   }
 }
+
+export const strictModeFactor = 2

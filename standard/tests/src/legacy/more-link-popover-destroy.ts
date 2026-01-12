@@ -26,8 +26,10 @@ describe('more-link popover', () => {
         }
       },
       eventWillUnmount(data) {
-        delete eventsRendered[data.event.title]
-        renderCount -= 1
+        if (activated) {
+          delete eventsRendered[data.event.title]
+          renderCount -= 1
+        }
       },
     })
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -61,8 +63,10 @@ describe('more-link popover', () => {
         }
       },
       eventWillUnmount(data) {
-        delete eventsRendered[data.event.title]
-        renderCount -= 1
+        if (activated) {
+          renderCount -= 1
+          delete eventsRendered[data.event.title]
+        }
       },
     })
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid

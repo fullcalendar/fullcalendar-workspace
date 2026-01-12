@@ -1,3 +1,5 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
+
 it('timegrid view rerenders well', (done) => {
   let dayHeaderRenderCnt = 0
   let dayCellRenderCnt = 0
@@ -44,41 +46,41 @@ it('timegrid view rerenders well', (done) => {
     eventRenderCnt = 0
   }
 
-  expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(7)
-  expect(dayLaneRenderCnt).toBe(7)
-  expect(slotHeaderRenderCnt).toBe(24) // one slot per every 2 lanes
-  expect(slotLaneRenderCnt).toBe(48)
-  expect(eventRenderCnt).toBe(1)
+  expect(dayHeaderRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayCellRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayLaneRenderCnt).toBe(7 * strictModeFactor)
+  expect(slotHeaderRenderCnt).toBe(24 * strictModeFactor) // one slot per every 2 lanes
+  expect(slotLaneRenderCnt).toBe(48 * strictModeFactor)
+  expect(eventRenderCnt).toBe(1 * strictModeFactor)
 
   resetCounts()
   calendar.next()
-  expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(7)
-  expect(dayLaneRenderCnt).toBe(7)
-  expect(slotHeaderRenderCnt).toBe(0)
-  expect(slotLaneRenderCnt).toBe(0)
-  expect(eventRenderCnt).toBe(0) // event will be out of view
+  expect(dayHeaderRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayCellRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayLaneRenderCnt).toBe(7 * strictModeFactor)
+  expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
+  expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
+  expect(eventRenderCnt).toBe(0 * strictModeFactor) // event will be out of view
 
   calendar.changeView('listWeek') // switch away
   resetCounts()
   calendar.changeView('timeGridWeek') // return to view
-  expect(dayHeaderRenderCnt).toBe(7)
-  expect(dayCellRenderCnt).toBe(7)
-  expect(dayLaneRenderCnt).toBe(7)
-  expect(slotHeaderRenderCnt).toBe(24)
-  expect(slotLaneRenderCnt).toBe(48)
-  expect(eventRenderCnt).toBe(0) // event still out of view
+  expect(dayHeaderRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayCellRenderCnt).toBe(7 * strictModeFactor)
+  expect(dayLaneRenderCnt).toBe(7 * strictModeFactor)
+  expect(slotHeaderRenderCnt).toBe(24 * strictModeFactor)
+  expect(slotLaneRenderCnt).toBe(48 * strictModeFactor)
+  expect(eventRenderCnt).toBe(0 * strictModeFactor) // event still out of view
 
   resetCounts()
   $(window).simulate('resize')
   setTimeout(() => {
-    expect(dayHeaderRenderCnt).toBe(0)
-    expect(dayCellRenderCnt).toBe(0)
-    expect(dayLaneRenderCnt).toBe(0)
-    expect(slotHeaderRenderCnt).toBe(0)
-    expect(slotLaneRenderCnt).toBe(0)
-    expect(eventRenderCnt).toBe(0)
+    expect(dayHeaderRenderCnt).toBe(0 * strictModeFactor)
+    expect(dayCellRenderCnt).toBe(0 * strictModeFactor)
+    expect(dayLaneRenderCnt).toBe(0 * strictModeFactor)
+    expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
+    expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
+    expect(eventRenderCnt).toBe(0 * strictModeFactor)
 
     done()
   }, 1)

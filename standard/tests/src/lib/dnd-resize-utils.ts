@@ -5,8 +5,14 @@ import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from './wrappers/CalendarWrapper.js'
 
 export function testEventDrag(options, dropDate, expectSuccess, callback, eventClassName?) {
+  let initialized = false
+
   options.editable = true
   options.viewDidMount = () => {
+    // protect against React StrictMode
+    if (initialized) { return }
+    initialized = true
+
     setTimeout(() => {
       let calendar = currentCalendar
       let isDraggingExternal = false
@@ -95,8 +101,14 @@ export function testEventDrag(options, dropDate, expectSuccess, callback, eventC
 }
 
 export function testEventResize(options, resizeDate, expectSuccess, callback, eventClassName?) {
+  let initialized = false
+
   options.editable = true
   options.viewDidMount = () => {
+    // protect against React StrictMode
+    if (initialized) { return }
+    initialized = true
+
     setTimeout(() => {
       let calendar = currentCalendar
       let $lastDayEl

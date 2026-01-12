@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import luxonPlugin from '@fullcalendar/luxon3'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both
@@ -22,14 +23,14 @@ describe('timeZone change', () => {
       })
 
       let events = calendar.getEvents()
-      expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-      expect(timeTexts.length).toBe(1)
-      expect(timeTexts[0]).toBe('12:00')
+      expect(events[0 * strictModeFactor].start).toEqualDate('2023-02-07T17:00:00Z')
+      expect(timeTexts.length).toBe(1 * strictModeFactor)
+      expect(timeTexts[0 * strictModeFactor]).toBe('12:00')
 
       calendar.setOption('timeZone', 'America/Chicago')
-      expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-      expect(timeTexts.length).toBe(2)
-      expect(timeTexts[1]).toBe('11:00')
+      expect(events[0 * strictModeFactor].start).toEqualDate('2023-02-07T17:00:00Z')
+      expect(timeTexts.length).toBe(2 * strictModeFactor)
+      expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
     })
   })
 })

@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -579,15 +580,15 @@ describe('rrule plugin', () => {
     let events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
     expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-    expect(timeTexts.length).toBe(1)
-    expect(timeTexts[0]).toBe('12p')
+    expect(timeTexts.length).toBe(1 * strictModeFactor)
+    expect(timeTexts[0 * strictModeFactor]).toBe('12p')
 
     calendar.setOption('timeZone', 'America/Chicago')
     events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
     expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-    expect(timeTexts.length).toBe(2)
-    expect(timeTexts[1]).toBe('11a')
+    expect(timeTexts.length).toBe(2 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
 
     // ensure bug doesn't occur when refetching (this happened)
     calendar.next()
@@ -595,8 +596,8 @@ describe('rrule plugin', () => {
     events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
     expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-    expect(timeTexts.length).toBe(3)
-    expect(timeTexts[1]).toBe('11a')
+    expect(timeTexts.length).toBe(3 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
   })
 
   // utils

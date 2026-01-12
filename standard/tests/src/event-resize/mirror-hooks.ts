@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { waitEventResize } from '../lib/wrappers/interaction-util.js'
@@ -49,9 +50,9 @@ describe('event resize mirror', () => {
       )
 
       waitEventResize(calendar, resizing).then(() => {
-        expect(mirrorMountCalls).toBe(1)
-        expect(mirrorContentCalls).toBe(3)
-        expect(mirrorUnmountCalls).toBe(1)
+        expect(mirrorMountCalls).toBe(1 * strictModeFactor)
+        expect(mirrorContentCalls).toBe(3 * strictModeFactor)
+        expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
         done()
       })
     })
@@ -100,9 +101,9 @@ describe('event resize mirror', () => {
       )
 
       waitEventResize(calendar, resizing).then(() => {
-        expect(mirrorMountCalls).toBe(1)
-        expect(mirrorContentCalls).toBe(3)
-        expect(mirrorUnmountCalls).toBe(1)
+        expect(mirrorMountCalls).toBe(1 * strictModeFactor)
+        expect(mirrorContentCalls).toBe(3 * strictModeFactor)
+        expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
         done()
       })
     })

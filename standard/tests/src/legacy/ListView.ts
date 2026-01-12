@@ -1,3 +1,4 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
 import frLocale from '@fullcalendar/core/locales/fr'
 import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
 
@@ -49,7 +50,7 @@ describe('ListView rendering', () => {
           },
         })
 
-        expect(eventMountCnt).toBe(2)
+        expect(eventMountCnt).toBe(2 * strictModeFactor)
       })
 
       it('filters events through eventWillUnmount', () => {
@@ -62,7 +63,7 @@ describe('ListView rendering', () => {
         })
 
         currentCalendar.destroy()
-        expect(callCnt).toBe(2)
+        expect(callCnt).toBe(2 * strictModeFactor)
       })
     })
 

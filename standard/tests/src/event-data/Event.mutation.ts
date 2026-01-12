@@ -1,3 +1,5 @@
+import { strictModeFactor } from '@fullcalendar/core/preact'
+
 describe('event mutations on non-instances', () => {
   pushOptions({
     initialView: 'dayGridWeek',
@@ -21,7 +23,7 @@ describe('event mutations on non-instances', () => {
         },
       })
 
-      expect(renderCnt).toBe(2)
+      expect(renderCnt).toBe(2 * strictModeFactor)
 
       let event = calendar.getEventById('1')
       expect(event.start).toEqualDate('2018-09-04')
