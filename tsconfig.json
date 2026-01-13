@@ -35,9 +35,6 @@
       "path": "premium/tests"
     },
     {
-      "path": "scripts"
-    },
-    {
       "path": "standard/bundle"
     },
     {
@@ -81,9 +78,6 @@
     },
     {
       "path": "standard/packages/web-component"
-    },
-    {
-      "path": "standard/scripts"
     },
     {
       "path": "standard/tests"

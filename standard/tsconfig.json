@@ -56,9 +56,6 @@
       "path": "packages/web-component"
     },
     {
-      "path": "scripts"
-    },
-    {
       "path": "tests"
     }
   ]

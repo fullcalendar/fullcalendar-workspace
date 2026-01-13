@@ -12,9 +12,6 @@
   "references": [
     {
       "path": "../headless-calendar"
-    },
-    {
-      "path": "../../scripts"
     }
   ]
 }

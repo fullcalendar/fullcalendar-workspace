@@ -7,9 +7,5 @@
   "include": [
     "./src/**/*"
   ],
-  "references": [
-    {
-      "path": "../../../standard/scripts"
-    }
-  ]
+  "references": []
 }

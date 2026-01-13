@@ -19,9 +19,6 @@
     },
     {
       "path": "../../../standard/packages/daygrid"
-    },
-    {
-      "path": "../../../standard/scripts"
     }
   ]
 }

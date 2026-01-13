@@ -25,9 +25,6 @@
     },
     {
       "path": "../../../standard/packages/core"
-    },
-    {
-      "path": "../../../standard/scripts"
     }
   ]
 }

@@ -25,9 +25,6 @@
     },
     {
       "path": "../../../standard/packages/timegrid"
-    },
-    {
-      "path": "../../../standard/scripts"
     }
   ]
 }
