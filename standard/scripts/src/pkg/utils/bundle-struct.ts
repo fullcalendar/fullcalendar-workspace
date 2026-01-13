@@ -1,9 +1,9 @@
 import { join as joinPaths } from 'path'
 import { globby } from 'globby'
-import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.js'
-import { filterProps } from '../../utils/lang.js'
-import { pkgLog } from '../../utils/log.js'
-import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.js'
+import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.ts'
+import { filterProps } from '../../utils/lang.ts'
+import { pkgLog } from '../../utils/log.ts'
+import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.ts'
 
 export interface PkgBundleStruct {
   pkgDir: string,

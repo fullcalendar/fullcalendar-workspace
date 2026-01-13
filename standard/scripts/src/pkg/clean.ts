@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
-import { ScriptContext } from '../utils/script-runner.js'
+import { ScriptContext } from '../utils/script-runner.ts'
 
 const pathsToDelete = [
   './dist',

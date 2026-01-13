@@ -1,14 +1,14 @@
 import { basename } from 'path'
 import { watch } from 'chokidar'
 import { rollup, watch as rollupWatch, RollupOptions, OutputOptions } from 'rollup'
-import { MonorepoStruct } from '../utils/monorepo-struct.js'
-import { buildPkgBundleStruct, PkgBundleStruct } from './utils/bundle-struct.js'
-import { analyzePkg } from '../utils/pkg-analysis.js'
-import { buildEsmOptions, buildCjsOptions, buildIifeOptions, buildDtsOptions } from './utils/rollup-presets.js'
-import { arrayify, continuousAsync } from '../utils/lang.js'
-import { ScriptContext } from '../utils/script-runner.js'
-import { untilSigInt } from '../utils/process.js'
-import { pkgLog } from '../utils/log.js'
+import { MonorepoStruct } from '../utils/monorepo-struct.ts'
+import { buildPkgBundleStruct, PkgBundleStruct } from './utils/bundle-struct.ts'
+import { analyzePkg } from '../utils/pkg-analysis.ts'
+import { buildEsmOptions, buildCjsOptions, buildIifeOptions, buildDtsOptions } from './utils/rollup-presets.ts'
+import { arrayify, continuousAsync } from '../utils/lang.ts'
+import { ScriptContext } from '../utils/script-runner.ts'
+import { untilSigInt } from '../utils/process.ts'
+import { pkgLog } from '../utils/log.ts'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this

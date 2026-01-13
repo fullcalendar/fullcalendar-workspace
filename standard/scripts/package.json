@@ -60,8 +60,8 @@
     "eslint": "./node_modules/eslint/bin/eslint.js"
   },
   "scripts": {
-    "lint": "eslint .",
-    "safe-build": "cp tsconfig.safe.json tsconfig.json && tsc -b"
+    "check": "tsc -b",
+    "lint": "eslint ."
   },
   "type": "module",
   "exports": {

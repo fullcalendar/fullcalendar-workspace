@@ -9,9 +9,9 @@ import { readFile } from 'fs/promises'
 import { Plugin } from 'rollup'
 import handlebars from 'handlebars'
 import cssnano from 'cssnano'
-import { execLive } from '../../utils/exec.js'
-import { strsToProps } from '../../utils/lang.js'
-import { standardScriptsDir } from '../../utils/script-runner.js'
+import { execLive } from '../../utils/exec.ts'
+import { strsToProps } from '../../utils/lang.ts'
+import { standardScriptsDir } from '../../utils/script-runner.ts'
 
 // Generated Content
 // -------------------------------------------------------------------------------------------------

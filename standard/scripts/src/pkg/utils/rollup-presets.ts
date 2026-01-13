@@ -10,10 +10,10 @@ import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
 import postcssPluginLib from 'rollup-plugin-postcss'
 import replacePluginLib from '@rollup/plugin-replace'
-import { MonorepoStruct } from '../../utils/monorepo-struct.js'
-import { analyzePkg } from '../../utils/pkg-analysis.js'
-import { readPkgJson } from '../../utils/pkg-json.js'
-import { standardScriptsDir } from '../../utils/script-runner.js'
+import { MonorepoStruct } from '../../utils/monorepo-struct.ts'
+import { analyzePkg } from '../../utils/pkg-analysis.ts'
+import { readPkgJson } from '../../utils/pkg-json.ts'
+import { standardScriptsDir } from '../../utils/script-runner.ts'
 import {
   transpiledExtension,
   transpiledSubdir,
@@ -22,7 +22,7 @@ import {
   iifeExtension,
   assetExtensions,
   manualChunkEntryAliases,
-} from './config.js'
+} from './config.ts'
 import {
   computeExternalPkgs,
   computeIifeExternalPkgs,
@@ -33,7 +33,7 @@ import {
   entryStructsToContentMap,
   PkgBundleStruct,
   GlobalVarMap,
-} from './bundle-struct.js'
+} from './bundle-struct.ts'
 import {
   externalizeExtensionsPlugin,
   externalizePathsPlugin,
@@ -44,9 +44,9 @@ import {
   rerootPlugin,
   simpleDotAssignment,
   extractCssSeparatelyPlugin,
-} from './rollup-plugins.js'
-import transformClassNamesPlugin from './rollup-plugins-theming.js'
-import { HashGenerator } from './hash-generator.js'
+} from './rollup-plugins.ts'
+import transformClassNamesPlugin from './rollup-plugins-theming.ts'
+import { HashGenerator } from './hash-generator.ts'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
 const jsonPlugin = cjsInterop(jsonPluginLib)

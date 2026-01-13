@@ -3,7 +3,7 @@ import MagicString from 'magic-string'
 import postcss from 'postcss'
 import selectorParser from 'postcss-selector-parser'
 import { TransformPluginContext, AcornNode } from 'rollup'
-import { HashGenerator } from './hash-generator.js'
+import { HashGenerator } from './hash-generator.ts'
 
 export default function transformClassNamesPlugin(minify: boolean, isPublicMui: boolean) {
   return {

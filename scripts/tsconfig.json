@@ -1,8 +1,7 @@
 {
   "extends": "@fullcalendar-scripts/standard/config/tsconfig.node.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "noEmit": true
+    "rootDir": "./src"
   },
   "include": [
     "./src/**/*"

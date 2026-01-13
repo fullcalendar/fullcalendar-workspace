@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { querySubrepoPkgs, readManifest, writeManifest } from './meta/utils.js'
+import { querySubrepoPkgs, readManifest, writeManifest } from './meta/utils.ts'
 import { addFile } from '@fullcalendar-scripts/standard/utils/git'
 
 const versionAuthorityPkg = 'standard/packages/core'

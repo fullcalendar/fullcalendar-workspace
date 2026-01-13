@@ -4,8 +4,8 @@ import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile, readLockfile, relinkLockfile, writeLockfile } from 'pnpm-make-dedicated-lockfile'
 import { addFile, assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
-import { querySubrepoPkgs, readManifest } from './utils.js'
-import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.js'
+import { querySubrepoPkgs, readManifest } from './utils.ts'
+import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.ts'
 
 const verbose = true
 

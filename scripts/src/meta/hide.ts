@@ -2,8 +2,8 @@ import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
 import { assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
-import { querySubrepoPkgs } from './utils.js'
-import { allSubpaths } from './config.js'
+import { querySubrepoPkgs } from './utils.ts'
+import { allSubpaths } from './config.ts'
 
 export default async function() {
   await hideMetaFiles(process.cwd())

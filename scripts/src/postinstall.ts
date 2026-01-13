@@ -1,6 +1,6 @@
 import { ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
 import origPostinstall from '@fullcalendar-scripts/standard/postinstall'
-import { hideMetaFiles } from './meta/hide.js'
+import { hideMetaFiles } from './meta/hide.ts'
 
 export default async function(this: ScriptContext) {
   await Promise.all([

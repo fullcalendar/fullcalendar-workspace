@@ -1,5 +1,5 @@
-import { ScriptContext } from './utils/script-runner.js'
-import { writeDistPkgJsons } from './json.js'
+import { ScriptContext } from './utils/script-runner.ts'
+import { writeDistPkgJsons } from './json.ts'
 
 export default async function(this: ScriptContext) {
   await Promise.all([

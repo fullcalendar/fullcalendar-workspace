@@ -1,8 +1,8 @@
 import { join as joinPaths } from 'path'
 import { assumeUnchanged, checkoutFile } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
-import { querySubrepoPkgs } from './utils.js'
-import { allSubpaths } from './config.js'
+import { querySubrepoPkgs } from './utils.ts'
+import { allSubpaths } from './config.ts'
 
 export default async function() {
   const monorepoDir = process.cwd()

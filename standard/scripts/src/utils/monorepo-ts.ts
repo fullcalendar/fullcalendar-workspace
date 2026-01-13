@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
-import { execLive, spawnLive } from './exec.js'
-import { standardScriptsDir } from './script-runner.js'
-import { log } from './log.js'
+import { execLive, spawnLive } from './exec.ts'
+import { standardScriptsDir } from './script-runner.ts'
+import { log } from './log.ts'
 
 export async function compileTs(dir: string, tscArgs: string[] = []): Promise<void> {
   await execLive([

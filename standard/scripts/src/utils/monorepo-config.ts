@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { MonorepoStruct } from './monorepo-struct.js'
+import { MonorepoStruct } from './monorepo-struct.ts'
 
 export function getArchiveRootDirs(monorepoStruct: MonorepoStruct): string[] {
   const { monorepoDir, monorepoPkgJson } = monorepoStruct

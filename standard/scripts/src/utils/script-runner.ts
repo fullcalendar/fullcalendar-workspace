@@ -1,7 +1,7 @@
 import { join as joinPaths, sep as pathSep } from 'path'
 import { fileURLToPath } from 'url'
-import { fileExists } from './fs.js'
-import { MonorepoStruct, readMonorepo } from './monorepo-struct.js'
+import { fileExists } from './fs.ts'
+import { MonorepoStruct, readMonorepo } from './monorepo-struct.ts'
 
 export interface ScriptContext {
   cwd: string

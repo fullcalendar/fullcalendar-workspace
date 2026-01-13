@@ -1,10 +1,10 @@
 import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
-import { ScriptContext } from './utils/script-runner.js'
-import { deleteMonorepoArchives } from './archive.js'
-import { runTurboTasks } from './utils/turbo.js'
-import { MonorepoStruct, traverseMonorepoGreedy } from './utils/monorepo-struct.js'
-import { cleanPkg } from './pkg/clean.js'
+import { ScriptContext } from './utils/script-runner.ts'
+import { deleteMonorepoArchives } from './archive.ts'
+import { runTurboTasks } from './utils/turbo.ts'
+import { MonorepoStruct, traverseMonorepoGreedy } from './utils/monorepo-struct.ts'
+import { cleanPkg } from './pkg/clean.ts'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this

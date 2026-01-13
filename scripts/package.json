@@ -17,6 +17,7 @@
     "ws": "./bin/workspace-scripts.ts"
   },
   "scripts": {
+    "check": "tsc -b",
     "lint": "eslint ."
   },
   "type": "module",
