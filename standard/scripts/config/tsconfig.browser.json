@@ -10,7 +10,6 @@
     ],
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "noUnusedLocals": true,
-    "noImplicitUseStrict": true,
     "resolveJsonModule": true,
     "jsx": "react",
     "jsxFactory": "createElement",

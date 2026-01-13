@@ -5,12 +5,6 @@
       "path": "bundle"
     },
     {
-      "path": "packages/bootstrap4"
-    },
-    {
-      "path": "packages/bootstrap5"
-    },
-    {
       "path": "packages/core"
     },
     {
@@ -27,12 +21,6 @@
     },
     {
       "path": "packages/list"
-    },
-    {
-      "path": "packages/luxon1"
-    },
-    {
-      "path": "packages/luxon2"
     },
     {
       "path": "packages/luxon3"
