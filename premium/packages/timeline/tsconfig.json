@@ -1,0 +1,24 @@
+{
+  "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/.tsout"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../premium-common"
+    },
+    {
+      "path": "../scrollgrid"
+    },
+    {
+      "path": "../../../standard/packages/core"
+    },
+    {
+      "path": "../../../standard/scripts"
+    }
+  ]
+}

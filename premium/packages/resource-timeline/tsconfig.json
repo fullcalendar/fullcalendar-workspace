@@ -1,0 +1,33 @@
+{
+  "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/.tsout"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../headless-grid"
+    },
+    {
+      "path": "../premium-common"
+    },
+    {
+      "path": "../resource"
+    },
+    {
+      "path": "../scrollgrid"
+    },
+    {
+      "path": "../timeline"
+    },
+    {
+      "path": "../../../standard/packages/core"
+    },
+    {
+      "path": "../../../standard/scripts"
+    }
+  ]
+}

@@ -22,16 +22,6 @@
     "clean-dist": "rm -f dist/palettes/*.js dist/palettes/*.min.js"
   },
   "type": "module",
-  "tsConfig": {
-    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
-    "compilerOptions": {
-      "rootDir": "./src",
-      "outDir": "./dist/.tsout"
-    },
-    "include": [
-      "./src/**/*"
-    ]
-  },
   "buildConfig": {
     "exports": {
       ".": {

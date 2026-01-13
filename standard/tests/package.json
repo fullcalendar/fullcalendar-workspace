@@ -38,21 +38,6 @@
     "lint": "eslint ."
   },
   "type": "module",
-  "tsConfig": {
-    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
-    "compilerOptions": {
-      "types": [
-        "jasmine",
-        "jasmine-jquery",
-        "jquery"
-      ],
-      "rootDir": "./src",
-      "outDir": "./dist/.tsout"
-    },
-    "include": [
-      "./src/**/*"
-    ]
-  },
   "buildConfig": {
     "exports": {
       ".": {

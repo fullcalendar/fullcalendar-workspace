@@ -1,0 +1,137 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "premium/bundle"
+    },
+    {
+      "path": "premium/packages/adaptive"
+    },
+    {
+      "path": "premium/packages/headless-grid"
+    },
+    {
+      "path": "premium/packages/premium-common"
+    },
+    {
+      "path": "premium/packages/resource"
+    },
+    {
+      "path": "premium/packages/resource-daygrid"
+    },
+    {
+      "path": "premium/packages/resource-timegrid"
+    },
+    {
+      "path": "premium/packages/resource-timeline"
+    },
+    {
+      "path": "premium/packages/scrollgrid"
+    },
+    {
+      "path": "premium/packages/timeline"
+    },
+    {
+      "path": "premium/tests"
+    },
+    {
+      "path": "scripts"
+    },
+    {
+      "path": "standard/bundle"
+    },
+    {
+      "path": "standard/packages/core"
+    },
+    {
+      "path": "standard/packages/daygrid"
+    },
+    {
+      "path": "standard/packages/google-calendar"
+    },
+    {
+      "path": "standard/packages/headless-calendar"
+    },
+    {
+      "path": "standard/packages/icalendar"
+    },
+    {
+      "path": "standard/packages/interaction"
+    },
+    {
+      "path": "standard/packages/list"
+    },
+    {
+      "path": "standard/packages/luxon3"
+    },
+    {
+      "path": "standard/packages/moment"
+    },
+    {
+      "path": "standard/packages/moment-timezone"
+    },
+    {
+      "path": "standard/packages/multimonth"
+    },
+    {
+      "path": "standard/packages/rrule"
+    },
+    {
+      "path": "standard/packages/timegrid"
+    },
+    {
+      "path": "standard/packages/web-component"
+    },
+    {
+      "path": "standard/scripts"
+    },
+    {
+      "path": "standard/tests"
+    },
+    {
+      "path": "standard/theming/theme-breezy"
+    },
+    {
+      "path": "standard/theming/theme-classic"
+    },
+    {
+      "path": "standard/theming/theme-forma"
+    },
+    {
+      "path": "standard/theming/theme-monarch"
+    },
+    {
+      "path": "standard/theming/theme-pulse"
+    },
+    {
+      "path": "theming/theme-breezy-tailwind"
+    },
+    {
+      "path": "theming/theme-classic-tailwind"
+    },
+    {
+      "path": "theming/theme-common"
+    },
+    {
+      "path": "theming/theme-forma-tailwind"
+    },
+    {
+      "path": "theming/theme-monarch-tailwind"
+    },
+    {
+      "path": "theming/theme-pulse-tailwind"
+    },
+    {
+      "path": "theming/ui-default-react-tailwind"
+    },
+    {
+      "path": "theming/ui-mui"
+    },
+    {
+      "path": "theming/ui-mui-tailwind"
+    },
+    {
+      "path": "theming/ui-shadcn"
+    }
+  ]
+}

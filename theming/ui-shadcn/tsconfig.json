@@ -1,0 +1,85 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "node16",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+    "jsx": "react",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../premium/packages/adaptive"
+    },
+    {
+      "path": "../../premium/packages/resource-daygrid"
+    },
+    {
+      "path": "../../premium/packages/resource-timegrid"
+    },
+    {
+      "path": "../../premium/packages/resource-timeline"
+    },
+    {
+      "path": "../../premium/packages/scrollgrid"
+    },
+    {
+      "path": "../../premium/packages/timeline"
+    },
+    {
+      "path": "../../standard/packages/core"
+    },
+    {
+      "path": "../../standard/packages/daygrid"
+    },
+    {
+      "path": "../../standard/packages/interaction"
+    },
+    {
+      "path": "../../standard/packages/list"
+    },
+    {
+      "path": "../../standard/packages/multimonth"
+    },
+    {
+      "path": "../../standard/packages/timegrid"
+    },
+    {
+      "path": "../theme-breezy-tailwind"
+    },
+    {
+      "path": "../theme-classic-tailwind"
+    },
+    {
+      "path": "../theme-common"
+    },
+    {
+      "path": "../theme-forma-tailwind"
+    },
+    {
+      "path": "../theme-monarch-tailwind"
+    },
+    {
+      "path": "../theme-pulse-tailwind"
+    }
+  ]
+}

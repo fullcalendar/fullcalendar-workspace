@@ -3,7 +3,7 @@
     "jsx": "react",
     "target": "es2016",
     "module": "node16",
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "typeRoots": [],
     "lib": [
       "es2017",

@@ -2,9 +2,7 @@
 # Package manager
 /node_modules
 
-# Dynamically generated
-/tsconfig.json
-
+# Typescript
 *.tsbuildinfo
 
 # Monorepo

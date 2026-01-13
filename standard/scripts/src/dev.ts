@@ -7,7 +7,7 @@ import {
   traverseMonorepo,
   watchMonorepo,
 } from './utils/monorepo-struct.js'
-import { watchTs, writeTsconfigs } from './utils/monorepo-ts.js'
+import { watchTs } from './utils/monorepo-ts.js'
 import { untilSigInt } from './utils/process.js'
 import { ScriptContext } from './utils/script-runner.js'
 
@@ -29,7 +29,6 @@ export default async function(this: ScriptContext) {
       }
     })
 
-    await writeTsconfigs(monorepoStruct)
     await writeDistPkgJsons(monorepoStruct, true) // isDev=true
 
     // tsc needs tsconfig.json and package.json from above

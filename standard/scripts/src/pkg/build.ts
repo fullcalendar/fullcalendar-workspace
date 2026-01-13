@@ -5,7 +5,7 @@ import { writeDistPkgJson } from './json.js'
 import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.js'
 import { ScriptContext } from '../utils/script-runner.js'
 import { writeBundles } from './bundle.js'
-import { compileTs, writeTsconfigs } from '../utils/monorepo-ts.js'
+import { compileTs } from '../utils/monorepo-ts.js'
 import { MonorepoStruct } from '../utils/monorepo-struct.js'
 
 const tscArtifacts = [
@@ -33,7 +33,6 @@ export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, i
   const { isTests } = pkgAnalysis
 
   await deleteBuiltFiles(pkgDir)
-  await writeTsconfigs(monorepoStruct, pkgDir)
 
   if (!isTests) {
     await writeDistPkgJson(pkgDir, pkgJson, isDev)

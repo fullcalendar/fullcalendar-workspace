@@ -13,29 +13,19 @@
     "terser": "^5.39.0"
   },
   "bin": {
-    "workspace-scripts": "./bin/workspace-scripts.js",
-    "ws": "./bin/workspace-scripts.js"
+    "workspace-scripts": "./bin/workspace-scripts.ts",
+    "ws": "./bin/workspace-scripts.ts"
   },
   "scripts": {
     "lint": "eslint ."
   },
   "type": "module",
-  "tsConfig": {
-    "extends": "@fullcalendar-scripts/standard/config/tsconfig.node.json",
-    "compilerOptions": {
-      "rootDir": "./src",
-      "outDir": "./dist"
-    },
-    "include": [
-      "./src/**/*"
-    ]
-  },
   "exports": {
     "./package.json": "./package.json",
     "./config/*": "./config/*",
     "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./dist/*.js"
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
     }
   }
 }

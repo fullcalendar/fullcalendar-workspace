@@ -1,0 +1,33 @@
+{
+  "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/.tsout"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../premium-common"
+    },
+    {
+      "path": "../resource"
+    },
+    {
+      "path": "../resource-daygrid"
+    },
+    {
+      "path": "../../../standard/packages/core"
+    },
+    {
+      "path": "../../../standard/packages/daygrid"
+    },
+    {
+      "path": "../../../standard/packages/timegrid"
+    },
+    {
+      "path": "../../../standard/scripts"
+    }
+  ]
+}

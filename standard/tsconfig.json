@@ -1,0 +1,65 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "bundle"
+    },
+    {
+      "path": "packages/bootstrap4"
+    },
+    {
+      "path": "packages/bootstrap5"
+    },
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/daygrid"
+    },
+    {
+      "path": "packages/google-calendar"
+    },
+    {
+      "path": "packages/icalendar"
+    },
+    {
+      "path": "packages/interaction"
+    },
+    {
+      "path": "packages/list"
+    },
+    {
+      "path": "packages/luxon1"
+    },
+    {
+      "path": "packages/luxon2"
+    },
+    {
+      "path": "packages/luxon3"
+    },
+    {
+      "path": "packages/moment"
+    },
+    {
+      "path": "packages/moment-timezone"
+    },
+    {
+      "path": "packages/multimonth"
+    },
+    {
+      "path": "packages/rrule"
+    },
+    {
+      "path": "packages/timegrid"
+    },
+    {
+      "path": "packages/web-component"
+    },
+    {
+      "path": "scripts"
+    },
+    {
+      "path": "tests"
+    }
+  ]
+}

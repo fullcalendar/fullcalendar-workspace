@@ -61,34 +61,6 @@
     "clean-dist": "rm -f dist/*/theme.js dist/*/theme.min.js"
   },
   "type": "module",
-  "tsConfig": {
-    "compilerOptions": {
-      "target": "ES2020",
-      "useDefineForClassFields": true,
-      "module": "node16",
-      "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "skipLibCheck": true,
-      "jsx": "react",
-
-      "moduleResolution": "node16",
-      "isolatedModules": true,
-      "moduleDetection": "force",
-
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true,
-
-      "composite": true,
-      "declaration": true,
-      "declarationMap": true,
-      "rootDir": "./src",
-      "outDir": "./dist/.tsout"
-    },
-    "include": [
-      "./src/**/*"
-    ]
-  },
   "buildConfig": {
     "exports": {
       "./breezy/theme": { "iife": true, "css": true },

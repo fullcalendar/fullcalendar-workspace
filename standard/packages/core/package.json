@@ -22,18 +22,6 @@
     "lint": "eslint ."
   },
   "type": "module",
-  "tsConfig": {
-    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
-    "compilerOptions": {
-      "rootDir": "./src",
-      "outDir": "./dist/.tsout"
-    },
-    "include": [
-      "./src/global-types.d.ts",
-      "./src/util.module.css",
-      "./src/**/*"
-    ]
-  },
   "buildConfig": {
     "exports": {
       ".": {

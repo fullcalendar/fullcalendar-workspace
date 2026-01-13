@@ -1,0 +1,62 @@
+{
+  "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+  "compilerOptions": {
+    "types": [
+      "jasmine",
+      "jasmine-jquery",
+      "jquery"
+    ],
+    "rootDir": "./src",
+    "outDir": "./dist/.tsout"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../bundle"
+    },
+    {
+      "path": "../packages/core"
+    },
+    {
+      "path": "../packages/daygrid"
+    },
+    {
+      "path": "../packages/google-calendar"
+    },
+    {
+      "path": "../packages/icalendar"
+    },
+    {
+      "path": "../packages/interaction"
+    },
+    {
+      "path": "../packages/list"
+    },
+    {
+      "path": "../packages/luxon3"
+    },
+    {
+      "path": "../packages/moment"
+    },
+    {
+      "path": "../packages/moment-timezone"
+    },
+    {
+      "path": "../packages/multimonth"
+    },
+    {
+      "path": "../packages/rrule"
+    },
+    {
+      "path": "../packages/timegrid"
+    },
+    {
+      "path": "../scripts"
+    },
+    {
+      "path": "../theming/theme-classic"
+    }
+  ]
+}

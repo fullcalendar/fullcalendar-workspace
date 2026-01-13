@@ -3,7 +3,7 @@
     "skipLibCheck": true,
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "strict": true,
     "declaration": true,
     "sourceMap": true,
