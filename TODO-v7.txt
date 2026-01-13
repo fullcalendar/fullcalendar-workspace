@@ -35,6 +35,11 @@ build note:
     manually before `pn dev`
 
 
+
+standard/scripts/config/banner.tpl
+  the "title" is blank. look at any global.js output for any theme
+
+
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
