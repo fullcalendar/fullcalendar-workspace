@@ -41,7 +41,7 @@
         "globalVar": "FullCalendar.InternalClassNames"
       },
       "./locales-all": {
-        "generator": "./scripts/generate-locales-all.js",
+        "generator": "./scripts/generate-locales-all.ts",
         "module": true
       },
       "./locales/*": {
@@ -56,7 +56,7 @@
         "iife": true
       },
       "./global/locales/*": {
-        "generator": "./scripts/generate-global-locale.js",
+        "generator": "./scripts/generate-global-locale.ts",
         "iife": true
       }
     },

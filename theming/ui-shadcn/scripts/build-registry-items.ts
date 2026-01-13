@@ -41,8 +41,8 @@ for (const theme of themes) {
   )
 
   // make suitable for registry.json
-  delete eventCalendarConfig.$schema
-  delete schedulerConfig.$schema
+  delete (eventCalendarConfig as any).$schema
+  delete (schedulerConfig as any).$schema
   for (const fileMeta of eventCalendarConfig.files) {
     delete fileMeta.content
   }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && pnpm run build:registry",
-    "build:registry": "node ./scripts/build-registry-items.js",
+    "build:registry": "node ./scripts/build-registry-items.ts",
     "dev": "tsc --watch",
     "serve": "serve registry-dist",
     "clean": "rm -rf dist tsconfig.tsbuildinfo registry-dist",
