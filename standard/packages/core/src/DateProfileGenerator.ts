@@ -21,7 +21,6 @@ import {
 } from '@full-ui/headless-calendar'
 import { computeVisibleDayRange } from './util/date.js'
 import { CalendarImpl } from './api/CalendarImpl.js'
-import { CalendarNowManager } from './reducers/CalendarNowManager.js'
 
 export interface DateProfile {
   currentDate: DateMarker
@@ -39,7 +38,6 @@ export interface DateProfile {
 
 export interface DateProfileGeneratorProps extends DateProfileOptions {
   dateProfileGeneratorClass: DateProfileGeneratorClass // not used by DateProfileGenerator itself
-  nowManager: CalendarNowManager
   duration: Duration
   durationUnit: string
   usesMinMaxTime: boolean
@@ -76,7 +74,7 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
   ------------------------------------------------------------------------------------------------------------------*/
 
   // Builds a structure with info about what the dates/ranges will be for the "prev" view.
-  buildPrev(currentDateProfile: DateProfile, currentDate: DateMarker, forceToValid?: boolean): DateProfile {
+  buildPrev(currentDateProfile: DateProfile, currentDate: DateMarker, nowDate: DateMarker, forceToValid?: boolean): DateProfile {
     let { dateEnv } = this.props
 
     let prevDate = dateEnv.subtract(
@@ -84,11 +82,11 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
       currentDateProfile.dateIncrement,
     )
 
-    return this.build(prevDate, -1, forceToValid)
+    return this.build(prevDate, nowDate, -1, forceToValid)
   }
 
   // Builds a structure with info about what the dates/ranges will be for the "next" view.
-  buildNext(currentDateProfile: DateProfile, currentDate: DateMarker, forceToValid?: boolean): DateProfile {
+  buildNext(currentDateProfile: DateProfile, currentDate: DateMarker, nowDate: DateMarker, forceToValid?: boolean): DateProfile {
     let { dateEnv } = this.props
 
     let nextDate = dateEnv.add(
@@ -96,13 +94,13 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
       currentDateProfile.dateIncrement,
     )
 
-    return this.build(nextDate, 1, forceToValid)
+    return this.build(nextDate, nowDate, 1, forceToValid)
   }
 
   // Builds a structure holding dates/ranges for rendering around the given date.
   // Optional direction param indicates whether the date is being incremented/decremented
   // from its previous value. decremented = -1, incremented = 1 (default).
-  build(currentDate: DateMarker, direction?, forceToValid = true): DateProfile {
+  build(currentDate: DateMarker, nowDate: DateMarker, direction?, forceToValid = true): DateProfile {
     let { props } = this
     let validRange: DateRange
     let currentInfo
@@ -111,7 +109,7 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
     let activeRange: DateRange
     let isValid
 
-    validRange = this.buildValidRange()
+    validRange = this.buildValidRange(nowDate)
     validRange = this.trimHiddenDays(validRange)
 
     if (forceToValid) {
@@ -185,10 +183,10 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
   // Builds an object with optional start/end properties.
   // Indicates the minimum/maximum dates to display.
   // not responsible for trimming hidden days.
-  buildValidRange(): OpenDateRange {
+  buildValidRange(nowDate: DateMarker): OpenDateRange {
     let input = this.props.validRangeInput
     let simpleInput = typeof input === 'function'
-      ? input.call(this.props.calendarApi, this.props.dateEnv.toDate(this.props.nowManager.getDateMarker()))
+      ? input.call(this.props.calendarApi, this.props.dateEnv.toDate(nowDate))
       : input
 
     return this.refineRange(simpleInput) ||

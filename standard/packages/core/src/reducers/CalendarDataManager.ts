@@ -3,12 +3,12 @@ import { memoize, memoizeObjArg } from '../util/memoize.js'
 import { Action } from './Action.js'
 import { buildBuildPluginHooks } from '../plugin-system.js'
 import { PluginHooks } from '../plugin-system-struct.js'
-import { DateEnv } from '@full-ui/headless-calendar'
+import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
 import { CalendarImpl } from '../api/CalendarImpl.js'
 import { EventSourceHash } from '../structs/event-source.js'
 import { buildViewSpecs, ViewSpec } from '../structs/view-spec.js'
 import { mapHash, isPropsEqualShallow } from '../util/object.js'
-import { DateProfileGenerator, DateProfileGeneratorProps } from '../DateProfileGenerator.js'
+import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps } from '../DateProfileGenerator.js'
 import { reduceViewType } from './view-type.js'
 import { getInitialDate, reduceCurrentDate } from './current-date.js'
 import { reduceDynamicOptionOverrides } from './options.js'
@@ -42,6 +42,7 @@ import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData,
 import { TaskRunner } from '../util/TaskRunner.js'
 import { buildTitle } from './title-formatting.js'
 import { CalendarNowManager } from './CalendarNowManager.js'
+import { NowTimerRunner } from '../NowTimerRunner.js'
 
 export interface CalendarDataManagerProps {
   optionOverrides: CalendarOptions
@@ -73,9 +74,11 @@ export class CalendarDataManager {
   private buildEventUiBySource = memoize(buildEventUiBySource, isPropsEqualShallow)
   private buildEventUiBases = memoize(buildEventUiBases)
   private parseContextBusinessHours = memoizeObjArg(parseContextBusinessHours)
+  private buildToolbarProps = memoize(buildToolbarProps)
   private buildTitle = memoize(buildTitle)
 
   private nowManager = new CalendarNowManager()
+  private nowTimer: NowTimerRunner
 
   public emitter = new Emitter<Required<CalendarListeners>>()
   private actionRunner = new TaskRunner(this._handleAction.bind(this), this.updateData.bind(this))
@@ -99,6 +102,7 @@ export class CalendarDataManager {
     this.props = props
     this.actionRunner.pause()
     this.nowManager = new CalendarNowManager()
+    this.nowTimer = new NowTimerRunner(this.handleNowChange)
 
     let dynamicOptionOverrides: CalendarOptions = {}
     let optionsData = this.computeOptionsData(
@@ -146,7 +150,16 @@ export class CalendarDataManager {
       optionsData.dateEnv,
       this.nowManager,
     )
-    let dateProfile = currentViewData.dateProfileGenerator.build(currentDate)
+
+    let { nowDate } = this.nowTimer.update({
+      unit: 'day',
+      unitValue: 1,
+      nowIndicatorSnap: 'auto',
+      nowManager: this.nowManager,
+      dateEnv: optionsData.dateEnv,
+    })
+
+    let dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
 
     if (!rangeContainsMarker(dateProfile.activeRange, currentDate)) {
       currentDate = dateProfile.currentRange.start
@@ -175,6 +188,7 @@ export class CalendarDataManager {
       eventDrag: null,
       eventResize: null,
       selectionConfig: this.buildViewUiProps(calendarContext).selectionConfig,
+      nowDate,
     }
     let contextAndState = { ...calendarContext, ...initialState }
 
@@ -249,14 +263,22 @@ export class CalendarDataManager {
       getCurrentData: this.getCurrentData,
     }
 
+    let { nowDate } = this.nowTimer.update({
+      unit: 'day',
+      unitValue: 1,
+      nowIndicatorSnap: 'auto',
+      nowManager: this.nowManager,
+      dateEnv: optionsData.dateEnv,
+    })
+
     let { currentDate, dateProfile } = state
 
     if (this.data && this.data.dateProfileGenerator !== currentViewData.dateProfileGenerator) { // hack
-      dateProfile = currentViewData.dateProfileGenerator.build(currentDate)
+      dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
     }
 
     currentDate = reduceCurrentDate(currentDate, action)
-    dateProfile = reduceDateProfile(dateProfile, action, currentDate, currentViewData.dateProfileGenerator)
+    dateProfile = reduceDateProfile(dateProfile, action, currentDate, nowDate, currentViewData.dateProfileGenerator)
 
     if (
       action.type === 'PREV' || // TODO: move this logic into DateProfileGenerator
@@ -294,6 +316,7 @@ export class CalendarDataManager {
       eventSelection: reduceSelectedEvent(state.eventSelection, action),
       eventDrag: reduceEventDrag(state.eventDrag, action),
       eventResize: reduceEventResize(state.eventResize, action),
+      nowDate,
     }
     let contextAndState = { ...calendarContext, ...newState }
 
@@ -318,6 +341,16 @@ export class CalendarDataManager {
     }
   }
 
+  private handleNowChange = () => {
+    this.actionRunner.request({ // hack. will cause updateData
+      type: 'NOTHING',
+    })
+  }
+
+  destroy() {
+    this.nowTimer.destroy()
+  }
+
   updateData() {
     let { props, state } = this
     let oldData = this.data
@@ -336,6 +369,16 @@ export class CalendarDataManager {
     )
 
     let viewTitle = this.buildTitle(state.dateProfile, currentViewData.options, optionsData.dateEnv)
+
+    let toolbarProps = this.buildToolbarProps(
+      currentViewData.viewSpec,
+      state.dateProfile,
+      currentViewData.dateProfileGenerator,
+      state.currentDate,
+      state.nowDate,
+      viewTitle,
+    )
+
     let data: CalendarData = this.data = {
       viewTitle,
       nowManager: this.nowManager,
@@ -343,6 +386,7 @@ export class CalendarDataManager {
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
+      toolbarProps,
       ...optionsData,
       ...currentViewData,
       ...state,
@@ -520,7 +564,6 @@ export class CalendarDataManager {
 
     let dateProfileGenerator = this.buildDateProfileGenerator({
       dateProfileGeneratorClass: viewSpec.optionDefaults.dateProfileGeneratorClass as any,
-      nowManager: this.nowManager,
       duration: viewSpec.duration,
       durationUnit: viewSpec.durationUnit,
       usesMinMaxTime: viewSpec.optionDefaults.usesMinMaxTime as any,
@@ -733,4 +776,36 @@ function filterKnownOptions(options: any, optionRefiners: any): any {
   }
 
   return knownOptions
+}
+
+export interface CalendarToolbarProps {
+  title: string
+  selectedButton: string
+  navUnit: string
+  isTodayEnabled: boolean
+  isPrevEnabled: boolean
+  isNextEnabled: boolean
+}
+
+function buildToolbarProps(
+  viewSpec: ViewSpec,
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+  currentDate: DateMarker,
+  nowDate: DateMarker,
+  title: string,
+): CalendarToolbarProps {
+  // don't force any date-profiles to valid date profiles (the `false`) so that we can tell if it's invalid
+  let todayInfo = dateProfileGenerator.build(nowDate, undefined, false) // TODO: need `undefined` or else INFINITE LOOP for some reason
+  let prevInfo = dateProfileGenerator.buildPrev(dateProfile, currentDate, nowDate, false)
+  let nextInfo = dateProfileGenerator.buildNext(dateProfile, currentDate, nowDate, false)
+
+  return {
+    title,
+    selectedButton: viewSpec.type,
+    navUnit: viewSpec.singleUnit,
+    isTodayEnabled: todayInfo.isValid && !rangeContainsMarker(dateProfile.currentRange, nowDate),
+    isPrevEnabled: prevInfo.isValid,
+    isNextEnabled: nextInfo.isValid,
+  }
 }

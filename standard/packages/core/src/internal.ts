@@ -164,8 +164,7 @@ export { parseDragMeta } from './structs/drag-meta.js'
 export type { ViewPropsTransformer, PluginDef } from './plugin-system-struct.js'
 export type { Action } from './reducers/Action.js'
 export type { CalendarContext } from './CalendarContext.js'
-export type { CalendarContentProps } from './Calendar.js'
-export { CalendarRoot } from './component/CalendarRoot.js'
+export type { CalendarContentProps } from './CalendarInner.js'
 
 export { DaySeriesModel } from './common/DaySeriesModel.js'
 

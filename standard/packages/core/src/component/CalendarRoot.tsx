@@ -1,76 +1,71 @@
-import { ComponentChildren, flushUpdates } from '../preact.js'
-import { BaseComponent } from '../vdom-util.js'
-import { CalendarOptions, CalendarListeners } from '../options.js'
 import { Emitter } from '../common/Emitter.js'
-import { CssDimValue } from '../scrollgrid/util.js'
-import { updateSizeSync } from '../component-util/resize-observer.js'
-import { joinArrayishClassNames } from '../util/html.js'
 import classNames from '../internal-classnames.js'
+import { CalendarListeners, CalendarOptions } from '../options.js'
+import { Component, flushSync, VNode } from '../preact.js'
+import { joinArrayishClassNames } from '../util/html.js'
 
-export interface CalendarRootProps {
-  options: CalendarOptions
+export interface CalendarMediaRootProps {
   emitter: Emitter<Required<CalendarListeners>>
-  children?: (isRtl: boolean, className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
+  children?: (forPrint: boolean) => VNode
 }
 
-interface CalendarRootState {
+interface CalendarMediaRootState {
   forPrint: boolean
 }
 
-export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootState> {
-  state: CalendarRootState = {
+export class CalendarMediaRoot extends Component<CalendarMediaRootProps, CalendarMediaRootState> {
+  state: CalendarMediaRootState = {
     forPrint: false,
   }
 
   render() {
-    let { props, state } = this
-    let { options } = props
-    let { forPrint } = state
-
-    // TODO: DRY
-    let borderlessX = options.borderlessX ?? options.borderless
-    let borderlessTop = options.borderlessTop ?? options.borderless
-    let borderlessBottom = options.borderlessBottom ?? options.borderless
-
-    let className = joinArrayishClassNames(
-      options.class,
-      options.className,
-      borderlessTop && classNames.borderlessTop,
-      borderlessBottom && classNames.borderlessBottom,
-      borderlessX && classNames.borderlessX,
-      classNames.borderBoxRoot,
-      classNames.isolate,
-      classNames.flexCol,
-      forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
-      (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
-    )
-
-    return props.children(options.direction === 'rtl', className, options.height, forPrint)
+    return this.props?.children(this.state.forPrint)
   }
 
   componentDidMount() {
-    let { emitter } = this.props
+    const { props } = this
+    const { emitter } = props
 
     emitter.on('_beforeprint', this.handleBeforePrint)
     emitter.on('_afterprint', this.handleAfterPrint)
   }
 
   componentWillUnmount() {
-    let { emitter } = this.props
+    const { props } = this
+    const { emitter } = props
 
     emitter.off('_beforeprint', this.handleBeforePrint)
     emitter.off('_afterprint', this.handleAfterPrint)
   }
 
-  handleBeforePrint = () => {
-    this.setState({ forPrint: true })
-    flushUpdates()
-    updateSizeSync()
-    flushUpdates()
+  private handleBeforePrint = () => {
+    flushSync(() => {
+      this.setState({ forPrint: true })
+    })
   }
 
-  handleAfterPrint = () => {
-    this.setState({ forPrint: false })
-    flushUpdates()
+  private handleAfterPrint = () => {
+    flushSync(() => {
+      this.setState({ forPrint: true })
+    })
   }
+}
+
+export function computeRootClassName(options: CalendarOptions, forPrint: boolean): string {
+  let borderlessX = options.borderlessX ?? options.borderless
+  let borderlessTop = options.borderlessTop ?? options.borderless
+  let borderlessBottom = options.borderlessBottom ?? options.borderless
+
+  return joinArrayishClassNames(
+    options.class,
+    options.className,
+    borderlessTop && classNames.borderlessTop,
+    borderlessBottom && classNames.borderlessBottom,
+    borderlessX && classNames.borderlessX,
+    classNames.borderBoxRoot,
+    classNames.isolate,
+    classNames.flexCol,
+    forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
+    (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
+  )
 }

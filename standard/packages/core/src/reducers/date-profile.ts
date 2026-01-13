@@ -6,26 +6,27 @@ export function reduceDateProfile(
   currentDateProfile: DateProfile | null,
   action: Action,
   currentDate: DateMarker,
+  nowDate: DateMarker,
   dateProfileGenerator: DateProfileGenerator,
 ): DateProfile {
   let dp: DateProfile
 
   switch (action.type) {
     case 'CHANGE_VIEW_TYPE':
-      return dateProfileGenerator.build(action.dateMarker || currentDate)
+      return dateProfileGenerator.build(action.dateMarker || currentDate, nowDate)
 
     case 'CHANGE_DATE':
-      return dateProfileGenerator.build(action.dateMarker)
+      return dateProfileGenerator.build(action.dateMarker, nowDate)
 
     case 'PREV':
-      dp = dateProfileGenerator.buildPrev(currentDateProfile, currentDate)
+      dp = dateProfileGenerator.buildPrev(currentDateProfile, currentDate, nowDate)
       if (dp.isValid) {
         return dp
       }
       break
 
     case 'NEXT':
-      dp = dateProfileGenerator.buildNext(currentDateProfile, currentDate)
+      dp = dateProfileGenerator.buildNext(currentDateProfile, currentDate, nowDate)
       if (dp.isValid) {
         return dp
       }

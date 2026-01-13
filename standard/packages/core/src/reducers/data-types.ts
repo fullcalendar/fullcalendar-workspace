@@ -30,6 +30,16 @@ export interface CalendarDataManagerState {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   selectionConfig: EventUi
+  nowDate: DateMarker // whole-day
+}
+
+export interface CalendarToolbarProps {
+  title: string
+  selectedButton: string
+  navUnit: string
+  isTodayEnabled: boolean
+  isPrevEnabled: boolean
+  isNextEnabled: boolean
 }
 
 export interface CalendarOptionsData {
@@ -60,4 +70,5 @@ export interface CalendarData extends CalendarDataBase {
   dispatch: (action: Action) => void
   emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove
+  toolbarProps: CalendarToolbarProps
 }

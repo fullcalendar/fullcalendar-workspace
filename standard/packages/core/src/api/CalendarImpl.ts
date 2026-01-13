@@ -28,6 +28,8 @@ import {
 } from './structs.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
 import { flushUpdates } from '../preact.js'
+import { NavButtonState, ButtonStateMap } from '../structs/button-state.js'
+import { formatWithOrdinals } from '../util/misc.js'
 
 /*
 Calendar instance for ALL frameworks
@@ -515,5 +517,73 @@ export class CalendarImpl implements CalendarApi {
     if (time) {
       this.trigger('_timeScrollRequest', time)
     }
+  }
+
+  // Button State
+  // -----------------------------------------------------------------------------------------------------------------
+
+  getButtonState(): ButtonStateMap {
+    const currentData = this.getCurrentData()
+    const { toolbarProps } = currentData
+
+    const options = currentData.calendarOptions
+    const buttonConfigs = options.buttons || {}
+    const viewSpecs = currentData.viewSpecs
+
+    const buttonState: ButtonStateMap = {
+      today: {
+        text: options.todayText,
+        hint: options.todayHint as string,
+        isDisabled: !toolbarProps.isTodayEnabled,
+      } as NavButtonState,
+
+      prev: {
+        text: options.prevText,
+        hint: options.prevHint as string,
+        isDisabled: !toolbarProps.isPrevEnabled,
+      } as NavButtonState,
+
+      next: {
+        text: options.nextText,
+        hint: options.nextHint as string,
+        isDisabled: !toolbarProps.isNextEnabled,
+      } as NavButtonState,
+
+      prevYear: {
+        text: options.prevYearText,
+        hint: formatWithOrdinals(options.prevHint, [options.yearText, 'year'], options.prevYearText),
+        isDisabled: false,
+      } as NavButtonState,
+
+      nextYear: {
+        text: options.prevYearText,
+        hint: formatWithOrdinals(options.nextHint, [options.yearText, 'year'], options.nextYearText),
+        isDisabled: false,
+      } as NavButtonState,
+    }
+
+    for (const viewSpecName in viewSpecs) {
+      const viewSpec = viewSpecs[viewSpecName]
+      const buttonTextKey = viewSpec.optionDefaults.buttonTextKey as string
+
+      const buttonText =
+        buttonConfigs[viewSpecName]?.text ||
+        (buttonTextKey ? options[buttonTextKey] : '') ||
+        (viewSpec.singleUnit ? options[viewSpec.singleUnit + 'Text'] : '') ||
+        viewSpecName
+
+      const buttonHint = formatWithOrdinals(
+        options.viewHint,
+        [buttonText, viewSpecName], // ordinal arguments
+        buttonText, // fallback text
+      )
+
+      buttonState[viewSpecName] = {
+        text: buttonText,
+        hint: buttonHint,
+      }
+    }
+
+    return buttonState
   }
 }
