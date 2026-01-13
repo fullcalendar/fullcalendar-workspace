@@ -1,6 +1,5 @@
 import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, generateClassName, getDateMeta, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
-import { createElement } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"

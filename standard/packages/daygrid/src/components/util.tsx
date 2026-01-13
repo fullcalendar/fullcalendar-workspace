@@ -1,8 +1,8 @@
 import { CssDimValue, DayHeaderData } from '@fullcalendar/core'
 import { computeMajorUnit, createFormatter, DateEnv, DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
-import { ComponentChild } from '@fullcalendar/core/preact'
+import type { ReactNode } from 'react'
 
-export function renderInner(renderProps: DayHeaderData): ComponentChild {
+export function renderInner(renderProps: DayHeaderData): ReactNode {
   return renderProps.text
 }
 

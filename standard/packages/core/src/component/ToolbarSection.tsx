@@ -1,4 +1,4 @@
-import { ComponentChild, createElement, Fragment, VNode } from '../preact.js'
+import { createElement, Fragment, type ReactNode, type ReactElement } from 'react'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarWidget, ButtonData } from '../toolbar-struct.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
@@ -38,7 +38,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
   renderWidgetGroup(widgetGroup: ToolbarWidget[]): any {
     let { props, context } = this
     let { options } = context
-    let children: VNode[] = []
+    let children: ReactElement[] = []
 
     let isOnlyButtons = true
     let isOnlyView = true
@@ -89,7 +89,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             : 'text'
         }
 
-        let iconNode: ComponentChild
+        let iconNode: ReactNode
         if (buttonDisplay !== 'text') {
           iconNode = (
             <ButtonIcon

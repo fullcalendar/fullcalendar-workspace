@@ -27,7 +27,7 @@ import {
   debounce
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
+import { createRef, Fragment, type Ref } from 'react'
 import {
   createEntityId,
   createGroupId,

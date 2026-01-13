@@ -1,4 +1,4 @@
-import { createElement, ComponentChild, CSSProperties, Ref, isValidElement } from '../preact.js'
+import { createElement, type ReactNode, type CSSProperties, type Ref, isValidElement } from 'react'
 import { CustomContentGenerator } from '../common/render-hook.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { guid } from '../util/misc.js'
@@ -28,7 +28,7 @@ export interface ContentGeneratorProps<RenderProps> {
   renderProps: RenderProps
   generatorName: string | undefined // for informing UI-framework if `customGenerator` is undefined
   customGenerator?: CustomContentGenerator<RenderProps>
-  defaultGenerator?: (renderProps: RenderProps) => ComponentChild
+  defaultGenerator?: (renderProps: RenderProps) => ReactNode
 }
 
 export type ContentInjectorProps<RenderProps> =
@@ -49,7 +49,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
     const { customGenerator, defaultGenerator, renderProps } = props
     const attrs = buildElAttrs(props, '', this.handleEl)
     let useDefault = false
-    let innerContent: ComponentChild | undefined
+    let innerContent: ReactNode | undefined
     let queuedDomNodes: Node[] = []
     let currentGeneratorMeta: any
 
@@ -74,7 +74,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
             : typeof customGeneratorRes !== 'function' // primitive value (like string or number)
         ) {
           // use in vdom
-          innerContent = customGeneratorRes as ComponentChild
+          innerContent = customGeneratorRes as ReactNode
         } else {
           // an exotic object for handleCustomRendering
           currentGeneratorMeta = customGeneratorRes

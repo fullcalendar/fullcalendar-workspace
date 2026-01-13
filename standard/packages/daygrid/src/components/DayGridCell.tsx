@@ -28,13 +28,11 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import {
-  Ref,
-  ComponentChildren,
-  createElement,
+  type Ref,
+  type ReactNode,
   createRef,
-  ComponentChild,
   Fragment,
-} from '@fullcalendar/core/preact'
+} from 'react'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
 
@@ -54,7 +52,7 @@ export interface DayGridCellProps {
   segs: DayRowEventRangePart[] // for +more link popover content
   hiddenSegs: DayRowEventRange[] // "
   fgLiquidHeight: boolean
-  fg: ComponentChildren
+  fg: ReactNode
   eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
   eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   eventSelection: string
@@ -261,7 +259,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderTopInner(props: DayCellData): ComponentChild {
+function renderTopInner(props: DayCellData): ReactNode {
   return props.text || <Fragment>&nbsp;</Fragment> // TODO: DRY?
 }
 

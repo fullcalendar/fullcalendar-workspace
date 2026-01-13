@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 import frLocale from '@fullcalendar/core/locales/fr'
 import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
 

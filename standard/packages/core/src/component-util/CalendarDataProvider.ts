@@ -1,4 +1,4 @@
-import { Component, ComponentChildren } from '../preact.js'
+import { Component, type ReactNode } from 'react'
 import { CalendarDataManager } from '../reducers/CalendarDataManager.js'
 import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
 import { CalendarData } from '../reducers/data-types.js'
@@ -6,7 +6,7 @@ import { CalendarData } from '../reducers/data-types.js'
 export interface CalendarDataProviderProps {
   optionOverrides: any
   calendarApi: CalendarApiImpl
-  children?: (data: CalendarData) => ComponentChildren
+  children?: (data: CalendarData) => ReactNode
 }
 
 // TODO: move this to react plugin?

@@ -1,4 +1,3 @@
-import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { defaultUiEventCalendarOptions, params } from './ui-default-options-event-calendar.js'
@@ -10,7 +9,7 @@ export default createPlugin({
   optionDefaults: mergeCalendarOptions(
     defaultUiEventCalendarOptions.optionDefaults,
     defaultUiSchedulerOnlyOptions.optionDefaults,
-    createSlots({ createElement, Fragment }, params),
+    createSlots(params),
   ),
   views: mergeViewOptionsMap(
     defaultUiEventCalendarOptions.views || {},

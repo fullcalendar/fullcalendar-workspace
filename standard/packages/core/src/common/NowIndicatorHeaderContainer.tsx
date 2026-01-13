@@ -1,7 +1,6 @@
 import { MountData } from './render-hook.js'
 import { DateMarker } from '@full-ui/headless-calendar'
 import { ViewContextType } from '../ViewContext.js'
-import { createElement } from '../preact.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer.js'

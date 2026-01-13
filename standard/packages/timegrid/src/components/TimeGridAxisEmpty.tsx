@@ -1,4 +1,3 @@
-import { createElement } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimeGridAxisEmptyProps {

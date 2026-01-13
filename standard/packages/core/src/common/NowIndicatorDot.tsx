@@ -1,5 +1,4 @@
 import { ViewContextType } from '../ViewContext.js'
-import { createElement } from '../preact.js'
 import { joinArrayishClassNames } from '../util/html.js'
 
 export interface NowIndicatorDotProps {

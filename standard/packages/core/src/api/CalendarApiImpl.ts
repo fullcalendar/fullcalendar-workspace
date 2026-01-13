@@ -27,7 +27,7 @@ import {
   EventInput,
 } from './structs.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
-import { flushUpdates } from '../preact.js'
+import { flushUpdates } from '../vdom-react.js'
 import { NavButtonState, ButtonStateMap } from '../structs/button-state.js'
 import { formatWithOrdinals } from '../util/misc.js'
 

@@ -5,7 +5,6 @@ import {
   DateRange
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlatCell } from './TimelineSlatCell.js'
 

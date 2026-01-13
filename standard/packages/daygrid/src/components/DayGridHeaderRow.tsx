@@ -1,5 +1,5 @@
 import { afterSize, BaseComponent, joinArrayishClassNames, RefMap, setRef } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import type { Ref } from 'react'
 import { RowConfig } from '../header-tier.js'
 import { DayGridHeaderCell } from './DayGridHeaderCell.js'
 import classNames from '@fullcalendar/core/internal-classnames'

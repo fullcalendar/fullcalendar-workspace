@@ -1,4 +1,4 @@
-import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
+import { createRef, Fragment, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'

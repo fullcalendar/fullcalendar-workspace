@@ -22,7 +22,7 @@ import {
   generateClassName,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
-import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { Fragment, type Ref, createRef } from 'react'
 import { DayGridRows } from './DayGridRows.js'
 import { computeColWidth, dayMicroWidth } from './util.js'
 import { DayGridHeader } from './DayGridHeader.js'

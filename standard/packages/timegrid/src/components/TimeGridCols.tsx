@@ -16,7 +16,6 @@ import {
 } from '@fullcalendar/core/internal'
 import { computeColFromPosition, getCellEl } from '@fullcalendar/daygrid/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
 

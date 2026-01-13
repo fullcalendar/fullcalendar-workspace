@@ -1,6 +1,6 @@
 import { ViewApi, ClassNameGenerator } from '@fullcalendar/core'
 import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/core/internal'
-import { ComponentChild } from '@fullcalendar/core/preact'
+import type { ReactNode } from 'react'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
 
@@ -60,7 +60,7 @@ export interface ColHeaderRenderHooks {
   headerInnerClass?: ClassNameGenerator<ResourceColumnHeaderData>
   headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderData>
   headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
-  headerDefault?: (renderProps: ResourceColumnHeaderData) => ComponentChild
+  headerDefault?: (renderProps: ResourceColumnHeaderData) => ReactNode
   headerDidMount?: DidMountHandler<ResourceColumnHeaderMountData>
   headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderMountData>
 }

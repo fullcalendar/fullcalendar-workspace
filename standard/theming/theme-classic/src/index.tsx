@@ -1,5 +1,4 @@
 import { joinClassNames, createPlugin, PluginDef, CalendarOptions } from '@fullcalendar/core'
-import { createElement } from '@fullcalendar/core/preact'
 import './global.css'
 
 // ambient types (tsc strips during build because of {})

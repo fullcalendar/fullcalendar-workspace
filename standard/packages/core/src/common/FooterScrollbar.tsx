@@ -1,6 +1,6 @@
 import { CssDimValue } from '../scrollgrid/util.js'
 import { watchHeight } from '../component-util/resize-observer.js'
-import { createElement, createRef, Ref } from '../preact.js'
+import { createRef, type Ref } from 'react'
 import { Scroller } from '../scrollgrid/Scroller.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'

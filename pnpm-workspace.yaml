@@ -12,3 +12,15 @@ packages:
   - './contrib/*'
   - './examples/*'
   - './examples-v7/*'
+
+  # temporarily disable react
+  - '!./contrib/react'
+  - '!./examples/react*'
+  - '!./examples/next*'
+  - '!./examples/t3-app'
+  - '!./examples/remix'
+  - '!./theming/ui-shadcn'
+  - '!./theming/ui-mui'
+  - '!./theming/ui-mui-tailwind'
+  - '!./theming/ui-default-react-tailwind'
+  - '!./theming/demo-react'

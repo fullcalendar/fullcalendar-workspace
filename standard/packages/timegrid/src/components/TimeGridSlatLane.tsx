@@ -1,7 +1,6 @@
 import { SlotLaneData, joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, getDateMeta, memoize } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
 export interface TimeGridSlatLaneProps extends TimeSlatMeta {

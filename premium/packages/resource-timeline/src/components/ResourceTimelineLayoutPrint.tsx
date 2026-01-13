@@ -14,7 +14,6 @@ import {
   ViewContainer
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import {
   createGroupId,
   GenericNode,

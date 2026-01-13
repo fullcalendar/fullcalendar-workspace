@@ -9,8 +9,8 @@
       "DOM.Iterable"
     ],
     "skipLibCheck": true,
-    "jsx": "react",
-    "jsxFactory": "createElement",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",

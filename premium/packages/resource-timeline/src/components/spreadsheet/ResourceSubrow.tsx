@@ -1,6 +1,6 @@
 import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { Ref, createElement } from '@fullcalendar/core/preact'
+import type { Ref } from 'react'
 import { Resource, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
 import { ColSpec } from '../../structs.js'

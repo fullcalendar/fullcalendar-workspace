@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import luxonPlugin from '@fullcalendar/luxon3'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both

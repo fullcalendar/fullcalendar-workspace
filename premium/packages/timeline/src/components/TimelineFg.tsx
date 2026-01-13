@@ -11,7 +11,7 @@ import {
   EventSegUiInteractionState,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { Fragment, type Ref } from 'react'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'

@@ -12,11 +12,19 @@
     "@fullcalendar/daygrid": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
+    "preact": "~10.23.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "@fullcalendar/core": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@fullcalendar/core": "workspace:7.0.0-beta.6",
-    "@fullcalendar-scripts/standard": "workspace:*"
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "preact": "~10.23.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -38,6 +46,13 @@
         "module": true,
         "globalVar": "FullCalendar.TimeGrid.Internal"
       }
+    },
+    "dependencyGlobalVars": {
+      "preact": "",
+      "preact/compat": "",
+      "react": "",
+      "react-dom": "",
+      "react-dom/client": ""
     }
   },
   "publishConfig": {

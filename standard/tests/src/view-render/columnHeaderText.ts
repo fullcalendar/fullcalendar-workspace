@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

@@ -1,7 +1,7 @@
 import { CssDimValue, joinClassNames } from '@fullcalendar/core'
 import { afterSize, buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, DayTableCell, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, memoize, RefMap, setRef, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createRef, type Ref } from 'react'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, dayMicroWidth } from '@fullcalendar/daygrid/internal'
 import { SingleMonthData, SingleMonthHeaderData } from '../structs.js'
 

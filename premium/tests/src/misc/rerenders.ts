@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 
 describe('rerender performance for resource timeline', () => {
   pushOptions({

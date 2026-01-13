@@ -3,7 +3,8 @@ import { DateRange, DateMarker, formatDayString } from '@full-ui/headless-calend
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Hit } from '../interactions/hit.js'
 import { Dictionary } from '../options.js'
-import { createElement, ComponentChildren, ComponentChild, createPortal, createRef } from '../preact.js'
+import { type ReactNode, createRef } from 'react'
+import { createPortal } from 'react-dom'
 import { getDateMeta } from '../component-util/date-rendering.js'
 import { memoize } from '../util/memoize.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
@@ -26,7 +27,7 @@ export interface MorePopoverProps {
   forceTimed?: boolean
   todayRange: DateRange
   dateSpanProps: Dictionary
-  children: ComponentChildren
+  children: ReactNode
   onClose?: () => void
 }
 
@@ -305,6 +306,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
 }
 
 // TODO: DRY
-function renderText(renderProps: DayHeaderData): ComponentChild {
+function renderText(renderProps: DayHeaderData): ReactNode {
   return renderProps.text
 }

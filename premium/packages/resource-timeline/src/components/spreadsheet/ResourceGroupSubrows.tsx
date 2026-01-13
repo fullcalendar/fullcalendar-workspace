@@ -1,7 +1,7 @@
 import { BaseComponent } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Group } from '@fullcalendar/resource/internal'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { Fragment } from 'react'
 import { ResourceGroupSubrow } from './ResourceGroupSubrow.js'
 
 export interface ResourceGroupSubrowsProps {

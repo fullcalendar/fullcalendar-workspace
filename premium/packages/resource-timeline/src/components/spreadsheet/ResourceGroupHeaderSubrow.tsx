@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
+import { Fragment, type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
 import { ResourceExpander } from './ResourceExpander.js'
@@ -150,6 +150,6 @@ ResourceGroupHeaderSubrow.addPropsEquality({
   group: isGroupsEqual,
 })
 
-function renderCellInner(renderProps: ResourceGroupHeaderData): ComponentChild {
+function renderCellInner(renderProps: ResourceGroupHeaderData): ReactNode {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

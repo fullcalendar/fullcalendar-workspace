@@ -15,7 +15,7 @@ import { EventSourceDef } from './structs/event-source-def.js'
 import { CmdFormatterFunc, NamedTimeZoneImplClass } from '@full-ui/headless-calendar'
 import { RecurringType } from './structs/recurring-event.js'
 import { ElementDraggingClass } from './interactions/ElementDragging.js'
-import { ComponentChildren } from './preact.js'
+import type { ReactNode } from 'react'
 import { GenericRefiners, GenericListenerRefiners, Dictionary, CalendarOptions } from './options.js'
 import { CalendarData } from './reducers/data-types.js'
 import { ScrollerSyncerClass } from './scrollgrid/ScrollerSyncerInterface.js'
@@ -108,4 +108,4 @@ export interface ViewPropsTransformer {
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps): any
 }
 
-export type ViewContainerAppend = (context: CalendarContext) => ComponentChildren
+export type ViewContainerAppend = (context: CalendarContext) => ReactNode

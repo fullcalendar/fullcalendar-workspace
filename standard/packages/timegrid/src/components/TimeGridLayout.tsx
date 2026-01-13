@@ -1,6 +1,6 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, memoize, joinArrayishClassNames } from "@fullcalendar/core/internal"
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createRef } from 'react'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeGridRange } from '../TimeColsSeg.js'

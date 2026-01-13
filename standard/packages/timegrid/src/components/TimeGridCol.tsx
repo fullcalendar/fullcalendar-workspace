@@ -21,10 +21,7 @@ import {
   sortEventSegs
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import {
-  createElement,
-  Fragment,
-} from '@fullcalendar/core/preact'
+import { Fragment } from 'react'
 import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg.js'
 import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement.js'
 import { buildWebPositioning, SegWebRect } from '../seg-web.js'

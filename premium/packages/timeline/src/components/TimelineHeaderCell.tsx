@@ -13,7 +13,7 @@ import {
   setRef,
   watchSize
 } from '@fullcalendar/core/internal'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createRef, type Ref } from 'react'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 

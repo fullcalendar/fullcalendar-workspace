@@ -14,7 +14,6 @@ import {
   EventRangeProps,
   ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'

@@ -1,4 +1,4 @@
-import { createElement, Fragment } from '../preact.js'
+import { Fragment } from 'react'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayData, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering.js'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'

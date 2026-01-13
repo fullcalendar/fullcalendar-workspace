@@ -29,9 +29,17 @@
     }
   },
   "peerDependencies": {
+    "preact": "~10.23.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "@fullcalendar/core": "workspace:*"
   },
   "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "preact": "~10.23.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",

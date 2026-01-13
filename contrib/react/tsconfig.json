@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "target": "es2016",
-    "module": "node16",
+    "module": "es2015",
     "moduleResolution": "bundler",
     "typeRoots": [],
     "lib": [

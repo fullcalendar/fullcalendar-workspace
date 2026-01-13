@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 
 it('timegrid view rerenders well', (done) => {
   let dayHeaderRenderCnt = 0

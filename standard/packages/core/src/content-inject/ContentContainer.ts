@@ -1,4 +1,4 @@
-import { createElement, Component, FunctionalComponent, ComponentChildren, ComponentChild } from '../preact.js'
+import { Component, type FC, type ReactNode, createElement } from 'react'
 import { ClassNameGenerator } from '../common/render-hook.js'
 import {
   ContentInjector,
@@ -90,12 +90,12 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
 
 // Inner
 
-export type InnerContainerComponent = FunctionalComponent<ElProps>
+export type InnerContainerComponent = FC<ElProps>
 export type InnerContainerFunc<RenderProps> = (
   InnerContainer: InnerContainerComponent,
   renderProps: RenderProps,
   attrs: ElAttrs,
-) => ComponentChildren
+) => ReactNode
 
 function InnerContentInjector<RenderProps>(
   containerComponent: ContentContainer<RenderProps>,
@@ -126,6 +126,6 @@ export function generateClassName<RenderProps>(
   return joinArrayishClassNames(classNames)
 }
 
-export function renderText(renderProps: { text: string }): ComponentChild {
+export function renderText(renderProps: { text: string }): ReactNode {
   return renderProps.text
 }

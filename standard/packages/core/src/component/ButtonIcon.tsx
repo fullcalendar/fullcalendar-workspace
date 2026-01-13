@@ -1,4 +1,3 @@
-import { createElement } from '../preact.js'
 import { CustomContentGenerator } from '../common/render-hook.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { BaseComponent } from '../vdom-util.js'

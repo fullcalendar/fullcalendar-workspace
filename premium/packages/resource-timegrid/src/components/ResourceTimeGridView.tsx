@@ -10,7 +10,6 @@ import {
   mapHash,
   memoize
 } from "@fullcalendar/core/internal"
-import { createElement } from '@fullcalendar/core/preact'
 import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 import { ResourceDayTableJoiner, buildResourceRowConfigs } from '@fullcalendar/resource-daygrid/internal'
 import {

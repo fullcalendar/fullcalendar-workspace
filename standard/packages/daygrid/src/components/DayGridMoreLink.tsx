@@ -10,7 +10,7 @@ import {
   SlicedCoordRange,
   StandardEvent,
 } from '@fullcalendar/core/internal'
-import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
+import { type RefObject, Fragment } from 'react'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
 

@@ -4,7 +4,7 @@ import { DateProfile } from '../DateProfileGenerator.js'
 import { Dictionary } from '../options.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
 import { formatWithOrdinals } from '../util/misc.js'
-import { createElement, Fragment, ComponentChild, RefObject } from '../preact.js'
+import { Fragment, type ReactNode, type RefObject } from 'react'
 import { joinClassNames } from '../util/html.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
@@ -31,7 +31,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   alignElRef?: RefObject<HTMLElement> // will use click-target if unspecified
   alignParentTop?: string // for popover
   forceTimed?: boolean // for popover
-  popoverContent: () => ComponentChild
+  popoverContent: () => ReactNode
   isNarrow: boolean
   isMicro: boolean
   display: 'row' | 'column'

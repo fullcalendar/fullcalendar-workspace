@@ -9,7 +9,6 @@ import {
   memoize
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {

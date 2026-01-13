@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 import { startOfDay } from '@fullcalendar/core/internal'
 import lvLocale from '@fullcalendar/core/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'

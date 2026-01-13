@@ -18,7 +18,7 @@ import {
   generateClassName,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
-import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
+import { Fragment, type Ref } from 'react'
 import { DayGridRows } from './DayGridRows.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'

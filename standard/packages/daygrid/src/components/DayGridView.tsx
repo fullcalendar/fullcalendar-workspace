@@ -6,7 +6,6 @@ import {
   NowTimer,
   ViewProps,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
 import { DayTableSlicer } from '../DayTableSlicer.js'
 import { buildDateRowConfigs } from '../header-tier.js'
 import { DayGridLayout } from './DayGridLayout.js'

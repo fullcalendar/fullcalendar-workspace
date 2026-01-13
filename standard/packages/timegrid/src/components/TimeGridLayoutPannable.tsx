@@ -1,6 +1,6 @@
 import { joinClassNames } from "@fullcalendar/core"
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, rangeContainsMarker, setRef, generateClassName, joinArrayishClassNames } from "@fullcalendar/core/internal"
-import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { Fragment, type Ref, createRef } from 'react'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, RowConfig, computeColWidth, dayMicroWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"

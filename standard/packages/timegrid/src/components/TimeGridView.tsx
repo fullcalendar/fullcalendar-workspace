@@ -1,5 +1,4 @@
 import { DateComponent, DateMarker, DateRange, EventRangeProps, memoize, NowTimer, ViewProps } from "@fullcalendar/core/internal"
-import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfigs, createDayHeaderFormatter, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { AllDaySplitter } from "../AllDaySplitter.js"
 import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"

@@ -1,4 +1,4 @@
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { Fragment } from 'react'
 import { createPlugin, PluginDef, CalendarOptions, DayCellData, joinClassNames } from '@fullcalendar/core'
 import './global.css'
 

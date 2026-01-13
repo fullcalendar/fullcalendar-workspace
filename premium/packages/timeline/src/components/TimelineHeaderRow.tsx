@@ -1,4 +1,4 @@
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import type { Ref } from 'react'
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile.js"

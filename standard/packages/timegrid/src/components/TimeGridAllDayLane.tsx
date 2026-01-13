@@ -1,6 +1,6 @@
 import { computeColFromPosition, DayGridRow, DayGridRowProps, getCellEl } from '@fullcalendar/daygrid/internal'
 import { addDays, DateComponent, Hit } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createRef } from 'react'
 
 export interface TimeGridAllDayLaneProps extends DayGridRowProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean

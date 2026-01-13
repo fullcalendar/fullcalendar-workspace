@@ -1,6 +1,6 @@
-import { createElement, ComponentChild } from '@fullcalendar/core/preact'
+import { ReactNode } from 'react'
 
-export function filledRightTriangle(className?: string): ComponentChild {
+export function filledRightTriangle(className?: string): ReactNode {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

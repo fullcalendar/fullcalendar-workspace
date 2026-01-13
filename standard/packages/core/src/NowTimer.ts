@@ -1,12 +1,12 @@
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { ViewContext, ViewContextType } from './ViewContext.js'
-import { ComponentChildren, Component } from './preact.js'
+import { type ReactNode, Component } from 'react'
 import { NowTimerRunner } from './NowTimerRunner.js'
 
 export interface NowTimerProps {
   unit: string // TODO: add type of unit
   unitValue?: number // solely for nowIndicator:auto
-  children?: (now: DateMarker, todayRange: DateRange) => ComponentChildren
+  children?: (now: DateMarker, todayRange: DateRange) => ReactNode
 }
 
 export class NowTimer extends Component<NowTimerProps> {

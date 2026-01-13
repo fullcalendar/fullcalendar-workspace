@@ -1,5 +1,5 @@
 import { watchWidth } from '../internal.js'
-import { createRef, Ref, createElement } from '../preact.js'
+import { createRef, type Ref } from 'react'
 import { BaseComponent, setRef } from '../vdom-util.js'
 
 export interface RulerProps {

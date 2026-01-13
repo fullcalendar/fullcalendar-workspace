@@ -1,6 +1,6 @@
 /* eslint max-classes-per-file: off */
 
-import { Component, Ref } from './preact.js'
+import { Component, type Ref } from 'react'
 import { ViewContextType, ViewContext } from './ViewContext.js'
 import { isPropsEqualWithMap } from './util/object.js'
 // import { getUnequalProps } from './util/object.js'

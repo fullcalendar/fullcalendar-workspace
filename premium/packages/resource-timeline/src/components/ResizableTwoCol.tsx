@@ -1,14 +1,14 @@
 import { CssDimValue, joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { type ReactNode, type Ref, createRef } from 'react'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
 
 export interface ResizableTwoColProps {
   className?: string
-  startContent: ComponentChildren
+  startContent: ReactNode
   startClassName?: string
-  endContent: ComponentChildren
+  endContent: ReactNode
   endClassName?: string
   elRef?: Ref<HTMLDivElement>
 

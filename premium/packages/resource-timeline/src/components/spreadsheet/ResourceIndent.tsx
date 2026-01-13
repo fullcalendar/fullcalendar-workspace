@@ -1,12 +1,12 @@
 import { BaseComponent, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { ComponentChildren, createElement } from '@fullcalendar/core/preact'
+import type { ReactNode } from 'react'
 
 export interface ResourceIndentProps {
   level: number // assumed >=1 ... or else caller should not include in DOM
   indentWidth: number | undefined
   style?: any // TODO
-  children?: ComponentChildren
+  children?: ReactNode
 }
 
 export class ResourceIndent extends BaseComponent<ResourceIndentProps> {

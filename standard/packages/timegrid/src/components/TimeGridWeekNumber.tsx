@@ -1,7 +1,7 @@
 import { WeekNumberHeaderData, joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, renderText, setRef, watchSize, generateClassName } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
-import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { type Ref, createRef } from 'react'
 
 export interface TimeGridWeekNumberProps {
   dateProfile: DateProfile

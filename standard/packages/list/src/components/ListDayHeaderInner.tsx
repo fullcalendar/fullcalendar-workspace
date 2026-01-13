@@ -1,5 +1,4 @@
 import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateFormatter, DateMarker, DateMeta, findDayNumberText, renderText } from "@fullcalendar/core/internal";
-import { createElement } from '@fullcalendar/core/preact'
 import { ListDayHeaderInnerData } from '../structs.js'
 
 export interface ListDayHeaderInnerProps {

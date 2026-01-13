@@ -1,7 +1,7 @@
 import { DateComponent } from '../component/DateComponent.js'
 import { computeElIsRtl, setRef, watchHeight, watchWidth } from '../internal.js'
 import { Dictionary } from '../options.js'
-import { ComponentChildren, createElement, Ref } from '../preact.js'
+import type { ReactNode, Ref } from 'react'
 import { joinClassNames } from '../util/html.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
@@ -13,7 +13,7 @@ export interface ScrollerProps {
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
   horizontal?: boolean // (same)
   hideScrollbars?: boolean // default: false
-  children?: ComponentChildren
+  children?: ReactNode
 
   // dimension refs
   clientWidthRef?: Ref<number>

@@ -1,4 +1,3 @@
-import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'

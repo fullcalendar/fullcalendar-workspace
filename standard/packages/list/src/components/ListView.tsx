@@ -24,12 +24,7 @@ import {
   ViewProps,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import {
-  ComponentChild,
-  createElement,
-  Fragment,
-  VNode,
-} from '@fullcalendar/core/preact'
+import { type ReactNode, Fragment, type ReactElement } from 'react'
 import { ListDay, ListSeg } from './ListDay.js'
 
 export interface NoEventsData {
@@ -140,7 +135,7 @@ export class ListView extends DateComponent<ViewProps> {
       >
         <NowTimer unit="day">
           {(nowDate: DateMarker, todayRange: DateRange) => {
-            const dayNodes: VNode[] = []
+            const dayNodes: ReactElement[] = []
 
             for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
               let daySegs = segsByDay[dayIndex]
@@ -228,7 +223,7 @@ export class ListView extends DateComponent<ViewProps> {
   }
 }
 
-function renderNoEventsInner(renderProps: NoEventsData): ComponentChild {
+function renderNoEventsInner(renderProps: NoEventsData): ReactNode {
   return renderProps.text
 }
 

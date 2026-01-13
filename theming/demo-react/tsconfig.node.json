@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["esnext"],
-    "module": "node16",
+    "module": "es2015",
     "skipLibCheck": true,
 
     /* Bundler mode */

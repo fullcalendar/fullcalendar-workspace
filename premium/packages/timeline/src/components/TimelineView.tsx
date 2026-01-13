@@ -24,7 +24,7 @@ import {
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createRef } from 'react'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlats } from './TimelineSlats.js'

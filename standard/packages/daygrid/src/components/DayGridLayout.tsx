@@ -14,7 +14,7 @@ import {
   EventRangeProps,
   joinArrayishClassNames
 } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
 import { computeTopFromDate } from './util.js'

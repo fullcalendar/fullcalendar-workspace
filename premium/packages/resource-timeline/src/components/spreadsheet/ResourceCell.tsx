@@ -9,7 +9,7 @@ import {
   generateClassName,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
+import { Fragment, type ReactNode, createRef, type Ref } from 'react'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
@@ -134,7 +134,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 }
 
-function renderResourceInner(renderProps: ResourceCellData): ComponentChild {
+function renderResourceInner(renderProps: ResourceCellData): ReactNode {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }
 

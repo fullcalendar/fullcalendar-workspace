@@ -1,11 +1,11 @@
-import { Component, createRef, Ref, createElement, ComponentChildren } from '@fullcalendar/core/preact'
+import { Component, createRef, type Ref, type ReactNode } from 'react'
 import { watchHeight, setRef } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineEventHarnessProps {
   key?: string | number | null
   style: any // should set top/left/right/width
-  children?: ComponentChildren
+  children?: ReactNode
 
   // ref
   heightRef?: Ref<number>

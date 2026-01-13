@@ -1,4 +1,3 @@
-import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { EventDisplayData, EventRenderRange, setElEventRange } from '../component-util/event-rendering.js'
 import { memoize } from '../util/memoize.js'

@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/preact'
+import { strictModeFactor } from '@fullcalendar/core/vdom'
 import { formatIsoDay } from '../lib/datelib-utils.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 

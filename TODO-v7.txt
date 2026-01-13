@@ -35,7 +35,8 @@ build note:
     manually before `pn dev`
 
 
-can now kill PictureInPictureEvent Preact hack?
+
+fully get rid of @fullcalendar/core/preact
 
 
 standard/scripts/config/banner.tpl

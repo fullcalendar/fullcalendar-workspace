@@ -1,4 +1,6 @@
-import { createRoot, createElement, flushSync } from '@fullcalendar/core/preact'
+import { createElement } from 'react'
+import { flushSync } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { ListenerCounter } from './ListenerCounter.js'
 
 let standardElListenerCount

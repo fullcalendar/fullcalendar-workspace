@@ -1,4 +1,5 @@
-import { preactOptions, flushSync } from '../preact.js'
+import { flushSync } from 'react-dom'
+import { preactOptions } from '../vdom-react.js'
 import { isDimsEqual } from './rendering-misc.js'
 import { debounce } from '../util/debounce.js'
 

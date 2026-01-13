@@ -1,22 +1,22 @@
-import { ComponentChild, createElement } from '@fullcalendar/core/preact'
+import { ReactNode } from 'react'
 
 /*
 Info: https://fluent2.microsoft.design/iconography
 Downloadable: https://www.iconfinder.com/search/icons?family=fluent-regular-20px
 */
 
-export function chevronDown(className?: string): ComponentChild {
+export function chevronDown(className?: string): ReactNode {
   return createSvg(className, <path d="M15.8527 7.64582C16.0484 7.84073 16.0489 8.15731 15.854 8.35292L10.389 13.8374C10.1741 14.0531 9.82477 14.0531 9.60982 13.8374L4.14484 8.35292C3.94993 8.15731 3.95049 7.84073 4.1461 7.64582C4.34171 7.4509 4.65829 7.45147 4.85321 7.64708L9.99942 12.8117L15.1456 7.64708C15.3406 7.45147 15.6571 7.4509 15.8527 7.64582Z"/>)
 }
 
-export function chevronDoubleLeft(className?: string): ComponentChild {
+export function chevronDoubleLeft(className?: string): ReactNode {
   return createSvg(className, <path d="M11.3544 15.8527C11.1594 16.0484 10.8429 16.0489 10.6472 15.854L5.16276 10.389C4.94705 10.1741 4.94705 9.82477 5.16276 9.60982L10.6472 4.14484C10.8429 3.94993 11.1594 3.95049 11.3544 4.1461C11.5493 4.34171 11.5487 4.65829 11.3531 4.85321L6.18851 9.99942L11.3531 15.1456C11.5487 15.3406 11.5493 15.6571 11.3544 15.8527ZM15.3534 15.8527C15.1585 16.0484 14.8419 16.0489 14.6463 15.854L9.16178 10.389C8.94607 10.1741 8.94607 9.82477 9.16178 9.60982L14.6463 4.14484C14.8419 3.94993 15.1585 3.95049 15.3534 4.1461C15.5483 4.34171 15.5477 4.65829 15.3521 4.85321L10.1875 9.99942L15.3521 15.1456C15.5477 15.3406 15.5483 15.6571 15.3534 15.8527Z"/>)
 }
 
-export function dismiss(className?: string): ComponentChild {
+export function dismiss(className?: string): ReactNode {
   return createSvg(className, <path d="M4.08859 4.21569L4.14645 4.14645C4.32001 3.97288 4.58944 3.9536 4.78431 4.08859L4.85355 4.14645L10 9.293L15.1464 4.14645C15.32 3.97288 15.5894 3.9536 15.7843 4.08859L15.8536 4.14645C16.0271 4.32001 16.0464 4.58944 15.9114 4.78431L15.8536 4.85355L10.707 10L15.8536 15.1464C16.0271 15.32 16.0464 15.5894 15.9114 15.7843L15.8536 15.8536C15.68 16.0271 15.4106 16.0464 15.2157 15.9114L15.1464 15.8536L10 10.707L4.85355 15.8536C4.67999 16.0271 4.41056 16.0464 4.21569 15.9114L4.14645 15.8536C3.97288 15.68 3.9536 15.4106 4.08859 15.2157L4.14645 15.1464L9.293 10L4.14645 4.85355C3.97288 4.67999 3.9536 4.41056 4.08859 4.21569L4.14645 4.14645L4.08859 4.21569Z"/>)
 }
 
-function createSvg(className: string | undefined, inner: ComponentChild): ComponentChild {
+function createSvg(className: string | undefined, inner: ReactNode): ReactNode {
   return <svg className={className} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">{inner}</svg>
 }

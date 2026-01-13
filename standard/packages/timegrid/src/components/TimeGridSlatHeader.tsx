@@ -17,11 +17,7 @@ import {
   watchSize
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import {
-  createElement,
-  createRef,
-  Ref,
-} from '@fullcalendar/core/preact'
+import { createRef, type Ref } from 'react'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
 const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({

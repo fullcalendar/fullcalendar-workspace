@@ -1,4 +1,4 @@
-import { Component, createRef, Ref, createElement, ComponentChildren } from '@fullcalendar/core/preact'
+import { Component, createRef, type Ref, type ReactNode } from 'react'
 import { joinClassNames } from '@fullcalendar/core'
 import { watchHeight, setRef } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
@@ -8,7 +8,7 @@ export interface DayGridEventHarnessProps {
 
   style: any // TODO
   className?: string
-  children?: ComponentChildren
+  children?: ReactNode
 
   // ref
   heightRef?: Ref<number>

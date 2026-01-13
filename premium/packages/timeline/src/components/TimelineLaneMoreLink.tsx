@@ -1,7 +1,7 @@
 import {
   BaseComponent, DateMarker, DateProfile, DateRange, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { Fragment } from 'react'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 

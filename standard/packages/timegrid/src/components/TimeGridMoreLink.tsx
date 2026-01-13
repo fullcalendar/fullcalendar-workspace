@@ -5,7 +5,6 @@ import {
   EventRangeProps,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement } from '@fullcalendar/core/preact'
 import { renderPlainFgSegs } from './TimeGridCol.js' // BAD
 import { TimeGridRange } from '../TimeColsSeg.js'
 

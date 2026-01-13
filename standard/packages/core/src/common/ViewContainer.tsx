@@ -1,6 +1,6 @@
 import { ViewSpec } from '../structs/view-spec.js'
 import { MountData } from './render-hook.js'
-import { ComponentChildren, createElement } from '../preact.js'
+import type { ReactNode } from 'react'
 import { BaseComponent } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
@@ -11,7 +11,7 @@ import classNames from '../internal-classnames.js'
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
   attrs?: any // TODO
-  children?: ComponentChildren
+  children?: ReactNode
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean

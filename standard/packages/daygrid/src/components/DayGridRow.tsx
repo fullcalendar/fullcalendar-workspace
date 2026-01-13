@@ -25,11 +25,11 @@ import {
   memoize,
 } from '@fullcalendar/core/internal'
 import {
-  VNode,
+  type ReactElement,
   createElement,
   Fragment,
-  Ref,
-} from '@fullcalendar/core/preact'
+  type Ref,
+} from 'react'
 import { DayRowEventRangePart, getEventPartKey } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { computeFgSegVerticals } from '../event-placement.js'
@@ -265,13 +265,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     segTops: Map<string, number>,
     todayRange: DateRange,
     isMirror: boolean,
-  ): VNode[] {
+  ): ReactElement[] {
     const { props, segHeightRefMap } = this
     const { colWidth, eventSelection, cellIsMicro } = props
 
     const colCount = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
-    const nodes: VNode[] = []
+    const nodes: ReactElement[] = []
 
     for (const seg of segs) {
       const key = getEventPartKey(seg)
@@ -336,12 +336,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   renderFillSegs(
     segs: DayRowEventRangePart[],
     fillType: string,
-  ): VNode {
+  ): ReactElement {
     const { props, context } = this
     const { todayRange, colWidth } = props
 
     const colCount = props.cells.length
-    const nodes: VNode[] = []
+    const nodes: ReactElement[] = []
 
     for (const seg of segs) {
       const key = seg.start + ':' + seg.end // NOTE: don't use date, because could be multiple of same (w/ resources)

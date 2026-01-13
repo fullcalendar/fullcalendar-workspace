@@ -1,17 +1,6 @@
 import * as preact from 'preact'
 
 /*
-Shim newer TS global libs
-https://github.com/preactjs/preact/issues/4023
-*/
-declare global {
-  interface PictureInPictureEvent extends Event {
-  }
-  interface PictureInPictureEventInit extends EventInit {
-  }
-}
-
-/*
 Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
 BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929
 */
@@ -50,30 +39,3 @@ class FakeComponent extends preact.Component {
 // HACK
 // for ResizeObserver fallback
 export const preactOptions: any = preact.options
-
-export type CSSProperties = preact.JSX.CSSProperties
-
-export {
-  type VNode,
-  type ComponentType,
-  type ComponentChild,
-  type ComponentChildren,
-  type Context,
-  type Ref,
-  type RefObject,
-  Component,
-  createElement,
-  createContext,
-  createRef,
-  Fragment,
-  isValidElement,
-  FunctionalComponent,
-} from 'preact'
-
-export {
-  createPortal,
-} from 'preact/compat'
-
-export {
-  createRoot
-} from 'preact/compat/client'

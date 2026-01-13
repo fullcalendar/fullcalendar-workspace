@@ -24,7 +24,7 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createRef } from 'react'
 import { SingleMonth, SingleMonthHeights } from './SingleMonth.js'
 
 interface MultiMonthViewState {

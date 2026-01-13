@@ -1,5 +1,4 @@
 import { MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean

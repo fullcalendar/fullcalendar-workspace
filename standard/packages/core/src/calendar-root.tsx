@@ -1,12 +1,13 @@
 import { Emitter } from './common/Emitter.js'
 import classNames from './internal-classnames.js'
 import { CalendarListeners, CalendarOptions } from './options.js'
-import { Component, flushSync, VNode } from './preact.js'
+import { Component, type ReactElement } from 'react'
+import { flushSync } from 'react-dom'
 import { joinArrayishClassNames } from './util/html.js'
 
 export interface CalendarMediaRootProps {
   emitter: Emitter<Required<CalendarListeners>>
-  children?: (forPrint: boolean) => VNode
+  children?: (forPrint: boolean) => ReactElement
 }
 
 interface CalendarMediaRootState {

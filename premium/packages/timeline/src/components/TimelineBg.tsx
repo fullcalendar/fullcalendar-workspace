@@ -4,7 +4,7 @@ import {
   EventRangeProps,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { Fragment } from 'react'
 import { computeSegHorizontals } from '../event-placement.js'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'

@@ -10,7 +10,7 @@ import {
   watchWidth
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
+import { createRef, Fragment } from 'react'
 import {
   buildResourceHierarchy,
   GenericNode,
