@@ -1,6 +1,7 @@
 
 export function flushUpdates(): void {
   // not possible
+  // TODO: kill from both adapters
 }
 
 export const preactOptions: any = {}
@@ -21,7 +22,7 @@ export {
   Fragment,
   isValidElement,
   FC as FunctionalComponent,
-  // StrictMode,
+  Fragment as StrictMode,
 } from 'react'
 
 export {
@@ -44,4 +45,4 @@ declare global {
   }
 }
 
-export const strictModeFactor = 2
+export const strictModeFactor = 1
