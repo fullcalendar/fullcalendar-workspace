@@ -95,7 +95,8 @@ export type { SplittableProps } from './component-util/event-splitting.js'
 export { Splitter } from './component-util/event-splitting.js'
 export { getDateMeta, DateMeta } from './component-util/date-rendering.js'
 export { isDimsEqual } from './component-util/rendering-misc.js'
-export { watchSize, watchWidth, watchHeight, afterSize, debounce } from './component-util/resize-observer.js'
+export { watchSize, watchWidth, watchHeight, afterSize } from './component-util/resize-observer.js'
+export { debounce } from './util/debounce.js'
 
 export { buildNavLinkAttrs, buildDateStr } from './common/nav-link.js'
 

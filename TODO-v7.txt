@@ -56,6 +56,12 @@ transpiler project
 re-add keys to toolbarsections, so doesn't reuse elements
 
 
+test if afterSize ever needs the requestAnimationFrame when not being call from within size handler
+
+
+kill preactOptions
+
+
 ./src/global-types.d.ts
 
 
