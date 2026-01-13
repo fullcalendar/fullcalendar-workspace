@@ -796,9 +796,9 @@ function buildToolbarProps(
   title: string,
 ): CalendarToolbarProps {
   // don't force any date-profiles to valid date profiles (the `false`) so that we can tell if it's invalid
-  let todayInfo = dateProfileGenerator.build(nowDate, undefined, false) // TODO: need `undefined` or else INFINITE LOOP for some reason
-  let prevInfo = dateProfileGenerator.buildPrev(dateProfile, currentDate, nowDate, false)
-  let nextInfo = dateProfileGenerator.buildNext(dateProfile, currentDate, nowDate, false)
+  let todayInfo = dateProfileGenerator.build(nowDate, nowDate, undefined, /* forceToValid = */ false)
+  let prevInfo = dateProfileGenerator.buildPrev(dateProfile, currentDate, nowDate, /* forceToValid = */ false)
+  let nextInfo = dateProfileGenerator.buildNext(dateProfile, currentDate, nowDate, /* forceToValid = */ false)
 
   return {
     title,

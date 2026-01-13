@@ -59,9 +59,18 @@ re-add keys to toolbarsections, so doesn't reuse elements
 ./src/global-types.d.ts
 
 
+weird bug: today button changes width as we go prev/next (React vdom)
+  standard/bundle/examples/month-view.html
+
+
+bug: list-event "click for Google" is blue
+  standard/bundle/examples/timegrid-views.html
+
+
 test NextJS SSR
 
 
+changelog: validRange function always receives whole-day as parameter
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?
   only happens in Angular 21 example

@@ -64,7 +64,9 @@ describe('validRange', () => {
       it('receives the nowDate, timezoneless', () => {
         let validRangeSpy = spyOnCalendarCallback('validRange', (date) => {
           expect(date instanceof Date).toBe(true)
-          expect(date).toEqualNow()
+          const todayDate = new Date()
+          todayDate.setUTCHours(0, 0, 0, 0)
+          expect(date).toEqualDate(todayDate)
         })
 
         initCalendar()
