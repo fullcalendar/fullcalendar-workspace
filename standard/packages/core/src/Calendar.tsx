@@ -1,6 +1,6 @@
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 import { CalendarInner } from './CalendarInner.js'
-import { CalendarMediaRoot, computeRootClassName } from './component/CalendarRoot.js'
+import { CalendarMediaRoot, computeRootClassName } from './calendar-root.js'
 import { RenderId } from './content-inject/RenderId.js'
 import { CalendarOptions } from './options.js'
 import { createElement, createRoot, flushSync, StrictMode } from './preact.js'
@@ -14,7 +14,7 @@ import { applyStyleProp } from './util/dom-manip.js'
 /*
 Vanilla JS API
 */
-export class Calendar extends CalendarImpl {
+export class Calendar extends CalendarApiImpl {
   el: HTMLElement
   private dataManager: CalendarDataManager
   private currentData: CalendarData

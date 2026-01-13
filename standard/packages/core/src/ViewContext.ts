@@ -1,4 +1,4 @@
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 import { ViewImpl } from './api/ViewImpl.js'
 import { DateEnv } from '@full-ui/headless-calendar'
 import { PluginHooks } from './plugin-system-struct.js'
@@ -41,7 +41,7 @@ export function buildViewContext(
   dispatch: (action: Action) => void,
   getCurrentData: () => CalendarData,
   emitter: Emitter<Required<CalendarListeners>>,
-  calendarApi: CalendarImpl,
+  calendarApi: CalendarApiImpl,
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void,
   unregisterInteractiveComponent: (component: DateComponent<any>) => void,
 ): ViewContext {

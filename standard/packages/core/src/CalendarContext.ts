@@ -3,7 +3,7 @@ import { BaseOptionsRefined, CalendarListeners } from './options.js'
 import { PluginHooks } from './plugin-system-struct.js'
 import { Emitter } from './common/Emitter.js'
 import { Action } from './reducers/Action.js'
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 import { CalendarData } from './reducers/data-types.js'
 import { CalendarNowManager } from './reducers/CalendarNowManager.js'
 
@@ -15,5 +15,5 @@ export interface CalendarContext {
   emitter: Emitter<Required<CalendarListeners>>
   dispatch(action: Action): void
   getCurrentData(): CalendarData
-  calendarApi: CalendarImpl
+  calendarApi: CalendarApiImpl
 }

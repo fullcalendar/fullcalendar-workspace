@@ -31,10 +31,7 @@ import { flushUpdates } from '../preact.js'
 import { NavButtonState, ButtonStateMap } from '../structs/button-state.js'
 import { formatWithOrdinals } from '../util/misc.js'
 
-/*
-Calendar instance for ALL frameworks
-*/
-export class CalendarImpl implements CalendarApi {
+export class CalendarApiImpl implements CalendarApi {
   currentDataManager?: CalendarDataManager // will be set by CalendarDataManager
 
   getCurrentData(): CalendarData {

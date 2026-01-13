@@ -4,7 +4,7 @@ import { Action } from './Action.js'
 import { buildBuildPluginHooks } from '../plugin-system.js'
 import { PluginHooks } from '../plugin-system-struct.js'
 import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
-import { CalendarImpl } from '../api/CalendarImpl.js'
+import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
 import { EventSourceHash } from '../structs/event-source.js'
 import { buildViewSpecs, ViewSpec } from '../structs/view-spec.js'
 import { mapHash, isPropsEqualShallow } from '../util/object.js'
@@ -46,7 +46,7 @@ import { NowTimerRunner } from '../NowTimerRunner.js'
 
 export interface CalendarDataManagerProps {
   optionOverrides: CalendarOptions
-  calendarApi: CalendarImpl
+  calendarApi: CalendarApiImpl
   onAction?: (action: Action) => void
   onData?: (data: CalendarData) => void
 }
@@ -424,7 +424,7 @@ export class CalendarDataManager {
   computeOptionsData(
     optionOverrides: CalendarOptions,
     dynamicOptionOverrides: CalendarOptions,
-    calendarApi: CalendarImpl,
+    calendarApi: CalendarApiImpl,
   ): CalendarOptionsData {
     // TODO: blacklist options that are handled by optionChangeHandlers
 

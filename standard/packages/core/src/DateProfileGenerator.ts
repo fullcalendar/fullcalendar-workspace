@@ -20,7 +20,7 @@ import {
   DateEnv,
 } from '@full-ui/headless-calendar'
 import { computeVisibleDayRange } from './util/date.js'
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 
 export interface DateProfile {
   currentDate: DateMarker
@@ -42,7 +42,7 @@ export interface DateProfileGeneratorProps extends DateProfileOptions {
   durationUnit: string
   usesMinMaxTime: boolean
   dateEnv: DateEnv
-  calendarApi: CalendarImpl
+  calendarApi: CalendarApiImpl
 }
 
 export interface DateProfileOptions {
@@ -54,8 +54,8 @@ export interface DateProfileOptions {
   dateIncrement?: Duration
   hiddenDays?: number[]
   weekends?: boolean
-  validRangeInput?: DateRangeInput | ((this: CalendarImpl, nowDate: Date) => DateRangeInput)
-  visibleRangeInput?: DateRangeInput | ((this: CalendarImpl, nowDate: Date) => DateRangeInput)
+  validRangeInput?: DateRangeInput | ((this: CalendarApiImpl, nowDate: Date) => DateRangeInput)
+  visibleRangeInput?: DateRangeInput | ((this: CalendarApiImpl, nowDate: Date) => DateRangeInput)
   fixedWeekCount?: boolean
 }
 

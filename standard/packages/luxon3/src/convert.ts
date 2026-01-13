@@ -1,9 +1,9 @@
 import { DateTime as LuxonDateTime, Duration as LuxonDuration } from 'luxon'
 import { CalendarApi, Duration } from '@fullcalendar/core'
-import { CalendarImpl } from '@fullcalendar/core/internal'
+import { CalendarApiImpl } from '@fullcalendar/core/internal'
 
 export function toLuxonDateTime(date: Date, calendar: CalendarApi): LuxonDateTime {
-  if (!(calendar instanceof CalendarImpl)) {
+  if (!(calendar instanceof CalendarApiImpl)) {
     throw new Error('must supply a CalendarApi instance')
   }
 
@@ -18,7 +18,7 @@ export function toLuxonDateTime(date: Date, calendar: CalendarApi): LuxonDateTim
 }
 
 export function toLuxonDuration(duration: Duration, calendar: CalendarApi): LuxonDuration {
-  if (!(calendar instanceof CalendarImpl)) {
+  if (!(calendar instanceof CalendarApiImpl)) {
     throw new Error('must supply a CalendarApi instance')
   }
 

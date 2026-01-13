@@ -229,7 +229,7 @@ export { ViewContainer } from './common/ViewContainer.js'
 export type { DatePointTransform, DateSpanTransform } from './calendar-utils.js'
 export { triggerDateSelect, getDefaultEventEnd } from './calendar-utils.js'
 
-export { CalendarImpl } from './api/CalendarImpl.js'
+export { CalendarApiImpl } from './api/CalendarApiImpl.js'
 export { EventImpl, buildEventApis } from './api/EventImpl.js'
 
 export type { ElProps } from './content-inject/ContentInjector.js'

@@ -2,7 +2,7 @@ import { CalendarApi } from './api/CalendarApi.js'
 import { ViewApi} from './api/ViewApi.js'
 import { ButtonStateMap, NavButtonState } from './structs/button-state.js'
 import { DateInput, DurationInput } from '@full-ui/headless-calendar'
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 
 const blankButtonState: NavButtonState = {
   text: '', hint: '', isDisabled: false,
@@ -58,7 +58,7 @@ export class CalendarController {
   getButtonState(): ButtonStateMap {
     const { calendarApi } = this
 
-    return (calendarApi && (calendarApi as CalendarImpl).getButtonState()) || {
+    return (calendarApi && (calendarApi as CalendarApiImpl).getButtonState()) || {
       today: blankButtonState,
       prev: blankButtonState,
       next: blankButtonState,

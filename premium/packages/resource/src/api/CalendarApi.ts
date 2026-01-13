@@ -1,4 +1,4 @@
-import { CalendarImpl, DateSpan, CalendarContext } from '@fullcalendar/core/internal'
+import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/core/internal'
 import { ResourceApi } from './ResourceApi.js'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource.js'
 import { ResourceAction } from '../reducers/resource-action.js'
@@ -15,7 +15,7 @@ declare module '@fullcalendar/core' {
 
 // TODO: more DRY
 declare module '@fullcalendar/core/internal' {
-  interface CalendarImpl {
+  interface CalendarApiImpl {
     dispatch(action: ResourceAction) // internal-only
     addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi
     getResourceById(id: string): ResourceApi | null
@@ -25,8 +25,8 @@ declare module '@fullcalendar/core/internal' {
   }
 }
 
-CalendarImpl.prototype.addResource = function ( // eslint-disable-line func-names
-  this: CalendarImpl,
+CalendarApiImpl.prototype.addResource = function ( // eslint-disable-line func-names
+  this: CalendarApiImpl,
   input: ResourceInput | ResourceApi,
   scrollTo = true,
 ) {
@@ -67,7 +67,7 @@ CalendarImpl.prototype.addResource = function ( // eslint-disable-line func-name
   return resourceApi
 }
 
-CalendarImpl.prototype.getResourceById = function (this: CalendarImpl, id: string) { // eslint-disable-line func-names
+CalendarApiImpl.prototype.getResourceById = function (this: CalendarApiImpl, id: string) { // eslint-disable-line func-names
   id = String(id)
   let currentState = this.getCurrentData() // eslint-disable-line react/no-this-in-sfc
 
@@ -82,7 +82,7 @@ CalendarImpl.prototype.getResourceById = function (this: CalendarImpl, id: strin
   return null
 }
 
-CalendarImpl.prototype.getResources = function (this: CalendarImpl): ResourceApi[] { // eslint-disable-line func-names
+CalendarApiImpl.prototype.getResources = function (this: CalendarApiImpl): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -98,7 +98,7 @@ CalendarImpl.prototype.getResources = function (this: CalendarImpl): ResourceApi
   return resourceApis
 }
 
-CalendarImpl.prototype.getTopLevelResources = function (this: CalendarImpl): ResourceApi[] { // eslint-disable-line func-names
+CalendarApiImpl.prototype.getTopLevelResources = function (this: CalendarApiImpl): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -116,7 +116,7 @@ CalendarImpl.prototype.getTopLevelResources = function (this: CalendarImpl): Res
   return resourceApis
 }
 
-CalendarImpl.prototype.refetchResources = function (this: CalendarImpl) { // eslint-disable-line func-names
+CalendarApiImpl.prototype.refetchResources = function (this: CalendarApiImpl) { // eslint-disable-line func-names
   this.dispatch({
     type: 'REFETCH_RESOURCES',
   })

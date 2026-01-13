@@ -1,18 +1,18 @@
 import { CalendarDataManager } from './reducers/CalendarDataManager.js'
 import { CalendarOptions } from './options.js'
-import { CalendarImpl } from './api/CalendarImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl.js'
 import { CalendarApi } from './api/CalendarApi.js'
 import { CalendarData } from './reducers/data-types.js'
 import { createElement, StrictMode } from './preact.js'
 import { PureComponent } from './vdom-util.js'
-import { CalendarMediaRoot, computeRootClassName } from './component/CalendarRoot.js'
+import { CalendarMediaRoot, computeRootClassName } from './calendar-root.js'
 import { CalendarInner } from './CalendarInner.js'
 import { memoize } from './util/memoize.js'
 
 export class CalendarComponent extends PureComponent<CalendarOptions> {
   private dataManager: CalendarDataManager | undefined
   private currentData: CalendarData | undefined
-  private _api = new CalendarImpl()
+  private _api = new CalendarApiImpl()
   private computeRootClassName = memoize(computeRootClassName)
 
   render() {

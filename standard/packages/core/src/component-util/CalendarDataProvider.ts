@@ -1,11 +1,11 @@
 import { Component, ComponentChildren } from '../preact.js'
 import { CalendarDataManager } from '../reducers/CalendarDataManager.js'
-import { CalendarImpl } from '../api/CalendarImpl.js'
+import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
 import { CalendarData } from '../reducers/data-types.js'
 
 export interface CalendarDataProviderProps {
   optionOverrides: any
-  calendarApi: CalendarImpl
+  calendarApi: CalendarApiImpl
   children?: (data: CalendarData) => ComponentChildren
 }
 

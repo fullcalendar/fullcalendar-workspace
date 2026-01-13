@@ -1,7 +1,7 @@
 import { Action } from './Action.js'
 import { PluginHooks } from '../plugin-system-struct.js'
 import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
-import { CalendarImpl } from '../api/CalendarImpl.js'
+import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
 import { EventSourceHash } from '../structs/event-source.js'
 import { ViewSpecHash, ViewSpec } from '../structs/view-spec.js'
 import { DateProfileGenerator, DateProfile } from '../DateProfileGenerator.js'
@@ -66,7 +66,7 @@ type CalendarDataBase = CalendarOptionsData & CalendarCurrentViewData & Calendar
 export interface CalendarData extends CalendarDataBase {
   nowManager: CalendarNowManager
   viewTitle: string // based on current date
-  calendarApi: CalendarImpl // TODO: try to remove this
+  calendarApi: CalendarApiImpl // TODO: try to remove this
   dispatch: (action: Action) => void
   emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove

@@ -2,14 +2,14 @@ import { EventInput, EventInputTransformer } from './event-parse.js'
 import { DateRange } from '@full-ui/headless-calendar'
 import { EventUi } from '../component-util/event-ui.js'
 import { CalendarContext } from '../CalendarContext.js'
-import { CalendarImpl } from '../api/CalendarImpl.js'
+import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
 import { Dictionary } from '../options.js'
 
 /*
 TODO: "EventSource" is the same name as a built-in type in TypeScript. Rethink.
 */
 
-export type EventSourceSuccessResponseHandler = (this: CalendarImpl, rawData: any, response: any) => EventInput[] | void
+export type EventSourceSuccessResponseHandler = (this: CalendarApiImpl, rawData: any, response: any) => EventInput[] | void
 export type EventSourceErrorResponseHandler = (error: Error) => void
 
 export interface EventSource<Meta> {

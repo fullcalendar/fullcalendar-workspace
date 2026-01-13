@@ -1,9 +1,9 @@
 import moment from 'moment'
 import { CalendarApi, Duration } from '@fullcalendar/core'
-import { CalendarImpl } from '@fullcalendar/core/internal'
+import { CalendarApiImpl } from '@fullcalendar/core/internal'
 
 export function toMoment(date: Date, calendar: CalendarApi): moment.Moment {
-  if (!(calendar instanceof CalendarImpl)) {
+  if (!(calendar instanceof CalendarApiImpl)) {
     throw new Error('must supply a CalendarApi instance')
   }
 
