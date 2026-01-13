@@ -5,6 +5,7 @@ import { createElement } from '@fullcalendar/core/preact'
 import { computeDateTopFrac } from './util.js'
 
 export interface TimeGridNowIndicatorLineProps {
+  key?: string | number | null
   nowDate: DateMarker
   dayDate: DateMarker
   dateProfile: DateProfile

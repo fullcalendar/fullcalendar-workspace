@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises'
 import { readFileSync } from 'fs'
 import { join as joinPaths } from 'path'
-import { RollupOptions, Plugin, OutputOptions, RollupWarning } from 'rollup'
+import { type RollupOptions, type Plugin, type OutputOptions, type RollupWarning } from 'rollup'
 import handlebars from 'handlebars'
 import nodeResolvePlugin from '@rollup/plugin-node-resolve'
 import dtsPlugin from 'rollup-plugin-dts'
@@ -10,7 +10,7 @@ import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
 import postcssPluginLib from 'rollup-plugin-postcss'
 import replacePluginLib from '@rollup/plugin-replace'
-import { MonorepoStruct } from '../../utils/monorepo-struct.ts'
+import { type MonorepoStruct } from '../../utils/monorepo-struct.ts'
 import { analyzePkg } from '../../utils/pkg-analysis.ts'
 import { readPkgJson } from '../../utils/pkg-json.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
@@ -29,10 +29,10 @@ import {
   computeGlobals,
   computeOwnExternalPaths,
   computeOwnIifeExternalPaths,
-  EntryStruct,
+  type EntryStruct,
   entryStructsToContentMap,
-  PkgBundleStruct,
-  GlobalVarMap,
+  type PkgBundleStruct,
+  type GlobalVarMap,
 } from './bundle-struct.ts'
 import {
   externalizeExtensionsPlugin,

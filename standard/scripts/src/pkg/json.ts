@@ -2,9 +2,9 @@ import { join as joinPaths, relative as relativizePath } from 'path'
 import { mkdir } from 'fs/promises'
 import { analyzePkg } from '../utils/pkg-analysis.ts'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.ts'
-import { ScriptContext } from '../utils/script-runner.ts'
+import { type ScriptContext } from '../utils/script-runner.ts'
 import { cjsExtension, esmExtension, iifeExtension } from './utils/config.ts'
-import { EntryConfigMap } from './utils/bundle-struct.ts'
+import { type EntryConfigMap } from './utils/bundle-struct.ts'
 
 const cdnFields = [
   'unpkg',

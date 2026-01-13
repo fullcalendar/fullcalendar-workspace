@@ -2,7 +2,7 @@ import { walk } from 'estree-walker'
 import MagicString from 'magic-string'
 import postcss from 'postcss'
 import selectorParser from 'postcss-selector-parser'
-import { TransformPluginContext, AcornNode } from 'rollup'
+import { type TransformPluginContext } from 'rollup'
 import { HashGenerator } from './hash-generator.ts'
 
 export default function transformClassNamesPlugin(minify: boolean, isPublicMui: boolean) {
@@ -44,7 +44,7 @@ function getThemeName(pathId: string, isPublicMui: boolean): string | undefined 
   }
 }
 
-function transformJs(themeName: string, isPublicMui: boolean, minify: boolean, code: string, ast: AcornNode) {
+function transformJs(themeName: string, isPublicMui: boolean, minify: boolean, code: string, ast: any) {
   const s = new MagicString(code)
 
   walk(ast, {

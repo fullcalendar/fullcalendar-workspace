@@ -1,4 +1,4 @@
-import { ScriptContext } from './utils/script-runner.ts'
+import { type ScriptContext } from './utils/script-runner.ts'
 import { writeMonorepoArchives } from './archive.ts'
 import { runTurboTasks } from './utils/turbo.ts'
 import { refineFilterArgs } from './utils/monorepo-config.ts'

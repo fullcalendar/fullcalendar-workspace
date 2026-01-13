@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { fileExists } from './utils/fs.ts'
-import { ScriptContext } from './utils/script-runner.ts'
-import { MonorepoStruct, PkgStruct, traverseMonorepoGreedy  } from './utils/monorepo-struct.ts'
+import { type ScriptContext } from './utils/script-runner.ts'
+import { type MonorepoStruct, type PkgStruct, traverseMonorepoGreedy  } from './utils/monorepo-struct.ts'
 import { writeDistPkgJson } from './pkg/json.ts'
 
 export default async function(this: ScriptContext, ...args: string[]) {

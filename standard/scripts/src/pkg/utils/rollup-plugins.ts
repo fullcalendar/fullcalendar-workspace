@@ -6,7 +6,7 @@ import {
   isAbsolute,
 } from 'path'
 import { readFile } from 'fs/promises'
-import { Plugin } from 'rollup'
+import { type Plugin } from 'rollup'
 import handlebars from 'handlebars'
 import cssnano from 'cssnano'
 import { execLive } from '../../utils/exec.ts'

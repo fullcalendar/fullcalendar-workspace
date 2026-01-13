@@ -35,6 +35,8 @@ build note:
     manually before `pn dev`
 
 
+can now kill PictureInPictureEvent Preact hack?
+
 
 standard/scripts/config/banner.tpl
   the "title" is blank. look at any global.js output for any theme

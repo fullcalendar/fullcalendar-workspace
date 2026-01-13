@@ -3,8 +3,8 @@ import { createWriteStream } from 'fs'
 import { mkdir, readFile, rm } from 'fs/promises'
 import { globby } from 'globby'
 import archiver from 'archiver'
-import { MonorepoStruct } from './utils/monorepo-struct.ts'
-import { ScriptContext } from './utils/script-runner.ts'
+import { type MonorepoStruct } from './utils/monorepo-struct.ts'
+import { type ScriptContext } from './utils/script-runner.ts'
 import { getArchiveRootDirs } from './utils/monorepo-config.ts'
 
 export default function(this: ScriptContext) {

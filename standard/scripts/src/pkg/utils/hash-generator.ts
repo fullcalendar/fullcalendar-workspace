@@ -3,8 +3,12 @@ import { createHash } from 'crypto'
 export class HashGenerator {
   private hashMap: Map<string, string> = new Map()
   private usedHashes: Set<string> = new Set()
+  private hashLength: number
+  private salt: string
 
-  constructor(private hashLength: number, private salt: string) {
+  constructor(hashLength: number, salt: string) {
+    this.hashLength = hashLength
+    this.salt = salt
   }
 
   generate(input: string) {

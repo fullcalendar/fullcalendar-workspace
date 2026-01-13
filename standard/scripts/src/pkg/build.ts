@@ -2,11 +2,11 @@ import { join as joinPaths } from 'path'
 import { copyFile, rm, writeFile } from 'fs/promises'
 import { globby } from 'globby'
 import { writeDistPkgJson } from './json.ts'
-import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.ts'
-import { ScriptContext } from '../utils/script-runner.ts'
+import { analyzePkg, type PkgAnalysis } from '../utils/pkg-analysis.ts'
+import { type ScriptContext } from '../utils/script-runner.ts'
 import { writeBundles } from './bundle.ts'
 import { compileTs } from '../utils/monorepo-ts.ts'
-import { MonorepoStruct } from '../utils/monorepo-struct.ts'
+import { type MonorepoStruct } from '../utils/monorepo-struct.ts'
 
 const tscArtifacts = [
   '.tsout',

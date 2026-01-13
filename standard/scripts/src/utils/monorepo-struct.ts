@@ -5,7 +5,7 @@ import { globby } from 'globby'
 import * as semver from 'semver'
 import * as yaml from 'js-yaml'
 import { getPkgJsonPath, readPkgJson } from './pkg-json.ts'
-import { continuousAsync, ContinuousAsyncFuncRes } from './lang.ts'
+import { continuousAsync, type ContinuousAsyncFuncRes } from './lang.ts'
 
 export interface MonorepoStruct {
   monorepoDir: string

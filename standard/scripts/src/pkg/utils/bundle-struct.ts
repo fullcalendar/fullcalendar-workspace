@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { globby } from 'globby'
-import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.ts'
+import { type MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.ts'
 import { filterProps } from '../../utils/lang.ts'
 import { pkgLog } from '../../utils/log.ts'
 import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.ts'

@@ -1,10 +1,9 @@
 import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
-import { ScriptContext } from '../utils/script-runner.ts'
+import { type ScriptContext } from '../utils/script-runner.ts'
 
 const pathsToDelete = [
   './dist',
-  './tsconfig.json',
   './tsconfig.tsbuildinfo', // for when pkg transpiles directly into dist
   './.turbo',
 ]

@@ -1,7 +1,7 @@
 import { join as joinPaths, sep as pathSep } from 'path'
 import { fileURLToPath } from 'url'
 import { fileExists } from './fs.ts'
-import { MonorepoStruct, readMonorepo } from './monorepo-struct.ts'
+import { type MonorepoStruct, readMonorepo } from './monorepo-struct.ts'
 
 export interface ScriptContext {
   cwd: string
@@ -23,7 +23,7 @@ export async function runScript(scriptPkgDir: string): Promise<void> {
   const monorepoDir = await findNearestMonorepoRoot(cwd)
   const monorepoStruct = await readMonorepo(monorepoDir)
 
-  const scriptPath = joinPaths(scriptPkgDir, 'dist', scriptName.replace(':', '/') + '.ts')
+  const scriptPath = joinPaths(scriptPkgDir, 'src', scriptName.replace(':', '/') + '.ts')
   const scriptExports = await import(scriptPath)
   const scriptMain = scriptExports.default
 
