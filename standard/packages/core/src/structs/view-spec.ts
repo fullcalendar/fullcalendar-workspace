@@ -1,8 +1,8 @@
-import { ViewDef, compileViewDefs } from './view-def.js'
+import { ViewDef, compileViewDefs } from './view-def'
 import { Duration, createDuration, greatestDurationDenominator, DurationInput } from '@full-ui/headless-calendar'
-import { mapHash } from '../util/object.js'
-import { ViewOptions, CalendarOptions } from '../options.js'
-import { ViewConfigInputHash, parseViewConfigs, ViewConfigHash, ViewComponentType } from './view-config.js'
+import { mapHash } from '../util/object'
+import { ViewOptions, CalendarOptions } from '../options'
+import { ViewConfigInputHash, parseViewConfigs, ViewConfigHash, ViewComponentType } from './view-config'
 
 /*
 Represents everything needed to instantiate a new view instance,

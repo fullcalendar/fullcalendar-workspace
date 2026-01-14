@@ -1,4 +1,4 @@
-import { Action } from './Action.js'
+import { Action } from './Action'
 
 export function reduceSelectedEvent(currentInstanceId: string, action: Action): string {
   switch (action.type) {

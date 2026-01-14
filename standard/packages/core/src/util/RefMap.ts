@@ -1,4 +1,4 @@
-import { guid } from "./misc.js"
+import { guid } from "./misc"
 
 /*
 TODO: make API where createRefMap() called

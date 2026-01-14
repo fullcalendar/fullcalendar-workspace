@@ -1,5 +1,5 @@
-import { ViewContextType } from '../ViewContext.js'
-import { joinArrayishClassNames } from '../util/html.js'
+import { ViewContextType } from '../ViewContext'
+import { joinArrayishClassNames } from '../util/html'
 
 export interface NowIndicatorDotProps {
   className?: string

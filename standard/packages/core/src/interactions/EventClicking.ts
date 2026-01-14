@@ -1,9 +1,9 @@
-import { listenBySelector } from '../util/dom-event.js'
-import { EventImpl } from '../api/EventImpl.js'
-import { getElEventRange } from '../component-util/event-rendering.js'
-import { Interaction, InteractionSettings } from './interaction.js'
-import { ViewApi } from '../api/ViewApi.js'
-import classNames from '../internal-classnames.js'
+import { listenBySelector } from '../util/dom-event'
+import { EventImpl } from '../api/EventImpl'
+import { getElEventRange } from '../component-util/event-rendering'
+import { Interaction, InteractionSettings } from './interaction'
+import { ViewApi } from '../api/ViewApi'
+import classNames from '../internal-classnames'
 
 export interface EventClickData {
   el: HTMLElement

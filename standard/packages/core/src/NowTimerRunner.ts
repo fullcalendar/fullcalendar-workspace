@@ -1,5 +1,5 @@
 import { DateMarker, startOfDay, addDays, createDuration, DateRange, DateEnv } from '@full-ui/headless-calendar'
-import { CalendarNowManager } from './reducers/CalendarNowManager.js'
+import { CalendarNowManager } from './reducers/CalendarNowManager'
 
 export interface NowTimerRunnerInput {
   unit: string,

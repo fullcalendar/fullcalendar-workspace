@@ -1,10 +1,10 @@
 import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration } from '@full-ui/headless-calendar'
-import { createEventInstance } from './event-instance.js'
-import { parseEventDef, refineEventDef } from './event-parse.js'
-import { EventRenderRange, compileEventUi } from '../component-util/event-rendering.js'
-import { EventUiHash } from '../component-util/event-ui.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { refineProps, identity, Identity } from '../options.js'
+import { createEventInstance } from './event-instance'
+import { parseEventDef, refineEventDef } from './event-parse'
+import { EventRenderRange, compileEventUi } from '../component-util/event-rendering'
+import { EventUiHash } from '../component-util/event-ui'
+import { CalendarContext } from '../CalendarContext'
+import { refineProps, identity, Identity } from '../options'
 
 /*
 A data-structure for a date-range that will be visually displayed.

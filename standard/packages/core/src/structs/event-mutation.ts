@@ -1,12 +1,12 @@
 import { Duration, startOfDay } from '@full-ui/headless-calendar'
-import { EventStore, createEmptyEventStore } from './event-store.js'
-import { EventDef } from './event-def.js'
-import { EventInstance } from './event-instance.js'
-import { computeAlignedDayRange } from '../util/date.js'
-import { EventUiHash, EventUi } from '../component-util/event-ui.js'
-import { compileEventUis } from '../component-util/event-rendering.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { getDefaultEventEnd } from '../calendar-utils.js'
+import { EventStore, createEmptyEventStore } from './event-store'
+import { EventDef } from './event-def'
+import { EventInstance } from './event-instance'
+import { computeAlignedDayRange } from '../util/date'
+import { EventUiHash, EventUi } from '../component-util/event-ui'
+import { compileEventUis } from '../component-util/event-rendering'
+import { CalendarContext } from '../CalendarContext'
+import { getDefaultEventEnd } from '../calendar-utils'
 
 /*
 A data structure for how to modify an EventDef/EventInstance within an EventStore

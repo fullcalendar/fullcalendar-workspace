@@ -1,6 +1,6 @@
-import * as Internal from './internal.js'
-import classNames from './internal-classnames.js'
-import * as Preact from './vdom-react.js'
+import * as Internal from './internal'
+import classNames from './internal-classnames'
+import * as Preact from './vdom-react'
 
-export * from './index.js'
+export * from './index'
 export { Internal, classNames as InternalClassNames, Preact }

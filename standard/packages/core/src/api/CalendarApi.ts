@@ -1,6 +1,6 @@
-import { ViewApi } from './ViewApi.js'
-import { EventSourceApi } from './EventSourceApi.js'
-import { EventApi } from './EventApi.js'
+import { ViewApi } from './ViewApi'
+import { EventSourceApi } from './EventSourceApi'
+import { EventApi } from './EventApi'
 import {
   CalendarOptions,
   CalendarListeners,
@@ -10,7 +10,7 @@ import {
   EventSourceInput,
   EventInput,
   FormatterInput,
-} from './structs.js'
+} from './structs'
 
 export interface CalendarApi {
   view: ViewApi

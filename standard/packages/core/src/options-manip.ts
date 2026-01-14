@@ -1,7 +1,7 @@
-import { CustomContentGenerator } from './common/render-hook.js'
-import { joinArrayishClassNames } from './util/html.js'
-import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
-import { CalendarOptions, ViewOptions } from './options.js'
+import { CustomContentGenerator } from './common/render-hook'
+import { joinArrayishClassNames } from './util/html'
+import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object'
+import { CalendarOptions, ViewOptions } from './options'
 
 type ClassNameInput = string | undefined
 type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput

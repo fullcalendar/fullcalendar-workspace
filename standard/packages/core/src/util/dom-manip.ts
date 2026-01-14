@@ -1,4 +1,4 @@
-import { Dictionary } from '../options.js'
+import { Dictionary } from '../options'
 
 export function getAppendableRoot(el: HTMLElement): Node {
   const root = el.getRootNode()

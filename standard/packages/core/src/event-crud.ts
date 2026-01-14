@@ -1,8 +1,8 @@
-import { EventStore } from './structs/event-store.js'
-import { CalendarData } from './reducers/data-types.js'
-import { EventImpl, buildEventApis } from './api/EventImpl.js'
+import { EventStore } from './structs/event-store'
+import { CalendarData } from './reducers/data-types'
+import { EventImpl, buildEventApis } from './api/EventImpl'
 import { Duration } from '@full-ui/headless-calendar'
-import { ViewApi } from './index.js'
+import { ViewApi } from './index'
 
 export interface EventAddData {
   event: EventImpl

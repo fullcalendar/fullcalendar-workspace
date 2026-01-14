@@ -1,17 +1,17 @@
-import { CalendarApiImpl } from './api/CalendarApiImpl.js'
-import { CalendarInner } from './CalendarInner.js'
-import { CalendarMediaRoot, computeRootClassName } from './calendar-root.js'
-import { RenderId } from './content-inject/RenderId.js'
-import { CalendarOptions } from './options.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl'
+import { CalendarInner } from './CalendarInner'
+import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
+import { RenderId } from './content-inject/RenderId'
+import { CalendarOptions } from './options'
 import { Fragment as StrictMode } from 'react' // DISABLE STRICT-MODE
 import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Action } from './reducers/Action.js'
-import { CalendarDataManager } from './reducers/CalendarDataManager.js'
-import { CalendarData } from './reducers/data-types.js'
-import { CssDimValue } from './scrollgrid/util.js'
-import { DelayedRunner } from './util/DelayedRunner.js'
-import { applyStyleProp } from './util/dom-manip.js'
+import { Action } from './reducers/Action'
+import { CalendarDataManager } from './reducers/CalendarDataManager'
+import { CalendarData } from './reducers/data-types'
+import { CssDimValue } from './scrollgrid/util'
+import { DelayedRunner } from './util/DelayedRunner'
+import { applyStyleProp } from './util/dom-manip'
 
 /*
 Vanilla JS API

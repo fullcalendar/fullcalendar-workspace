@@ -1,4 +1,4 @@
-import { Action } from './Action.js'
+import { Action } from './Action'
 
 export function reduceDynamicOptionOverrides(dynamicOptionOverrides, action: Action) {
   switch (action.type) {

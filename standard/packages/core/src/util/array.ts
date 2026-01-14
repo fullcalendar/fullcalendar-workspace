@@ -1,4 +1,4 @@
-import { valuesIdentical } from './misc.js'
+import { valuesIdentical } from './misc'
 
 // TODO: new util arrayify?
 // Array.prototype.slice.call(

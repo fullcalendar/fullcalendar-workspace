@@ -1,4 +1,4 @@
-import { LocaleInput } from '../index.js'
+import { LocaleInput } from '../index'
 
 function affix(unitText: string): string {
   return (unitText === 'Tag' || unitText === 'Monat') ? 'r' :

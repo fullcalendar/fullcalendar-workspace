@@ -1,5 +1,5 @@
-import { DateProfile, DateProfileGenerator } from '../DateProfileGenerator.js'
-import { Action } from './Action.js'
+import { DateProfile, DateProfileGenerator } from '../DateProfileGenerator'
+import { Action } from './Action'
 import { DateMarker } from '@full-ui/headless-calendar'
 
 export function reduceDateProfile(

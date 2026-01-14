@@ -1,10 +1,10 @@
-import { CssDimValue } from '../scrollgrid/util.js'
-import { watchHeight } from '../component-util/resize-observer.js'
+import { CssDimValue } from '../scrollgrid/util'
+import { watchHeight } from '../component-util/resize-observer'
 import { createRef, type Ref } from 'react'
-import { Scroller } from '../scrollgrid/Scroller.js'
-import { BaseComponent, setRef } from '../vdom-util.js'
-import { joinClassNames } from '../util/html.js'
-import classNames from '../internal-classnames.js'
+import { Scroller } from '../scrollgrid/Scroller'
+import { BaseComponent, setRef } from '../vdom-util'
+import { joinClassNames } from '../util/html'
+import classNames from '../internal-classnames'
 
 export interface FooterScrollbarProps {
   isSticky?: boolean

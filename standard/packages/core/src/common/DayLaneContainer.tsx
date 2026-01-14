@@ -1,7 +1,7 @@
-import { ViewApi } from '../api/ViewApi.js'
-import { DateMeta } from '../component-util/date-rendering.js'
+import { ViewApi } from '../api/ViewApi'
+import { DateMeta } from '../component-util/date-rendering'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { MountData } from './render-hook.js'
+import { MountData } from './render-hook'
 
 export interface DayLaneData extends DateMeta {
   date: DateMarker // localized

@@ -1,5 +1,5 @@
-import { Emitter } from "../common/Emitter.js"
-import { DelayedRunner } from "../util/DelayedRunner.js"
+import { Emitter } from "../common/Emitter"
+import { DelayedRunner } from "../util/DelayedRunner"
 
 /*
 Fires:

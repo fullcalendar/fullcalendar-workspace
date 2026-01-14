@@ -1,8 +1,8 @@
-import { EventSourceDef } from '../structs/event-source-def.js'
-import { EventInput } from '../structs/event-parse.js'
-import { createPlugin } from '../plugin-system.js'
-import { buildRangeApiWithTimeZone } from '../structs/date-span.js'
-import { unpromisify } from '../util/promise.js'
+import { EventSourceDef } from '../structs/event-source-def'
+import { EventInput } from '../structs/event-parse'
+import { createPlugin } from '../plugin-system'
+import { buildRangeApiWithTimeZone } from '../structs/date-span'
+import { unpromisify } from '../util/promise'
 
 export type EventSourceFuncData = {
   start: Date

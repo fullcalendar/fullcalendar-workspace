@@ -1,6 +1,6 @@
-import { isArraysEqual } from './array.js'
-import { isPropsEqualShallow } from './object.js'
-import { Dictionary } from '../options.js'
+import { isArraysEqual } from './array'
+import { isPropsEqualShallow } from './object'
+import { Dictionary } from '../options'
 
 export function memoize<Args extends any[], Res>(
   workerFunc: (...args: Args) => Res,

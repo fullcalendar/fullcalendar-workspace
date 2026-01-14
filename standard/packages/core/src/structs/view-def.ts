@@ -1,6 +1,6 @@
-import { ViewConfigHash, ViewComponentType } from './view-config.js'
-import { ViewOptions } from '../options.js'
-import { mergeCalendarOptions } from '../options-manip.js'
+import { ViewConfigHash, ViewComponentType } from './view-config'
+import { ViewOptions } from '../options'
+import { mergeCalendarOptions } from '../options-manip'
 
 /*
 Represents information for an instantiatable View class along with settings

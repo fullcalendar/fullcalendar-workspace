@@ -1,5 +1,5 @@
 import { Component, type FC, type ReactNode, createElement } from 'react'
-import { ClassNameGenerator } from '../common/render-hook.js'
+import { ClassNameGenerator } from '../common/render-hook'
 import {
   ContentInjector,
   ContentGeneratorProps,
@@ -7,10 +7,10 @@ import {
   buildElAttrs,
   ElProps,
   ElAttrs,
-} from './ContentInjector.js'
-import { RenderId } from './RenderId.js'
-import { setRef } from '../vdom-util.js'
-import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
+} from './ContentInjector'
+import { RenderId } from './RenderId'
+import { setRef } from '../vdom-util'
+import { joinArrayishClassNames, joinClassNames } from '../util/html'
 
 /*
 The `children` prop is a function that defines inner wrappers (ex: ResourceCell)

@@ -1,4 +1,4 @@
-import { CalendarApi } from './CalendarApi.js'
+import { CalendarApi } from './CalendarApi'
 
 export interface ViewApi {
   calendar: CalendarApi

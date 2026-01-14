@@ -1,8 +1,8 @@
-import { CalendarApiImpl } from './api/CalendarApiImpl.js'
-import { CalendarOptionsRefined } from './options.js'
-import { ViewSpec, ViewSpecHash } from './structs/view-spec.js'
-import { ToolbarInput, ToolbarModel, ToolbarWidget } from './toolbar-struct.js'
-import { formatWithOrdinals } from './util/misc.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl'
+import { CalendarOptionsRefined } from './options'
+import { ViewSpec, ViewSpecHash } from './structs/view-spec'
+import { ToolbarInput, ToolbarModel, ToolbarWidget } from './toolbar-struct'
+import { formatWithOrdinals } from './util/misc'
 
 export function parseToolbars(
   calendarOptions: CalendarOptionsRefined,

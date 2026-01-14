@@ -1,22 +1,22 @@
 
-export { Calendar } from './Calendar.js'
+export { Calendar } from './Calendar'
 
-export { CalendarApi } from './api/CalendarApi.js'
-export { CalendarController } from './CalendarController.js'
-export { ViewApi } from './api/ViewApi.js'
-export { EventSourceApi } from './api/EventSourceApi.js'
-export { EventApi } from './api/EventApi.js'
-export * from './api/structs.js'
+export { CalendarApi } from './api/CalendarApi'
+export { CalendarController } from './CalendarController'
+export { ViewApi } from './api/ViewApi'
+export { EventSourceApi } from './api/EventSourceApi'
+export { EventApi } from './api/EventApi'
+export * from './api/structs'
 
-export { FormatDateOptions, FormatRangeOptions } from './formatting-api.js'
-export { formatDate, formatRange } from './formatting-api.js'
-export { createPlugin } from './plugin-system.js'
-export { sliceEvents } from './component-util/View.js'
-export { EventRenderRange } from './component-util/event-rendering.js' // for sliceEvents
-export { JsonRequestError } from './util/requestJson.js'
-export { joinClassNames } from './util/html.js'
+export { FormatDateOptions, FormatRangeOptions } from './formatting-api'
+export { formatDate, formatRange } from './formatting-api'
+export { createPlugin } from './plugin-system'
+export { sliceEvents } from './component-util/View'
+export { EventRenderRange } from './component-util/event-rendering' // for sliceEvents
+export { JsonRequestError } from './util/requestJson'
+export { joinClassNames } from './util/html'
 
-export { globalLocales } from './global-locales.js'
-export { globalPlugins } from './global-plugins.js'
+export { globalLocales } from './global-locales'
+export { globalPlugins } from './global-plugins'
 
 export const version: string = '<%= pkgVersion %>'

@@ -1,9 +1,9 @@
-import { Emitter } from './common/Emitter.js'
-import classNames from './internal-classnames.js'
-import { CalendarListeners, CalendarOptions } from './options.js'
+import { Emitter } from './common/Emitter'
+import classNames from './internal-classnames'
+import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
 import { flushSync } from 'react-dom'
-import { joinArrayishClassNames } from './util/html.js'
+import { joinArrayishClassNames } from './util/html'
 
 export interface CalendarMediaRootProps {
   emitter: Emitter<Required<CalendarListeners>>

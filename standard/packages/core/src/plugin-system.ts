@@ -1,7 +1,7 @@
-import { guid } from './util/misc.js'
-import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct.js'
-import { isArraysEqual } from './util/array.js'
-import { mergeViewOptionsMap } from './options-manip.js'
+import { guid } from './util/misc'
+import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct'
+import { isArraysEqual } from './util/array'
+import { mergeViewOptionsMap } from './options-manip'
 
 // TODO: easier way to add new hooks? need to update a million things
 

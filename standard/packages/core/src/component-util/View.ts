@@ -1,9 +1,9 @@
-import { DateProfile } from '../DateProfileGenerator.js'
-import { EventStore } from '../structs/event-store.js'
-import { EventUiHash } from './event-ui.js'
-import { sliceEventStore, EventRenderRange } from './event-rendering.js'
-import { DateSpan } from '../structs/date-span.js'
-import { EventInteractionState } from '../interactions/event-interaction-state.js'
+import { DateProfile } from '../DateProfileGenerator'
+import { EventStore } from '../structs/event-store'
+import { EventUiHash } from './event-ui'
+import { sliceEventStore, EventRenderRange } from './event-rendering'
+import { DateSpan } from '../structs/date-span'
+import { EventInteractionState } from '../interactions/event-interaction-state'
 import { Duration } from '@full-ui/headless-calendar'
 
 export interface ViewProps {

@@ -1,7 +1,7 @@
 import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
-import { Action } from './Action.js'
-import { CalendarOptionsRefined } from '../options.js'
-import { CalendarNowManager } from './CalendarNowManager.js'
+import { Action } from './Action'
+import { CalendarOptionsRefined } from '../options'
+import { CalendarNowManager } from './CalendarNowManager'
 
 export function reduceCurrentDate(currentDate: DateMarker, action: Action) {
   switch (action.type) {

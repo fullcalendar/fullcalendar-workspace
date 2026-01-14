@@ -1,7 +1,7 @@
-import { DateProfileGeneratorClass } from './DateProfileGenerator.js'
-import { CalendarApi } from './api/CalendarApi.js'
-import { CalendarController } from './CalendarController.js'
-import { EventApi } from './api/EventApi.js'
+import { DateProfileGeneratorClass } from './DateProfileGenerator'
+import { CalendarApi } from './api/CalendarApi'
+import { CalendarController } from './CalendarController'
+import { EventApi } from './api/EventApi'
 import {
   AllDayHeaderData, AllDayHeaderMountData,
   AllowFunc,
@@ -61,13 +61,13 @@ import {
   DayHeaderMountData,
   DayCellMountData,
   DayCellData,
-} from './api/structs.js'
-import { TableHeaderData } from './common/TableAndSubsections.js'
+} from './api/structs'
+import { TableHeaderData } from './common/TableAndSubsections'
 import { createDuration, Duration } from '@full-ui/headless-calendar'
-import { createFormatter } from './datelib/formatting.js'
-import { parseFieldSpecs } from './util/misc.js'
-import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object.js'
-import { isMaybeArraysEqual } from './util/array.js'
+import { createFormatter } from './datelib/formatting'
+import { parseFieldSpecs } from './util/misc'
+import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object'
+import { isMaybeArraysEqual } from './util/array'
 
 // base options
 // ------------

@@ -1,11 +1,11 @@
 import { DateEnv } from '@full-ui/headless-calendar'
-import { createFormatter } from './datelib/formatting.js'
-import { NativeFormatterOptions } from './datelib/formatting-native.js'
-import { organizeRawLocales, buildLocale } from './datelib/locale.js'
-import { BASE_OPTION_DEFAULTS } from './options.js'
+import { createFormatter } from './datelib/formatting'
+import { NativeFormatterOptions } from './datelib/formatting-native'
+import { organizeRawLocales, buildLocale } from './datelib/locale'
+import { BASE_OPTION_DEFAULTS } from './options'
 
 // public
-import { DateInput } from './api/structs.js'
+import { DateInput } from './api/structs'
 
 export interface FormatDateOptions extends NativeFormatterOptions {
   locale?: string

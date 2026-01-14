@@ -1,5 +1,5 @@
-import { EventInteractionState } from '../interactions/event-interaction-state.js'
-import { Action } from './Action.js'
+import { EventInteractionState } from '../interactions/event-interaction-state'
+import { Action } from './Action'
 
 export function reduceEventResize(currentResize: EventInteractionState | null, action: Action): EventInteractionState | null {
   let newResize: EventInteractionState

@@ -1,9 +1,9 @@
-import { EventStore, parseEvents } from './event-store.js'
-import { EventInput } from './event-parse.js'
-import { DateSpanApi } from './date-span.js'
-import { EventImpl } from '../api/EventImpl.js'
-import { SplittableProps } from '../component-util/event-splitting.js'
-import { CalendarContext } from '../CalendarContext.js'
+import { EventStore, parseEvents } from './event-store'
+import { EventInput } from './event-parse'
+import { DateSpanApi } from './date-span'
+import { EventImpl } from '../api/EventImpl'
+import { SplittableProps } from '../component-util/event-splitting'
+import { CalendarContext } from '../CalendarContext'
 
 // TODO: rename to "criteria" ?
 export type ConstraintInput = 'businessHours' | string | EventInput | EventInput[]

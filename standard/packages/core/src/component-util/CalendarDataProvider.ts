@@ -1,7 +1,7 @@
 import { Component, type ReactNode } from 'react'
-import { CalendarDataManager } from '../reducers/CalendarDataManager.js'
-import { CalendarApiImpl } from '../api/CalendarApiImpl.js'
-import { CalendarData } from '../reducers/data-types.js'
+import { CalendarDataManager } from '../reducers/CalendarDataManager'
+import { CalendarApiImpl } from '../api/CalendarApiImpl'
+import { CalendarData } from '../reducers/data-types'
 
 export interface CalendarDataProviderProps {
   optionOverrides: any

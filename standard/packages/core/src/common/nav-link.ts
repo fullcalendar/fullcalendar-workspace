@@ -1,10 +1,10 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { joinArrayishClassNames } from '../internal.js'
-import { createAriaClickAttrs } from '../util/dom-event.js'
-import { formatWithOrdinals } from '../util/misc.js'
-import { ViewContext } from '../ViewContext.js'
-import classNames from '../internal-classnames.js'
-import { FULL_DATE_FORMAT, WEEK_FORMAT } from '../util/date-format.js'
+import { joinArrayishClassNames } from '../internal'
+import { createAriaClickAttrs } from '../util/dom-event'
+import { formatWithOrdinals } from '../util/misc'
+import { ViewContext } from '../ViewContext'
+import classNames from '../internal-classnames'
+import { FULL_DATE_FORMAT, WEEK_FORMAT } from '../util/date-format'
 
 /*
 TODO: just have this return the string?

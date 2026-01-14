@@ -1,4 +1,4 @@
-import { MountData } from './render-hook.js'
+import { MountData } from './render-hook'
 
 export type DateTimeFormatPartWithWeek = Omit<Intl.DateTimeFormatPart, 'type'> & {
   type: Intl.DateTimeFormatPart['type'] | 'week'

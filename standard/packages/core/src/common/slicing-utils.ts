@@ -1,14 +1,14 @@
 import { DateRange, intersectRanges, Duration, DateMarker, addMs, addDays } from '@full-ui/headless-calendar'
-import { EventStore } from '../structs/event-store.js'
-import { EventUiHash } from '../component-util/event-ui.js'
-import { sliceEventStore, EventRenderRange, EventRangeProps } from '../component-util/event-rendering.js'
-import { DateProfile } from '../DateProfileGenerator.js'
-import { EventSegUiInteractionState } from '../component/DateComponent.js' // TODO: rename EventSegUiInteractionState, move here
-import { DateSpan, fabricateEventRange } from '../structs/date-span.js'
-import { EventInteractionState } from '../interactions/event-interaction-state.js'
-import { memoize } from '../util/memoize.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { expandRecurring } from '../structs/recurring-event.js'
+import { EventStore } from '../structs/event-store'
+import { EventUiHash } from '../component-util/event-ui'
+import { sliceEventStore, EventRenderRange, EventRangeProps } from '../component-util/event-rendering'
+import { DateProfile } from '../DateProfileGenerator'
+import { EventSegUiInteractionState } from '../component/DateComponent' // TODO: rename EventSegUiInteractionState, move here
+import { DateSpan, fabricateEventRange } from '../structs/date-span'
+import { EventInteractionState } from '../interactions/event-interaction-state'
+import { memoize } from '../util/memoize'
+import { CalendarContext } from '../CalendarContext'
+import { expandRecurring } from '../structs/recurring-event'
 
 export interface SliceableProps {
   dateSelection: DateSpan

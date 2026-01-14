@@ -1,11 +1,11 @@
-import { DateComponent } from '../component/DateComponent.js'
-import { computeElIsRtl, setRef, watchHeight, watchWidth } from '../internal.js'
-import { Dictionary } from '../options.js'
+import { DateComponent } from '../component/DateComponent'
+import { computeElIsRtl, setRef, watchHeight, watchWidth } from '../internal'
+import { Dictionary } from '../options'
 import type { ReactNode, Ref } from 'react'
-import { joinClassNames } from '../util/html.js'
-import { ScrollerInterface } from './ScrollerInterface.js'
-import { ScrollListener } from './ScrollListener.js'
-import classNames from '../internal-classnames.js'
+import { joinClassNames } from '../util/html'
+import { ScrollerInterface } from './ScrollerInterface'
+import { ScrollListener } from './ScrollListener'
+import classNames from '../internal-classnames'
 
 export interface ScrollerProps {
   ref?: Ref<Scroller>

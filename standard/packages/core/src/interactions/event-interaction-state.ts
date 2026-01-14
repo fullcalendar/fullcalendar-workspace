@@ -1,4 +1,4 @@
-import { EventStore } from '../structs/event-store.js'
+import { EventStore } from '../structs/event-store'
 
 export interface EventInteractionState { // is this ever used alone?
   affectedEvents: EventStore

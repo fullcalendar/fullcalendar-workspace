@@ -1,8 +1,8 @@
-import { BaseComponent } from '../vdom-util.js'
-import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
-import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
-import { joinClassNames } from '../util/html.js'
-import { generateClassName } from '../content-inject/ContentContainer.js'
+import { BaseComponent } from '../vdom-util'
+import { ToolbarModel, ToolbarWidget } from '../toolbar-struct'
+import { ToolbarSection, ToolbarContent } from './ToolbarSection'
+import { joinClassNames } from '../util/html'
+import { generateClassName } from '../content-inject/ContentContainer'
 
 export interface ToolbarProps extends ToolbarContent {
   className?: string

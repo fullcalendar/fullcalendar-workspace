@@ -1,10 +1,10 @@
-import { requestJson } from '../util/requestJson.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { EventSourceDef } from '../structs/event-source-def.js'
+import { requestJson } from '../util/requestJson'
+import { CalendarContext } from '../CalendarContext'
+import { EventSourceDef } from '../structs/event-source-def'
 import { DateRange } from '@full-ui/headless-calendar'
-import { createPlugin } from '../plugin-system.js'
-import { JSON_FEED_EVENT_SOURCE_REFINERS } from './json-feed-event-source-refiners.js'
-import { EventInput } from '../api/structs.js'
+import { createPlugin } from '../plugin-system'
+import { JSON_FEED_EVENT_SOURCE_REFINERS } from './json-feed-event-source-refiners'
+import { EventInput } from '../api/structs'
 
 interface JsonFeedMeta {
   url: string

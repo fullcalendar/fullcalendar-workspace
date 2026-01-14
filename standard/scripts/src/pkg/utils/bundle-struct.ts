@@ -278,6 +278,7 @@ export function computeGlobals(
 
       allGlobalVars[fullImportId] = globalVar
       allGlobalVars[entrySrcPath] = globalVar // add file path too
+      allGlobalVars[entrySrcPath.replace(/\.js$/, '')] = globalVar // without .js
     }
   }
 

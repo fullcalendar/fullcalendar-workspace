@@ -1,21 +1,21 @@
-import { EventDef } from '../structs/event-def.js'
-import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse.js'
-import { EventInstance } from '../structs/event-instance.js'
-import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui.js'
-import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation.js'
-import { diffDates, computeAlignedDayRange } from '../util/date.js'
+import { EventDef } from '../structs/event-def'
+import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse'
+import { EventInstance } from '../structs/event-instance'
+import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui'
+import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
+import { diffDates, computeAlignedDayRange } from '../util/date'
 import { createDuration, durationsEqual } from '@full-ui/headless-calendar'
-import { createFormatter } from '../datelib/formatting.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { getRelevantEvents, EventStore } from '../structs/event-store.js'
-import { Dictionary } from '../options.js'
-import { EventApi } from './EventApi.js'
-import { EventSourceImpl } from './EventSourceImpl.js'
+import { createFormatter } from '../datelib/formatting'
+import { CalendarContext } from '../CalendarContext'
+import { getRelevantEvents, EventStore } from '../structs/event-store'
+import { Dictionary } from '../options'
+import { EventApi } from './EventApi'
+import { EventSourceImpl } from './EventSourceImpl'
 import {
   DateInput,
   DurationInput,
   FormatterInput,
-} from './structs.js'
+} from './structs'
 
 export class EventImpl implements EventApi {
   _context: CalendarContext

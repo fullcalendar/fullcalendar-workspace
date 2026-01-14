@@ -1,12 +1,12 @@
 import { createElement, type ReactNode, type CSSProperties, type Ref, isValidElement } from 'react'
-import { CustomContentGenerator } from '../common/render-hook.js'
-import { BaseComponent, setRef } from '../vdom-util.js'
-import { guid } from '../util/misc.js'
-import { isArraysEqual } from '../util/array.js'
-import { ViewOptions } from '../options.js'
-import { isPropsEqualShallow } from '../util/object.js'
-import { isNonHandlerPropsEqual } from '../options-manip.js'
-import { joinClassNames } from '../util/html.js'
+import { CustomContentGenerator } from '../common/render-hook'
+import { BaseComponent, setRef } from '../vdom-util'
+import { guid } from '../util/misc'
+import { isArraysEqual } from '../util/array'
+import { ViewOptions } from '../options'
+import { isPropsEqualShallow } from '../util/object'
+import { isNonHandlerPropsEqual } from '../options-manip'
+import { joinClassNames } from '../util/html'
 
 export type ElRef = Ref<HTMLElement>
 

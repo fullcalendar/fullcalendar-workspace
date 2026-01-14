@@ -1,7 +1,7 @@
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
-import { ViewContext, ViewContextType } from './ViewContext.js'
+import { ViewContext, ViewContextType } from './ViewContext'
 import { type ReactNode, Component } from 'react'
-import { NowTimerRunner } from './NowTimerRunner.js'
+import { NowTimerRunner } from './NowTimerRunner'
 
 export interface NowTimerProps {
   unit: string // TODO: add type of unit

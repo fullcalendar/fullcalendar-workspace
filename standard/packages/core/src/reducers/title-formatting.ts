@@ -1,7 +1,7 @@
-import { DateProfile } from '../DateProfileGenerator.js'
+import { DateProfile } from '../DateProfileGenerator'
 import { diffWholeDays, DateRange, DateEnv } from '@full-ui/headless-calendar'
-import { createFormatter, FormatterInput } from '../datelib/formatting.js'
-import { BaseOptions } from '../options.js'
+import { createFormatter, FormatterInput } from '../datelib/formatting'
+import { BaseOptions } from '../options'
 
 // Computes what the title at the top of the calendarApi should be for this view
 export function buildTitle(

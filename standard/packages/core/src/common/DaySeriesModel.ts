@@ -1,6 +1,6 @@
-import { DateProfileGenerator } from '../DateProfileGenerator.js'
+import { DateProfileGenerator } from '../DateProfileGenerator'
 import { DateMarker, addDays, diffDays, DateRange } from '@full-ui/headless-calendar'
-import { SlicedCoordRange } from '../coord-range.js'
+import { SlicedCoordRange } from '../coord-range'
 
 export class DaySeriesModel {
   cnt: number

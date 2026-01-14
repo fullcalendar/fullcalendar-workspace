@@ -1,10 +1,10 @@
 import { createElement, Fragment, type ReactNode, type ReactElement } from 'react'
-import { BaseComponent } from '../vdom-util.js'
-import { ToolbarWidget, ButtonData } from '../toolbar-struct.js'
-import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
-import { ButtonIcon } from './ButtonIcon.js'
-import classNames from '../internal-classnames.js'
+import { BaseComponent } from '../vdom-util'
+import { ToolbarWidget, ButtonData } from '../toolbar-struct'
+import { joinArrayishClassNames, joinClassNames } from '../util/html'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { ButtonIcon } from './ButtonIcon'
+import classNames from '../internal-classnames'
 
 export interface ToolbarContent {
   title: string

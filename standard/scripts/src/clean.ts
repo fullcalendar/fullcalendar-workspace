@@ -13,7 +13,6 @@ export default async function(this: ScriptContext, ...args: string[]) {
 
   await Promise.all([
     deleteRootDist(monorepoDir),
-    deleteRootTsconfig(monorepoDir),
     deleteGlobalTurboCache(monorepoDir),
     deleteMonorepoArchives(monorepoStruct),
     isAll ?
@@ -26,13 +25,6 @@ export default async function(this: ScriptContext, ...args: string[]) {
 function deleteRootDist(monorepoDir: string): Promise<void> {
   return rm(
     joinPaths(monorepoDir, 'dist'),
-    { force: true },
-  )
-}
-
-function deleteRootTsconfig(monorepoDir: string): Promise<void> {
-  return rm(
-    joinPaths(monorepoDir, 'tsconfig.json'),
     { force: true },
   )
 }

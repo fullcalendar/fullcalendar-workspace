@@ -1,21 +1,21 @@
-import { FormatterInput, createFormatter } from '../datelib/formatting.js'
+import { FormatterInput, createFormatter } from '../datelib/formatting'
 import { createDuration } from '@full-ui/headless-calendar'
-import { parseDateSpan } from '../structs/date-span.js'
-import { parseEventSource } from '../structs/event-source-parse.js'
-import { parseEvent } from '../structs/event-parse.js'
-import { eventTupleToStore } from '../structs/event-store.js'
-import { ViewSpec } from '../structs/view-spec.js'
-import { PointerDragEvent } from '../interactions/pointer.js'
-import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils.js'
-import { hashValuesToArray } from '../util/object.js'
-import { CalendarDataManager } from '../reducers/CalendarDataManager.js'
-import { Action } from '../reducers/Action.js'
-import { EventSource } from '../structs/event-source.js'
-import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl.js'
-import { CalendarData } from '../reducers/data-types.js'
-import { CalendarApi } from './CalendarApi.js'
-import { ViewImpl } from './ViewImpl.js'
-import { EventSourceImpl } from './EventSourceImpl.js'
+import { parseDateSpan } from '../structs/date-span'
+import { parseEventSource } from '../structs/event-source-parse'
+import { parseEvent } from '../structs/event-parse'
+import { eventTupleToStore } from '../structs/event-store'
+import { ViewSpec } from '../structs/view-spec'
+import { PointerDragEvent } from '../interactions/pointer'
+import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils'
+import { hashValuesToArray } from '../util/object'
+import { CalendarDataManager } from '../reducers/CalendarDataManager'
+import { Action } from '../reducers/Action'
+import { EventSource } from '../structs/event-source'
+import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl'
+import { CalendarData } from '../reducers/data-types'
+import { CalendarApi } from './CalendarApi'
+import { ViewImpl } from './ViewImpl'
+import { EventSourceImpl } from './EventSourceImpl'
 import {
   CalendarOptions,
   CalendarListeners,
@@ -25,11 +25,11 @@ import {
   DateRangeInput,
   EventSourceInput,
   EventInput,
-} from './structs.js'
-import { updateSizeSync } from '../component-util/resize-observer.js'
-import { flushUpdates } from '../vdom-react.js'
-import { NavButtonState, ButtonStateMap } from '../structs/button-state.js'
-import { formatWithOrdinals } from '../util/misc.js'
+} from './structs'
+import { updateSizeSync } from '../component-util/resize-observer'
+import { flushUpdates } from '../vdom-react'
+import { NavButtonState, ButtonStateMap } from '../structs/button-state'
+import { formatWithOrdinals } from '../util/misc'
 
 export class CalendarApiImpl implements CalendarApi {
   currentDataManager?: CalendarDataManager // will be set by CalendarDataManager

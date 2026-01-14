@@ -1,12 +1,12 @@
-import { ViewSpec } from '../structs/view-spec.js'
-import { MountData } from './render-hook.js'
+import { ViewSpec } from '../structs/view-spec'
+import { MountData } from './render-hook'
 import type { ReactNode } from 'react'
-import { BaseComponent } from '../vdom-util.js'
-import { ViewApi } from '../api/ViewApi.js'
-import { ContentContainer } from '../content-inject/ContentContainer.js'
-import { ElProps } from '../content-inject/ContentInjector.js'
-import { joinClassNames } from '../util/html.js'
-import classNames from '../internal-classnames.js'
+import { BaseComponent } from '../vdom-util'
+import { ViewApi } from '../api/ViewApi'
+import { ContentContainer } from '../content-inject/ContentContainer'
+import { ElProps } from '../content-inject/ContentInjector'
+import { joinClassNames } from '../util/html'
+import classNames from '../internal-classnames'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec

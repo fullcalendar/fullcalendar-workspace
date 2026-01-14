@@ -1,7 +1,7 @@
 import { flushSync } from 'react-dom'
-import { preactOptions } from '../vdom-react.js'
-import { isDimsEqual } from './rendering-misc.js'
-import { debounce } from '../util/debounce.js'
+import { preactOptions } from '../vdom-react'
+import { isDimsEqual } from './rendering-misc'
+import { debounce } from '../util/debounce'
 
 const nativeEnabled = true
 const nativeBorderBoxEnabled = true

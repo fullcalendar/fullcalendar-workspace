@@ -1,6 +1,6 @@
-import { CustomContentGenerator } from '../common/render-hook.js'
-import { ContentContainer } from '../content-inject/ContentContainer.js'
-import { BaseComponent } from '../vdom-util.js'
+import { CustomContentGenerator } from '../common/render-hook'
+import { ContentContainer } from '../content-inject/ContentContainer'
+import { BaseComponent } from '../vdom-util'
 
 interface IconProps {
   className?: string

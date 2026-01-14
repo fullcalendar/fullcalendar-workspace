@@ -1,8 +1,8 @@
-import { CalendarApi } from './api/CalendarApi.js'
-import { ViewApi} from './api/ViewApi.js'
-import { ButtonStateMap, NavButtonState } from './structs/button-state.js'
+import { CalendarApi } from './api/CalendarApi'
+import { ViewApi} from './api/ViewApi'
+import { ButtonStateMap, NavButtonState } from './structs/button-state'
 import { DateInput, DurationInput } from '@full-ui/headless-calendar'
-import { CalendarApiImpl } from './api/CalendarApiImpl.js'
+import { CalendarApiImpl } from './api/CalendarApiImpl'
 
 const blankButtonState: NavButtonState = {
   text: '', hint: '', isDisabled: false,

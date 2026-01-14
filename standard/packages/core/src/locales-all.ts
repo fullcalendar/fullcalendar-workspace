@@ -1,4 +1,4 @@
-import { LocaleInput } from './index.js'
+import { LocaleInput } from './index'
 
 declare const allLocales: LocaleInput[]
 

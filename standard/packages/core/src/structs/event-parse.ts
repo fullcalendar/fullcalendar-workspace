@@ -1,13 +1,13 @@
-import { guid } from '../util/misc.js'
+import { guid } from '../util/misc'
 import { DateInput, startOfDay } from '@full-ui/headless-calendar'
-import { parseRecurring } from './recurring-event.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { EventDef } from './event-def.js'
-import { createEventInstance, EventInstance } from './event-instance.js'
-import { EventSource } from './event-source.js'
-import { RefinedOptionsFromRefiners, RawOptionsFromRefiners, identity, Identity, Dictionary, refineProps, GenericRefiners } from '../options.js'
-import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component-util/event-ui.js'
-import { EventDefIdMap, EventInstanceIdMap } from '../reducers/eventStore.js'
+import { parseRecurring } from './recurring-event'
+import { CalendarContext } from '../CalendarContext'
+import { EventDef } from './event-def'
+import { createEventInstance, EventInstance } from './event-instance'
+import { EventSource } from './event-source'
+import { RefinedOptionsFromRefiners, RawOptionsFromRefiners, identity, Identity, Dictionary, refineProps, GenericRefiners } from '../options'
+import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component-util/event-ui'
+import { EventDefIdMap, EventInstanceIdMap } from '../reducers/eventStore'
 
 export const EVENT_NON_DATE_REFINERS = {
   id: String,

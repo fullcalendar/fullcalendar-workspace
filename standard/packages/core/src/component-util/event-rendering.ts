@@ -1,6 +1,6 @@
-import { EventDef, EventDefHash } from '../structs/event-def.js'
-import { EventTuple } from '../structs/event-parse.js'
-import { EventStore } from '../structs/event-store.js'
+import { EventDef, EventDefHash } from '../structs/event-def'
+import { EventTuple } from '../structs/event-parse'
+import { EventStore } from '../structs/event-store'
 import {
   DateRange,
   invertRanges,
@@ -12,15 +12,15 @@ import {
   DateMarker,
   startOfDay,
 } from '@full-ui/headless-calendar'
-import { compareByFieldSpecs, OrderSpec } from '../util/misc.js'
-import { computeVisibleDayRange } from '../util/date.js'
-import { EventImpl } from '../api/EventImpl.js'
-import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
-import { mapHash } from '../util/object.js'
-import { ViewContext } from '../ViewContext.js'
-import { ViewApi } from '../api/ViewApi.js'
-import { MountData } from '../common/render-hook.js'
-import { createAriaKeyboardAttrs } from '../util/dom-event.js'
+import { compareByFieldSpecs, OrderSpec } from '../util/misc'
+import { computeVisibleDayRange } from '../util/date'
+import { EventImpl } from '../api/EventImpl'
+import { EventUi, EventUiHash, combineEventUis } from './event-ui'
+import { mapHash } from '../util/object'
+import { ViewContext } from '../ViewContext'
+import { ViewApi } from '../api/ViewApi'
+import { MountData } from '../common/render-hook'
+import { createAriaKeyboardAttrs } from '../util/dom-event'
 
 export interface EventRenderRange extends EventTuple {
   ui: EventUi

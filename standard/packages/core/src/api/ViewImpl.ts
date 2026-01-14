@@ -1,7 +1,7 @@
 import { DateEnv } from '@full-ui/headless-calendar'
-import { CalendarData } from '../reducers/data-types.js'
-import { CalendarApi } from './CalendarApi.js'
-import { ViewApi } from './ViewApi.js'
+import { CalendarData } from '../reducers/data-types'
+import { CalendarApi } from './CalendarApi'
+import { ViewApi } from './ViewApi'
 
 // always represents the current view. otherwise, it'd need to change value every time date changes
 export class ViewImpl implements ViewApi {

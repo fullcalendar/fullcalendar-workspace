@@ -1,12 +1,12 @@
-import { ViewProps } from '../component-util/View.js'
-import { mapHash } from '../util/object.js'
+import { ViewProps } from '../component-util/View'
+import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
-import { MountData } from '../common/render-hook.js'
-import { ViewContextType } from '../ViewContext.js'
-import { ViewOptions } from '../options.js'
+import { MountData } from '../common/render-hook'
+import { ViewContextType } from '../ViewContext'
+import { ViewOptions } from '../options'
 import { Duration } from '@full-ui/headless-calendar'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
-import { BaseComponent } from '../vdom-util.js'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { BaseComponent } from '../vdom-util'
 
 /*
 A view-config represents information for either:

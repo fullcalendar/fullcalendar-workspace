@@ -19,8 +19,8 @@ import {
   DateRangeInput,
   DateEnv,
 } from '@full-ui/headless-calendar'
-import { computeVisibleDayRange } from './util/date.js'
-import { CalendarApiImpl } from './api/CalendarApiImpl.js'
+import { computeVisibleDayRange } from './util/date'
+import { CalendarApiImpl } from './api/CalendarApiImpl'
 
 export interface DateProfile {
   currentDate: DateMarker

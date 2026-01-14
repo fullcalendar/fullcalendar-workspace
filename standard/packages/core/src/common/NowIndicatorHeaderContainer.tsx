@@ -1,9 +1,9 @@
-import { MountData } from './render-hook.js'
+import { MountData } from './render-hook'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { ViewContextType } from '../ViewContext.js'
-import { ViewApi } from '../api/ViewApi.js'
-import { ElProps } from '../content-inject/ContentInjector.js'
-import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer.js'
+import { ViewContextType } from '../ViewContext'
+import { ViewApi } from '../api/ViewApi'
+import { ElProps } from '../content-inject/ContentInjector'
+import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer'
 
 export interface NowIndicatorHeaderContainerProps extends Partial<ElProps> {
   date: DateMarker

@@ -1,13 +1,13 @@
-import { CalendarDataManager } from './reducers/CalendarDataManager.js'
-import { CalendarOptions } from './options.js'
-import { CalendarApiImpl } from './api/CalendarApiImpl.js'
-import { CalendarApi } from './api/CalendarApi.js'
-import { CalendarData } from './reducers/data-types.js'
+import { CalendarDataManager } from './reducers/CalendarDataManager'
+import { CalendarOptions } from './options'
+import { CalendarApiImpl } from './api/CalendarApiImpl'
+import { CalendarApi } from './api/CalendarApi'
+import { CalendarData } from './reducers/data-types'
 import { StrictMode } from 'react'
-import { PureComponent } from './vdom-util.js'
-import { CalendarMediaRoot, computeRootClassName } from './calendar-root.js'
-import { CalendarInner } from './CalendarInner.js'
-import { memoize } from './util/memoize.js'
+import { PureComponent } from './vdom-util'
+import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
+import { CalendarInner } from './CalendarInner'
+import { memoize } from './util/memoize'
 
 export class CalendarComponent extends PureComponent<CalendarOptions> {
   private dataManager: CalendarDataManager | undefined

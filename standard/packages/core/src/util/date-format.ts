@@ -1,4 +1,4 @@
-import { createFormatter } from '../datelib/formatting.js'
+import { createFormatter } from '../datelib/formatting'
 
 export const FULL_DATE_FORMAT = createFormatter({ year: 'numeric', month: 'long', day: 'numeric' })
 export const WEEK_FORMAT = createFormatter({ week: 'long' })

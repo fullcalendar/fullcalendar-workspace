@@ -10,8 +10,8 @@ import {
   joinDateTimeFormatParts,
   trimEnd,
 } from '@full-ui/headless-calendar'
-import { memoize } from '../util/memoize.js'
-import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
+import { memoize } from '../util/memoize'
+import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer'
 
 const EXTENDED_SETTINGS_AND_SEVERITIES = {
   week: 3,

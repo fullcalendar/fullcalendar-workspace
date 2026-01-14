@@ -1,25 +1,25 @@
-export type { CalendarOptions, CalendarListeners, ViewOptions } from '../options.js'
-export type { DateSpanInput } from '../structs/date-span.js'
-export type { EventSourceInput } from '../structs/event-source-parse.js'
-export type { EventSourceFunc, EventSourceFuncData } from '../event-sources/func-event-source.js'
-export type { EventInput, EventInputTransformer } from '../structs/event-parse.js'
-export type { CssDimValue } from '../scrollgrid/util.js'
-export type { BusinessHoursInput } from '../structs/business-hours.js'
-export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constraint.js'
-export type { PluginDef, PluginDefInput } from '../plugin-system-struct.js'
-export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from '../structs/view-config.js'
-export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
-export type { NowIndicatorHeaderData, NowIndicatorHeaderMountData } from '../common/NowIndicatorHeaderContainer.js'
-export type { NowIndicatorLineData, NowIndicatorLineMountData } from '../common/NowIndicatorLineContainer.js'
+export type { CalendarOptions, CalendarListeners, ViewOptions } from '../options'
+export type { DateSpanInput } from '../structs/date-span'
+export type { EventSourceInput } from '../structs/event-source-parse'
+export type { EventSourceFunc, EventSourceFuncData } from '../event-sources/func-event-source'
+export type { EventInput, EventInputTransformer } from '../structs/event-parse'
+export type { CssDimValue } from '../scrollgrid/util'
+export type { BusinessHoursInput } from '../structs/business-hours'
+export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constraint'
+export type { PluginDef, PluginDefInput } from '../plugin-system-struct'
+export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from '../structs/view-config'
+export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook'
+export type { NowIndicatorHeaderData, NowIndicatorHeaderMountData } from '../common/NowIndicatorHeaderContainer'
+export type { NowIndicatorLineData, NowIndicatorLineMountData } from '../common/NowIndicatorLineContainer'
 export type {
   InlineWeekNumberData,
   InlineWeekNumberMountData,
   WeekNumberHeaderData,
   WeekNumberHeaderMountData,
   DateTimeFormatPartWithWeek,
-} from '../common/WeekNumberContainer.js'
-export type { MoreLinkData, MoreLinkMountData } from '../common/MoreLinkContainer.js'
-export * from '../common/more-link-public-types.js'
+} from '../common/WeekNumberContainer'
+export type { MoreLinkData, MoreLinkMountData } from '../common/MoreLinkContainer'
+export * from '../common/more-link-public-types'
 export type {
   SlotLaneData, SlotLaneMountData,
   SlotHeaderData, SlotHeaderMountData,
@@ -28,25 +28,25 @@ export type {
   DayHeaderMountData,
   DayCellData,
   DayCellMountData,
-} from '../render-hook-misc.js'
-export type { DayLaneData, DayLaneMountData } from '../common/DayLaneContainer.js'
-export type { ViewDisplayData, ViewMountData } from '../common/ViewContainer.js'
-export type { EventClickData } from '../interactions/EventClicking.js'
-export type { EventHoveringData } from '../interactions/EventHovering.js'
-export type { DateSelectData, DateUnselectData } from '../calendar-utils.js'
-export type { ToolbarInput, ButtonInput, ButtonGroupData, ButtonData, ButtonMountData, ButtonDisplay, ToolbarElementInput, ToolbarSectionData, ToolbarData } from '../toolbar-struct.js'
-export type { EventDisplayData, EventMountData } from '../component-util/event-rendering.js'
-export type { DatesSetData } from '../dates-set.js'
-export type { EventAddData, EventChangeData, EventDropData, EventRemoveData } from '../event-crud.js'
-export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore.js'
-export type { DateSpanApi, DatePointApi } from '../structs/date-span.js'
-export type { DateSelectionApi } from '../calendar-utils.js'
-export type { ButtonState, NavButtonState, ButtonStateMap } from '../structs/button-state.js'
+} from '../render-hook-misc'
+export type { DayLaneData, DayLaneMountData } from '../common/DayLaneContainer'
+export type { ViewDisplayData, ViewMountData } from '../common/ViewContainer'
+export type { EventClickData } from '../interactions/EventClicking'
+export type { EventHoveringData } from '../interactions/EventHovering'
+export type { DateSelectData, DateUnselectData } from '../calendar-utils'
+export type { ToolbarInput, ButtonInput, ButtonGroupData, ButtonData, ButtonMountData, ButtonDisplay, ToolbarElementInput, ToolbarSectionData, ToolbarData } from '../toolbar-struct'
+export type { EventDisplayData, EventMountData } from '../component-util/event-rendering'
+export type { DatesSetData } from '../dates-set'
+export type { EventAddData, EventChangeData, EventDropData, EventRemoveData } from '../event-crud'
+export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore'
+export type { DateSpanApi, DatePointApi } from '../structs/date-span'
+export type { DateSelectionApi } from '../calendar-utils'
+export type { ButtonState, NavButtonState, ButtonStateMap } from '../structs/button-state'
 
 // TODO: other new "public" exports that should be in an "/api/" file like this?
 
-export type { FormatterInput } from '../datelib/formatting.js'
-export type { LocaleSingularArg, LocaleInput } from '../datelib/locale.js'
+export type { FormatterInput } from '../datelib/formatting'
+export type { LocaleSingularArg, LocaleInput } from '../datelib/locale'
 
 export type { DateInput, WeekNumberCalculation } from '@full-ui/headless-calendar'
 export type { DurationInput, Duration } from '@full-ui/headless-calendar'

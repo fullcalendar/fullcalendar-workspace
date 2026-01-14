@@ -1,4 +1,4 @@
-import { ScrollerSyncerClass } from "./ScrollerSyncerInterface.js"
+import { ScrollerSyncerClass } from "./ScrollerSyncerInterface"
 
 /*
 TODO: dedup with @full-ui/headless-grid somehow

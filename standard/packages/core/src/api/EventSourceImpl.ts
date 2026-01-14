@@ -1,6 +1,6 @@
-import { EventSource } from '../structs/event-source.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { EventSourceApi } from './EventSourceApi.js'
+import { EventSource } from '../structs/event-source'
+import { CalendarContext } from '../CalendarContext'
+import { EventSourceApi } from './EventSourceApi'
 
 export class EventSourceImpl implements EventSourceApi {
   constructor(

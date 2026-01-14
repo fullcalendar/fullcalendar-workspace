@@ -1,4 +1,4 @@
-import { valuesIdentical } from './misc.js'
+import { valuesIdentical } from './misc'
 
 const { hasOwnProperty } = Object.prototype
 

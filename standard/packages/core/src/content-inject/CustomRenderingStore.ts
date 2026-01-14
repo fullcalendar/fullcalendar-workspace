@@ -1,5 +1,5 @@
-import { Store } from './Store.js'
-import { ElProps } from './ContentInjector.js'
+import { Store } from './Store'
+import { ElProps } from './ContentInjector'
 
 export type CustomRenderingHandler<RenderProps> = (customRender: CustomRendering<RenderProps>) => void
 

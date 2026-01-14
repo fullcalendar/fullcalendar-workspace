@@ -1,4 +1,4 @@
-import { intersectRects, Rect } from './geom.js'
+import { intersectRects, Rect } from './geom'
 
 export interface EdgeInfo {
   borderLeft: number

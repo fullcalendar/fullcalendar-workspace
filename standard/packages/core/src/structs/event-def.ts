@@ -1,6 +1,6 @@
 import { Duration } from '@full-ui/headless-calendar'
-import { EventUi } from '../component-util/event-ui.js'
-import { Dictionary } from '../options.js'
+import { EventUi } from '../component-util/event-ui'
+import { Dictionary } from '../options'
 
 export interface EventDef { // TODO: add recurring type here?
   defId: string

@@ -1,5 +1,5 @@
 import { DateRange, rangeContainsMarker, DateEnv, DateMarker } from '@full-ui/headless-calendar'
-import { DateProfile } from '../DateProfileGenerator.js'
+import { DateProfile } from '../DateProfileGenerator'
 
 export interface DateMeta {
   dow: number

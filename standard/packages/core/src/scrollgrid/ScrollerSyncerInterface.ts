@@ -1,4 +1,4 @@
-import { ScrollerInterface } from "./ScrollerInterface.js";
+import { ScrollerInterface } from "./ScrollerInterface";
 
 export interface ScrollerSyncerClass {
   new(horizontal?: boolean): ScrollerSyncerInterface

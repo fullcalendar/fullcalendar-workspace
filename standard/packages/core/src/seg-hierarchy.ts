@@ -1,5 +1,5 @@
-import { EventRangeProps } from './component-util/event-rendering.js'
-import { computeEarliestStart, CoordRange, doCoordRangesIntersect, getCoordRangeEnd, intersectCoordRanges, joinCoordRanges, SlicedCoordRange } from './coord-range.js'
+import { EventRangeProps } from './component-util/event-rendering'
+import { computeEarliestStart, CoordRange, doCoordRangesIntersect, getCoordRangeEnd, intersectCoordRanges, joinCoordRanges, SlicedCoordRange } from './coord-range'
 import { buildIsoString } from '@full-ui/headless-calendar'
 
 /*

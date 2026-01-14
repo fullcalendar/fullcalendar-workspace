@@ -1,10 +1,10 @@
-import { Dictionary } from '../options.js'
-import { EventSourceApi } from './EventSourceApi.js'
+import { Dictionary } from '../options'
+import { EventSourceApi } from './EventSourceApi'
 import {
   DateInput,
   DurationInput,
   FormatterInput,
-} from './structs.js'
+} from './structs'
 
 export interface EventApi {
   source: EventSourceApi | null

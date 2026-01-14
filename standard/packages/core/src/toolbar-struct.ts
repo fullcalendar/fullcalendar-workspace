@@ -1,4 +1,4 @@
-import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, MountData, WillUnmountHandler } from './common/render-hook.js'
+import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, MountData, WillUnmountHandler } from './common/render-hook'
 
 export interface ToolbarModel {
   sectionWidgets: {

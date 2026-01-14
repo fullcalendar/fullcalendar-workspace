@@ -1,9 +1,9 @@
 import { startOfDay, addDays, DateMarker, Duration, subtractDurations, DateRange, intersectRanges, DateEnv } from '@full-ui/headless-calendar'
-import { arrayToHash } from '../util/object.js'
-import { RecurringType } from './recurring-event.js'
-import { EventRefined } from './event-parse.js'
-import { createPlugin } from '../plugin-system.js'
-import { SIMPLE_RECURRING_REFINERS } from './recurring-event-simple-refiners.js'
+import { arrayToHash } from '../util/object'
+import { RecurringType } from './recurring-event'
+import { EventRefined } from './event-parse'
+import { createPlugin } from '../plugin-system'
+import { SIMPLE_RECURRING_REFINERS } from './recurring-event-simple-refiners'
 import './recurring-event-simple-declare.js'
 
 /*

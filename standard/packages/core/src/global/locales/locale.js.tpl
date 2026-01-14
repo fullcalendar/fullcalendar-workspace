@@ -1,4 +1,4 @@
-import { globalLocales } from '../../global.js'
-import locale from '../../locales/{{localeCode}}.js'
+import { globalLocales } from '../../global'
+import locale from '../../locales/{{localeCode}}'
 
 globalLocales.push(locale);

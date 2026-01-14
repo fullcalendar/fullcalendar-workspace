@@ -1,8 +1,8 @@
-import { PointerDragEvent } from './interactions/pointer.js'
-import { buildDateSpanApi, DateSpanApi, DatePointApi, DateSpan } from './structs/date-span.js'
-import { CalendarContext } from './CalendarContext.js'
-import { ViewApi } from './api/ViewApi.js'
-import { ViewImpl } from './api/ViewImpl.js'
+import { PointerDragEvent } from './interactions/pointer'
+import { buildDateSpanApi, DateSpanApi, DatePointApi, DateSpan } from './structs/date-span'
+import { CalendarContext } from './CalendarContext'
+import { ViewApi } from './api/ViewApi'
+import { ViewImpl } from './api/ViewImpl'
 import { DateMarker, startOfDay } from '@full-ui/headless-calendar'
 
 export interface DateClickApi extends DatePointApi {

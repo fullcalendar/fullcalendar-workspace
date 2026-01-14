@@ -1,5 +1,5 @@
 import { DateRange } from '@full-ui/headless-calendar'
-import { guid } from '../util/misc.js'
+import { guid } from '../util/misc'
 
 export interface EventInstance {
   instanceId: string

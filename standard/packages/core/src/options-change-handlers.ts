@@ -1,8 +1,8 @@
-import { createPlugin } from './plugin-system.js'
-import { hashValuesToArray } from './util/object.js'
-import { EventSource } from './structs/event-source.js'
-import { CalendarContext } from './CalendarContext.js'
-import { CalendarController } from './index.js'
+import { createPlugin } from './plugin-system'
+import { hashValuesToArray } from './util/object'
+import { EventSource } from './structs/event-source'
+import { CalendarContext } from './CalendarContext'
+import { CalendarController } from './index'
 
 export const changeHandlerPlugin = createPlugin({
   name: 'change-handler',

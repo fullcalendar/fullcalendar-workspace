@@ -1,9 +1,9 @@
-import { EventInput } from '../structs/event-parse.js'
+import { EventInput } from '../structs/event-parse'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
-import { EventStore } from '../structs/event-store.js'
-import { EventSource } from '../structs/event-source.js'
-import { EventInteractionState } from '../interactions/event-interaction-state.js'
-import { DateSpan } from '../structs/date-span.js'
+import { EventStore } from '../structs/event-store'
+import { EventSource } from '../structs/event-source'
+import { EventInteractionState } from '../interactions/event-interaction-state'
+import { DateSpan } from '../structs/date-span'
 
 export type Action =
   { type: 'NOTHING' } | // hack

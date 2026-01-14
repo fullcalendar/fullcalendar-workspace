@@ -1,10 +1,10 @@
-import { EventDef } from './event-def.js'
-import { EventInstance, createEventInstance } from './event-instance.js'
+import { EventDef } from './event-def'
+import { EventInstance, createEventInstance } from './event-instance'
 import { DateRange, DateEnv, Duration, DateMarker, startOfDay } from '@full-ui/headless-calendar'
-import { EventStore } from './event-store.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { filterHash } from '../util/object.js'
-import { EventRefined } from './event-parse.js'
+import { EventStore } from './event-store'
+import { CalendarContext } from '../CalendarContext'
+import { filterHash } from '../util/object'
+import { EventRefined } from './event-parse'
 
 /*
 The plugin system for defining how a recurring event is expanded into individual instances.

@@ -1,10 +1,10 @@
 /* eslint max-classes-per-file: off */
 
 import { Component, type Ref } from 'react'
-import { ViewContextType, ViewContext } from './ViewContext.js'
-import { isPropsEqualWithMap } from './util/object.js'
-// import { getUnequalProps } from './util/object.js'
-import { Dictionary } from './options.js'
+import { ViewContextType, ViewContext } from './ViewContext'
+import { isPropsEqualWithMap } from './util/object'
+// import { getUnequalProps } from './util/object'
+import { Dictionary } from './options'
 
 export type EqualityFunc<T> = (a: T, b: T) => boolean
 export type EqualityFuncs<P> = {

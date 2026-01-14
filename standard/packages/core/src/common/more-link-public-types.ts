@@ -1,5 +1,5 @@
-import { EventApi } from '../api/EventApi.js'
-import { ViewApi } from '../api/ViewApi.js'
+import { EventApi } from '../api/EventApi'
+import { ViewApi } from '../api/ViewApi'
 
 export interface EventSegment {
   event: EventApi

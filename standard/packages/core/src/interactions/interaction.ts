@@ -1,5 +1,5 @@
-import { DateComponent } from '../component/DateComponent.js'
-import { Hit } from './hit.js'
+import { DateComponent } from '../component/DateComponent'
+import { Hit } from './hit'
 
 export abstract class Interaction {
   component: DateComponent<any>

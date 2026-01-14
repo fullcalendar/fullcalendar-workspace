@@ -1,10 +1,10 @@
-import { EventDef, EventDefHash } from './event-def.js'
-import { EventInstance, EventInstanceHash } from './event-instance.js'
-import { EventInput, parseEvent, EventTuple, buildEventRefiners } from './event-parse.js'
-import { filterHash } from '../util/object.js'
-import { CalendarContext } from '../CalendarContext.js'
-import { EventSource } from './event-source.js'
-import { EventDefIdMap, EventInstanceIdMap } from '../reducers/eventStore.js'
+import { EventDef, EventDefHash } from './event-def'
+import { EventInstance, EventInstanceHash } from './event-instance'
+import { EventInput, parseEvent, EventTuple, buildEventRefiners } from './event-parse'
+import { filterHash } from '../util/object'
+import { CalendarContext } from '../CalendarContext'
+import { EventSource } from './event-source'
+import { EventDefIdMap, EventInstanceIdMap } from '../reducers/eventStore'
 
 /*
 A data structure that encapsulates EventDefs and EventInstances.

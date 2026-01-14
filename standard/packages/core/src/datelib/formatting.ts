@@ -1,4 +1,4 @@
-import { NativeFormatter, NativeFormatterOptions } from './formatting-native.js'
+import { NativeFormatter, NativeFormatterOptions } from './formatting-native'
 import { CmdFormatter, FuncFormatter, FuncFormatterFunc, DateFormatter } from '@full-ui/headless-calendar'
 
 export type FormatterInput = NativeFormatterOptions | string | FuncFormatterFunc
