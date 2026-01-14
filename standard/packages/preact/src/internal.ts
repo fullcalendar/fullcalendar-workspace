@@ -77,6 +77,7 @@ export {
   getAppendableRoot,
   computeElIsRtl,
   applyStyle,
+  applyStyleProp,
   getEventTargetViaRoot,
   getUniqueDomId,
 } from './util/dom-manip'
@@ -122,6 +123,7 @@ export { ViewContextType } from './ViewContext'
 export type { EventSegUiInteractionState } from './component/DateComponent'
 export { DateComponent } from './component/DateComponent'
 export type { CalendarData } from './reducers/data-types'
+export { CalendarDataManager } from './reducers/CalendarDataManager'
 export type { ViewProps } from './component-util/View'
 
 export type { DateProfile } from './DateProfileGenerator'
@@ -166,6 +168,7 @@ export type { ViewPropsTransformer, PluginDef } from './plugin-system-struct'
 export type { Action } from './reducers/Action'
 export type { CalendarContext } from './CalendarContext'
 export type { CalendarContentProps } from './CalendarInner'
+export { CalendarInner } from './CalendarInner'
 
 export { DaySeriesModel } from './common/DaySeriesModel'
 
@@ -232,6 +235,9 @@ export { triggerDateSelect, getDefaultEventEnd } from './calendar-utils'
 
 export { CalendarApiImpl } from './api/CalendarApiImpl'
 export { EventImpl, buildEventApis } from './api/EventImpl'
+
+export { CalendarMediaRoot, computeRootClassName } from './calendar-root'
+export { RenderId } from './content-inject/RenderId'
 
 export type { ElProps } from './content-inject/ContentInjector'
 export { buildElAttrs } from './content-inject/ContentInjector'

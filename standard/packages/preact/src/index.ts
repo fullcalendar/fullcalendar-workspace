@@ -1,4 +1,7 @@
 
+// TODO: rethink this
+export { CalendarComponent } from './CalendarComponent'
+
 export { CalendarApi } from './api/CalendarApi'
 export { CalendarController } from './CalendarController'
 export { ViewApi } from './api/ViewApi'
