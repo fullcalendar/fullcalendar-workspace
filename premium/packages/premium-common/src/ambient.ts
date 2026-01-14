@@ -1,4 +1,4 @@
-import { PremiumOptions, PremiumOptionsRefined } from './options.js'
+import { PremiumOptions, PremiumOptionsRefined } from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends PremiumOptions {}

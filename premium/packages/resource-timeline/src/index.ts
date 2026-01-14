@@ -2,9 +2,9 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
-import { ResourceTimelineView } from './components/ResourceTimelineView.js'
-import { OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { ResourceTimelineView } from './components/ResourceTimelineView'
+import { OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -44,5 +44,5 @@ export default createPlugin({
   optionRefiners: OPTION_REFINERS,
 }) as PluginDef
 
-export * from './structs.js'
-export { ResourceTimelineOptions } from './options.js'
+export * from './structs'
+export { ResourceTimelineOptions } from './options'

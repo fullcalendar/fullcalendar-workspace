@@ -18,7 +18,7 @@ import {
   ResourceLaneMountData,
   ColSpec,
   ResourceExpanderData,
-} from './structs.js'
+} from './structs'
 
 export const OPTION_REFINERS = {
   resourceColumnsWidth: identity as Identity<CssDimValue>,

@@ -2,7 +2,7 @@ import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import type { Ref } from 'react'
-import { ResourceExpanderData } from '../../structs.js'
+import { ResourceExpanderData } from '../../structs'
 
 export interface ResourceExpanderProps {
   isExpanded: boolean

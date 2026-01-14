@@ -4,7 +4,7 @@ import { RecurringType } from './recurring-event'
 import { EventRefined } from './event-parse'
 import { createPlugin } from '../plugin-system'
 import { SIMPLE_RECURRING_REFINERS } from './recurring-event-simple-refiners'
-import './recurring-event-simple-declare.js'
+import './recurring-event-simple-declare'
 
 /*
 An implementation of recurring events that only supports every-day or weekly recurrences.

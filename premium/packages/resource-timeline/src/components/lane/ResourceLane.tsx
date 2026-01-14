@@ -4,7 +4,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { type Ref, Fragment } from 'react'
 import { Resource } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
-import { refineRenderProps } from '../../structs.js'
+import { refineRenderProps } from '../../structs'
 
 export interface ResourceLaneProps {
   key?: string | number | null

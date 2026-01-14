@@ -25,10 +25,10 @@ import {
   TimelineLaneSlicer
 } from '@fullcalendar/timeline/internal'
 import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '@full-ui/headless-grid'
-import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal.js'
-import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
-import { processColOptions } from '../col-options.js'
-import { ResourceExpander } from './spreadsheet/ResourceExpander.js'
+import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal'
+import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint'
+import { processColOptions } from '../col-options'
+import { ResourceExpander } from './spreadsheet/ResourceExpander'
 
 interface ResourceTimelineViewState {
   colWidthOverrides?: SiblingDimConfig[]

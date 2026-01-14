@@ -1,7 +1,7 @@
-import { DateMarker } from './marker.js'
-import { CalendarSystem } from './calendar-system.js'
-import { Locale } from './locale.js'
-import { ZonedMarker, ExpandedZonedMarker, expandZonedMarker } from './zoned-marker.js'
+import { DateMarker } from './marker'
+import { CalendarSystem } from './calendar-system'
+import { Locale } from './locale'
+import { ZonedMarker, ExpandedZonedMarker, expandZonedMarker } from './zoned-marker'
 
 export interface VerboseFormattingData {
   date: ExpandedZonedMarker

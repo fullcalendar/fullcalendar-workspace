@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { DateMarker, DateProfile, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { computeDateTopFrac } from './util.js'
+import { computeDateTopFrac } from './util'
 
 export interface TimeGridNowIndicatorLineProps {
   key?: string | number | null

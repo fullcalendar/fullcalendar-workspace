@@ -2,9 +2,9 @@ import { ViewApi, DatePointApi } from '@fullcalendar/core'
 import {
   PointerDragEvent, Interaction, InteractionSettings, interactionSettingsToStore,
 } from '@fullcalendar/core/internal'
-import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
-import { HitDragging, isHitsEqual } from './HitDragging.js'
-import { buildDatePointApiWithContext } from '../utils.js'
+import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
+import { HitDragging, isHitsEqual } from './HitDragging'
+import { buildDatePointApiWithContext } from '../utils'
 
 export interface DateClickData extends DatePointApi {
   dayEl: HTMLElement

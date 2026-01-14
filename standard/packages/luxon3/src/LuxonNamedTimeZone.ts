@@ -1,6 +1,6 @@
 import { DateTime as LuxonDateTime } from 'luxon'
 import { NamedTimeZoneImpl } from '@fullcalendar/core/internal'
-import { arrayToLuxon, luxonToArray } from './convert.js'
+import { arrayToLuxon, luxonToArray } from './convert'
 
 export class LuxonNamedTimeZone extends NamedTimeZoneImpl {
   offsetForArray(a: number[]): number {

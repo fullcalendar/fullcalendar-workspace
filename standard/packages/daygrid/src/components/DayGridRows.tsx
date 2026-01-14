@@ -14,9 +14,9 @@ import {
   EventRangeProps,
   ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
-import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
-import { DayGridRow } from './DayGridRow.js'
-import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
+import { splitSegsByRow, splitInteractionByRow } from '../TableSeg'
+import { DayGridRow } from './DayGridRow'
+import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridRowsProps {

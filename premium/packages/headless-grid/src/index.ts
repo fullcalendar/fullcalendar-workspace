@@ -10,15 +10,15 @@ export {
   serializeDimConfig,
   resizeSiblingDimConfig,
   resizeDimConfig,
-} from './col-positioning.js'
+} from './col-positioning'
 export {
   type GenericLayout,
   ROW_BORDER_WIDTH,
   computeHeights,
   computeTopsFromHeights,
   findEntityByCoord,
-} from './row-positioning.js'
+} from './row-positioning'
 export {
   type Scroller,
   ScrollerSyncer,
-} from './ScrollerSyncer.js'
+} from './ScrollerSyncer'

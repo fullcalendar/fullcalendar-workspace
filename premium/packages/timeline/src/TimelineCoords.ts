@@ -3,7 +3,7 @@ import {
   DateMarker,
   isInt
 } from '@fullcalendar/core/internal'
-import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineDateProfile } from './timeline-date-profile'
 
 /*
 TODO: rename this file!

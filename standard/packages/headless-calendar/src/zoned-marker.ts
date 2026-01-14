@@ -1,5 +1,5 @@
-import { DateMarker } from './marker.js'
-import { CalendarSystem } from './calendar-system.js'
+import { DateMarker } from './marker'
+import { CalendarSystem } from './calendar-system'
 
 export interface ZonedMarker {
   marker: DateMarker,

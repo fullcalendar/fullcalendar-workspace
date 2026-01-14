@@ -30,12 +30,12 @@ import {
   Fragment,
   type Ref,
 } from 'react'
-import { DayRowEventRangePart, getEventPartKey } from '../TableSeg.js'
-import { DayGridCell } from './DayGridCell.js'
-import { computeFgSegVerticals } from '../event-placement.js'
-import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
-import { computeHorizontalsFromSeg } from './util.js'
-import { DayGridEventHarness } from './DayGridEventHarness.js'
+import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
+import { DayGridCell } from './DayGridCell'
+import { computeFgSegVerticals } from '../event-placement'
+import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
+import { computeHorizontalsFromSeg } from './util'
+import { DayGridEventHarness } from './DayGridEventHarness'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { DateMarker } from '@fullcalendar/core/internal'
 import { ViewContext } from '@fullcalendar/core/internal'

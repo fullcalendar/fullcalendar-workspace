@@ -3,7 +3,7 @@ import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNa
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createRef, type Ref } from 'react'
 import { Group } from '@fullcalendar/resource/internal'
-import { GroupSpec, ResourceGroupLaneData } from '../../structs.js'
+import { GroupSpec, ResourceGroupLaneData } from '../../structs'
 
 export interface GroupLaneProps {
   key?: string | number | null

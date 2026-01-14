@@ -1,8 +1,8 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { ContentContainer, setRef, renderText, BaseComponent, generateClassName, watchSize } from '@fullcalendar/core/internal'
 import type { Ref } from 'react'
-import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
-import { dayHeaderMicroFormat } from './util.js'
+import { CellDataConfig, CellRenderConfig } from '../header-tier'
+import { dayHeaderMicroFormat } from './util'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {

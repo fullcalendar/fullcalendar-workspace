@@ -24,7 +24,7 @@ import {
   flattenResources,
 } from '@fullcalendar/resource/internal'
 import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildDayRanges, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/timegrid/internal'
-import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner.js'
+import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner'
 
 interface ResourceTimeGridViewState {
   axisWidth?: number

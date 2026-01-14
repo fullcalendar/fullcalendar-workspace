@@ -1,5 +1,5 @@
 import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/core/internal';
-import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/core'
 
 // Timeline-specific

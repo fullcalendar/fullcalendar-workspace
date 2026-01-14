@@ -1,8 +1,8 @@
 import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import type { Ref } from 'react'
-import { ColSpec } from '../../structs.js'
-import { HeaderCell } from './HeaderCell.js'
+import { ColSpec } from '../../structs'
+import { HeaderCell } from './HeaderCell'
 
 export interface HeaderRowProps {
   colSpecs: ColSpec[]

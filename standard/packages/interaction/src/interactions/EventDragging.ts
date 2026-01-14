@@ -25,9 +25,9 @@ import {
   getAppendableRoot,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { HitDragging, isHitsEqual } from './HitDragging.js'
-import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
-import { buildDatePointApiWithContext } from '../utils.js'
+import { HitDragging, isHitsEqual } from './HitDragging'
+import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
+import { buildDatePointApiWithContext } from '../utils'
 
 export type EventDragStopData = EventDragData
 export type EventDragStartData = EventDragData

@@ -6,9 +6,9 @@ import {
   CoordSpan,
   getEventKey,
 } from '@fullcalendar/core/internal'
-import { TimelineCoordRange, TimelineRange } from './TimelineLaneSlicer.js'
-import { TimelineDateProfile } from './timeline-date-profile.js'
-import { dateToCoord } from './timeline-positioning.js'
+import { TimelineCoordRange, TimelineRange } from './TimelineLaneSlicer'
+import { TimelineDateProfile } from './timeline-date-profile'
+import { dateToCoord } from './timeline-positioning'
 
 export function computeManySegHorizontals(
   segs: (TimelineRange & EventRangeProps)[],

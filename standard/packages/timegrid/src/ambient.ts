@@ -1,4 +1,4 @@
-import { TimeGridOptions, TimeGridOptionsRefined } from './options.js'
+import { TimeGridOptions, TimeGridOptionsRefined } from './options'
 
 // all dependencies except core
 import '@fullcalendar/daygrid'

@@ -1,8 +1,8 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, NowIndicatorHeaderContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { TimelineDateProfile } from '../timeline-date-profile.js'
-import { dateToCoord } from '../timeline-positioning.js'
+import { TimelineDateProfile } from '../timeline-date-profile'
+import { dateToCoord } from '../timeline-positioning'
 
 export interface TimelineNowIndicatorArrowProps {
   tDateProfile: TimelineDateProfile

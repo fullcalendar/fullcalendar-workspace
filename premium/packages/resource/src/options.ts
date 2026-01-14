@@ -3,7 +3,7 @@ import {
   ResourceSourceInput,
   ResourceApi,
   ResourceAddData, ResourceChangeData, ResourceRemoveData,
-} from './public-types.js'
+} from './public-types'
 
 export const OPTION_REFINERS = {
   initialResources: identity as Identity<ResourceSourceInput>,

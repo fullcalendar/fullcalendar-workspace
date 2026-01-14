@@ -2,7 +2,7 @@ import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { type ReactNode, createRef, Fragment, type Ref } from 'react'
-import { ColSpec, ResourceGroupHeaderData } from '../../structs.js'
+import { ColSpec, ResourceGroupHeaderData } from '../../structs'
 
 export interface ResourceGroupSubrowProps {
   key?: string | number | null

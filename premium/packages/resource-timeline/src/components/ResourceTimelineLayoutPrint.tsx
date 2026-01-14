@@ -29,16 +29,16 @@ import {
   TimelineSlats
 } from '@fullcalendar/timeline/internal'
 import { flexifyDimConfigs, SiblingDimConfig } from '@full-ui/headless-grid'
-import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print.js'
-import { GroupLane } from './lane/GroupLane.js'
-import { ResourceLane } from './lane/ResourceLane.js'
-import { ResourceGroupHeaderSubrow } from './spreadsheet/ResourceGroupHeaderSubrow.js'
-import { HeaderRow } from './spreadsheet/HeaderRow.js'
-import { ResourceSubrow } from './spreadsheet/ResourceSubrow.js'
-import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows.js'
+import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print'
+import { GroupLane } from './lane/GroupLane'
+import { ResourceLane } from './lane/ResourceLane'
+import { ResourceGroupHeaderSubrow } from './spreadsheet/ResourceGroupHeaderSubrow'
+import { HeaderRow } from './spreadsheet/HeaderRow'
+import { ResourceSubrow } from './spreadsheet/ResourceSubrow'
+import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
+import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows'
 import { CssDimValue } from '@fullcalendar/core'
-import { ColSpec } from '../structs.js'
+import { ColSpec } from '../structs'
 
 export interface ResourceTimelineLayoutPrintProps {
   className?: string

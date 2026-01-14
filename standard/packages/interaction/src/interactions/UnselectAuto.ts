@@ -4,8 +4,8 @@ import {
   CalendarContext,
   getEventTargetViaRoot,
 } from '@fullcalendar/core/internal'
-import { PointerDragging } from '../dnd/PointerDragging.js'
-import { EventDragging } from './EventDragging.js'
+import { PointerDragging } from '../dnd/PointerDragging'
+import { EventDragging } from './EventDragging'
 
 export class UnselectAuto {
   documentPointer: PointerDragging // for unfocusing

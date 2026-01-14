@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { MomentNamedTimeZone } from './MomentNamedTimeZone.js'
+import { MomentNamedTimeZone } from './MomentNamedTimeZone'
 
 export default createPlugin({
   name: '<%= pkgName %>',

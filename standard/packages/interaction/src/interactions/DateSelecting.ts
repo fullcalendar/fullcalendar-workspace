@@ -4,8 +4,8 @@ import {
   Interaction, InteractionSettings, interactionSettingsToStore,
   triggerDateSelect, isDateSelectionValid,
 } from '@fullcalendar/core/internal'
-import { HitDragging } from './HitDragging.js'
-import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
+import { HitDragging } from './HitDragging'
+import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 
 /*
 Tracks when the user selects a portion of time of a component,

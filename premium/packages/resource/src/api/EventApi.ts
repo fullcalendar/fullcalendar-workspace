@@ -1,5 +1,5 @@
 import { EventImpl } from '@fullcalendar/core/internal'
-import { ResourceApi } from './ResourceApi.js'
+import { ResourceApi } from './ResourceApi'
 
 declare module '@fullcalendar/core' {
   interface EventApi {

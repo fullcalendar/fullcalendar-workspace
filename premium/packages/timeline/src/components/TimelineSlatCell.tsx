@@ -9,7 +9,7 @@ import {
   memoize
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { TimelineDateProfile } from '../timeline-date-profile.js'
+import { TimelineDateProfile } from '../timeline-date-profile'
 
 export interface TimelineSlatCellProps {
   key?: string | number | null

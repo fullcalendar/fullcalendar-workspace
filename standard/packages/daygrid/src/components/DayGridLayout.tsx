@@ -15,10 +15,10 @@ import {
   joinArrayishClassNames
 } from '@fullcalendar/core/internal'
 import { createRef } from 'react'
-import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
-import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
-import { computeTopFromDate } from './util.js'
-import { RowConfig } from '../header-tier.js'
+import { DayGridLayoutNormal } from './DayGridLayoutNormal'
+import { DayGridLayoutPannable } from './DayGridLayoutPannable'
+import { computeTopFromDate } from './util'
+import { RowConfig } from '../header-tier'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridLayoutProps {

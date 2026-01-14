@@ -3,7 +3,7 @@ import {
   InteractionOptionsRefined,
   InteractionListeners,
   InteractionListenersRefined,
-} from './options.js'
+} from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends InteractionOptions {}

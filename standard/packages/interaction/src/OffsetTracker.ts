@@ -2,7 +2,7 @@ import {
   getClippingParents, computeRect,
   pointInsideRect, Rect, computeElIsRtl,
 } from '@fullcalendar/core/internal'
-import { ElementScrollGeomCache } from './ElementScrollGeomCache.js'
+import { ElementScrollGeomCache } from './ElementScrollGeomCache'
 
 /*
 When this class is instantiated, it records the offset of an element (relative to the document topleft),

@@ -5,9 +5,9 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment } from 'react'
-import { computeSegHorizontals } from '../event-placement.js'
-import { TimelineRange } from '../TimelineLaneSlicer.js'
-import { TimelineDateProfile } from '../timeline-date-profile.js'
+import { computeSegHorizontals } from '../event-placement'
+import { TimelineRange } from '../TimelineLaneSlicer'
+import { TimelineDateProfile } from '../timeline-date-profile'
 
 export interface TimelineBgProps {
   tDateProfile: TimelineDateProfile

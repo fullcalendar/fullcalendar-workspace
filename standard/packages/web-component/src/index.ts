@@ -1,2 +1,2 @@
 
-export { FullCalendarElement } from './FullCalendarElement.js'
+export { FullCalendarElement } from './FullCalendarElement'

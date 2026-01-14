@@ -1,6 +1,6 @@
 import { CalendarData, OrderSpec, parseFieldSpecs } from '@fullcalendar/core/internal'
-import { buildResourceApis, ResourceApi } from './api/ResourceApi.js'
-import { ResourceHash } from './structs/resource.js'
+import { buildResourceApis, ResourceApi } from './api/ResourceApi'
+import { ResourceHash } from './structs/resource'
 
 export const DEFAULT_RESOURCE_ORDER: OrderSpec<unknown>[] = parseFieldSpecs('id,title')
 

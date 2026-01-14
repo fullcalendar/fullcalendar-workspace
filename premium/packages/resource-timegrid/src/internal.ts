@@ -1,2 +1,2 @@
 
-export { ResourceTimeGridView } from './components/ResourceTimeGridView.js'
+export { ResourceTimeGridView } from './components/ResourceTimeGridView'

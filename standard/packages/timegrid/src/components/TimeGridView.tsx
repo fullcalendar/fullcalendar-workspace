@@ -1,10 +1,10 @@
 import { DateComponent, DateMarker, DateRange, EventRangeProps, memoize, NowTimer, ViewProps } from "@fullcalendar/core/internal"
 import { buildDateRowConfigs, createDayHeaderFormatter, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { AllDaySplitter } from "../AllDaySplitter.js"
-import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"
-import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from "../TimeColsSeg.js"
-import { TimeGridLayout } from './TimeGridLayout.js'
-import { buildDayRanges, buildTimeColsModel } from "./util.js"
+import { AllDaySplitter } from "../AllDaySplitter"
+import { DayTimeColsSlicer } from "../DayTimeColsSlicer"
+import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from "../TimeColsSeg"
+import { TimeGridLayout } from './TimeGridLayout'
+import { buildDayRanges, buildTimeColsModel } from "./util"
 
 export class TimeGridView extends DateComponent<ViewProps> {
   // memo

@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent } from '@fullcalendar/core/internal'
-import { DayGridHeaderRow } from './DayGridHeaderRow.js'
-import { RowConfig } from '../header-tier.js'
+import { DayGridHeaderRow } from './DayGridHeaderRow'
+import { RowConfig } from '../header-tier'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderProps {

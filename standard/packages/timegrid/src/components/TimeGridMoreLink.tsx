@@ -5,8 +5,8 @@ import {
   EventRangeProps,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { renderPlainFgSegs } from './TimeGridCol.js' // BAD
-import { TimeGridRange } from '../TimeColsSeg.js'
+import { renderPlainFgSegs } from './TimeGridCol' // BAD
+import { TimeGridRange } from '../TimeColsSeg'
 
 export interface TimeGridMoreLinkProps {
   key?: string | number | null

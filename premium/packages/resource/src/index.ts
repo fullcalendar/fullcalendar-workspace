@@ -1,25 +1,25 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import { ResourceDataAdder, transformIsDraggable } from './View.js'
-import { ResourceEventConfigAdder } from './ResourceEventConfigAdder.js'
-import { reduceResources, ResourceState } from './reducers/resources.js'
-import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse.js'
-import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging.js'
-import { transformDateSelectionJoin } from './DateSelecting.js'
-import { transformDatePoint, transformDateSpan } from './api/CalendarApi.js'
-import { isPropsValidWithResources } from './validation.js'
-import { transformExternalDef } from './ExternalElementDragging.js'
-import { optionChangeHandlers } from './option-change-handlers.js'
-import { handleResourceStore } from './resources-crud.js'
-import { OPTION_REFINERS, LISTENER_REFINERS } from './options.js'
-import './ambient.js'
-import './api/EventApi.js'
-import './api/CalendarApi.js'
+import { ResourceDataAdder, transformIsDraggable } from './View'
+import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
+import { reduceResources, ResourceState } from './reducers/resources'
+import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
+import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
+import { transformDateSelectionJoin } from './DateSelecting'
+import { transformDatePoint, transformDateSpan } from './api/CalendarApi'
+import { isPropsValidWithResources } from './validation'
+import { transformExternalDef } from './ExternalElementDragging'
+import { optionChangeHandlers } from './option-change-handlers'
+import { handleResourceStore } from './resources-crud'
+import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
+import './ambient'
+import './api/EventApi'
+import './api/CalendarApi'
 
 // TODO: plugin-ify
-import './resource-sources/resource-array.js'
-import './resource-sources/resource-func.js'
-import './resource-sources/resource-json-feed.js'
+import './resource-sources/resource-array'
+import './resource-sources/resource-func'
+import './resource-sources/resource-json-feed'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -47,5 +47,5 @@ export default createPlugin({
   propSetHandlers: { resourceStore: handleResourceStore },
 }) as PluginDef
 
-export * from './public-types.js'
-export { ResourceApi } from './api/ResourceApi.js'
+export * from './public-types'
+export { ResourceApi } from './api/ResourceApi'

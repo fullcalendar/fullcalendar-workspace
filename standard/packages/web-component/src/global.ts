@@ -1,4 +1,4 @@
-import { FullCalendarElement } from './FullCalendarElement.js'
+import { FullCalendarElement } from './FullCalendarElement'
 
 type FullCalendarElementType = typeof FullCalendarElement
 

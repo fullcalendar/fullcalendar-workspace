@@ -1,5 +1,5 @@
 import { SlicedProps, memoize, EventSegUiInteractionState, EventRangeProps } from '@fullcalendar/core/internal'
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
+import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 const NO_SEGS = [] // for memoizing
 

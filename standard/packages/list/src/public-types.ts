@@ -1,3 +1,3 @@
-export { NoEventsData, NoEventsMountData } from './components/ListView.js'
-export { ListDayHeaderData, ListDayHeaderInnerData, ListDayHeaderMountData, ListDayData } from './structs.js'
-export { ListOptions } from './options.js'
+export { NoEventsData, NoEventsMountData } from './components/ListView'
+export { ListDayHeaderData, ListDayHeaderInnerData, ListDayHeaderMountData, ListDayData } from './structs'
+export { ListOptions } from './options'

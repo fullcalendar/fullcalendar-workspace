@@ -1,6 +1,6 @@
 import { compareByFieldSpecs, flexibleCompare, OrderSpec } from '@fullcalendar/core/internal'
-import { Resource, ResourceHash } from '../structs/resource.js'
-import { ResourceApi } from '../public-types.js'
+import { Resource, ResourceHash } from '../structs/resource'
+import { ResourceApi } from '../public-types'
 
 interface GenericGroupSpec { // best place for this?
   field?: string

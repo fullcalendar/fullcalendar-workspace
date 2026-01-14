@@ -3,8 +3,8 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import resourcePlugin from '@fullcalendar/resource'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import { ResourceTimeGridView } from './components/ResourceTimeGridView.js'
-import './ambient.js'
+import { ResourceTimeGridView } from './components/ResourceTimeGridView'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',

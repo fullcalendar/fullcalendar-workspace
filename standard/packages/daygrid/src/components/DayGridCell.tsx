@@ -33,8 +33,8 @@ import {
   createRef,
   Fragment,
 } from 'react'
-import { DayGridMoreLink } from './DayGridMoreLink.js'
-import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
+import { DayGridMoreLink } from './DayGridMoreLink'
+import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
 
 export interface DayGridCellProps {
   key?: string | number | null

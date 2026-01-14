@@ -2,8 +2,8 @@ import {
   DateMarker,
   DateProfile,
 } from '@fullcalendar/core/internal'
-import { TimeGridRange } from './TimeColsSeg.js'
-import { computeDateTopFrac } from './components/util.js'
+import { TimeGridRange } from './TimeColsSeg'
+import { computeDateTopFrac } from './components/util'
 
 // VERTICAL
 // -------------------------------------------------------------------------------------------------

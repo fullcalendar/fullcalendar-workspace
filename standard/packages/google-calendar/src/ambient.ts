@@ -3,7 +3,7 @@ import {
   GoogleCalendarOptionsRefined,
   GoogleCalendarEventSourceOptions,
   GoogleCalendarEventSourceOptionsRefined,
-} from './options.js'
+} from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends GoogleCalendarOptions {}

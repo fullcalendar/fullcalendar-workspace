@@ -18,7 +18,7 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createRef, type Ref } from 'react'
-import { TimeSlatMeta } from '../time-slat-meta.js'
+import { TimeSlatMeta } from '../time-slat-meta'
 
 const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
   hour: 'numeric',

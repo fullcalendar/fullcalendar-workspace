@@ -1,12 +1,12 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { DateClicking } from './interactions/DateClicking.js'
-import { DateSelecting } from './interactions/DateSelecting.js'
-import { EventDragging } from './interactions/EventDragging.js'
-import { EventResizing } from './interactions/EventResizing.js'
-import { UnselectAuto } from './interactions/UnselectAuto.js'
-import { FeaturefulElementDragging } from './dnd/FeaturefulElementDragging.js'
-import { OPTION_REFINERS, LISTENER_REFINERS } from './options.js'
-import './ambient.js'
+import { DateClicking } from './interactions/DateClicking'
+import { DateSelecting } from './interactions/DateSelecting'
+import { EventDragging } from './interactions/EventDragging'
+import { EventResizing } from './interactions/EventResizing'
+import { UnselectAuto } from './interactions/UnselectAuto'
+import { FeaturefulElementDragging } from './dnd/FeaturefulElementDragging'
+import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -17,6 +17,6 @@ export default createPlugin({
   listenerRefiners: LISTENER_REFINERS,
 }) as PluginDef
 
-export * from './public-types.js'
-export { ExternalDraggable as Draggable } from './interactions-external/ExternalDraggable.js'
-export { ThirdPartyDraggable } from './interactions-external/ThirdPartyDraggable.js'
+export * from './public-types'
+export { ExternalDraggable as Draggable } from './interactions-external/ExternalDraggable'
+export { ThirdPartyDraggable } from './interactions-external/ThirdPartyDraggable'

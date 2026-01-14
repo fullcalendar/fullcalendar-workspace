@@ -12,12 +12,12 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment, type Ref } from 'react'
-import { TimelineDateProfile } from '../timeline-date-profile.js'
-import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer.js'
-import { TimelineEvent } from './TimelineEvent.js'
-import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
-import { computeFgSegPlacements, computeManySegHorizontals } from '../event-placement.js'
-import { TimelineEventHarness } from './TimelineEventHarness.js'
+import { TimelineDateProfile } from '../timeline-date-profile'
+import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer'
+import { TimelineEvent } from './TimelineEvent'
+import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
+import { computeFgSegPlacements, computeManySegHorizontals } from '../event-placement'
+import { TimelineEventHarness } from './TimelineEventHarness'
 
 export interface TimelineFgProps {
   dateProfile: DateProfile

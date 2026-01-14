@@ -1,8 +1,8 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { DayGridView } from './components/DayGridView.js'
-import { TableDateProfileGenerator } from './TableDateProfileGenerator.js'
-import { OPTION_DEFAULTS, OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { DayGridView } from './components/DayGridView'
+import { TableDateProfileGenerator } from './TableDateProfileGenerator'
+import { OPTION_DEFAULTS, OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -34,4 +34,4 @@ export default createPlugin({
   },
 }) as PluginDef
 
-export { DayGridOptions } from './options.js'
+export { DayGridOptions } from './options'

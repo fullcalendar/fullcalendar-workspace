@@ -1,4 +1,4 @@
-import { ResourcefulDayTableModel } from './ResourcefulDayTableModel.js'
+import { ResourcefulDayTableModel } from './ResourcefulDayTableModel'
 
 /*
 resources over dates

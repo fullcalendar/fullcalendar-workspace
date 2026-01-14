@@ -1,5 +1,5 @@
 import { intersectRanges, DateRange, Slicer } from '@fullcalendar/core/internal'
-import { TimeGridRange } from './TimeColsSeg.js'
+import { TimeGridRange } from './TimeColsSeg'
 
 export class DayTimeColsSlicer extends Slicer<TimeGridRange, [DateRange[]]> {
   sliceRange(range: DateRange, dayRanges: DateRange[]): TimeGridRange[] {

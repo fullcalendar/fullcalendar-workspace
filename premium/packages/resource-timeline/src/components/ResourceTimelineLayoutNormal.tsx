@@ -51,15 +51,15 @@ import {
   TimelineHeaderCellData,
 } from '@fullcalendar/timeline/internal'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
-import { buildResourceLayouts, GenericLayout, GroupCellLayout, GroupRowLayout, ResourceLayout } from '../resource-layout.js'
-import { ColSpec } from '../structs.js'
-import { GroupLane } from './lane/GroupLane.js'
-import { ResourceLane } from './lane/ResourceLane.js'
-import { ResizableTwoCol } from './ResizableTwoCol.js'
-import { BodySection } from './spreadsheet/BodySection.js'
-import { HeaderRow } from './spreadsheet/HeaderRow.js'
-import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { computeShift, Virtualizer } from '../virtual/virtualizer.js'
+import { buildResourceLayouts, GenericLayout, GroupCellLayout, GroupRowLayout, ResourceLayout } from '../resource-layout'
+import { ColSpec } from '../structs'
+import { GroupLane } from './lane/GroupLane'
+import { ResourceLane } from './lane/ResourceLane'
+import { ResizableTwoCol } from './ResizableTwoCol'
+import { BodySection } from './spreadsheet/BodySection'
+import { HeaderRow } from './spreadsheet/HeaderRow'
+import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
+import { computeShift, Virtualizer } from '../virtual/virtualizer'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string

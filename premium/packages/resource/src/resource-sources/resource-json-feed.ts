@@ -1,7 +1,7 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/core/internal'
-import { ResourceInput } from '../public-types.js'
-import { registerResourceSourceDef } from '../structs/resource-source-def.js'
-import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
+import { ResourceInput } from '../public-types'
+import { registerResourceSourceDef } from '../structs/resource-source-def'
+import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
 interface JsonFeedMeta {
   url: string

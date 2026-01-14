@@ -11,7 +11,7 @@ import {
 import {
   ResourceDayHeaderData,
   ResourceDayHeaderMountData,
-} from './structs.js'
+} from './structs'
 
 export const OPTION_REFINERS = {
   resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,

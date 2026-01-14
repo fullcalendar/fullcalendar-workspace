@@ -2,7 +2,7 @@
 import '@fullcalendar/premium-common'
 import '@fullcalendar/scrollgrid'
 
-import { TimelineOptions, TimelineOptionsRefined } from './options.js'
+import { TimelineOptions, TimelineOptionsRefined } from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends TimelineOptions {}

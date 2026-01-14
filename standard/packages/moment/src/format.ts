@@ -1,5 +1,5 @@
 import { VerboseFormattingData } from '@fullcalendar/core/internal'
-import { convertToMoment } from './convert.js'
+import { convertToMoment } from './convert'
 
 export function formatWithCmdStr(
   cmdStr: string,

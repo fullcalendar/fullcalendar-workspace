@@ -22,12 +22,12 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment } from 'react'
-import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg.js'
-import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement.js'
-import { buildWebPositioning, SegWebRect } from '../seg-web.js'
-import { TimeGridEvent } from './TimeGridEvent.js'
-import { TimeGridMoreLink } from './TimeGridMoreLink.js'
-import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
+import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg'
+import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement'
+import { buildWebPositioning, SegWebRect } from '../seg-web'
+import { TimeGridEvent } from './TimeGridEvent'
+import { TimeGridMoreLink } from './TimeGridMoreLink'
+import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine'
 
 // Firefox is terrible at rendering absolute elements that span across multiple print pages
 export const simplifiedTimeGridPrint = /* true || */ (

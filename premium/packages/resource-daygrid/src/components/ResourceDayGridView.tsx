@@ -22,8 +22,8 @@ import {
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
-import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner.js'
-import { buildResourceRowConfigs } from '../resource-header-tier.js'
+import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner'
+import { buildResourceRowConfigs } from '../resource-header-tier'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   // memo

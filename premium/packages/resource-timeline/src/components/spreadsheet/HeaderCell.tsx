@@ -2,8 +2,8 @@ import { createRef, Fragment, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { ColSpec, ResourceColumnHeaderData } from '../../structs.js'
-import { ResourceIndent } from './ResourceIndent.js'
+import { ColSpec, ResourceColumnHeaderData } from '../../structs'
+import { ResourceIndent } from './ResourceIndent'
 
 export interface HeaderCellProps {
   key?: string | number | null

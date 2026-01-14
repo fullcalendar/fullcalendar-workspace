@@ -4,7 +4,7 @@ import '@fullcalendar/resource'
 import '@fullcalendar/scrollgrid'
 import '@fullcalendar/timeline'
 
-import { ResourceTimelineOptions, ResourceTimelineOptionsRefined } from './options.js'
+import { ResourceTimelineOptions, ResourceTimelineOptionsRefined } from './options'
 
 
 declare module '@fullcalendar/core/internal' {

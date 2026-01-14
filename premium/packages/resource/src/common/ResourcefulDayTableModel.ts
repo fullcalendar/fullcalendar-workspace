@@ -1,7 +1,7 @@
 import { CalendarContext, DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/core/internal'
-import { Resource } from '../structs/resource.js'
-import { ResourceApi } from '../api/ResourceApi.js'
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
+import { Resource } from '../structs/resource'
+import { ResourceApi } from '../api/ResourceApi'
+import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 /*
 TODO: move this so @fullcalendar/resource-daygrid

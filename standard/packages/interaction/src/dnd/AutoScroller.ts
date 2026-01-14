@@ -1,7 +1,7 @@
 import classNames from '@fullcalendar/core/internal-classnames'
-import { ScrollGeomCache } from '../ScrollGeomCache.js'
-import { ElementScrollGeomCache } from '../ElementScrollGeomCache.js'
-import { WindowScrollGeomCache } from '../WindowScrollGeomCache.js'
+import { ScrollGeomCache } from '../ScrollGeomCache'
+import { ElementScrollGeomCache } from '../ElementScrollGeomCache'
+import { WindowScrollGeomCache } from '../WindowScrollGeomCache'
 
 interface Edge {
   scrollCache: ScrollGeomCache

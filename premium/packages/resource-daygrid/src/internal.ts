@@ -1,6 +1,6 @@
 
-export { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'
+export { ResourceDayTableJoiner } from './ResourceDayTableJoiner'
 
 // new
-export { ResourceDayGridView } from './components/ResourceDayGridView.js'
-export { buildResourceRowConfigs } from './resource-header-tier.js'
+export { ResourceDayGridView } from './components/ResourceDayGridView'
+export { buildResourceRowConfigs } from './resource-header-tier'

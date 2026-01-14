@@ -1,7 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import { contextInit } from './global-handlers.js'
-import './ambient.js'
+import { contextInit } from './global-handlers'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',

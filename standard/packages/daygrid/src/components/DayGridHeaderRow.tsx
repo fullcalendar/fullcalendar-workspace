@@ -1,7 +1,7 @@
 import { afterSize, BaseComponent, joinArrayishClassNames, RefMap, setRef } from '@fullcalendar/core/internal'
 import type { Ref } from 'react'
-import { RowConfig } from '../header-tier.js'
-import { DayGridHeaderCell } from './DayGridHeaderCell.js'
+import { RowConfig } from '../header-tier'
+import { DayGridHeaderCell } from './DayGridHeaderCell'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {

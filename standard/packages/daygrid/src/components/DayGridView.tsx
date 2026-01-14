@@ -6,11 +6,11 @@ import {
   NowTimer,
   ViewProps,
 } from '@fullcalendar/core/internal'
-import { DayTableSlicer } from '../DayTableSlicer.js'
-import { buildDateRowConfigs } from '../header-tier.js'
-import { DayGridLayout } from './DayGridLayout.js'
-import { createDayHeaderFormatter } from './util.js'
-import { buildDayTableModel } from './util.js'
+import { DayTableSlicer } from '../DayTableSlicer'
+import { buildDateRowConfigs } from '../header-tier'
+import { DayGridLayout } from './DayGridLayout'
+import { createDayHeaderFormatter } from './util'
+import { buildDayTableModel } from './util'
 
 export class DayGridView extends BaseComponent<ViewProps> {
   // memo

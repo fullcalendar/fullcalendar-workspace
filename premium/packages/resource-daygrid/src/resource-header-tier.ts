@@ -2,10 +2,10 @@ import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, get
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/daygrid/internal'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
-import { ResourceDayHeaderData } from './structs.js'
+import { ResourceDayHeaderData } from './structs'
 
 // TODO: figure out plugin-types
-// import { DayHeaderData } from '../../../../standard/packages/daygrid/src/structs.js'
+// import { DayHeaderData } from '../../../../standard/packages/daygrid/src/structs'
 type DayHeaderData = any
 
 export function buildResourceRowConfigs(

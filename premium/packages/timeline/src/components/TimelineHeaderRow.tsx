@@ -1,8 +1,8 @@
 import type { Ref } from 'react'
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
-import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile.js"
-import { TimelineHeaderCell } from './TimelineHeaderCell.js'
+import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile"
+import { TimelineHeaderCell } from './TimelineHeaderCell'
 
 export interface TimelineHeaderRowProps {
   key?: string | number | null

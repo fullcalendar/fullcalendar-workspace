@@ -19,8 +19,8 @@ import {
   EventImpl,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { HitDragging, isHitsEqual } from './HitDragging.js'
-import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
+import { HitDragging, isHitsEqual } from './HitDragging'
+import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 
 export type EventResizeStartData = EventResizeStartStopData
 export type EventResizeStopData = EventResizeStartStopData

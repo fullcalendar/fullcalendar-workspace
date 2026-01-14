@@ -1,6 +1,6 @@
 import { DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/core/internal'
-import { Resource } from '../structs/resource.js'
-import { ResourceIndex } from './ResourceIndex.js'
+import { Resource } from '../structs/resource'
+import { ResourceIndex } from './ResourceIndex'
 
 /*
 TODO: move this so @fullcalendar/resource-daygrid

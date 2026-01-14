@@ -1,4 +1,4 @@
-import { CssDimValue, fracToCssDim } from './utils.js'
+import { CssDimValue, fracToCssDim } from './utils'
 
 export interface DimConfig {
   pixels: number

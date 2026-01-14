@@ -19,11 +19,11 @@ import {
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { Fragment, type Ref } from 'react'
-import { DayGridRows } from './DayGridRows.js'
-import { DayGridHeader } from './DayGridHeader.js'
-import { RowConfig } from '../header-tier.js'
+import { DayGridRows } from './DayGridRows'
+import { DayGridHeader } from './DayGridHeader'
+import { RowConfig } from '../header-tier'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { dayMicroWidth } from './util.js'
+import { dayMicroWidth } from './util'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile

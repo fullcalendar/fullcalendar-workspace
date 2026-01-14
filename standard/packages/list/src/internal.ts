@@ -1,2 +1,2 @@
 
-export { ListView } from './components/ListView.js'
+export { ListView } from './components/ListView'

@@ -1,4 +1,4 @@
-import { RRULE_EVENT_REFINERS } from './event-refiners.js'
+import { RRULE_EVENT_REFINERS } from './event-refiners'
 
 type ExtraRefiners = typeof RRULE_EVENT_REFINERS
 

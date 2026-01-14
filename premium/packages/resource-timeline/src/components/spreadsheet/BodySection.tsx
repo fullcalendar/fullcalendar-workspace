@@ -1,12 +1,12 @@
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
-import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
-import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
-import { ResourceSubrow } from "./ResourceSubrow.js"
-import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
-import { ColSpec } from '../../structs.js'
-import { ItemPosition } from '../../virtual/virtualizer.js'
+import { ResourceGroupSubrow } from "./ResourceGroupSubrow"
+import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow"
+import { ResourceSubrow } from "./ResourceSubrow"
+import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout"
+import { ColSpec } from '../../structs'
+import { ItemPosition } from '../../virtual/virtualizer'
 
 export interface BodySectionProps {
   rowPositions: ItemPosition<ResourceLayout>[]

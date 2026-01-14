@@ -1,6 +1,6 @@
 import { EventRenderRange } from '@fullcalendar/core'
 import { DayTableCell, SegHierarchy } from '@fullcalendar/core/internal'
-import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceSegForCol } from './TableSeg.js'
+import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceSegForCol } from './TableSeg'
 
 export function computeFgSegVerticals(
   segs: DayRowEventRange[],

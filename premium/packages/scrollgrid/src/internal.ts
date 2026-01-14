@@ -1,3 +1,3 @@
 
 // new
-export { ScrollerSyncer } from './ScrollerSyncer.js'
+export { ScrollerSyncer } from './ScrollerSyncer'

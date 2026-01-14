@@ -11,8 +11,8 @@ import {
   StandardEvent,
 } from '@fullcalendar/core/internal'
 import { type RefObject, Fragment } from 'react'
-import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
-import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
+import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
+import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
 
 export interface DayGridMoreLinkProps {
   className?: string

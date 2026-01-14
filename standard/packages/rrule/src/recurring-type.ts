@@ -9,7 +9,7 @@ import {
   parseMarker,
   addDays,
 } from '@fullcalendar/core/internal'
-import { RRuleInputObject } from './event-refiners.js'
+import { RRuleInputObject } from './event-refiners'
 
 interface EventRRuleData {
   rruleSet: rruleLib.RRuleSet

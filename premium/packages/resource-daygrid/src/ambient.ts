@@ -3,7 +3,7 @@ import '@fullcalendar/daygrid'
 import '@fullcalendar/premium-common'
 import '@fullcalendar/resource'
 
-import { ResourceDayGridOptions, ResourceDayGridOptionsRefined } from './options.js'
+import { ResourceDayGridOptions, ResourceDayGridOptionsRefined } from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends ResourceDayGridOptions {}

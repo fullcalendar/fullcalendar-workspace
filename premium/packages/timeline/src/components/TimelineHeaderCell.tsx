@@ -14,7 +14,7 @@ import {
   watchSize
 } from '@fullcalendar/core/internal'
 import { createRef, type Ref } from 'react'
-import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
+import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineHeaderCellProps {

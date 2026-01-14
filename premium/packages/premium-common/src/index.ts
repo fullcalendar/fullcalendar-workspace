@@ -1,7 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { buildLicenseWarning } from './license.js'
-import { OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { buildLicenseWarning } from './license'
+import { OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -10,4 +10,4 @@ export default createPlugin({
   viewContainerAppends: [buildLicenseWarning],
 }) as PluginDef
 
-export { PremiumOptions } from './options.js'
+export { PremiumOptions } from './options'

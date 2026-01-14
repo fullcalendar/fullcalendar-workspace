@@ -1,5 +1,5 @@
 import { Action, DateRange } from '@fullcalendar/core/internal'
-import { ResourceHash, ResourceInput } from '../structs/resource.js'
+import { ResourceHash, ResourceInput } from '../structs/resource'
 
 export type ResourceAction = Action |
   { type: 'FETCH_RESOURCE' } |

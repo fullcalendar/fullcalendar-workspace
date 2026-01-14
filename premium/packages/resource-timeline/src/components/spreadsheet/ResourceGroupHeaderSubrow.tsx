@@ -3,9 +3,9 @@ import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, gene
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment, type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
-import { ResourceIndent } from './ResourceIndent.js'
-import { ResourceExpander } from './ResourceExpander.js'
-import { ResourceGroupHeaderData, GroupSpec } from '../../structs.js'
+import { ResourceIndent } from './ResourceIndent'
+import { ResourceExpander } from './ResourceExpander'
+import { ResourceGroupHeaderData, GroupSpec } from '../../structs'
 
 export interface ResourceGroupHeaderSubrowProps {
   key?: string | number | null

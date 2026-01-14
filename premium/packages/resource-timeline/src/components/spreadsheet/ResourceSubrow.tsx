@@ -2,8 +2,8 @@ import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap
 import classNames from '@fullcalendar/core/internal-classnames'
 import type { Ref } from 'react'
 import { Resource, getPublicId } from '@fullcalendar/resource/internal'
-import { ResourceCell } from './ResourceCell.js'
-import { ColSpec } from '../../structs.js'
+import { ResourceCell } from './ResourceCell'
+import { ColSpec } from '../../structs'
 
 export interface ResourceSubrowProps {
   key?: string | number | null

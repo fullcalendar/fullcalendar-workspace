@@ -1,15 +1,15 @@
-import { ResourceApi } from './api/ResourceApi.js'
-import { ResourceSource } from './structs/resource-source.js'
-import { ResourceHash } from './structs/resource.js'
-import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
-import { ResourceAction } from './reducers/resource-action.js'
+import { ResourceApi } from './api/ResourceApi'
+import { ResourceSource } from './structs/resource-source'
+import { ResourceHash } from './structs/resource'
+import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
+import { ResourceAction } from './reducers/resource-action'
 import {
   ResourceOptions,
   ResourceOptionsRefined,
   ResourceListeners,
   ResourceListenersRefined,
-} from './options.js'
-import { EVENT_REFINERS } from './structs/event-parse.js'
+} from './options'
+import { EVENT_REFINERS } from './structs/event-parse'
 
 // all dependencies except core
 import '@fullcalendar/premium-common'

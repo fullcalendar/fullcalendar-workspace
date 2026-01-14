@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { eventSourceDef } from './event-source-def.js'
+import { eventSourceDef } from './event-source-def'
 
 export default createPlugin({
   name: '<%= pkgName %>',

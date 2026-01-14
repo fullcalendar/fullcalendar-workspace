@@ -1,5 +1,5 @@
 import { EventDef, mapHash, Splitter, SplittableProps, DateSpan } from '@fullcalendar/core/internal'
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
+import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 // splitter
 

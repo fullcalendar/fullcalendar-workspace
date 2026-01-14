@@ -2,7 +2,7 @@ import {
   ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
   EventUi, isPropsEqualShallow, EventUiHash, EventDefHash, EventDef, combineEventUis,
 } from '@fullcalendar/core/internal'
-import { ResourceHash } from './structs/resource.js'
+import { ResourceHash } from './structs/resource'
 
 // for when non-resource view should be given EventUi info (for event coloring/constraints based off of resource data)
 

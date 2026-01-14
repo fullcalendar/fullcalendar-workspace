@@ -5,8 +5,8 @@ import {
   DateRange
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { TimelineDateProfile } from '../timeline-date-profile.js'
-import { TimelineSlatCell } from './TimelineSlatCell.js'
+import { TimelineDateProfile } from '../timeline-date-profile'
+import { TimelineSlatCell } from './TimelineSlatCell'
 
 export interface TimelineSlatsProps {
   dateProfile: DateProfile

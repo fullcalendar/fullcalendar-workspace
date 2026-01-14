@@ -12,9 +12,9 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment, type ReactNode, createRef, type Ref } from 'react'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
-import { ResourceIndent } from './ResourceIndent.js'
-import { ResourceExpander } from './ResourceExpander.js'
-import { ResourceCellData, ColSpec } from '../../structs.js'
+import { ResourceIndent } from './ResourceIndent'
+import { ResourceExpander } from './ResourceExpander'
+import { ResourceCellData, ColSpec } from '../../structs'
 
 export interface ResourceCellProps {
   key?: string | number | null

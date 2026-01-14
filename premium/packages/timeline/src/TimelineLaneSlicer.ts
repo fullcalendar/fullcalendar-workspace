@@ -3,8 +3,8 @@ import {
   DateProfileGenerator, DateEnv, DateMarker,
   CoordRange,
 } from '@fullcalendar/core/internal'
-import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile.js'
-import { computeDateSnapCoverage } from './TimelineCoords.js'
+import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
+import { computeDateSnapCoverage } from './TimelineCoords'
 
 export interface TimelineRange {
   // the point of this range is because it might be different than seg.eventRange.range

@@ -1,7 +1,7 @@
 import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/core/internal'
-import { ResourceApi } from './ResourceApi.js'
-import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource.js'
-import { ResourceAction } from '../reducers/resource-action.js'
+import { ResourceApi } from './ResourceApi'
+import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
+import { ResourceAction } from '../reducers/resource-action'
 
 declare module '@fullcalendar/core' {
   interface CalendarApi {

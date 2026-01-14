@@ -9,8 +9,8 @@ import {
   SlicedCoordRange,
   getEventKey,
 } from '@fullcalendar/core/internal'
-import { TimeGridCoordRange, TimeGridRange } from './TimeColsSeg.js'
-import { TimeGridSegVertical } from './event-placement.js'
+import { TimeGridCoordRange, TimeGridRange } from './TimeColsSeg'
+import { TimeGridSegVertical } from './event-placement'
 
 /*
 Output for buildWeb

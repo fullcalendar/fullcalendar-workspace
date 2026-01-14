@@ -1,7 +1,7 @@
-export type { CalendarSystem } from './calendar-system.js'
-export { registerCalendarSystem, createCalendarSystem } from './calendar-system.js'
+export type { CalendarSystem } from './calendar-system'
+export { registerCalendarSystem, createCalendarSystem } from './calendar-system'
 
-export type { DateRangeInput, OpenDateRange, DateRange } from './date-range.js'
+export type { DateRangeInput, OpenDateRange, DateRange } from './date-range'
 export {
   parseRange,
   invertRanges,
@@ -11,17 +11,17 @@ export {
   rangeContainsRange,
   rangeContainsMarker,
   constrainMarkerToRange,
-} from './date-range.js'
+} from './date-range'
 
 export type {
   VerboseFormattingData,
   CmdFormatterFunc,
   DateFormattingContext,
   DateFormatter,
-} from './DateFormatter.js'
-export { createVerboseFormattingArg } from './DateFormatter.js'
+} from './DateFormatter'
+export { createVerboseFormattingArg } from './DateFormatter'
 
-export type { DurationInput, DurationObjectInput, Duration } from './duration.js'
+export type { DurationInput, DurationObjectInput, Duration } from './duration'
 export {
   createDuration,
   durationsEqual,
@@ -38,15 +38,15 @@ export {
   asRoughMs,
   wholeDivideDurations,
   greatestDurationDenominator,
-} from './duration.js'
+} from './duration'
 
-export type { WeekNumberCalculation, DateEnvSettings, DateInput, DateMarkerMeta } from './env.js'
-export { DateEnv } from './env.js'
+export type { WeekNumberCalculation, DateEnvSettings, DateInput, DateMarkerMeta } from './env'
+export { DateEnv } from './env'
 
-export { CmdFormatter } from './formatting-cmd.js'
+export { CmdFormatter } from './formatting-cmd'
 
-export type { FuncFormatterFunc } from './formatting-func.js'
-export { FuncFormatter } from './formatting-func.js'
+export type { FuncFormatterFunc } from './formatting-func'
+export { FuncFormatter } from './formatting-func'
 
 export {
   buildIsoString,
@@ -55,11 +55,11 @@ export {
   formatIsoTimeString,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
-} from './formatting-utils.js'
+} from './formatting-utils'
 
-export type { LocaleCodeArg, Locale } from './locale.js'
+export type { LocaleCodeArg, Locale } from './locale'
 
-export type { DateMarker } from './marker.js'
+export type { DateMarker } from './marker'
 export {
   addWeeks,
   addDays,
@@ -83,14 +83,14 @@ export {
   arrayToUtcDate,
   isValidDate,
   timeAsMs,
-} from './marker.js'
+} from './marker'
 
-export { parse } from './parsing.js'
+export { parse } from './parsing'
 
-export type { NamedTimeZoneImplClass } from './timezone.js'
-export { NamedTimeZoneImpl } from './timezone.js'
+export type { NamedTimeZoneImplClass } from './timezone'
+export { NamedTimeZoneImpl } from './timezone'
 
-export { isInt, trimEnd, padStart } from './utils.js'
+export { isInt, trimEnd, padStart } from './utils'
 
-export type { ZonedMarker, ExpandedZonedMarker } from './zoned-marker.js'
-export { expandZonedMarker } from './zoned-marker.js'
+export type { ZonedMarker, ExpandedZonedMarker } from './zoned-marker'
+export { expandZonedMarker } from './zoned-marker'

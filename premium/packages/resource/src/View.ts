@@ -2,9 +2,9 @@ import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
   EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
 } from '@fullcalendar/core/internal'
-import { ResourceHash } from './structs/resource.js'
-import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
-import { computeResourceEditable } from './EventDragging.js'
+import { ResourceHash } from './structs/resource'
+import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
+import { computeResourceEditable } from './EventDragging'
 
 // for when resource views need resource data
 

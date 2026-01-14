@@ -1,6 +1,6 @@
 import { EventApi } from '@fullcalendar/core'
 import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/core/internal'
-import { Resource, getPublicId, ResourceHash } from '../structs/resource.js'
+import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 
 export class ResourceApi {
   constructor(

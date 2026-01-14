@@ -1,8 +1,8 @@
 import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/core/internal'
-import { ResourceSource } from '../structs/resource-source.js'
-import { parseResourceSource } from '../structs/resource-source-parse.js'
-import { getResourceSourceDef } from '../structs/resource-source-def.js'
-import { ResourceAction } from './resource-action.js'
+import { ResourceSource } from '../structs/resource-source'
+import { parseResourceSource } from '../structs/resource-source-parse'
+import { getResourceSourceDef } from '../structs/resource-source-def'
+import { ResourceAction } from './resource-action'
 
 export function reduceResourceSource(
   source: ResourceSource<any> | null,

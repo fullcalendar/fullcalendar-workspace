@@ -1,5 +1,5 @@
 import { VerboseFormattingData } from '@fullcalendar/core/internal'
-import { arrayToLuxon } from './convert.js'
+import { arrayToLuxon } from './convert'
 
 export function formatWithCmdStr(
   cmdStr: string,

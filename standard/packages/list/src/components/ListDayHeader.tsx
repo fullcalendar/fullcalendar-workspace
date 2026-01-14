@@ -1,8 +1,8 @@
 import { BaseComponent, ContentContainer, DateFormatter, DateMarker, DateMeta, formatDayString, ViewSpec, WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from "@fullcalendar/core/internal";
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Fragment } from 'react'
-import { ListDayHeaderData } from '../structs.js'
-import { ListDayHeaderInner } from "./ListDayHeaderInner.js";
+import { ListDayHeaderData } from '../structs'
+import { ListDayHeaderInner } from "./ListDayHeaderInner";
 
 export interface ListDayHeaderProps {
   dayDate: DateMarker

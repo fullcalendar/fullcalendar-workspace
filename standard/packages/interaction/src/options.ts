@@ -5,7 +5,7 @@ import {
   EventDragStartData, EventDragStopData,
   EventResizeStartData, EventResizeStopData, EventResizeDoneData,
   DropData, EventReceiveData, EventLeaveData,
-} from './public-types.js'
+} from './public-types'
 
 export const OPTION_REFINERS = {}
 

@@ -2,11 +2,11 @@ import { Duration, ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, memoize, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { createRef } from 'react'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { buildSlatMetas } from "../time-slat-meta.js"
-import { TimeGridRange } from '../TimeColsSeg.js'
-import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
-import { TimeGridLayoutNormal } from './TimeGridLayoutNormal.js'
-import { computeTimeTopFrac } from './util.js'
+import { buildSlatMetas } from "../time-slat-meta"
+import { TimeGridRange } from '../TimeColsSeg'
+import { TimeGridLayoutPannable } from './TimeGridLayoutPannable'
+import { TimeGridLayoutNormal } from './TimeGridLayoutNormal'
+import { computeTimeTopFrac } from './util'
 import { RowConfig } from '@fullcalendar/daygrid/internal'
 
 export interface TimeGridLayoutProps {

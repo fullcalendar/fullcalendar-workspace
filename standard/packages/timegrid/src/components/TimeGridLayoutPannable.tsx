@@ -3,18 +3,18 @@ import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventR
 import { Fragment, type Ref, createRef } from 'react'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, RowConfig, computeColWidth, dayMicroWidth } from '@fullcalendar/daygrid/internal'
-import { TimeSlatMeta } from "../time-slat-meta.js"
-import { TimeGridRange } from "../TimeColsSeg.js"
-import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader.js"
-import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
-import { TimeGridCols } from "./TimeGridCols.js"
-import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
-import { TimeGridSlatHeader } from "./TimeGridSlatHeader.js"
-import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
-import { computeSlatHeight } from './util.js'
-import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
-import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty.js"
-import { simplifiedTimeGridPrint } from "./TimeGridCol.js"
+import { TimeSlatMeta } from "../time-slat-meta"
+import { TimeGridRange } from "../TimeColsSeg"
+import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader"
+import { TimeGridAllDayLane } from "./TimeGridAllDayLane"
+import { TimeGridCols } from "./TimeGridCols"
+import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow"
+import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
+import { TimeGridSlatLane } from "./TimeGridSlatLane"
+import { computeSlatHeight } from './util'
+import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
+import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"
+import { simplifiedTimeGridPrint } from "./TimeGridCol"
 
 export interface TimeGridLayoutPannableProps {
   dateProfile: DateProfile

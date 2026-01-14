@@ -1,4 +1,4 @@
-import { DayGridOptions, DayGridOptionsRefined } from './options.js'
+import { DayGridOptions, DayGridOptionsRefined } from './options'
 
 declare module '@fullcalendar/core/internal' {
   interface BaseOptions extends DayGridOptions {}

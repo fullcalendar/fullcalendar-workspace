@@ -1,6 +1,6 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { LuxonNamedTimeZone } from './LuxonNamedTimeZone.js'
-import { formatWithCmdStr } from './format.js'
+import { LuxonNamedTimeZone } from './LuxonNamedTimeZone'
+import { formatWithCmdStr } from './format'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -8,4 +8,4 @@ export default createPlugin({
   namedTimeZonedImpl: LuxonNamedTimeZone,
 }) as PluginDef
 
-export { toLuxonDateTime, toLuxonDuration } from './convert.js'
+export { toLuxonDateTime, toLuxonDuration } from './convert'

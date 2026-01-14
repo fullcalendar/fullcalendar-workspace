@@ -1,7 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { recurringType } from './recurring-type.js'
-import { RRULE_EVENT_REFINERS } from './event-refiners.js'
-import './ambient.js'
+import { recurringType } from './recurring-type'
+import { RRULE_EVENT_REFINERS } from './event-refiners'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',

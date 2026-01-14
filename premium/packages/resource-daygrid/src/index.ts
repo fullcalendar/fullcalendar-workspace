@@ -2,9 +2,9 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { ResourceDayGridView } from './components/ResourceDayGridView.js'
-import { OPTION_DEFAULTS, OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { ResourceDayGridView } from './components/ResourceDayGridView'
+import { OPTION_DEFAULTS, OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -39,5 +39,5 @@ export default createPlugin({
   optionDefaults: OPTION_DEFAULTS,
 }) as PluginDef
 
-export * from './structs.js'
-export { ResourceDayGridOptions } from './options.js'
+export * from './structs'
+export { ResourceDayGridOptions } from './options'

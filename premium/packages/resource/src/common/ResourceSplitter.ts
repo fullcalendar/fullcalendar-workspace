@@ -1,5 +1,5 @@
 import { Splitter, SplittableProps, DateSpan, EventDef } from '@fullcalendar/core/internal'
-import { ResourceHash } from '../structs/resource.js'
+import { ResourceHash } from '../structs/resource'
 
 export interface SplittableResourceProps extends SplittableProps {
   resourceStore: ResourceHash

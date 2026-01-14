@@ -1,12 +1,12 @@
 
-export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './TimeColsSeg.js'
-export { DayTimeColsSlicer } from './DayTimeColsSlicer.js'
-export { TimeSlatMeta, buildSlatMetas } from './time-slat-meta.js'
-export { AllDaySplitter } from './AllDaySplitter.js'
+export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './TimeColsSeg'
+export { DayTimeColsSlicer } from './DayTimeColsSlicer'
+export { TimeSlatMeta, buildSlatMetas } from './time-slat-meta'
+export { AllDaySplitter } from './AllDaySplitter'
 
 // new
-export { TimeGridView } from './components/TimeGridView.js'
-export { TimeGridLayout, TimeGridLayoutProps } from './components/TimeGridLayout.js'
-export { TimeGridWeekNumber } from './components/TimeGridWeekNumber.js'
+export { TimeGridView } from './components/TimeGridView'
+export { TimeGridLayout, TimeGridLayoutProps } from './components/TimeGridLayout'
+export { TimeGridWeekNumber } from './components/TimeGridWeekNumber'
 
-export { buildTimeColsModel, buildDayRanges } from './components/util.js'
+export { buildTimeColsModel, buildDayRanges } from './components/util'

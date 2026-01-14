@@ -25,7 +25,7 @@ import {
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { type ReactNode, Fragment, type ReactElement } from 'react'
-import { ListDay, ListSeg } from './ListDay.js'
+import { ListDay, ListSeg } from './ListDay'
 
 export interface NoEventsData {
   text: string

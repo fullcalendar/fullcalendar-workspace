@@ -1,4 +1,4 @@
-import { Duration } from './duration.js'
+import { Duration } from './duration'
 
 export type DateMarker = Date
 

@@ -1,7 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import './ambient.js'
-import { ScrollerSyncer } from './ScrollerSyncer.js'
+import './ambient'
+import { ScrollerSyncer } from './ScrollerSyncer'
 
 export default createPlugin({
   name: '<%= pkgName %>',

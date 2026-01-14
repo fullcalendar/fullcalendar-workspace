@@ -1,7 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { ListView } from './components/ListView.js'
-import { OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { ListView } from './components/ListView'
+import { OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -30,4 +30,4 @@ export default createPlugin({
   },
 }) as PluginDef
 
-export * from './public-types.js'
+export * from './public-types'

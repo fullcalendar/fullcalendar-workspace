@@ -23,10 +23,10 @@ import {
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { Fragment, type Ref, createRef } from 'react'
-import { DayGridRows } from './DayGridRows.js'
-import { computeColWidth, dayMicroWidth } from './util.js'
-import { DayGridHeader } from './DayGridHeader.js'
-import { RowConfig } from '../header-tier.js'
+import { DayGridRows } from './DayGridRows'
+import { computeColWidth, dayMicroWidth } from './util'
+import { DayGridHeader } from './DayGridHeader'
+import { RowConfig } from '../header-tier'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridLayoutPannableProps {

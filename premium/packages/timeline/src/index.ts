@@ -1,8 +1,8 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import { TimelineView } from './components/TimelineView.js'
-import { OPTION_REFINERS } from './options.js'
-import './ambient.js'
+import { TimelineView } from './components/TimelineView'
+import { OPTION_REFINERS } from './options'
+import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -35,4 +35,4 @@ export default createPlugin({
   },
 }) as PluginDef
 
-export { TimelineOptions } from './options.js'
+export { TimelineOptions } from './options'

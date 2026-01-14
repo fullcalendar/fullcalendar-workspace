@@ -18,8 +18,8 @@ import {
   EventImpl,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { HitDragging } from '../interactions/HitDragging.js'
-import { buildDatePointApiWithContext } from '../utils.js'
+import { HitDragging } from '../interactions/HitDragging'
+import { buildDatePointApiWithContext } from '../utils'
 
 export type DragMetaGenerator = DragMetaInput | ((el: HTMLElement) => DragMetaInput)
 

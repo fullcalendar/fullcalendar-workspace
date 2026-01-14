@@ -3,7 +3,7 @@ import { afterSize, buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, 
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createRef, type Ref } from 'react'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, dayMicroWidth } from '@fullcalendar/daygrid/internal'
-import { SingleMonthData, SingleMonthHeaderData } from '../structs.js'
+import { SingleMonthData, SingleMonthHeaderData } from '../structs'
 
 export interface SingleMonthHeights {
   titleHeight: number
