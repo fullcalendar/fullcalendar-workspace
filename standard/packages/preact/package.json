@@ -47,6 +47,21 @@
       },
       "./locales/*": {
         "module": true
+      },
+      "./interaction": {
+        "module": true
+      },
+      "./daygrid": {
+        "module": true
+      },
+      "./timegrid": {
+        "module": true
+      },
+      "./multimonth": {
+        "module": true
+      },
+      "./list": {
+        "module": true
       }
     },
     "dependencyGlobalVars": {

@@ -177,8 +177,7 @@ function buildEsmOutputOptions(
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: 'esm/[name]' + esmExtension,
-    chunkFileNames: 'esm/[name]' + esmExtension,
-    manualChunks: buildManualChunks(pkgBundleStruct, transpiledExtension),
+    chunkFileNames: 'esm/chunks/[name]-[hash]' + esmExtension,
     sourcemap,
   }
 }
@@ -213,39 +212,10 @@ function buildIifeOutputOptions(
 function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions {
   return {
     format: 'esm',
-    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist/esm'),
-    entryFileNames: '[name].d.ts',
-    chunkFileNames: '[name].d.ts',
-    manualChunks: buildManualChunks(pkgBundleStruct, '.d.ts'),
+    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
+    entryFileNames: 'esm/[name].d.ts',
+    chunkFileNames: 'esm/chunks/[name]-[hash].d.ts',
   }
-}
-
-// Chunk Options
-// -------------------------------------------------------------------------------------------------
-
-function buildManualChunks(
-  pkgBundleStruct: PkgBundleStruct,
-  inExtension: string,
-): { [absPath: string]: string[] } {
-  const { pkgDir, entryStructMap } = pkgBundleStruct
-  const manualChunks: { [absPath: string]: string[] } = {}
-
-  for (const chunkName in manualChunkEntryAliases) {
-    const entryAliases = manualChunkEntryAliases[chunkName]
-    const validEntryPaths: string[] = []
-
-    for (const entryAlias of entryAliases) {
-      if (entryStructMap[entryAlias]) {
-        validEntryPaths.push(joinPaths(pkgDir, transpiledSubdir, entryAlias + inExtension))
-      }
-    }
-
-    if (validEntryPaths.length) {
-      manualChunks[chunkName] = validEntryPaths
-    }
-  }
-
-  return manualChunks
 }
 
 // Plugins Lists
