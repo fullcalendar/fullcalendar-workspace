@@ -1,4 +1,4 @@
-import { DayLaneData } from '../../render-hook-misc'
+import { DayLaneData } from '../../common/DayLaneContainer'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
 import { BgEvent, renderFill } from '../../common/bg-fill'

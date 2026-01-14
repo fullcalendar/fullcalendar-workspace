@@ -1,6 +1,6 @@
-import { config } from '../../config'
+import { config } from '../../global-config'
 import { Emitter } from '../../common/Emitter'
-import type { PointerDragEvent } from '../../interactions/pointer-event'
+import type { PointerDragEvent } from '../../interactions/pointer'
 
 config.touchMouseIgnoreWait = 500
 

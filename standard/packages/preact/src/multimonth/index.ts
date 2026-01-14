@@ -2,13 +2,10 @@ import { createPlugin } from '../plugin-system'
 import { PluginDef } from '../plugin-system-struct'
 import { TableDateProfileGenerator } from '../daygrid/TableDateProfileGenerator'
 import { MultiMonthView } from './components/MultiMonthView'
-import { OPTION_REFINERS } from './options'
-import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   initialView: 'multiMonthYear',
-  optionRefiners: OPTION_REFINERS,
   views: {
     multiMonth: {
       component: MultiMonthView,
@@ -24,11 +21,3 @@ export default createPlugin({
     },
   },
 }) as PluginDef
-
-export {
-  SingleMonthData,
-  SingleMonthMountData,
-  SingleMonthHeaderData,
-} from './structs'
-
-export { MultiMonthOptions } from './options'

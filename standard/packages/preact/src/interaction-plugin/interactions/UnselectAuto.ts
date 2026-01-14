@@ -1,5 +1,5 @@
-import type { DateSelectionApi } from '../../api-type-deps'
-import type { PointerDragEvent } from '../../interactions/pointer-event'
+import type { DateSelectionApi } from '../../calendar-utils'
+import type { PointerDragEvent } from '../../interactions/pointer'
 import type { CalendarContext } from '../../CalendarContext'
 import { getEventTargetViaRoot } from '../../util/dom-manip'
 import { PointerDragging } from '../dnd/PointerDragging'

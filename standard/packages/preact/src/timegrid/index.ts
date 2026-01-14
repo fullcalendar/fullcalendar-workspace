@@ -2,14 +2,11 @@ import { createPlugin } from '../plugin-system'
 import { PluginDef } from '../plugin-system-struct'
 import dayGridPlugin from '../daygrid/index'
 import { TimeGridView } from './components/TimeGridView'
-import { OPTION_REFINERS } from './options'
-import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   initialView: 'timeGridWeek',
   deps: [dayGridPlugin],
-  optionRefiners: OPTION_REFINERS,
   views: {
     timeGrid: {
       component: TimeGridView,
@@ -28,5 +25,3 @@ export default createPlugin({
     },
   },
 }) as PluginDef
-
-export { TimeGridOptions } from './options'

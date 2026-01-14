@@ -2,14 +2,10 @@ import { createPlugin } from '../plugin-system'
 import { PluginDef } from '../plugin-system-struct'
 import { DayGridView } from './components/DayGridView'
 import { TableDateProfileGenerator } from './TableDateProfileGenerator'
-import { OPTION_DEFAULTS, OPTION_REFINERS } from './options'
-import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   initialView: 'dayGridMonth',
-  optionRefiners: OPTION_REFINERS,
-  optionDefaults: OPTION_DEFAULTS,
   views: {
     dayGrid: {
       component: DayGridView,
@@ -34,5 +30,3 @@ export default createPlugin({
     },
   },
 }) as PluginDef
-
-export { DayGridOptions } from './options'

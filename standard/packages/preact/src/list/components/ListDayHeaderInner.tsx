@@ -1,11 +1,9 @@
-import { BaseComponent } from '../../component/BaseComponent'
+import { BaseComponent } from '../../vdom-util'
 import { buildNavLinkAttrs } from '../../common/nav-link'
-import { ContentContainer } from '../../content-inject/ContentContainer'
-import type { DateFormatter } from '../../datelib/formatting'
-import type { DateMarker } from '@full-ui/headless-calendar'
+import { ContentContainer, renderText } from '../../content-inject/ContentContainer'
+import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../../component-util/date-rendering'
 import { findDayNumberText } from '../../util/date-format'
-import { renderText } from '../../content-inject/render-functions'
 import { ListDayHeaderInnerData } from '../structs'
 
 export interface ListDayHeaderInnerProps {

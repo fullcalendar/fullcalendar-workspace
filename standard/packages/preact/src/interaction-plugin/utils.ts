@@ -1,9 +1,9 @@
 import { ViewApi } from '../api/ViewApi'
 import { EventApi } from '../api/EventApi'
-import type { DatePointApi } from '../api-type-deps'
+import type { DatePointApi } from '../structs/date-span'
 import type { DateSpan } from '../structs/date-span'
 import type { CalendarContext } from '../CalendarContext'
-import type { DateEnv } from '../datelib/env'
+import type { DateEnv } from '@full-ui/headless-calendar'
 
 export interface DropData extends DatePointApi {
   draggedEl: HTMLElement

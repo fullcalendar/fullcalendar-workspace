@@ -39,6 +39,10 @@ ensure preact/plugin files don't import any types
 merge CalendarOptions
 get rid of each plugin's global.ts
 change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
+need to have plugin "deps" anymore?
+deal with plugin ./internal files
+use </> everywhere instead of Fragment
+don't have rollup create pre-named chunks
 
 
 fully get rid of @fullcalendar/core/preact

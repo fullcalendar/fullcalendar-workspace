@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../component/BaseComponent'
+import { BaseComponent } from '../../vdom-util'
 import { createFormatter } from '../../datelib/formatting'
 import type { MinimalEventProps } from '../../component-util/event-rendering'
 import { StandardEvent } from '../../common/StandardEvent'

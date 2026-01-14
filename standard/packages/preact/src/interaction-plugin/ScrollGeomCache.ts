@@ -1,4 +1,4 @@
-import type { Rect } from '../geom'
+import type { Rect } from '../util/geom'
 import { ScrollController } from '../common/scroll-controller'
 
 /*

@@ -1,11 +1,9 @@
-import { createPlugin, PluginDef } from '../plugin-system-struct'
+import { createPlugin } from '../plugin-system'
+import { PluginDef } from '../plugin-system-struct'
 import { ListView } from './components/ListView'
-import { OPTION_REFINERS } from './options'
-import './ambient'
 
 export default createPlugin({
   name: '<%= pkgName %>',
-  optionRefiners: OPTION_REFINERS,
   views: {
     list: {
       component: ListView,
@@ -29,5 +27,3 @@ export default createPlugin({
     },
   },
 }) as PluginDef
-
-export * from './public-types'

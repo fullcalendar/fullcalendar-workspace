@@ -1,5 +1,6 @@
-import { applyStyle, whenTransitionDone } from '../../util/dom-manip'
-import type { Rect } from '../../geom'
+import { applyStyle } from '../../util/dom-manip'
+import { whenTransitionDone } from '../../util/dom-event'
+import type { Rect } from '../../util/geom'
 
 /*
 An effect in which an element follows the movement of a pointer across the screen.

@@ -1,5 +1,5 @@
-import type { PointerDragEvent } from '../../interactions/pointer-event'
-import { preventSelection, allowSelection, preventContextMenu, allowContextMenu } from '../../util/dom-manip'
+import type { PointerDragEvent } from '../../interactions/pointer'
+import { preventSelection, allowSelection, preventContextMenu, allowContextMenu } from '../../util/misc'
 import { ElementDragging } from '../../interactions/ElementDragging'
 import { PointerDragging } from './PointerDragging'
 import { ElementMirror } from './ElementMirror'

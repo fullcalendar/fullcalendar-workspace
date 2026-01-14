@@ -1,6 +1,6 @@
-import { getClippingParents } from '../util/dom-geom'
-import { computeRect, pointInsideRect, computeElIsRtl } from '../util/dom-geom'
-import type { Rect } from '../geom'
+import { getClippingParents, computeRect } from '../util/dom-geom'
+import { computeElIsRtl } from '../util/dom-manip'
+import { pointInsideRect, type Rect } from '../util/geom'
 import { ElementScrollGeomCache } from './ElementScrollGeomCache'
 
 /*

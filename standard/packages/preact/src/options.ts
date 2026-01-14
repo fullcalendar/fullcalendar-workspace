@@ -63,11 +63,19 @@ import {
   DayCellData,
 } from './api/structs'
 import { TableHeaderData } from './common/TableAndSubsections'
-import { createDuration, Duration } from '@full-ui/headless-calendar'
+import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting'
 import { parseFieldSpecs } from './util/misc'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object'
 import { isMaybeArraysEqual } from './util/array'
+import { ListDayData, ListDayHeaderData, ListDayHeaderInnerData, ListDayHeaderMountData } from './list/structs'
+import { NoEventsData, NoEventsMountData } from './list/components/ListView'
+import { SingleMonthData, SingleMonthHeaderData, SingleMonthMountData } from './multimonth/structs'
+import { DateClickData } from './interaction-plugin/interactions/DateClicking'
+import { EventDragStartData, EventDragStopData } from './interaction-plugin/interactions/EventDragging'
+import { EventDropData } from './event-crud'
+import { EventResizeStartData, EventResizeStopData, EventResizeDoneData } from './interaction-plugin/interactions/EventResizing'
+import { DropData, EventReceiveData, EventLeaveData } from './interaction-plugin/utils'
 
 // base options
 // ------------
@@ -429,6 +437,46 @@ export const BASE_OPTION_REFINERS = {
 
   nonBusinessClass: identity as Identity<string | undefined>,
   highlightClass: identity as Identity<string | undefined>,
+
+  // daygrid-only
+  dayHeaders: Boolean,
+  dayHeaderFormat: createFormatter,
+
+  // timegrid-only
+  allDayDividerClass: identity as Identity<string | undefined>,
+
+  // list-only
+  listDaysClass: identity as Identity<string | undefined>,  // rename this?
+  listDayClass: identity as Identity<ClassNameGenerator<ListDayData>>,
+  //
+  listDayFormat: createFalsableFormatter, // defaults specified in list plugins
+  listDaySideFormat: createFalsableFormatter, // "
+  //
+  listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountData>>,
+  listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountData>>,
+  listDayHeaderClass: identity as Identity<ClassNameGenerator<ListDayHeaderData>>,
+  listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
+  listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
+  //
+  listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayData>>,
+  //
+  noEventsClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
+  noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
+  noEventsContent: identity as Identity<CustomContentGenerator<NoEventsData>>,
+  noEventsDidMount: identity as Identity<DidMountHandler<NoEventsMountData>>,
+  noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsMountData>>,
+  // noEventsText is defined in base options
+
+  // multimonth-only
+  multiMonthMaxColumns: Number,
+  //
+  singleMonthMinWidth: Number,
+  singleMonthTitleFormat: createFormatter,
+  singleMonthDidMount: identity as Identity<DidMountHandler<SingleMonthMountData>>,
+  singleMonthWillUnmount: identity as Identity<WillUnmountHandler<SingleMonthMountData>>,
+  singleMonthClass: identity as Identity<ClassNameGenerator<SingleMonthData>>,
+  singleMonthHeaderClass: identity as Identity<ClassNameGenerator<SingleMonthHeaderData>>,
+  singleMonthHeaderInnerClass: identity as Identity<ClassNameGenerator<SingleMonthHeaderData>>,
 }
 
 type BaseOptionRefiners = typeof BASE_OPTION_REFINERS
@@ -499,6 +547,9 @@ export const BASE_OPTION_DEFAULTS = {
   rowEventTitleSticky: true,
   columnEventTitleSticky: true,
   nowIndicatorSnap: 'auto',
+
+  // daygrid-only
+  dayHeaders: true,
 }
 
 // calendar listeners
@@ -524,6 +575,18 @@ export const CALENDAR_LISTENER_REFINERS = {
   _noEventDrop: identity as Identity<() => void>,
   _noEventResize: identity as Identity<() => void>,
   _timeScrollRequest: identity as Identity<(time: Duration) => void>,
+
+  // interaction-plugin-only
+  dateClick: identity as Identity<(data: DateClickData) => void>,
+  eventDragStart: identity as Identity<(data: EventDragStartData) => void>,
+  eventDragStop: identity as Identity<(data: EventDragStopData) => void>,
+  eventDrop: identity as Identity<(data: EventDropData) => void>,
+  eventResizeStart: identity as Identity<(data: EventResizeStartData) => void>,
+  eventResizeStop: identity as Identity<(data: EventResizeStopData) => void>,
+  eventResize: identity as Identity<(data: EventResizeDoneData) => void>,
+  drop: identity as Identity<(data: DropData) => void>,
+  eventReceive: identity as Identity<(data: EventReceiveData) => void>,
+  eventLeave: identity as Identity<(data: EventLeaveData) => void>,
 }
 
 type CalendarListenerRefiners = typeof CALENDAR_LISTENER_REFINERS
@@ -676,4 +739,8 @@ export type Identity<T = any> = (raw: T) => T
 
 export function identity<T>(raw: T): T {
   return raw
+}
+
+function createFalsableFormatter(input: FormatterInput | false): DateFormatter {
+  return input === false ? null : createFormatter(input)
 }
