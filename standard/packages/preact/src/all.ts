@@ -1,0 +1,20 @@
+
+import { globalPlugins } from './global-plugins'
+import interactionPlugin from './interaction'
+import dayGridPlugin from './daygrid'
+import timeGridPlugin from './timegrid'
+import listPlugin from './list'
+import multiMonthPlugin from './multimonth'
+
+// has side effects! mark in package.json!
+
+globalPlugins.push(
+  interactionPlugin,
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  multiMonthPlugin,
+)
+
+// TODO: rethink this
+export { CalendarComponent } from './CalendarComponent'

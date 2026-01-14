@@ -32,6 +32,9 @@
       ".": {
         "module": true
       },
+      "./all": {
+        "module": true
+      },
       "./internal": {
         "module": true
       },

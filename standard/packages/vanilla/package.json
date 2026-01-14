@@ -28,6 +28,10 @@
         "module": true,
         "globalVar": "FullCalendar"
       },
+      "./all": {
+        "module": true,
+        "globalVar": "FullCalendar"
+      },
       "./interaction": {
         "module": true
       },
