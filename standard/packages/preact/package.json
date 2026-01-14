@@ -33,10 +33,6 @@
         "module": true,
         "globalVar": "FullCalendar"
       },
-      "./vdom": {
-        "module": true,
-        "globalVar": "FullCalendar.VDom"
-      },
       "./internal": {
         "module": true,
         "globalVar": "FullCalendar.Internal"
@@ -51,18 +47,6 @@
       },
       "./locales/*": {
         "module": true
-      },
-      "./global": {
-        "iife": true,
-        "globalVar": "FullCalendar",
-        "css": true
-      },
-      "./global/locales-all": {
-        "iife": true
-      },
-      "./global/locales/*": {
-        "generator": "./scripts/generate-global-locale.ts",
-        "iife": true
       }
     },
     "dependencyGlobalVars": {

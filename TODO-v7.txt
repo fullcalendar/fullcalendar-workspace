@@ -43,6 +43,7 @@ need to have plugin "deps" anymore?
 deal with plugin ./internal files
 use </> everywhere instead of Fragment
 don't have rollup create pre-named chunks
+a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore
 
 
 fully get rid of @fullcalendar/core/preact

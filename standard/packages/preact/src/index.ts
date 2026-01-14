@@ -1,6 +1,4 @@
 
-export { Calendar } from './Calendar'
-
 export { CalendarApi } from './api/CalendarApi'
 export { CalendarController } from './CalendarController'
 export { ViewApi } from './api/ViewApi'
