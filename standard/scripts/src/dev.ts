@@ -2,14 +2,14 @@ import { writeDistPkgJsons } from './json.ts'
 import { deleteBuiltFiles } from './pkg/build.ts'
 import { watchBundles } from './pkg/bundle.ts'
 import {
-  MonorepoStruct,
-  PkgStruct,
+  type MonorepoStruct,
+  type PkgStruct,
   traverseMonorepo,
   watchMonorepo,
 } from './utils/monorepo-struct.ts'
 import { watchTs } from './utils/monorepo-ts.ts'
 import { untilSigInt } from './utils/process.ts'
-import { ScriptContext } from './utils/script-runner.ts'
+import { type ScriptContext } from './utils/script-runner.ts'
 
 // TODO: if error with rollup, kill typescript, and vice-versa
 

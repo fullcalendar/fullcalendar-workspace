@@ -7,10 +7,7 @@ import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps }
 
 const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
 
-const slots = createSlots({
-  createElement: React.createElement as any, // HACK
-  Fragment: React.Fragment as any, // HACK
-}, params)
+const slots = createSlots(params)
 
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,

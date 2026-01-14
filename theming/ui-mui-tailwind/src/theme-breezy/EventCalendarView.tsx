@@ -9,10 +9,7 @@ import { params } from '../lib/option-params.js'
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 
-const slots = createSlots({
-  createElement: React.createElement as any,
-  Fragment: React.Fragment as any, // HACK
-}, params)
+const slots = createSlots(params)
 
 export default function EventCalendarView({
   views: userViews,

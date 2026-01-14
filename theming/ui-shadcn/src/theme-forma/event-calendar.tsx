@@ -66,10 +66,7 @@ export function EventCalendar({
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 
-const slots = createSlots({
-  createElement: React.createElement as any, // HACK
-  Fragment: React.Fragment as any, // HACK
-}, params)
+const slots = createSlots(params)
 
 export function EventCalendarView({
   views: userViews,
