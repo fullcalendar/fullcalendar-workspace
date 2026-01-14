@@ -35,6 +35,11 @@ build note:
     manually before `pn dev`
 
 
+ensure preact/plugin files don't import any types
+merge CalendarOptions
+get rid of each plugin's global.ts
+change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
+
 
 fully get rid of @fullcalendar/core/preact
 

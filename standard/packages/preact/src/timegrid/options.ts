@@ -1,0 +1,9 @@
+import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '../options'
+
+export const OPTION_REFINERS = {
+  allDayDividerClass: identity as Identity<string | undefined>,
+}
+
+type TimeGridOptionRefiners = typeof OPTION_REFINERS
+export type TimeGridOptions = RawOptionsFromRefiners<TimeGridOptionRefiners>
+export type TimeGridOptionsRefined = RefinedOptionsFromRefiners<TimeGridOptionRefiners>

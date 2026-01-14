@@ -1,0 +1,14 @@
+import { MountData } from '../common/render-hook'
+
+export interface SingleMonthData {
+  colCount: number // initially 0 (unknown)
+}
+
+export type SingleMonthMountData = MountData<SingleMonthData>
+
+export interface SingleMonthHeaderData {
+  colCount: number // initially 0 (unknown)
+  isSticky: boolean
+  isNarrow: boolean
+  hasNavLink: boolean
+}
