@@ -6,7 +6,6 @@ export const transpiledExtension = '.js'
 export const assetExtensions = ['.css']
 
 // output
-export const cjsExtension = '.cjs'
 export const esmExtension = '.js'
 export const iifeExtension = '.js'
 

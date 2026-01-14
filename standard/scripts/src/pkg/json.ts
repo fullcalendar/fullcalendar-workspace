@@ -3,7 +3,7 @@ import { mkdir } from 'fs/promises'
 import { analyzePkg } from '../utils/pkg-analysis.ts'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.ts'
 import { type ScriptContext } from '../utils/script-runner.ts'
-import { cjsExtension, esmExtension, iifeExtension } from './utils/config.ts'
+import { esmExtension, iifeExtension } from './utils/config.ts'
 import { type EntryConfigMap } from './utils/bundle-struct.ts'
 
 const cdnFields = [
@@ -52,18 +52,14 @@ export async function writeDistPkgJson(
     if (entryConfig.module) {
       const typesPath = entrySubpath.replace(/^\./, typesRoot) + '.d.ts'
       const esmPath = entrySubpath.replace(/^\./, './esm') + esmExtension
-      const cjsPath = entrySubpath.replace(/^\./, './cjs') + cjsExtension
 
       exportsMap[entryName] = {
-        import: {
-          types: typesPath, // tsc likes this first
-          default: esmPath,
-        },
-        require: cjsPath,
+        types: typesPath,
+        default: esmPath,
       }
 
       if (entryConfig.iife) { // has side effects?
-        sideEffects.push(esmPath, cjsPath)
+        sideEffects.push(esmPath)
       }
     }
 
@@ -114,7 +110,7 @@ export async function writeDistPkgJson(
         : (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
     module: './esm/index' + esmExtension,
-    main: './cjs/index' + cjsExtension,
+    main: './esm/index' + esmExtension,
     ...(
       hasAnyIife
         ? cdnFields.reduce(

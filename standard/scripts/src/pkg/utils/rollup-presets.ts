@@ -17,7 +17,6 @@ import { standardScriptsDir } from '../../utils/script-runner.ts'
 import {
   transpiledExtension,
   transpiledSubdir,
-  cjsExtension,
   esmExtension,
   iifeExtension,
   assetExtensions,
@@ -53,9 +52,6 @@ const jsonPlugin = cjsInterop(jsonPluginLib)
 const postcssPlugin = cjsInterop(postcssPluginLib)
 const replacePlugin = cjsInterop(replacePluginLib)
 
-/*
-TODO: converge with buildCjsOptions and just have multiple outputs?
-*/
 export function buildEsmOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
@@ -68,23 +64,6 @@ export function buildEsmOptions(
     onwarn(warning) {
       if (warning.code !== 'CIRCULAR_DEPENDENCY') {
         console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
-      }
-    }
-  }
-}
-
-export function buildCjsOptions(
-  pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean,
-  minifyCss: boolean,
-): RollupOptions {
-  return {
-    input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
-    output: buildCjsOutputOptions(pkgBundleStruct, sourcemap),
-    onwarn(warning) {
-      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-        console.error(`${pkgBundleStruct.pkgDir}(cjs): ${warning}`)
       }
     }
   }
@@ -199,21 +178,6 @@ function buildEsmOutputOptions(
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: 'esm/[name]' + esmExtension,
     chunkFileNames: 'esm/[name]' + esmExtension,
-    manualChunks: buildManualChunks(pkgBundleStruct, transpiledExtension),
-    sourcemap,
-  }
-}
-
-function buildCjsOutputOptions(
-  pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean,
-): OutputOptions {
-  return {
-    format: 'cjs',
-    exports: 'named',
-    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-    entryFileNames: 'cjs/[name]' + cjsExtension,
-    chunkFileNames: 'cjs/[name]' + cjsExtension,
     manualChunks: buildManualChunks(pkgBundleStruct, transpiledExtension),
     sourcemap,
   }

@@ -4,7 +4,7 @@ import { rollup, watch as rollupWatch, type RollupOptions, type OutputOptions } 
 import { type MonorepoStruct } from '../utils/monorepo-struct.ts'
 import { buildPkgBundleStruct, type PkgBundleStruct } from './utils/bundle-struct.ts'
 import { analyzePkg } from '../utils/pkg-analysis.ts'
-import { buildEsmOptions, buildCjsOptions, buildIifeOptions, buildDtsOptions } from './utils/rollup-presets.ts'
+import { buildEsmOptions, buildIifeOptions, buildDtsOptions } from './utils/rollup-presets.ts'
 import { arrayify, continuousAsync } from '../utils/lang.ts'
 import { type ScriptContext } from '../utils/script-runner.ts'
 import { untilSigInt } from '../utils/process.ts'
@@ -98,7 +98,6 @@ async function buildRollupOptionObjs(
   const { isBundle, isTests } = analyzePkg(pkgBundleStruct.pkgDir)
 
   const esm = !isTests
-  const cjs = !isDev && !isTests
   const moduleSourcemap = isDev || isTests
   const moduleCssMinify = !isDev
   const iife = true // !isDev || isBundle || isTests
@@ -108,7 +107,6 @@ async function buildRollupOptionObjs(
 
   return [
     ...(esm ? [buildEsmOptions(pkgBundleStruct, moduleSourcemap, moduleCssMinify)] : []),
-    ...(cjs ? [buildCjsOptions(pkgBundleStruct, moduleSourcemap, moduleCssMinify)] : []),
     ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify, iifeSourcemap) : []),
     ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
   ]
