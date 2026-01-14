@@ -158,7 +158,13 @@ function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
     const entryStruct = entryStructMap[entryAlias]
     const entryConfig = entryConfigMap[entryStruct.entryGlob]
 
-    if (entryConfig.module) {
+    if (entryConfig.types) {
+      if (entryConfig.module) {
+        // HACK: will execute many times per-file
+        // HACK: don't hardcode tsout dir
+        inputMap[entryConfig.types] = joinPaths(pkgBundleStruct.pkgDir, 'dist/.tsout', entryConfig.types + '.d.ts')
+      }
+    } else if (entryConfig.module) {
       inputMap[entryAlias] = entryStruct.entrySrcBase + '.d.ts'
     }
   }

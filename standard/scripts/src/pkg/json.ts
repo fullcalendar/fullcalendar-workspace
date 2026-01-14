@@ -50,8 +50,12 @@ export async function writeDistPkgJson(
     const entrySubpath = entryName === '.' ? './index' : entryName
 
     if (entryConfig.module) {
-      const typesPath = entrySubpath.replace(/^\./, typesRoot) + '.d.ts'
       const esmPath = entrySubpath.replace(/^\./, './esm') + esmExtension
+
+      const typesPath =
+        entryConfig.types
+          ? typesRoot + '/' + entryConfig.types + '.d.ts'
+          : entrySubpath.replace(/^\./, typesRoot) + '.d.ts'
 
       exportsMap[entryName] = {
         types: typesPath,

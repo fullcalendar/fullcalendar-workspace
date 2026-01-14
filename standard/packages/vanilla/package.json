@@ -32,6 +32,15 @@
         "module": true,
         "globalVar": "FullCalendar"
       },
+      "./locales-all": {
+        "generator": "./scripts/generate-locales-all.ts",
+        "module": true
+      },
+      "./locales/*": {
+        "generator": "./scripts/generate-locales.ts",
+        "types": "locales/locale",
+        "module": true
+      },
       "./interaction": {
         "module": true
       },

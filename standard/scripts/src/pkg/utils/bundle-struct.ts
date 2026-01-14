@@ -20,6 +20,7 @@ export interface EntryConfig {
   iife?: boolean
   globalVar?: string
   css?: boolean
+  types?: string // relative to src dir, no extension
 }
 
 export interface EntryStruct {
