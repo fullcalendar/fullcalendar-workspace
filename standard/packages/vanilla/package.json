@@ -26,10 +26,15 @@
     "exports": {
       ".": {
         "module": true,
-        "globalVar": "FullCalendar"
+        "globalVar": "FullCalendar",
+        "css": true
       },
       "./all": {
         "module": true,
+        "globalVar": "FullCalendar"
+      },
+      "./all.global": {
+        "iife": true,
         "globalVar": "FullCalendar"
       },
       "./locales-all": {
@@ -58,6 +63,8 @@
       }
     },
     "dependencyGlobalVars": {
+      "@fullcalendar/preact": "",
+      "@fullcalendar/preact/internal": "",
       "preact": "",
       "preact/compat": "",
       "react": "",
