@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "standard-scripts pkg:build && pnpm run dist-prune",
-    "dist-prune": "rm -rf ./dist/skeleton.js",
+    "dist-prune": "rm -rf ./dist/skeleton.js ./dist/themes/*/theme.js ./dist/themes/*/palette.js",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
@@ -70,6 +70,18 @@
       },
       "./list": {
         "module": true
+      },
+      "./themes/classic/index": {
+        "module": true
+      },
+      "./themes/classic/global": {
+        "iife": true
+      },
+      "./themes/classic/theme": {
+        "cssExtract": true
+      },
+      "./themes/classic/palette": {
+        "cssExtract": true
       }
     },
     "dependencyGlobalVars": {

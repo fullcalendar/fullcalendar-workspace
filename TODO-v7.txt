@@ -35,6 +35,14 @@ build note:
     manually before `pn dev`
 
 
+tricky: how to get GLOBAL plugin within vanilla to reference correct react/preact?
+  preact is EMBEDDED into vanilla's all.global.js
+  how does themes/monarch/global.js get at it!?
+  we can export it via FullCalendar.VDom, but how to know which (P)React features to export? just createElement?
+  easyy....
+  we need to export fullcalendar/preact ANYWAY... use that... but wait that's esm
+
+
 have vanilla plugin do themes
 make srcOverride possible
   (for themes/classic/index)
