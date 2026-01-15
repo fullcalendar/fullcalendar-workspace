@@ -1,0 +1,97 @@
+
+:root {
+  /* primary */
+  --fc-monarch-primary: #6750A4;
+  --fc-monarch-primary-foreground: #FFFFFF;
+  --fc-monarch-primary-over: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
+  --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+
+  /* secondary */
+  --fc-monarch-secondary: #EADDFF;
+  --fc-monarch-secondary-foreground: #4F378B;
+  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 95%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
+
+  /* tertiary */
+  --fc-monarch-tertiary: #7D5260;
+  --fc-monarch-tertiary-foreground: #FFFFFF;
+  --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
+  --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+
+  /* calendar content */
+  --fc-monarch-event: var(--fc-monarch-primary);
+  --fc-monarch-event-contrast: var(--fc-monarch-primary-foreground);
+  --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
+  --fc-monarch-now: #B3261E;
+
+  /* controls */
+  --fc-monarch-selected: #625B71;
+  --fc-monarch-selected-foreground: #FFFFFF;
+  --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
+  --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
+  --fc-monarch-outline: #ff9dbb;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: #ffffff;
+  --fc-monarch-faint: #6b72801A;
+  --fc-monarch-muted: #6b728026;
+  --fc-monarch-strong: #6b72804D;
+  --fc-monarch-stronger: #6b728059;
+  --fc-monarch-strongest: #6b728066;
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: #030712;
+  --fc-monarch-faint-foreground: #bebebe;
+  --fc-monarch-muted-foreground: #8d8d8d;
+
+  /* neutral borders */
+  --fc-monarch-border: #dedce1;
+  --fc-monarch-strong-border: #bcbabe;
+}
+
+[data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: #D0BCFF;
+  --fc-monarch-primary-foreground: #381E72;
+
+  /* secondary */
+  --fc-monarch-secondary: #4F378B;
+  --fc-monarch-secondary-foreground: #EADDFF;
+
+  /* tertiary */
+  --fc-monarch-tertiary: #EFB8C8;
+  --fc-monarch-tertiary-foreground: #492532;
+
+  /* calendar content */
+  --fc-monarch-now: #F2B8B5;
+
+  /* controls */
+  --fc-monarch-selected: #CCC2DC;
+  --fc-monarch-selected-foreground: #332D41;
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(26 17 15);
+  --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: #030712;
+  --fc-monarch-faint: #6b72801A;
+  --fc-monarch-muted: #6b728026;
+  --fc-monarch-strong: #6b72804D;
+  --fc-monarch-stronger: #6b728059;
+  --fc-monarch-strongest: #6b728066;
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: #ffffff;
+  --fc-monarch-faint-foreground: #898989;
+  --fc-monarch-muted-foreground: #b0b0b0;
+
+  /* neutral borders */
+  --fc-monarch-border: #323036;
+  --fc-monarch-strong-border: #615d67;
+}
+

@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "standard-scripts pkg:build && pnpm run dist-prune",
-    "dist-prune": "rm -rf ./dist/skeleton.js ./dist/themes/*/theme.js ./dist/themes/*/palette.js",
+    "dist-prune": "rm -rf ./dist/skeleton.js ./dist/themes/*/theme.js ./dist/themes/*/palette.js ./dist/themes/*/palettes/*.js",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
@@ -81,6 +81,27 @@
         "cssExtract": true
       },
       "./themes/classic/palette": {
+        "cssExtract": true
+      },
+      "./themes/monarch/index": {
+        "module": true
+      },
+      "./themes/monarch/theme": {
+        "cssExtract": true
+      },
+      "./themes/monarch/palettes/blue": {
+        "cssExtract": true
+      },
+      "./themes/monarch/palettes/green": {
+        "cssExtract": true
+      },
+      "./themes/monarch/palettes/purple": {
+        "cssExtract": true
+      },
+      "./themes/monarch/palettes/red": {
+        "cssExtract": true
+      },
+      "./themes/monarch/palettes/yellow": {
         "cssExtract": true
       }
     },

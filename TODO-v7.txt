@@ -48,6 +48,10 @@ make srcOverride possible
   (for themes/classic/index)
 
 
+I guess the rollup package.json#exports resolver plugin doesn't work well with wildcards + css,
+  which is why we broke out individual palette colors in @fullcalendar/preact
+
+
 ensure themes files don't use .js extension for imports
 need "module" fields in package.json anymore?
 make "all"-plugins system better
