@@ -16,11 +16,7 @@ import { renderText, ContentContainer } from '../../content-inject/ContentContai
 import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
-import {
-  type ReactElement,
-  createElement,
-  type Ref,
-} from 'react'
+import { type ReactElement, type Ref } from 'react'
 import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { computeFgSegVerticals } from '../event-placement'
