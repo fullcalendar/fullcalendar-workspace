@@ -61,8 +61,8 @@ export function buildEsmOptions(
     input: buildModuleInput(pkgBundleStruct),
     plugins: buildModulePlugins(
       pkgBundleStruct,
-      isDev,
       sourcemap,
+      isDev,
     ),
     output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
     onwarn(warning) {
@@ -103,7 +103,6 @@ export async function buildIifeOptions(
           entryConfig.cssExtract,
           cssMin && (entryConfig.cssMin ?? false),
           !isDev && (entryConfig.cssAsJs ?? false),
-          !isDev && (entryConfig.classNameTransform ?? false),
         ),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn(warning) {
@@ -238,10 +237,11 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
-  isDev: boolean,
   sourcemap: boolean,
+  isDev: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
+  const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -251,6 +251,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
+    transformClassNamesPlugin(!isDev, isPublicMui),
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,
@@ -272,7 +273,6 @@ async function buildIifePlugins(
   cssExtract: boolean | string | undefined,
   cssMin: boolean,
   cssAsJs: boolean,
-  classNameTransform: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
@@ -287,7 +287,7 @@ async function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...(classNameTransform ? [transformClassNamesPlugin(!isDev, isPublicMui)] : []),
+    transformClassNamesPlugin(!isDev, isPublicMui),
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,

@@ -35,6 +35,12 @@ build note:
     manually before `pn dev`
 
 
+have vanilla plugin do themes
+make srcOverride possible
+  (for themes/classic/index)
+
+
+ensure themes files don't use .js extension for imports
 need "module" fields in package.json anymore?
 make "all"-plugins system better
 rename all clean-dist to dist-prune

@@ -22,7 +22,6 @@ export interface EntryConfig {
   cssExtract?: boolean | string
   cssMin?: boolean
   cssAsJs?: boolean
-  classNameTransform?: boolean
   types?: string // relative to src dir, no extension
 }
 

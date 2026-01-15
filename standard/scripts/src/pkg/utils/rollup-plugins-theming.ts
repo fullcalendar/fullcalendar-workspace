@@ -37,7 +37,7 @@ function getThemeName(pathId: string, isPublicMui: boolean): string | undefined 
       return match[1]
     }
   } else {
-    const match = pathId.match(/\/theme-([A-Za-z]+)\//) // brittle
+    const match = pathId.match(/\/themes\/([A-Za-z]+)\/[^\/]+$/) // brittle
     if (match) {
       return match[1]
     }
