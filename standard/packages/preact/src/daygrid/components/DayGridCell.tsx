@@ -20,7 +20,6 @@ import {
   type Ref,
   type ReactNode,
   createRef,
-  Fragment,
 } from 'react'
 import { DayGridMoreLink } from './DayGridMoreLink'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
@@ -149,7 +148,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         willUnmount={options.dayCellWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
+          <>
             <div
               className={joinClassNames(
                 classNames.rel, // puts it above bg-fills, which are positioned on TOP of this component :|
@@ -210,7 +209,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 generateClassName(options.dayCellBottomClass, renderProps),
               )}
             />
-          </Fragment>
+          </>
         )}
       </ContentContainer>
     )
@@ -249,7 +248,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 // -------------------------------------------------------------------------------------------------
 
 function renderTopInner(props: DayCellData): ReactNode {
-  return props.text || <Fragment>&nbsp;</Fragment> // TODO: DRY?
+  return props.text || <>&nbsp;</> // TODO: DRY?
 }
 
 function shouldDisplayMonthStart(date: DateMarker, currentRange: DateRange, dateEnv: DateEnv): boolean {

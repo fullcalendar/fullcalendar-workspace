@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { BaseComponent, setRef } from '../vdom-util'
 import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayData, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
@@ -188,7 +187,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         willUnmount={options.eventWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
+          <>
             {/* hit expander */}
             {Boolean(renderProps.isSelected && isBlock) && (
               <div
@@ -269,7 +268,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 )}
               </div>
             )}
-          </Fragment>
+          </>
         )}
       </ContentContainer>
     )
@@ -298,13 +297,13 @@ StandardEvent.addPropsEquality({
 
 function renderInnerContent(innerProps: EventDisplayData) {
   return (
-    <Fragment>
+    <>
       {innerProps.timeText && (
         <div className={innerProps.timeClass}>{innerProps.timeText}</div>
       )}
       <div className={innerProps.titleClass}>
-        {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
+        {innerProps.event.title || <>&nbsp;</>}
       </div>
-    </Fragment>
+    </>
   )
 }

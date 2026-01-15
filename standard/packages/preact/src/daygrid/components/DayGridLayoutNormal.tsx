@@ -12,7 +12,7 @@ import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { generateClassName } from '../../content-inject/ContentContainer'
-import { Fragment, type Ref } from 'react'
+import { type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
@@ -78,7 +78,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const cellIsNarrow = cellIsMicro || (cellWidth != null && cellWidth <= options.dayNarrowWidth)
 
     return (
-      <Fragment>
+      <>
         {options.dayHeaders && (
           <div className={joinClassNames(
             generateClassName(options.tableHeaderClass, {
@@ -156,7 +156,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           />
         </Scroller>
         <Ruler widthRef={this.handleTotalWidth} />
-      </Fragment>
+      </>
     )
   }
 

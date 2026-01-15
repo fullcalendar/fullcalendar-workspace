@@ -10,7 +10,7 @@ import {
 import classNames from './internal-classnames'
 import { generateClassName } from './internal'
 import { ViewPropsTransformerClass } from './plugin-system-struct'
-import { Fragment, type ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { CalendarData, CalendarToolbarProps } from './reducers/data-types'
 import { CssDimValue, getIsHeightAuto } from './scrollgrid/util'
 import { getUniqueDomId } from './util/dom-manip'
@@ -172,7 +172,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     const children = props.pluginHooks.viewContainerAppends.map(
       (buildAppendContent) => buildAppendContent(props),
     )
-    return <Fragment>{children}</Fragment>
+    return <>{children}</>
   }
 
   componentDidMount() {

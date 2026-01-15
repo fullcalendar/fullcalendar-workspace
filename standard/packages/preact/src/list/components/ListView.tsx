@@ -23,7 +23,7 @@ import { startOfDay } from '@full-ui/headless-calendar'
 import { ViewContainer } from '../../common/ViewContainer'
 import type { ViewProps } from '../../component-util/View'
 import classNames from '../../internal-classnames'
-import { type ReactNode, Fragment, type ReactElement } from 'react'
+import { type ReactNode, type ReactElement } from 'react'
 import { ListDay, ListSeg } from './ListDay'
 
 export interface NoEventsData {
@@ -157,7 +157,7 @@ export class ListView extends DateComponent<ViewProps> {
             }
 
             return (
-              <Fragment>{dayNodes}</Fragment>
+              <>{dayNodes}</>
             )
           }}
         </NowTimer>

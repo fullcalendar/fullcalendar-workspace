@@ -17,7 +17,7 @@ import { afterSize } from '../../component-util/resize-observer'
 import { getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates } from '../../scrollgrid/util'
 import { isArraysEqual } from '../../util/array'
 import { generateClassName } from '../../content-inject/ContentContainer'
-import { Fragment, type Ref, createRef } from 'react'
+import { type Ref, createRef } from 'react'
 import classNames from '../../internal-classnames'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { RowConfig } from '../../daygrid/header-tier'
@@ -188,7 +188,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           : undefined
 
     return (
-      <Fragment>
+      <>
         {options.dayHeaders && (
           <div
             className={joinClassNames(
@@ -318,7 +318,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           }}
         >
           {options.allDaySlot && (
-            <Fragment>
+            <>
               <div
                 role='row'
                 aria-rowindex={firstBodyRowIndex}
@@ -393,7 +393,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 className={joinArrayishClassNames(options.allDayDividerClass)}
                 style={{ zIndex: 2 }}
               />
-            </Fragment>
+            </>
           )}
           <div
             role='row'
@@ -420,7 +420,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               clientHeightRef={this.handleBodyHeight}
             >
               {!simplePrint && (
-                <Fragment>
+                <>
                   <div // canvas
                     role='rowheader'
                     aria-label={options.timedText}
@@ -474,7 +474,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       />
                     )}
                   </div>
-                </Fragment>
+                </>
               )}
             </Scroller>
             <div
@@ -541,7 +541,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   />
 
                   {!simplePrint && (
-                    <Fragment>
+                    <>
                       <div // slot list
                         aria-hidden
                         className={joinClassNames(
@@ -577,7 +577,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           )}
                         />
                       )}
-                    </Fragment>
+                    </>
                   )}
                 </div>
               </Scroller>
@@ -593,7 +593,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           </div>{/* END timed row */}
         </div>{/* END rowgroup */}
         <Ruler widthRef={this.handleTotalWidth} />
-      </Fragment>
+      </>
     )
   }
 

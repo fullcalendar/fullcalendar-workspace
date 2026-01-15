@@ -4,7 +4,7 @@ import { DateProfile } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
 import { getUniqueDomId } from '../util/dom-manip'
 import { formatWithOrdinals } from '../util/misc'
-import { Fragment, type ReactNode, type RefObject } from 'react'
+import { type ReactNode, type RefObject } from 'react'
 import { joinClassNames } from '../util/html'
 import { BaseComponent, setRef } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
@@ -91,7 +91,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
           }
 
           return (
-            <Fragment>
+            <>
               {Boolean(moreCnt) && (
                 <ContentContainer
                   tag='div'
@@ -166,7 +166,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   children={props.popoverContent()}
                 />
               )}
-            </Fragment>
+            </>
           )
         }}
       />

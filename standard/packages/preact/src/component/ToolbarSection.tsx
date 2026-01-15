@@ -1,4 +1,4 @@
-import { createElement, Fragment, type ReactNode, type ReactElement } from 'react'
+import { createElement, type ReactNode, type ReactElement } from 'react'
 import { BaseComponent } from '../vdom-util'
 import { ToolbarWidget, ButtonData } from '../toolbar-struct'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
@@ -147,8 +147,8 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
               : buttonDisplay === 'icon'
                 ? iconNode
                 : buttonDisplay === 'icon-text'
-                  ? (<Fragment>{iconNode}{widget.buttonText}</Fragment>)
-                  : (<Fragment>{widget.buttonText}{iconNode}</Fragment>) // text-icon
+                  ? (<>{iconNode}{widget.buttonText}</>)
+                  : (<>{widget.buttonText}{iconNode}</>) // text-icon
           )}</ContentContainer>
         )
       }

@@ -14,7 +14,7 @@ import { Ruler } from '../../scrollgrid/Ruler'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { SlicedCoordRange } from '../../coord-range'
-import { Fragment, type Ref } from 'react'
+import { type Ref } from 'react'
 import classNames from '../../internal-classnames'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { dayMicroWidth } from '../../daygrid/components/util'
@@ -152,7 +152,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
-      <Fragment>
+      <>
         {/* HEADER
         ---------------------------------------------------------------------------------------*/}
         {options.dayHeaders && (
@@ -253,7 +253,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
-            <Fragment>
+            <>
               <div
                 role='row'
                 className={classNames.flexRow}
@@ -306,7 +306,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 className={joinArrayishClassNames(options.allDayDividerClass)}
                 style={{ zIndex: 2 }}
               />
-            </Fragment>
+            </>
           )}
           {/* SLATS
           -----------------------------------------------------------------------------------------*/}
@@ -384,7 +384,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               </div>
 
               {!simplePrint && (
-                <Fragment>
+                <>
                   <div
                     aria-hidden
                     className={joinClassNames(
@@ -454,13 +454,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
                     />
                   )}
-                </Fragment>
+                </>
               )}
             </div>
           </Scroller>
         </div>
         <Ruler widthRef={this.handleTotalWidth} />
-      </Fragment>
+      </>
     )
   }
 

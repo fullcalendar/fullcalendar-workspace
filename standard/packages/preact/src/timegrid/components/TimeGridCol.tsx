@@ -13,7 +13,6 @@ import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
 import { SegGroup } from '../../seg-hierarchy'
 import classNames from '../../internal-classnames'
-import { Fragment } from 'react'
 import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg'
 import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement'
 import { buildWebPositioning, SegWebRect } from '../seg-web'
@@ -136,7 +135,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         willUnmount={options.dayLaneWillUnmount}
       >
         {() => (
-          <Fragment>
+          <>
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
@@ -162,7 +161,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               </div>
             )}
             {this.renderNowIndicator(props.nowIndicatorSegs)}
-          </Fragment>
+          </>
         )}
       </ContentContainer>
     )
@@ -202,7 +201,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
 
     return (
-      <Fragment>
+      <>
         {segs.map((seg, index) => {
           let { eventRange } = seg
           let { instanceId } = eventRange.instance // guaranteed because it's an fg event
@@ -250,7 +249,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           )
         })}
         {this.renderHiddenGroups(hiddenGroups)}
-      </Fragment>
+      </>
     )
   }
 
@@ -261,7 +260,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props
 
     return (
-      <Fragment>
+      <>
         {hiddenGroups.map((hiddenGroup) => {
           return (
             <TimeGridMoreLink
@@ -281,7 +280,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             />
           )
         })}
-      </Fragment>
+      </>
     )
   }
 
@@ -298,7 +297,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     )
 
     return (
-      <Fragment>
+      <>
         {segs.map((seg, index) => {
           const { eventRange } = seg
           const segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
@@ -332,7 +331,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             </div>
           )
         })}
-      </Fragment>
+      </>
     )
   }
 
@@ -397,7 +396,7 @@ export function renderPlainFgSegs(
   isMirror: boolean,
 ) {
   return (
-    <Fragment>
+    <>
       {sortedFgSegs.map((seg) => {
         let { eventRange } = seg
         let { instanceId } = eventRange.instance
@@ -430,6 +429,6 @@ export function renderPlainFgSegs(
           </div>
         )
       })}
-    </Fragment>
+    </>
   )
 }

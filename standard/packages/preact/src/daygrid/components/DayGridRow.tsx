@@ -19,7 +19,6 @@ import { ViewContext } from '../../ViewContext'
 import {
   type ReactElement,
   createElement,
-  Fragment,
   type Ref,
 } from 'react'
 import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
@@ -214,9 +213,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               hiddenSegs={hiddenSegsByCol[col]}
               fgLiquidHeight={fgLiquidHeight}
               fg={(
-                <Fragment>
+                <>
                   {normalFgNodes}
-                </Fragment>
+                </>
               )}
               eventDrag={props.eventDrag}
               eventResize={props.eventResize}
@@ -364,7 +363,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
     }
 
-    return createElement(Fragment, {}, nodes)
+    return <>{nodes}</>
   }
 
   handleRootEl = (rootEl: HTMLElement) => {

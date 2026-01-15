@@ -1,5 +1,4 @@
 import { createPlugin, PluginDef, CalendarOptions, DayCellData, joinClassNames } from '../../index'
-import { Fragment } from 'react'
 
 // // ambient types (tsc strips during build because of {})
 // import {} from '@fullcalendar/timeline'
@@ -292,7 +291,7 @@ export default createPlugin({
     rowEventBeforeContent: (data) => (
       (!data.isStart && !data.isNarrow) ? filledRightTriangle(
         'size-full rotate-180 [[dir=rtl]_&]:rotate-0 text-(--fc-event-color)',
-      ) : <Fragment />
+      ) : <></>
     ),
     rowEventAfterClass: (data) => joinClassNames(
       data.isEndResizable && joinClassNames(
@@ -304,7 +303,7 @@ export default createPlugin({
     rowEventAfterContent: (data) => (
       (!data.isEnd && !data.isNarrow) ? filledRightTriangle(
         'size-full [[dir=rtl]_&]:rotate-180 text-(--fc-event-color)',
-      ) : <Fragment />
+      ) : <></>
     ),
     rowEventInnerClass: (data) => joinClassNames(
       'flex flex-row items-center',
@@ -382,7 +381,7 @@ export default createPlugin({
     ),
     dayHeaderInnerClass: "group mt-2 mx-2 flex flex-col items-center outline-none",
     dayHeaderContent: (data) => (
-      <Fragment>
+      <>
         {data.weekdayText && (
           <div
             className="text-xs uppercase text-(--fc-monarch-muted-foreground)"
@@ -402,7 +401,7 @@ export default createPlugin({
             )}
           >{data.dayNumberText}</div>
         )}
-      </Fragment>
+      </>
     ),
 
     /* Day Cell

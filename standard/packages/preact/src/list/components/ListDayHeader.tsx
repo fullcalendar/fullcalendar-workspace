@@ -6,7 +6,6 @@ import { formatDayString } from '@full-ui/headless-calendar'
 import type { ViewSpec } from '../../structs/view-spec'
 import { WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from '../../util/date-format'
 import classNames from '../../internal-classnames'
-import { Fragment } from 'react'
 import { ListDayHeaderData } from '../structs'
 import { ListDayHeaderInner } from "./ListDayHeaderInner";
 
@@ -45,7 +44,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
         willUnmount={options.listDayHeaderWillUnmount}
       >
         {() => (
-          <Fragment>
+          <>
             {Boolean(listDayFormat) && (
               <ListDayHeaderInner
                 dayDate={dayDate}
@@ -64,7 +63,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
                 level={1}
               />
             )}
-          </Fragment>
+          </>
         )}
       </ContentContainer>
     )

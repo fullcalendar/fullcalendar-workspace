@@ -7,7 +7,7 @@ import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { getEventRangeMeta } from '../../component-util/event-rendering'
 import { SlicedCoordRange } from '../../coord-range'
 import { StandardEvent } from '../../common/StandardEvent'
-import { type RefObject, Fragment } from 'react'
+import { type RefObject } from 'react'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
 
@@ -47,7 +47,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
         alignParentTop={props.alignParentTop}
         dateSpanProps={props.dateSpanProps}
         popoverContent={() => (
-          <Fragment>
+          <>
             {props.segs.map((seg) => {
               let { eventRange } = seg
               let { instanceId } = eventRange.instance
@@ -78,7 +78,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                 </div>
               )
             })}
-          </Fragment>
+          </>
         )}
       />
     )
