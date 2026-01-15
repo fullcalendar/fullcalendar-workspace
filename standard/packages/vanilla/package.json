@@ -17,7 +17,8 @@
     "handlebars": "^4.1.2"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build",
+    "build": "standard-scripts pkg:build && pnpm run dist-prune",
+    "dist-prune": "rm -rf ./dist/skeleton.js",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
@@ -36,6 +37,15 @@
       "./all.global": {
         "iife": true,
         "globalVar": "FullCalendar"
+      },
+      "./skeleton": {
+        "cssExtract": true
+      },
+      "./internal": {
+        "module": true
+      },
+      "./internal-classnames": {
+        "module": true
       },
       "./locales-all": {
         "generator": "./scripts/generate-locales-all.ts",

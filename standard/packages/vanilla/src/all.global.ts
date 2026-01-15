@@ -1,2 +1,3 @@
 
-export * from './all'
+// for side-effects
+import '@fullcalendar/preact/all'
