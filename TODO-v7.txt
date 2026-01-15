@@ -35,6 +35,13 @@ build note:
     manually before `pn dev`
 
 
+need "module" fields in package.json anymore?
+make "all"-plugins system better
+rename all clean-dist to dist-prune
+remove most .styles.js files... only web-component needs it
+  do types for .styles.js files?
+
+
 ensure preact/plugin files don't import any types
 merge CalendarOptions
 get rid of each plugin's global.ts

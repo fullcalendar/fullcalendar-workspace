@@ -43,7 +43,7 @@ export async function writeDistPkgJson(
   }
 
   const sideEffects: string[] = []
-  let hasAnyIife = false
+  let firstCdnPath: string | undefined
 
   for (const entryName in entryConfigMap) {
     const entryConfig = entryConfigMap[entryName]
@@ -68,38 +68,28 @@ export async function writeDistPkgJson(
     }
 
     if (entryConfig.iife) {
-      hasAnyIife = true
+      sideEffects.push(entrySubpath + iifeExtension)
 
-      const iifePath = entrySubpath + iifeExtension
-      const iifeMinPath = entrySubpath + '.min' + iifeExtension
+      if (!isDev) {
+        sideEffects.push(entrySubpath + '.min' + iifeExtension)
 
-      // HACK (see clean-dist)
-      // matches "./palettes/"" or "./palette.css" (classic)
-      const isThemePalette = pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette')
-      const disableIifeMinAndJsStyles = pkgAnalysis.isPublicMui || isThemePalette
-
-      if (!disableIifeMinAndJsStyles) { // HACK (see clean-dist)
-        sideEffects.push(iifePath, iifeMinPath)
+        if (!firstCdnPath) {
+          firstCdnPath = entrySubpath + '.min' + iifeExtension
+        }
       }
+    }
 
-      if (entryConfig.css) { // only works for iife (for now)
-        let entrySubpathOverride = ''
-        if (pkgAnalysis.isPublicTheme) {
-          if (!isThemePalette) {
-            entrySubpathOverride = './theme'
-          }
-        } else if (!pkgAnalysis.isPublicMui) { // core css
-          entrySubpathOverride = './skeleton'
-        }
+    if (entryConfig.cssExtract) {
+      const cssEntryName =
+        typeof entryConfig.cssExtract === 'string'
+          ? entryConfig.cssExtract
+          : entryName
 
-        const cssPath = (entrySubpathOverride || entrySubpath) + '.css'
-        exportsMap[cssPath] = cssPath
+      exportsMap[cssEntryName + '.css'] = cssEntryName + '.css'
 
-        if (!disableIifeMinAndJsStyles) { // HACK (see clean-dist)
-          const cssJsPath = (entrySubpathOverride || entrySubpath) + '.styles.js'
-          exportsMap[(entrySubpathOverride || entrySubpath) + '.styles'] = cssJsPath
-          sideEffects.push(cssJsPath)
-        }
+      if (entryConfig.cssAsJs) {
+        exportsMap[cssEntryName + '.styles'] = cssEntryName + '.styles.js'
+        sideEffects.push(cssEntryName + '.styles.js')
       }
     }
   }
@@ -116,10 +106,10 @@ export async function writeDistPkgJson(
     module: './esm/index' + esmExtension,
     main: './esm/index' + esmExtension,
     ...(
-      hasAnyIife
+      firstCdnPath
         ? cdnFields.reduce(
             (props, cdnField) => Object.assign(props, {
-              [cdnField]: './global.min' + iifeExtension,
+              [cdnField]: firstCdnPath,
             }),
             {},
           )

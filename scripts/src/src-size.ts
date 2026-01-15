@@ -13,9 +13,9 @@ export default async function(this: ScriptContext) {
     const pkgAnalysis = analyzePkg(pkgDir)
 
     if (pkgJson.buildConfig) {
-      if (pkgAnalysis.isBundle) {
-        bundles[pkgJson.name] = Object.keys(pkgJson.dependencies)
-      } else if (!pkgAnalysis.isTests) {
+      bundles[pkgJson.name] = Object.keys(pkgJson.dependencies)
+
+      if (!pkgAnalysis.isTests) {
         pkgSrcsMap[pkgJson.name] = await getPkgSrcs(pkgDir)
       }
     }

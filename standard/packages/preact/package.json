@@ -22,7 +22,8 @@
     "react-dom": "^19.2.3"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build",
+    "build": "standard-scripts pkg:build && pnpm run dist-prune",
+    "dist-prune": "rm -rf ./dist/skeleton.js",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
@@ -34,6 +35,12 @@
       },
       "./all": {
         "module": true
+      },
+      "./all.global": {
+        "iife": true
+      },
+      "./skeleton": {
+        "cssExtract": true
       },
       "./internal": {
         "module": true

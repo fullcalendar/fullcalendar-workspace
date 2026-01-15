@@ -54,12 +54,16 @@ const replacePlugin = cjsInterop(replacePluginLib)
 
 export function buildEsmOptions(
   pkgBundleStruct: PkgBundleStruct,
+  isDev: boolean,
   sourcemap: boolean,
-  minifyCss: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
+    plugins: buildModulePlugins(
+      pkgBundleStruct,
+      isDev,
+      sourcemap,
+    ),
     output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
     onwarn(warning) {
       if (warning.code !== 'CIRCULAR_DEPENDENCY') {
@@ -72,7 +76,9 @@ export function buildEsmOptions(
 export async function buildIifeOptions(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
-  minify: boolean,
+  isDev: boolean,
+  jsMin: boolean,
+  cssMin: boolean,
   sourcemap: boolean,
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
@@ -85,16 +91,19 @@ export async function buildIifeOptions(
     const entryStruct = entryStructMap[entryAlias]
     const entryConfig = entryConfigMap[entryStruct.entryGlob]
 
-    if (entryConfig.iife) {
+    if (entryConfig.iife || entryConfig.cssExtract) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
         plugins: await buildIifePlugins(
           entryStruct,
           pkgBundleStruct,
           sourcemap,
-          /* extractCss = */ Boolean(entryConfig.css),
-          minify,
-          /* isPalette = */ /palettes?/.test(entryAlias), // brittle
+          isDev,
+          jsMin && (entryConfig.iife ?? false),
+          entryConfig.cssExtract,
+          cssMin && (entryConfig.cssMin ?? false),
+          !isDev && (entryConfig.cssAsJs ?? false),
+          !isDev && (entryConfig.classNameTransform ?? false),
         ),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn(warning) {
@@ -229,11 +238,10 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
+  isDev: boolean,
   sourcemap: boolean,
-  minifyCss: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const { isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -243,8 +251,11 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minifyCss, isPublicMui)] : []),
-    ...buildJsPlugins(pkgBundleStruct, /* extractCss = */ false, minifyCss),
+    ...buildJsPlugins(
+        pkgBundleStruct,
+        isDev,
+        false, // cssExtract
+      ),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -256,12 +267,15 @@ async function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
-  extractCss: boolean,
-  minify: boolean,
-  isPalette: boolean,
+  isDev: boolean,
+  jsMin: boolean,
+  cssExtract: boolean | string | undefined,
+  cssMin: boolean,
+  cssAsJs: boolean,
+  classNameTransform: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const { isTests, isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
+  const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -273,23 +287,15 @@ async function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
+    ...(classNameTransform ? [transformClassNamesPlugin(!isDev, isPublicMui)] : []),
     ...buildJsPlugins(
-      pkgBundleStruct,
-      extractCss
-        ? isPublicTheme
-          ? isPalette
-            ? true // keep given name
-            : 'theme.css'
-          : (isTests || isPublicMui)
-            ? true // keep given name
-            : 'skeleton.css' // core css
-        : false,
-      minify,
-    ),
+        pkgBundleStruct,
+        isDev,
+        cssExtract,
+      ),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
-    ...(extractCss ? [await extractCssSeparatelyPlugin(minify, isPublicTheme, isPublicMui)] : []),
-    ...(minify ? [minifyJsSeparatelyPlugin()] : []),
+    ...((cssMin || cssAsJs) ? [await extractCssSeparatelyPlugin(cssMin, cssAsJs)] : []),
+    ...(jsMin ? [minifyJsSeparatelyPlugin()] : []),
   ]
 }
 
@@ -312,17 +318,25 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minifyCss: boolean): Plugin[] {
+function buildJsPlugins(
+  pkgBundleStruct: PkgBundleStruct,
+  isDev: boolean,
+  cssExtract: boolean | string | undefined,
+): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minifyCss)
+    return buildNormalJsPlugins(pkgBundleStruct, isDev, cssExtract)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean | string, minifyCss: boolean): Plugin[] {
+function buildNormalJsPlugins(
+  pkgBundleStruct: PkgBundleStruct,
+  isDev: boolean,
+  cssExtract: boolean | string | undefined,
+): Plugin[] {
   const { pkgJson } = pkgBundleStruct
 
   return [
@@ -331,8 +345,8 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     }),
     commonjsPlugin(), // for React :(
     cssPlugin({
-      extract: extractCss,
-      minify: minifyCss,
+      extract: cssExtract,
+      minifyClassNames: !isDev,
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'], // affect all "values" below
@@ -347,9 +361,9 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
       preventAssignment: true,
       values: {
         'process.env.NODE_ENV': JSON.stringify(
-          minifyCss // FIX: unreliable standin for dev-mode
-            ? 'production'
-            : 'development'
+          isDev
+            ? 'development'
+            : 'production'
         ),
       },
     }),
@@ -385,10 +399,10 @@ function buildTestJsPlugins(): Plugin[] {
 
 function cssPlugin(options?: {
   extract?: boolean | string,
-  minify?: boolean,
+  minifyClassNames?: boolean,
   inject?: boolean,
 }): Plugin {
-  const { extract, minify, inject } = options || {}
+  const { extract, minifyClassNames, inject } = options || {}
 
   return postcssPlugin({
     config: {
@@ -397,7 +411,7 @@ function cssPlugin(options?: {
     },
     modules: {
       generateScopedName(localName: string, resourcePath: string) {
-        return minify
+        return minifyClassNames
           ? 'fc-' + hashGenerator.generate(localName + resourcePath)
           : 'f-' + localName
       },

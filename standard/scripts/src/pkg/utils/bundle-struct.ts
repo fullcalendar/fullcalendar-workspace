@@ -19,7 +19,10 @@ export interface EntryConfig {
   module?: boolean
   iife?: boolean
   globalVar?: string
-  css?: boolean
+  cssExtract?: boolean | string
+  cssMin?: boolean
+  cssAsJs?: boolean
+  classNameTransform?: boolean
   types?: string // relative to src dir, no extension
 }
 
