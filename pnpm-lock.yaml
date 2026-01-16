@@ -377,7 +377,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/cli':
         specifier: ~13.3.10
         version: 13.3.11(chokidar@3.6.0)
@@ -474,7 +474,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^14.1.0
-        version: 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.7.4)
+        version: 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.7.4)
       '@angular/cli':
         specifier: ~14.1.0
         version: 14.1.3(chokidar@3.6.0)
@@ -2730,6 +2730,9 @@ importers:
       postcss-selector-parser:
         specifier: ^7.1.1
         version: 7.1.1
+      rollup-plugin-iife-split:
+        specifier: ^0.0.1
+        version: 0.0.1(rollup@2.79.2)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^12.0.0
@@ -19773,6 +19776,11 @@ packages:
       rollup: ^2.48.0
       typescript: ^4.2.4
 
+  rollup-plugin-iife-split@0.0.1:
+    resolution: {integrity: sha512-sY8jn+bhFqexNKkHVDSnmBWYR4MgLS+hHaskHKTUvq3hf8TvcJQRkvobYVcfzK7AEyuNK0Z3NxqUQlP8KEpxag==}
+    peerDependencies:
+      rollup: ^3.0.0 || ^4.0.0
+
   rollup-plugin-postcss@2.9.0:
     resolution: {integrity: sha512-Y7qDwlqjZMBexbB1kRJf+jKIQL8HR6C+ay53YzN+nNJ64hn1PNZfBE3c61hFUhD//zrMwmm7uBW30RuTi+CD0w==}
     engines: {node: '>=10'}
@@ -22913,11 +22921,11 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)':
+  '@angular-devkit/build-angular@13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)':
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -22978,9 +22986,9 @@ snapshots:
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
       webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.97.0)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
       esbuild: 0.14.22
       karma: 6.3.20
@@ -23000,11 +23008,11 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.7.4)':
+  '@angular-devkit/build-angular@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.7.4)':
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1(esbuild@0.15.5)))(webpack@5.76.1(esbuild@0.15.5))
       '@angular-devkit/core': 14.2.13(chokidar@3.6.0)
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       '@babel/core': 7.18.10
@@ -23063,9 +23071,9 @@ snapshots:
       typescript: 4.7.4
       webpack: 5.76.1(esbuild@0.15.5)
       webpack-dev-middleware: 5.3.3(webpack@5.76.1(esbuild@0.15.5))
-      webpack-dev-server: 4.11.0(webpack@5.76.1)
+      webpack-dev-server: 4.11.0(webpack@5.97.0)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.15.5))
     optionalDependencies:
       esbuild: 0.15.5
       karma: 6.4.4
@@ -23687,21 +23695,21 @@ snapshots:
       - vite
       - webpack-cli
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.97.0)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))':
+  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1(esbuild@0.15.5)))(webpack@5.76.1(esbuild@0.15.5))':
     dependencies:
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.15.5)
-      webpack-dev-server: 4.11.0(webpack@5.76.1)
+      webpack-dev-server: 4.11.0(webpack@5.97.0)
     transitivePeerDependencies:
       - chokidar
 
@@ -36299,10 +36307,6 @@ snapshots:
     dependencies:
       acorn: 7.4.1
 
-  acorn-jsx@5.3.2(acorn@8.14.0):
-    dependencies:
-      acorn: 8.14.0
-
   acorn-jsx@5.3.2(acorn@8.15.0):
     dependencies:
       acorn: 8.15.0
@@ -40155,8 +40159,8 @@ snapshots:
 
   espree@9.6.1:
     dependencies:
-      acorn: 8.14.0
-      acorn-jsx: 5.3.2(acorn@8.14.0)
+      acorn: 8.15.0
+      acorn-jsx: 5.3.2(acorn@8.15.0)
       eslint-visitor-keys: 3.4.3
 
   esprima@4.0.1: {}
@@ -41182,7 +41186,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.2.1
     optionalDependencies:
-      webpack: 5.76.1(esbuild@0.15.5)
+      webpack: 5.76.1(esbuild@0.14.22)
     optional: true
 
   html-webpack-plugin@5.6.3(webpack@5.94.0):
@@ -47522,6 +47526,12 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.26.2
 
+  rollup-plugin-iife-split@0.0.1(rollup@2.79.2):
+    dependencies:
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+      rollup: 2.79.2
+
   rollup-plugin-postcss@2.9.0:
     dependencies:
       chalk: 4.1.2
@@ -48902,7 +48912,7 @@ snapshots:
 
   terminal-columns@1.4.1: {}
 
-  terser-webpack-plugin@5.3.10(esbuild@0.14.22)(webpack@5.76.1(esbuild@0.14.22)):
+  terser-webpack-plugin@5.3.10(esbuild@0.14.22)(webpack@5.76.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -48913,7 +48923,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.14.22
 
-  terser-webpack-plugin@5.3.10(esbuild@0.15.5)(webpack@5.76.1):
+  terser-webpack-plugin@5.3.10(esbuild@0.15.5)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -49019,7 +49029,7 @@ snapshots:
   terser@5.29.1:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.14.0
+      acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -50214,14 +50224,14 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.15.5)
 
-  webpack-dev-middleware@5.3.4(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-middleware@5.3.4(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
       mime-types: 2.1.35
       range-parser: 1.2.1
       schema-utils: 4.2.0
-      webpack: 5.76.1(esbuild@0.14.22)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   webpack-dev-middleware@5.3.4(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
@@ -50239,7 +50249,7 @@ snapshots:
       mime-types: 2.1.35
       range-parser: 1.2.1
       schema-utils: 4.2.0
-      webpack: 5.76.1(esbuild@0.15.5)
+      webpack: 5.76.1(esbuild@0.14.22)
 
   webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.20.1)):
     dependencies:
@@ -50311,7 +50321,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.96.1(esbuild@0.24.0)
 
-  webpack-dev-server@4.11.0(webpack@5.76.1):
+  webpack-dev-server@4.11.0(webpack@5.97.0):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -50340,8 +50350,8 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack: 5.76.1(esbuild@0.15.5)
-      webpack-dev-middleware: 5.3.4(webpack@5.76.1)
+      webpack: 5.97.0(webpack-cli@4.10.0)
+      webpack-dev-middleware: 5.3.4(webpack@5.76.1(esbuild@0.15.5))
       ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
@@ -50505,7 +50515,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.97.0):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -50534,8 +50544,8 @@ snapshots:
       sockjs: 0.3.24
       spdy: 4.0.2
       strip-ansi: 7.1.0
-      webpack: 5.97.0(webpack-cli@4.10.0)
-      webpack-dev-middleware: 5.3.4(webpack@5.76.1(esbuild@0.14.22))
+      webpack: 5.76.1(esbuild@0.14.22)
+      webpack-dev-middleware: 5.3.4(webpack@5.76.1)
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'
@@ -50644,10 +50654,10 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5)):
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.15.5)
+      webpack: 5.76.1(esbuild@0.14.22)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
@@ -50665,10 +50675,10 @@ snapshots:
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.96.1)
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.14.22)
+      webpack: 5.76.1(esbuild@0.15.5)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.97.0)
 
@@ -50725,7 +50735,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.14.22)(webpack@5.76.1(esbuild@0.14.22))
+      terser-webpack-plugin: 5.3.10(esbuild@0.14.22)(webpack@5.76.1)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
@@ -50756,7 +50766,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.15.5)(webpack@5.76.1)
+      terser-webpack-plugin: 5.3.10(esbuild@0.15.5)(webpack@5.76.1(esbuild@0.15.5))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
@@ -50892,7 +50902,7 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
-      acorn: 8.14.0
+      acorn: 8.15.0
       browserslist: 4.28.1
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1

@@ -178,55 +178,6 @@ export function copyCssPlugin(options: CopyCssOptions): Plugin {
   }
 }
 
-// Simple Global-Name Dot Assignment
-// -------------------------------------------------------------------------------------------------
-// TODO: revive if outputted IIFE wrapper looks weird
-
-export function simpleDotAssignment(): Plugin {
-  return {
-    name: 'simple-dot-assignment',
-    outputOptions(outputOptions) {
-      const { name } = outputOptions
-
-      if (name && name.includes('.')) {
-        return {
-          ...outputOptions,
-          name: encodeDotName(name),
-        }
-      }
-    },
-    renderChunk(code, chunk, outputOptions) {
-      const { name } = outputOptions
-
-      if (name && isEncodedDotName(name)) {
-        return replaceDotAssignments(code)
-      }
-    },
-  }
-}
-
-function encodeDotName(dotName: string): string {
-  return '__dot_name_' + dotName.replaceAll('.', '_') + '__'
-}
-
-function isEncodedDotName(name: string): boolean {
-  return name.startsWith('__dot_name_')
-}
-
-function replaceDotAssignments(code: string): string {
-  let replaced = false
-
-  code = code.replace(/var __dot_name_(\w+)__ =/, (whole, dotName) => {
-    replaced = true
-    return dotName.replaceAll('_', '.') + ' ='
-  })
-
-  if (!replaced) {
-    throw new Error('Error transforming dot assignment')
-  }
-
-  return code
-}
 
 // Minify
 // -------------------------------------------------------------------------------------------------

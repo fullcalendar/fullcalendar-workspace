@@ -35,7 +35,7 @@ import {
   externalizePkgsPlugin,
   generatedContentPlugin,
   massageDtsPlugin,
-  rerootPlugin
+  rerootPlugin,
 } from './rollup-plugins.ts'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
@@ -182,9 +182,11 @@ function buildGlobalOutputOptions(
   sourcemapOutput: boolean,
 ): OutputOptions {
   return {
+    // format: 'esm', // for DEBUGGING as ESM
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: '[name].js',
-    globals: pkgBundleStruct.globalConfig?.externalGlobals || {},
+    // chunkFileNames: 'global-chunks/[name]-[hash]' + esmExtension, // for DEBUGGING as ESM
+    globals: pkgBundleStruct.globalConfig?.externalGlobals || {}, // comment for DEBUGGING as ESM
     sourcemap: sourcemapOutput,
     // the iifeSplit plugin fills in the rest
   }
@@ -248,7 +250,6 @@ async function buildGlobalPlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap)
     ),
-    // simpleDotAssignment(), // need anymore?
     transformClassNamesPlugin(!isDev, isPublicMui),
     ...buildJsPlugins(
         pkgBundleStruct,
@@ -380,6 +381,7 @@ function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOpt
     primaryGlobal: globalConfig.primaryGlobal || '',
     secondaryProps,
     sharedProp: globalConfig.sharedProp || '',
+    // debug: true,
   }
 }
 

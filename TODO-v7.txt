@@ -35,6 +35,18 @@ build note:
     manually before `pn dev`
 
 
+
+Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
+  to avoid lots of duplicate css files in node_modules
+  might make for better NPM stats
+    transitive deps dont get download stats; when we move to transpiling, no transitive deps anyway
+    (so, if we started with transitive deps, then removed, DL count would look like it went down)
+
+
+why does outputted object destructuring look weird?:
+ Object.assign(Object.assign({}
+
+
 kill all dependencyGlobalVars
 
 
