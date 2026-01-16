@@ -1,8 +1,6 @@
 
-import '@fullcalendar/preact/skeleton.css'
-
 import { Calendar } from './Calendar'
 
-export { Calendar, Calendar as default }
-
-// TODO: export lots of types too!
+export * from '@fullcalendar/preact'
+export default Calendar
+export { Calendar }

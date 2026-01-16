@@ -1,5 +1,5 @@
 
-import themePlugin from '@fullcalendar/preact/themes/classic/index'
-import { globalPlugins } from '@fullcalendar/preact'
+import themePlugin from '@fullcalendar/preact/themes/classic'
+import { globalPlugins } from '../../all.global'
 
 globalPlugins.push(themePlugin)

@@ -62,7 +62,7 @@ export async function writeDistPkgJson(
         default: esmPath,
       }
 
-      if (entryConfig.iife) { // has side effects?
+      if (entryConfig.sideEffects) {
         sideEffects.push(esmPath)
       }
     }

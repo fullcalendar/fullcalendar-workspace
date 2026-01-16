@@ -38,10 +38,8 @@
         "module": true
       },
       "./all": {
-        "module": true
-      },
-      "./all.global": {
-        "iife": true
+        "module": true,
+        "sideEffects": true
       },
       "./skeleton": {
         "cssExtract": true
@@ -74,7 +72,8 @@
       "./list": {
         "module": true
       },
-      "./themes/classic/index": {
+      "./themes/classic": {
+        "src": "themes/classic/index",
         "module": true
       },
       "./themes/classic/theme": {
@@ -83,7 +82,8 @@
       "./themes/classic/palette": {
         "cssExtract": true
       },
-      "./themes/monarch/index": {
+      "./themes/monarch": {
+        "src": "themes/monarch/index",
         "module": true
       },
       "./themes/monarch/theme": {
@@ -104,13 +104,6 @@
       "./themes/monarch/palettes/yellow": {
         "cssExtract": true
       }
-    },
-    "dependencyGlobalVars": {
-      "preact": "",
-      "preact/compat": "",
-      "react": "",
-      "react-dom": "",
-      "react-dom/client": ""
     }
   },
   "publishConfig": {

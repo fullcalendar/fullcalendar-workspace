@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/preact/'
+export { default } from '@fullcalendar/preact'

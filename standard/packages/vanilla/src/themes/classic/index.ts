@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/preact/themes/classic/index'
+export { default } from '@fullcalendar/preact/themes/classic'

@@ -11,8 +11,6 @@
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "noUnusedLocals": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
     "strictBindCallApply": true,
     "skipLibCheck": true,
     "sourceMap": true,

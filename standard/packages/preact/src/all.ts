@@ -6,8 +6,6 @@ import timeGridPlugin from './timegrid'
 import listPlugin from './list'
 import multiMonthPlugin from './multimonth'
 
-// has side effects! mark in package.json!
-
 globalPlugins.push(
   interactionPlugin,
   dayGridPlugin,

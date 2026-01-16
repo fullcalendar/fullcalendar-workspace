@@ -70,10 +70,11 @@ export function externalizePathsPlugin(options: ExteralizePathsOptions): Plugin 
 export interface ExternalizePkgsOptions {
   pkgNames: string[],
   moduleSideEffects?: boolean
+  debug?: true
 }
 
 export function externalizePkgsPlugin(
-  { pkgNames, moduleSideEffects }: ExternalizePkgsOptions,
+  { pkgNames, moduleSideEffects, debug }: ExternalizePkgsOptions,
 ): Plugin {
   return {
     name: 'externalize-pkgs',
@@ -81,10 +82,21 @@ export function externalizePkgsPlugin(
       if (!isImportRelative(importId)) {
         for (const pkgName of pkgNames) {
           if (!pkgName.startsWith('@full-ui/')) { // HACK
-            if (importId === pkgName || importId.startsWith(pkgName + '/')) {
+            if (
+              importId === pkgName ||
+              // HACK: for non-fullcalendar packages, ensure all subpaths marked as external too
+              (!pkgName.startsWith('@fullcalendar/') && importId.startsWith(pkgName + '/'))
+            ) {
+              if (debug && !importId.startsWith('/')) {
+                console.log('DID externalize', importId)
+              }
               return { id: importId, external: true, moduleSideEffects }
             }
           }
+        }
+
+        if (debug && !importId.startsWith('/')) {
+          console.log('did NOT externalize', importId)
         }
       }
     },

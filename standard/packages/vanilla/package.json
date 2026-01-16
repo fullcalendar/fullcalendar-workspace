@@ -26,17 +26,14 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "module": true,
-        "globalVar": "FullCalendar",
-        "css": true
+        "module": true
       },
       "./all": {
         "module": true,
-        "globalVar": "FullCalendar"
+        "sideEffects": true
       },
       "./all.global": {
-        "iife": true,
-        "globalVar": "FullCalendar"
+        "global": "FullCalendar"
       },
       "./skeleton": {
         "cssExtract": true
@@ -71,11 +68,21 @@
       "./list": {
         "module": true
       },
-      "./themes/classic/index": {
+      "./themes/classic": {
+        "src": "themes/classic/index",
         "module": true
       },
       "./themes/classic/global": {
-        "iife": true
+        "external": [
+          "react",
+          "react-dom",
+          "@fullcalendar/preact",
+          "@fullcalendar/preact/internal"
+        ],
+        "globals": {
+          "@fullcalendar/preact": "FullCalendar.Preact",
+          "react/jsx-runtime": "FullCalendar.JSXRuntime"
+        }
       },
       "./themes/classic/theme": {
         "cssExtract": true
@@ -83,11 +90,21 @@
       "./themes/classic/palette": {
         "cssExtract": true
       },
-      "./themes/monarch/index": {
+      "./themes/monarch": {
+        "src": "themes/monarch/index",
         "module": true
       },
       "./themes/monarch/global": {
-        "iife": true
+        "iife": true,
+        "external": [
+          "react",
+          "react-dom",
+          "@fullcalendar/preact"
+        ],
+        "globals": {
+          "@fullcalendar/preact": "FullCalendar.Preact",
+          "react/jsx-runtime": "FullCalendar.JSXRuntime"
+        }
       },
       "./themes/monarch/theme": {
         "cssExtract": true
@@ -95,15 +112,6 @@
       "./themes/monarch/palettes/*": {
         "cssExtract": true
       }
-    },
-    "dependencyGlobalVars": {
-      "@fullcalendar/preact": "",
-      "@fullcalendar/preact/internal": "",
-      "preact": "",
-      "preact/compat": "",
-      "react": "",
-      "react-dom": "",
-      "react-dom/client": ""
     }
   },
   "publishConfig": {

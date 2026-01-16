@@ -35,6 +35,25 @@ build note:
     manually before `pn dev`
 
 
+maybe don't do "*" expansion of vanilla theme css palettes either
+
+
+remove createElement from *Content hooks
+
+
+can remove key?: and ref?: now too?
+
+
+convert all Fragments over to </>
+i think that will cause it to be used from jsx-runtime
+
+	var reactJsxRuntime_production = {
+		Fragment: Fragment$1,
+		jsx: jsx,
+		jsxs: jsxs
+	};
+
+
 tricky: how to get GLOBAL plugin within vanilla to reference correct react/preact?
   preact is EMBEDDED into vanilla's all.global.js
   how does themes/monarch/global.js get at it!?

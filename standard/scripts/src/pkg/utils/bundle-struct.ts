@@ -10,7 +10,6 @@ export interface PkgBundleStruct {
   pkgJson: any
   entryConfigMap: EntryConfigMap
   entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
-  dependencyGlobalVarMap: GlobalVarMap
   miscWatchPaths: string[]
 }
 
@@ -18,11 +17,15 @@ export interface EntryConfig {
   generator?: string
   module?: boolean
   iife?: boolean
-  globalVar?: string
+  global?: string // own global
+  external?: string[]
+  globals?: { [dep: string]: string } // globals for externals
   cssExtract?: boolean | string
   cssMin?: boolean
   cssAsJs?: boolean
-  types?: string // relative to src dir, no extension
+  src?: string // relative to src dir, no loeading "./", no extension
+  types?: string // relative to src dir, no leading "./", no extension
+  sideEffects?: boolean
 }
 
 export interface EntryStruct {
@@ -58,7 +61,6 @@ export async function buildPkgBundleStruct(
   const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
-  const dependencyGlobalVarMap: GlobalVarMap = buildConfig.dependencyGlobalVars || {}
   const miscWatchPaths: string[] = []
 
   await Promise.all(
@@ -66,13 +68,13 @@ export async function buildPkgBundleStruct(
       const entryConfig = entryConfigMap[entryGlob]
       const newEntryStructMap = entryConfig.generator ?
         await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
-        await unglobEntryStructMap(pkgDir, entryGlob)
+        await unglobEntryStructMap(pkgDir, entryGlob, entryConfig.src)
 
       Object.assign(entryStructMap, newEntryStructMap)
     }),
   )
 
-  return { pkgDir, pkgJson, entryConfigMap, entryStructMap, dependencyGlobalVarMap, miscWatchPaths }
+  return { pkgDir, pkgJson, entryConfigMap, entryStructMap, miscWatchPaths }
 }
 
 // Source-File Entrypoints
@@ -81,10 +83,12 @@ export async function buildPkgBundleStruct(
 async function unglobEntryStructMap(
   pkgDir: string,
   entryGlob: string,
+  maybeSrcAlias: string | undefined,
 ): Promise<EntryStructMap> {
+  const srcGlob = maybeSrcAlias ? `./${maybeSrcAlias}` : entryGlob
   const entryStructMap: EntryStructMap = {}
   const massagedGlob =
-    (entryGlob === '.' ? 'index' : removeDotSlash(entryGlob)) +
+    (srcGlob === '.' ? 'index' : removeDotSlash(srcGlob)) +
     '{' + srcExtensions.join(',') + '}'
 
   const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
@@ -98,9 +102,18 @@ async function unglobEntryStructMap(
   for (const srcPath of srcPaths) {
     for (const srcExtension of srcExtensions) {
       if (srcPath.endsWith(srcExtension)) {
-        const entryAlias = srcPath.substring(0, srcPath.length - srcExtension.length)
-        const entrySrcBase = joinPaths(transpiledDir, entryAlias)
+        const entrySrcAlias = srcPath.substring(0, srcPath.length - srcExtension.length)
+        const entrySrcBase = joinPaths(transpiledDir, entrySrcAlias)
         const entrySrcPath = entrySrcBase + transpiledExtension
+        let entryAlias = entrySrcAlias
+
+        if (maybeSrcAlias) {
+          if (entryGlob.includes('*')) {
+            throw new Error('Cannot remap glob entrypoints to other src files just yet')
+          } else {
+            entryAlias = entryGlob.replace(/^\.\//, '')
+          }
+        }
 
         entryStructMap[entryAlias] = { entryGlob, entrySrcPath, entrySrcBase }
       }
@@ -207,21 +220,6 @@ export function computeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] 
   })
 }
 
-/*
-For IIFE, some third-party packages are bundled
-*/
-export function computeIifeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
-  const { dependencyGlobalVarMap } = pkgBundleStruct
-
-  const res = computeExternalPkgs(pkgBundleStruct)
-    .filter((pkgName) => (
-      dependencyGlobalVarMap[pkgName] !== '' &&
-      dependencyGlobalVarMap['*'] !== ''
-    ))
-
-  return res
-}
-
 // External File Paths
 // -------------------------------------------------------------------------------------------------
 
@@ -235,17 +233,17 @@ export function computeOwnIifeExternalPaths(
   pkgBundleStruct: PkgBundleStruct,
 ): string[] {
   const { entryStructMap, entryConfigMap } = pkgBundleStruct
-  const currentGlobalVar = entryConfigMap[currentEntryStruct.entryGlob].globalVar
+  const currentGlobalVar = entryConfigMap[currentEntryStruct.entryGlob].global
 
   const iifeEntryStructMap = filterProps(entryStructMap, (entryStruct) => {
-    const globalVar = entryConfigMap[entryStruct.entryGlob].globalVar
+    const globalVar = entryConfigMap[entryStruct.entryGlob].global
 
     return Boolean(
       // not the current entrypoint
       entryStruct.entryGlob !== currentEntryStruct.entryGlob &&
       // has a global variable
       globalVar &&
-      // not equal to or nested within current global var
+      // not equal to or nested within current global var???
       (!currentGlobalVar || !(
         globalVar === currentGlobalVar ||
         globalVar.startsWith(currentGlobalVar + '.')
@@ -260,19 +258,19 @@ export function computeOwnIifeExternalPaths(
 // IIFE Browser Globals
 // -------------------------------------------------------------------------------------------------
 
-export function computeGlobals(
+export function computeGlobalsVars(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
 ): GlobalVarMap {
   const allGlobalVars: GlobalVarMap = {}
 
-  const { pkgJson, entryStructMap, entryConfigMap, dependencyGlobalVarMap } = pkgBundleStruct
+  const { pkgJson, entryStructMap, entryConfigMap } = pkgBundleStruct
   const pkgName = pkgJson.name
 
   // scan the package's own unglobbed entrypoints
   for (const entryAlias in entryStructMap) {
     const { entrySrcPath, entryGlob } = entryStructMap[entryAlias]
-    const globalVar = entryConfigMap[entryGlob].globalVar
+    const globalVar = entryConfigMap[entryGlob].global
 
     if (globalVar) {
       const fullImportId = entryGlob === '.' ?
@@ -282,16 +280,6 @@ export function computeGlobals(
       allGlobalVars[fullImportId] = globalVar
       allGlobalVars[entrySrcPath] = globalVar // add file path too
       allGlobalVars[entrySrcPath.replace(/\.js$/, '')] = globalVar // without .js
-    }
-  }
-
-  // scan the package's third-party dependencies
-  // TODO: scan dependencies of dependencies (or just do a global scan)
-  for (const importId in dependencyGlobalVarMap) {
-    const globalName = dependencyGlobalVarMap[importId]
-
-    if (globalName) {
-      allGlobalVars[importId] = globalName
     }
   }
 
@@ -305,7 +293,7 @@ export function computeGlobals(
     const depExportsMap = depBuildConfig.exports || {}
 
     for (const exportId in depExportsMap) {
-      const globalVar = depExportsMap[exportId].globalVar
+      const globalVar = depExportsMap[exportId].global
 
       if (globalVar) {
         if (exportId === '.') {

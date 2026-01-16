@@ -24,14 +24,14 @@ import {
 } from './config.ts'
 import {
   computeExternalPkgs,
-  computeIifeExternalPkgs,
-  computeGlobals,
+  computeGlobalsVars,
   computeOwnExternalPaths,
   computeOwnIifeExternalPaths,
   type EntryStruct,
   entryStructsToContentMap,
   type PkgBundleStruct,
   type GlobalVarMap,
+  type EntryConfig,
 } from './bundle-struct.ts'
 import {
   externalizeExtensionsPlugin,
@@ -83,7 +83,7 @@ export async function buildIifeOptions(
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
-  const globalVarMap = computeGlobals(pkgBundleStruct, monorepoStruct)
+  const globalVarMap = computeGlobalsVars(pkgBundleStruct, monorepoStruct)
   const banner = await buildBanner(pkgBundleStruct)
   const optionsObjs: RollupOptions[] = []
 
@@ -104,7 +104,14 @@ export async function buildIifeOptions(
           cssMin && (entryConfig.cssMin ?? false),
           !isDev && (entryConfig.cssAsJs ?? false),
         ),
-        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
+        output: buildIifeOutputOptions(
+          entryStruct,
+          entryAlias,
+          pkgBundleStruct,
+          { ...globalVarMap, ...entryConfig.globals },
+          banner,
+          sourcemap,
+        ),
         onwarn(warning) {
           if (warning.code !== 'CIRCULAR_DEPENDENCY') {
             console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
@@ -205,7 +212,7 @@ function buildIifeOutputOptions(
   sourcemap: boolean,
 ): OutputOptions {
   const { pkgDir, entryConfigMap } = pkgBundleStruct
-  const globalVar = entryConfigMap[entryStruct.entryGlob].globalVar
+  const globalVar = entryConfigMap[entryStruct.entryGlob].global
 
   return {
     format: 'iife',
@@ -275,12 +282,13 @@ async function buildIifePlugins(
   cssAsJs: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
+  const entryConfig = pkgBundleStruct.entryConfigMap[currentEntryStruct.entryGlob]
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
-      pkgNames: computeIifeExternalPkgs(pkgBundleStruct),
+      pkgNames: entryConfig.external || [],
     }),
     externalizePathsPlugin({
       paths: computeOwnIifeExternalPaths(currentEntryStruct, pkgBundleStruct),
