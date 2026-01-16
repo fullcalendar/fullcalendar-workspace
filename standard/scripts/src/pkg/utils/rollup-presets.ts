@@ -10,6 +10,7 @@ import { type OutputOptions, type Plugin, type RollupOptions } from 'rollup'
 import dtsPlugin from 'rollup-plugin-dts'
 import postcssPluginLib from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
+import iifeSplit, { type IifeSplitOptions } from 'rollup-plugin-iife-split'
 import { analyzePkg } from '../../utils/pkg-analysis.ts'
 import { readPkgJson } from '../../utils/pkg-json.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
@@ -18,6 +19,7 @@ import {
   computeModuleExternalPkgs,
   computeOwnExternalPaths,
   entryStructsToContentMap,
+  type PkgGlobalConfig,
   type PkgBundleStruct
 } from './bundle-struct.ts'
 import {
@@ -74,15 +76,9 @@ export async function buildGlobalOptions(
     plugins: await buildGlobalPlugins(
       pkgBundleStruct,
       isDev,
-      sourcemaps, // sourcemapLoading
+      sourcemaps,
     ),
-    output: { // TEMPORARY
-      format: 'esm',
-      dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-      entryFileNames: '[name].js',
-      chunkFileNames: 'chunks-global/[name]-[hash].js',
-      sourcemap: sourcemaps,
-    },
+    output: buildGlobalOutputOptions(pkgBundleStruct, sourcemaps),
     onwarn(warning) {
       if (warning.code !== 'CIRCULAR_DEPENDENCY') {
         console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
@@ -129,7 +125,7 @@ function buildModuleInput(pkgBundleStruct: PkgBundleStruct): InputMap {
 
 function buildGlobalInput(pkgBundleStruct: PkgBundleStruct): InputMap {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
-  let inputMap: InputMap = {}
+  const inputMap: InputMap = {}
 
   for (let entryAlias in entryStructMap) {
     const entryStruct = entryStructMap[entryAlias]
@@ -170,14 +166,27 @@ function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
 
 function buildModuleOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean,
+  sourcemapOutput: boolean,
 ): OutputOptions {
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: 'esm/[name]' + esmExtension,
     chunkFileNames: 'esm/chunks/[name]-[hash]' + esmExtension,
-    sourcemap,
+    sourcemap: sourcemapOutput,
+  }
+}
+
+function buildGlobalOutputOptions(
+  pkgBundleStruct: PkgBundleStruct,
+  sourcemapOutput: boolean,
+): OutputOptions {
+  return {
+    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
+    entryFileNames: '[name].js',
+    globals: pkgBundleStruct.globalConfig?.externalGlobals || {},
+    sourcemap: sourcemapOutput,
+    // the iifeSplit plugin fills in the rest
   }
 }
 
@@ -223,12 +232,15 @@ function buildModulePlugins(
 async function buildGlobalPlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
-  sourcemapLoading: boolean,
+  sourcemaps: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
+    iifeSplit(
+      buildGlobalSplitOptions(pkgBundleStruct),
+    ),
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
       pkgNames: computeGlobalExternalPkgs(pkgBundleStruct),
@@ -243,7 +255,7 @@ async function buildGlobalPlugins(
         isDev,
         pkgBundleStruct.globalConfig?.cssExtract || '',
       ),
-    ...(sourcemapLoading ? [sourcemapsPlugin()] : []),
+    ...(sourcemaps ? [sourcemapsPlugin()] : []), // source map *loading*
     // ...((cssMin || cssAsJs) ? [await extractCssSeparatelyPlugin(cssMin, cssAsJs)] : []),
     // ...(jsMin ? [minifyJsSeparatelyPlugin()] : []),
   ]
@@ -342,6 +354,33 @@ function buildTestJsPlugins(): Plugin[] {
       },
     }),
   ]
+}
+
+function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOptions {
+  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  let primaryAlias: string | undefined
+  const secondaryProps: Record<string, string> = {}
+
+  for (let entryAlias in entryStructMap) {
+    const entryStruct = entryStructMap[entryAlias]
+    const entryConfig = entryConfigMap[entryStruct.entryGlob]
+
+    if (entryConfig.format === 'global') {
+      if (entryConfig.primary) {
+        primaryAlias = entryAlias
+      } else if (entryConfig.secondaryProp) {
+        secondaryProps[entryAlias] = entryConfig.secondaryProp
+      }
+    }
+  }
+
+  const globalConfig: Partial<PkgGlobalConfig> = pkgBundleStruct.globalConfig || {}
+  return {
+    primary: primaryAlias || '',
+    primaryGlobal: globalConfig.primaryGlobal || '',
+    secondaryProps,
+    sharedProp: globalConfig.sharedProp || '',
+  }
 }
 
 // Plugins Wrappers

@@ -33,6 +33,8 @@ export interface EntryConfig {
   import?: string
   generator?: string
   sideEffects?: boolean
+  primary?: boolean // for iifeSplit
+  secondaryProp?: string // for iifeSplit
 }
 
 export interface EntryStruct {
