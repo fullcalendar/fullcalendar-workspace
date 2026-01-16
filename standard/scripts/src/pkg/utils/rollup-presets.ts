@@ -1,70 +1,59 @@
-import { readFile } from 'fs/promises'
-import { readFileSync } from 'fs'
-import { join as joinPaths } from 'path'
-import { type RollupOptions, type Plugin, type OutputOptions, type RollupWarning } from 'rollup'
-import handlebars from 'handlebars'
-import nodeResolvePlugin from '@rollup/plugin-node-resolve'
-import dtsPlugin from 'rollup-plugin-dts'
-import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
-import postcssPluginLib from 'rollup-plugin-postcss'
+import nodeResolvePlugin from '@rollup/plugin-node-resolve'
 import replacePluginLib from '@rollup/plugin-replace'
-import { type MonorepoStruct } from '../../utils/monorepo-struct.ts'
+import { readFileSync } from 'fs'
+import { readFile } from 'fs/promises'
+import handlebars from 'handlebars'
+import { join as joinPaths } from 'path'
+import { type OutputOptions, type Plugin, type RollupOptions } from 'rollup'
+import dtsPlugin from 'rollup-plugin-dts'
+import postcssPluginLib from 'rollup-plugin-postcss'
+import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { analyzePkg } from '../../utils/pkg-analysis.ts'
 import { readPkgJson } from '../../utils/pkg-json.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
 import {
-  transpiledExtension,
-  transpiledSubdir,
-  esmExtension,
-  iifeExtension,
-  assetExtensions,
-  manualChunkEntryAliases,
-} from './config.ts'
-import {
-  computeExternalPkgs,
-  computeGlobalsVars,
+  computeGlobalExternalPkgs,
+  computeModuleExternalPkgs,
   computeOwnExternalPaths,
-  computeOwnIifeExternalPaths,
-  type EntryStruct,
   entryStructsToContentMap,
-  type PkgBundleStruct,
-  type GlobalVarMap,
-  type EntryConfig,
+  type PkgBundleStruct
 } from './bundle-struct.ts'
 import {
+  assetExtensions,
+  esmExtension
+} from './config.ts'
+import { HashGenerator } from './hash-generator.ts'
+import transformClassNamesPlugin from './rollup-plugins-theming.ts'
+import {
+  copyCssPlugin,
   externalizeExtensionsPlugin,
   externalizePathsPlugin,
   externalizePkgsPlugin,
   generatedContentPlugin,
-  minifyJsSeparatelyPlugin,
   massageDtsPlugin,
-  rerootPlugin,
-  simpleDotAssignment,
-  extractCssSeparatelyPlugin,
+  rerootPlugin
 } from './rollup-plugins.ts'
-import transformClassNamesPlugin from './rollup-plugins-theming.ts'
-import { HashGenerator } from './hash-generator.ts'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
 const jsonPlugin = cjsInterop(jsonPluginLib)
 const postcssPlugin = cjsInterop(postcssPluginLib)
 const replacePlugin = cjsInterop(replacePluginLib)
 
-export function buildEsmOptions(
+export function buildModuleOptions(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
-  sourcemap: boolean,
+  sourcemaps: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
     plugins: buildModulePlugins(
       pkgBundleStruct,
-      sourcemap,
       isDev,
+      sourcemaps, // sourcemapLoading
     ),
-    output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
+    output: buildModuleOutputOptions(pkgBundleStruct, sourcemaps),
     onwarn(warning) {
       if (warning.code !== 'CIRCULAR_DEPENDENCY') {
         console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
@@ -73,58 +62,35 @@ export function buildEsmOptions(
   }
 }
 
-export async function buildIifeOptions(
+export async function buildGlobalOptions(
   pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
   isDev: boolean,
-  jsMin: boolean,
-  cssMin: boolean,
-  sourcemap: boolean,
-): Promise<RollupOptions[]> {
-  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  sourcemaps: boolean,
+): Promise<RollupOptions> {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
-  const globalVarMap = computeGlobalsVars(pkgBundleStruct, monorepoStruct)
-  const banner = await buildBanner(pkgBundleStruct)
-  const optionsObjs: RollupOptions[] = []
 
-  for (let entryAlias in entryStructMap) {
-    const entryStruct = entryStructMap[entryAlias]
-    const entryConfig = entryConfigMap[entryStruct.entryGlob]
-
-    if (entryConfig.iife || entryConfig.cssExtract) {
-      optionsObjs.push({
-        input: buildIifeInput(entryStruct),
-        plugins: await buildIifePlugins(
-          entryStruct,
-          pkgBundleStruct,
-          sourcemap,
-          isDev,
-          jsMin && (entryConfig.iife ?? false),
-          entryConfig.cssExtract,
-          cssMin && (entryConfig.cssMin ?? false),
-          !isDev && (entryConfig.cssAsJs ?? false),
-        ),
-        output: buildIifeOutputOptions(
-          entryStruct,
-          entryAlias,
-          pkgBundleStruct,
-          { ...globalVarMap, ...entryConfig.globals },
-          banner,
-          sourcemap,
-        ),
-        onwarn(warning) {
-          if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-            console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
-          }
-        },
-
-        // Workaround for rollup being aggressive about tree-shacking
-        treeshake: !pkgAnalysis.isTests,
-      })
-    }
+  return {
+    input: buildGlobalInput(pkgBundleStruct),
+    plugins: await buildGlobalPlugins(
+      pkgBundleStruct,
+      isDev,
+      sourcemaps, // sourcemapLoading
+    ),
+    output: { // TEMPORARY
+      format: 'esm',
+      dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
+      entryFileNames: '[name].js',
+      chunkFileNames: 'chunks-global/[name]-[hash].js',
+      sourcemap: sourcemaps,
+    },
+    onwarn(warning) {
+      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+        console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
+      }
+    },
+    // Workaround for rollup being aggressive about tree-shacking
+    treeshake: !pkgAnalysis.isTests,
   }
-
-  return optionsObjs
 }
 
 export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions {
@@ -153,7 +119,7 @@ function buildModuleInput(pkgBundleStruct: PkgBundleStruct): InputMap {
     const entryStruct = entryStructMap[entryAlias]
     const entryConfig = entryConfigMap[entryStruct.entryGlob]
 
-    if (entryConfig.module) {
+    if (entryConfig.format === 'module') {
       inputMap[entryAlias] = entryStruct.entrySrcPath
     }
   }
@@ -161,8 +127,20 @@ function buildModuleInput(pkgBundleStruct: PkgBundleStruct): InputMap {
   return inputMap
 }
 
-function buildIifeInput(entryStruct: EntryStruct): string {
-  return entryStruct.entrySrcBase + transpiledExtension
+function buildGlobalInput(pkgBundleStruct: PkgBundleStruct): InputMap {
+  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  let inputMap: InputMap = {}
+
+  for (let entryAlias in entryStructMap) {
+    const entryStruct = entryStructMap[entryAlias]
+    const entryConfig = entryConfigMap[entryStruct.entryGlob]
+
+    if (entryConfig.format === 'global') {
+      inputMap[entryAlias] = entryStruct.entrySrcPath
+    }
+  }
+
+  return inputMap
 }
 
 function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
@@ -174,12 +152,12 @@ function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
     const entryConfig = entryConfigMap[entryStruct.entryGlob]
 
     if (entryConfig.types) {
-      if (entryConfig.module) {
+      if (entryConfig.format === 'module') {
         // HACK: will execute many times per-file
         // HACK: don't hardcode tsout dir
         inputMap[entryConfig.types] = joinPaths(pkgBundleStruct.pkgDir, 'dist/.tsout', entryConfig.types + '.d.ts')
       }
-    } else if (entryConfig.module) {
+    } else if (entryConfig.format === 'module') {
       inputMap[entryAlias] = entryStruct.entrySrcBase + '.d.ts'
     }
   }
@@ -190,7 +168,7 @@ function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
 // Output
 // -------------------------------------------------------------------------------------------------
 
-function buildEsmOutputOptions(
+function buildModuleOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
 ): OutputOptions {
@@ -199,33 +177,6 @@ function buildEsmOutputOptions(
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: 'esm/[name]' + esmExtension,
     chunkFileNames: 'esm/chunks/[name]-[hash]' + esmExtension,
-    sourcemap,
-  }
-}
-
-function buildIifeOutputOptions(
-  entryStruct: EntryStruct,
-  entryAlias: string,
-  pkgBundleStruct: PkgBundleStruct,
-  globalVarMap: GlobalVarMap,
-  banner: string,
-  sourcemap: boolean,
-): OutputOptions {
-  const { pkgDir, entryConfigMap } = pkgBundleStruct
-  const globalVar = entryConfigMap[entryStruct.entryGlob].global
-
-  return {
-    format: 'iife',
-    banner,
-    file: joinPaths(pkgDir, 'dist', entryAlias) + iifeExtension,
-    globals: globalVarMap,
-    ...(
-      globalVar
-        ? { exports: 'named', name: globalVar }
-        : { exports: 'none' }
-    ),
-    interop: 'auto',
-    freeze: false,
     sourcemap,
   }
 }
@@ -244,8 +195,8 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean,
   isDev: boolean,
+  sourcemapLoading: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
@@ -253,7 +204,7 @@ function buildModulePlugins(
   return [
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
-      pkgNames: computeExternalPkgs(pkgBundleStruct),
+      pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
     }),
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
@@ -262,48 +213,39 @@ function buildModulePlugins(
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,
-        false, // cssExtract
+        pkgBundleStruct.moduleConfig?.cssExtract || '',
       ),
-    ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
+    ...(sourcemapLoading ? [sourcemapsPlugin()] : []),
+    copyCssPlugin({ srcToDest: pkgBundleStruct.cssSrcToDest }),
   ]
 }
 
-/*
-TODO: inefficient to repeatedly generate all this?
-*/
-async function buildIifePlugins(
-  currentEntryStruct: EntryStruct,
+async function buildGlobalPlugins(
   pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean,
   isDev: boolean,
-  jsMin: boolean,
-  cssExtract: boolean | string | undefined,
-  cssMin: boolean,
-  cssAsJs: boolean,
+  sourcemapLoading: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const entryConfig = pkgBundleStruct.entryConfigMap[currentEntryStruct.entryGlob]
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
-      pkgNames: entryConfig.external || [],
+      pkgNames: computeGlobalExternalPkgs(pkgBundleStruct),
     }),
-    externalizePathsPlugin({
-      paths: computeOwnIifeExternalPaths(currentEntryStruct, pkgBundleStruct),
-    }),
-    generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
-    simpleDotAssignment(),
+    generatedContentPlugin(
+      entryStructsToContentMap(entryStructMap)
+    ),
+    // simpleDotAssignment(), // need anymore?
     transformClassNamesPlugin(!isDev, isPublicMui),
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,
-        cssExtract,
+        pkgBundleStruct.globalConfig?.cssExtract || '',
       ),
-    ...(sourcemap ? [sourcemapsPlugin()] : []),
-    ...((cssMin || cssAsJs) ? [await extractCssSeparatelyPlugin(cssMin, cssAsJs)] : []),
-    ...(jsMin ? [minifyJsSeparatelyPlugin()] : []),
+    ...(sourcemapLoading ? [sourcemapsPlugin()] : []),
+    // ...((cssMin || cssAsJs) ? [await extractCssSeparatelyPlugin(cssMin, cssAsJs)] : []),
+    // ...(jsMin ? [minifyJsSeparatelyPlugin()] : []),
   ]
 }
 
@@ -311,7 +253,7 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   return [
     externalizeAssetsPlugin(),
     externalizePkgsPlugin({
-      pkgNames: computeExternalPkgs(pkgBundleStruct),
+      pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
       moduleSideEffects: true, // for including ambient declarations in other packages
     }),
     // rollup-plugin-dts normally gets confused with code splitting. this helps a lot.
@@ -329,7 +271,7 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
 function buildJsPlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
-  cssExtract: boolean | string | undefined,
+  cssExtract: string,
 ): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
@@ -343,7 +285,7 @@ function buildJsPlugins(
 function buildNormalJsPlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
-  cssExtract: boolean | string | undefined,
+  cssExtract: string,
 ): Plugin[] {
   const { pkgJson } = pkgBundleStruct
 
@@ -443,6 +385,7 @@ function externalizeAssetsPlugin(): Plugin {
 
 // Misc
 // -------------------------------------------------------------------------------------------------
+// TODO: revive
 
 async function buildBanner(pkgBundleStruct: PkgBundleStruct): Promise<string> {
   const { pkgDir, pkgJson } = pkgBundleStruct

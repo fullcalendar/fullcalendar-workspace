@@ -26,83 +26,82 @@
     "react-dom": "^19.2.3"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build && pnpm run dist-prune",
-    "dist-prune": "rm -rf ./dist/skeleton.js ./dist/themes/*/theme.js ./dist/themes/*/palette.js ./dist/themes/*/palettes/*.js",
+    "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
   "type": "module",
   "buildConfig": {
+    "moduleConfig": {
+      "cssExtract": "skeleton.css"
+    },
     "exports": {
       ".": {
-        "module": true
+        "format": "module"
       },
       "./all": {
-        "module": true,
+        "format": "module",
         "sideEffects": true
       },
-      "./skeleton": {
-        "cssExtract": true
-      },
       "./internal": {
-        "module": true
+        "format": "module"
       },
       "./internal-classnames": {
-        "module": true
+        "format": "module"
       },
       "./locales-all": {
-        "generator": "./scripts/generate-locales-all.ts",
-        "module": true
+        "format": "module",
+        "generator": "./scripts/generate-locales-all.ts"
       },
       "./locales/*": {
-        "module": true
+        "format": "module"
       },
       "./interaction": {
-        "module": true
+        "format": "module"
       },
       "./daygrid": {
-        "module": true
+        "format": "module"
       },
       "./timegrid": {
-        "module": true
+        "format": "module"
       },
       "./multimonth": {
-        "module": true
+        "format": "module"
       },
       "./list": {
-        "module": true
+        "format": "module"
       },
       "./themes/classic": {
-        "src": "themes/classic/index",
-        "module": true
+        "format": "module",
+        "src": "themes/classic/index"
       },
-      "./themes/classic/theme": {
-        "cssExtract": true
+      "./themes/classic/theme.css": {
+        "format": "css"
       },
-      "./themes/classic/palette": {
-        "cssExtract": true
+      "./themes/classic/palette.css": {
+        "format": "css"
       },
       "./themes/monarch": {
-        "src": "themes/monarch/index",
-        "module": true
+        "format": "module",
+        "src": "themes/monarch/index"
       },
-      "./themes/monarch/theme": {
-        "cssExtract": true
+      "./themes/monarch/theme.css": {
+        "format": "css"
       },
-      "./themes/monarch/palettes/blue": {
-        "cssExtract": true
+      "./themes/monarch/palettes/blue.css": {
+        "format": "css"
       },
-      "./themes/monarch/palettes/green": {
-        "cssExtract": true
+      "./themes/monarch/palettes/green.css": {
+        "format": "css"
       },
-      "./themes/monarch/palettes/purple": {
-        "cssExtract": true
+      "./themes/monarch/palettes/purple.css": {
+        "format": "css"
       },
-      "./themes/monarch/palettes/red": {
-        "cssExtract": true
+      "./themes/monarch/palettes/red.css": {
+        "format": "css"
       },
-      "./themes/monarch/palettes/yellow": {
-        "cssExtract": true
+      "./themes/monarch/palettes/yellow.css": {
+        "format": "css"
       }
     }
   },

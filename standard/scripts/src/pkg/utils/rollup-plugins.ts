@@ -150,8 +150,37 @@ export function rerootPlugin(options: RerootOptions): Plugin {
   }
 }
 
+// Copy CSS Files
+// -------------------------------------------------------------------------------------------------
+
+export interface CopyCssOptions {
+  srcToDest: Record<string, string> // dest is relative to pkg's dist dir
+}
+
+export function copyCssPlugin(options: CopyCssOptions): Plugin {
+  return {
+    name: 'copy-css',
+    buildStart() {
+      for (const srcPath of Object.keys(options.srcToDest)) {
+        this.addWatchFile(srcPath)
+      }
+    },
+    async generateBundle() {
+      for (const [srcPath, destPath] of Object.entries(options.srcToDest)) {
+        const source = await readFile(srcPath)
+        this.emitFile({
+          type: 'asset',
+          fileName: destPath,
+          source,
+        })
+      }
+    }
+  }
+}
+
 // Simple Global-Name Dot Assignment
 // -------------------------------------------------------------------------------------------------
+// TODO: revive if outputted IIFE wrapper looks weird
 
 export function simpleDotAssignment(): Plugin {
   return {
@@ -227,7 +256,7 @@ async function minifyJsSeparately(path: string): Promise<void> {
   const pathMatch = path.match(/^(.*)(\.[cm]?js)$/)
 
   if (!pathMatch) {
-    throw new Error('Invalid extension for minification')
+    throw new Error(`Invalid extension for minification ${path}`)
   }
 
   return execLive([

@@ -4,7 +4,7 @@ import { analyzePkg } from '../utils/pkg-analysis.ts'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.ts'
 import { type ScriptContext } from '../utils/script-runner.ts'
 import { esmExtension, iifeExtension } from './utils/config.ts'
-import { type EntryConfigMap } from './utils/bundle-struct.ts'
+import { type PkgJsonBuildConfig } from './utils/bundle-struct.ts'
 
 const cdnFields = [
   'unpkg',
@@ -27,8 +27,7 @@ export async function writeDistPkgJson(
   pkgJson: any,
   isDev: boolean,
 ): Promise<void> {
-  const { buildConfig } = pkgJson
-
+  const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig
   if (!buildConfig) {
     throw new Error('Can only generate dist package.json for a buildConfig')
   }
@@ -37,9 +36,19 @@ export async function writeDistPkgJson(
   const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
   const typesRoot = isDev ? './.tsout' : './esm' // TODO: make config var for .tsout?
 
-  const entryConfigMap = buildConfig.exports as EntryConfigMap
+  const entryConfigMap = buildConfig.exports || {}
   const exportsMap: any = {
     './package.json': './package.json',
+  }
+
+  let cssExtract = buildConfig.moduleConfig?.cssExtract
+  if (cssExtract) {
+    exportsMap[`./${cssExtract}`] = `./${cssExtract}`
+  }
+
+  cssExtract = buildConfig.globalConfig?.cssExtract
+  if (cssExtract) {
+    exportsMap[`./${cssExtract}`] = `./${cssExtract}`
   }
 
   const sideEffects: string[] = []
@@ -49,7 +58,7 @@ export async function writeDistPkgJson(
     const entryConfig = entryConfigMap[entryName]
     const entrySubpath = entryName === '.' ? './index' : entryName
 
-    if (entryConfig.module) {
+    if (entryConfig.format === 'module') {
       const esmPath = entrySubpath.replace(/^\./, './esm') + esmExtension
 
       const typesPath =
@@ -65,9 +74,7 @@ export async function writeDistPkgJson(
       if (entryConfig.sideEffects) {
         sideEffects.push(esmPath)
       }
-    }
-
-    if (entryConfig.iife) {
+    } else if (entryConfig.format === 'global') {
       sideEffects.push(entrySubpath + iifeExtension)
 
       if (!isDev) {
@@ -77,20 +84,8 @@ export async function writeDistPkgJson(
           firstCdnPath = entrySubpath + '.min' + iifeExtension
         }
       }
-    }
-
-    if (entryConfig.cssExtract) {
-      const cssEntryName =
-        typeof entryConfig.cssExtract === 'string'
-          ? entryConfig.cssExtract
-          : entryName
-
-      exportsMap[cssEntryName + '.css'] = cssEntryName + '.css'
-
-      if (entryConfig.cssAsJs) {
-        exportsMap[cssEntryName + '.styles'] = cssEntryName + '.styles.js'
-        sideEffects.push(cssEntryName + '.styles.js')
-      }
+    } else if (entryConfig.format === 'css') {
+      exportsMap[entryName] = entryName
     }
   }
 

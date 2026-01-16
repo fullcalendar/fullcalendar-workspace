@@ -17,100 +17,107 @@
     "handlebars": "^4.1.2"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build && pnpm run dist-prune",
-    "dist-prune": "rm -rf ./dist/skeleton.js ./dist/themes/*/theme.js ./dist/themes/*/palette.js ./dist/themes/*/palettes/*.js",
+    "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
   "type": "module",
   "buildConfig": {
+    "globalConfig": {
+      "primaryGlobal": "FullCalendar",
+      "sharedProp": "Shared"
+    },
     "exports": {
       ".": {
-        "module": true
+        "format": "module"
       },
       "./all": {
-        "module": true,
+        "format": "module",
         "sideEffects": true
       },
       "./all.global": {
-        "global": "FullCalendar"
+        "format": "global",
+        "primary": true
       },
-      "./skeleton": {
-        "cssExtract": true
+      "./skeleton.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/skeleton.css"
       },
       "./internal": {
-        "module": true
+        "format": "module"
       },
       "./internal-classnames": {
-        "module": true
+        "format": "module"
       },
       "./locales-all": {
-        "generator": "./scripts/generate-locales-all.ts",
-        "module": true
+        "format": "module",
+        "generator": "./scripts/generate-locales-all.ts"
       },
       "./locales/*": {
+        "format": "module",
         "generator": "./scripts/generate-locales.ts",
-        "types": "locales/locale",
-        "module": true
+        "types": "locales/locale"
       },
       "./interaction": {
-        "module": true
+        "format": "module"
       },
       "./daygrid": {
-        "module": true
+        "format": "module"
       },
       "./timegrid": {
-        "module": true
+        "format": "module"
       },
       "./multimonth": {
-        "module": true
+        "format": "module"
       },
       "./list": {
-        "module": true
+        "format": "module"
       },
       "./themes/classic": {
-        "src": "themes/classic/index",
-        "module": true
+        "format": "module",
+        "src": "themes/classic/index"
       },
       "./themes/classic/global": {
-        "external": [
-          "react",
-          "react-dom",
-          "@fullcalendar/preact",
-          "@fullcalendar/preact/internal"
-        ],
-        "globals": {
-          "@fullcalendar/preact": "FullCalendar.Preact",
-          "react/jsx-runtime": "FullCalendar.JSXRuntime"
-        }
+        "format": "global"
       },
-      "./themes/classic/theme": {
-        "cssExtract": true
+      "./themes/classic/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/classic/theme.css"
       },
-      "./themes/classic/palette": {
-        "cssExtract": true
+      "./themes/classic/palette.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/classic/palette.css"
       },
       "./themes/monarch": {
-        "src": "themes/monarch/index",
-        "module": true
+        "format": "module",
+        "src": "themes/monarch/index"
       },
       "./themes/monarch/global": {
-        "iife": true,
-        "external": [
-          "react",
-          "react-dom",
-          "@fullcalendar/preact"
-        ],
-        "globals": {
-          "@fullcalendar/preact": "FullCalendar.Preact",
-          "react/jsx-runtime": "FullCalendar.JSXRuntime"
-        }
+        "format": "global"
       },
-      "./themes/monarch/theme": {
-        "cssExtract": true
+      "./themes/monarch/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/theme.css"
       },
-      "./themes/monarch/palettes/*": {
-        "cssExtract": true
+      "./themes/monarch/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/palettes/blue.css"
+      },
+      "./themes/monarch/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/palettes/green.css"
+      },
+      "./themes/monarch/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/palettes/purple.css"
+      },
+      "./themes/monarch/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/palettes/red.css"
+      },
+      "./themes/monarch/palettes/yellow.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/monarch/palettes/yellow.css"
       }
     }
   },

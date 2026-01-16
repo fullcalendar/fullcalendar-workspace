@@ -42,7 +42,7 @@ export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, i
   await compileTs(pkgDir)
 
   await Promise.all([
-    writeBundles(pkgDir, pkgJson, monorepoStruct, isDev),
+    writeBundles(pkgDir, pkgJson, isDev),
     !isTests && writeDistNpmIgnore(pkgDir),
     !isTests && writeDistReadme(pkgDir), // needs dist folder
     !isTests && writeDistLicense(pkgAnalysis), // needs dist folder

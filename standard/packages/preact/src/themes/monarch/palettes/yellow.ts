@@ -1,3 +1,0 @@
-
-import './yellow.css'
-

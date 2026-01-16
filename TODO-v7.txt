@@ -35,6 +35,9 @@ build note:
     manually before `pn dev`
 
 
+kill all dependencyGlobalVars
+
+
 maybe don't do "*" expansion of vanilla theme css palettes either
 
 

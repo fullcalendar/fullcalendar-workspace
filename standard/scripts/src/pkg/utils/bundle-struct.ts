@@ -1,7 +1,6 @@
 import { join as joinPaths } from 'path'
+import { createRequire } from 'module'
 import { globby } from 'globby'
-import { type MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.ts'
-import { filterProps } from '../../utils/lang.ts'
 import { pkgLog } from '../../utils/log.ts'
 import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.ts'
 
@@ -10,21 +9,29 @@ export interface PkgBundleStruct {
   pkgJson: any
   entryConfigMap: EntryConfigMap
   entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
-  miscWatchPaths: string[]
+  cssSrcToDest: Record<string, string> // dest is relative to pkg's dist dir
+  miscWatchPaths: string[] // not CSS
+  moduleConfig?: PkgModuleConfig
+  globalConfig?: PkgGlobalConfig
+}
+
+export interface PkgModuleConfig {
+  cssExtract?: string
+}
+
+export interface PkgGlobalConfig {
+  primaryGlobal: string
+  sharedProp: string
+  externalGlobals?: Record<string, string>
+  cssExtract?: string
 }
 
 export interface EntryConfig {
-  generator?: string
-  module?: boolean
-  iife?: boolean
-  global?: string // own global
-  external?: string[]
-  globals?: { [dep: string]: string } // globals for externals
-  cssExtract?: boolean | string
-  cssMin?: boolean
-  cssAsJs?: boolean
-  src?: string // relative to src dir, no loeading "./", no extension
+  format: 'module' | 'global' | 'css'
   types?: string // relative to src dir, no leading "./", no extension
+  src?: string // relative to src dir, no loeading "./", no extension
+  import?: string
+  generator?: string
   sideEffects?: boolean
 }
 
@@ -37,7 +44,8 @@ export interface EntryStruct {
 
 export interface PkgJsonBuildConfig {
   exports?: EntryConfigMap
-  dependencyGlobalVars?: GlobalVarMap
+  moduleConfig?: PkgModuleConfig
+  globalConfig?: PkgGlobalConfig
 }
 
 export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
@@ -48,10 +56,6 @@ export type GeneratorFunc = (
   config: { pkgDir: string, entryGlob: string, log: (message: string) => void }
 ) => (string | { [entryName: string]: string })
 
-export type IifeGeneratorFunc = (
-  config: { pkgDir: string, entryAlias: string, log: (message: string) => void }
-) => string
-
 export type WatchPathsFunc = (pkgDir: string) => string[]
 
 export async function buildPkgBundleStruct(
@@ -61,20 +65,47 @@ export async function buildPkgBundleStruct(
   const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
+  const cssSrcToDest: Record<string, string> = {}
   const miscWatchPaths: string[] = []
 
   await Promise.all(
     Object.keys(entryConfigMap).map(async (entryGlob) => {
       const entryConfig = entryConfigMap[entryGlob]
-      const newEntryStructMap = entryConfig.generator ?
-        await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
-        await unglobEntryStructMap(pkgDir, entryGlob, entryConfig.src)
 
-      Object.assign(entryStructMap, newEntryStructMap)
+      if (entryConfig.format === 'css') {
+        if (entryGlob.includes('*')) {
+          throw new Error('CSS copying does not support glob')
+        }
+
+        let srcPath: string
+        if (entryConfig.import) {
+          const require = createRequire(joinPaths(pkgDir, 'package.json'))
+          srcPath = require.resolve(entryConfig.import)
+        } else {
+          srcPath = joinPaths(pkgDir, 'src', entryConfig.src || entryGlob)
+        }
+        let destPath = removeDotSlash(entryGlob)
+        cssSrcToDest[srcPath] = destPath // dest relative to pkg's dist dir
+      } else {
+        const newEntryStructMap = entryConfig.generator ?
+          await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
+          await unglobEntryStructMap(pkgDir, entryGlob, entryConfig.src)
+
+        Object.assign(entryStructMap, newEntryStructMap)
+      }
     }),
   )
 
-  return { pkgDir, pkgJson, entryConfigMap, entryStructMap, miscWatchPaths }
+  return {
+    pkgDir,
+    pkgJson,
+    entryConfigMap,
+    entryStructMap,
+    cssSrcToDest,
+    miscWatchPaths,
+    moduleConfig: buildConfig.moduleConfig,
+    globalConfig: buildConfig.globalConfig,
+  }
 }
 
 // Source-File Entrypoints
@@ -210,7 +241,7 @@ export function entryStructsToContentMap(
 // External Packages
 // -------------------------------------------------------------------------------------------------
 
-export function computeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
+export function computeModuleExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
   const { pkgJson } = pkgBundleStruct
 
   return Object.keys({
@@ -220,92 +251,16 @@ export function computeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] 
   })
 }
 
+export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
+  return Object.keys(pkgBundleStruct.globalConfig?.externalGlobals || {})
+}
+
 // External File Paths
 // -------------------------------------------------------------------------------------------------
 
 export function computeOwnExternalPaths(pkgBundleStruct: PkgBundleStruct): string[] {
   return Object.values(pkgBundleStruct.entryStructMap)
     .map((entryStruct) => entryStruct.entrySrcPath)
-}
-
-export function computeOwnIifeExternalPaths(
-  currentEntryStruct: EntryStruct,
-  pkgBundleStruct: PkgBundleStruct,
-): string[] {
-  const { entryStructMap, entryConfigMap } = pkgBundleStruct
-  const currentGlobalVar = entryConfigMap[currentEntryStruct.entryGlob].global
-
-  const iifeEntryStructMap = filterProps(entryStructMap, (entryStruct) => {
-    const globalVar = entryConfigMap[entryStruct.entryGlob].global
-
-    return Boolean(
-      // not the current entrypoint
-      entryStruct.entryGlob !== currentEntryStruct.entryGlob &&
-      // has a global variable
-      globalVar &&
-      // not equal to or nested within current global var???
-      (!currentGlobalVar || !(
-        globalVar === currentGlobalVar ||
-        globalVar.startsWith(currentGlobalVar + '.')
-      )),
-    )
-  })
-
-  return Object.values(iifeEntryStructMap)
-    .map((entryStruct) => entryStruct.entrySrcPath)
-}
-
-// IIFE Browser Globals
-// -------------------------------------------------------------------------------------------------
-
-export function computeGlobalsVars(
-  pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
-): GlobalVarMap {
-  const allGlobalVars: GlobalVarMap = {}
-
-  const { pkgJson, entryStructMap, entryConfigMap } = pkgBundleStruct
-  const pkgName = pkgJson.name
-
-  // scan the package's own unglobbed entrypoints
-  for (const entryAlias in entryStructMap) {
-    const { entrySrcPath, entryGlob } = entryStructMap[entryAlias]
-    const globalVar = entryConfigMap[entryGlob].global
-
-    if (globalVar) {
-      const fullImportId = entryGlob === '.' ?
-        pkgName :
-        pkgName + '/' + entryAlias
-
-      allGlobalVars[fullImportId] = globalVar
-      allGlobalVars[entrySrcPath] = globalVar // add file path too
-      allGlobalVars[entrySrcPath.replace(/\.js$/, '')] = globalVar // without .js
-    }
-  }
-
-  const depDirs = computeLocalDepDirs(monorepoStruct, pkgJson)
-  const depPkgJsons = depDirs.map((depDir) => monorepoStruct.pkgDirToJson[depDir])
-
-  // scan the package's dependencies that live in the monorepo
-  for (const depPkgJson of depPkgJsons) {
-    const depPkgName = depPkgJson.name
-    const depBuildConfig: PkgJsonBuildConfig = depPkgJson.buildConfig || {}
-    const depExportsMap = depBuildConfig.exports || {}
-
-    for (const exportId in depExportsMap) {
-      const globalVar = depExportsMap[exportId].global
-
-      if (globalVar) {
-        if (exportId === '.') {
-          allGlobalVars[depPkgName] = globalVar
-        } else if (exportId.startsWith('./')) {
-          allGlobalVars[depPkgName + exportId.substring(1)] = globalVar
-        }
-      }
-    }
-  }
-
-  return allGlobalVars
 }
 
 // Utils

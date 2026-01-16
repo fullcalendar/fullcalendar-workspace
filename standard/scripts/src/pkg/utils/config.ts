@@ -8,8 +8,3 @@ export const assetExtensions = ['.css']
 // output
 export const esmExtension = '.js'
 export const iifeExtension = '.js'
-
-// for consistent chunk names
-export const manualChunkEntryAliases: { [chunkName: string]: string[] } = {
-  'internal-common': ['internal'],
-}

@@ -1,10 +1,9 @@
 import { basename } from 'path'
 import { watch } from 'chokidar'
-import { rollup, watch as rollupWatch, type RollupOptions, type OutputOptions } from 'rollup'
-import { type MonorepoStruct } from '../utils/monorepo-struct.ts'
+import { rollup, watch as rollupWatch, type RollupOptions, type OutputOptions, type RollupWatchOptions } from 'rollup'
 import { buildPkgBundleStruct, type PkgBundleStruct } from './utils/bundle-struct.ts'
 import { analyzePkg } from '../utils/pkg-analysis.ts'
-import { buildEsmOptions, buildIifeOptions, buildDtsOptions } from './utils/rollup-presets.ts'
+import { buildModuleOptions, buildGlobalOptions, buildDtsOptions } from './utils/rollup-presets.ts'
 import { arrayify, continuousAsync } from '../utils/lang.ts'
 import { type ScriptContext } from '../utils/script-runner.ts'
 import { untilSigInt } from '../utils/process.ts'
@@ -19,9 +18,9 @@ export default async function(this: ScriptContext, ...args: string[]) {
   const isDev = args.includes('--dev')
 
   if (!isWatch) {
-    await writeBundles(pkgDir, pkgJson, monorepoStruct, isDev)
+    await writeBundles(pkgDir, pkgJson, isDev)
   } else {
-    const stopWatch = await watchBundles(pkgDir, pkgJson, monorepoStruct, isDev)
+    const stopWatch = await watchBundles(pkgDir, pkgJson, isDev)
 
     await untilSigInt()
     stopWatch()
@@ -31,11 +30,30 @@ export default async function(this: ScriptContext, ...args: string[]) {
 export async function writeBundles(
   pkgDir: string,
   pkgJson: any,
-  monorepoStruct: MonorepoStruct,
   isDev: boolean,
 ): Promise<void> {
   const pkgBundleStruct = await buildPkgBundleStruct(pkgDir, pkgJson)
-  const optionsObjs = await buildRollupOptionObjs(pkgBundleStruct, monorepoStruct, isDev)
+  const { isTests } = analyzePkg(pkgBundleStruct.pkgDir)
+  const moduleEnabled = !isTests
+  const dtsEnabled = !isDev && !isTests
+
+  const optionsObjs = [
+    moduleEnabled &&
+      buildModuleOptions(
+        pkgBundleStruct,
+        isDev,
+        /* sourcemaps = */ isDev || isTests,
+      ),
+    pkgBundleStruct.globalConfig &&
+      await buildGlobalOptions(
+        pkgBundleStruct,
+        isDev,
+        /* sourcemaps = */ isDev || isTests,
+        ///* jsMin = */ !isDev && !isTests,
+        ///* cssMin = */ !isDev && !isTests,
+      ),
+    dtsEnabled && buildDtsOptions(pkgBundleStruct)
+  ].filter(Boolean) as RollupOptions[]
 
   await Promise.all(
     optionsObjs.map(async (options) => {
@@ -52,13 +70,32 @@ export async function writeBundles(
 export async function watchBundles(
   pkgDir: string,
   pkgJson: any,
-  monorepoStruct: MonorepoStruct,
   isDev: boolean,
 ): Promise<() => void> {
   return continuousAsync(async (rerun: any) => {
     const pkgName = pkgJson.name
     const pkgBundleStruct = await buildPkgBundleStruct(pkgDir, pkgJson)
-    const optionsObjs = await buildRollupOptionObjs(pkgBundleStruct, monorepoStruct, isDev)
+    const { isTests } = analyzePkg(pkgBundleStruct.pkgDir)
+    const moduleEnabled = !isTests
+    const dtsEnabled = !isDev && !isTests
+
+    const optionsObjs = [
+      moduleEnabled &&
+        buildModuleOptions(
+          pkgBundleStruct,
+          isDev,
+          /* sourcemaps = */ isDev || isTests,
+        ),
+      pkgBundleStruct.globalConfig &&
+        await buildGlobalOptions(
+          pkgBundleStruct,
+          isDev,
+          /* sourcemaps = */ isDev || isTests,
+          ///* jsMin = */ !isDev && !isTests,
+          ///* cssMin = */ !isDev && !isTests,
+        ),
+      dtsEnabled && buildDtsOptions(pkgBundleStruct),
+    ].filter(Boolean) as RollupWatchOptions[]
 
     const rollupWatcher = rollupWatch(optionsObjs)
     await new Promise<void>((resolve) => {
@@ -88,38 +125,6 @@ export async function watchBundles(
       fileWatcher.close()
     }
   })
-}
-
-async function buildRollupOptionObjs(
-  pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
-  isDev: boolean,
-): Promise<RollupOptions[]> {
-  const { isTests } = analyzePkg(pkgBundleStruct.pkgDir)
-  const esm = !isTests
-  const dts = !isDev && !isTests
-
-  return [
-    ...(esm
-        ? [buildEsmOptions(
-            pkgBundleStruct,
-            isDev,
-            /* sourcemaps = */ isDev || isTests,
-          )]
-        : []
-      ),
-    ...(
-      await buildIifeOptions(
-        pkgBundleStruct,
-        monorepoStruct,
-        isDev,
-        /* jsMin = */ !isDev && !isTests,
-        /* cssMin = */ !isDev && !isTests,
-        /* sourcemaps = */ isDev || isTests,
-      )
-    ),
-    ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
-  ]
 }
 
 function formatWriteMessage(input: any, outputPaths: string[]): string {
