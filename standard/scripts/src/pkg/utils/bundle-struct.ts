@@ -9,7 +9,7 @@ export interface PkgBundleStruct {
   pkgJson: any
   entryConfigMap: EntryConfigMap
   entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
-  cssSrcToDest: Record<string, string> // dest is relative to pkg's dist dir
+  copySrcToDest: Record<string, string> // dest is relative to pkg's dist dir
   miscWatchPaths: string[] // not CSS
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
@@ -67,7 +67,7 @@ export async function buildPkgBundleStruct(
   const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
-  const cssSrcToDest: Record<string, string> = {}
+  const copySrcToDest: Record<string, string> = {}
   const miscWatchPaths: string[] = []
 
   await Promise.all(
@@ -87,7 +87,7 @@ export async function buildPkgBundleStruct(
           srcPath = joinPaths(pkgDir, 'src', entryConfig.src || entryGlob)
         }
         let destPath = removeDotSlash(entryGlob)
-        cssSrcToDest[srcPath] = destPath // dest relative to pkg's dist dir
+        copySrcToDest[srcPath] = destPath // dest relative to pkg's dist dir
       } else {
         const newEntryStructMap = entryConfig.generator ?
           await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
@@ -103,7 +103,7 @@ export async function buildPkgBundleStruct(
     pkgJson,
     entryConfigMap,
     entryStructMap,
-    cssSrcToDest,
+    copySrcToDest,
     miscWatchPaths,
     moduleConfig: buildConfig.moduleConfig,
     globalConfig: buildConfig.globalConfig,

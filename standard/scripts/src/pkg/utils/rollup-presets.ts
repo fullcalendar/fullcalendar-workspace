@@ -29,7 +29,7 @@ import {
 import { HashGenerator } from './hash-generator.ts'
 import transformClassNamesPlugin from './rollup-plugins-theming.ts'
 import {
-  copyCssPlugin,
+  copyFilesPlugin,
   externalizeExtensionsPlugin,
   externalizePathsPlugin,
   externalizePkgsPlugin,
@@ -220,7 +220,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    copyCssPlugin({ srcToDest: pkgBundleStruct.cssSrcToDest }),
+    copyFilesPlugin({ srcToDest: pkgBundleStruct.copySrcToDest }),
     transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
     ...buildJsPlugins(
         pkgBundleStruct,

@@ -150,16 +150,16 @@ export function rerootPlugin(options: RerootOptions): Plugin {
   }
 }
 
-// Copy CSS Files
+// Copy Files
 // -------------------------------------------------------------------------------------------------
 
-export interface CopyCssOptions {
+export interface CopyFilesOptions {
   srcToDest: Record<string, string> // dest is relative to pkg's dist dir
 }
 
-export function copyCssPlugin(options: CopyCssOptions): Plugin {
+export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
   return {
-    name: 'copy-css',
+    name: 'copy-files',
     buildStart() {
       for (const srcPath of Object.keys(options.srcToDest)) {
         this.addWatchFile(srcPath)
