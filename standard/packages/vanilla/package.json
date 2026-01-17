@@ -118,6 +118,87 @@
       "./themes/monarch/palettes/yellow.css": {
         "format": "css",
         "import": "@fullcalendar/preact/themes/monarch/palettes/yellow.css"
+      },
+      "./themes/breezy": {
+        "format": "module",
+        "src": "themes/breezy/index"
+      },
+      "./themes/breezy/global": {
+        "format": "global"
+      },
+      "./themes/breezy/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/breezy/theme.css"
+      },
+      "./themes/breezy/palettes/emerald.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/breezy/palettes/emerald.css"
+      },
+      "./themes/breezy/palettes/honey.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/breezy/palettes/honey.css"
+      },
+      "./themes/breezy/palettes/indigo.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/breezy/palettes/indigo.css"
+      },
+      "./themes/breezy/palettes/rose.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/breezy/palettes/rose.css"
+      },
+      "./themes/forma": {
+        "format": "module",
+        "src": "themes/forma/index"
+      },
+      "./themes/forma/global": {
+        "format": "global"
+      },
+      "./themes/forma/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/forma/theme.css"
+      },
+      "./themes/forma/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/forma/palettes/blue.css"
+      },
+      "./themes/forma/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/forma/palettes/green.css"
+      },
+      "./themes/forma/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/forma/palettes/purple.css"
+      },
+      "./themes/forma/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/forma/palettes/red.css"
+      },
+      "./themes/pulse": {
+        "format": "module",
+        "src": "themes/pulse/index"
+      },
+      "./themes/pulse/global": {
+        "format": "global"
+      },
+      "./themes/pulse/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/pulse/theme.css"
+      },
+      "./themes/pulse/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/pulse/palettes/blue.css"
+      },
+      "./themes/pulse/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/pulse/palettes/green.css"
+      },
+      "./themes/pulse/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/pulse/palettes/purple.css"
+      },
+      "./themes/pulse/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/preact/themes/pulse/palettes/red.css"
       }
     }
   },
