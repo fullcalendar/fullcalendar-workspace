@@ -382,7 +382,11 @@ function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOpt
     primaryGlobal: globalConfig.primaryGlobal || '',
     secondaryProps,
     sharedProp: globalConfig.sharedProp || '',
-    // debug: true,
+    unshared(id) {
+      // includes the built @fullcalendar/preact locale files duplicated in single-locale and locales-all
+      return /\/locales\/[\w-]+\.js$/.test(id)
+    },
+    // debug: true
   }
 }
 
