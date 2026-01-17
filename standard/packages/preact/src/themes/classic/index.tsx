@@ -136,7 +136,7 @@ const expanderIconClass = 'size-4 not-group-hover:opacity-65'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
 export default createPlugin({
-  name: '@fullcalendar/theme-classic',
+  name: 'theme-classic',
   optionDefaults: {
     className: "gap-5 reset-root",
     viewClass: "bg-(--fc-classic-background) border border-(--fc-classic-border)",

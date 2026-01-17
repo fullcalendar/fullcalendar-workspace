@@ -158,7 +158,7 @@ const resourceDayHeaderClasses = {
 }
 
 export default createPlugin({
-  name: '@fullcalendar/theme-monarch',
+  name: 'theme-monarch',
   optionDefaults: {
     className: "bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden reset-root",
 

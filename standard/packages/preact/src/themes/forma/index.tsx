@@ -165,7 +165,7 @@ const dayRowCommonClasses: CalendarOptions = {
 }
 
 export default createPlugin({
-  name: '@fullcalendar/theme-forma',
+  name: 'theme-forma',
   optionDefaults: {
     className: "bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden reset-root",
 

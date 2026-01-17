@@ -190,7 +190,7 @@ const dayRowCommonClasses: CalendarOptions = {
 }
 
 export default createPlugin({
-  name: '@fullcalendar/theme-breezy',
+  name: 'theme-breezy',
   optionDefaults: {
     className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden reset-root",
 

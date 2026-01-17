@@ -162,7 +162,7 @@ const dayRowCommonClasses: CalendarOptions = {
 }
 
 export default createPlugin({
-  name: '@fullcalendar/theme-pulse',
+  name: 'theme-pulse',
   optionDefaults: {
     className: "gap-6 reset-root",
     viewClass: `rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
