@@ -209,7 +209,7 @@ function buildModulePlugins(
   isDev: boolean,
   sourcemapLoading: boolean,
 ): Plugin[] {
-  const { pkgDir, entryStructMap } = pkgBundleStruct
+  const { pkgDir, pkgJson, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
@@ -221,14 +221,15 @@ function buildModulePlugins(
       entryStructsToContentMap(entryStructMap),
     ),
     copyFilesPlugin({ srcToDest: pkgBundleStruct.copySrcToDest }),
-    transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
+    (pkgJson.name === '@fullcalendar/preact' || isPublicMui) &&
+      transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,
         pkgBundleStruct.moduleConfig?.cssExtract || '',
       ),
-    ...(sourcemapLoading ? [sourcemapsPlugin()] : []),
-  ]
+    sourcemapLoading && sourcemapsPlugin(),
+  ].filter(Boolean) as Plugin[]
 }
 
 async function buildGlobalPlugins(
