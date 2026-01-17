@@ -220,14 +220,14 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    transformClassNamesPlugin(!isDev, isPublicMui),
+    copyCssPlugin({ srcToDest: pkgBundleStruct.cssSrcToDest }),
+    transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
     ...buildJsPlugins(
         pkgBundleStruct,
         isDev,
         pkgBundleStruct.moduleConfig?.cssExtract || '',
       ),
     ...(sourcemapLoading ? [sourcemapsPlugin()] : []),
-    copyCssPlugin({ srcToDest: pkgBundleStruct.cssSrcToDest }),
   ]
 }
 

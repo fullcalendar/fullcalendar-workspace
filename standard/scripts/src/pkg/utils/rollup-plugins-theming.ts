@@ -2,25 +2,49 @@ import { walk } from 'estree-walker'
 import MagicString from 'magic-string'
 import postcss from 'postcss'
 import selectorParser from 'postcss-selector-parser'
-import { type TransformPluginContext } from 'rollup'
+import { type TransformPluginContext, type OutputBundle, type OutputAsset } from 'rollup'
 import { HashGenerator } from './hash-generator.ts'
 
 export default function transformClassNamesPlugin(minify: boolean, isPublicMui: boolean) {
   return {
     name: 'transform-classnames',
+
+    // for JS
+    // must be aware of source file
     transform(this: TransformPluginContext, code: string, id: string) {
       const themeName = getThemeName(id, isPublicMui)
       if (themeName) {
+        // console.log('MATCH', { themeName, id })
         if (id.endsWith('.js')) {
           if (isPublicMui && !id.endsWith('Views.js') && !id.endsWith('icons.js')) {
             return null // don't transform EventCalendar/Scheduler.js, which contains sx props
           }
           return transformJs(themeName, isPublicMui, minify, code, this.parse(code))
-        } else if (id.endsWith('.css')) {
-          return transformCss(themeName, isPublicMui, minify, code)
         }
       } else {
-        // console.log('no theme name', id)
+        // console.log('NO-MATCH', { themeName, id })
+      }
+    },
+
+    // for CSS
+    // works on files outputted via rollup's .emitFile
+    generateBundle(_options: unknown, bundle: OutputBundle) {
+      for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+        if (fileName.endsWith('.css') && chunkOrAsset.type === 'asset') {
+          const asset = chunkOrAsset as OutputAsset
+          const themeName = getThemeName(fileName, isPublicMui)
+          if (themeName) {
+            // console.log('MATCH', { themeName, fileName })
+            const cssText =
+              typeof asset.source === 'string'
+                ? asset.source
+                : Buffer.from(asset.source).toString('utf8')
+            const result = transformCss(themeName, isPublicMui, minify, cssText)
+            asset.source = result.code
+          } else {
+            // console.log('NO-MATCH', { themeName, fileName })
+          }
+        }
       }
     }
   }
@@ -28,16 +52,20 @@ export default function transformClassNamesPlugin(minify: boolean, isPublicMui: 
 
 function getThemeName(pathId: string, isPublicMui: boolean): string | undefined {
   if (isPublicMui) {
+    // JS (in tsout)
     let match = pathId.match(/\/ui\-mui\/dist\/\.tsout\/([A-Za-z]+)\//) // brittle
     if (match) {
       return match[1]
     }
-    match = pathId.match(/\/ui-mui\/src\/([A-Za-z]+)\/theme\.css/) // brittle
+
+    // CSS (emitted, relative to dist)
+    match = pathId.match(/^([A-Za-z]+)\/theme\.css/) // brittle
     if (match) {
       return match[1]
     }
   } else {
-    const match = pathId.match(/\/themes\/([A-Za-z]+)\/[^\/]+$/) // brittle
+    // JS & CSS
+    const match = pathId.match(/themes\/([A-Za-z]+)\//) // brittle
     if (match) {
       return match[1]
     }
