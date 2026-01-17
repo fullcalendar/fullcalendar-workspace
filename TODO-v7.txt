@@ -68,6 +68,11 @@ remove createElement from *Content hooks
 can remove key?: and ref?: now too?
 
 
+later: revive iife-banner generation
+  naive implementation conflicts with iifeSplit plugin and buts banner within closure
+  have iifeSplit intercept banner setting (same with "outro")
+
+
 convert all Fragments over to </>
 i think that will cause it to be used from jsx-runtime
 

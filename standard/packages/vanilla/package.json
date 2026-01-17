@@ -53,10 +53,18 @@
         "format": "module",
         "generator": "./scripts/generate-locales-all.ts"
       },
+      "./locales-all.global": {
+        "format": "global",
+        "generator": "./scripts/generate-locales-all-global.ts"
+      },
       "./locales/*": {
         "format": "module",
         "generator": "./scripts/generate-locales.ts",
         "types": "locales/locale"
+      },
+      "./locales/*.global": {
+        "format": "global",
+        "generator": "./scripts/generate-locales-global.ts"
       },
       "./interaction": {
         "format": "module"

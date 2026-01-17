@@ -1,7 +1,9 @@
+import { globalLocales } from '@fullcalendar/preact';
+
 {{#each localeCodes}}
 import l{{@index}} from '@fullcalendar/preact/locales/{{this}}';
 {{/each}}
 
-export default [
+globalLocales.push(
   {{#each localeCodes}}l{{@index}}, {{/each}}
-];
+);
