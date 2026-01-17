@@ -53,21 +53,7 @@ In the theme's `package.json`, add export entries for each palette in the `build
 
 Add one entry for each color palette.
 
-### 5. Update the clean-dist script
-
-If the theme has a `clean-dist` script in `package.json` that cleans up palette build artifacts, update it to use wildcards:
-
-**Before:**
-```json
-"clean-dist": "rm -f dist/palettes.js dist/palettes.min.js dist/palettes.css.js"
-```
-
-**After:**
-```json
-"clean-dist": "rm -f dist/palettes/*.js dist/palettes/*.min.js dist/palettes/*.css.js"
-```
-
-### 6. Delete the main palettes.ts file
+### 5. Delete the main palettes.ts file
 
 Since individual palette TypeScript files now exist, delete the main `src/palettes.ts` file (if it exists).
 

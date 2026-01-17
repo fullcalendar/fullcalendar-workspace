@@ -35,136 +35,51 @@ build note:
     manually before `pn dev`
 
 
-
-TODO:
-  theme (and locale files) should not do ../../index, but rather direct-import
-  .global.js for LOCALES working in vanilla, and locales-ALL
-  get .global.js banners working
-  get .min.js and .min.css working
-  vanilla is not externalizing theme js files correctly. inlining them!
-    even tho @fullcalendar/preact is a proper dependency
-
-
+web-component working
+  revive .style.js
+scheduler working
+  preact-scheduler
+  vanilla-scheduler
+  web-component-scheduler
 Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
   to avoid lots of duplicate css files in node_modules
   might make for better NPM stats
     transitive deps dont get download stats; when we move to transpiling, no transitive deps anyway
     (so, if we started with transitive deps, then removed, DL count would look like it went down)
-
-
 why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
-
-
-kill all dependencyGlobalVars
-
-
-maybe don't do "*" expansion of vanilla theme css palettes either
-
-
-remove createElement from *Content hooks
-
-
+remove (data, *createElement*) param from *Content hooks
 can remove key?: and ref?: now too?
-
-
-later: revive iife-banner generation
-  naive implementation conflicts with iifeSplit plugin and buts banner within closure
-  have iifeSplit intercept banner setting (same with "outro")
-
-
-convert all Fragments over to </>
-i think that will cause it to be used from jsx-runtime
-
-	var reactJsxRuntime_production = {
-		Fragment: Fragment$1,
-		jsx: jsx,
-		jsxs: jsxs
-	};
-
-
-tricky: how to get GLOBAL plugin within vanilla to reference correct react/preact?
-  preact is EMBEDDED into vanilla's all.global.js
-  how does themes/monarch/global.js get at it!?
-  we can export it via FullCalendar.VDom, but how to know which (P)React features to export? just createElement?
-  easyy....
-  we need to export fullcalendar/preact ANYWAY... use that... but wait that's esm
-
-
-have vanilla plugin do themes
-make srcOverride possible
-  (for themes/classic/index)
-
-
-I guess the rollup package.json#exports resolver plugin doesn't work well with wildcards + css,
-  which is why we broke out individual palette colors in @fullcalendar/preact
-
-
-ensure themes files don't use .js extension for imports
+re-add keys to toolbarsections, so doesn't reuse elements
 need "module" fields in package.json anymore?
-make "all"-plugins system better
-rename all clean-dist to dist-prune
-remove most .styles.js files... only web-component needs it
-  do types for .styles.js files?
-
-
 ensure preact/plugin files don't import any types
-merge CalendarOptions
-get rid of each plugin's global.ts
 change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
 need to have plugin "deps" anymore?
-deal with plugin ./internal files
-use </> everywhere instead of Fragment
-don't have rollup create pre-named chunks
 a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore
-
-
 fully get rid of @fullcalendar/core/preact
-
-
+need ./src/global-types.d.ts?
 standard/scripts/config/banner.tpl
+  revive
+    naive implementation conflicts with iifeSplit plugin and buts banner within closure
+    have iifeSplit intercept banner setting (same with "outro")
   the "title" is blank. look at any global.js output for any theme
-
-
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
-
 get angular/react/vue tests up and running again, which all depend on preset classnames
-
-
-why is multi-month scrolling down so much?
-  file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
-
-
-transpiler project
-  React's KeyboardEvent<T> (and prolly others) is not compatible with native KeyboardEvent
-  (probably because React's is synthetic)
-
-
-re-add keys to toolbarsections, so doesn't reuse elements
-
-
-test if afterSize ever needs the requestAnimationFrame when not being call from within size handler
-
-
-kill preactOptions
-
-
-./src/global-types.d.ts
-
-
-weird bug: today button changes width as we go prev/next (React vdom)
+sizing refactor
+  test if afterSize ever needs the requestAnimationFrame when not being call from within size handler
+  kill preactOptions
+bug: today button changes width as we go prev/next (React vdom)
   standard/bundle/examples/month-view.html
-
-
 bug: list-event "click for Google" is blue
   standard/bundle/examples/timegrid-views.html
-
-
+bug: why is multi-month scrolling down so much?
+  file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
 test NextJS SSR
+ensure all dependencyGlobalVars killed
 
 
 changelog: validRange function always receives whole-day as parameter
@@ -1401,3 +1316,8 @@ color palettes we put in each themes' dist
   was impossible to have data-color-scheme=auto that relied on media query
     because impossible to combine media query with a selector in the way we want
     and the only other solution would be duplicating all the dark mode css
+NOTE: I guess the rollup package.json#exports resolver plugin doesn't work well with wildcards + css,
+  which is why we broke out individual palette colors in @fullcalendar/preact
+LATER: transpiler project
+  React's KeyboardEvent<T> (and prolly others) is not compatible with native KeyboardEvent
+  (probably because React's is synthetic)
