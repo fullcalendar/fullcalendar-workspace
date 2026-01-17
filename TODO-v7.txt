@@ -36,6 +36,15 @@ build note:
 
 
 
+TODO:
+  theme (and locale files) should not do ../../index, but rather direct-import
+  .global.js for LOCALES working in vanilla, and locales-ALL
+  get .global.js banners working
+  get .min.js and .min.css working
+  vanilla is not externalizing theme js files correctly. inlining them!
+    even tho @fullcalendar/preact is a proper dependency
+
+
 Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
   to avoid lots of duplicate css files in node_modules
   might make for better NPM stats

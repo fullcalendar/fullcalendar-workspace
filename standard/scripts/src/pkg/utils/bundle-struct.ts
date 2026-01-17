@@ -22,6 +22,7 @@ export interface PkgModuleConfig {
 export interface PkgGlobalConfig {
   primaryGlobal: string
   sharedProp: string
+  externalPkgs?: string[]
   externalGlobals?: Record<string, string>
   cssExtract?: string
 }
@@ -254,7 +255,7 @@ export function computeModuleExternalPkgs(pkgBundleStruct: PkgBundleStruct): str
 }
 
 export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
-  return Object.keys(pkgBundleStruct.globalConfig?.externalGlobals || {})
+  return pkgBundleStruct.globalConfig?.externalPkgs || []
 }
 
 // External File Paths
