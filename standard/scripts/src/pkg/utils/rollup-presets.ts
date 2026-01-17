@@ -172,8 +172,8 @@ function buildModuleOutputOptions(
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-    entryFileNames: 'esm/[name]' + esmExtension,
-    chunkFileNames: 'esm/chunks/[name]-[hash]' + esmExtension,
+    entryFileNames: '[name]' + esmExtension,
+    chunkFileNames: 'chunks/[name]-[hash]' + esmExtension,
     sourcemap: sourcemapOutput,
   }
 }
@@ -197,8 +197,8 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-    entryFileNames: 'esm/[name].d.ts',
-    chunkFileNames: 'esm/chunks/[name]-[hash].d.ts',
+    entryFileNames: '[name].d.ts',
+    chunkFileNames: 'chunks/[name]-[hash].d.ts',
   }
 }
 

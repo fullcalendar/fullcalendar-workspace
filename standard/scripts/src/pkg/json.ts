@@ -34,7 +34,7 @@ export async function writeDistPkgJson(
 
   const pkgAnalysis = analyzePkg(pkgDir)
   const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
-  const typesRoot = isDev ? './.tsout' : './esm' // TODO: make config var for .tsout?
+  const typesRoot = isDev ? './.tsout' : '.' // TODO: make config var for .tsout?
 
   const entryConfigMap = buildConfig.exports || {}
   const exportsMap: any = {
@@ -59,7 +59,7 @@ export async function writeDistPkgJson(
     const entrySubpath = entryName === '.' ? './index' : entryName
 
     if (entryConfig.format === 'module') {
-      const esmPath = entrySubpath.replace(/^\./, './esm') + esmExtension
+      const esmPath = entrySubpath + esmExtension
 
       const typesPath =
         entryConfig.types
@@ -98,8 +98,8 @@ export async function writeDistPkgJson(
         ? (pkgJson.keywords || basePkgJson.keywords || []) // don't merge
         : (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
-    module: './esm/index' + esmExtension,
-    main: './esm/index' + esmExtension,
+    module: './index' + esmExtension,
+    main: './index' + esmExtension,
     ...(
       firstCdnPath
         ? cdnFields.reduce(
