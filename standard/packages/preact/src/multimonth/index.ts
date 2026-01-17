@@ -4,7 +4,7 @@ import { TableDateProfileGenerator } from '../daygrid/TableDateProfileGenerator'
 import { MultiMonthView } from './components/MultiMonthView'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'multimonth',
   initialView: 'multiMonthYear',
   views: {
     multiMonth: {

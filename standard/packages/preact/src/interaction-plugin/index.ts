@@ -8,7 +8,7 @@ import { UnselectAuto } from './interactions/UnselectAuto'
 import { FeaturefulElementDragging } from './dnd/FeaturefulElementDragging'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'interaction',
   componentInteractions: [DateClicking, DateSelecting, EventDragging, EventResizing],
   calendarInteractions: [UnselectAuto],
   elementDraggingImpl: FeaturefulElementDragging,

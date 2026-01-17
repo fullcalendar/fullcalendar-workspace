@@ -4,7 +4,7 @@ import { DayGridView } from './components/DayGridView'
 import { TableDateProfileGenerator } from './TableDateProfileGenerator'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'daygrid',
   initialView: 'dayGridMonth',
   views: {
     dayGrid: {

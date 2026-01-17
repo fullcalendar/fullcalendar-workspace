@@ -4,7 +4,7 @@ import dayGridPlugin from '../daygrid/index'
 import { TimeGridView } from './components/TimeGridView'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'timegrid',
   initialView: 'timeGridWeek',
   deps: [dayGridPlugin],
   views: {

@@ -3,7 +3,7 @@ import { PluginDef } from '../plugin-system-struct'
 import { ListView } from './components/ListView'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'list',
   views: {
     list: {
       component: ListView,
