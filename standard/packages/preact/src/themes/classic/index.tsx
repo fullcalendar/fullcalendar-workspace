@@ -1,4 +1,7 @@
-import { joinClassNames, createPlugin, type CalendarOptions, type PluginDef } from '../../index'
+import { createPlugin } from '../../plugin-system'
+import { type PluginDef } from '../../plugin-system-struct'
+import { type CalendarOptions } from '../../options'
+import { joinClassNames } from '../../util/html'
 
 // ambient types (tsc strips during build because of {})
 // import {} from '@fullcalendar/timeline'

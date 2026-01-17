@@ -1,4 +1,8 @@
-import { createPlugin, PluginDef, CalendarOptions, DayHeaderData, DayCellData, joinClassNames } from '../../index'
+import { createPlugin } from '../../plugin-system'
+import { PluginDef } from '../../plugin-system-struct'
+import { CalendarOptions } from '../../options'
+import { DayHeaderData, DayCellData } from '../../render-hook-misc'
+import { joinClassNames } from '../../util/html'
 
 // // ambient types (tsc strips during build because of {})
 // import {} from '@fullcalendar/timeline'

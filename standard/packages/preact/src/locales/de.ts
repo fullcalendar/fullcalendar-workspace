@@ -1,4 +1,4 @@
-import { LocaleInput } from '../index'
+import { LocaleInput } from '../datelib/locale'
 
 function affix(unitText: string): string {
   return (unitText === 'Tag' || unitText === 'Monat') ? 'r' :

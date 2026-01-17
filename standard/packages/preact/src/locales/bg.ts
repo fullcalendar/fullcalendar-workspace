@@ -1,4 +1,4 @@
-import { LocaleInput } from '../index'
+import { LocaleInput } from '../datelib/locale'
 
 export default {
   code: 'bg',
