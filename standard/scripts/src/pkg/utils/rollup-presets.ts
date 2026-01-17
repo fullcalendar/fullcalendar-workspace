@@ -33,6 +33,7 @@ import {
   externalizePkgsPlugin,
   generatedContentPlugin,
   massageDtsPlugin,
+  minifyBundleSeparatelyPlugin,
   rerootPlugin,
 } from './rollup-plugins.ts'
 
@@ -66,6 +67,7 @@ export async function buildGlobalOptions(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
   sourcemaps: boolean,
+  minification: boolean,
 ): Promise<RollupOptions> {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
@@ -75,6 +77,7 @@ export async function buildGlobalOptions(
       pkgBundleStruct,
       isDev,
       sourcemaps,
+      minification,
     ),
     output: buildGlobalOutputOptions(pkgBundleStruct, sourcemaps),
     onwarn(warning) {
@@ -205,7 +208,7 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
-  sourcemapLoading: boolean,
+  sourcemaps: boolean,
 ): Plugin[] {
   const { pkgDir, pkgJson, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
@@ -218,7 +221,10 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    copyFilesPlugin({ srcToDest: pkgBundleStruct.copySrcToDest }),
+    copyFilesPlugin({
+      srcToDest: pkgBundleStruct.copySrcToDest,
+      minification: true, // temp
+    }),
     (pkgJson.name === '@fullcalendar/preact' || isPublicMui) &&
       transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
     ...buildJsPlugins(
@@ -226,7 +232,7 @@ function buildModulePlugins(
         isDev,
         pkgBundleStruct.moduleConfig?.cssExtract || '',
       ),
-    sourcemapLoading && sourcemapsPlugin(),
+    sourcemaps && sourcemapsPlugin(), // source map *loading*
   ].filter(Boolean) as Plugin[]
 }
 
@@ -234,6 +240,7 @@ async function buildGlobalPlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
   sourcemaps: boolean,
+  minification: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
@@ -255,10 +262,9 @@ async function buildGlobalPlugins(
         isDev,
         pkgBundleStruct.globalConfig?.cssExtract || '',
       ),
-    ...(sourcemaps ? [sourcemapsPlugin()] : []), // source map *loading*
-    // ...((cssMin || cssAsJs) ? [await extractCssSeparatelyPlugin(cssMin, cssAsJs)] : []),
-    // ...(jsMin ? [minifyJsSeparatelyPlugin()] : []),
-  ]
+    sourcemaps && sourcemapsPlugin(), // source map *loading*
+    minification && minifyBundleSeparatelyPlugin(),
+  ].filter(Boolean) as Plugin[]
 }
 
 function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {

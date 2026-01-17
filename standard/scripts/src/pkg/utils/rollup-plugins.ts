@@ -5,13 +5,13 @@ import {
   sep as pathSep,
   isAbsolute,
 } from 'path'
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { type Plugin } from 'rollup'
 import handlebars from 'handlebars'
 import cssnano from 'cssnano'
 import { execLive } from '../../utils/exec.ts'
-import { strsToProps } from '../../utils/lang.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
+import { type CopyOperation } from './bundle-struct.ts'
 
 // Generated Content
 // -------------------------------------------------------------------------------------------------
@@ -117,52 +117,73 @@ export function rerootPlugin(options: RerootOptions): Plugin {
 // -------------------------------------------------------------------------------------------------
 
 export interface CopyFilesOptions {
-  srcToDest: Record<string, string> // dest is relative to pkg's dist dir
+  srcToDest: CopyOperation[]
+  minification?: boolean
 }
 
 export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
   return {
     name: 'copy-files',
     buildStart() {
-      for (const srcPath of Object.keys(options.srcToDest)) {
-        this.addWatchFile(srcPath)
+      for (const { src } of options.srcToDest) {
+        this.addWatchFile(src)
       }
     },
     async generateBundle() {
-      for (const [srcPath, destPath] of Object.entries(options.srcToDest)) {
-        const source = await readFile(srcPath)
+      for (const { src, dest } of options.srcToDest) {
+        const source = await readFile(src)
         this.emitFile({
           type: 'asset',
-          fileName: destPath,
+          fileName: dest,
           source,
         })
       }
-    }
+    },
+    async writeBundle(outputOptions) {
+      if (options.minification) {
+        const { dir } = outputOptions
+        if (!dir) {
+          return this.error('For minification, must specify dir output option')
+        }
+        await Promise.all(
+          options.srcToDest
+            .filter(({ minificationDisabled }) => !minificationDisabled)
+            .map(({ dest }) => minifyBundleFile(resolvePath(joinPaths(dir, dest))))
+        )
+      }
+    },
   }
 }
-
 
 // Minify
 // -------------------------------------------------------------------------------------------------
 
-export function minifyJsSeparatelyPlugin(): Plugin {
+export function minifyBundleSeparatelyPlugin(): Plugin {
   return {
-    name: 'minify-separately',
+    name: 'minify-bundle-separately',
     async writeBundle(options, bundles) {
       const { file, dir } = options
 
       if (file) {
-        await minifyJsSeparately(resolvePath(file))
+        await minifyBundleFile(resolvePath(file))
       } else if (dir) {
         await Promise.all(
           Object.keys(bundles).map((bundlePath) => {
-            return minifyJsSeparately(resolvePath(joinPaths(dir, bundlePath)))
+            return minifyBundleFile(resolvePath(joinPaths(dir, bundlePath)))
           }),
         )
       } else {
         this.error('For minification, must specify dir or file output option')
       }
     },
+  }
+}
+
+async function minifyBundleFile(path: string): Promise<void> {
+  if (path.match(/\.[cm]?js$/)) {
+    return minifyJsSeparately(path)
+  } else if (path.endsWith('.css')) {
+    return minifyCssSeparately(path)
   }
 }
 
@@ -183,59 +204,30 @@ async function minifyJsSeparately(path: string): Promise<void> {
   })
 }
 
-// Inject CSS as Style Tag, Separately
-// -------------------------------------------------------------------------------------------------
+async function minifyCssSeparately(path: string): Promise<void> {
+  const cssText = await readFile(path, 'utf8')
+  const result = await cssnano({
+    preset: ['default', {
+      calc: false,
+    }],
+  }).process(cssText)
+  const minPath = path.replace(/\.css$/, '.min.css')
+  await writeFile(minPath, result.css)
+}
 
 /*
-Makes the .min.css and .style.js files
-Does NOT output the normal .css file
-*/
-export async function extractCssSeparatelyPlugin(
-  cssMin: boolean | undefined,
-  cssAsJs: boolean | undefined
-): Promise<Plugin> {
+Dormant functionality for making a .style.js file from a CSS file:
+
   const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
   const templateText = await readFile(templatePath, 'utf8')
   const template = handlebars.compile(templateText)
 
-  return {
-    name: 'inject-css-separately',
-    async generateBundle(options, bundle) {
-      for (let [fileName, chunkOrAsset] of Object.entries(bundle)) {
-        if (fileName.endsWith('.css') && chunkOrAsset.type === 'asset') {
-          let cssText =
-            typeof chunkOrAsset.source === 'string'
-              ? chunkOrAsset.source
-              : Buffer.from(chunkOrAsset.source).toString('utf8')
-
-          cssText = (
-            await cssnano({
-              preset: ['default', {
-                calc: false, // bad for tailwind line heights
-              }],
-            }).process(cssText)
-          ).css
-
-          if (cssMin) {
-            this.emitFile({
-              type: 'asset',
-              fileName: fileName.replace(/\.css$/, '.min.css'),
-              source: cssText,
-            })
-          }
-
-          if (cssAsJs) {
-            this.emitFile({
-              type: 'asset',
-              fileName: fileName.replace(/\.css$/, '.styles.js'),
-              source: template({ cssTextAsJson: JSON.stringify(cssText) })
-            })
-          }
-        }
-      }
-    }
-  }
-}
+  this.emitFile({
+    type: 'asset',
+    fileName: fileName.replace(/\.css$/, '.styles.js'),
+    source: template({ cssTextAsJson: JSON.stringify(cssText) })
+  })
+*/
 
 // .d.ts
 // -------------------------------------------------------------------------------------------------

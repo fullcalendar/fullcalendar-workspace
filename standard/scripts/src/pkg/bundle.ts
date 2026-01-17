@@ -49,8 +49,7 @@ export async function writeBundles(
         pkgBundleStruct,
         isDev,
         /* sourcemaps = */ isDev || isTests,
-        ///* jsMin = */ !isDev && !isTests,
-        ///* cssMin = */ !isDev && !isTests,
+        /* minification = */ !isDev && !isTests,
       ),
     dtsEnabled && buildDtsOptions(pkgBundleStruct)
   ].filter(Boolean) as RollupOptions[]
@@ -91,8 +90,7 @@ export async function watchBundles(
           pkgBundleStruct,
           isDev,
           /* sourcemaps = */ isDev || isTests,
-          ///* jsMin = */ !isDev && !isTests,
-          ///* cssMin = */ !isDev && !isTests,
+          /* minification = */ !isDev && !isTests,
         ),
       dtsEnabled && buildDtsOptions(pkgBundleStruct),
     ].filter(Boolean) as RollupWatchOptions[]

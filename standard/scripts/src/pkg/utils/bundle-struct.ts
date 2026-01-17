@@ -9,10 +9,16 @@ export interface PkgBundleStruct {
   pkgJson: any
   entryConfigMap: EntryConfigMap
   entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
-  copySrcToDest: Record<string, string> // dest is relative to pkg's dist dir
+  copySrcToDest: CopyOperation[]
   miscWatchPaths: string[] // not CSS
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
+}
+
+export interface CopyOperation {
+  src: string // absolute path
+  dest: string // relative to pkg's dist dir
+  minificationDisabled?: boolean
 }
 
 export interface PkgModuleConfig {
@@ -36,6 +42,7 @@ export interface EntryConfig {
   sideEffects?: boolean
   primary?: boolean // for iifeSplit
   secondaryProp?: string // for iifeSplit
+  minificationDisabled?: boolean // for use with `src` or `import` copying
 }
 
 export interface EntryStruct {
@@ -68,7 +75,7 @@ export async function buildPkgBundleStruct(
   const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
-  const copySrcToDest: Record<string, string> = {}
+  const copySrcToDest: CopyOperation[] = []
   const miscWatchPaths: string[] = []
 
   await Promise.all(
@@ -87,8 +94,12 @@ export async function buildPkgBundleStruct(
         } else {
           srcPath = joinPaths(pkgDir, 'src', entryConfig.src || entryGlob)
         }
-        let destPath = removeDotSlash(entryGlob)
-        copySrcToDest[srcPath] = destPath // dest relative to pkg's dist dir
+
+        copySrcToDest.push({
+          src: srcPath,
+          dest: removeDotSlash(entryGlob),
+          minificationDisabled: entryConfig.minificationDisabled,
+        })
       } else {
         const newEntryStructMap = entryConfig.generator ?
           await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
