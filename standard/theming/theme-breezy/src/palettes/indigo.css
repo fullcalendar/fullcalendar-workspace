@@ -62,7 +62,7 @@
   /* calendar content */
   --fc-breezy-highlight: #3b82f633;
   --fc-breezy-now: red;
-  --fc-breezy-event: #3b82f6#93c5fd;
+  --fc-breezy-event: #93c5fd;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-muted);

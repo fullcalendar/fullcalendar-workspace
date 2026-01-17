@@ -21,7 +21,7 @@ Color conversion table:
   var(--color-amber-950): #451a03
   var(--color-black): #000000
   var(--color-white): #ffffff
-  var(--color-blue-300): #3b82f6#93c5fd
+  var(--color-blue-300): #93c5fd
   var(--color-blue-500): #3b82f6
   var(--color-cyan-100): #cffafe
   var(--color-emerald-500): #10b981
