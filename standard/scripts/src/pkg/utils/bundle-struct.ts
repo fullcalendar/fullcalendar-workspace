@@ -258,14 +258,6 @@ export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): str
   return pkgBundleStruct.globalConfig?.externalPkgs || []
 }
 
-// External File Paths
-// -------------------------------------------------------------------------------------------------
-
-export function computeOwnExternalPaths(pkgBundleStruct: PkgBundleStruct): string[] {
-  return Object.values(pkgBundleStruct.entryStructMap)
-    .map((entryStruct) => entryStruct.entrySrcPath)
-}
-
 // Utils
 // -------------------------------------------------------------------------------------------------
 

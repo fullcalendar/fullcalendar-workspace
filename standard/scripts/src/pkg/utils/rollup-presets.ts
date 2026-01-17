@@ -17,7 +17,6 @@ import { standardScriptsDir } from '../../utils/script-runner.ts'
 import {
   computeGlobalExternalPkgs,
   computeModuleExternalPkgs,
-  computeOwnExternalPaths,
   entryStructsToContentMap,
   type PkgGlobalConfig,
   type PkgBundleStruct
@@ -31,7 +30,6 @@ import transformClassNamesPlugin from './rollup-plugins-theming.ts'
 import {
   copyFilesPlugin,
   externalizeExtensionsPlugin,
-  externalizePathsPlugin,
   externalizePkgsPlugin,
   generatedContentPlugin,
   massageDtsPlugin,
@@ -269,10 +267,6 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
       moduleSideEffects: true, // for including ambient declarations in other packages
-    }),
-    // rollup-plugin-dts normally gets confused with code splitting. this helps a lot.
-    externalizePathsPlugin({
-      paths: computeOwnExternalPaths(pkgBundleStruct),
     }),
     dtsPlugin(),
     massageDtsPlugin(),

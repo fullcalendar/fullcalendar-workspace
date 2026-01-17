@@ -33,37 +33,6 @@ export function generatedContentPlugin(contentMap: { [path: string]: string }): 
   }
 }
 
-// Externalize certain paths
-// -------------------------------------------------------------------------------------------------
-
-export interface ExteralizePathsOptions {
-  paths: string[]
-  extensions?: ExtensionInput
-}
-
-export function externalizePathsPlugin(options: ExteralizePathsOptions): Plugin {
-  const pathMap = strsToProps(options.paths)
-  const extensionMap = options.extensions && normalizeExtensionMap(options.extensions)
-
-  return {
-    name: 'externalize-paths',
-    resolveId(importId, importerPath) {
-      let importPath = computeImportPath(importId, importerPath)
-
-      if (importPath && pathMap[importPath]) {
-        if (extensionMap) {
-          importPath = findAndReplaceExtensions(importPath, extensionMap)
-        }
-
-        if (importPath) {
-          // return absolute is possible via makeAbsoluteExternalsRelative
-          return { id: importPath, external: true }
-        }
-      }
-    },
-  }
-}
-
 // Externalize certain packages
 // -------------------------------------------------------------------------------------------------
 
