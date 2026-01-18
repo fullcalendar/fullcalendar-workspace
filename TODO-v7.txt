@@ -35,8 +35,6 @@ build note:
     manually before `pn dev`
 
 
-web-component working
-  revive .style.js
 scheduler working
   preact-scheduler
   vanilla-scheduler
@@ -46,6 +44,9 @@ Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
   might make for better NPM stats
     transitive deps dont get download stats; when we move to transpiling, no transitive deps anyway
     (so, if we started with transitive deps, then removed, DL count would look like it went down)
+export 'preact' entrypoint for vanilla
+  and preact.global.js?
+  current preact.ts file is whack
 why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
 remove (data, *createElement*) param from *Content hooks
@@ -78,6 +79,9 @@ bug: list-event "click for Google" is blue
   standard/bundle/examples/timegrid-views.html
 bug: why is multi-month scrolling down so much?
   file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
+bug: web-component (with React internals), timegrid "Todo el día" all on same line
+  thought it should break to a second?
+docs: is web-component's getApi() documented? no
 test NextJS SSR
 ensure all dependencyGlobalVars killed
 

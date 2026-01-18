@@ -1,8 +1,12 @@
 import { join as joinPaths } from 'path'
+import { readFile } from 'fs/promises'
 import { createRequire } from 'module'
 import { globby } from 'globby'
+import handlebars from 'handlebars'
 import { pkgLog } from '../../utils/log.ts'
-import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.ts'
+import { srcExtensions, transpiledSubdir, transpiledExtension, esmExtension } from './config.ts'
+import { standardScriptsDir } from '../../utils/script-runner.ts'
+import { minifyCss, minifyJs } from './rollup-plugins.ts'
 
 export interface PkgBundleStruct {
   pkgDir: string,
@@ -17,6 +21,7 @@ export interface PkgBundleStruct {
 
 export interface CopyOperation {
   src: string // absolute path
+  transform?: (srcStr: string) => string | Promise<string>
   dest: string // relative to pkg's dist dir
   minificationDisabled?: boolean
 }
@@ -34,7 +39,7 @@ export interface PkgGlobalConfig {
 }
 
 export interface EntryConfig {
-  format: 'module' | 'global' | 'css'
+  format: 'module' | 'global' | 'css' | 'css-as-js'
   types?: string // relative to src dir, no leading "./", no extension
   src?: string // relative to src dir, no loeading "./", no extension
   import?: string
@@ -81,13 +86,15 @@ export async function buildPkgBundleStruct(
   await Promise.all(
     Object.keys(entryConfigMap).map(async (entryGlob) => {
       const entryConfig = entryConfigMap[entryGlob]
+      const isCssAsJs = entryConfig.format === 'css-as-js'
 
-      if (entryConfig.format === 'css') {
+      if (entryConfig.format === 'css' || isCssAsJs) {
         if (entryGlob.includes('*')) {
           throw new Error('CSS copying does not support glob')
         }
 
         let srcPath: string
+
         if (entryConfig.import) {
           const require = createRequire(joinPaths(pkgDir, 'package.json'))
           srcPath = require.resolve(entryConfig.import)
@@ -95,11 +102,28 @@ export async function buildPkgBundleStruct(
           srcPath = joinPaths(pkgDir, 'src', entryConfig.src || entryGlob)
         }
 
-        copySrcToDest.push({
-          src: srcPath,
-          dest: removeDotSlash(entryGlob),
-          minificationDisabled: entryConfig.minificationDisabled,
-        })
+        const { minificationDisabled } = entryConfig
+
+        if (isCssAsJs) {
+          copySrcToDest.push({
+            src: srcPath,
+            transform: async (cssText) => {
+              let jsText = await wrapCssAsJs(cssText, minificationDisabled)
+              if (!minificationDisabled) {
+                jsText = await minifyJs(jsText)
+              }
+              return jsText
+            },
+            dest: removeDotSlash(entryGlob) + esmExtension,
+            minificationDisabled: true, // never do .style.min.js
+          })
+        } else {
+          copySrcToDest.push({
+            src: srcPath,
+            dest: removeDotSlash(entryGlob),
+            minificationDisabled,
+          })
+        }
       } else {
         const newEntryStructMap = entryConfig.generator ?
           await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
@@ -267,6 +291,31 @@ export function computeModuleExternalPkgs(pkgBundleStruct: PkgBundleStruct): str
 
 export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
   return pkgBundleStruct.globalConfig?.externalPkgs || []
+}
+
+// CSS-AS-JS
+// -------------------------------------------------------------------------------------------------
+
+async function wrapCssAsJs(cssText: string, minificationDisabled: boolean | undefined): Promise<string> {
+  const template = await getCssWrapTemplate()
+  if (!minificationDisabled) {
+    cssText = await minifyCss(cssText)
+  }
+  return template({ cssTextAsJson: JSON.stringify(cssText) })
+}
+
+type HandlebarsTemplate = ReturnType<typeof handlebars.compile>
+
+let _cssWrapTemplate: HandlebarsTemplate
+
+async function getCssWrapTemplate(): Promise<HandlebarsTemplate> {
+  return _cssWrapTemplate || (_cssWrapTemplate = await buildCssWrapTemplate())
+}
+
+async function buildCssWrapTemplate(): Promise<HandlebarsTemplate> {
+  const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
+  const templateText = await readFile(templatePath, 'utf8')
+  return handlebars.compile(templateText)
 }
 
 // Utils

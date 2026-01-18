@@ -11,7 +11,7 @@ export class FullCalendarElement extends HTMLElement {
     if ((globalThis as any).__applyFullCalendarStyles) {
       (globalThis as any).__applyFullCalendarStyles(this.shadowRoot)
     } else {
-      throw new Error('FullCalendar styles for Shadow DOM must be included via global.css.js')
+      throw new Error('FullCalendar styles for Shadow DOM must be included via .styles.js')
     }
   }
 

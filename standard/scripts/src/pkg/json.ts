@@ -86,6 +86,9 @@ export async function writeDistPkgJson(
       }
     } else if (entryConfig.format === 'css') {
       exportsMap[entryName] = entryName
+    } else if (entryConfig.format === 'css-as-js') {
+      exportsMap[entryName] = entryName + iifeExtension
+      sideEffects.push(entrySubpath + iifeExtension)
     }
   }
 

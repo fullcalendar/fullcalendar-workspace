@@ -7,9 +7,8 @@ import {
 } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import { type Plugin } from 'rollup'
-import handlebars from 'handlebars'
+import Terser, { type MinifyOptions as TerserOptions } from 'terser'
 import cssnano from 'cssnano'
-import { execLive } from '../../utils/exec.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
 import { type CopyOperation } from './bundle-struct.ts'
 
@@ -130,8 +129,11 @@ export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
       }
     },
     async generateBundle() {
-      for (const { src, dest } of options.srcToDest) {
-        const source = await readFile(src)
+      for (const { src, dest, transform } of options.srcToDest) {
+        let source: string | Buffer = await readFile(src)
+        if (transform) {
+          source = await transform(source.toString())
+        }
         this.emitFile({
           type: 'asset',
           fileName: dest,
@@ -148,7 +150,7 @@ export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
         await Promise.all(
           options.srcToDest
             .filter(({ minificationDisabled }) => !minificationDisabled)
-            .map(({ dest }) => minifyBundleFile(resolvePath(joinPaths(dir, dest))))
+            .map(({ dest }) => minifyFileSeparately(resolvePath(joinPaths(dir, dest))))
         )
       }
     },
@@ -165,11 +167,11 @@ export function minifyBundleSeparatelyPlugin(): Plugin {
       const { file, dir } = options
 
       if (file) {
-        await minifyBundleFile(resolvePath(file))
+        await minifyFileSeparately(resolvePath(file))
       } else if (dir) {
         await Promise.all(
           Object.keys(bundles).map((bundlePath) => {
-            return minifyBundleFile(resolvePath(joinPaths(dir, bundlePath)))
+            return minifyFileSeparately(resolvePath(joinPaths(dir, bundlePath)))
           }),
         )
       } else {
@@ -179,7 +181,7 @@ export function minifyBundleSeparatelyPlugin(): Plugin {
   }
 }
 
-async function minifyBundleFile(path: string): Promise<void> {
+async function minifyFileSeparately(path: string): Promise<void> {
   if (path.match(/\.[cm]?js$/)) {
     return minifyJsSeparately(path)
   } else if (path.endsWith('.css')) {
@@ -194,40 +196,45 @@ async function minifyJsSeparately(path: string): Promise<void> {
     throw new Error(`Invalid extension for minification ${path}`)
   }
 
-  return execLive([
-    joinPaths(standardScriptsDir, 'node_modules/.bin/terser'),
-    '--config-file', 'config/terser.json',
-    '--output', pathMatch[1] + '.min' + pathMatch[2],
-    '--', path,
-  ], {
-    cwd: standardScriptsDir,
-  })
+  const jsText = await readFile(path, 'utf8')
+  const minJsText = await minifyJs(jsText)
+  const minPath = pathMatch[1] + '.min' + pathMatch[2]
+  await writeFile(minPath, minJsText)
+}
+
+let terserOptions: TerserOptions | undefined
+
+async function getTerserOptions(): Promise<TerserOptions> {
+  if (!terserOptions) {
+    const configPath = joinPaths(standardScriptsDir, 'config/terser.json')
+    terserOptions = JSON.parse(await readFile(configPath, 'utf8'))
+  }
+  return terserOptions!
+}
+
+export async function minifyJs(jsText: string): Promise<string> {
+  const options = await getTerserOptions()
+  const result = Terser.minify(jsText, options)
+  if (result.code === undefined) {
+    throw new Error('Terser minification failed')
+  }
+  return result.code
 }
 
 async function minifyCssSeparately(path: string): Promise<void> {
-  const cssText = await readFile(path, 'utf8')
+  const cssText = await minifyCss(await readFile(path, 'utf8'))
+  const minPath = path.replace(/\.css$/, '.min.css')
+  await writeFile(minPath, cssText)
+}
+
+export async function minifyCss(cssText: string): Promise<string> {
   const result = await cssnano({
     preset: ['default', {
       calc: false,
     }],
   }).process(cssText)
-  const minPath = path.replace(/\.css$/, '.min.css')
-  await writeFile(minPath, result.css)
+  return result.css
 }
-
-/*
-Dormant functionality for making a .style.js file from a CSS file:
-
-  const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
-  const templateText = await readFile(templatePath, 'utf8')
-  const template = handlebars.compile(templateText)
-
-  this.emitFile({
-    type: 'asset',
-    fileName: fileName.replace(/\.css$/, '.styles.js'),
-    source: template({ cssTextAsJson: JSON.stringify(cssText) })
-  })
-*/
 
 // .d.ts
 // -------------------------------------------------------------------------------------------------
