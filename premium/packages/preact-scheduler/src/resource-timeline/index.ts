@@ -1,4 +1,4 @@
-import '../common/ambient'
+import '../ambient'
 
 export * from './structs'
 export { ResourceTimelineOptions } from './options'

@@ -1,3 +1,3 @@
-import '../common/ambient'
+import '../ambient'
 
 export { default } from './plugin'

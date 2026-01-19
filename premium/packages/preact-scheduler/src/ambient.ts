@@ -1,19 +1,19 @@
-import { PremiumOptions, PremiumOptionsRefined } from './options'
-import { ResourceApi } from '../resource/api/ResourceApi'
-import { ResourceSource } from '../resource/structs/resource-source'
-import { ResourceHash } from '../resource/structs/resource'
-import { ResourceEntityExpansions } from '../resource/reducers/resourceEntityExpansions'
-import { ResourceAction } from '../resource/reducers/resource-action'
+import { PremiumOptions, PremiumOptionsRefined } from './common/options'
+import { ResourceApi } from './resource/api/ResourceApi'
+import { ResourceSource } from './resource/structs/resource-source'
+import { ResourceHash } from './resource/structs/resource'
+import { ResourceEntityExpansions } from './resource/reducers/resourceEntityExpansions'
+import { ResourceAction } from './resource/reducers/resource-action'
 import {
   ResourceOptions,
   ResourceOptionsRefined,
   ResourceListeners,
   ResourceListenersRefined,
-} from '../resource/options'
-import { EVENT_REFINERS } from '../resource/structs/event-parse'
-import { ResourceDayGridOptions, ResourceDayGridOptionsRefined } from '../resource-daygrid/options'
-import { ResourceTimelineOptions, ResourceTimelineOptionsRefined } from '../resource-timeline/options'
-import { TimelineOptions, TimelineOptionsRefined } from '../timeline/options'
+} from './resource/options'
+import { EVENT_REFINERS } from './resource/structs/event-parse'
+import { ResourceDayGridOptions, ResourceDayGridOptionsRefined } from './resource-daygrid/options'
+import { ResourceTimelineOptions, ResourceTimelineOptionsRefined } from './resource-timeline/options'
+import { TimelineOptions, TimelineOptionsRefined } from './timeline/options'
 
 type ExtraEventRefiners = typeof EVENT_REFINERS
 

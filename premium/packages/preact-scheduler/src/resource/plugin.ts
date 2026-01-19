@@ -14,7 +14,7 @@ import { handleResourceStore } from './resources-crud'
 import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
 
 // SIDE EFFECTS
-import '../common/ambient'
+import '../ambient'
 import './api/EventApi'
 import './api/CalendarApi'
 // TODO: plugin-ify
