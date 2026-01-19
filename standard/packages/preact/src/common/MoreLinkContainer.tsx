@@ -16,7 +16,7 @@ import { ElAttrsProps } from '../content-inject/ContentInjector'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { EventRangeProps } from '../component-util/event-rendering'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 /*
 TODO: simplify this interface. don't need all el attrs

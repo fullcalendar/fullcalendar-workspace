@@ -4,7 +4,7 @@ import { createRef, type Ref } from 'react'
 import { Scroller } from '../scrollgrid/Scroller'
 import { BaseComponent, setRef } from '../vdom-util'
 import { joinClassNames } from '../util/html'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export interface FooterScrollbarProps {
   isSticky?: boolean

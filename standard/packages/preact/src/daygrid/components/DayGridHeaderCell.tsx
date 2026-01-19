@@ -6,7 +6,7 @@ import { watchSize } from '../../component-util/resize-observer'
 import type { Ref } from 'react'
 import { CellDataConfig, CellRenderConfig } from '../header-tier'
 import { dayHeaderMicroFormat } from './util'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridHeaderCellProps<RenderProps> {
   key?: string | number | null

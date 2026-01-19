@@ -1,4 +1,4 @@
-import { watchWidth } from '../internal'
+import { watchWidth } from '../component-util/resize-observer'
 import { createRef, type Ref } from 'react'
 import { BaseComponent, setRef } from '../vdom-util'
 

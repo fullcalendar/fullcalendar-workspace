@@ -4,7 +4,7 @@ import { BaseComponent } from '../../vdom-util'
 import { ContentContainer } from '../../content-inject/ContentContainer'
 import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { TimeSlatMeta } from '../time-slat-meta'
 
 export interface TimeGridSlatLaneProps extends TimeSlatMeta {

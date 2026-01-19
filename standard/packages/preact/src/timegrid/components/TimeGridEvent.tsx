@@ -2,7 +2,7 @@ import { BaseComponent } from '../../vdom-util'
 import { MinimalEventProps } from '../../component-util/event-rendering'
 import { createFormatter } from '../../datelib/formatting'
 import { StandardEvent } from '../../common/StandardEvent'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',

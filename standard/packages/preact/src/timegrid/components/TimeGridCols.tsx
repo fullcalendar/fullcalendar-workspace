@@ -8,7 +8,7 @@ import { Hit } from '../../interactions/hit'
 import { isPropsEqualShallow } from '../../util/object'
 import { memoize } from '../../util/memoize'
 import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { TimeGridRange } from '../TimeColsSeg'
 import { TimeGridCol } from './TimeGridCol'
 

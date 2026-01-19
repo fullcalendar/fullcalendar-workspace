@@ -1,9 +1,9 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { joinArrayishClassNames } from '../internal'
+import { joinArrayishClassNames } from '../util/html'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { formatWithOrdinals } from '../util/misc'
 import { ViewContext } from '../ViewContext'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 import { FULL_DATE_FORMAT, WEEK_FORMAT } from '../util/date-format'
 
 /*

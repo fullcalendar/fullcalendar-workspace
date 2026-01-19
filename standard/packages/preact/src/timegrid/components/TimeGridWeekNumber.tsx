@@ -7,7 +7,7 @@ import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { createFormatter } from '../../datelib/formatting'
 import { diffDays } from '@full-ui/headless-calendar'
 import { watchSize } from '../../component-util/resize-observer'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { type Ref, createRef } from 'react'
 
 export interface TimeGridWeekNumberProps {

@@ -18,7 +18,7 @@ import { getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getS
 import { isArraysEqual } from '../../util/array'
 import { generateClassName } from '../../content-inject/ContentContainer'
 import { type Ref, createRef } from 'react'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { RowConfig } from '../../daygrid/header-tier'
 import { computeColWidth, dayMicroWidth } from '../../daygrid/components/util'

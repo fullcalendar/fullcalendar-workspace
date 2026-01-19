@@ -19,7 +19,7 @@ import { DayGridRows } from './DayGridRows'
 import { computeColWidth, dayMicroWidth } from './util'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridLayoutPannableProps {
   dateProfile: DateProfile

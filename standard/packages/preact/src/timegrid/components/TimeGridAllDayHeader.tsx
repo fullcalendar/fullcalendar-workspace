@@ -4,7 +4,7 @@ import { type ReactNode, type Ref, createRef } from 'react'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
 import { watchWidth } from '../../component-util/resize-observer'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface TimeGridAllDayHeaderProps {
   // dimension

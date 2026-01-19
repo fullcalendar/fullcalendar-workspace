@@ -9,7 +9,7 @@ import { getEventKey } from '../../component-util/event-rendering'
 import { getEventRangeMeta } from '../../component-util/event-rendering'
 import { memoize } from '../../util/memoize'
 import { sortEventSegs } from '../../component-util/event-rendering'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { ListDayHeader } from "./ListDayHeader"
 import { ListEvent } from "./ListEvent"
 

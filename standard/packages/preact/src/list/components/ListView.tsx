@@ -22,7 +22,7 @@ import { sliceEventStore } from '../../component-util/event-rendering'
 import { startOfDay } from '@full-ui/headless-calendar'
 import { ViewContainer } from '../../common/ViewContainer'
 import type { ViewProps } from '../../component-util/View'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { type ReactNode, type ReactElement } from 'react'
 import { ListDay, ListSeg } from './ListDay'
 

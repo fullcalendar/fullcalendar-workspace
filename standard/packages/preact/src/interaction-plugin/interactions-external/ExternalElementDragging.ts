@@ -19,7 +19,7 @@ import type { CalendarContext } from '../../CalendarContext'
 import { getDefaultEventEnd } from '../../calendar-utils'
 import { refineEventDef } from '../../structs/event-parse'
 import { EventImpl } from '../../api/EventImpl'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { HitDragging } from '../interactions/HitDragging'
 import { buildDatePointApiWithContext } from '../utils'
 

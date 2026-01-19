@@ -4,7 +4,7 @@ import { EventInstanceHash } from '../structs/event-instance'
 import { Hit } from '../interactions/hit'
 import { guid } from '../util/misc'
 import { Dictionary } from '../options'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export type DateComponentHash = { [uid: string]: DateComponent<any, any> }
 

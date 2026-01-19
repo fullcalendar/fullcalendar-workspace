@@ -1,4 +1,4 @@
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface TimeGridAxisEmptyProps {
   isLiquid: boolean

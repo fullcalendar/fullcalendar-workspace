@@ -2,7 +2,7 @@ import { Component, createRef, type Ref, type ReactNode } from 'react'
 import { joinClassNames } from '../../util/html'
 import { watchHeight } from '../../component-util/resize-observer'
 import { setRef } from '../../vdom-util'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridEventHarnessProps {
   key?: string | number | null

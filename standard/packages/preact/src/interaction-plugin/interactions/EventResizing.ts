@@ -21,7 +21,7 @@ import { interactionSettingsToStore } from '../../interactions/interaction'
 import { buildEventApis } from '../../api/EventImpl'
 import { isInteractionValid } from '../../validation'
 import { EventImpl } from '../../api/EventImpl'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { HitDragging, isHitsEqual } from './HitDragging'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 

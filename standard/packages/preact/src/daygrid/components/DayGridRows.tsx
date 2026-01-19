@@ -12,7 +12,7 @@ import { ViewOptionsRefined } from '../../options'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg'
 import { DayGridRow } from './DayGridRow'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridRowsProps {
   dateProfile: DateProfile

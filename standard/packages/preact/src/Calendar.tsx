@@ -9,7 +9,7 @@ import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
 import { memoize } from './util/memoize'
 
-export class CalendarComponent extends PureComponent<CalendarOptions> {
+export class Calendar extends PureComponent<CalendarOptions> {
   private dataManager: CalendarDataManager | undefined
   private currentData: CalendarData | undefined
   private _api = new CalendarApiImpl()

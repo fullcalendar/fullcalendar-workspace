@@ -3,7 +3,7 @@ import { DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { NowIndicatorHeaderContainer } from '../../common/NowIndicatorHeaderContainer'
 import { computeDateTopFrac } from './util'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface TimeGridNowIndicatorArrowProps {
   nowDate: DateMarker

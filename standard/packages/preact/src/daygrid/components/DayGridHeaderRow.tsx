@@ -5,7 +5,7 @@ import { RefMap } from '../../util/RefMap'
 import type { Ref } from 'react'
 import { RowConfig } from '../header-tier'
 import { DayGridHeaderCell } from './DayGridHeaderCell'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
   key?: string | number | null

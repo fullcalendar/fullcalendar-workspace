@@ -6,7 +6,7 @@ import { ViewApi } from '../api/ViewApi'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { ElProps } from '../content-inject/ContentInjector'
 import { joinClassNames } from '../util/html'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec

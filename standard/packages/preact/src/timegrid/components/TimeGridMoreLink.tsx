@@ -7,7 +7,7 @@ import { DateProfile } from '../../DateProfileGenerator'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { EventRangeProps } from '../../component-util/event-rendering'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { renderPlainFgSegs } from './TimeGridCol' // BAD
 import { TimeGridRange } from '../TimeColsSeg'
 

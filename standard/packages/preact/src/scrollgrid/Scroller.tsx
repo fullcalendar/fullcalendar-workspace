@@ -1,11 +1,13 @@
 import { DateComponent } from '../component/DateComponent'
-import { computeElIsRtl, setRef, watchHeight, watchWidth } from '../internal'
+import { computeElIsRtl } from '../util/dom-manip'
+import { setRef } from '../vdom-util'
+import { watchHeight, watchWidth } from '../component-util/resize-observer'
 import { Dictionary } from '../options'
 import type { ReactNode, Ref } from 'react'
 import { joinClassNames } from '../util/html'
 import { ScrollerInterface } from './ScrollerInterface'
 import { ScrollListener } from './ScrollListener'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export interface ScrollerProps {
   ref?: Ref<Scroller>

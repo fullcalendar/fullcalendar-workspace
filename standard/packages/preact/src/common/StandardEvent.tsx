@@ -9,7 +9,7 @@ import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 import { isPropsEqualShallow } from '../util/object'
 
 export interface StandardEventProps {

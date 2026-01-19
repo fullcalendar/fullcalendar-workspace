@@ -7,8 +7,8 @@ import { EventHovering } from './interactions/EventHovering'
 import {
   Interaction, InteractionClass, InteractionSettingsInput, interactionSettingsStore, parseInteractionSettings
 } from './interactions/interaction'
-import classNames from './internal-classnames'
-import { generateClassName } from './internal'
+import classNames from './styles.module.css'
+import { generateClassName } from './content-inject/ContentContainer'
 import { ViewPropsTransformerClass } from './plugin-system-struct'
 import { type ReactElement } from 'react'
 import { CalendarData, CalendarToolbarProps } from './reducers/data-types'

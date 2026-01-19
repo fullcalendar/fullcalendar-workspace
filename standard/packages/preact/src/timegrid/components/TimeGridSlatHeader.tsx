@@ -8,7 +8,7 @@ import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
 import { watchSize } from '../../component-util/resize-observer'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { createRef, type Ref } from 'react'
 import { TimeSlatMeta } from '../time-slat-meta'
 

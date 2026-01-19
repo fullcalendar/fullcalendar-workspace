@@ -16,7 +16,7 @@ import { type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { dayMicroWidth } from './util'
 
 export interface DayGridLayoutNormalProps {

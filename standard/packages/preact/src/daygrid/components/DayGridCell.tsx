@@ -15,7 +15,7 @@ import { memoize, memoizeObjArg } from '../../util/memoize'
 import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
 import { findDayNumberText, findMonthText } from '../../util/date-format'
 import { joinArrayishClassNames } from '../../util/html'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import {
   type Ref,
   type ReactNode,

@@ -40,13 +40,18 @@
         "format": "module"
       },
       "./all": {
-        "format": "module",
-        "sideEffects": true
-      },
-      "./internal": {
         "format": "module"
       },
-      "./internal-classnames": {
+      "./public-components": {
+        "format": "module"
+      },
+      "./public-api": {
+        "format": "module"
+      },
+      "./protected-api": {
+        "format": "module"
+      },
+      "./protected-styles": {
         "format": "module"
       },
       "./locales-all": {

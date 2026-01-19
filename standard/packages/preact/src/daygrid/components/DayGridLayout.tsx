@@ -15,7 +15,7 @@ import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
 import { computeTopFromDate } from './util'
 import { RowConfig } from '../header-tier'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 
 export interface DayGridLayoutProps {
   labelId: string | undefined

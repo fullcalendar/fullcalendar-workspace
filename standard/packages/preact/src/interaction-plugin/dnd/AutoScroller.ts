@@ -1,4 +1,4 @@
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { ScrollGeomCache } from '../ScrollGeomCache'
 import { ElementScrollGeomCache } from '../ElementScrollGeomCache'
 import { WindowScrollGeomCache } from '../WindowScrollGeomCache'

@@ -5,7 +5,7 @@ import type { DateMeta } from '../../component-util/date-rendering'
 import { formatDayString } from '@full-ui/headless-calendar'
 import type { ViewSpec } from '../../structs/view-spec'
 import { WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from '../../util/date-format'
-import classNames from '../../internal-classnames'
+import classNames from '../../styles.module.css'
 import { ListDayHeaderData } from '../structs'
 import { ListDayHeaderInner } from "./ListDayHeaderInner";
 

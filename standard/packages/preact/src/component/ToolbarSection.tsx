@@ -4,7 +4,7 @@ import { ToolbarWidget, ButtonData } from '../toolbar-struct'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ButtonIcon } from './ButtonIcon'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export interface ToolbarContent {
   title: string

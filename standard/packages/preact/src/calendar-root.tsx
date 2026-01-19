@@ -1,5 +1,5 @@
 import { Emitter } from './common/Emitter'
-import classNames from './internal-classnames'
+import classNames from './styles.module.css'
 import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
 import { flushSync } from 'react-dom'

@@ -1,5 +1,5 @@
 import { preventDefault } from './dom-event'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export type GenericHash = { [key: string]: any } // already did this somewhere
 

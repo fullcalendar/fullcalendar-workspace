@@ -8,7 +8,7 @@ import { ViewContext } from '../ViewContext'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ViewOptionsRefined } from '../options'
-import classNames from '../internal-classnames'
+import classNames from '../styles.module.css'
 
 export interface BgEventProps {
   eventRange: EventRenderRange
