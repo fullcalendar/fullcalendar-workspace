@@ -1,0 +1,27 @@
+import { DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/preact/internal'
+import { Resource } from '../structs/resource'
+import { ResourceIndex } from './ResourceIndex'
+
+/*
+TODO: move this so @fullcalendar/resource-daygrid
+*/
+export abstract class AbstractResourceDayTableModel {
+  cells: DayTableCell[][]
+  resourceIndex: ResourceIndex
+
+  constructor(
+    public dayTableModel: DayTableModel,
+    public resources: Resource[],
+    public rowCount: number,
+    public colCount: number
+  ) {
+    this.resourceIndex = new ResourceIndex(resources)
+    this.cells = this.buildCells()
+  }
+
+  abstract computeCol(dateI: number, resourceI: number): number
+
+  abstract computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): SlicedCoordRange[]
+
+  abstract buildCells(): DayTableCell[][]
+}

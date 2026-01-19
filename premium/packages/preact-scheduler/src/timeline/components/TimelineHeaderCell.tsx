@@ -1,0 +1,196 @@
+import { SlotHeaderData, joinClassNames } from '@fullcalendar/preact'
+import {
+  BaseComponent,
+  buildNavLinkAttrs,
+  ContentContainer,
+  DateMarker,
+  DateProfile,
+  DateRange,
+  generateClassName,
+  getDateMeta,
+  joinArrayishClassNames,
+  memoize,
+  setRef,
+  watchSize
+} from '@fullcalendar/preact/internal'
+import { createRef, type Ref } from 'react'
+import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
+import classNames from '@fullcalendar/preact/internal-classnames'
+
+export interface TimelineHeaderCellProps {
+  key?: string | number | null
+
+  dateProfile: DateProfile
+  tDateProfile: TimelineDateProfile
+  rowLevel: number // 0 is closest to divider (like "ground floor")
+  cell: TimelineHeaderCellData
+  todayRange: DateRange
+  nowDate: DateMarker
+  isFirst: boolean
+
+  // dimensions
+  slotWidth: number | undefined // always provided. if pending, use `undefined`
+
+  // refs
+  innerHeightRef?: Ref<number>
+  innerWidthRef?: Ref<number>
+}
+
+interface TimelineHeaderCellState {
+  innerWidth?: number
+}
+
+export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, TimelineHeaderCellState> {
+  state = {} as TimelineHeaderCellState
+
+  // memo
+  private getDateMeta = memoize(getDateMeta)
+
+  // ref
+  private innerWrapperElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private disconnectSize?: () => void
+  private align?: 'start' | 'center' | 'end'
+  private isSticky?: boolean
+
+  render() {
+    let { props, state, context } = this
+    let { dateEnv, options } = context
+    let { cell, dateProfile, tDateProfile } = props
+
+    // the cell.rowUnit is f'd
+    // giving 'month' for a 3-day view
+    // workaround: to infer day, do NOT time
+
+    let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
+    let hasNavLink = options.navLinks && !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
+    let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
+
+    let renderProps = {
+      ...dateMeta,
+      level: props.rowLevel,
+      isMajor: cell.isMajor,
+      isMinor: false,
+      isNarrow: false,
+      isTime,
+      hasNavLink,
+      text: cell.text,
+      isFirst: props.isFirst,
+      view: context.viewApi,
+    }
+
+    const { slotHeaderAlign } = options
+    const align = this.align =
+      typeof slotHeaderAlign === 'function'
+        ? slotHeaderAlign({ level: props.rowLevel, isTime })
+        : slotHeaderAlign
+
+    const isSticky = this.isSticky =
+      props.rowLevel && options.slotHeaderSticky !== false
+
+    let edgeCoord: number | string | undefined
+
+    if (isSticky) {
+      if (align === 'center') {
+        if (state.innerWidth != null) {
+          edgeCoord = `calc(50% - ${state.innerWidth / 2}px)`
+        }
+      } else {
+        edgeCoord = (
+          typeof options.slotHeaderSticky === 'number' ||
+          typeof options.slotHeaderSticky === 'string'
+        ) ? options.slotHeaderSticky : 0
+      }
+    }
+
+    return (
+      <ContentContainer
+        tag="div"
+        className={joinArrayishClassNames(
+          classNames.tight,
+          classNames.flexCol,
+          props.isFirst ? classNames.borderNone : classNames.borderOnlyS,
+          align === 'center' ? classNames.alignCenter :
+            align === 'end' ? classNames.alignEnd :
+              classNames.alignStart,
+          classNames.internalTimelineSlot,
+        )}
+        attrs={{
+          'data-date': dateEnv.formatIso(cell.date, {
+            omitTime: !tDateProfile.isTimeScale,
+            omitTimeZoneOffset: true,
+          }),
+          ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
+        }}
+        style={{
+          width: props.slotWidth != null
+            ? props.slotWidth * cell.colspan
+            : undefined,
+        }}
+        renderProps={renderProps}
+        generatorName="slotHeaderContent"
+        customGenerator={options.slotHeaderContent}
+        defaultGenerator={renderInnerContent}
+        classNameGenerator={options.slotHeaderClass}
+        didMount={options.slotHeaderDidMount}
+        willUnmount={options.slotHeaderWillUnmount}
+      >
+        {(InnerContent) => (
+          <div
+            ref={this.innerWrapperElRef}
+            className={joinClassNames(
+              classNames.flexCol,
+              classNames.rigid,
+              isSticky && classNames.sticky,
+            )}
+            style={{
+              left: edgeCoord,
+              right: edgeCoord,
+            }}
+          >
+            <InnerContent
+              tag='div'
+              attrs={
+                hasNavLink
+                  // not tabbable because parent is aria-hidden
+                  ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
+                  : {} // don't bother with aria-hidden because parent already hidden
+              }
+              className={generateClassName(options.slotHeaderInnerClass, renderProps)}
+            />
+          </div>
+        )}
+      </ContentContainer>
+    )
+  }
+
+  componentDidMount(): void {
+    const { props } = this
+    const innerWrapperEl = this.innerWrapperElRef.current // TODO: make dynamic with useEffect
+
+    this.disconnectSize = watchSize(innerWrapperEl, (width, height) => {
+      setRef(props.innerWidthRef, width)
+      setRef(props.innerHeightRef, height)
+
+      if (this.align === 'center' && this.isSticky) {
+        this.setState({ innerWidth: width })
+      }
+    })
+  }
+
+  componentWillUnmount(): void {
+    const { props } = this
+
+    this.disconnectSize()
+    setRef(props.innerWidthRef, null)
+    setRef(props.innerHeightRef, null)
+  }
+}
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+function renderInnerContent(renderProps: SlotHeaderData) {
+  return renderProps.text
+}

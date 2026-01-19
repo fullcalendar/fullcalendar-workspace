@@ -1,0 +1,52 @@
+import { joinClassNames } from '@fullcalendar/preact'
+import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/internal'
+import classNames from '@fullcalendar/preact/internal-classnames'
+import type { Ref } from 'react'
+import { ResourceExpanderData } from '../../structs'
+
+export interface ResourceExpanderProps {
+  isExpanded: boolean
+  onExpanderClick?: any // TODO type
+  elRef?: Ref<HTMLElement>
+  className?: string
+}
+
+export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
+  render() {
+    const { props } = this
+    const { options } = this.context
+    const classNameGenerator = options.resourceExpanderClass
+    const contentGenerator = options.resourceExpanderContent
+
+    const renderProps: ResourceExpanderData = {
+      isExpanded: props.isExpanded,
+    }
+
+    return (
+      <span
+        aria-hidden // TODO: better a11y when doing roving tabindex
+        className={joinClassNames(
+          generateClassName(classNameGenerator, renderProps),
+          classNames.flexRow,
+          classNames.cursorPointer,
+          classNames.selectNone, // prevent text-selecting cell underneath
+          classNames.noMargin,
+          props.className,
+        )}
+        onClick={props.onExpanderClick}
+        ref={props.elRef}
+      >
+        {contentGenerator && (
+          <ContentContainer<ResourceExpanderData>
+            tag='span'
+            style={{ display: 'contents' }}
+            attrs={{ 'aria-hidden': true }}
+            renderProps={renderProps}
+            generatorName={undefined}
+            customGenerator={contentGenerator}
+          />
+        )}
+      </span>
+    )
+  }
+}

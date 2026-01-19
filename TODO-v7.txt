@@ -37,6 +37,8 @@ build note:
 
 scheduler working
   preact-scheduler
+    move refineRenderProps from resource-timeline export
+    figure out default export thing, CalendarComponent
   vanilla-scheduler
   web-component-scheduler
 Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?

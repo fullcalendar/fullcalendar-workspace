@@ -1,0 +1,10 @@
+import { createPlugin, PluginDef } from '@fullcalendar/preact'
+import premiumCommonPlugin from '../common/plugin'
+import { contextInit } from './global-handlers'
+
+export default createPlugin({
+  name: 'adaptive',
+  premiumReleaseDate: '<%= releaseDate %>',
+  deps: [premiumCommonPlugin],
+  contextInit,
+}) as PluginDef
