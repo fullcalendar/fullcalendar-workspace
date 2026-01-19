@@ -7,8 +7,8 @@ import {
   watchHeight,
   setRef,
   generateClassName,
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { Fragment, type ReactNode, createRef, type Ref } from 'react'
 import { ResourceApi } from '../../../resource'
 import { Resource } from '../../../resource/structs/resource'

@@ -1,4 +1,4 @@
-import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/preact/internal';
+import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact'
 

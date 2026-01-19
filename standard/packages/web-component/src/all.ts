@@ -1,8 +1,11 @@
+import { plugins } from '@fullcalendar/vanilla/all'
+import { FullCalendarElement as BareFullCalendarElement } from './FullCalendarElement'
 
-// for side-effects
-import '@fullcalendar/vanilla/all'
+export class FullCalendarElement extends BareFullCalendarElement {
+  constructor() {
+    super()
+    this._forcedPlugins = plugins
+  }
+}
 
-// only export the JS-component
-import { FullCalendarElement } from './FullCalendarElement'
-export default FullCalendarElement
-export { FullCalendarElement }
+export { FullCalendarElement as default, plugins }

@@ -1,4 +1,4 @@
-import { compareByFieldSpecs, flexibleCompare, OrderSpec } from '@fullcalendar/preact/internal'
+import { compareByFieldSpecs, flexibleCompare, OrderSpec } from '@fullcalendar/preact/protected-api'
 import { Resource, ResourceHash } from '../structs/resource'
 import { ResourceApi } from '../public-types'
 

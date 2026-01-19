@@ -1,5 +1,5 @@
-import { BaseComponent } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { Group } from '../../../resource/common/resource-hierarchy'
 import { Fragment } from 'react'
 import { ResourceGroupSubrow } from './ResourceGroupSubrow'

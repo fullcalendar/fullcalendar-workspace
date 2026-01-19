@@ -1,7 +1,7 @@
 import {
   ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
   EventUi, isPropsEqualShallow, EventUiHash, EventDefHash, EventDef, combineEventUis,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from './structs/resource'
 
 // for when non-resource view should be given EventUi info (for event coloring/constraints based off of resource data)

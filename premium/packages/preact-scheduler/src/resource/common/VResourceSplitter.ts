@@ -1,4 +1,4 @@
-import { EventDef, mapHash, Splitter, SplittableProps, DateSpan } from '@fullcalendar/preact/internal'
+import { EventDef, mapHash, Splitter, SplittableProps, DateSpan } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 // splitter

@@ -2,7 +2,7 @@ import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
   DateProfileGenerator, DateEnv, DateMarker,
   CoordRange,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import { computeDateSnapCoverage } from './TimelineCoords'
 

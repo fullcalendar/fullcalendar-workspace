@@ -1,4 +1,4 @@
-import { CalendarData, OrderSpec, parseFieldSpecs } from '@fullcalendar/preact/internal'
+import { CalendarData, OrderSpec, parseFieldSpecs } from '@fullcalendar/preact/protected-api'
 import { buildResourceApis, ResourceApi } from './api/ResourceApi'
 import { ResourceHash } from './structs/resource'
 

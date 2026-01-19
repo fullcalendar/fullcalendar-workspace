@@ -1,4 +1,4 @@
-import { MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/preact/internal'
+import { MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean

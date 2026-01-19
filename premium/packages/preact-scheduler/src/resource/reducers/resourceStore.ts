@@ -1,4 +1,4 @@
-import { CalendarContext } from '@fullcalendar/preact/internal'
+import { CalendarContext } from '@fullcalendar/preact/protected-api'
 import { ResourceAction } from './resource-action'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'

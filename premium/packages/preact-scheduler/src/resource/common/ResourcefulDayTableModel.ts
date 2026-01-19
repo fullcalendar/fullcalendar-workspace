@@ -1,4 +1,4 @@
-import { CalendarContext, DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/preact/internal'
+import { CalendarContext, DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/preact/protected-api'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'

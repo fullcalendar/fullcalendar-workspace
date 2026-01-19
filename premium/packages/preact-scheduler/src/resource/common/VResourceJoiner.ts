@@ -1,4 +1,4 @@
-import { SlicedProps, memoize, EventSegUiInteractionState, EventRangeProps } from '@fullcalendar/preact/internal'
+import { SlicedProps, memoize, EventSegUiInteractionState, EventRangeProps } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 const NO_SEGS = [] // for memoizing

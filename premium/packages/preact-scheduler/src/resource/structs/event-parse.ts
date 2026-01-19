@@ -1,4 +1,4 @@
-import { EventRefined, identity, Identity } from '@fullcalendar/preact/internal'
+import { EventRefined, identity, Identity } from '@fullcalendar/preact/protected-api'
 
 export const EVENT_REFINERS = {
   resourceId: String,

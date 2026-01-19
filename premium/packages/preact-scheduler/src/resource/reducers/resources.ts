@@ -1,4 +1,4 @@
-import { CalendarContext, DateProfile } from '@fullcalendar/preact/internal'
+import { CalendarContext, DateProfile } from '@fullcalendar/preact/protected-api'
 import { ResourceSource } from '../structs/resource-source'
 import { ResourceHash } from '../structs/resource'
 import { reduceResourceSource } from './resourceSource'

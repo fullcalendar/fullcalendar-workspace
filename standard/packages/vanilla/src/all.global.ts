@@ -1,12 +1,11 @@
+import * as PublicApi from '@fullcalendar/preact/public-api'
+import * as ProtectedApi from '@fullcalendar/preact/protected-api'
+import * as ProtectedStyles from '@fullcalendar/preact/protected-styles'
 
-import * as JSXRuntime from 'react/jsx-runtime'
-import * as FullCalendarPreact from '@fullcalendar/preact'
+export * from '@fullcalendar/preact/public-api'
+export { Calendar } from './all'
+export { PublicApi, ProtectedApi, ProtectedStyles }
 
-// for side-effects
-import '@fullcalendar/preact/all'
-
-// export whole namespace
-export * from './index'
-
-// export transitive deps
-export { FullCalendarPreact as Preact, JSXRuntime }
+// // publicly available util for content-injection
+// import * as Preact from 'preact'
+// export { Preact }

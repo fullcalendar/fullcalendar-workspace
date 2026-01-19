@@ -1,4 +1,4 @@
-import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/preact/internal'
+import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/preact/protected-api'
 import { ResourceSource } from '../structs/resource-source'
 import { parseResourceSource } from '../structs/resource-source-parse'
 import { getResourceSourceDef } from '../structs/resource-source-def'

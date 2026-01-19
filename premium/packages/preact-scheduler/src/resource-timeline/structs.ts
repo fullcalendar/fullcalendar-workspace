@@ -1,5 +1,5 @@
 import { ViewApi, ClassNameGenerator } from '@fullcalendar/preact'
-import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/preact/internal'
+import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/preact/protected-api'
 import type { ReactNode } from 'react'
 import { ResourceApi } from '../resource'
 import { Resource } from '../resource/structs/resource'

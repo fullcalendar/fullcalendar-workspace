@@ -1,5 +1,5 @@
-import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/preact/internal"
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
 import { HeaderCell } from './HeaderCell'

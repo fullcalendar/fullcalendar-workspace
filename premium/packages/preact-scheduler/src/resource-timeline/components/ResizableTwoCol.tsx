@@ -1,6 +1,6 @@
 import { CssDimValue, joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
 

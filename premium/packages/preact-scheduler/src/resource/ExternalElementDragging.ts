@@ -1,4 +1,4 @@
-import { DateSpan } from '@fullcalendar/preact/internal'
+import { DateSpan } from '@fullcalendar/preact/protected-api'
 
 export function transformExternalDef(dateSpan: DateSpan) {
   return dateSpan.resourceId ?

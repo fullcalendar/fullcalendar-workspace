@@ -1,5 +1,5 @@
-import { config, isValidDate, addDays, CalendarContext, joinArrayishClassNames } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { config, isValidDate, addDays, CalendarContext, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
 const INVALID_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#invalid'

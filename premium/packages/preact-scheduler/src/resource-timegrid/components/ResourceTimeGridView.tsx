@@ -9,8 +9,8 @@ import {
   NowTimer,
   mapHash,
   memoize
-} from "@fullcalendar/preact/internal"
-import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
+import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
 import { buildResourceRowConfigs } from '../../resource-daygrid/resource-header-tier'
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
@@ -22,7 +22,7 @@ import { ResourceViewProps } from '../../resource/View'
 import { ResourcelessDayTableModel } from '../../resource/common/ResourcelessDayTableModel'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildDayRanges, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/internal'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildDayRanges, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner'
 
 interface ResourceTimeGridViewState {

@@ -2,7 +2,7 @@ import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/pr
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
   guid, identity, Identity, RawOptionsFromRefiners, refineProps, createEventUi, Dictionary,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 
 const PRIVATE_ID_PREFIX = '_fc:'
 

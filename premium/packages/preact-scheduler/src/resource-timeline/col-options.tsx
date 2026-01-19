@@ -1,4 +1,4 @@
-import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined } from '@fullcalendar/preact/internal'
+import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined } from '@fullcalendar/preact/protected-api'
 import { DEFAULT_RESOURCE_ORDER } from '../resource/resources-crud'
 import { ensureDimConfigsGrow, parseSiblingDimConfig } from '@full-ui/headless-grid'
 import { GroupSpec, ColSpec } from './structs'

@@ -5,7 +5,7 @@ import {
   asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined,
   computeMajorUnit,
   isMajorUnit,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 
 export interface TimelineDateProfile {
   labelInterval: Duration

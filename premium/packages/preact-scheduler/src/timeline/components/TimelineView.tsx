@@ -22,8 +22,8 @@ import {
   FooterScrollbar,
   generateClassName,
   joinArrayishClassNames,
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef } from 'react'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile'

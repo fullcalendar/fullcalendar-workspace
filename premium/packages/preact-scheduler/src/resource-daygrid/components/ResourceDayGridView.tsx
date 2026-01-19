@@ -9,8 +9,8 @@ import {
   NowTimer,
   mapHash,
   memoize,
-} from '@fullcalendar/preact/internal'
-import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
+import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
 import { DayResourceTableModel } from '../../resource/common/DayResourceTableModel'

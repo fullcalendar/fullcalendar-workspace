@@ -12,8 +12,8 @@ import {
   SlicedProps,
   SplittableProps,
   ViewContainer
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { createGroupId, GenericNode } from '../../resource/common/resource-hierarchy'
 import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'

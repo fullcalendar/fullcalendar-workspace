@@ -12,10 +12,10 @@ import {
   memoize,
   setRef,
   watchSize
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { createRef, type Ref } from 'react'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import classNames from '@fullcalendar/preact/protected-styles'
 
 export interface TimelineHeaderCellProps {
   key?: string | number | null

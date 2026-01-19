@@ -1,5 +1,5 @@
 import { ViewApi } from '@fullcalendar/preact'
-import { MountData, DateMeta } from '@fullcalendar/preact/internal'
+import { MountData, DateMeta } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 
 // uses Partial<DateMeta> because might not be date-specific

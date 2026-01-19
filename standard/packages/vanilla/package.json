@@ -32,8 +32,7 @@
         "format": "module"
       },
       "./all": {
-        "format": "module",
-        "sideEffects": true
+        "format": "module"
       },
       "./all.global": {
         "format": "global",
@@ -42,6 +41,18 @@
       "./skeleton.css": {
         "format": "css",
         "import": "@fullcalendar/preact/skeleton.css"
+      },
+      "./public-components": {
+        "format": "module"
+      },
+      "./public-api": {
+        "format": "module"
+      },
+      "./protected-api": {
+        "format": "module"
+      },
+      "./protected-styles": {
+        "format": "module"
       },
       "./locales-all": {
         "format": "module",

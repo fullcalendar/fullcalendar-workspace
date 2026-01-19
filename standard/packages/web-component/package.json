@@ -36,8 +36,7 @@
         "sideEffects": true
       },
       "./all": {
-        "format": "module",
-        "sideEffects": true
+        "format": "module"
       },
       "./all.global": {
         "format": "global",

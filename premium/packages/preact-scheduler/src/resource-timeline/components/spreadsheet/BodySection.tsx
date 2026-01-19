@@ -1,5 +1,5 @@
-import { BaseComponent, RefMap } from "@fullcalendar/preact/internal"
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, RefMap } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow"

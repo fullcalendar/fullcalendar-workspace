@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ResourceExpanderData } from '../../structs'
 

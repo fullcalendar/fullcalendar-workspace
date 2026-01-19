@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { ResourceColumnHeaderData, ColHeaderRenderHooks } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'

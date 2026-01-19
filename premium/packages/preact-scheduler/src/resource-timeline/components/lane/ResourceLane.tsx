@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref, Fragment } from 'react'
 import { Resource } from '../../../resource/structs/resource'
 import { TimelineDateProfile } from '../../../timeline/timeline-date-profile'

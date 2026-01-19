@@ -1,7 +1,7 @@
 import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
   EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { computeResourceEditable } from './EventDragging'

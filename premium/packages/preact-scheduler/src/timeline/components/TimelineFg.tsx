@@ -9,8 +9,8 @@ import {
   CoordSpan,
   setRef,
   EventSegUiInteractionState,
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { Fragment, type Ref } from 'react'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer'

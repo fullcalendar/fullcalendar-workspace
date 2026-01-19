@@ -1,6 +1,6 @@
 import { Component, createRef, type Ref, type ReactNode } from 'react'
-import { watchHeight, setRef } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { watchHeight, setRef } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 
 export interface TimelineEventHarnessProps {
   key?: string | number | null

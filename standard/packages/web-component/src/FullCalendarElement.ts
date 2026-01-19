@@ -1,8 +1,9 @@
-import { Calendar, CalendarApi, CalendarOptions } from '@fullcalendar/vanilla'
+import { Calendar, CalendarApi, CalendarOptions, PluginDef } from '@fullcalendar/vanilla'
 
 export class FullCalendarElement extends HTMLElement {
   _calendar: Calendar | null = null
   _options: CalendarOptions | null = null
+  _forcedPlugins: PluginDef[] | null = null
 
   constructor() {
     super()
@@ -50,6 +51,15 @@ export class FullCalendarElement extends HTMLElement {
 
   _handleOptions(options: CalendarOptions | null): void {
     if (options) {
+      if (this._forcedPlugins) {
+        options = {
+          ...options,
+          plugins: [
+            ...this._forcedPlugins,
+            ...(options.plugins || []),
+          ],
+        }
+      }
       if (this._calendar) {
         this._calendar.resetOptions(options)
       } else {

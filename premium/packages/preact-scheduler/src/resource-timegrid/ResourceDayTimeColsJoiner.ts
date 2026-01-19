@@ -1,5 +1,5 @@
-import { TimeGridRange } from '@fullcalendar/preact/internal'
-import { EventRangeProps } from '@fullcalendar/preact/internal'
+import { TimeGridRange } from '@fullcalendar/preact/protected-api'
+import { EventRangeProps } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
 import { VResourceJoiner } from '../resource/common/VResourceJoiner'
 

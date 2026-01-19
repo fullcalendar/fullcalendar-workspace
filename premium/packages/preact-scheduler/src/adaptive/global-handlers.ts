@@ -1,4 +1,4 @@
-import { CalendarContext, removeExact } from '@fullcalendar/preact/internal'
+import { CalendarContext, removeExact } from '@fullcalendar/preact/protected-api'
 
 let contexts: CalendarContext[] = []
 

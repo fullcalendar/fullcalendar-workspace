@@ -8,7 +8,7 @@
   },
   "include": [
     "./src/global-types.d.ts",
-    "./src/util.module.css",
+    "./src/styles.module.css",
     "./src/**/*"
   ],
   "references": [

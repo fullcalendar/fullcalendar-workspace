@@ -32,8 +32,7 @@
   "buildConfig": {
     "exports": {
       "./all": {
-        "format": "module",
-        "sideEffects": true
+        "format": "module"
       },
       "./adaptive": {
         "format": "module",

@@ -7,7 +7,7 @@ import {
   WillUnmountHandler,
   RawOptionsFromRefiners,
   RefinedOptionsFromRefiners,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import {
   ResourceDayHeaderData,
   ResourceDayHeaderMountData,

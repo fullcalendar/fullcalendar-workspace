@@ -1,4 +1,4 @@
-import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/preact/internal'
+import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
 import { ResourceAction } from '../reducers/resource-action'
@@ -14,7 +14,7 @@ declare module '@fullcalendar/preact' {
 }
 
 // TODO: more DRY
-declare module '@fullcalendar/preact/internal' {
+declare module '@fullcalendar/preact/protected-api' {
   interface CalendarApiImpl {
     dispatch(action: ResourceAction) // internal-only
     addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi

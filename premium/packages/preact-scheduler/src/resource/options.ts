@@ -1,4 +1,4 @@
-import { Identity, identity, parseFieldSpecs, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/preact/internal'
+import { Identity, identity, parseFieldSpecs, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/preact/protected-api'
 import {
   ResourceSourceInput,
   ResourceApi,

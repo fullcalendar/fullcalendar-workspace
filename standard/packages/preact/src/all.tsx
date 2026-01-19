@@ -7,18 +7,24 @@ import timeGridPlugin from './timegrid'
 import listPlugin from './list'
 import multiMonthPlugin from './multimonth'
 
+export const plugins = [
+  interactionPlugin,
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  multiMonthPlugin,
+]
+
 export function Calendar(options: CalendarOptions): ReactNode {
   return (
     <BareCalendar
       {...options}
       plugins={[
-        interactionPlugin,
-        dayGridPlugin,
-        timeGridPlugin,
-        listPlugin,
-        multiMonthPlugin,
+        ...plugins,
         ...(options.plugins || []),
       ]}
     />
   )
 }
+
+export default Calendar

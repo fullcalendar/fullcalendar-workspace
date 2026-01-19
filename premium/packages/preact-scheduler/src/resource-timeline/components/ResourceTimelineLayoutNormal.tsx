@@ -25,8 +25,8 @@ import {
   generateClassName,
   joinArrayishClassNames,
   debounce
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, Fragment, type Ref } from 'react'
 import { createEntityId, createGroupId, GenericNode, Group, isEntityGroup } from '../../resource/common/resource-hierarchy'
 import { Resource } from '../../resource/structs/resource'

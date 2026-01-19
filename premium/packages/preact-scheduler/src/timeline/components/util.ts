@@ -1,4 +1,4 @@
-import classNames from '@fullcalendar/preact/internal-classnames'
+import classNames from '@fullcalendar/preact/protected-styles'
 
 export function getTimelineSlotEl(parentEl: HTMLElement, index: number): HTMLElement {
   return parentEl.querySelectorAll(

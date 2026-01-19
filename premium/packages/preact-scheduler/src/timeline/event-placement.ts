@@ -5,7 +5,7 @@ import {
   EventRangeProps,
   CoordSpan,
   getEventKey,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { TimelineCoordRange, TimelineRange } from './TimelineLaneSlicer'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { dateToCoord } from './timeline-positioning'

@@ -1,4 +1,4 @@
-import { DateRange, CalendarContext } from '@fullcalendar/preact/internal'
+import { DateRange, CalendarContext } from '@fullcalendar/preact/protected-api'
 import { ResourceInput } from './resource'
 
 export interface ResourceSource<ResourceSourceMeta> {

@@ -1,5 +1,5 @@
 import { EventApi } from '@fullcalendar/preact'
-import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/preact/internal'
+import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/preact/protected-api'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 
 export class ResourceApi {

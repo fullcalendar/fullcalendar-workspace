@@ -2,8 +2,8 @@ import {
   BaseComponent, BgEvent, renderFill,
   getEventRangeMeta, DateRange, DateMarker, buildEventRangeKey,
   EventRangeProps,
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { Fragment } from 'react'
 import { computeSegHorizontals } from '../event-placement'
 import { TimelineRange } from '../TimelineLaneSlicer'

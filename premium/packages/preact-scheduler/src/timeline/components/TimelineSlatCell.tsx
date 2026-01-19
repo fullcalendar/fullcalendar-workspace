@@ -7,8 +7,8 @@ import {
   DateRange, getDateMeta,
   isInt,
   memoize
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
 
 export interface TimelineSlatCellProps {

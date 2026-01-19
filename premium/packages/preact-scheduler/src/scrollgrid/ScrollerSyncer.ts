@@ -1,4 +1,4 @@
-import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from "@fullcalendar/preact/internal"
+import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from '@fullcalendar/preact/protected-api'
 
 /*
 TODO: detangle and use from @full-ui/headless-grid

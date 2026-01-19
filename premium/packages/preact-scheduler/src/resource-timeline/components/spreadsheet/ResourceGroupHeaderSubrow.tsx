@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { Fragment, type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
 import { ResourceIndent } from './ResourceIndent'

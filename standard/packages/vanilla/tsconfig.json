@@ -7,8 +7,6 @@
     "outDir": "./dist/.tsout"
   },
   "include": [
-    "./src/global-types.d.ts",
-    "./src/util.module.css",
     "./src/**/*"
   ],
   "references": [

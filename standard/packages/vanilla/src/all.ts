@@ -1,6 +1,17 @@
+import { CalendarOptions } from '@fullcalendar/preact'
+import { plugins } from '@fullcalendar/preact/all'
+import { Calendar as BareCalendar } from './Calendar'
 
-// for side-effects
-import '@fullcalendar/preact/all'
+export class Calendar extends BareCalendar {
+  constructor(el: HTMLElement, optionOverrides: CalendarOptions) {
+    super(el, {
+      ...optionOverrides,
+      plugins: [
+        ...plugins,
+        ...(optionOverrides.plugins || []),
+      ]
+    })
+  }
+}
 
-// only export the JS-component
-export { Calendar } from './Calendar'
+export { Calendar as default, plugins }

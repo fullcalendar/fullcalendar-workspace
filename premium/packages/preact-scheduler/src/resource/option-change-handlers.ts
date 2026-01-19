@@ -1,4 +1,4 @@
-import { CalendarContext } from '@fullcalendar/preact/internal'
+import { CalendarContext } from '@fullcalendar/preact/protected-api'
 
 export const optionChangeHandlers = {
   resources: handleResources,

@@ -1,5 +1,5 @@
 import { EventDropData } from '@fullcalendar/preact'
-import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/preact/internal'
+import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/preact/protected-api'
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
   let resource0 = hit0.dateSpan.resourceId

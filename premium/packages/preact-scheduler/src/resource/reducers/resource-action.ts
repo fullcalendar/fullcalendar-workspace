@@ -1,4 +1,4 @@
-import { Action, DateRange } from '@fullcalendar/preact/internal'
+import { Action, DateRange } from '@fullcalendar/preact/protected-api'
 import { ResourceHash, ResourceInput } from '../structs/resource'
 
 export type ResourceAction = Action |

@@ -35,12 +35,16 @@ build note:
     manually before `pn dev`
 
 
+are styles broken? see
+  standard/packages/preact/dist/protected-styles.d.ts
+    export { default } from './styles.module.css.js';
 scheduler working
   preact-scheduler
     move refineRenderProps from resource-timeline export
     figure out default export thing, CalendarComponent
   vanilla-scheduler
   web-component-scheduler
+export preact from vanilla, for people wanting jsx-like experience
 Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
   to avoid lots of duplicate css files in node_modules
   might make for better NPM stats

@@ -2,7 +2,7 @@ import {
   DateEnv,
   DateMarker,
   isInt
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 /*

@@ -1,4 +1,4 @@
-import { DayGridRange, EventRangeProps } from '@fullcalendar/preact/internal'
+import { DayGridRange, EventRangeProps } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
 import { VResourceJoiner } from '../resource/common/VResourceJoiner'
 

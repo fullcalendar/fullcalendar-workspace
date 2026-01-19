@@ -32,7 +32,7 @@ declare module '@fullcalendar/preact' {
   }
 }
 
-declare module '@fullcalendar/preact/internal' {
+declare module '@fullcalendar/preact/protected-api' {
   interface BaseOptions extends PremiumOptions, ResourceOptions, ResourceDayGridOptions, ResourceTimelineOptions, TimelineOptions {}
   interface BaseOptionsRefined extends PremiumOptionsRefined, ResourceOptionsRefined, ResourceDayGridOptionsRefined, ResourceTimelineOptionsRefined, TimelineOptionsRefined {}
   interface CalendarListeners extends ResourceListeners {}

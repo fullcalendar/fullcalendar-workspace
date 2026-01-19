@@ -1,4 +1,4 @@
-import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/preact/internal'
+import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/preact/protected-api'
 import { ResourceInput } from '../public-types'
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'

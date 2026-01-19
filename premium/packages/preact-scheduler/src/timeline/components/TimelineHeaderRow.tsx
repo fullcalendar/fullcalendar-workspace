@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from "@fullcalendar/preact/internal"
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile"
 import { TimelineHeaderCell } from './TimelineHeaderCell'
 

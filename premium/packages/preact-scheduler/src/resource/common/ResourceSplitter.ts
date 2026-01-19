@@ -1,4 +1,4 @@
-import { Splitter, SplittableProps, DateSpan, EventDef } from '@fullcalendar/preact/internal'
+import { Splitter, SplittableProps, DateSpan, EventDef } from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from '../structs/resource'
 
 export interface SplittableResourceProps extends SplittableProps {

@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact'
-import { BaseComponent, DateMarker, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+import { BaseComponent, DateMarker, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { dateToCoord } from '../timeline-positioning'
 

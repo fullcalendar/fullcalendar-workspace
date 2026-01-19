@@ -1,6 +1,4 @@
 
-import { Calendar } from './Calendar'
-
-export * from '@fullcalendar/preact'
-export default Calendar
-export { Calendar }
+export * from './public-api'
+export * from './public-components'
+export { Calendar as default } from './public-components'

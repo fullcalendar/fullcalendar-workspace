@@ -8,8 +8,8 @@ import {
   memoize,
   NowTimer,
   watchWidth
-} from '@fullcalendar/preact/internal'
-import classNames from '@fullcalendar/preact/internal-classnames'
+} from '@fullcalendar/preact/protected-api'
+import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, Fragment } from 'react'
 import { buildResourceHierarchy, GenericNode, GroupNode, ResourceNode } from '../../resource/common/resource-hierarchy'
 import { ResourceSplitter } from '../../resource/common/ResourceSplitter'

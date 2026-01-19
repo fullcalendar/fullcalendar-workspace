@@ -18,7 +18,7 @@ import {
   CalendarMediaRoot,
   computeRootClassName,
   RenderId,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 
 /*
 Vanilla JS API

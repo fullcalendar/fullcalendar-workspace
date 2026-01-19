@@ -4,7 +4,7 @@ import {
   CustomContentGenerator, DidMountHandler, WillUnmountHandler,
   RawOptionsFromRefiners,
   RefinedOptionsFromRefiners,
-} from '@fullcalendar/preact/internal'
+} from '@fullcalendar/preact/protected-api'
 import {
   ResourceColumnHeaderData,
   ResourceColumnHeaderMountData,
