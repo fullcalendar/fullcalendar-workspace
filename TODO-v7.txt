@@ -35,13 +35,15 @@ build note:
     manually before `pn dev`
 
 
-are styles broken? see
-  standard/packages/preact/dist/protected-styles.d.ts
-    export { default } from './styles.module.css.js';
+don't make .style.js files for palletes
+better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
+remove this in preact/package.json
+  "@fullcalendar/timeline": "workspace:7.0.0-beta.6",
+  "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.6",
+  "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.6",
+  "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.6",
+move refineRenderProps from resource-timeline export
 scheduler working
-  preact-scheduler
-    move refineRenderProps from resource-timeline export
-    figure out default export thing, CalendarComponent
   vanilla-scheduler
   web-component-scheduler
 export preact from vanilla, for people wanting jsx-like experience
@@ -87,6 +89,7 @@ bug: why is multi-month scrolling down so much?
   file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
 bug: web-component (with React internals), timegrid "Todo el día" all on same line
   thought it should break to a second?
+bug: web-component popover position way out of whack
 docs: is web-component's getApi() documented? no
 test NextJS SSR
 ensure all dependencyGlobalVars killed

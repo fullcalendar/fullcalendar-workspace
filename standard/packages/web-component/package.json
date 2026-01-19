@@ -8,11 +8,9 @@
     "custom-element"
   ],
   "homepage": "https://fullcalendar.io/docs/web-component",
-  "dependencies": {
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
-  },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
   },

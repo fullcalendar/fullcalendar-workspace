@@ -5,12 +5,13 @@ import replacePluginLib from '@rollup/plugin-replace'
 import { readFileSync } from 'fs'
 import { readFile } from 'fs/promises'
 import handlebars from 'handlebars'
-import { join as joinPaths } from 'path'
+import { dirname, join as joinPaths } from 'path'
+import { fileURLToPath } from 'url'
 import { type OutputOptions, type Plugin, type RollupOptions } from 'rollup'
 import dtsPlugin from 'rollup-plugin-dts'
 import postcssPluginLib from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
-import iifeSplit, { type IifeSplitOptions } from 'rollup-plugin-iife-split'
+import iifeSplitPlugin, { type IifeSplitOptions } from 'rollup-plugin-iife-split'
 import { analyzePkg } from '../../utils/pkg-analysis.ts'
 import { readPkgJson } from '../../utils/pkg-json.ts'
 import { standardScriptsDir } from '../../utils/script-runner.ts'
@@ -41,6 +42,9 @@ const commonjsPlugin = cjsInterop(commonjsPluginLib)
 const jsonPlugin = cjsInterop(jsonPluginLib)
 const postcssPlugin = cjsInterop(postcssPluginLib)
 const replacePlugin = cjsInterop(replacePluginLib)
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const debugDir = joinPaths(__dirname, 'debug')
 
 export function buildModuleOptions(
   pkgBundleStruct: PkgBundleStruct,
@@ -189,7 +193,7 @@ function buildGlobalOutputOptions(
     // chunkFileNames: 'global-chunks/[name]-[hash]' + esmExtension, // for DEBUGGING as ESM
     globals: pkgBundleStruct.globalConfig?.externalGlobals || {}, // comment for DEBUGGING as ESM
     sourcemap: sourcemapOutput,
-    // the iifeSplit plugin fills in the rest
+    // the iifeSplitPlugin plugin fills in the rest
   }
 }
 
@@ -246,7 +250,7 @@ async function buildGlobalPlugins(
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
-    iifeSplit(
+    iifeSplitPlugin(
       buildGlobalSplitOptions(pkgBundleStruct),
     ),
     rerootAssetsPlugin(pkgDir),
@@ -386,7 +390,7 @@ function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOpt
       // includes the built @fullcalendar/preact locale files duplicated in single-locale and locales-all
       return /\/locales\/[\w-]+\.js$/.test(id)
     },
-    // debug: true
+    // debugDir,
   }
 }
 
