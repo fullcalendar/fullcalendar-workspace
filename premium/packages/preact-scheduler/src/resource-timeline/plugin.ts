@@ -4,10 +4,9 @@ import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'
 import { ResourceTimelineView } from './components/ResourceTimelineView'
 import { OPTION_REFINERS } from './options'
-import '../common/ambient'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'resource-timeline',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,

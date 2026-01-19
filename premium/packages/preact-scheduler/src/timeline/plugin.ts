@@ -2,10 +2,9 @@ import { createPlugin, PluginDef } from '@fullcalendar/preact'
 import premiumCommonPlugin from '../common'
 import { TimelineView } from './components/TimelineView'
 import { OPTION_REFINERS } from './options'
-import '../common/ambient'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'timeline',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   initialView: 'timelineDay',

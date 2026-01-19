@@ -6,7 +6,7 @@ import { ResourceDayGridView } from './components/ResourceDayGridView'
 import { OPTION_DEFAULTS, OPTION_REFINERS } from './options'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'resource-daygrid',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,

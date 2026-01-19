@@ -6,7 +6,7 @@ import resourceDayGridPlugin from '../resource-daygrid/plugin'
 import { ResourceTimeGridView } from './components/ResourceTimeGridView'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'resource-timegrid',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,

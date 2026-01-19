@@ -23,7 +23,7 @@ import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 
 export default createPlugin({
-  name: '<%= pkgName %>',
+  name: 'resource',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   reducers: [reduceResources],
