@@ -1,4 +1,4 @@
-import { SlotLaneData, joinClassNames } from '@fullcalendar/preact'
+import { SlotLaneData, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   ContentContainer,

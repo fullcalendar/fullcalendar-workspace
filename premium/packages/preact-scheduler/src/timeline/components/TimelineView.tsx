@@ -1,4 +1,4 @@
-import { Duration, joinClassNames } from '@fullcalendar/preact'
+import { Duration, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   ViewProps,
   memoize,

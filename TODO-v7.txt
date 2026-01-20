@@ -35,6 +35,16 @@ build note:
     manually before `pn dev`
 
 
+fix lots of chunks being imported for side effects
+  many bundlers will assume they DO have side effects
+    import '@fullcalendar/preact/daygrid';
+    import '@fullcalendar/vanilla/all';
+    import './chunks/CalendarInner-8edbf2ad.js';
+    import './chunks/global-plugins-dea7ebba.js';
+    import './chunks/plugin-system-8f7d95cc.js';
+  then undo skipRequireGlobals because this was causing an extra iife dep we dont have a global for
+    import '@fullcalendar/vanilla/all';
+don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
 don't make .style.js files for palletes
 better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
 remove this in preact/package.json

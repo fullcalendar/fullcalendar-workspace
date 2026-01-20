@@ -1,4 +1,4 @@
-import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/preact'
+import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
   DateComponent,

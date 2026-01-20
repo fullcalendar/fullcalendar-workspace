@@ -14,16 +14,12 @@
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@fullcalendar/timeline": "workspace:7.0.0-beta.6",
     "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.6",
     "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.6",
     "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.6",
     "globby": "^13.1.2",
-    "handlebars": "^4.1.2",
-    "preact": "~10.23.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "handlebars": "^4.1.2"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

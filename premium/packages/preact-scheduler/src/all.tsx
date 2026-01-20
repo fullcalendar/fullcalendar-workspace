@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { CalendarOptions } from '@fullcalendar/preact'
+import { CalendarOptions } from '@fullcalendar/preact/public-api'
 import { Calendar as StandardCalendar } from '@fullcalendar/preact/all'
 import resourceDayGridPlugin from './resource-daygrid'
 import resourceTimeGridPlugin from './resource-timegrid'

@@ -1,4 +1,4 @@
-import { CssDimValue, joinClassNames } from '@fullcalendar/preact'
+import { CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'

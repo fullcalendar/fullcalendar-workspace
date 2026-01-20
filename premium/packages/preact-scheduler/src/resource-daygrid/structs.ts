@@ -1,4 +1,4 @@
-import { ViewApi } from '@fullcalendar/preact'
+import { ViewApi } from '@fullcalendar/preact/public-api'
 import { MountData, DateMeta } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 

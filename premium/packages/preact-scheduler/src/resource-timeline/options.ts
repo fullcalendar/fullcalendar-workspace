@@ -1,4 +1,4 @@
-import { ClassNameGenerator, CssDimValue } from '@fullcalendar/preact'
+import { ClassNameGenerator, CssDimValue } from '@fullcalendar/preact/public-api'
 import {
   Identity, identity,
   CustomContentGenerator, DidMountHandler, WillUnmountHandler,

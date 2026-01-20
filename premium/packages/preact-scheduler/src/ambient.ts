@@ -17,7 +17,7 @@ import { TimelineOptions, TimelineOptionsRefined } from './timeline/options'
 
 type ExtraEventRefiners = typeof EVENT_REFINERS
 
-declare module '@fullcalendar/preact' {
+declare module '@fullcalendar/preact/public-api' {
   interface DatePointApi {
     resource?: ResourceApi
   }

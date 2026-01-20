@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,

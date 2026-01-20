@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'

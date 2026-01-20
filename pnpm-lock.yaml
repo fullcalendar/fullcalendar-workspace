@@ -2084,25 +2084,12 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/headless-calendar/dist
-      '@fullcalendar/preact':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/preact/dist
-    devDependencies:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
-      globby:
-        specifier: ^13.1.2
-        version: 13.2.2
-      handlebars:
-        specifier: ^4.1.2
-        version: 4.7.8
+      '@fullcalendar/preact':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/preact/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2112,6 +2099,13 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.7
+        version: 19.2.7
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.7)
     publishDirectory: ./dist
 
   premium/packages/premium-common:
@@ -2314,6 +2308,35 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+    publishDirectory: ./dist
+
+  premium/packages/vanilla-scheduler:
+    dependencies:
+      '@fullcalendar/vanilla':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/vanilla/dist
+      preact:
+        specifier: ~10.23.1
+        version: 10.23.2
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@fullcalendar/preact':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/preact/dist
+      '@fullcalendar/preact-scheduler':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../preact-scheduler/dist
+      '@types/react':
+        specifier: ^19.2.7
+        version: 19.2.7
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.7)
     publishDirectory: ./dist
 
   premium/tests:
@@ -2634,6 +2657,15 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
+      preact:
+        specifier: ~10.23.1
+        version: 10.23.2
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar/resource-daygrid':
         specifier: workspace:7.0.0-beta.6
@@ -2659,15 +2691,6 @@ importers:
       handlebars:
         specifier: ^4.1.2
         version: 4.7.8
-      preact:
-        specifier: ~10.23.1
-        version: 10.23.2
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
     publishDirectory: ./dist
 
   standard/packages/rrule:
@@ -2772,8 +2795,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       rollup-plugin-iife-split:
-        specifier: ^0.0.3
-        version: 0.0.3(rollup@2.79.2)
+        specifier: ^0.0.4
+        version: 0.0.4(rollup@2.79.2)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^12.0.0
@@ -19817,8 +19840,8 @@ packages:
       rollup: ^2.48.0
       typescript: ^4.2.4
 
-  rollup-plugin-iife-split@0.0.3:
-    resolution: {integrity: sha512-LtuxtrhR3SUroRaV/6iLSvIuA3lxQYEqCdYI+GARqcpwsjzSPs3w796qk3qbLEuB8F0LfZ7yKgbfCs8GwCBcqw==}
+  rollup-plugin-iife-split@0.0.4:
+    resolution: {integrity: sha512-2hRBlBOd6eetafillRi/01Survry1NpG5x9ptMVJO43TLvShIKoNu8Rx+5+Cra0pspwNho8dfeAM8bNIMRvLOA==}
     peerDependencies:
       rollup: ^3.0.0 || ^4.0.0
 
@@ -47567,7 +47590,7 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.26.2
 
-  rollup-plugin-iife-split@0.0.3(rollup@2.79.2):
+  rollup-plugin-iife-split@0.0.4(rollup@2.79.2):
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.21

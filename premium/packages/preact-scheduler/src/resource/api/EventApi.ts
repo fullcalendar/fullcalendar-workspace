@@ -1,7 +1,7 @@
 import { EventImpl } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
 
-declare module '@fullcalendar/preact' {
+declare module '@fullcalendar/preact/public-api' {
   interface EventApi {
     getResources: () => ResourceApi[]
     setResources: (resources: (string | ResourceApi)[]) => void

@@ -1,4 +1,4 @@
-import { EventDropData } from '@fullcalendar/preact'
+import { EventDropData } from '@fullcalendar/preact/public-api'
 import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/preact/protected-api'
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {

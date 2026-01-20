@@ -1,4 +1,4 @@
-import { CssDimValue } from '@fullcalendar/preact'
+import { CssDimValue } from '@fullcalendar/preact/public-api'
 import {
   DateComponent,
   DateMarker,

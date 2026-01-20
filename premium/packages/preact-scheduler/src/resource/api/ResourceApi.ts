@@ -1,4 +1,4 @@
-import { EventApi } from '@fullcalendar/preact'
+import { EventApi } from '@fullcalendar/preact/public-api'
 import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/preact/protected-api'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 

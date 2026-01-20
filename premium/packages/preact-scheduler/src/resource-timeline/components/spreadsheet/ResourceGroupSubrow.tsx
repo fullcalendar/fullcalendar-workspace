@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, Fragment, type Ref } from 'react'

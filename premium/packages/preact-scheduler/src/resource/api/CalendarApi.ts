@@ -3,7 +3,7 @@ import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
 import { ResourceAction } from '../reducers/resource-action'
 
-declare module '@fullcalendar/preact' {
+declare module '@fullcalendar/preact/public-api' {
   interface CalendarApi {
     addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi
     getResourceById(id: string): ResourceApi | null

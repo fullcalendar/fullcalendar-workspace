@@ -1,4 +1,4 @@
-import { ClassNameGenerator } from '@fullcalendar/preact'
+import { ClassNameGenerator } from '@fullcalendar/preact/public-api'
 import {
   Identity,
   identity,

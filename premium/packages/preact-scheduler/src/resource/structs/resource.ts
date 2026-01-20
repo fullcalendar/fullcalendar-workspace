@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/preact'
+import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/preact/public-api'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
   guid, identity, Identity, RawOptionsFromRefiners, refineProps, createEventUi, Dictionary,

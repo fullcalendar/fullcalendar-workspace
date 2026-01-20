@@ -391,6 +391,7 @@ function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOpt
       return /\/locales\/[\w-]+\.js$/.test(id)
     },
     // debugDir,
+    skipRequireGlobals: true,
   }
 }
 

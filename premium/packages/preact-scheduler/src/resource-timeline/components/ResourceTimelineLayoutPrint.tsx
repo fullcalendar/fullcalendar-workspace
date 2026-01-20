@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   DateMarker,
@@ -32,7 +32,7 @@ import { HeaderRow } from './spreadsheet/HeaderRow'
 import { ResourceSubrow } from './spreadsheet/ResourceSubrow'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows'
-import { CssDimValue } from '@fullcalendar/preact'
+import { CssDimValue } from '@fullcalendar/preact/public-api'
 import { ColSpec } from '../structs'
 
 export interface ResourceTimelineLayoutPrintProps {

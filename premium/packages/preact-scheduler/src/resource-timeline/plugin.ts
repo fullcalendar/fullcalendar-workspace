@@ -1,4 +1,4 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact'
+import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common'
 import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'

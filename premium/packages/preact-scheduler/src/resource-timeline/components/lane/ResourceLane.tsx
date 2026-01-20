@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref, Fragment } from 'react'

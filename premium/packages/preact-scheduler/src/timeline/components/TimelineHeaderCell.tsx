@@ -1,4 +1,4 @@
-import { SlotHeaderData, joinClassNames } from '@fullcalendar/preact'
+import { SlotHeaderData, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   buildNavLinkAttrs,

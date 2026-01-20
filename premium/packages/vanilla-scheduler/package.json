@@ -1,0 +1,73 @@
+{
+  "name": "@fullcalendar/vanilla-scheduler",
+  "version": "7.0.0-beta.6",
+  "title": "FullCalendar Core",
+  "description": "FullCalendar core package for rendering a calendar",
+  "dependencies": {
+    "preact": "~10.23.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "peerDependencies": {
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@fullcalendar/preact": "workspace:7.0.0-beta.6",
+    "@fullcalendar/preact-scheduler": "workspace:7.0.0-beta.6"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "buildConfig": {
+    "globalConfig": {
+      "sharedProp": "Shared",
+      "externalPkgs": [
+        "@fullcalendar/vanilla",
+        "@fullcalendar/preact"
+      ],
+      "externalGlobals": {
+        "@fullcalendar/preact/public-api": "FullCalendar.PublicApi",
+        "@fullcalendar/preact/protected-api": "FullCalendar.ProtectedApi",
+        "@fullcalendar/preact/protected-styles": "FullCalendar.ProtectedStyles",
+        "@fullcalendar/preact/daygrid": "FullCalendar.DayGrid",
+        "@fullcalendar/preact/timegrid": "FullCalendar.TimeGrid"
+      }
+    },
+    "exports": {
+      "./all": {
+        "format": "module"
+      },
+      "./all.global": {
+        "format": "global",
+        "primary": true
+      },
+      "./adaptive": {
+        "format": "module"
+      },
+      "./resource-daygrid": {
+        "format": "module"
+      },
+      "./resource-timegrid": {
+        "format": "module"
+      },
+      "./resource-timeline": {
+        "format": "module"
+      },
+      "./scrollgrid": {
+        "format": "module"
+      },
+      "./timeline": {
+        "format": "module"
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

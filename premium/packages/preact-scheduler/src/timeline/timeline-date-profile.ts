@@ -1,4 +1,4 @@
-import { Duration } from '@fullcalendar/preact'
+import { Duration } from '@fullcalendar/preact/public-api'
 import {
   config, computeVisibleDayRange, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,
   startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator,
