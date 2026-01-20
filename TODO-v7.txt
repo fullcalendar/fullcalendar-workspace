@@ -34,7 +34,10 @@ build note:
     @fullcalendar/react in terms for `pn dev`; until they do, we need to build @fullcalendar/react
     manually before `pn dev`
 
-
+implement externalRemaps
+1-primary-origin.js (and ultimately built iife) is getting lots of stuff that shouldnt be inlined:
+  see createPlugin/$1 calls
+  see const plugins =
 fix lots of chunks being imported for side effects
   many bundlers will assume they DO have side effects
     import '@fullcalendar/preact/daygrid';
@@ -47,11 +50,6 @@ fix lots of chunks being imported for side effects
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
 don't make .style.js files for palletes
 better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
-remove this in preact/package.json
-  "@fullcalendar/timeline": "workspace:7.0.0-beta.6",
-  "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.6",
-  "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.6",
-  "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.6",
 move refineRenderProps from resource-timeline export
 scheduler working
   vanilla-scheduler
@@ -77,11 +75,6 @@ need to have plugin "deps" anymore?
 a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore
 fully get rid of @fullcalendar/core/preact
 need ./src/global-types.d.ts?
-standard/scripts/config/banner.tpl
-  revive
-    naive implementation conflicts with iifeSplit plugin and buts banner within closure
-    have iifeSplit intercept banner setting (same with "outro")
-  the "title" is blank. look at any global.js output for any theme
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",

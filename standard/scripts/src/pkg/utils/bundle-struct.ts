@@ -28,6 +28,8 @@ export interface CopyOperation {
 
 export interface PkgModuleConfig {
   cssExtract?: string
+  externalPkgs?: string[]
+  externalRemaps?: Record<string, string>
 }
 
 export interface PkgGlobalConfig {
@@ -282,11 +284,14 @@ export function entryStructsToContentMap(
 export function computeModuleExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
   const { pkgJson } = pkgBundleStruct
 
-  return Object.keys({
-    ...pkgJson.dependencies,
-    ...pkgJson.peerDependencies,
-    ...pkgJson.optionalDependencies,
-  })
+  return [
+    ...(pkgBundleStruct.moduleConfig?.externalPkgs || []),
+    ...Object.keys({
+      ...pkgJson.dependencies,
+      ...pkgJson.peerDependencies,
+      ...pkgJson.optionalDependencies,
+    })
+  ]
 }
 
 export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {

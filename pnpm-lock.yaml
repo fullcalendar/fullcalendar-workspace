@@ -2100,6 +2100,9 @@ importers:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../../standard/scripts
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -2312,6 +2315,12 @@ importers:
 
   premium/packages/vanilla-scheduler:
     dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/headless-calendar/dist
+      '@full-ui/headless-grid':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-grid/dist
       '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla/dist
@@ -2337,6 +2346,35 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.7)
+    publishDirectory: ./dist
+
+  premium/packages/web-component-scheduler:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/headless-calendar/dist
+      '@full-ui/headless-grid':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-grid/dist
+      '@fullcalendar/web-component':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/web-component/dist
+      preact:
+        specifier: ~10.23.1
+        version: 10.23.2
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@fullcalendar/vanilla':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../vanilla-scheduler/dist
     publishDirectory: ./dist
 
   premium/tests:
@@ -2667,18 +2705,9 @@ importers:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
     devDependencies:
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../premium/packages/resource-timeline/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../premium/packages/timeline/dist
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -2737,6 +2766,9 @@ importers:
 
   standard/packages/vanilla:
     dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2768,6 +2800,19 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/web-component:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      preact:
+        specifier: ~10.23.1
+        version: 10.23.2
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2795,8 +2840,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       rollup-plugin-iife-split:
-        specifier: ^0.0.4
-        version: 0.0.4(rollup@2.79.2)
+        specifier: ^0.0.5
+        version: 0.0.5(rollup@2.79.2)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^12.0.0
@@ -19840,8 +19885,8 @@ packages:
       rollup: ^2.48.0
       typescript: ^4.2.4
 
-  rollup-plugin-iife-split@0.0.4:
-    resolution: {integrity: sha512-2hRBlBOd6eetafillRi/01Survry1NpG5x9ptMVJO43TLvShIKoNu8Rx+5+Cra0pspwNho8dfeAM8bNIMRvLOA==}
+  rollup-plugin-iife-split@0.0.5:
+    resolution: {integrity: sha512-nGOCgKeN+FSdTCFqAqiHVtt1Twu2v60u/6tcVYkEqmcwTZ2f/SnVtKDQKxfZrRZXRe5PXZDaB3G+eS84YOf72A==}
     peerDependencies:
       rollup: ^3.0.0 || ^4.0.0
 
@@ -23322,7 +23367,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -23413,7 +23458,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -23786,7 +23831,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1
@@ -47590,7 +47635,7 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.26.2
 
-  rollup-plugin-iife-split@0.0.4(rollup@2.79.2):
+  rollup-plugin-iife-split@0.0.5(rollup@2.79.2):
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.21

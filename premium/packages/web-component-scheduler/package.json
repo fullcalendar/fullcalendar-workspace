@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/vanilla-scheduler",
+  "name": "@fullcalendar/web-component-scheduler",
   "version": "7.0.0-beta.6",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
@@ -11,13 +11,11 @@
     "react-dom": "^19.2.3"
   },
   "peerDependencies": {
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
+    "@fullcalendar/web-component": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
-    "@fullcalendar/preact": "workspace:7.0.0-beta.6",
-    "@fullcalendar/preact-scheduler": "workspace:7.0.0-beta.6",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3"
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -31,11 +29,11 @@
         "@fullcalendar/preact"
       ],
       "externalRemaps": {
-        "@fullcalendar/preact/public-api": "@fullcalendar/vanilla/public-api",
-        "@fullcalendar/preact/protected-api": "@fullcalendar/vanilla/protected-api",
-        "@fullcalendar/preact/protected-styles": "@fullcalendar/vanilla/protected-styles",
-        "@fullcalendar/preact/daygrid": "@fullcalendar/vanilla/daygrid",
-        "@fullcalendar/preact/timegrid": "@fullcalendar/vanilla/timegrid"
+        "@fullcalendar/preact/public-api": "@fullcalendar/web-component/public-api",
+        "@fullcalendar/preact/protected-api": "@fullcalendar/web-component/protected-api",
+        "@fullcalendar/preact/protected-styles": "@fullcalendar/web-component/protected-styles",
+        "@fullcalendar/preact/daygrid": "@fullcalendar/web-component/daygrid",
+        "@fullcalendar/preact/timegrid": "@fullcalendar/web-component/timegrid"
       }
     },
     "globalConfig": {

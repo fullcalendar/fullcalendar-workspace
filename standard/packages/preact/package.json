@@ -12,12 +12,9 @@
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
+    "@fullcalendar-scripts/standard": "workspace:*",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@fullcalendar/timeline": "workspace:7.0.0-beta.6",
-    "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.6",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
   },

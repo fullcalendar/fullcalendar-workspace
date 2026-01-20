@@ -83,7 +83,7 @@ export async function buildGlobalOptions(
       sourcemaps,
       minification,
     ),
-    output: buildGlobalOutputOptions(pkgBundleStruct, sourcemaps),
+    output: await buildGlobalOutputOptions(pkgBundleStruct, sourcemaps),
     onwarn(warning) {
       if (warning.code !== 'CIRCULAR_DEPENDENCY') {
         console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
@@ -182,10 +182,10 @@ function buildModuleOutputOptions(
   }
 }
 
-function buildGlobalOutputOptions(
+async function buildGlobalOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemapOutput: boolean,
-): OutputOptions {
+): Promise<OutputOptions> {
   return {
     // format: 'esm', // for DEBUGGING as ESM
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
@@ -193,6 +193,7 @@ function buildGlobalOutputOptions(
     // chunkFileNames: 'global-chunks/[name]-[hash]' + esmExtension, // for DEBUGGING as ESM
     globals: pkgBundleStruct.globalConfig?.externalGlobals || {}, // comment for DEBUGGING as ESM
     sourcemap: sourcemapOutput,
+    banner: await buildBanner(pkgBundleStruct),
     // the iifeSplitPlugin plugin fills in the rest
   }
 }
@@ -436,7 +437,6 @@ function externalizeAssetsPlugin(): Plugin {
 
 // Misc
 // -------------------------------------------------------------------------------------------------
-// TODO: revive
 
 async function buildBanner(pkgBundleStruct: PkgBundleStruct): Promise<string> {
   const { pkgDir, pkgJson } = pkgBundleStruct
