@@ -2,7 +2,7 @@ import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawO
 import { ResourceInput } from './resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'
-import { getResourceSourceDefs } from './resource-source-def'
+import { getResourceSourceDefs } from './resource-source-def-all'
 
 // TODO: make this a plugin-able parser
 // TODO: success/failure

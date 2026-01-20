@@ -9,12 +9,6 @@ export interface ResourceSourceDef<ResourceSourceMeta> {
 
 let defs: ResourceSourceDef<any>[] = [] // TODO: use plugin system
 
-export function registerResourceSourceDef<ResourceSourceMeta>(
-  def: ResourceSourceDef<ResourceSourceMeta>,
-) {
-  defs.push(def)
-}
-
 export function getResourceSourceDef(id: number): ResourceSourceDef<any> {
   return defs[id]
 }

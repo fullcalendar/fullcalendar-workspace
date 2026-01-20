@@ -1,5 +1,5 @@
 import { unpromisify } from '@fullcalendar/preact/protected-api'
-import { registerResourceSourceDef } from '../structs/resource-source-def'
+import { ResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceInput } from '../structs/resource'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
@@ -19,7 +19,7 @@ export type ResourceFunc =
   ) => void) |
   ((data: ResourceFuncData) => Promise<ResourceInput[]>)
 
-registerResourceSourceDef<ResourceFunc>({
+export const funcResourceSource: ResourceSourceDef<ResourceFunc> = {
 
   parseMeta(refined: ResourceSourceRefined) {
     if (typeof refined.resources === 'function') {
@@ -47,4 +47,4 @@ registerResourceSourceDef<ResourceFunc>({
     )
   },
 
-})
+}

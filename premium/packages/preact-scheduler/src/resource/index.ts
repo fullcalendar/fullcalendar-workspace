@@ -1,3 +1,4 @@
+import '../ambient'
 
 export * from './public-types'
 export { ResourceApi } from './api/ResourceApi'

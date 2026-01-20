@@ -1,6 +1,6 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/preact/protected-api'
 import { ResourceInput } from '../public-types'
-import { registerResourceSourceDef } from '../structs/resource-source-def'
+import { ResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
 interface JsonFeedMeta {
@@ -12,7 +12,7 @@ interface JsonFeedMeta {
   extraParams?: Dictionary | (() => Dictionary)
 }
 
-registerResourceSourceDef<JsonFeedMeta>({
+export const jsonFeedResourceSource: ResourceSourceDef<JsonFeedMeta> = {
 
   parseMeta(refined: ResourceSourceRefined) {
     if (refined.url) {
@@ -41,7 +41,7 @@ registerResourceSourceDef<JsonFeedMeta>({
     )
   },
 
-})
+}
 
 // TODO: somehow consolidate with event json feed
 function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, context: CalendarContext) {

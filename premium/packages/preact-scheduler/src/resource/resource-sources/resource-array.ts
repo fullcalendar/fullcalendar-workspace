@@ -1,8 +1,8 @@
-import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceInput } from '../structs/resource'
+import { ResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
-registerResourceSourceDef<ResourceInput[]>({
+export const arrayResourceSource: ResourceSourceDef<ResourceInput[]> = {
 
   ignoreRange: true,
 
@@ -19,4 +19,4 @@ registerResourceSourceDef<ResourceInput[]>({
     })
   },
 
-})
+}
