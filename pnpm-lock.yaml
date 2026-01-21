@@ -1934,33 +1934,12 @@ importers:
 
   examples/webpack-scheduler:
     dependencies:
-      '@fullcalendar/adaptive':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
+        version: link:../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/resource':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
       css-loader:
         specifier: ^4.3.0
