@@ -9,7 +9,6 @@ import { dayHeaderMicroFormat } from './util'
 import classNames from '../../styles.module.css'
 
 export interface DayGridHeaderCellProps<RenderProps> {
-  key?: string | number | null
   renderConfig: CellRenderConfig<RenderProps>
   dataConfig: CellDataConfig<RenderProps>
   borderStart: boolean

@@ -3,7 +3,6 @@ import { watchHeight, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 
 export interface TimelineEventHarnessProps {
-  key?: string | number | null
   style: any // should set top/left/right/width
   children?: ReactNode
 

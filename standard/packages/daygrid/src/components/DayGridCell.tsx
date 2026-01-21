@@ -37,8 +37,6 @@ import { DayGridMoreLink } from './DayGridMoreLink'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
 
 export interface DayGridCellProps {
-  key?: string | number | null
-
   dateProfile: DateProfile
   todayRange: DateRange
   date: DateMarker

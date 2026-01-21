@@ -5,8 +5,6 @@ import { type ReactNode, createRef, Fragment, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderData } from '../../structs'
 
 export interface ResourceGroupSubrowProps {
-  key?: string | number | null
-
   colSpec: ColSpec
   fieldValue: any
   rowSpan?: number

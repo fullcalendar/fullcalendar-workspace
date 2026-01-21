@@ -8,7 +8,6 @@ import { DayGridHeaderCell } from './DayGridHeaderCell'
 import classNames from '../../styles.module.css'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
-  key?: string | number | null
   cellIsNarrow: boolean
   cellIsMicro: boolean
   className?: string

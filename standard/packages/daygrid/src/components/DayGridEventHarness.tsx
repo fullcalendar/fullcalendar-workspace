@@ -4,8 +4,6 @@ import { watchHeight, setRef } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridEventHarnessProps {
-  key?: string | number | null
-
   style: any // TODO
   className?: string
   children?: ReactNode

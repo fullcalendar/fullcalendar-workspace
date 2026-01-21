@@ -28,7 +28,6 @@ export interface SingleMonthHeights {
 }
 
 export interface SingleMonthProps extends ViewProps {
-  key?: string | number | null
   todayRange: DateRange
   isoDateStr?: string
   titleFormat: DateFormatter

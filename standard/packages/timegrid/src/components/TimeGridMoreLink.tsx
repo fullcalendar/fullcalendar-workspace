@@ -9,7 +9,6 @@ import { renderPlainFgSegs } from './TimeGridCol' // BAD
 import { TimeGridRange } from '../TimeColsSeg'
 
 export interface TimeGridMoreLinkProps {
-  key?: string | number | null
   hiddenSegs: (TimeGridRange & EventRangeProps)[]
   top: CssDimValue
   height: CssDimValue

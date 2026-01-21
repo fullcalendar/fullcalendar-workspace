@@ -46,7 +46,6 @@ move refineRenderProps from resource-timeline export
 why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
 remove (data, *createElement*) param from *Content hooks
-can remove key?: and ref?: now too?
 re-add keys to toolbarsections, so doesn't reuse elements
 need "module" fields in package.json anymore?
 ensure preact/plugin files don't import any types

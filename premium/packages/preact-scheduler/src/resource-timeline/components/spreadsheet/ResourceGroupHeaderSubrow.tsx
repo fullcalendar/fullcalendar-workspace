@@ -8,8 +8,6 @@ import { ResourceExpander } from './ResourceExpander'
 import { ResourceGroupHeaderData, GroupSpec } from '../../structs'
 
 export interface ResourceGroupHeaderSubrowProps {
-  key?: string | number | null
-
   group: Group
   isExpanded: boolean // for aria
   colSpan: number // for aria

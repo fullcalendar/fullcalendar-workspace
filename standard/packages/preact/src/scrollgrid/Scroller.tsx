@@ -10,8 +10,6 @@ import { ScrollListener } from './ScrollListener'
 import classNames from '../styles.module.css'
 
 export interface ScrollerProps {
-  ref?: Ref<Scroller>
-
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
   horizontal?: boolean // (same)
   hideScrollbars?: boolean // default: false

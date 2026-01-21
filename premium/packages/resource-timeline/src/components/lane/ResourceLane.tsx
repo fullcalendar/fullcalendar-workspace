@@ -7,8 +7,6 @@ import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from 
 import { refineRenderProps } from '../../structs'
 
 export interface ResourceLaneProps {
-  key?: string | number | null
-
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker

@@ -6,8 +6,6 @@ import { ColSpec, ResourceColumnHeaderData } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
 
 export interface HeaderCellProps {
-  key?: string | number | null
-
   colSpec: ColSpec
   resizer: boolean
   indent?: boolean

@@ -5,8 +5,6 @@ import { setRef } from '../../vdom-util'
 import classNames from '../../styles.module.css'
 
 export interface DayGridEventHarnessProps {
-  key?: string | number | null
-
   style: any // TODO
   className?: string
   children?: ReactNode

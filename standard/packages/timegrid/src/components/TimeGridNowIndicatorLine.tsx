@@ -4,7 +4,6 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { computeDateTopFrac } from './util'
 
 export interface TimeGridNowIndicatorLineProps {
-  key?: string | number | null
   nowDate: DateMarker
   dayDate: DateMarker
   dateProfile: DateProfile

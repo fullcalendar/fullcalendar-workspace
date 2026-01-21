@@ -17,7 +17,6 @@ import { ResourceExpander } from './ResourceExpander'
 import { ResourceCellData, ColSpec } from '../../structs'
 
 export interface ResourceCellProps {
-  key?: string | number | null
   colSpec: ColSpec
   resource: Resource
   fieldValue: any

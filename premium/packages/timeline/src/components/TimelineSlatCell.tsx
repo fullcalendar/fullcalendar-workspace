@@ -12,8 +12,6 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { TimelineDateProfile } from '../timeline-date-profile'
 
 export interface TimelineSlatCellProps {
-  key?: string | number | null
-
   date: DateMarker
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile

@@ -24,7 +24,6 @@ export interface ListSeg {
 }
 
 export interface ListDayProps {
-  key?: string | number | null
   dayDate: DateMarker
   nowDate: DateMarker
   todayRange: DateRange

@@ -12,8 +12,6 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
 
 export interface TimelineSlatCellProps {
-  key?: string | number | null
-
   date: DateMarker
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile

@@ -5,8 +5,6 @@ import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-pr
 import { TimelineHeaderCell } from './TimelineHeaderCell'
 
 export interface TimelineHeaderRowProps {
-  key?: string | number | null
-
   className?: string
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile

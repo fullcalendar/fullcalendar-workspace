@@ -6,8 +6,6 @@ import { Group } from '../../../resource/common/resource-hierarchy'
 import { GroupSpec, ResourceGroupLaneData } from '../../structs'
 
 export interface GroupLaneProps {
-  key?: string | number | null
-
   group: Group
   role?: string // aria
   rowIndex?: number // aria

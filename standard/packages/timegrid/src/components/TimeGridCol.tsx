@@ -36,8 +36,6 @@ export const simplifiedTimeGridPrint = /* true || */ (
 )
 
 export interface TimeGridColProps {
-  key?: string | number | null
-
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange

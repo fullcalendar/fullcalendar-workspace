@@ -6,7 +6,6 @@ import { dayHeaderMicroFormat } from './util'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {
-  key?: string | number | null
   renderConfig: CellRenderConfig<RenderProps>
   dataConfig: CellDataConfig<RenderProps>
   borderStart: boolean

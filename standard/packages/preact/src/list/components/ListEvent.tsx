@@ -10,7 +10,6 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 })
 
 export interface ListEventProps extends MinimalEventProps {
-  key?: string | number | null
 }
 
 export class ListEvent extends BaseComponent<ListEventProps> {

@@ -26,8 +26,6 @@ import { DayGridEventHarness } from './DayGridEventHarness'
 import classNames from '../../styles.module.css'
 
 export interface DayGridRowProps {
-  key?: string | number | null
-
   dateProfile: DateProfile
   todayRange: DateRange
   cells: DayTableCell[]

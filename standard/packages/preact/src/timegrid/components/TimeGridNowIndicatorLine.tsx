@@ -7,7 +7,6 @@ import classNames from '../../styles.module.css'
 import { computeDateTopFrac } from './util'
 
 export interface TimeGridNowIndicatorLineProps {
-  key?: string | number | null
   nowDate: DateMarker
   dayDate: DateMarker
   dateProfile: DateProfile
