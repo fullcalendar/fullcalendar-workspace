@@ -32,6 +32,31 @@ export function generatedContentPlugin(contentMap: { [path: string]: string }): 
   }
 }
 
+// Remap Imports
+// -------------------------------------------------------------------------------------------------
+
+export interface RemapImportsOptions {
+  mappings: { [oldImport: string]: string }
+  debug?: boolean
+}
+
+export function remapExternalImportsPlugin(
+  { mappings, debug }: RemapImportsOptions,
+): Plugin {
+  return {
+    name: 'remap-imports',
+    resolveId(importId) {
+      // Check for exact match
+      if (mappings[importId]) {
+        if (debug) {
+          console.log(`Remapped external import: "${importId}" -> "${mappings[importId]}"`)
+        }
+        return { id: mappings[importId], external: true }
+      }
+    },
+  }
+}
+
 // Externalize certain packages
 // -------------------------------------------------------------------------------------------------
 

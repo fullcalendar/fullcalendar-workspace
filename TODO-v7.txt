@@ -35,12 +35,6 @@ build note:
     manually before `pn dev`
 
 
-error when compiling web-component dts:
-  '@fullcalendar/preact' is imported by dist/.tsout/all.d.ts, but could not be resolved – treating it as an external dependency
-  ^^^will be fixed when we do externalRemaps?
-
-
-implement externalRemaps
 fix lots of chunks being imported for side effects
   many bundlers will assume they DO have side effects
     import '@fullcalendar/preact/daygrid';

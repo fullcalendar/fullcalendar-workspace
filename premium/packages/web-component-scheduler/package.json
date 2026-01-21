@@ -26,23 +26,26 @@
   "buildConfig": {
     "moduleConfig": {
       "externalPkgs": [
-        "@fullcalendar/preact"
+        "@fullcalendar/vanilla"
       ],
       "externalRemaps": {
-        "@fullcalendar/preact/public-api": "@fullcalendar/web-component",
-        "@fullcalendar/preact/protected-api": "@fullcalendar/web-component/protected-api",
-        "@fullcalendar/preact/protected-styles": "@fullcalendar/web-component/protected-styles",
-        "@fullcalendar/preact/interaction": "@fullcalendar/web-component/interaction",
-        "@fullcalendar/preact/daygrid": "@fullcalendar/web-component/daygrid",
-        "@fullcalendar/preact/timegrid": "@fullcalendar/web-component/timegrid",
-        "@fullcalendar/preact/list": "@fullcalendar/web-component/list",
-        "@fullcalendar/preact/multimonth": "@fullcalendar/web-component/multimonth"
-      }
+        "@fullcalendar/vanilla/public-api": "@fullcalendar/web-component",
+        "@fullcalendar/vanilla/protected-api": "@fullcalendar/web-component/protected-api",
+        "@fullcalendar/vanilla/protected-styles": "@fullcalendar/web-component/protected-styles",
+        "@fullcalendar/vanilla/interaction": "@fullcalendar/web-component/interaction",
+        "@fullcalendar/vanilla/daygrid": "@fullcalendar/web-component/daygrid",
+        "@fullcalendar/vanilla/timegrid": "@fullcalendar/web-component/timegrid",
+        "@fullcalendar/vanilla/list": "@fullcalendar/web-component/list",
+        "@fullcalendar/vanilla/multimonth": "@fullcalendar/web-component/multimonth"
+      },
+      "externalRemaps#NOTE": [
+        "above deps are imports from within @fullcalendar/vanilla-scheduler"
+      ]
     },
     "globalConfig": {
       "externalPkgs": [
         "@fullcalendar/web-component",
-        "@fullcalendar/preact",
+        "@fullcalendar/vanilla",
         "react"
       ],
       "externalGlobals": {
@@ -54,14 +57,14 @@
         "@fullcalendar/web-component/timegrid": "FullCalendar.TimeGrid",
         "@fullcalendar/web-component/list": "FullCalendar.List",
         "@fullcalendar/web-component/multimonth": "FullCalendar.MultiMonth",
-        "@fullcalendar/preact/public-api": "FullCalendar",
-        "@fullcalendar/preact/protected-api": "FullCalendar.ProtectedApi",
-        "@fullcalendar/preact/protected-styles": "FullCalendar.ProtectedStyles",
-        "@fullcalendar/preact/interaction": "FullCalendar.Interaction",
-        "@fullcalendar/preact/daygrid": "FullCalendar.DayGrid",
-        "@fullcalendar/preact/timegrid": "FullCalendar.TimeGrid",
-        "@fullcalendar/preact/list": "FullCalendar.List",
-        "@fullcalendar/preact/multimonth": "FullCalendar.MultiMonth",
+        "@fullcalendar/vanilla/public-api": "FullCalendar",
+        "@fullcalendar/vanilla/protected-api": "FullCalendar.ProtectedApi",
+        "@fullcalendar/vanilla/protected-styles": "FullCalendar.ProtectedStyles",
+        "@fullcalendar/vanilla/interaction": "FullCalendar.Interaction",
+        "@fullcalendar/vanilla/daygrid": "FullCalendar.DayGrid",
+        "@fullcalendar/vanilla/timegrid": "FullCalendar.TimeGrid",
+        "@fullcalendar/vanilla/list": "FullCalendar.List",
+        "@fullcalendar/vanilla/multimonth": "FullCalendar.MultiMonth",
         "react": "FullCalendar.React",
         "react/jsx-runtime": "FullCalendar.ReactJSXRuntime"
       }

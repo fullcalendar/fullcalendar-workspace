@@ -35,6 +35,7 @@ import {
   generatedContentPlugin,
   massageDtsPlugin,
   minifyBundleSeparatelyPlugin,
+  remapExternalImportsPlugin,
   rerootPlugin,
 } from './rollup-plugins.ts'
 
@@ -219,6 +220,9 @@ function buildModulePlugins(
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
+    remapExternalImportsPlugin({
+      mappings: pkgBundleStruct.moduleConfig?.externalRemaps || {},
+    }),
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
@@ -274,6 +278,9 @@ async function buildGlobalPlugins(
 
 function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   return [
+    remapExternalImportsPlugin({
+      mappings: pkgBundleStruct.moduleConfig?.externalRemaps || {},
+    }),
     externalizeAssetsPlugin(),
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),

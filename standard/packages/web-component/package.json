@@ -29,6 +29,17 @@
   },
   "type": "module",
   "buildConfig": {
+    "moduleConfig": {
+      "externalPkgs": [
+        "@fullcalendar/preact"
+      ],
+      "externalRemaps": {
+        "@fullcalendar/preact": "@fullcalendar/vanilla"
+      },
+      "externalRemaps#NOTE": [
+        "externalPkgs and remap done for .d.ts bundling warning about @fullcalendar/preact remaining"
+      ]
+    },
     "globalConfig": {
       "primaryGlobal": "FullCalendar",
       "sharedProp": "Shared"
