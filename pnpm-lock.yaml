@@ -2124,6 +2124,35 @@ importers:
         version: 19.2.3(react@19.2.3)
     publishDirectory: ./dist
 
+  premium/packages/react-scheduler:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/headless-calendar/dist
+      '@full-ui/headless-grid':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-grid/dist
+      '@fullcalendar/react2':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/react/dist
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../../standard/scripts
+      '@types/react':
+        specifier: ^19.2.9
+        version: 19.2.9
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.9)
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    publishDirectory: ./dist
+
   premium/packages/resource:
     dependencies:
       '@fullcalendar/premium-common':
