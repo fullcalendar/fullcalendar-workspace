@@ -7,14 +7,10 @@
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
-    "preact": "~10.23.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "preact": "~10.23.1"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
   },
@@ -25,6 +21,12 @@
   },
   "type": "module",
   "buildConfig": {
+    "externalRemaps": {
+      "react": "preact/compat",
+      "react/jsx-runtime": "preact/jsx-runtime",
+      "react-dom": "preact/compat",
+      "react-dom/client": "preact/compat/client"
+    },
     "moduleConfig": {
       "cssExtract": "skeleton.css"
     },

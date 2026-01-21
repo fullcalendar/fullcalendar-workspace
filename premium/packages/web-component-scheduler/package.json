@@ -65,8 +65,8 @@
         "@fullcalendar/vanilla/timegrid": "FullCalendar.TimeGrid",
         "@fullcalendar/vanilla/list": "FullCalendar.List",
         "@fullcalendar/vanilla/multimonth": "FullCalendar.MultiMonth",
-        "react": "FullCalendar.React",
-        "react/jsx-runtime": "FullCalendar.ReactJSXRuntime"
+        "preact": "FullCalendar.Preact",
+        "preact/jsx-runtime": "FullCalendar.PreactJSXRuntime"
       }
     },
     "exports": {

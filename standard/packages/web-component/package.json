@@ -10,15 +10,11 @@
   "homepage": "https://fullcalendar.io/docs/web-component",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "preact": "~10.23.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "preact": "~10.23.1"
   },
   "devDependencies": {
     "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
   },
@@ -29,17 +25,6 @@
   },
   "type": "module",
   "buildConfig": {
-    "moduleConfig": {
-      "externalPkgs": [
-        "@fullcalendar/preact"
-      ],
-      "externalRemaps": {
-        "@fullcalendar/preact": "@fullcalendar/vanilla"
-      },
-      "externalRemaps#NOTE": [
-        "externalPkgs and remap done for .d.ts bundling warning about @fullcalendar/preact remaining"
-      ]
-    },
     "globalConfig": {
       "primaryGlobal": "FullCalendar",
       "sharedProp": "Shared"
@@ -62,6 +47,9 @@
       "./skeleton.styles": {
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/skeleton.css"
+      },
+      "./preact": {
+        "format": "module"
       },
       "./locales-all": {
         "format": "module",

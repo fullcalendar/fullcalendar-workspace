@@ -1,2 +1,2 @@
 
-export * from './vdom-react'
+export * from './vdom-preact'

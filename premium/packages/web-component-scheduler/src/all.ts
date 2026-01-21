@@ -1,4 +1,4 @@
-import { FullCalendarElement as BareFullCalendarElement } from '@fullcalendar/web-component'
+import { FullCalendarElement as BareFullCalendarElement, PluginDef } from '@fullcalendar/web-component'
 import interactionPlugin from '@fullcalendar/web-component/interaction'
 import dayGridPlugin from '@fullcalendar/web-component/daygrid'
 import timeGridPlugin from '@fullcalendar/web-component/timegrid'
@@ -10,7 +10,7 @@ import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-tim
 import scrollGridPlugin from '@fullcalendar/vanilla-scheduler/scrollgrid'
 import timelinePlugin from '@fullcalendar/vanilla-scheduler/timeline'
 
-const basePlugins = [
+const basePlugins: PluginDef[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -18,7 +18,7 @@ const basePlugins = [
   multiMonthPlugin,
 ]
 
-export const plugins = [
+export const plugins: PluginDef[] = [
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
   resourceTimelinePlugin,

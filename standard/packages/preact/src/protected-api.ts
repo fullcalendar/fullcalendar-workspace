@@ -199,6 +199,7 @@ export { isPropsValid, isInteractionValid, isDateSelectionValid } from './valida
 
 export { requestJson } from './util/requestJson'
 
+export { flushUpdates, flushSync } from './vdom'
 export { BaseComponent, setRef } from './vdom-util'
 export { DelayedRunner } from './util/DelayedRunner'
 

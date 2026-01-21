@@ -6,6 +6,7 @@ import {
   isAbsolute,
 } from 'path'
 import { readFile, writeFile } from 'fs/promises'
+import { createRequire } from 'module'
 import { type Plugin } from 'rollup'
 import Terser, { type MinifyOptions as TerserOptions } from 'terser'
 import cssnano from 'cssnano'
@@ -37,23 +38,63 @@ export function generatedContentPlugin(contentMap: { [path: string]: string }): 
 
 export interface RemapImportsOptions {
   mappings: { [oldImport: string]: string }
+  forceExternal?: boolean
   debug?: boolean
 }
 
-export function remapExternalImportsPlugin(
-  { mappings, debug }: RemapImportsOptions,
+export function remapImportsPlugin(
+  { mappings, forceExternal, debug }: RemapImportsOptions,
 ): Plugin {
   return {
     name: 'remap-imports',
-    resolveId(importId) {
-      // Check for exact match
+    async resolveId(importId, importer, options) {
       if (mappings[importId]) {
+        const newId = mappings[importId]
         if (debug) {
-          console.log(`Remapped external import: "${importId}" -> "${mappings[importId]}"`)
+          console.log(`Remapped import: "${importId}" -> "${newId}"`)
         }
-        return { id: mappings[importId], external: true }
+        if (forceExternal) {
+          return { id: newId, external: true }
+        }
+        // Continue resolution with the new ID
+        // skipSelf: true prevents infinite recursion
+        const resolved = await this.resolve(newId, importer, { ...options, skipSelf: true })
+        // If nothing resolved it, mark as external
+        return resolved ?? { id: newId, external: true }
       }
     },
+  }
+}
+
+/*
+Workaround for rollup-plugin-dts always making non-filepath imports external.
+Must go before dts plugin in plugins list
+*/
+export interface ResolveExternalForDtsOptions {
+  debug?: boolean
+}
+
+export function resolveExternalForDts(
+  { debug }: ResolveExternalForDtsOptions = {},
+): Plugin {
+  return {
+    name: 'resolve-external-for-dts',
+    resolveId(importId, importer) {
+      if (!isImportRelative(importId) && !isImportAbsolute(importId)) {
+        // Create a require function relative to the importer (or cwd if no importer)
+        const requireFn = createRequire(importer || import.meta.url)
+        let resolved = requireFn.resolve(importId)
+
+        // HACK: avoid CSS modules
+        if (!/\.module\.css\.js$/.test(resolved)) {
+          resolved = resolved.replace(/\.js$/, '.d.ts')
+          if (debug) {
+            console.log('mapped', importId, '->', resolved)
+          }
+          return resolved
+        }
+      }
+    }
   }
 }
 
@@ -337,4 +378,8 @@ function computeImportPath(importId: string, importerPath: string | undefined): 
 
 function isImportRelative(importId: string): boolean {
   return importId.startsWith('./') || importId.startsWith('../')
+}
+
+function isImportAbsolute(importId: string): boolean {
+  return importId.startsWith('/')
 }

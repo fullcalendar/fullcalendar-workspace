@@ -1,12 +1,9 @@
-
-
-import { Fragment as StrictMode } from 'react' // DISABLE STRICT-MODE
-import { flushSync } from 'react-dom'
-import { createRoot } from 'react-dom/client'
+import { Fragment as StrictMode } from 'preact' // DISABLE STRICT-MODE
+import { createRoot } from 'preact/compat/client'
 import {
   CssDimValue,
   CalendarOptions,
-} from '@fullcalendar/preact'
+} from '@fullcalendar/preact/public-api'
 import {
   Action,
   CalendarDataManager,
@@ -18,6 +15,7 @@ import {
   CalendarMediaRoot,
   computeRootClassName,
   RenderId,
+  flushSync,
 } from '@fullcalendar/preact/protected-api'
 
 /*

@@ -1,5 +1,5 @@
 import { Calendar as BareCalendar } from '@fullcalendar/vanilla/public-components'
-import { CalendarOptions } from '@fullcalendar/vanilla/public-api'
+import { CalendarOptions, PluginDef } from '@fullcalendar/vanilla/public-api'
 import interactionPlugin from '@fullcalendar/vanilla/interaction'
 import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
@@ -11,7 +11,7 @@ import resourceTimelinePlugin from '@fullcalendar/preact-scheduler/resource-time
 import scrollGridPlugin from '@fullcalendar/preact-scheduler/scrollgrid'
 import timelinePlugin from '@fullcalendar/preact-scheduler/timeline'
 
-const basePlugins = [
+const basePlugins: PluginDef[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -19,7 +19,7 @@ const basePlugins = [
   multiMonthPlugin,
 ]
 
-export const plugins = [
+export const plugins: PluginDef[] = [
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
   resourceTimelinePlugin,

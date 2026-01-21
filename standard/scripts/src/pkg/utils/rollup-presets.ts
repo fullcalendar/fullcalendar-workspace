@@ -35,8 +35,9 @@ import {
   generatedContentPlugin,
   massageDtsPlugin,
   minifyBundleSeparatelyPlugin,
-  remapExternalImportsPlugin,
+  remapImportsPlugin,
   rerootPlugin,
+  resolveExternalForDts,
 } from './rollup-plugins.ts'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
@@ -220,8 +221,9 @@ function buildModulePlugins(
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
-    remapExternalImportsPlugin({
-      mappings: pkgBundleStruct.moduleConfig?.externalRemaps || {},
+    remapImportsPlugin({
+      mappings: pkgBundleStruct.externalRemaps || {},
+      forceExternal: true,
     }),
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
@@ -255,6 +257,9 @@ async function buildGlobalPlugins(
   const { isPublicMui } = analyzePkg(pkgDir)
 
   return [
+    remapImportsPlugin({
+      mappings: pkgBundleStruct.externalRemaps || {},
+    }),
     iifeSplitPlugin(
       buildGlobalSplitOptions(pkgBundleStruct),
     ),
@@ -278,13 +283,17 @@ async function buildGlobalPlugins(
 
 function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   return [
-    remapExternalImportsPlugin({
-      mappings: pkgBundleStruct.moduleConfig?.externalRemaps || {},
+    remapImportsPlugin({
+      mappings: pkgBundleStruct.externalRemaps || {},
+      forceExternal: true,
     }),
     externalizeAssetsPlugin(),
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
       moduleSideEffects: true, // for including ambient declarations in other packages
+    }),
+    resolveExternalForDts({
+      // debug: true,
     }),
     dtsPlugin(),
     massageDtsPlugin(),
@@ -399,7 +408,7 @@ function buildGlobalSplitOptions(pkgBundleStruct: PkgBundleStruct): IifeSplitOpt
       return /\/locales\/[\w-]+\.js$/.test(id)
     },
     // debugDir,
-    skipRequireGlobals: true,
+    // skipRequireGlobals: true,
   }
 }
 
