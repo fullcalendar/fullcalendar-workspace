@@ -222,7 +222,7 @@ function buildModulePlugins(
 
   return [
     remapImportsPlugin({
-      mappings: pkgBundleStruct.externalRemaps || {},
+      mappings: pkgBundleStruct.importRemaps || {},
       forceExternal: true,
     }),
     rerootAssetsPlugin(pkgDir),
@@ -258,7 +258,7 @@ async function buildGlobalPlugins(
 
   return [
     remapImportsPlugin({
-      mappings: pkgBundleStruct.externalRemaps || {},
+      mappings: pkgBundleStruct.importRemaps || {},
     }),
     iifeSplitPlugin(
       buildGlobalSplitOptions(pkgBundleStruct),
@@ -284,7 +284,7 @@ async function buildGlobalPlugins(
 function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   return [
     remapImportsPlugin({
-      mappings: pkgBundleStruct.externalRemaps || {},
+      mappings: pkgBundleStruct.importRemaps || {},
       forceExternal: true,
     }),
     externalizeAssetsPlugin(),

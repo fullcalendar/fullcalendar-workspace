@@ -22,7 +22,7 @@
   },
   "type": "module",
   "buildConfig": {
-    "externalRemaps": {
+    "importRemaps": {
       "@fullcalendar/vanilla/public-api": "@fullcalendar/web-component",
       "@fullcalendar/vanilla/protected-api": "@fullcalendar/web-component/protected-api",
       "@fullcalendar/vanilla/protected-styles": "@fullcalendar/web-component/protected-styles",

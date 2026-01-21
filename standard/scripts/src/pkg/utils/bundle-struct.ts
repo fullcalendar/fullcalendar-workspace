@@ -17,7 +17,7 @@ export interface PkgBundleStruct {
   miscWatchPaths: string[] // not CSS
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
-  externalRemaps?: Record<string, string>
+  importRemaps?: Record<string, string>
 }
 
 export interface CopyOperation {
@@ -63,7 +63,7 @@ export interface PkgJsonBuildConfig {
   exports?: EntryConfigMap
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
-  externalRemaps?: Record<string, string>
+  importRemaps?: Record<string, string>
 }
 
 export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
@@ -146,7 +146,7 @@ export async function buildPkgBundleStruct(
     miscWatchPaths,
     moduleConfig: buildConfig.moduleConfig,
     globalConfig: buildConfig.globalConfig,
-    externalRemaps: buildConfig.externalRemaps,
+    importRemaps: buildConfig.importRemaps,
   }
 }
 

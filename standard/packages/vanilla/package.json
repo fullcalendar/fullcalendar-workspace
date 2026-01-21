@@ -20,7 +20,7 @@
   },
   "type": "module",
   "buildConfig": {
-    "externalRemaps": {
+    "importRemaps": {
       "react": "preact/compat",
       "react/jsx-runtime": "preact/jsx-runtime",
       "react-dom": "preact/compat",
