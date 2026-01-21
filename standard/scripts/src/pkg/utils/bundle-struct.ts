@@ -64,6 +64,7 @@ export interface PkgJsonBuildConfig {
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
   importRemaps?: Record<string, string>
+  disableWatch?: boolean
 }
 
 export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
