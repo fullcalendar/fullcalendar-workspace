@@ -41,9 +41,6 @@ error when compiling web-component dts:
 
 
 implement externalRemaps
-1-primary-origin.js (and ultimately built iife) is getting lots of stuff that shouldnt be inlined:
-  see createPlugin/$1 calls
-  see const plugins =
 fix lots of chunks being imported for side effects
   many bundlers will assume they DO have side effects
     import '@fullcalendar/preact/daygrid';
@@ -56,18 +53,7 @@ fix lots of chunks being imported for side effects
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
 better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
 move refineRenderProps from resource-timeline export
-scheduler working
-  vanilla-scheduler
-  web-component-scheduler
-export preact from vanilla, for people wanting jsx-like experience
-Make @fullcalendar/preact a devDependency for vanilla? (and web-component)?
-  to avoid lots of duplicate css files in node_modules
-  might make for better NPM stats
-    transitive deps dont get download stats; when we move to transpiling, no transitive deps anyway
-    (so, if we started with transitive deps, then removed, DL count would look like it went down)
-export 'preact' entrypoint for vanilla
-  and preact.global.js?
-  current preact.ts file is whack
+export 'preact' entrypoint for vanilla in ESM
 why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
 remove (data, *createElement*) param from *Content hooks
