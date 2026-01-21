@@ -1,3 +1,5 @@
+import * as React from 'react'
+import * as ReactJSXRuntime from 'react/jsx-runtime'
 import * as ProtectedApi from '@fullcalendar/vanilla/protected-api'
 import * as ProtectedStyles from '@fullcalendar/vanilla/protected-styles'
 import * as Interaction from '@fullcalendar/vanilla/interaction'
@@ -15,6 +17,8 @@ customElements.define('full-calendar', FullCalendarElement)
 
 export * from '@fullcalendar/vanilla/public-api'
 export {
+  React,
+  ReactJSXRuntime,
   FullCalendarElement,
   ProtectedApi,
   ProtectedStyles,

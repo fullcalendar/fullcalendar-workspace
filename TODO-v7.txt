@@ -35,9 +35,6 @@ build note:
     manually before `pn dev`
 
 
-bad: jsxRuntime source is showing up in vanilla-scheduler/all.global.js and web-component-scheduler/all.global.js
-
-
 implement externalRemaps
 1-primary-origin.js (and ultimately built iife) is getting lots of stuff that shouldnt be inlined:
   see createPlugin/$1 calls

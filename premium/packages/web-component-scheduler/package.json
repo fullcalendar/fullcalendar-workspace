@@ -42,7 +42,8 @@
     "globalConfig": {
       "externalPkgs": [
         "@fullcalendar/web-component",
-        "@fullcalendar/preact"
+        "@fullcalendar/preact",
+        "react"
       ],
       "externalGlobals": {
         "@fullcalendar/web-component": "FullCalendar",
@@ -60,7 +61,9 @@
         "@fullcalendar/preact/daygrid": "FullCalendar.DayGrid",
         "@fullcalendar/preact/timegrid": "FullCalendar.TimeGrid",
         "@fullcalendar/preact/list": "FullCalendar.List",
-        "@fullcalendar/preact/multimonth": "FullCalendar.MultiMonth"
+        "@fullcalendar/preact/multimonth": "FullCalendar.MultiMonth",
+        "react": "FullCalendar.React",
+        "react/jsx-runtime": "FullCalendar.ReactJSXRuntime"
       }
     },
     "exports": {

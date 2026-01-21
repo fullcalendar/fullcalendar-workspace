@@ -1,3 +1,5 @@
+import * as React from 'react'
+import * as ReactJSXRuntime from 'react/jsx-runtime'
 import * as ProtectedApi from '@fullcalendar/preact/protected-api'
 import * as ProtectedStyles from '@fullcalendar/preact/protected-styles'
 import * as Interaction from '@fullcalendar/preact/interaction'
@@ -9,6 +11,8 @@ import * as MultiMonth from '@fullcalendar/preact/multimonth'
 export * from '@fullcalendar/preact/public-api'
 export { Calendar } from './all'
 export {
+  React,
+  ReactJSXRuntime,
   ProtectedApi,
   ProtectedStyles,
   Interaction,
