@@ -1,11 +1,16 @@
+import React, { createRef, act } from 'react'
+import { render } from '@testing-library/react'
+import FullCalendar from '@fullcalendar/react2'
 
-import React, { useState, useEffect, useContext, useCallback, createContext, createRef, act } from 'react'
-import adaptivePlugin from '@fullcalendar/adaptive'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+/*
+Only works on build dist code!
+*/
+import adaptivePlugin from '../dist/adaptive.js'
+import resourceTimelinePlugin from '../dist/resource-timeline.js'
 
 // https://github.com/fullcalendar/fullcalendar/issues/7419
 it('render custom event JSX during print-mode', (done) => {
-  let calendarRef = createRef()
+  let calendarRef = createRef<FullCalendar>()
 
   const { container } = render(
     <FullCalendar
@@ -84,3 +89,10 @@ it('renders resourceGroupLaneContent function', () => {
 
   expect(container.querySelectorAll('.test-group-lane').length).toBe(2)
 })
+
+// DOM utils
+// -------------------------------------------------------------------------------------------------
+
+function getEventEls(container: HTMLElement): HTMLElement[] {
+  return [...(container.querySelectorAll('.fc-event') as NodeListOf<HTMLElement>)]
+}

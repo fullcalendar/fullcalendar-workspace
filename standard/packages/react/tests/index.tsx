@@ -685,20 +685,20 @@ function buildEvent() {
 // DOM utils
 // -------------------------------------------------------------------------------------------------
 
-function getHeaderToolbarEl(container) {
+function getHeaderToolbarEl(container: HTMLElement): HTMLElement | null {
   return container.querySelector('.fc-header-toolbar')
 }
 
 
-function isWeekendsRendered(container) {
+function isWeekendsRendered(container: HTMLElement): boolean {
   return Boolean(container.querySelector('.fc-day-sat'))
 }
 
 
-function getFirstEventEl(container) {
+function getFirstEventEl(container: HTMLElement): HTMLElement | null {
   return container.querySelector('.fc-event')
 }
 
-function getEventEls(container) {
-  return [...container.querySelectorAll('.fc-event')]
+function getEventEls(container: HTMLElement): HTMLElement[] {
+  return [...(container.querySelectorAll('.fc-event') as NodeListOf<HTMLElement>)]
 }
