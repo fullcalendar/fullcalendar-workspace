@@ -1,5 +1,17 @@
-import { plugins } from '@fullcalendar/vanilla/all'
+import interactionPlugin from '@fullcalendar/vanilla/interaction'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
+import listPlugin from '@fullcalendar/vanilla/list'
+import multiMonthPlugin from '@fullcalendar/vanilla/multimonth'
 import { FullCalendarElement as BareFullCalendarElement } from './FullCalendarElement'
+
+export const plugins = [
+  interactionPlugin,
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  multiMonthPlugin,
+]
 
 export class FullCalendarElement extends BareFullCalendarElement {
   constructor() {
@@ -8,4 +20,4 @@ export class FullCalendarElement extends BareFullCalendarElement {
   }
 }
 
-export { FullCalendarElement as default, plugins }
+export default FullCalendarElement

@@ -1,11 +1,39 @@
-import { plugins } from '@fullcalendar/vanilla-scheduler/all'
-import { FullCalendarElement as StandardFullCalendarElement } from '@fullcalendar/web-component/all'
+import { FullCalendarElement as BareFullCalendarElement } from '@fullcalendar/web-component'
+import interactionPlugin from '@fullcalendar/web-component/interaction'
+import dayGridPlugin from '@fullcalendar/web-component/daygrid'
+import timeGridPlugin from '@fullcalendar/web-component/timegrid'
+import listPlugin from '@fullcalendar/web-component/list'
+import multiMonthPlugin from '@fullcalendar/web-component/multimonth'
+import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-daygrid'
+import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
+import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'
+import scrollGridPlugin from '@fullcalendar/vanilla-scheduler/scrollgrid'
+import timelinePlugin from '@fullcalendar/vanilla-scheduler/timeline'
 
-export class FullCalendarElement extends StandardFullCalendarElement {
+const basePlugins = [
+  interactionPlugin,
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  multiMonthPlugin,
+]
+
+export const plugins = [
+  resourceDayGridPlugin,
+  resourceTimeGridPlugin,
+  resourceTimelinePlugin,
+  scrollGridPlugin,
+  timelinePlugin,
+]
+
+export class FullCalendarElement extends BareFullCalendarElement {
   constructor() {
     super()
-    this._forcedPlugins!.push(...plugins)
+    this._forcedPlugins = [
+      ...basePlugins,
+      ...plugins,
+    ]
   }
 }
 
-export { FullCalendarElement as default, plugins }
+export default FullCalendarElement

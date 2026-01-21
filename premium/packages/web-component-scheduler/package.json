@@ -29,23 +29,38 @@
         "@fullcalendar/preact"
       ],
       "externalRemaps": {
-        "@fullcalendar/preact/public-api": "@fullcalendar/web-component/public-api",
+        "@fullcalendar/preact/public-api": "@fullcalendar/web-component",
         "@fullcalendar/preact/protected-api": "@fullcalendar/web-component/protected-api",
         "@fullcalendar/preact/protected-styles": "@fullcalendar/web-component/protected-styles",
+        "@fullcalendar/preact/interaction": "@fullcalendar/web-component/interaction",
         "@fullcalendar/preact/daygrid": "@fullcalendar/web-component/daygrid",
-        "@fullcalendar/preact/timegrid": "@fullcalendar/web-component/timegrid"
+        "@fullcalendar/preact/timegrid": "@fullcalendar/web-component/timegrid",
+        "@fullcalendar/preact/list": "@fullcalendar/web-component/list",
+        "@fullcalendar/preact/multimonth": "@fullcalendar/web-component/multimonth"
       }
     },
     "globalConfig": {
       "externalPkgs": [
+        "@fullcalendar/web-component",
         "@fullcalendar/preact"
       ],
       "externalGlobals": {
-        "@fullcalendar/preact/public-api": "FullCalendar.PublicApi",
+        "@fullcalendar/web-component": "FullCalendar",
+        "@fullcalendar/web-component/protected-api": "FullCalendar.ProtectedApi",
+        "@fullcalendar/web-component/protected-styles": "FullCalendar.ProtectedStyles",
+        "@fullcalendar/web-component/interaction": "FullCalendar.Interaction",
+        "@fullcalendar/web-component/daygrid": "FullCalendar.DayGrid",
+        "@fullcalendar/web-component/timegrid": "FullCalendar.TimeGrid",
+        "@fullcalendar/web-component/list": "FullCalendar.List",
+        "@fullcalendar/web-component/multimonth": "FullCalendar.MultiMonth",
+        "@fullcalendar/preact/public-api": "FullCalendar",
         "@fullcalendar/preact/protected-api": "FullCalendar.ProtectedApi",
         "@fullcalendar/preact/protected-styles": "FullCalendar.ProtectedStyles",
+        "@fullcalendar/preact/interaction": "FullCalendar.Interaction",
         "@fullcalendar/preact/daygrid": "FullCalendar.DayGrid",
-        "@fullcalendar/preact/timegrid": "FullCalendar.TimeGrid"
+        "@fullcalendar/preact/timegrid": "FullCalendar.TimeGrid",
+        "@fullcalendar/preact/list": "FullCalendar.List",
+        "@fullcalendar/preact/multimonth": "FullCalendar.MultiMonth"
       }
     },
     "exports": {

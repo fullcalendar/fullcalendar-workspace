@@ -1,6 +1,18 @@
-import { CalendarOptions } from '@fullcalendar/preact'
-import { plugins } from '@fullcalendar/preact/all'
+import { CalendarOptions } from '@fullcalendar/preact/public-api'
+import interactionPlugin from '@fullcalendar/preact/interaction'
+import dayGridPlugin from '@fullcalendar/preact/daygrid'
+import timeGridPlugin from '@fullcalendar/preact/timegrid'
+import listPlugin from '@fullcalendar/preact/list'
+import multiMonthPlugin from '@fullcalendar/preact/multimonth'
 import { Calendar as BareCalendar } from './Calendar'
+
+export const plugins = [
+  interactionPlugin,
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  multiMonthPlugin,
+]
 
 export class Calendar extends BareCalendar {
   constructor(el: HTMLElement, optionOverrides: CalendarOptions) {
@@ -14,4 +26,4 @@ export class Calendar extends BareCalendar {
   }
 }
 
-export { Calendar as default, plugins }
+export default Calendar

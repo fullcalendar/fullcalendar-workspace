@@ -2840,8 +2840,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       rollup-plugin-iife-split:
-        specifier: ^0.0.5
-        version: 0.0.5(rollup@2.79.2)
+        specifier: ^0.0.6
+        version: 0.0.6(rollup@2.79.2)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^12.0.0
@@ -19885,8 +19885,8 @@ packages:
       rollup: ^2.48.0
       typescript: ^4.2.4
 
-  rollup-plugin-iife-split@0.0.5:
-    resolution: {integrity: sha512-nGOCgKeN+FSdTCFqAqiHVtt1Twu2v60u/6tcVYkEqmcwTZ2f/SnVtKDQKxfZrRZXRe5PXZDaB3G+eS84YOf72A==}
+  rollup-plugin-iife-split@0.0.6:
+    resolution: {integrity: sha512-CVcoME7uRSyP4njfwp09AddyhjawU0gUG0ig82Aa3y940XVyPTf0Sh4VoXmXZLpyaotrrb2G38nIv+HY6gYimw==}
     peerDependencies:
       rollup: ^3.0.0 || ^4.0.0
 
@@ -23367,7 +23367,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -23458,7 +23458,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -23831,7 +23831,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1
@@ -47635,7 +47635,7 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.26.2
 
-  rollup-plugin-iife-split@0.0.5(rollup@2.79.2):
+  rollup-plugin-iife-split@0.0.6(rollup@2.79.2):
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.21
