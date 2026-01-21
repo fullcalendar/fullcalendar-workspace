@@ -2680,6 +2680,26 @@ importers:
         version: 4.7.8
     publishDirectory: ./dist
 
+  standard/packages/react:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      preact:
+        specifier: ~10.23.1
+        version: 10.23.2
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
+      globby:
+        specifier: ^13.1.2
+        version: 13.2.2
+      handlebars:
+        specifier: ^4.1.2
+        version: 4.7.8
+    publishDirectory: ./dist
+
   standard/packages/rrule:
     devDependencies:
       '@fullcalendar-scripts/standard':
