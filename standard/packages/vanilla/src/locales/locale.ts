@@ -1,4 +1,3 @@
-
-import { LocaleInput } from '@fullcalendar/preact'
+import { LocaleInput } from '@fullcalendar/preact/public-api'
 
 export default LocaleInput

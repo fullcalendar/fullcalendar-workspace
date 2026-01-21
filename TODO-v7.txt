@@ -38,6 +38,7 @@ build note:
 externalRemaps -> importRemaps
 hook up vdom-react.ts
 strip comments in non-min iife?
+look at preact-scheduler and others for use of Fragment
 
 
 fix lots of chunks being imported for side effects

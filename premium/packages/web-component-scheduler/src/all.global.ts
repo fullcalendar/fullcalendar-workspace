@@ -1,4 +1,4 @@
-import { globalPlugins } from '@fullcalendar/web-component'
+import { globalPlugins } from '@fullcalendar/vanilla/public-api'
 import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'

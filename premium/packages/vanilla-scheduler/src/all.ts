@@ -20,11 +20,11 @@ const basePlugins: PluginDef[] = [
 ]
 
 export const plugins: PluginDef[] = [
-  resourceDayGridPlugin,
-  resourceTimeGridPlugin,
-  resourceTimelinePlugin,
-  scrollGridPlugin,
-  timelinePlugin,
+  resourceDayGridPlugin as any, // !!!
+  resourceTimeGridPlugin as any, // !!!
+  resourceTimelinePlugin as any, // !!!
+  scrollGridPlugin as any, // !!!
+  timelinePlugin as any, // !!!
 ]
 
 export class Calendar extends BareCalendar {

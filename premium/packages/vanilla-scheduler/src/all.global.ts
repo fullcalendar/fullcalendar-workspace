@@ -1,4 +1,4 @@
-import { globalPlugins } from '@fullcalendar/vanilla'
+import { globalPlugins } from '@fullcalendar/preact/public-api'
 import resourceDayGridPlugin from '@fullcalendar/preact-scheduler/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/preact-scheduler/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/preact-scheduler/resource-timeline'

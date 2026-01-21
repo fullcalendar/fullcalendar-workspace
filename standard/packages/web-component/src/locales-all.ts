@@ -1,4 +1,4 @@
-import { LocaleInput } from '@fullcalendar/vanilla'
+import { LocaleInput } from '@fullcalendar/vanilla/public-api'
 
 declare const allLocales: LocaleInput[]
 

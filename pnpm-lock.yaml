@@ -2093,22 +2093,10 @@ importers:
       preact:
         specifier: ~10.23.1
         version: 10.23.2
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
-      '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
     publishDirectory: ./dist
 
   premium/packages/premium-common:
@@ -2327,12 +2315,6 @@ importers:
       preact:
         specifier: ~10.23.1
         version: 10.23.2
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar/preact':
         specifier: workspace:7.0.0-beta.6
@@ -2340,12 +2322,6 @@ importers:
       '@fullcalendar/preact-scheduler':
         specifier: workspace:7.0.0-beta.6
         version: link:../preact-scheduler/dist
-      '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.7
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.7)
     publishDirectory: ./dist
 
   premium/packages/web-component-scheduler:
@@ -2362,12 +2338,6 @@ importers:
       preact:
         specifier: ~10.23.1
         version: 10.23.2
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
