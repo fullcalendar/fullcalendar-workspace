@@ -1,5 +1,5 @@
 import { flushSync } from 'react-dom'
-import { preactOptions } from '../vdom-react'
+import { preactOptions } from '../vdom'
 import { isDimsEqual } from './rendering-misc'
 import { debounce } from '../util/debounce'
 
