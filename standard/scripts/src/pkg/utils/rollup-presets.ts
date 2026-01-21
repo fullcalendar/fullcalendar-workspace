@@ -181,6 +181,9 @@ function buildModuleOutputOptions(
     entryFileNames: '[name]' + esmExtension,
     chunkFileNames: 'chunks/[name]-[hash]' + esmExtension,
     sourcemap: sourcemapOutput,
+
+    // don't have memberless import statement merely to preserve import order
+    hoistTransitiveImports: false,
   }
 }
 
@@ -196,7 +199,11 @@ async function buildGlobalOutputOptions(
     globals: pkgBundleStruct.globalConfig?.externalGlobals || {}, // comment for DEBUGGING as ESM
     sourcemap: sourcemapOutput,
     banner: await buildBanner(pkgBundleStruct),
-    // the iifeSplitPlugin plugin fills in the rest
+
+    // ...the iifeSplitPlugin plugin fills in the rest...
+
+    // don't have memberless import statement merely to preserve import order
+    hoistTransitiveImports: false,
   }
 }
 
@@ -206,6 +213,9 @@ function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions 
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: '[name].d.ts',
     chunkFileNames: 'chunks/[name]-[hash].d.ts',
+
+    // don't have memberless import statement merely to preserve import order
+    hoistTransitiveImports: false,
   }
 }
 
@@ -290,7 +300,7 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
     externalizeAssetsPlugin(),
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
-      moduleSideEffects: true, // for including ambient declarations in other packages
+      // moduleSideEffects: true, // for including ambient declarations in other packages
     }),
     resolveExternalForDts({
       // debug: true,
@@ -298,6 +308,8 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
     dtsPlugin(),
     massageDtsPlugin(),
     nodeResolvePlugin({
+      // ignore sideEffects in bundled packages's json for own files, forcing sideEffects: false
+      // for all. Not sure this is relevant to our setup, but might produce leaner output JS
       ignoreSideEffectsForRoot: true,
     }),
   ]
@@ -326,6 +338,8 @@ function buildNormalJsPlugins(
 
   return [
     nodeResolvePlugin({
+      // ignore sideEffects in bundled packages's json for own files, forcing sideEffects: false
+      // for all. Not sure this is relevant to our setup, but might produce leaner output JS
       ignoreSideEffectsForRoot: true,
     }),
     commonjsPlugin(), // for React :(

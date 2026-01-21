@@ -116,14 +116,14 @@ export function externalizePkgsPlugin(
       if (!isImportRelative(importId)) {
         for (const pkgName of pkgNames) {
           if (importId === pkgName || importId.startsWith(pkgName + '/')) {
-            if (debug && !importId.startsWith('/')) {
+            if (debug && !isAbsolute(importId)) {
               console.log('DID externalize', importId)
             }
             return { id: importId, external: true, moduleSideEffects }
           }
         }
 
-        if (debug && !importId.startsWith('/')) {
+        if (debug && !isAbsolute(importId)) {
           console.log('did NOT externalize', importId)
         }
       }

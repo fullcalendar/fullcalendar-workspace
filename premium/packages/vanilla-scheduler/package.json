@@ -23,7 +23,8 @@
   "type": "module",
   "buildConfig": {
     "importRemaps": {
-      "@fullcalendar/preact/public-api": "@fullcalendar/vanilla",
+      "@fullcalendar/preact": "@fullcalendar/vanilla",
+      "@fullcalendar/preact/public-api": "@fullcalendar/vanilla/public-api",
       "@fullcalendar/preact/protected-api": "@fullcalendar/vanilla/protected-api",
       "@fullcalendar/preact/protected-styles": "@fullcalendar/vanilla/protected-styles",
       "@fullcalendar/preact/interaction": "@fullcalendar/vanilla/interaction",
@@ -39,6 +40,7 @@
       ],
       "externalGlobals": {
         "@fullcalendar/vanilla": "FullCalendar",
+        "@fullcalendar/vanilla/public-api": "FullCalendar",
         "@fullcalendar/vanilla/protected-api": "FullCalendar.ProtectedApi",
         "@fullcalendar/vanilla/protected-styles": "FullCalendar.ProtectedStyles",
         "@fullcalendar/vanilla/interaction": "FullCalendar.Interaction",
