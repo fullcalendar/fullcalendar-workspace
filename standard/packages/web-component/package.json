@@ -95,8 +95,8 @@
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/themes/classic/theme.css"
       },
-      "./themes/classic/palette.styles": {
-        "format": "css-as-js",
+      "./themes/classic/palette.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/classic/palette.css",
         "minificationDisabled": true
       },
@@ -111,28 +111,28 @@
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/themes/monarch/theme.css"
       },
-      "./themes/monarch/palettes/blue.styles": {
-        "format": "css-as-js",
+      "./themes/monarch/palettes/blue.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/monarch/palettes/blue.css",
         "minificationDisabled": true
       },
-      "./themes/monarch/palettes/green.styles": {
-        "format": "css-as-js",
+      "./themes/monarch/palettes/green.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/monarch/palettes/green.css",
         "minificationDisabled": true
       },
-      "./themes/monarch/palettes/purple.styles": {
-        "format": "css-as-js",
+      "./themes/monarch/palettes/purple.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/monarch/palettes/purple.css",
         "minificationDisabled": true
       },
-      "./themes/monarch/palettes/red.styles": {
-        "format": "css-as-js",
+      "./themes/monarch/palettes/red.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/monarch/palettes/red.css",
         "minificationDisabled": true
       },
-      "./themes/monarch/palettes/yellow.styles": {
-        "format": "css-as-js",
+      "./themes/monarch/palettes/yellow.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/monarch/palettes/yellow.css",
         "minificationDisabled": true
       },
@@ -147,23 +147,23 @@
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/themes/breezy/theme.css"
       },
-      "./themes/breezy/palettes/emerald.styles": {
-        "format": "css-as-js",
+      "./themes/breezy/palettes/emerald.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/breezy/palettes/emerald.css",
         "minificationDisabled": true
       },
-      "./themes/breezy/palettes/honey.styles": {
-        "format": "css-as-js",
+      "./themes/breezy/palettes/honey.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/breezy/palettes/honey.css",
         "minificationDisabled": true
       },
-      "./themes/breezy/palettes/indigo.styles": {
-        "format": "css-as-js",
+      "./themes/breezy/palettes/indigo.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/breezy/palettes/indigo.css",
         "minificationDisabled": true
       },
-      "./themes/breezy/palettes/rose.styles": {
-        "format": "css-as-js",
+      "./themes/breezy/palettes/rose.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/breezy/palettes/rose.css",
         "minificationDisabled": true
       },
@@ -178,23 +178,23 @@
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/themes/forma/theme.css"
       },
-      "./themes/forma/palettes/blue.styles": {
-        "format": "css-as-js",
+      "./themes/forma/palettes/blue.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/forma/palettes/blue.css",
         "minificationDisabled": true
       },
-      "./themes/forma/palettes/green.styles": {
-        "format": "css-as-js",
+      "./themes/forma/palettes/green.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/forma/palettes/green.css",
         "minificationDisabled": true
       },
-      "./themes/forma/palettes/purple.styles": {
-        "format": "css-as-js",
+      "./themes/forma/palettes/purple.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/forma/palettes/purple.css",
         "minificationDisabled": true
       },
-      "./themes/forma/palettes/red.styles": {
-        "format": "css-as-js",
+      "./themes/forma/palettes/red.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/forma/palettes/red.css",
         "minificationDisabled": true
       },
@@ -209,23 +209,23 @@
         "format": "css-as-js",
         "import": "@fullcalendar/vanilla/themes/pulse/theme.css"
       },
-      "./themes/pulse/palettes/blue.styles": {
-        "format": "css-as-js",
+      "./themes/pulse/palettes/blue.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/pulse/palettes/blue.css",
         "minificationDisabled": true
       },
-      "./themes/pulse/palettes/green.styles": {
-        "format": "css-as-js",
+      "./themes/pulse/palettes/green.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/pulse/palettes/green.css",
         "minificationDisabled": true
       },
-      "./themes/pulse/palettes/purple.styles": {
-        "format": "css-as-js",
+      "./themes/pulse/palettes/purple.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/pulse/palettes/purple.css",
         "minificationDisabled": true
       },
-      "./themes/pulse/palettes/red.styles": {
-        "format": "css-as-js",
+      "./themes/pulse/palettes/red.css": {
+        "format": "css",
         "import": "@fullcalendar/vanilla/themes/pulse/palettes/red.css",
         "minificationDisabled": true
       }
