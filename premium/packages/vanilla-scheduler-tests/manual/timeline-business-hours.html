@@ -9,37 +9,44 @@
 
 <script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
 <script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../dist/all.global.js'></script>
+<script src='../../vanilla-scheduler/dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialDate: '2023-01-07',
+      now: '2023-01-09',
       editable: true, // enable draggable events
-      selectable: true,
       aspectRatio: 1.8,
       headerToolbar: {
         left: 'today prev,next',
         center: 'title',
-        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
-      },
-      initialView: 'resourceTimelineDay',
-      views: {
-        resourceTimelineThreeDays: {
-          type: 'resourceTimeline',
-          duration: { days: 3 },
-        }
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
       },
       buttons: {
         resourceTimelineThreeDays: {
-          text: '3 days',
+          text: '3 days'
         }
       },
-      resourceColumnHeaderContent: 'Rooms',
+      views: {
+        resourceTimelineThreeDays: {
+          type: 'resourceTimeline',
+          duration: { days: 3 }
+        }
+      },
+      initialView: 'resourceTimelineThreeDays',
+      businessHours: true,
+      resourceAreaHeaderContent: 'Rooms',
       resources: [
-        { id: 'a', title: 'Auditorium A' },
+        {
+          id: 'a',
+          title: 'Auditorium A',
+          // businessHours: {
+          //   startTime: '08:00',
+          //   endTime: '18:00',
+          // }
+        },
         { id: 'b', title: 'Auditorium B', eventColor: 'green' },
         { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
         { id: 'd', title: 'Auditorium D', children: [
@@ -68,14 +75,6 @@
         { id: 'x', title: 'Auditorium X' },
         { id: 'y', title: 'Auditorium Y' },
         { id: 'z', title: 'Auditorium Z' }
-      ],
-      events: [
-        { id: '1', resourceId: 'b', start: '2023-01-07T08:00:00', end: '2023-01-07T15:00:00', title: 'event 1' },
-        { id: '2', resourceId: 'c', start: '2023-01-07T11:00:00', end: '2023-01-08T06:00:00', title: 'event 2' },
-        { id: '3', resourceId: 'd', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
-        { id: '4', resourceId: 'e', start: '2023-01-07T09:00:00', end: '2023-01-07T14:00:00', title: 'event 4' },
-        { id: '5', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 5' },
-        { id: '6', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 6' }
       ]
     });
 

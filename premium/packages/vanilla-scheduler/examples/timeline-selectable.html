@@ -16,14 +16,16 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialDate: '2023-01-07',
-      editable: true, // enable draggable events
+      now: '2023-01-07',
       selectable: true,
+      selectHelper: true,
+      editable: true, // enable draggable events
       aspectRatio: 1.8,
+      scrollTime: '00:00', // undo default 6am scrollTime
       headerToolbar: {
         left: 'today prev,next',
         center: 'title',
-        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
       },
       initialView: 'resourceTimelineDay',
       views: {
@@ -70,16 +72,43 @@
         { id: 'z', title: 'Auditorium Z' }
       ],
       events: [
-        { id: '1', resourceId: 'b', start: '2023-01-07T08:00:00', end: '2023-01-07T15:00:00', title: 'event 1' },
-        { id: '2', resourceId: 'c', start: '2023-01-07T11:00:00', end: '2023-01-08T06:00:00', title: 'event 2' },
+        { id: '1', resourceId: 'b', start: '2023-01-07T02:00:00', end: '2023-01-07T07:00:00', title: 'event 1' },
+        { id: '2', resourceId: 'c', start: '2023-01-07T05:00:00', end: '2023-01-07T22:00:00', title: 'event 2' },
         { id: '3', resourceId: 'd', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
-        { id: '4', resourceId: 'e', start: '2023-01-07T09:00:00', end: '2023-01-07T14:00:00', title: 'event 4' },
-        { id: '5', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 5' },
-        { id: '6', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 6' }
-      ]
+        { id: '4', resourceId: 'e', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
+        { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' }
+      ],
+      select: function(data) {
+        console.log(
+          'select callback',
+          data.startStr,
+          data.endStr,
+          data.resource ? data.resource.id : '(no resource)'
+        );
+      },
+      dateClick: function(data) {
+        console.log(
+          'dateClick',
+          data.date,
+          data.resource ? data.resource.id : '(no resource)'
+        );
+      }
     });
 
     calendar.render();
+
+    document.getElementById('select-G').addEventListener('click', function() {
+      calendar.select({
+        start: '2023-01-07T02:00:00',
+        end: '2023-01-07T07:00:00',
+        resourceId: 'g'
+      });
+    });
+
+    document.getElementById('select-unspecified').addEventListener('click', function() {
+      calendar.select('2023-01-07T02:00:00', '2023-01-07T07:00:00');
+    });
+
   });
 
 </script>
@@ -102,6 +131,11 @@
 <body>
 
   <div id='calendar'></div>
+
+  <p style='text-align:center'>
+    <button id='select-G'>select G</button>
+    <button id='select-unspecified'>select w/o a resource</button>
+  </p>
 
 </body>
 </html>

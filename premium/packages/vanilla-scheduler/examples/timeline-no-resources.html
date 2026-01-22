@@ -9,46 +9,42 @@
 
 <script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
 <script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../../../../standard/packages/google-calendar/dist/global.js'></script>
-<script src='../../vanilla-scheduler/dist/all.global.js'></script>
+<script src='../dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      now: '2020-09-07',
+      selectable: true,
+      now: '2023-01-07',
       editable: true, // enable draggable events
       aspectRatio: 1.8,
       scrollTime: '00:00', // undo default 6am scrollTime
       headerToolbar: {
         left: 'today prev,next',
         center: 'title',
-        right: 'timelineMonth,timelineYear'
+        right: 'timelineDay,timelineThreeDays,timeGridWeek,dayGridMonth'
       },
-      initialView: 'timelineMonth',
-
-      /*
-      NOTE: unfortunately, Scheduler doesn't know how to associated events from
-      Google Calendar with resources, so if you specify a resource list,
-      nothing will show up :(  Working on some solutions.
-      */
-
-      // THIS KEY WON'T WORK IN PRODUCTION!!!
-      // To make your own Google API key, follow the directions here:
-      // https://fullcalendar.io/docs/google-calendar
-      googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
-
-      // US Holidays
-      events: 'usa__en@holiday.calendar.google.com',
-
-      eventClick: function(data) {
-        // opens events in a popup window
-        window.open(data.event.url, 'gcalevent', 'width=700,height=600');
-
-        // prevent browser from visiting event's URL in the current tab
-        data.jsEvent.preventDefault();
-      }
+      initialView: 'timelineDay',
+      views: {
+        timelineThreeDays: {
+          type: 'timeline',
+          duration: { days: 3 },
+        }
+      },
+      buttons: {
+        timelineThreeDays: {
+          text: '3 days',
+        }
+      },
+      events: [
+        { id: '1', start: '2023-01-07T02:00:00', end: '2023-01-07T07:00:00', title: 'event 1' },
+        { id: '2', start: '2023-01-07T05:00:00', end: '2023-01-07T22:00:00', title: 'event 2' },
+        { id: '3', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
+        { id: '4', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
+        { id: '5', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' }
+      ]
     });
 
     calendar.render();

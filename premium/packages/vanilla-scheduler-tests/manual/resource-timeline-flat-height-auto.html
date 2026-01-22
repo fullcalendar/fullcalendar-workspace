@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
 <meta charset='utf-8' />
+<title>Flat Resource Timeline Example</title>
 
 <link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
 <link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
@@ -9,13 +10,14 @@
 
 <script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
 <script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../dist/all.global.js'></script>
+<script src='../../vanilla-scheduler/dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      height: 'auto',
       initialDate: '2023-01-07',
       editable: true, // enable draggable events
       selectable: true,
@@ -25,27 +27,24 @@
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
       },
-      initialView: 'resourceTimelineDay',
+      buttons: {
+        resourceTimelineThreeDays: {
+          text: '3 days'
+        }
+      },
       views: {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',
-          duration: { days: 3 },
+          duration: { days: 3 }
         }
       },
-      buttons: {
-        resourceTimelineThreeDays: {
-          text: '3 days',
-        }
-      },
-      resourceColumnHeaderContent: 'Rooms',
+      initialView: 'resourceTimelineDay',
+      resourceAreaHeaderContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B', eventColor: 'green' },
         { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
-        { id: 'd', title: 'Auditorium D', children: [
-          { id: 'd1', title: 'Room D1' },
-          { id: 'd2', title: 'Room D2' }
-        ] },
+        { id: 'd', title: 'Auditorium D' },
         { id: 'e', title: 'Auditorium E' },
         { id: 'f', title: 'Auditorium F', eventColor: 'red' },
         { id: 'g', title: 'Auditorium G' },

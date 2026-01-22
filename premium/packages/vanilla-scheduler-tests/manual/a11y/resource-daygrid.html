@@ -1,40 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
 <meta charset='utf-8' />
+<title>Resource DayGrid Example</title>
 
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
 
-<script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
-<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../../vanilla-scheduler/dist/all.global.js'></script>
+<script src='../../../../../standard/packages/vanilla/dist/all.global.js'></script>
+<script src='../../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../../vanilla-scheduler/dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'resourceTimeGridTwoDay',
+      initialView: 'resourceDayGridTwoDay',
       initialDate: '2020-09-07',
       editable: true,
       selectable: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      dayMinWidth: 200,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,resourceTimeGridWeek,dayGridMonth'
+        right: 'resourceDayGridDay,resourceDayGridTwoDay,timeGridWeek,dayGridMonth'
       },
       buttons: {
-        resourceTimeGridTwoDay: {
+        resourceDayGridTwoDay: {
           text: '2 days',
-        }
+        },
       },
       views: {
-        resourceTimeGridTwoDay: {
-          type: 'resourceTimeGrid',
+        resourceDayGridTwoDay: {
+          type: 'resourceDayGrid',
           duration: { days: 2 },
         }
       },

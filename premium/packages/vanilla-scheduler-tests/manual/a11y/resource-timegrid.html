@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
 <meta charset='utf-8' />
+<title>Resource TimeGrid Example</title>
 
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
-<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
 
-<script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
-<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../../vanilla-scheduler/dist/all.global.js'></script>
+<script src='../../../../../standard/packages/vanilla/dist/all.global.js'></script>
+<script src='../../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../../vanilla-scheduler/dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -21,11 +22,10 @@
       editable: true,
       selectable: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      dayMinWidth: 200,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,resourceTimeGridWeek,dayGridMonth'
+        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek'
       },
       buttons: {
         resourceTimeGridTwoDay: {

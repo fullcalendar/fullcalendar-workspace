@@ -9,7 +9,7 @@
 
 <script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
 <script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
-<script src='../dist/all.global.js'></script>
+<script src='../../vanilla-scheduler/dist/all.global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -25,19 +25,19 @@
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
       },
-      initialView: 'resourceTimelineDay',
+      buttons: {
+        resourceTimelineThreeDays: {
+          text: '3 days'
+        }
+      },
       views: {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',
-          duration: { days: 3 },
+          duration: { days: 3 }
         }
       },
-      buttons: {
-        resourceTimelineThreeDays: {
-          text: '3 days',
-        }
-      },
-      resourceColumnHeaderContent: 'Rooms',
+      initialView: 'resourceTimelineDay',
+      resourceAreaHeaderContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B', eventColor: 'green' },
@@ -69,14 +69,24 @@
         { id: 'y', title: 'Auditorium Y' },
         { id: 'z', title: 'Auditorium Z' }
       ],
-      events: [
-        { id: '1', resourceId: 'b', start: '2023-01-07T08:00:00', end: '2023-01-07T15:00:00', title: 'event 1' },
-        { id: '2', resourceId: 'c', start: '2023-01-07T11:00:00', end: '2023-01-08T06:00:00', title: 'event 2' },
-        { id: '3', resourceId: 'd', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
-        { id: '4', resourceId: 'e', start: '2023-01-07T09:00:00', end: '2023-01-07T14:00:00', title: 'event 4' },
-        { id: '5', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 5' },
-        { id: '6', resourceId: 'f', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 6' }
-      ]
+      events(info, callback) {
+        setTimeout(() => {
+          callback([
+            { id: '1a', resourceId: 'a', start: '2023-01-07T08:00:00', end: '2023-01-07T15:00:00', title: 'event 1' },
+            { id: '2a', resourceId: 'a', start: '2023-01-07T11:00:00', end: '2023-01-08T06:00:00', title: 'event 2' },
+            { id: '3a', resourceId: 'a', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
+            { id: '4a', resourceId: 'a', start: '2023-01-07T09:00:00', end: '2023-01-07T14:00:00', title: 'event 4' },
+            { id: '5a', resourceId: 'a', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 5' },
+            { id: '6a', resourceId: 'a', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 6' },
+            { id: '1b', resourceId: 'a', start: '2023-01-07T08:00:00', end: '2023-01-07T15:00:00', title: 'event 1' },
+            { id: '2b', resourceId: 'a', start: '2023-01-07T11:00:00', end: '2023-01-08T06:00:00', title: 'event 2' },
+            { id: '3b', resourceId: 'a', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
+            { id: '4b', resourceId: 'a', start: '2023-01-07T09:00:00', end: '2023-01-07T14:00:00', title: 'event 4' },
+            { id: '5b', resourceId: 'a', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 5' },
+            { id: '6b', resourceId: 'a', start: '2023-01-07T06:30:00', end: '2023-01-07T08:30:00', title: 'event 6' },
+          ])
+        }, 2000)
+      }
     });
 
     calendar.render();
