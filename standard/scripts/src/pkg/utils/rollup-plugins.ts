@@ -305,21 +305,38 @@ export async function minifyCss(cssText: string): Promise<string> {
 // .d.ts
 // -------------------------------------------------------------------------------------------------
 
+export interface MassageDtsOptions {
+  mappings: Record<string, string>
+  debug?: boolean
+}
+
 /*
 Workarounds rollup-plugin-dts
 */
-export function massageDtsPlugin(): Plugin {
+export function massageDtsPlugin({ mappings, debug }: MassageDtsOptions): Plugin {
   return {
     name: 'massage-dts',
     renderChunk(code) {
       // force all import statements (especially auto-generated chunks) to have a .js extension
       // TODO: file a bug. code splitting w/ es2016 modules
-      code = code.replace(/(} from ['"])([^'"]*)(['"])/g, (whole, start, importId, end) => {
+      code = code.replace(/((?:} from|import) ['"])([^'"]*)(['"])/g, (whole, start, importId, end) => {
         if (
           importId.startsWith('./') && // relative ID
           !importId.endsWith('.js')
         ) {
           return start + importId + '.js' + end
+        }
+        return whole
+      })
+
+      // rollup-plugin-dts does run its "declare module" statements through module resolution,
+      // so we find another way to support the remapping
+      code = code.replace(/(declare module ['"])([^'"]*)(['"])/g, (whole, start, importId, end) => {
+        if (mappings[importId] !== undefined) {
+          if (debug) {
+            console.log('remap', importId, '->', mappings[importId])
+          }
+          return start + mappings[importId] + end
         }
         return whole
       })

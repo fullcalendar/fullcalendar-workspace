@@ -306,7 +306,9 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
       // debug: true,
     }),
     dtsPlugin(),
-    massageDtsPlugin(),
+    massageDtsPlugin({
+      mappings: pkgBundleStruct.importRemaps || {},
+    }),
     nodeResolvePlugin({
       // ignore sideEffects in bundled packages's json for own files, forcing sideEffects: false
       // for all. Not sure this is relevant to our setup, but might produce leaner output JS
