@@ -1390,24 +1390,9 @@ importers:
 
   examples/locales:
     dependencies:
-      '@fullcalendar/core':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../standard/packages/vanilla/dist
     devDependencies:
       css-loader:
         specifier: ^4.3.0
@@ -1592,21 +1577,9 @@ importers:
 
   examples/parcel:
     dependencies:
-      '@fullcalendar/core':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../standard/packages/vanilla/dist
     devDependencies:
       '@babel/core':
         specifier: ^7.13.16
@@ -1617,24 +1590,9 @@ importers:
 
   examples/rollup:
     dependencies:
-      '@fullcalendar/core':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../standard/packages/vanilla/dist
     devDependencies:
       '@rollup/plugin-node-resolve':
         specifier: ^14.0.1
@@ -1648,33 +1606,12 @@ importers:
 
   examples/rollup-scheduler:
     dependencies:
-      '@fullcalendar/adaptive':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
+        version: link:../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/resource':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
       '@rollup/plugin-node-resolve':
         specifier: ^14.0.1
@@ -1688,24 +1625,9 @@ importers:
 
   examples/typescript:
     dependencies:
-      '@fullcalendar/core':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: link:../../standard/packages/vanilla/dist
     devDependencies:
       css-loader:
         specifier: ^4.3.0
@@ -1731,39 +1653,12 @@ importers:
 
   examples/typescript-scheduler:
     dependencies:
-      '@fullcalendar/adaptive':
+      '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
+        version: link:../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/premium-common/dist
-      '@fullcalendar/resource':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/timeline/dist
+        version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
       css-loader:
         specifier: ^4.3.0

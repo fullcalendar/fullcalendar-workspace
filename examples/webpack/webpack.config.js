@@ -9,7 +9,6 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        sideEffects: true, // needed for third-party .css imports
         use: ['style-loader', 'css-loader'],
       }
     ]

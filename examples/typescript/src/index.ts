@@ -1,10 +1,14 @@
-import { Calendar, DayHeaderData } from '@fullcalendar/core';
-import { Component, createElement } from '@fullcalendar/core/preact';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
+import { Calendar, DayHeaderData } from '@fullcalendar/vanilla';
+import { Component, createElement } from '@fullcalendar/vanilla/preact';
+import interactionPlugin from '@fullcalendar/vanilla/interaction';
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid';
+import timeGridPlugin from '@fullcalendar/vanilla/timegrid';
+import listPlugin from '@fullcalendar/vanilla/list';
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic';
+
+import '@fullcalendar/vanilla/skeleton.css';
+import '@fullcalendar/vanilla/themes/classic/theme.css';
+import '@fullcalendar/vanilla/themes/classic/palette.css';
 import './index.css';
 
 document.addEventListener('DOMContentLoaded', function() {

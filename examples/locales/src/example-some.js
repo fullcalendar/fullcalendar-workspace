@@ -1,12 +1,16 @@
-import { Calendar } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/interaction';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import frLocale from '@fullcalendar/core/locales/fr';
-import ptLocale from '@fullcalendar/core/locales/pt';
-import arLocale from '@fullcalendar/core/locales/ar';
+import { Calendar } from '@fullcalendar/vanilla';
+import interactionPlugin from '@fullcalendar/vanilla/interaction';
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid';
+import timeGridPlugin from '@fullcalendar/vanilla/timegrid';
+import listPlugin from '@fullcalendar/vanilla/list';
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic';
+import frLocale from '@fullcalendar/vanilla/locales/fr';
+import ptLocale from '@fullcalendar/vanilla/locales/pt';
+import arLocale from '@fullcalendar/vanilla/locales/ar';
+
+import '@fullcalendar/vanilla/skeleton.css';
+import '@fullcalendar/vanilla/themes/classic/theme.css';
+import '@fullcalendar/vanilla/themes/classic/palette.css';
 import './page-styling/with-top-bar.css';
 
 document.addEventListener('DOMContentLoaded', function() {

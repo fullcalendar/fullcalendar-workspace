@@ -10,17 +10,8 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "@fullcalendar/adaptive": "workspace:7.0.0-beta.6",
-    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.6",
-    "@fullcalendar/list": "workspace:7.0.0-beta.6",
-    "@fullcalendar/premium-common": "workspace:7.0.0-beta.6",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.6",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.6",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/timeline": "workspace:7.0.0-beta.6"
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",

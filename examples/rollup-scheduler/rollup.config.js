@@ -7,6 +7,7 @@ module.exports = {
     nodeResolve(),
     postcss({
       config: false, // don't attempt to load a postcss config
+      inject: true,  // inject CSS into <style> tag at runtime
     })
   ],
   output: {
