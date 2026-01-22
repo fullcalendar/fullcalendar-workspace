@@ -16,7 +16,6 @@
     "@fullcalendar/rrule": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
-    "fullcalendar": "workspace:*",
     "luxon": "^2.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.40",
