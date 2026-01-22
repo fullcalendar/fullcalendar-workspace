@@ -53,6 +53,7 @@ export async function writeDistPkgJson(
 
   const sideEffects: string[] = []
   let firstCdnPath: string | undefined
+  let anyCss = false
 
   for (const entryName in entryConfigMap) {
     const entryConfig = entryConfigMap[entryName]
@@ -86,10 +87,15 @@ export async function writeDistPkgJson(
       }
     } else if (entryConfig.format === 'css') {
       exportsMap[entryName] = entryName
+      anyCss = true
     } else if (entryConfig.format === 'css-as-js') {
       exportsMap[entryName] = entryName + iifeExtension
       sideEffects.push(entrySubpath + iifeExtension)
     }
+  }
+
+  if (anyCss) {
+    sideEffects.push('**/*.css')
   }
 
   const finalPkgJson = {
