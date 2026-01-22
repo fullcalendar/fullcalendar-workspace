@@ -16,9 +16,6 @@
   ],
   "references": [
     {
-      "path": "../bundle"
-    },
-    {
       "path": "../packages/core"
     },
     {

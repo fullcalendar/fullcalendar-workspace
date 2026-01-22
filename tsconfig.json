@@ -2,9 +2,6 @@
   "files": [],
   "references": [
     {
-      "path": "premium/bundle"
-    },
-    {
       "path": "premium/packages/adaptive"
     },
     {
@@ -33,9 +30,6 @@
     },
     {
       "path": "premium/tests"
-    },
-    {
-      "path": "standard/bundle"
     },
     {
       "path": "standard/packages/core"
