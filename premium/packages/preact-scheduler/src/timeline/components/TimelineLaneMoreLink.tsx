@@ -1,7 +1,6 @@
 import {
   BaseComponent, DateMarker, DateProfile, DateRange, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
 } from '@fullcalendar/preact/protected-api'
-import { Fragment } from 'react'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
 
@@ -37,7 +36,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         isNarrow={false}
         isMicro={false}
         popoverContent={() => (
-          <Fragment>
+          <>
             {hiddenSegs.map((seg) => {
               let { eventRange } = seg
               let { instanceId } = eventRange.instance
@@ -64,7 +63,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
                 </div>
               )
             })}
-          </Fragment>
+          </>
         )}
       />
     )

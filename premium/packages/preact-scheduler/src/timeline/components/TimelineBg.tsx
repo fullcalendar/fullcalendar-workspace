@@ -4,7 +4,6 @@ import {
   EventRangeProps,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { Fragment } from 'react'
 import { computeSegHorizontals } from '../event-placement'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineDateProfile } from '../timeline-date-profile'
@@ -34,11 +33,11 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
     let highlightSeg = [].concat(props.eventResizeSegs || [], props.dateSelectionSegs)
 
     return (
-      <Fragment>
+      <>
         {this.renderSegs(props.businessHourSegs || [], 'non-business')}
         {this.renderSegs(props.bgEventSegs || [], 'bg-event')}
         {this.renderSegs(highlightSeg, 'highlight')}
-      </Fragment>
+      </>
     )
   }
 
@@ -50,7 +49,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
     const clipEnd = props.clipEnd ?? Infinity
 
     return (
-      <Fragment>
+      <>
         {segs.map((seg) => {
           let { start, size } = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)!
           let end = start + size
@@ -83,7 +82,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
             )
           }
         })}
-      </Fragment>
+      </>
     )
   }
 }

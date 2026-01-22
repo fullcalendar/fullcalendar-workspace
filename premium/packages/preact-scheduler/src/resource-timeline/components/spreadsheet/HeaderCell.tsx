@@ -1,4 +1,4 @@
-import { createRef, Fragment, type Ref } from 'react'
+import { createRef, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -61,7 +61,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         willUnmount={colSpec.headerWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
+          <>
             <div
               className={joinClassNames(
                 classNames.crop, // must crop instead of outer
@@ -98,7 +98,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 )}
               />
             )}
-          </Fragment>
+          </>
         )}
       </ContentContainer>
     )

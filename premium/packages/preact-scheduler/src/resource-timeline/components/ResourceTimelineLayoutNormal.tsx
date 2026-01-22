@@ -27,7 +27,7 @@ import {
   debounce
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef, Fragment, type Ref } from 'react'
+import { createRef, type Ref } from 'react'
 import { createEntityId, createGroupId, GenericNode, Group, isEntityGroup } from '../../resource/common/resource-hierarchy'
 import { Resource } from '../../resource/structs/resource'
 import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
@@ -430,7 +430,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
           startClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
           startContent={
-            <Fragment>
+            <>
 
               {/* spreadsheet HEADER
               ---------------------------------------------------------------------------- */}
@@ -570,7 +570,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 scrollerRef={this.spreadsheetFooterScrollerRef}
                 scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               />
-            </Fragment>
+            </>
           }
 
           /* time-area (TODO: try to make this DRY-er with TimelineView???)
@@ -578,7 +578,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
           endClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
           endContent={
-            <Fragment>
+            <>
 
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
@@ -865,7 +865,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               )}
 
               <Ruler widthRef={this.handleTimeTotalWidth} />
-            </Fragment>
+            </>
           }
         />
       </ViewContainer>

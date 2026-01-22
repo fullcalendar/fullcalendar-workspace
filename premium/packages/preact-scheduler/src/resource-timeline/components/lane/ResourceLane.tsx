@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type Ref, Fragment } from 'react'
+import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
 import { TimelineDateProfile } from '../../../timeline/timeline-date-profile'
 import { TimelineFg } from '../../../timeline/components/TimelineFg'
@@ -124,7 +124,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           willUnmount={options.resourceLaneWillUnmount}
         >
           {() => (
-            <Fragment>
+            <>
               <TimelineBg
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
@@ -188,7 +188,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 generatorName='resourceLaneBottomContent'
                 classNameGenerator={options.resourceLaneBottomClass}
               />
-            </Fragment>
+            </>
           )}
         </ContentContainer>
       </div>

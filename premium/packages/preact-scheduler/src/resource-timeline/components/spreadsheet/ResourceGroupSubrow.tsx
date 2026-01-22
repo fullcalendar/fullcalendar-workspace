@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type ReactNode, createRef, Fragment, type Ref } from 'react'
+import { type ReactNode, createRef, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderData } from '../../structs'
 
 export interface ResourceGroupSubrowProps {
@@ -117,5 +117,5 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
 }
 
 function renderGroupInner(renderProps: ResourceGroupHeaderData): ReactNode {
-  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
+  return renderProps.fieldValue || <>&nbsp;</>
 }

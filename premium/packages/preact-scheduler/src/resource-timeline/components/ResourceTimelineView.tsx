@@ -10,7 +10,7 @@ import {
   watchWidth
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef, Fragment } from 'react'
+import { createRef } from 'react'
 import { buildResourceHierarchy, GenericNode, GroupNode, ResourceNode } from '../../resource/common/resource-hierarchy'
 import { ResourceSplitter } from '../../resource/common/ResourceSplitter'
 import { ResourceViewProps } from '../../resource/View'
@@ -131,7 +131,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     return (
-      <Fragment>
+      <>
         <NowTimer unit={timerUnit} unitValue={timeUnitValue}>
           {(nowDate: DateMarker, todayRange: DateRange) => {
             const baseProps = {
@@ -203,7 +203,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           elRef={this.handleExpanderEl}
           className={classNames.offscreen}
         />
-      </Fragment>
+      </>
     )
   }
 

@@ -35,9 +35,6 @@ build note:
     manually before `pn dev`
 
 
-hook up vdom-react.ts
-strip comments in non-min iife?
-look at preact-scheduler and others for use of Fragment
 get react/react-scheduler tests working
 manual test todos:
   standard/packages/vanilla-tests/manual/google-calendar.html

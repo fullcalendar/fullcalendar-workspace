@@ -9,7 +9,7 @@ import {
   generateClassName,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { Fragment, type ReactNode, createRef, type Ref } from 'react'
+import { type ReactNode, createRef, type Ref } from 'react'
 import { ResourceApi } from '../../../resource'
 import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
@@ -134,7 +134,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 }
 
 function renderResourceInner(renderProps: ResourceCellData): ReactNode {
-  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
+  return renderProps.fieldValue || <>&nbsp;</>
 }
 
 // Render Props

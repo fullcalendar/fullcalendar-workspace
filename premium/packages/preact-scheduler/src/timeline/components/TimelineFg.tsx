@@ -11,7 +11,7 @@ import {
   EventSegUiInteractionState,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { Fragment, type Ref } from 'react'
+import { type Ref } from 'react'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
@@ -138,7 +138,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     const { props, segHeightRefMap, moreLinkHeightRefMap } = this
 
     return (
-      <Fragment>
+      <>
         {segs.map((seg) => {
           const { eventRange } = seg
           const { instanceId } = eventRange.instance
@@ -176,7 +176,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             </TimelineEventHarness>
           )
         })}
-        {/* TODO: need different Fragment parents for separate array keys? */}
+        {/* TODO: need different parents for separate array keys? */}
         {hiddenGroups.map((hiddenGroup) => (
           <TimelineEventHarness
             key={hiddenGroup.key}
@@ -200,7 +200,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             />
           </TimelineEventHarness>
         ))}
-      </Fragment>
+      </>
     )
   }
 

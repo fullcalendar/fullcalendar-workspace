@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { Fragment, type ReactNode, type Ref, createRef } from 'react'
+import { type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
@@ -149,5 +149,5 @@ ResourceGroupHeaderSubrow.addPropsEquality({
 })
 
 function renderCellInner(renderProps: ResourceGroupHeaderData): ReactNode {
-  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
+  return renderProps.fieldValue || <>&nbsp;</>
 }

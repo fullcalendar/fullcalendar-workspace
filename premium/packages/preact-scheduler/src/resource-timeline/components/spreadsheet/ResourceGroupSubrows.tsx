@@ -1,7 +1,6 @@
 import { BaseComponent } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { Group } from '../../../resource/common/resource-hierarchy'
-import { Fragment } from 'react'
 import { ResourceGroupSubrow } from './ResourceGroupSubrow'
 
 export interface ResourceGroupSubrowsProps {
@@ -23,7 +22,7 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
     const colGrows = props.colGrows || []
 
     return (
-      <Fragment>
+      <>
         {colGroups.map((colGroup, i) => {
           const stats = colGroupStats[i]
 
@@ -50,7 +49,7 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
             )
           )
         })}
-      </Fragment>
+      </>
     )
   }
 }
