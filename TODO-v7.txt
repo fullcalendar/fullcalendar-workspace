@@ -39,6 +39,10 @@ hook up vdom-react.ts
 strip comments in non-min iife?
 look at preact-scheduler and others for use of Fragment
 get react/react-scheduler tests working
+manual test todos:
+  standard/packages/vanilla-tests/manual/google-calendar.html
+  standard/packages/vanilla-tests/manual/importmap.*.html
+  standard/packages/vanilla-tests/manual/vue3.html
 
 
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
