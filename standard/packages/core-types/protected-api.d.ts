@@ -11,6 +11,9 @@ export interface EventSourceOptions {
 export interface EventSourceOptionsRefined {
 }
 
+export interface EventRefiners {
+}
+
 export type RawOptionsFromRefiners<Refiners extends GenericRefiners> = {
   [Prop in keyof Refiners]?: // all optional
     Refiners[Prop] extends ((input: infer RawType) => infer RefinedType)

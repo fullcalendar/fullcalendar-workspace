@@ -1,5 +1,5 @@
 import { DateInput, startOfDay } from '@full-ui/headless-calendar'
-import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { EventRefiners, RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 import { guid } from '../util/misc'
 import { parseRecurring } from './recurring-event'
 import { CalendarContext } from '../CalendarContext'
@@ -33,8 +33,8 @@ const EVENT_REFINERS = { // does NOT include EVENT_UI_REFINERS
 
 type BuiltInEventRefiners = typeof EVENT_REFINERS
 
-export interface EventRefiners extends BuiltInEventRefiners {
-  // for ambient
+declare module '@fullcalendar/core-types/protected-api' {
+  interface EventRefiners extends BuiltInEventRefiners {}
 }
 
 export type EventInput =

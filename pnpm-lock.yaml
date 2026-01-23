@@ -2299,9 +2299,6 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types

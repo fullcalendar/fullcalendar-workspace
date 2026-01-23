@@ -26,18 +26,22 @@
   },
   "type": "module",
   "buildConfig": {
-    "exports": {
-      ".": {
-        "module": true,
-        "globalVar": "FullCalendar.RRule"
-      },
-      "./global": {
-        "iife": true,
-        "globalVar": "FullCalendar.RRule"
+    "globalConfig": {
+      "externalPkgs": [
+        "rrule"
+      ],
+      "externalGlobals": {
+        "rrule": "rrule"
       }
     },
-    "dependencyGlobalVars": {
-      "rrule": "rrule"
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./global": {
+        "format": "global",
+        "primary": true
+      }
     }
   },
   "publishConfig": {

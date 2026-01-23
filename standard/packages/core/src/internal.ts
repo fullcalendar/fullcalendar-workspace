@@ -261,6 +261,6 @@ export {
   DateEnv,
   formatIsoTimeString, formatDayString, buildIsoString, formatIsoMonthStr,
   NamedTimeZoneImpl,
-  parse as parseMarker,
+  parseMarker,
   padStart, isInt, trimEnd,
 } from '@full-ui/headless-calendar'

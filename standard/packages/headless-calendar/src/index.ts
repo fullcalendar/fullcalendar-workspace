@@ -85,7 +85,7 @@ export {
   timeAsMs,
 } from './marker'
 
-export { parse } from './parsing'
+export { parse as parseMarker } from './parsing'
 
 export type { NamedTimeZoneImplClass } from './timezone'
 export { NamedTimeZoneImpl } from './timezone'

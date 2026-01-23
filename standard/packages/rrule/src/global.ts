@@ -1,7 +1,7 @@
-import { globalPlugins } from '@fullcalendar/core'
 import plugin from './index'
 
-globalPlugins.push(plugin)
+declare global {
+  var FullCalendar: any
+}
 
-export { plugin as default }
-export * from './index'
+FullCalendar.globalPlugins.push(plugin)
