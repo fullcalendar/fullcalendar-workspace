@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { addHours, startOfDay } from 'date-fns';
 import FullCalendar from '@fullcalendar/react';
+import themePlugin from '@fullcalendar/react/themes/classic';
 import momentPlugin from '@fullcalendar/moment';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import scrollGrid from '@fullcalendar/scrollgrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/react/timegrid';
+import scrollGrid from '@fullcalendar/react-scheduler/scrollgrid';
+import interactionPlugin from '@fullcalendar/react/interaction';
+
+import '@fullcalendar/react/skeleton.css';
+import '@fullcalendar/react/themes/classic/theme.css';
+import '@fullcalendar/react/themes/classic/palette.css';
 
 function today() {
   return startOfDay(new Date()); //new Date();
 }
 
 const PLUGINS = [
+  themePlugin,
   momentPlugin,
   // resourceTimeGridPlugin,
   scrollGrid,

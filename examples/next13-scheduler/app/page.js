@@ -1,15 +1,20 @@
 'use client';
 
 import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import themePlugin from '@fullcalendar/react/themes/classic';
+import dayGridPlugin from '@fullcalendar/react/daygrid';
+import timeGridPlugin from '@fullcalendar/react/timegrid';
+import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline';
+
+import '@fullcalendar/react/skeleton.css';
+import '@fullcalendar/react/themes/classic/theme.css';
+import '@fullcalendar/react/themes/classic/palette.css';
 
 export default function Home() {
   return (
     <div className="calendar-container">
       <FullCalendar
-        plugins={[resourceTimelinePlugin, dayGridPlugin, timeGridPlugin]}
+        plugins={[themePlugin, dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',

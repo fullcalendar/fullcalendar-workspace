@@ -1,11 +1,16 @@
 import FullCalendar from '@fullcalendar/react'
-import interactionPlugin from '@fullcalendar/interaction'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import themePlugin from '@fullcalendar/react/themes/classic'
+import interactionPlugin from '@fullcalendar/react/interaction'
+import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
+
+import '@fullcalendar/react/skeleton.css'
+import '@fullcalendar/react/themes/classic/theme.css'
+import '@fullcalendar/react/themes/classic/palette.css'
 
 export default function Home() {
   return (
     <FullCalendar
-      plugins={[interactionPlugin, resourceTimelinePlugin]}
+      plugins={[themePlugin, interactionPlugin, resourceTimelinePlugin]}
       initialView='resourceTimelineDay'
       nowIndicator={true}
       editable={true}

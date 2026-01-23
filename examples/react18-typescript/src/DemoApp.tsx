@@ -5,12 +5,17 @@ import {
   EventClickData,
   EventDisplayData,
   formatDate,
-} from '@fullcalendar/core'
+} from '@fullcalendar/react'
 import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import themePlugin from '@fullcalendar/react/themes/classic'
+import dayGridPlugin from '@fullcalendar/react/daygrid'
+import timeGridPlugin from '@fullcalendar/react/timegrid'
+import interactionPlugin from '@fullcalendar/react/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+
+import '@fullcalendar/react/skeleton.css'
+import '@fullcalendar/react/themes/classic/theme.css'
+import '@fullcalendar/react/themes/classic/palette.css'
 
 interface DemoAppState {
   weekendsVisible: boolean
@@ -30,7 +35,7 @@ export default class DemoApp extends React.Component<{}, DemoAppState> {
         {this.renderSidebar()}
         <div className='demo-app-main'>
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            plugins={[themePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',

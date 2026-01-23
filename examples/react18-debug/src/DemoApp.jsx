@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import themePlugin from '@fullcalendar/react/themes/classic';
+import dayGridPlugin from '@fullcalendar/react/daygrid';
+import timeGridPlugin from '@fullcalendar/react/timegrid';
+import interactionPlugin from '@fullcalendar/react/interaction';
+
+import '@fullcalendar/react/skeleton.css';
+import '@fullcalendar/react/themes/classic/theme.css';
+import '@fullcalendar/react/themes/classic/palette.css';
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -47,7 +52,7 @@ export default function DemoApp() {
         <FullCalendar
           events={events}
           eventDrop={eventDrop}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[themePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',

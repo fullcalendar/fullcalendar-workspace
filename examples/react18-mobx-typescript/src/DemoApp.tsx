@@ -5,11 +5,16 @@ import {
   EventClickData,
   DateSelectData,
   EventChangeData,
-} from "@fullcalendar/core";
+} from "@fullcalendar/react";
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import themePlugin from "@fullcalendar/react/themes/classic";
+import dayGridPlugin from "@fullcalendar/react/daygrid";
+import interactionPlugin from "@fullcalendar/react/interaction";
+import timeGridPlugin from "@fullcalendar/react/timegrid";
+
+import "@fullcalendar/react/skeleton.css";
+import "@fullcalendar/react/themes/classic/theme.css";
+import "@fullcalendar/react/themes/classic/palette.css";
 
 import { Sidebar } from "./Sidebar";
 import { eventStoreContext } from "./event-store";
@@ -43,7 +48,7 @@ export const DemoApp = observer(function DemoApp() {
       <Sidebar />
       <div className="demo-app-main">
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[themePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: "prev,next today",
             center: "title",

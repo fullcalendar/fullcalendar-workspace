@@ -1,10 +1,15 @@
 const React = require('react')
-const { formatDate } = require('@fullcalendar/core')
+const { formatDate } = require('@fullcalendar/react')
 const FullCalendar = require('@fullcalendar/react').default
-const dayGridPlugin = require('@fullcalendar/daygrid').default
-const timeGridPlugin = require('@fullcalendar/timegrid').default
-const interactionPlugin = require('@fullcalendar/interaction').default
+const themePlugin = require('@fullcalendar/react/themes/classic').default
+const dayGridPlugin = require('@fullcalendar/react/daygrid').default
+const timeGridPlugin = require('@fullcalendar/react/timegrid').default
+const interactionPlugin = require('@fullcalendar/react/interaction').default
 const { INITIAL_EVENTS, createEventId } = require('./event-utils')
+
+require('@fullcalendar/react/skeleton.css')
+require('@fullcalendar/react/themes/classic/theme.css')
+require('@fullcalendar/react/themes/classic/palette.css')
 
 class DemoApp extends React.Component {
 
@@ -19,7 +24,7 @@ class DemoApp extends React.Component {
         {this.renderSidebar()}
         <div className='demo-app-main'>
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            plugins={[themePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',
