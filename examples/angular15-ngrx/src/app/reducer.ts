@@ -1,4 +1,4 @@
-import { EventInput } from '@fullcalendar/core';
+import { EventInput } from '@fullcalendar/angular';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { INITIAL_EVENTS } from './event-utils';
 import * as CalendarActions from './actions';

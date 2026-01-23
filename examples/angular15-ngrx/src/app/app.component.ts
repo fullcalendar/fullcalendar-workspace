@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CalendarOptions, DateSelectData, EventClickData, EventInput } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
+import { CalendarOptions, DateSelectData, EventClickData, EventInput } from '@fullcalendar/angular';
+import classicThemePlugin from '@fullcalendar/angular/themes/classic';
+import interactionPlugin from '@fullcalendar/angular/interaction';
+import dayGridPlugin from '@fullcalendar/angular/daygrid';
+import timeGridPlugin from '@fullcalendar/angular/timegrid';
+import listPlugin from '@fullcalendar/angular/list';
 import { createEventId } from './event-utils';
 import { CalendarFeature, selectEventsCount } from './reducer';
 import * as CalendarActions from './actions';
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/angular/skeleton.css'
+import '@fullcalendar/angular/themes/classic/theme.css'
+import '@fullcalendar/angular/themes/classic/palette.css'
 
 @Component({
   selector: 'app-root',

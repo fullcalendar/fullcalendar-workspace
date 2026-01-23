@@ -21,12 +21,6 @@
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
     "@fullcalendar/angular": "workspace:7.0.0-beta.6",
-    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.6",
-    "@fullcalendar/list": "workspace:7.0.0-beta.6",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.6",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

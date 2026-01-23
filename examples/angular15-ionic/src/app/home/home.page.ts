@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import { CalendarOptions } from '@fullcalendar/angular';
+import classicThemePlugin from '@fullcalendar/angular/themes/classic';
+import dayGridPlugin from '@fullcalendar/angular/daygrid';
+import timeGridPlugin from '@fullcalendar/angular/timegrid';
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/angular/skeleton.css'
+import '@fullcalendar/angular/themes/classic/theme.css'
+import '@fullcalendar/angular/themes/classic/palette.css'
 
 @Component({
   selector: 'app-home',

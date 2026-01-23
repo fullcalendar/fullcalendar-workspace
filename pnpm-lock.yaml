@@ -405,25 +405,7 @@ importers:
         version: 14.3.0(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@14.3.0(@angular/animations@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))
       rxjs:
         specifier: ~7.5.0
         version: 7.5.7
@@ -499,25 +481,7 @@ importers:
         version: 15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))
       rxjs:
         specifier: ~7.5.0
         version: 7.5.7
@@ -603,18 +567,6 @@ importers:
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
         version: link:../../contrib/angular/dist/lib
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
       '@ionic/angular':
         specifier: ^6.1.9
         version: 6.7.5(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(@angular/forms@15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7))(@angular/router@15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7))(rxjs@7.5.7)(zone.js@0.11.8)
@@ -750,25 +702,7 @@ importers:
         version: 15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))
       '@ngrx/store':
         specifier: ^15.0.0
         version: 15.4.0(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7)
@@ -847,25 +781,7 @@ importers:
         version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(rxjs@7.8.1)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -941,25 +857,7 @@ importers:
         version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -1035,25 +933,7 @@ importers:
         version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -1129,25 +1009,7 @@ importers:
         version: 19.0.1(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -1217,25 +1079,7 @@ importers:
         version: 20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -1305,25 +1149,7 @@ importers:
         version: 21.0.7(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.0.7(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:contrib/angular/dist/lib(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/timegrid/dist
+        version: file:contrib/angular/dist/lib(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -31263,60 +31089,52 @@ snapshots:
       '@angular/core': 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))':
     dependencies:
       '@angular/common': 14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7)
       '@angular/core': 14.3.0(rxjs@7.5.7)(zone.js@0.11.8)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))':
     dependencies:
       '@angular/common': 15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7)
       '@angular/core': 15.2.10(rxjs@7.5.7)(zone.js@0.12.0)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))':
     dependencies:
       '@angular/common': 16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1)
       '@angular/core': 16.2.12(rxjs@7.8.1)(zone.js@0.13.3)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))':
     dependencies:
       '@angular/common': 17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
       '@angular/core': 17.3.12(rxjs@7.8.1)(zone.js@0.14.10)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))':
     dependencies:
       '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
       '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.14.10)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))':
     dependencies:
       '@angular/common': 19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 19.0.1(rxjs@7.8.1)(zone.js@0.15.0)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))':
     dependencies:
       '@angular/common': 20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)':
+  '@fullcalendar/angular@file:contrib/angular/dist/lib(@angular/common@21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))':
     dependencies:
       '@angular/common': 21.0.7(@angular/core@21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 21.0.7(@angular/compiler@21.0.7)(rxjs@7.8.1)(zone.js@0.15.0)
-      '@fullcalendar/core': link:standard/packages/core/dist
       tslib: 2.8.1
 
   '@gar/promisify@1.1.3': {}
