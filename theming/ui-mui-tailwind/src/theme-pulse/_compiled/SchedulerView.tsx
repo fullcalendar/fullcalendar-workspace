@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarView, {
   mutedBgClass,

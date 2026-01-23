@@ -1,9 +1,8 @@
 import React from 'react'
-import { CalendarOptions } from '@fullcalendar/core'
-import { useCalendarController } from "@fullcalendar/react"
-import adaptivePlugin from '@fullcalendar/adaptive'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import interactionPlugin from '@fullcalendar/interaction'
+import { CalendarOptions, useCalendarController } from '@fullcalendar/react'
+import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
+import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
+import interactionPlugin from '@fullcalendar/react/interaction'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import SchedulerViews from './SchedulerViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'

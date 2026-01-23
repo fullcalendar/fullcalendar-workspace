@@ -1,8 +1,6 @@
 import React from 'react'
-import { CalendarOptions } from "@fullcalendar/core"
-import { useCalendarController } from "@fullcalendar/react"
-import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar, { CalendarOptions, useCalendarController } from '@fullcalendar/react'
+import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-tailwind/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-tailwind/slots'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'

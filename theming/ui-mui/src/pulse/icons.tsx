@@ -1,5 +1,5 @@
 import React from 'react'
-import { joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/react'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import CloseIcon from '@mui/icons-material/Close'

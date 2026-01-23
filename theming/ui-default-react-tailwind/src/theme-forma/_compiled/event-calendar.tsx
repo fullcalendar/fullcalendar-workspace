@@ -1,11 +1,10 @@
 import React from 'react'
-import { CalendarOptions, DayCellData, joinClassNames } from '@fullcalendar/core'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import interactionPlugin from '@fullcalendar/interaction'
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import FullCalendar, { CalendarOptions, DayCellData, joinClassNames } from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/react/daygrid'
+import timeGridPlugin from '@fullcalendar/react/timegrid'
+import listPlugin from '@fullcalendar/react/list'
+import interactionPlugin from '@fullcalendar/react/interaction'
+import multiMonthPlugin from '@fullcalendar/react/multimonth'
 
 const eventCalendarPlugins = [
   dayGridPlugin,

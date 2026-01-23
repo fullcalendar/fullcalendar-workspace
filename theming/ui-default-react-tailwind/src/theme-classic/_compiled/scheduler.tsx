@@ -1,11 +1,11 @@
 import React from 'react'
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
-import adaptivePlugin from '@fullcalendar/adaptive'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/react'
+import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
+import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
+import timelinePlugin from '@fullcalendar/react-scheduler/timeline'
+import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
+import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timegrid'
+import resourceDayGridPlugin from '@fullcalendar/react-scheduler/resource-daygrid'
 import { EventCalendar, xxsTextClass, outlineWidthFocusClass, primaryOutlineColorClass, strongSolidPressableClass } from './event-calendar.js'
 
 const schedulerOnlyPlugins = [

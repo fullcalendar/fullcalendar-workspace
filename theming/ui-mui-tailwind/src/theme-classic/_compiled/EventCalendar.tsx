@@ -1,12 +1,11 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import { CalendarOptions } from '@fullcalendar/core'
-import { useCalendarController } from "@fullcalendar/react"
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import interactionPlugin from '@fullcalendar/interaction'
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import { CalendarOptions, useCalendarController } from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/react/daygrid'
+import timeGridPlugin from '@fullcalendar/react/timegrid'
+import listPlugin from '@fullcalendar/react/list'
+import interactionPlugin from '@fullcalendar/react/interaction'
+import multiMonthPlugin from '@fullcalendar/react/multimonth'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import EventCalendarView from './EventCalendarView.js'
 

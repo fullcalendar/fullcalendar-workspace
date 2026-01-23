@@ -1,9 +1,9 @@
 import React from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { CalendarOptions, joinClassNames } from "@fullcalendar/core"
+import { CalendarOptions, joinClassNames } from "@fullcalendar/react"
 import { pressableIconClass } from './option-params.js'
 
-import type {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 
 export const schedulerOnlyIconOptions: CalendarOptions = {
   resourceExpanderContent: (data) => (

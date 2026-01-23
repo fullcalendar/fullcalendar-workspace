@@ -1,6 +1,6 @@
 import React from 'react'
 import { useCalendarController } from "@fullcalendar/react"
-import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-forma-tailwind/options-scheduler'
 import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'

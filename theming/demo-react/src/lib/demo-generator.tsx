@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import adaptivePlugin from '@fullcalendar/adaptive'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
+import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 import { eventCalendarProps, resourceTimelineProps, vResourceProps } from './demo-config.js'

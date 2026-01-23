@@ -1,6 +1,6 @@
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import { CalendarOptions } from "@fullcalendar/core"
+import { CalendarOptions } from "@fullcalendar/react"
 import { pressableIconClass } from './option-params.js'
 
 export const eventCalendarIconOptions: CalendarOptions = {

@@ -1,4 +1,4 @@
-import { joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/react'
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
 /*

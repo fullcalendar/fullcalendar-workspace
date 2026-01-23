@@ -1,5 +1,5 @@
 import React from 'react'
-import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-monarch-tailwind/ui-default-options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-tailwind/slots'

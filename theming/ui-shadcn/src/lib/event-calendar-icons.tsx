@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions } from "@fullcalendar/core"
+import { CalendarOptions } from "@fullcalendar/react"
 import { mutedFgPressableGroupClass } from './option-params.js'
 import { XIcon } from 'lucide-react'
 

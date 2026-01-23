@@ -1,4 +1,4 @@
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/react'
 import { Fragment } from 'react'
 import { EventCalendarOptionParams } from './options-event-calendar.js'
 

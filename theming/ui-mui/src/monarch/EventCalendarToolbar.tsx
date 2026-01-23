@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarController } from '@fullcalendar/core'
+import { CalendarController } from '@fullcalendar/react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'

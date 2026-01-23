@@ -1,4 +1,4 @@
-import { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions } from '@fullcalendar/react'
 
 export interface SchedulerProps extends Omit<CalendarOptions, 'class'> {
   availableViews?: string[]

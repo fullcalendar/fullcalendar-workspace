@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarController } from '@fullcalendar/core'
+import { CalendarController } from '@fullcalendar/react'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Button } from '../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'

@@ -1,7 +1,6 @@
 import React from 'react'
-import { CalendarOptions } from "@fullcalendar/core"
-import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar, { CalendarOptions } from '@fullcalendar/react'
+import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createEventCalendarOptions } from '@fullcalendar/theme-breezy-tailwind/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-breezy-tailwind/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'

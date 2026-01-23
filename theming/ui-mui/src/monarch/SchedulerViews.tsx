@@ -1,9 +1,9 @@
 import React from 'react'
-import { joinClassNames } from '@fullcalendar/core'
-import type {} from '@fullcalendar/timeline'
-import type {} from '@fullcalendar/resource-timeline'
-import type {} from '@fullcalendar/resource-daygrid'
-import type {} from '@fullcalendar/resource-timegrid'
+import { joinClassNames } from '@fullcalendar/react'
+import type {} from '@fullcalendar/react-scheduler/timeline'
+import type {} from '@fullcalendar/react-scheduler/resource-timeline'
+import type {} from '@fullcalendar/react-scheduler/resource-daygrid'
+import type {} from '@fullcalendar/react-scheduler/resource-timegrid'
 import EventCalendarViews, {
   EventCalendarViewsProps,
   faintBgClass,

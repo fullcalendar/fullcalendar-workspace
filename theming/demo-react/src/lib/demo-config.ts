@@ -2,7 +2,7 @@ import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 
 import type {} from '@fullcalendar/resource'
-import type {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 
 export const eventCalendarProps: EventCalendarProps = {
   // dayMinWidth: 200
