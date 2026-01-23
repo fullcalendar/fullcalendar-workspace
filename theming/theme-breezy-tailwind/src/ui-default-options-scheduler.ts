@@ -1,4 +1,4 @@
-import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
 import * as svgs from './ui-default-svgs.js'
 import { params, mutedFgPressableGroupClass } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'

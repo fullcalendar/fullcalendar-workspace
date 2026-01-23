@@ -5,10 +5,8 @@ FullCalendar core package for rendering a calendar
 
 ## Installation
 
-This package is never used alone. Use it with least one plugin (like [daygrid](https://fullcalendar.io/docs/month-view)):
-
 ```sh
-npm install @fullcalendar/core @fullcalendar/daygrid
+npm install @fullcalendar/preact
 ```
 
 ## Usage
@@ -24,13 +22,13 @@ First, ensure there's a DOM element for your calendar to render into:
 Then, instantiate a Calendar object with [options](https://fullcalendar.io/docs#toc) and call its `render` method:
 
 ```js
-import { Calendar } from '@fullcalendar/core'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/theme-classic'
+import { Calendar } from '@fullcalendar/preact'
+import classicThemePlugin from '@fullcalendar/preact/themes/classic'
+import dayGridPlugin from '@fullcalendar/preact/daygrid'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/preact/skeleton.css'
+import '@fullcalendar/preact/themes/classic/theme.css'
+import '@fullcalendar/preact/themes/classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

@@ -5,17 +5,8 @@ Display an event calendar that inherits from your [@mui/material](https://www.np
 
 ## Installation
 
-First, ensure you have all React and MUI-related packages already installed.
-Then install FullCalendar and a select set of plugins:
-
 ```sh
-npm install \
-  @fullcalendar/core \
-  @fullcalendar/mui \
-  @fullcalendar/daygrid \
-  @fullcalendar/timegrid \
-  @fullcalendar/interaction \
-  @fullcalendar/multimonth
+npm install @fullcalendar/react @fullcalendar/mui
 ```
 
 ## Usage
@@ -29,8 +20,8 @@ Next, decide whether you're using FullCalendar "standard" (aka "EventCalendar") 
 ```jsx
 import EventCalendar from '@fullcalendar/mui/monarch/EventCalendar'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/mui/monarch/global.css'
+import '@fullcalendar/react/skeleton.css'
+import '@fullcalendar/mui/monarch/theme.css'
 
 <EventCalendar
   addButton={{
@@ -61,8 +52,8 @@ Then write your component code:
 ```jsx
 import Scheduler from '@fullcalendar/mui/monarch/Scheduler'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/mui/monarch/global.css'
+import '@fullcalendar/react/skeleton.css'
+import '@fullcalendar/mui/monarch/theme.css'
 
 <EventCalendar
   addButton={{

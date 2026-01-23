@@ -67,14 +67,6 @@ More notes on comments:
     const whatever = 'cool'
     const nice = 'yes'
 
-Removing some blocks
-  Remove blocks of code like this:
-    // ambient types (tsc strips during build because of {})
-    import {} from '@fullcalendar/daygrid'
-    import {} from '@fullcalendar/timegrid'
-    import {} from '@fullcalendar/list'
-    // etc...
-
 For merging `userViews` or `views`, instead of relying on `mergeViewOptionsMap`, do something like this:
 
   views={{

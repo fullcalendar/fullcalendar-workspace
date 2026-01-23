@@ -73,12 +73,6 @@ async function createEventCalendarConfig(theme, themeTitle) {
     "description": `A standard event calendar in the ${themeTitle} theme-flavor`,
     "dependencies": [
       "@fullcalendar/react@beta",
-      "@fullcalendar/core@beta",
-      "@fullcalendar/interaction@beta",
-      "@fullcalendar/daygrid@beta",
-      "@fullcalendar/timegrid@beta",
-      "@fullcalendar/list@beta",
-      "@fullcalendar/multimonth@beta",
       "lucide-react"
     ],
     "registryDependencies": [
@@ -160,15 +154,7 @@ async function createSchedulerConfig(theme, themeTitle) {
     "description": `A premium event scheduler in the ${themeTitle} theme-flavor`,
     "dependencies": [
       "@fullcalendar/react@beta",
-      "@fullcalendar/core@beta",
-      "@fullcalendar/interaction@beta",
-      "@fullcalendar/adaptive@beta",
-      "@fullcalendar/scrollgrid@beta",
-      "@fullcalendar/timeline@beta",
-      "@fullcalendar/resource@beta",
-      "@fullcalendar/resource-timeline@beta",
-      "@fullcalendar/resource-daygrid@beta",
-      "@fullcalendar/resource-timegrid@beta",
+      "@fullcalendar/react-scheduler@beta",
       "lucide-react"
     ],
     "registryDependencies": [

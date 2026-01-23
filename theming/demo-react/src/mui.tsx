@@ -7,7 +7,7 @@ import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 
-import '@fullcalendar/core/skeleton.css'
+import '@fullcalendar/react/skeleton.css'
 import '@fullcalendar/mui/breezy/theme.css'
 import '@fullcalendar/mui/classic/theme.css'
 import '@fullcalendar/mui/forma/theme.css'

@@ -14,7 +14,7 @@ npm install moment
 Then, install the FullCalendar core package, the Moment plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/core @fullcalendar/moment @fullcalendar/daygrid
+npm install @fullcalendar/vanilla @fullcalendar/moment
 ```
 
 ## Usage
@@ -22,14 +22,14 @@ npm install @fullcalendar/core @fullcalendar/moment @fullcalendar/daygrid
 Instantiate a Calendar with the necessary plugin:
 
 ```js
-import { Calendar } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/vanilla'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 import momentPlugin from '@fullcalendar/moment'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/theme-classic'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/vanilla/skeleton.css'
+import '@fullcalendar/vanilla/themes/classic/theme.css'
+import '@fullcalendar/vanilla/themes/classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

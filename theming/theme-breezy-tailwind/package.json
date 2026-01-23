@@ -29,29 +29,17 @@
     }
   },
   "peerDependencies": {
-    "preact": "~10.23.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@fullcalendar/core": "workspace:*"
+    "@fullcalendar/react": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "preact": "~10.23.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@fullcalendar/adaptive": "workspace:*",
-    "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/multimonth": "workspace:*",
-    "@fullcalendar/resource": "workspace:*",
-    "@fullcalendar/resource-daygrid": "workspace:*",
-    "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/resource-timegrid": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/react": "workspace:*",
+    "@fullcalendar/react-scheduler": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
     "typescript": "~5.7.2"
   }

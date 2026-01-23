@@ -1,6 +1,6 @@
 import { PropType, defineComponent, h, Fragment, Teleport, VNode } from 'vue'
-import { Calendar, CalendarOptions } from '@fullcalendar/core'
-import { CustomRenderingStore, CustomRendering } from '@fullcalendar/core/internal'
+import { Calendar, CalendarOptions } from '@fullcalendar/vanilla'
+import { CustomRenderingStore, CustomRendering } from '@fullcalendar/vanilla/protected-api'
 import { OPTION_IS_COMPLEX } from './options.js'
 
 const FullCalendar = defineComponent({

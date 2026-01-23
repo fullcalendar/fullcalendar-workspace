@@ -1,9 +1,9 @@
-import { CalendarOptions } from '@fullcalendar/core'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import interactionPlugin from '@fullcalendar/interaction'
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import { CalendarOptions } from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/react/daygrid'
+import timeGridPlugin from '@fullcalendar/react/timegrid'
+import listPlugin from '@fullcalendar/react/list'
+import interactionPlugin from '@fullcalendar/react/interaction'
+import multiMonthPlugin from '@fullcalendar/react/multimonth'
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews?: string[]

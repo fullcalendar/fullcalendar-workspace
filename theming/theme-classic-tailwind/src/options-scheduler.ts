@@ -1,13 +1,13 @@
-import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
 import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
-import {} from '@fullcalendar/timeline'
-import {} from '@fullcalendar/resource-daygrid'
-import {} from '@fullcalendar/resource-timegrid'
-import {} from '@fullcalendar/resource-timeline'
-import {} from '@fullcalendar/adaptive'
-import {} from '@fullcalendar/scrollgrid'
+import {} from '@fullcalendar/react-scheduler/timeline'
+import {} from '@fullcalendar/react-scheduler/resource-daygrid'
+import {} from '@fullcalendar/react-scheduler/resource-timegrid'
+import {} from '@fullcalendar/react-scheduler/resource-timeline'
+import {} from '@fullcalendar/react-scheduler/adaptive'
+import {} from '@fullcalendar/react-scheduler/scrollgrid'
 
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 

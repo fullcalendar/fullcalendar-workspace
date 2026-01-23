@@ -3,8 +3,8 @@ import pkgJson from './package.json'
 const [ourPkgNames, otherPkgNames] = getDepNames()
 const externalGlobals = {
   vue: 'Vue',
-  '@fullcalendar/core': 'FullCalendar',
-  '@fullcalendar/core/internal': 'FullCalendar.Internal'
+  '@fullcalendar/vanilla': 'FullCalendar',
+  '@fullcalendar/vanilla/protected-api': 'FullCalendar.ProtectedApi'
 }
 
 export default [

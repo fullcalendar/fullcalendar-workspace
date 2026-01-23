@@ -1,10 +1,10 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import { PluginDefInput } from '@fullcalendar/react'
+import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { defaultUiEventCalendarOptions, params } from './ui-default-options-event-calendar.js'
 import { defaultUiSchedulerOnlyOptions } from './ui-default-options-scheduler.js'
 import { createSlots } from './slots.js'
 
-export default createPlugin({
+export default {
   name: '@fullcalendar/theme-breezy',
   optionDefaults: mergeCalendarOptions(
     defaultUiEventCalendarOptions.optionDefaults,
@@ -15,4 +15,4 @@ export default createPlugin({
     defaultUiEventCalendarOptions.views || {},
     defaultUiSchedulerOnlyOptions.views || {},
   ),
-}) as PluginDef
+} as PluginDefInput

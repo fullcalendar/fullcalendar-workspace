@@ -11,7 +11,7 @@ export interface DayGridRange extends SlicedCoordRange {
 }
 
 /*
-TODO: move this to @fullcalendar/daygrid
+TODO: move this to daygrid
 TODO: DRY-up these types and utils with header-tier
 */
 export interface DayTableCell {

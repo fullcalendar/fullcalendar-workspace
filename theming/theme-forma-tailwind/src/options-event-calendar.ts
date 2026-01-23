@@ -1,11 +1,11 @@
-import { CalendarOptions, DayCellData, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, DayCellData, joinClassNames, ViewOptions } from '@fullcalendar/react'
 
 // ambient types (tsc strips during build because of {})
-import {} from '@fullcalendar/daygrid'
-import {} from '@fullcalendar/timegrid'
-import {} from '@fullcalendar/list'
-import {} from '@fullcalendar/multimonth'
-import {} from '@fullcalendar/interaction'
+import {} from '@fullcalendar/react/daygrid'
+import {} from '@fullcalendar/react/timegrid'
+import {} from '@fullcalendar/react/list'
+import {} from '@fullcalendar/react/multimonth'
+import {} from '@fullcalendar/react/interaction'
 
 export interface EventCalendarOptionParams {
   // outline

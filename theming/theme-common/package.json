@@ -27,19 +27,8 @@
     }
   },
   "dependencies": {
-    "@fullcalendar/adaptive": "workspace:*",
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/multimonth": "workspace:*",
-    "@fullcalendar/resource": "workspace:*",
-    "@fullcalendar/resource-daygrid": "workspace:*",
-    "@fullcalendar/resource-timegrid": "workspace:*",
-    "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/react": "workspace:*",
+    "@fullcalendar/react-scheduler": "workspace:*",
     "typescript": "~5.7.2"
   }
 }

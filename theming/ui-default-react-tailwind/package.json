@@ -18,25 +18,13 @@
     }
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/react": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/multimonth": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
     "@fullcalendar/react": "workspace:*",
-    "@fullcalendar/resource-daygrid": "workspace:*",
-    "@fullcalendar/resource-timegrid": "workspace:*",
-    "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/adaptive": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/react-scheduler": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-monarch-tailwind": "workspace:*",
     "@fullcalendar/theme-forma-tailwind": "workspace:*",

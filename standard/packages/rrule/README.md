@@ -11,10 +11,10 @@ First, ensure the RRule lib is installed:
 npm install rrule
 ```
 
-Then, install the FullCalendar core package, the RRule plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
+Then, install the FullCalendar vanilla-JS package and the RRule plugin:
 
 ```sh
-npm install @fullcalendar/core @fullcalendar/rrule @fullcalendar/daygrid
+npm install @fullcalendar/vanilla @fullcalendar/rrule
 ```
 
 ## Usage
@@ -22,14 +22,14 @@ npm install @fullcalendar/core @fullcalendar/rrule @fullcalendar/daygrid
 Instantiate a Calendar with the necessary plugin:
 
 ```js
-import { Calendar } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/vanilla'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic'
 import rrulePlugin from '@fullcalendar/rrule'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/theme-classic'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/vanilla/skeleton.css'
+import '@fullcalendar/vanilla/themes/classic/theme.css'
+import '@fullcalendar/vanilla/themes/classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

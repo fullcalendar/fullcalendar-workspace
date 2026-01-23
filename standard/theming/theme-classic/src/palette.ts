@@ -1,3 +1,0 @@
-
-import './palette.css'
-
