@@ -1,4 +1,4 @@
-import { computeEdges } from '@fullcalendar/core/internal'
+import { computeEdges } from '@fullcalendar/vanilla/protected-api'
 import { getStockScrollbarWidths } from '../lib/dom-misc.js'
 
 describe('computeEdges', () => {

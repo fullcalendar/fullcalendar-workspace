@@ -14,7 +14,7 @@ export {
 export type { EventDef, EventDefHash } from './structs/event-def'
 export type { EventInstance, EventInstanceHash } from './structs/event-instance'
 export { createEventInstance } from './structs/event-instance'
-export type { EventRefined, EventTuple, EventRefiners } from './structs/event-parse'
+export type { EventRefined, EventTuple } from './structs/event-parse'
 export { parseEventDef, refineEventDef } from './structs/event-parse'
 export { parseBusinessHours } from './structs/business-hours'
 
@@ -194,7 +194,7 @@ export { isPropsValid, isInteractionValid, isDateSelectionValid } from './valida
 
 export { requestJson } from './util/requestJson'
 
-export { flushUpdates, flushSync } from './vdom'
+export { flushUpdates, flushSync, strictModeFactor } from './vdom'
 export { BaseComponent, setRef } from './vdom-util'
 export { DelayedRunner } from './util/DelayedRunner'
 
@@ -263,7 +263,7 @@ export {
   DateEnv,
   formatIsoTimeString, formatDayString, buildIsoString, formatIsoMonthStr,
   NamedTimeZoneImpl,
-  parse as parseMarker,
+  parseMarker,
   padStart, isInt, trimEnd,
 } from '@full-ui/headless-calendar'
 

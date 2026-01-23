@@ -1,5 +1,5 @@
-import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from './theme-for-tests.js' // "
 
 export function testTimeZoneImpl(timeZoneImplPlugin) {

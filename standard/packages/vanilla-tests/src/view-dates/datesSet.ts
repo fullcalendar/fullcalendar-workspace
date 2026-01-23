@@ -1,7 +1,7 @@
-import { Calendar } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import { Calendar } from '@fullcalendar/vanilla'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 
 describe('datesSet', () => {
   pushOptions({

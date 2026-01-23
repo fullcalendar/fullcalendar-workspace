@@ -35,6 +35,7 @@ build note:
     manually before `pn dev`
 
 
+why .d.ts.map written for 'build'?
 moment-timezone kill, adjust
 kill NOTES.txt
 plugins will inline utils from @fullcalendar/core-types, no great

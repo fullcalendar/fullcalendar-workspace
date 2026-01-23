@@ -1,4 +1,4 @@
-import { parseMarker, addMs } from '@fullcalendar/core/internal'
+import { parseMarker, addMs } from '@fullcalendar/vanilla/protected-api'
 import { drag } from '../lib/EventDragUtils.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 import { intersectRects } from '../lib/geom.js'

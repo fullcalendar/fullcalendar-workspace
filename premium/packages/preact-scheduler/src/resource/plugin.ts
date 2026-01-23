@@ -1,4 +1,4 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
+import { PluginDefInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import { ResourceDataAdder, transformIsDraggable } from './View'
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
@@ -17,7 +17,7 @@ import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
 import './api/EventApi'
 import './api/CalendarApi'
 
-export default createPlugin({
+export default {
   name: 'resource',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
@@ -41,4 +41,4 @@ export default createPlugin({
   optionRefiners: OPTION_REFINERS,
   listenerRefiners: LISTENER_REFINERS,
   propSetHandlers: { resourceStore: handleResourceStore },
-}) as PluginDef
+} as PluginDefInput

@@ -1,4 +1,4 @@
-import { addDays } from '@fullcalendar/core/internal'
+import { addDays } from '@fullcalendar/vanilla/protected-api'
 import { formatIsoDay } from './datelib-utils.js'
 import { CalendarWrapper } from './wrappers/CalendarWrapper.js'
 

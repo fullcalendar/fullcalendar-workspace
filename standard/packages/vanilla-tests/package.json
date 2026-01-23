@@ -3,18 +3,12 @@
   "name": "@fullcalendar-tests/standard",
   "version": "0.0.0",
   "dependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/daygrid": "workspace:*",
+    "@fullcalendar/vanilla": "workspace:*",
     "@fullcalendar/google-calendar": "workspace:*",
     "@fullcalendar/icalendar": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/list": "workspace:*",
     "@fullcalendar/luxon3": "workspace:*",
     "@fullcalendar/moment": "workspace:*",
-    "@fullcalendar/multimonth": "workspace:*",
     "@fullcalendar/rrule": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
     "luxon": "^2.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.40",
@@ -38,14 +32,14 @@
   },
   "type": "module",
   "buildConfig": {
+    "globalConfig": {
+    },
     "exports": {
       ".": {
-        "generator": "./scripts/generate-index.js",
-        "iife": true
+        "format": "global",
+        "primary": true,
+        "generator": "./scripts/generate-index.js"
       }
-    },
-    "dependencyGlobalVars": {
-      "*": ""
     }
   },
   "karmaConfig": {
@@ -55,33 +49,17 @@
           "./dist/index.js"
         ]
       },
-      "pkg:global:locale": {
+      "global:locale": {
         "files": [
-          "./node_modules/@fullcalendar/core/global.js",
-          "./node_modules/@fullcalendar/core/global/locales/ar.js",
-          "./node_modules/@fullcalendar/daygrid/global.js",
+          "./node_modules/@fullcalendar/vanilla/all.global.js",
+          "./node_modules/@fullcalendar/vanilla/locales/ar.global.js",
           "./src/global-locale.js"
         ]
       },
-      "pkg:global:locales-all": {
+      "global:locales-all": {
         "files": [
-          "./node_modules/@fullcalendar/core/global.js",
-          "./node_modules/@fullcalendar/core/global/locales-all.js",
-          "./node_modules/@fullcalendar/daygrid/global.js",
-          "./src/global-locales-all.js"
-        ]
-      },
-      "bundle:global:locale": {
-        "files": [
-          "./node_modules/fullcalendar/global.js",
-          "./node_modules/@fullcalendar/core/global/locales/ar.js",
-          "./src/global-locale.js"
-        ]
-      },
-      "bundle:global:locales-all": {
-        "files": [
-          "./node_modules/fullcalendar/global.js",
-          "./node_modules/@fullcalendar/core/global/locales-all.js",
+          "./node_modules/@fullcalendar/vanilla/all.global.js",
+          "./node_modules/@fullcalendar/vanilla/locales-all.global.js",
           "./src/global-locales-all.js"
         ]
       }

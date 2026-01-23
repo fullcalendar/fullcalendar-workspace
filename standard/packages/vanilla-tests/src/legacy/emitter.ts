@@ -1,4 +1,4 @@
-import { Emitter } from '@fullcalendar/core/internal'
+import { Emitter } from '@fullcalendar/vanilla/protected-api'
 
 describe('emitter', () => {
   it('calls a handler', () => {

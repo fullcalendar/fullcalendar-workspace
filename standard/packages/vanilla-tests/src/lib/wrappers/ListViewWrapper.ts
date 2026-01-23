@@ -1,5 +1,5 @@
-import { Calendar } from '@fullcalendar/core'
-import internalClassNames from '@fullcalendar/core/internal-classnames'
+import { Calendar } from '@fullcalendar/vanilla'
+import internalClassNames from '@fullcalendar/vanilla/protected-styles'
 import { findElements } from '../../lib/dom-misc.js'
 import { ViewWrapper } from './ViewWrapper.js'
 import { formatIsoDay } from '../datelib-utils.js'

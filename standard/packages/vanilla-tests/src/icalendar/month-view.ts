@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock'
-import dayGridMonth from '@fullcalendar/daygrid'
-import { EventSourceInput } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import dayGridMonth from '@fullcalendar/vanilla/daygrid'
+import { EventSourceInput } from '@fullcalendar/vanilla'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'

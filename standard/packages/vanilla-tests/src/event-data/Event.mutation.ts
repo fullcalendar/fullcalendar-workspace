@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/vdom'
+import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
 
 describe('event mutations on non-instances', () => {
   pushOptions({

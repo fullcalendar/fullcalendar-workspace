@@ -1,11 +1,11 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
+import { PluginDefInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common'
 import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'
 import { ResourceTimelineView } from './components/ResourceTimelineView'
 import { OPTION_REFINERS } from './options'
 
-export default createPlugin({
+export default {
   name: 'resource-timeline',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
@@ -41,4 +41,4 @@ export default createPlugin({
     },
   },
   optionRefiners: OPTION_REFINERS,
-}) as PluginDef
+} as PluginDefInput

@@ -5,7 +5,8 @@
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@full-ui/headless-grid": "workspace:7.0.0-beta.6"
+    "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
     "@fullcalendar/preact": "workspace:7.0.0-beta.6",

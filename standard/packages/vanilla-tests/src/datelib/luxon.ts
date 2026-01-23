@@ -1,9 +1,9 @@
-import { Calendar } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/vanilla'
 import luxonPlugin from '@fullcalendar/luxon3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import timeGridPlugin from '@fullcalendar/timegrid'
+import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

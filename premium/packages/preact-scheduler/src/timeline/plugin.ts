@@ -1,9 +1,9 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
+import { PluginDefInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common'
 import { TimelineView } from './components/TimelineView'
 import { OPTION_REFINERS } from './options'
 
-export default createPlugin({
+export default {
   name: 'timeline',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
@@ -32,4 +32,4 @@ export default createPlugin({
       duration: { years: 1 },
     },
   },
-}) as PluginDef
+} as PluginDefInput

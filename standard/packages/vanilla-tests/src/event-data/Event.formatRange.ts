@@ -1,4 +1,4 @@
-import { FormatterInput } from '@fullcalendar/core'
+import { FormatterInput } from '@fullcalendar/vanilla'
 
 xdescribe('Event::formatRange', () => {
   pushOptions({

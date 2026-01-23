@@ -5,6 +5,7 @@ import { EventDragging } from './interactions/EventDragging'
 import { EventResizing } from './interactions/EventResizing'
 import { UnselectAuto } from './interactions/UnselectAuto'
 import { FeaturefulElementDragging } from './dnd/FeaturefulElementDragging'
+import { ExternalDraggable } from './interactions-external/ExternalDraggable'
 
 export default {
   name: 'interaction',
@@ -12,3 +13,6 @@ export default {
   calendarInteractions: [UnselectAuto],
   elementDraggingImpl: FeaturefulElementDragging,
 } as PluginDefInput
+
+export { ThirdPartyDraggable } from './interactions-external/ThirdPartyDraggable'
+export { ExternalDraggable as Draggable }

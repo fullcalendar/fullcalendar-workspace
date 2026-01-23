@@ -1,4 +1,4 @@
-import { FormatterInput } from '@fullcalendar/core'
+import { FormatterInput } from '@fullcalendar/vanilla'
 import { parseLocalDate } from '../lib/date-parsing.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

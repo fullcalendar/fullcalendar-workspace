@@ -1,7 +1,6 @@
-import { createPlugin } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 
 describe('view-specific options', () => {
   pushOptions({
@@ -130,7 +129,7 @@ describe('view-specific options', () => {
         dayGridPlugin,
         classicThemePlugin,
         themeForTestsPlugin,
-        createPlugin({
+        {
           name: 'test-plugin',
           views: {
             superBasic: {
@@ -138,7 +137,7 @@ describe('view-specific options', () => {
               content: 'hello world',
             },
           },
-        }),
+        },
       ],
       views: {
         dayGrid: {

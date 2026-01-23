@@ -1,9 +1,9 @@
-import { Calendar } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import { Calendar } from '@fullcalendar/vanilla'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import interactionPlugin from '@fullcalendar/interaction'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/vanilla/interaction'
+import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
 import { getRectCenter } from '../lib/geom.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'

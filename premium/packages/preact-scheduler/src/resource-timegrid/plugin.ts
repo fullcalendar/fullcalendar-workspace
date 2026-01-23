@@ -1,11 +1,11 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
+import { PluginDefInput } from '@fullcalendar/preact/public-api'
 import timeGridPlugin from '@fullcalendar/preact/timegrid'
 import premiumCommonPlugin from '../common/plugin'
 import resourcePlugin from '../resource/plugin'
 import resourceDayGridPlugin from '../resource-daygrid/plugin'
 import { ResourceTimeGridView } from './components/ResourceTimeGridView'
 
-export default createPlugin({
+export default {
   name: 'resource-timegrid',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
@@ -30,4 +30,4 @@ export default createPlugin({
       duration: { weeks: 1 },
     },
   },
-}) as PluginDef
+} as PluginDefInput

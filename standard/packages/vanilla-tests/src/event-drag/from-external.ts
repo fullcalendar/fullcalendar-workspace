@@ -1,4 +1,4 @@
-import { Draggable } from '@fullcalendar/interaction'
+import { Draggable } from '@fullcalendar/vanilla/interaction'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('external event dragging', () => {

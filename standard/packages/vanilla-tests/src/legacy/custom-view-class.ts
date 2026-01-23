@@ -1,6 +1,5 @@
-import { createPlugin } from '@fullcalendar/core'
-import { sliceEvents } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
+import { sliceEvents } from '@fullcalendar/vanilla'
+import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
@@ -54,12 +53,12 @@ xdescribe('custom view class', () => { // TODO: rename file
       plugins: [
         classicThemePlugin,
         themeForTestsPlugin,
-        createPlugin({
+        {
           name: 'test-plugin',
           views: {
             custom: CustomViewConfig,
           },
-        }),
+        },
       ],
       initialView: 'custom',
       initialDate: '2014-12-25', // will end up being a single-day view

@@ -16,43 +16,22 @@
   ],
   "references": [
     {
-      "path": "../packages/core"
+      "path": "../vanilla"
     },
     {
-      "path": "../packages/daygrid"
+      "path": "../google-calendar"
     },
     {
-      "path": "../packages/google-calendar"
+      "path": "../icalendar"
     },
     {
-      "path": "../packages/icalendar"
+      "path": "../luxon3"
     },
     {
-      "path": "../packages/interaction"
+      "path": "../moment"
     },
     {
-      "path": "../packages/list"
-    },
-    {
-      "path": "../packages/luxon3"
-    },
-    {
-      "path": "../packages/moment"
-    },
-    {
-      "path": "../packages/moment-timezone"
-    },
-    {
-      "path": "../packages/multimonth"
-    },
-    {
-      "path": "../packages/rrule"
-    },
-    {
-      "path": "../packages/timegrid"
-    },
-    {
-      "path": "../theming/theme-classic"
+      "path": "../rrule"
     }
   ]
 }

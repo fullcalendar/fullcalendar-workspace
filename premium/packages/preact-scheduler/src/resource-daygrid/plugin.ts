@@ -1,11 +1,11 @@
-import { createPlugin, PluginDef } from '@fullcalendar/preact/public-api'
+import { PluginDefInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import resourcePlugin from '../resource/plugin'
 import dayGridPlugin from '@fullcalendar/preact/daygrid'
 import { ResourceDayGridView } from './components/ResourceDayGridView'
 import { OPTION_DEFAULTS, OPTION_REFINERS } from './options'
 
-export default createPlugin({
+export default {
   name: 'resource-daygrid',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
@@ -36,4 +36,4 @@ export default createPlugin({
   },
   optionRefiners: OPTION_REFINERS,
   optionDefaults: OPTION_DEFAULTS,
-}) as PluginDef
+} as PluginDefInput

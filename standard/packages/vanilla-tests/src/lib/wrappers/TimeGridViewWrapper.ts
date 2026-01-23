@@ -1,4 +1,4 @@
-import internalClassNames from '@fullcalendar/core/internal-classnames'
+import internalClassNames from '@fullcalendar/vanilla/protected-styles'
 import { ViewWrapper } from './ViewWrapper.js'
 import { TimeGridWrapper } from './TimeGridWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'

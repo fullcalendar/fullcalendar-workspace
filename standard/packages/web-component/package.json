@@ -9,6 +9,7 @@
   ],
   "homepage": "https://fullcalendar.io/docs/web-component",
   "dependencies": {
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
   },

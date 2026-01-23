@@ -1,3 +1,5 @@
 import { LocaleInput } from '@fullcalendar/preact/public-api'
 
-export default LocaleInput
+declare const _default: LocaleInput
+
+export default _default

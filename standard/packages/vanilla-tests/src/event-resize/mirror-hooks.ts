@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/vdom'
+import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { waitEventResize } from '../lib/wrappers/interaction-util.js'

@@ -1,5 +1,4 @@
-import { Calendar, CalendarOptions } from '@fullcalendar/core'
-import { createPlugin } from '@fullcalendar/core'
+import { Calendar, CalendarOptions } from '@fullcalendar/vanilla'
 import { parseLocalDate, parseUtcDate } from './date-parsing.js'
 
 // Other Important Global Stuff
@@ -72,12 +71,12 @@ function initCalendar(moreOptions?: CalendarOptions, el?) {
   let newCalendar = null
 
   options.plugins = options.plugins.concat([
-    createPlugin({
+    {
       name: 'current-calendar-' + Date.now(), // ugh, might be called twice per calendar
       contextInit(context) {
         newCalendar = window.currentCalendar = context.calendarApi as Calendar
       },
-    }),
+    },
   ])
 
   let cool = new Calendar($el[0], options)

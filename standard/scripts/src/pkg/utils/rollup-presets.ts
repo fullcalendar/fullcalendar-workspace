@@ -52,18 +52,22 @@ export function buildModuleOptions(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
   sourcemaps: boolean,
-): RollupOptions {
-  return {
-    input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(
-      pkgBundleStruct,
-      isDev,
-      sourcemaps, // sourcemapLoading
-    ),
-    output: buildModuleOutputOptions(pkgBundleStruct, sourcemaps),
-    onwarn(warning) {
-      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-        console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
+): RollupOptions | undefined {
+  const inputs = buildModuleInput(pkgBundleStruct)
+
+  if (Object.keys(inputs).length) {
+    return {
+      input: buildModuleInput(pkgBundleStruct),
+      plugins: buildModulePlugins(
+        pkgBundleStruct,
+        isDev,
+        sourcemaps, // sourcemapLoading
+      ),
+      output: buildModuleOutputOptions(pkgBundleStruct, sourcemaps),
+      onwarn(warning) {
+        if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+          console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
+        }
       }
     }
   }
@@ -96,16 +100,20 @@ export async function buildGlobalOptions(
   }
 }
 
-export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions {
-  return {
-    input: buildDtsInput(pkgBundleStruct),
-    plugins: buildDtsPlugins(pkgBundleStruct),
-    output: buildDtsOutputOptions(pkgBundleStruct),
-    onwarn(warning) {
-      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-        console.error(`${pkgBundleStruct.pkgDir}(dts): ${warning}`)
-      }
-    },
+export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions | undefined {
+  const inputs = buildDtsInput(pkgBundleStruct)
+
+  if (Object.keys(inputs).length) {
+    return {
+      input: buildDtsInput(pkgBundleStruct),
+      plugins: buildDtsPlugins(pkgBundleStruct),
+      output: buildDtsOutputOptions(pkgBundleStruct),
+      onwarn(warning) {
+        if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+          console.error(`${pkgBundleStruct.pkgDir}(dts): ${warning}`)
+        }
+      },
+    }
   }
 }
 

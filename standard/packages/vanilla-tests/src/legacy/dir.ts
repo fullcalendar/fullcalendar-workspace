@@ -1,4 +1,4 @@
-import arLocale from '@fullcalendar/core/locales/ar'
+import arLocale from '@fullcalendar/vanilla/locales/ar'
 
 describe('direction', () => {
   it('has it\'s default value computed differently based off of the locale', () => {

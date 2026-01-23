@@ -1,4 +1,4 @@
-import { formatDate, formatRange } from '@fullcalendar/core'
+import { formatDate, formatRange } from '@fullcalendar/vanilla'
 
 xdescribe('formatDate', () => {
   it('works with no timezone offset', () => {

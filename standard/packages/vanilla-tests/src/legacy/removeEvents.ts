@@ -1,4 +1,4 @@
-import { EventInput } from '@fullcalendar/core'
+import { EventInput } from '@fullcalendar/vanilla'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('removeEvents', () => {

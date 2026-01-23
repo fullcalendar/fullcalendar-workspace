@@ -1,4 +1,4 @@
-import { parseMarker, addDays } from '@fullcalendar/core/internal'
+import { parseMarker, addDays } from '@fullcalendar/vanilla/protected-api'
 import { formatIsoDay } from './datelib-utils.js'
 import { TimeGridViewWrapper } from './wrappers/TimeGridViewWrapper.js'
 import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper.js'

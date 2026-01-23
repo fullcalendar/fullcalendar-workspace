@@ -1,5 +1,7 @@
 import * as preact from 'preact'
 
+export const strictModeFactor = 1
+
 /*
 Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
 BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929

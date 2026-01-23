@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, PluginDef, joinClassNames } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, PluginDefInput } from '@fullcalendar/vanilla'
 
 /*
 NOTE: other classnames in theme-for-tests-premium.ts
@@ -16,7 +16,7 @@ const dayRowCommonClasses: CalendarOptions = {
   rowMoreLinkClass: 'fc-daygrid-more-link',
 }
 
-export default createPlugin({
+export default {
   name: 'theme-for-tests',
   optionDefaults: {
     headerToolbar: {
@@ -125,7 +125,7 @@ export default createPlugin({
       noEventsClass: 'fc-list-empty',
     }
   }
-}) as PluginDef
+} as PluginDefInput
 
 // Utils
 // -------------------------------------------------------------------------------------------------

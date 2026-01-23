@@ -1,5 +1,5 @@
-import { strictModeFactor } from '@fullcalendar/core/vdom'
-import frLocale from '@fullcalendar/core/locales/fr'
+import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import frLocale from '@fullcalendar/vanilla/locales/fr'
 import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
 
 describe('ListView rendering', () => {

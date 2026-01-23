@@ -1,3 +1,4 @@
+import {} from '@fullcalendar/core-types/protected-api'
 import { PremiumOptions, PremiumOptionsRefined } from './common/options'
 import { ResourceApi } from './resource/api/ResourceApi'
 import { ResourceSource } from './resource/structs/resource-source'
@@ -32,13 +33,15 @@ declare module '@fullcalendar/preact/public-api' {
   }
 }
 
-declare module '@fullcalendar/preact/protected-api' {
+declare module '@fullcalendar/core-types/protected-api' {
   interface BaseOptions extends PremiumOptions, ResourceOptions, ResourceDayGridOptions, ResourceTimelineOptions, TimelineOptions {}
   interface BaseOptionsRefined extends PremiumOptionsRefined, ResourceOptionsRefined, ResourceDayGridOptionsRefined, ResourceTimelineOptionsRefined, TimelineOptionsRefined {}
+  interface EventRefiners extends ExtraEventRefiners {}
+}
+
+declare module '@fullcalendar/preact/protected-api' {
   interface CalendarListeners extends ResourceListeners {}
   interface CalendarListenersRefined extends ResourceListenersRefined {}
-
-  interface EventRefiners extends ExtraEventRefiners {}
 
   interface CalendarContext {
     dispatch(action: ResourceAction): void
