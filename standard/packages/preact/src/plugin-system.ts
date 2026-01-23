@@ -1,4 +1,3 @@
-import { guid } from './util/misc'
 import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct'
 import { isArraysEqual } from './util/array'
 import { mergeViewOptionsMap } from './options-manip'
@@ -7,7 +6,6 @@ import { mergeViewOptionsMap } from './options-manip'
 
 function refinePluginDef(input: PluginDefInput): PluginDef {
   return {
-    id: guid(),
     name: input.name,
     premiumReleaseDate: input.premiumReleaseDate ? new Date(input.premiumReleaseDate): undefined,
     reducers: input.reducers || [],
@@ -46,7 +44,7 @@ function refinePluginDef(input: PluginDefInput): PluginDef {
 }
 
 function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInput[]): PluginHooks {
-  let currentPluginIds: { [pluginName: string]: string } = {}
+  let pluginsByName: { [pluginName: string]: PluginDef } = {}
   let hooks: PluginHooks = {
     premiumReleaseDate: undefined,
     reducers: [],
@@ -83,25 +81,27 @@ function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInp
     propSetHandlers: {},
   }
 
-  function addDefs(defs: PluginDefInput[]) {
+  /*
+  IDs/names, etc
+  */
+  function addDefs(defs: PluginDefInput[], warnDuplicate?: boolean) {
     for (let unrefinedDef of defs) {
-      const def = refinePluginDef(unrefinedDef)
-      const pluginName = def.name
-      const currentId = currentPluginIds[pluginName]
-
-      if (currentId === undefined) {
-        currentPluginIds[pluginName] = def.id
-        addDefs(unrefinedDef.deps)
+      const { name } = unrefinedDef
+      if (!name) {
+        throw new Error('Plugin must specify a name')
+      }
+      if (!pluginsByName[name]) {
+        const def = pluginsByName[name] = refinePluginDef(unrefinedDef)
         hooks = combineHooks(hooks, def)
-      } else if (currentId !== def.id) {
-        // different ID than the one already added
-        console.warn(`Duplicate plugin '${pluginName}'`)
+        addDefs(unrefinedDef.deps || [])
+      } else if (warnDuplicate) {
+        console.warn(`Duplicate plugin '${name}'`)
       }
     }
   }
 
-  if (pluginDefs) {
-    addDefs(pluginDefs)
+  if (pluginDefs) { // how could this be undefined?
+    addDefs(pluginDefs, /* warnDuplicate = */ true)
   }
 
   addDefs(globalDefs)

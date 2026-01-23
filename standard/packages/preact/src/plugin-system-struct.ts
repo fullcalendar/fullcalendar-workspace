@@ -97,7 +97,6 @@ export interface PluginHooks {
 }
 
 export interface PluginDef extends PluginHooks {
-  id: string
   name: string
 }
 

@@ -35,8 +35,8 @@ build note:
     manually before `pn dev`
 
 
-problem with react(-scheduler) pkg's src:generate ordering with tsc
-update ts workspaces
+sourcemaps messed up
+changelog: createPlugin removed
 revive react tests
 why .d.ts.map written for 'build'?
 moment-timezone kill, adjust
