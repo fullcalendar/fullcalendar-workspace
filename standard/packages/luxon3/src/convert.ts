@@ -1,47 +1,4 @@
-import { DateTime as LuxonDateTime, Duration as LuxonDuration } from 'luxon'
-import { CalendarApi, Duration } from '@fullcalendar/core'
-import { CalendarApiImpl } from '@fullcalendar/core/internal'
-
-export function toLuxonDateTime(date: Date, calendar: CalendarApi): LuxonDateTime {
-  if (!(calendar instanceof CalendarApiImpl)) {
-    throw new Error('must supply a CalendarApi instance')
-  }
-
-  let { dateEnv } = calendar.getCurrentData()
-
-  return LuxonDateTime.fromJSDate(date, {
-    zone: dateEnv.timeZone,
-    locale: dateEnv.locale.codes[0],
-  } as {
-    zone: string // HACK to allow locale property, which IS supported
-  })
-}
-
-export function toLuxonDuration(duration: Duration, calendar: CalendarApi): LuxonDuration {
-  if (!(calendar instanceof CalendarApiImpl)) {
-    throw new Error('must supply a CalendarApi instance')
-  }
-
-  let { dateEnv } = calendar.getCurrentData()
-
-  return LuxonDuration.fromObject(duration, {
-    locale: dateEnv.locale.codes[0],
-  })
-}
-
-// Internal Utils
-
-export function luxonToArray(datetime: LuxonDateTime): number[] {
-  return [
-    datetime.year,
-    datetime.month - 1, // convert 1-based to 0-based
-    datetime.day,
-    datetime.hour,
-    datetime.minute,
-    datetime.second,
-    datetime.millisecond,
-  ]
-}
+import { DateTime as LuxonDateTime } from 'luxon'
 
 export function arrayToLuxon(arr: number[], timeZone: string, locale?: string): LuxonDateTime {
   return LuxonDateTime.fromObject({

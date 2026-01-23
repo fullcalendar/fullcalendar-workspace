@@ -10,8 +10,7 @@
   "homepage": "https://fullcalendar.io/docs/icalendar",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6"
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
     "ical.js": "^2.0.0"
@@ -27,18 +26,22 @@
   },
   "type": "module",
   "buildConfig": {
-    "exports": {
-      ".": {
-        "module": true,
-        "globalVar": "FullCalendar.ICalendar"
-      },
-      "./global": {
-        "iife": true,
-        "globalVar": "FullCalendar.ICalendar"
+    "globalConfig": {
+      "externalPkgs": [
+        "ical.js"
+      ],
+      "externalGlobals": {
+        "ical.js": "ICAL"
       }
     },
-    "dependencyGlobalVars": {
-      "ical.js": "ICAL"
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./global": {
+        "format": "global",
+        "primary": true
+      }
     }
   },
   "publishConfig": {

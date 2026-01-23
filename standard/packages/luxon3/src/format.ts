@@ -1,4 +1,4 @@
-import { VerboseFormattingData } from '@fullcalendar/core/internal'
+import { VerboseFormattingData } from '@full-ui/headless-calendar'
 import { arrayToLuxon } from './convert'
 
 export function formatWithCmdStr(

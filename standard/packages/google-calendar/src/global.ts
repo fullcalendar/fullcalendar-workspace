@@ -5,4 +5,3 @@ declare global {
 }
 
 FullCalendar.globalPlugins.push(plugin)
-
