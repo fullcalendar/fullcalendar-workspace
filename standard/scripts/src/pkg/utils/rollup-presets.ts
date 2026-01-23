@@ -199,6 +199,9 @@ async function buildGlobalOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemapOutput: boolean,
 ): Promise<OutputOptions> {
+  const { pkgDir } = pkgBundleStruct
+  const { isTests } = analyzePkg(pkgDir)
+
   return {
     // format: 'esm', // for DEBUGGING as ESM
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
@@ -206,7 +209,9 @@ async function buildGlobalOutputOptions(
     // chunkFileNames: 'global-chunks/[name]-[hash]' + esmExtension, // for DEBUGGING as ESM
     globals: pkgBundleStruct.globalConfig?.externalGlobals || {}, // comment for DEBUGGING as ESM
     sourcemap: sourcemapOutput,
-    banner: await buildBanner(pkgBundleStruct),
+    banner: isTests
+      ? undefined
+      : await buildBanner(pkgBundleStruct),
 
     // ...the iifeSplitPlugin plugin fills in the rest...
 

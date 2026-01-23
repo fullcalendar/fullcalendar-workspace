@@ -9,7 +9,7 @@ export interface PkgAnalysis {
 
 export function analyzePkg(pkgDir: string): PkgAnalysis {
   const pkgDirName = basename(pkgDir)
-  const isTests = pkgDirName === 'tests'
+  const isTests = pkgDirName.endsWith('-tests')
   const metaRootDir = joinPaths(pkgDir, isTests ? '..' : '../..')
 
   const isPublicMui = pkgDirName === 'ui-mui'
