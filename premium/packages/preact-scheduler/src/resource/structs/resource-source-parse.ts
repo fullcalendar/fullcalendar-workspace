@@ -1,4 +1,5 @@
-import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/preact/protected-api'
+import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { guid, identity, Identity, refineProps, Dictionary } from '@fullcalendar/preact/protected-api'
 import { ResourceInput } from './resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'

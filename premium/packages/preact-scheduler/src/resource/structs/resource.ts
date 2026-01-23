@@ -1,7 +1,8 @@
+import { identity, Identity, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/preact/public-api'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
-  guid, identity, Identity, RawOptionsFromRefiners, refineProps, createEventUi, Dictionary,
+  guid, refineProps, createEventUi, Dictionary,
 } from '@fullcalendar/preact/protected-api'
 
 const PRIVATE_ID_PREFIX = '_fc:'

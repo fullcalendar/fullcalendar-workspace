@@ -1,8 +1,9 @@
+import { BaseOptionsRefined } from '@fullcalendar/core-types/protected-api'
 import { Duration } from '@fullcalendar/preact/public-api'
 import {
   config, computeVisibleDayRange, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,
   startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator,
-  asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined,
+  asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator,
   computeMajorUnit,
   isMajorUnit,
 } from '@fullcalendar/preact/protected-api'

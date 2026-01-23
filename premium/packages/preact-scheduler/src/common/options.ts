@@ -1,4 +1,4 @@
-import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/preact/protected-api'
+import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 
 export const OPTION_REFINERS = {
   schedulerLicenseKey: String,

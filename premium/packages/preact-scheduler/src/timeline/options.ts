@@ -1,4 +1,4 @@
-import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/preact/protected-api'
+import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 
 export const OPTION_REFINERS = {
   timelineTopClass: identity as Identity<string | undefined>,

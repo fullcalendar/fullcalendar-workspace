@@ -1,3 +1,7 @@
+import {
+  RawOptionsFromRefiners,
+  RefinedOptionsFromRefiners,
+} from '@fullcalendar/core-types/protected-api'
 import { ClassNameGenerator } from '@fullcalendar/preact/public-api'
 import {
   Identity,
@@ -5,8 +9,6 @@ import {
   CustomContentGenerator,
   DidMountHandler,
   WillUnmountHandler,
-  RawOptionsFromRefiners,
-  RefinedOptionsFromRefiners,
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceDayHeaderData,
