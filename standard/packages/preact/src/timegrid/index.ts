@@ -1,9 +1,8 @@
-import { createPlugin } from '../plugin-system'
-import { PluginDef } from '../plugin-system-struct'
 import dayGridPlugin from '../daygrid/index'
+import { PluginDefInput } from '../plugin-system-struct'
 import { TimeGridView } from './components/TimeGridView'
 
-export default createPlugin({
+export default {
   name: 'timegrid',
   initialView: 'timeGridWeek',
   deps: [dayGridPlugin],
@@ -24,4 +23,4 @@ export default createPlugin({
       duration: { weeks: 1 },
     },
   },
-}) as PluginDef
+} as PluginDefInput

@@ -1,9 +1,8 @@
-import { createPlugin } from '../plugin-system'
-import { PluginDef } from '../plugin-system-struct'
 import { TableDateProfileGenerator } from '../daygrid/TableDateProfileGenerator'
+import { PluginDefInput } from '../plugin-system-struct'
 import { MultiMonthView } from './components/MultiMonthView'
 
-export default createPlugin({
+export default {
   name: 'multimonth',
   initialView: 'multiMonthYear',
   views: {
@@ -20,4 +19,4 @@ export default createPlugin({
       showNonCurrentDates: false, // TODO: looks bad when single-col layout
     },
   },
-}) as PluginDef
+} as PluginDefInput

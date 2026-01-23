@@ -8,7 +8,6 @@ export * from './api/structs'
 
 export { FormatDateOptions, FormatRangeOptions } from './formatting-api'
 export { formatDate, formatRange } from './formatting-api'
-export { createPlugin } from './plugin-system'
 export { sliceEvents } from './component-util/View'
 export { EventRenderRange } from './component-util/event-rendering' // for sliceEvents
 export { JsonRequestError } from './util/requestJson'

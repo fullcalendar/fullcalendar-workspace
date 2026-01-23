@@ -1,8 +1,7 @@
-import { createPlugin } from '../plugin-system'
-import { PluginDef } from '../plugin-system-struct'
+import { PluginDefInput } from '../plugin-system-struct'
 import { ListView } from './components/ListView'
 
-export default createPlugin({
+export default {
   name: 'list',
   views: {
     list: {
@@ -26,4 +25,4 @@ export default createPlugin({
       duration: { year: 1 },
     },
   },
-}) as PluginDef
+} as PluginDefInput

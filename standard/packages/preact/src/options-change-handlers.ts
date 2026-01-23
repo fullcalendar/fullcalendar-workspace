@@ -1,10 +1,9 @@
-import { createPlugin } from './plugin-system'
-import { hashValuesToArray } from './util/object'
-import { EventSource } from './structs/event-source'
 import { CalendarContext } from './CalendarContext'
-import { CalendarController } from './index'
+import { CalendarController, PluginDefInput } from './index'
+import { EventSource } from './structs/event-source'
+import { hashValuesToArray } from './util/object'
 
-export const changeHandlerPlugin = createPlugin({
+export const changeHandlerPlugin = {
   name: 'change-handler',
   optionChangeHandlers: {
     controller(controller: CalendarController, context: CalendarContext) {
@@ -16,7 +15,7 @@ export const changeHandlerPlugin = createPlugin({
     },
     eventSources: handleEventSources,
   },
-})
+} as PluginDefInput
 
 /*
 BUG: if `event` was supplied, all previously-given `eventSources` will be wiped out

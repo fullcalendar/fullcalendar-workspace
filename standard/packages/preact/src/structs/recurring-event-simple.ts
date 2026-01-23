@@ -2,9 +2,9 @@ import { startOfDay, addDays, DateMarker, Duration, subtractDurations, DateRange
 import { arrayToHash } from '../util/object'
 import { RecurringType } from './recurring-event'
 import { EventRefined } from './event-parse'
-import { createPlugin } from '../plugin-system'
 import { SIMPLE_RECURRING_REFINERS } from './recurring-event-simple-refiners'
 import './recurring-event-simple-declare'
+import { PluginDefInput } from '..'
 
 /*
 An implementation of recurring events that only supports every-day or weekly recurrences.
@@ -71,11 +71,11 @@ let recurring: RecurringType<SimpleRecurringData> = {
 
 }
 
-export const simpleRecurringEventsPlugin = createPlugin({
+export const simpleRecurringEventsPlugin = {
   name: 'simple-recurring-event',
   recurringTypes: [recurring],
   eventRefiners: SIMPLE_RECURRING_REFINERS,
-})
+} as PluginDefInput
 
 function expandRanges(
   daysOfWeek: number[] | null,

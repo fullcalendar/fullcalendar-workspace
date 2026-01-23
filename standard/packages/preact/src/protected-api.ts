@@ -1,14 +1,10 @@
 
 export {
-  BaseOptions,
-  BaseOptionsRefined,
   BASE_OPTION_DEFAULTS,
   CalendarListeners,
   CalendarListenersRefined,
   ViewOptions,
   ViewOptionsRefined,
-  RawOptionsFromRefiners,
-  RefinedOptionsFromRefiners,
   Identity,
   Dictionary,
   identity,
@@ -134,7 +130,6 @@ export { isDateSpansEqual } from './structs/date-span'
 
 export type { EventSourceDef } from './structs/event-source-def'
 export type { EventSourceRefined } from './structs/event-source-parse'
-export type { EventSourceOptions, EventSourceOptionsRefined } from './structs/event-source-parse'
 
 export {
   EventPlacement,

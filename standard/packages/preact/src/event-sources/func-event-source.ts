@@ -1,7 +1,7 @@
-import { EventSourceDef } from '../structs/event-source-def'
-import { EventInput } from '../structs/event-parse'
-import { createPlugin } from '../plugin-system'
+import { PluginDefInput } from '../public-api'
 import { buildRangeApiWithTimeZone } from '../structs/date-span'
+import { EventInput } from '../structs/event-parse'
+import { EventSourceDef } from '../structs/event-source-def'
 import { unpromisify } from '../util/promise'
 
 export type EventSourceFuncData = {
@@ -42,7 +42,7 @@ let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 
 }
 
-export const funcEventSourcePlugin = createPlugin({
+export const funcEventSourcePlugin = {
   name: 'func-event-source',
   eventSourceDefs: [eventSourceDef],
-})
+} as PluginDefInput

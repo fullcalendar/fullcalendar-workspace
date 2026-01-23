@@ -1,5 +1,4 @@
-import { createPlugin } from '../../plugin-system'
-import { type PluginDef } from '../../plugin-system-struct'
+import { PluginDefInput } from '../../plugin-system-struct'
 import { type CalendarOptions } from '../../options'
 import { joinClassNames } from '../../util/html'
 
@@ -14,7 +13,7 @@ import { joinClassNames } from '../../util/html'
 // import {} from '@fullcalendar/multimonth'
 
 // HACK until we can import @fullcalendar/preact-scheduler
-declare module '../../options' {
+declare module '@fullcalendar/core-types/protected-api' {
   interface BaseOptions {
     resourceDayHeaderAlign?: any
     resourceDayHeaderClass?: any
@@ -138,7 +137,7 @@ const dayRowCommonClasses: CalendarOptions = {
 const expanderIconClass = 'size-4 not-group-hover:opacity-65'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
-export default createPlugin({
+export default {
   name: 'theme-classic',
   optionDefaults: {
     className: "gap-5 reset-root",
@@ -552,7 +551,7 @@ export default createPlugin({
       nowIndicatorLineClass: 'border-s border-(--fc-classic-now)',
     },
   }
-}) as PluginDef
+} as PluginDefInput
 
 /* SVGs
 ------------------------------------------------------------------------------------------------- */

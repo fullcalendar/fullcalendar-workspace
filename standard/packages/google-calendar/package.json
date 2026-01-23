@@ -7,11 +7,11 @@
   "keywords": [
     "google-calendar"
   ],
-  "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6"
+  "dependencies": {
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
@@ -21,14 +21,15 @@
   },
   "type": "module",
   "buildConfig": {
+    "globalConfig": {
+    },
     "exports": {
       ".": {
-        "module": true,
-        "globalVar": "FullCalendar.GoogleCalendar"
+        "format": "module"
       },
       "./global": {
-        "iife": true,
-        "globalVar": "FullCalendar.GoogleCalendar"
+        "format": "global",
+        "primary": true
       }
     }
   },

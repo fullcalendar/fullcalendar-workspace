@@ -25,7 +25,7 @@ import { ScrollerSyncerClass } from './scrollgrid/ScrollerSyncerInterface'
 export interface PluginDefInput {
   name: string
   premiumReleaseDate?: string
-  deps?: PluginDef[]
+  deps?: PluginDefInput[]
   reducers?: ReducerFunc[]
   isLoadingFuncs?: ((state: Dictionary) => boolean)[]
   contextInit?: (context: CalendarContext) => void
@@ -99,7 +99,6 @@ export interface PluginHooks {
 export interface PluginDef extends PluginHooks {
   id: string
   name: string
-  deps: PluginDef[]
 }
 
 export type ViewPropsTransformerClass = new() => ViewPropsTransformer

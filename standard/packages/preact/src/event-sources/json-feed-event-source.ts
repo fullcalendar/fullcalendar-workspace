@@ -2,9 +2,8 @@ import { requestJson } from '../util/requestJson'
 import { CalendarContext } from '../CalendarContext'
 import { EventSourceDef } from '../structs/event-source-def'
 import { DateRange } from '@full-ui/headless-calendar'
-import { createPlugin } from '../plugin-system'
 import { JSON_FEED_EVENT_SOURCE_REFINERS } from './json-feed-event-source-refiners'
-import { EventInput } from '../api/structs'
+import { EventInput, PluginDefInput } from '../api/structs'
 
 interface JsonFeedMeta {
   url: string
@@ -51,11 +50,11 @@ let eventSourceDef: EventSourceDef<JsonFeedMeta> = {
 
 }
 
-export const jsonFeedEventSourcePlugin = createPlugin({
+export const jsonFeedEventSourcePlugin = {
   name: 'json-event-source',
   eventSourceRefiners: JSON_FEED_EVENT_SOURCE_REFINERS,
   eventSourceDefs: [eventSourceDef],
-})
+} as PluginDefInput
 
 function buildRequestParams(meta: JsonFeedMeta, range: DateRange, context: CalendarContext) {
   let { dateEnv, options } = context

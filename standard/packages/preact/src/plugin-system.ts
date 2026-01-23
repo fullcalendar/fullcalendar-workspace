@@ -5,12 +5,11 @@ import { mergeViewOptionsMap } from './options-manip'
 
 // TODO: easier way to add new hooks? need to update a million things
 
-export function createPlugin(input: PluginDefInput): PluginDef {
+function refinePluginDef(input: PluginDefInput): PluginDef {
   return {
     id: guid(),
     name: input.name,
     premiumReleaseDate: input.premiumReleaseDate ? new Date(input.premiumReleaseDate): undefined,
-    deps: input.deps || [],
     reducers: input.reducers || [],
     isLoadingFuncs: input.isLoadingFuncs || [],
     contextInit: [].concat(input.contextInit || []),
@@ -46,7 +45,7 @@ export function createPlugin(input: PluginDefInput): PluginDef {
   }
 }
 
-function buildPluginHooks(pluginDefs: PluginDef[], globalDefs: PluginDef[]): PluginHooks {
+function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInput[]): PluginHooks {
   let currentPluginIds: { [pluginName: string]: string } = {}
   let hooks: PluginHooks = {
     premiumReleaseDate: undefined,
@@ -84,14 +83,15 @@ function buildPluginHooks(pluginDefs: PluginDef[], globalDefs: PluginDef[]): Plu
     propSetHandlers: {},
   }
 
-  function addDefs(defs: PluginDef[]) {
-    for (let def of defs) {
+  function addDefs(defs: PluginDefInput[]) {
+    for (let unrefinedDef of defs) {
+      const def = refinePluginDef(unrefinedDef)
       const pluginName = def.name
       const currentId = currentPluginIds[pluginName]
 
       if (currentId === undefined) {
         currentPluginIds[pluginName] = def.id
-        addDefs(def.deps)
+        addDefs(unrefinedDef.deps)
         hooks = combineHooks(hooks, def)
       } else if (currentId !== def.id) {
         // different ID than the one already added
@@ -110,11 +110,11 @@ function buildPluginHooks(pluginDefs: PluginDef[], globalDefs: PluginDef[]): Plu
 }
 
 export function buildBuildPluginHooks() { // memoizes
-  let currentOverrideDefs: PluginDef[] = []
-  let currentGlobalDefs: PluginDef[] = []
+  let currentOverrideDefs: PluginDefInput[] = []
+  let currentGlobalDefs: PluginDefInput[] = []
   let currentHooks: PluginHooks
 
-  return (overrideDefs: PluginDef[], globalDefs: PluginDef[]) => {
+  return (overrideDefs: PluginDefInput[], globalDefs: PluginDefInput[]) => {
     if (!currentHooks || !isArraysEqual(overrideDefs, currentOverrideDefs) || !isArraysEqual(globalDefs, currentGlobalDefs)) {
       currentHooks = buildPluginHooks(overrideDefs, globalDefs)
     }

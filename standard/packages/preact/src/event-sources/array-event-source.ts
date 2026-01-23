@@ -1,6 +1,6 @@
-import { createPlugin } from '../plugin-system'
-import { EventSourceDef } from '../structs/event-source-def'
+import { PluginDefInput } from '../public-api'
 import { EventInput } from '../structs/event-parse'
+import { EventSourceDef } from '../structs/event-source-def'
 
 let eventSourceDef: EventSourceDef<EventInput[]> = {
   ignoreRange: true,
@@ -19,7 +19,7 @@ let eventSourceDef: EventSourceDef<EventInput[]> = {
   },
 }
 
-export const arrayEventSourcePlugin = createPlugin({
+export const arrayEventSourcePlugin = {
   name: 'array-event-source',
   eventSourceDefs: [eventSourceDef],
-})
+} as PluginDefInput

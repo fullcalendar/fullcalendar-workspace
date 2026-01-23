@@ -35,6 +35,12 @@ build note:
     manually before `pn dev`
 
 
+plugins will inline utils from @fullcalendar/core-types, no great
+make core-types a real buildable package
+audit imports like
+  import { PluginDefInput } from '../public-api'
+always use identity/Identity from core-types
+  also requestJson ... look at other utils too
 get react/react-scheduler tests working
 manual test todos:
   standard/packages/vanilla-tests/manual/google-calendar.html

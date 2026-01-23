@@ -1,5 +1,6 @@
 import { DateEnv } from '@full-ui/headless-calendar'
-import { BaseOptionsRefined, CalendarListeners } from './options'
+import { BaseOptionsRefined } from '@fullcalendar/core-types/protected-api'
+import { CalendarListeners } from './options'
 import { PluginHooks } from './plugin-system-struct'
 import { Emitter } from './common/Emitter'
 import { Action } from './reducers/Action'

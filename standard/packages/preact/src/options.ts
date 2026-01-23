@@ -1,3 +1,4 @@
+import { BaseOptions, BaseOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 import { DateProfileGeneratorClass } from './DateProfileGenerator'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarController } from './CalendarController'
@@ -39,7 +40,6 @@ import {
   NowIndicatorLineData,
   NowIndicatorLineMountData,
   OverlapFunc,
-  PluginDef,
   SlotHeaderData, SlotHeaderMountData,
   SlotLaneData, SlotLaneMountData,
   SpecificViewData, SpecificViewMountData,
@@ -61,6 +61,7 @@ import {
   DayHeaderMountData,
   DayCellMountData,
   DayCellData,
+  PluginDefInput,
 } from './api/structs'
 import { TableHeaderData } from './common/TableAndSubsections'
 import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
@@ -360,7 +361,7 @@ export const BASE_OPTION_REFINERS = {
   eventMinWidth: Number,
   eventShortHeight: Number,
   slotEventOverlap: Boolean,
-  plugins: identity as Identity<PluginDef[]>,
+  plugins: identity as Identity<PluginDefInput[]>,
   firstDay: Number,
   dayCount: Number,
   dateAlignment: String,
@@ -481,12 +482,9 @@ export const BASE_OPTION_REFINERS = {
 
 type BaseOptionRefiners = typeof BASE_OPTION_REFINERS
 
-export interface BaseOptions extends RawOptionsFromRefiners<BaseOptionRefiners> {
-  // for ambient extending
-}
-
-export interface BaseOptionsRefined extends RefinedOptionsFromRefiners<BaseOptionRefiners> {
-  // for ambient extending
+declare module '@fullcalendar/core-types/protected-api' {
+  interface BaseOptions extends RawOptionsFromRefiners<BaseOptionRefiners> {}
+  interface BaseOptionsRefined extends RefinedOptionsFromRefiners<BaseOptionRefiners> {}
 }
 
 // do NOT give a type here. need `typeof BASE_OPTION_DEFAULTS` to give real results.
@@ -604,7 +602,7 @@ export interface CalendarListenersRefined extends RefinedOptionsFromRefiners<Cal
 
 export const CALENDAR_ONLY_OPTION_REFINERS = { // does not include base nor calendar listeners
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
-  plugins: identity as Identity<PluginDef[]>,
+  plugins: identity as Identity<PluginDefInput[]>,
   initialEvents: identity as Identity<EventSourceInput>,
   events: identity as Identity<EventSourceInput>,
   eventSources: identity as Identity<EventSourceInput[]>,
@@ -712,18 +710,6 @@ export type GenericRefiners = {
 
 export type GenericListenerRefiners = {
   [listenerName: string]: Identity<(this: CalendarApi, ...args: any[]) => void>
-}
-
-export type RawOptionsFromRefiners<Refiners extends GenericRefiners> = {
-  [Prop in keyof Refiners]?: // all optional
-    Refiners[Prop] extends ((input: infer RawType) => infer RefinedType)
-      ? (any extends RawType ? RefinedType : RawType) // if input type `any`, use output (for Boolean/Number/String)
-      : never
-}
-
-export type RefinedOptionsFromRefiners<Refiners extends GenericRefiners> = {
-  [Prop in keyof Refiners]?: // all optional
-    Refiners[Prop] extends ((input: any) => infer RefinedType) ? RefinedType : never
 }
 
 export type DefaultedRefinedOptions<RefinedOptions extends Dictionary, DefaultKey extends keyof RefinedOptions> =

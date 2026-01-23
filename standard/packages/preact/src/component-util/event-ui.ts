@@ -1,7 +1,8 @@
+import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
 import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constraint'
 import { joinArrayishClassNames } from '../util/html'
 import { CalendarContext } from '../CalendarContext'
-import { RawOptionsFromRefiners, RefinedOptionsFromRefiners, identity, Identity } from '../options'
+import { identity, Identity } from '../options'
 
 // TODO: better called "EventSettings" or "EventConfig"
 // TODO: move this file into structs

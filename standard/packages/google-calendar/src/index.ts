@@ -1,13 +1,12 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
 import { eventSourceDef } from './event-source-def'
 import { OPTION_REFINERS, EVENT_SOURCE_REFINERS } from './options'
 import './ambient'
 
-export default createPlugin({
-  name: '<%= pkgName %>',
+export default {
+  name: 'google-calendar',
   eventSourceDefs: [eventSourceDef],
   optionRefiners: OPTION_REFINERS,
   eventSourceRefiners: EVENT_SOURCE_REFINERS,
-}) as PluginDef
+}
 
 export { GoogleCalendarOptions } from './options'

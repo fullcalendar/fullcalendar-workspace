@@ -2167,6 +2167,12 @@ importers:
         version: 19.2.3(react@19.2.3)
     publishDirectory: ./dist
 
+  standard/packages/core-types:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+
   standard/packages/daygrid:
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -2193,13 +2199,17 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/google-calendar:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
     publishDirectory: ./dist
 
   standard/packages/headless-calendar:
@@ -2213,13 +2223,20 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/icalendar:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
       ical.js:
         specifier: ^2.0.0
         version: 2.1.0
@@ -2261,13 +2278,20 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/luxon3:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
       '@types/luxon':
         specifier: ^3.3.0
         version: 3.4.2
@@ -2277,13 +2301,20 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/moment:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
       moment:
         specifier: ^2.29.1
         version: 2.30.1
@@ -2336,6 +2367,9 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2381,13 +2415,20 @@ importers:
     publishDirectory: ./dist
 
   standard/packages/rrule:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core/dist
       rrule:
         specifier: ^2.6.0
         version: 2.8.1

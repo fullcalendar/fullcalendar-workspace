@@ -1,19 +1,21 @@
-import { JsonRequestError } from '@fullcalendar/core'
-import { EventSourceDef, addDays, DateEnv, requestJson, Dictionary } from '@fullcalendar/core/internal'
+import { BaseOptions, JsonRequestError, requestJson } from '@fullcalendar/core-types/protected-api'
+import { addDays, DateEnv, DateRange } from '@full-ui/headless-calendar'
 
 // TODO: expose somehow
 const API_BASE = 'https://www.googleapis.com/calendar/v3/calendars'
 
-interface GCalMeta {
+export interface GCalMeta {
   googleCalendarId: string
   googleCalendarApiKey?: string
   googleCalendarApiBase?: string,
-  extraParams?: Dictionary | (() => Dictionary)
+  extraParams?: Record<string, any> | (() => Record<string, any>)
 }
 
-export const eventSourceDef: EventSourceDef<GCalMeta> = {
+export const eventSourceDef = {
 
-  parseMeta(refined): GCalMeta | null {
+  parseMeta(
+    refined: any // wtf -- GCalMeta & { url: string }
+  ): GCalMeta | null {
     let { googleCalendarId } = refined
 
     if (!googleCalendarId && refined.url) {
@@ -32,7 +34,20 @@ export const eventSourceDef: EventSourceDef<GCalMeta> = {
     return null
   },
 
-  fetch(arg, successCallback, errorCallback) {
+  fetch(
+    arg: {
+      range: DateRange
+      eventSource: any & { // wtf
+        meta: GCalMeta
+      }
+      context: any & { // wtf
+        dateEnv: DateEnv
+        options: BaseOptions
+      }
+    },
+    successCallback: any, // TODO
+    errorCallback: any, // TODO
+  ) {
     let { dateEnv, options } = arg.context
     let meta: GCalMeta = arg.eventSource.meta
     let apiKey = meta.googleCalendarApiKey || options.googleCalendarApiKey
@@ -106,7 +121,7 @@ function buildUrl(meta) {
   return apiBase + '/' + encodeURIComponent(meta.googleCalendarId) + '/events'
 }
 
-function buildRequestParams(range, apiKey: string, extraParams: Dictionary, dateEnv: DateEnv) {
+function buildRequestParams(range, apiKey: string, extraParams: Record<string, any>, dateEnv: DateEnv) {
   let params
   let startStr
   let endStr

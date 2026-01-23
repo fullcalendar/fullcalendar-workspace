@@ -1,5 +1,4 @@
-import { createPlugin } from '../../plugin-system'
-import { PluginDef } from '../../plugin-system-struct'
+import { PluginDefInput } from '../../plugin-system-struct'
 import { CalendarOptions } from '../../options'
 import { DayHeaderData, DayCellData } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
@@ -15,7 +14,7 @@ import { joinClassNames } from '../../util/html'
 // import {} from '@fullcalendar/multimonth'
 
 // HACK until we can import @fullcalendar/preact-scheduler
-declare module '../../options' {
+declare module '@fullcalendar/core-types/protected-api' {
   interface BaseOptions {
     resourceDayHeaderAlign?: any
     resourceDayHeaderClass?: any
@@ -193,7 +192,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
 }
 
-export default createPlugin({
+export default {
   name: 'theme-breezy',
   optionDefaults: {
     className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden reset-root",
@@ -749,7 +748,7 @@ export default createPlugin({
       slotHeaderDividerClass: 'border-b border-(--fc-breezy-strong-border) shadow-sm',
     },
   },
-}) as PluginDef
+} as PluginDefInput
 
 /* SVGs
 ------------------------------------------------------------------------------------------------- */

@@ -1,4 +1,4 @@
-import { Dictionary, identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from "@fullcalendar/core/internal"
+import { identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from "@fullcalendar/core-types/protected-api"
 
 export const OPTION_REFINERS = {
   googleCalendarApiKey: String,
@@ -12,7 +12,7 @@ export const EVENT_SOURCE_REFINERS = {
   googleCalendarApiKey: String, // TODO: rename with no prefix?
   googleCalendarId: String,
   googleCalendarApiBase: String,
-  extraParams: identity as Identity<Dictionary | (() => Dictionary)>,
+  extraParams: identity as Identity<Record<string, any> | (() => Record<string, any>)>,
 }
 
 type GoogleCalendarEventSourceRefiners = typeof EVENT_SOURCE_REFINERS

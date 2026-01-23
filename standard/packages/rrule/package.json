@@ -7,12 +7,15 @@
     "rrule"
   ],
   "homepage": "https://fullcalendar.io/docs/rrule-plugin",
+  "dependencies": {
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6"
+  },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "rrule": "^2.6.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*",
     "rrule": "^2.6.0"
   },
