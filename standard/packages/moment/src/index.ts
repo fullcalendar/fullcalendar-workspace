@@ -1,9 +1,6 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
 import { formatWithCmdStr } from './format'
 
-export default createPlugin({
-  name: '<%= pkgName %>',
+export default {
+  name: 'moment',
   cmdFormatter: formatWithCmdStr,
-}) as PluginDef
-
-export { toMoment, toMomentDuration } from './convert'
+}

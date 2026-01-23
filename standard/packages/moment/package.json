@@ -9,8 +9,7 @@
   "homepage": "https://fullcalendar.io/docs/moment-plugin",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6"
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
     "moment": "^2.29.1"
@@ -26,18 +25,22 @@
   },
   "type": "module",
   "buildConfig": {
-    "exports": {
-      ".": {
-        "module": true,
-        "globalVar": "FullCalendar.Moment"
-      },
-      "./global": {
-        "iife": true,
-        "globalVar": "FullCalendar.Moment"
+    "globalConfig": {
+      "externalPkgs": [
+        "moment"
+      ],
+      "externalGlobals": {
+        "moment": "moment"
       }
     },
-    "dependencyGlobalVars": {
-      "moment": "moment"
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./global": {
+        "format": "global",
+        "primary": true
+      }
     }
   },
   "publishConfig": {

@@ -1,25 +1,4 @@
 import moment from 'moment'
-import { CalendarApi, Duration } from '@fullcalendar/core'
-import { CalendarApiImpl } from '@fullcalendar/core/internal'
-
-export function toMoment(date: Date, calendar: CalendarApi): moment.Moment {
-  if (!(calendar instanceof CalendarApiImpl)) {
-    throw new Error('must supply a CalendarApi instance')
-  }
-
-  let { dateEnv } = calendar.getCurrentData()
-
-  return convertToMoment(
-    date,
-    dateEnv.timeZone,
-    null,
-    dateEnv.locale.codes[0],
-  )
-}
-
-export function toMomentDuration(fcDuration: Duration): moment.Duration {
-  return moment.duration(fcDuration) // moment accepts all the props that fc.Duration already has!
-}
 
 // Internal Utils
 
