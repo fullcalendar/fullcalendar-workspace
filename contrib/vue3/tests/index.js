@@ -1,9 +1,13 @@
 import { nextTick, defineAsyncComponent, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { mount as _mount } from '@vue/test-utils'
+
+/*
+Must be built for running tests
+*/
 import FullCalendar from '../dist/index.js'
-import classicThemePlugin from '@fullcalendar/theme-classic'
-import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '../dist/themes/classic.js'
+import dayGridPlugin from '../dist/daygrid.js'
 
 const INITIAL_DATE = '2019-05-15'
 

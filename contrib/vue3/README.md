@@ -8,7 +8,7 @@ The official [Vue 3](https://vuejs.org/) component for [FullCalendar](https://fu
 Install the Vue 3 connector, the core package, and any plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/vue3 @fullcalendar/core @fullcalendar/daygrid
+npm install @fullcalendar/vue3
 ```
 
 ## Usage
@@ -18,12 +18,12 @@ Render a `FullCalendar` component, supplying an [options](https://fullcalendar.i
 ```vue
 <script>
 import FullCalendar from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/theme-classic'
-import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/vue3/themes/classic'
+import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/vue3/skeleton.css'
+import '@fullcalendar/vue3/themes/classic/theme.css'
+import '@fullcalendar/vue3/themes/classic/palette.css'
 
 export default {
   components: {

@@ -1,6 +1,6 @@
 import React, { createRef, act } from 'react'
 import { render } from '@testing-library/react'
-import FullCalendar from '@fullcalendar/react2'
+import FullCalendar from '@fullcalendar/react'
 
 /*
 Only works on build dist code!

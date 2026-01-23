@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, forwardRef } from '@angular/core';
-import { CalendarOptions, Calendar, EventClickData } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin, { DateClickData, EventDragStopData } from '@fullcalendar/interaction';
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { FullCalendarComponent, CalendarOptions, Calendar, EventClickData } from '@fullcalendar/angular';
+import classicThemePlugin from '@fullcalendar/angular/themes/classic';
+import dayGridPlugin from '@fullcalendar/angular/daygrid';
+import interactionPlugin, { DateClickData, EventDragStopData } from '@fullcalendar/angular/interaction';
 
 @Component({
   selector: 'app-root',

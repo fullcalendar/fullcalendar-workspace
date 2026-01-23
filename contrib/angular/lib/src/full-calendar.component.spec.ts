@@ -2,13 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FullCalendarModule } from './full-calendar.module';
 import { FullCalendarComponent } from './full-calendar.component';
-import { CalendarOptions } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/theme-classic';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+
+import { CalendarOptions } from '@fullcalendar/angular';
+import classicThemePlugin from '@fullcalendar/angular/themes/classic';
+import dayGridPlugin from '@fullcalendar/angular/daygrid';
+import interactionPlugin from '@fullcalendar/angular/interaction';
+import listPlugin from '@fullcalendar/angular/list';
+import resourceTimeGridPlugin from '@fullcalendar/angular-scheduler/resource-timegrid';
+import resourceTimelinePlugin from '@fullcalendar/angular-scheduler/resource-timeline';
 
 const DEFAULT_OPTIONS = {
   plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],

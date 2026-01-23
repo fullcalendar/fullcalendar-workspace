@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/react2",
+  "name": "@fullcalendar/react",
   "version": "7.0.0-beta.6",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",

@@ -8,7 +8,7 @@ The official [Angular](https://angular.io/) Component for [FullCalendar](https:/
 Install the Angular connector, the core package, and any plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/angular @fullcalendar/core @fullcalendar/daygrid
+npm install @fullcalendar/angular
 ```
 
 ## Usage
@@ -39,8 +39,8 @@ Then, use the `full-calendar` component, supplying an [options](https://fullcale
 
 ```js
 import { Component } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import { CalendarOptions } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/angular/daygrid';
 
 @Component({
   selector: 'app-root',
