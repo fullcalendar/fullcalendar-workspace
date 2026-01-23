@@ -95,6 +95,10 @@ export async function watchBundles(
       dtsEnabled && buildDtsOptions(pkgBundleStruct),
     ].filter(Boolean) as RollupWatchOptions[]
 
+    if (!optionsObjs.length) {
+      return () => {}
+    }
+
     const rollupWatcher = rollupWatch(optionsObjs)
     await new Promise<void>((resolve) => {
       rollupWatcher.on('event', (ev) => {

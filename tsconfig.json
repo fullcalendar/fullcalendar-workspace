@@ -5,10 +5,34 @@
       "path": "premium/packages/headless-grid"
     },
     {
-      "path": "premium/packages/vanilla-scheduler-tests"
+      "path": "standard/packages/preact"
+    },
+    {
+      "path": "premium/packages/preact-scheduler"
+    },
+    {
+      "path": "standard/packages/react"
+    },
+    {
+      "path": "premium/packages/react-scheduler"
     },
     {
       "path": "standard/packages/vanilla"
+    },
+    {
+      "path": "standard/packages/vanilla-tests"
+    },
+    {
+      "path": "premium/packages/vanilla-scheduler"
+    },
+    {
+      "path": "premium/packages/vanilla-scheduler-tests"
+    },
+    {
+      "path": "standard/packages/web-component"
+    },
+    {
+      "path": "premium/packages/web-component-scheduler"
     },
     {
       "path": "standard/packages/google-calendar"
@@ -27,12 +51,6 @@
     },
     {
       "path": "standard/packages/rrule"
-    },
-    {
-      "path": "standard/packages/web-component"
-    },
-    {
-      "path": "standard/packages/vanilla-tests"
     },
     {
       "path": "theming/theme-breezy-tailwind"
