@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 
 import { eventStoreContext } from "./event-store";
-import { formatDate, EventInput } from "@fullcalendar/core";
+import { formatDate, EventInput } from "@fullcalendar/react";
 
 export const Sidebar = observer(function Sidebar() {
   const eventStore = useContext(eventStoreContext);

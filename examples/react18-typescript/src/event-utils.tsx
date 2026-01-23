@@ -1,4 +1,4 @@
-import { EventInput } from '@fullcalendar/core'
+import { EventInput } from '@fullcalendar/react'
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today

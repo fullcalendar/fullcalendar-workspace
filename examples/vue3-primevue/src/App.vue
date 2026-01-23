@@ -3,15 +3,15 @@
   import SelectButton from 'primevue/selectbutton'
 
   import FullCalendar, { useCalendarController } from '@fullcalendar/vue3'
-  import themePlugin from '@fullcalendar/theme-forma'
-  import dayGridPlugin from '@fullcalendar/daygrid'
-  import timeGridPlugin from '@fullcalendar/timegrid'
-  import multiMonthPlugin from '@fullcalendar/multimonth'
-  import interactionPlugin from '@fullcalendar/interaction'
+  import themePlugin from '@fullcalendar/vue3/themes/forma'
+  import dayGridPlugin from '@fullcalendar/vue3/daygrid'
+  import timeGridPlugin from '@fullcalendar/vue3/timegrid'
+  import multiMonthPlugin from '@fullcalendar/vue3/multimonth'
+  import interactionPlugin from '@fullcalendar/vue3/interaction'
 
-  import '@fullcalendar/core/skeleton.css'
-  import '@fullcalendar/theme-forma/theme.css'
-  import '@fullcalendar/theme-forma/palettes/green.css'
+  import '@fullcalendar/vue3/skeleton.css'
+  import '@fullcalendar/vue3/themes/forma/theme.css'
+  import '@fullcalendar/vue3/themes/forma/palettes/green.css'
 
   const controller = useCalendarController()
   const buttons = controller.getButtonState()

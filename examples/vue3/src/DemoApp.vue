@@ -1,15 +1,15 @@
 <script>
 import { defineComponent } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/theme-classic'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import classicThemePlugin from '@fullcalendar/vue3/themes/classic'
+import dayGridPlugin from '@fullcalendar/vue3/daygrid'
+import timeGridPlugin from '@fullcalendar/vue3/timegrid'
+import interactionPlugin from '@fullcalendar/vue3/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 
-import '@fullcalendar/core/skeleton.css'
-import '@fullcalendar/theme-classic/theme.css'
-import '@fullcalendar/theme-classic/palette.css'
+import '@fullcalendar/vue3/skeleton.css'
+import '@fullcalendar/vue3/themes/classic/theme.css'
+import '@fullcalendar/vue3/themes/classic/palette.css'
 
 export default defineComponent({
   components: {

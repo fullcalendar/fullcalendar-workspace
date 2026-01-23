@@ -9,12 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.6",
-    "@fullcalendar/multimonth": "workspace:7.0.0-beta.6",
-    "@fullcalendar/theme-forma": "workspace:7.0.0-beta.6",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.6",
     "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
     "@primeuix/themes": "^2.0.2",
     "primeicons": "^7.0.0",

@@ -18,7 +18,6 @@
     "url": "https://github.com/fullcalendar/fullcalendar-vue.git"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "vue": "^3.0.11"
   },
   "devDependencies": {

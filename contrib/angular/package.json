@@ -18,8 +18,7 @@
   },
   "peerDependencies": {
     "@angular/common": "13 - 21",
-    "@angular/core": "13 - 21",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6"
+    "@angular/core": "13 - 21"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",

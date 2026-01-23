@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { observable, action } from "mobx";
-import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/core";
+import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/react";
 
 export class EventStore {
   @observable
