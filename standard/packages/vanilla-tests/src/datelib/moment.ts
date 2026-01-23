@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
-import momentPlugin, { toMoment, toMomentDuration } from '@fullcalendar/moment'
+import momentPlugin from '@fullcalendar/moment'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -11,64 +11,6 @@ import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 describe('moment plugin', () => {
   const PLUGINS = [classicThemePlugin, themeForTestsPlugin, dayGridPlugin, timeGridPlugin, momentPlugin]
   pushOptions({ plugins: PLUGINS })
-
-  describe('toMoment', () => {
-    describe('timezone handling', () => {
-      it('transfers UTC', () => {
-        let calendar = new Calendar(document.createElement('div'), {
-          plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
-          events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-          timeZone: 'UTC',
-        })
-        let event = calendar.getEvents()[0]
-        let startMom = toMoment(event.start, calendar)
-        let endMom = toMoment(event.end, calendar)
-        expect(startMom.format()).toEqual('2018-09-05T12:00:00Z')
-        expect(endMom.format()).toEqual('2018-09-05T18:00:00Z')
-      })
-
-      it('transfers local', () => {
-        let calendar = new Calendar(document.createElement('div'), {
-          plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
-          events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-          timeZone: 'local',
-        })
-        let event = calendar.getEvents()[0]
-        let startMom = toMoment(event.start, calendar)
-        let endMom = toMoment(event.end, calendar)
-        expect(startMom.toDate()).toEqualLocalDate('2018-09-05T12:00:00')
-        expect(endMom.toDate()).toEqualLocalDate('2018-09-05T18:00:00')
-      })
-    })
-
-    it('transfers locale', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
-        events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-        locale: 'es',
-      })
-      let event = calendar.getEvents()[0]
-      let mom = toMoment(event.start, calendar)
-      expect(mom.locale()).toEqual('es')
-    })
-  })
-
-  describe('toDuration', () => {
-    it('converts correctly', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
-        defaultTimedEventDuration: '05:00',
-        defaultAllDayEventDuration: { days: 3 },
-      })
-
-      // hacky way to have a duration parsed
-      let timedDuration = toMomentDuration(calendar.getCurrentData().options.defaultTimedEventDuration)
-      let allDayDuration = toMomentDuration(calendar.getCurrentData().options.defaultAllDayEventDuration)
-
-      expect(timedDuration.asHours()).toBe(5)
-      expect(allDayDuration.asDays()).toBe(3)
-    })
-  })
 
   describe('date formatting', () => {
     it('produces event time text', () => {

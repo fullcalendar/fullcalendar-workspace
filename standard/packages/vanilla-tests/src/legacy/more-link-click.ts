@@ -1,7 +1,3 @@
-import dayGridPlugin from '@fullcalendar/daygrid'
-import momentTimeZonePlugin from '@fullcalendar/moment-timezone'
-import classicThemePlugin from '@fullcalendar/theme-classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('moreLinkClick', () => {
@@ -176,28 +172,28 @@ describe('moreLinkClick', () => {
     })
   })
 
-  describe('with moment-timezone resolution', () => {
-    pushOptions({
-      plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin, momentTimeZonePlugin],
-      timeZone: 'Asia/Hong_Kong',
-    })
+  // xdescribe('with moment-timezone resolution', () => {
+  //   pushOptions({
+  //     plugins: [classicThemePlugin, themeForTestsPlugin, dayGridPlugin, momentTimeZonePlugin],
+  //     timeZone: 'Asia/Hong_Kong',
+  //   })
 
-    it('gives date data correct timezone', (done) => {
-      let handled = false
-      let calendar = initCalendar({
-        moreLinkClick(data) {
-          expect(typeof data).toBe('object')
-          expect(data.date).toEqualDate('2014-07-28T16:00:00')
-          handled = true
-        },
-      })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+  //   it('gives date data correct timezone', (done) => {
+  //     let handled = false
+  //     let calendar = initCalendar({
+  //       moreLinkClick(data) {
+  //         expect(typeof data).toBe('object')
+  //         expect(data.date).toEqualDate('2014-07-28T16:00:00')
+  //         handled = true
+  //       },
+  //     })
+  //     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        expect(handled).toBe(true)
-        done()
-      })
-    })
-  })
+  //     dayGridWrapper.openMorePopover()
+  //     setTimeout(() => {
+  //       expect(handled).toBe(true)
+  //       done()
+  //     })
+  //   })
+  // })
 })

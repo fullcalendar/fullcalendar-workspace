@@ -2503,9 +2503,6 @@ importers:
       '@fullcalendar/moment':
         specifier: workspace:*
         version: link:../moment/dist
-      '@fullcalendar/moment-timezone':
-        specifier: workspace:*
-        version: link:../moment-timezone/dist
       '@fullcalendar/multimonth':
         specifier: workspace:*
         version: link:../multimonth/dist
@@ -2530,12 +2527,6 @@ importers:
       preact:
         specifier: ~10.23.1
         version: 10.23.2
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
       xhr-mock:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2552,12 +2543,6 @@ importers:
       '@types/jquery':
         specifier: ^3.3.29
         version: 3.5.32
-      '@types/react':
-        specifier: ^19.2.7
-        version: 19.2.9
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.9)
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@3.3.2)

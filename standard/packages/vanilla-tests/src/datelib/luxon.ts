@@ -1,11 +1,9 @@
 import { Calendar } from '@fullcalendar/core'
-import esLocale from '@fullcalendar/core/locales/es'
-import luxonPlugin, { toLuxonDateTime, toLuxonDuration } from '@fullcalendar/luxon3'
+import luxonPlugin from '@fullcalendar/luxon3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import classicThemePlugin from '@fullcalendar/theme-classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { testTimeZoneImpl } from '../lib/timeZoneImpl.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
@@ -20,98 +18,6 @@ describe('luxon plugin', () => {
 
   pushOptions({ // for initCalendar
     plugins: PLUGINS,
-  })
-
-  testTimeZoneImpl(luxonPlugin)
-
-  describe('toLuxonDateTime', () => {
-    describe('timezone transfering', () => {
-      it('transfers UTC', () => {
-        let calendar = new Calendar(document.createElement('div'), {
-          plugins: PLUGINS,
-          events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-          timeZone: 'UTC',
-        })
-        let event = calendar.getEvents()[0]
-        let start = toLuxonDateTime(event.start, calendar)
-        let end = toLuxonDateTime(event.end, calendar)
-        expect(start.toISO()).toBe('2018-09-05T12:00:00.000Z')
-        expect(start.zoneName).toBe('UTC')
-        expect(end.toISO()).toBe('2018-09-05T18:00:00.000Z')
-        expect(end.zoneName).toBe('UTC')
-      })
-
-      it('transfers local timezone', () => {
-        let calendar = new Calendar(document.createElement('div'), {
-          plugins: PLUGINS,
-          events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-          timeZone: 'local',
-        })
-        let event = calendar.getEvents()[0]
-        let start = toLuxonDateTime(event.start, calendar)
-        let end = toLuxonDateTime(event.end, calendar)
-        expect(start.toJSDate()).toEqualLocalDate('2018-09-05T12:00:00')
-        expect(start.zoneName).toMatch('/') // has a named timezone
-        expect(end.toJSDate()).toEqualLocalDate('2018-09-05T18:00:00')
-        expect(end.zoneName).toMatch('/') // has a named timezone
-      })
-
-      it('transfers named timezone', () => {
-        let calendar = new Calendar(document.createElement('div'), {
-          plugins: PLUGINS,
-          events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-          timeZone: 'Europe/Moscow',
-        })
-        let event = calendar.getEvents()[0]
-        let start = toLuxonDateTime(event.start, calendar)
-        let end = toLuxonDateTime(event.end, calendar)
-        expect(start.toJSDate()).toEqualDate('2018-09-05T12:00:00+03:00')
-        expect(start.zoneName).toMatch('Europe/Moscow')
-        expect(end.toJSDate()).toEqualDate('2018-09-05T18:00:00+03:00')
-        expect(end.zoneName).toMatch('Europe/Moscow')
-      })
-    })
-
-    it('transfers locale', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: PLUGINS,
-        events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
-        locale: esLocale,
-      })
-      let event = calendar.getEvents()[0]
-      let datetime = toLuxonDateTime(event.start, calendar)
-      expect(datetime.locale).toEqual('es')
-    })
-  })
-
-  describe('toLuxonDuration', () => {
-    it('converts numeric values correctly', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: PLUGINS,
-        defaultTimedEventDuration: '05:00',
-        defaultAllDayEventDuration: { days: 3 },
-      })
-
-      // hacky way to have a duration parsed
-      let timedDuration = toLuxonDuration(calendar.getCurrentData().options.defaultTimedEventDuration, calendar)
-      let allDayDuration = toLuxonDuration(calendar.getCurrentData().options.defaultAllDayEventDuration, calendar)
-
-      expect(timedDuration.as('hours')).toBe(5)
-      expect(allDayDuration.as('days')).toBe(3)
-    })
-
-    it('transfers locale correctly', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: PLUGINS,
-        defaultTimedEventDuration: '05:00',
-        locale: esLocale,
-      })
-
-      // hacky way to have a duration parsed
-      let timedDuration = toLuxonDuration(calendar.getCurrentData().options.defaultTimedEventDuration, calendar)
-
-      expect(timedDuration.locale).toBe('es')
-    })
   })
 
   describe('date formatting', () => {
@@ -226,24 +132,6 @@ describe('luxon plugin', () => {
 
       // must be different
       expect(Math.abs(nowIndicatorY1 - nowIndicatorY0)).toBeGreaterThan(100)
-    })
-  })
-
-  // https://github.com/fullcalendar/fullcalendar/issues/7633
-  xdescribe('date headers', () => {
-    it('don\'t fall into DST', () => {
-      const dayNumbers = []
-      initCalendar({
-        timeZone: 'Asia/Beirut',
-        initialView: 'timeGridWeek',
-        initialDate: '2024-03-31',
-        firstDay: 3,
-        dayHeaderContent(arg) {
-          dayNumbers.push(toLuxonDateTime(arg.date, arg.view.calendar).day)
-          return true // render default
-        },
-      })
-      expect(dayNumbers).toEqual([27, 28, 29, 30, 31, 1, 2])
     })
   })
 })

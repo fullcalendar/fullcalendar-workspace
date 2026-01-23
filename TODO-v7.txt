@@ -52,6 +52,14 @@ search and destroy
   theme-class (and theme-*)
   /internal
   /internal-classnames
+reuse for new tz lib
+  xit('won\'t accidentally clip dates when calendar has non-UTC timezone'
+  xdescribe('with moment-timezone resolution'
+  xit('updates rrule timed events when timeZone changes'
+  xit('when timeZone changes, events with unspecified timezone offsets move'
+  xdescribe('with non-recurring timed events and luxon plugin'
+use testTimeZoneImpl on whatever new tz lib
+remove luxon hack about date header tz
 
 
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
