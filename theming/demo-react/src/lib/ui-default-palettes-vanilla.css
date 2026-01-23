@@ -1,6 +1,6 @@
 
 /* different because didn't need color-split */
-@import "@fullcalendar/theme-classic/palette.css";
+@import "@fullcalendar/react/themes/classic/palette.css";
 
 @import "@fullcalendar/theme-breezy-tailwind/ui-default-palettes-vanilla.css";
 @import "@fullcalendar/theme-pulse-tailwind/ui-default-palettes-vanilla.css";

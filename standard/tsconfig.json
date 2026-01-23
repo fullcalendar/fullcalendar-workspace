@@ -2,25 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "bundle"
-    },
-    {
-      "path": "packages/core"
-    },
-    {
-      "path": "packages/daygrid"
-    },
-    {
       "path": "packages/google-calendar"
     },
     {
+      "path": "packages/headless-calendar"
+    },
+    {
       "path": "packages/icalendar"
-    },
-    {
-      "path": "packages/interaction"
-    },
-    {
-      "path": "packages/list"
     },
     {
       "path": "packages/luxon3"
@@ -29,16 +17,19 @@
       "path": "packages/moment"
     },
     {
-      "path": "packages/moment-timezone"
+      "path": "packages/preact"
     },
     {
-      "path": "packages/multimonth"
+      "path": "packages/react"
     },
     {
       "path": "packages/rrule"
     },
     {
-      "path": "packages/timegrid"
+      "path": "packages/vanilla"
+    },
+    {
+      "path": "packages/vanilla-tests"
     },
     {
       "path": "packages/web-component"

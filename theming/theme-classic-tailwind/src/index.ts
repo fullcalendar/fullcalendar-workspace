@@ -4,7 +4,7 @@ import { defaultUiEventCalendarOptions } from './ui-default-options-event-calend
 import { defaultUiSchedulerOnlyOptions } from './ui-default-options-scheduler.js'
 
 export default createPlugin({
-  name: '@fullcalendar/theme-classic',
+  name: 'theme-classic',
   optionDefaults: mergeCalendarOptions(
     defaultUiEventCalendarOptions.optionDefaults,
     defaultUiSchedulerOnlyOptions.optionDefaults,

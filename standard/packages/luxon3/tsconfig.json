@@ -10,8 +10,5 @@
     "./src/**/*"
   ],
   "references": [
-    {
-      "path": "../core"
-    }
   ]
 }

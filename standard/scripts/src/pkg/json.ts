@@ -63,9 +63,11 @@ export async function writeDistPkgJson(
       const esmPath = entrySubpath + esmExtension
 
       const typesPath =
-        entryConfig.types
-          ? typesRoot + '/' + entryConfig.types + '.d.ts'
-          : entrySubpath.replace(/^\./, typesRoot) + '.d.ts'
+        (isDev && entryConfig.src)
+          ? typesRoot + '/' + entryConfig.src + '.d.ts'
+          : entryConfig.types
+            ? typesRoot + '/' + entryConfig.types + '.d.ts'
+            : entrySubpath.replace(/^\./, typesRoot) + '.d.ts'
 
       exportsMap[entryName] = {
         types: typesPath,

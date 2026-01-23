@@ -1,7 +1,7 @@
 import { writeDistPkgJsons } from './json.ts'
 import { deleteBuiltFiles } from './pkg/build.ts'
 import { watchBundles } from './pkg/bundle.ts'
-import { PkgJsonBuildConfig } from './pkg/utils/bundle-struct.ts'
+import { type PkgJsonBuildConfig } from './pkg/utils/bundle-struct.ts'
 import {
   type MonorepoStruct,
   type PkgStruct,

@@ -2,40 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "premium/packages/adaptive"
-    },
-    {
       "path": "premium/packages/headless-grid"
     },
     {
-      "path": "premium/packages/premium-common"
+      "path": "premium/packages/vanilla-scheduler-tests"
     },
     {
-      "path": "premium/packages/resource"
-    },
-    {
-      "path": "premium/packages/resource-daygrid"
-    },
-    {
-      "path": "premium/packages/resource-timegrid"
-    },
-    {
-      "path": "premium/packages/resource-timeline"
-    },
-    {
-      "path": "premium/packages/scrollgrid"
-    },
-    {
-      "path": "premium/packages/timeline"
-    },
-    {
-      "path": "premium/tests"
-    },
-    {
-      "path": "standard/packages/core"
-    },
-    {
-      "path": "standard/packages/daygrid"
+      "path": "standard/packages/vanilla"
     },
     {
       "path": "standard/packages/google-calendar"
@@ -47,49 +20,19 @@
       "path": "standard/packages/icalendar"
     },
     {
-      "path": "standard/packages/interaction"
-    },
-    {
-      "path": "standard/packages/list"
-    },
-    {
       "path": "standard/packages/luxon3"
     },
     {
       "path": "standard/packages/moment"
     },
     {
-      "path": "standard/packages/moment-timezone"
-    },
-    {
-      "path": "standard/packages/multimonth"
-    },
-    {
       "path": "standard/packages/rrule"
-    },
-    {
-      "path": "standard/packages/timegrid"
     },
     {
       "path": "standard/packages/web-component"
     },
     {
-      "path": "standard/tests"
-    },
-    {
-      "path": "standard/theming/theme-breezy"
-    },
-    {
-      "path": "standard/theming/theme-classic"
-    },
-    {
-      "path": "standard/theming/theme-forma"
-    },
-    {
-      "path": "standard/theming/theme-monarch"
-    },
-    {
-      "path": "standard/theming/theme-pulse"
+      "path": "standard/packages/vanilla-tests"
     },
     {
       "path": "theming/theme-breezy-tailwind"

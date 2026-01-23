@@ -28,40 +28,10 @@
   ],
   "references": [
     {
-      "path": "../../premium/packages/adaptive"
+      "path": "../../premium/packages/react-scheduler"
     },
     {
-      "path": "../../premium/packages/resource-daygrid"
-    },
-    {
-      "path": "../../premium/packages/resource-timegrid"
-    },
-    {
-      "path": "../../premium/packages/resource-timeline"
-    },
-    {
-      "path": "../../premium/packages/scrollgrid"
-    },
-    {
-      "path": "../../premium/packages/timeline"
-    },
-    {
-      "path": "../../standard/packages/core"
-    },
-    {
-      "path": "../../standard/packages/daygrid"
-    },
-    {
-      "path": "../../standard/packages/interaction"
-    },
-    {
-      "path": "../../standard/packages/list"
-    },
-    {
-      "path": "../../standard/packages/multimonth"
-    },
-    {
-      "path": "../../standard/packages/timegrid"
+      "path": "../../standard/packages/react"
     },
     {
       "path": "../theme-breezy-tailwind"
