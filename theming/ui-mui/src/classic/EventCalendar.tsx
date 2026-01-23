@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions, PluginDef, useCalendarController } from '@fullcalendar/react'
+import { CalendarOptions, PluginDefInput, useCalendarController } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/react/daygrid'
 import timeGridPlugin from '@fullcalendar/react/timegrid'
 import listPlugin from '@fullcalendar/react/list'
@@ -9,7 +9,7 @@ import EventCalendarToolbar from './EventCalendarToolbar.js'
 import EventCalendarViews from './EventCalendarViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'
 
-const plugins: PluginDef[] = [
+const plugins: PluginDefInput[] = [
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,

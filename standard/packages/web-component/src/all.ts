@@ -1,4 +1,4 @@
-import { type PluginDef } from '@fullcalendar/vanilla/public-api'
+import { type PluginDefInput } from '@fullcalendar/vanilla/public-api'
 import interactionPlugin from '@fullcalendar/vanilla/interaction'
 import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
@@ -6,7 +6,7 @@ import listPlugin from '@fullcalendar/vanilla/list'
 import multiMonthPlugin from '@fullcalendar/vanilla/multimonth'
 import { FullCalendarElement as BareFullCalendarElement } from './FullCalendarElement'
 
-export const plugins: PluginDef[] = [
+export const plugins: PluginDefInput[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
