@@ -35,74 +35,42 @@ build note:
     manually before `pn dev`
 
 
-sourcemaps messed up
-changelog: createPlugin removed
-revive react tests
-why .d.ts.map written for 'build'?
-moment-timezone kill, adjust
-kill NOTES.txt
-plugins will inline utils from @fullcalendar/core-types, no great
-make core-types a real buildable package
+high-priority build
+-------------------
+working tests
+  vanilla/vanilla-scheduler
+  react/react-scheduler (use vitest?)
+  vue/angular (needs classname adjustments too)
+vue3
+angular w/ endpoints somehow
 audit imports like
   import { PluginDefInput } from '../public-api'
-always use identity/Identity from core-types
-  also requestJson ... look at other utils too
-get react/react-scheduler tests working
-manual test todos:
-  standard/packages/vanilla-tests/manual/google-calendar.html
-  standard/packages/vanilla-tests/manual/importmap.*.html
-  standard/packages/vanilla-tests/manual/vue3.html
-search and destroy
-  theme-class (and theme-*)
-  /internal
-  /internal-classnames
-reuse for new tz lib
-  xit('won\'t accidentally clip dates when calendar has non-UTC timezone'
-  xdescribe('with moment-timezone resolution'
-  xit('updates rrule timed events when timeZone changes'
-  xit('when timeZone changes, events with unspecified timezone offsets move'
-  xdescribe('with non-recurring timed events and luxon plugin'
-use testTimeZoneImpl on whatever new tz lib
-remove luxon hack about date header tz
-
-
-don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
-better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
-move refineRenderProps from resource-timeline export
-why does outputted object destructuring look weird?:
- Object.assign(Object.assign({}
-remove (data, *createElement*) param from *Content hooks
-re-add keys to toolbarsections, so doesn't reuse elements
-need "module" fields in package.json anymore?
-ensure preact/plugin files don't import any types
 change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
-need to have plugin "deps" anymore?
-a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore
-fully get rid of @fullcalendar/core/preact
-need ./src/global-types.d.ts?
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
-get angular/react/vue tests up and running again, which all depend on preset classnames
-sizing refactor
-  test if afterSize ever needs the requestAnimationFrame when not being call from within size handler
-  kill preactOptions
-bug: today button changes width as we go prev/next (React vdom)
-  standard/bundle/examples/month-view.html
-bug: list-event "click for Google" is blue
-  standard/bundle/examples/timegrid-views.html
-bug: why is multi-month scrolling down so much?
-  file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
-bug: web-component (with React internals), timegrid "Todo el día" all on same line
-  thought it should break to a second?
-bug: web-component popover position way out of whack
-docs: is web-component's getApi() documented? no
 test NextJS SSR
-ensure all dependencyGlobalVars killed
 
 
+low-priority build
+------------------
+sourcemaps messed up (pnpm dev)
+why .d.ts.map written for 'build'?
+make core-types a real buildable package
+don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
+better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
+move refineRenderProps from resource-timeline export
+why does outputted object destructuring look weird?:
+ Object.assign(Object.assign({}
+need "module" fields in package.json anymore?
+need to have plugin "deps" anymore?
+a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
+
+
+remove (data, *createElement*) param from *Content hooks
+re-add keys to toolbarsections, so doesn't reuse elements
 changelog: validRange function always receives whole-day as parameter
 investige Angular example project problem where "All Events" in sidebar don't initially populate
   one of our events not emitting?
@@ -196,6 +164,30 @@ bug: resize-observer bad loop
   which changes the header height, all-day-label width/height, and slot-label heights (b/c of font size)
 bug: resize-observer bad loop but only for Preact vdom
   test: "vresource structure resyncs header row heights when horizontal scrolling and dynamic resources"
+manual test todos:
+  standard/packages/vanilla-tests/manual/google-calendar.html
+  standard/packages/vanilla-tests/manual/importmap.*.html
+  standard/packages/vanilla-tests/manual/vue3.html
+reuse for new tz lib
+  xit('won\'t accidentally clip dates when calendar has non-UTC timezone'
+  xdescribe('with moment-timezone resolution'
+  xit('updates rrule timed events when timeZone changes'
+  xit('when timeZone changes, events with unspecified timezone offsets move'
+  xdescribe('with non-recurring timed events and luxon plugin'
+use testTimeZoneImpl on whatever new tz lib
+remove luxon hack about date header tz
+always use identity/Identity from core-types
+  also requestJson ... look at other utils too
+bug: today button changes width as we go prev/next (React vdom)
+  standard/bundle/examples/month-view.html
+bug: list-event "click for Google" is blue
+  standard/bundle/examples/timegrid-views.html
+bug: why is multi-month scrolling down so much?
+  file:///Users/adam/Code/fullcalendar-workspace/standard/bundle/examples/multimonth-view.html
+bug: web-component (with React internals), timegrid "Todo el día" all on same line
+  thought it should break to a second?
+bug: web-component popover position way out of whack
+docs: is web-component's getApi() documented? no
 
 
 ASAP
@@ -211,6 +203,8 @@ project: ResizeObserver refactor
     premium/bundle/a11y-ci/resource-timeline-flat-height.html
     Happening when timeline-header height increases,
       needs to change height of data-grid header, thus data-grid body
+  test if afterSize ever needs the requestAnimationFrame when not being call from within size handler
+  kill preactOptions
   AFTER:
     HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
     Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
@@ -645,6 +639,7 @@ essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
 listDayFormat/listDaySideFormat defaults are different. depend on view duration
 no more console.warn on unknown options
 new dayHeaderFormat default not showing year
+changelog: createPlugin removed
 
 
 Docs
