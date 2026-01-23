@@ -2032,45 +2032,12 @@ importers:
       '@fullcalendar-tests/standard':
         specifier: workspace:*
         version: link:../../../standard/packages/vanilla-tests
-      '@fullcalendar/core':
+      '@fullcalendar/vanilla':
         specifier: workspace:*
-        version: link:../../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
+        version: link:../../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
         specifier: workspace:*
-        version: link:../../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../../standard/packages/list/dist
-      '@fullcalendar/premium-common':
-        specifier: workspace:*
-        version: link:../premium-common/dist
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../scrollgrid/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/theming/theme-classic/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../../standard/packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../timeline/dist
+        version: link:../vanilla-scheduler/dist
       xhr-mock:
         specifier: ^2.5.1
         version: 2.5.1
@@ -49966,15 +49933,6 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.18.17)):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 3.5.3
-      mime-types: 2.1.35
-      range-parser: 1.2.1
-      schema-utils: 4.2.0
-      webpack: 5.94.0(esbuild@0.18.17)
-
   webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.20.1)):
     dependencies:
       colorette: 2.0.20
@@ -49983,6 +49941,15 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.2.0
       webpack: 5.94.0(esbuild@0.20.1)
+
+  webpack-dev-middleware@5.3.4(webpack@5.94.0):
+    dependencies:
+      colorette: 2.0.20
+      memfs: 3.5.3
+      mime-types: 2.1.35
+      range-parser: 1.2.1
+      schema-utils: 4.2.0
+      webpack: 5.94.0(esbuild@0.18.17)
 
   webpack-dev-middleware@6.1.2(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
@@ -50180,7 +50147,7 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 5.3.4(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-middleware: 5.3.4(webpack@5.94.0)
       ws: 8.19.0
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.18.17)

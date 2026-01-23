@@ -3,20 +3,9 @@
   "name": "@fullcalendar-tests/premium",
   "version": "0.0.0",
   "dependencies": {
-    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/premium-common": "workspace:*",
-    "@fullcalendar/resource": "workspace:*",
-    "@fullcalendar/resource-daygrid": "workspace:*",
-    "@fullcalendar/resource-timegrid": "workspace:*",
-    "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar-tests/standard": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/vanilla": "workspace:*",
+    "@fullcalendar/vanilla-scheduler": "workspace:*",
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
@@ -35,14 +24,13 @@
   },
   "type": "module",
   "buildConfig": {
+    "globalConfig": {},
     "exports": {
       ".": {
-        "generator": "./scripts/generate-index.js",
-        "iife": true
+        "format": "global",
+        "primary": true,
+        "generator": "./scripts/generate-index.js"
       }
-    },
-    "dependencyGlobalVars": {
-      "*": ""
     }
   },
   "karmaConfig": {

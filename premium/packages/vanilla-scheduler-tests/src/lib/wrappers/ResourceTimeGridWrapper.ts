@@ -1,4 +1,4 @@
-import { startOfDay } from '@fullcalendar/core/internal'
+import { startOfDay } from '@fullcalendar/vanilla/protected-api'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { ensureDate, formatIsoDay } from '@fullcalendar-tests/standard/lib/datelib-utils'
 import { getBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'

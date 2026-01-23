@@ -1,5 +1,5 @@
-import { Calendar } from '@fullcalendar/core'
-import internalClassNames from '@fullcalendar/core/internal-classnames'
+import { Calendar } from '@fullcalendar/vanilla'
+import internalClassNames from '@fullcalendar/vanilla/protected-styles'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { ResourceTimeGridWrapper } from './ResourceTimeGridWrapper.js'

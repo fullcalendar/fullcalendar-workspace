@@ -1,6 +1,6 @@
-import { strictModeFactor } from '@fullcalendar/core/vdom'
-import { startOfDay } from '@fullcalendar/core/internal'
-import lvLocale from '@fullcalendar/core/locales/lv'
+import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import { startOfDay } from '@fullcalendar/vanilla/protected-api'
+import lvLocale from '@fullcalendar/vanilla/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 

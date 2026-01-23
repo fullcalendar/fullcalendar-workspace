@@ -1,4 +1,4 @@
-import internalClassNames from '@fullcalendar/core/internal-classnames'
+import internalClassNames from '@fullcalendar/vanilla/protected-styles'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { parseIsoAsUtc } from '@fullcalendar-tests/standard/lib/datelib-utils'
 import { parseUtcDate } from '@fullcalendar-tests/standard/lib/date-parsing'

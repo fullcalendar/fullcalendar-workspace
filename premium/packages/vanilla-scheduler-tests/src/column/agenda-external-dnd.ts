@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { Draggable } from '@fullcalendar/interaction'
+import { Draggable } from '@fullcalendar/vanilla/interaction'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 

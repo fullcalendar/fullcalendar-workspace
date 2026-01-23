@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/vanilla'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper.js'

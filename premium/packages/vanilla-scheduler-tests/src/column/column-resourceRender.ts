@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/core/vdom'
+import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
 
 describe('column-view resourceDayHeaderDidMount trigger', () => { // TODO: rename the file
   pushOptions({

@@ -1,5 +1,5 @@
-import { Calendar } from '@fullcalendar/core'
-import { config } from '@fullcalendar/core/internal'
+import { Calendar } from '@fullcalendar/vanilla'
+import { config } from '@fullcalendar/vanilla/protected-api'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 
 describe('schedulerLicenseKey', () => {

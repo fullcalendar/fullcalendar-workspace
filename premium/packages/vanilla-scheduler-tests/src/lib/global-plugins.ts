@@ -1,13 +1,13 @@
-import { PluginDef } from '@fullcalendar/core'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import { PluginDefInput } from '@fullcalendar/vanilla'
+import scrollGridPlugin from '@fullcalendar/vanilla-scheduler/scrollgrid'
+import timelinePlugin from '@fullcalendar/vanilla-scheduler/timeline'
+import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'
+import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-daygrid'
+import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar-tests/standard/lib/global-plugins'
 import themeForTestsPremiumPlugin from './theme-for-tests-premium.js'
 
-const MORE_DEFAULT_PLUGINS: PluginDef[] = [
+const MORE_DEFAULT_PLUGINS: PluginDefInput[] = [
   scrollGridPlugin,
   timelinePlugin,
   resourceTimelinePlugin,
