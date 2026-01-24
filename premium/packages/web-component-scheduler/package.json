@@ -13,6 +13,7 @@
     "@fullcalendar/web-component": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
+    "@fullcalendar/web-component": "workspace:7.0.0-beta.6",
     "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
     "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
   },

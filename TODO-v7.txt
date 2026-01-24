@@ -55,7 +55,6 @@ test NextJS SSR
 low-priority build
 ------------------
 sourcemaps messed up (pnpm dev)
-why .d.ts.map written for 'build'?
 make core-types a real buildable package
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
 better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?

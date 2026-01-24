@@ -2355,9 +2355,6 @@ importers:
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types
-      '@fullcalendar/preact':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/preact/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2365,6 +2362,9 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
+      '@fullcalendar/preact':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/preact/dist
     publishDirectory: ./dist
 
   premium/packages/react-scheduler:
@@ -2378,13 +2378,13 @@ importers:
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types
-      '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/react/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
+      '@fullcalendar/react':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/react/dist
       '@types/react':
         specifier: ^19.2.9
         version: 19.2.9
@@ -2502,9 +2502,6 @@ importers:
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types
-      '@fullcalendar/web-component':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/web-component/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2515,6 +2512,9 @@ importers:
       '@fullcalendar/vanilla-scheduler':
         specifier: workspace:7.0.0-beta.6
         version: link:../vanilla-scheduler/dist
+      '@fullcalendar/web-component':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/web-component/dist
     publishDirectory: ./dist
 
   scripts:

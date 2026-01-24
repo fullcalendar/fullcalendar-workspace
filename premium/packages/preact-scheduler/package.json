@@ -13,6 +13,7 @@
     "preact": "~10.23.1"
   },
   "devDependencies": {
+    "@fullcalendar/preact": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
