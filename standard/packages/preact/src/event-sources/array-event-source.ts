@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../public-api'
+import { PluginDefInput } from '../plugin-system-struct'
 import { EventInput } from '../structs/event-parse'
 import { EventSourceDef } from '../structs/event-source-def'
 

@@ -39,13 +39,10 @@ high-priority build
 -------------------
 react* examples running (have errors)
 working tests
-  vanilla/vanilla-scheduler
   react/react-scheduler (use vitest?)
   vue/angular (needs classname adjustments too)
 vue3
 angular w/ endpoints somehow
-audit imports like
-  import { PluginDefInput } from '../public-api'
 change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
