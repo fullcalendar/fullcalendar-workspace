@@ -42,13 +42,13 @@ export async function writeBundles(
       buildModuleOptions(
         pkgBundleStruct,
         isDev,
-        /* sourcemaps = */ isDev || isTests,
+        /* sourcemaps = */ isDev || isTests || Boolean(process.env.SOURCEMAPS),
       ),
     pkgBundleStruct.globalConfig &&
       await buildGlobalOptions(
         pkgBundleStruct,
         isDev,
-        /* sourcemaps = */ isDev || isTests,
+        /* sourcemaps = */ isDev || isTests || Boolean(process.env.SOURCEMAPS),
         /* minification = */ !isDev && !isTests,
       ),
     dtsEnabled && buildDtsOptions(pkgBundleStruct, isDev)

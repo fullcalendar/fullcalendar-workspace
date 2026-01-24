@@ -414,6 +414,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         >
                           <TimeGridSlatHeader
                             {...slatMeta /* FYI doesn't need isoTimeStr */}
+                            key={slatMeta.key}
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                             borderTop={Boolean(slatI)}
@@ -431,6 +432,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         />
                         <TimeGridSlatLane
                           {...slatMeta /* FYI doesn't need isoTimeStr */}
+                          key={slatMeta.key}
                           borderTop={Boolean(slatI)}
                         />
                       </div>

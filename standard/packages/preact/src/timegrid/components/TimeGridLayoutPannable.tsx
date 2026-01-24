@@ -563,6 +563,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           >
                             <TimeGridSlatLane
                               {...slatMeta /* FYI doesn't need isoTimeStr */}
+                              key={slatMeta.key}
                               borderTop={Boolean(slatI)}
                             />
                           </div>
