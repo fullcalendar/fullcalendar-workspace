@@ -2746,6 +2746,41 @@ importers:
         specifier: ^4.7.7
         version: 4.7.8
 
+  standard/packages/vanilla-w-react:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
+      '@fullcalendar/react':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../react/dist
+      '@types/react':
+        specifier: ^19.2.9
+        version: 19.2.9
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.9)
+      globby:
+        specifier: ^13.1.2
+        version: 13.2.2
+      handlebars:
+        specifier: ^4.1.2
+        version: 4.7.8
+    publishDirectory: ./dist
+
   standard/packages/web-component:
     dependencies:
       '@full-ui/headless-calendar':

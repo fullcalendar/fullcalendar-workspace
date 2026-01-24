@@ -20,10 +20,13 @@
       "path": "standard/packages/vanilla"
     },
     {
-      "path": "standard/packages/vanilla-tests"
+      "path": "premium/packages/vanilla-scheduler"
     },
     {
-      "path": "premium/packages/vanilla-scheduler"
+      "path": "standard/packages/vanilla-w-react"
+    },
+    {
+      "path": "standard/packages/vanilla-tests"
     },
     {
       "path": "premium/packages/vanilla-scheduler-tests"

@@ -1,0 +1,241 @@
+{
+  "name": "@fullcalendar/vanilla-w-react",
+  "version": "7.0.0-beta.6",
+  "title": "FullCalendar Core",
+  "description": "FullCalendar core package for rendering a calendar",
+  "dependencies": {
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@fullcalendar/react": "workspace:7.0.0-beta.6",
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "globby": "^13.1.2",
+    "handlebars": "^4.1.2"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "buildConfig": {
+    "globalConfig": {
+      "primaryGlobal": "FullCalendar",
+      "sharedProp": "Shared"
+    },
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./all": {
+        "format": "module"
+      },
+      "./all.global": {
+        "format": "global",
+        "primary": true
+      },
+      "./skeleton.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/skeleton.css"
+      },
+      "./public-components": {
+        "format": "module"
+      },
+      "./public-api": {
+        "format": "module"
+      },
+      "./protected-api": {
+        "format": "module"
+      },
+      "./protected-styles": {
+        "format": "module"
+      },
+      "./locales-all": {
+        "format": "module",
+        "generator": "./scripts/generate-locales-all.ts"
+      },
+      "./locales-all.global": {
+        "format": "global",
+        "generator": "./scripts/generate-locales-all-global.ts"
+      },
+      "./locales/*": {
+        "format": "module",
+        "generator": "./scripts/generate-locales.ts",
+        "types": "locales/locale"
+      },
+      "./locales/*.global": {
+        "format": "global",
+        "generator": "./scripts/generate-locales-global.ts"
+      },
+      "./interaction": {
+        "format": "module"
+      },
+      "./daygrid": {
+        "format": "module"
+      },
+      "./timegrid": {
+        "format": "module"
+      },
+      "./multimonth": {
+        "format": "module"
+      },
+      "./list": {
+        "format": "module"
+      },
+      "./themes/classic": {
+        "format": "module",
+        "src": "themes/classic/index"
+      },
+      "./themes/classic/global": {
+        "format": "global"
+      },
+      "./themes/classic/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/classic/theme.css"
+      },
+      "./themes/classic/palette.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/classic/palette.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch": {
+        "format": "module",
+        "src": "themes/monarch/index"
+      },
+      "./themes/monarch/global": {
+        "format": "global"
+      },
+      "./themes/monarch/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/theme.css"
+      },
+      "./themes/monarch/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/palettes/red.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/yellow.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/monarch/palettes/yellow.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy": {
+        "format": "module",
+        "src": "themes/breezy/index"
+      },
+      "./themes/breezy/global": {
+        "format": "global"
+      },
+      "./themes/breezy/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/breezy/theme.css"
+      },
+      "./themes/breezy/palettes/emerald.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/breezy/palettes/emerald.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/honey.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/breezy/palettes/honey.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/indigo.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/breezy/palettes/indigo.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/rose.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/breezy/palettes/rose.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma": {
+        "format": "module",
+        "src": "themes/forma/index"
+      },
+      "./themes/forma/global": {
+        "format": "global"
+      },
+      "./themes/forma/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/forma/theme.css"
+      },
+      "./themes/forma/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/forma/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/forma/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/forma/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/forma/palettes/red.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse": {
+        "format": "module",
+        "src": "themes/pulse/index"
+      },
+      "./themes/pulse/global": {
+        "format": "global"
+      },
+      "./themes/pulse/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/pulse/theme.css"
+      },
+      "./themes/pulse/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/pulse/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/pulse/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/pulse/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/react/themes/pulse/palettes/red.css",
+        "minificationDisabled": true
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
