@@ -6,11 +6,14 @@ import dayGridPlugin from '@fullcalendar/preact/daygrid'
 import timeGridPlugin from '@fullcalendar/preact/timegrid'
 import listPlugin from '@fullcalendar/preact/list'
 import multiMonthPlugin from '@fullcalendar/preact/multimonth'
-import resourceDayGridPlugin from './resource-daygrid'
-import resourceTimeGridPlugin from './resource-timegrid'
-import resourceTimelinePlugin from './resource-timeline'
-import scrollGridPlugin from './scrollgrid'
-import timelinePlugin from './timeline'
+import resourceDayGridPlugin from './resource-daygrid/plugin'
+import resourceTimeGridPlugin from './resource-timegrid/plugin'
+import resourceTimelinePlugin from './resource-timeline/plugin'
+import scrollGridPlugin from './scrollgrid/plugin'
+import timelinePlugin from './timeline/plugin'
+
+import './ambient'
+import './side-effects'
 
 const basePlugins: PluginDefInput[] = [
   interactionPlugin,

@@ -1,5 +1,5 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/preact/protected-api'
-import { ResourceInput } from '../public-types'
+import { ResourceInput } from '../public-api'
 import { ResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
 

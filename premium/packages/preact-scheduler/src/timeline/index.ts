@@ -1,4 +1,4 @@
 import '../ambient'
+import '../side-effects'
 
-export { TimelineOptions } from './options'
 export { default } from './plugin'

@@ -1,5 +1,4 @@
 import '../ambient'
+import '../side-effects'
 
-export * from './structs'
-export { ResourceTimelineOptions } from './options'
 export { default } from './plugin'

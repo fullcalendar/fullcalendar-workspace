@@ -1,5 +1,5 @@
 import { PluginDefInput } from '@fullcalendar/preact/public-api'
-import premiumCommonPlugin from '../common'
+import premiumCommonPlugin from '../common/plugin'
 import { ScrollerSyncer } from './ScrollerSyncer'
 
 export default {

@@ -13,10 +13,6 @@ import { optionChangeHandlers } from './option-change-handlers'
 import { handleResourceStore } from './resources-crud'
 import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
 
-// SIDE EFFECTS
-import './api/EventApi'
-import './api/CalendarApi'
-
 export default {
   name: 'resource',
   premiumReleaseDate: '<%= releaseDate %>',

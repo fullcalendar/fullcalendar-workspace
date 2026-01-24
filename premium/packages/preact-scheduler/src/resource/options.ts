@@ -4,7 +4,7 @@ import {
   ResourceSourceInput,
   ResourceApi,
   ResourceAddData, ResourceChangeData, ResourceRemoveData,
-} from './public-types'
+} from './public-api'
 
 export const OPTION_REFINERS = {
   initialResources: identity as Identity<ResourceSourceInput>,

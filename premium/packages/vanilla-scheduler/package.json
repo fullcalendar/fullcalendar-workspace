@@ -56,29 +56,36 @@
     },
     "exports": {
       "./all": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./all.global": {
         "format": "global",
         "primary": true
       },
       "./adaptive": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./resource-daygrid": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./resource-timegrid": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./resource-timeline": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./scrollgrid": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./timeline": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       }
     }
   },

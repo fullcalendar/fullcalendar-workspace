@@ -1,7 +1,7 @@
 import { ViewApi, ClassNameGenerator } from '@fullcalendar/preact/public-api'
 import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/preact/protected-api'
 import type { ReactNode } from 'react'
-import { ResourceApi } from '../resource'
+import { ResourceApi } from '../resource/api/ResourceApi'
 import { Resource } from '../resource/structs/resource'
 
 export interface ResourceColumnHeaderData {

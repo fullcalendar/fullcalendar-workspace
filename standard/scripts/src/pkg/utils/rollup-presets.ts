@@ -324,8 +324,8 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
       mappings: pkgBundleStruct.importRemaps || {},
     }),
     nodeResolvePlugin({
-      // ignore sideEffects in bundled packages's json for own files, forcing sideEffects: false
-      // for all. Not sure this is relevant to our setup, but might produce leaner output JS
+      // in current package's package.json, ignore sideEffects entry
+      // (we currently dont even do this)
       ignoreSideEffectsForRoot: true,
     }),
   ]
@@ -353,11 +353,14 @@ function buildNormalJsPlugins(
   const { pkgJson } = pkgBundleStruct
 
   return [
-    nodeResolvePlugin({
-      // ignore sideEffects in bundled packages's json for own files, forcing sideEffects: false
-      // for all. Not sure this is relevant to our setup, but might produce leaner output JS
-      ignoreSideEffectsForRoot: true,
-    }),
+    // HACK because nodeResolvePlugin was strangely causing the './side-effects' import to be
+    // tree-shaken away
+    pkgJson.name !== '@fullcalendar/preact-scheduler' &&
+      nodeResolvePlugin({
+        // in current package's package.json, ignore sideEffects entry
+        // (we currently dont even do this)
+        ignoreSideEffectsForRoot: true,
+      }),
     commonjsPlugin(), // for React :(
     cssPlugin({
       extract: cssExtract,
@@ -382,7 +385,7 @@ function buildNormalJsPlugins(
         ),
       },
     }),
-  ]
+  ].filter(Boolean) as Plugin[]
 }
 
 function buildTestJsPlugins(): Plugin[] {

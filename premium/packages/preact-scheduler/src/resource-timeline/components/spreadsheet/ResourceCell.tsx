@@ -10,7 +10,7 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
-import { ResourceApi } from '../../../resource'
+import { ResourceApi } from '../../../resource/api/ResourceApi'
 import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
