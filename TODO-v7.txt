@@ -37,8 +37,17 @@ build note:
 
 high-priority build
 -------------------
-react* examples running (have errors)
+react* examples
+  react-issue-7619 - dnd jumpy. https://github.com/fullcalendar/fullcalendar/issues/7619
+  react18-mobx-typescript - weird errors with
+  react18-redux - hangs
+  react18-typescript - ts and runtime errors, hangs
+  react17 - has two Reacts for some reason (injection not working?)
+  next* - ? - TODO: test SSR
+  t3-app - ?
+play around with React StrictMode on all views
 working tests
+  SHIM vanilla(-scheduler)-w-react (and strict-mode too)
   react/react-scheduler (use vitest?)
   vue/angular (needs classname adjustments too)
 vue3
@@ -49,7 +58,6 @@ angular/esm issues:
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
-test NextJS SSR
 
 
 low-priority build

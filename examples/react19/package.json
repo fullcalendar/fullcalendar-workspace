@@ -16,6 +16,11 @@
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/react": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

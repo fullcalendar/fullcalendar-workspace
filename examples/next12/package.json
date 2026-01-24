@@ -15,6 +15,14 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/react": {
+      "injected": true
+    },
+    "@fullcalendar/react-scheduler": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "eslint": "^8.26.0",
     "eslint-config-next": "^13.0.1",

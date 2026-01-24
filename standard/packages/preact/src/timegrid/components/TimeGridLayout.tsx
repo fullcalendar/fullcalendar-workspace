@@ -182,7 +182,11 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   componentDidMount() {
     this.resetScroll()
     this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
-    this.timeScrollerRef.current.addScrollEndListener(this.handleTimeScrollEnd)
+
+    const timeScroller = this.timeScrollerRef.current
+    if (timeScroller) {
+      timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
+    }
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps) {
@@ -197,7 +201,11 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
   componentWillUnmount() {
     this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
-    this.timeScrollerRef.current.removeScrollEndListener(this.handleTimeScrollEnd)
+
+    const timeScroller = this.timeScrollerRef.current
+    if (timeScroller) {
+      timeScroller.removeScrollEndListener(this.handleTimeScrollEnd)
+    }
   }
 
   // Sizing

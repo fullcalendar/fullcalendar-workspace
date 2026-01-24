@@ -3,7 +3,7 @@ import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarData } from './reducers/data-types'
-import { StrictMode } from 'react'
+import { Fragment as StrictMode } from 'react' // HARDCODE StrictMode OFF for now
 import { PureComponent } from './vdom-util'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
