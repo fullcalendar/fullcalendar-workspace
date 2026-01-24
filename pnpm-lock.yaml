@@ -2456,6 +2456,41 @@ importers:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@3.3.2)
 
+  premium/packages/vanilla-scheduler-w-react:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/headless-calendar/dist
+      '@full-ui/headless-grid':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-grid/dist
+      '@fullcalendar/core-types':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/core-types
+      '@fullcalendar/vanilla-w-react':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/vanilla-w-react/dist
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@fullcalendar/react':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/react/dist
+      '@fullcalendar/react-scheduler':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../react-scheduler/dist
+      '@types/react':
+        specifier: ^19.2.9
+        version: 19.2.9
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.9)
+    publishDirectory: ./dist
+
   premium/packages/web-component-scheduler:
     dependencies:
       '@full-ui/headless-calendar':

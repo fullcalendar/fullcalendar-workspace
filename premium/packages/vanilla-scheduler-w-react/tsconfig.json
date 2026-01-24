@@ -1,0 +1,23 @@
+{
+  "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "rootDir": "./src",
+    "outDir": "./dist/.tsout"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../../../standard/packages/vanilla-w-react"
+    },
+    {
+      "path": "../../../standard/packages/react"
+    },
+    {
+      "path": "../react-scheduler"
+    }
+  ]
+}
