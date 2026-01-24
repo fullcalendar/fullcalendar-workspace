@@ -76,5 +76,10 @@
       "types": "./dist/.tsout/index.d.ts",
       "default": "./dist/index.js"
     }
-  }
+  },
+  "sideEffects": [
+    "./dist/.tsout/lib/global.js",
+    "./dist/.tsout/lib/global-utils.js",
+    "./dist/.tsout/lib/global-plugins.js"
+  ]
 }

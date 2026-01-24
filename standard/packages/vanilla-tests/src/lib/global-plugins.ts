@@ -6,6 +6,7 @@ import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
 import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
 import listPlugin from '@fullcalendar/vanilla/list'
 import multiMonthPlugin from '@fullcalendar/vanilla/multimonth'
+import { pushOptions } from './global-utils.js'
 
 export const DEFAULT_PLUGINS: PluginDefInput[] = [
   interactionPlugin,

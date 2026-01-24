@@ -31,7 +31,7 @@ afterEach(() => {
 // Calendar Options and Initialization
 // ---------------------------------------------------------------------------------------------------------------------
 
-function pushOptions(options: CalendarOptions) {
+export function pushOptions(options: CalendarOptions) {
   beforeEach(() => {
     optionsStack.push(options)
   })

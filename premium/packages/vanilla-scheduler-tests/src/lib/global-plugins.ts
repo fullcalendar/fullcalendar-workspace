@@ -6,6 +6,7 @@ import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-dayg
 import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar-tests/standard/lib/global-plugins'
 import themeForTestsPremiumPlugin from './theme-for-tests-premium.js'
+import { pushOptions } from '@fullcalendar-tests/standard/lib/global-utils'
 
 const MORE_DEFAULT_PLUGINS: PluginDefInput[] = [
   scrollGridPlugin,

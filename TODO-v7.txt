@@ -175,6 +175,7 @@ reuse for new tz lib
   xit('updates rrule timed events when timeZone changes'
   xit('when timeZone changes, events with unspecified timezone offsets move'
   xdescribe('with non-recurring timed events and luxon plugin'
+  xdescribe('now-date', () => {
 use testTimeZoneImpl on whatever new tz lib
 remove luxon hack about date header tz
 always use identity/Identity from core-types

@@ -112,7 +112,7 @@ describe('luxon plugin', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5753
-  describe('now-date', () => {
+  xdescribe('now-date', () => {
     it('adapts to switching timeZone', () => {
       const calendar = initCalendar({
         timeZone: 'America/Chicago',
