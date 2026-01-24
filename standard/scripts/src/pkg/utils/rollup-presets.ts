@@ -63,7 +63,7 @@ export function buildModuleOptions(
         isDev,
         sourcemaps, // sourcemapLoading
       ),
-      output: buildModuleOutputOptions(pkgBundleStruct, sourcemaps),
+      output: buildModuleOutputOptions(pkgBundleStruct, isDev, sourcemaps),
       onwarn(warning) {
         if (warning.code !== 'CIRCULAR_DEPENDENCY') {
           console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
@@ -100,14 +100,14 @@ export async function buildGlobalOptions(
   }
 }
 
-export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions | undefined {
+export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct, isDev: boolean): RollupOptions | undefined {
   const inputs = buildDtsInput(pkgBundleStruct)
 
   if (Object.keys(inputs).length) {
     return {
       input: buildDtsInput(pkgBundleStruct),
       plugins: buildDtsPlugins(pkgBundleStruct),
-      output: buildDtsOutputOptions(pkgBundleStruct),
+      output: buildDtsOutputOptions(pkgBundleStruct, isDev),
       onwarn(warning) {
         if (warning.code !== 'CIRCULAR_DEPENDENCY') {
           console.error(`${pkgBundleStruct.pkgDir}(dts): ${warning}`)
@@ -181,13 +181,14 @@ function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
 
 function buildModuleOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
+  isDev: boolean,
   sourcemapOutput: boolean,
 ): OutputOptions {
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: '[name]' + esmExtension,
-    chunkFileNames: 'chunks/[name]-[hash]' + esmExtension,
+    chunkFileNames: 'chunks/' + (isDev ? '[name]' : '[hash]') + esmExtension,
     sourcemap: sourcemapOutput,
 
     // don't have memberless import statement merely to preserve import order
@@ -220,12 +221,12 @@ async function buildGlobalOutputOptions(
   }
 }
 
-function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions {
+function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct, isDev: boolean): OutputOptions {
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: '[name].d.ts',
-    chunkFileNames: 'chunks/[name]-[hash].d.ts',
+    chunkFileNames: 'chunks/' + (isDev ? '[name]' : '[hash]') + '.d.ts',
 
     // don't have memberless import statement merely to preserve import order
     hoistTransitiveImports: false,

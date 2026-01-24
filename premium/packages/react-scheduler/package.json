@@ -29,7 +29,6 @@
   },
   "type": "module",
   "buildConfig": {
-    "disableWatch": true,
     "exports": {
       "./all": {
         "format": "module"

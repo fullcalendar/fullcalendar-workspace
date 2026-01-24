@@ -51,7 +51,7 @@ export async function writeBundles(
         /* sourcemaps = */ isDev || isTests,
         /* minification = */ !isDev && !isTests,
       ),
-    dtsEnabled && buildDtsOptions(pkgBundleStruct)
+    dtsEnabled && buildDtsOptions(pkgBundleStruct, isDev)
   ].filter(Boolean) as RollupOptions[]
 
   await Promise.all(
@@ -92,7 +92,7 @@ export async function watchBundles(
           /* sourcemaps = */ isDev || isTests,
           /* minification = */ !isDev && !isTests,
         ),
-      dtsEnabled && buildDtsOptions(pkgBundleStruct),
+      dtsEnabled && buildDtsOptions(pkgBundleStruct, isDev),
     ].filter(Boolean) as RollupWatchOptions[]
 
     if (!optionsObjs.length) {

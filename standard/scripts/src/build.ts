@@ -8,5 +8,9 @@ export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this
 
   await runTurboTasks(monorepoDir, ['build', ...refineFilterArgs(args, monorepoStruct)])
-  await writeMonorepoArchives(monorepoStruct)
+
+  console.log()
+  console.log('NOTE: archive-generation has been temporarily disabled')
+  console.log()
+  // await writeMonorepoArchives(monorepoStruct)
 }

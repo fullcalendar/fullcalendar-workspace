@@ -3,7 +3,7 @@
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "es2015",
+    "module": "ES2022",
     "skipLibCheck": true,
 
     /* Bundler mode */

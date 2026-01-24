@@ -37,6 +37,7 @@ build note:
 
 high-priority build
 -------------------
+react* examples running (have errors)
 working tests
   vanilla/vanilla-scheduler
   react/react-scheduler (use vitest?)
