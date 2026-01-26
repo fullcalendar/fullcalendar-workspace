@@ -1,7 +1,6 @@
 packages:
   - './standard/scripts'
   - './standard/packages/*'
-  - './standard/theming/*'
   - './premium/packages/*'
   - './theming/*'
   - './scripts'
