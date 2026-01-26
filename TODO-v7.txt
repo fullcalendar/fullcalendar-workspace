@@ -38,13 +38,21 @@ build note:
 high-priority build
 -------------------
 react* examples
-  react-issue-7619 - dnd jumpy. https://github.com/fullcalendar/fullcalendar/issues/7619
-  react18-mobx-typescript - weird errors with
-  react18-redux - hangs
-  react18-typescript - ts and runtime errors, hangs
-  react17 - has two Reacts for some reason (injection not working?)
+  react18-issue-7619 (https://github.com/fullcalendar/fullcalendar/issues/7619)
+    dnd jumpy
+  react18-mobx-typescript
+    dnd works, but all controls on sidebar don't work
+    bad TS error in DemoApp.tsx
+  react18-redux
+    hangs
+  react18-typescript
+    bad TS error in DemoApp.tsx
+  react17
+    hangs
+  t3-app
+    SSR problem - visiting http://localhost:3000/calendar directly - `document` not defined
+  remix - ?
   next* - ? - TODO: test SSR
-  t3-app - ?
 play around with React StrictMode on all views
 working tests
   SHIM vanilla(-scheduler)-w-react (and strict-mode too)
