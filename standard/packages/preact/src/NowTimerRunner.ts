@@ -53,8 +53,12 @@ export class NowTimerRunner {
       // init listeners
       this.setTimeout()
       this.nowManager.addResetListener(this.handleRefresh)
+
       // fired tab becomes visible after being hidden
-      document.addEventListener('visibilitychange', this.handleVisibilityChange)
+      // SSR check. CalendarDataManager calls top-level sync :(
+      if (typeof document !== 'undefined') {
+        document.addEventListener('visibilitychange', this.handleVisibilityChange)
+      }
     } else if (
       input.unit !== this.unit ||
       input.unitValue !== this.unitValue ||
@@ -84,7 +88,11 @@ export class NowTimerRunner {
       this.isMounted = false
       this.clearTimeout()
       this.nowManager.removeResetListener(this.handleRefresh)
-      document.removeEventListener('visibilitychange', this.handleVisibilityChange)
+
+      // SSR check. CalendarDataManager calls top-level sync :(
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange)
+      }
     }
   }
 
