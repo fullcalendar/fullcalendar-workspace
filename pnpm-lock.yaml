@@ -1427,48 +1427,12 @@ importers:
       '@fullcalendar/react':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18:
     dependencies:
@@ -16859,14 +16823,6 @@ packages:
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
 
-  fdir@6.4.2:
-    resolution: {integrity: sha512-KnhMXsKSPZlAhp7+IjUkRZKPb4fUyccpDrdFXbi4QL1qkmFh9kVY09Yox+n4MaOb3lHZ1Tv829C3oaaXoMYPDQ==}
-    peerDependencies:
-      picomatch: ^3 || ^4
-    peerDependenciesMeta:
-      picomatch:
-        optional: true
-
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
@@ -25089,6 +25045,46 @@ packages:
       sugarss:
         optional: true
       terser:
+        optional: true
+
+  vite@6.4.1:
+    resolution: {integrity: sha512-+Oxm7q9hDoLMyJOYfUYBuHQo+dkAloi33apOPP56pzj+vsdJDzr+j1NISE5pyaAuKL4A3UD34qd0lx5+kfKp2g==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      jiti: '>=1.21.0'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      sass-embedded: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
         optional: true
 
   vite@7.1.11:
@@ -41355,6 +41351,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))':
+    dependencies:
+      '@babel/core': 7.28.5
+      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.5)
+      '@rolldown/pluginutils': 1.0.0-beta.27
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.17.0
+      vite: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitejs/plugin-react@4.7.0(vite@7.2.7(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))':
     dependencies:
       '@babel/core': 7.28.5
@@ -46927,10 +46935,6 @@ snapshots:
   fd-slicer@1.1.0:
     dependencies:
       pend: 1.2.0
-
-  fdir@6.4.2(picomatch@4.0.3):
-    optionalDependencies:
-      picomatch: 4.0.3
 
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:
@@ -57008,7 +57012,7 @@ snapshots:
 
   tinyglobby@0.2.10:
     dependencies:
-      fdir: 6.4.2(picomatch@4.0.3)
+      fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
 
   tinyglobby@0.2.14:
@@ -58039,6 +58043,25 @@ snapshots:
       sass: 1.93.2
       stylus: 0.62.0
       terser: 5.39.0
+
+  vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1):
+    dependencies:
+      esbuild: 0.25.9
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.52.3
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 24.10.3
+      fsevents: 2.3.3
+      jiti: 2.4.2
+      less: 4.2.1
+      lightningcss: 1.30.1
+      sass: 1.93.2
+      stylus: 0.62.0
+      terser: 5.39.0
+      yaml: 2.6.1
 
   vite@7.1.11(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.90.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1):
     dependencies:
