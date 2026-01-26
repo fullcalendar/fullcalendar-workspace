@@ -1449,48 +1449,12 @@ importers:
       '@fullcalendar/react':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-debug:
     dependencies:
@@ -1507,48 +1471,12 @@ importers:
       '@fullcalendar/react':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-issue-7619:
     dependencies:
@@ -1576,48 +1504,12 @@ importers:
       '@fullcalendar/react-scheduler':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-lazy:
     dependencies:
@@ -1634,48 +1526,12 @@ importers:
       '@fullcalendar/react':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-mobx-typescript:
     dependencies:
@@ -1704,30 +1560,15 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.27)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      ts-loader:
-        specifier: ^8.0.7
-        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
       typescript:
         specifier: ^4.0.5
         version: 4.8.4
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-redux:
     dependencies:
@@ -1756,48 +1597,12 @@ importers:
       '@fullcalendar/react':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-scheduler:
     dependencies:
@@ -1819,48 +1624,12 @@ importers:
       '@fullcalendar/react-scheduler':
         injected: true
     devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.28.5
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.28.5)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.28.5)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.28.5)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.9(@babel/core@7.28.5)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.28.5(@babel/core@7.28.5)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.2.5(@babel/core@7.28.5)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react18-typescript:
     dependencies:
@@ -1883,30 +1652,15 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.27)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      ts-loader:
-        specifier: ^8.0.7
-        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
       typescript:
         specifier: ^4.0.5
         version: 4.8.4
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+      vite:
+        specifier: ^6.0.11
+        version: 6.4.1(@types/node@24.10.3)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/react19:
     dependencies:

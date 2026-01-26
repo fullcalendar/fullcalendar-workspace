@@ -1,21 +1,16 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "target": "es5",
-    "module": "es6",
-    "moduleResolution": "node",
-    "lib": [
-      "dom",
-      "es2015"
-    ],
+    "jsx": "react-jsx",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "strict": true,
     "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "tsc"
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src/index.tsx"
-  ]
+  "include": ["src"]
 }

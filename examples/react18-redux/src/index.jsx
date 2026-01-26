@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
@@ -9,11 +9,8 @@ import './index.css'
 
 let store = createStore(rootReducer, applyMiddleware(thunk))
 
-document.addEventListener('DOMContentLoaded', function() {
-  render(
-    <Provider store={store}>
-      <DemoApp />
-    </Provider>,
-    document.body.appendChild(document.createElement('div'))
-  )
-})
+createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <DemoApp />
+  </Provider>
+)
