@@ -29,8 +29,8 @@ const event = {
   title: 'Hello',
   start: addHours(today(), 10),
   end: addHours(today(), 2),
-  backgroundColor: 'cyan',
-  textColor: 'black',
+  color: 'cyan',
+  contrastColor: 'black',
 };
 
 const ghost = {
@@ -38,9 +38,9 @@ const ghost = {
   title: 'Hello',
   start: addHours(today(), 10),
   end: addHours(today(), 2),
-  backgroundColor: 'yellow',
   display: 'background',
-  textColor: 'black',
+  color: 'yellow',
+  contrastColor: 'black',
 };
 
 export const DEFAULT_EVENT_BACKGROUND_COLOUR = '#F4F4F4';

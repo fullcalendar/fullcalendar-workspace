@@ -197,7 +197,7 @@ export class CalendarDataManager {
     prevState: CalendarDataManagerState | undefined,
     prevData: CalendarData | undefined,
     action: Action,
-  ): { state: CalendarDataManagerState; calendarContext: CalendarContext; data: CalendarData } {
+  ): { state: CalendarDataManagerState; data: CalendarData; calendarContext: CalendarContext } {
     let { config } = this
     let isInit = !prevState
 
@@ -534,7 +534,7 @@ export class CalendarDataManager {
       durationUnit: viewSpec.durationUnit,
       usesMinMaxTime: viewSpec.optionDefaults.usesMinMaxTime as any,
       dateEnv: optionsData.dateEnv,
-      calendarApi: this.config.calendarApi, // should come from elsewhere?
+      calendarApi: this.config.calendarApi,
       slotMinTime: refinedOptions.slotMinTime,
       slotMaxTime: refinedOptions.slotMaxTime,
       showNonCurrentDates: refinedOptions.showNonCurrentDates,

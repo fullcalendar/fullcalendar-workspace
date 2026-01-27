@@ -48,8 +48,6 @@ document how to clear cache in vite projects (rm node_modules/.vite too)
 high-priority build
 -------------------
 react* examples
-  dnd jumpy
-    react18-issue-7619 (https://github.com/fullcalendar/fullcalendar/issues/7619)
   dnd works, but all controls on sidebar don't work
     react18-mobx-typescript
   bad TS error in DemoApp.tsx
@@ -70,6 +68,8 @@ angular/esm issues:
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
+later: snapDuration={'00:15:00'} causing weird DnD on TimeGrid
+  seem examples/react18-issue-7619
 
 
 low-priority build
@@ -568,6 +568,7 @@ changelog: Event::toPlainObject doesn't accept collapseColor anymore
   now returns { color, contrastColor }
 changelog: +Event::color, +Event::contrastColor, -Event::backgroundColor, -Event::textColor, -Event::borderColor
   (same for Resource)
+  +color/contrastColor
 changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroundColor, -eventBorderColor, -eventTextColor
   gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
 changelog: --fc-event-color, --fc-event-contrast-color
