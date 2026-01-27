@@ -41,8 +41,6 @@ rerun vanilla tests
 too much 'updateRevision' on initial load for react timeline
   do special-case on initial run?
   for vanilla too?
-document how to clear cache in vite projects (rm node_modules/.vite too)
-  or use higher-level solution
 
 
 high-priority build

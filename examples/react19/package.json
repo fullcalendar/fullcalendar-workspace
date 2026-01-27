@@ -6,7 +6,7 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist node_modules/.vite",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

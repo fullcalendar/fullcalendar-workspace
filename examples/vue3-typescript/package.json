@@ -17,7 +17,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist node_modules/.vite"
   },
   "type": "module"
 }

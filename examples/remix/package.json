@@ -10,7 +10,7 @@
     "dev": "remix vite:dev",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "clean": "rm -rf build .cache"
+    "clean": "rm -rf build .cache node_modules/.vite"
   },
   "dependencies": {
     "@fullcalendar/react": "workspace:7.0.0-beta.6",

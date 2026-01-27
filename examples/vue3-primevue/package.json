@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "clean": "rm -rf dist node_modules/.vite",
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
