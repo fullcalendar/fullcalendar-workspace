@@ -33,7 +33,7 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
 
   InnerContent = InnerContentInjector.bind(undefined, this)
 
-  render() {
+  render(): ReactNode {
     const { props } = this
     const generatedClassName = generateClassName(props.classNameGenerator, props.renderProps)
 
