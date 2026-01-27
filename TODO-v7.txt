@@ -41,8 +41,6 @@ rerun vanilla tests
 high-priority build
 -------------------
 react* examples
-  dnd works, but all controls on sidebar don't work
-    react18-mobx-typescript
   Runtime error: next-dev.js:20 Warning: Prop `style` did not match. Server: "inset-inline-start:1728.2223888888889px" Client: "inset-inline-start:1728.250166666667px"
     (all next.js/t3/remix)
 play around with React StrictMode on all views

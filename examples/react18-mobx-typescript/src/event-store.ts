@@ -1,8 +1,12 @@
 import { createContext } from "react";
-import { observable, action } from "mobx";
+import { observable, action, makeObservable } from "mobx";
 import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/react";
 
 export class EventStore {
+  constructor() {
+    makeObservable(this);
+  }
+
   @observable
   weekendsVisible = true;
 
