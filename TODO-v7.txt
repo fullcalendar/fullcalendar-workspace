@@ -644,6 +644,7 @@ listDayFormat/listDaySideFormat defaults are different. depend on view duration
 no more console.warn on unknown options
 new dayHeaderFormat default not showing year
 changelog: createPlugin removed
+React >= 17 support (same versions that support hooks)
 
 
 Docs
