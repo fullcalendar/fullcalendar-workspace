@@ -35,12 +35,7 @@ build note:
     manually before `pn dev`
 
 
-bug: month-view timed events, when dragging, have broken styling (wrong font)
-  block events too
 rerun vanilla tests
-too much 'updateRevision' on initial load for react timeline
-  do special-case on initial run?
-  for vanilla too?
 
 
 high-priority build
@@ -68,6 +63,9 @@ angular/esm issues:
     solution: go all-ESM in top-level dist; is backwards-compat
 later: snapDuration={'00:15:00'} causing weird DnD on TimeGrid
   seem examples/react18-issue-7619
+later: event dragging problems
+  in timegrid, at beginning of drag, abs-positioned ghost is visible while original underneath
+  looses correct font
 
 
 low-priority build

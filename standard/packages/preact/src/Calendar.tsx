@@ -26,7 +26,7 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
   const [calendarApi] = useState(() => new CalendarApiImpl())
   const [calendarDataManager] = useState(() => new CalendarDataManager({
     calendarApi,
-    onDispatchRequest: updateRevision,
+    onDataChange: updateRevision,
   }))
 
   useEffect(() => { // Cleanup on unmount

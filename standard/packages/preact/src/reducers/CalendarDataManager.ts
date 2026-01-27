@@ -45,7 +45,6 @@ import { NowTimerRunner } from '../NowTimerRunner'
 
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
-  onDispatchRequest?: () => void // prevents drainActionQueue(), must call update()
   onDataChange?: (data: CalendarData, actionsComplete: Action[]) => void
 }
 
@@ -142,10 +141,7 @@ export class CalendarDataManager {
   dispatch = (action: Action) => {
     this.actionQueue.push(action)
 
-    const { onDispatchRequest } = this.config
-    if (onDispatchRequest) {
-      onDispatchRequest()
-    } else if (!this.isDrainingActionQueue) {
+    if (!this.isDrainingActionQueue) {
       this.drainActionQueue()
     }
   }
@@ -185,7 +181,7 @@ export class CalendarDataManager {
       }
     }
 
-    if (actionsComplete.length) {
+    if (!isInit && actionsComplete.length) {
       const { onDataChange } = this.config
       if (onDataChange) {
         onDataChange(this.data, actionsComplete)
