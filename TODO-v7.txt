@@ -684,6 +684,7 @@ Getting VSCode TailwindCSS Intellisense working with FullCalendar's theming clas
 Background events don't respect contrast color
   because the color is made transparent, it's essentially considered the canvas color
   but themes can override by forcing text-color for backgroundEventTitleClass
+For React 17 support, must include id="" for SSR, or else warning
 
 
 Release Prep

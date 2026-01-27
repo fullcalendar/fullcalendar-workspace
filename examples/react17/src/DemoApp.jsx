@@ -23,6 +23,7 @@ export default class DemoApp extends React.Component {
         {this.renderSidebar()}
         <div className='demo-app-main'>
           <FullCalendar
+            id='fullcalendar'
             plugins={[themePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: 'prev,next today',

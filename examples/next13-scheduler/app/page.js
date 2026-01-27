@@ -2,6 +2,7 @@
 
 import FullCalendar from '@fullcalendar/react';
 import themePlugin from '@fullcalendar/react/themes/classic';
+import interactionPlugin from '@fullcalendar/react/interaction'
 import dayGridPlugin from '@fullcalendar/react/daygrid';
 import timeGridPlugin from '@fullcalendar/react/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline';
@@ -14,7 +15,7 @@ export default function Home() {
   return (
     <div className="calendar-container">
       <FullCalendar
-        plugins={[themePlugin, dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
+        plugins={[themePlugin, interactionPlugin, dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
