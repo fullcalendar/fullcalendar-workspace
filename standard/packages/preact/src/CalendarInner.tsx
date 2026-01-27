@@ -13,7 +13,7 @@ import { ViewPropsTransformerClass } from './plugin-system-struct'
 import { type ReactElement, Fragment } from 'react'
 import { CalendarData, CalendarToolbarProps } from './reducers/data-types'
 import { CssDimValue, getIsHeightAuto } from './scrollgrid/util'
-import { getUniqueDomId } from './util/dom-manip'
+
 import { joinClassNames } from './util/html'
 import { memoize } from './util/memoize'
 import { buildViewContext, ViewContextType } from './ViewContext'
@@ -21,6 +21,7 @@ import { PureComponent } from './vdom-util'
 
 export interface CalendarInnerProps extends CalendarData {
   forPrint: boolean
+  baseId: string
 }
 
 // hook for public api
@@ -34,7 +35,10 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[] = []
-  private viewTitleId = getUniqueDomId()
+
+  private get viewTitleId() {
+    return this.props.baseId + 'title'
+  }
 
   render() {
     const { props } = this
@@ -67,6 +71,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       props.getCurrentData,
       props.emitter,
       props.calendarApi,
+      props.baseId,
       this.registerInteractiveComponent,
       this.unregisterInteractiveComponent,
     )

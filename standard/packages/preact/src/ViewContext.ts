@@ -26,6 +26,7 @@ export interface ViewContext extends CalendarContext {
   dateProfileGenerator: DateProfileGenerator
   viewSpec: ViewSpec
   viewApi: ViewImpl
+  baseId: string
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void
   unregisterInteractiveComponent: (component: DateComponent<any>) => void
 }
@@ -42,6 +43,7 @@ export function buildViewContext(
   getCurrentData: () => CalendarData,
   emitter: Emitter<Required<CalendarListeners>>,
   calendarApi: CalendarApiImpl,
+  baseId: string,
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void,
   unregisterInteractiveComponent: (component: DateComponent<any>) => void,
 ): ViewContext {
@@ -57,6 +59,7 @@ export function buildViewContext(
     viewSpec,
     viewApi,
     dateProfileGenerator,
+    baseId,
     registerInteractiveComponent,
     unregisterInteractiveComponent,
   }

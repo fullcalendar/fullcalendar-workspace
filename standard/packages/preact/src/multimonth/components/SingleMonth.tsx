@@ -6,7 +6,7 @@ import { DateComponent } from '../../component/DateComponent'
 import { DateFormatter, DateRange } from '@full-ui/headless-calendar'
 import { DayTableCell } from '../../common/DayTableModel'
 import { generateClassName } from '../../content-inject/ContentContainer'
-import { getUniqueDomId } from '../../util/dom-manip'
+
 import { memoize } from '../../util/memoize'
 import { RefMap } from '../../util/RefMap'
 import { setRef } from '../../vdom-util'
@@ -62,9 +62,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
   // internal
   private slicer = new DayTableSlicer()
-  private titleId = getUniqueDomId()
   private rootEl?: HTMLElement
   private renderProps?: SingleMonthData
+
+  private get titleId() {
+    return this.context.baseId + 'month-' + this.props.isoDateStr
+  }
   private disconnectGridWidth?: () => void
   private disconnectTitleHeight?: () => void
   private disconnectTableHeaderHeight?: () => void

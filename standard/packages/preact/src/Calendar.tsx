@@ -1,75 +1,75 @@
+import { PropsWithoutRef, Ref, FunctionComponent } from 'react'
 import { CalendarDataManager } from './reducers/CalendarDataManager'
 import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarData } from './reducers/data-types'
-import { Fragment as StrictMode } from 'react' // HARDCODE StrictMode OFF for now
-import { PureComponent } from './vdom-util'
+import { forwardRef, useId, useRef, useState, useEffect, useCallback, useMemo, useImperativeHandle } from 'react'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
 import { memoize } from './util/memoize'
 
-export class Calendar extends PureComponent<CalendarOptions> {
-  private _dataManager: CalendarDataManager | undefined
-  private _currentData: CalendarData | undefined
-  private _api = new CalendarApiImpl()
-  private _computeRootClassName = memoize(computeRootClassName)
-  private _inRender = false
-
-  render() {
-    const { props } = this
-
-    this._inRender = true
-    if (!this._dataManager) {
-      this._dataManager = new CalendarDataManager({
-        optionOverrides: props,
-        calendarApi: this._api,
-        onData: this.handleData,
-      })
-    } else {
-      this._dataManager.resetOptions(props)
-    }
-
-    // populated by CalendarDataManager constructor or resetOptions
-    const { _currentData: currentData } = this
-    this._inRender = false
-
-    return (
-      <StrictMode>
-        <CalendarMediaRoot emitter={currentData.emitter}>
-          {(forPrint: boolean) => {
-            const options = currentData.calendarOptions
-            const isRtl = options.direction === 'rtl'
-            const className = this._computeRootClassName(options, forPrint)
-
-            return (
-              <div
-                dir={isRtl ? 'rtl' : undefined}
-                className={className}
-                style={{ height: options.height }}
-              >
-                <CalendarInner {...currentData} forPrint={forPrint} />
-              </div>
-            )
-          }}
-        </CalendarMediaRoot>
-      </StrictMode>
-    )
-  }
-
-  private handleData = (data: CalendarData) => {
-    this._currentData = data
-
-    if (!this._inRender) {
-      this.forceUpdate()
-    }
-  }
-
-  componentWillUnmount(): void {
-    this._dataManager.destroy()
-  }
-
-  getApi(): CalendarApi {
-    return this._api
-  }
+export interface CalendarRef {
+  getApi(): CalendarApi
 }
+
+export const Calendar: FunctionComponent<PropsWithoutRef<CalendarOptions> & { ref?: Ref<CalendarRef> }> = forwardRef<CalendarRef, CalendarOptions>((props, ref) => {
+  const baseId = useId()
+  const apiRef = useRef(new CalendarApiImpl())
+  const dataManagerRef = useRef<CalendarDataManager | undefined>(undefined)
+  const [currentData, setCurrentData] = useState<CalendarData | undefined>(undefined)
+  const inRenderRef = useRef(false)
+  const computeRootClassNameMemo = useMemo(() => memoize(computeRootClassName), [])
+
+  // Expose getApi() via ref
+  useImperativeHandle(ref, () => ({
+    getApi: () => apiRef.current
+  }), [])
+
+  // Handle data updates
+  const handleData = useCallback((data: CalendarData) => {
+    setCurrentData(data)
+  }, [])
+
+  // Initialize/update data manager
+  inRenderRef.current = true
+  if (!dataManagerRef.current) {
+    dataManagerRef.current = new CalendarDataManager({
+      optionOverrides: props,
+      calendarApi: apiRef.current,
+      onData: handleData,
+    })
+  } else {
+    dataManagerRef.current.resetOptions(props)
+  }
+  inRenderRef.current = false
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      dataManagerRef.current?.destroy()
+    }
+  }, [])
+
+  if (!currentData) return null
+
+  return (
+    <CalendarMediaRoot emitter={currentData.emitter}>
+      {(forPrint: boolean) => {
+        const options = currentData.calendarOptions
+        const isRtl = options.direction === 'rtl'
+        const className = computeRootClassNameMemo(options, forPrint)
+
+        return (
+          <div
+            dir={isRtl ? 'rtl' : undefined}
+            className={className}
+            style={{ height: options.height }}
+          >
+            <CalendarInner {...currentData} baseId={baseId} forPrint={forPrint} />
+          </div>
+        )
+      }}
+    </CalendarMediaRoot>
+  )
+})

@@ -12,13 +12,14 @@ import { ContentContainer } from '../content-inject/ContentContainer'
 import { DayCellData, DayHeaderData } from '../api/structs'
 import classNames from '../styles.module.css'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
-import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip'
+import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot } from '../util/dom-manip'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { computeClippedClientRect } from '../util/dom-geom'
 import { findDayNumberText, findMonthText, findWeekdayText } from '../util/date-format'
 
 export interface MorePopoverProps {
   id: string
+  titleId: string
   startDate: DateMarker
   endDate: DateMarker
   dateProfile: DateProfile
@@ -44,8 +45,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
   private focusStartRef = createRef<HTMLDivElement>()
   private focusEndRef = createRef<HTMLDivElement>()
 
-  // internal
-  private titleId = getUniqueDomId()
+
 
   render() {
     let { props, context } = this
@@ -101,7 +101,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         data-date={fullDateStr}
         id={props.id}
         role='dialog'
-        aria-labelledby={this.titleId}
+        aria-labelledby={props.titleId}
         className={joinArrayishClassNames(
           options.popoverClass,
           classNames.flexCol,
@@ -132,7 +132,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             <ContentContainer
               tag="div"
               attrs={{
-                id: this.titleId,
+                id: props.titleId,
                 // NOTE: more-popover never has nav-links
               }}
               generatorName="dayHeaderContent"

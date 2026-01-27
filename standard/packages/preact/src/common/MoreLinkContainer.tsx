@@ -2,7 +2,7 @@ import { EventImpl } from '../api/EventImpl'
 import { DateRange, addDays, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
-import { getUniqueDomId } from '../util/dom-manip'
+
 import { formatWithOrdinals } from '../util/misc'
 import { type ReactNode, type RefObject } from 'react'
 import { joinClassNames } from '../util/html'
@@ -50,7 +50,6 @@ export type MoreLinkMountData = MountData<MoreLinkData>
 
 interface MoreLinkContainerState {
   isPopoverOpen: boolean
-  popoverId: string
 }
 
 /*
@@ -62,7 +61,6 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   state = {
     isPopoverOpen: false,
-    popoverId: getUniqueDomId(),
   }
 
   render() {
@@ -70,10 +68,11 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
     return (
       <ViewContextType.Consumer
         children={(context) => {
-          let { viewApi, options, calendarApi } = context
+          let { viewApi, options, calendarApi, baseId } = context
           let { moreLinkText } = options
           let moreCnt = props.hiddenSegs.length
           let range = computeRange(props)
+          let popoverId = baseId + 'popover-' + range.start.toISOString()
 
           let numericText = `+${moreCnt}` // TODO: offer hook or i18n?
           let longText = typeof moreLinkText === 'function' // TODO: eventually use formatWithOrdinals
@@ -118,7 +117,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                     'role': 'button',
                     'aria-haspopup': 'dialog',
                     'aria-expanded': state.isPopoverOpen,
-                    'aria-controls': state.isPopoverOpen ? state.popoverId : undefined,
+                    'aria-controls': state.isPopoverOpen ? popoverId : undefined,
                   }}
                   renderProps={renderProps}
                   generatorName="moreLinkContent"
@@ -149,7 +148,8 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
               )}
               {state.isPopoverOpen && (
                 <MorePopover
-                  id={state.popoverId}
+                  id={popoverId}
+                  titleId={popoverId + '-title'}
                   startDate={range.start}
                   endDate={range.end}
                   dateProfile={props.dateProfile}

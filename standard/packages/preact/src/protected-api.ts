@@ -75,7 +75,6 @@ export {
   applyStyle,
   applyStyleProp,
   getEventTargetViaRoot,
-  getUniqueDomId,
 } from './util/dom-manip'
 export { joinArrayishClassNames, fracToCssDim } from './util/html'
 

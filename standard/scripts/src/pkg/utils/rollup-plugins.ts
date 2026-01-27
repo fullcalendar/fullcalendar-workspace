@@ -6,6 +6,7 @@ import {
   isAbsolute,
 } from 'path'
 import { readFile, writeFile } from 'fs/promises'
+import { existsSync, statSync } from 'fs'
 import { createRequire } from 'module'
 import { type Plugin } from 'rollup'
 import Terser, { type MinifyOptions as TerserOptions } from 'terser'

@@ -43,11 +43,4 @@ export function getEventTargetViaRoot(ev: Event) {
   return ev.composedPath?.()[0] ?? ev.target
 }
 
-// Unique ID for DOM attribute
 
-let guid = 0
-
-export function getUniqueDomId() {
-  guid += 1
-  return 'fc-dom-' + guid
-}
