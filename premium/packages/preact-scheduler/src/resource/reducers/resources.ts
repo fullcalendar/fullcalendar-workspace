@@ -13,8 +13,8 @@ export interface ResourceState {
 }
 
 export function reduceResources(
-  state: ResourceState | null,
-  action: ResourceAction | null,
+  state: ResourceState | undefined,
+  action: ResourceAction | undefined,
   context: CalendarContext & { dateProfile: DateProfile },
 ) {
   let resourceSource = reduceResourceSource(state && state.resourceSource, action, context)

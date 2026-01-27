@@ -16,6 +16,7 @@ import {
   computeRootClassName,
   RenderId,
   flushSync,
+  guid,
 } from '@fullcalendar/preact/protected-api'
 
 /*
@@ -23,6 +24,7 @@ Vanilla JS API
 */
 export class Calendar extends CalendarApiImpl {
   el: HTMLElement
+  private baseId = `fc:${guid()}:`
   private dataManager: CalendarDataManager
   private currentData: CalendarData
   private renderRunner: DelayedRunner
@@ -40,25 +42,24 @@ export class Calendar extends CalendarApiImpl {
     this.renderRunner = new DelayedRunner(this.handleRenderRequest)
 
     this.dataManager = new CalendarDataManager({
-      optionOverrides,
       calendarApi: this,
-      onAction: this.handleAction,
-      onData: this.handleData,
+      onDataChange: this.handleDataChange,
     })
+    this.currentData = this.dataManager.update(optionOverrides)
   }
 
-  private handleAction = (action: Action) => {
-    // actions we know we want to render immediately
-    switch (action.type) {
-      case 'SET_EVENT_DRAG':
-      case 'SET_EVENT_RESIZE':
-        this.renderRunner.tryDrain()
-    }
-  }
-
-  private handleData = (data: CalendarData) => {
+  private handleDataChange = (data: CalendarData, actions: Action[]) => {
     this.currentData = data
-    this.renderRunner.request(data.calendarOptions.rerenderDelay)
+
+    let renderImmediate = false
+    for (const action of actions) {
+      if (action.type === 'SET_EVENT_DRAG' || action.type === 'SET_EVENT_RESIZE') {
+        renderImmediate = true
+        break
+      }
+    }
+
+    this.renderRunner.request(renderImmediate ? undefined : data.calendarOptions.rerenderDelay)
   }
 
   private handleRenderRequest = () => {
@@ -74,13 +75,19 @@ export class Calendar extends CalendarApiImpl {
                 {(forPrint: boolean) => {
                   const options = currentData.calendarOptions
                   const isRtl = options.direction === 'rtl'
-                  const className = computeRootClassName(options, forPrint) // TODO: memoize
+                  const className = computeRootClassName(options, forPrint)
 
                   this.setIsRtl(isRtl)
                   this.setClassName(className)
                   this.setHeight(options.height)
 
-                  return <CalendarInner {...currentData} forPrint={forPrint} />
+                  return (
+                    <CalendarInner
+                      {...currentData}
+                      forPrint={forPrint}
+                      baseId={this.baseId}
+                    />
+                  )
                 }}
               </CalendarMediaRoot>
             </RenderId.Provider>

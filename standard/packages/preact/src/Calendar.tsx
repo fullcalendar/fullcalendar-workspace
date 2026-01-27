@@ -3,62 +3,50 @@ import { CalendarDataManager } from './reducers/CalendarDataManager'
 import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
-import { CalendarData } from './reducers/data-types'
-import { forwardRef, useId, useRef, useState, useEffect, useCallback, useMemo, useImperativeHandle } from 'react'
+import { forwardRef, useId, useState, useEffect, useImperativeHandle } from 'react'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
-import { memoize } from './util/memoize'
+import { guid } from './protected-api'
 
 export interface CalendarRef {
   getApi(): CalendarApi
 }
 
-export const Calendar: FunctionComponent<PropsWithoutRef<CalendarOptions> & { ref?: Ref<CalendarRef> }> = forwardRef<CalendarRef, CalendarOptions>((props, ref) => {
-  const baseId = useId()
-  const apiRef = useRef(new CalendarApiImpl())
-  const dataManagerRef = useRef<CalendarDataManager | undefined>(undefined)
-  const [currentData, setCurrentData] = useState<CalendarData | undefined>(undefined)
-  const inRenderRef = useRef(false)
-  const computeRootClassNameMemo = useMemo(() => memoize(computeRootClassName), [])
+type CalendarPropsInternal = CalendarOptions & { id?: string }
+export type CalendarProps = PropsWithoutRef<CalendarPropsInternal> & { ref?: Ref<CalendarRef> }
 
-  // Expose getApi() via ref
-  useImperativeHandle(ref, () => ({
-    getApi: () => apiRef.current
-  }), [])
+export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef, CalendarPropsInternal>((props, ref) => {
+  const baseId = useStableId(props.id) // for DOM ids
 
-  // Handle data updates
-  const handleData = useCallback((data: CalendarData) => {
-    setCurrentData(data)
-  }, [])
-
-  // Initialize/update data manager
-  inRenderRef.current = true
-  if (!dataManagerRef.current) {
-    dataManagerRef.current = new CalendarDataManager({
-      optionOverrides: props,
-      calendarApi: apiRef.current,
-      onData: handleData,
-    })
-  } else {
-    dataManagerRef.current.resetOptions(props)
+  const [_revision, setRevision] = useState('')
+  function updateRevision() {
+    setRevision(guid())
   }
-  inRenderRef.current = false
 
-  // Cleanup on unmount
-  useEffect(() => {
+  const [calendarApi] = useState(() => new CalendarApiImpl())
+  const [calendarDataManager] = useState(() => new CalendarDataManager({
+    calendarApi,
+    onDispatchRequest: updateRevision,
+  }))
+
+  useEffect(() => { // Cleanup on unmount
     return () => {
-      dataManagerRef.current?.destroy()
+      calendarDataManager.destroy()
     }
   }, [])
 
-  if (!currentData) return null
+  useImperativeHandle(ref, () => ({
+    getApi: () => calendarApi
+  }), [])
+
+  const data = calendarDataManager.update(props)
 
   return (
-    <CalendarMediaRoot emitter={currentData.emitter}>
+    <CalendarMediaRoot emitter={data.emitter}>
       {(forPrint: boolean) => {
-        const options = currentData.calendarOptions
+        const options = data.calendarOptions
         const isRtl = options.direction === 'rtl'
-        const className = computeRootClassNameMemo(options, forPrint)
+        const className = computeRootClassName(options, forPrint)
 
         return (
           <div
@@ -66,10 +54,24 @@ export const Calendar: FunctionComponent<PropsWithoutRef<CalendarOptions> & { re
             className={className}
             style={{ height: options.height }}
           >
-            <CalendarInner {...currentData} baseId={baseId} forPrint={forPrint} />
+            <CalendarInner {...data} baseId={baseId} forPrint={forPrint} />
           </div>
         )
       }}
     </CalendarMediaRoot>
   )
 })
+
+function useStableId(fallbackId: string | undefined): string {
+  // React >= 18
+  if (useId) {
+    return useId()
+  }
+
+  // React 17
+  if (fallbackId) {
+    return fallbackId + ':'
+  }
+  console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
+  return `fc:${guid()}:`
+}

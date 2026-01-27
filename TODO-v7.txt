@@ -35,12 +35,19 @@ build note:
     manually before `pn dev`
 
 
+bug: month-view timed events, when dragging, have broken styling (wrong font)
+  block events too
+rerun vanilla tests
+too much 'updateRevision' on initial load for react timeline
+  do special-case on initial run?
+  for vanilla too?
+document how to clear cache in vite projects (rm node_modules/.vite too)
+  or use higher-level solution
+
+
 high-priority build
 -------------------
 react* examples
-  hangs
-    react18-redux
-    react17
   dnd jumpy
     react18-issue-7619 (https://github.com/fullcalendar/fullcalendar/issues/7619)
   dnd works, but all controls on sidebar don't work
@@ -50,9 +57,6 @@ react* examples
     react18-typescript
   Runtime error: next-dev.js:20 Warning: Prop `style` did not match. Server: "inset-inline-start:1728.2223888888889px" Client: "inset-inline-start:1728.250166666667px"
     (all next.js/t3/remix)
-  Prop `id` did not match. Server: "fc-dom-1" Client: "fc-dom-2"
-    (all next.js/t3/remix)
-    Need stable ID
 play around with React StrictMode on all views
 working tests
   SHIM vanilla(-scheduler)-w-react (and strict-mode too)

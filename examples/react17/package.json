@@ -5,7 +5,7 @@
   "version": "0.0.1-beta.1",
   "license": "ISC",
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist node_modules/.vite",
     "build": "vite build",
     "start": "vite"
   },

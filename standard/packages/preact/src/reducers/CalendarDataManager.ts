@@ -39,26 +39,21 @@ import { globalPlugins } from '../global-plugins'
 import { createEmptyEventStore } from '../structs/event-store'
 import { CalendarContext } from '../CalendarContext'
 import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types'
-import { TaskRunner } from '../util/TaskRunner'
 import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
 
-export interface CalendarDataManagerProps {
-  optionOverrides: CalendarOptions
+export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
-  onAction?: (action: Action) => void
-  onData?: (data: CalendarData) => void
+  onDispatchRequest?: () => void // prevents drainActionQueue(), must call update()
+  onDataChange?: (data: CalendarData, actionsComplete: Action[]) => void
 }
 
-export type ReducerFunc = ( // TODO: rename to CalendarDataInjector. move view-props-manip hook here as well?
-  currentState: Dictionary | null,
-  action: Action | null,
+export type ReducerFunc = (
+  currentState: Dictionary | undefined,
+  action: Action | undefined,
   context: CalendarContext & CalendarDataManagerState // more than just context
 ) => Dictionary
-
-// in future refactor, do the redux-style function(state=initial) for initial-state
-// also, whatever is happening in constructor, have it happen in action queue too
 
 export class CalendarDataManager {
   private computeCurrentViewData = memoize(this._computeCurrentViewData)
@@ -80,17 +75,22 @@ export class CalendarDataManager {
   private nowManager = new CalendarNowManager()
   private nowTimer: NowTimerRunner
 
-  public emitter = new Emitter<Required<CalendarListeners>>()
-  private actionRunner = new TaskRunner(this._handleAction.bind(this), this.updateData.bind(this))
-  private props: CalendarDataManagerProps
-  private state: CalendarDataManagerState
-  private data: CalendarData
+  private isDrainingActionQueue = false
+  private actionQueue: Action[] = []
 
+  private optionOverrides: CalendarOptions = {}
+  private config: CalendarDataManagerConfig
+  private state: CalendarDataManagerState // internal state
+  private data: CalendarData // internal state + computed
+
+  // used by CalendarApiImpl
+  public emitter = new Emitter<Required<CalendarListeners>>()
+  public currentCalendarOptionsRefiners: any = {}
   public currentCalendarOptionsInput: CalendarOptions = {}
+
   private currentCalendarOptionsRefined: CalendarOptionsRefined = ({} as any)
   private currentViewOptionsInput: ViewOptions = {}
   private currentViewOptionsRefined: ViewOptionsRefined = ({} as any)
-  public currentCalendarOptionsRefiners: any = {}
 
   private stableOptionOverrides: CalendarOptions
   private stableDynamicOptionOverrides: CalendarOptions
@@ -98,59 +98,149 @@ export class CalendarDataManager {
   private optionsForRefining: string[] = []
   private optionsForHandling: string[] = []
 
-  constructor(props: CalendarDataManagerProps) {
-    this.props = props
-    this.actionRunner.pause()
+  constructor(config: CalendarDataManagerConfig) {
+    this.config = config
     this.nowManager = new CalendarNowManager()
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
+  }
 
-    let dynamicOptionOverrides: CalendarOptions = {}
+  destroy() {
+    this.nowTimer.destroy()
+  }
+
+  /*
+  Will NOT trigger onDataChange unless there were other actions in the queue
+  */
+  update(optionOverrides: CalendarOptions): CalendarData {
+    this.optionOverrides = optionOverrides
+    this.actionQueue.push({ type: 'IDLE' }) // ensure reducer gets called
+    this.drainActionQueue()
+
+    return this.data
+  }
+
+  /*
+  WILL trigger onDataChange
+  */
+  resetOptions(optionOverrides: CalendarOptions, changedOptionNames?: string[]) {
+    if (changedOptionNames === undefined) {
+      this.optionOverrides = optionOverrides
+    } else {
+      this.optionOverrides = { ...this.optionOverrides, ...optionOverrides }
+      this.optionsForRefining.push(...changedOptionNames)
+    }
+
+    this.dispatch({ type: 'RESET_OPTIONS' })
+  }
+
+  getCurrentData = () => this.data
+
+  private handleNowChange = () => {
+    this.dispatch({ type: 'UPDATE_NOW' })
+  }
+
+  dispatch = (action: Action) => {
+    this.actionQueue.push(action)
+
+    const { onDispatchRequest } = this.config
+    if (onDispatchRequest) {
+      onDispatchRequest()
+    } else if (!this.isDrainingActionQueue) {
+      this.drainActionQueue()
+    }
+  }
+
+  private drainActionQueue() {
+    let calendarContext: CalendarContext
+    let { state, data } = this
+    const isInit = !state
+
+    const { actionQueue } = this
+    const actionsComplete: Action[] = [] // non-idle
+
+    this.isDrainingActionQueue = true
+
+    while (actionQueue.length) {
+      const action = actionQueue.shift()
+
+      ;({ state, data, calendarContext } = this.reduce(state, data, action))
+      this.state = state
+      this.data = data
+
+      if (action.type !== 'IDLE') {
+        actionsComplete.push(action)
+      }
+    }
+
+    this.isDrainingActionQueue = false
+
+    if (isInit) {
+      const controllerOption = calendarContext.options.controller
+      if (controllerOption) {
+        controllerOption._setApi(this.config.calendarApi)
+      }
+
+      for (let callback of calendarContext.pluginHooks.contextInit) {
+        callback(calendarContext)
+      }
+    }
+
+    if (actionsComplete.length) {
+      const { onDataChange } = this.config
+      if (onDataChange) {
+        onDataChange(this.data, actionsComplete)
+      }
+    }
+  }
+
+  private reduce(
+    prevState: CalendarDataManagerState | undefined,
+    prevData: CalendarData | undefined,
+    action: Action,
+  ): { state: CalendarDataManagerState; calendarContext: CalendarContext; data: CalendarData } {
+    let { config } = this
+    let isInit = !prevState
+
+    // === Compute options and view data ===
+    let dynamicOptionOverrides = isInit
+      ? {}
+      : reduceDynamicOptionOverrides(prevState.dynamicOptionOverrides, action)
+
     let optionsData = this.computeOptionsData(
-      props.optionOverrides,
+      this.optionOverrides,
       dynamicOptionOverrides,
-      props.calendarApi,
+      config.calendarApi,
     )
 
-    let currentViewType =
-      optionsData.calendarOptions.initialView ||
-      optionsData.pluginHooks.initialView
+    let currentViewType = isInit
+      ? (optionsData.calendarOptions.initialView || optionsData.pluginHooks.initialView)
+      : reduceViewType(prevState.currentViewType, action)
 
     let currentViewData = this.computeCurrentViewData(
       currentViewType,
       optionsData,
-      props.optionOverrides,
+      this.optionOverrides,
       dynamicOptionOverrides,
     )
 
-    // wire things up
-    // TODO: not DRY
-    props.calendarApi.currentDataManager = this
-    this.emitter.setThisContext(props.calendarApi)
+    // === Wire things up ===
+    config.calendarApi.currentDataManager = this
+    this.emitter.setThisContext(config.calendarApi)
     this.emitter.setOptions(currentViewData.options)
 
-    // NOTE: subsequent updates detected by options-change-handlers.ts
-    const controllerOption = optionsData.calendarOptions.controller
-    if (controllerOption) {
-      controllerOption._setApi(props.calendarApi)
-    }
-
+    // === Build calendarContext ===
     let calendarContext: CalendarContext = {
       nowManager: this.nowManager,
       dateEnv: optionsData.dateEnv,
       options: optionsData.calendarOptions,
       pluginHooks: optionsData.pluginHooks,
-      calendarApi: props.calendarApi,
+      calendarApi: config.calendarApi,
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
     }
 
-    let currentDate = getInitialDate(
-      optionsData.calendarOptions,
-      optionsData.dateEnv,
-      this.nowManager,
-    )
-
+    // === Update now timer ===
     let { nowDate } = this.nowTimer.update({
       unit: 'day',
       unitValue: 1,
@@ -159,148 +249,57 @@ export class CalendarDataManager {
       dateEnv: optionsData.dateEnv,
     })
 
-    let dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
+    // === Compute currentDate ===
+    let currentDate = isInit
+      ? getInitialDate(optionsData.calendarOptions, optionsData.dateEnv, this.nowManager)
+      : reduceCurrentDate(prevState.currentDate, action)
 
-    if (!rangeContainsMarker(dateProfile.activeRange, currentDate)) {
-      currentDate = dateProfile.currentRange.start
-    }
-
-    // needs to be after setThisContext
-    for (let callback of optionsData.pluginHooks.contextInit) {
-      callback(calendarContext)
-    }
-
-    // NOT DRY
-    let eventSources = initEventSources(optionsData.calendarOptions, dateProfile, calendarContext)
-
-    let initialState: CalendarDataManagerState = {
-      dynamicOptionOverrides,
-      currentViewType,
-      currentDate,
-      dateProfile,
-      businessHours: this.parseContextBusinessHours(calendarContext), // weird to have this in state
-      eventSources,
-      eventUiBases: {},
-      eventStore: createEmptyEventStore(),
-      renderableEventStore: createEmptyEventStore(),
-      dateSelection: null,
-      eventSelection: '',
-      eventDrag: null,
-      eventResize: null,
-      selectionConfig: this.buildViewUiProps(calendarContext).selectionConfig,
-      nowDate,
-    }
-    let contextAndState = { ...calendarContext, ...initialState }
-
-    for (let reducer of optionsData.pluginHooks.reducers) {
-      Object.assign(initialState, reducer(null, null, contextAndState))
-    }
-
-    if (computeIsLoading(initialState, calendarContext)) {
-      this.emitter.trigger('loading', true) // NOT DRY
-    }
-
-    this.state = initialState
-    this.updateData()
-    this.actionRunner.resume()
-  }
-
-  getCurrentData = () => this.data
-
-  dispatch = (action: Action) => {
-    this.actionRunner.request(action) // protects against recursive calls to _handleAction
-  }
-
-  resetOptions(optionOverrides: CalendarOptions, changedOptionNames?: string[]) {
-    let { props } = this
-
-    if (changedOptionNames === undefined) {
-      props.optionOverrides = optionOverrides
-    } else {
-      props.optionOverrides = { ...(props.optionOverrides || {}), ...optionOverrides }
-      this.optionsForRefining.push(...changedOptionNames)
-    }
-
-    if (changedOptionNames === undefined || changedOptionNames.length) {
-      this.actionRunner.request({ // hack. will cause updateData
-        type: 'NOTHING',
-      })
-    }
-  }
-
-  _handleAction(action: Action) {
-    let { props, state, emitter } = this
-
-    let dynamicOptionOverrides = reduceDynamicOptionOverrides(state.dynamicOptionOverrides, action)
-    let optionsData = this.computeOptionsData(
-      props.optionOverrides,
-      dynamicOptionOverrides,
-      props.calendarApi,
-    )
-
-    let currentViewType = reduceViewType(state.currentViewType, action)
-    let currentViewData = this.computeCurrentViewData(
-      currentViewType,
-      optionsData,
-      props.optionOverrides,
-      dynamicOptionOverrides,
-    )
-
-    // wire things up
-    // TODO: not DRY
-    props.calendarApi.currentDataManager = this
-    emitter.setThisContext(props.calendarApi)
-    emitter.setOptions(currentViewData.options)
-
-    let calendarContext: CalendarContext = {
-      nowManager: this.nowManager,
-      dateEnv: optionsData.dateEnv,
-      options: optionsData.calendarOptions,
-      pluginHooks: optionsData.pluginHooks,
-      calendarApi: props.calendarApi,
-      dispatch: this.dispatch,
-      emitter,
-      getCurrentData: this.getCurrentData,
-    }
-
-    let { nowDate } = this.nowTimer.update({
-      unit: 'day',
-      unitValue: 1,
-      nowIndicatorSnap: 'auto',
-      nowManager: this.nowManager,
-      dateEnv: optionsData.dateEnv,
-    })
-
-    let { currentDate, dateProfile } = state
-
-    if (this.data && this.data.dateProfileGenerator !== currentViewData.dateProfileGenerator) { // hack
+    // === Compute dateProfile ===
+    let dateProfile: DateProfile
+    if (isInit) {
       dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
+    } else {
+      dateProfile = prevState.dateProfile
+      // Check for generator change
+      if (prevData && prevData.dateProfileGenerator !== currentViewData.dateProfileGenerator) {
+        dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
+      }
+      dateProfile = reduceDateProfile(dateProfile, action, currentDate, nowDate, currentViewData.dateProfileGenerator)
     }
 
-    currentDate = reduceCurrentDate(currentDate, action)
-    dateProfile = reduceDateProfile(dateProfile, action, currentDate, nowDate, currentViewData.dateProfileGenerator)
-
+    // === Adjust currentDate if out of range ===
     if (
-      action.type === 'PREV' || // TODO: move this logic into DateProfileGenerator
-      action.type === 'NEXT' || // "
-      !rangeContainsMarker(dateProfile.currentRange, currentDate)
+      (action && (action.type === 'PREV' || action.type === 'NEXT')) ||
+      !rangeContainsMarker(dateProfile.activeRange, currentDate)
     ) {
       currentDate = dateProfile.currentRange.start
     }
 
-    let eventSources = reduceEventSources(state.eventSources, action, dateProfile, calendarContext)
-    let eventStore = reduceEventStore(state.eventStore, action, eventSources, dateProfile, calendarContext)
-    let isEventsLoading = computeEventSourcesLoading(eventSources) // BAD. also called in this func in computeIsLoading
+    // === Compute eventSources, eventStore ===
+    let eventSources = isInit
+      ? initEventSources(optionsData.calendarOptions, dateProfile, calendarContext)
+      : reduceEventSources(prevState.eventSources, action, dateProfile, calendarContext)
 
-    let renderableEventStore =
-      (isEventsLoading && !currentViewData.options.progressiveEventRendering) ?
-        (state.renderableEventStore || eventStore) : // try from previous state
-        eventStore
+    let eventStore = isInit
+      ? createEmptyEventStore()
+      : reduceEventStore(prevState.eventStore, action, eventSources, dateProfile, calendarContext)
 
-    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext) // will memoize obj
+    // === Compute renderableEventStore ===
+    let isEventsLoading = computeEventSourcesLoading(eventSources)
+    let renderableEventStore = isInit
+      ? createEmptyEventStore()
+      : (isEventsLoading && !currentViewData.options.progressiveEventRendering)
+        ? (prevState.renderableEventStore || eventStore)
+        : eventStore
+
+    // === UI computation ===
+    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext)
     let eventUiBySource = this.buildEventUiBySource(eventSources)
-    let eventUiBases = this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
+    let eventUiBases = isInit
+      ? {}
+      : this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
 
+    // === Build new state ===
     let newState: CalendarDataManagerState = {
       dynamicOptionOverrides,
       currentViewType,
@@ -311,117 +310,84 @@ export class CalendarDataManager {
       renderableEventStore,
       selectionConfig,
       eventUiBases,
-      businessHours: this.parseContextBusinessHours(calendarContext), // will memoize obj
-      dateSelection: reduceDateSelection(state.dateSelection, action),
-      eventSelection: reduceSelectedEvent(state.eventSelection, action),
-      eventDrag: reduceEventDrag(state.eventDrag, action),
-      eventResize: reduceEventResize(state.eventResize, action),
+      businessHours: this.parseContextBusinessHours(calendarContext),
+      dateSelection: isInit ? null : reduceDateSelection(prevState.dateSelection, action),
+      eventSelection: isInit ? '' : reduceSelectedEvent(prevState.eventSelection, action),
+      eventDrag: isInit ? null : reduceEventDrag(prevState.eventDrag, action),
+      eventResize: isInit ? null : reduceEventResize(prevState.eventResize, action),
       nowDate,
     }
-    let contextAndState = { ...calendarContext, ...newState }
 
+    // === Plugin reducers ===
+    let contextAndState = { ...calendarContext, ...newState }
     for (let reducer of optionsData.pluginHooks.reducers) {
-      Object.assign(newState, reducer(state, action, contextAndState)) // give the OLD state, for old value
+      Object.assign(newState, reducer(prevState, action, contextAndState))
     }
 
-    let wasLoading = computeIsLoading(state, calendarContext)
+    // === Loading state emission ===
+    let wasLoading = prevState ? computeIsLoading(prevState, calendarContext) : false
     let isLoading = computeIsLoading(newState, calendarContext)
 
-    // TODO: use propSetHandlers in plugin system
     if (!wasLoading && isLoading) {
-      emitter.trigger('loading', true)
+      this.emitter.trigger('loading', true)
     } else if (wasLoading && !isLoading) {
-      emitter.trigger('loading', false)
+      this.emitter.trigger('loading', false)
     }
 
-    this.state = newState
-
-    if (props.onAction) {
-      props.onAction(action)
-    }
-  }
-
-  private handleNowChange = () => {
-    this.actionRunner.request({ // hack. will cause updateData
-      type: 'NOTHING',
-    })
-  }
-
-  destroy() {
-    this.nowTimer.destroy()
-  }
-
-  updateData() {
-    let { props, state } = this
-    let oldData = this.data
-
-    let optionsData = this.computeOptionsData(
-      props.optionOverrides,
-      state.dynamicOptionOverrides,
-      props.calendarApi,
-    )
-
-    let currentViewData = this.computeCurrentViewData(
-      state.currentViewType,
-      optionsData,
-      props.optionOverrides,
-      state.dynamicOptionOverrides,
-    )
-
-    let viewTitle = this.buildTitle(state.dateProfile, currentViewData.options, optionsData.dateEnv)
+    // === Build CalendarData ===
+    let viewTitle = this.buildTitle(dateProfile, currentViewData.options, optionsData.dateEnv)
 
     let toolbarProps = this.buildToolbarProps(
       currentViewData.viewSpec,
-      state.dateProfile,
+      dateProfile,
       currentViewData.dateProfileGenerator,
-      state.currentDate,
-      state.nowDate,
+      currentDate,
+      nowDate,
       viewTitle,
     )
 
-    let data: CalendarData = this.data = {
+    let newData: CalendarData = {
       viewTitle,
       nowManager: this.nowManager,
-      calendarApi: props.calendarApi,
+      calendarApi: config.calendarApi,
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
       toolbarProps,
       ...optionsData,
       ...currentViewData,
-      ...state,
+      ...newState,
     }
 
+    // === Handle option changes ===
     let changeHandlers = optionsData.pluginHooks.optionChangeHandlers
-    let oldCalendarOptions = oldData && oldData.calendarOptions
+    let prevCalendarOptions = prevData && prevData.calendarOptions
     let newCalendarOptions = optionsData.calendarOptions
 
-    if (oldCalendarOptions && oldCalendarOptions !== newCalendarOptions) {
-      if (oldCalendarOptions.timeZone !== newCalendarOptions.timeZone) {
-        // hack
-        state.eventSources = data.eventSources = reduceEventSourcesNewTimeZone(data.eventSources, state.dateProfile, data)
-        state.eventStore = data.eventStore = rezoneEventStoreDates(data.eventStore, oldData.dateEnv, data.dateEnv)
-        state.renderableEventStore = data.renderableEventStore = rezoneEventStoreDates(data.renderableEventStore, oldData.dateEnv, data.dateEnv)
+    if (prevCalendarOptions && prevCalendarOptions !== newCalendarOptions) {
+      if (prevCalendarOptions.timeZone !== newCalendarOptions.timeZone) {
+        // HACK
+        newState.eventSources = newData.eventSources = reduceEventSourcesNewTimeZone(newData.eventSources, dateProfile, newData)
+        newState.eventStore = newData.eventStore = rezoneEventStoreDates(newData.eventStore, prevData!.dateEnv, newData.dateEnv)
+        newState.renderableEventStore = newData.renderableEventStore = rezoneEventStoreDates(newData.renderableEventStore, prevData!.dateEnv, newData.dateEnv)
       }
 
       for (let optionName in changeHandlers) {
         if (
           this.optionsForHandling.indexOf(optionName) !== -1 ||
-          oldCalendarOptions[optionName] !== newCalendarOptions[optionName]
+          prevCalendarOptions[optionName] !== newCalendarOptions[optionName]
         ) {
-          changeHandlers[optionName](newCalendarOptions[optionName], data)
+          changeHandlers[optionName](newCalendarOptions[optionName], newData)
         }
       }
     }
 
     this.optionsForHandling = []
 
-    if (props.onData) {
-      props.onData(data)
-    }
+    return { state: newState, data: newData, calendarContext }
   }
 
-  computeOptionsData(
+  private computeOptionsData(
     optionOverrides: CalendarOptions,
     dynamicOptionOverrides: CalendarOptions,
     calendarApi: CalendarApiImpl,
@@ -467,7 +433,7 @@ export class CalendarDataManager {
   }
 
   // always called from behind a memoizer
-  processRawCalendarOptions(optionOverrides: CalendarOptions, dynamicOptionOverrides: CalendarOptions) {
+  private processRawCalendarOptions(optionOverrides: CalendarOptions, dynamicOptionOverrides: CalendarOptions) {
     let { locales, locale } = mergeCalendarOptions(
       BASE_OPTION_DEFAULTS as any,
       optionOverrides,
@@ -540,7 +506,7 @@ export class CalendarDataManager {
     }
   }
 
-  _computeCurrentViewData(
+  private _computeCurrentViewData(
     viewType: string,
     optionsData: CalendarOptionsData,
     optionOverrides: CalendarOptions,
@@ -568,7 +534,7 @@ export class CalendarDataManager {
       durationUnit: viewSpec.durationUnit,
       usesMinMaxTime: viewSpec.optionDefaults.usesMinMaxTime as any,
       dateEnv: optionsData.dateEnv,
-      calendarApi: this.props.calendarApi, // should come from elsewhere?
+      calendarApi: this.config.calendarApi, // should come from elsewhere?
       slotMinTime: refinedOptions.slotMinTime,
       slotMaxTime: refinedOptions.slotMaxTime,
       showNonCurrentDates: refinedOptions.showNonCurrentDates,
@@ -587,7 +553,7 @@ export class CalendarDataManager {
     return { viewSpec, options: refinedOptions, dateProfileGenerator, viewApi }
   }
 
-  processRawViewOptions(
+  private processRawViewOptions(
     viewSpec: ViewSpec,
     pluginHooks: PluginHooks,
     localeDefaults: CalendarOptions,

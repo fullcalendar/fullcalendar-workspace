@@ -6,8 +6,11 @@ import { EventInteractionState } from '../interactions/event-interaction-state'
 import { DateSpan } from '../structs/date-span'
 
 export type Action =
-  { type: 'NOTHING' } | // hack
+  { type: 'IDLE' } | // hack
+  { type: 'UPDATE_NOW' } |
+
   { type: 'SET_OPTION', optionName: string, rawOptionValue: any } | // TODO: how to link this to CalendarOptions?
+  { type: 'RESET_OPTIONS' } |
 
   { type: 'PREV' } |
   { type: 'NEXT' } |
