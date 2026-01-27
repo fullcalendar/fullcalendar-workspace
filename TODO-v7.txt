@@ -35,9 +35,6 @@ build note:
     manually before `pn dev`
 
 
-rerun vanilla tests
-
-
 high-priority build
 -------------------
 play around with React StrictMode on all views

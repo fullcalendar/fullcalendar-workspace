@@ -5,5 +5,9 @@ import './index.css'
 
 document.addEventListener('DOMContentLoaded', function() {
   createRoot(document.getElementById('root'))
-    .render(<DemoApp />)
+    .render(
+      <React.StrictMode>
+        <DemoApp />
+      </React.StrictMode>
+    )
 })
