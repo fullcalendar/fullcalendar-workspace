@@ -33,7 +33,7 @@ export interface TimelineFgProps {
   resourceId?: string // hack
 
   // dimensions
-  slotWidth: number | undefined
+  slotWidth: number
 
   // virtualization (optional)
   clipStart?: number
@@ -81,10 +81,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     let fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
-    let fgSegHorizontals = props.slotWidth != null
-      ? computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth, props.clipStart, props.clipEnd)
-      : {}
-
+    let fgSegHorizontals = computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth, props.clipStart, props.clipEnd)
     let [fgSegTops, hiddenGroups, hiddenGroupTops, totalHeight] = computeFgSegPlacements(
       fgSegs,
       fgSegHorizontals,
@@ -157,8 +154,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: 1, // scope z-indexes within
                 top: segTop || 0,
-                insetInlineStart: segHorizontal.start,
-                width: segHorizontal.size,
+                // .toFixed() fixes SSR where server does division precision slightly differently
+                insetInlineStart: segHorizontal.start.toFixed(1),
+                width: segHorizontal.size.toFixed(1),
               }}
               heightRef={isMirror ? undefined : segHeightRefMap.createRef(instanceId)}
             >

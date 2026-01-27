@@ -40,9 +40,6 @@ rerun vanilla tests
 
 high-priority build
 -------------------
-react* examples
-  Runtime error: next-dev.js:20 Warning: Prop `style` did not match. Server: "inset-inline-start:1728.2223888888889px" Client: "inset-inline-start:1728.250166666667px"
-    (all next.js/t3/remix)
 play around with React StrictMode on all views
 working tests
   SHIM vanilla(-scheduler)-w-react (and strict-mode too)
