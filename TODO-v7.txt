@@ -35,9 +35,15 @@ build note:
     manually before `pn dev`
 
 
+Strict-Mode problems
+  react17 - switching nearly any view - Warning: Can't perform a React state update on an unmounted component
+play around with React StrictMode on all views
+bug: scrolltime not working on examples/next13-scheduler
+docs: when inset-inline-start or top SSR mismatch, due to event Dates on server/client mismatching
+
+
 high-priority build
 -------------------
-play around with React StrictMode on all views
 working tests
   SHIM vanilla(-scheduler)-w-react (and strict-mode too)
   react/react-scheduler (use vitest?)

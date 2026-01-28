@@ -154,9 +154,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: 1, // scope z-indexes within
                 top: segTop || 0,
-                // .toFixed() fixes SSR where server does division precision slightly differently
-                insetInlineStart: segHorizontal.start?.toFixed(1) + 'px',
-                width: segHorizontal.size?.toFixed(1) + 'px',
+                insetInlineStart: segHorizontal.start,
+                width: segHorizontal.size,
               }}
               heightRef={isMirror ? undefined : segHeightRefMap.createRef(instanceId)}
             >
