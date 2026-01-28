@@ -10,6 +10,8 @@ import '@fullcalendar/react/skeleton.css'
 import '@fullcalendar/react/themes/classic/theme.css'
 import '@fullcalendar/react/themes/classic/palette.css'
 
+const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+
 export default function CalendarPage() {
   return (
     <Layout>
@@ -28,6 +30,8 @@ export default function CalendarPage() {
             right: 'resourceTimelineWeek,dayGridMonth,timeGridWeek'
           }}
           initialView='resourceTimelineWeek'
+          initialDate={todayStr}
+          scrollTime='08:00'
           nowIndicator={true}
           editable={true}
           selectable={true}
@@ -38,7 +42,7 @@ export default function CalendarPage() {
             { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
           ]}
           initialEvents={[
-            { title: 'nice event', start: new Date(), resourceId: 'a' }
+            { title: 'nice event', start: todayStr + 'T09:00:00', resourceId: 'a' }
           ]}
         />
       </div>

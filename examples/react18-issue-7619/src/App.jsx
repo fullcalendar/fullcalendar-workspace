@@ -11,9 +11,8 @@ import '@fullcalendar/react/skeleton.css';
 import '@fullcalendar/react/themes/classic/theme.css';
 import '@fullcalendar/react/themes/classic/palette.css';
 
-function today() {
-  return startOfDay(new Date()); //new Date();
-}
+const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+const today = startOfDay(new Date(todayStr));
 
 const PLUGINS = [
   themePlugin,
@@ -27,8 +26,8 @@ const PLUGINS = [
 const event = {
   id: '12',
   title: 'Hello',
-  start: addHours(today(), 10),
-  end: addHours(today(), 2),
+  start: addHours(today, 10),
+  end: addHours(today, 2),
   color: 'cyan',
   contrastColor: 'black',
 };
@@ -36,8 +35,8 @@ const event = {
 const ghost = {
   id: '12-ghost',
   title: 'Hello',
-  start: addHours(today(), 10),
-  end: addHours(today(), 2),
+  start: addHours(today, 10),
+  end: addHours(today, 2),
   display: 'background',
   color: 'yellow',
   contrastColor: 'black',

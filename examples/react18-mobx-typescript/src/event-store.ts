@@ -2,6 +2,8 @@ import { createContext } from "react";
 import { observable, action, makeObservable } from "mobx";
 import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/react";
 
+const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+
 export class EventStore {
   constructor() {
     makeObservable(this);
@@ -17,13 +19,13 @@ export class EventStore {
     {
       id: this.createEventId(),
       title: "All-day event",
-      start: new Date(),
+      start: todayStr,
       allDay: true,
     },
     {
       id: this.createEventId(),
       title: "Timed event",
-      start: new Date(),
+      start: todayStr + 'T12:00:00',
       allDay: false,
     },
   ];

@@ -11,6 +11,8 @@ import '@fullcalendar/react/skeleton.css';
 import '@fullcalendar/react/themes/classic/theme.css';
 import '@fullcalendar/react/themes/classic/palette.css';
 
+const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+
 export default function Home() {
   return (
     <div className="calendar-container">
@@ -21,6 +23,8 @@ export default function Home() {
           center: 'title',
         }}
         initialView="resourceTimelineDay"
+        initialDate={todayStr}
+        scrollTime='08:00'
         nowIndicator={true}
         editable={true}
         selectable={true}
@@ -31,11 +35,11 @@ export default function Home() {
           { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
         ]}
         initialEvents={[
-          { title: 'event1', start: new Date(), resourceId: 'a' },
-          { title: 'event2', start: new Date(), resourceId: 'a' },
-          { title: 'event3', start: new Date(), resourceId: 'a' },
-          { title: 'event4', start: new Date(), resourceId: 'a' },
-          { title: 'event5', start: new Date(), resourceId: 'a' },
+          { title: 'event1', start: todayStr + 'T09:00:00', resourceId: 'a' },
+          { title: 'event2', start: todayStr + 'T09:00:00', resourceId: 'a' },
+          { title: 'event3', start: todayStr + 'T09:00:00', resourceId: 'a' },
+          { title: 'event4', start: todayStr + 'T09:00:00', resourceId: 'a' },
+          { title: 'event5', start: todayStr + 'T09:00:00', resourceId: 'a' },
         ]}
         eventContent={(eventInfo) => {
           return (

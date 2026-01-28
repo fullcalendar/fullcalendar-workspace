@@ -4,7 +4,7 @@ import { excludeById, getTodayStr } from './utils'
 functions that simulate network requests
 */
 
-let todayStr = getTodayStr()
+const todayStr = getTodayStr()
 let eventGuid = 0
 let eventDb = [
   {
