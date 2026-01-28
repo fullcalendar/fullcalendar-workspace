@@ -11,7 +11,11 @@ export default function Layout({ children }) {
       </Head>
       <div className='navbar'>
         <Link prefetch={false} href='/'>Home</Link>
-        <Link prefetch={false} href='/calendar'>Calendar</Link>
+        <Link prefetch={false} href='/month'>Month</Link>
+        <Link prefetch={false} href='/week'>Week</Link>
+        <Link prefetch={false} href='/timeline'>Timeline</Link>
+        <Link prefetch={false} href='/list'>List</Link>
+        <Link prefetch={false} href='/year'>Year</Link>
         <Link prefetch={false} href='/about'>About</Link>
       </div>
       <div>
