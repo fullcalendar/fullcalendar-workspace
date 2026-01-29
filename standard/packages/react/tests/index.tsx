@@ -136,12 +136,10 @@ it('will not inifinitely recurse in strict mode with datesSet', async () => {
     ]);
 
     const dateChange = () => {
-      act(() => {
-        setEvents([
-          { title: 'event 10', date: '2022-04-01' },
-          { title: 'event 20', date: '2022-04-02' }
-        ]);
-      })
+      setEvents([
+        { title: 'event 10', date: '2022-04-01' },
+        { title: 'event 20', date: '2022-04-02' }
+      ]);
     };
 
     return (
@@ -159,7 +157,9 @@ it('will not inifinitely recurse in strict mode with datesSet', async () => {
     </React.StrictMode>
   )
 
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 })
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/13
@@ -171,12 +171,10 @@ it('will not inifinitely recurse with datesSet and dateIncrement', async () => {
     ]);
 
     const dateChange = () => {
-      act(() => {
-        setEvents([
-          { title: 'event 10', date: '2022-04-01' },
-          { title: 'event 20', date: '2022-04-02' }
-        ]);
-      })
+      setEvents([
+        { title: 'event 10', date: '2022-04-01' },
+        { title: 'event 20', date: '2022-04-02' }
+      ]);
     };
 
     return (
@@ -200,7 +198,9 @@ it('will not inifinitely recurse with datesSet and dateIncrement', async () => {
     <TestApp />
   )
 
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 })
 
 it('slot rendering inherits parent context', () => {
@@ -280,7 +280,9 @@ it('does not produce overlapping multiday events with custom eventContent', asyn
 
   const { container } = render(<TestApp />)
 
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 
   const eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(2)
@@ -314,7 +316,9 @@ it('does not produce overlapping all-day & timed events with custom eventContent
 
   const { container } = render(<TestApp />)
 
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 
   const eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(2)
@@ -348,7 +352,9 @@ it('does not produce overlapping all-day & timed events with custom eventContent
 
     render(<TestApp />)
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 100))
+    })
 
     expect(eventDidMountCalled).toBe(true)
   })
@@ -385,7 +391,9 @@ it('rerenders content-injection with latest render-func closure', async () => {
 
   const { container } = render(<TestApp />)
 
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 
   let eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(1)
@@ -394,8 +402,9 @@ it('rerenders content-injection with latest render-func closure', async () => {
   act(() => {
     incrementCounter()
   })
-
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
 
   let newEventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(newEventEls.length).toBe(1)
@@ -437,10 +446,14 @@ it('no unnecessary rerenders, using events, when parent rerenders', async () => 
 
   render(<TestApp />)
   expect(customRenderCnt).toBe(1)
+
   act(() => {
     incrementCounter()
   })
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
+
   expect(customRenderCnt).toBe(1)
 })
 
@@ -478,10 +491,14 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', async 
 
   render(<TestApp />)
   expect(customRenderCnt).toBe(1)
+
   act(() => {
     incrementCounter()
   })
-  await new Promise(resolve => setTimeout(resolve, 100))
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
+
   expect(customRenderCnt).toBe(1)
 })
 
