@@ -21,6 +21,7 @@
     "jsdom": "^27.4.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   },
   "scripts": {
@@ -29,6 +30,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:dev": "vitest",
+    "typecheck": "tsc -p tsconfig.tests.json",
     "src:generate": "./scripts/src-generate.sh",
     "src:clean": "rm -rf src"
   },

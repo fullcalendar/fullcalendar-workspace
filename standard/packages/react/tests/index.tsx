@@ -80,12 +80,12 @@ it('should accept a callback', () => {
 })
 
 it('should expose an API', function() {
-  let componentRef = React.createRef()
+  let componentRef = React.createRef<React.ComponentRef<typeof FullCalendar>>()
   render(
     <FullCalendar {...DEFAULT_OPTIONS} ref={componentRef} />
   )
 
-  let calendarApi = componentRef.current.getApi()
+  let calendarApi = componentRef.current!.getApi()
   expect(calendarApi).toBeTruthy()
 
   let newDate = new Date(Date.UTC(2000, 0, 1))
@@ -274,7 +274,7 @@ it('does not produce overlapping multiday events with custom eventContent', asyn
 
   await new Promise(resolve => setTimeout(resolve, 100))
 
-  const eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  const eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(2)
   expect(anyElsIntersect(eventEls)).toBe(false)
 })
@@ -308,7 +308,7 @@ it('does not produce overlapping all-day & timed events with custom eventContent
 
   await new Promise(resolve => setTimeout(resolve, 100))
 
-  const eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  const eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(2)
   expect(anyElsIntersect(eventEls)).toBe(false)
 })
@@ -352,14 +352,14 @@ it('rerenders content-injection with latest render-func closure', async () => {
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
   ]
-  let incrementCounter
+  let incrementCounter: () => void = () => {}
 
   function TestApp() {
     const [counter, setCounter] = useState(0)
 
     incrementCounter = useCallback(() => {
-      setCounter(counter + 1)
-    })
+      setCounter((currentCounter) => currentCounter + 1)
+    }, [])
 
     return (
       <FullCalendar
@@ -379,7 +379,7 @@ it('rerenders content-injection with latest render-func closure', async () => {
 
   await new Promise(resolve => setTimeout(resolve, 100))
 
-  let eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  let eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls.length).toBe(1)
   expect(eventEls[0].querySelector('i')!.textContent).toBe('event 1 - 0')
 
@@ -389,7 +389,7 @@ it('rerenders content-injection with latest render-func closure', async () => {
 
   await new Promise(resolve => setTimeout(resolve, 100))
 
-  let newEventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  let newEventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(newEventEls.length).toBe(1)
   expect(newEventEls[0]).toBe(eventEls[0])
   expect(newEventEls[0].querySelector('i')!.textContent).toBe('event 1 - 1')
@@ -400,15 +400,15 @@ it('no unnecessary rerenders, using events, when parent rerenders', () => {
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
   ]
-  let incrementCounter
+  let incrementCounter: () => void = () => {}
   let customRenderCnt = 0
 
   function TestApp() {
-    const [counter, setCounter] = useState(0)
+    const [_counter, setCounter] = useState(0)
 
     incrementCounter = useCallback(() => {
-      setCounter(counter + 1)
-    })
+      setCounter((currentCounter) => currentCounter + 1)
+    }, [])
 
     return (
       <FullCalendar
@@ -438,15 +438,15 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', () => 
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
   ]
-  let incrementCounter
+  let incrementCounter: () => void = () => {}
   let customRenderCnt = 0
 
   function TestApp() {
-    const [counter, setCounter] = useState(0)
+    const [_counter, setCounter] = useState(0)
 
     incrementCounter = useCallback(() => {
-      setCounter(counter + 1)
-    })
+      setCounter((currentCounter) => currentCounter + 1)
+    }, [])
 
     return (
       <FullCalendar
@@ -574,7 +574,7 @@ it('eventContent render can return true to use default rendering', () => {
     />
   )
 
-  let eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  let eventEls = Array.from(container.querySelectorAll(`.${TEST_EVENT_CLASS}`)) as HTMLElement[]
   expect(eventEls[0].innerHTML.trim()).toBeTruthy()
 })
 
@@ -680,4 +680,3 @@ function buildToolbar() {
 function buildEvent() {
   return { title: 'event', start: new Date(NOW_DATE.valueOf()) } // consistent datetime
 }
-
