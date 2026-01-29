@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "dependencies": {
     "@fullcalendar-tests/standard": "workspace:*",
-    "@fullcalendar/vanilla": "workspace:*",
-    "@fullcalendar/vanilla-scheduler": "workspace:*",
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
+    "@fullcalendar/vanilla": "workspace:*",
+    "@fullcalendar/vanilla-w-react": "workspace:*",
+    "@fullcalendar/vanilla-scheduler": "workspace:*",
+    "@fullcalendar/vanilla-scheduler-w-react": "workspace:*",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",
@@ -23,16 +25,7 @@
     "lint": "eslint ."
   },
   "type": "module",
-  "buildConfig": {
-    "globalConfig": {},
-    "exports": {
-      ".": {
-        "format": "global",
-        "primary": true,
-        "generator": "./scripts/generate-index.js"
-      }
-    }
-  },
+  "buildConfig": "./build.config.js",
   "karmaConfig": {
     "files": [
       "./dist/index.js"

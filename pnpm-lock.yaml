@@ -2059,12 +2059,6 @@ importers:
       '@fullcalendar-tests/standard':
         specifier: workspace:*
         version: link:../../../standard/packages/vanilla-tests
-      '@fullcalendar/vanilla':
-        specifier: workspace:*
-        version: link:../../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
-        specifier: workspace:*
-        version: link:../vanilla-scheduler/dist
       xhr-mock:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2072,6 +2066,18 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
+      '@fullcalendar/vanilla':
+        specifier: workspace:*
+        version: link:../../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
+        specifier: workspace:*
+        version: link:../vanilla-scheduler/dist
+      '@fullcalendar/vanilla-scheduler-w-react':
+        specifier: workspace:*
+        version: link:../vanilla-scheduler-w-react/dist
+      '@fullcalendar/vanilla-w-react':
+        specifier: workspace:*
+        version: link:../../../standard/packages/vanilla-w-react/dist
       '@types/jasmine':
         specifier: ^3.3.12
         version: 3.10.18
@@ -2357,24 +2363,6 @@ importers:
 
   standard/packages/vanilla-tests:
     dependencies:
-      '@fullcalendar/google-calendar':
-        specifier: workspace:*
-        version: link:../google-calendar/dist
-      '@fullcalendar/icalendar':
-        specifier: workspace:*
-        version: link:../icalendar/dist
-      '@fullcalendar/luxon3':
-        specifier: workspace:*
-        version: link:../luxon3/dist
-      '@fullcalendar/moment':
-        specifier: workspace:*
-        version: link:../moment/dist
-      '@fullcalendar/rrule':
-        specifier: workspace:*
-        version: link:../rrule/dist
-      '@fullcalendar/vanilla':
-        specifier: workspace:*
-        version: link:../vanilla/dist
       luxon:
         specifier: ^2.0.0
         version: 2.5.2
@@ -2394,6 +2382,27 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
+      '@fullcalendar/google-calendar':
+        specifier: workspace:*
+        version: link:../google-calendar/dist
+      '@fullcalendar/icalendar':
+        specifier: workspace:*
+        version: link:../icalendar/dist
+      '@fullcalendar/luxon3':
+        specifier: workspace:*
+        version: link:../luxon3/dist
+      '@fullcalendar/moment':
+        specifier: workspace:*
+        version: link:../moment/dist
+      '@fullcalendar/rrule':
+        specifier: workspace:*
+        version: link:../rrule/dist
+      '@fullcalendar/vanilla':
+        specifier: workspace:*
+        version: link:../vanilla/dist
+      '@fullcalendar/vanilla-w-react':
+        specifier: workspace:*
+        version: link:../vanilla-w-react/dist
       '@types/jasmine':
         specifier: ^3.3.12
         version: 3.10.18
@@ -25847,7 +25856,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -25938,7 +25947,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -26311,7 +26320,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1

@@ -355,7 +355,7 @@ function buildNormalJsPlugins(
   return [
     // HACK because nodeResolvePlugin was strangely causing the './side-effects' import to be
     // tree-shaken away
-    pkgJson.name !== '@fullcalendar/preact-scheduler' &&
+    !/^@fullcalendar\/p?react-scheduler$/.test(pkgJson.name) &&
       nodeResolvePlugin({
         // in current package's package.json, ignore sideEffects entry
         // (we currently dont even do this)

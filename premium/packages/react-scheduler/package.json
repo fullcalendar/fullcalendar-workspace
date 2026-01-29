@@ -32,31 +32,38 @@
   "buildConfig": {
     "exports": {
       "./all": {
-        "format": "module"
+        "format": "module",
+        "sideEffects": true
       },
       "./adaptive": {
         "format": "module",
-        "src": "adaptive/index"
+        "src": "adaptive/index",
+        "sideEffects": true
       },
       "./resource-daygrid": {
         "format": "module",
-        "src": "resource-daygrid/index"
+        "src": "resource-daygrid/index",
+        "sideEffects": true
       },
       "./resource-timegrid": {
         "format": "module",
-        "src": "resource-timegrid/index"
+        "src": "resource-timegrid/index",
+        "sideEffects": true
       },
       "./resource-timeline": {
         "format": "module",
-        "src": "resource-timeline/index"
+        "src": "resource-timeline/index",
+        "sideEffects": true
       },
       "./scrollgrid": {
         "format": "module",
-        "src": "scrollgrid/index"
+        "src": "scrollgrid/index",
+        "sideEffects": true
       },
       "./timeline": {
         "format": "module",
-        "src": "timeline/index"
+        "src": "timeline/index",
+        "sideEffects": true
       }
     }
   },

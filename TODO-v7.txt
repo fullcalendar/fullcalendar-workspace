@@ -35,18 +35,15 @@ build note:
     manually before `pn dev`
 
 
-bug: scrolltime not working on examples/next13-scheduler
-docs: when inset-inline-start or top SSR mismatch, due to event Dates on server/client mismatching
-
-
 high-priority build
 -------------------
-working tests
-  SHIM vanilla(-scheduler)-w-react (and strict-mode too)
-  react/react-scheduler (use vitest?)
-  vue/angular (needs classname adjustments too)
+react
+  vanilla(-scheduler)-w-react with StrictMode
+  restore react-specific tests
 vue3
+  restore tests (use vitest?)
 angular w/ endpoints somehow
+  restore tests
 change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
@@ -194,6 +191,10 @@ bug: web-component (with React internals), timegrid "Todo el día" all on same l
   thought it should break to a second?
 bug: web-component popover position way out of whack
 docs: is web-component's getApi() documented? no
+bug: scrolltime not working on examples/next13-scheduler
+docs: when inset-inline-start or top SSR mismatch, due to event Dates on server/client mismatching
+minor bugs with FORCE_REACT=1 with vanilla tests
+  mostly just global handlers not cleaned up after destroy? (problem with tests methinks)
 
 
 ASAP
