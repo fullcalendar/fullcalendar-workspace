@@ -304,6 +304,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   componentWillUnmount(): void {
     const { options } = this.context
 
+    this.rowHeightRefMap.disable()
     this.disconnectGridWidth()
     this.disconnectTitleHeight()
     this.disconnectTableHeaderHeight()

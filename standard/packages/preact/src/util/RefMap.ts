@@ -7,11 +7,21 @@ export class RefMap<K, V> {
   public rev: string = ''
   public current = new Map<K, V>()
   private callbacks = new Map<K, (val: V | null) => void>
+  private _disabled = false
 
   constructor(
     public masterCallback?: (val: V, key: K) => void,
     private ignoreDeletes = false
   ) {
+  }
+
+  /*
+  Call in componentWillUnmount to prevent callbacks during child cleanup.
+  Parent unmounts fire before children in React, so children reporting null
+  would otherwise trigger masterCallback on an unmounting parent.
+  */
+  disable() {
+    this._disabled = true
   }
 
   createRef(key: K) {
@@ -28,6 +38,8 @@ export class RefMap<K, V> {
   }
 
   handleValue = (val: V, key: K) => { // bind in case users want to pass it around
+    if (this._disabled) return
+
     let { current, callbacks } = this
 
     if (val === null) {

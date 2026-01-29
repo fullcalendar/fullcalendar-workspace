@@ -612,6 +612,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   }
 
   componentWillUnmount() {
+    this.headerLabelInnerWidthRefMap.disable()
+    this.headerLabelInnerHeightRefMap.disable()
+    this.headerMainInnerHeightRefMap.disable()
+    this.slatLabelInnerWidthRefMap.disable()
+    this.slatLabelInnerHeightRefMap.disable()
     this.destroyScrollers()
 
     setRef(this.props.slatHeightRef, null)

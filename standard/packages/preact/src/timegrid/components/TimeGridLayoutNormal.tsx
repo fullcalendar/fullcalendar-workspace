@@ -478,6 +478,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   }
 
   componentWillUnmount(): void {
+    this.headerLabelInnerWidthRefMap.disable()
+    this.slatLabelInnerWidthRefMap.disable()
+    this.slatLabelInnerHeightRefMap.disable()
     setRef(this.props.slatHeightRef, null)
   }
 

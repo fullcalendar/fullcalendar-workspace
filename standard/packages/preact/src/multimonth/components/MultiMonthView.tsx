@@ -168,6 +168,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentWillUnmount() {
+    this.singleMonthHeightsRefMap.disable()
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
 
     this.disconnectInnerWidth()

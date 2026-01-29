@@ -157,6 +157,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     }
   }
 
+  componentWillUnmount(): void {
+    this.rowHeightRefMap.disable()
+  }
+
   // Hit System
   // -----------------------------------------------------------------------------------------------
 

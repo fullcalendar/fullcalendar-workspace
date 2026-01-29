@@ -110,6 +110,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   }
 
   componentWillUnmount() {
+    this.rowHeightRefMap.disable()
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
   }
 
