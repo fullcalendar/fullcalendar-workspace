@@ -58,6 +58,7 @@ interface DayGridViewState {
 
 export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannableProps, DayGridViewState> {
   state = {} as DayGridViewState
+  private _isUnmounting = false
 
   headerScrollerRef = createRef<Scroller>()
   bodyScrollerRef = createRef<Scroller>()
@@ -205,6 +206,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     // scroller
     this.syncedScroller.destroy()
   }
@@ -213,10 +215,12 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
   // -----------------------------------------------------------------------------------------------
 
   handleTotalWidth = (totalWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ totalWidth })
   }
 
   handleClientWidth = (clientWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ clientWidth })
   }
 

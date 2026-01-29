@@ -37,6 +37,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   })
 
   // internal
+  private _isUnmounting = false
   private disconnectInnerWidth?: () => void
   private scrollDate: DateMarker | null = null
   private cols: number | undefined
@@ -168,7 +169,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentWillUnmount() {
-    this.singleMonthHeightsRefMap.disable()
+    this._isUnmounting = true
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
 
     this.disconnectInnerWidth()
@@ -178,6 +179,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   // -----------------------------------------------------------------------------------------------
 
   private handleSingleMonthHeights = () => {
+    if (this._isUnmounting) return
     this.applyScroll()
   }
 

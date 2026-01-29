@@ -35,8 +35,6 @@ build note:
     manually before `pn dev`
 
 
-examples/react17 - Strict-Mode
-  switching nearly any view - Warning: Can't perform a React state update on an unmounted component
 bug: scrolltime not working on examples/next13-scheduler
 docs: when inset-inline-start or top SSR mismatch, due to event Dates on server/client mismatching
 

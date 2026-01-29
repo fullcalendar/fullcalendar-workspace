@@ -84,6 +84,7 @@ interface TimeGridLayoutState {
 
 export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProps, TimeGridLayoutState> {
   state = {} as TimeGridLayoutState
+  private _isUnmounting = false
 
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
@@ -478,9 +479,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   }
 
   componentWillUnmount(): void {
-    this.headerLabelInnerWidthRefMap.disable()
-    this.slatLabelInnerWidthRefMap.disable()
-    this.slatLabelInnerHeightRefMap.disable()
+    this._isUnmounting = true
     setRef(this.props.slatHeightRef, null)
   }
 
@@ -494,22 +493,27 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   // -----------------------------------------------------------------------------------------------
 
   private handleTotalWidth = (totalWidth: number) => {
+    if (this._isUnmounting) return
     // Must delay the rerender because might change the width of the all-day DayGridRow events,
     // which shows a ResizeObserver loop warning
     requestAnimationFrame(() => {
+      if (this._isUnmounting) return
       this.setState({ totalWidth })
     })
   }
 
   private handleClientWidth = (clientWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ clientWidth })
   }
 
   private handleClientHeight = (clientHeight: number) => {
+    if (this._isUnmounting) return
     this.setState({ clientHeight })
   }
 
   private handleAxisInnerWidths = () => {
+    if (this._isUnmounting) return
     const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
     let max = Math.max(
@@ -531,6 +535,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   }
 
   private handleSlatInnerHeights = () => {
+    if (this._isUnmounting) return
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
     let max = 0
 

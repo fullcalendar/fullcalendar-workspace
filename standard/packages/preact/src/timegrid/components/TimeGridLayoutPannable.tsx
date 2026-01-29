@@ -96,6 +96,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   state: TimeGridLayoutPannableState = {
     headerTierHeights: [],
   }
+  private _isUnmounting = false
 
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
@@ -612,11 +613,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   }
 
   componentWillUnmount() {
-    this.headerLabelInnerWidthRefMap.disable()
-    this.headerLabelInnerHeightRefMap.disable()
-    this.headerMainInnerHeightRefMap.disable()
-    this.slatLabelInnerWidthRefMap.disable()
-    this.slatLabelInnerHeightRefMap.disable()
+    this._isUnmounting = true
     this.destroyScrollers()
 
     setRef(this.props.slatHeightRef, null)
@@ -632,26 +629,32 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   // -----------------------------------------------------------------------------------------------
 
   private handleTotalWidth = (totalWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ totalWidth })
   }
 
   private handleBodyHeight = (bodyHeight: number) => {
+    if (this._isUnmounting) return
     this.setState({ bodyHeight })
   }
 
   private handleClientWidth = (clientWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ clientWidth })
   }
 
   private handleClientHeight = (clientHeight: number) => {
+    if (this._isUnmounting) return
     this.setState({ clientHeight })
   }
 
   private handleStickyBottomScrollbarWidth = (sticykBottomScrollbarWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({ sticykBottomScrollbarWidth })
   }
 
   private handleHeaderHeights = () => {
+    if (this._isUnmounting) return
     const headerLabelInnerHeightMap = this.headerLabelInnerHeightRefMap.current
     const headerMainInnerHeightMap = this.headerMainInnerHeightRefMap.current
     const heights = []
@@ -668,6 +671,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   }
 
   private handleSlatInnerHeights = () => {
+    if (this._isUnmounting) return
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
     let max = 0
 
@@ -681,6 +685,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   }
 
   private handleAxisWidths = () => {
+    if (this._isUnmounting) return
     const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
     let max = this.allDayLabelInnerWidth || 0 // guard against all-day slot hidden

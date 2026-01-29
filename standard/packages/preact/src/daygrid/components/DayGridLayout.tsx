@@ -54,6 +54,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   })
 
   // internal
+  private _isUnmounting = false
   private scrollDate: DateMarker | null = null
 
   render() {
@@ -110,7 +111,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   }
 
   componentWillUnmount() {
-    this.rowHeightRefMap.disable()
+    this._isUnmounting = true
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
   }
 
@@ -126,6 +127,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   }
 
   updateScrollY = () => {
+    if (this._isUnmounting) return
     const rowHeightMap = this.rowHeightRefMap.current
     const scroller = this.scrollerRef.current
 

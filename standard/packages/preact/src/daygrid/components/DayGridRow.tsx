@@ -81,6 +81,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private buildWeekNumberRenderProps = memoize(buildWeekNumberRenderProps)
 
   // internal
+  private _isUnmounting = false
   private disconnectHeight?: () => void
 
   render() {
@@ -377,9 +378,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   }
 
   componentWillUnmount(): void {
-    this.headerHeightRefMap.disable()
-    this.mainHeightRefMap.disable()
-    this.segHeightRefMap.disable()
+    this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.heightRef, null)
   }
@@ -419,6 +418,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   }
 
   private handleSegPositioning = () => {
+    if (this._isUnmounting) return
     this.forceUpdate()
   }
 

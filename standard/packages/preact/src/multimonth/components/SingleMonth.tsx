@@ -61,6 +61,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   })
 
   // internal
+  private _isUnmounting = false
   private slicer = new DayTableSlicer()
   private rootEl?: HTMLElement
   private renderProps?: SingleMonthData
@@ -304,7 +305,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   componentWillUnmount(): void {
     const { options } = this.context
 
-    this.rowHeightRefMap.disable()
+    this._isUnmounting = true
     this.disconnectGridWidth()
     this.disconnectTitleHeight()
     this.disconnectTableHeaderHeight()
@@ -316,6 +317,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   }
 
   private handleHeights = () => {
+    if (this._isUnmounting) return
     setRef(this.props.heightsRef, {
       titleHeight: this.titleHeight,
       tableHeaderHeight: this.tableHeaderHeight,
