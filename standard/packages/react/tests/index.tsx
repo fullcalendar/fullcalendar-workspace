@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-import React, { useState, useContext, useCallback, createContext, act } from 'react'
+import React, { useState, useContext, createContext, act } from 'react'
 import { render } from '@testing-library/react'
 
 /*
@@ -18,6 +18,7 @@ const TEST_WEEKEND_CLASS = 'test-weekend'
 
 const DEFAULT_OPTIONS = {
   plugins: [classicThemePlugin, dayGridPlugin, listPlugin],
+  initialView: 'dayGridMonth',
   headerToolbar: {
     start: 'prev,next today',
     end: 'title',
@@ -89,7 +90,11 @@ it('should expose an API', function() {
   expect(calendarApi).toBeTruthy()
 
   let newDate = new Date(Date.UTC(2000, 0, 1))
-  calendarApi.gotoDate(newDate)
+
+  act(() => {
+    calendarApi.gotoDate(newDate)
+  })
+
   expect(calendarApi.getDate().valueOf()).toBe(newDate.valueOf())
 })
 
@@ -131,16 +136,17 @@ it('will not inifinitely recurse in strict mode with datesSet', async () => {
     ]);
 
     const dateChange = () => {
-      setEvents([
-        { title: 'event 10', date: '2022-04-01' },
-        { title: 'event 20', date: '2022-04-02' }
-      ]);
+      act(() => {
+        setEvents([
+          { title: 'event 10', date: '2022-04-01' },
+          { title: 'event 20', date: '2022-04-02' }
+        ]);
+      })
     };
 
     return (
       <FullCalendar
         plugins={[dayGridPlugin]}
-        initialView='dayGridMonth'
         events={events}
         datesSet={dateChange}
       />
@@ -165,10 +171,12 @@ it('will not inifinitely recurse with datesSet and dateIncrement', async () => {
     ]);
 
     const dateChange = () => {
-      setEvents([
-        { title: 'event 10', date: '2022-04-01' },
-        { title: 'event 20', date: '2022-04-02' }
-      ]);
+      act(() => {
+        setEvents([
+          { title: 'event 10', date: '2022-04-01' },
+          { title: 'event 20', date: '2022-04-02' }
+        ]);
+      })
     };
 
     return (
@@ -357,9 +365,9 @@ it('rerenders content-injection with latest render-func closure', async () => {
   function TestApp() {
     const [counter, setCounter] = useState(0)
 
-    incrementCounter = useCallback(() => {
+    incrementCounter = () => {
       setCounter((currentCounter) => currentCounter + 1)
-    }, [])
+    }
 
     return (
       <FullCalendar
@@ -395,7 +403,7 @@ it('rerenders content-injection with latest render-func closure', async () => {
   expect(newEventEls[0].querySelector('i')!.textContent).toBe('event 1 - 1')
 })
 
-it('no unnecessary rerenders, using events, when parent rerenders', () => {
+it('no unnecessary rerenders, using events, when parent rerenders', async () => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
@@ -406,9 +414,9 @@ it('no unnecessary rerenders, using events, when parent rerenders', () => {
   function TestApp() {
     const [_counter, setCounter] = useState(0)
 
-    incrementCounter = useCallback(() => {
+    incrementCounter = () => {
       setCounter((currentCounter) => currentCounter + 1)
-    }, [])
+    }
 
     return (
       <FullCalendar
@@ -429,11 +437,14 @@ it('no unnecessary rerenders, using events, when parent rerenders', () => {
 
   render(<TestApp />)
   expect(customRenderCnt).toBe(1)
-  act(() => incrementCounter())
+  act(() => {
+    incrementCounter()
+  })
+  await new Promise(resolve => setTimeout(resolve, 100))
   expect(customRenderCnt).toBe(1)
 })
 
-it('no unnecessary rerenders, using eventSources, when parent rerenders', () => {
+it('no unnecessary rerenders, using eventSources, when parent rerenders', async () => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
@@ -444,9 +455,9 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', () => 
   function TestApp() {
     const [_counter, setCounter] = useState(0)
 
-    incrementCounter = useCallback(() => {
+    incrementCounter = () => {
       setCounter((currentCounter) => currentCounter + 1)
-    }, [])
+    }
 
     return (
       <FullCalendar
@@ -467,7 +478,10 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', () => 
 
   render(<TestApp />)
   expect(customRenderCnt).toBe(1)
-  act(() => incrementCounter())
+  act(() => {
+    incrementCounter()
+  })
+  await new Promise(resolve => setTimeout(resolve, 100))
   expect(customRenderCnt).toBe(1)
 })
 

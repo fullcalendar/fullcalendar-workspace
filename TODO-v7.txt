@@ -37,8 +37,6 @@ build note:
 
 build
 -----
-react
-  restore react-specific tests
 vue3
   restore tests (use vitest?)
 angular w/ endpoints somehow
@@ -645,6 +643,7 @@ no more console.warn on unknown options
 new dayHeaderFormat default not showing year
 changelog: createPlugin removed
 React >= 17 support (same versions that support hooks)
+changelog: FullCalendar.act testing util removed
 
 
 Docs
