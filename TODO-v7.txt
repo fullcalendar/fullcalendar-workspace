@@ -41,7 +41,6 @@ vue3
   restore tests (use vitest?)
 angular w/ endpoints somehow
   restore tests
-change shadcn: theming/ui-shadcn/scripts/build-registry-items.ts
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
@@ -189,6 +188,7 @@ why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
 better way of testing React StrictMode
   current: must set strictModeFactor=1 in standard/packages/vanilla-w-react/src/vdom-strict-mode.ts
+quirk: react version timegrid all-day scrollbar-offset is jumpy
 
 
 ASAP

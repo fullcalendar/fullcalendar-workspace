@@ -260,7 +260,7 @@ function buildModulePlugins(
       srcToDest: pkgBundleStruct.copySrcToDest,
       minification: true, // temp
     }),
-    (pkgJson.name === '@fullcalendar/preact' || isPublicMui) &&
+    (/^@fullcalendar\/p?react$/.test(pkgJson.name) || isPublicMui) &&
       transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
     ...buildJsPlugins(
         pkgBundleStruct,
