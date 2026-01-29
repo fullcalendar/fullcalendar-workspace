@@ -38,7 +38,6 @@ build note:
 build
 -----
 react
-  vanilla(-scheduler)-w-react with StrictMode
   restore react-specific tests
 vue3
   restore tests (use vitest?)
@@ -190,6 +189,8 @@ better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it i
 move refineRenderProps from resource-timeline export
 why does outputted object destructuring look weird?:
  Object.assign(Object.assign({}
+better way of testing React StrictMode
+  current: must set strictModeFactor=1 in standard/packages/vanilla-w-react/src/vdom-strict-mode.ts
 
 
 ASAP
