@@ -31,17 +31,7 @@
     "lint": "eslint ."
   },
   "type": "module",
-  "buildConfig": {
-    "globalConfig": {
-    },
-    "exports": {
-      ".": {
-        "format": "global",
-        "primary": true,
-        "generator": "./scripts/generate-index.js"
-      }
-    }
-  },
+  "buildConfig": "./build.config.js",
   "karmaConfig": {
     "suites": {
       "default": {

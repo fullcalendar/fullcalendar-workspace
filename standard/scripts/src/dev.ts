@@ -1,7 +1,7 @@
 import { writeDistPkgJsons } from './json.ts'
 import { deleteBuiltFiles } from './pkg/build.ts'
 import { watchBundles } from './pkg/bundle.ts'
-import { type PkgJsonBuildConfig } from './pkg/utils/bundle-struct.ts'
+import { resolveBuildConfig, type PkgJsonBuildConfig } from './pkg/utils/bundle-struct.ts'
 import {
   type MonorepoStruct,
   type PkgStruct,
@@ -37,7 +37,7 @@ export default async function(this: ScriptContext) {
 
     const stopPkgs = await traverseMonorepo(monorepoStruct, async (pkgStruct: PkgStruct) => {
       const { pkgDir, pkgJson } = pkgStruct
-      const buildConfig: PkgJsonBuildConfig | undefined = pkgJson.buildConfig
+      const buildConfig = await resolveBuildConfig(pkgDir, pkgJson.buildConfig)
 
       if (buildConfig && !buildConfig.disableWatch) {
         return watchBundles(pkgDir, pkgJson, true) // isDev=true

@@ -4,7 +4,7 @@ import { analyzePkg } from '../utils/pkg-analysis.ts'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.ts'
 import { type ScriptContext } from '../utils/script-runner.ts'
 import { esmExtension, iifeExtension } from './utils/config.ts'
-import { type PkgJsonBuildConfig } from './utils/bundle-struct.ts'
+import { resolveBuildConfig, type PkgJsonBuildConfig } from './utils/bundle-struct.ts'
 
 const cdnFields = [
   'unpkg',
@@ -27,7 +27,7 @@ export async function writeDistPkgJson(
   pkgJson: any,
   isDev: boolean,
 ): Promise<void> {
-  const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig
+  const buildConfig = await resolveBuildConfig(pkgDir, pkgJson.buildConfig)
   if (!buildConfig) {
     throw new Error('Can only generate dist package.json for a buildConfig')
   }

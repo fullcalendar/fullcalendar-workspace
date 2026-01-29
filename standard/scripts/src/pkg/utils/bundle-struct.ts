@@ -77,11 +77,34 @@ export type GeneratorFunc = (
 
 export type WatchPathsFunc = (pkgDir: string) => string[]
 
+export async function resolveBuildConfig(
+  pkgDir: string,
+  buildConfigOrPath: string | PkgJsonBuildConfig | undefined,
+): Promise<PkgJsonBuildConfig | undefined> {
+  if (buildConfigOrPath === undefined) {
+    return undefined
+  }
+  if (typeof buildConfigOrPath === 'object') {
+    return buildConfigOrPath
+  }
+  // It's a string path
+  const configPath = joinPaths(pkgDir, buildConfigOrPath)
+  if (buildConfigOrPath.endsWith('.json')) {
+    const content = await readFile(configPath, 'utf8')
+    return JSON.parse(content)
+  }
+  if (buildConfigOrPath.endsWith('.js')) {
+    const module = await import(configPath)
+    return module.default
+  }
+  throw new Error(`buildConfig path must end in .json or .js: ${buildConfigOrPath}`)
+}
+
 export async function buildPkgBundleStruct(
   pkgDir: string,
   pkgJson: any,
 ): Promise<PkgBundleStruct> {
-  const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
+  const buildConfig = await resolveBuildConfig(pkgDir, pkgJson.buildConfig) || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
   const copySrcToDest: CopyOperation[] = []
