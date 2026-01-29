@@ -1,4 +1,3 @@
-import { Fragment as StrictMode } from 'react' // DISABLE STRICT-MODE
 import { createRoot } from 'react-dom/client'
 import {
   CssDimValue,
@@ -18,6 +17,7 @@ import {
   flushSync,
   guid,
 } from '@fullcalendar/react/protected-api'
+import { StrictMode } from './vdom-strict-mode'
 
 /*
 Vanilla JS API

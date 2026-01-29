@@ -7,5 +7,3 @@ export function flushUpdates(): void {
 }
 
 export const preactOptions: any = {}
-
-export const strictModeFactor = 1

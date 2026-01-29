@@ -1,4 +1,3 @@
-import { Fragment as StrictMode } from 'preact' // DISABLE STRICT-MODE
 import { createRoot } from 'preact/compat/client'
 import {
   CssDimValue,
@@ -18,6 +17,7 @@ import {
   flushSync,
   guid,
 } from '@fullcalendar/preact/protected-api'
+import { StrictMode } from './vdom-strict-mode'
 
 /*
 Vanilla JS API
