@@ -35,8 +35,8 @@ build note:
     manually before `pn dev`
 
 
-high-priority build
--------------------
+build
+-----
 react
   vanilla(-scheduler)-w-react with StrictMode
   restore react-specific tests
@@ -50,25 +50,10 @@ angular/esm issues:
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
     which doesn't support exports map
     solution: go all-ESM in top-level dist; is backwards-compat
-later: snapDuration={'00:15:00'} causing weird DnD on TimeGrid
-  seem examples/react18-issue-7619
-later: event dragging problems
-  in timegrid, at beginning of drag, abs-positioned ghost is visible while original underneath
-  looses correct font
-
-
-low-priority build
-------------------
-sourcemap-generation broken for our iifeSplit plugin (only output partial)
+a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
 make core-types a real buildable package
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
-better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
-move refineRenderProps from resource-timeline export
-why does outputted object destructuring look weird?:
- Object.assign(Object.assign({}
-need "module" fields in package.json anymore?
-need to have plugin "deps" anymore?
-a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
+need "module" fields in package.json anymore? no
 
 
 remove (data, *createElement*) param from *Content hooks
@@ -195,6 +180,16 @@ bug: scrolltime not working on examples/next13-scheduler
 docs: when inset-inline-start or top SSR mismatch, due to event Dates on server/client mismatching
 minor bugs with FORCE_REACT=1 with vanilla tests
   mostly just global handlers not cleaned up after destroy? (problem with tests methinks)
+later: snapDuration={'00:15:00'} causing weird DnD on TimeGrid
+  seem examples/react18-issue-7619
+later: event dragging problems
+  in timegrid, at beginning of drag, abs-positioned ghost is visible while original underneath
+  looses correct font
+sourcemap-generation broken for our iifeSplit plugin (only output partial)
+better way to do __applyFullCalendarStyles ... dont repeat intro/outro. Put it in FullCalendar.applyStyles or whatever?
+move refineRenderProps from resource-timeline export
+why does outputted object destructuring look weird?:
+ Object.assign(Object.assign({}
 
 
 ASAP
