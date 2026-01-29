@@ -81,7 +81,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private buildWeekNumberRenderProps = memoize(buildWeekNumberRenderProps)
 
   // internal
-  private _isUnmounting = false
+  private _isUnmounting: boolean
   private disconnectHeight?: () => void
 
   render() {
@@ -370,6 +370,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     const { rootEl } = this // TODO: make dynamic with useEffect
 
     this.disconnectHeight = watchHeight(rootEl, (contentHeight) => {

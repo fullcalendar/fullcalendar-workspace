@@ -27,7 +27,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
   })
 
   // internal
-  private _isUnmounting = false
+  private _isUnmounting: boolean
   private currentInnerHeight?: number
 
   render() {
@@ -64,6 +64,10 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
         ))}
       </div>
     )
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
   }
 
   private handleInnerHeights = () => {

@@ -96,7 +96,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   state: TimeGridLayoutPannableState = {
     headerTierHeights: [],
   }
-  private _isUnmounting = false
+  private _isUnmounting: boolean
 
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
@@ -603,6 +603,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     this.initScrollers()
     this.updateSlatHeight()
   }

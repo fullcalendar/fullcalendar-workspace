@@ -54,7 +54,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   })
 
   // internal
-  private _isUnmounting = false
+  private _isUnmounting: boolean
   private scrollDate: DateMarker | null = null
 
   render() {
@@ -100,6 +100,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     this.resetScroll()
     this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
   }

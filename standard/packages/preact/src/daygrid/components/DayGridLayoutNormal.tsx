@@ -53,7 +53,7 @@ interface DayGridViewState {
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
   state = {} as DayGridViewState
-  private _isUnmounting = false
+  private _isUnmounting: boolean
 
   render() {
     const { props, state, context } = this
@@ -163,6 +163,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
   private handleScroller = (scroller: Scroller | null) => {
     setRef(this.props.scrollerRef, scroller)
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
   }
 
   componentWillUnmount(): void {

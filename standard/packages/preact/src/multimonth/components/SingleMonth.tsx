@@ -61,7 +61,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   })
 
   // internal
-  private _isUnmounting = false
+  private _isUnmounting: boolean
   private slicer = new DayTableSlicer()
   private rootEl?: HTMLElement
   private renderProps?: SingleMonthData
@@ -289,6 +289,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private titleHeight: number
 
   componentDidMount(): void {
+    this._isUnmounting = false
     this.disconnectGridWidth = watchWidth(this.gridElRef.current, (width) => {
       this.setState({ gridWidth: width })
     })

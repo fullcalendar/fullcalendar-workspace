@@ -84,7 +84,7 @@ interface TimeGridLayoutState {
 
 export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProps, TimeGridLayoutState> {
   state = {} as TimeGridLayoutState
-  private _isUnmounting = false
+  private _isUnmounting: boolean
 
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
@@ -471,6 +471,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     this.updateSlatHeight()
   }
 
