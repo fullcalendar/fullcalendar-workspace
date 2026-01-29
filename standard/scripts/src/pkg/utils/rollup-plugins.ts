@@ -43,14 +43,51 @@ export interface RemapImportsOptions {
   debug?: boolean
 }
 
+/**
+ * Finds a matching remap for an import ID.
+ * Supports exact matches and single-wildcard patterns (e.g., "react/*" -> "preact/*").
+ * Exact matches take precedence over wildcard matches.
+ */
+export function findRemapMatch(
+  importId: string,
+  mappings: Record<string, string>,
+): string | undefined {
+  // First: check for exact match (highest priority)
+  if (mappings[importId] !== undefined) {
+    return mappings[importId]
+  }
+
+  // Second: check wildcard patterns
+  const wildcardPatterns = Object.keys(mappings).filter(p => p.includes('*'))
+
+  for (const pattern of wildcardPatterns) {
+    const wildcardIndex = pattern.indexOf('*')
+    const prefix = pattern.substring(0, wildcardIndex)
+    const suffix = pattern.substring(wildcardIndex + 1)
+
+    if (importId.startsWith(prefix) && (!suffix || importId.endsWith(suffix))) {
+      const captureStart = prefix.length
+      const captureEnd = suffix ? importId.length - suffix.length : importId.length
+
+      if (captureStart <= captureEnd) {
+        const captured = importId.substring(captureStart, captureEnd)
+        return mappings[pattern].replace('*', captured)
+      }
+    }
+  }
+
+  return undefined
+}
+
 export function remapImportsPlugin(
   { mappings, forceExternal, debug }: RemapImportsOptions,
 ): Plugin {
   return {
     name: 'remap-imports',
     async resolveId(importId, importer, options) {
-      if (mappings[importId]) {
-        const newId = mappings[importId]
+      const newId = findRemapMatch(importId, mappings)
+
+      if (newId !== undefined) {
         if (debug) {
           console.log(`Remapped import: "${importId}" -> "${newId}"`)
         }
@@ -333,11 +370,13 @@ export function massageDtsPlugin({ mappings, debug }: MassageDtsOptions): Plugin
       // rollup-plugin-dts does run its "declare module" statements through module resolution,
       // so we find another way to support the remapping
       code = code.replace(/(declare module ['"])([^'"]*)(['"])/g, (whole, start, importId, end) => {
-        if (mappings[importId] !== undefined) {
+        const newId = findRemapMatch(importId, mappings)
+
+        if (newId !== undefined) {
           if (debug) {
-            console.log('remap', importId, '->', mappings[importId])
+            console.log('remap', importId, '->', newId)
           }
-          return start + mappings[importId] + end
+          return start + newId + end
         }
         return whole
       })
