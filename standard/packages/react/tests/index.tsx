@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext, useCallback, createContext, act } from 'react'
+/// <reference types="vitest/globals" />
+import React, { useState, useContext, useCallback, createContext, act } from 'react'
 import { render } from '@testing-library/react'
 
 /*
@@ -11,15 +12,29 @@ import listPlugin from '../dist/list.js'
 import { anyElsIntersect } from './utils.js'
 
 const NOW_DATE = new Date()
+const TEST_TOOLBAR_CLASS = 'test-toolbar'
+const TEST_EVENT_CLASS = 'test-event'
+const TEST_WEEKEND_CLASS = 'test-weekend'
+
 const DEFAULT_OPTIONS = {
-  plugins: [classicThemePlugin, dayGridPlugin, listPlugin]
+  plugins: [classicThemePlugin, dayGridPlugin, listPlugin],
+  headerToolbar: {
+    start: 'prev,next today',
+    end: 'title',
+  },
+  toolbarClass: TEST_TOOLBAR_CLASS,
+  eventClass: TEST_EVENT_CLASS,
+  dayCellClass: ({ date }: { date: Date }) => {
+    const day = date.getDay()
+    return (day === 0 || day === 6) ? TEST_WEEKEND_CLASS : ''
+  },
 }
 
 it('should render without crashing', () => {
   let { container } = render(
     <FullCalendar {...DEFAULT_OPTIONS} />
   )
-  expect(getHeaderToolbarEl(container)).toBeTruthy()
+  expect(container.querySelector(`.${TEST_TOOLBAR_CLASS}`)).toBeTruthy()
 })
 
 it('should unmount and destroy', () => {
@@ -42,12 +57,12 @@ it('should have updatable props', () => {
   let { container, rerender } = render(
     <FullCalendar {...DEFAULT_OPTIONS} />
   )
-  expect(isWeekendsRendered(container)).toBe(true)
+  expect(container.querySelector(`.${TEST_WEEKEND_CLASS}`)).toBeTruthy()
 
   rerender(
     <FullCalendar {...DEFAULT_OPTIONS} weekends={false} />
   )
-  expect(isWeekendsRendered(container)).toBe(false)
+  expect(container.querySelector(`.${TEST_WEEKEND_CLASS}`)).toBeFalsy()
 })
 
 it('should accept a callback', () => {
@@ -82,12 +97,12 @@ it('won\'t rerender toolbar if didn\'t change', function() { // works because in
   let { container, rerender } = render(
     <FullCalendar {...DEFAULT_OPTIONS} headerToolbar={buildToolbar()} />
   )
-  let headerEl = getHeaderToolbarEl(container)
+  let headerEl = container.querySelector(`.${TEST_TOOLBAR_CLASS}`)
 
   rerender(
     <FullCalendar {...DEFAULT_OPTIONS} headerToolbar={buildToolbar()} />
   )
-  expect(getHeaderToolbarEl(container)).toBe(headerEl)
+  expect(container.querySelector(`.${TEST_TOOLBAR_CLASS}`)).toBe(headerEl)
 })
 
 it('won\'t rerender events if nothing changed', function() {
@@ -99,18 +114,16 @@ it('won\'t rerender events if nothing changed', function() {
   let { container, rerender } = render(
     <FullCalendar {...options} />
   )
-  let eventEl = getFirstEventEl(container)
+  let eventEl = container.querySelector(`.${TEST_EVENT_CLASS}`)
 
   rerender(
     <FullCalendar {...options} />
   )
-  expect(getFirstEventEl(container)).toBe(eventEl)
+  expect(container.querySelector(`.${TEST_EVENT_CLASS}`)).toBe(eventEl)
 })
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/185
-it('will not inifinitely recurse in strict mode with datesSet', function(done) {
-  let calledDone = false
-
+it('will not inifinitely recurse in strict mode with datesSet', async () => {
   function TestApp() {
     const [events, setEvents] = useState([
       { title: 'event 1', date: '2022-04-01' },
@@ -123,15 +136,6 @@ it('will not inifinitely recurse in strict mode with datesSet', function(done) {
         { title: 'event 20', date: '2022-04-02' }
       ]);
     };
-
-    useEffect(() => {
-      setTimeout(() => {
-        if (!calledDone) {
-          calledDone = true
-          done()
-        }
-      }, 100)
-    });
 
     return (
       <FullCalendar
@@ -148,12 +152,12 @@ it('will not inifinitely recurse in strict mode with datesSet', function(done) {
       <TestApp />
     </React.StrictMode>
   )
+
+  await new Promise(resolve => setTimeout(resolve, 100))
 })
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/13
-it('will not inifinitely recurse with datesSet and dateIncrement', function(done) {
-  let calledDone = false
-
+it('will not inifinitely recurse with datesSet and dateIncrement', async () => {
   function TestApp() {
     const [events, setEvents] = useState([
       { title: 'event 1', date: '2022-04-01' },
@@ -166,15 +170,6 @@ it('will not inifinitely recurse with datesSet and dateIncrement', function(done
         { title: 'event 20', date: '2022-04-02' }
       ]);
     };
-
-    useEffect(() => {
-      setTimeout(() => {
-        if (!calledDone) {
-          calledDone = true
-          done()
-        }
-      }, 100)
-    });
 
     return (
       <FullCalendar
@@ -196,6 +191,8 @@ it('will not inifinitely recurse with datesSet and dateIncrement', function(done
   render(
     <TestApp />
   )
+
+  await new Promise(resolve => setTimeout(resolve, 100))
 })
 
 it('slot rendering inherits parent context', () => {
@@ -232,8 +229,8 @@ it('slot rendering inherits parent context', () => {
     </React.StrictMode>
   )
 
-  let eventEl = getFirstEventEl(container)
-  expect(eventEl.querySelector('span').style.color).toBe('red')
+  let eventEl = container.querySelector(`.${TEST_EVENT_CLASS}`)
+  expect(eventEl!.querySelector('span')!.style.color).toBe('red')
 })
 
 it('accepts jsx node for slot', () => {
@@ -249,7 +246,7 @@ it('accepts jsx node for slot', () => {
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7089
-it('does not produce overlapping multiday events with custom eventContent', (done) => {
+it('does not produce overlapping multiday events with custom eventContent', async () => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' },
@@ -268,22 +265,22 @@ it('does not produce overlapping multiday events with custom eventContent', (don
         initialDate={DATE}
         initialEvents={EVENTS}
         eventContent={renderEvent}
+        eventClass={TEST_EVENT_CLASS}
       />
     );
   }
 
   const { container } = render(<TestApp />)
 
-  setTimeout(() => {
-    const eventEls = getEventEls(container)
-    expect(eventEls.length).toBe(2)
-    expect(anyElsIntersect(eventEls)).toBe(false)
-    done()
-  }, 100)
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  const eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  expect(eventEls.length).toBe(2)
+  expect(anyElsIntersect(eventEls)).toBe(false)
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7239
-it('does not produce overlapping all-day & timed events with custom eventContent', (done) => {
+it('does not produce overlapping all-day & timed events with custom eventContent', async () => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' },
@@ -302,23 +299,23 @@ it('does not produce overlapping all-day & timed events with custom eventContent
         initialDate={DATE}
         initialEvents={EVENTS}
         eventContent={renderEvent}
+        eventClass={TEST_EVENT_CLASS}
       />
     );
   }
 
   const { container } = render(<TestApp />)
 
-  setTimeout(() => {
-    const eventEls = getEventEls(container)
-    expect(eventEls.length).toBe(2)
-    expect(anyElsIntersect(eventEls)).toBe(false)
-    done()
-  }, 100)
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  const eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  expect(eventEls.length).toBe(2)
+  expect(anyElsIntersect(eventEls)).toBe(false)
 })
 
 // eventDidMount
 ;['auto', 'background'].forEach((eventDisplay) => {
-  it(`during ${eventDisplay} custom event rendering, receives el`, (done) => {
+  it(`during ${eventDisplay} custom event rendering, receives el`, async () => {
     let eventDidMountCalled = false
 
     function TestApp() {
@@ -342,15 +339,15 @@ it('does not produce overlapping all-day & timed events with custom eventContent
     }
 
     render(<TestApp />)
-    setTimeout(() => {
-      expect(eventDidMountCalled).toBe(true)
-      done()
-    }, 100)
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    expect(eventDidMountCalled).toBe(true)
   })
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7119
-it('rerenders content-injection with latest render-func closure', (done) => {
+it('rerenders content-injection with latest render-func closure', async () => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' }
@@ -373,28 +370,29 @@ it('rerenders content-injection with latest render-func closure', (done) => {
         eventContent={(data) => (
           <i>{data.event.title + ' - ' + counter}</i>
         )}
+        eventClass={TEST_EVENT_CLASS}
       />
     );
   }
 
   const { container } = render(<TestApp />)
 
-  setTimeout(() => {
-    let eventEls = getEventEls(container)
-    expect(eventEls.length).toBe(1)
-    expect(eventEls[0].querySelector('i').innerText).toBe('event 1 - 0')
+  await new Promise(resolve => setTimeout(resolve, 100))
 
-    act(() => {
-      incrementCounter()
-    })
-    setTimeout(() => { // wait for useEffect timeout
-      let newEventEls = getEventEls(container)
-      expect(newEventEls.length).toBe(1)
-      expect(newEventEls[0]).toBe(eventEls[0])
-      expect(newEventEls[0].querySelector('i').innerText).toBe('event 1 - 1')
-      done()
-    }, 100)
-  }, 100)
+  let eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  expect(eventEls.length).toBe(1)
+  expect(eventEls[0].querySelector('i')!.textContent).toBe('event 1 - 0')
+
+  act(() => {
+    incrementCounter()
+  })
+
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  let newEventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
+  expect(newEventEls.length).toBe(1)
+  expect(newEventEls[0]).toBe(eventEls[0])
+  expect(newEventEls[0].querySelector('i')!.textContent).toBe('event 1 - 1')
 })
 
 it('no unnecessary rerenders, using events, when parent rerenders', () => {
@@ -572,10 +570,11 @@ it('eventContent render can return true to use default rendering', () => {
       initialView='dayGridMonth'
       events={EVENTS}
       eventContent={() => true}
+      eventClass={TEST_EVENT_CLASS}
     />
   )
 
-  let eventEls = getEventEls(container)
+  let eventEls = [...container.querySelectorAll(`.${TEST_EVENT_CLASS}`)] as HTMLElement[]
   expect(eventEls[0].innerHTML.trim()).toBeTruthy()
 })
 
@@ -656,14 +655,14 @@ it('custom view receives enough props for slicing', () => {
   )
 
   // temporary
-  const test1 = container.querySelector('.custom-view-title').innerText
+  const test1 = container.querySelector('.custom-view-title')!.textContent
   const test2 = String(NOW_DATE.getMonth())
   if (test1 !== test2) {
     console.log('DEBUG!!!', test1, NOW_DATE.toString())
   }
 
-  expect(container.querySelector('.custom-view-title').innerText).toBe(String(NOW_DATE.getMonth()))
-  expect(container.querySelector('.custom-view-events').innerText).toBe('1 events')
+  expect(container.querySelector('.custom-view-title')!.textContent).toBe(String(NOW_DATE.getMonth()))
+  expect(container.querySelector('.custom-view-events')!.textContent).toBe('1 events')
 })
 
 
@@ -682,23 +681,3 @@ function buildEvent() {
   return { title: 'event', start: new Date(NOW_DATE.valueOf()) } // consistent datetime
 }
 
-// DOM utils
-// -------------------------------------------------------------------------------------------------
-
-function getHeaderToolbarEl(container: HTMLElement): HTMLElement | null {
-  return container.querySelector('.fc-header-toolbar')
-}
-
-
-function isWeekendsRendered(container: HTMLElement): boolean {
-  return Boolean(container.querySelector('.fc-day-sat'))
-}
-
-
-function getFirstEventEl(container: HTMLElement): HTMLElement | null {
-  return container.querySelector('.fc-event')
-}
-
-function getEventEls(container: HTMLElement): HTMLElement[] {
-  return [...(container.querySelectorAll('.fc-event') as NodeListOf<HTMLElement>)]
-}
