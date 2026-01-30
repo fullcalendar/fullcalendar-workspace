@@ -4,6 +4,8 @@ import { CustomRenderingStore, CustomRendering } from '@fullcalendar/vanilla/pro
 import { OPTION_IS_COMPLEX } from './options.js'
 
 const FullCalendar = defineComponent({
+  inheritAttrs: false,
+
   props: {
     options: Object as PropType<CalendarOptions>
   },
@@ -45,7 +47,7 @@ const FullCalendar = defineComponent({
     this.renderId
 
     return h(Fragment, null, [
-      h('div', { ref: 'calendarEl' }),
+      h('div', { ref: 'calendarEl', ...this.$attrs }),
       h(Fragment, null, customRenderingNodes)
     ])
   },
