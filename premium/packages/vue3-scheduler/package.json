@@ -1,0 +1,66 @@
+{
+  "name": "@fullcalendar/vue3-scheduler",
+  "version": "7.0.0-beta.6",
+  "title": "FullCalendar Core",
+  "description": "FullCalendar core package for rendering a calendar",
+  "dependencies": {
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
+    "preact": "~10.23.1"
+  },
+  "peerDependencies": {
+    "@fullcalendar/vue3": "workspace:7.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "buildConfig": {
+    "importRemaps": {
+      "@fullcalendar/vanilla": "@fullcalendar/vue3",
+      "@fullcalendar/vanilla/public-api": "@fullcalendar/vue3",
+      "@fullcalendar/vanilla/protected-api": "@fullcalendar/vue3/protected-api",
+      "@fullcalendar/vanilla/protected-styles": "@fullcalendar/vue3/protected-styles",
+      "@fullcalendar/vanilla/interaction": "@fullcalendar/vue3/interaction",
+      "@fullcalendar/vanilla/daygrid": "@fullcalendar/vue3/daygrid",
+      "@fullcalendar/vanilla/timegrid": "@fullcalendar/vue3/timegrid",
+      "@fullcalendar/vanilla/list": "@fullcalendar/vue3/list",
+      "@fullcalendar/vanilla/multimonth": "@fullcalendar/vue3/multimonth"
+    },
+    "exports": {
+      "./all": {
+        "format": "module"
+      },
+      "./adaptive": {
+        "format": "module"
+      },
+      "./resource-daygrid": {
+        "format": "module"
+      },
+      "./resource-timegrid": {
+        "format": "module"
+      },
+      "./resource-timeline": {
+        "format": "module"
+      },
+      "./scrollgrid": {
+        "format": "module"
+      },
+      "./timeline": {
+        "format": "module"
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
