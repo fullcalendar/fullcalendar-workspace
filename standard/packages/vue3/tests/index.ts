@@ -1,7 +1,7 @@
 /// <reference types="vitest/globals" />
 import { nextTick, defineAsyncComponent, h } from 'vue'
 import { createI18n } from 'vue-i18n'
-import { mount as _mount } from '@vue/test-utils'
+import { mount as _mount, ComponentMountingOptions } from '@vue/test-utils'
 
 /*
 Must be built for running tests
@@ -22,7 +22,7 @@ const DEFAULT_OPTIONS = {
 let currentWrapper
 let currentContainerEl
 
-function mount(component, options = {}) {
+function mount(component, options: ComponentMountingOptions<any> = {}) {
   if (options.attachTo === undefined) {
     currentContainerEl = document.body.appendChild(document.createElement('div'))
     options = {
@@ -371,12 +371,14 @@ const EVENT_FUNC_COMPONENT = {
   }
 }
 
-it('can receive an async event function', function(done) {
-  let wrapper = mount(EVENT_FUNC_COMPONENT)
-  setTimeout(() => {
-    expect(getRenderedEventCount(wrapper)).toEqual(2)
-    done()
-  }, 100) // more than event function's setTimeout
+it('can receive an async event function', () => {
+  return new Promise<void>((resolve) => {
+    let wrapper = mount(EVENT_FUNC_COMPONENT)
+    setTimeout(() => {
+      expect(getRenderedEventCount(wrapper)).toEqual(2)
+      resolve()
+    }, 100) // more than event function's setTimeout
+  })
 })
 
 
@@ -538,15 +540,17 @@ const COMPONENT_WITH_SLOTS_MULTIDAY_EVENTS = {
   }
 }
 
-it('renders two multi-day events positioned correctly', (done) => {
-  let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_EVENTS)
+it('renders two multi-day events positioned correctly', () => {
+  return new Promise<void>((resolve) => {
+    let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_EVENTS)
 
-  setTimeout(() => {
-    let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
-    expect(eventEls.length).toBe(2)
-    expect(anyElsIntersect(eventEls)).toBe(false)
-    done()
-  }, 100)
+    setTimeout(() => {
+      let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
+      expect(eventEls.length).toBe(2)
+      expect(anyElsIntersect(eventEls)).toBe(false)
+      resolve()
+    }, 100)
+  })
 })
 
 // component with eventContent (multi-day & timed)
@@ -576,15 +580,17 @@ const COMPONENT_WITH_SLOTS_MULTIDAY_AND_TIMED = {
   }
 }
 
-it('renders a multi-day and timed event positioned correctly', async (done) => {
-  let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_AND_TIMED)
+it('renders a multi-day and timed event positioned correctly', () => {
+  return new Promise<void>((resolve) => {
+    let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_AND_TIMED)
 
-  setTimeout(() => {
-    let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
-    expect(eventEls.length).toBe(2)
-    expect(anyElsIntersect(eventEls)).toBe(false)
-    done()
-  }, 100)
+    setTimeout(() => {
+      let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
+      expect(eventEls.length).toBe(2)
+      expect(anyElsIntersect(eventEls)).toBe(false)
+      resolve()
+    }, 100)
+  })
 })
 
 // component with vue slots AND custom render func
@@ -765,7 +771,7 @@ it('allows plugin access for slots', async () => {
   }
   let wrapper = mount(Component, {
     global: {
-      plugins: [i18n]
+      plugins: [i18n as any]
     }
   })
 
@@ -802,14 +808,16 @@ const COMPONENT_WITH_DYNAMIC_SLOTS = {
 }
 
 // https://github.com/fullcalendar/fullcalendar-vue/issues/122
-it('renders dynamically imported event', (done) => {
-  let wrapper = mount(COMPONENT_WITH_DYNAMIC_SLOTS)
-  let eventEl = getRenderedEventEls(wrapper).at(0)
+it('renders dynamically imported event', () => {
+  return new Promise<void>((resolve) => {
+    let wrapper = mount(COMPONENT_WITH_DYNAMIC_SLOTS)
+    let eventEl = getRenderedEventEls(wrapper).at(0)
 
-  setTimeout(() => {
-    expect(eventEl.findAll('.dynamic-event').length).toEqual(1)
-    done()
-  }, 100)
+    setTimeout(() => {
+      expect(eventEl!.findAll('.dynamic-event').length).toEqual(1)
+      resolve()
+    }, 100)
+  })
 })
 
 

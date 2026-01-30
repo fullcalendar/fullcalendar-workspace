@@ -1,7 +1,8 @@
 {
   "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "module": "esnext"
   },
   "include": [
     "./tests/**/*"

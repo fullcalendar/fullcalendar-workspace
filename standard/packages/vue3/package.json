@@ -32,7 +32,7 @@
     "@vue/test-utils": "^2.4.6",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
-    "happy-dom": "^20.4.0",
+    "jsdom": "^27.4.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16",
     "vue": "^3.2.41",
