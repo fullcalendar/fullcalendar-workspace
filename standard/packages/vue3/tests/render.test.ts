@@ -2,9 +2,9 @@ import { test, expect } from 'vitest'
 import { nextTick, ref, reactive, computed, h, onMounted, onBeforeUnmount, onUnmounted, defineAsyncComponent } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { mount } from '@vue/test-utils'
-import FullCalendar, { CalendarOptions } from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/vue3/themes/classic'
-import dayGridPlugin from '@fullcalendar/vue3/daygrid'
+import FullCalendar, { CalendarOptions } from '../dist'
+import classicThemePlugin from '../dist/themes/classic'
+import dayGridPlugin from '../dist/daygrid'
 
 const INITIAL_DATE = '2019-05-15'
 const DEFAULT_OPTIONS = {
