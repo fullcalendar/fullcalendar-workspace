@@ -42,8 +42,6 @@ bug: our TS hack is making its way into dist (for vue3 at least)
   declare module '@fullcalendar/core-types/protected-api' {
     interface BaseOptions {
       resourceDayHeaderAlign?: any;
-vue3
-  need all.ts component for vue3(-scheduler)
 angular w/ endpoints somehow
   restore tests
 angular/esm issues:

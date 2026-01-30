@@ -1,4 +1,5 @@
-import { /* FullCalendarElement as BareFullCalendarElement, */ PluginDefInput } from '@fullcalendar/vue3'
+import { defineComponent, h } from 'vue'
+import FullCalendar, { PluginDefInput } from '@fullcalendar/vue3'
 import interactionPlugin from '@fullcalendar/vue3/interaction'
 import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 import timeGridPlugin from '@fullcalendar/vue3/timegrid'
@@ -18,8 +19,6 @@ const basePlugins: PluginDefInput[] = [
   multiMonthPlugin,
 ]
 
-;(basePlugins || null)
-
 export const plugins: PluginDefInput[] = [
   resourceDayGridPlugin as any, // !!!
   resourceTimeGridPlugin as any, // !!!
@@ -28,15 +27,23 @@ export const plugins: PluginDefInput[] = [
   timelinePlugin as any, // !!!
 ]
 
-/*
-export class FullCalendarElement extends BareFullCalendarElement {
-  constructor() {
-    super()
-    this._forcedPlugins = [
-      ...basePlugins,
-      ...plugins,
-    ]
+export default defineComponent({
+  props: {
+    options: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  setup(props) {
+    return () => h(FullCalendar, {
+      options: {
+        ...props.options,
+        plugins: [
+          ...basePlugins,
+          ...plugins,
+          ...(props.options.plugins || []),
+        ]
+      }
+    })
   }
-}
-export default FullCalendarElement
-*/
+})
