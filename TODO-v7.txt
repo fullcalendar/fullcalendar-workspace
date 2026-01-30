@@ -38,6 +38,10 @@ build note:
 build
 -----
 non-vanilla packages don't need .min.css
+bug: our TS hack is making its way into dist (for vue3 at least)
+  declare module '@fullcalendar/core-types/protected-api' {
+    interface BaseOptions {
+      resourceDayHeaderAlign?: any;
 vue3
   restore tests (use vitest?)
 angular w/ endpoints somehow

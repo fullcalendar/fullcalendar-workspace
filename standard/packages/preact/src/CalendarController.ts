@@ -12,7 +12,7 @@ export class CalendarController {
   private calendarApi?: CalendarApi
 
   constructor(
-    private handleDateChange: () => void,
+    private handleDateChange?: () => void, // HACK for "nominal" vue3 ts types
   ) {}
 
   today(): void {

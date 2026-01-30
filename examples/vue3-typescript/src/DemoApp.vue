@@ -16,7 +16,10 @@ export default defineComponent({
   components: {
     FullCalendar,
   },
-  data() {
+  data(): {
+    calendarOptions: CalendarOptions
+    currentEvents: EventApi[]
+  } {
     return {
       calendarOptions: {
         plugins: [

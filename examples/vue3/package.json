@@ -7,6 +7,11 @@
     "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
     "vue": "^3.2.45"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/vue3": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "vite": "^4.0.0"
