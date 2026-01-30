@@ -28,15 +28,15 @@
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vue/test-utils": "^2.4.6",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
     "jsdom": "^27.4.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16",
-    "vue": "^3.2.41",
-    "vue-i18n": "^11.1.11"
+    "vue": "^3.5.27",
+    "vue-i18n": "^11.2.8"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
