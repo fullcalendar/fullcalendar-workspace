@@ -18,8 +18,8 @@
     "url": "https://github.com/fullcalendar/fullcalendar-vue.git"
   },
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
   },
   "peerDependencies": {
@@ -28,18 +28,23 @@
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@vitejs/plugin-vue": "^3.2.0",
-    "@vue/test-utils": "next",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/test-utils": "^2.4.6",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
-    "vite": "^3.2.3",
+    "happy-dom": "^20.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16",
     "vue": "^3.2.41",
     "vue-i18n": "^11.1.11"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "typecheck": "tsc -p tsconfig.tests.json"
   },
   "type": "module",
   "buildConfig": {

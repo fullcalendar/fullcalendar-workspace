@@ -1,3 +1,4 @@
+/// <reference types="vitest/globals" />
 import { nextTick, defineAsyncComponent, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { mount as _mount } from '@vue/test-utils'
