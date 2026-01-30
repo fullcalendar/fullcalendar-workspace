@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h, Fragment, Teleport, VNode, toRaw } from 'vue'
+import { PropType, defineComponent, h, Fragment, Teleport, VNode, toRaw, ref, watch, onMounted, onBeforeUpdate, onBeforeUnmount, useSlots, useAttrs } from 'vue'
 import { Calendar, CalendarOptions } from '@fullcalendar/vanilla'
 import { CustomRenderingStore, CustomRendering } from '@fullcalendar/vanilla/protected-api'
 import { OPTION_IS_COMPLEX } from './options.js'
@@ -10,72 +10,114 @@ const FullCalendar = defineComponent({
     options: Object as PropType<CalendarOptions>
   },
 
-  data() {
-    return {
-      renderId: 0,
-      customRenderingMap: new Map<string, CustomRendering<any>>()
+  setup(props, { expose }) {
+    const slots = useSlots()
+    const attrs = useAttrs()
+
+    // Reactive state
+    const renderIdRef = ref(0)
+    const customRenderingMapRef = ref(new Map<string, CustomRendering<any>>())
+
+    // Template ref
+    const calendarElRef = ref<HTMLElement | null>(null)
+
+    // Non-reactive internal state (replaces getSecret pattern)
+    let calendar: Calendar
+    let handleCustomRendering: (customRendering: CustomRendering<any>) => void
+
+    // Methods
+    function getApi(): Calendar {
+      return calendar
     }
-  },
 
-  methods: {
-    getApi(): Calendar {
-      return getSecret(this).calendar
-    },
-
-    buildOptions(suppliedOptions: CalendarOptions | undefined): CalendarOptions {
+    function buildOptions(suppliedOptions: CalendarOptions | undefined): CalendarOptions {
       return {
         ...suppliedOptions,
-        customRenderingMetaMap: kebabToCamelKeys(this.$slots),
-        handleCustomRendering: getSecret(this).handleCustomRendering,
+        customRenderingMetaMap: kebabToCamelKeys(slots),
+        handleCustomRendering,
       }
-    },
-  },
+    }
 
-  render() {
-    const customRenderingNodes: VNode[] = []
+    // Expose getApi for external access
+    expose({ getApi })
 
-    for (const customRendering of this.customRenderingMap.values()) {
-      customRenderingNodes.push(
-        h(CustomRenderingComponent, {
-          key: customRendering.id,
-          customRendering,
-        })
+    // Lifecycle hooks
+    onMounted(() => {
+      const customRenderingStore = new CustomRenderingStore<any>()
+      handleCustomRendering = customRenderingStore.handle.bind(customRenderingStore)
+
+      const calendarOptions = buildOptions(toRaw(props.options))
+      calendar = new Calendar(calendarElRef.value!, calendarOptions)
+
+      calendar.render()
+      customRenderingStore.subscribe((map) => {
+        customRenderingMapRef.value = map // likely same reference, so won't rerender
+        renderIdRef.value++ // force rerender
+      })
+    })
+
+    onBeforeUpdate(() => {
+      getApi().resumeRendering() // the watcher handlers paused it
+    })
+
+    onBeforeUnmount(() => {
+      getApi().destroy()
+    })
+
+    // Watchers
+    // Watch changes of ALL options and their nested objects,
+    // but this is only a means to be notified of top-level non-complex options changes.
+    watch(
+      () => props.options,
+      (options) => {
+        calendar.pauseRendering()
+        const calendarOptions = buildOptions(toRaw(options))
+        calendar.resetOptions(calendarOptions)
+        renderIdRef.value++ // will queue a rerender
+      },
+      { deep: true }
+    )
+
+    // Watchers for complex options (handlers called when nested objects change)
+    for (const complexOptionName in OPTION_IS_COMPLEX) {
+      watch(
+        () => props.options?.[complexOptionName as keyof CalendarOptions],
+        (val) => {
+          // unfortunately the handler is called with undefined if new props were set, but the complex one wasn't ever set
+          if (val !== undefined) {
+            calendar.pauseRendering()
+            calendar.resetOptions({
+              [complexOptionName]: toRaw(val)
+            }, [complexOptionName])
+            renderIdRef.value++ // will queue a rerender
+          }
+        },
+        { deep: true }
       )
     }
 
-    // establish reactive dependence
-    this.renderId
+    // Render function
+    return () => {
+      const customRenderingNodes: VNode[] = []
 
-    return h(Fragment, null, [
-      h('div', { ref: 'calendarEl', ...this.$attrs }),
-      h(Fragment, null, customRenderingNodes)
-    ])
+      for (const customRendering of customRenderingMapRef.value.values()) {
+        customRenderingNodes.push(
+          h(CustomRenderingComponent, {
+            key: customRendering.id,
+            customRendering,
+          })
+        )
+      }
+
+      // establish reactive dependence
+      renderIdRef.value
+
+      return h(Fragment, null, [
+        h('div', { ref: calendarElRef, ...attrs }),
+        h(Fragment, null, customRenderingNodes)
+      ])
+    }
   },
-
-  mounted() {
-    const customRenderingStore = new CustomRenderingStore<any>()
-    getSecret(this).handleCustomRendering = customRenderingStore.handle.bind(customRenderingStore)
-
-    const calendarOptions = this.buildOptions(toRaw(this.options))
-    const calendar = new Calendar(this.$refs.calendarEl as HTMLElement, calendarOptions)
-    getSecret(this).calendar = calendar
-
-    calendar.render()
-    customRenderingStore.subscribe((customRenderingMap) => {
-      this.customRenderingMap = customRenderingMap // likely same reference, so won't rerender
-      this.renderId++ // force rerender
-    })
-  },
-
-  beforeUpdate() {
-    this.getApi().resumeRendering() // the watcher handlers paused it
-  },
-
-  beforeUnmount() {
-    this.getApi().destroy()
-  },
-
-  watch: buildWatchers()
 })
 
 export default FullCalendar
@@ -88,76 +130,17 @@ const CustomRenderingComponent = defineComponent({
     customRendering: Object as PropType<CustomRendering<any>>
   },
 
-  render() {
-    const customRendering = this.customRendering!
-    const innerContent = typeof customRendering.generatorMeta === 'function' ?
-      customRendering.generatorMeta(customRendering.renderProps) : // vue-normalized slot function
-      customRendering.generatorMeta // probably a vue JSX node returned from content-inject func
+  setup(props) {
+    return () => {
+      const customRendering = props.customRendering!
+      const innerContent = typeof customRendering.generatorMeta === 'function' ?
+        customRendering.generatorMeta(customRendering.renderProps) : // vue-normalized slot function
+        customRendering.generatorMeta // probably a vue JSX node returned from content-inject func
 
-    return h(Teleport, { to: customRendering.containerEl }, innerContent)
+      return h(Teleport, { to: customRendering.containerEl }, innerContent)
+    }
   }
 })
-
-// Internals
-// -------------------------------------------------------------------------------------------------
-
-type FullCalendarInstance = InstanceType<typeof FullCalendar>
-
-interface FullCalendarSecret {
-  calendar: Calendar
-  handleCustomRendering: (customRendering: CustomRendering<any>) => void
-}
-
-// storing internal state:
-// https://github.com/vuejs/vue/issues/1988#issuecomment-163013818
-function getSecret(inst: any): FullCalendarSecret {
-  return inst as FullCalendarSecret
-}
-
-function buildWatchers() {
-
-  let watchers: { [member: string]: any } = {
-
-    // watches changes of ALL options and their nested objects,
-    // but this is only a means to be notified of top-level non-complex options changes.
-    options: {
-      deep: true,
-      handler(this: FullCalendarInstance, options: CalendarOptions) {
-        let calendar = this.getApi()
-        calendar.pauseRendering()
-
-        let calendarOptions = this.buildOptions(toRaw(options))
-        calendar.resetOptions(calendarOptions)
-
-        this.renderId++ // will queue a rerender
-      }
-    }
-  }
-
-  for (let complexOptionName in OPTION_IS_COMPLEX) {
-
-    // handlers called when nested objects change
-    watchers[`options.${complexOptionName}`] = {
-      deep: true,
-      handler(this: FullCalendarInstance, val: any) {
-
-        // unfortunately the handler is called with undefined if new props were set, but the complex one wasn't ever set
-        if (val !== undefined) {
-
-          let calendar = this.getApi()
-          calendar.pauseRendering()
-          calendar.resetOptions({
-            [complexOptionName]: toRaw(val)
-          }, [complexOptionName])
-
-          this.renderId++ // will queue a rerender
-        }
-      }
-    }
-  }
-
-  return watchers
-}
 
 // General Utils
 // -------------------------------------------------------------------------------------------------
