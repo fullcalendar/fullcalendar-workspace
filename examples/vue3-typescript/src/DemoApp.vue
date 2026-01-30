@@ -6,7 +6,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 import timeGridPlugin from '@fullcalendar/vue3/timegrid'
 import interactionPlugin from '@fullcalendar/vue3/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import resourceTimelinePlugin from '@fullcalendar/vue3-scheduler/resource-timeline'
+import { RESOURCES, INITIAL_EVENTS, createEventId } from './event-utils'
 
 import '@fullcalendar/vue3/skeleton.css'
 import '@fullcalendar/vue3/themes/classic/theme.css'
@@ -24,17 +25,19 @@ export default defineComponent({
       calendarOptions: {
         plugins: [
           classicThemePlugin,
+          interactionPlugin, // needed for dateClick
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // needed for dateClick
+          resourceTimelinePlugin,
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth,timeGridWeek,resourceTimelineYear'
         },
         initialView: 'dayGridMonth',
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        resources: RESOURCES,
         editable: true,
         selectable: true,
         selectMirror: true,

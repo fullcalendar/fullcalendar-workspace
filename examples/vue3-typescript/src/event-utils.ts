@@ -19,3 +19,9 @@ export const INITIAL_EVENTS: EventInput[] = [
 export function createEventId() {
   return String(eventGuid++)
 }
+
+export const RESOURCES = [
+  { id: 'a', title: 'Auditorium A' },
+  { id: 'b', title: 'Auditorium B', eventColor: 'green' },
+  { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
+]
