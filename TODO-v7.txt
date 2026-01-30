@@ -195,6 +195,8 @@ why does outputted object destructuring look weird?:
 better way of testing React StrictMode
   current: must set strictModeFactor=1 in standard/packages/vanilla-w-react/src/vdom-strict-mode.ts
 quirk: react version timegrid all-day scrollbar-offset is jumpy
+Vue3 tests: add readme about how we had to use playwright because jsom/happy-dom wouldn't populate refs correctly in onMount
+  file a bug?
 
 
 ASAP

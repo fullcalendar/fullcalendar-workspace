@@ -9,9 +9,11 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/browser-playwright": "^4.0.18",
     "@vue/test-utils": "^2.4.6",
-    "happy-dom": "^18.0.1",
-    "vitest": "^4.0.16"
+    "playwright": "^1.58.1",
+    "vitest": "^4.0.18",
+    "vue-i18n": "^11.2.8"
   },
   "dependenciesMeta": {
     "@fullcalendar/vue3": {
