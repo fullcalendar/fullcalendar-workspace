@@ -41,10 +41,13 @@ const FullCalendar = defineComponent({
       )
     }
 
-    return h('div', {
-      // when renderId is changed, Vue will trigger a real-DOM async rerender, calling beforeUpdate/updated
-      attrs: { 'data-fc-render-id': this.renderId }
-    }, h(Fragment, customRenderingNodes)) // for containing CustomRendering keys
+    // establish reactive dependence
+    this.renderId
+
+    return h(Fragment, null, [
+      h('div', { ref: 'calendarEl' }),
+      h(Fragment, null, customRenderingNodes)
+    ])
   },
 
   mounted() {
@@ -52,7 +55,7 @@ const FullCalendar = defineComponent({
     getSecret(this).handleCustomRendering = customRenderingStore.handle.bind(customRenderingStore)
 
     const calendarOptions = this.buildOptions(this.options)
-    const calendar = new Calendar(this.$el as HTMLElement, calendarOptions)
+    const calendar = new Calendar(this.$refs.calendarEl as HTMLElement, calendarOptions)
     getSecret(this).calendar = calendar
 
     calendar.render()
