@@ -37,6 +37,7 @@ build note:
 
 build
 -----
+non-vanilla packages don't need .min.css
 vue3
   restore tests (use vitest?)
 angular w/ endpoints somehow

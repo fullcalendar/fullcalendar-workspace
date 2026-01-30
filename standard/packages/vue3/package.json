@@ -1,0 +1,220 @@
+{
+  "name": "@fullcalendar/vue3",
+  "version": "7.0.0-beta.6",
+  "title": "FullCalendar Vue 3 Component",
+  "description": "The official Vue 3 component for FullCalendar",
+  "keywords": [
+    "calendar",
+    "event",
+    "full-sized",
+    "fullcalendar",
+    "vue",
+    "vue3"
+  ],
+  "homepage": "https://fullcalendar.io/docs/vue",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-vue.git"
+  },
+  "dependencies": {
+    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6"
+  },
+  "peerDependencies": {
+    "preact": "~10.23.1",
+    "vue": "^3.0.11"
+  },
+  "devDependencies": {
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/test-utils": "next",
+    "globby": "^13.1.2",
+    "handlebars": "^4.1.2",
+    "vite": "^3.2.3",
+    "vue": "^3.2.41",
+    "vue-i18n": "^11.1.11"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "buildConfig": {
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./all": {
+        "format": "module"
+      },
+      "./skeleton.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/skeleton.css"
+      },
+      "./public-api": {
+        "format": "module"
+      },
+      "./protected-api": {
+        "format": "module"
+      },
+      "./protected-styles": {
+        "format": "module"
+      },
+      "./locales-all": {
+        "format": "module",
+        "generator": "./scripts/generate-locales-all.ts"
+      },
+      "./locales/*": {
+        "format": "module",
+        "generator": "./scripts/generate-locales.ts",
+        "types": "locales/locale"
+      },
+      "./interaction": {
+        "format": "module"
+      },
+      "./daygrid": {
+        "format": "module"
+      },
+      "./timegrid": {
+        "format": "module"
+      },
+      "./multimonth": {
+        "format": "module"
+      },
+      "./list": {
+        "format": "module"
+      },
+      "./themes/classic": {
+        "format": "module"
+      },
+      "./themes/classic/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/classic/theme.css"
+      },
+      "./themes/classic/palette.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/classic/palette.css"
+      },
+      "./themes/monarch": {
+        "format": "module"
+      },
+      "./themes/monarch/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/theme.css"
+      },
+      "./themes/monarch/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/palettes/red.css",
+        "minificationDisabled": true
+      },
+      "./themes/monarch/palettes/yellow.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/monarch/palettes/yellow.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy": {
+        "format": "module"
+      },
+      "./themes/breezy/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/breezy/theme.css"
+      },
+      "./themes/breezy/palettes/emerald.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/breezy/palettes/emerald.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/honey.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/breezy/palettes/honey.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/indigo.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/breezy/palettes/indigo.css",
+        "minificationDisabled": true
+      },
+      "./themes/breezy/palettes/rose.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/breezy/palettes/rose.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma": {
+        "format": "module"
+      },
+      "./themes/forma/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/forma/theme.css"
+      },
+      "./themes/forma/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/forma/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/forma/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/forma/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/forma/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/forma/palettes/red.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse": {
+        "format": "module"
+      },
+      "./themes/pulse/theme.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/pulse/theme.css"
+      },
+      "./themes/pulse/palettes/blue.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/pulse/palettes/blue.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/green.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/pulse/palettes/green.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/purple.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/pulse/palettes/purple.css",
+        "minificationDisabled": true
+      },
+      "./themes/pulse/palettes/red.css": {
+        "format": "css",
+        "import": "@fullcalendar/vanilla/themes/pulse/palettes/red.css",
+        "minificationDisabled": true
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
