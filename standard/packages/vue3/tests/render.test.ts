@@ -14,19 +14,6 @@ const DEFAULT_OPTIONS = {
   plugins: [ classicThemePlugin, dayGridPlugin ]
 }
 
-test('renders DOM elements', () => {
-  const wrapper = mount(FullCalendar, {
-    props: {
-      options: {
-        plugins: [dayGridPlugin],
-        initialView: 'dayGridMonth',
-      }
-    }
-  })
-
-  expect(wrapper.findAll('div').length).toBeGreaterThan(10)
-})
-
 test('renders', async () => {
   let wrapper = mount(FullCalendar, {
     props: {

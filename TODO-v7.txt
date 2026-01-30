@@ -43,7 +43,6 @@ bug: our TS hack is making its way into dist (for vue3 at least)
     interface BaseOptions {
       resourceDayHeaderAlign?: any;
 vue3
-  restore tests (use vitest?)
   need all.ts component for vue3(-scheduler)
 angular w/ endpoints somehow
   restore tests
