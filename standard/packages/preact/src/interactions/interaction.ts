@@ -41,7 +41,7 @@ export function parseInteractionSettings(component: DateComponent<any>, input: I
   }
 }
 
-export function interactionSettingsToStore(settings: InteractionSettings) {
+export function interactionSettingsToStore(settings: InteractionSettings): InteractionSettingsStore {
   return {
     [settings.component.uid]: settings,
   }

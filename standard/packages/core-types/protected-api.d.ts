@@ -35,7 +35,7 @@ export declare class JsonRequestError extends Error {
   constructor(message: string, response: Response);
 }
 
-export declare function requestJson<ParsedResponse>(method: string, url: string, params: Dictionary): Promise<[ParsedResponse, Response]>;
+export declare function requestJson<ParsedResponse>(method: string, url: string, params: Record<string, any>): Promise<[ParsedResponse, Response]>;
 
 export type Identity<T = any> = (raw: T) => T;
 
