@@ -2505,6 +2505,18 @@ importers:
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
     publishDirectory: ./dist
 
+  standard/packages/vue3-tests:
+    dependencies:
+      '@fullcalendar/vue3':
+        specifier: workspace:7.0.0-beta.6
+        version: file:standard/packages/vue3/dist(vue@3.5.27(typescript@5.9.3))
+      vue:
+        specifier: ^3.5.27
+        version: 3.5.27(typescript@5.9.3)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: vue3
+
   standard/packages/web-component:
     dependencies:
       '@full-ui/headless-calendar':
@@ -34711,6 +34723,13 @@ snapshots:
       '@fullcalendar/core-types': link:standard/packages/core-types
       preact: 10.23.2
       vue: 3.5.26(typescript@5.9.3)
+
+  '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
+      '@fullcalendar/core-types': link:standard/packages/core-types
+      preact: 10.23.2
+      vue: 3.5.27(typescript@5.9.3)
 
   '@gar/promisify@1.1.3': {}
 
