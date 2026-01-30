@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h, Fragment, Teleport, VNode } from 'vue'
+import { PropType, defineComponent, h, Fragment, Teleport, VNode, toRaw } from 'vue'
 import { Calendar, CalendarOptions } from '@fullcalendar/vanilla'
 import { CustomRenderingStore, CustomRendering } from '@fullcalendar/vanilla/protected-api'
 import { OPTION_IS_COMPLEX } from './options.js'
@@ -56,7 +56,7 @@ const FullCalendar = defineComponent({
     const customRenderingStore = new CustomRenderingStore<any>()
     getSecret(this).handleCustomRendering = customRenderingStore.handle.bind(customRenderingStore)
 
-    const calendarOptions = this.buildOptions(this.options)
+    const calendarOptions = this.buildOptions(toRaw(this.options))
     const calendar = new Calendar(this.$refs.calendarEl as HTMLElement, calendarOptions)
     getSecret(this).calendar = calendar
 
@@ -126,7 +126,7 @@ function buildWatchers() {
         let calendar = this.getApi()
         calendar.pauseRendering()
 
-        let calendarOptions = this.buildOptions(options)
+        let calendarOptions = this.buildOptions(toRaw(options))
         calendar.resetOptions(calendarOptions)
 
         this.renderId++ // will queue a rerender
@@ -147,7 +147,7 @@ function buildWatchers() {
           let calendar = this.getApi()
           calendar.pauseRendering()
           calendar.resetOptions({
-            [complexOptionName]: val
+            [complexOptionName]: toRaw(val)
           }, [complexOptionName])
 
           this.renderId++ // will queue a rerender

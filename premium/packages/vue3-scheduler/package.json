@@ -10,12 +10,14 @@
     "preact": "~10.23.1"
   },
   "peerDependencies": {
-    "@fullcalendar/vue3": "workspace:7.0.0-beta.6"
+    "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
+    "vue": "^3.0.11"
   },
   "devDependencies": {
     "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
     "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6",
+    "vue": "^3.2.41"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

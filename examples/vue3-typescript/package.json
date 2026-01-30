@@ -11,6 +11,9 @@
   "dependenciesMeta": {
     "@fullcalendar/vue3": {
       "injected": true
+    },
+    "@fullcalendar/vue3-scheduler": {
+      "injected": true
     }
   },
   "devDependencies": {

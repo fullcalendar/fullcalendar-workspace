@@ -1841,12 +1841,14 @@ importers:
         version: file:standard/packages/vue3/dist(vue@3.5.13(typescript@4.9.5))
       '@fullcalendar/vue3-scheduler':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../premium/packages/vue3-scheduler/dist
+        version: file:premium/packages/vue3-scheduler/dist(@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.13(typescript@4.9.5)))(vue@3.5.13(typescript@4.9.5))
       vue:
         specifier: ^3.2.45
         version: 3.5.13(typescript@4.9.5)
     dependenciesMeta:
       '@fullcalendar/vue3':
+        injected: true
+      '@fullcalendar/vue3-scheduler':
         injected: true
     devDependencies:
       '@vitejs/plugin-vue':
@@ -2111,6 +2113,9 @@ importers:
       '@fullcalendar/vue3':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vue3/dist
+      vue:
+        specifier: ^3.2.41
+        version: 3.5.26(typescript@5.9.3)
     publishDirectory: ./dist
 
   premium/packages/web-component-scheduler:
@@ -8239,6 +8244,12 @@ packages:
     peerDependencies:
       react: ^16.7.0 || ^17 || ^18 || ^19
       react-dom: ^16.7.0 || ^17 || ^18 || ^19
+
+  '@fullcalendar/vue3-scheduler@file:premium/packages/vue3-scheduler/dist':
+    resolution: {directory: premium/packages/vue3-scheduler/dist, type: directory}
+    peerDependencies:
+      '@fullcalendar/vue3': workspace:7.0.0-beta.6
+      vue: ^3.0.11
 
   '@fullcalendar/vue3@file:standard/packages/vue3/dist':
     resolution: {directory: standard/packages/vue3/dist, type: directory}
@@ -34651,6 +34662,15 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
+  '@fullcalendar/vue3-scheduler@file:premium/packages/vue3-scheduler/dist(@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.13(typescript@4.9.5)))(vue@3.5.13(typescript@4.9.5))':
+    dependencies:
+      '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
+      '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
+      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/vue3': file:standard/packages/vue3/dist(vue@3.5.13(typescript@4.9.5))
+      preact: 10.23.2
+      vue: 3.5.13(typescript@4.9.5)
+
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.13(typescript@4.9.5))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
@@ -40160,7 +40180,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.13':
     dependencies:
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.6
       '@vue/compiler-core': 3.5.13
       '@vue/compiler-dom': 3.5.13
       '@vue/compiler-ssr': 3.5.13
@@ -55922,8 +55942,8 @@ snapshots:
   vite@3.2.11(@types/node@24.10.3)(less@4.2.1)(sass@1.93.2)(stylus@0.62.0)(terser@5.39.0):
     dependencies:
       esbuild: 0.15.18
-      postcss: 8.4.49
-      resolve: 1.22.8
+      postcss: 8.5.6
+      resolve: 1.22.11
       rollup: 2.79.2
     optionalDependencies:
       '@types/node': 24.10.3
