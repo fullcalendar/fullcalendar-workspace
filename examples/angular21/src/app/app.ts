@@ -8,10 +8,6 @@ import listPlugin from '@fullcalendar/angular/list';
 import themePlugin from '@fullcalendar/angular/themes/classic';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 
-import '@fullcalendar/angular/skeleton.css'
-import '@fullcalendar/angular/themes/classic/theme.css'
-import '@fullcalendar/angular/themes/classic/palette.css'
-
 @Component({
   selector: 'app-root',
   standalone: true,
