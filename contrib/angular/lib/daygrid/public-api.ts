@@ -1,2 +1,2 @@
 
-export const magicNumber = 42
+export { default } from '@fullcalendar/vanilla/daygrid'
