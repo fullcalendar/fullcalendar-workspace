@@ -43,6 +43,7 @@ bug: our TS hack is making its way into dist (for vue3 at least)
     interface BaseOptions {
       resourceDayHeaderAlign?: any;
 angular w/ endpoints somehow
+  try to compile preact-version WITHIN
   restore tests
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error

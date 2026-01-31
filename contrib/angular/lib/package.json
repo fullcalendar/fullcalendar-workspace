@@ -24,5 +24,8 @@
     "@angular/common": "13 - 21",
     "@angular/core": "13 - 21"
   },
+  "devDependencies": {
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
+  },
   "sideEffects": false
 }

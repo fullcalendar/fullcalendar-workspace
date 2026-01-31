@@ -11,6 +11,9 @@
     "paths": {
       "@fullcalendar/angular": [
         "dist/lib"
+      ],
+      "@fullcalendar/angular/*": [
+        "dist/lib/*"
       ]
     },
     "noImplicitReturns": true,
