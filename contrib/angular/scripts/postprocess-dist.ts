@@ -27,7 +27,7 @@ console.log(`Found ${localeCodes.length} locale codes`)
 fs.mkdirSync(path.join(ANGULAR_DIST, 'locales'), { recursive: true })
 for (const code of localeCodes) {
   fs.writeFileSync(
-    path.join(ANGULAR_DIST, `locales/${code}.js`),
+    path.join(ANGULAR_DIST, `locales/${code}.mjs`),
     `export { default } from "@fullcalendar/vanilla/locales/${code}"\n`
   )
 }
@@ -47,7 +47,7 @@ for (const exportKey of themeModules) {
   const themePath = exportKey.slice(2) // 'themes/classic'
   fs.mkdirSync(path.dirname(path.join(ANGULAR_DIST, themePath)), { recursive: true })
   fs.writeFileSync(
-    path.join(ANGULAR_DIST, `${themePath}.js`),
+    path.join(ANGULAR_DIST, `${themePath}.mjs`),
     `export { default } from "@fullcalendar/vanilla/${themePath}"\n`
   )
   fs.writeFileSync(
@@ -58,7 +58,38 @@ for (const exportKey of themeModules) {
 
 console.log(`Generated ${themeModules.length} theme module re-exports`)
 
-// 4. Copy CSS files (driven by buildConfig.exports)
+// 4. Generate plugin/utility module re-exports (driven by buildConfig.exports)
+const pluginUtilityModules = Object.entries(buildExports)
+  .filter(([key, val]) =>
+    val.format === 'module' &&
+    [
+      './daygrid',
+      './timegrid',
+      './list',
+      './multimonth',
+      './interaction',
+      './locales-all',
+      './protected-api',
+      './protected-styles'
+    ].includes(key)
+  )
+  .map(([key]) => key)
+
+for (const exportKey of pluginUtilityModules) {
+  const modulePath = exportKey.slice(2) // 'daygrid', 'interaction', etc.
+
+  // Special case: protected-api has no default export
+  const content = modulePath === 'protected-api'
+    ? `export * from "@fullcalendar/vanilla/${modulePath}"\n`
+    : `export * from "@fullcalendar/vanilla/${modulePath}"\nexport { default } from "@fullcalendar/vanilla/${modulePath}"\n`
+
+  fs.writeFileSync(path.join(ANGULAR_DIST, `${modulePath}.mjs`), content)
+  fs.writeFileSync(path.join(ANGULAR_DIST, `${modulePath}.d.ts`), content)
+}
+
+console.log(`Generated ${pluginUtilityModules.length} plugin/utility module re-exports`)
+
+// 5. Copy CSS files (driven by buildConfig.exports)
 const cssExports = Object.entries(buildExports)
   .filter(([key, val]) => val.format === 'css')
   .map(([key]) => key)
@@ -73,13 +104,13 @@ for (const exportKey of cssExports) {
 
 console.log(`Copied ${cssExports.length} CSS files`)
 
-// 5. Update package.json with new exports
+// 6. Update package.json with new exports
 const angularPkg = JSON.parse(fs.readFileSync(path.join(ANGULAR_DIST, 'package.json'), 'utf-8'))
 
 // Add locale wildcard
 angularPkg.exports['./locales/*'] = {
   types: './locales/locale.d.ts',
-  default: './locales/*.js'
+  default: './locales/*.mjs'
 }
 
 // Add theme module exports
@@ -87,7 +118,7 @@ for (const exportKey of themeModules) {
   const themePath = exportKey.slice(2)
   angularPkg.exports[exportKey] = {
     types: `./${themePath}.d.ts`,
-    default: `./${themePath}.js`
+    default: `./${themePath}.mjs`
   }
 }
 
@@ -96,10 +127,20 @@ for (const exportKey of cssExports) {
   angularPkg.exports[exportKey] = exportKey // './foo.css' -> './foo.css'
 }
 
+// Add plugin/utility module exports
+for (const exportKey of pluginUtilityModules) {
+  const modulePath = exportKey.slice(2)
+  angularPkg.exports[exportKey] = {
+    types: `./${modulePath}.d.ts`,
+    default: `./${modulePath}.mjs`
+  }
+}
+
 fs.writeFileSync(
   path.join(ANGULAR_DIST, 'package.json'),
   JSON.stringify(angularPkg, null, 2) + '\n'
 )
 
 console.log('Updated package.json exports')
+console.log(`Total exports: ${Object.keys(angularPkg.exports).length}`)
 console.log('Done!')
