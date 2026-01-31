@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, forwardRef } from '@angular/core';
-import { FullCalendarComponent, CalendarOptions, Calendar, EventClickData } from '@fullcalendar/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FullCalendarComponent, CalendarOptions, DateClickData, EventClickData } from '@fullcalendar/angular';
 import classicThemePlugin from '@fullcalendar/angular/themes/classic';
 import dayGridPlugin from '@fullcalendar/angular/daygrid';
-import interactionPlugin, { DateClickData, EventDragStopData } from '@fullcalendar/angular/interaction';
+import interactionPlugin, { EventDragStopData } from '@fullcalendar/angular/interaction';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,6 @@ export class AppComponent implements OnInit {
   @ViewChild('fullcalendar') fullcalendar?: FullCalendarComponent;
 
   ngOnInit() {
-    // need for load calendar bundle first
-    forwardRef(() => Calendar);
-
     this.calendarOptions = {
       plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],
       editable: true,
