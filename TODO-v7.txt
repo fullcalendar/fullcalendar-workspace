@@ -44,6 +44,9 @@ bug: our TS hack is making its way into dist (for vue3 at least)
       resourceDayHeaderAlign?: any;
 angular w/ endpoints somehow
   restore tests
+  give all examples projects peerDependencies:
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
 angular/esm issues:
   examples/angular18: baffling angular cli version mismatch error
   examples/angular17-13: tsconfigs use "moduleResolution": "node",
