@@ -187,6 +187,32 @@ export function externalizeExtensionsPlugin(extensionsInput: ExtensionInput): Pl
   }
 }
 
+// CSS Module Types
+// -------------------------------------------------------------------------------------------------
+
+export function cssModuleTypesPlugin(): Plugin {
+  return {
+    name: 'css-module-types',
+    resolveId(importId) {
+      // Check if this is a CSS module import
+      if (importId.endsWith('.module.css')) {
+        // Return a virtual module ID with .d.ts extension so DTS plugin processes it
+        return '\0css-module:' + importId + '.d.ts'
+      }
+    },
+    load(id) {
+      // Check if this is our virtual CSS module
+      if (id.startsWith('\0css-module:') && id.endsWith('.d.ts')) {
+        // Return a synthetic type definition
+        return {
+          code: 'declare const styles: Record<string, string>;\nexport default styles;',
+          map: null
+        }
+      }
+    }
+  }
+}
+
 // Reroot Paths
 // -------------------------------------------------------------------------------------------------
 

@@ -30,6 +30,7 @@ import { HashGenerator } from './hash-generator.ts'
 import transformClassNamesPlugin from './rollup-plugins-theming.ts'
 import {
   copyFilesPlugin,
+  cssModuleTypesPlugin,
   externalizeExtensionsPlugin,
   externalizePkgsPlugin,
   generatedContentPlugin,
@@ -311,6 +312,7 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
       mappings: pkgBundleStruct.importRemaps || {},
       forceExternal: true,
     }),
+    cssModuleTypesPlugin(), // Handle CSS module imports before dtsPlugin
     externalizeAssetsPlugin(),
     externalizePkgsPlugin({
       pkgNames: computeModuleExternalPkgs(pkgBundleStruct),
