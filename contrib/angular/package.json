@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build lib && pnpm run meta",
+    "build": "ng build lib && pnpm run meta && ./scripts/postprocess-dist.ts",
     "watch": "ng build lib --watch --configuration development",
     "test": "ng test lib --watch=false --browsers ChromeHeadless",
     "test:dev": "ng test lib",
