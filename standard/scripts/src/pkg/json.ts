@@ -101,7 +101,6 @@ export async function writeDistPkgJson(
         ? (pkgJson.keywords || basePkgJson.keywords || []) // don't merge
         : (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
-    module: './index' + esmExtension,
     main: './index' + esmExtension,
     ...(
       firstCdnPath
