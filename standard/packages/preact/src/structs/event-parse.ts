@@ -97,7 +97,7 @@ export function parseEvent(
 
   if (singleRes) {
     let def = parseEventDef(refined, extra, eventSource ? eventSource.sourceId : '', singleRes.allDay, singleRes.hasEnd, context, defIdMap)
-    let instance = createEventInstance(def.defId, singleRes.range, singleRes.forcedStartTzo, singleRes.forcedEndTzo)
+    let instance = createEventInstance(def.defId, singleRes.range)
 
     if (instanceIdMap && def.publicId && instanceIdMap[def.publicId]) {
       instance.instanceId = instanceIdMap[def.publicId]
@@ -226,8 +226,6 @@ function parseSingle(refined: EventRefined, defaultAllDay: boolean | null, conte
     allDay,
     hasEnd,
     range: { start: startMarker, end: endMarker },
-    forcedStartTzo: startMeta ? startMeta.forcedTzo : null,
-    forcedEndTzo: endMeta ? endMeta.forcedTzo : null,
   }
 }
 

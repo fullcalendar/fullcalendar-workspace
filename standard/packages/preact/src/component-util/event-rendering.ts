@@ -287,7 +287,7 @@ export function buildEventRangeTimeText(
   defaultDisplayEventEnd = true,
 ): string {
   const { dateEnv, options } = context
-  const { def, instance } = eventRange
+  const { def } = eventRange
   let { displayEventTime, displayEventEnd } = options
 
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
@@ -314,16 +314,11 @@ export function buildEventRangeTimeText(
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
-      return dateEnv.formatRange(startDate, endDate, timeFormat, {
-        forcedStartTzo: isStart ? instance.forcedStartTzo : null,
-        forcedEndTzo: isEnd ? instance.forcedEndTzo : null,
-      })
+      return dateEnv.formatRange(startDate, endDate, timeFormat)
     }
 
     if (isStart) {
-      return dateEnv.format(startDate, timeFormat, {
-        forcedTzo: instance.forcedStartTzo,
-      })[0]
+      return dateEnv.format(startDate, timeFormat)[0]
     }
   }
 

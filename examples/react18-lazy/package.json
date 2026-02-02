@@ -12,7 +12,8 @@
   "dependencies": {
     "@fullcalendar/react": "workspace:7.0.0-beta.6",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "temporal-polyfill": "^0.3.0"
   },
   "dependenciesMeta": {
     "@fullcalendar/react": {

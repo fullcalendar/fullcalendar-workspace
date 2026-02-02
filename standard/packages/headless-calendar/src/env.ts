@@ -1,3 +1,4 @@
+import { Temporal } from 'temporal-polyfill'
 import {
   DateMarker, addMs,
   diffHours, diffMinutes, diffSeconds, diffWholeWeeks, diffWholeDays,
@@ -6,7 +7,6 @@ import {
 } from './marker'
 import { CalendarSystem, createCalendarSystem } from './calendar-system'
 import { Locale } from './locale'
-import { NamedTimeZoneImpl, NamedTimeZoneImplClass } from './timezone'
 import { Duration, asRoughYears, asRoughMonths, asRoughDays, asRoughMs } from './duration'
 import { DateFormatter, CmdFormatterFunc } from './DateFormatter'
 import { buildIsoString } from './formatting-utils'
@@ -17,7 +17,6 @@ export type WeekNumberCalculation = 'local' | 'ISO' | ((m: Date) => number)
 
 export interface DateEnvSettings {
   timeZone: string
-  namedTimeZoneImpl?: NamedTimeZoneImplClass
   calendarSystem: string
   locale: Locale
   weekNumberCalculation?: WeekNumberCalculation
@@ -33,14 +32,10 @@ export type DateInput = Date | string | number | number[]
 export interface DateMarkerMeta {
   marker: DateMarker
   isTimeUnspecified: boolean
-  forcedTzo: number | null
 }
 
 export class DateEnv {
   timeZone: string
-  namedTimeZoneImpl: NamedTimeZoneImpl
-  canComputeOffset: boolean
-
   calendarSystem: CalendarSystem
   locale: Locale
   weekDow: number // which day begins the week
@@ -52,15 +47,7 @@ export class DateEnv {
   defaultSeparator: string
 
   constructor(settings: DateEnvSettings) {
-    let timeZone = this.timeZone = settings.timeZone
-    let isNamedTimeZone = timeZone !== 'local' && timeZone !== 'UTC'
-
-    if (settings.namedTimeZoneImpl && isNamedTimeZone) {
-      this.namedTimeZoneImpl = new settings.namedTimeZoneImpl(timeZone)
-    }
-
-    this.canComputeOffset = Boolean(!isNamedTimeZone || this.namedTimeZoneImpl)
-
+    this.timeZone = settings.timeZone
     this.calendarSystem = createCalendarSystem(settings.calendarSystem)
     this.locale = settings.locale
     this.weekDow = settings.locale.week.dow
@@ -97,12 +84,7 @@ export class DateEnv {
   }
 
   createNowMarker(): DateMarker {
-    if (this.canComputeOffset) {
-      return this.timestampToMarker(new Date().valueOf())
-    }
-    // if we can't compute the current date val for a timezone,
-    // better to give the current local date vals than UTC
-    return arrayToUtcDate(dateToLocalArray(new Date()))
+    return this.timestampToMarker(new Date().valueOf())
   }
 
   createMarkerMeta(input: DateInput): DateMarkerMeta {
@@ -128,7 +110,7 @@ export class DateEnv {
       return null
     }
 
-    return { marker, isTimeUnspecified: false, forcedTzo: null }
+    return { marker, isTimeUnspecified: false }
   }
 
   parse(s: string) {
@@ -138,17 +120,12 @@ export class DateEnv {
     }
 
     let { marker } = parts
-    let forcedTzo = null
 
     if (parts.timeZoneOffset !== null) {
-      if (this.canComputeOffset) {
-        marker = this.timestampToMarker(marker.valueOf() - parts.timeZoneOffset * 60 * 1000)
-      } else {
-        forcedTzo = parts.timeZoneOffset
-      }
+      marker = this.timestampToMarker(marker.valueOf() - parts.timeZoneOffset * 60 * 1000)
     }
 
-    return { marker, isTimeUnspecified: parts.isTimeUnspecified, forcedTzo }
+    return { marker, isTimeUnspecified: parts.isTimeUnspecified }
   }
 
   // Accessors
@@ -360,13 +337,11 @@ export class DateEnv {
   }
 
   // TODO: choke on timeZoneName: long
-  format(marker: DateMarker, formatter: DateFormatter, dateOptions: { forcedTzo?: number } = {}) {
+  format(marker: DateMarker, formatter: DateFormatter) {
     return formatter.format(
       {
         marker,
-        timeZoneOffset: dateOptions.forcedTzo != null ?
-          dateOptions.forcedTzo :
-          this.offsetForMarker(marker),
+        timeZoneOffset: this.offsetForMarker(marker),
       },
       this,
     )
@@ -377,7 +352,7 @@ export class DateEnv {
     start: DateMarker,
     end: DateMarker,
     formatter: DateFormatter,
-    dateOptions: { forcedStartTzo?: number, forcedEndTzo?: number, isEndExclusive?: boolean, defaultSeparator?: string } = {},
+    dateOptions: { isEndExclusive?: boolean, defaultSeparator?: string } = {},
   ): string {
     if (dateOptions.isEndExclusive) {
       end = addMs(end, -1)
@@ -386,15 +361,11 @@ export class DateEnv {
     return formatter.formatRange(
       {
         marker: start,
-        timeZoneOffset: dateOptions.forcedStartTzo != null ?
-          dateOptions.forcedStartTzo :
-          this.offsetForMarker(start),
+        timeZoneOffset: this.offsetForMarker(start),
       },
       {
         marker: end,
-        timeZoneOffset: dateOptions.forcedEndTzo != null ?
-          dateOptions.forcedEndTzo :
-          this.offsetForMarker(end),
+        timeZoneOffset: this.offsetForMarker(end),
       },
       this,
       dateOptions.defaultSeparator,
@@ -409,11 +380,7 @@ export class DateEnv {
     let timeZoneOffset = null
 
     if (!extraOptions.omitTimeZoneOffset) {
-      if (extraOptions.forcedTzo != null) {
-        timeZoneOffset = extraOptions.forcedTzo
-      } else {
-        timeZoneOffset = this.offsetForMarker(marker)
-      }
+      timeZoneOffset = this.offsetForMarker(marker)
     }
 
     return buildIsoString(marker, timeZoneOffset, extraOptions.omitTime)
@@ -424,41 +391,66 @@ export class DateEnv {
   timestampToMarker(ms: number) {
     if (this.timeZone === 'local') {
       return arrayToUtcDate(dateToLocalArray(new Date(ms)))
-    } if (this.timeZone === 'UTC' || !this.namedTimeZoneImpl) {
+    }
+    if (this.timeZone === 'UTC') {
       return new Date(ms)
     }
-    return arrayToUtcDate(this.namedTimeZoneImpl.timestampToArray(ms))
+
+    const zdt = Temporal.Instant.fromEpochMilliseconds(ms)
+      .toZonedDateTimeISO(this.timeZone)
+
+    return new Date( // a "Date Marker", which is like PlainDateTime
+      Date.UTC(
+        zdt.year,
+        zdt.month,
+        zdt.day,
+        zdt.hour,
+        zdt.minute,
+        zdt.second,
+        zdt.millisecond,
+      ),
+    )
   }
 
   offsetForMarker(m: DateMarker) {
     if (this.timeZone === 'local') {
       return -arrayToLocalDate(dateToUtcArray(m)).getTimezoneOffset() // convert "inverse" offset to "normal" offset
-    } if (this.timeZone === 'UTC') {
-      return 0
-    } if (this.namedTimeZoneImpl) {
-      return this.namedTimeZoneImpl.offsetForArray(dateToUtcArray(m))
     }
-    return null
+    if (this.timeZone === 'UTC') {
+      return 0
+    }
+
+    return new Temporal.PlainDateTime(
+      m.getUTCFullYear(),
+      m.getUTCMonth(),
+      m.getUTCDate(),
+      m.getUTCHours(),
+      m.getUTCMinutes(),
+      m.getUTCSeconds(),
+      m.getUTCMilliseconds(),
+    ).toZonedDateTime(this.timeZone).offsetNanoseconds / 1000000
   }
 
   // Conversion
 
-  toDate(m: DateMarker, forcedTzo?: number): Date {
+  toDate(m: DateMarker): Date {
     if (this.timeZone === 'local') {
       return arrayToLocalDate(dateToUtcArray(m))
     }
-
     if (this.timeZone === 'UTC') {
       return new Date(m.valueOf()) // make sure it's a copy
     }
 
-    if (!this.namedTimeZoneImpl) {
-      return new Date(m.valueOf() - (forcedTzo || 0))
-    }
-
     return new Date(
-      m.valueOf() -
-        this.namedTimeZoneImpl.offsetForArray(dateToUtcArray(m)) * 1000 * 60, // convert minutes -> ms
+      new Temporal.PlainDateTime(
+        m.getUTCFullYear(),
+        m.getUTCMonth(),
+        m.getUTCDate(),
+        m.getUTCHours(),
+        m.getUTCMinutes(),
+        m.getUTCSeconds(),
+        m.getUTCMilliseconds(),
+      ).toZonedDateTime(this.timeZone).epochMilliseconds,
     )
   }
 }

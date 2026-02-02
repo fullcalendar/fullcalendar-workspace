@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "fullcalendar": "workspace:7.0.0-beta.6",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.6"
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",

@@ -1,5 +1,5 @@
 import { BaseOptions, JsonRequestError, requestJson } from '@fullcalendar/core/protected-api'
-import { addDays, DateEnv, DateRange } from '@full-ui/headless-calendar'
+import { DateEnv, DateRange } from '@full-ui/headless-calendar'
 
 // TODO: expose somehow
 const API_BASE = 'https://www.googleapis.com/calendar/v3/calendars'
@@ -123,20 +123,8 @@ function buildUrl(meta) {
 
 function buildRequestParams(range, apiKey: string, extraParams: Record<string, any>, dateEnv: DateEnv) {
   let params
-  let startStr
-  let endStr
-
-  if (dateEnv.canComputeOffset) {
-    // strings will naturally have offsets, which GCal needs
-    startStr = dateEnv.formatIso(range.start)
-    endStr = dateEnv.formatIso(range.end)
-  } else {
-    // when timezone isn't known, we don't know what the UTC offset should be, so ask for +/- 1 day
-    // from the UTC day-start to guarantee we're getting all the events
-    // (start/end will be UTC-coerced dates, so toISOString is okay)
-    startStr = addDays(range.start, -1).toISOString()
-    endStr = addDays(range.end, 1).toISOString()
-  }
+  let startStr = dateEnv.formatIso(range.start)
+  let endStr = dateEnv.formatIso(range.end)
 
   params = {
     ...(extraParams || {}),

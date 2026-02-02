@@ -25,9 +25,7 @@ export function formatDate(dateInput: DateInput, options: FormatDateOptions = {}
     return ''
   }
 
-  return dateEnv.format(dateMeta.marker, formatter, {
-    forcedTzo: dateMeta.forcedTzo,
-  })[0]
+  return dateEnv.format(dateMeta.marker, formatter)[0]
 }
 
 export function formatRange(
@@ -45,8 +43,6 @@ export function formatRange(
   }
 
   return dateEnv.formatRange(startMeta.marker, endMeta.marker, formatter, {
-    forcedStartTzo: startMeta.forcedTzo,
-    forcedEndTzo: endMeta.forcedTzo,
     isEndExclusive: options.isEndExclusive,
     defaultSeparator: BASE_OPTION_DEFAULTS.defaultRangeSeparator,
   })

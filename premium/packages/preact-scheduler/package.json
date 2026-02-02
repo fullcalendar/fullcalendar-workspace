@@ -10,11 +10,14 @@
   },
   "peerDependencies": {
     "@fullcalendar/preact": "workspace:7.0.0-beta.6",
-    "preact": "~10.23.1"
+    "preact": "~10.23.1",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar/preact": "workspace:7.0.0-beta.6",
-    "@fullcalendar-scripts/standard": "workspace:*"
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "preact": "~10.23.1",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

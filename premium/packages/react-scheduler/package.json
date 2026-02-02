@@ -4,14 +4,15 @@
   "title": "FullCalendar React Scheduler",
   "description": "FullCalendar React Scheduler package",
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@full-ui/headless-grid": "workspace:7.0.0-beta.6"
+    "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
     "@fullcalendar/react": "workspace:7.0.0-beta.6",
     "react": "^16.7.0 || ^17 || ^18 || ^19",
-    "react-dom": "^16.7.0 || ^17 || ^18 || ^19"
+    "react-dom": "^16.7.0 || ^17 || ^18 || ^19",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar/react": "workspace:7.0.0-beta.6",
@@ -19,7 +20,8 @@
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "pnpm run src:generate && standard-scripts pkg:build",

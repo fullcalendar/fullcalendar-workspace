@@ -201,14 +201,9 @@ export class EventImpl implements EventApi {
     let formatter = createFormatter(formatInput)
 
     if (this._def.hasEnd) {
-      return dateEnv.formatRange(instance.range.start, instance.range.end, formatter, {
-        forcedStartTzo: instance.forcedStartTzo,
-        forcedEndTzo: instance.forcedEndTzo,
-      })
+      return dateEnv.formatRange(instance.range.start, instance.range.end, formatter)
     }
-    return dateEnv.format(instance.range.start, formatter, {
-      forcedTzo: instance.forcedStartTzo,
-    })[0]
+    return dateEnv.format(instance.range.start, formatter)[0]
   }
 
   mutate(mutation: EventMutation): void { // meant to be private. but plugins need access
@@ -308,7 +303,6 @@ export class EventImpl implements EventApi {
     if (instance) {
       return this._context.dateEnv.formatIso(instance.range.start, {
         omitTime: this._def.allDay,
-        forcedTzo: instance.forcedStartTzo,
       })
     }
     return ''
@@ -319,7 +313,6 @@ export class EventImpl implements EventApi {
     if (instance && this._def.hasEnd) {
       return this._context.dateEnv.formatIso(instance.range.end, {
         omitTime: this._def.allDay,
-        forcedTzo: instance.forcedEndTzo,
       })
     }
     return ''

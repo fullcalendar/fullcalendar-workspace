@@ -195,11 +195,9 @@ export function rezoneEventStoreDates(eventStore: EventStore, oldDateEnv: DateEn
     return {
       ...instance,
       range: {
-        start: newDateEnv.createMarker(oldDateEnv.toDate(instance.range.start, instance.forcedStartTzo)),
-        end: newDateEnv.createMarker(oldDateEnv.toDate(instance.range.end, instance.forcedEndTzo)),
+        start: newDateEnv.createMarker(oldDateEnv.toDate(instance.range.start)),
+        end: newDateEnv.createMarker(oldDateEnv.toDate(instance.range.end)),
       },
-      forcedStartTzo: newDateEnv.canComputeOffset ? null : instance.forcedStartTzo,
-      forcedEndTzo: newDateEnv.canComputeOffset ? null : instance.forcedEndTzo,
     }
   })
 

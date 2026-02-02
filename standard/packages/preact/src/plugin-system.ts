@@ -31,7 +31,6 @@ function refinePluginDef(input: PluginDefInput): PluginDef {
     eventSourceDefs: input.eventSourceDefs || [],
     cmdFormatter: input.cmdFormatter,
     recurringTypes: input.recurringTypes || [],
-    namedTimeZoneImpl: input.namedTimeZoneImpl,
     initialView: input.initialView || '',
     elementDraggingImpl: input.elementDraggingImpl,
     optionChangeHandlers: input.optionChangeHandlers || {},
@@ -70,7 +69,6 @@ function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInp
     eventSourceDefs: [],
     cmdFormatter: null,
     recurringTypes: [],
-    namedTimeZoneImpl: null,
     initialView: '',
     elementDraggingImpl: null,
     optionChangeHandlers: {},
@@ -150,7 +148,6 @@ function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
     eventSourceDefs: hooks0.eventSourceDefs.concat(hooks1.eventSourceDefs),
     cmdFormatter: hooks1.cmdFormatter || hooks0.cmdFormatter,
     recurringTypes: hooks0.recurringTypes.concat(hooks1.recurringTypes),
-    namedTimeZoneImpl: hooks1.namedTimeZoneImpl || hooks0.namedTimeZoneImpl,
     initialView: hooks0.initialView || hooks1.initialView, // put earlier plugins FIRST
     elementDraggingImpl: hooks0.elementDraggingImpl || hooks1.elementDraggingImpl, // "
     optionChangeHandlers: { ...hooks0.optionChangeHandlers, ...hooks1.optionChangeHandlers },

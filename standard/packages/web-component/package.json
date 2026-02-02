@@ -9,15 +9,19 @@
   ],
   "homepage": "https://fullcalendar.io/docs/web-component",
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
+  },
+  "peerDepencencies": {
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "fullcalendar": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*",
     "globby": "^13.1.2",
-    "handlebars": "^4.1.2"
+    "handlebars": "^4.1.2",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

@@ -23,6 +23,8 @@ build note:
     manually before `pn dev`
 
 
+any types referenced in (public) PluginDefInput,
+  ensure they're public too
 better READMEs:
   core
   *-scheduler

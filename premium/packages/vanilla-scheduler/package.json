@@ -4,17 +4,19 @@
   "title": "FullCalendar Scheduler (Vanilla JS)",
   "description": "FullCalendar Vanilla JS Scheduler package",
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
   },
   "peerDependencies": {
-    "fullcalendar": "workspace:7.0.0-beta.6"
+    "fullcalendar": "workspace:7.0.0-beta.6",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar/preact": "workspace:7.0.0-beta.6",
-    "@fullcalendar/preact-scheduler": "workspace:7.0.0-beta.6"
+    "@fullcalendar/preact-scheduler": "workspace:7.0.0-beta.6",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

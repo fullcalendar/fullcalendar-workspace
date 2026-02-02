@@ -636,7 +636,6 @@ function buildDateEnv(
   return new DateEnv({
     calendarSystem: 'gregory', // TODO: make this a setting
     timeZone,
-    namedTimeZoneImpl: pluginHooks.namedTimeZoneImpl,
     locale,
     weekNumberCalculation,
     firstDay,

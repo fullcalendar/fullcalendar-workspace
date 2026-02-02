@@ -12,7 +12,7 @@ import { dateSelectionJoinTransformer } from './interactions/date-selecting'
 import { ExternalDefTransform } from './interactions/external-element-dragging'
 import { InteractionClass } from './interactions/interaction'
 import { EventSourceDef } from './structs/event-source-def'
-import { CmdFormatterFunc, NamedTimeZoneImplClass } from '@full-ui/headless-calendar'
+import { CmdFormatterFunc } from '@full-ui/headless-calendar'
 import { RecurringType } from './structs/recurring-event'
 import { ElementDraggingClass } from './interactions/ElementDragging'
 import type { ReactNode } from 'react'
@@ -49,7 +49,6 @@ export interface PluginDefInput {
   eventSourceDefs?: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes?: RecurringType<any>[]
-  namedTimeZoneImpl?: NamedTimeZoneImplClass
   initialView?: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers?: OptionChangeHandlerMap
@@ -85,7 +84,6 @@ export interface PluginHooks {
   eventSourceDefs: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes: RecurringType<any>[]
-  namedTimeZoneImpl?: NamedTimeZoneImplClass
   initialView: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers: OptionChangeHandlerMap

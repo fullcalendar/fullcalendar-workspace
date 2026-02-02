@@ -87,9 +87,6 @@ export {
 
 export { parse as parseMarker } from './parsing'
 
-export type { NamedTimeZoneImplClass } from './timezone'
-export { NamedTimeZoneImpl } from './timezone'
-
 export { isInt, trimEnd, padStart } from './utils'
 
 export type { ZonedMarker, ExpandedZonedMarker } from './zoned-marker'

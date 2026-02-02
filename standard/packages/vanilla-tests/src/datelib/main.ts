@@ -136,21 +136,18 @@ describe('datelib', () => {
         let res = env.createMarkerMeta('2018-06-08')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 8)))
-        expect(res.forcedTzo).toBeNull()
       })
 
       it('parses a date already in UTC', () => {
         let res = env.createMarkerMeta('2018-06-08T00:00:00Z')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 8)))
-        expect(res.forcedTzo).toBeNull()
       })
 
       it('parses timezones into UTC', () => {
         let res = env.createMarkerMeta('2018-06-08T00:00:00+12:00')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 7, 12)))
-        expect(res.forcedTzo).toBeNull()
       })
 
       it('detects lack of time', () => {
@@ -517,14 +514,12 @@ describe('datelib', () => {
         let res = env.createMarkerMeta('2018-06-08')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(2018, 5, 8))
-        expect(res.forcedTzo).toBeNull()
       })
 
       it('parses timezones into local', () => {
         let res = env.createMarkerMeta('2018-06-08T00:00:00+12:00')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 7, 12)))
-        expect(res.forcedTzo).toBeNull()
       })
 
       it('does not lose info when parsing a dst-dead-zone date', () => {
@@ -615,25 +610,22 @@ describe('datelib', () => {
     })
 
     describe('ISO8601 parsing', () => {
-      it('parses non-tz as UTC with no forcedTzo', () => {
+      it('parses non-tz as UTC with no forced timezone offset', () => {
         let res = env.createMarkerMeta('2018-06-08')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 8)))
-        expect(res.forcedTzo).toBeNull()
       })
 
-      it('parses as UTC after stripping and with a forcedTzo', () => {
+      it('parses as UTC after stripping and with a forced timezone offset', () => {
         let res = env.createMarkerMeta('2018-06-08T00:00:00+12:00')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 8)))
-        expect(res.forcedTzo).toBe(12 * 60)
       })
 
-      it('parses as UTC after stripping and with a forcedTzo, alt format', () => {
+      it('parses as UTC after stripping and with a forced timezone offset, alt format', () => {
         let res = env.createMarkerMeta('2018-06-08T01:01:01.100+1200')
         let date = env.toDate(res.marker)
         expect(date).toEqual(new Date(Date.UTC(2018, 5, 8, 1, 1, 1, 100)))
-        expect(res.forcedTzo).toBe(12 * 60)
       })
     })
 
