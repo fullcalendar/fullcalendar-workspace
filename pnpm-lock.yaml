@@ -490,9 +490,15 @@ importers:
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
         version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
+      '@fullcalendar/angular-scheduler':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../premium/packages/angular-scheduler/dist
       '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
+      '@fullcalendar/vanilla-scheduler':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../premium/packages/vanilla-scheduler/dist
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -22383,7 +22389,7 @@ snapshots:
       lmdb: 3.4.4
       postcss: 8.5.6
       tailwindcss: 4.1.18
-      vitest: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
+      vitest: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - '@types/node'
       - chokidar

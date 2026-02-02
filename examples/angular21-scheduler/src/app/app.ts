@@ -1,12 +1,14 @@
 import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule, CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/angular';
+import themePlugin from '@fullcalendar/angular/themes/classic';
 import interactionPlugin from '@fullcalendar/angular/interaction';
 import dayGridPlugin from '@fullcalendar/angular/daygrid';
 import timeGridPlugin from '@fullcalendar/angular/timegrid';
 import listPlugin from '@fullcalendar/angular/list';
-import themePlugin from '@fullcalendar/angular/themes/classic';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
+import resourceTimeGridPlugin from '@fullcalendar/angular-scheduler/resource-timegrid'
+import resourceTimelinePlugin from '@fullcalendar/angular-scheduler/resource-timeline'
+import { RESOURCES, INITIAL_EVENTS, createEventId } from './event-utils';
 
 @Component({
   selector: 'app-root',
@@ -19,19 +21,22 @@ export class App {
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
+      themePlugin,
       interactionPlugin,
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
-      themePlugin,
+      resourceTimeGridPlugin,
+      resourceTimelinePlugin,
     ],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'resourceTimelineWeek,resourceTimeGridDay,dayGridMonth'
     },
-    initialView: 'dayGridMonth',
+    initialView: 'resourceTimelineWeek',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    resources: RESOURCES,
     weekends: true,
     editable: true,
     selectable: true,
