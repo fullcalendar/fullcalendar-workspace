@@ -7,7 +7,7 @@ settings:
 patchedDependencies:
   '@angular/build@18.2.21':
     hash: 9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293
-    path: scripts/patches/@angular__build@19.0.2.patch
+    path: scripts/patches/@angular__build@18.patch
   jasmine-jquery@2.1.1:
     hash: 67897d46cf39c5f967a51ffdefb9218080e44eded878a866b057bd84e8703db7
     path: standard/scripts/patches/jasmine-jquery@2.1.1.patch

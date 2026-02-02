@@ -1,6 +1,6 @@
 {
-  "name": "@fullcalendar/vanilla-w-react",
   "private": true,
+  "name": "@fullcalendar/vanilla-w-react",
   "version": "7.0.0-beta.6",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",

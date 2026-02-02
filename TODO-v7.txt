@@ -11,7 +11,6 @@ IMPORTANT
       undo Build step filter
         --filter '!./examples-v7/**' \
         --filter '!./contrib/angular' \
-      undo private:true on angular (both package.jsons)
       the tag-and-release part is broken! because relies on "Sync Repos" which is disabled
         always skip and create GH releases manually
     in scripts/src/tag-and-release.ts
@@ -36,6 +35,9 @@ build note:
 
 build
 -----
+redo git-subrepo
+update package.json name/description/etc
+restore READMEs
 a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
 make core-types a real buildable package
 
