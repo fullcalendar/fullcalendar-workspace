@@ -49,7 +49,7 @@ export interface PluginDefInput {
   eventSourceDefs?: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes?: RecurringType<any>[]
-  namedTimeZonedImpl?: NamedTimeZoneImplClass
+  namedTimeZoneImpl?: NamedTimeZoneImplClass
   initialView?: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers?: OptionChangeHandlerMap
@@ -85,7 +85,7 @@ export interface PluginHooks {
   eventSourceDefs: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes: RecurringType<any>[]
-  namedTimeZonedImpl?: NamedTimeZoneImplClass
+  namedTimeZoneImpl?: NamedTimeZoneImplClass
   initialView: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers: OptionChangeHandlerMap
