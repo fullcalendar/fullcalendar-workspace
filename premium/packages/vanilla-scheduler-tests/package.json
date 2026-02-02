@@ -8,14 +8,15 @@
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
+    "@types/jasmine": "^3.3.12",
+    "@types/jasmine-jquery": "^1.5.33",
+    "@types/jquery": "^3.3.29",
     "fullcalendar": "workspace:*",
     "fullcalendar-w-react": "workspace:*",
     "fullcalendar-scheduler": "workspace:*",
     "fullcalendar-scheduler-w-react": "workspace:*",
-    "@types/jasmine": "^3.3.12",
-    "@types/jasmine-jquery": "^1.5.33",
-    "@types/jquery": "^3.3.29",
-    "fetch-mock": "^9.11.0"
+    "fetch-mock": "^9.11.0",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

@@ -11,8 +11,6 @@
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
-    "fullcalendar": "workspace:*",
-    "fullcalendar-w-react": "workspace:*",
     "@fullcalendar/google-calendar": "workspace:*",
     "@fullcalendar/icalendar": "workspace:*",
     "@fullcalendar/luxon3": "workspace:*",
@@ -21,8 +19,11 @@
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",
+    "fullcalendar": "workspace:*",
+    "fullcalendar-w-react": "workspace:*",
     "fetch-mock": "^9.11.0",
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
