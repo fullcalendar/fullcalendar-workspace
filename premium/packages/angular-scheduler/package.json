@@ -1,0 +1,48 @@
+{
+  "name": "@fullcalendar/angular-scheduler",
+  "version": "7.0.0-beta.6",
+  "title": "FullCalendar Core",
+  "description": "FullCalendar core package for rendering a calendar",
+  "peerDependencies": {
+    "@fullcalendar/angular": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@fullcalendar/angular": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "buildConfig": {
+    "exports": {
+      "./adaptive": {
+        "format": "module"
+      },
+      "./resource-daygrid": {
+        "format": "module"
+      },
+      "./resource-timegrid": {
+        "format": "module"
+      },
+      "./resource-timeline": {
+        "format": "module"
+      },
+      "./scrollgrid": {
+        "format": "module"
+      },
+      "./timeline": {
+        "format": "module"
+      }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
