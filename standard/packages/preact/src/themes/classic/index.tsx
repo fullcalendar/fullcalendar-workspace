@@ -2,41 +2,8 @@ import { PluginDefInput } from '../../plugin-system-struct'
 import { type CalendarOptions } from '../../options'
 import { joinClassNames } from '../../util/html'
 
-// ambient types (tsc strips during build because of {})
-// import {} from '@fullcalendar/timeline'
-// import {} from '@fullcalendar/resource-daygrid'
-// import {} from '@fullcalendar/resource-timegrid'
-// import {} from '@fullcalendar/resource-timeline'
-// import {} from '@fullcalendar/adaptive'
-// import {} from '@fullcalendar/scrollgrid'
-// import {} from '@fullcalendar/list'
-// import {} from '@fullcalendar/multimonth'
-
-// HACK until we can import @fullcalendar/preact-scheduler
-declare module '@fullcalendar/core-types/protected-api' {
-  interface BaseOptions {
-    resourceDayHeaderAlign?: any
-    resourceDayHeaderClass?: any
-    resourceDayHeaderInnerClass?: any
-    resourceColumnHeaderClass?: any
-    resourceColumnHeaderInnerClass?: any
-    resourceColumnResizerClass?: any
-    resourceGroupHeaderClass?: any
-    resourceGroupHeaderInnerClass?: any
-    resourceCellClass?: any
-    resourceCellInnerClass?: any
-    resourceIndentClass?: any
-    resourceExpanderClass?: any
-    resourceExpanderContent?: any
-    resourceHeaderRowClass?: any
-    resourceRowClass?: any
-    resourceColumnDividerClass?: any
-    resourceGroupLaneClass?: any
-    resourceLaneClass?: any
-    resourceLaneBottomClass?: any
-    timelineBottomClass?: any
-  }
-}
+// will get stripped during tsc transpile
+import {} from '../scheduler-types-hack'
 
 // usually 11px font / 12px line-height
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
