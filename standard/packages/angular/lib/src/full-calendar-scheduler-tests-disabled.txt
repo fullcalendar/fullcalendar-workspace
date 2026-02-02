@@ -1,0 +1,91 @@
+import resourceTimeGridPlugin from '@fullcalendar/angular-scheduler/resource-timegrid';
+import resourceTimelinePlugin from '@fullcalendar/angular-scheduler/resource-timeline';
+
+// Integration test: resource-timeline
+// https://github.com/fullcalendar/fullcalendar/issues/7105
+
+@Component({
+  template: `
+    <full-calendar #calendar [options]="calendarOptions">
+      <ng-template #resourceCellContent let-arg>
+        <b>{{ arg.resource.title }}</b>
+      </ng-template>
+    </full-calendar>
+  `
+})
+class LameComponent {
+  calendarOptions: CalendarOptions = {
+    plugins: [resourceTimelinePlugin],
+    initialView: 'resourceTimelineWeek',
+    resources: [{ id: 'a', title: 'a' }]
+  };
+
+  @ViewChild('calendar') calendarComponent?: FullCalendarComponent;
+
+  removeResource() {
+    const resource = this.calendarComponent!.getApi().getResourceById('a')!
+    resource.remove()
+  }
+}
+
+describe('with resource-timeline view', () => {
+  let component: LameComponent;
+  let fixture: ComponentFixture<LameComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FullCalendarModule],
+      declarations: [LameComponent]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(LameComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges(); // necessary for initializing change detection system
+  });
+
+  it('doesn\'t throw any errors when removing a resource', () => {
+    component.removeResource()
+    expect(Boolean(fixture)).toBe(true)
+  })
+})
+
+// Integration test: resource-timegrid
+// https://github.com/fullcalendar/fullcalendar/issues/7182
+
+@Component({
+  template: `
+    <full-calendar #calendar [options]="calendarOptions">
+      <ng-template #resourceCellContent let-arg>
+        <b>{{ arg.resource.title }}</b>
+      </ng-template>
+    </full-calendar>
+  `
+})
+class ResourceTimeGridComponent {
+  calendarOptions: CalendarOptions = {
+    plugins: [resourceTimeGridPlugin],
+    initialView: 'resourceTimeGridDay',
+    resources: [{ id: 'a', title: 'a' }]
+  };
+}
+
+describe('with resource-timeline view', () => {
+  let component: ResourceTimeGridComponent;
+  let fixture: ComponentFixture<ResourceTimeGridComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FullCalendarModule],
+      declarations: [ResourceTimeGridComponent]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ResourceTimeGridComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges(); // necessary for initializing change detection system
+  });
+
+  it('renders custom label', () => {
+    const resourceColHeader = fixture.nativeElement.querySelector('.fc-resource[role=columnheader]');
+    expect(resourceColHeader.querySelectorAll('b').length).toBe(1);
+  })
+})

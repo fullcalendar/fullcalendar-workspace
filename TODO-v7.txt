@@ -189,6 +189,7 @@ quirk: react version timegrid all-day scrollbar-offset is jumpy
 Vue3 tests: add readme about how we had to use playwright because jsom/happy-dom wouldn't populate refs correctly in onMount
   file a bug?
 restore angular ionic and ngrx examples (previously angular15)
+revive angular-scheduler tests in full-calendar-scheduler-tests-disabled.txt
 
 
 ASAP
@@ -644,6 +645,7 @@ new dayHeaderFormat default not showing year
 changelog: createPlugin removed
 React >= 17 support (same versions that support hooks)
 changelog: FullCalendar.act testing util removed
+changelog: angular 16-21 support
 
 
 Docs
