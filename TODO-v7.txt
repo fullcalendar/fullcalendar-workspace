@@ -6,16 +6,6 @@ IMPORTANT
   beta/rc/latest notes
     adjust @beta/etc in theming/ui-shadcn/scripts/build-registry-items.js
     adjust @beta/etc and CDN URLs in install guide
-    in .github/release.yaml
-      undo # DISABLED!
-      undo Build step filter
-        --filter '!./examples-v7/**' \
-        --filter '!./contrib/angular' \
-      the tag-and-release part is broken! because relies on "Sync Repos" which is disabled
-        always skip and create GH releases manually
-    in scripts/src/tag-and-release.ts
-      undo angular special cases
-      undo archives disabled
   Publish NPM packages
   Publish themes.fullcalendar.io
   Publish Shadcn registry. URLs:
@@ -35,8 +25,6 @@ build note:
 
 build
 -----
-triage above angular release hacks
-redo git-subrepo
 update package.json name/description/etc
 restore READMEs
 
@@ -215,6 +203,7 @@ AFTER BETA
 fix ZIP archives
   problematic because of how .html files reference theming/theme-classic directory
   might need to rewrite paths in HTML like before :(
+  reenable in createGithubRelease function
 Should themes define a default toolbar and style them responsively?
   how would we pass availableViews and addButton in there?
 Demo-App pulls in json-feed events, but doesn't have contrastColor, so looks bad in dark-mode
@@ -779,7 +768,7 @@ confusion over event color and text-color:
     https://github.com/fullcalendar/fullcalendar/issues/5528
 Fixed this issue of mousedown taking long time to recalculate style?
   https://fullcalendar.freshdesk.com/a/tickets/9078
-  Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
+  Can see forced-reflow warning here too: issue-7677.html
 Make tickets for a new view with list-view underneath month calendar
 Check ticket for daygrid view with "dots"
 Need to split this issue

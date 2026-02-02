@@ -8,9 +8,6 @@ version="6.1.10"
 
 declare -a tag_dirs=( \
   "$root_dir/standard" \
-  "$root_dir/contrib/angular" \
-  "$root_dir/contrib/react" \
-  "$root_dir/contrib/vue3" \
   "$root_dir" \
 )
 

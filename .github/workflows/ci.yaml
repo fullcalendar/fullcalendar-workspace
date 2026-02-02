@@ -63,10 +63,10 @@ jobs:
             --filter '!@fullcalendar-tests/*' \
             run build
 
-      # execute only contrib tests, as "smoke" tests. they're fast
+      # execute only connector-package tests, as "smoke" tests. they're fast
       - name: Test
         run: |
           pnpm \
-            --filter './contrib/**' \
-            --filter '!@fullcalendar/angular' \
+            --filter '@fullcalendar/react' \
+            --filter '@fullcalendar/vue3' \
             run test

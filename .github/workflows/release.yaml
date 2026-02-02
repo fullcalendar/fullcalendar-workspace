@@ -91,19 +91,16 @@ jobs:
         run: |
           pnpm \
             --filter '!./examples/**' \
-            --filter '!./examples-v7/**' \
-            --filter '!./contrib/angular' \
             --filter '!@fullcalendar-tests/*' \
             run build
           pnpm run archive
 
-      # execute only contrib tests, as "smoke" tests. they're fast
+      # execute only connector-package tests, as "smoke" tests. they're fast
       - name: Test
-        # DISABLED!
-        if: false
         run: |
           pnpm \
-            --filter './contrib/**' \
+            --filter '@fullcalendar/react' \
+            --filter '@fullcalendar/vue3' \
             run test
 
       # Must happen before tag-and-release. Would prefer to do it after as a
@@ -115,7 +112,6 @@ jobs:
       # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
       #
       - name: Sync Repos
-        # DISABLED!
         if: false
         run: |
           echo "Pulling latest and rebasing version-bump commit atop..."

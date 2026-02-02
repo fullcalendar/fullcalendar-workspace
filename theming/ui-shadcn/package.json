@@ -1,6 +1,6 @@
 {
-  "name": "@fullcalendar/ui-shadcn",
   "private": true,
+  "name": "@fullcalendar/ui-shadcn",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
