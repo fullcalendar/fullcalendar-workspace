@@ -38,7 +38,10 @@ build
 redo git-subrepo
 update package.json name/description/etc
 restore READMEs
-make core-types a real buildable package
+rename packages
+  @fullcalendar/vanilla -> fullcalendar
+  @fullcalendar/vanilla-scheduler -> fullcalendar-scheduler
+  @fullcalendar/core-types -> @fullcalendar/core (and adjust README/package.json)
 
 
 name it 'PluginDef' or 'PluginDefInput' (current) ?

@@ -6,15 +6,26 @@
   "peerDependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6"
   },
+  "devDependencies": {
+    "@fullcalendar-scripts/standard": "workspace:*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean"
+  },
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "default": "./index.js"
-    },
-    "./protected-api": {
-      "types": "./protected-api.d.ts",
-      "default": "./protected-api.js"
+  "buildConfig": {
+    "exports": {
+      ".": {
+        "format": "module"
+      },
+      "./protected-api": {
+        "format": "module"
+      }
     }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
   }
 }

@@ -1503,7 +1503,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -1526,7 +1526,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1558,7 +1558,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
       '@fullcalendar/vanilla':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla/dist
@@ -1621,7 +1621,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
       '@fullcalendar/vanilla-w-react':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla-w-react/dist
@@ -1656,7 +1656,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -1685,7 +1685,7 @@ importers:
         version: link:../headless-grid/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/core-types
+        version: link:../../../standard/packages/core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -1813,6 +1813,11 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
+    publishDirectory: ./dist
 
   standard/packages/google-calendar:
     dependencies:
@@ -1821,7 +1826,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1845,7 +1850,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1862,7 +1867,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1882,7 +1887,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1899,7 +1904,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -1922,7 +1927,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1966,7 +1971,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -1983,7 +1988,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2067,7 +2072,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
       react:
         specifier: ^19.2.3
         version: 19.2.4
@@ -2102,7 +2107,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -2152,7 +2157,7 @@ importers:
         version: link:../headless-calendar/dist
       '@fullcalendar/core-types':
         specifier: workspace:7.0.0-beta.6
-        version: link:../core-types
+        version: link:../core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
@@ -25975,7 +25980,7 @@ snapshots:
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       '@fullcalendar/react': file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -25983,21 +25988,21 @@ snapshots:
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
@@ -26005,7 +26010,7 @@ snapshots:
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       '@fullcalendar/vue3': file:standard/packages/vue3/dist(vue@3.5.27(typescript@4.9.5))
       preact: 10.23.2
       vue: 3.5.27(typescript@4.9.5)
@@ -26013,14 +26018,14 @@ snapshots:
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.27(typescript@4.9.5))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       preact: 10.23.2
       vue: 3.5.27(typescript@4.9.5)
 
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types
+      '@fullcalendar/core-types': link:standard/packages/core-types/dist
       preact: 10.23.2
       vue: 3.5.27(typescript@5.9.3)
 
