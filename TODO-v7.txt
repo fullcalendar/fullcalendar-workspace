@@ -38,7 +38,6 @@ build
 -----
 a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
 make core-types a real buildable package
-don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)
 need "module" fields in package.json anymore? no
 
 
