@@ -1,7 +1,7 @@
 
-# FullCalendar PREACT
+# FullCalendar Preact
 
-FullCalendar core package for rendering a calendar
+FullCalendar Preact package for rendering a calendar
 
 ## Installation
 

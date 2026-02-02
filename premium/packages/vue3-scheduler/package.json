@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/vue3-scheduler",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Core",
-  "description": "FullCalendar core package for rendering a calendar",
+  "title": "FullCalendar Vue 3",
+  "description": "FullCalendar Vue 3 Scheduler package",
   "dependencies": {
     "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",

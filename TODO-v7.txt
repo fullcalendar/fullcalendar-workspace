@@ -25,10 +25,12 @@ build note:
 
 build
 -----
-update package.json name/description/etc
-restore READMEs
+add examples for additional angular package deps
 
 
+better READMEs:
+  core
+  *-scheduler
 name it 'PluginDef' or 'PluginDefInput' (current) ?
 remove (data, *createElement*) param from *Content hooks
 re-add keys to toolbarsections, so doesn't reuse elements

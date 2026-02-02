@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/angular-scheduler",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Core",
-  "description": "FullCalendar core package for rendering a calendar",
+  "title": "FullCalendar Angular",
+  "description": "FullCalendar Angular Scheduler package",
   "peerDependencies": {
     "@fullcalendar/angular": "workspace:7.0.0-beta.6",
     "fullcalendar": "workspace:7.0.0-beta.6",

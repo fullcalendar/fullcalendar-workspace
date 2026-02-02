@@ -1,7 +1,7 @@
 
-# FullCalendar VANILLA
+# FullCalendar (Vanilla JS)
 
-FullCalendar core package for rendering a calendar
+FullCalendar Vanilla JS package for rendering a calendar
 
 ## Installation
 

@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/preact-scheduler",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Core",
-  "description": "FullCalendar core package for rendering a calendar",
+  "title": "FullCalendar Preact Scheduler",
+  "description": "FullCalendar Preact Scheduler package",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.6",

@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/core",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Core",
-  "description": "FullCalendar core package for rendering a calendar",
+  "title": "FullCalendar Core Types",
+  "description": "FullCalendar core types package",
   "peerDependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6"
   },

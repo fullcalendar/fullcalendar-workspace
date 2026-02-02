@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/react",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Core",
-  "description": "FullCalendar core package for rendering a calendar",
+  "title": "FullCalendar React",
+  "description": "FullCalendar React package for rendering a calendar",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@fullcalendar/core": "workspace:7.0.0-beta.6"
