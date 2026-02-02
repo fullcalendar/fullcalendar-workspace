@@ -79,14 +79,6 @@ export async function writeDistPkgJson(
       }
     } else if (entryConfig.format === 'global') {
       sideEffects.push(entrySubpath + iifeExtension)
-
-      if (!isDev) {
-        sideEffects.push(entrySubpath + '.min' + iifeExtension)
-
-        if (!firstCdnPath) {
-          firstCdnPath = entrySubpath + '.min' + iifeExtension
-        }
-      }
     } else if (entryConfig.format === 'css') {
       exportsMap[entryName] = entryName
       anyCss = true

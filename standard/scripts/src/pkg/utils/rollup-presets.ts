@@ -35,7 +35,6 @@ import {
   externalizePkgsPlugin,
   generatedContentPlugin,
   massageDtsPlugin,
-  minifyBundleSeparatelyPlugin,
   remapImportsPlugin,
   rerootPlugin,
   resolveExternalForDts,
@@ -78,7 +77,6 @@ export async function buildGlobalOptions(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
   sourcemaps: boolean,
-  minification: boolean,
 ): Promise<RollupOptions> {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
@@ -88,7 +86,6 @@ export async function buildGlobalOptions(
       pkgBundleStruct,
       isDev,
       sourcemaps,
-      minification,
     ),
     output: await buildGlobalOutputOptions(pkgBundleStruct, sourcemaps),
     onwarn(warning) {
@@ -259,7 +256,6 @@ function buildModulePlugins(
     ),
     copyFilesPlugin({
       srcToDest: pkgBundleStruct.copySrcToDest,
-      minification: true, // temp
     }),
     (/^@fullcalendar\/p?react$/.test(pkgJson.name) || isPublicMui) &&
       transformClassNamesPlugin(!isDev, isPublicMui), // must go after copying
@@ -276,7 +272,6 @@ async function buildGlobalPlugins(
   pkgBundleStruct: PkgBundleStruct,
   isDev: boolean,
   sourcemaps: boolean,
-  minification: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui } = analyzePkg(pkgDir)
@@ -302,7 +297,6 @@ async function buildGlobalPlugins(
         pkgBundleStruct.globalConfig?.cssExtract || '',
       ),
     sourcemaps && sourcemapsPlugin(), // source map *loading*
-    minification && minifyBundleSeparatelyPlugin(),
   ].filter(Boolean) as Plugin[]
 }
 

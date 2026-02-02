@@ -247,7 +247,6 @@ export function rerootPlugin(options: RerootOptions): Plugin {
 
 export interface CopyFilesOptions {
   srcToDest: CopyOperation[]
-  minification?: boolean
 }
 
 export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
@@ -271,66 +270,11 @@ export function copyFilesPlugin(options: CopyFilesOptions): Plugin {
         })
       }
     },
-    async writeBundle(outputOptions) {
-      if (options.minification) {
-        const { dir } = outputOptions
-        if (!dir) {
-          return this.error('For minification, must specify dir output option')
-        }
-        await Promise.all(
-          options.srcToDest
-            .filter(({ minificationDisabled }) => !minificationDisabled)
-            .map(({ dest }) => minifyFileSeparately(resolvePath(joinPaths(dir, dest))))
-        )
-      }
-    },
   }
 }
 
 // Minify
 // -------------------------------------------------------------------------------------------------
-
-export function minifyBundleSeparatelyPlugin(): Plugin {
-  return {
-    name: 'minify-bundle-separately',
-    async writeBundle(options, bundles) {
-      const { file, dir } = options
-
-      if (file) {
-        await minifyFileSeparately(resolvePath(file))
-      } else if (dir) {
-        await Promise.all(
-          Object.keys(bundles).map((bundlePath) => {
-            return minifyFileSeparately(resolvePath(joinPaths(dir, bundlePath)))
-          }),
-        )
-      } else {
-        this.error('For minification, must specify dir or file output option')
-      }
-    },
-  }
-}
-
-async function minifyFileSeparately(path: string): Promise<void> {
-  if (path.match(/\.[cm]?js$/)) {
-    return minifyJsSeparately(path)
-  } else if (path.endsWith('.css')) {
-    return minifyCssSeparately(path)
-  }
-}
-
-async function minifyJsSeparately(path: string): Promise<void> {
-  const pathMatch = path.match(/^(.*)(\.[cm]?js)$/)
-
-  if (!pathMatch) {
-    throw new Error(`Invalid extension for minification ${path}`)
-  }
-
-  const jsText = await readFile(path, 'utf8')
-  const minJsText = await minifyJs(jsText)
-  const minPath = pathMatch[1] + '.min' + pathMatch[2]
-  await writeFile(minPath, minJsText)
-}
 
 let terserOptions: TerserOptions | undefined
 
@@ -349,12 +293,6 @@ export async function minifyJs(jsText: string): Promise<string> {
     throw new Error('Terser minification failed')
   }
   return result.code
-}
-
-async function minifyCssSeparately(path: string): Promise<void> {
-  const cssText = await minifyCss(await readFile(path, 'utf8'))
-  const minPath = path.replace(/\.css$/, '.min.css')
-  await writeFile(minPath, cssText)
 }
 
 export async function minifyCss(cssText: string): Promise<string> {

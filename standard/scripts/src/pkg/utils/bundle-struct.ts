@@ -24,7 +24,6 @@ export interface CopyOperation {
   src: string // absolute path
   transform?: (srcStr: string) => string | Promise<string>
   dest: string // relative to pkg's dist dir
-  minificationDisabled?: boolean
 }
 
 export interface PkgModuleConfig {
@@ -49,7 +48,6 @@ export interface EntryConfig {
   sideEffects?: boolean
   primary?: boolean // for iifeSplit
   secondaryProp?: string // for iifeSplit
-  minificationDisabled?: boolean // for use with `src` or `import` copying
 }
 
 export interface EntryStruct {
@@ -129,26 +127,20 @@ export async function buildPkgBundleStruct(
           srcPath = joinPaths(pkgDir, 'src', entryConfig.src || entryGlob)
         }
 
-        const { minificationDisabled } = entryConfig
-
         if (isCssAsJs) {
           copySrcToDest.push({
             src: srcPath,
             transform: async (cssText) => {
-              let jsText = await wrapCssAsJs(cssText, minificationDisabled)
-              if (!minificationDisabled) {
-                jsText = await minifyJs(jsText)
-              }
+              let jsText = await wrapCssAsJs(cssText)
+              jsText = await minifyJs(jsText)
               return jsText
             },
             dest: removeDotSlash(entryGlob) + esmExtension,
-            minificationDisabled: true, // never do .style.min.js
           })
         } else {
           copySrcToDest.push({
             src: srcPath,
             dest: removeDotSlash(entryGlob),
-            minificationDisabled,
           })
         }
       } else {
@@ -327,11 +319,9 @@ export function computeGlobalExternalPkgs(pkgBundleStruct: PkgBundleStruct): str
 // CSS-AS-JS
 // -------------------------------------------------------------------------------------------------
 
-async function wrapCssAsJs(cssText: string, minificationDisabled: boolean | undefined): Promise<string> {
+async function wrapCssAsJs(cssText: string): Promise<string> {
   const template = await getCssWrapTemplate()
-  if (!minificationDisabled) {
-    cssText = await minifyCss(cssText)
-  }
+  cssText = await minifyCss(cssText)
   return template({ cssTextAsJson: JSON.stringify(cssText) })
 }
 

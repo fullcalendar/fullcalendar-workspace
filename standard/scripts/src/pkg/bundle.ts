@@ -49,7 +49,6 @@ export async function writeBundles(
         pkgBundleStruct,
         isDev,
         /* sourcemaps = */ isDev || isTests || Boolean(process.env.SOURCEMAPS),
-        /* minification = */ !isDev && !isTests,
       ),
     dtsEnabled && buildDtsOptions(pkgBundleStruct, isDev)
   ].filter(Boolean) as RollupOptions[]
@@ -90,7 +89,6 @@ export async function watchBundles(
           pkgBundleStruct,
           isDev,
           /* sourcemaps = */ isDev || isTests,
-          /* minification = */ !isDev && !isTests,
         ),
       dtsEnabled && buildDtsOptions(pkgBundleStruct, isDev),
     ].filter(Boolean) as RollupWatchOptions[]
