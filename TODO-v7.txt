@@ -23,11 +23,6 @@ build note:
     manually before `pn dev`
 
 
-build
------
-add examples for additional angular package deps
-
-
 better READMEs:
   core
   *-scheduler

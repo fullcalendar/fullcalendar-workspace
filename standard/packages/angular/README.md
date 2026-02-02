@@ -8,7 +8,7 @@ The official [Angular](https://angular.io/) Component for [FullCalendar](https:/
 Install the Angular connector, the core package, and any plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/angular
+npm install @fullcalendar/angular fullcalendar
 ```
 
 ## Usage
@@ -77,7 +77,7 @@ You can even supply nested templates:
 
 ## Supported Angular Versions
 
-`@fullcalendar/angular` version 6 supports Angular 16 - 20
+`@fullcalendar/angular` version 6 supports Angular 16 - 21
 
 ## Links
 
