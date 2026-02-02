@@ -19,8 +19,7 @@
   "peerDependencies": {
     "@angular/common": "16 - 21",
     "@angular/core": "16 - 21",
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",

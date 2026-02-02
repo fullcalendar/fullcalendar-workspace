@@ -2,10 +2,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const REPO_ROOT = path.resolve(import.meta.dirname, '../../..')
-const VANILLA_PKG = path.join(REPO_ROOT, 'standard/packages/vanilla/package.json')
-const VANILLA_DIST = path.join(REPO_ROOT, 'standard/packages/vanilla/dist')
-const ANGULAR_DIST = path.join(REPO_ROOT, 'standard/packages/angular/dist/lib')
+const STANDARD_ROOT = path.resolve(import.meta.dirname, '../../..')
+const VANILLA_PKG = path.join(STANDARD_ROOT, 'packages/vanilla/package.json')
+const VANILLA_DIST = path.join(STANDARD_ROOT, 'packages/vanilla/dist')
+const ANGULAR_DIST = path.join(STANDARD_ROOT, 'packages/angular/dist/lib')
 
 interface BuildExportConfig {
   format: 'module' | 'css' | 'global'
