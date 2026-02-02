@@ -38,10 +38,10 @@ build
 redo git-subrepo
 update package.json name/description/etc
 restore READMEs
-a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
 make core-types a real buildable package
 
 
+name it 'PluginDef' or 'PluginDefInput' (current) ?
 remove (data, *createElement*) param from *Content hooks
 re-add keys to toolbarsections, so doesn't reuse elements
 changelog: validRange function always receives whole-day as parameter
