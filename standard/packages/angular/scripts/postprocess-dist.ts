@@ -5,7 +5,7 @@ import path from 'node:path'
 const REPO_ROOT = path.resolve(import.meta.dirname, '../../..')
 const VANILLA_PKG = path.join(REPO_ROOT, 'standard/packages/vanilla/package.json')
 const VANILLA_DIST = path.join(REPO_ROOT, 'standard/packages/vanilla/dist')
-const ANGULAR_DIST = path.join(REPO_ROOT, 'contrib/angular/dist/lib')
+const ANGULAR_DIST = path.join(REPO_ROOT, 'standard/packages/angular/dist/lib')
 
 interface BuildExportConfig {
   format: 'module' | 'css' | 'global'
