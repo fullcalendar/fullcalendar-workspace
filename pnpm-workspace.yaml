@@ -4,6 +4,4 @@ packages:
   - './premium/packages/*'
   - './theming/*'
   - './scripts'
-  - './contrib/*'
   - './examples/*'
-  - './examples-v7/*'
