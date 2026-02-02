@@ -41,16 +41,8 @@ bug: our TS hack is making its way into dist (for vue3 at least)
   declare module '@fullcalendar/core-types/protected-api' {
     interface BaseOptions {
       resourceDayHeaderAlign?: any;
-angular w/ endpoints somehow
+angular
   restore tests
-  give all examples projects peerDependencies:
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
-angular/esm issues:
-  examples/angular18: baffling angular cli version mismatch error
-  examples/angular17-13: tsconfigs use "moduleResolution": "node",
-    which doesn't support exports map
-    solution: go all-ESM in top-level dist; is backwards-compat
 a lot of what was exported in the @fullcalendar/internal endpoint won't be needed anymore. use ai
 make core-types a real buildable package
 don't need jsx/jsxImportSource in every tsconfig.json (web-component, vanilla?)

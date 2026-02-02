@@ -27,6 +27,9 @@
               }
             ],
             "styles": [
+              "@fullcalendar/angular/skeleton.css",
+              "@fullcalendar/angular/themes/classic/theme.css",
+              "@fullcalendar/angular/themes/classic/palette.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -85,6 +88,9 @@
               }
             ],
             "styles": [
+              "@fullcalendar/angular/skeleton.css",
+              "@fullcalendar/angular/themes/classic/theme.css",
+              "@fullcalendar/angular/themes/classic/palette.css",
               "src/styles.css"
             ],
             "scripts": []

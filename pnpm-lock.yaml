@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@angular/build@18.2.21':
+    hash: 9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293
+    path: scripts/patches/@angular__build@19.0.2.patch
   jasmine-jquery@2.1.1:
     hash: 67897d46cf39c5f967a51ffdefb9218080e44eded878a866b057bd84e8703db7
     path: standard/scripts/patches/jasmine-jquery@2.1.1.patch
@@ -465,7 +468,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.8
-        version: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
+        version: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
 
   examples/angular21-scheduler:
     dependencies:
@@ -526,7 +529,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.8
-        version: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
+        version: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
 
   examples/locales:
     dependencies:
@@ -21824,7 +21827,7 @@ snapshots:
       '@angular-devkit/architect': 0.1802.21(chokidar@3.6.0)
       '@angular-devkit/build-webpack': 0.1802.21(chokidar@3.6.0)(webpack-dev-server@5.2.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0)))(webpack@5.94.0(esbuild@0.23.0))
       '@angular-devkit/core': 18.2.21(chokidar@3.6.0)
-      '@angular/build': 18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(less@4.2.0)(lightningcss@1.31.1)(postcss@8.4.41)(stylus@0.62.0)(terser@5.31.6)(typescript@5.4.5)
+      '@angular/build': 18.2.21(patch_hash=9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293)(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(less@4.2.0)(lightningcss@1.31.1)(postcss@8.4.41)(stylus@0.62.0)(terser@5.31.6)(typescript@5.4.5)
       '@angular/compiler-cli': 18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5)
       '@babel/core': 7.26.10
       '@babel/generator': 7.26.10
@@ -22203,7 +22206,7 @@ snapshots:
       '@angular/core': 19.2.18(rxjs@7.8.2)(zone.js@0.15.1)
       tslib: 2.8.1
 
-  '@angular/build@18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(less@4.2.0)(lightningcss@1.31.1)(postcss@8.4.41)(stylus@0.62.0)(terser@5.31.6)(typescript@5.4.5)':
+  '@angular/build@18.2.21(patch_hash=9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293)(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(less@4.2.0)(lightningcss@1.31.1)(postcss@8.4.41)(stylus@0.62.0)(terser@5.31.6)(typescript@5.4.5)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1802.21(chokidar@3.6.0)
