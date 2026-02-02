@@ -12,6 +12,7 @@
     "@fullcalendar-scripts/workspace": "workspace:*"
   },
   "scripts": {
+    "pnpm:devPreinstall": "./scripts/bin/prepare-dist-dirs.sh",
     "postinstall": "workspace-scripts postinstall",
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",

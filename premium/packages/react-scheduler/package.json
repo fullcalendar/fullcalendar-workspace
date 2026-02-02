@@ -31,6 +31,10 @@
   "type": "module",
   "buildConfig": {
     "exports": {
+      ".": {
+        "format": "module",
+        "sideEffects": true
+      },
       "./all": {
         "format": "module",
         "sideEffects": true

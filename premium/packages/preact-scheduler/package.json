@@ -30,6 +30,10 @@
       "react-dom/client": "preact/compat/client"
     },
     "exports": {
+      ".": {
+        "format": "module",
+        "sideEffects": true
+      },
       "./all": {
         "format": "module",
         "sideEffects": true
