@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla-scheduler/resource-daygrid'
+export { default } from 'fullcalendar-scheduler/resource-daygrid'

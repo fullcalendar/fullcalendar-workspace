@@ -1,5 +1,5 @@
-import { sliceEvents } from '@fullcalendar/vanilla'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import { sliceEvents } from 'fullcalendar'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 

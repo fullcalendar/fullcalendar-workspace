@@ -1,4 +1,4 @@
-import { EventInput } from '@fullcalendar/vanilla'
+import { EventInput } from 'fullcalendar'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 const RED_OR_OKLAB_REGEX = /red|rgb\(255,\s*0,\s*0\)|oklab/

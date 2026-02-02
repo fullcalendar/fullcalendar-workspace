@@ -1,18 +1,18 @@
 {
   "private": true,
-  "name": "@fullcalendar/vanilla-scheduler-w-react",
+  "name": "fullcalendar-scheduler-w-react",
   "version": "7.0.0-beta.6",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "peerDependencies": {
-    "@fullcalendar/vanilla-w-react": "workspace:7.0.0-beta.6"
+    "fullcalendar-w-react": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
     "@fullcalendar/react": "workspace:7.0.0-beta.6",
@@ -28,31 +28,31 @@
   "type": "module",
   "buildConfig": {
     "importRemaps": {
-      "@fullcalendar/react": "@fullcalendar/vanilla-w-react",
-      "@fullcalendar/react/public-api": "@fullcalendar/vanilla-w-react/public-api",
-      "@fullcalendar/react/protected-api": "@fullcalendar/vanilla-w-react/protected-api",
-      "@fullcalendar/react/protected-styles": "@fullcalendar/vanilla-w-react/protected-styles",
-      "@fullcalendar/react/interaction": "@fullcalendar/vanilla-w-react/interaction",
-      "@fullcalendar/react/daygrid": "@fullcalendar/vanilla-w-react/daygrid",
-      "@fullcalendar/react/timegrid": "@fullcalendar/vanilla-w-react/timegrid",
-      "@fullcalendar/react/list": "@fullcalendar/vanilla-w-react/list",
-      "@fullcalendar/react/multimonth": "@fullcalendar/vanilla-w-react/multimonth"
+      "@fullcalendar/react": "fullcalendar-w-react",
+      "@fullcalendar/react/public-api": "fullcalendar-w-react/public-api",
+      "@fullcalendar/react/protected-api": "fullcalendar-w-react/protected-api",
+      "@fullcalendar/react/protected-styles": "fullcalendar-w-react/protected-styles",
+      "@fullcalendar/react/interaction": "fullcalendar-w-react/interaction",
+      "@fullcalendar/react/daygrid": "fullcalendar-w-react/daygrid",
+      "@fullcalendar/react/timegrid": "fullcalendar-w-react/timegrid",
+      "@fullcalendar/react/list": "fullcalendar-w-react/list",
+      "@fullcalendar/react/multimonth": "fullcalendar-w-react/multimonth"
     },
     "globalConfig": {
       "externalPkgs": [
-        "@fullcalendar/vanilla-w-react",
+        "fullcalendar-w-react",
         "react"
       ],
       "externalGlobals": {
-        "@fullcalendar/vanilla-w-react": "FullCalendar",
-        "@fullcalendar/vanilla-w-react/public-api": "FullCalendar",
-        "@fullcalendar/vanilla-w-react/protected-api": "FullCalendar.ProtectedApi",
-        "@fullcalendar/vanilla-w-react/protected-styles": "FullCalendar.ProtectedStyles",
-        "@fullcalendar/vanilla-w-react/interaction": "FullCalendar.Interaction",
-        "@fullcalendar/vanilla-w-react/daygrid": "FullCalendar.DayGrid",
-        "@fullcalendar/vanilla-w-react/timegrid": "FullCalendar.TimeGrid",
-        "@fullcalendar/vanilla-w-react/list": "FullCalendar.List",
-        "@fullcalendar/vanilla-w-react/multimonth": "FullCalendar.MultiMonth",
+        "fullcalendar-w-react": "FullCalendar",
+        "fullcalendar-w-react/public-api": "FullCalendar",
+        "fullcalendar-w-react/protected-api": "FullCalendar.ProtectedApi",
+        "fullcalendar-w-react/protected-styles": "FullCalendar.ProtectedStyles",
+        "fullcalendar-w-react/interaction": "FullCalendar.Interaction",
+        "fullcalendar-w-react/daygrid": "FullCalendar.DayGrid",
+        "fullcalendar-w-react/timegrid": "FullCalendar.TimeGrid",
+        "fullcalendar-w-react/list": "FullCalendar.List",
+        "fullcalendar-w-react/multimonth": "FullCalendar.MultiMonth",
         "react": "FullCalendar.Preact",
         "react/jsx-runtime": "FullCalendar.PreactJSXRuntime"
       }

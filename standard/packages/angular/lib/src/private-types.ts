@@ -1,5 +1,5 @@
 import { TemplateRef } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/vanilla';
+import { CalendarOptions } from 'fullcalendar';
 
 export type CalendarOption<OptionName> = OptionName extends keyof CalendarOptions
   ? CalendarOptions[OptionName]

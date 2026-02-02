@@ -1,4 +1,4 @@
-import { identity, Identity, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { identity, Identity, RawOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/preact/public-api'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,

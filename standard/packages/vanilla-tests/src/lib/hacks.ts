@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/vanilla/protected-api'
+import { config } from 'fullcalendar/protected-api'
 
 beforeEach(() => {
   // On real devices, when a click-like touch interaction happens, there is a preiod of time where mouse events

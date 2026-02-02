@@ -4,11 +4,11 @@ import dayGridPlugin from '@fullcalendar/web-component/daygrid'
 import timeGridPlugin from '@fullcalendar/web-component/timegrid'
 import listPlugin from '@fullcalendar/web-component/list'
 import multiMonthPlugin from '@fullcalendar/web-component/multimonth'
-import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-daygrid'
-import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
-import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'
-import scrollGridPlugin from '@fullcalendar/vanilla-scheduler/scrollgrid'
-import timelinePlugin from '@fullcalendar/vanilla-scheduler/timeline'
+import resourceDayGridPlugin from 'fullcalendar-scheduler/resource-daygrid'
+import resourceTimeGridPlugin from 'fullcalendar-scheduler/resource-timegrid'
+import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
+import scrollGridPlugin from 'fullcalendar-scheduler/scrollgrid'
+import timelinePlugin from 'fullcalendar-scheduler/timeline'
 
 const basePlugins: PluginDefInput[] = [
   interactionPlugin,

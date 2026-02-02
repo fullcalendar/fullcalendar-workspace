@@ -1,4 +1,4 @@
-import { BaseOptionsRefined } from '@fullcalendar/core-types/protected-api'
+import { BaseOptionsRefined } from '@fullcalendar/core/protected-api'
 import { Duration } from '@fullcalendar/preact/public-api'
 import {
   config, computeVisibleDayRange, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,

@@ -1,7 +1,7 @@
 import {
   RawOptionsFromRefiners,
   RefinedOptionsFromRefiners,
-} from '@fullcalendar/core-types/protected-api'
+} from '@fullcalendar/core/protected-api'
 import { ClassNameGenerator } from '@fullcalendar/preact/public-api'
 import {
   Identity,

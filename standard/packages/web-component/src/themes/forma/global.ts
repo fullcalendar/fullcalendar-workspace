@@ -1,5 +1,5 @@
-import themePlugin from '@fullcalendar/vanilla/themes/forma'
-import { globalPlugins } from '@fullcalendar/vanilla/public-api'
+import themePlugin from 'fullcalendar/themes/forma'
+import { globalPlugins } from 'fullcalendar/public-api'
 
 globalPlugins.push(themePlugin)
 

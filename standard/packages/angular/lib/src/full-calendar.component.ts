@@ -11,8 +11,8 @@ import {
   ViewEncapsulation,
   ChangeDetectorRef,
 } from '@angular/core';
-import { Calendar, CalendarOptions } from '@fullcalendar/vanilla';
-import { CustomRendering, CustomRenderingStore } from '@fullcalendar/vanilla/protected-api';
+import { Calendar, CalendarOptions } from 'fullcalendar';
+import { CustomRendering, CustomRenderingStore } from 'fullcalendar/protected-api';
 import { OPTION_INPUT_NAMES, OPTION_IS_DEEP } from './options';
 import { CalendarOption, CalendarTemplateRef } from './private-types';
 import { deepCopy, mapHash } from './utils/obj';

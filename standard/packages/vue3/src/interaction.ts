@@ -1,3 +1,3 @@
 
-export { default } from '@fullcalendar/vanilla/interaction'
-export * from '@fullcalendar/vanilla/interaction' // for Draggable, ThirdPartyDraggable
+export { default } from 'fullcalendar/interaction'
+export * from 'fullcalendar/interaction' // for Draggable, ThirdPartyDraggable

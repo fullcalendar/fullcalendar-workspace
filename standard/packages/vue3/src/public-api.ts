@@ -1,2 +1,2 @@
 
-export * from '@fullcalendar/vanilla/public-api'
+export * from 'fullcalendar/public-api'

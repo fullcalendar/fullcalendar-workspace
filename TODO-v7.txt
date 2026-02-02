@@ -35,13 +35,10 @@ build note:
 
 build
 -----
+triage above angular release hacks
 redo git-subrepo
 update package.json name/description/etc
 restore READMEs
-rename packages
-  @fullcalendar/vanilla -> fullcalendar
-  @fullcalendar/vanilla-scheduler -> fullcalendar-scheduler
-  @fullcalendar/core-types -> @fullcalendar/core (and adjust README/package.json)
 
 
 name it 'PluginDef' or 'PluginDefInput' (current) ?

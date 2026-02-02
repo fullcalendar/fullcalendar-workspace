@@ -1,12 +1,12 @@
 import * as Preact from 'preact'
 import * as PreactJSXRuntime from 'preact/jsx-runtime'
-import * as ProtectedApi from '@fullcalendar/vanilla/protected-api'
-import * as ProtectedStyles from '@fullcalendar/vanilla/protected-styles'
-import * as Interaction from '@fullcalendar/vanilla/interaction'
-import * as DayGrid from '@fullcalendar/vanilla/daygrid'
-import * as TimeGrid from '@fullcalendar/vanilla/timegrid'
-import * as List from '@fullcalendar/vanilla/list'
-import * as MultiMonth from '@fullcalendar/vanilla/multimonth'
+import * as ProtectedApi from 'fullcalendar/protected-api'
+import * as ProtectedStyles from 'fullcalendar/protected-styles'
+import * as Interaction from 'fullcalendar/interaction'
+import * as DayGrid from 'fullcalendar/daygrid'
+import * as TimeGrid from 'fullcalendar/timegrid'
+import * as List from 'fullcalendar/list'
+import * as MultiMonth from 'fullcalendar/multimonth'
 import { FullCalendarElement } from './all'
 import './global-types'
 
@@ -15,7 +15,7 @@ import './global-types'
 globalThis.FullCalendarElement = FullCalendarElement
 customElements.define('full-calendar', FullCalendarElement)
 
-export * from '@fullcalendar/vanilla/public-api'
+export * from 'fullcalendar/public-api'
 export {
   Preact,
   PreactJSXRuntime,

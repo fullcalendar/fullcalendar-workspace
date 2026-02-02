@@ -1,4 +1,4 @@
-import { Calendar, CalendarOptions } from '@fullcalendar/vanilla'
+import { Calendar, CalendarOptions } from 'fullcalendar'
 import { parseLocalDate, parseUtcDate } from './date-parsing.js'
 
 // Other Important Global Stuff

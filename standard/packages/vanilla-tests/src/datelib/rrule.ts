@@ -1,7 +1,7 @@
-// import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+// import { strictModeFactor } from 'fullcalendar/protected-api'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import dayGridPlugin from 'fullcalendar/daygrid'
 import rrulePlugin from '@fullcalendar/rrule'
 import { parseUtcDate, parseLocalDate } from '../lib/date-parsing.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'

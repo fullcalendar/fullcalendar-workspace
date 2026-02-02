@@ -1,8 +1,8 @@
-import { Calendar } from '@fullcalendar/vanilla'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import { Calendar } from 'fullcalendar'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
-import interactionPlugin from '@fullcalendar/vanilla/interaction'
+import dayGridPlugin from 'fullcalendar/daygrid'
+import interactionPlugin from 'fullcalendar/interaction'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

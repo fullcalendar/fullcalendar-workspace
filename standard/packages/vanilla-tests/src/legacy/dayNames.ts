@@ -1,4 +1,4 @@
-import { addDays } from '@fullcalendar/vanilla/protected-api'
+import { addDays } from 'fullcalendar/protected-api'
 import { removeLtrCharCodes, moveDayNumberLast, removeCommas } from '../lib/string.js'
 import { parseUtcDate } from '../lib/date-parsing.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'

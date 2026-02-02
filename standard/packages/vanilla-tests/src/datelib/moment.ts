@@ -1,9 +1,9 @@
-import { Calendar } from '@fullcalendar/vanilla'
+import { Calendar } from 'fullcalendar'
 import momentPlugin from '@fullcalendar/moment'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
-import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
+import dayGridPlugin from 'fullcalendar/daygrid'
+import timeGridPlugin from 'fullcalendar/timegrid'
 import 'moment/locale/es' // only test spanish
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'

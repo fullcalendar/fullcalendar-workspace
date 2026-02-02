@@ -9,7 +9,7 @@ export default {
     }
   },
   importRemaps: process.env.FORCE_REACT ? {
-    '@fullcalendar/vanilla': '@fullcalendar/vanilla-w-react',
-    '@fullcalendar/vanilla/*': '@fullcalendar/vanilla-w-react/*',
+    'fullcalendar': 'fullcalendar-w-react',
+    'fullcalendar/*': 'fullcalendar-w-react/*',
   } : undefined,
 }

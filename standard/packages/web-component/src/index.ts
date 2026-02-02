@@ -1,5 +1,5 @@
 
-export * from '@fullcalendar/vanilla/public-api'
+export * from 'fullcalendar/public-api'
 
 import { FullCalendarElement } from './FullCalendarElement'
 export default FullCalendarElement

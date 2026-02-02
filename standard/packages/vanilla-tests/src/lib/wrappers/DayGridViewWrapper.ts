@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/vanilla'
+import { Calendar } from 'fullcalendar'
 import { ViewWrapper } from './ViewWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'
 import { DayHeaderWrapper } from './DayHeaderWrapper.js'

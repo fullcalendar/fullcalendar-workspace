@@ -1,10 +1,10 @@
 {
-  "name": "@fullcalendar/vanilla",
+  "name": "fullcalendar",
   "version": "7.0.0-beta.6",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
   },

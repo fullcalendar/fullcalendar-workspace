@@ -1,4 +1,4 @@
-import { PluginDefInput, joinClassNames } from '@fullcalendar/vanilla'
+import { PluginDefInput, joinClassNames } from 'fullcalendar'
 import { getDayClass } from '@fullcalendar-tests/standard/lib/theme-for-tests'
 
 export default {

@@ -1,3 +1,3 @@
 
-export { default } from '@fullcalendar/vanilla/themes/breezy'
+export { default } from 'fullcalendar/themes/breezy'
 

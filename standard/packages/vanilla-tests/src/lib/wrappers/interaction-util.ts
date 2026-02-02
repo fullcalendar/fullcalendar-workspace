@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/vanilla'
+import { Calendar } from 'fullcalendar'
 
 export function waitEventDrag(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {

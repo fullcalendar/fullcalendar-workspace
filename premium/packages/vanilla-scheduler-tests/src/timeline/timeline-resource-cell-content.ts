@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline resource labels', () => {

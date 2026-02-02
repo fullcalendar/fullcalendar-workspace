@@ -1,4 +1,4 @@
-import enGbLocale from '@fullcalendar/vanilla/locales/en-gb'
+import enGbLocale from 'fullcalendar/locales/en-gb'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 

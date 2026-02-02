@@ -1,6 +1,6 @@
-import esLocale from '@fullcalendar/vanilla/locales/es'
-import frLocale from '@fullcalendar/vanilla/locales/fr'
-import arLocale from '@fullcalendar/vanilla/locales/ar'
+import esLocale from 'fullcalendar/locales/es'
+import frLocale from 'fullcalendar/locales/fr'
+import arLocale from 'fullcalendar/locales/ar'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

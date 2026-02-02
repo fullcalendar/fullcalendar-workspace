@@ -1,4 +1,4 @@
-import { computeInnerRect } from '@fullcalendar/vanilla/protected-api'
+import { computeInnerRect } from 'fullcalendar/protected-api'
 import { getStockScrollbarWidths } from '../lib/dom-misc.js'
 
 describe('computeInnerRect', () => {

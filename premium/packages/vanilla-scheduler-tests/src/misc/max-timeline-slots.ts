@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/vanilla/protected-api'
+import { config } from 'fullcalendar/protected-api'
 
 describe('MAX_TIMELINE_SLOTS hook', () => {
   it('is present', () => {

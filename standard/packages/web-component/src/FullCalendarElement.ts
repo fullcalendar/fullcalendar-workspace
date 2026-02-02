@@ -1,5 +1,5 @@
-import { Calendar } from '@fullcalendar/vanilla/public-components'
-import { CalendarApi, CalendarOptions, PluginDefInput } from '@fullcalendar/vanilla/public-api'
+import { Calendar } from 'fullcalendar/public-components'
+import { CalendarApi, CalendarOptions, PluginDefInput } from 'fullcalendar/public-api'
 
 export class FullCalendarElement extends HTMLElement {
   _calendar: Calendar | null = null

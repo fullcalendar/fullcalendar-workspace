@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla-scheduler/scrollgrid'
+export { default } from 'fullcalendar-scheduler/scrollgrid'

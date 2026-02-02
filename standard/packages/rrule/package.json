@@ -9,7 +9,7 @@
   "homepage": "https://fullcalendar.io/docs/rrule-plugin",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6"
+    "@fullcalendar/core": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
     "rrule": "^2.6.0"

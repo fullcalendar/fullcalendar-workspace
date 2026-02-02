@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/vanilla'
+import { Calendar } from 'fullcalendar'
 
 export class ViewWrapper {
   el: HTMLElement // TODO: make protected?

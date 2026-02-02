@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla-scheduler/timeline'
+export { default } from 'fullcalendar-scheduler/timeline'

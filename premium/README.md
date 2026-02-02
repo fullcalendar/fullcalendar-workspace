@@ -18,7 +18,7 @@ The [FullCalendar Premium Bundle](bundle) is easier to install than individual p
 Install the FullCalendar vanilla-JS and scheduler packages:
 
 ```sh
-npm install @fullcalendar/vanilla @fullcalendar/vanilla-scheduler
+npm install fullcalendar fullcalendar-scheduler
 ```
 
 ## Usage
@@ -26,14 +26,14 @@ npm install @fullcalendar/vanilla @fullcalendar/vanilla-scheduler
 Instantiate a Calendar with plugins and options:
 
 ```js
-import { Calendar } from '@fullcalendar/vanilla'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic'
-import interactionPlugin from '@fullcalendar/vanilla/interaction'
-import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'
+import { Calendar } from 'fullcalendar'
+import classicThemePlugin from 'fullcalendar/themes/classic'
+import interactionPlugin from 'fullcalendar/interaction'
+import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 
-import '@fullcalendar/vanilla/skeleton.css'
-import '@fullcalendar/vanilla/themes/classic/theme.css'
-import '@fullcalendar/vanilla/themes/classic/palette.css'
+import 'fullcalendar/skeleton.css'
+import 'fullcalendar/themes/classic/theme.css'
+import 'fullcalendar/themes/classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

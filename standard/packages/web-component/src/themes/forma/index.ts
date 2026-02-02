@@ -1,3 +1,3 @@
 
-export { default } from '@fullcalendar/vanilla/themes/forma'
+export { default } from 'fullcalendar/themes/forma'
 

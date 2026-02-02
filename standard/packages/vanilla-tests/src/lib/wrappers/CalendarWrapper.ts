@@ -1,5 +1,5 @@
-import { Calendar } from '@fullcalendar/vanilla'
-import internalClassNames from '@fullcalendar/vanilla/protected-styles'
+import { Calendar } from 'fullcalendar'
+import internalClassNames from 'fullcalendar/protected-styles'
 import { findElements } from '../../lib/dom-misc.js'
 import { ToolbarWrapper } from './ToolbarWrapper.js'
 

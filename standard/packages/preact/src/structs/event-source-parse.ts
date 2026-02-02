@@ -1,4 +1,4 @@
-import { EventSourceOptions, EventSourceOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { EventSourceOptions, EventSourceOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { EventInput, EventInputTransformer } from './event-parse'
 import { EventSourceFunc } from '../event-sources/func-event-source'
 import { EventSource, EventSourceSuccessResponseHandler, EventSourceErrorResponseHandler } from './event-source'
@@ -24,7 +24,7 @@ const EVENT_SOURCE_REFINERS = { // does NOT include EVENT_UI_REFINERS
 type BuiltInEventSourceRefiners = typeof EVENT_SOURCE_REFINERS &
   typeof JSON_FEED_EVENT_SOURCE_REFINERS
 
-declare module '@fullcalendar/core-types/protected-api' {
+declare module '@fullcalendar/core/protected-api' {
   interface EventSourceOptions extends RawOptionsFromRefiners<BuiltInEventSourceRefiners> {}
   interface EventSourceOptionsRefined extends RefinedOptionsFromRefiners<BuiltInEventSourceRefiners> {}
 }

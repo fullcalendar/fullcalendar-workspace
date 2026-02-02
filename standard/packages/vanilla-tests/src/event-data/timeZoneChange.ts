@@ -1,7 +1,7 @@
-// import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
-// import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
+// import { strictModeFactor } from 'fullcalendar/protected-api'
+// import timeGridPlugin from 'fullcalendar/timegrid'
 // import luxonPlugin from '@fullcalendar/luxon3'
-// import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+// import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 // import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 
 describe('timeZone change', () => {

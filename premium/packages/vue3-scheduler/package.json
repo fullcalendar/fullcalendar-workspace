@@ -4,7 +4,7 @@
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "@fullcalendar/vue3": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6",
+    "fullcalendar": "workspace:7.0.0-beta.6",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6",
     "vue": "^3.2.41"
   },
   "scripts": {
@@ -27,15 +27,15 @@
   "type": "module",
   "buildConfig": {
     "importRemaps": {
-      "@fullcalendar/vanilla": "@fullcalendar/vue3",
-      "@fullcalendar/vanilla/public-api": "@fullcalendar/vue3",
-      "@fullcalendar/vanilla/protected-api": "@fullcalendar/vue3/protected-api",
-      "@fullcalendar/vanilla/protected-styles": "@fullcalendar/vue3/protected-styles",
-      "@fullcalendar/vanilla/interaction": "@fullcalendar/vue3/interaction",
-      "@fullcalendar/vanilla/daygrid": "@fullcalendar/vue3/daygrid",
-      "@fullcalendar/vanilla/timegrid": "@fullcalendar/vue3/timegrid",
-      "@fullcalendar/vanilla/list": "@fullcalendar/vue3/list",
-      "@fullcalendar/vanilla/multimonth": "@fullcalendar/vue3/multimonth"
+      "fullcalendar": "@fullcalendar/vue3",
+      "fullcalendar/public-api": "@fullcalendar/vue3",
+      "fullcalendar/protected-api": "@fullcalendar/vue3/protected-api",
+      "fullcalendar/protected-styles": "@fullcalendar/vue3/protected-styles",
+      "fullcalendar/interaction": "@fullcalendar/vue3/interaction",
+      "fullcalendar/daygrid": "@fullcalendar/vue3/daygrid",
+      "fullcalendar/timegrid": "@fullcalendar/vue3/timegrid",
+      "fullcalendar/list": "@fullcalendar/vue3/list",
+      "fullcalendar/multimonth": "@fullcalendar/vue3/multimonth"
     },
     "exports": {
       ".": {

@@ -1,4 +1,4 @@
-import { BaseOptions, JsonRequestError, requestJson } from '@fullcalendar/core-types/protected-api'
+import { BaseOptions, JsonRequestError, requestJson } from '@fullcalendar/core/protected-api'
 import { addDays, DateEnv, DateRange } from '@full-ui/headless-calendar'
 
 // TODO: expose somehow

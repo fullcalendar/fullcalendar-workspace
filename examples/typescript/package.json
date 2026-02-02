@@ -10,7 +10,7 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6"
+    "fullcalendar": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",

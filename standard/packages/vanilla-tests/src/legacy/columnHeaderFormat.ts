@@ -1,6 +1,6 @@
-import frLocale from '@fullcalendar/vanilla/locales/fr'
-import enGbLocale from '@fullcalendar/vanilla/locales/en-gb'
-import koLocale from '@fullcalendar/vanilla/locales/ko'
+import frLocale from 'fullcalendar/locales/fr'
+import enGbLocale from 'fullcalendar/locales/en-gb'
+import koLocale from 'fullcalendar/locales/ko'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

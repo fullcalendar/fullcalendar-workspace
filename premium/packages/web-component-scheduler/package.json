@@ -4,7 +4,7 @@
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@fullcalendar/web-component": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+    "fullcalendar": "workspace:7.0.0-beta.6",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -25,15 +25,15 @@
   "type": "module",
   "buildConfig": {
     "importRemaps": {
-      "@fullcalendar/vanilla": "@fullcalendar/web-component",
-      "@fullcalendar/vanilla/public-api": "@fullcalendar/web-component",
-      "@fullcalendar/vanilla/protected-api": "@fullcalendar/web-component/protected-api",
-      "@fullcalendar/vanilla/protected-styles": "@fullcalendar/web-component/protected-styles",
-      "@fullcalendar/vanilla/interaction": "@fullcalendar/web-component/interaction",
-      "@fullcalendar/vanilla/daygrid": "@fullcalendar/web-component/daygrid",
-      "@fullcalendar/vanilla/timegrid": "@fullcalendar/web-component/timegrid",
-      "@fullcalendar/vanilla/list": "@fullcalendar/web-component/list",
-      "@fullcalendar/vanilla/multimonth": "@fullcalendar/web-component/multimonth"
+      "fullcalendar": "@fullcalendar/web-component",
+      "fullcalendar/public-api": "@fullcalendar/web-component",
+      "fullcalendar/protected-api": "@fullcalendar/web-component/protected-api",
+      "fullcalendar/protected-styles": "@fullcalendar/web-component/protected-styles",
+      "fullcalendar/interaction": "@fullcalendar/web-component/interaction",
+      "fullcalendar/daygrid": "@fullcalendar/web-component/daygrid",
+      "fullcalendar/timegrid": "@fullcalendar/web-component/timegrid",
+      "fullcalendar/list": "@fullcalendar/web-component/list",
+      "fullcalendar/multimonth": "@fullcalendar/web-component/multimonth"
     },
     "globalConfig": {
       "externalPkgs": [

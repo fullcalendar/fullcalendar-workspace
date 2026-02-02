@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
-    "@fullcalendar/vanilla": "workspace:*",
-    "@fullcalendar/vanilla-w-react": "workspace:*",
+    "fullcalendar": "workspace:*",
+    "fullcalendar-w-react": "workspace:*",
     "@fullcalendar/google-calendar": "workspace:*",
     "@fullcalendar/icalendar": "workspace:*",
     "@fullcalendar/luxon3": "workspace:*",
@@ -42,15 +42,15 @@
       },
       "global:locale": {
         "files": [
-          "./node_modules/@fullcalendar/vanilla/all.global.js",
-          "./node_modules/@fullcalendar/vanilla/locales/ar.global.js",
+          "./node_modules/fullcalendar/all.global.js",
+          "./node_modules/fullcalendar/locales/ar.global.js",
           "./src/global-locale.js"
         ]
       },
       "global:locales-all": {
         "files": [
-          "./node_modules/@fullcalendar/vanilla/all.global.js",
-          "./node_modules/@fullcalendar/vanilla/locales-all.global.js",
+          "./node_modules/fullcalendar/all.global.js",
+          "./node_modules/fullcalendar/locales-all.global.js",
           "./src/global-locales-all.js"
         ]
       }

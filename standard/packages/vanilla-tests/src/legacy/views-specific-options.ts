@@ -1,6 +1,6 @@
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
+import dayGridPlugin from 'fullcalendar/daygrid'
 
 describe('view-specific options', () => {
   pushOptions({

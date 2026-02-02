@@ -28,12 +28,12 @@ fs.mkdirSync(path.join(ANGULAR_DIST, 'locales'), { recursive: true })
 for (const code of localeCodes) {
   fs.writeFileSync(
     path.join(ANGULAR_DIST, `locales/${code}.mjs`),
-    `export { default } from "@fullcalendar/vanilla/locales/${code}"\n`
+    `export { default } from "fullcalendar/locales/${code}"\n`
   )
 }
 fs.writeFileSync(
   path.join(ANGULAR_DIST, 'locales/locale.d.ts'),
-  `export { default } from "@fullcalendar/vanilla/locales/locale"\n`
+  `export { default } from "fullcalendar/locales/locale"\n`
 )
 
 console.log(`Generated ${localeCodes.length} locale JS files + locale.d.ts`)
@@ -48,11 +48,11 @@ for (const exportKey of themeModules) {
   fs.mkdirSync(path.dirname(path.join(ANGULAR_DIST, themePath)), { recursive: true })
   fs.writeFileSync(
     path.join(ANGULAR_DIST, `${themePath}.mjs`),
-    `export { default } from "@fullcalendar/vanilla/${themePath}"\n`
+    `export { default } from "fullcalendar/${themePath}"\n`
   )
   fs.writeFileSync(
     path.join(ANGULAR_DIST, `${themePath}.d.ts`),
-    `export { default } from "@fullcalendar/vanilla/${themePath}"\n`
+    `export { default } from "fullcalendar/${themePath}"\n`
   )
 }
 
@@ -80,8 +80,8 @@ for (const exportKey of pluginUtilityModules) {
 
   // Special case: protected-api has no default export
   const content = modulePath === 'protected-api'
-    ? `export * from "@fullcalendar/vanilla/${modulePath}"\n`
-    : `export * from "@fullcalendar/vanilla/${modulePath}"\nexport { default } from "@fullcalendar/vanilla/${modulePath}"\n`
+    ? `export * from "fullcalendar/${modulePath}"\n`
+    : `export * from "fullcalendar/${modulePath}"\nexport { default } from "fullcalendar/${modulePath}"\n`
 
   fs.writeFileSync(path.join(ANGULAR_DIST, `${modulePath}.mjs`), content)
   fs.writeFileSync(path.join(ANGULAR_DIST, `${modulePath}.d.ts`), content)

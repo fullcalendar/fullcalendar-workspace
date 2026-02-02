@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { CalendarController } from '@fullcalendar/vanilla'
+import { CalendarController } from 'fullcalendar'
 
 export function useCalendarController(): CalendarController {
   const revisionRef = ref(0)

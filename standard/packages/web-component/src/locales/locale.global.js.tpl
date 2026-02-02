@@ -1,4 +1,4 @@
-import { globalLocales } from '@fullcalendar/vanilla';
-import locale from '@fullcalendar/vanilla/locales/{{localeCode}}';
+import { globalLocales } from 'fullcalendar';
+import locale from 'fullcalendar/locales/{{localeCode}}';
 
 globalLocales.push(locale);

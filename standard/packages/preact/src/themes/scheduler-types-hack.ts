@@ -10,7 +10,7 @@
 // import {} from '@fullcalendar/multimonth'
 
 // HACK until we can import @fullcalendar/preact-scheduler
-declare module '@fullcalendar/core-types/protected-api' {
+declare module '@fullcalendar/core/protected-api' {
   interface BaseOptions {
     resourceDayHeaderAlign?: any
     resourceDayHeaderClass?: any

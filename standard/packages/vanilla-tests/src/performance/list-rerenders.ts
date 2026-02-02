@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 
 it('list view rerenders well', (done) => {
   let dayRenderCnt = 0

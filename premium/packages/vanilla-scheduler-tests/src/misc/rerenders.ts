@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 
 describe('rerender performance for resource timeline', () => {
   pushOptions({

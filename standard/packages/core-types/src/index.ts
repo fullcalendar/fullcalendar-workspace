@@ -2,4 +2,4 @@
 // All functionality is in protected-api
 export {}
 
-console.log('@fullcalendar/core-types should not be imported directly')
+console.log('@fullcalendar/core should not be imported directly')

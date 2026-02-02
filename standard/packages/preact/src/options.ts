@@ -1,4 +1,4 @@
-import { BaseOptions, BaseOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { BaseOptions, BaseOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { DateProfileGeneratorClass } from './DateProfileGenerator'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarController } from './CalendarController'
@@ -482,7 +482,7 @@ export const BASE_OPTION_REFINERS = {
 
 type BaseOptionRefiners = typeof BASE_OPTION_REFINERS
 
-declare module '@fullcalendar/core-types/protected-api' {
+declare module '@fullcalendar/core/protected-api' {
   interface BaseOptions extends RawOptionsFromRefiners<BaseOptionRefiners> {}
   interface BaseOptionsRefined extends RefinedOptionsFromRefiners<BaseOptionRefiners> {}
 }

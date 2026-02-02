@@ -1,2 +1,2 @@
 
-export * from '@fullcalendar/vanilla-scheduler'
+export * from 'fullcalendar-scheduler'

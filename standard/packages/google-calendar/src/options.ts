@@ -1,4 +1,4 @@
-import { identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from "@fullcalendar/core-types/protected-api"
+import { identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from "@fullcalendar/core/protected-api"
 
 export const OPTION_REFINERS = {
   googleCalendarApiKey: String,

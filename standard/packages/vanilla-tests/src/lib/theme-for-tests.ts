@@ -1,4 +1,4 @@
-import { CalendarOptions, joinClassNames, PluginDefInput } from '@fullcalendar/vanilla'
+import { CalendarOptions, joinClassNames, PluginDefInput } from 'fullcalendar'
 
 /*
 NOTE: other classnames in theme-for-tests-premium.ts

@@ -1,4 +1,4 @@
-import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constraint'
 import { joinArrayishClassNames } from '../util/html'
 import { CalendarContext } from '../CalendarContext'

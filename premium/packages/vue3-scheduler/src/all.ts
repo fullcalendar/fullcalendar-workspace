@@ -5,11 +5,11 @@ import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 import timeGridPlugin from '@fullcalendar/vue3/timegrid'
 import listPlugin from '@fullcalendar/vue3/list'
 import multiMonthPlugin from '@fullcalendar/vue3/multimonth'
-import resourceDayGridPlugin from '@fullcalendar/vanilla-scheduler/resource-daygrid'
-import resourceTimeGridPlugin from '@fullcalendar/vanilla-scheduler/resource-timegrid'
-import resourceTimelinePlugin from '@fullcalendar/vanilla-scheduler/resource-timeline'
-import scrollGridPlugin from '@fullcalendar/vanilla-scheduler/scrollgrid'
-import timelinePlugin from '@fullcalendar/vanilla-scheduler/timeline'
+import resourceDayGridPlugin from 'fullcalendar-scheduler/resource-daygrid'
+import resourceTimeGridPlugin from 'fullcalendar-scheduler/resource-timegrid'
+import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
+import scrollGridPlugin from 'fullcalendar-scheduler/scrollgrid'
+import timelinePlugin from 'fullcalendar-scheduler/timeline'
 
 const basePlugins: PluginDefInput[] = [
   interactionPlugin,

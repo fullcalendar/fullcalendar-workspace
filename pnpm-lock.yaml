@@ -54,8 +54,8 @@ importers:
         version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -133,8 +133,8 @@ importers:
         version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -212,8 +212,8 @@ importers:
         version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -291,8 +291,8 @@ importers:
         version: 19.2.18(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.18(@angular/animations@19.2.18(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -364,8 +364,8 @@ importers:
         version: 20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -437,8 +437,8 @@ importers:
         version: 21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
-      '@fullcalendar/vanilla':
+        version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
       rxjs:
@@ -492,14 +492,14 @@ importers:
         version: 21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
-        version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)
+        version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)
       '@fullcalendar/angular-scheduler':
         specifier: workspace:7.0.0-beta.6
         version: link:../../premium/packages/angular-scheduler/dist
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
+      fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.6
         version: link:../../premium/packages/vanilla-scheduler/dist
       rxjs:
@@ -533,7 +533,7 @@ importers:
 
   examples/locales:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
     devDependencies:
@@ -702,7 +702,7 @@ importers:
 
   examples/parcel:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
     devDependencies:
@@ -1036,7 +1036,7 @@ importers:
 
   examples/rollup:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
     devDependencies:
@@ -1052,10 +1052,10 @@ importers:
 
   examples/rollup-scheduler:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
+      fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.6
         version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
@@ -1262,7 +1262,7 @@ importers:
 
   examples/typescript:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
     devDependencies:
@@ -1290,10 +1290,10 @@ importers:
 
   examples/typescript-scheduler:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
+      fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.6
         version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
@@ -1410,7 +1410,7 @@ importers:
 
   examples/webpack:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
     devDependencies:
@@ -1432,10 +1432,10 @@ importers:
 
   examples/webpack-scheduler:
     dependencies:
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
+      fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.6
         version: link:../../premium/packages/vanilla-scheduler/dist
     devDependencies:
@@ -1460,10 +1460,10 @@ importers:
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/angular/dist/lib
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
+      fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.6
         version: link:../vanilla-scheduler/dist
     publishDirectory: ./dist
@@ -1501,7 +1501,7 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
       preact:
@@ -1524,7 +1524,7 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
     devDependencies:
@@ -1556,10 +1556,10 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla/dist
       preact:
@@ -1586,18 +1586,6 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
-      '@fullcalendar/vanilla':
-        specifier: workspace:*
-        version: link:../../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
-        specifier: workspace:*
-        version: link:../vanilla-scheduler/dist
-      '@fullcalendar/vanilla-scheduler-w-react':
-        specifier: workspace:*
-        version: link:../vanilla-scheduler-w-react/dist
-      '@fullcalendar/vanilla-w-react':
-        specifier: workspace:*
-        version: link:../../../standard/packages/vanilla-w-react/dist
       '@types/jasmine':
         specifier: ^3.3.12
         version: 3.10.19
@@ -1610,6 +1598,18 @@ importers:
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
+      fullcalendar:
+        specifier: workspace:*
+        version: link:../../../standard/packages/vanilla/dist
+      fullcalendar-scheduler:
+        specifier: workspace:*
+        version: link:../vanilla-scheduler/dist
+      fullcalendar-scheduler-w-react:
+        specifier: workspace:*
+        version: link:../vanilla-scheduler-w-react/dist
+      fullcalendar-w-react:
+        specifier: workspace:*
+        version: link:../../../standard/packages/vanilla-w-react/dist
 
   premium/packages/vanilla-scheduler-w-react:
     dependencies:
@@ -1619,10 +1619,10 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
-      '@fullcalendar/vanilla-w-react':
+      fullcalendar-w-react:
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vanilla-w-react/dist
       react:
@@ -1654,22 +1654,22 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
     devDependencies:
-      '@fullcalendar/vanilla':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../vanilla-scheduler/dist
       '@fullcalendar/vue3':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/vue3/dist
+      fullcalendar:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/vanilla/dist
+      fullcalendar-scheduler:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../vanilla-scheduler/dist
       vue:
         specifier: ^3.2.41
         version: 3.5.27(typescript@5.9.3)
@@ -1683,22 +1683,22 @@ importers:
       '@full-ui/headless-grid':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-grid/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/core-types/dist
       preact:
         specifier: ~10.23.1
         version: 10.23.2
     devDependencies:
-      '@fullcalendar/vanilla':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../standard/packages/vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../vanilla-scheduler/dist
       '@fullcalendar/web-component':
         specifier: workspace:7.0.0-beta.6
         version: link:../../../standard/packages/web-component/dist
+      fullcalendar:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../standard/packages/vanilla/dist
+      fullcalendar-scheduler:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../vanilla-scheduler/dist
     publishDirectory: ./dist
 
   scripts:
@@ -1767,15 +1767,15 @@ importers:
       '@angular/router':
         specifier: ^16.2.0
         version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(rxjs@7.8.2)
-      '@fullcalendar/vanilla':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../vanilla/dist
-      '@fullcalendar/vanilla-scheduler':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../../../premium/packages/vanilla-scheduler/dist
       '@types/jasmine':
         specifier: ~4.3.0
         version: 4.3.6
+      fullcalendar:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../vanilla/dist
+      fullcalendar-scheduler:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../../../premium/packages/vanilla-scheduler/dist
       jasmine-core:
         specifier: ~4.6.0
         version: 4.6.1
@@ -1824,7 +1824,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1848,7 +1848,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1865,7 +1865,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1885,7 +1885,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1902,7 +1902,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
       preact:
@@ -1925,7 +1925,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1969,7 +1969,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
     devDependencies:
@@ -1986,7 +1986,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
       preact:
@@ -2043,12 +2043,6 @@ importers:
       '@fullcalendar/rrule':
         specifier: workspace:*
         version: link:../rrule/dist
-      '@fullcalendar/vanilla':
-        specifier: workspace:*
-        version: link:../vanilla/dist
-      '@fullcalendar/vanilla-w-react':
-        specifier: workspace:*
-        version: link:../vanilla-w-react/dist
       '@types/jasmine':
         specifier: ^3.3.12
         version: 3.10.19
@@ -2061,6 +2055,12 @@ importers:
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
+      fullcalendar:
+        specifier: workspace:*
+        version: link:../vanilla/dist
+      fullcalendar-w-react:
+        specifier: workspace:*
+        version: link:../vanilla-w-react/dist
       handlebars:
         specifier: ^4.7.7
         version: 4.7.8
@@ -2070,7 +2070,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
       react:
@@ -2105,7 +2105,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
       preact:
@@ -2115,9 +2115,6 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/vanilla':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../vanilla/dist
       '@vitejs/plugin-vue':
         specifier: ^6.0.3
         version: 6.0.4(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.31.1)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vue@3.5.27(typescript@5.9.3))
@@ -2127,6 +2124,9 @@ importers:
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
+      fullcalendar:
+        specifier: workspace:7.0.0-beta.6
+        version: link:../vanilla/dist
       globby:
         specifier: ^13.1.2
         version: 13.2.2
@@ -2155,7 +2155,7 @@ importers:
       '@full-ui/headless-calendar':
         specifier: workspace:7.0.0-beta.6
         version: link:../headless-calendar/dist
-      '@fullcalendar/core-types':
+      '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.6
         version: link:../core-types/dist
       preact:
@@ -2165,7 +2165,7 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
-      '@fullcalendar/vanilla':
+      fullcalendar:
         specifier: workspace:7.0.0-beta.6
         version: link:../vanilla/dist
       globby:
@@ -6693,7 +6693,7 @@ packages:
     peerDependencies:
       '@angular/common': 16 - 21
       '@angular/core': 16 - 21
-      '@fullcalendar/vanilla': workspace:7.0.0-beta.6
+      fullcalendar: workspace:7.0.0-beta.6
 
   '@fullcalendar/react-scheduler@file:premium/packages/react-scheduler/dist':
     resolution: {directory: premium/packages/react-scheduler/dist, type: directory}
@@ -25934,53 +25934,53 @@ snapshots:
 
   '@fontsource-variable/roboto@5.2.9': {}
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2)
       '@angular/core': 16.2.12(rxjs@7.8.2)(zone.js@0.13.3)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
       '@angular/core': 17.3.12(rxjs@7.8.2)(zone.js@0.14.10)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
       '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.14.10)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 19.2.18(rxjs@7.8.2)(zone.js@0.15.1)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
-  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@fullcalendar/vanilla@standard+packages+vanilla+dist)':
+  '@fullcalendar/angular@file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)':
     dependencies:
       '@angular/common': 21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1)
-      '@fullcalendar/vanilla': link:standard/packages/vanilla/dist
+      fullcalendar: link:standard/packages/vanilla/dist
       tslib: 2.8.1
 
   '@fullcalendar/react-scheduler@file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       '@fullcalendar/react': file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -25988,21 +25988,21 @@ snapshots:
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
   '@fullcalendar/react@file:standard/packages/react/dist(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
@@ -26010,7 +26010,7 @@ snapshots:
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       '@fullcalendar/vue3': file:standard/packages/vue3/dist(vue@3.5.27(typescript@4.9.5))
       preact: 10.23.2
       vue: 3.5.27(typescript@4.9.5)
@@ -26018,14 +26018,14 @@ snapshots:
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.27(typescript@4.9.5))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       preact: 10.23.2
       vue: 3.5.27(typescript@4.9.5)
 
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
-      '@fullcalendar/core-types': link:standard/packages/core-types/dist
+      '@fullcalendar/core': link:standard/packages/core-types/dist
       preact: 10.23.2
       vue: 3.5.27(typescript@5.9.3)
 

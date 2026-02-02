@@ -1,3 +1,3 @@
 
-export { default } from '@fullcalendar/vanilla/themes/pulse'
+export { default } from 'fullcalendar/themes/pulse'
 

@@ -1,13 +1,13 @@
-import { Calendar } from '@fullcalendar/vanilla';
-import interactionPlugin from '@fullcalendar/vanilla/interaction';
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid';
-import timeGridPlugin from '@fullcalendar/vanilla/timegrid';
-import listPlugin from '@fullcalendar/vanilla/list';
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic';
+import { Calendar } from 'fullcalendar';
+import interactionPlugin from 'fullcalendar/interaction';
+import dayGridPlugin from 'fullcalendar/daygrid';
+import timeGridPlugin from 'fullcalendar/timegrid';
+import listPlugin from 'fullcalendar/list';
+import classicThemePlugin from 'fullcalendar/themes/classic';
 
-import '@fullcalendar/vanilla/skeleton.css'
-import '@fullcalendar/vanilla/themes/classic/theme.css'
-import '@fullcalendar/vanilla/themes/classic/palette.css'
+import 'fullcalendar/skeleton.css'
+import 'fullcalendar/themes/classic/theme.css'
+import 'fullcalendar/themes/classic/palette.css'
 import './index.css';
 
 document.addEventListener('DOMContentLoaded', function() {

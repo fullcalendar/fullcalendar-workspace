@@ -1,4 +1,4 @@
-import { strictModeFactor } from '@fullcalendar/vanilla/protected-api'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 

@@ -1,4 +1,4 @@
-import { joinClassNames } from "@fullcalendar/vanilla"
+import { joinClassNames } from "fullcalendar"
 import { CalendarWrapper } from "@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper"
 
 describe('event styling hooks', () => {

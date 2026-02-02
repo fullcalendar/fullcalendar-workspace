@@ -1,6 +1,6 @@
 import { createElement } from 'preact'
 import { createRoot } from 'preact/compat/client'
-import { flushSync } from '@fullcalendar/vanilla/protected-api'
+import { flushSync } from 'fullcalendar/protected-api'
 import { ListenerCounter } from './ListenerCounter.js'
 
 let standardElListenerCount

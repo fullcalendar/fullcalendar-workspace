@@ -1,4 +1,4 @@
-import { createDuration } from '@fullcalendar/vanilla/protected-api'
+import { createDuration } from 'fullcalendar/protected-api'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { waitEventDrag2 } from '../lib/wrappers/interaction-util.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'

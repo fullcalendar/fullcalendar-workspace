@@ -1,4 +1,4 @@
-import { BaseOptions } from '@fullcalendar/core-types/protected-api'
+import { BaseOptions } from '@fullcalendar/core/protected-api'
 import { DateProfile } from '../DateProfileGenerator'
 import { diffWholeDays, DateRange, DateEnv } from '@full-ui/headless-calendar'
 import { createFormatter, FormatterInput } from '../datelib/formatting'

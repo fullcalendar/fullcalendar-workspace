@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla/interaction'
+export { default } from 'fullcalendar/interaction'

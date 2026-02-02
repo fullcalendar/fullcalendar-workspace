@@ -1,9 +1,9 @@
-import { Calendar } from '@fullcalendar/vanilla'
-import interactionPlugin, { ThirdPartyDraggable } from '@fullcalendar/vanilla/interaction'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import { Calendar } from 'fullcalendar'
+import interactionPlugin, { ThirdPartyDraggable } from 'fullcalendar/interaction'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
-import timeGridPlugin from '@fullcalendar/vanilla/timegrid'
+import dayGridPlugin from 'fullcalendar/daygrid'
+import timeGridPlugin from 'fullcalendar/timegrid'
 import { ListenerCounter } from '../lib/ListenerCounter.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'

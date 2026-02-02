@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla/themes/monarch'
+export { default } from 'fullcalendar/themes/monarch'

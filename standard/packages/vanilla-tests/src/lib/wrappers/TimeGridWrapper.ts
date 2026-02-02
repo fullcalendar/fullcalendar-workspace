@@ -1,4 +1,4 @@
-import { startOfDay, createDuration, parseMarker, addDays, addMs, getRectCenter, asRoughMs } from '@fullcalendar/vanilla/protected-api'
+import { startOfDay, createDuration, parseMarker, addDays, addMs, getRectCenter, asRoughMs } from 'fullcalendar/protected-api'
 import { findElements } from '../../lib/dom-misc.js'
 import { formatIsoDay, formatIsoTime, ensureDate } from '../datelib-utils.js'
 import { parseUtcDate } from '../date-parsing.js'

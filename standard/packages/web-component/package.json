@@ -9,12 +9,12 @@
   ],
   "homepage": "https://fullcalendar.io/docs/web-component",
   "dependencies": {
-    "@fullcalendar/core-types": "workspace:7.0.0-beta.6",
+    "@fullcalendar/core": "workspace:7.0.0-beta.6",
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "preact": "~10.23.1"
   },
   "devDependencies": {
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
+    "fullcalendar": "workspace:7.0.0-beta.6",
     "@fullcalendar-scripts/standard": "workspace:*",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
@@ -47,7 +47,7 @@
       },
       "./skeleton.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/skeleton.css"
+        "import": "fullcalendar/skeleton.css"
       },
       "./preact": {
         "format": "module"
@@ -93,11 +93,11 @@
       },
       "./themes/classic/theme.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/themes/classic/theme.css"
+        "import": "fullcalendar/themes/classic/theme.css"
       },
       "./themes/classic/palette.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/classic/palette.css"
+        "import": "fullcalendar/themes/classic/palette.css"
       },
       "./themes/monarch": {
         "format": "module",
@@ -108,27 +108,27 @@
       },
       "./themes/monarch/theme.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/themes/monarch/theme.css"
+        "import": "fullcalendar/themes/monarch/theme.css"
       },
       "./themes/monarch/palettes/blue.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/monarch/palettes/blue.css"
+        "import": "fullcalendar/themes/monarch/palettes/blue.css"
       },
       "./themes/monarch/palettes/green.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/monarch/palettes/green.css"
+        "import": "fullcalendar/themes/monarch/palettes/green.css"
       },
       "./themes/monarch/palettes/purple.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/monarch/palettes/purple.css"
+        "import": "fullcalendar/themes/monarch/palettes/purple.css"
       },
       "./themes/monarch/palettes/red.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/monarch/palettes/red.css"
+        "import": "fullcalendar/themes/monarch/palettes/red.css"
       },
       "./themes/monarch/palettes/yellow.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/monarch/palettes/yellow.css"
+        "import": "fullcalendar/themes/monarch/palettes/yellow.css"
       },
       "./themes/breezy": {
         "format": "module",
@@ -139,23 +139,23 @@
       },
       "./themes/breezy/theme.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/themes/breezy/theme.css"
+        "import": "fullcalendar/themes/breezy/theme.css"
       },
       "./themes/breezy/palettes/emerald.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/breezy/palettes/emerald.css"
+        "import": "fullcalendar/themes/breezy/palettes/emerald.css"
       },
       "./themes/breezy/palettes/honey.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/breezy/palettes/honey.css"
+        "import": "fullcalendar/themes/breezy/palettes/honey.css"
       },
       "./themes/breezy/palettes/indigo.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/breezy/palettes/indigo.css"
+        "import": "fullcalendar/themes/breezy/palettes/indigo.css"
       },
       "./themes/breezy/palettes/rose.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/breezy/palettes/rose.css"
+        "import": "fullcalendar/themes/breezy/palettes/rose.css"
       },
       "./themes/forma": {
         "format": "module",
@@ -166,23 +166,23 @@
       },
       "./themes/forma/theme.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/themes/forma/theme.css"
+        "import": "fullcalendar/themes/forma/theme.css"
       },
       "./themes/forma/palettes/blue.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/forma/palettes/blue.css"
+        "import": "fullcalendar/themes/forma/palettes/blue.css"
       },
       "./themes/forma/palettes/green.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/forma/palettes/green.css"
+        "import": "fullcalendar/themes/forma/palettes/green.css"
       },
       "./themes/forma/palettes/purple.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/forma/palettes/purple.css"
+        "import": "fullcalendar/themes/forma/palettes/purple.css"
       },
       "./themes/forma/palettes/red.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/forma/palettes/red.css"
+        "import": "fullcalendar/themes/forma/palettes/red.css"
       },
       "./themes/pulse": {
         "format": "module",
@@ -193,23 +193,23 @@
       },
       "./themes/pulse/theme.styles": {
         "format": "css-as-js",
-        "import": "@fullcalendar/vanilla/themes/pulse/theme.css"
+        "import": "fullcalendar/themes/pulse/theme.css"
       },
       "./themes/pulse/palettes/blue.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/pulse/palettes/blue.css"
+        "import": "fullcalendar/themes/pulse/palettes/blue.css"
       },
       "./themes/pulse/palettes/green.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/pulse/palettes/green.css"
+        "import": "fullcalendar/themes/pulse/palettes/green.css"
       },
       "./themes/pulse/palettes/purple.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/pulse/palettes/purple.css"
+        "import": "fullcalendar/themes/pulse/palettes/purple.css"
       },
       "./themes/pulse/palettes/red.css": {
         "format": "css",
-        "import": "@fullcalendar/vanilla/themes/pulse/palettes/red.css"
+        "import": "fullcalendar/themes/pulse/palettes/red.css"
       }
     }
   },

@@ -6,7 +6,7 @@ FullCalendar core package for rendering a calendar
 ## Installation
 
 ```sh
-npm install @fullcalendar/vanilla
+npm install fullcalendar
 ```
 
 ## Usage
@@ -22,13 +22,13 @@ First, ensure there's a DOM element for your calendar to render into:
 Then, instantiate a Calendar object with [options](https://fullcalendar.io/docs#toc) and call its `render` method:
 
 ```js
-import { Calendar } from '@fullcalendar/vanilla'
-import dayGridPlugin from '@fullcalendar/vanilla/daygrid'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic'
+import { Calendar } from 'fullcalendar'
+import dayGridPlugin from 'fullcalendar/daygrid'
+import classicThemePlugin from 'fullcalendar/themes/classic'
 
-import '@fullcalendar/vanilla/skeleton.css'
-import '@fullcalendar/vanilla/themes/classic/theme.css'
-import '@fullcalendar/vanilla/themes/classic/palette.css'
+import 'fullcalendar/skeleton.css'
+import 'fullcalendar/themes/classic/theme.css'
+import 'fullcalendar/themes/classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

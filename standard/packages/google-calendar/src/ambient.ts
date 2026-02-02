@@ -1,4 +1,4 @@
-import {} from '@fullcalendar/core-types/protected-api'
+import {} from '@fullcalendar/core/protected-api'
 import {
   GoogleCalendarOptions,
   GoogleCalendarOptionsRefined,
@@ -6,7 +6,7 @@ import {
   GoogleCalendarEventSourceOptionsRefined,
 } from './options'
 
-declare module '@fullcalendar/core-types/protected-api' {
+declare module '@fullcalendar/core/protected-api' {
   interface BaseOptions extends GoogleCalendarOptions {}
   interface BaseOptionsRefined extends GoogleCalendarOptionsRefined {}
 

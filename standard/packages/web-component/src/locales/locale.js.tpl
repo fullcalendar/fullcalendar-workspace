@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla/locales/{{localeCode}}';
+export { default } from 'fullcalendar/locales/{{localeCode}}';

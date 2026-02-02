@@ -1,5 +1,5 @@
 import { createDuration, Duration } from '@full-ui/headless-calendar'
-import { RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { RawOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { refineProps, Dictionary } from '../options'
 
 /*

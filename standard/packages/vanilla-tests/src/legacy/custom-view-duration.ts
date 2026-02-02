@@ -1,5 +1,5 @@
-import frLocale from '@fullcalendar/vanilla/locales/fr'
-import classicThemePlugin from '@fullcalendar/vanilla/themes/classic' // need both
+import frLocale from 'fullcalendar/locales/fr'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'

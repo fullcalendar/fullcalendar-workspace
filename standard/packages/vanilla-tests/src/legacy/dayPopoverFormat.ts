@@ -1,4 +1,4 @@
-import frLocale from '@fullcalendar/vanilla/locales/fr'
+import frLocale from 'fullcalendar/locales/fr'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('dayPopoverFormat', () => {

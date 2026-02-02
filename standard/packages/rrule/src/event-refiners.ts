@@ -1,6 +1,6 @@
 import { Options as RRuleOptions } from 'rrule'
 import { DateInput, createDuration } from '@full-ui/headless-calendar'
-import { identity, Identity } from '@fullcalendar/core-types/protected-api'
+import { identity, Identity } from '@fullcalendar/core/protected-api'
 
 export type RRuleInputObjectFull = Omit<RRuleOptions, 'dtstart' | 'until' | 'freq' | 'wkst' | 'byweekday'> & {
   dtstart: RRuleOptions['dtstart'] | DateInput

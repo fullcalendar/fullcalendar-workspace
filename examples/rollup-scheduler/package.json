@@ -10,8 +10,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@fullcalendar/vanilla": "workspace:7.0.0-beta.6",
-    "@fullcalendar/vanilla-scheduler": "workspace:7.0.0-beta.6"
+    "fullcalendar": "workspace:7.0.0-beta.6",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.0.1",

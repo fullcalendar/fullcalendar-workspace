@@ -1,4 +1,4 @@
-import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core-types/protected-api'
+import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { ClassNameGenerator, CssDimValue } from '@fullcalendar/preact/public-api'
 import {
   Identity, identity,

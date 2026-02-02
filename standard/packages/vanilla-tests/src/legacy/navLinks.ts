@@ -1,4 +1,4 @@
-import { addDays } from '@fullcalendar/vanilla/protected-api'
+import { addDays } from 'fullcalendar/protected-api'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'

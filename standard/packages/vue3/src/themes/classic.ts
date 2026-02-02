@@ -1,2 +1,2 @@
 
-export { default } from '@fullcalendar/vanilla/themes/classic'
+export { default } from 'fullcalendar/themes/classic'
