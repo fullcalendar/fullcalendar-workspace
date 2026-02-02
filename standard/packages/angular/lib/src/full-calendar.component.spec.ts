@@ -25,18 +25,25 @@ describe('FullCalendarComponent', () => {
 
     fixture = TestBed.createComponent(FullCalendarComponent);
     component = fixture.componentInstance;
-    component.options = DEFAULT_OPTIONS;
+    component.options = {
+      ...DEFAULT_OPTIONS,
+      headerToolbarClass: 'my-header-toolbar',
+      headerToolbar: {
+        start: 'prev,next today',
+        end: 'title'
+      },
+    };
     fixture.detectChanges(); // necessary for initializing change detection system
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(isHeaderToolbarRendered(fixture)).toBe(true);
+    expect(fixture.nativeElement.querySelector('.my-header-toolbar')).toBeTruthy()
   });
 
   it('should unmount and call destroy', () => {
     fixture.destroy();
-    expect(isHeaderToolbarRendered(fixture)).toBe(false);
+    expect(fixture.nativeElement.querySelector('.my-header-toolbar')).toBeFalsy()
   });
 
   it('should expose an API', () => {
@@ -50,7 +57,6 @@ describe('FullCalendarComponent', () => {
 
 });
 
-
 // some tests need a wrapper component
 
 @Component({
@@ -59,8 +65,13 @@ describe('FullCalendarComponent', () => {
   `
 })
 class HostComponent {
-  calendarOptions = {
+  calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
+    headerToolbarClass: 'my-header-toolbar',
+    dayCellClass: (data) => {
+      const day = data.date.getDay()
+      return (day === 0 || day === 6) ? 'my-weekend' : ''
+    },
     weekends: true,
     events: [buildEvent()] as any,
     viewDidMount: this.handleViewDidMount.bind(this),
@@ -79,7 +90,7 @@ class HostComponent {
   }
 
   addEventReset() {
-    this.calendarOptions.events = this.calendarOptions.events.concat([ buildEvent() ]);
+    this.calendarOptions.events = (this.calendarOptions.events as any).concat([ buildEvent() ]);
   }
 
   setEventFunc(timeout: number) {
@@ -115,18 +126,18 @@ describe('HostComponent', () => {
   });
 
   it('should handle prop changes', () => {
-    expect(isWeekendsRendered(fixture)).toBe(true);
+    expect(fixture.nativeElement.querySelector('.my-weekend')).toBeTruthy();
     component.disableWeekends();
     fixture.detectChanges();
-    expect(isWeekendsRendered(fixture)).toBe(false);
+    expect(fixture.nativeElement.querySelector('.my-weekend')).toBeFalsy();
   });
 
   it('should handle prop changes that don\'t rerender any DOM', () => {
-    const headerEl = getHeaderToolbarEl(fixture);
+    const headerEl = fixture.nativeElement.querySelector('.my-header-toolbar');
     expect(component.viewSkeletonRenderCnt).toBe(1);
     component.changeSomething();
     fixture.detectChanges();
-    expect(getHeaderToolbarEl(fixture)).toBe(headerEl);
+    expect(fixture.nativeElement.querySelector('.my-header-toolbar')).toBe(headerEl);
     expect(component.viewSkeletonRenderCnt).toBe(1);
   });
 
@@ -152,7 +163,6 @@ describe('HostComponent', () => {
   });
 
 });
-
 
 // uses the separate `events` input
 
@@ -204,7 +214,6 @@ describe('HostComponentWithEventAttr', () => {
   });
 })
 
-
 // has content-injection template
 
 @Component({
@@ -218,8 +227,10 @@ describe('HostComponentWithEventAttr', () => {
   `
 })
 class HostComponentWithTemplate {
-  calendarOptions = {
+  calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
+    eventClass: 'my-event',
+    listItemEventClass: 'my-list-item-event',
     events: [buildEvent()]
   };
   isBold = false;
@@ -247,14 +258,14 @@ describe('HostComponentWithTemplate', () => {
   });
 
   it('should render event with custom template', () => {
-    const eventEl = getFirstEventEl(fixture);
+    const eventEl = fixture.nativeElement.querySelector('.my-event');
     expect(eventEl.querySelectorAll('i').length).toBe(1);
     expect(eventEl.querySelectorAll('b').length).toBe(0);
 
     component.turnBold();
     fixture.detectChanges();
 
-    expect(eventEl).toBe(getFirstEventEl(fixture));
+    expect(eventEl).toBe(fixture.nativeElement.querySelector('.my-event'));
     expect(eventEl.querySelectorAll('i').length).toBe(0);
     expect(eventEl.querySelectorAll('b').length).toBe(1);
   });
@@ -262,24 +273,23 @@ describe('HostComponentWithTemplate', () => {
   it('should custom-render going forward-back', () => {
     const calendar = component.calendarComponent!.getApi();
 
-    let eventEl = getFirstEventEl(fixture);
+    let eventEl = fixture.nativeElement.querySelector('.my-event');
     expect(eventEl.querySelectorAll('i').length).toBe(1);
     expect(eventEl.querySelectorAll('b').length).toBe(0);
 
     calendar.next();
     calendar.prev();
 
-    eventEl = getFirstEventEl(fixture);
+    eventEl = fixture.nativeElement.querySelector('.my-event');
     expect(eventEl.querySelectorAll('i').length).toBe(1);
     expect(eventEl.querySelectorAll('b').length).toBe(0);
   });
 
   it('should custom-render DnD-able daygrid list-like event', () => {
-    let eventEl = getFirstEventEl(fixture);
-    expect(eventEl).toHaveClass('fc-daygrid-dot-event');
+    let eventEl = fixture.nativeElement.querySelector('.my-event');
+    expect(eventEl).toHaveClass('my-list-item-event');
   })
 })
-
 
 // some tests need a wrapper component with DEEP COMPARISON
 
@@ -293,19 +303,20 @@ describe('HostComponentWithTemplate', () => {
 })
 class DeepHostComponent {
 
-  calendarOptions = {
+  calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
     events: [buildEvent()] as any,
+    eventTitleClass: 'my-event-title',
     eventDidMount: this.handleEventDidMount.bind(this)
   };
   eventRenderCnt = 0;
 
   addEventAppend() {
-    this.calendarOptions.events.push(buildEvent());
+    (this.calendarOptions.events as any).push(buildEvent());
   }
 
   updateEventTitle(title: string) {
-    this.calendarOptions.events[0].title = title;
+    (this.calendarOptions.events as any)[0].title = title;
   }
 
   setEventFunc(timeout: number) {
@@ -350,14 +361,14 @@ describe('DeepHostComponent', () => {
     fixture.detectChanges();
 
     setTimeout(() => { // wait for event positioning
-      expect(getFirstEventTitle(fixture)).toBe('another title');
+      expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
       expect(component.eventRenderCnt).toBe(2); // +1
 
       component.updateEventTitle('another title');
       fixture.detectChanges();
 
       setTimeout(() => { // wait for event positioning
-        expect(getFirstEventTitle(fixture)).toBe('another title');
+        expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
         expect(component.eventRenderCnt).toBe(2); // +0 (didn't rerender anything)
         done()
       })
@@ -375,7 +386,6 @@ describe('DeepHostComponent', () => {
   });
 
 });
-
 
 // Integration test
 // https://github.com/fullcalendar/fullcalendar/issues/7058
@@ -431,10 +441,8 @@ describe('with list-view, customContent, and state mutation in datesSet', () => 
   })
 })
 
-
 // Supplying content-injection as a function for dayCellTopContent
 // https://github.com/fullcalendar/fullcalendar/issues/7187
-
 
 @Component({
   template: `
@@ -445,6 +453,7 @@ class MonthComponent {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
+    dayCellTopClass: 'my-day-cell-top',
     dayCellTopContent(data) {
       return { html: `<b>${data.text}</b>` }
     },
@@ -467,11 +476,10 @@ describe('with month view and dayCellTopContent as a function', () => {
   });
 
   it('should render custom content', () => {
-    const resourceColHeader = fixture.nativeElement.querySelector('.fc-daygrid-day-header');
-    expect(resourceColHeader.querySelectorAll('b').length).toBe(1);
+    const dayCellTop = fixture.nativeElement.querySelector('.my-day-cell-top');
+    expect(dayCellTop.querySelectorAll('b').length).toBe(1);
   });
 });
-
 
 // https://github.com/fullcalendar/fullcalendar/issues/7191
 describe('dayGridMonth view dot-event elements, custom content, and eventDidMount', () => {
@@ -531,7 +539,6 @@ describe('dayGridMonth view dot-event elements, custom content, and eventDidMoun
   });
 });
 
-
 ;['auto', 'background'].forEach((eventDisplay) => {
   describe(`during ${eventDisplay} custom event rendering`, async () => {
     let eventDidMountCalled: boolean | undefined;
@@ -587,7 +594,6 @@ describe('dayGridMonth view dot-event elements, custom content, and eventDidMoun
   })
 })
 
-
 // FullCalendar data utils
 
 function buildEvent() {
@@ -596,27 +602,4 @@ function buildEvent() {
     start: new Date(),
     end: new Date(Date.now() + 1) // guarantee only within single day
    };
-}
-
-
-// DOM utils
-
-function isHeaderToolbarRendered(fixture: ComponentFixture<any>) {
-  return Boolean(getHeaderToolbarEl(fixture));
-}
-
-function getHeaderToolbarEl(fixture: ComponentFixture<any>) {
-  return fixture.nativeElement.querySelector('.fc-header-toolbar');
-}
-
-function isWeekendsRendered(fixture: ComponentFixture<any>) {
-  return Boolean(fixture.nativeElement.querySelector('.fc-day-sat'));
-}
-
-function getFirstEventEl(fixture: ComponentFixture<any>) {
-  return fixture.nativeElement.querySelector('.fc-event');
-}
-
-function getFirstEventTitle(fixture: ComponentFixture<any>) {
-  return fixture.nativeElement.querySelector('.fc-event-title').innerText;
 }
