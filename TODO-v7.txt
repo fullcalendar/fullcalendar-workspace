@@ -25,9 +25,6 @@ build note:
 
 disable pushing to fullcalendar/fullcalendar subrepo
 shadcn needs to install temporal-polyfill
-angular
-  how to css
-  ensure all new settings are put on the Angular connector!
 
 
 any types referenced in (public) PluginDefInput,
