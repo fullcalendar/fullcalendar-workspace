@@ -6,12 +6,14 @@
   "peerDependencies": {
     "@fullcalendar/angular": "workspace:7.0.0-beta.6",
     "fullcalendar": "workspace:7.0.0-beta.6",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.6"
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar/angular": "workspace:7.0.0-beta.6",
     "fullcalendar": "workspace:7.0.0-beta.6",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.6"
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.6",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

@@ -23,10 +23,6 @@ build note:
     manually before `pn dev`
 
 
-disable pushing to fullcalendar/fullcalendar subrepo
-shadcn needs to install temporal-polyfill
-
-
 any types referenced in (public) PluginDefInput,
   ensure they're public too
 better READMEs:

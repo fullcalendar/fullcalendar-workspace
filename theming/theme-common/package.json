@@ -28,6 +28,7 @@
   "dependencies": {
     "@fullcalendar/react": "workspace:*",
     "@fullcalendar/react-scheduler": "workspace:*",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "temporal-polyfill": "^0.3.0"
   }
 }

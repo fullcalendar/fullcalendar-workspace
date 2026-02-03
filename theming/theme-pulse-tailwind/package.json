@@ -30,7 +30,8 @@
   "peerDependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@fullcalendar/react": "workspace:*"
+    "@fullcalendar/react": "workspace:*",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
@@ -40,6 +41,7 @@
     "@fullcalendar/react": "workspace:*",
     "@fullcalendar/react-scheduler": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "temporal-polyfill": "^0.3.0"
   }
 }

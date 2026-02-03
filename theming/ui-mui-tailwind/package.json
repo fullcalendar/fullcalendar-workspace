@@ -22,7 +22,8 @@
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar/react": "workspace:*",
@@ -39,6 +40,7 @@
     "@types/react-dom": "^19.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "temporal-polyfill": "^0.3.0"
   }
 }

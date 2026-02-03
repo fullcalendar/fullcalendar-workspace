@@ -4,6 +4,11 @@ set -e
 cd "`dirname $0`/../.."
 root_dir=`pwd`
 
+echo
+echo "This script must be updated for v7"
+echo
+exit
+
 version="6.1.10"
 
 declare -a tag_dirs=( \
