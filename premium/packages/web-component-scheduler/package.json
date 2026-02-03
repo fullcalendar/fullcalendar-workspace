@@ -1,22 +1,22 @@
 {
   "name": "@fullcalendar/web-component-scheduler",
-  "version": "7.0.0-beta.6",
+  "version": "7.0.0-beta.7",
   "title": "FullCalendar Web Component",
   "description": "FullCalendar Web Component Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
-    "@full-ui/headless-grid": "workspace:7.0.0-beta.6",
-    "@fullcalendar/core": "workspace:7.0.0-beta.6",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.7",
+    "@full-ui/headless-grid": "workspace:7.0.0-beta.7",
+    "@fullcalendar/core": "workspace:7.0.0-beta.7",
     "preact": "~10.23.1"
   },
   "peerDependencies": {
-    "@fullcalendar/web-component": "workspace:7.0.0-beta.6",
+    "@fullcalendar/web-component": "workspace:7.0.0-beta.7",
     "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
-    "@fullcalendar/web-component": "workspace:7.0.0-beta.6",
-    "fullcalendar": "workspace:7.0.0-beta.6",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.6",
+    "@fullcalendar/web-component": "workspace:7.0.0-beta.7",
+    "fullcalendar": "workspace:7.0.0-beta.7",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.7",
     "temporal-polyfill": "^0.3.0"
   },
   "scripts": {

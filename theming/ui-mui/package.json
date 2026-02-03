@@ -1,9 +1,9 @@
 {
   "name": "@fullcalendar/mui",
-  "version": "7.0.0-beta.6",
+  "version": "7.0.0-beta.7",
   "peerDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-beta.6",
-    "@fullcalendar/react-scheduler": "workspace:7.0.0-beta.6",
+    "@fullcalendar/react": "workspace:7.0.0-beta.7",
+    "@fullcalendar/react-scheduler": "workspace:7.0.0-beta.7",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "react": "^17 || ^18 || ^19",
@@ -14,8 +14,8 @@
     "@fullcalendar/react-scheduler": { "optional": true }
   },
   "devDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-beta.6",
-    "@fullcalendar/react-scheduler": "workspace:7.0.0-beta.6",
+    "@fullcalendar/react": "workspace:7.0.0-beta.7",
+    "@fullcalendar/react-scheduler": "workspace:7.0.0-beta.7",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@types/react": "^19.1.8",
