@@ -2,6 +2,7 @@ import fetchMock from 'fetch-mock'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
+import { plainAndZoneToString, plainAndZoneToDate } from '@fullcalendar-tests/standard/lib/temporal-convert'
 
 describe('refetchResourcesOnNavigate', () => {
   pushOptions({
@@ -221,14 +222,15 @@ describe('refetchResourcesOnNavigate', () => {
   })
 
   it('resources function will receive view start/end/timezone', (done) => {
+    const timeZone = 'America/Chicago'
     let calendar = initCalendar({
       initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
-      timeZone: 'America/Chicago',
+      timeZone,
       resources(arg, callback) {
-        expect(arg.start).toEqualDate('2017-02-12')
-        expect(arg.end).toEqualDate('2017-02-19')
-        expect(arg.timeZone).toBe('America/Chicago')
+        expect(arg.start).toEqualDate(plainAndZoneToDate('2017-02-12', timeZone))
+        expect(arg.end).toEqualDate(plainAndZoneToDate('2017-02-19', timeZone))
+        expect(arg.timeZone).toBe(timeZone)
         callback([])
       },
     })
@@ -239,23 +241,24 @@ describe('refetchResourcesOnNavigate', () => {
   })
 
   it('will cause a resource function to receive start/end/timezone after navigate', () => {
+    const timeZone = 'America/Chicago'
     let fetchCnt = 0
     let calendar = initCalendar({
       initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
-      timeZone: 'America/Chicago',
+      timeZone,
       resources(arg, callback) {
         fetchCnt += 1
 
         if (fetchCnt === 1) {
-          expect(arg.start).toEqualDate('2017-02-12')
-          expect(arg.end).toEqualDate('2017-02-19')
+          expect(arg.start).toEqualDate(plainAndZoneToDate('2017-02-12', timeZone))
+          expect(arg.end).toEqualDate(plainAndZoneToDate('2017-02-19', timeZone))
         } else if (fetchCnt === 2) {
-          expect(arg.start).toEqualDate('2017-02-19')
-          expect(arg.end).toEqualDate('2017-02-26')
+          expect(arg.start).toEqualDate(plainAndZoneToDate('2017-02-19', timeZone))
+          expect(arg.end).toEqualDate(plainAndZoneToDate('2017-02-26', timeZone))
         }
 
-        expect(arg.timeZone).toBe('America/Chicago')
+        expect(arg.timeZone).toBe(timeZone)
         callback([])
       },
     })
@@ -265,18 +268,19 @@ describe('refetchResourcesOnNavigate', () => {
   })
 
   it('will receive start/end/timezone params when refetchResources', () => {
+    const timeZone = 'America/Chicago'
     let requestCnt = 0
 
     initCalendar({
       initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
-      timeZone: 'America/Chicago',
+      timeZone,
 
       resources(arg, callback) {
         requestCnt += 1
-        expect(arg.start).toEqualDate('2017-02-12')
-        expect(arg.end).toEqualDate('2017-02-19')
-        expect(arg.timeZone).toBe('America/Chicago')
+        expect(arg.start).toEqualDate(plainAndZoneToDate('2017-02-12', timeZone))
+        expect(arg.end).toEqualDate(plainAndZoneToDate('2017-02-19', timeZone))
+        expect(arg.timeZone).toBe(timeZone)
         callback([])
       },
     })
@@ -292,31 +296,33 @@ describe('refetchResourcesOnNavigate', () => {
     })
 
     it('receives the start/end/timezone GET parameters', () => {
+      const timeZone = 'America/Chicago'
       const givenUrl = window.location.href + '/my-feed.php'
       fetchMock.get(/my-feed\.php/, { body: [] })
 
       initCalendar({
         initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
-        timeZone: 'America/Chicago',
+        timeZone,
         resources: givenUrl,
       })
 
       const [requestUrl] = fetchMock.lastCall()
       const requestParams = new URL(requestUrl).searchParams
-      expect(requestParams.get('start')).toBe('2017-02-12T00:00:00')
-      expect(requestParams.get('end')).toBe('2017-02-19T00:00:00')
-      expect(requestParams.get('timeZone')).toBe('America/Chicago')
+      expect(requestParams.get('start')).toBe(plainAndZoneToString('2017-02-12T00:00:00', timeZone))
+      expect(requestParams.get('end')).toBe(plainAndZoneToString('2017-02-19T00:00:00', timeZone))
+      expect(requestParams.get('timeZone')).toBe(timeZone)
     })
 
     it('respects startParam/endParam/timeZoneParam', () => {
+      const timeZone = 'America/Chicago'
       const givenUrl = window.location.href + '/my-feed.php'
       fetchMock.get(/my-feed\.php/, { body: [] })
 
       initCalendar({
         initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
-        timeZone: 'America/Chicago',
+        timeZone,
         resources: givenUrl,
         startParam: 'mystart',
         endParam: 'myend',
@@ -325,9 +331,9 @@ describe('refetchResourcesOnNavigate', () => {
 
       const [requestUrl] = fetchMock.lastCall()
       const requestParams = new URL(requestUrl).searchParams
-      expect(requestParams.get('mystart')).toBe('2017-02-12T00:00:00')
-      expect(requestParams.get('myend')).toBe('2017-02-19T00:00:00')
-      expect(requestParams.get('mytimezone')).toBe('America/Chicago')
+      expect(requestParams.get('mystart')).toBe(plainAndZoneToString('2017-02-12T00:00:00', timeZone))
+      expect(requestParams.get('myend')).toBe(plainAndZoneToString('2017-02-19T00:00:00', timeZone))
+      expect(requestParams.get('mytimezone')).toBe(timeZone)
     })
 
     it('won\'t send start/end/timezone params when off', () => {
