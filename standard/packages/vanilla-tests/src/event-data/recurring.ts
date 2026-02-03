@@ -1,3 +1,7 @@
+import { strictModeFactor } from 'fullcalendar/protected-api'
+import classicThemePlugin from 'fullcalendar/themes/classic' // need both
+import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import timeGridPlugin from 'fullcalendar/timegrid'
 
 describe('recurring events', () => {
   describe('when timed events in local timezone', () => {
@@ -76,37 +80,37 @@ describe('recurring events', () => {
     })
   })
 
-  // xit('when timeZone changes, events with unspecified timezone offsets move', () => {
-  //   const timeTexts = []
-  //   const calendar = initCalendar({
-  //     plugins: [classicThemePlugin, themeForTestsPlugin, timeGridPlugin, luxonPlugin],
-  //     timeZone: 'America/New_York',
-  //     initialView: 'timeGridWeek',
-  //     initialDate: '2023-02-07',
-  //     events: [
-  //       { startTime: '12:00', daysOfWeek: [2] },
-  //     ],
-  //     eventContent(data) {
-  //       timeTexts.push(data.timeText)
-  //       return true
-  //     },
-  //   })
+  it('when timeZone changes, events with unspecified timezone offsets move', () => {
+    const timeTexts = []
+    const calendar = initCalendar({
+      plugins: [classicThemePlugin, themeForTestsPlugin, timeGridPlugin],
+      timeZone: 'America/New_York',
+      initialView: 'timeGridWeek',
+      initialDate: '2023-02-07',
+      events: [
+        { startTime: '12:00', daysOfWeek: [2] },
+      ],
+      eventContent(data) {
+        timeTexts.push(data.timeText)
+        return true
+      },
+    })
 
-  //   let events = calendar.getEvents()
-  //   expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-  //   expect(timeTexts.length).toBe(1 * strictModeFactor)
-  //   expect(timeTexts[0 * strictModeFactor]).toBe('12:00')
+    let events = calendar.getEvents()
+    expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
+    expect(timeTexts.length).toBe(1 * strictModeFactor)
+    expect(timeTexts[0 * strictModeFactor]).toBe('12:00')
 
-  //   calendar.setOption('timeZone', 'America/Chicago')
-  //   expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-  //   expect(timeTexts.length).toBe(2 * strictModeFactor)
-  //   expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
+    calendar.setOption('timeZone', 'America/Chicago')
+    expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
+    expect(timeTexts.length).toBe(2 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
 
-  //   calendar.next() // renders next week's event
-  //   calendar.prev() // renders prev week's event
-  //   calendar.setOption('timeZone', 'America/Chicago')
-  //   expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-  //   expect(timeTexts.length).toBe(4 * strictModeFactor)
-  //   expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
-  // })
+    calendar.next() // renders next week's event
+    calendar.prev() // renders prev week's event
+    calendar.setOption('timeZone', 'America/Chicago')
+    expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
+    expect(timeTexts.length).toBe(4 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
+  })
 })

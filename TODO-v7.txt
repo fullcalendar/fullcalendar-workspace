@@ -115,9 +115,6 @@ flaky
   premium/tests/src/misc/eventConstraint.ts
 nested resource column grouping buggy
   xdescribe: premium/tests/src/timeline/timeline-col-grouping.ts
-we'll probably remove luxon. so who cares...
-  xdescribe: standard/tests/src/datelib/luxon.ts
-    // https://github.com/fullcalendar/fullcalendar/issues/7633
 bug: resize-observer bad loop
   premium/tests/src/column/agenda-nowIndicator.ts (xit)
   happens because resources loading causes timegrid to switch to isNarrow,
@@ -128,15 +125,6 @@ manual test todos:
   standard/packages/vanilla-tests/manual/google-calendar.html
   standard/packages/vanilla-tests/manual/importmap.*.html
   standard/packages/vanilla-tests/manual/vue3.html
-reuse for new tz lib
-  xit('won\'t accidentally clip dates when calendar has non-UTC timezone'
-  xdescribe('with moment-timezone resolution'
-  xit('updates rrule timed events when timeZone changes'
-  xit('when timeZone changes, events with unspecified timezone offsets move'
-  xdescribe('with non-recurring timed events and luxon plugin'
-  xdescribe('now-date', () => {
-use testTimeZoneImpl on whatever new tz lib
-remove luxon hack about date header tz
 always use identity/Identity from core-types
   also requestJson ... look at other utils too
 bug: today button changes width as we go prev/next (React vdom)
@@ -476,8 +464,6 @@ test print-view with virtualization
   test expandRows
 Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
 should full-ui packages be put on v1?
-if kill luxon/moment, remove this block:
-  // workaround for Luxon (and maybe moment)
 
 
 Changelog

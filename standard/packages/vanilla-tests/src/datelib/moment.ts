@@ -8,7 +8,7 @@ import 'moment/locale/es' // only test spanish
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
-describe('moment plugin', () => {
+describe('moment formatting plugin', () => {
   const PLUGINS = [classicThemePlugin, themeForTestsPlugin, dayGridPlugin, timeGridPlugin, momentPlugin]
   pushOptions({ plugins: PLUGINS })
 

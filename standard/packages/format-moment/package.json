@@ -1,7 +1,7 @@
 {
   "name": "@fullcalendar/format-moment",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Moment Plugin",
+  "title": "FullCalendar Moment Date-Formatting Plugin",
   "description": "Enhanced date formatting with Moment",
   "keywords": [
     "moment"

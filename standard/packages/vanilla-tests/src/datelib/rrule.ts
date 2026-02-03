@@ -1,4 +1,4 @@
-// import { strictModeFactor } from 'fullcalendar/protected-api'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
@@ -495,26 +495,26 @@ describe('rrule plugin', () => {
       expect(events[2].start).toEqualDate('2020-10-10T03:00:00')
     })
 
-    // // https://github.com/fullcalendar/fullcalendar/issues/5993
-    // xit('won\'t accidentally clip dates when calendar has non-UTC timezone', () => {
-    //   let calendar = initCalendar({
-    //     plugins: [classicThemePlugin, themeForTestsPlugin, rrulePlugin, dayGridPlugin, luxonPlugin],
-    //     initialDate: '2020-11-01',
-    //     timeZone: 'Asia/Manila',
-    //     events: [
-    //       {
-    //         duration: '01:00',
-    //         rrule: {
-    //           freq: 'daily',
-    //           dtstart: '2020-10-24T16:00:00Z', // will be 00:00 in Manila
-    //         },
-    //       },
-    //     ],
-    //   })
+    // https://github.com/fullcalendar/fullcalendar/issues/5993
+    it('won\'t accidentally clip dates when calendar has non-UTC timezone', () => {
+      let calendar = initCalendar({
+        plugins: [classicThemePlugin, themeForTestsPlugin, rrulePlugin, dayGridPlugin],
+        initialDate: '2020-11-01',
+        timeZone: 'Asia/Manila',
+        events: [
+          {
+            duration: '01:00',
+            rrule: {
+              freq: 'daily',
+              dtstart: '2020-10-24T16:00:00Z', // will be 00:00 in Manila
+            },
+          },
+        ],
+      })
 
-    //   let events = calendar.getEvents()
-    //   expect(events[0].start).toEqualDate(calendar.view.activeStart)
-    // })
+      let events = calendar.getEvents()
+      expect(events[0].start).toEqualDate(calendar.view.activeStart)
+    })
 
     // https://github.com/fullcalendar/fullcalendar/issues/7230
     it('updating the rrule dynamically renders correct number of events', () => {
@@ -551,53 +551,53 @@ describe('rrule plugin', () => {
     })
   })
 
-  // // https://github.com/fullcalendar/fullcalendar/issues/5273
-  // xit('updates rrule timed events when timeZone changes', () => {
-  //   const timeTexts = []
+  // https://github.com/fullcalendar/fullcalendar/issues/5273
+  it('updates rrule timed events when timeZone changes', () => {
+    const timeTexts = []
 
-  //   const calendar = initCalendar({
-  //     plugins: [classicThemePlugin, themeForTestsPlugin, rrulePlugin, dayGridPlugin, luxonPlugin],
-  //     timeZone: 'America/New_York',
-  //     initialDate: '2023-02-10',
-  //     initialView: 'dayGridMonth',
-  //     events: [{
-  //       id: '4',
-  //       groupId: '4',
-  //       allDay: false,
-  //       rrule: {
-  //         freq: 'weekly',
-  //         dtstart: '2023-02-10T12:00:00', // assumed to be America/New_York
-  //         until: '2023-02-11', // only one instance
-  //       },
-  //     }],
-  //     eventContent(data) {
-  //       timeTexts.push(data.timeText)
-  //       return true
-  //     },
-  //   })
+    const calendar = initCalendar({
+      plugins: [classicThemePlugin, themeForTestsPlugin, rrulePlugin, dayGridPlugin],
+      timeZone: 'America/New_York',
+      initialDate: '2023-02-10',
+      initialView: 'dayGridMonth',
+      events: [{
+        id: '4',
+        groupId: '4',
+        allDay: false,
+        rrule: {
+          freq: 'weekly',
+          dtstart: '2023-02-10T12:00:00', // assumed to be America/New_York
+          until: '2023-02-11', // only one instance
+        },
+      }],
+      eventContent(data) {
+        timeTexts.push(data.timeText)
+        return true
+      },
+    })
 
-  //   let events = calendar.getEvents()
-  //   expect(events[0].allDay).toBe(false)
-  //   expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-  //   expect(timeTexts.length).toBe(1 * strictModeFactor)
-  //   expect(timeTexts[0 * strictModeFactor]).toBe('12p')
+    let events = calendar.getEvents()
+    expect(events[0].allDay).toBe(false)
+    expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
+    expect(timeTexts.length).toBe(1 * strictModeFactor)
+    expect(timeTexts[0 * strictModeFactor]).toBe('12p')
 
-  //   calendar.setOption('timeZone', 'America/Chicago')
-  //   events = calendar.getEvents()
-  //   expect(events[0].allDay).toBe(false)
-  //   expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-  //   expect(timeTexts.length).toBe(2 * strictModeFactor)
-  //   expect(timeTexts[1 * strictModeFactor]).toBe('11a')
+    calendar.setOption('timeZone', 'America/Chicago')
+    events = calendar.getEvents()
+    expect(events[0].allDay).toBe(false)
+    expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
+    expect(timeTexts.length).toBe(2 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
 
-  //   // ensure bug doesn't occur when refetching (this happened)
-  //   calendar.next()
-  //   calendar.prev()
-  //   events = calendar.getEvents()
-  //   expect(events[0].allDay).toBe(false)
-  //   expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-  //   expect(timeTexts.length).toBe(3 * strictModeFactor)
-  //   expect(timeTexts[1 * strictModeFactor]).toBe('11a')
-  // })
+    // ensure bug doesn't occur when refetching (this happened)
+    calendar.next()
+    calendar.prev()
+    events = calendar.getEvents()
+    expect(events[0].allDay).toBe(false)
+    expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
+    expect(timeTexts.length).toBe(3 * strictModeFactor)
+    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
+  })
 
   // utils
 

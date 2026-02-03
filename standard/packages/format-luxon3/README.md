@@ -1,5 +1,5 @@
 
-# FullCalendar Luxon 3 Plugin
+# FullCalendar Luxon 3 Date-Formatting Plugin
 
 Enhanced date formatting with [Luxon](https://moment.github.io/luxon/) 3
 

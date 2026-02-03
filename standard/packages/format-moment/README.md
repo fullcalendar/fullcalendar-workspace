@@ -1,5 +1,5 @@
 
-# FullCalendar Moment Plugin
+# FullCalendar Moment Date-Formatting Plugin
 
 Enhanced date formatting and conversion with [Moment](https://momentjs.com/)
 
