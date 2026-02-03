@@ -14,7 +14,7 @@ npm install rrule
 Then, install the FullCalendar vanilla-JS package and the RRule plugin:
 
 ```sh
-npm install fullcalendar @fullcalendar/rrule
+npm install fullcalendar @fullcalendar/rrule temporal-polyfill
 ```
 
 ## Usage

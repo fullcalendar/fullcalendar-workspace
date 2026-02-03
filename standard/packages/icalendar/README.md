@@ -14,7 +14,7 @@ npm install ical.js
 Then, install the FullCalendar core package, the iCalendar plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install fullcalendar @fullcalendar/icalendar
+npm install fullcalendar @fullcalendar/icalendar temporal-polyfill
 ```
 
 ## Usage

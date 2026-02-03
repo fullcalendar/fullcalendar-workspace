@@ -8,7 +8,7 @@ Display events from a public [Google Calendar feed](https://support.google.com/c
 Install the FullCalendar vanilla-JS package, the Google Calendar plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install fullcalendar @fullcalendar/google-calendar
+npm install fullcalendar @fullcalendar/google-calendar temporal-polyfill
 ```
 
 ## Usage

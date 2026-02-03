@@ -8,7 +8,7 @@ The official [Angular](https://angular.io/) Component for [FullCalendar](https:/
 Install the Angular connector, the core package, and any plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/angular fullcalendar
+npm install @fullcalendar/angular fullcalendar temporal-polyfill
 ```
 
 ## Usage

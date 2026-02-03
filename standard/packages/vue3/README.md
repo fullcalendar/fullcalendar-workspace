@@ -8,7 +8,7 @@ The official [Vue 3](https://vuejs.org/) component for [FullCalendar](https://fu
 Install the Vue 3 connector, the core package, and any plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install @fullcalendar/vue3
+npm install @fullcalendar/vue3 temporal-polyfill
 ```
 
 ## Usage

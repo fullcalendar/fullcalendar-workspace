@@ -4,7 +4,7 @@
 ## Installation
 
 ```sh
-npm install fullcalendar fullcalendar-scheduler
+npm install fullcalendar fullcalendar-scheduler temporal-polyfill
 ```
 
 ## Usage

@@ -6,7 +6,7 @@ FullCalendar React package for rendering a calendar
 ## Installation
 
 ```sh
-npm install @fullcalendar/react
+npm install @fullcalendar/react temporal-polyfill
 ```
 
 ## Usage

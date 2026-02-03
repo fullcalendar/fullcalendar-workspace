@@ -6,7 +6,7 @@ FullCalendar Vanilla JS package for rendering a calendar
 ## Installation
 
 ```sh
-npm install fullcalendar
+npm install fullcalendar temporal-polyfill
 ```
 
 ## Usage

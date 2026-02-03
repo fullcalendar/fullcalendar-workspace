@@ -6,7 +6,7 @@ FullCalendar Preact package for rendering a calendar
 ## Installation
 
 ```sh
-npm install @fullcalendar/preact
+npm install @fullcalendar/preact temporal-polyfill
 ```
 
 ## Usage
