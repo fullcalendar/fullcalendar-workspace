@@ -1,4 +1,157 @@
 
+## v7.0.0-beta.7
+
+### React (`@fullcalendar/react`)
+
+- FEATURE: React connector is no longer just a connector with internal **P**react rendering. `@fullcalendar/react` is now fully implemented in React, including working SSR and StrictMode.
+- FEATURE: `@fullcalendar/core` removed as peer dependency
+- BREAKING: `temporal-polyfill` added as peer dependency (more info below)
+- BREAKING: Many packages restructured into `@fullcalendar/react` and `@fullcalendar/react-scheduler` (new)
+  - `@fullcalendar/interaction` -> `@fullcalendar/react/interaction`
+  - `@fullcalendar/daygrid` -> `@fullcalendar/react/daygrid`
+  - `@fullcalendar/timegrid` -> `@fullcalendar/react/timegrid`
+  - `@fullcalendar/list` -> `@fullcalendar/react/list`
+  - `@fullcalendar/multimonth` -> `@fullcalendar/react/multimonth`
+  - `@fullcalendar/theme-monarch` -> `@fullcalendar/react/themes/monarch`
+  - `@fullcalendar/theme-forma` -> `@fullcalendar/react/themes/forma`
+  - `@fullcalendar/theme-breezy` -> `@fullcalendar/react/themes/breezy`
+  - `@fullcalendar/theme-pulse` -> `@fullcalendar/react/themes/pulse`
+  - `@fullcalendar/theme-classic` -> `@fullcalendar/react/themes/classic`
+  - `@fullcalendar/resource` -> `@fullcalendar/react-scheduler`
+  - `@fullcalendar/adaptive` -> `@fullcalendar/react-scheduler/adaptive`
+  - `@fullcalendar/scrollgrid` -> `@fullcalendar/react-scheduler/scrollgrid`
+  - `@fullcalendar/timeline` -> `@fullcalendar/react-scheduler/timeline`
+  - `@fullcalendar/resource-timeline` -> `@fullcalendar/react-scheduler/resource-timeline`
+  - `@fullcalendar/resource-timegrid` -> `@fullcalendar/react-scheduler/resource-timegrid`
+
+### Preact
+
+- FEATURE: FullCalendar implemented natively with [Preact](https://preactjs.com/) and finally exposed as packages: `@fullcalendar/preact` and `@fullcalendar/preact-scheduler`
+
+### Vue 3 (`@fullcalendar/vue3`)
+
+- FEATURE: `@fullcalendar/core` removed as peer dependency
+- BREAKING: `temporal-polyfill` added as peer dependency (more info below)
+- BREAKING: Many packages restructured into `@fullcalendar/vue3` and `@fullcalendar/vue3-scheduler` (new)
+  - `@fullcalendar/interaction` -> `@fullcalendar/vue3/interaction`
+  - `@fullcalendar/daygrid` -> `@fullcalendar/vue3/daygrid`
+  - `@fullcalendar/timegrid` -> `@fullcalendar/vue3/timegrid`
+  - `@fullcalendar/list` -> `@fullcalendar/vue3/list`
+  - `@fullcalendar/multimonth` -> `@fullcalendar/vue3/multimonth`
+  - `@fullcalendar/theme-monarch` -> `@fullcalendar/vue3/themes/monarch`
+  - `@fullcalendar/theme-forma` -> `@fullcalendar/vue3/themes/forma`
+  - `@fullcalendar/theme-breezy` -> `@fullcalendar/vue3/themes/breezy`
+  - `@fullcalendar/theme-pulse` -> `@fullcalendar/vue3/themes/pulse`
+  - `@fullcalendar/theme-classic` -> `@fullcalendar/vue3/themes/classic`
+  - `@fullcalendar/resource` -> `@fullcalendar/vue3-scheduler`
+  - `@fullcalendar/adaptive` -> `@fullcalendar/vue3-scheduler/adaptive`
+  - `@fullcalendar/scrollgrid` -> `@fullcalendar/vue3-scheduler/scrollgrid`
+  - `@fullcalendar/timeline` -> `@fullcalendar/vue3-scheduler/timeline`
+  - `@fullcalendar/resource-timeline` -> `@fullcalendar/vue3-scheduler/resource-timeline`
+  - `@fullcalendar/resource-timegrid` -> `@fullcalendar/vue3-scheduler/resource-timegrid`
+
+### Angular (`@fullcalendar/angular`)
+
+- FIX: Restored Angular support for v7
+- BREAKING: Vanilla JS peer dependency renamed from `@fullcalendar/core` to `fullcalendar`
+- BREAKING: `temporal-polyfill` added as peer dependency (more info below)
+- BREAKING: Many packages restructured into `@fullcalendar/angular` and `@fullcalendar/angular-scheduler` (new)
+  - `@fullcalendar/interaction` -> `@fullcalendar/angular/interaction`
+  - `@fullcalendar/daygrid` -> `@fullcalendar/angular/daygrid`
+  - `@fullcalendar/timegrid` -> `@fullcalendar/angular/timegrid`
+  - `@fullcalendar/list` -> `@fullcalendar/angular/list`
+  - `@fullcalendar/multimonth` -> `@fullcalendar/angular/multimonth`
+  - `@fullcalendar/theme-monarch` -> `@fullcalendar/angular/themes/monarch`
+  - `@fullcalendar/theme-forma` -> `@fullcalendar/angular/themes/forma`
+  - `@fullcalendar/theme-breezy` -> `@fullcalendar/angular/themes/breezy`
+  - `@fullcalendar/theme-pulse` -> `@fullcalendar/angular/themes/pulse`
+  - `@fullcalendar/theme-classic` -> `@fullcalendar/angular/themes/classic`
+  - `@fullcalendar/resource` -> `@fullcalendar/angular-scheduler`
+  - `@fullcalendar/adaptive` -> `@fullcalendar/angular-scheduler/adaptive`
+  - `@fullcalendar/scrollgrid` -> `@fullcalendar/angular-scheduler/scrollgrid`
+  - `@fullcalendar/timeline` -> `@fullcalendar/angular-scheduler/timeline`
+  - `@fullcalendar/resource-timeline` -> `@fullcalendar/angular-scheduler/resource-timeline`
+  - `@fullcalendar/resource-timegrid` -> `@fullcalendar/angular-scheduler/resource-timegrid`
+
+### Vanilla JS (previously `@fullcalendar/core`)
+
+- BREAKING: renamed to `fullcalendar`
+- BREAKING: `temporal-polyfill` added as peer dependency (more info below)
+- BREAKING: Many packages restructured into `fullcalendar` and `fullcalendar-scheduler` (repurposed)
+  - `@fullcalendar/interaction` -> `fullcalendar/interaction`
+  - `@fullcalendar/daygrid` -> `fullcalendar/daygrid`
+  - `@fullcalendar/timegrid` -> `fullcalendar/timegrid`
+  - `@fullcalendar/list` -> `fullcalendar/list`
+  - `@fullcalendar/multimonth` -> `fullcalendar/multimonth`
+  - `@fullcalendar/theme-monarch` -> `fullcalendar/themes/monarch`
+  - `@fullcalendar/theme-forma` -> `fullcalendar/themes/forma`
+  - `@fullcalendar/theme-breezy` -> `fullcalendar/themes/breezy`
+  - `@fullcalendar/theme-pulse` -> `fullcalendar/themes/pulse`
+  - `@fullcalendar/theme-classic` -> `fullcalendar/themes/classic`
+  - `@fullcalendar/resource` -> `fullcalendar-scheduler`
+  - `@fullcalendar/adaptive` -> `fullcalendar-scheduler/adaptive`
+  - `@fullcalendar/scrollgrid` -> `fullcalendar-scheduler/scrollgrid`
+  - `@fullcalendar/timeline` -> `fullcalendar-scheduler/timeline`
+  - `@fullcalendar/resource-timeline` -> `fullcalendar-scheduler/resource-timeline`
+  - `@fullcalendar/resource-timegrid` -> `fullcalendar-scheduler/resource-timegrid`
+
+### Web Component (`@fullcalendar/web-component`)
+
+- FEATURE: `@fullcalendar/core` removed as peer dependency
+- BREAKING: `temporal-polyfill` added as peer dependency (more info below)
+- BREAKING: Many packages restructured into `@fullcalendar/web-component` and `@fullcalendar/web-component-scheduler` (new)
+  - `@fullcalendar/interaction` -> `@fullcalendar/web-component/interaction`
+  - `@fullcalendar/daygrid` -> `@fullcalendar/web-component/daygrid`
+  - `@fullcalendar/timegrid` -> `@fullcalendar/web-component/timegrid`
+  - `@fullcalendar/list` -> `@fullcalendar/web-component/list`
+  - `@fullcalendar/multimonth` -> `@fullcalendar/web-component/multimonth`
+  - `@fullcalendar/theme-monarch` -> `@fullcalendar/web-component/themes/monarch`
+  - `@fullcalendar/theme-forma` -> `@fullcalendar/web-component/themes/forma`
+  - `@fullcalendar/theme-breezy` -> `@fullcalendar/web-component/themes/breezy`
+  - `@fullcalendar/theme-pulse` -> `@fullcalendar/web-component/themes/pulse`
+  - `@fullcalendar/theme-classic` -> `@fullcalendar/web-component/themes/classic`
+  - `@fullcalendar/resource` -> `@fullcalendar/web-component-scheduler`
+  - `@fullcalendar/adaptive` -> `@fullcalendar/web-component-scheduler/adaptive`
+  - `@fullcalendar/scrollgrid` -> `@fullcalendar/web-component-scheduler/scrollgrid`
+  - `@fullcalendar/timeline` -> `@fullcalendar/web-component-scheduler/timeline`
+  - `@fullcalendar/resource-timeline` -> `@fullcalendar/web-component-scheduler/resource-timeline`
+  - `@fullcalendar/resource-timegrid` -> `@fullcalendar/web-component-scheduler/resource-timegrid`
+
+### `temporal-polyfill` Peer Dependency
+
+The [temporal-polyfill](https://www.npmjs.com/package/temporal-polyfill) package is now a peer dependency of all the FullCalendar packages. This means you are required to install it.
+
+The "Temporal" [built-in browser API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) is coming to all modern browsers, and this package is a polyfill for it, which means it allows you to use it before it's officially supported.
+
+FullCalendar **DOES NOT INSTALL IT GLOBALLY** but instead uses it internally. For v7, FullCalendar uses the [tree-shakeable API](https://github.com/fullcalendar/temporal-polyfill?tab=readme-ov-file#tree-shakable-api), meaning the code-size impact will be minimal and there will be no side-effects.
+
+Though FullCalendar does not install the polyfill globally, you are welcome to do so for your projects:
+
+```ts
+import 'temporal-polyfill/global'
+```
+
+### Moment / Moment Timezone
+
+- BREAKING: moment package removed (`@fullcalendar/moment`)
+  - Date formatting-string functionality moved to `@fullcalendar/format-moment` plugin
+  - Date conversion utilities (`toMoment` and `toMomentDuration`) removed
+- BREAKING: moment-timezone support removed (`@fullcalendar/moment-timezone`) because time zone resolution is now built-in to FullCalendar via the `temporal-polyfill` peer dependency.
+
+### Luxon
+
+- BREAKING: Luxon 1 package removed (`@fullcalendar/luxon`)
+- BREAKING: Luxon 2 package removed (`@fullcalendar/luxon2`)
+- BREAKING: Luxon 3 package removed (`@fullcalendar/luxon3`)
+  - Date formatting-string functionality moved to `@fullcalendar/format-luxon3` plugin
+  - Date conversion utilities (`toLuxonDateTime` and `toLuxonDuration`) removed
+  - Luxon time zone support removed because time zone resolution is now built-in to FullCalendar via the `temporal-polyfill` peer dependency.
+
+### Bootstrap Theme
+
+- BREAKING: Bootstrap 4 theme support removed (`@fullcalendar/bootstrap4`)
+- BREAKING: Bootstrap 5 theme support removed (`@fullcalendar/bootstrap5`)
+
 ## v7.0.0-beta.6
 
 - Virtual rendering for all axes in resource-timeline views ([#5673](https://github.com/fullcalendar/fullcalendar/issues/5673), [#6478](https://github.com/fullcalendar/fullcalendar/issues/6478))
