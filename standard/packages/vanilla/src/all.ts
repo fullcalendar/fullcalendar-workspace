@@ -15,7 +15,7 @@ export const plugins: PluginDefInput[] = [
 ]
 
 export class Calendar extends BareCalendar {
-  constructor(el: HTMLElement, optionOverrides: CalendarOptions) {
+  constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
     super(el, {
       ...optionOverrides,
       plugins: [

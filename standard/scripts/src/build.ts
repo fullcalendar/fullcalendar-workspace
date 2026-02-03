@@ -10,7 +10,7 @@ export default async function(this: ScriptContext, ...args: string[]) {
   await runTurboTasks(monorepoDir, ['build', ...refineFilterArgs(args, monorepoStruct)])
 
   console.log()
-  console.log('NOTE: archive-generation has been temporarily disabled')
+  console.log('NOTE: zip archiving has been temporarily disabled')
   console.log()
   // await writeMonorepoArchives(monorepoStruct)
 }

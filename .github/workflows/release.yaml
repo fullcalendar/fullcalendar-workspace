@@ -93,7 +93,9 @@ jobs:
             --filter '!./examples/**' \
             --filter '!@fullcalendar-tests/*' \
             run build
-          pnpm run archive
+
+      # zip archiving temporarily disabled after build
+      # pnpm run archive
 
       # execute only connector-package tests, as "smoke" tests. they're fast
       - name: Test
@@ -112,6 +114,7 @@ jobs:
       # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
       #
       - name: Sync Repos
+        # DISABLED!
         if: false
         run: |
           echo "Pulling latest and rebasing version-bump commit atop..."

@@ -31,7 +31,7 @@ export const plugins: PluginDefInput[] = [
   timelinePlugin,
 ]
 
-export function Calendar(options: CalendarOptions): ReactNode {
+export function Calendar(options: CalendarOptions = {}): ReactNode {
   return (
     <BareCalendar
       {...options}

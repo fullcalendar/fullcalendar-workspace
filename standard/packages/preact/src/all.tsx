@@ -16,7 +16,7 @@ export const plugins: PluginDefInput[] = [
   multiMonthPlugin,
 ]
 
-export function Calendar(options: CalendarOptions): ReactNode {
+export function Calendar(options: CalendarOptions = {}): ReactNode {
   return (
     <BareCalendar
       {...options}
