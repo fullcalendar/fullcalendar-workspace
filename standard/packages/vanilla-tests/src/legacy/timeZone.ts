@@ -1,3 +1,5 @@
+import { Temporal } from 'temporal-polyfill'
+
 describe('timeZone', () => {
   // NOTE: Only deals with the processing of *received* events.
   // Verification of a correct AJAX *request* is done in events-json-feed.js
@@ -63,22 +65,21 @@ describe('timeZone', () => {
   }
 
   it('receives events correctly when custom timezone', () => {
-    initCalendar({
-      timeZone: 'America/Chicago',
-    })
-    expectCustomTimezone()
+    const timeZone = 'America/Chicago'
+    initCalendar({ timeZone })
+    expectCustomTimezone(timeZone)
   })
 
-  function expectCustomTimezone() {
+  function expectCustomTimezone(timeZone) {
     let allDayEvent = currentCalendar.getEventById('1')
     let timedEvent = currentCalendar.getEventById('2')
     let zonedEvent = currentCalendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
-    expect(allDayEvent.start).toEqualDate('2014-05-02')
+    expect(allDayEvent.start).toEqualDate(new Date(Temporal.PlainDate.from('2014-05-02').toZonedDateTime(timeZone).epochMilliseconds))
     expect(timedEvent.allDay).toEqual(false)
-    expect(timedEvent.start).toEqualDate('2014-05-10T12:00:00Z')
+    expect(timedEvent.start).toEqualDate(new Date(Temporal.PlainDateTime.from('2014-05-10T12:00:00').toZonedDateTime(timeZone).epochMilliseconds))
     expect(zonedEvent.allDay).toEqual(false)
-    expect(zonedEvent.start).toEqualDate('2014-05-10T14:00:00Z') // coerced to UTC
+    expect(zonedEvent.start).toEqualDate(new Date(Temporal.Instant.from('2014-05-10T14:00:00+11:00').epochMilliseconds))
   }
 
   it('can be set dynamically', () => {

@@ -274,15 +274,16 @@ async function buildGlobalPlugins(
   sourcemaps: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const { isPublicMui } = analyzePkg(pkgDir)
+  const { isPublicMui, isTests } = analyzePkg(pkgDir)
 
   return [
     remapImportsPlugin({
       mappings: pkgBundleStruct.importRemaps || {},
     }),
-    iifeSplitPlugin(
-      buildGlobalSplitOptions(pkgBundleStruct),
-    ),
+    !isTests && // HACK around recent plugin bug
+      iifeSplitPlugin(
+        buildGlobalSplitOptions(pkgBundleStruct),
+      ),
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
       pkgNames: computeGlobalExternalPkgs(pkgBundleStruct),

@@ -1,6 +1,7 @@
 import fetchMock from 'fetch-mock'
 import { JsonRequestError } from 'fullcalendar'
 import { formatIsoTimeZoneOffset } from '../lib/datelib-utils.js'
+import { plainAndZoneToString } from '../lib/temporal-convert.js'
 
 describe('events as a json feed', () => {
   pushOptions({
@@ -50,27 +51,30 @@ describe('events as a json feed', () => {
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, { body: [] })
 
+    const timeZone = 'America/Chicago'
     initCalendar({
       events: givenUrl,
-      timeZone: 'America/Chicago',
+      timeZone,
     })
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParams = new URL(requestUrl).searchParams
-    expect(requestParams.get('start')).toBe('2014-04-27T00:00:00')
-    expect(requestParams.get('end')).toBe('2014-06-08T00:00:00')
-    expect(requestParams.get('timeZone')).toBe('America/Chicago')
+    expect(requestParams.get('start')).toBe(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+    expect(requestParams.get('end')).toBe(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
+    expect(requestParams.get('timeZone')).toBe(timeZone)
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5485
   it('processes new events under updated time zone', (done) => {
     const givenUrl = window.location.href + '/my-feed.php'
+    const timeZone = 'America/Chicago'
+
     fetchMock.get(/my-feed\.php/, (requestUrl) => {
       const requestParams = new URL(requestUrl).searchParams
       let reqTimeZone = requestParams.get('timeZone')
       return {
         body: [
-          reqTimeZone === 'America/Chicago'
+          reqTimeZone === timeZone
             ? { start: '2014-06-08T01:00:00' }
             : { start: '2014-06-08T03:00:00' },
         ],
@@ -79,17 +83,17 @@ describe('events as a json feed', () => {
 
     let calendar = initCalendar({
       events: givenUrl,
-      timeZone: 'America/Chicago',
+      timeZone,
     })
 
     setTimeout(() => {
       let eventStartStr = calendar.getEvents()[0].startStr
-      expect(eventStartStr).toBe('2014-06-08T01:00:00')
+      expect(eventStartStr).toBe(plainAndZoneToString('2014-06-08T01:00:00', timeZone))
 
       calendar.setOption('timeZone', 'America/New_York')
       setTimeout(() => {
         eventStartStr = calendar.getEvents()[0].startStr
-        expect(eventStartStr).toBe('2014-06-08T03:00:00')
+        expect(eventStartStr).toBe(plainAndZoneToString('2014-06-08T03:00:00', 'America/New_York'))
         done()
       }, 100)
     }, 100)
@@ -106,12 +110,13 @@ describe('events as a json feed', () => {
       ],
     })
 
+    const timeZone = 'America/Chicago'
     initCalendar({
       eventSources: [{
         url: givenUrl,
         className: 'customeventclass',
       }],
-      timeZone: 'America/Chicago',
+      timeZone,
       eventDidMount(data) {
         expect(data.el).toHaveClass('customeventclass')
         done()
@@ -120,9 +125,9 @@ describe('events as a json feed', () => {
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParams = new URL(requestUrl).searchParams
-    expect(requestParams.get('start')).toBe('2014-04-27T00:00:00')
-    expect(requestParams.get('end')).toBe('2014-06-08T00:00:00')
-    expect(requestParams.get('timeZone')).toBe('America/Chicago')
+    expect(requestParams.get('start')).toBe(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+    expect(requestParams.get('end')).toBe(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
+    expect(requestParams.get('timeZone')).toBe(timeZone)
   })
 
   it('requests POST correctly', (done) => {
@@ -242,3 +247,4 @@ describe('events as a json feed', () => {
     }, 100)
   })
 })
+

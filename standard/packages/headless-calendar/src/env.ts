@@ -402,7 +402,7 @@ export class DateEnv {
     return new Date( // a "Date Marker", which is like PlainDateTime
       Date.UTC(
         zdt.year,
-        zdt.month,
+        zdt.month - 1,
         zdt.day,
         zdt.hour,
         zdt.minute,
@@ -422,13 +422,13 @@ export class DateEnv {
 
     return new Temporal.PlainDateTime(
       m.getUTCFullYear(),
-      m.getUTCMonth(),
+      m.getUTCMonth() + 1,
       m.getUTCDate(),
       m.getUTCHours(),
       m.getUTCMinutes(),
       m.getUTCSeconds(),
       m.getUTCMilliseconds(),
-    ).toZonedDateTime(this.timeZone).offsetNanoseconds / 1000000
+    ).toZonedDateTime(this.timeZone).offsetNanoseconds / (1000000000 * 60)
   }
 
   // Conversion
@@ -444,7 +444,7 @@ export class DateEnv {
     return new Date(
       new Temporal.PlainDateTime(
         m.getUTCFullYear(),
-        m.getUTCMonth(),
+        m.getUTCMonth() + 1,
         m.getUTCDate(),
         m.getUTCHours(),
         m.getUTCMinutes(),

@@ -1,3 +1,5 @@
+import { plainAndZoneToString, plainAndZoneToDate } from "../lib/temporal-convert"
+
 describe('events as a function', () => {
   pushOptions({
     initialView: 'dayGridMonth',
@@ -43,15 +45,16 @@ describe('events as a function', () => {
   })
 
   it('requests correctly when custom timezone', (done) => {
+    const timeZone = 'America/Chicago'
     initCalendar({
-      timeZone: 'America/Chicago',
+      timeZone,
       events(data, callback) {
         testEventFunctionParams(data, callback)
-        expect(data.timeZone).toEqual('America/Chicago')
-        expect(data.start).toEqualDate('2014-04-27T00:00:00Z')
-        expect(data.startStr).toEqual('2014-04-27T00:00:00') // no Z
-        expect(data.end).toEqualDate('2014-06-08T00:00:00Z')
-        expect(data.endStr).toEqual('2014-06-08T00:00:00') // no Z
+        expect(data.timeZone).toEqual(timeZone)
+        expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27T00:00:00', timeZone))
+        expect(data.startStr).toEqual(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+        expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08T00:00:00', timeZone))
+        expect(data.endStr).toEqual(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
         callback([])
         setTimeout(done) // :(
       },
@@ -59,23 +62,24 @@ describe('events as a function', () => {
   })
 
   it('requests correctly when timezone changed dynamically', (done) => {
+    const timeZone = 'America/Chicago'
     let callCnt = 0
     let options = {
-      timeZone: 'America/Chicago',
+      timeZone,
       events(data, callback) {
         testEventFunctionParams(data, callback)
         callCnt += 1
         if (callCnt === 1) {
-          expect(data.timeZone).toEqual('America/Chicago')
-          expect(data.start).toEqualDate('2014-04-27')
-          expect(data.end).toEqualDate('2014-06-08')
+          expect(data.timeZone).toEqual(timeZone)
+          expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27', timeZone))
+          expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08', timeZone))
           setTimeout(() => {
             currentCalendar.setOption('timeZone', 'UTC')
           }, 0)
         } else if (callCnt === 2) {
           expect(data.timeZone).toEqual('UTC')
-          expect(data.start).toEqualDate('2014-04-27')
-          expect(data.end).toEqualDate('2014-06-08')
+          expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27', 'UTC'))
+          expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08', 'UTC'))
           setTimeout(done) // :(
         }
       },

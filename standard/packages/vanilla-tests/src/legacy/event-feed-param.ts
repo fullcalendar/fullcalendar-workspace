@@ -1,4 +1,5 @@
 import fetchMock from 'fetch-mock'
+import { plainAndZoneToString } from '../lib/temporal-convert'
 
 describe('event feed params', () => {
   pushOptions({
@@ -11,12 +12,13 @@ describe('event feed params', () => {
   })
 
   it('utilizes custom startParam, endParam, and timeZoneParam names', () => {
+    const timeZone = 'America/Los_Angeles'
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, { body: [] })
 
     initCalendar({
       events: givenUrl,
-      timeZone: 'America/Los_Angeles',
+      timeZone,
       startParam: 'mystart',
       endParam: 'myend',
       timeZoneParam: 'currtz',
@@ -24,17 +26,18 @@ describe('event feed params', () => {
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParams = new URL(requestUrl).searchParams
-    expect(requestParams.get('mystart')).toBe('2014-04-27T00:00:00')
-    expect(requestParams.get('myend')).toBe('2014-06-08T00:00:00')
-    expect(requestParams.get('currtz')).toBe('America/Los_Angeles')
+    expect(requestParams.get('mystart')).toBe(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+    expect(requestParams.get('myend')).toBe(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
+    expect(requestParams.get('currtz')).toBe(timeZone)
   })
 
   it('utilizes event-source-specific startParam, endParam, and timeZoneParam names', () => {
+    const timeZone = 'America/Los_Angeles'
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, { body: [] })
 
     initCalendar({
-      timeZone: 'America/Los_Angeles',
+      timeZone,
       startParam: 'mystart',
       endParam: 'myend',
       timeZoneParam: 'currtz',
@@ -50,8 +53,8 @@ describe('event feed params', () => {
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParams = new URL(requestUrl).searchParams
-    expect(requestParams.get('feedstart')).toBe('2014-04-27T00:00:00')
-    expect(requestParams.get('feedend')).toBe('2014-06-08T00:00:00')
-    expect(requestParams.get('feedctz')).toBe('America/Los_Angeles')
+    expect(requestParams.get('feedstart')).toBe(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+    expect(requestParams.get('feedend')).toBe(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
+    expect(requestParams.get('feedctz')).toBe(timeZone)
   })
 })
