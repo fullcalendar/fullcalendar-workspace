@@ -7,7 +7,8 @@
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "react": "^17 || ^18 || ^19",
-    "react-dom": "^17 || ^18 || ^19"
+    "react-dom": "^17 || ^18 || ^19",
+    "temporal-polyfill": "^0.3.0"
   },
   "peerDependenciesMeta": {
     "@fullcalendar/react-scheduler": { "optional": true }
@@ -20,7 +21,8 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
