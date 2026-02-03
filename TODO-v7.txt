@@ -23,6 +23,15 @@ build note:
     manually before `pn dev`
 
 
+disable pushing to fullcalendar/fullcalendar subrepo
+shadcn needs to install temporal-polyfill
+angular
+  how to css
+  ensure all new settings are put on the Angular connector!
+  Building example project gives warnings like
+    Ignoring this import because ".." was marked as having no side effects
+
+
 any types referenced in (public) PluginDefInput,
   ensure they're public too
 better READMEs:
@@ -32,10 +41,6 @@ name it 'PluginDef' or 'PluginDefInput' (current) ?
 remove (data, *createElement*) param from *Content hooks
 re-add keys to toolbarsections, so doesn't reuse elements
 changelog: validRange function always receives whole-day as parameter
-investige Angular example project problem where "All Events" in sidebar don't initially populate
-  one of our events not emitting?
-  only happens in Angular 21 example
-  for v6 too? probably
 changelog:
   DateSelectArg -> DateSelectData
   EventClickArg -> EventClickData
@@ -258,8 +263,6 @@ bug: Causes scrollbars when there shouldn't be
 Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
   Overhaul the default setting
   Add to changelog
-new Angular version
-  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
 [rename] maybe rename "canvas" color to "background" color?
   NOTES: rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
     but we still want popover bg to be white. call is just "bg" color?
@@ -673,7 +676,6 @@ Rerun aXe tests
 hire designer for schematics
 somehow publish classic tailwind theme?
 adjust transpilation settings. es2016 okay now, with null coalescing operator?
-ensure all new settings are put on the Angular connector!
 test print-view extensively after theme refactor
 test all horizontally-scrolling views
 test z-index of events and more-link ABOVE background events in ALL VIEWs
@@ -849,9 +851,6 @@ Resource Timeline
   [structure] when no groupcols, do simplified DOM structure?
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
-Angular
-  Building example project gives warnings like
-    Ignoring this import because ".." was marked as having no side effects
 TimeGrid
   when date-selecting with mirror event, why are we rendering highlight?
   for timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events

@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule, CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/angular/interaction';
@@ -49,9 +49,6 @@ export class App {
   });
   currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
-
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
   }
@@ -88,6 +85,5 @@ export class App {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 }
