@@ -23,6 +23,10 @@ build note:
     manually before `pn dev`
 
 
+on themes.fullcalendar.io
+  WARN: Duplicate plugin 'resource-daygrid'
+
+
 any types referenced in (public) PluginDefInput,
   ensure they're public too
 better READMEs:
@@ -985,6 +989,8 @@ punt: BUG: when timeline events stack and need more-link,
 Notes
 -----
 
+Making an npm-script called "deploy" and expecting "pn deploy" to work WON'T, pnpm intercepts it
+  rename script to "cloudflare"
 isMajor/isMinor API additions:
   isMajor
     + slotLane

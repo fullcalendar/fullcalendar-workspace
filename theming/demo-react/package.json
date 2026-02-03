@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "clean": "rm -rf dist public/shoelace/assets",
     "preview": "vite preview",
-    "deploy": "wrangler deploy",
+    "cloudflare": "wrangler deploy",
     "copy-shoelace-assets": "mkdir -p public/shoelace/assets && cp -R node_modules/@shoelace-style/shoelace/dist/assets/ public/shoelace/assets/",
     "postinstall": "pnpm run copy-shoelace-assets"
   },
