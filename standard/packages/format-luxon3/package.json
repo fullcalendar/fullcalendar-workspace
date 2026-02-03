@@ -1,23 +1,26 @@
 {
-  "name": "@fullcalendar/moment",
+  "name": "@fullcalendar/format-luxon3",
   "version": "7.0.0-beta.6",
-  "title": "FullCalendar Moment Plugin",
-  "description": "Enhanced date formatting with Moment",
+  "title": "FullCalendar Luxon 3 Plugin",
+  "description": "Enhanced date formatting with Luxon 3",
   "keywords": [
-    "moment"
+    "luxon",
+    "luxon3",
+    "timezone"
   ],
-  "homepage": "https://fullcalendar.io/docs/moment-plugin",
+  "homepage": "https://fullcalendar.io/docs/luxon",
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.6",
     "@fullcalendar/core": "workspace:7.0.0-beta.6"
   },
   "peerDependencies": {
-    "moment": "^2.29.1",
+    "luxon": "^3.0.0",
     "temporal-polyfill": "^0.3.0"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
-    "moment": "^2.29.1",
+    "@types/luxon": "^3.3.0",
+    "luxon": "^3.0.0",
     "temporal-polyfill": "^0.3.0"
   },
   "scripts": {
@@ -29,10 +32,10 @@
   "buildConfig": {
     "globalConfig": {
       "externalPkgs": [
-        "moment"
+        "luxon"
       ],
       "externalGlobals": {
-        "moment": "moment"
+        "luxon": "luxon"
       }
     },
     "exports": {

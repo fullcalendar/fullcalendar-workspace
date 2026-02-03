@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { addHours, startOfDay } from 'date-fns';
 import FullCalendar from '@fullcalendar/react';
 import themePlugin from '@fullcalendar/react/themes/classic';
-import momentPlugin from '@fullcalendar/moment';
+import momentPlugin from '@fullcalendar/format-moment';
 import timeGridPlugin from '@fullcalendar/react/timegrid';
 import scrollGrid from '@fullcalendar/react-scheduler/scrollgrid';
 import interactionPlugin from '@fullcalendar/react/interaction';

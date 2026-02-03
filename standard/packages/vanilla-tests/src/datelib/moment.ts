@@ -1,5 +1,5 @@
 import { Calendar } from 'fullcalendar'
-import momentPlugin from '@fullcalendar/moment'
+import momentPlugin from '@fullcalendar/format-moment'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
 import dayGridPlugin from 'fullcalendar/daygrid'

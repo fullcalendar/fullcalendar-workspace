@@ -23,10 +23,10 @@
       "path": "../icalendar"
     },
     {
-      "path": "../luxon3"
+      "path": "../format-luxon3"
     },
     {
-      "path": "../moment"
+      "path": "../format-moment"
     },
     {
       "path": "../rrule"

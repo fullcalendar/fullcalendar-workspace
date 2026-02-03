@@ -79,7 +79,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
-        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.31.1)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.31.1)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)
       '@angular/cli':
         specifier: ~16.0.2
         version: 16.0.6(chokidar@3.5.3)
@@ -243,7 +243,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
-        version: 18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.31.1)(stylus@0.62.0)(typescript@5.4.5)
+        version: 18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.31.1)(stylus@0.62.0)(typescript@5.4.5)
       '@angular/cli':
         specifier: ^18.0.2
         version: 18.2.21(chokidar@3.6.0)
@@ -838,9 +838,9 @@ importers:
 
   examples/react18-issue-7619:
     dependencies:
-      '@fullcalendar/moment':
+      '@fullcalendar/format-moment':
         specifier: workspace:7.0.0-beta.6
-        version: link:../../standard/packages/moment/dist
+        version: link:../../standard/packages/format-moment/dist
       '@fullcalendar/react':
         specifier: workspace:7.0.0-beta.6
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
@@ -1959,6 +1959,49 @@ importers:
         version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
     publishDirectory: ./dist
 
+  standard/packages/format-luxon3:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types/dist
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
+      '@types/luxon':
+        specifier: ^3.3.0
+        version: 3.7.1
+      luxon:
+        specifier: ^3.0.0
+        version: 3.7.2
+      temporal-polyfill:
+        specifier: ^0.3.0
+        version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
+    publishDirectory: ./dist
+
+  standard/packages/format-moment:
+    dependencies:
+      '@full-ui/headless-calendar':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../headless-calendar/dist
+      '@fullcalendar/core':
+        specifier: workspace:7.0.0-beta.6
+        version: link:../core-types/dist
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: workspace:*
+        version: link:../../scripts
+      moment:
+        specifier: ^2.29.1
+        version: 2.30.1
+      temporal-polyfill:
+        specifier: ^0.3.0
+        version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
+    publishDirectory: ./dist
+
   standard/packages/google-calendar:
     dependencies:
       '@full-ui/headless-calendar':
@@ -2004,49 +2047,6 @@ importers:
       ical.js:
         specifier: ^2.0.0
         version: 2.2.1
-      temporal-polyfill:
-        specifier: ^0.3.0
-        version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
-    publishDirectory: ./dist
-
-  standard/packages/luxon3:
-    dependencies:
-      '@full-ui/headless-calendar':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../headless-calendar/dist
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core-types/dist
-    devDependencies:
-      '@fullcalendar-scripts/standard':
-        specifier: workspace:*
-        version: link:../../scripts
-      '@types/luxon':
-        specifier: ^3.3.0
-        version: 3.7.1
-      luxon:
-        specifier: ^3.0.0
-        version: 3.7.2
-      temporal-polyfill:
-        specifier: ^0.3.0
-        version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
-    publishDirectory: ./dist
-
-  standard/packages/moment:
-    dependencies:
-      '@full-ui/headless-calendar':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../headless-calendar/dist
-      '@fullcalendar/core':
-        specifier: workspace:7.0.0-beta.6
-        version: link:../core-types/dist
-    devDependencies:
-      '@fullcalendar-scripts/standard':
-        specifier: workspace:*
-        version: link:../../scripts
-      moment:
-        specifier: ^2.29.1
-        version: 2.30.1
       temporal-polyfill:
         specifier: ^0.3.0
         version: 0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)
@@ -2195,18 +2195,18 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
+      '@fullcalendar/format-luxon3':
+        specifier: workspace:*
+        version: link:../format-luxon3/dist
+      '@fullcalendar/format-moment':
+        specifier: workspace:*
+        version: link:../format-moment/dist
       '@fullcalendar/google-calendar':
         specifier: workspace:*
         version: link:../google-calendar/dist
       '@fullcalendar/icalendar':
         specifier: workspace:*
         version: link:../icalendar/dist
-      '@fullcalendar/luxon3':
-        specifier: workspace:*
-        version: link:../luxon3/dist
-      '@fullcalendar/moment':
-        specifier: workspace:*
-        version: link:../moment/dist
       '@fullcalendar/rrule':
         specifier: workspace:*
         version: link:../rrule/dist
@@ -21747,11 +21747,11 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.31.1)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)':
+  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.31.1)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -21812,9 +21812,9 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.31.1)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.104.1)
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.18.17))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
       esbuild: 0.18.17
       karma: 6.4.4
@@ -21841,7 +21841,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -21902,7 +21902,7 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.31.1)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
@@ -22015,11 +22015,11 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.31.1)(stylus@0.62.0)(typescript@5.4.5)':
+  '@angular-devkit/build-angular@18.2.21(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.31.1)(stylus@0.62.0)(typescript@5.4.5)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1802.21(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1802.21(chokidar@3.6.0)(webpack-dev-server@5.2.2(tslib@2.6.3)(webpack@5.94.0))(webpack@5.94.0(esbuild@0.23.0))
+      '@angular-devkit/build-webpack': 0.1802.21(chokidar@3.6.0)(webpack-dev-server@5.2.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0)))(webpack@5.94.0(esbuild@0.23.0))
       '@angular-devkit/core': 18.2.21(chokidar@3.6.0)
       '@angular/build': 18.2.21(patch_hash=9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293)(@angular/compiler-cli@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@24.10.9)(chokidar@3.6.0)(less@4.2.0)(lightningcss@1.31.1)(postcss@8.4.41)(stylus@0.62.0)(terser@5.31.6)(typescript@5.4.5)
       '@angular/compiler-cli': 18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(typescript@5.4.5)
@@ -22075,10 +22075,10 @@ snapshots:
       typescript: 5.4.5
       watchpack: 2.4.1
       webpack: 5.94.0(esbuild@0.23.0)
-      webpack-dev-middleware: 7.4.2(tslib@2.8.1)(webpack@5.94.0)
-      webpack-dev-server: 5.2.2(tslib@2.8.1)(webpack@5.94.0)
+      webpack-dev-middleware: 7.4.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0))
+      webpack-dev-server: 5.2.2(tslib@2.8.1)(webpack@5.104.1)
       webpack-merge: 6.0.1
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.23.0))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.23.0))
     optionalDependencies:
       esbuild: 0.23.0
       karma: 6.4.4
@@ -22186,12 +22186,12 @@ snapshots:
       - webpack-cli
       - yaml
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.18.17)
-      webpack-dev-server: 4.15.1(webpack@5.104.1)
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
     transitivePeerDependencies:
       - chokidar
 
@@ -22204,12 +22204,12 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1802.21(chokidar@3.6.0)(webpack-dev-server@5.2.2(tslib@2.6.3)(webpack@5.94.0))(webpack@5.94.0(esbuild@0.23.0))':
+  '@angular-devkit/build-webpack@0.1802.21(chokidar@3.6.0)(webpack-dev-server@5.2.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0)))(webpack@5.94.0(esbuild@0.23.0))':
     dependencies:
       '@angular-devkit/architect': 0.1802.21(chokidar@3.6.0)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.23.0)
-      webpack-dev-server: 5.2.2(tslib@2.8.1)(webpack@5.94.0)
+      webpack-dev-server: 5.2.2(tslib@2.8.1)(webpack@5.104.1)
     transitivePeerDependencies:
       - chokidar
 
@@ -35723,7 +35723,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.3.0
     optionalDependencies:
-      webpack: 5.94.0(esbuild@0.23.0)
+      webpack: 5.94.0(esbuild@0.18.17)
     optional: true
 
   html-webpack-plugin@5.6.6(webpack@5.98.0):
@@ -42333,7 +42333,7 @@ snapshots:
 
   terminal-columns@1.4.1: {}
 
-  terser-webpack-plugin@5.3.16(esbuild@0.18.17)(webpack@5.94.0(esbuild@0.18.17)):
+  terser-webpack-plugin@5.3.16(esbuild@0.18.17)(webpack@5.94.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
@@ -42355,7 +42355,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.20.1
 
-  terser-webpack-plugin@5.3.16(esbuild@0.23.0)(webpack@5.94.0):
+  terser-webpack-plugin@5.3.16(esbuild@0.23.0)(webpack@5.94.0(esbuild@0.23.0)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
@@ -43736,15 +43736,6 @@ snapshots:
       webpack: 5.104.1(webpack-cli@4.10.0)
       webpack-merge: 5.10.0
 
-  webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.18.17)):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 3.5.3
-      mime-types: 2.1.35
-      range-parser: 1.2.1
-      schema-utils: 4.3.3
-      webpack: 5.94.0(esbuild@0.18.17)
-
   webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.20.1)):
     dependencies:
       colorette: 2.0.20
@@ -43753,6 +43744,15 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
       webpack: 5.94.0(esbuild@0.20.1)
+
+  webpack-dev-middleware@5.3.4(webpack@5.94.0):
+    dependencies:
+      colorette: 2.0.20
+      memfs: 3.5.3
+      mime-types: 2.1.35
+      range-parser: 1.2.1
+      schema-utils: 4.3.3
+      webpack: 5.94.0(esbuild@0.18.17)
 
   webpack-dev-middleware@6.1.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -43774,7 +43774,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.20.1)
 
-  webpack-dev-middleware@7.4.2(tslib@2.8.1)(webpack@5.94.0):
+  webpack-dev-middleware@7.4.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0)):
     dependencies:
       colorette: 2.0.20
       memfs: 4.56.10(tslib@2.6.3)
@@ -43840,7 +43840,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)):
+  webpack-dev-server@4.15.1(webpack@5.94.0):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -43870,7 +43870,7 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 5.3.4(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-middleware: 5.3.4(webpack@5.94.0)
       ws: 8.19.0
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.18.17)
@@ -43880,7 +43880,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@5.2.2(tslib@2.8.1)(webpack@5.94.0):
+  webpack-dev-server@5.2.2(tslib@2.8.1)(webpack@5.104.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -43908,10 +43908,10 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.2(tslib@2.8.1)(webpack@5.94.0)
+      webpack-dev-middleware: 7.4.2(tslib@2.6.3)(webpack@5.94.0(esbuild@0.23.0))
       ws: 8.19.0
     optionalDependencies:
-      webpack: 5.94.0(esbuild@0.23.0)
+      webpack: 5.104.1(webpack-cli@4.10.0)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -43991,10 +43991,17 @@ snapshots:
     optionalDependencies:
       html-webpack-plugin: 5.6.6(webpack@5.104.1)
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.23.0)):
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.23.0)):
     dependencies:
       typed-assert: 1.0.9
       webpack: 5.94.0(esbuild@0.23.0)
+    optionalDependencies:
+      html-webpack-plugin: 5.6.6(webpack@5.104.1)
+
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17)):
+    dependencies:
+      typed-assert: 1.0.9
+      webpack: 5.94.0(esbuild@0.18.17)
     optionalDependencies:
       html-webpack-plugin: 5.6.6(webpack@5.94.0)
 
@@ -44063,7 +44070,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.16(esbuild@0.18.17)(webpack@5.94.0(esbuild@0.18.17))
+      terser-webpack-plugin: 5.3.16(esbuild@0.18.17)(webpack@5.94.0)
       watchpack: 2.5.1
       webpack-sources: 3.3.3
     transitivePeerDependencies:
@@ -44123,7 +44130,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.16(esbuild@0.23.0)(webpack@5.94.0)
+      terser-webpack-plugin: 5.3.16(esbuild@0.23.0)(webpack@5.94.0(esbuild@0.23.0))
       watchpack: 2.5.1
       webpack-sources: 3.3.3
     transitivePeerDependencies:

@@ -50,10 +50,10 @@
       "path": "standard/packages/icalendar"
     },
     {
-      "path": "standard/packages/luxon3"
+      "path": "standard/packages/format-luxon3"
     },
     {
-      "path": "standard/packages/moment"
+      "path": "standard/packages/format-moment"
     },
     {
       "path": "standard/packages/rrule"

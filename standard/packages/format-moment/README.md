@@ -14,7 +14,7 @@ npm install moment
 Then, install the FullCalendar core package, the Moment plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
 
 ```sh
-npm install fullcalendar @fullcalendar/moment temporal-polyfill
+npm install fullcalendar @fullcalendar/format-moment temporal-polyfill
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from 'fullcalendar'
 import classicThemePlugin from 'fullcalendar/themes/classic'
 import dayGridPlugin from 'fullcalendar/daygrid'
-import momentPlugin from '@fullcalendar/moment'
+import momentPlugin from '@fullcalendar/format-moment'
 
 import 'fullcalendar/skeleton.css'
 import 'fullcalendar/themes/classic/theme.css'

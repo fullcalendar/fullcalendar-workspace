@@ -1,5 +1,5 @@
 import { Calendar } from 'fullcalendar'
-import luxonPlugin from '@fullcalendar/luxon3'
+import luxonPlugin from '@fullcalendar/format-luxon3'
 import dayGridPlugin from 'fullcalendar/daygrid'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
