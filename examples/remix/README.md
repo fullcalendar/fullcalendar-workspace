@@ -22,36 +22,3 @@ npm run build # build for production
 npm run start # run the production build
 npm run typecheck # typecheck source files
 ```
-
-
-## Workaround Explained
-
-Remix must be told the exact destination of the FullCalendar-generated styles within the DOM.
-Add the following line to `app/root.tsx`:
-
-```tsx
-function Document({
-  children,
-  title,
-}: {
-  children: React.ReactNode;
-  title?: string;
-}) {
-  return (
-    <html lang="en">
-      <head>
-        {title ? <title>{title}</title> : null}
-        <Meta />
-        <style data-fullcalendar />{/* ADD THIS LINE */}
-        <Links />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
-  );
-}
-```

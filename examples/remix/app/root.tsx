@@ -21,7 +21,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <Meta />
-        <style data-fullcalendar />
         <Links />
       </head>
       <body>
