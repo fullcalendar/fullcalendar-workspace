@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "registries": {
+    "@fullcalendar-breezy": "http://localhost:3000/breezy/{name}.json",
+    "@fullcalendar-classic": "http://localhost:3000/classic/{name}.json",
+    "@fullcalendar-forma": "http://localhost:3000/forma/{name}.json",
+    "@fullcalendar-monarch": "http://localhost:3000/monarch/{name}.json",
+    "@fullcalendar-pulse": "http://localhost:3000/pulse/{name}.json"
+  }
+}

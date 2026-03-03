@@ -38,6 +38,8 @@ seriously consider normalizing custom-view-by-object (like .className/.didMount)
 dark-mode setting
 restore zip archive generation
   then, fix links in docs
+bug: resource-timline weird double top border
+  http://localhost:5173/debug-scheduler-json-feed
 bug: themes' outer-containers overflow-hidden killing important stickiness
   http://localhost:5173/sticky-list-demo
   http://localhost:5173/sticky-resource-timegrid-demo
