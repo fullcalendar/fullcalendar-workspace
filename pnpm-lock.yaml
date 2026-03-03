@@ -56,10 +56,10 @@ importers:
         specifier: ^16.0.0
         version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -138,10 +138,10 @@ importers:
         specifier: ^17.0.0
         version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@17.3.12(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -220,10 +220,10 @@ importers:
         specifier: ^18.0.0
         version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -302,10 +302,10 @@ importers:
         specifier: ^19.0.0
         version: 19.2.18(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.18(@angular/animations@19.2.18(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@19.2.18(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.18(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -378,10 +378,10 @@ importers:
         specifier: ^20.0.0
         version: 20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -454,10 +454,10 @@ importers:
         specifier: ^21.0.0
         version: 21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       rxjs:
         specifier: ~7.8.0
@@ -512,16 +512,16 @@ importers:
         specifier: ^21.0.0
         version: 21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.1.2(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/angular/dist/lib(@angular/common@21.1.2(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.1.2(@angular/compiler@21.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(fullcalendar@standard+packages+vanilla+dist)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/angular-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../premium/packages/angular-scheduler/dist
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       fullcalendar-scheduler:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../premium/packages/vanilla-scheduler/dist
       rxjs:
         specifier: ~7.8.0
@@ -558,7 +558,7 @@ importers:
   examples/locales:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -580,10 +580,10 @@ importers:
   examples/next12:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       next:
         specifier: ^12.3.2
@@ -616,10 +616,10 @@ importers:
   examples/next12-scheduler:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       next:
         specifier: ^12.3.2
@@ -652,10 +652,10 @@ importers:
   examples/next13:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@next/font':
         specifier: 13.2.3
@@ -681,10 +681,10 @@ importers:
   examples/next13-scheduler:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       next:
         specifier: 13.5.6
@@ -707,10 +707,10 @@ importers:
   examples/next14:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@next/font':
         specifier: 14.2.15
@@ -736,7 +736,7 @@ importers:
   examples/nuxt3:
     dependencies:
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vue3/dist
       nuxt:
         specifier: ^3.3.1
@@ -748,7 +748,7 @@ importers:
   examples/parcel:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -764,7 +764,7 @@ importers:
   examples/react17:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^17.0.2
@@ -789,7 +789,7 @@ importers:
   examples/react18:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -814,7 +814,7 @@ importers:
   examples/react18-debug:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -839,13 +839,13 @@ importers:
   examples/react18-issue-7619:
     dependencies:
       '@fullcalendar/format-moment':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/format-moment/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       date-fns:
         specifier: ^2.14.0
@@ -875,7 +875,7 @@ importers:
   examples/react18-lazy:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -900,7 +900,7 @@ importers:
   examples/react18-mobx-typescript:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       mobx:
         specifier: ^6.0.3
@@ -940,7 +940,7 @@ importers:
   examples/react18-redux:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -977,10 +977,10 @@ importers:
   examples/react18-scheduler:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -1007,7 +1007,7 @@ importers:
   examples/react18-typescript:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^18.3.1
@@ -1041,7 +1041,7 @@ importers:
   examples/react19:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       react:
         specifier: ^19.0.0-rc.0
@@ -1072,7 +1072,7 @@ importers:
   examples/remix:
     dependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@remix-run/node':
         specifier: ^2.17.4
@@ -1118,7 +1118,7 @@ importers:
   examples/rollup:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1137,10 +1137,10 @@ importers:
   examples/rollup-scheduler:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       fullcalendar-scheduler:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../premium/packages/vanilla-scheduler/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1323,10 +1323,10 @@ importers:
         injected: true
     devDependencies:
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@fullcalendar/react-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))
       '@types/eslint':
         specifier: ^8.21.3
@@ -1359,7 +1359,7 @@ importers:
   examples/typescript:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1390,10 +1390,10 @@ importers:
   examples/typescript-scheduler:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       fullcalendar-scheduler:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../premium/packages/vanilla-scheduler/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1424,7 +1424,7 @@ importers:
   examples/vue3:
     dependencies:
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/vue3/dist(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))(vue@3.5.27(typescript@5.9.3))
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1446,7 +1446,7 @@ importers:
   examples/vue3-primevue:
     dependencies:
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/vue3/dist(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))(vue@3.5.27(typescript@5.9.3))
       '@primeuix/themes':
         specifier: ^2.0.2
@@ -1489,10 +1489,10 @@ importers:
   examples/vue3-typescript:
     dependencies:
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:standard/packages/vue3/dist(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))(vue@3.5.27(typescript@4.9.5))
       '@fullcalendar/vue3-scheduler':
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: file:premium/packages/vue3-scheduler/dist(@fullcalendar/vue3@file:standard/packages/vue3/dist(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))(vue@3.5.27(typescript@4.9.5)))(temporal-polyfill@0.3.0(patch_hash=40d70c7e0e9ca02cc017677f2f2bc36ae588ad1a63f9cc4713f9f86b8ae5e5cc))(vue@3.5.27(typescript@4.9.5))
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1522,7 +1522,7 @@ importers:
   examples/webpack:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       temporal-polyfill:
         specifier: ^0.3.0
@@ -1547,10 +1547,10 @@ importers:
   examples/webpack-scheduler:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../standard/packages/vanilla/dist
       fullcalendar-scheduler:
-        specifier: workspace:7.0.0-beta.7
+        specifier: 7.0.0-beta.7
         version: link:../../premium/packages/vanilla-scheduler/dist
       temporal-polyfill:
         specifier: ^0.3.0
