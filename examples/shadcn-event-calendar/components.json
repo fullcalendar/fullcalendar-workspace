@@ -19,10 +19,10 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@fullcalendar-breezy": "http://localhost:3000/breezy/{name}.json",
-    "@fullcalendar-classic": "http://localhost:3000/classic/{name}.json",
-    "@fullcalendar-forma": "http://localhost:3000/forma/{name}.json",
-    "@fullcalendar-monarch": "http://localhost:3000/monarch/{name}.json",
-    "@fullcalendar-pulse": "http://localhost:3000/pulse/{name}.json"
+    "@fullcalendar-breezy": "https://shadcn-registry.fullcalendar.io/breezy/{name}.json",
+    "@fullcalendar-classic": "https://shadcn-registry.fullcalendar.io/classic/{name}.json",
+    "@fullcalendar-forma": "https://shadcn-registry.fullcalendar.io/forma/{name}.json",
+    "@fullcalendar-monarch": "https://shadcn-registry.fullcalendar.io/monarch/{name}.json",
+    "@fullcalendar-pulse": "https://shadcn-registry.fullcalendar.io/pulse/{name}.json"
   }
 }
