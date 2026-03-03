@@ -152,6 +152,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 )}
                 renderProps={renderProps}
                 generatorName='resourceLaneTopContent'
+                customGenerator={options.resourceLaneTopContent}
                 classNameGenerator={options.resourceLaneTopClass}
               />
               <TimelineFg
@@ -186,6 +187,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 )}
                 renderProps={renderProps}
                 generatorName='resourceLaneBottomContent'
+                customGenerator={options.resourceLaneBottomContent}
                 classNameGenerator={options.resourceLaneBottomClass}
               />
             </>

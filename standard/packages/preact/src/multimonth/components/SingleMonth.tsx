@@ -120,7 +120,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const hasNavLink = options.navLinks && props.colCount > 1
     const headerRenderProps: SingleMonthHeaderData = {
-      colCount: props.colCount,
+      colCount: props.colCount || 0,
       isSticky: isTitleAndHeaderSticky,
       isNarrow: cellIsNarrow,
       hasNavLink,

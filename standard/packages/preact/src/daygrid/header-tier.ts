@@ -128,7 +128,7 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
     didMount: options.dayHeaderDidMount,
     willUnmount: options.dayHeaderWillUnmount,
     align: options.dayHeaderAlign,
-    sticky: options.dayHeaderSticky,
+    sticky: options._dayHeaderSticky,
   }
 }
 

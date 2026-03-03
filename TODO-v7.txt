@@ -23,9 +23,74 @@ build note:
     manually before `pn dev`
 
 
+new example projects (esp for reduced test cases):
+  preact
+  mui
+  shadcn
+  (then, link from docs)
+
 on themes.fullcalendar.io
   WARN: Duplicate plugin 'resource-daygrid'
 
+seriously consider normalizing custom-view-by-object (like .className/.didMount)
+  with view-specific ones (like .viewClass/.viewDidMount)
+
+dark-mode setting
+restore zip archive generation
+  then, fix links in docs
+bug: themes' outer-containers overflow-hidden killing important stickiness
+  http://localhost:5173/sticky-list-demo
+  http://localhost:5173/sticky-resource-timegrid-demo
+  http://localhost:5173/sticky-timegrid-demo
+bug: isMajor timegrid border
+  http://localhost:5173/timegrid-custom-view-demo
+bug: timeline axis headers off-by-pixels onload
+  http://localhost:5173/eventOverlap-off-timeline-demo
+bug: when scrolled all the way down to footer, and click prev/next, page jumps to top
+  http://localhost:5173/toolbar-demo
+timeGridFourDay: {
+  classNames: ['my-classname', 'my-util'],
+  className: 'my-classname my-util',
+  type: 'timeGrid', -----> viewType???
+  duration: { days: 4 },
+EXAMPLES: https://github.com/fullcalendar/fullcalendar-workspace/tree/v7-dev/examples/angular20
+  README says "Current errors":
+    TypeError: def.resolveHostDirectives is not a function or its return value is not iterable
+    NG0203: inject() must be called from an injection context
+kill all existing *MountData interfaces
+  have MountData<OrigData> and MountHandler<OrigData>
+  and document interface name changes
+  EXAMPLE:
+    EventMountData (in v7 EventMountArg... this name matters more)
+maybe rename all to *State ?
+INVESTIGATE: options.resourceRowClass currently applying to resourceGroupHeader. BAD. why aren't themes breaking?
+Create aXe scrollbar workaround
+  then change docs "[which has a workaround](#)"
+Why is DateSelectArg/DateUnselectArg in core,
+  but DateClickArg in interaction???
+  was like this in v6 too
+for DateSelectWhatever, EventClickWhatever
+  call them "Event" instead??? definitely not "State"
+  maybe .nativeEvent like Angular?
+resourceCell* hooks should have data.field
+  then, update api-migration.md#resource-cell
+TODO: investigate how we implemented timeZone:'local' with temporal-polyfill. works?
+implement PluginInput (currently PluginDefInput)
+classic theme variables
+  --fc-classic-button
+  --fc-classic-button-border
+  --fc-classic-button-over
+  --fc-classic-button-border-over
+  --fc-classic-button-foreground
+  --fc-classic-button-selected
+  --fc-classic-button-border-selected
+  --
+  --fc-classic-background-event-opacity (currently hardcoded to 15%)
+  --fc-classic-background-event-foreground-opacity (for text)
+  --fc-classic-small-dot-width (currently radius, do calc( / 2))
+  --fc-classic-large-dot-width (currently radius, do calc( / 2))
+BIG QUESTION: does eventClass apply to background events!?
+  put decision in docs
 
 any types referenced in (public) PluginDefInput,
   ensure they're public too
@@ -462,155 +527,20 @@ test print-view with virtualization
   test expandRows
 Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
 should full-ui packages be put on v1?
-
-
-Changelog
----------
-
-Note that scrollgrid will be removed in v7
-Accept falsy className inputs. will remove
-breaking: column hooks, instead of groupValue/text, uses fieldValue
-breaking: resourceColumnHeaderClass apply to normal col-headers now too
-breaking: dayLane* separated from dayCell*
-breaking: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
-breaking: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
-changelog: new EventContentArg props
-breaking: timelineheader would previously use fc-day- instead of fc-slot- if rowUnit was >time
-  now, uses fc-slot- no matter what (for classic theme)
-changelog: new toolbar-button-display setting? (icons-before-text whatever)
-breaking: ViewSpec's buttonText is gone... for people declaring custom views
-changelog: feature: to disable "List" buttons while returning i18n, set listText:false
-changelog: dropped Bootstrap 4
-changelog: shape of a locale
-changelog: classic-theme visually capitalizes button name strings, like "Today" versus old "today"
-changelog: EventContentArg `level`
-changelog: remove luxon1/2
-changelog:
-  dayCellContent/etc prop `dayNumberText` renamed to just `text`
-  textParts added to:
-    dayHeaderContent
-    dayCellTopContent
-    weekNumberContent
-    listDayHeaderContent
-changelog: Vue3 path to global.js changed from index.global.js
-changelog: how importmap (ex: importmap.html) must reference */esm/* files
-changelog: removed web-component 'shadow' setting
-changelog: event hooks' .isDragging/isResizing might be subtly different for mirror or regular
-  TODO: figure out how
-breaking: single-row dayGrid (like dayGridWeek) no longer shows week numbers
-changelog: do "isMajor/isMinor API additions"
-changelog: buttonDisplay (and buttons.display)
-changelog: hints
-  xxx buttonHints -> prevHint, nextHint, todayHint,
-  xxx timeHint (aria is done differently now, as list)
-  args --- prevHint(unitText, unit) -- gets unitText via yearText, monthText, weekText, dayText
-  args --- nextHint(unitText, unit) -- "
-  args --- todayHint(unitText, unit) -- "
-  args --- viewHint(unitText, unit) -- "
-  (second arg is new!)
-bugfix: date given to week-number hooks was never zoned
-changelog: list-event time "column" is hardcoded as 165px width
-note: for tailwind themes, don't use JS colorScheme setting, just use dark: classname prefixes
-  and configure your darkmode manually: https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
-changelog: transforms on event bg(colors) via CSS filters
-changelog: Event::toPlainObject doesn't accept collapseColor anymore
-  now returns { color, contrastColor }
-changelog: +Event::color, +Event::contrastColor, -Event::backgroundColor, -Event::textColor, -Event::borderColor
-  (same for Resource)
-  +color/contrastColor
-changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroundColor, -eventBorderColor, -eventTextColor
-  gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
-changelog: --fc-event-color, --fc-event-contrast-color
-changelog: borderless(X) also indents toolbar
-changelog: dayCellTop will be rendered even if no day-cell-text
-changelog: premium-warning styled in dark mode
-  https://github.com/fullcalendar/fullcalendar/issues/7904
-changelog: is root className/class a new feature!? i think so
-changelog: fieldValue. what was old API?
-changelog: resourceContent / ResourceContentArg removed? no global "resource" renderer anymore
-changelog: TYPE renames:
-  MountArg -> MountData
-  EventContentArg -> EventDisplayData
-  EventMountArg -> EventMountData
-  WeekNumberContentArg -> WeekNumberDisplayData
-  WeekNumberMountArg -> WeekNumberMountData
-  AllDayContentArg -> AllDayHeaderData
-  AllDayMountArg -> AllDayHeaderMountData
-  ButtonContentArg -> ButtonData
-  ButtonMountArg -> ButtonMountData
-  *ContentArg -> *Data
-  *MountArg -> *MountData
-  *Arg -> *Data (like EventClickArg -> EventClickData)
-  we DO NOT rename LocaleArg
-  (search only the old .d.ts files!)
-changelog: instead of accepting classNames, these please accept both className/class:
-  root calendar
-  view-specific options to define custom view
-  ButtonInput
-  Event input
-  EventSource input
-changelog: querying className now returns a non-normalized ORIGINAL value:
-  Event::className (previously classNames <-- KILLED)
-  Resource::eventClass (previously eventClassNames <-- KILLED)
-changelog: Event::toPlainObject/toJSON returns a 'className' string instead of 'classNames' array
-changelog: dayLaneInnerClass arg.isStack means whether it's simple PRINT-view for firefox
-changelog: MoreLinkData .numericText .longText .isNarrow
-changelog: improved responsiveness when really narrow... font size adjusts
-changelog: big styling change... separate element for by event
-changelog: for porting custom themes, recomment ppl start with the "modern" theme
-changelog: backgroundEventColor
-changelog: week/multi-day views in timegrid/daygrid will have "Sun 8" header by default,
-  instead of "Sun 8/5" header (no more month number. just day-of-month)
-changelog:
-  custom-content hooks about lanes (not sure their previous name)
-    were REMOVED:
-      resourceLaneContent/InnerClass
-      slotLaneContent/InnerClass
-      dayLaneContent (dayLaneInnerClass is actually useful. something else)
-changelog: weekdayJustify, forceCommas
-changelog: default computed titleFormat for week view (could span different months),
-  WHEN it actually does span different months, is like "Sep - Oct 2014"
-changelog: dayHeaderClass/etc is used within popover (inPopover)
-changelog: removed css variables like --fc-page-bg-color
-changelog: different rendering behavior around not-defined buttons?
-changelog: weekNumber classnames/hooks
-  x weekNumberClass
-  x weekNumberContent
-  x weekNumberDidMount
-  x weekNumberWillUnmount
-  if daygrid week numbers (always inline), use:
-    inlineWeekNumberClass
-    inlineWeekNumberContent
-    inlineWeekNumberDidMount
-    inlineWeekNumberWillUnmount
-  if timegrid corner-cell in header, use
-    weekNumberHeaderClass
-    weekNumberHeaderInnerClass
-    weekNumberHeaderContent
-    weekNumberHeaderDidMount
-    weekNumberHeaderWillUnmount
-more-popover headers are navlinks now
-in multi-month (when very narrow months), day-of-week abbreviation is "S|M|T|..."
-in standard theme,
-  no longer have day classnames on popover
-changelog: +slotHeaderAlign (only about highest level)
-changelog: navlinks on single-month title!
-changelog: sticky-bottom for no-events message
-changelog: classic theme has slightly more spacious look
-changelog: eventSlicing is new
-changelog: removed fixedMirrorParent (always body or shadow-root)
-rowEventBeforeContent
-rowEventAfterContent
-EventDisplayData.isInteractive
-changelog: nice tab-focus effects on everything
-essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
-listDayFormat/listDaySideFormat defaults are different. depend on view duration
-no more console.warn on unknown options
-new dayHeaderFormat default not showing year
-changelog: createPlugin removed
-React >= 17 support (same versions that support hooks)
-changelog: FullCalendar.act testing util removed
-changelog: angular 16-21 support
+in READMEs kill "and any other plugins" text
+Restore Vue3 global api?
+get importmap.html working again... possible to do locally. then port to importmap.public.html after launch
+don't allow creation of theme css variables like --fc-pulse-border-style,
+  which affect global border-style
+  just hardcode to "solid"
+timeHint/eventHint no longer used. previously for list-view column explanations
+  currently kept in locales file. remove from all? useful for something else later?
+We want to fix this timeline scrollbar-appearance bug
+  ticket: https://github.com/fullcalendar/fullcalendar/issues/6539
+  repro: https://codepen.io/acerix/pen/KKqazbw?editors=0010
+  our demo: premium/packages/vanilla-scheduler-tests/manual/issue-6539.html
+  BUT in trying to recreate problem,
+    slotMinWidth/slotLabelFormat causing slats to be too wide!!!
 
 
 Docs

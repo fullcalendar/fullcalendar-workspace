@@ -153,7 +153,7 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
     didMount: options.resourceDayHeaderDidMount,
     willUnmount: options.resourceDayHeaderWillUnmount,
     align: options.resourceDayHeaderAlign,
-    sticky: options.resourceDayHeaderSticky,
+    sticky: options._resourceDayHeaderSticky,
   }
 }
 

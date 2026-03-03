@@ -316,7 +316,8 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
   dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end')>,
-  dayHeaderSticky: identity as Identity<boolean | number | string>,
+  // stickiness for cell-inner-contents laterally. experimental settings
+  _dayHeaderSticky: identity as Identity<boolean | number | string>,
 
   dayHeaderRowClass: identity as Identity<string | undefined>,
 
@@ -541,7 +542,7 @@ export const BASE_OPTION_DEFAULTS = {
   slotHeaderAlign: 'start',
   slotHeaderSticky: true,
   dayHeaderAlign: 'start',
-  dayHeaderSticky: true,
+  _dayHeaderSticky: true,
   rowEventTitleSticky: true,
   columnEventTitleSticky: true,
   nowIndicatorSnap: 'auto',
@@ -624,7 +625,6 @@ export const VIEW_ONLY_OPTION_REFINERS: {
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
 
-  // TODO: move over to view* prefix? will align with view* options like viewClass
   class: identity as Identity<ClassNameGenerator<SpecificViewData>>,
   className: identity as Identity<ClassNameGenerator<SpecificViewData>>,
   content: identity as Identity<CustomContentGenerator<SpecificViewData>>,

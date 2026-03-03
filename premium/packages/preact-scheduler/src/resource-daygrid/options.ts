@@ -22,12 +22,13 @@ export const OPTION_REFINERS = {
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,
   resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number }) => 'start' | 'center' | 'end')>,
-  resourceDayHeaderSticky: identity as Identity<boolean | number | string>,
+  // stickiness for cell-inner-contents laterally. experimental settings
+  _resourceDayHeaderSticky: identity as Identity<boolean | number | string>,
 }
 
 export const OPTION_DEFAULTS = {
   // resourceDayHeaderAlign: 'start' as const, --- this default was inlined due to plugin ordering problems
-  resourceDayHeaderSticky: true,
+  _resourceDayHeaderSticky: true,
 }
 
 type ResourceDayGridOptionRefiners = typeof OPTION_REFINERS
