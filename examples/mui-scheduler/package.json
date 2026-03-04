@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "@fullcalendar-examples/mui-scheduler",
+  "title": "FullCalendar MUI Example Project",
+  "version": "0.0.0",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm -rf dist node_modules/.vite",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@fullcalendar/mui": "7.0.0-beta.7",
+    "@fullcalendar/react": "7.0.0-beta.7",
+    "@fullcalendar/react-scheduler": "7.0.0-beta.7",
+    "@mui/material": "^7.3.8",
+    "react": "^19.0.4",
+    "react-dom": "^19.0.4",
+    "temporal-polyfill": "^0.3.0"
+  },
+  "dependenciesMeta": {
+    "@fullcalendar/react": {
+      "injected": true
+    }
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.11"
+  }
+}
