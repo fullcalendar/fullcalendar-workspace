@@ -1,4 +1,6 @@
-import { Temporal } from 'temporal-polyfill'
+import * as ZonedDateTimeFns from 'temporal-polyfill/fns/zoneddatetime'
+import * as PlainDateTimeFns from 'temporal-polyfill/fns/plaindatetime'
+import * as InstantFns from 'temporal-polyfill/fns/instant'
 import {
   DateMarker, addMs,
   diffHours, diffMinutes, diffSeconds, diffWholeWeeks, diffWholeDays,
@@ -396,18 +398,19 @@ export class DateEnv {
       return new Date(ms)
     }
 
-    const zdt = Temporal.Instant.fromEpochMilliseconds(ms)
-      .toZonedDateTimeISO(this.timeZone)
+    const zdtFields = ZonedDateTimeFns.getFields(
+      InstantFns.toZonedDateTimeISO(InstantFns.fromEpochMilliseconds(ms), this.timeZone),
+    )
 
     return new Date( // a "Date Marker", which is like PlainDateTime
       Date.UTC(
-        zdt.year,
-        zdt.month - 1,
-        zdt.day,
-        zdt.hour,
-        zdt.minute,
-        zdt.second,
-        zdt.millisecond,
+        zdtFields.year,
+        zdtFields.month - 1,
+        zdtFields.day,
+        zdtFields.hour,
+        zdtFields.minute,
+        zdtFields.second,
+        zdtFields.millisecond,
       ),
     )
   }
@@ -420,15 +423,20 @@ export class DateEnv {
       return 0
     }
 
-    return new Temporal.PlainDateTime(
-      m.getUTCFullYear(),
-      m.getUTCMonth() + 1,
-      m.getUTCDate(),
-      m.getUTCHours(),
-      m.getUTCMinutes(),
-      m.getUTCSeconds(),
-      m.getUTCMilliseconds(),
-    ).toZonedDateTime(this.timeZone).offsetNanoseconds / (1000000000 * 60)
+    return ZonedDateTimeFns.offsetNanoseconds(
+      PlainDateTimeFns.toZonedDateTime(
+        PlainDateTimeFns.create(
+          m.getUTCFullYear(),
+          m.getUTCMonth() + 1,
+          m.getUTCDate(),
+          m.getUTCHours(),
+          m.getUTCMinutes(),
+          m.getUTCSeconds(),
+          m.getUTCMilliseconds(),
+        ),
+        this.timeZone,
+      ),
+    ) / (1000000000 * 60)
   }
 
   // Conversion
@@ -442,15 +450,20 @@ export class DateEnv {
     }
 
     return new Date(
-      new Temporal.PlainDateTime(
-        m.getUTCFullYear(),
-        m.getUTCMonth() + 1,
-        m.getUTCDate(),
-        m.getUTCHours(),
-        m.getUTCMinutes(),
-        m.getUTCSeconds(),
-        m.getUTCMilliseconds(),
-      ).toZonedDateTime(this.timeZone).epochMilliseconds,
+      ZonedDateTimeFns.epochMilliseconds(
+        PlainDateTimeFns.toZonedDateTime(
+          PlainDateTimeFns.create(
+            m.getUTCFullYear(),
+            m.getUTCMonth() + 1,
+            m.getUTCDate(),
+            m.getUTCHours(),
+            m.getUTCMinutes(),
+            m.getUTCSeconds(),
+            m.getUTCMilliseconds(),
+          ),
+          this.timeZone,
+        ),
+      ),
     )
   }
 }

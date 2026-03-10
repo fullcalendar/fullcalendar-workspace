@@ -1,4 +1,7 @@
-import { Temporal } from 'temporal-polyfill'
+import * as PlainDateFns from 'temporal-polyfill/fns/plaindate'
+import * as PlainDateTimeFns from 'temporal-polyfill/fns/plaindatetime'
+import * as InstantFns from 'temporal-polyfill/fns/instant'
+import * as ZonedDateTimeFns from 'temporal-polyfill/fns/zoneddatetime'
 
 describe('timeZone', () => {
   // NOTE: Only deals with the processing of *received* events.
@@ -75,11 +78,23 @@ describe('timeZone', () => {
     let timedEvent = currentCalendar.getEventById('2')
     let zonedEvent = currentCalendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
-    expect(allDayEvent.start).toEqualDate(new Date(Temporal.PlainDate.from('2014-05-02').toZonedDateTime(timeZone).epochMilliseconds))
+    expect(allDayEvent.start).toEqualDate(
+      new Date(
+        ZonedDateTimeFns.epochMilliseconds(PlainDateFns.toZonedDateTime(PlainDateFns.fromString('2014-05-02'), timeZone)),
+      )
+    )
     expect(timedEvent.allDay).toEqual(false)
-    expect(timedEvent.start).toEqualDate(new Date(Temporal.PlainDateTime.from('2014-05-10T12:00:00').toZonedDateTime(timeZone).epochMilliseconds))
+    expect(timedEvent.start).toEqualDate(
+      new Date(
+        ZonedDateTimeFns.epochMilliseconds(PlainDateTimeFns.toZonedDateTime(PlainDateTimeFns.fromString('2014-05-10T12:00:00'), timeZone)),
+      )
+    )
     expect(zonedEvent.allDay).toEqual(false)
-    expect(zonedEvent.start).toEqualDate(new Date(Temporal.Instant.from('2014-05-10T14:00:00+11:00').epochMilliseconds))
+    expect(zonedEvent.start).toEqualDate(
+      new Date(
+        InstantFns.epochMilliseconds(InstantFns.fromString('2014-05-10T14:00:00+11:00')),
+      )
+    )
   }
 
   it('can be set dynamically', () => {

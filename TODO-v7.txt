@@ -14,14 +14,26 @@ IMPORTANT
     https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
 clean+build all:
   pn clean --all
-  pn --filter "./theming/**" run clean
   pn install # important because writes tsconfigs
-  pn build
+  pnpm --filter '!./examples/**' --filter '!./theming/**' run build
+  pn install # for dependenciesMeta.*.injected
+  pnpm --filter './examples/**' --filter './theming/**' run build
 build note:
   The @fullcalendar/mui & @fullcalendar/ui-shadcn packages should formally rely on
     @fullcalendar/react in terms for `pn dev`; until they do, we need to build @fullcalendar/react
     manually before `pn dev`
 
+
+TODO: revive patch standard/scripts/patches/temporal-polyfill@0.3.0.patch
+
+angular style errors
+  running angular project on stackblitz has broken styles
+  should be same:
+    https://npmx.dev/package-code/fullcalendar/v/7.0.0-beta.7/skeleton.css
+    https://npmx.dev/package-code/@fullcalendar/angular/v/7.0.0-beta.7/skeleton.css
+
+react19 (and others) stackblitz has more-popover 100% height!
+  because CSS says body>*{height:100%} or whatever
 
 new example projects (esp for reduced test cases):
   preact
