@@ -24,8 +24,6 @@ build note:
     manually before `pn dev`
 
 
-TODO: revive patch standard/scripts/patches/temporal-polyfill@0.3.0.patch
-
 angular style errors
   running angular project on stackblitz has broken styles
   should be same:

@@ -5,7 +5,7 @@
   "license": "ISC",
   "dependencies": {
     "@fullcalendar/vue3": "7.0.0-beta.7",
-    "temporal-polyfill": "^0.3.0",
+    "temporal-polyfill": "^0.3.2",
     "vue": "^3.2.45"
   },
   "dependenciesMeta": {

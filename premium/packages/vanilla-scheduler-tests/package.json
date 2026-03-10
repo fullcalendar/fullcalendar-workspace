@@ -16,7 +16,7 @@
     "fullcalendar-scheduler": "workspace:*",
     "fullcalendar-scheduler-w-react": "workspace:*",
     "fetch-mock": "^9.11.0",
-    "temporal-polyfill": "^0.3.0"
+    "temporal-polyfill": "^0.3.2"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

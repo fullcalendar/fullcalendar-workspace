@@ -14,7 +14,7 @@
     "next": "^12.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "temporal-polyfill": "^0.3.0"
+    "temporal-polyfill": "^0.3.2"
   },
   "dependenciesMeta": {
     "@fullcalendar/react": {

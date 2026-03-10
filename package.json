@@ -57,13 +57,10 @@
         "ng-packagr@13>typescript": "^4.4.0"
       }
     },
-    "overrides": {
-      "temporal-polyfill": "link:/Users/adam/Code/temporal/packages/temporal-polyfill/dist",
-      "temporal-spec": "link:/Users/adam/Code/temporal/packages/temporal-spec"
-    },
     "patchedDependencies": {
+      "@angular/build@18.2.21": "scripts/patches/@angular__build@18.patch",
       "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch",
-      "@angular/build@18.2.21": "scripts/patches/@angular__build@18.patch"
+      "temporal-polyfill@0.3.2": "standard/scripts/patches/temporal-polyfill@0.3.2.patch"
     }
   }
 }

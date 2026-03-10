@@ -35,7 +35,7 @@
     "fullcalendar": "7.0.0-beta.7",
     "fullcalendar-scheduler": "7.0.0-beta.7",
     "rxjs": "~7.8.0",
-    "temporal-polyfill": "^0.3.0",
+    "temporal-polyfill": "^0.3.2",
     "tslib": "^2.3.0"
   },
   "dependenciesMeta": {

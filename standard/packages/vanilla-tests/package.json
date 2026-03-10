@@ -23,7 +23,7 @@
     "fullcalendar-w-react": "workspace:*",
     "fetch-mock": "^9.11.0",
     "handlebars": "^4.7.7",
-    "temporal-polyfill": "^0.3.0"
+    "temporal-polyfill": "^0.3.2"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
