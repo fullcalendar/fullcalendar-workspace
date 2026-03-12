@@ -13,16 +13,23 @@ IMPORTANT
     https://shadcn-registry.fullcalendar.io/monarch/event-calendar.json
     https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
 clean+build all:
-  pn clean --all
-  pn install # important because writes tsconfigs
+  pnpm clean --all
+  pnpm install # important because writes tsconfigs
   pnpm --filter '!./examples/**' --filter '!./theming/**' run build
-  pn install # for dependenciesMeta.*.injected
+  pnpm install # for dependenciesMeta.*.injected
   pnpm --filter './examples/**' --filter './theming/**' run build
 build note:
   The @fullcalendar/mui & @fullcalendar/ui-shadcn packages should formally rely on
     @fullcalendar/react in terms for `pn dev`; until they do, we need to build @fullcalendar/react
     manually before `pn dev`
 
+
+
+don't need imports like this anymore:
+  import type {} from '@fullcalendar/react/daygrid'
+  import type {} from '@fullcalendar/react/timegrid'
+  import type {} from '@fullcalendar/react/list'
+  import type {} from '@fullcalendar/react/multimonth'
 
 angular style errors
   running angular project on stackblitz has broken styles
