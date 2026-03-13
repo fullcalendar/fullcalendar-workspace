@@ -61,6 +61,9 @@ function App() {
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
+        themeName={demoChoices.theme}
+        paletteName={demoChoices.palette}
+        colorScheme={demoChoices.colorScheme}
         renderEventCalendar={(props) => (
           <EventCalendar {...props} />
         )}

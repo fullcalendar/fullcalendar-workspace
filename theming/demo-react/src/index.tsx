@@ -3,9 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
-import { ThemeName } from './lib/config.js'
+import { buildToolbarAndButtons } from './lib/demo-generator-util.js'
+
 import FullCalendar from '@fullcalendar/react'
-import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 
 import '@fullcalendar/react/skeleton.css'
@@ -41,6 +42,9 @@ function App() {
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
+        themeName={demoChoices.theme}
+        paletteName={demoChoices.palette}
+        colorScheme={demoChoices.colorScheme}
         renderEventCalendar={({
           availableViews = eventCalendarAvailableViews,
           addButton,
@@ -129,54 +133,3 @@ createRoot(document.documentElement).render(
   </StrictMode>,
 )
 
-/* Toolbar
-------------------------------------------------------------------------------------------------- */
-
-function buildToolbarAndButtons(
-  theme: ThemeName,
-  availableViews: string[],
-  addButton: EventCalendarProps['addButton'],
-) {
-  switch (theme) {
-    case 'monarch':
-    case 'forma':
-      return {
-        headerToolbar: {
-          start: 'add today prev,next title',
-          end: availableViews.join(','),
-        },
-        buttons: {
-          add: {
-            isPrimary: true,
-            ...addButton,
-          }
-        }
-      }
-    case 'breezy':
-    case 'pulse':
-      return {
-        headerToolbar: {
-          start: 'add prev,today,next',
-          center: 'title',
-          end: availableViews.join(','),
-        },
-        buttons: {
-          add: {
-            isPrimary: true,
-            ...addButton,
-          }
-        }
-      }
-    case 'classic':
-      return {
-        headerToolbar: {
-          start: 'add today prev,next',
-          center: 'title',
-          end: availableViews.join(','),
-        },
-        buttons: {
-          add: addButton || {},
-        }
-      }
-  }
-}

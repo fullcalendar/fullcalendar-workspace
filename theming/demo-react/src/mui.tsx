@@ -75,6 +75,9 @@ function App() {
       <MuiThemeProvider theme={muiTheme}>
         <MuiCssBaseline />
         <DemoGenerator
+          themeName={demoChoices.theme}
+          paletteName={demoChoices.palette}
+          colorScheme={demoChoices.colorScheme}
           renderEventCalendar={(props) => (
             <EventCalendar {...props} />
           )}

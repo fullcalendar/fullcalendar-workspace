@@ -28,3 +28,79 @@ html, body {
   flex-direction: column;
   gap: 120px;
 }
+
+.demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.demo-code-button {
+  align-self: end;
+}
+
+.demo-dialog-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.demo-dialog-fields-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.demo-dialog-checkbox-field {
+  margin: 6px 0;
+}
+
+.demo-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  width: min-content;
+}
+
+.demo-dialog-field-input-row {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+}
+
+.demo-dialog-field-input-row sl-input {
+  flex: 1;
+}
+
+.demo-dialog-field-warning {
+  font-size: var(--sl-font-size-x-small);
+  color: var(--sl-color-warning-600);
+}
+
+.demo-code-tabs {
+  position: relative;
+}
+
+.demo-code-tabs sl-tab-panel {
+  --padding: 0;
+}
+
+.demo-code-copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+}
+
+.demo-code-pre {
+  margin: 0;
+  height: 300px;
+  overflow-y: auto;
+  padding: 12px;
+  font-family: var(--sl-font-mono);
+  font-size: 13px;
+  white-space: pre;
+  border-bottom: 2px solid var(--sl-color-neutral-200);
+}
