@@ -16,7 +16,7 @@ import SlTab from '@shoelace-style/shoelace/dist/react/tab/index.js'
 import SlTabGroup from '@shoelace-style/shoelace/dist/react/tab-group/index.js'
 import SlTabPanel from '@shoelace-style/shoelace/dist/react/tab-panel/index.js'
 import SlTooltip from '@shoelace-style/shoelace/dist/react/tooltip/index.js'
-import { DEFAULT_DARK_CLASS_NAME, DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
+import { DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
 import { ColorScheme, ThemeName } from './config.js'
 import { getForkedAppCode, getStockAppCode } from './demo-generator-code.js'
 
@@ -99,26 +99,25 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
   const [isFork, setIsFork] = useState(false)
   const [colorSchemeTechnique, setColorSchemeTechnique] = useState<'component-prop' | 'data-attribute' | 'class-name' | 'media-query'>('component-prop')
   const [dataAttribute, setDataAttribute] = useState(DEFAULT_DATA_ATTRIBUTE)
-  const [darkClassName, setDarkClassName] = useState(DEFAULT_DARK_CLASS_NAME)
   const [styling, setStyling] = useState('tailwind')
 
   function resetForm() {
     setIsFork(false)
     setColorSchemeTechnique('component-prop')
     setDataAttribute(DEFAULT_DATA_ATTRIBUTE)
-    setDarkClassName(DEFAULT_DARK_CLASS_NAME)
     setStyling('tailwind')
   }
 
   const sourceFiles: Record<string, string> = {}
+
+  const effectiveDataAttribute = VALID_IDENTIFIER_RE.test(dataAttribute) ? dataAttribute : DEFAULT_DATA_ATTRIBUTE
 
   if (activeDialog) {
     sourceFiles['app.tsx'] = isFork
       ? getForkedAppCode({
           colorScheme: activeDialog?.colorScheme,
           colorSchemeTechnique,
-          colorSchemeDataAttribute: dataAttribute,
-          darkClassName,
+          colorSchemeDataAttribute: effectiveDataAttribute,
           pluginMap: activeDialog?.pluginMap,
           isScheduler: activeDialog?.isScheduler,
           availableViews: activeDialog?.availableViews,
@@ -128,8 +127,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           paletteName: activeDialog?.paletteName,
           colorScheme: activeDialog?.colorScheme,
           colorSchemeTechnique,
-          colorSchemeDataAttribute: dataAttribute,
-          darkClassName,
+          colorSchemeDataAttribute: effectiveDataAttribute,
           pluginMap: activeDialog?.pluginMap,
           isScheduler: activeDialog?.isScheduler,
           availableViews: activeDialog?.availableViews,
@@ -154,6 +152,12 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
                   <SlIcon name='question-circle' style={{ cursor: 'help' }} />
                 </SlTooltip>
               </SlRadioButton>
+              <SlRadioButton value='vanilla' disabled>
+                Vanilla
+                <SlTooltip slot='suffix' content='Examples coming soon' style={{ pointerEvents: 'auto' }} onSlAfterHide={(e: any) => e.stopPropagation()}>
+                  <SlIcon name='question-circle' style={{ cursor: 'help' }} />
+                </SlTooltip>
+              </SlRadioButton>
             </SlRadioGroup>
             <SlCheckbox className='demo-dialog-checkbox-field' checked={isFork} onSlChange={() => setIsFork(!isFork)}>Fork theme source code</SlCheckbox>
           </div>
@@ -166,7 +170,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
                 <SlRadioButton value='media-query'>Media Query</SlRadioButton>
               </SlRadioGroup>
               {colorSchemeTechnique === 'component-prop' && (
-                <div className='demo-dialog-field-warning'>This technique is simple but may result in a FOUC.</div>
+                <div className='demo-dialog-field-note'>This technique is simple but may result in a FOUC.</div>
               )}
               {colorSchemeTechnique === 'data-attribute' && (
                 <div className='demo-dialog-field-input-row'>
@@ -175,19 +179,10 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
                 </div>
               )}
               {colorSchemeTechnique === 'data-attribute' && !VALID_IDENTIFIER_RE.test(dataAttribute) && (
-                <div className='demo-dialog-field-warning'>This data attribute is invalid</div>
+                <div className='demo-dialog-field-error'>This data attribute is invalid</div>
               )}
               {colorSchemeTechnique === 'data-attribute' && VALID_IDENTIFIER_RE.test(dataAttribute) && dataAttribute !== DEFAULT_DATA_ATTRIBUTE && !isFork && (
-                <div className='demo-dialog-field-warning'>A non-default data attribute requires a forked palette.css</div>
-              )}
-              {colorSchemeTechnique === 'class-name' && (
-                <div className='demo-dialog-field-input-row'>
-                  <SlInput label='Dark Class Name' size='small' value={darkClassName} onSlInput={(e: any) => setDarkClassName(e.target.value)} />
-                  <SlButton size='small' variant='default' onClick={() => setDarkClassName(DEFAULT_DARK_CLASS_NAME)}>Reset</SlButton>
-                </div>
-              )}
-              {colorSchemeTechnique === 'class-name' && !VALID_IDENTIFIER_RE.test(darkClassName) && (
-                <div className='demo-dialog-field-warning'>This class name is invalid</div>
+                <div className='demo-dialog-field-note'>A non-default data attribute requires a forked palette.css</div>
               )}
             </div>
             {isFork && (
@@ -198,10 +193,10 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
                 <SlRadioButton value='css-modules'>CSS Modules</SlRadioButton>
               </SlRadioGroup>
               {styling === 'global-css' && (
-                <div className='demo-dialog-field-warning'>The readability of selectors is still being improved for CSS modules.</div>
+                <div className='demo-dialog-field-error'>The readability of selectors is still being improved for CSS modules.</div>
               )}
               {styling === 'css-modules' && (
-                <div className='demo-dialog-field-warning'>This option is not yet available. Please consult Global CSS for now.</div>
+                <div className='demo-dialog-field-error'>This option is not yet available. Please consult Global CSS for now.</div>
               )}
             </div>
             )}

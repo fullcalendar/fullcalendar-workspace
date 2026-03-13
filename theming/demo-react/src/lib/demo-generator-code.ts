@@ -7,7 +7,6 @@ export function getStockAppCode({
   colorScheme,
   colorSchemeTechnique,
   colorSchemeDataAttribute,
-  darkClassName,
   pluginMap,
   isScheduler,
   availableViews,
@@ -17,7 +16,6 @@ export function getStockAppCode({
   colorScheme: 'light' | 'dark', // light|dark
   colorSchemeTechnique: 'component-prop' | 'data-attribute' | 'class-name' | 'media-query',
   colorSchemeDataAttribute: string,
-  darkClassName: string,
   pluginMap: Record<string, string>, // { jsVarName => importName }
   isScheduler: boolean,
   availableViews: string[],
@@ -46,8 +44,8 @@ ${(
 ${
   colorSchemeTechnique === 'data-attribute' ? (
     `document.body.setAttribute('${colorSchemeDataAttribute}', '${colorScheme}')\n\n`
-  ) : (colorSchemeTechnique === 'class-name' && colorScheme === 'dark') ? (
-    `document.body.classList.add('${darkClassName}')\n\n`
+  ) : colorSchemeTechnique === 'class-name' ? (
+    `document.body.classList.add('${colorScheme}')\n\n`
   ) : ''
 }export function App() {
   return (
@@ -80,7 +78,7 @@ ${
           text: 'Add ${isScheduler ? 'Resource' : 'Event'}',
           click() {
             alert('handle add ${isScheduler ? 'resource' : 'event'}...')
-          }
+          },
         }
       }}
       initialView='${availableViews[0]}'
@@ -94,7 +92,6 @@ export function getForkedAppCode({
   colorScheme,
   colorSchemeTechnique,
   colorSchemeDataAttribute,
-  darkClassName,
   pluginMap,
   isScheduler,
   availableViews,
@@ -102,7 +99,6 @@ export function getForkedAppCode({
   colorScheme: 'light' | 'dark',
   colorSchemeTechnique: 'component-prop' | 'data-attribute' | 'class-name' | 'media-query',
   colorSchemeDataAttribute: string,
-  darkClassName: string,
   pluginMap: Record<string, string>, // { jsVarName => importName }
   isScheduler: boolean,
   availableViews: string[],
@@ -119,24 +115,24 @@ ${isScheduler ? (
 ${
   colorSchemeTechnique === 'data-attribute' ? (
     `document.body.setAttribute('${colorSchemeDataAttribute}', '${colorScheme}')\n\n`
-  ) : (colorSchemeTechnique === 'class-name' && colorScheme === 'dark') ? (
-    `document.body.classList.add('${darkClassName}')\n\n`
+  ) : colorSchemeTechnique === 'class-name' ? (
+    `document.body.classList.add('${colorScheme}')\n\n`
   ) : ''
 }export function App() {
   return (
     <${isScheduler ? 'Scheduler' : 'EventCalendar'}
-      availableViews={${JSON.stringify(availableViews)}}
+      plugins={[
+${Object.keys(pluginMap).map((importSymbol) => (
+`        ${importSymbol},`
+)).join('\n')}
+      ]}
       addButton={{
         text: 'Add ${isScheduler ? 'Resource' : 'Event'}',
         click() {
           alert('handle add ${isScheduler ? 'resource' : 'event'}...')
-        }
+        },
       }}
-      plugins={[
-${Object.keys(pluginMap).map((importSymbol) => (
-`       ${importSymbol},`
-)).join('\n')}
-      ]}
+      availableViews={['${availableViews.join('\', \'')}']}
     />
   )
 }
