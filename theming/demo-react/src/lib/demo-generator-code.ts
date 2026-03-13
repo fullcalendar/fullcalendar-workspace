@@ -1,6 +1,34 @@
 import { ThemeName } from './config'
 import { buildToolbarAndButtons, DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util'
 
+import breezyEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-breezy/_compiled/event-calendar.tsx?raw'
+import classicEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-classic/_compiled/event-calendar.tsx?raw'
+import formaEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-forma/_compiled/event-calendar.tsx?raw'
+import monarchEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-monarch/_compiled/event-calendar.tsx?raw'
+import pulseEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-pulse/_compiled/event-calendar.tsx?raw'
+
+import breezySchedulerRaw from '../../../ui-default-react-tailwind/src/theme-breezy/_compiled/scheduler.tsx?raw'
+import classicSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-classic/_compiled/scheduler.tsx?raw'
+import formaSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-forma/_compiled/scheduler.tsx?raw'
+import monarchSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-monarch/_compiled/scheduler.tsx?raw'
+import pulseSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-pulse/_compiled/scheduler.tsx?raw'
+
+export const compiledEventCalendarByTheme: Record<string, string> = {
+  breezy: breezyEventCalendarRaw,
+  classic: classicEventCalendarRaw,
+  forma: formaEventCalendarRaw,
+  monarch: monarchEventCalendarRaw,
+  pulse: pulseEventCalendarRaw,
+}
+
+export const compiledSchedulerByTheme: Record<string, string> = {
+  breezy: breezySchedulerRaw,
+  classic: classicSchedulerRaw,
+  forma: formaSchedulerRaw,
+  monarch: monarchSchedulerRaw,
+  pulse: pulseSchedulerRaw,
+}
+
 export function getStockAppCode({
   themeName,
   paletteName,

@@ -18,7 +18,7 @@ import SlTabPanel from '@shoelace-style/shoelace/dist/react/tab-panel/index.js'
 import SlTooltip from '@shoelace-style/shoelace/dist/react/tooltip/index.js'
 import { DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
 import { ColorScheme, ThemeName } from './config.js'
-import { getForkedAppCode, getStockAppCode } from './demo-generator-code.js'
+import { compiledEventCalendarByTheme, compiledSchedulerByTheme, getForkedAppCode, getStockAppCode } from './demo-generator-code.js'
 
 /*
 TODO: redirect for MUI and Shadcn
@@ -34,12 +34,11 @@ export interface DemoGeneratorProps {
 }
 
 interface CodeDialogParams {
-  label: string // TODO: keep?
   themeName: ThemeName
   paletteName: string
   colorScheme: 'light' | 'dark'
-  pluginMap: Record<string, string>
   isScheduler: boolean
+  pluginMap: Record<string, string>
   availableViews: string[]
 }
 
@@ -118,8 +117,8 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           colorScheme: activeDialog?.colorScheme,
           colorSchemeTechnique,
           colorSchemeDataAttribute: effectiveDataAttribute,
-          pluginMap: activeDialog?.pluginMap,
           isScheduler: activeDialog?.isScheduler,
+          pluginMap: activeDialog?.pluginMap,
           availableViews: activeDialog?.availableViews,
         })
       : getStockAppCode({
@@ -128,14 +127,26 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           colorScheme: activeDialog?.colorScheme,
           colorSchemeTechnique,
           colorSchemeDataAttribute: effectiveDataAttribute,
-          pluginMap: activeDialog?.pluginMap,
           isScheduler: activeDialog?.isScheduler,
+          pluginMap: activeDialog?.pluginMap,
           availableViews: activeDialog?.availableViews,
         })
+
+    if (isFork) {
+      if (activeDialog.isScheduler) {
+        sourceFiles['scheduler.tsx'] = compiledSchedulerByTheme[activeDialog.themeName]
+      }
+      sourceFiles['event-calendar.tsx'] = compiledEventCalendarByTheme[activeDialog.themeName]
+    }
   }
 
   return (
-    <SlDialog label={activeDialog?.label ?? ''} open={activeDialog !== null} onSlAfterHide={onClose} style={{ '--width': '860px' } as React.CSSProperties}>
+    <SlDialog
+      label={(activeDialog?.isScheduler ? 'Scheduler' : 'Event Calendar') + ' Code'}
+      open={activeDialog !== null}
+      onSlAfterHide={onClose}
+      style={{ '--width': '860px' } as React.CSSProperties}
+    >
       <div className='demo-dialog-fields'>
           <div className='demo-dialog-fields-row' style={{ alignItems: 'end', marginBottom: 20 }}>
             <SlRadioGroup label='UI Framework' value='react' size='small'>
@@ -222,21 +233,23 @@ export function DemoGenerator(props: DemoGeneratorProps) {
             ...eventCalendarProps,
             initialView: 'dayGridMonth',
             availableViews: ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear'],
-            plugins: [scrollGridPlugin, adaptivePlugin],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Day Grid Month',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
               pluginMap: {
                 'dayGridPlugin': '@fullcalendar/react/daygrid',
                 'timeGridPlugin': '@fullcalendar/react/timegrid',
                 'listPlugin': '@fullcalendar/react/list',
                 'multiMonthPlugin': '@fullcalendar/react/multimonth',
               },
-              isScheduler: false,
               availableViews: ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear'],
             })}
           />
@@ -246,19 +259,22 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           {props.renderEventCalendar({
             ...eventCalendarProps,
             initialView: 'timeGridWeek',
-            plugins: [scrollGridPlugin, adaptivePlugin],
+            availableViews: ['timeGridWeek', 'timeGridDay', 'dayGridMonth'],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Time Grid Week',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
               pluginMap: {
                 'timeGridPlugin': '@fullcalendar/react/timegrid',
                 'dayGridPlugin': '@fullcalendar/react/daygrid',
               },
-              isScheduler: false,
               availableViews: ['timeGridWeek', 'timeGridDay', 'dayGridMonth'],
             })}
           />
@@ -268,18 +284,21 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           {props.renderEventCalendar({
             ...eventCalendarProps,
             initialView: 'multiMonthYear',
-            plugins: [scrollGridPlugin, adaptivePlugin],
+            availableViews: ['multiMonthYear'],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Multi Month Year',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
               pluginMap: {
                 'multiMonthPlugin': '@fullcalendar/react/multimonth',
               },
-              isScheduler: false,
               availableViews: ['multiMonthYear'],
             })}
           />
@@ -290,18 +309,20 @@ export function DemoGenerator(props: DemoGeneratorProps) {
             ...eventCalendarProps,
             initialView: 'dayGridYear',
             availableViews: ['dayGridYear'],
-            plugins: [scrollGridPlugin, adaptivePlugin],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Day Grid Year',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
               pluginMap: {
                 'dayGridPlugin': '@fullcalendar/react/daygrid',
               },
-              isScheduler: false,
               availableViews: ['dayGridYear'],
             })}
           />
@@ -312,19 +333,21 @@ export function DemoGenerator(props: DemoGeneratorProps) {
             ...eventCalendarProps,
             initialView: 'listYear',
             availableViews: ['listYear', 'listMonth', 'listWeek'],
-            plugins: [scrollGridPlugin, adaptivePlugin],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
             listText: '',
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'List Year',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
               pluginMap: {
                 'listPlugin': '@fullcalendar/react/list',
               },
-              isScheduler: false,
               availableViews: ['listYear', 'listMonth', 'listWeek'],
             })}
           />
@@ -338,14 +361,13 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Resource Timeline',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: true,
               pluginMap: {
                 'resourceTimelinePlugin': '@fullcalendar/react-scheduler/resource-timeline',
               },
-              isScheduler: true,
               availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
             })}
           />
@@ -359,14 +381,13 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
-              label: 'Resource Time Grid',
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: true,
               pluginMap: {
                 'resourceTimeGridPlugin': '@fullcalendar/react-scheduler/resource-timegrid',
               },
-              isScheduler: true,
               availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],
             })}
           />

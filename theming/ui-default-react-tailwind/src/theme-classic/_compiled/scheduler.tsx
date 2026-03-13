@@ -6,7 +6,7 @@ import timelinePlugin from '@fullcalendar/react-scheduler/timeline'
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timegrid'
 import resourceDayGridPlugin from '@fullcalendar/react-scheduler/resource-daygrid'
-import { EventCalendar, xxsTextClass, outlineWidthFocusClass, primaryOutlineColorClass, strongSolidPressableClass } from './event-calendar.js'
+import { EventCalendar, xxsTextClass, outlineWidthFocusClass, primaryOutlineColorClass, strongSolidPressableClass } from './event-calendar'
 
 const schedulerOnlyPlugins = [
   adaptivePlugin,
