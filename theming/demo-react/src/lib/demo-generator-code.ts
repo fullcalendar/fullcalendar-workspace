@@ -13,6 +13,31 @@ import formaSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-form
 import monarchSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-monarch/_compiled/scheduler-simple.tsx?raw'
 import pulseSchedulerRaw from '../../../ui-default-react-tailwind/src/theme-pulse/_compiled/scheduler-simple.tsx?raw'
 
+import breezyThemeCssRaw from '../../../../standard/packages/preact/src/themes/breezy/theme.css?raw'
+import classicThemeCssRaw from '../../../../standard/packages/preact/src/themes/classic/theme.css?raw'
+import formaThemeCssRaw from '../../../../standard/packages/preact/src/themes/forma/theme.css?raw'
+import monarchThemeCssRaw from '../../../../standard/packages/preact/src/themes/monarch/theme.css?raw'
+import pulseThemeCssRaw from '../../../../standard/packages/preact/src/themes/pulse/theme.css?raw'
+
+import breezyPaletteEmeraldRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/emerald.css?raw'
+import breezyPaletteHoneyRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/honey.css?raw'
+import breezyPaletteIndigoRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/indigo.css?raw'
+import breezyPaletteRoseRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/rose.css?raw'
+import classicPaletteRaw from '../../../../standard/packages/preact/src/themes/classic/palette.css?raw'
+import formaPaletteBlueRaw from '../../../../standard/packages/preact/src/themes/forma/palettes/blue.css?raw'
+import formaPaletteGreenRaw from '../../../../standard/packages/preact/src/themes/forma/palettes/green.css?raw'
+import formaPalettePurpleRaw from '../../../../standard/packages/preact/src/themes/forma/palettes/purple.css?raw'
+import formaPaletteRedRaw from '../../../../standard/packages/preact/src/themes/forma/palettes/red.css?raw'
+import monarchPaletteBlueRaw from '../../../../standard/packages/preact/src/themes/monarch/palettes/blue.css?raw'
+import monarchPaletteGreenRaw from '../../../../standard/packages/preact/src/themes/monarch/palettes/green.css?raw'
+import monarchPalettePurpleRaw from '../../../../standard/packages/preact/src/themes/monarch/palettes/purple.css?raw'
+import monarchPaletteRedRaw from '../../../../standard/packages/preact/src/themes/monarch/palettes/red.css?raw'
+import monarchPaletteYellowRaw from '../../../../standard/packages/preact/src/themes/monarch/palettes/yellow.css?raw'
+import pulsePaletteBlueRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/blue.css?raw'
+import pulsePaletteGreenRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/green.css?raw'
+import pulsePalettePurpleRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/purple.css?raw'
+import pulsePaletteRedRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/red.css?raw'
+
 export const compiledEventCalendarByTheme: Record<string, string> = {
   breezy: breezyEventCalendarRaw,
   classic: classicEventCalendarRaw,
@@ -27,6 +52,43 @@ export const compiledSchedulerByTheme: Record<string, string> = {
   forma: formaSchedulerRaw,
   monarch: monarchSchedulerRaw,
   pulse: pulseSchedulerRaw,
+}
+
+export const themeCssByTheme: Record<string, string> = {
+  breezy: breezyThemeCssRaw,
+  classic: classicThemeCssRaw,
+  forma: formaThemeCssRaw,
+  monarch: monarchThemeCssRaw,
+  pulse: pulseThemeCssRaw,
+}
+
+export const paletteCssByTheme: Record<string, string | Record<string, string>> = {
+  breezy: {
+    emerald: breezyPaletteEmeraldRaw,
+    honey: breezyPaletteHoneyRaw,
+    indigo: breezyPaletteIndigoRaw,
+    rose: breezyPaletteRoseRaw,
+  },
+  classic: classicPaletteRaw,
+  forma: {
+    blue: formaPaletteBlueRaw,
+    green: formaPaletteGreenRaw,
+    purple: formaPalettePurpleRaw,
+    red: formaPaletteRedRaw,
+  },
+  monarch: {
+    blue: monarchPaletteBlueRaw,
+    green: monarchPaletteGreenRaw,
+    purple: monarchPalettePurpleRaw,
+    red: monarchPaletteRedRaw,
+    yellow: monarchPaletteYellowRaw,
+  },
+  pulse: {
+    blue: pulsePaletteBlueRaw,
+    green: pulsePaletteGreenRaw,
+    purple: pulsePalettePurpleRaw,
+    red: pulsePaletteRedRaw,
+  },
 }
 
 export function getStockAppCode({

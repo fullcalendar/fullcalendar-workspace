@@ -18,7 +18,7 @@ import SlTabPanel from '@shoelace-style/shoelace/dist/react/tab-panel/index.js'
 import SlTooltip from '@shoelace-style/shoelace/dist/react/tooltip/index.js'
 import { DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
 import { ColorScheme, ThemeName } from './config.js'
-import { compiledEventCalendarByTheme, compiledSchedulerByTheme, getForkedAppCode, getStockAppCode } from './demo-generator-code.js'
+import { compiledEventCalendarByTheme, compiledSchedulerByTheme, getForkedAppCode, getStockAppCode, paletteCssByTheme, themeCssByTheme } from './demo-generator-code.js'
 
 /*
 TODO: redirect for MUI and Shadcn
@@ -145,7 +145,27 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
       if (activeDialog.isScheduler) {
         sourceFiles['scheduler.tsx'] = compiledSchedulerByTheme[activeDialog.themeName]
       }
+
       sourceFiles['event-calendar.tsx'] = compiledEventCalendarByTheme[activeDialog.themeName]
+
+      if (styling !== 'tailwind') {
+        sourceFiles['theme.css'] = themeCssByTheme[activeDialog.themeName]
+      }
+    }
+
+    if (
+      isFork || (
+        colorSchemeTechnique !== 'component-prop' &&
+        !(colorSchemeTechnique === 'data-attribute' && effectiveDataAttribute === DEFAULT_DATA_ATTRIBUTE)
+      )
+    ) {
+      const themeEntry = paletteCssByTheme[activeDialog.themeName]
+      const paletteCss = typeof themeEntry === 'string'
+        ? themeEntry
+        : themeEntry[activeDialog.paletteName]
+      if (paletteCss) {
+        sourceFiles['palette.css'] = paletteCss
+      }
     }
   }
 
