@@ -45,8 +45,17 @@ interface CodeDialogParams {
 function CodeFileTabs({ sourceFiles }: { sourceFiles: Record<string, string> }) {
   const filenames = Object.keys(sourceFiles)
   const [activeFilename, setActiveFilename] = useState(filenames[0])
-  const activeCode = sourceFiles[activeFilename] ?? ''
+  const effectiveFilename = filenames.includes(activeFilename) ? activeFilename : filenames[0]
+  const activeCode = sourceFiles[effectiveFilename] ?? ''
   const copyWrapperRef = useRef<HTMLDivElement>(null)
+  const tabGroupRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (!filenames.includes(activeFilename)) {
+      setActiveFilename(filenames[0])
+      tabGroupRef.current?.show(filenames[0])
+    }
+  }, [filenames.join(',')])
 
   useEffect(() => {
     const el = copyWrapperRef.current
@@ -64,7 +73,7 @@ function CodeFileTabs({ sourceFiles }: { sourceFiles: Record<string, string> }) 
       <div ref={copyWrapperRef} className='demo-code-copy-btn'>
         <SlCopyButton value={activeCode} />
       </div>
-      <SlTabGroup onSlTabShow={(e: any) => setActiveFilename(e.detail.name)}>
+      <SlTabGroup ref={tabGroupRef} onSlTabShow={(e: any) => setActiveFilename(e.detail.name)}>
         {filenames.map((filename) => (
           <SlTab key={filename} slot='nav' panel={filename}>{filename}</SlTab>
         ))}
