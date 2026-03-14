@@ -25,6 +25,7 @@ TODO: redirect for MUI and Shadcn
 */
 
 export interface DemoGeneratorProps {
+  uiName: 'default' | 'shadcn' | 'mui',
   themeName: string,
   paletteName: string,
   colorScheme: string,
@@ -34,6 +35,7 @@ export interface DemoGeneratorProps {
 }
 
 interface CodeDialogParams {
+  uiName: 'default' | 'shadcn' | 'mui'
   themeName: ThemeName
   paletteName: string
   colorScheme: 'light' | 'dark'
@@ -177,6 +179,13 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
     }
   }
 
+  const isCustomUi = activeDialog?.uiName === 'shadcn' || activeDialog?.uiName === 'mui'
+  const customUiDocsUrl = activeDialog?.uiName === 'mui'
+    ? 'https://v7.fullcalendar.io/mui'
+    : activeDialog?.uiName === 'shadcn'
+      ? 'https://v7.fullcalendar.io/shadcn'
+      : undefined
+
   return (
     <SlDialog
       label={(activeDialog?.isScheduler ? 'Scheduler' : 'Event Calendar') + ' Code'}
@@ -184,7 +193,8 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
       onSlAfterHide={onClose}
       style={{ '--width': '860px' } as React.CSSProperties}
     >
-      <div className='demo-dialog-fields'>
+      {!isCustomUi && (
+        <div className='demo-dialog-fields'>
           <div className='demo-dialog-fields-row' style={{ alignItems: 'end', marginBottom: 20 }}>
             <SlRadioGroup label='UI Framework' value='react' size='small'>
               <SlRadioButton value='react'>React</SlRadioButton>
@@ -250,10 +260,14 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
             )}
           </div>
         </div>
-        {activeDialog && <CodeFileTabs sourceFiles={sourceFiles} />}
-        <SlButton slot='footer' variant='default' onClick={resetForm}>Reset All</SlButton>
-        <SlButton slot='footer' variant='primary' onClick={onClose}>Close</SlButton>
-      </SlDialog>
+      )}
+      {customUiDocsUrl && (
+        <p className='demo-dialog-custom-ui-link'>For more info, visit <a href={customUiDocsUrl} target='_blank'>{customUiDocsUrl}</a></p>
+      )}
+      {!isCustomUi && activeDialog && <CodeFileTabs sourceFiles={sourceFiles} />}
+      {!isCustomUi && <SlButton slot='footer' variant='default' onClick={resetForm}>Reset All</SlButton>}
+      <SlButton slot='footer' variant='primary' onClick={onClose}>Close</SlButton>
+    </SlDialog>
   )
 }
 
@@ -277,6 +291,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -304,6 +319,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -329,6 +345,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -353,6 +370,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -378,6 +396,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -398,6 +417,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,
@@ -419,6 +439,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           })}
           <CodeButton
             onPress={() => setActiveDialog({
+              uiName: props.uiName,
               themeName: props.themeName as ThemeName,
               paletteName: props.paletteName,
               colorScheme: props.colorScheme as ColorScheme,

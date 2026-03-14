@@ -89,6 +89,12 @@ html, body {
   color: var(--sl-color-neutral-500);
 }
 
+.demo-dialog-custom-ui-link a {
+  color: var(--sl-color-primary-600);
+  text-decoration: underline;
+  font-weight: var(--sl-font-weight-semibold);
+}
+
 .demo-code-tabs {
   position: relative;
 }

@@ -61,6 +61,7 @@ function App() {
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
+        uiName='shadcn'
         themeName={demoChoices.theme}
         paletteName={demoChoices.palette}
         colorScheme={demoChoices.colorScheme}

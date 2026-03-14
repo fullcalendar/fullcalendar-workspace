@@ -48,6 +48,7 @@ function App() {
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
+        uiName='default'
         themeName={demoChoices.theme}
         paletteName={demoChoices.palette}
         colorScheme={demoChoices.colorScheme}

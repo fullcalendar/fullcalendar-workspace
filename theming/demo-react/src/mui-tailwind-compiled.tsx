@@ -57,6 +57,7 @@ function App() {
       <MuiThemeProvider theme={muiTheme}>
         <MuiCssBaseline />
         <DemoGenerator
+          uiName='mui'
           themeName={demoChoices.theme}
           paletteName={demoChoices.palette}
           colorScheme={demoChoices.colorScheme}
