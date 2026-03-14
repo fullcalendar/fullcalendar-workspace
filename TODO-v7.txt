@@ -24,6 +24,10 @@ build note:
     manually before `pn dev`
 
 
+In themes.fullcalendar.io theme generation, suggest <body> font-family somehow?
+
+remove comments from theme.css files like:
+  "NOTE: apply this to calendar root AND popover"
 
 don't need imports like this anymore:
   import type {} from '@fullcalendar/react/daygrid'

@@ -102,9 +102,14 @@ export function getCompiledEventCalendar(
   code = code.replace(
     'from \'@fullcalendar/react\'',
     'from \'@fullcalendar/react\'' +
+      '\nimport \'@fullcalendar/react/skeleton.css\'' +
       (needsThemeCss ? '\nimport \'./theme.css\'' : '') +
       '\nimport \'./palette.css\''
   )
+
+  if (!needsThemeCss) {
+    code = code.replace(/\s*(reset-root|button-reset)\s*/g, '')
+  }
 
   return code.trim()
 }
@@ -136,7 +141,13 @@ export function getPaletteCss(
   } else if (classNameOverride) {
     css = css.replaceAll('[data-color-scheme=dark]', `.dark`)
   } else if (mediaQueryOverride) {
-    css = css.replaceAll('[data-color-scheme=dark]', '@media (prefers-color-scheme: dark)')
+    css = css.replace(
+      /\[data-color-scheme=dark\]\s*\{([\s\S]*?)\}/g,
+      (_, inner) => {
+        const reindented = inner.replace(/^  /mg, '    ')
+        return `@media (prefers-color-scheme: dark) {\n  :root {${reindented}  }\n}`
+      }
+    )
   }
 
   return css.trim()

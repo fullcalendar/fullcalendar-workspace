@@ -137,7 +137,7 @@ export function EventCalendar({
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      className="bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden"
+      className="bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden reset-root"
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -154,7 +154,7 @@ export function EventCalendar({
         data.isSelectGroup && 'border border-(--fc-monarch-border)'
       )}
       buttonClass={(data) => joinClassNames(
-        'py-2.5 rounded-full flex flex-row items-center text-sm',
+        'py-2.5 rounded-full flex flex-row items-center text-sm button-reset',
         data.isIconOnly ? 'px-2.5' : 'px-5',
         data.inSelectGroup && '-m-px',
         (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
@@ -426,8 +426,8 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
-      popoverClass="border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60"
-      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass}`}
+      popoverClass="border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60 reset-root"
+      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass} button-reset`}
       popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
 
       /* Lane

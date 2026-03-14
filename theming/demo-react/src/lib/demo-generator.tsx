@@ -251,7 +251,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
                 <SlRadioButton value='css-module'>CSS Module</SlRadioButton>
               </SlRadioGroup>
               {styling === 'global-css' && (
-                <div className='demo-dialog-field-warning'>The readability of selectors will be improved.</div>
+                <div className='demo-dialog-field-warning'>The readability of selectors needs improving.</div>
               )}
               {styling === 'css-module' && (
                 <div className='demo-dialog-field-error'>Not yet available. Use Global CSS instead.</div>
