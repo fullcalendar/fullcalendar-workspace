@@ -151,6 +151,7 @@ export function getStockAppCode({
   pluginMap,
   isScheduler,
   availableViews,
+  initialView,
 }: {
   themeName: ThemeName,
   paletteName: string,
@@ -160,6 +161,7 @@ export function getStockAppCode({
   pluginMap: Record<string, string>, // { jsVarName => importName }
   isScheduler: boolean,
   availableViews: string[],
+  initialView?: string
 }): string {
   const { headerToolbar } = buildToolbarAndButtons(themeName, availableViews, undefined)
 
@@ -222,7 +224,7 @@ ${
           },
         }
       }}
-      initialView='${availableViews[0]}'
+      initialView='${initialView ?? availableViews[0]}'
     />
   )
 }
@@ -236,6 +238,7 @@ export function getForkedAppCode({
   pluginMap,
   isScheduler,
   availableViews,
+  initialView,
 }: {
   colorScheme: 'light' | 'dark',
   colorSchemeTechnique: 'component-prop' | 'data-attribute' | 'class-name' | 'media-query',
@@ -243,6 +246,7 @@ export function getForkedAppCode({
   pluginMap: Record<string, string>, // { jsVarName => importName }
   isScheduler: boolean,
   availableViews: string[],
+  initialView?: string
 }): string {
   return `${Object.keys(pluginMap).map((importSymbol) => (
   `import ${importSymbol} from '${pluginMap[importSymbol]}'`
@@ -274,6 +278,7 @@ ${Object.keys(pluginMap).map((importSymbol) => (
         },
       }}
       availableViews={['${availableViews.join('\', \'')}']}
+      initialView='${initialView ?? availableViews[0]}'
     />
   )
 }

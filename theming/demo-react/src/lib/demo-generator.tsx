@@ -40,6 +40,7 @@ interface CodeDialogParams {
   isScheduler: boolean
   pluginMap: Record<string, string>
   availableViews: string[]
+  initialView?: string
 }
 
 function CodeFileTabs({ sourceFiles }: { sourceFiles: Record<string, string> }) {
@@ -129,6 +130,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           isScheduler: activeDialog?.isScheduler,
           pluginMap: activeDialog?.pluginMap,
           availableViews: activeDialog?.availableViews,
+          initialView: activeDialog?.initialView,
         })
       : getStockAppCode({
           themeName: activeDialog?.themeName,
@@ -139,6 +141,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           isScheduler: activeDialog?.isScheduler,
           pluginMap: activeDialog?.pluginMap,
           availableViews: activeDialog?.availableViews,
+          initialView: activeDialog?.initialView,
         })
 
     if (isFork) {
@@ -403,6 +406,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
                 'resourceTimelinePlugin': '@fullcalendar/react-scheduler/resource-timeline',
               },
               availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
+              initialView: 'resourceTimelineThreeDay',
             })}
           />
         </div>
@@ -423,6 +427,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
                 'resourceTimeGridPlugin': '@fullcalendar/react-scheduler/resource-timegrid',
               },
               availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],
+              initialView: 'resourceTimeGridFiveDay',
             })}
           />
         </div>
