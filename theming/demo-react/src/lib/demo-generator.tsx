@@ -412,8 +412,8 @@ export function DemoGenerator(props: DemoGeneratorProps) {
         <div className='demo-item'>
           {props.renderResourceTimeline({
             ...resourceTimelineProps,
-            initialView: 'resourceTimelineThreeDay',
             availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
+            initialView: 'resourceTimelineWeek',
           })}
           <CodeButton
             onPress={() => setActiveDialog({
@@ -425,8 +425,8 @@ export function DemoGenerator(props: DemoGeneratorProps) {
               pluginMap: {
                 'resourceTimelinePlugin': '@fullcalendar/react-scheduler/resource-timeline',
               },
-              availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
-              initialView: 'resourceTimelineThreeDay',
+              availableViews: ['resourceTimelineDay', 'resourceTimelineWeek'],
+              initialView: 'resourceTimelineWeek',
             })}
           />
         </div>
@@ -434,8 +434,8 @@ export function DemoGenerator(props: DemoGeneratorProps) {
         <div className='demo-item'>
           {props.renderResourceTimeGrid({
             ...vResourceProps,
-            initialView: 'resourceTimeGridFiveDay',
             availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],
+            initialView: 'resourceTimeGridFiveDay',
           })}
           <CodeButton
             onPress={() => setActiveDialog({
@@ -447,8 +447,8 @@ export function DemoGenerator(props: DemoGeneratorProps) {
               pluginMap: {
                 'resourceTimeGridPlugin': '@fullcalendar/react-scheduler/resource-timegrid',
               },
-              availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],
-              initialView: 'resourceTimeGridFiveDay',
+              availableViews: ['resourceTimeGridDay', 'resourceTimeGridWeek'],
+              initialView: 'resourceTimeGridWeek',
             })}
           />
         </div>

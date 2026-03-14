@@ -26,6 +26,8 @@ build note:
 
 In themes.fullcalendar.io theme generation, suggest <body> font-family somehow?
 
+When calendar forced dark, ensure scrollbars are dark, even if rest of page is light
+
 remove comments from theme.css files like:
   "NOTE: apply this to calendar root AND popover"
 

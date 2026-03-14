@@ -18,7 +18,6 @@ export interface SchedulerProps extends CalendarOptions {
 export function Scheduler({
   availableViews,
   addButton,
-  plugins: userPlugins = [],
   views: userViews,
   ...restOptions
 }: SchedulerProps) {
