@@ -18,7 +18,7 @@ import SlTabPanel from '@shoelace-style/shoelace/dist/react/tab-panel/index.js'
 import SlTooltip from '@shoelace-style/shoelace/dist/react/tooltip/index.js'
 import { DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
 import { ColorScheme, ThemeName } from './config.js'
-import { compiledEventCalendarByTheme, compiledSchedulerByTheme, getForkedAppCode, getStockAppCode, paletteCssByTheme, themeCssByTheme } from './demo-generator-code.js'
+import { getCompiledEventCalendar, getCompiledScheduler, getForkedAppCode, getPaletteCss, getStockAppCode, getThemeCss } from './demo-generator-code.js'
 
 /*
 TODO: redirect for MUI and Shadcn
@@ -143,13 +143,15 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
 
     if (isFork) {
       if (activeDialog.isScheduler) {
-        sourceFiles['scheduler.tsx'] = compiledSchedulerByTheme[activeDialog.themeName]
+        sourceFiles['scheduler.tsx'] = getCompiledScheduler(activeDialog.themeName)
       }
 
-      sourceFiles['event-calendar.tsx'] = compiledEventCalendarByTheme[activeDialog.themeName]
+      const needsThemeCss = styling !== 'tailwind'
 
-      if (styling !== 'tailwind') {
-        sourceFiles['theme.css'] = themeCssByTheme[activeDialog.themeName]
+      sourceFiles['event-calendar.tsx'] = getCompiledEventCalendar(activeDialog.themeName, needsThemeCss)
+
+      if (needsThemeCss) {
+        sourceFiles['theme.css'] = getThemeCss(activeDialog.themeName)
       }
     }
 
@@ -159,10 +161,13 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
         !(colorSchemeTechnique === 'data-attribute' && effectiveDataAttribute === DEFAULT_DATA_ATTRIBUTE)
       )
     ) {
-      const themeEntry = paletteCssByTheme[activeDialog.themeName]
-      const paletteCss = typeof themeEntry === 'string'
-        ? themeEntry
-        : themeEntry[activeDialog.paletteName]
+      const paletteCss = getPaletteCss(
+        activeDialog.themeName,
+        activeDialog.paletteName,
+        colorSchemeTechnique === 'data-attribute' ? dataAttribute : '',
+        colorSchemeTechnique === 'class-name',
+        colorSchemeTechnique === 'media-query',
+      )
       if (paletteCss) {
         sourceFiles['palette.css'] = paletteCss
       }
@@ -230,13 +235,13 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
               <SlRadioGroup label='Styling' value={styling} size='small' onSlChange={(e: any) => setStyling(e.target.value)}>
                 <SlRadioButton value='tailwind'>Tailwind</SlRadioButton>
                 <SlRadioButton value='global-css'>Global CSS</SlRadioButton>
-                <SlRadioButton value='css-modules'>CSS Modules</SlRadioButton>
+                <SlRadioButton value='css-module'>CSS Module</SlRadioButton>
               </SlRadioGroup>
               {styling === 'global-css' && (
-                <div className='demo-dialog-field-error'>The readability of selectors is still being improved for CSS modules.</div>
+                <div className='demo-dialog-field-warning'>The readability of selectors will be improved.</div>
               )}
-              {styling === 'css-modules' && (
-                <div className='demo-dialog-field-error'>This option is not yet available. Please consult Global CSS for now.</div>
+              {styling === 'css-module' && (
+                <div className='demo-dialog-field-error'>Not yet available. Use Global CSS instead.</div>
               )}
             </div>
             )}

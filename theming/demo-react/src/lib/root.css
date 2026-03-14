@@ -79,6 +79,11 @@ html, body {
   color: var(--sl-color-danger-600);
 }
 
+.demo-dialog-field-warning {
+  font-size: var(--sl-font-size-x-small);
+  color: var(--sl-color-warning-600);
+}
+
 .demo-dialog-field-note {
   font-size: var(--sl-font-size-x-small);
   color: var(--sl-color-neutral-500);

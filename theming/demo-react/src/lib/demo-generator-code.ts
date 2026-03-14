@@ -38,7 +38,7 @@ import pulsePaletteGreenRaw from '../../../../standard/packages/preact/src/theme
 import pulsePalettePurpleRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/purple.css?raw'
 import pulsePaletteRedRaw from '../../../../standard/packages/preact/src/themes/pulse/palettes/red.css?raw'
 
-export const compiledEventCalendarByTheme: Record<string, string> = {
+const compiledEventCalendarByTheme: Record<string, string> = {
   breezy: breezyEventCalendarRaw,
   classic: classicEventCalendarRaw,
   forma: formaEventCalendarRaw,
@@ -46,7 +46,7 @@ export const compiledEventCalendarByTheme: Record<string, string> = {
   pulse: pulseEventCalendarRaw,
 }
 
-export const compiledSchedulerByTheme: Record<string, string> = {
+const compiledSchedulerByTheme: Record<string, string> = {
   breezy: breezySchedulerRaw,
   classic: classicSchedulerRaw,
   forma: formaSchedulerRaw,
@@ -54,7 +54,7 @@ export const compiledSchedulerByTheme: Record<string, string> = {
   pulse: pulseSchedulerRaw,
 }
 
-export const themeCssByTheme: Record<string, string> = {
+const themeCssByTheme: Record<string, string> = {
   breezy: breezyThemeCssRaw,
   classic: classicThemeCssRaw,
   forma: formaThemeCssRaw,
@@ -62,7 +62,7 @@ export const themeCssByTheme: Record<string, string> = {
   pulse: pulseThemeCssRaw,
 }
 
-export const paletteCssByTheme: Record<string, string | Record<string, string>> = {
+const paletteCssByTheme: Record<string, string | Record<string, string>> = {
   breezy: {
     emerald: breezyPaletteEmeraldRaw,
     honey: breezyPaletteHoneyRaw,
@@ -89,6 +89,57 @@ export const paletteCssByTheme: Record<string, string | Record<string, string>> 
     purple: pulsePalettePurpleRaw,
     red: pulsePaletteRedRaw,
   },
+}
+
+export function getCompiledEventCalendar(
+  themeName: string,
+  needsThemeCss: boolean,
+): string {
+  let code = compiledEventCalendarByTheme[themeName]
+
+  code = code.replace('import React from \'react\'', '')
+
+  code = code.replace(
+    'from \'@fullcalendar/react\'',
+    'from \'@fullcalendar/react\'' +
+      (needsThemeCss ? '\nimport \'./theme.css\'' : '') +
+      '\nimport \'./palette.css\''
+  )
+
+  return code.trim()
+}
+
+export function getCompiledScheduler(themeName: string): string {
+  let code = compiledSchedulerByTheme[themeName]
+
+  code = code.replace('import React from \'react\'', '')
+
+  return code.trim()
+}
+
+export function getThemeCss(themeName: string): string {
+  return themeCssByTheme[themeName].trim()
+}
+
+export function getPaletteCss(
+  themeName: string,
+  paletteName: string,
+  dataAttributeOverride: string,
+  classNameOverride: boolean,
+  mediaQueryOverride: boolean,
+): string | undefined {
+  const entry = paletteCssByTheme[themeName]
+  let css = typeof entry === 'string' ? entry : entry?.[paletteName]
+
+  if (dataAttributeOverride) {
+    css = css.replaceAll('[data-color-scheme=dark]', `[${dataAttributeOverride}=dark]`)
+  } else if (classNameOverride) {
+    css = css.replaceAll('[data-color-scheme=dark]', `.dark`)
+  } else if (mediaQueryOverride) {
+    css = css.replaceAll('[data-color-scheme=dark]', '@media (prefers-color-scheme: dark)')
+  }
+
+  return css.trim()
 }
 
 export function getStockAppCode({
