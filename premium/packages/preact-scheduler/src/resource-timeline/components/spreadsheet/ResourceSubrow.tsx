@@ -78,6 +78,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
               key={i} // eslint-disable-line react/no-array-index-key
               colSpec={colSpec}
               resource={resource}
+              field={colSpec.field || 'title'}
               fieldValue={fieldValue}
               indent={props.indent}
               hasChildren={props.hasChildren}

@@ -19,6 +19,7 @@ import { ResourceCellData, ColSpec } from '../../structs'
 export interface ResourceCellProps {
   colSpec: ColSpec
   resource: Resource
+  field: string
   fieldValue: any
   indent: number
   hasChildren: boolean
@@ -41,6 +42,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
     let renderProps = this.refineRenderProps({
       resource: props.resource,
+      field: props.field,
       fieldValue: props.fieldValue,
       context,
     })
@@ -141,6 +143,7 @@ function renderResourceInner(renderProps: ResourceCellData): ReactNode {
 
 interface RenderPropsInput {
   resource: Resource
+  field: string
   fieldValue: any
   context: ViewContext
 }
@@ -148,6 +151,7 @@ interface RenderPropsInput {
 function refineRenderProps(input: RenderPropsInput): ResourceCellData {
   return {
     resource: new ResourceApi(input.context, input.resource),
+    field: input.field,
     fieldValue: input.fieldValue,
     view: input.context.viewApi,
   }

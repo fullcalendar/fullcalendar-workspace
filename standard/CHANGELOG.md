@@ -1,6 +1,7 @@
 
 ## v7.0.0-beta.8
 
+- feature: `resourceCell*` hooks now receive `.field` in data
 - feature: new Classic theme CSS variables:
   --fc-classic-button
   --fc-classic-button-border

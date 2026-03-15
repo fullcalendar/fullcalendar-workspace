@@ -11,6 +11,7 @@ export type ResourceColumnHeaderMountData = MountData<ResourceColumnHeaderData>
 
 export interface ResourceCellData {
   resource?: ResourceApi
+  field: string
   fieldValue: any
   view: ViewApi
 }
