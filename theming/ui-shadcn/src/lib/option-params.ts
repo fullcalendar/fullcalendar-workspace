@@ -127,6 +127,9 @@ export const params: ThemeOptionParams = {
   eventFaintPressableClass,
   bgEventColor: 'var(--foreground)',
   bgEventBgClass,
+  bgEventFgOpacityClass: 'opacity-50',
+  smallDotBorderClass: 'border-4',
+  largeDotBorderClass: 'border-5',
 
   // misc event content
   highlightClass: 'bg-primary/10',

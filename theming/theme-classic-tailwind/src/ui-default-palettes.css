@@ -20,9 +20,14 @@ NOTE: button/toolbar UI is not defined here
   --fc-classic-event: var(--fc-classic-primary);
   --fc-classic-event-contrast: var(--fc-classic-primary-foreground);
   --fc-classic-background-event: var(--color-green-500);
+  --fc-classic-background-event-opacity: 15%;
+  --fc-classic-background-event-foreground-opacity: 50%;
   --fc-classic-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-classic-today: color-mix(in oklab, var(--color-yellow-400) 15%, transparent);
   --fc-classic-now: var(--color-red-500);
+  /* non-colors */
+  --fc-classic-small-dot-width: 8px;
+  --fc-classic-large-dot-width: 10px;
 
   /* neutral backgrounds */
   --fc-classic-background: var(--color-white);

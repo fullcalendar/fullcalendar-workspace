@@ -60,7 +60,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
 
   listItemEventBeforeClass: (data) => joinClassNames(
-    'border-4',
+    'border-[calc(var(--fc-classic-small-dot-width)/2)]',
     data.isNarrow ? 'mx-px' : 'mx-1',
   ),
 
@@ -165,9 +165,9 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     backgroundEventColor: "var(--fc-classic-background-event)",
-    backgroundEventClass: "bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]",
+    backgroundEventClass: "bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)]",
     backgroundEventTitleClass: (data) => joinClassNames(
-      'opacity-50 italic',
+      'opacity-(--fc-classic-background-event-foreground-opacity) italic',
       data.isNarrow
         ? `p-0.5 ${xxsTextClass}`
         : 'p-1.5 text-xs',
@@ -457,7 +457,7 @@ export default {
           ? joinClassNames(faintHoverPressableClass, outlineInsetClass)
           : faintHoverClass,
       ),
-      listItemEventBeforeClass: 'border-5',
+      listItemEventBeforeClass: 'border-[calc(var(--fc-classic-large-dot-width)/2)]',
       listItemEventInnerClass: '[display:contents]',
       listItemEventTimeClass: '-order-1 shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm',
       listItemEventTitleClass: (data) => joinClassNames(

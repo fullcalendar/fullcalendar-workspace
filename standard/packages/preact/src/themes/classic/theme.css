@@ -371,6 +371,16 @@ NOTE: apply this to buttonClass and popoverCloseClass
   border-width: 5px
 }
 
+.border-\[calc\(var\(--fc-classic-small-dot-width\)\/2\)\] {
+  border-style: var(--fc-classic-border-style);
+  border-width: calc(var(--fc-classic-small-dot-width) / 2)
+}
+
+.border-\[calc\(var\(--fc-classic-large-dot-width\)\/2\)\] {
+  border-style: var(--fc-classic-border-style);
+  border-width: calc(var(--fc-classic-large-dot-width) / 2)
+}
+
 .border-x {
   border-inline-style: var(--fc-classic-border-style);
   border-inline-width: 1px
@@ -509,13 +519,18 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .bg-\(--fc-event-color\),
-.bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
+.bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\],
+.bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
   background-color: var(--fc-event-color)
 }
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
     background-color: color-mix(in oklab, var(--fc-event-color)15%, transparent)
+  }
+
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
+    background-color: color-mix(in oklab, var(--fc-event-color) var(--fc-classic-background-event-opacity), transparent)
   }
 }
 
@@ -682,6 +697,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
 .opacity-75 {
   opacity: .75
+}
+
+.opacity-\(--fc-classic-background-event-foreground-opacity\) {
+  opacity: var(--fc-classic-background-event-foreground-opacity)
 }
 
 .shadow-lg {

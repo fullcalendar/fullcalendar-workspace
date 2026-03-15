@@ -156,6 +156,9 @@ export const params: ThemeOptionParams = {
   eventFaintBgClass,
   eventFaintPressableClass,
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  bgEventFgOpacityClass: 'opacity-50',
+  smallDotBorderClass: 'border-4',
+  largeDotBorderClass: 'border-5',
 
   // misc content
   highlightClass: 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]',

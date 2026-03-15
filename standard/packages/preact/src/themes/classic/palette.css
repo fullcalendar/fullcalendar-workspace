@@ -16,9 +16,14 @@
   --fc-classic-event: var(--fc-classic-primary);
   --fc-classic-event-contrast: var(--fc-classic-primary-foreground);
   --fc-classic-background-event: #22c55e;
+  --fc-classic-background-event-opacity: 15%;
+  --fc-classic-background-event-foreground-opacity: 50%;
   --fc-classic-highlight: #cffafe66;
   --fc-classic-today: #facc1526;
   --fc-classic-now: #ef4444;
+  /* non-colors */
+  --fc-classic-small-dot-width: 8px;
+  --fc-classic-large-dot-width: 10px;
 
   /* neutral backgrounds */
   --fc-classic-background: #ffffff;

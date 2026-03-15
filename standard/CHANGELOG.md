@@ -1,4 +1,19 @@
 
+## v7.0.0-beta.8
+
+- feature: new Classic theme CSS variables:
+  --fc-classic-button
+  --fc-classic-button-border
+  --fc-classic-button-strong
+  --fc-classic-button-strong-border
+  --fc-classic-button-outline
+  --fc-classic-button-foreground
+  --fc-classic-background-event-opacity
+  --fc-classic-background-event-foreground-opacity
+  --fc-classic-small-dot-width
+  --fc-classic-large-dot-width
+
+
 ## v7.0.0-beta.7
 
 ### React (`@fullcalendar/react`)

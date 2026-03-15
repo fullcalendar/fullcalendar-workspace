@@ -47,6 +47,9 @@ export interface EventCalendarOptionParams {
   eventContrastColor: string
   bgEventColor: string
   bgEventBgClass: string
+  bgEventFgOpacityClass: string
+  smallDotBorderClass: string
+  largeDotBorderClass: string
 
   // misc content
   highlightClass: string
@@ -103,7 +106,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ),
 
     listItemEventBeforeClass: (data) => joinClassNames(
-      'border-4', // 8px diameter
+      params.smallDotBorderClass,
       data.isNarrow ? 'mx-px' : 'mx-1',
     ),
 
@@ -171,7 +174,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventClass: params.bgEventBgClass,
 
       backgroundEventTitleClass: (data) => joinClassNames(
-        'opacity-50 italic',
+        params.bgEventFgOpacityClass, 'italic',
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1.5 text-xs',
@@ -484,7 +487,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             : params.faintHoverClass,
         ),
 
-        listItemEventBeforeClass: 'border-5', // 10px diameter
+        listItemEventBeforeClass: params.largeDotBorderClass, // 10px diameter
 
         listItemEventInnerClass: '[display:contents]',
 

@@ -83,6 +83,9 @@ export interface ThemeOptionParams {
   eventFaintPressableClass: string
   bgEventColor: string
   bgEventBgClass: string
+  bgEventFgOpacityClass: string
+  smallDotBorderClass: string
+  largeDotBorderClass: string
 
   // misc content
   highlightClass: string
