@@ -1,15 +1,9 @@
 
-/*
-NOTE: apply this to calendar root AND popover
-*/
 .reset-root {
   line-height: 1.5;
   --fc-classic-border-style: solid;
 }
 
-/*
-NOTE: apply this to buttonClass and popoverCloseClass
-*/
 .button-reset {
   appearance: button;
   font: inherit;
@@ -20,7 +14,6 @@ NOTE: apply this to buttonClass and popoverCloseClass
   opacity: 1;
   background-color: #0000;
   border-radius: 0;
-  /* originally provided on border-box reset */
   margin: 0;
   border: 0;
   padding: 0
