@@ -448,16 +448,20 @@ NOTE: apply this to buttonClass and popoverCloseClass
   border-color: var(--fc-classic-primary)
 }
 
+.border-\(--fc-classic-button-border\) {
+  border-color: var(--fc-classic-button-border)
+}
+
+.border-\(--fc-classic-button-strong-border\) {
+  border-color: var(--fc-classic-button-strong-border)
+}
+
 .border-\(--fc-classic-strong-border\) {
   border-color: var(--fc-classic-strong-border)
 }
 
 .border-\(--fc-event-color\) {
   border-color: var(--fc-event-color)
-}
-
-.border-slate-900 {
-  border-color: #0f172a
 }
 
 .border-transparent {
@@ -515,12 +519,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
   }
 }
 
-.bg-slate-700 {
-  background-color: #334155
+.bg-\(--fc-classic-button\) {
+  background-color: var(--fc-classic-button)
 }
 
-.bg-slate-800 {
-  background-color: #1e293b
+.bg-\(--fc-classic-button-strong\) {
+  background-color: var(--fc-classic-button-strong)
 }
 
 .p-0\.5 {
@@ -656,12 +660,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
   color: var(--fc-classic-muted-foreground)
 }
 
-.text-\(--fc-event-contrast-color\) {
-  color: var(--fc-event-contrast-color)
+.text-\(--fc-classic-button-foreground\) {
+  color: var(--fc-classic-button-foreground)
 }
 
-.text-white {
-  color: #fff
+.text-\(--fc-event-contrast-color\) {
+  color: var(--fc-event-contrast-color)
 }
 
 .italic {
@@ -718,12 +722,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
   outline-offset: 2px
 }
 
-.outline-\(--fc-classic-primary\) {
-  outline-color: var(--fc-classic-primary)
+.outline-\(--fc-classic-button-outline\) {
+  outline-color: var(--fc-classic-button-outline)
 }
 
-.outline-slate-600\/50 {
-  outline-color: #47556980;
+.outline-\(--fc-classic-primary\) {
+  outline-color: var(--fc-classic-primary)
 }
 
 .\[background\:linear-gradient\(var\(--fc-classic-muted\)\,var\(--fc-classic-muted\)\)_var\(--fc-classic-background\)\] {
@@ -771,8 +775,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 @media (hover:hover) {
-  .hover\:border-slate-900:hover {
-    border-color: #0f172a
+  .hover\:border-\(--fc-classic-button-strong-border\):hover {
+    border-color: var(--fc-classic-button-strong-border)
+  }
+
+  .hover\:bg-\(--fc-classic-button-strong\):hover {
+    background-color: var(--fc-classic-button-strong)
   }
 
   .hover\:bg-\(--fc-classic-faint\):hover {
@@ -781,10 +789,6 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
   .hover\:bg-\(--fc-classic-muted\):hover {
     background-color: var(--fc-classic-muted)
-  }
-
-  .hover\:bg-slate-800:hover {
-    background-color: #1e293b
   }
 
   .hover\:underline:hover {
@@ -810,8 +814,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
   outline-width: 3px
 }
 
-.active\:border-slate-900:active {
-  border-color: #0f172a
+.active\:border-\(--fc-classic-button-strong-border\):active {
+  border-color: var(--fc-classic-button-strong-border)
+}
+
+.active\:bg-\(--fc-classic-button-strong\):active {
+  background-color: var(--fc-classic-button-strong)
 }
 
 .active\:bg-\(--fc-classic-muted\):active {
@@ -822,21 +830,17 @@ NOTE: apply this to buttonClass and popoverCloseClass
   background-color: var(--fc-classic-strong)
 }
 
-.active\:bg-slate-800:active {
-  background-color: #1e293b
-}
-
 @media print {
+  .print\:border-\(--fc-classic-button-strong-border\) {
+    border-color: var(--fc-classic-button-strong-border)
+  }
+
   .print\:border-\(--fc-event-color\) {
     border-color: var(--fc-event-color)
   }
 
   .print\:border-black {
     border-color: #000
-  }
-
-  .print\:border-slate-900 {
-    border-color: #0f172a
   }
 
   .print\:bg-white {

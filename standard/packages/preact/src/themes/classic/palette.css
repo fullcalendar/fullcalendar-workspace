@@ -1,9 +1,13 @@
 
-/*
-NOTE: button/toolbar UI is not defined here
-*/
-
 :root {
+  /* buttons */
+  --fc-classic-button: #334155;
+  --fc-classic-button-border: #334155;
+  --fc-classic-button-strong: #1e293b;
+  --fc-classic-button-strong-border: #0f172a;
+  --fc-classic-button-outline: #47556980;
+  --fc-classic-button-foreground: #fff;
+
   /* primary */
   --fc-classic-primary: #3788d8;
   --fc-classic-primary-foreground: #fff;

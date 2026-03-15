@@ -136,14 +136,14 @@ export function EventCalendar({
       toolbarTitleClass="text-2xl font-bold"
       buttonGroupClass="flex flex-row items-center"
       buttonClass={(data) => joinClassNames(
-        'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black button-reset',
+        'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-(--fc-classic-button-outline) print:bg-white text-sm text-(--fc-classic-button-foreground) print:text-black button-reset',
         data.isIconOnly ? 'px-2.5' : 'px-3',
         data.inGroup
           ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
           : 'rounded-[4px]',
         data.isSelected
-          ? 'border-slate-900 bg-slate-800'
-          : 'border-transparent bg-slate-700',
+          ? 'border-(--fc-classic-button-strong-border) bg-(--fc-classic-button-strong)'
+          : 'border-(--fc-classic-button-border) hover:border-(--fc-classic-button-strong-border) active:border-(--fc-classic-button-strong-border) print:border-(--fc-classic-button-strong-border) bg-(--fc-classic-button) hover:bg-(--fc-classic-button-strong) active:bg-(--fc-classic-button-strong)',
         data.isDisabled && 'opacity-65 pointer-events-none',
       )}
       buttons={{
