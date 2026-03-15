@@ -33,6 +33,7 @@ export class Calendar extends CalendarApiImpl {
   private isRendered = false
   private customContentRenderId = 0
   private currentClassName = ''
+  private currentColorScheme = ''
 
   constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
     super()
@@ -80,6 +81,7 @@ export class Calendar extends CalendarApiImpl {
                   this.setIsRtl(isRtl)
                   this.setClassName(className)
                   this.setHeight(options.height)
+                  this.setColorScheme(options.colorScheme || '')
 
                   return (
                     <CalendarInner
@@ -101,6 +103,7 @@ export class Calendar extends CalendarApiImpl {
       this.setIsRtl(false)
       this.setClassName('')
       this.setHeight('')
+      this.setColorScheme('')
     }
   }
 
@@ -169,6 +172,17 @@ export class Calendar extends CalendarApiImpl {
 
   private setHeight(height: CssDimValue) {
     applyStyleProp(this.el, 'height', height)
+  }
+
+  private setColorScheme(colorScheme: string) {
+    if (colorScheme !== this.currentColorScheme) {
+      if (colorScheme) {
+        this.el.dataset.colorScheme = colorScheme
+      } else {
+        delete this.el.dataset.colorScheme
+      }
+      this.currentColorScheme = colorScheme
+    }
   }
 
   private setIsRtl(isRtl: boolean) {

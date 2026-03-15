@@ -53,6 +53,7 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
             dir={isRtl ? 'rtl' : undefined}
             className={className}
             style={{ height: options.height }}
+            data-color-scheme={options.colorScheme || undefined}
           >
             <CalendarInner {...data} baseId={baseId} forPrint={forPrint} />
           </div>

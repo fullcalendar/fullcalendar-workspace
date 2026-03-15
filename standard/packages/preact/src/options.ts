@@ -208,6 +208,7 @@ export const BASE_OPTION_REFINERS = {
   height: identity as Identity<CssDimValue>,
   contentHeight: identity as Identity<CssDimValue>,
   direction: String as Identity<'ltr' | 'rtl'>,
+  colorScheme: String as Identity<'light' | 'dark' | string | undefined>,
   weekNumberFormat: createFormatter,
   eventResizableFromStart: Boolean,
   displayEventTime: Boolean,
