@@ -162,7 +162,7 @@ const dayRowCommonClasses: CalendarOptions = {
 export default {
   name: 'theme-breezy',
   optionDefaults: {
-    className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden reset-root",
+    className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden root-reset",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -449,7 +449,7 @@ export default {
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1 min-w-55 reset-root",
+    popoverClass: "bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1 min-w-55 root-reset",
     popoverCloseClass: `group absolute top-2 end-2 p-0.5 rounded-sm ${mutedHoverButtonClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
 

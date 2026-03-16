@@ -107,7 +107,7 @@ const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity
 export default {
   name: 'theme-classic',
   optionDefaults: {
-    className: "gap-5 reset-root",
+    className: "gap-5 root-reset",
     viewClass: "bg-(--fc-classic-background) border border-(--fc-classic-border)",
 
     /* Toolbar
@@ -304,7 +304,7 @@ export default {
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55 reset-root",
+    popoverClass: "bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55 root-reset",
     popoverCloseClass: `group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`,
     popoverCloseContent: () => x('size-5 text-sm not-group-hover:opacity-65'),
 

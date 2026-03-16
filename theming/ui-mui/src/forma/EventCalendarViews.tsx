@@ -150,7 +150,7 @@ export default function EventCalendarViews({
       sx={liquidHeight ? { flexGrow: 1, minHeight: 0 } : {}}
     >
       <FullCalendar
-        className='reset-root'
+        className='root-reset'
         height={liquidHeight ? '100%' : height}
 
         /* Abstract Event
@@ -368,7 +368,7 @@ export default function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
-        popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 reset-root"
+        popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 root-reset"
         popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
         popoverCloseContent={() => <EventCalendarCloseIcon />}
         dayLaneClass={(data) => joinClassNames(

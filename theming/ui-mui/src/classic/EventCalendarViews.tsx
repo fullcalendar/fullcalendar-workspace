@@ -145,7 +145,7 @@ export default function EventCalendarViews({
       }}
     >
       <FullCalendar
-        className='reset-root'
+        className='root-reset'
         height={liquidHeight ? '100%' : height}
 
         /* Abstract Event
@@ -307,7 +307,7 @@ export default function EventCalendarViews({
         /* Popover
         ----------------------------------------------------------------------------------------- */
 
-        popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 reset-root"
+        popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 root-reset"
         popoverCloseClass={`group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
         popoverCloseContent={() => <EventCalendarCloseIcon />}
 

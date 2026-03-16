@@ -130,7 +130,7 @@ const resourceDayHeaderClasses = {
 export default {
   name: 'theme-monarch',
   optionDefaults: {
-    className: "bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden reset-root",
+    className: "bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden root-reset",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -408,7 +408,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     dayPopoverFormat: { day: 'numeric', weekday: 'short' },
-    popoverClass: "border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60 reset-root",
+    popoverClass: "border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60 root-reset",
     popoverCloseClass: `group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
 

@@ -131,7 +131,7 @@ function transformPotentialClassName(themeName: string, isPublicMui: boolean, mi
 }
 
 const exactClassNames: { [key: string]: 1 } = {
-  'reset-root': 1,
+  'root-reset': 1,
   'button-reset': 1,
 }
 

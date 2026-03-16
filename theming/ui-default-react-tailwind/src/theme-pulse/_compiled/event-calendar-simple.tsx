@@ -146,7 +146,7 @@ export function EventCalendar({
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      className="gap-6 reset-root"
+      className="gap-6 root-reset"
       viewClass={`rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`}
 
       /* Toolbar
@@ -478,7 +478,7 @@ export function EventCalendar({
       /* Popover
       ------------------------------------------------------------------------------------------- */
 
-      popoverClass="bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1 min-w-55 reset-root"
+      popoverClass="bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1 min-w-55 root-reset"
       popoverCloseClass={`group absolute top-1.5 end-1.5 p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass} button-reset`}
       popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
 

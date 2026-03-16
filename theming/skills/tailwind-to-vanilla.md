@@ -30,7 +30,7 @@ Add this very simple set of reset classes to the top of the file along with the 
   /*
   NOTE: apply this to calendar root AND popover
   */
-  .reset-root {
+  .root-reset {
     line-height: 1.5;
     --tw-border-style: solid;
   }
@@ -58,7 +58,7 @@ Now we'll update the corresponding index.tsx in the same directory to USE these 
 If that file doesn't exist, look for EventCalendarView.tsx in the same directory (in the case of MUI).
 Do this to the file:
 
-  add reset-root to the end of the declarations for `className` and `popoverClass`
+  add root-reset to the end of the declarations for `className` and `popoverClass`
 
   add button-reset to the end of the first string literal declarations for `buttonClass` and `popoverCloseClass`
 

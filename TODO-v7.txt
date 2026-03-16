@@ -931,7 +931,7 @@ Notes
 -----
 
 Tailwind -> CSS files, RESET info:
-  .reset-root -- apply this to calendar root AND popover
+  .root-reset -- apply this to calendar root AND popover
   .button-reset -- apply this to buttonClass and popoverCloseClass
 Making an npm-script called "deploy" and expecting "pn deploy" to work WON'T, pnpm intercepts it
   rename script to "cloudflare"
