@@ -1,11 +1,11 @@
 {
   "name": "@fullcalendar/preact",
-  "version": "7.0.0-beta.7",
+  "version": "7.0.0-beta.8",
   "title": "FullCalendar Preact",
   "description": "FullCalendar Preact package for rendering a calendar",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-beta.7",
-    "@fullcalendar/core": "workspace:7.0.0-beta.7"
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.8",
+    "@fullcalendar/core": "workspace:7.0.0-beta.8"
   },
   "peerDependencies": {
     "preact": "~10.23.1",

@@ -1,18 +1,18 @@
 {
   "name": "@fullcalendar/angular-scheduler",
-  "version": "7.0.0-beta.7",
+  "version": "7.0.0-beta.8",
   "title": "FullCalendar Angular",
   "description": "FullCalendar Angular Scheduler package",
   "peerDependencies": {
-    "@fullcalendar/angular": "workspace:7.0.0-beta.7",
-    "fullcalendar": "workspace:7.0.0-beta.7",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.7",
+    "@fullcalendar/angular": "workspace:7.0.0-beta.8",
+    "fullcalendar": "workspace:7.0.0-beta.8",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.8",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
-    "@fullcalendar/angular": "workspace:7.0.0-beta.7",
-    "fullcalendar": "workspace:7.0.0-beta.7",
-    "fullcalendar-scheduler": "workspace:7.0.0-beta.7",
+    "@fullcalendar/angular": "workspace:7.0.0-beta.8",
+    "fullcalendar": "workspace:7.0.0-beta.8",
+    "fullcalendar-scheduler": "workspace:7.0.0-beta.8",
     "temporal-polyfill": "^0.3.2"
   },
   "scripts": {

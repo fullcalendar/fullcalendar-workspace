@@ -26,8 +26,8 @@
     }
   },
   "devDependencies": {
-    "@fullcalendar/react": "7.0.0-beta.7",
-    "@fullcalendar/react-scheduler": "7.0.0-beta.7",
+    "@fullcalendar/react": "7.0.0-beta.8",
+    "@fullcalendar/react-scheduler": "7.0.0-beta.8",
     "@types/eslint": "^8.21.3",
     "@types/node": "^18.15.5",
     "@types/react": "^18.3.3",

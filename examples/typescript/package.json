@@ -10,7 +10,7 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "fullcalendar": "7.0.0-beta.7",
+    "fullcalendar": "7.0.0-beta.8",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {

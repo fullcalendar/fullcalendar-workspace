@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/web-component",
-  "version": "7.0.0-beta.7",
+  "version": "7.0.0-beta.8",
   "title": "FullCalendar Web Component",
   "description": "Custom Element for FullCalendar",
   "keywords": [
@@ -9,15 +9,15 @@
   ],
   "homepage": "https://fullcalendar.io/docs/web-component",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-beta.7",
-    "@fullcalendar/core": "workspace:7.0.0-beta.7",
+    "@full-ui/headless-calendar": "workspace:7.0.0-beta.8",
+    "@fullcalendar/core": "workspace:7.0.0-beta.8",
     "preact": "~10.23.1"
   },
   "peerDepencencies": {
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
-    "fullcalendar": "workspace:7.0.0-beta.7",
+    "fullcalendar": "workspace:7.0.0-beta.8",
     "@fullcalendar-scripts/standard": "workspace:*",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
