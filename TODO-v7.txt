@@ -24,105 +24,90 @@ build note:
     manually before `pn dev`
 
 
-In themes.fullcalendar.io theme generation, suggest <body> font-family somehow?
+INVESTIGATE: options.resourceRowClass currently applying to resourceGroupHeader. BAD. why aren't themes breaking?
+api: seriously consider normalizing custom-view-by-object (like .className/.didMount)
+  with view-specific ones (like .viewClass/.viewDidMount)
+  timeGridFourDay: {
+    classNames: ['my-classname', 'my-util'],
+    className: 'my-classname my-util',
+    type: 'timeGrid', -----> viewType???
+    duration: { days: 4 },
+api: Why is DateSelectArg/DateUnselectArg in core,
+  but DateClickArg in interaction???
+  was like this in v6 too
 
-When calendar forced dark, ensure scrollbars are dark, even if rest of page is light
 
-remove comments from theme.css files like:
-  "NOTE: apply this to calendar root AND popover"
+naming questions
+----------------
+api: kill all existing *MountData interfaces
+  have MountData<OrigData> and MountHandler<OrigData>
+  and document interface name changes
+  EXAMPLE:
+    EventMountData (in v7 EventMountArg... this name matters more)
+api: maybe rename all to *State ?
+api: for DateSelectWhatever, EventClickWhatever
+  call them "Event" instead??? definitely not "State"
+  maybe .nativeEvent like Angular?
+api: any types referenced in (public) PluginDefInput,
+  ensure they're public too
+  ALSO: implement PluginInput (currently PluginDefInput)
 
-don't need imports like this anymore:
+
+when setting colorScheme="dark"
+- for classic theme (and maybe others), and outer page is not dark-mode
+  it inherits dark text which has no contrast. thus, dark-mode for subcomponent is not module
+  TODO: all themes should define default text color
+- lots of other problems for other themes. why wrong Monarch border color?
+BAD bug: angular style errors
+  running angular project on stackblitz has broken styles
+  should be same:
+    https://npmx.dev/package-code/fullcalendar/v/7.0.0-beta.7/skeleton.css
+    https://npmx.dev/package-code/@fullcalendar/angular/v/7.0.0-beta.7/skeleton.css
+bug: On themes.fullcalendar.io, "Forma" "Click for Google" link wrong color
+bug: When calendar forced dark, ensure scrollbars are dark, even if rest of page is light
+bug: on themes.fullcalendar.io
+  WARN: Duplicate plugin 'resource-daygrid'
+fix: restore zip archive generation
+  then, fix links in docs
+
+
+cleanup: don't need imports like this anymore:
   import type {} from '@fullcalendar/react/daygrid'
   import type {} from '@fullcalendar/react/timegrid'
   import type {} from '@fullcalendar/react/list'
   import type {} from '@fullcalendar/react/multimonth'
 
-angular style errors
-  running angular project on stackblitz has broken styles
-  should be same:
-    https://npmx.dev/package-code/fullcalendar/v/7.0.0-beta.7/skeleton.css
-    https://npmx.dev/package-code/@fullcalendar/angular/v/7.0.0-beta.7/skeleton.css
 
-react19 (and others) stackblitz has more-popover 100% height!
+examples: react19 (and others) stackblitz has more-popover 100% height!
   because CSS says body>*{height:100%} or whatever
-
-new example projects (esp for reduced test cases):
+examples: new example projects (esp for reduced test cases):
   preact
   mui
   shadcn
   (then, link from docs)
+example: https://github.com/fullcalendar/fullcalendar-workspace/tree/v7-dev/examples/angular20
+  README says "Current errors" ... still relevant?
+    TypeError: def.resolveHostDirectives is not a function or its return value is not iterable
+    NG0203: inject() must be called from an injection context
 
-on themes.fullcalendar.io
-  WARN: Duplicate plugin 'resource-daygrid'
 
-seriously consider normalizing custom-view-by-object (like .className/.didMount)
-  with view-specific ones (like .viewClass/.viewDidMount)
-
-dark-mode setting
-restore zip archive generation
-  then, fix links in docs
-bug: resource-timline weird double top border
-  http://localhost:5173/debug-scheduler-json-feed
-bug: themes' outer-containers overflow-hidden killing important stickiness
+bug: themes' outer-containers overflow-hidden killing important stickiness (AHHH refactor?)
   http://localhost:5173/sticky-list-demo
   http://localhost:5173/sticky-resource-timegrid-demo
   http://localhost:5173/sticky-timegrid-demo
+bug: resource-timline weird double top border
+  http://localhost:5173/debug-scheduler-json-feed
 bug: isMajor timegrid border
   http://localhost:5173/timegrid-custom-view-demo
 bug: timeline axis headers off-by-pixels onload
   http://localhost:5173/eventOverlap-off-timeline-demo
 bug: when scrolled all the way down to footer, and click prev/next, page jumps to top
   http://localhost:5173/toolbar-demo
-timeGridFourDay: {
-  classNames: ['my-classname', 'my-util'],
-  className: 'my-classname my-util',
-  type: 'timeGrid', -----> viewType???
-  duration: { days: 4 },
-EXAMPLES: https://github.com/fullcalendar/fullcalendar-workspace/tree/v7-dev/examples/angular20
-  README says "Current errors":
-    TypeError: def.resolveHostDirectives is not a function or its return value is not iterable
-    NG0203: inject() must be called from an injection context
-kill all existing *MountData interfaces
-  have MountData<OrigData> and MountHandler<OrigData>
-  and document interface name changes
-  EXAMPLE:
-    EventMountData (in v7 EventMountArg... this name matters more)
-maybe rename all to *State ?
-INVESTIGATE: options.resourceRowClass currently applying to resourceGroupHeader. BAD. why aren't themes breaking?
-Create aXe scrollbar workaround
-  then change docs "[which has a workaround](#)"
-Why is DateSelectArg/DateUnselectArg in core,
-  but DateClickArg in interaction???
-  was like this in v6 too
-for DateSelectWhatever, EventClickWhatever
-  call them "Event" instead??? definitely not "State"
-  maybe .nativeEvent like Angular?
-resourceCell* hooks should have data.field
-  then, update api-migration.md#resource-cell
-TODO: investigate how we implemented timeZone:'local' with temporal-polyfill. works?
-implement PluginInput (currently PluginDefInput)
-classic theme variables
-  --fc-classic-button
-  --fc-classic-button-border
-  --fc-classic-button-over
-  --fc-classic-button-border-over
-  --fc-classic-button-foreground
-  --fc-classic-button-selected
-  --fc-classic-button-border-selected
-  --
-  --fc-classic-background-event-opacity (currently hardcoded to 15%)
-  --fc-classic-background-event-foreground-opacity (for text)
-  --fc-classic-small-dot-width (currently radius, do calc( / 2))
-  --fc-classic-large-dot-width (currently radius, do calc( / 2))
-BIG QUESTION: does eventClass apply to background events!?
-  put decision in docs
 
-any types referenced in (public) PluginDefInput,
-  ensure they're public too
+
 better READMEs:
   core
   *-scheduler
-name it 'PluginDef' or 'PluginDefInput' (current) ?
 remove (data, *createElement*) param from *Content hooks
 re-add keys to toolbarsections, so doesn't reuse elements
 changelog: validRange function always receives whole-day as parameter
@@ -550,7 +535,6 @@ when not enough resources (and expandRows:false), resource area needs filler lin
 test print-view with virtualization
   limit # of resource-timeline rows for print view
   test expandRows
-Might be nice to have colorScheme=light|dark|undefined (or call "forcedColorScheme" ?)
 should full-ui packages be put on v1?
 in READMEs kill "and any other plugins" text
 Restore Vue3 global api?
@@ -566,6 +550,8 @@ We want to fix this timeline scrollbar-appearance bug
   our demo: premium/packages/vanilla-scheduler-tests/manual/issue-6539.html
   BUT in trying to recreate problem,
     slotMinWidth/slotLabelFormat causing slats to be too wide!!!
+themes.fullcalendar.io
+  suggest <body> font-family somehow?
 
 
 Docs
@@ -944,6 +930,9 @@ punt: BUG: when timeline events stack and need more-link,
 Notes
 -----
 
+Tailwind -> CSS files, RESET info:
+  .reset-root -- apply this to calendar root AND popover
+  .button-reset -- apply this to buttonClass and popoverCloseClass
 Making an npm-script called "deploy" and expecting "pn deploy" to work WON'T, pnpm intercepts it
   rename script to "cloudflare"
 isMajor/isMinor API additions:
