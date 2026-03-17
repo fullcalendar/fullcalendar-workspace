@@ -196,6 +196,7 @@ export default {
     eventColor: "var(--fc-monarch-event)",
     eventContrastColor: "var(--fc-monarch-event-contrast)",
     eventClass: (data) => joinClassNames(
+      data.event.url && 'link-reset',
       data.isSelected
         ? joinClassNames(
             outlineWidthClass,

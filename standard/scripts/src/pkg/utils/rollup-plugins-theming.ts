@@ -133,6 +133,7 @@ function transformPotentialClassName(themeName: string, isPublicMui: boolean, mi
 const exactClassNames: { [key: string]: 1 } = {
   'root-reset': 1,
   'button-reset': 1,
+  'link-reset': 1,
 }
 
 const tailwindClassNamePrefixes: { [key: string]: 1 } = {

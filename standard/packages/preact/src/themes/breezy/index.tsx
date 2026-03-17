@@ -223,6 +223,7 @@ export default {
     eventShortHeight: 50,
     eventColor: "var(--fc-breezy-event)",
     eventClass: (data) => joinClassNames(
+      data.event.url && 'link-reset',
       data.isSelected
         ? joinClassNames(outlineWidthClass, data.isDragging && 'shadow-md')
         : outlineWidthFocusClass,

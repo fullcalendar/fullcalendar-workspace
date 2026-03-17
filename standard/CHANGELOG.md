@@ -1,7 +1,8 @@
 
 ## v7.0.0-beta.8
 
-- fix: vanilla CSS themes, sizing relative to component rather than html tag, and uses em units
+- fix: vanilla CSS themes, sizing relative to component rather than `<html>` tag, and uses em units
+- fix: vanilla CSS themes, should reset `<a>` tag color and underline
 
 
 ## v7.0.0-beta.8

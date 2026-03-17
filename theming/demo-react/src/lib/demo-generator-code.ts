@@ -108,7 +108,7 @@ export function getCompiledEventCalendar(
   )
 
   if (!needsThemeCss) {
-    code = code.replace(/\s*(root-reset|button-reset)\s*/g, '')
+    code = code.replace(/\s*(root-reset|button-reset|link-reset)\s*/g, '')
   }
 
   return code.trim()

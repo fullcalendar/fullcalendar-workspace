@@ -20,6 +20,11 @@
   padding: 0
 }
 
+.link-reset {
+  color: inherit;
+  text-decoration: inherit;
+}
+
 .absolute {
   position: absolute
 }

@@ -152,6 +152,7 @@ export default {
     eventColor: "var(--fc-classic-event)",
     eventContrastColor: "var(--fc-classic-event-contrast)",
     eventClass: (data) => joinClassNames(
+      data.event.url && 'link-reset',
       data.isSelected
         ? joinClassNames(
             outlineWidthClass,
