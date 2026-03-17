@@ -1,6 +1,6 @@
 import { CustomContentGenerator } from './common/render-hook'
 import { joinArrayishClassNames } from './util/html'
-import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object'
+import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
 
 type ClassNameInput = string | undefined
@@ -14,8 +14,6 @@ const handlerRe = /^on[A-Z]/
 // Somewhat tracks COMPLEX_OPTION_COMPARATORS
 // Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
 const customMergeFuncs = {
-  headerToolbar: mergeMaybePropsShallow,
-  footerToolbar: mergeMaybePropsShallow,
   buttons: mergeMaybePropsDepth1,
 }
 

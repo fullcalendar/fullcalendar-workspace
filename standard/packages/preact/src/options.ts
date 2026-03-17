@@ -664,8 +664,6 @@ export const COMPLEX_OPTION_COMPARATORS: {
   [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
 } = {
   // Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
-  headerToolbar: isMaybePropsEqualShallow,
-  footerToolbar: isMaybePropsEqualShallow,
   dateIncrement: isMaybePropsEqualShallow,
   buttons: isMaybePropsEqualDepth1,
   plugins: isMaybeArraysEqual,
