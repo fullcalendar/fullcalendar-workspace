@@ -244,6 +244,7 @@ export function EventCalendar({
 
       eventShortHeight={50}
       eventColor="var(--fc-breezy-event)"
+      eventContrastColor="var(--fc-breezy-event-contrast)"
       eventClass={(data) => joinClassNames(
         data.isSelected
           ? joinClassNames(outlineWidthClass, data.isDragging && 'shadow-md')

@@ -17,6 +17,7 @@
   --fc-breezy-highlight: #cffafe66;
   --fc-breezy-now: red;
   --fc-breezy-event: #3b82f6;
+  --fc-breezy-event-contrast: #fff;
   --fc-breezy-background-event: #22c55e;
 
   /* controls */
@@ -63,6 +64,7 @@
   --fc-breezy-highlight: #3b82f633;
   --fc-breezy-now: red;
   --fc-breezy-event: #93c5fd;
+  --fc-breezy-event-contrast: #000;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-muted);

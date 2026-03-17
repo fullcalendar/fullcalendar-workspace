@@ -106,6 +106,7 @@ export const params: EventCalendarOptionParams = {
 
   // event content
   eventColor: 'var(--fc-breezy-event)',
+  eventContrastColor: 'var(--fc-breezy-event-contrast)',
   eventFaintBgClass,
   eventFaintPressableClass,
   eventMutedFgClass,

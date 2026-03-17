@@ -74,6 +74,7 @@ export interface EventCalendarOptionParams {
 
   // event content
   eventColor: string
+  eventContrastColor: string
   eventFaintBgClass: string
   eventFaintPressableClass: string
   eventMutedFgClass: string

@@ -524,22 +524,26 @@
 }
 
 .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,var\(--fc-forma-background\)\)\] {
-  background-color: var(--fc-event-color)
+  background-color: var(--fc-event-color);
+  color: var(--fc-event-contrast-color)
 }
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,var\(--fc-forma-background\)\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)20%, var(--fc-forma-background))
+    background-color: color-mix(in oklab, var(--fc-event-color)20%, var(--fc-forma-background));
+    color: inherit
   }
 }
 
 .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_30\%\,var\(--fc-forma-background\)\)\] {
-  background-color: var(--fc-event-color)
+  background-color: var(--fc-event-color);
+  color: var(--fc-event-contrast-color)
 }
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_30\%\,var\(--fc-forma-background\)\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)30%, var(--fc-forma-background))
+    background-color: color-mix(in oklab, var(--fc-event-color)30%, var(--fc-forma-background));
+    color: inherit
   }
 }
 

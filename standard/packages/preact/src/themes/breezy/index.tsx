@@ -222,6 +222,7 @@ export default {
 
     eventShortHeight: 50,
     eventColor: "var(--fc-breezy-event)",
+    eventContrastColor: "var(--fc-breezy-event-contrast)",
     eventClass: (data) => joinClassNames(
       data.event.url && 'link-reset',
       data.isSelected

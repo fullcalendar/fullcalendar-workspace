@@ -819,7 +819,7 @@
 }
 
 .text-\[color-mix\(in_oklab\,var\(--fc-event-color\)_50\%\,var\(--fc-breezy-foreground\)\)\] {
-  color: var(--fc-event-color)
+  color: var(--fc-event-contrast-color) /* hand-picked fallback */
 }
 
 @supports (color:color-mix(in lab, red, red)) {
