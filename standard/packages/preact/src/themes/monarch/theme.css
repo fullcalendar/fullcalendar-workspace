@@ -1,4 +1,5 @@
 .root-reset {
+  font-size: 16px;
   line-height: 1.5;
   --fc-monarch-border-style: solid;
 }
@@ -35,15 +36,15 @@
 }
 
 .-start-1 {
-  inset-inline-start: -.25rem
+  inset-inline-start: -.25em
 }
 
 .-start-2 {
-  inset-inline-start: -.5rem
+  inset-inline-start: -.5em
 }
 
 .-start-3 {
-  inset-inline-start: -.75rem
+  inset-inline-start: -.75em
 }
 
 .start-0 {
@@ -51,19 +52,19 @@
 }
 
 .start-1 {
-  inset-inline-start: .25rem
+  inset-inline-start: .25em
 }
 
 .-end-1 {
-  inset-inline-end: -.25rem
+  inset-inline-end: -.25em
 }
 
 .-end-2 {
-  inset-inline-end: -.5rem
+  inset-inline-end: -.5em
 }
 
 .end-2 {
-  inset-inline-end: .5rem
+  inset-inline-end: .5em
 }
 
 .end-\[-3px\] {
@@ -71,15 +72,15 @@
 }
 
 .-top-1 {
-  top: -.25rem
+  top: -.25em
 }
 
 .-top-4 {
-  top: -1rem
+  top: -1em
 }
 
 .-top-5 {
-  top: -1.25rem
+  top: -1.25em
 }
 
 .-top-px {
@@ -87,11 +88,11 @@
 }
 
 .top-0\.5 {
-  top: .125rem
+  top: .125em
 }
 
 .top-1\.5 {
-  top: .375rem
+  top: .375em
 }
 
 .top-1\/2 {
@@ -99,11 +100,11 @@
 }
 
 .top-2 {
-  top: .5rem
+  top: .5em
 }
 
 .-bottom-1 {
-  bottom: -.25rem
+  bottom: -.25em
 }
 
 .-bottom-px {
@@ -127,23 +128,23 @@
 }
 
 .m-0\.5 {
-  margin: .125rem
+  margin: .125em
 }
 
 .m-1 {
-  margin: .25rem
+  margin: .25em
 }
 
 .m-1\.5 {
-  margin: .375rem
+  margin: .375em
 }
 
 .m-2 {
-  margin: .5rem
+  margin: .5em
 }
 
 .m-4 {
-  margin: 1rem
+  margin: 1em
 }
 
 .m-px {
@@ -151,11 +152,11 @@
 }
 
 .mx-0\.5 {
-  margin-inline: .125rem
+  margin-inline: .125em
 }
 
 .mx-2 {
-  margin-inline: .5rem
+  margin-inline: .5em
 }
 
 .mx-px {
@@ -163,11 +164,11 @@
 }
 
 .my-0\.5 {
-  margin-block: .125rem
+  margin-block: .125em
 }
 
 .my-2 {
-  margin-block: .5rem
+  margin-block: .5em
 }
 
 .my-px {
@@ -175,15 +176,15 @@
 }
 
 .ms-0\.5 {
-  margin-inline-start: .125rem
+  margin-inline-start: .125em
 }
 
 .ms-1 {
-  margin-inline-start: .25rem
+  margin-inline-start: .25em
 }
 
 .ms-2 {
-  margin-inline-start: .5rem
+  margin-inline-start: .5em
 }
 
 .ms-px {
@@ -191,15 +192,15 @@
 }
 
 .-me-1\.5 {
-  margin-inline-end: -.375rem
+  margin-inline-end: -.375em
 }
 
 .me-1 {
-  margin-inline-end: .25rem
+  margin-inline-end: .25em
 }
 
 .me-2 {
-  margin-inline-end: .5rem
+  margin-inline-end: .5em
 }
 
 .me-\[2\.5\%\] {
@@ -211,19 +212,19 @@
 }
 
 .-mt-1 {
-  margin-top: -.25rem
+  margin-top: -.25em
 }
 
 .mt-2 {
-  margin-top: .5rem
+  margin-top: .5em
 }
 
 .mb-1 {
-  margin-bottom: .25rem
+  margin-bottom: .25em
 }
 
 .mb-2 {
-  margin-bottom: .5rem
+  margin-bottom: .5em
 }
 
 .mb-px {
@@ -231,7 +232,7 @@
 }
 
 .-ml-1 {
-  margin-left: -.25rem
+  margin-left: -.25em
 }
 
 .block {
@@ -252,28 +253,28 @@
 }
 
 .size-2 {
-  width: .5rem;
-  height: .5rem
+  width: .5em;
+  height: .5em
 }
 
 .size-4 {
-  width: 1rem;
-  height: 1rem
+  width: 1em;
+  height: 1em
 }
 
 .size-5 {
-  width: 1.25rem;
-  height: 1.25rem
+  width: 1.25em;
+  height: 1.25em
 }
 
 .size-7 {
-  width: 1.75rem;
-  height: 1.75rem
+  width: 1.75em;
+  height: 1.75em
 }
 
 .size-8 {
-  width: 2rem;
-  height: 2rem
+  width: 2em;
+  height: 2em
 }
 
 .size-full {
@@ -282,35 +283,35 @@
 }
 
 .h-2 {
-  height: .5rem
+  height: .5em
 }
 
 .h-4 {
-  height: 1rem
+  height: 1em
 }
 
 .h-5 {
-  height: 1.25rem
+  height: 1.25em
 }
 
 .h-6 {
-  height: 1.5rem
+  height: 1.5em
 }
 
 .h-9 {
-  height: 2.25rem
+  height: 2.25em
 }
 
 .min-h-0\.5 {
-  min-height: .125rem
+  min-height: .125em
 }
 
 .min-h-4 {
-  min-height: 1rem
+  min-height: 1em
 }
 
 .min-h-9 {
-  min-height: 2.25rem
+  min-height: 2.25em
 }
 
 .min-h-px {
@@ -326,19 +327,19 @@
 }
 
 .w-2 {
-  width: .5rem
+  width: .5em
 }
 
 .w-5 {
-  width: 1.25rem
+  width: 1.25em
 }
 
 .w-6 {
-  width: 1.5rem
+  width: 1.5em
 }
 
 .w-9 {
-  width: 2.25rem
+  width: 2.25em
 }
 
 .w-\[5px\] {
@@ -346,11 +347,11 @@
 }
 
 .max-w-40 {
-  max-width: 10rem
+  max-width: 10em
 }
 
 .max-w-44 {
-  max-width: 11rem
+  max-width: 11em
 }
 
 .min-w-0 {
@@ -358,7 +359,7 @@
 }
 
 .min-w-60 {
-  min-width: 15rem
+  min-width: 15em
 }
 
 .shrink-0 {
@@ -426,15 +427,15 @@
 }
 
 .gap-1 {
-  gap: .25rem
+  gap: .25em
 }
 
 .gap-2 {
-  gap: .5rem
+  gap: .5em
 }
 
 .gap-3 {
-  gap: .75rem
+  gap: .75em
 }
 
 .self-end {
@@ -450,15 +451,15 @@
 }
 
 .rounded-lg {
-  border-radius: .5rem
+  border-radius: .5em
 }
 
 .rounded-sm {
-  border-radius: .25rem
+  border-radius: .25em
 }
 
 .rounded-xl {
-  border-radius: .75rem
+  border-radius: .75em
 }
 
 .rounded-s-full {
@@ -467,8 +468,8 @@
 }
 
 .rounded-s-sm {
-  border-start-start-radius: .25rem;
-  border-end-start-radius: .25rem
+  border-start-start-radius: .25em;
+  border-end-start-radius: .25em
 }
 
 .rounded-e-full {
@@ -477,18 +478,18 @@
 }
 
 .rounded-e-sm {
-  border-start-end-radius: .25rem;
-  border-end-end-radius: .25rem
+  border-start-end-radius: .25em;
+  border-end-end-radius: .25em
 }
 
 .rounded-t-sm {
-  border-top-left-radius: .25rem;
-  border-top-right-radius: .25rem
+  border-top-left-radius: .25em;
+  border-top-right-radius: .25em
 }
 
 .rounded-b-sm {
-  border-bottom-right-radius: .25rem;
-  border-bottom-left-radius: .25rem
+  border-bottom-right-radius: .25em;
+  border-bottom-left-radius: .25em
 }
 
 .border,
@@ -622,19 +623,19 @@
 }
 
 .p-0\.5 {
-  padding: .125rem
+  padding: .125em
 }
 
 .p-1 {
-  padding: .25rem
+  padding: .25em
 }
 
 .p-2 {
-  padding: .5rem
+  padding: .5em
 }
 
 .p-4 {
-  padding: 1rem
+  padding: 1em
 }
 
 .p-px {
@@ -642,55 +643,55 @@
 }
 
 .px-0\.5 {
-  padding-inline: .125rem
+  padding-inline: .125em
 }
 
 .px-1 {
-  padding-inline: .25rem
+  padding-inline: .25em
 }
 
 .px-1\.5 {
-  padding-inline: .375rem
+  padding-inline: .375em
 }
 
 .px-2 {
-  padding-inline: .5rem
+  padding-inline: .5em
 }
 
 .px-2\.5 {
-  padding-inline: .625rem
+  padding-inline: .625em
 }
 
 .px-3 {
-  padding-inline: .75rem
+  padding-inline: .75em
 }
 
 .px-5 {
-  padding-inline: 1.25rem
+  padding-inline: 1.25em
 }
 
 .py-0\.5 {
-  padding-block: .125rem
+  padding-block: .125em
 }
 
 .py-1 {
-  padding-block: .25rem
+  padding-block: .25em
 }
 
 .py-1\.5 {
-  padding-block: .375rem
+  padding-block: .375em
 }
 
 .py-2 {
-  padding-block: .5rem
+  padding-block: .5em
 }
 
 .py-2\.5 {
-  padding-block: .625rem
+  padding-block: .625em
 }
 
 .py-15 {
-  padding-block: 3.75rem
+  padding-block: 3.75em
 }
 
 .py-px {
@@ -698,39 +699,39 @@
 }
 
 .ps-0\.5 {
-  padding-inline-start: .125rem
+  padding-inline-start: .125em
 }
 
 .ps-1 {
-  padding-inline-start: .25rem
+  padding-inline-start: .25em
 }
 
 .ps-2 {
-  padding-inline-start: .5rem
+  padding-inline-start: .5em
 }
 
 .pe-1 {
-  padding-inline-end: .25rem
+  padding-inline-end: .25em
 }
 
 .pe-3 {
-  padding-inline-end: .75rem
+  padding-inline-end: .75em
 }
 
 .pb-0\.5 {
-  padding-bottom: .125rem
+  padding-bottom: .125em
 }
 
 .pb-1 {
-  padding-bottom: .25rem
+  padding-bottom: .25em
 }
 
 .pb-2 {
-  padding-bottom: .5rem
+  padding-bottom: .5em
 }
 
 .pb-3 {
-  padding-bottom: .75rem
+  padding-bottom: .75em
 }
 
 .text-end {
@@ -738,32 +739,32 @@
 }
 
 .text-2xl {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   line-height: calc(2/1.5)
 }
 
-.text-\[0\.6875rem\]\/\[1\.090909\] {
-  font-size: .6875rem;
+.text-\[0\.6875em\]\/\[1\.090909\] {
+  font-size: .6875em;
   line-height: 1.09091
 }
 
 .text-lg {
-  font-size: 1.125rem;
+  font-size: 1.125em;
   line-height: calc(1.75/1.125)
 }
 
 .text-base {
-  font-size: 1rem;
+  font-size: 1em;
   line-height: calc(1.5/1)
 }
 
 .text-sm {
-  font-size: .875rem;
+  font-size: .875em;
   line-height: calc(1.25/.875)
 }
 
 .text-xs {
-  font-size: .75rem;
+  font-size: .75em;
   line-height: calc(1/.75)
 }
 
