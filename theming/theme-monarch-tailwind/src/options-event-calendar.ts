@@ -29,6 +29,7 @@ export interface EventCalendarOptionParams {
   faintBgClass: string
 
   // neutral foregrounds
+  fgClass: string
   mutedFgClass: string
   faintFgClass: string
 
@@ -197,7 +198,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       listItemEventBeforeClass: 'rounded-full border-(--fc-event-color)',
-      listItemEventInnerClass: 'flex flex-row items-center',
+      listItemEventInnerClass: `${params.fgClass} flex flex-row items-center`, // fgClass needed for DnD
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */

@@ -137,7 +137,7 @@ export function EventCalendar({
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      className="bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden root-reset"
+      className="bg-(--fc-monarch-background) text-(--fc-monarch-foreground) border border-(--fc-monarch-border) rounded-xl overflow-hidden root-reset"
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -245,7 +245,7 @@ export function EventCalendar({
             : mutedHoverClass,
       )}
       listItemEventBeforeClass="rounded-full border-(--fc-event-color)"
-      listItemEventInnerClass="flex flex-row items-center"
+      listItemEventInnerClass="text-(--fc-monarch-foreground) flex flex-row items-center"
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */

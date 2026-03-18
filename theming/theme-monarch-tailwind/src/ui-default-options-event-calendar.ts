@@ -61,6 +61,7 @@ export const params: EventCalendarOptionParams = {
   faintBgClass: 'bg-(--fc-monarch-faint)',
 
   // neutral foregrounds
+  fgClass: 'text-(--fc-monarch-foreground)',
   mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
   faintFgClass: 'text-(--fc-monarch-faint-foreground)',
 
@@ -107,7 +108,7 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: 'bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden',
+    className: 'bg-(--fc-monarch-background) text-(--fc-monarch-foreground) border border-(--fc-monarch-border) rounded-xl overflow-hidden',
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
