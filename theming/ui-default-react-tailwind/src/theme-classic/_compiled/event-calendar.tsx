@@ -218,6 +218,7 @@ export function EventCalendar({
 
       listItemEventClass="items-center"
       listItemEventBeforeClass="border-(--fc-event-color) rounded-full"
+      listItemEventInnerClass="text-(--fc-classic-foreground)"
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */

@@ -27,6 +27,7 @@ export const params: EventCalendarOptionParams = {
   faintBgClass: 'bg-(--fc-classic-faint)',
 
   // neutral foregrounds
+  fgClass: 'text-(--fc-classic-foreground)',
   mutedFgClass: 'text-(--fc-classic-muted-foreground)',
   faintFgClass: 'text-(--fc-classic-faint-foreground)',
 
