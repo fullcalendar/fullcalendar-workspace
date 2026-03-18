@@ -1,9 +1,9 @@
 
 ## v7.0.0-beta.8
 
-- fix: vanilla CSS themes, sizing relative to component rather than `<html>` tag, and uses em units
-- fix: vanilla CSS themes, should reset `<a>` tag color and underline
-- fix: vanilla CSS themes, fallbacks when browser does not support color-mix
+- fix: stock themes, sizing relative to component rather than `<html>` tag, and uses em units
+- fix: stock themes, should reset `<a>` tag color and underline
+- fix: stock/MUI themes, fallbacks when browser does not support color-mix
 
 
 ## v7.0.0-beta.8

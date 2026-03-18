@@ -490,13 +490,23 @@
   background-color: var(--mui-palette-secondary-main)
 }
 
-.bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
-  background-color: var(--fc-event-color)
-}
-
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
     background-color: color-mix(in oklab, var(--fc-event-color)15%, transparent)
+  }
+}
+@supports not (color:color-mix(in lab, red, red)) {
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
+    position: relative;
+    isolation: isolate
+  }
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\]:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--fc-event-color);
+    opacity: 0.15;
+    z-index: -1
   }
 }
 

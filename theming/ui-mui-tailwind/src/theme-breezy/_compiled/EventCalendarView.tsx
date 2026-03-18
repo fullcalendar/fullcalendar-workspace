@@ -165,6 +165,7 @@ export default function EventCalendarView({
 
       eventShortHeight={50}
       eventColor="var(--mui-palette-primary-main)"
+      eventContrastColor="var(--mui-palette-primary-contrastText)"
       eventClass={(data) => joinClassNames(
         data.isSelected
           ? joinClassNames(
