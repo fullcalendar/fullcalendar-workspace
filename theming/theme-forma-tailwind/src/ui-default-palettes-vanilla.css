@@ -30,6 +30,7 @@ Further color reference:
   --fc-forma-strongest: #00000033;
 
   /* neutral foregrounds */
+  --fc-forma-foreground: #030712;
   --fc-forma-faint-foreground: #9ca3af;
   --fc-forma-muted-foreground: #6b7280;
 
@@ -53,6 +54,7 @@ Further color reference:
   --fc-forma-strongest: #ffffff33;
 
   /* neutral foregrounds */
+  --fc-forma-foreground: #ffffff;
   --fc-forma-faint-foreground: #4b5563;
   --fc-forma-muted-foreground: #6b7280;
 

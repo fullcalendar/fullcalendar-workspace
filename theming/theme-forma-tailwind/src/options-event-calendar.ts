@@ -22,6 +22,7 @@ export interface EventCalendarOptionParams {
   faintBgClass: string
 
   // neutral foregrounds
+  fgClass: string
   faintFgClass: string
   mutedFgClass: string
   mutedFgBorderColorClass: string
@@ -188,7 +189,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       listItemEventClass: 'items-center',
-      listItemEventInnerClass: 'flex flex-row items-center',
+      listItemEventInnerClass: `${params.fgClass} flex flex-row items-center`,
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */

@@ -30,6 +30,7 @@ Further color reference:
   --fc-forma-strongest: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
+  --fc-forma-foreground: #030712;
   --fc-forma-faint-foreground: var(--color-gray-400);
   --fc-forma-muted-foreground: var(--color-gray-500);
 
@@ -53,6 +54,7 @@ Further color reference:
   --fc-forma-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
+  --fc-forma-foreground: #ffffff;
   --fc-forma-faint-foreground: var(--color-gray-600);
   --fc-forma-muted-foreground: var(--color-gray-500);
 

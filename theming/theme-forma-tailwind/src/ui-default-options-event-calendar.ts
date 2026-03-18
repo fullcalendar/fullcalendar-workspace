@@ -67,6 +67,7 @@ export const params: EventCalendarOptionParams = {
   faintBgClass: 'bg-(--fc-forma-faint)',
 
   // neutral foregrounds
+  fgClass: 'text-(--fc-forma-foreground)',
   faintFgClass: 'text-(--fc-forma-faint-foreground)',
   mutedFgClass: 'text-(--fc-forma-muted-foreground)',
   mutedFgBorderColorClass: 'border-(--fc-forma-muted-foreground)',
@@ -82,7 +83,7 @@ export const params: EventCalendarOptionParams = {
   mutedHoverPressableClass,
 
   // popover
-  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
+  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) text-(--fc-forma-foreground) shadow-md',
   popoverHeaderClass: `border-b border-(--fc-forma-border) bg-(--fc-forma-faint)`,
 
   // primary
@@ -114,7 +115,7 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: 'bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden',
+    className: 'bg-(--fc-forma-background) text-(--fc-forma-foreground) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden',
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */

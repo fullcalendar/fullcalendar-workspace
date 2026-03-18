@@ -693,6 +693,10 @@
   white-space: pre
 }
 
+.text-\(--fc-forma-foreground\) {
+  color: var(--fc-forma-foreground)
+}
+
 .text-\(--fc-forma-faint-foreground\) {
   color: var(--fc-forma-faint-foreground)
 }

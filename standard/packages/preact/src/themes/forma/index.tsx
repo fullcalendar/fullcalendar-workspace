@@ -137,7 +137,7 @@ const dayRowCommonClasses: CalendarOptions = {
 export default {
   name: 'theme-forma',
   optionDefaults: {
-    className: "bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden root-reset",
+    className: "bg-(--fc-forma-background) text-(--fc-forma-foreground) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden root-reset",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -217,7 +217,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     listItemEventClass: "items-center",
-    listItemEventInnerClass: "flex flex-row items-center",
+    listItemEventInnerClass: "text-(--fc-forma-foreground) flex flex-row items-center",
 
     /* Block Event
     --------------------------------------------------------------------------------------------- */
@@ -402,7 +402,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     dayPopoverFormat: { day: 'numeric', weekday: 'long' },
-    popoverClass: "border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md min-w-55 root-reset",
+    popoverClass: "border border-(--fc-forma-border) bg-(--fc-forma-background) text-(--fc-forma-foreground) shadow-md min-w-55 root-reset",
     popoverCloseClass: `group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`,
     popoverCloseContent: () => dismiss(`size-5 ${mutedFgPressableGroupClass}`),
 

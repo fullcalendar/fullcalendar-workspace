@@ -172,7 +172,7 @@ export function EventCalendar({
     <FullCalendar
       plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
-      className="bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden"
+      className="bg-(--fc-forma-background) text-(--fc-forma-foreground) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden"
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -260,7 +260,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       listItemEventClass="items-center"
-      listItemEventInnerClass="flex flex-row items-center"
+      listItemEventInnerClass="text-(--fc-forma-foreground) flex flex-row items-center"
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */
@@ -445,7 +445,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
-      popoverClass="border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md min-w-55"
+      popoverClass="border border-(--fc-forma-border) bg-(--fc-forma-background) text-(--fc-forma-foreground) shadow-md min-w-55"
       popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => dismiss(`size-5 ${mutedFgPressableGroupClass}`)}
 
