@@ -1,3 +1,4 @@
+import classNames from '../../styles.module.css'
 import { applyStyle } from '../../util/dom-manip'
 import { whenTransitionDone } from '../../util/dom-event'
 import type { Rect } from '../../util/geom'
@@ -137,12 +138,12 @@ export class ElementMirror {
       if (this.colorScheme) {
         mirrorEl.setAttribute('data-color-scheme', this.colorScheme)
       }
+      mirrorEl.classList.add(classNames.borderBoxRoot)
 
       applyStyle(mirrorEl, {
         position: 'fixed',
         zIndex: this.zIndex,
         visibility: '', // in case original element was hidden by the drag effect
-        boxSizing: 'border-box', // for easy width/height... IN PLACE OF classNames.borderBoxRoot
         width: sourceElRect.right - sourceElRect.left, // explicit height in case there was a 'right' value
         height: sourceElRect.bottom - sourceElRect.top, // explicit width in case there was a 'bottom' value
         right: 'auto', // erase and set width instead

@@ -191,6 +191,7 @@ export default {
     eventColor: "var(--fc-forma-event)",
     eventContrastColor: "var(--fc-forma-event-contrast)",
     eventClass: (data) => joinClassNames(
+      data.isDragging && 'root-reset',
       data.event.url && 'link-reset',
       data.isSelected
         ? joinClassNames(
