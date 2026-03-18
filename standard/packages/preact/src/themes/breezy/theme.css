@@ -42,15 +42,15 @@
 }
 
 .-start-1 {
-  inset-inline-start: -0.25em
+  inset-inline-start: -4px
 }
 
 .-start-4 {
-  inset-inline-start: -1em
+  inset-inline-start: -16px
 }
 
 .-end-1 {
-  inset-inline-end: -0.25em
+  inset-inline-end: -4px
 }
 
 .end-0 {
@@ -58,7 +58,7 @@
 }
 
 .end-2 {
-  inset-inline-end: 0.5em
+  inset-inline-end: 8px
 }
 
 .end-\[-3px\] {
@@ -66,15 +66,15 @@
 }
 
 .-top-1 {
-  top: -0.25em
+  top: -4px
 }
 
 .-top-3\.5 {
-  top: -0.875em
+  top: -14px
 }
 
 .-top-4 {
-  top: -1em
+  top: -16px
 }
 
 .top-0 {
@@ -86,11 +86,11 @@
 }
 
 .top-2 {
-  top: 0.5em
+  top: 8px
 }
 
 .-bottom-1 {
-  bottom: -0.25em
+  bottom: -4px
 }
 
 .left-1\/2 {
@@ -110,35 +110,35 @@
 }
 
 .m-1 {
-  margin: 0.25em
+  margin: 4px
 }
 
 .m-1\.5 {
-  margin: 0.375em
+  margin: 6px
 }
 
 .m-2 {
-  margin: 0.5em
+  margin: 8px
 }
 
 .m-4 {
-  margin: 1em
+  margin: 16px
 }
 
 .-mx-2 {
-  margin-inline: -0.5em
+  margin-inline: -8px
 }
 
 .mx-0\.5 {
-  margin-inline: 0.125em
+  margin-inline: 2px
 }
 
 .mx-1 {
-  margin-inline: 0.25em
+  margin-inline: 4px
 }
 
 .mx-2 {
-  margin-inline: 0.5em
+  margin-inline: 8px
 }
 
 .mx-auto {
@@ -150,27 +150,27 @@
 }
 
 .my-0\.5 {
-  margin-block: 0.125em
+  margin-block: 2px
 }
 
 .my-1 {
-  margin-block: 0.25em
+  margin-block: 4px
 }
 
 .my-2 {
-  margin-block: 0.5em
+  margin-block: 8px
 }
 
 .my-3 {
-  margin-block: 0.75em
+  margin-block: 12px
 }
 
 .my-4 {
-  margin-block: 1em
+  margin-block: 16px
 }
 
 .my-10 {
-  margin-block: 2.5em
+  margin-block: 40px
 }
 
 .my-px {
@@ -178,11 +178,11 @@
 }
 
 .ms-0\.5 {
-  margin-inline-start: 0.125em
+  margin-inline-start: 2px
 }
 
 .ms-1 {
-  margin-inline-start: 0.25em
+  margin-inline-start: 4px
 }
 
 .ms-px {
@@ -190,15 +190,15 @@
 }
 
 .-me-1\.5 {
-  margin-inline-end: -0.375em
+  margin-inline-end: -6px
 }
 
 .me-0\.5 {
-  margin-inline-end: 0.125em
+  margin-inline-end: 2px
 }
 
 .me-1 {
-  margin-inline-end: 0.25em
+  margin-inline-end: 4px
 }
 
 .me-px {
@@ -206,11 +206,11 @@
 }
 
 .-mt-1 {
-  margin-top: -0.25em
+  margin-top: -4px
 }
 
 .mt-1 {
-  margin-top: 0.25em
+  margin-top: 4px
 }
 
 .mt-px {
@@ -218,7 +218,7 @@
 }
 
 .mb-1 {
-  margin-bottom: 0.25em
+  margin-bottom: 4px
 }
 
 .mb-px {
@@ -226,7 +226,7 @@
 }
 
 .-ml-1 {
-  margin-left: -0.25em
+  margin-left: -4px
 }
 
 .block {
@@ -251,51 +251,51 @@
 }
 
 .size-2 {
-  width: 0.5em;
-  height: 0.5em
+  width: 8px;
+  height: 8px
 }
 
 .size-5 {
-  width: 1.25em;
-  height: 1.25em
+  width: 20px;
+  height: 20px
 }
 
 .size-6 {
-  width: 1.5em;
-  height: 1.5em
+  width: 24px;
+  height: 24px
 }
 
 .size-8 {
-  width: 2em;
-  height: 2em
+  width: 32px;
+  height: 32px
 }
 
 .h-2 {
-  height: 0.5em
+  height: 8px
 }
 
 .h-5 {
-  height: 1.25em
+  height: 20px
 }
 
 .h-6 {
-  height: 1.5em
+  height: 24px
 }
 
 .h-8 {
-  height: 2em
+  height: 32px
 }
 
 .min-h-0\.5 {
-  min-height: 0.125em
+  min-height: 2px
 }
 
 .min-h-1 {
-  min-height: 0.25em
+  min-height: 4px
 }
 
 .min-h-3 {
-  min-height: 0.75em
+  min-height: 12px
 }
 
 .min-h-px {
@@ -311,15 +311,15 @@
 }
 
 .w-2 {
-  width: 0.5em
+  width: 8px
 }
 
 .w-5 {
-  width: 1.25em
+  width: 20px
 }
 
 .w-6 {
-  width: 1.5em
+  width: 24px
 }
 
 .w-\[5px\] {
@@ -331,11 +331,11 @@
 }
 
 .max-w-50 {
-  max-width: 12.5em
+  max-width: 200px
 }
 
 .max-w-218 {
-  max-width: 54.5em
+  max-width: 872px
 }
 
 .min-w-0 {
@@ -343,7 +343,7 @@
 }
 
 .min-w-55 {
-  min-width: 13.75em
+  min-width: 220px
 }
 
 .shrink-0 {
@@ -407,19 +407,19 @@
 }
 
 .gap-1 {
-  gap: 0.25em
+  gap: 4px
 }
 
 .gap-2 {
-  gap: 0.5em
+  gap: 8px
 }
 
 .gap-3 {
-  gap: 0.75em
+  gap: 12px
 }
 
 .gap-4 {
-  gap: 1em
+  gap: 16px
 }
 
 .self-start {
@@ -435,49 +435,49 @@
 }
 
 .rounded-lg {
-  border-radius: .5em
+  border-radius: 8px
 }
 
 .rounded-md {
-  border-radius: .375em
+  border-radius: 6px
 }
 
 .rounded-sm {
-  border-radius: .25em
+  border-radius: 4px
 }
 
 .rounded-s-md {
-  border-start-start-radius: .375em;
-  border-end-start-radius: .375em
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px
 }
 
 .rounded-s-sm {
-  border-start-start-radius: .25em;
-  border-end-start-radius: .25em
+  border-start-start-radius: 4px;
+  border-end-start-radius: 4px
 }
 
 .rounded-e-md {
-  border-start-end-radius: .375em;
-  border-end-end-radius: .375em
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px
 }
 
 .rounded-e-sm {
-  border-start-end-radius: .25em;
-  border-end-end-radius: .25em
+  border-start-end-radius: 4px;
+  border-end-end-radius: 4px
 }
 
 .rounded-es-md {
-  border-end-start-radius: .375em
+  border-end-start-radius: 6px
 }
 
 .rounded-t-lg {
-  border-top-left-radius: .5em;
-  border-top-right-radius: .5em
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px
 }
 
 .rounded-b-lg {
-  border-bottom-right-radius: .5em;
-  border-bottom-left-radius: .5em
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px
 }
 
 .border,
@@ -638,27 +638,27 @@
 }
 
 .p-0\.5 {
-  padding: 0.125em
+  padding: 2px
 }
 
 .p-1 {
-  padding: 0.25em
+  padding: 4px
 }
 
 .p-1\.5 {
-  padding: 0.375em
+  padding: 6px
 }
 
 .p-2 {
-  padding: 0.5em
+  padding: 8px
 }
 
 .p-3 {
-  padding: 0.75em
+  padding: 12px
 }
 
 .p-4 {
-  padding: 1em
+  padding: 16px
 }
 
 .p-px {
@@ -666,27 +666,27 @@
 }
 
 .px-0\.5 {
-  padding-inline: 0.125em
+  padding-inline: 2px
 }
 
 .px-1 {
-  padding-inline: 0.25em
+  padding-inline: 4px
 }
 
 .px-1\.5 {
-  padding-inline: 0.375em
+  padding-inline: 6px
 }
 
 .px-2 {
-  padding-inline: 0.5em
+  padding-inline: 8px
 }
 
 .px-3 {
-  padding-inline: 0.75em
+  padding-inline: 12px
 }
 
 .px-4 {
-  padding-inline: 1em
+  padding-inline: 16px
 }
 
 .px-px {
@@ -694,27 +694,27 @@
 }
 
 .py-0\.5 {
-  padding-block: 0.125em
+  padding-block: 2px
 }
 
 .py-1 {
-  padding-block: 0.25em
+  padding-block: 4px
 }
 
 .py-2 {
-  padding-block: 0.5em
+  padding-block: 8px
 }
 
 .py-3\.5 {
-  padding-block: 0.875em
+  padding-block: 14px
 }
 
 .py-4 {
-  padding-block: 1em
+  padding-block: 16px
 }
 
 .py-15 {
-  padding-block: 3.75em
+  padding-block: 60px
 }
 
 .py-px {
@@ -722,47 +722,47 @@
 }
 
 .ps-0\.5 {
-  padding-inline-start: 0.125em
+  padding-inline-start: 2px
 }
 
 .ps-1 {
-  padding-inline-start: 0.25em
+  padding-inline-start: 4px
 }
 
 .pt-0\.5 {
-  padding-top: 0.125em
+  padding-top: 2px
 }
 
 .pt-1 {
-  padding-top: 0.25em
+  padding-top: 4px
 }
 
 .pb-1 {
-  padding-bottom: 0.25em
+  padding-bottom: 4px
 }
 
 .text-\[0\.6875rem\]\/\[1\.090909\] {
-  font-size: .6875em;
+  font-size: 11px;
   line-height: 1.09091
 }
 
 .text-lg {
-  font-size: 1.125em;
+  font-size: 18px;
   line-height: calc(1.75/1.125)
 }
 
 .text-base {
-  font-size: 1em;
+  font-size: 16px;
   line-height: calc(1.5/1)
 }
 
 .text-sm {
-  font-size: .875em;
+  font-size: 14px;
   line-height: calc(1.25/.875)
 }
 
 .text-xs {
-  font-size: .75em;
+  font-size: 12px;
   line-height: calc(1/.75)
 }
 
@@ -943,8 +943,8 @@
 }
 
 .first\:rounded-s-md:first-child {
-  border-start-start-radius: .375em;
-  border-end-start-radius: .375em
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px
 }
 
 .first\:border-s:first-child {
@@ -953,8 +953,8 @@
 }
 
 .last\:rounded-e-md:last-child {
-  border-start-end-radius: .375em;
-  border-end-end-radius: .375em
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px
 }
 
 .last\:border-e:last-child {
