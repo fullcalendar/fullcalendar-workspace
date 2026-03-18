@@ -43,7 +43,7 @@ export const params: EventCalendarOptionParams = {
   faintHoverPressableClass,
 
   // popover
-  popoverClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md',
+  popoverClass: 'bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border) shadow-md',
   popoverHeaderClass: 'border-b border-(--fc-classic-border) bg-(--fc-classic-muted)',
 
   // event content
@@ -73,7 +73,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
-    viewClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border)',
+    viewClass: 'bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border)',
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */

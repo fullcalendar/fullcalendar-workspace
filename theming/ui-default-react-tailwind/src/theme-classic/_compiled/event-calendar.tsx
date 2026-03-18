@@ -141,7 +141,7 @@ export function EventCalendar({
       plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
       className="gap-5"
-      viewClass="bg-(--fc-classic-background) border border-(--fc-classic-border)"
+      viewClass="bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border)"
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -344,7 +344,7 @@ export function EventCalendar({
       /* Popover
       ------------------------------------------------------------------------------------------- */
 
-      popoverClass="bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55"
+      popoverClass="bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border) shadow-md min-w-55"
       popoverCloseClass={`group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => x('size-5 text-sm not-group-hover:opacity-65')}
 

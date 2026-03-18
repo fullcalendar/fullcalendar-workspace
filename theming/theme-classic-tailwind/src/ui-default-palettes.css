@@ -36,6 +36,7 @@ NOTE: button/toolbar UI is not defined here
   --fc-classic-strong: color-mix(in oklab, var(--color-black) 14%, transparent); /* TODO */
 
   /* neutral foregrounds */
+  --fc-classic-foreground: var(--color-gray-950);
   --fc-classic-faint-foreground: var(--color-gray-400);
   --fc-classic-muted-foreground: var(--color-gray-500);
 
@@ -56,6 +57,7 @@ NOTE: button/toolbar UI is not defined here
   --fc-classic-strong: color-mix(in oklab, var(--color-white) 14%, transparent); /* TODO */
 
   /* neutral foregrounds */
+  --fc-classic-foreground: var(--color-white);
   --fc-classic-faint-foreground: var(--color-gray-600);
   --fc-classic-muted-foreground: var(--color-gray-500);
 
