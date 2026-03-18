@@ -682,6 +682,10 @@
   color: var(--fc-classic-muted-foreground)
 }
 
+.text-\(--fc-classic-foreground\) {
+  color: var(--fc-classic-foreground)
+}
+
 .text-\(--fc-classic-button-foreground\) {
   color: var(--fc-classic-button-foreground)
 }

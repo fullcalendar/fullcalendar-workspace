@@ -53,7 +53,7 @@
   --fc-classic-strong: #ffffff24;
 
   /* neutral foregrounds */
-  --fc-classic-background: #fff;
+  --fc-classic-foreground: #fff;
   --fc-classic-faint-foreground: #4b5563;
   --fc-classic-muted-foreground: #6b7280;
 
