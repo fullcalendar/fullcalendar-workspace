@@ -103,6 +103,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
     mirror.parentNode = getAppendableRoot(origTarget) as HTMLElement
     mirror.revertDuration = options.dragRevertDuration
+    mirror.colorScheme = options.colorScheme || ''
 
     let isValid =
       component.isValidSegDownEl(origTarget) &&

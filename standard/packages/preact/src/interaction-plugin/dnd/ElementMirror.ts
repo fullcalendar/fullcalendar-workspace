@@ -21,6 +21,7 @@ export class ElementMirror {
   parentNode: HTMLElement = document.body // HIGHLY SUGGESTED to set this to sidestep ShadowDOM issues
   zIndex: number = 9999
   revertDuration: number = 0
+  colorScheme: string = ''
 
   start(sourceEl: HTMLElement, pageX: number, pageY: number) {
     this.sourceEl = sourceEl
@@ -132,6 +133,10 @@ export class ElementMirror {
       mirrorEl.style.userSelect = 'none'
       mirrorEl.style.webkitUserSelect = 'none'
       mirrorEl.style.pointerEvents = 'none'
+
+      if (this.colorScheme) {
+        mirrorEl.setAttribute('data-color-scheme', this.colorScheme)
+      }
 
       applyStyle(mirrorEl, {
         position: 'fixed',

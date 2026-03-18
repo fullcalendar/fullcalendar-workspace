@@ -112,6 +112,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         )}
         // HACK because of portal
         dir={isRtl ? 'rtl' : undefined}
+        data-color-scheme={options.colorScheme || undefined}
         ref={this.handleRootEl}
       >
         <div
