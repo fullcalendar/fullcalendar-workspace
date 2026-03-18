@@ -137,7 +137,7 @@ export class ElementMirror {
         position: 'fixed',
         zIndex: this.zIndex,
         visibility: '', // in case original element was hidden by the drag effect
-        boxSizing: 'border-box', // for easy width/height
+        boxSizing: 'border-box', // for easy width/height... IN PLACE OF classNames.borderBoxRoot
         width: sourceElRect.right - sourceElRect.left, // explicit height in case there was a 'right' value
         height: sourceElRect.bottom - sourceElRect.top, // explicit width in case there was a 'bottom' value
         right: 'auto', // erase and set width instead

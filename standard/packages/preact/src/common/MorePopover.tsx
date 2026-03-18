@@ -107,6 +107,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           classNames.flexCol,
           classNames.popoverZ,
           classNames.abs,
+          classNames.borderBoxRoot,
           classNames.internalPopover,
         )}
         // HACK because of portal
