@@ -94,7 +94,8 @@ TODO: convert all colors to hex
   --fc-monarch-border: #dedce1;
   --fc-monarch-strong-border: #bcbabe; /* TODO */
 }
-[data-palette=purple][data-color-scheme=dark] {
+[data-palette=purple][data-color-scheme=dark],
+[data-palette=purple] [data-color-scheme=dark] {
   /* primary */
   --fc-monarch-primary: #D0BCFF;
   --fc-monarch-primary-foreground: #381E72;
@@ -152,7 +153,8 @@ TODO: convert all colors to hex
   --fc-monarch-border: rgb(216 194 188);
   --fc-monarch-strong-border: rgb(216 194 188);
 }
-[data-palette=red][data-color-scheme=dark] {
+[data-palette=red][data-color-scheme=dark],
+[data-palette=red] [data-color-scheme=dark] {
   /* primary */
   --fc-monarch-primary: rgb(255 181 160);
   --fc-monarch-primary-foreground: rgb(86 31 15);
@@ -210,7 +212,8 @@ TODO: convert all colors to hex
   --fc-monarch-border: rgb(197 200 186);
   --fc-monarch-strong-border: rgb(197 200 186);
 }
-[data-palette=green][data-color-scheme=dark] {
+[data-palette=green][data-color-scheme=dark],
+[data-palette=green] [data-color-scheme=dark] {
   /* primary */
   --fc-monarch-primary: rgb(177 209 138);
   --fc-monarch-primary-foreground: rgb(31 55 1);
@@ -268,7 +271,8 @@ TODO: convert all colors to hex
   --fc-monarch-border: rgb(196 198 208);
   --fc-monarch-strong-border: rgb(196 198 208);
 }
-[data-palette=blue][data-color-scheme=dark] {
+[data-palette=blue][data-color-scheme=dark],
+[data-palette=blue] [data-color-scheme=dark] {
   /* primary */
   --fc-monarch-primary: rgb(170 199 255);
   --fc-monarch-primary-foreground: rgb(10 48 95);
@@ -326,7 +330,8 @@ TODO: convert all colors to hex
   --fc-monarch-border: rgb(205 198 180);
   --fc-monarch-strong-border: rgb(205 198 180);
 }
-[data-palette=yellow][data-color-scheme=dark] {
+[data-palette=yellow][data-color-scheme=dark],
+[data-palette=yellow] [data-color-scheme=dark] {
   /* primary */
   --fc-monarch-primary: rgb(219 198 110);
   --fc-monarch-primary-foreground: rgb(58 48 0);

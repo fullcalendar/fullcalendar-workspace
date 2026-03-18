@@ -96,7 +96,8 @@
   --fc-pulse-event: #631515;
   --fc-pulse-event-contrast: #fff;
 }
-[data-palette=red][data-color-scheme=dark] {
+[data-palette=red][data-color-scheme=dark],
+[data-palette=red] [data-color-scheme=dark] {
   /* tertiary */
   --fc-pulse-tertiary: #fd4539;
   --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
@@ -120,7 +121,8 @@
   --fc-pulse-event: #012e66;
   --fc-pulse-event-contrast: #fff;
 }
-[data-palette=blue][data-color-scheme=dark] {
+[data-palette=blue][data-color-scheme=dark],
+[data-palette=blue] [data-color-scheme=dark] {
   /* tertiary */
   --fc-pulse-tertiary: #1284ff;
   --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
@@ -162,7 +164,8 @@
   --fc-pulse-event: #084b19;
   --fc-pulse-event-contrast: #fff;
 }
-[data-palette=green][data-color-scheme=dark] {
+[data-palette=green][data-color-scheme=dark],
+[data-palette=green] [data-color-scheme=dark] {
   /* tertiary */
   --fc-pulse-tertiary: #30d157;
   --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);

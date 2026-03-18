@@ -102,7 +102,8 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   --fc-breezy-event-contrast: var(--color-white);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
-[data-palette=indigo][data-color-scheme=dark] { /* shift lighter */
+[data-palette=indigo][data-color-scheme=dark],
+[data-palette=indigo] [data-color-scheme=dark] { /* shift lighter */
   /* primary */
   --fc-breezy-primary: var(--color-indigo-500);
   --fc-breezy-primary-over: var(--color-indigo-400);
