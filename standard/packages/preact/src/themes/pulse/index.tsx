@@ -135,7 +135,8 @@ export default {
   name: 'theme-pulse',
   optionDefaults: {
     className: "gap-6 root-reset",
-    viewClass: `rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
+    viewClass: `rounded-sm overflow-hidden border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
+    tableBodyClass: 'bg-(--fc-pulse-background)',
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -580,20 +581,22 @@ export default {
   views: {
     dayGrid: {
       ...dayRowCommonClasses,
+      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
       dayHeaderDividerClass: 'border-b border-(--fc-pulse-border)',
       dayCellBottomClass: getShortDayCellBottomClass,
     },
     multiMonth: {
       ...dayRowCommonClasses,
+      viewClass: 'bg-(--fc-pulse-faint)',
+      tableBodyClass: 'border border-(--fc-pulse-border) rounded-sm overflow-hidden',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
       dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-pulse-border)'),
       dayCellBottomClass: getShortDayCellBottomClass,
-      viewClass: 'bg-(--fc-pulse-faint)',
-      tableBodyClass: 'border border-(--fc-pulse-border) bg-(--fc-pulse-background) rounded-sm overflow-hidden',
     },
     timeGrid: {
       ...dayRowCommonClasses,
+      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
       dayHeaderDividerClass: (data) => joinClassNames(
         'border-b',
@@ -637,6 +640,7 @@ export default {
       slotHeaderDividerClass: 'border-e border-(--fc-pulse-border)',
     },
     list: {
+      viewClass: 'bg-(--fc-pulse-background)',
 
       /* List-View > List-Item Event
       ------------------------------------------------------------------------------------------- */
@@ -662,6 +666,7 @@ export default {
       noEventsInnerClass: 'py-15',
     },
     timeline: {
+      tableHeaderClass: 'bg-(--fc-pulse-background)',
 
       /* Timeline > Row Event
       ------------------------------------------------------------------------------------------- */

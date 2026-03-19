@@ -169,6 +169,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   return {
     optionDefaults: {
+      tableBodyClass: params.bgClass,
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
@@ -514,21 +515,22 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayGrid: {
         ...dayRowCommonClasses,
+        tableHeaderClass: params.bgClass,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
         dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
       },
       multiMonth: {
         ...dayRowCommonClasses,
+        viewClass: params.faintBgClass,
+        tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
         dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b ${params.borderColorClass}`),
         dayCellBottomClass: getShortDayCellBottomClass,
-
-        viewClass: params.faintBgClass,
-        tableBodyClass: `border ${params.borderColorClass} ${params.bgClass} rounded-sm overflow-hidden`,
       },
       timeGrid: {
         ...dayRowCommonClasses,
+        tableHeaderClass: params.bgClass,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
         dayHeaderDividerClass: (data) => joinClassNames(
           'border-b',
@@ -574,6 +576,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotHeaderDividerClass: `border-e ${params.borderColorClass}`,
       },
       list: {
+        viewClass: params.bgClass,
 
         /* List-View > List-Item Event
         ----------------------------------------------------------------------------------------- */

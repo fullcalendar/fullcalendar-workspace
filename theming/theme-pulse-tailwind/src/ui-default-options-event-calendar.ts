@@ -114,10 +114,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-6',
-    viewClass: joinClassNames(
-      'rounded-sm overflow-hidden',
-      `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
-    ),
+    viewClass: `rounded-sm overflow-hidden border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */

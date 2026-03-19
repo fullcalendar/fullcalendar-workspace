@@ -70,6 +70,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
+        tableHeaderClass: params.bgClass,
 
         /* Timeline > Row Event
         ----------------------------------------------------------------------------------------- */

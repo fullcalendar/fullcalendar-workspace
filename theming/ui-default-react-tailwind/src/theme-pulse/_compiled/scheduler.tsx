@@ -91,6 +91,7 @@ export function Scheduler({
       views={{
         ...userViews,
         timeline: {
+          tableHeaderClass: 'bg-(--fc-pulse-background)',
 
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
@@ -130,4 +131,3 @@ export function Scheduler({
     />
   )
 }
-
