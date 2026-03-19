@@ -34,7 +34,7 @@ export function useDemoChoices(ui: UIName): DemoChoices {
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
   const [fcBreezyPalette, setFcBreezyPalette] = useLocalStorageState('fcBreezyPalette', fcBreezyPaletteValues[0], fcBreezyPaletteValues)
   const [fcPulsePalette, setFcPulsePalette] = useLocalStorageState('fcPulsePalette', fcPulsePaletteValues[0], fcPulsePaletteValues)
-  const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
+  const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'neutral', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState('colorScheme', 'light', colorSchemeValues)
 
