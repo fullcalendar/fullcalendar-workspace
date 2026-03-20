@@ -40,15 +40,15 @@ const secondaryClass = strongBgClass
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${outlineFocusClass}`
 
 // tertiary (based on primary, but with low contrast)
-const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
+const tertiaryClass = 'bg-chart-1/50'
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-chart-1/60 ${outlineFocusClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-chart-1/60`
 
 // event content
-const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]'
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
-  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
 )
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
@@ -125,14 +125,14 @@ export const params: ThemeOptionParams = {
   eventMutedFgClass,
   eventFaintBgClass,
   eventFaintPressableClass,
-  bgEventColor: 'var(--foreground)',
+  bgEventColor: 'var(--chart-3)',
   bgEventBgClass,
   bgEventFgOpacityClass: 'opacity-50',
   smallDotBorderClass: 'border-4',
   largeDotBorderClass: 'border-5',
 
   // misc event content
-  highlightClass: 'bg-primary/10',
+  highlightClass: 'bg-chart-1/20',
   todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
   nowBorderColorClass: 'border-destructive',
   nowBorderStartColorClass: 'border-s-destructive',

@@ -113,7 +113,7 @@ export function EventCalendarViews({
         /* Background Event
         ----------------------------------------------------------------------------------------- */
 
-        backgroundEventColor='var(--foreground)'
+        backgroundEventColor='var(--chart-3)'
         backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
         backgroundEventTitleClass={(data) => cn(
           'opacity-50 italic',
@@ -264,8 +264,8 @@ export function EventCalendarViews({
                     : 'size-8 text-lg',
                   data.isToday
                     ? [
-                        'bg-primary/20 dark:bg-primary/30',
-                        data.hasNavLink && 'group-hover:bg-primary/40',
+                        'bg-chart-1/50',
+                        data.hasNavLink && 'group-hover:bg-chart-1/60',
                       ]
                     : (data.hasNavLink && 'hover:bg-foreground/5'),
                   data.hasNavLink && 'group-focus-visible:outline-3 outline-ring/50',
@@ -299,8 +299,8 @@ export function EventCalendarViews({
             : (data.isNarrow ? 'px-1' : 'px-2'),
           data.isToday
             ? [
-                'bg-primary/20 dark:bg-primary/30',
-                data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 outline-ring/50',
+                'bg-chart-1/50',
+                data.hasNavLink && 'hover:bg-chart-1/60 focus-visible:outline-3 outline-ring/50',
               ]
             : (data.hasNavLink && 'hover:bg-foreground/5'),
           data.isOther && 'text-muted-foreground',
@@ -349,8 +349,8 @@ export function EventCalendarViews({
                   : 'px-3',
                 data.isToday
                   ? [
-                      'bg-primary/20 dark:bg-primary/30',
-                      data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 outline-ring/50',
+                      'bg-chart-1/50',
+                      data.hasNavLink && 'hover:bg-chart-1/60 focus-visible:outline-3 outline-ring/50',
                     ]
                   : (data.hasNavLink && 'hover:bg-foreground/5')
               ]
@@ -401,7 +401,7 @@ export function EventCalendarViews({
           data.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
         )}
         nonBusinessClass='bg-foreground/3'
-        highlightClass='bg-primary/10'
+        highlightClass='bg-chart-1/20'
         nowIndicatorLineClass='-m-px border-1 border-destructive'
         nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
 

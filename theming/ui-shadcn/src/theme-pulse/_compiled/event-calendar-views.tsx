@@ -121,7 +121,7 @@ export function EventCalendarViews({
         /* Background Event
         ----------------------------------------------------------------------------------------- */
 
-        backgroundEventColor='var(--foreground)'
+        backgroundEventColor='var(--chart-3)'
         backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
         backgroundEventTitleClass={(data) => cn(
           'opacity-50 italic',
@@ -262,8 +262,8 @@ export function EventCalendarViews({
                     'whitespace-pre',
                     (textPart.type === 'day' && data.isToday)
                       ? [
-                          'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold flex flex-row items-center justify-center bg-primary/20 dark:bg-primary/30',
-                          data.hasNavLink && 'group-hover:bg-primary/40 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                          'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold flex flex-row items-center justify-center bg-chart-1/50',
+                          data.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
                         ]
                       : 'text-muted-foreground',
                   )}
@@ -316,8 +316,8 @@ export function EventCalendarViews({
                     'whitespace-pre',
                     (textPart.type === 'day' && data.isToday)
                       ? [
-                          'rounded-full font-semibold flex flex-row items-center justify-center bg-primary/20 dark:bg-primary/30',
-                          data.hasNavLink && 'group-hover:bg-primary/40 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                          'rounded-full font-semibold flex flex-row items-center justify-center bg-chart-1/50',
+                          data.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
                           data.isNarrow
                             ? 'size-5'
                             : 'size-6 first:-ms-1 last:-me-1',
@@ -365,8 +365,8 @@ export function EventCalendarViews({
           !data.level && 'font-semibold',
           (!data.level && data.isToday)
             ? [
-                'bg-primary/20 dark:bg-primary/30',
-                data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                'bg-chart-1/50',
+                data.hasNavLink && 'hover:bg-chart-1/60 focus-visible:outline-3 -outline-offset-1 outline-ring/50',
               ]
             : data.hasNavLink && 'hover:bg-foreground/5',
         )}
@@ -408,7 +408,7 @@ export function EventCalendarViews({
             : 'top-1 p-1 text-xs',
           data.hasNavLink && 'hover:bg-foreground/5',
         )}
-        highlightClass='bg-primary/10'
+        highlightClass='bg-chart-1/20'
         nonBusinessClass='bg-foreground/3'
         nowIndicatorLineClass='-m-px border-1 border-destructive'
         nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"

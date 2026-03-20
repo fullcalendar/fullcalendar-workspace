@@ -106,7 +106,7 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         eventShortHeight={50}
-        eventColor="var(--primary)"
+        eventColor="var(--chart-2)"
         eventContrastColor="var(--primary-foreground)"
         eventClass={(data) => cn(
           data.isSelected
@@ -121,7 +121,7 @@ export function EventCalendarViews({
         /* Background Event
         ----------------------------------------------------------------------------------------- */
 
-        backgroundEventColor="var(--foreground)"
+        backgroundEventColor="var(--chart-3)"
         backgroundEventClass="bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]"
         backgroundEventTitleClass={(data) => cn(
           'opacity-50 italic',
@@ -140,8 +140,8 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         blockEventClass={(data) => cn(
-          'group relative border-(--fc-event-color) print:bg-white bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))] -outline-offset-3',
-          data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
+          'group relative border-(--fc-event-color) print:bg-white bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))] -outline-offset-3',
+          data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
           (data.isDragging && !data.isSelected) && 'opacity-75',
         )}
         blockEventTimeClass="whitespace-nowrap overflow-hidden shrink-1"
@@ -385,7 +385,7 @@ export function EventCalendarViews({
           data.hasNavLink && 'hover:bg-foreground/10',
         )}
         nonBusinessClass="bg-foreground/3"
-        highlightClass="bg-primary/10"
+        highlightClass="bg-chart-1/15"
         nowIndicatorLineClass="-m-px border-1 border-destructive"
         nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
 
@@ -456,8 +456,8 @@ export function EventCalendarViews({
             ------------------------------------------------------------------------------------- */
 
             listItemEventClass: (data) => cn(
-              'group border-s-6 border-(--fc-event-color) p-3 rounded-sm bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]',
-              data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
+              'group border-s-6 border-(--fc-event-color) p-3 rounded-sm bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+              data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
             ),
             listItemEventInnerClass: 'gap-2 text-sm',
             listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

@@ -62,9 +62,13 @@ export function EventCalendar({
   )
 }
 
-const baseEventCalendarOptions = createEventCalendarOptions(params)
-
-const slots = createSlots(params)
+const extendedParams = {
+  ...params,
+  eventColor: 'var(--chart-2)', // more fluorescent than primary
+  highlightClass: 'bg-chart-1/15', // slightly lighter than standard 20%, for lighter events
+}
+const baseEventCalendarOptions = createEventCalendarOptions(extendedParams)
+const slots = createSlots(extendedParams)
 
 export function EventCalendarView({
   views: userViews,

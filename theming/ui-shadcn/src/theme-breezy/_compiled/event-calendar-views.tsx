@@ -126,7 +126,7 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         eventShortHeight={50}
-        eventColor="var(--primary)"
+        eventColor="var(--chart-2)"
         eventClass={(data) => cn(
           data.isSelected
             ? [
@@ -140,7 +140,7 @@ export function EventCalendarViews({
         /* Background Event
         ----------------------------------------------------------------------------------------- */
 
-        backgroundEventColor="var(--foreground)"
+        backgroundEventColor="var(--chart-3)"
         backgroundEventClass="bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]"
         backgroundEventTitleClass={(data) => cn(
           'opacity-50 italic',
@@ -153,8 +153,8 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         blockEventClass={(data) => cn(
-          'group relative print:bg-white border-transparent print:border-(--fc-event-color) bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]',
-          data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
+          'group relative print:bg-white border-transparent print:border-(--fc-event-color) bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+          data.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
           (data.isDragging && !data.isSelected) && 'opacity-75',
         )}
         blockEventInnerClass="text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]"
@@ -431,7 +431,7 @@ export function EventCalendarViews({
             : 'p-1.5 text-xs',
           data.hasNavLink && '-outline-offset-1',
         )}
-        highlightClass="bg-primary/10"
+        highlightClass="bg-chart-1/15"
         nonBusinessClass="bg-foreground/3"
         nowIndicatorLineClass="-m-px border-1 border-destructive"
         nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"

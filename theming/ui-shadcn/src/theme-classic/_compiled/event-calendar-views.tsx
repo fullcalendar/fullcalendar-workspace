@@ -123,7 +123,7 @@ export function EventCalendarViews({
         /* Background Event
         ----------------------------------------------------------------------------------------- */
 
-        backgroundEventColor='var(--foreground)'
+        backgroundEventColor='var(--chart-3)'
         backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
         backgroundEventTitleClass={(data) => cn(
           'opacity-50 italic',
@@ -309,7 +309,7 @@ export function EventCalendarViews({
           data.isNarrow ? xxsTextClass : 'text-sm',
         )}
         nonBusinessClass='bg-foreground/3'
-        highlightClass='bg-primary/10'
+        highlightClass='bg-chart-1/20'
 
         /* View-Specific Options
         ----------------------------------------------------------------------------------------- */
