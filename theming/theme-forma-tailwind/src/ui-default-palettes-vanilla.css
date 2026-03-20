@@ -59,7 +59,7 @@ Further color reference:
   --fc-forma-muted-foreground: #6b7280;
 
   /* neutral borders */
-  --fc-forma-border: #404040;
+  --fc-forma-border: #2a2a2a;
   --fc-forma-muted-border: #3A3A3A;
   --fc-forma-strong-border: #707070;
 }
@@ -110,7 +110,7 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
-  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event: #0d944b; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
 [data-palette=green][data-color-scheme=dark],
@@ -129,7 +129,7 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
-  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event: #8a3d8a; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
 [data-palette=purple][data-color-scheme=dark],

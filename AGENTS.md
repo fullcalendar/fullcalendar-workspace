@@ -1,7 +1,7 @@
 
 ## Theme Pipeline
 
-All themes start out as configuration files and tailwind classnames and are manually transformed through multiple phases. All phases are committed to the codebase. When making changes to upstream theme config/tailwind, ensure all downstream phase files are modified as well.
+All themes start out as configuration files and tailwind classnames and are manually transformed through multiple phases. All phases are committed to the codebase. Below is the flow from file-to-file. The developer may make changes to upstream theme config/tailwind, and the explicitly ask to fill-in the downstream conversions.
 
 ### Default-UI JS Plugin
 
@@ -29,6 +29,22 @@ All themes start out as configuration files and tailwind classnames and are manu
 - Split to either:
   - standard/packages/preact/src/themes/*/palettes/*.css (for most themes)
   - standard/packages/preact/src/themes/classic/palette.css (for classic theme only)
+
+#### Palette CSS structure mapping
+
+The source file (`ui-default-palettes.css`) uses Tailwind color references and is structured as:
+- `:root` — global light-mode defaults (palette-agnostic)
+- `[data-color-scheme=dark]` — global dark-mode overrides (palette-agnostic)
+- `[data-palette=X]` — palette-specific light/default values
+- `[data-palette=X][data-color-scheme=dark]` — palette-specific dark overrides
+
+The vanilla file (`ui-default-palettes-vanilla.css`) mirrors this same structure with resolved color values.
+
+The split per-palette files (`palettes/X.css`) each contain only one palette's variables, restructured as:
+- `:root` — combines global light defaults + palette-specific light values
+- `[data-color-scheme=dark]` — combines global dark overrides + palette-specific dark overrides
+
+**Critical:** When propagating changes, preserve the light/dark context. A variable defined in `[data-palette=X]` (light) in the source belongs in `:root` in the split file — **not** in `[data-color-scheme=dark]`. A variable in `[data-palette=X][data-color-scheme=dark]` (dark) belongs in `[data-color-scheme=dark]` in the split file.
 
 ### Shadcn Components
 

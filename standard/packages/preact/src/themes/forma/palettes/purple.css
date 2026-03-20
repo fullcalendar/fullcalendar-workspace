@@ -9,7 +9,7 @@
   /* calendar content */
   --fc-forma-background-event: #22c55e;
   --fc-forma-highlight: #cffafe66;
-  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event: #8a3d8a; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 
   /* neutral backgrounds */
@@ -54,7 +54,7 @@
   --fc-forma-muted-foreground: #6b7280;
 
   /* neutral borders */
-  --fc-forma-border: #404040;
+  --fc-forma-border: #2a2a2a;
   --fc-forma-muted-border: #3A3A3A;
   --fc-forma-strong-border: #707070;
 }
