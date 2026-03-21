@@ -71,12 +71,9 @@ function createViewHookComponent(options: ViewOptions) {
             generateClassName(options.viewClass, {
               view: context.viewApi,
               ...computeViewBorderless(context.options),
-              options: {
-                height: context.options.height,
-                contentHeight: context.options.contentHeight,
-                headerToolbar: context.options.headerToolbar,
-                footerToolbar: context.options.footerToolbar,
-              },
+              isFirst: !context.options.headerToolbar,
+              isLast: !context.options.footerToolbar,
+              isHeightAuto: context.options.height === 'auto' || context.options.contentHeight === 'auto',
             })
           }
           renderProps={{

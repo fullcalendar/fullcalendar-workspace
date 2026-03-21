@@ -76,8 +76,8 @@ export const defaultUiEventCalendarOptions: {
     className: 'gap-5',
     viewClass: (data) => joinClassNames(
       'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
-      !data.borderlessTop && 'border-t',
-      !data.borderlessBottom && 'border-b',
+      !(data.isFirst && data.borderlessTop) && 'border-t',
+      !(data.isLast && data.borderlessBottom) && 'border-b',
       !data.borderlessX && 'border-x',
     ),
 

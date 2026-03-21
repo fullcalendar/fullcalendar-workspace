@@ -111,8 +111,8 @@ export const defaultUiEventCalendarOptions: {
     className: 'text-(--fc-monarch-foreground)',
 
     viewClass: (data) => {
-      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
-      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderTop = data.isFirst && !data.borderlessTop
+      const hasBorderBottom = data.isLast && !data.borderlessBottom
       const hasBorderX = !data.borderlessX
 
       return joinClassNames(
@@ -122,7 +122,7 @@ export const defaultUiEventCalendarOptions: {
         hasBorderX && 'border-x',
         (hasBorderTop && hasBorderX) && 'rounded-t-xl',
         (hasBorderBottom && hasBorderX) && 'rounded-b-xl',
-        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+        !data.isHeightAuto && 'overflow-hidden',
       )
     },
 

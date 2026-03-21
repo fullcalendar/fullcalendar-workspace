@@ -122,7 +122,7 @@ export const defaultUiEventCalendarOptions: {
       !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
       !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
       !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && smallBoxShadowClass,
-      !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden'
+      !data.isHeightAuto && 'overflow-hidden'
     ),
 
     /* Toolbar

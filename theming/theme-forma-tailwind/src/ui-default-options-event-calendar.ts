@@ -127,12 +127,12 @@ export const defaultUiEventCalendarOptions: {
     //   !data.borderlessX && 'border-x',
     //   !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
     //   !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
-    //   !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+    //   !data.isHeightAuto && 'overflow-hidden',
     // ),
 
     viewClass: (data) => {
-      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
-      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderTop = data.isFirst && !data.borderlessTop
+      const hasBorderBottom = data.isLast && !data.borderlessBottom
       const hasBorderX = !data.borderlessX
 
       return joinClassNames(
@@ -142,7 +142,7 @@ export const defaultUiEventCalendarOptions: {
         hasBorderX && 'border-x',
         (hasBorderTop && hasBorderX) && 'rounded-t-sm',
         (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
-        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+        !data.isHeightAuto && 'overflow-hidden',
       )
     },
 

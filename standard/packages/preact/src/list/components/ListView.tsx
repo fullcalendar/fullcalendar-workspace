@@ -131,6 +131,11 @@ export class ListView extends DateComponent<ViewProps> {
         <NowTimer unit="day">
           {(nowDate: DateMarker, todayRange: DateRange) => {
             const dayNodes: ReactElement[] = []
+            const populatedDayCount = segsByDay.reduce(
+              (count, daySegs) => count + (daySegs ? 1 : 0),
+              0,
+            )
+            let populatedDayIndex = 0
 
             for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
               let daySegs = segsByDay[dayIndex]
@@ -138,6 +143,8 @@ export class ListView extends DateComponent<ViewProps> {
               if (daySegs) { // sparse array, so might be undefined
                 const dayDate = dayDates[dayIndex]
                 const key = formatDayString(dayDate)
+                const isFirst = populatedDayIndex === 0
+                const isLast = populatedDayIndex === populatedDayCount - 1
 
                 dayNodes.push(
                   <ListDay
@@ -146,9 +153,13 @@ export class ListView extends DateComponent<ViewProps> {
                     nowDate={nowDate}
                     todayRange={todayRange}
                     segs={daySegs}
+                    isFirst={isFirst}
+                    isLast={isLast}
                     forPrint={this.props.forPrint}
                   />,
                 )
+
+                populatedDayIndex += 1
               }
             }
 

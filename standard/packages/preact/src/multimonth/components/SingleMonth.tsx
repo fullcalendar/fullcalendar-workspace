@@ -34,6 +34,8 @@ export interface SingleMonthProps extends ViewProps {
   titleFormat: DateFormatter
   width?: CssDimValue
   colCount?: number // # of MONTHS, not day columns
+  isFirst: boolean
+  isLast: boolean
   hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
   heightsRef?: Ref<SingleMonthHeights>
 }
@@ -143,6 +145,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           data-date={props.isoDateStr}
           className={joinClassNames(
             generateClassName(options.singleMonthClass, {
+              isFirst: props.isFirst,
+              isLast: props.isLast,
               multiMonthColumnCount: props.colCount || 0,
             }),
             props.colCount === 1 && classNames.noMargin,

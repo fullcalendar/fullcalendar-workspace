@@ -4,6 +4,10 @@ import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 
 export const eventCalendarProps: EventCalendarProps = {
+  // borderlessTop: true,
+  // borderlessBottom: true,
+  // borderlessX: true,
+
   // dayMinWidth: 200
   // slotMaxTime: '08:00:00'
   // expandRows: true

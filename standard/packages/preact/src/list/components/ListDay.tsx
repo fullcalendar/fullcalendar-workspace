@@ -28,6 +28,8 @@ export interface ListDayProps {
   nowDate: DateMarker
   todayRange: DateRange
   segs: (ListSeg & EventRangeProps)[]
+  isFirst: boolean
+  isLast: boolean
   forPrint: boolean
 }
 
@@ -44,15 +46,22 @@ export class ListDay extends BaseComponent<ListDayProps> {
     const dateMeta = this.getDateMeta(props.dayDate, context.dateEnv, undefined, todayRange)
     const segs = this.sortEventSegs(props.segs, options.eventOrder)
     const fullDateStr = buildDateStr(this.context, props.dayDate)
+    const listDayData = {
+      ...dateMeta,
+      isFirst: props.isFirst,
+      isLast: props.isLast,
+      view: context.viewApi,
+    }
+    const listDayEventsData = {
+      ...dateMeta,
+      view: context.viewApi,
+    }
 
     return (
       <div
         role='listitem'
         aria-label={fullDateStr}
-        className={generateClassName(options.listDayClass, {
-          ...dateMeta,
-          view: context.viewApi,
-        })}
+        className={generateClassName(options.listDayClass, listDayData)}
       >
         <ListDayHeader
           dayDate={props.dayDate}
@@ -63,7 +72,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
           role='list'
           aria-label={options.eventsHint}
           className={joinClassNames(
-            generateClassName(options.listDayEventsClass, dateMeta),
+            generateClassName(options.listDayEventsClass, listDayEventsData),
             classNames.flexCol,
           )}
         >

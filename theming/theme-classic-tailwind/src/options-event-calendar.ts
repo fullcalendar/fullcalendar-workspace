@@ -365,7 +365,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       listDayHeaderClass: joinClassNames(
         `border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
-        'flex flex-row items-center justify-between',
+        '-mb-px flex flex-row items-center justify-between',
       ),
 
       listDayHeaderInnerClass: 'px-3 py-2 text-sm font-bold',
@@ -373,11 +373,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass: 'm-4',
+      singleMonthClass: (data) => joinClassNames(
+        'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) &&
+          `${params.borderColorClass} border-b`,
+      ),
 
       singleMonthHeaderClass: (data) => joinClassNames(
-        data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
-        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
+        data.multiMonthColumnCount > 1
+          ? 'pb-4'
+          : `py-2 border-b ${params.borderColorClass} ${params.bgClass}`,
         'items-center', // h-align
       ),
 
@@ -425,10 +430,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayCellBottomClass: 'min-h-px',
 
         tableClass: (data) => joinClassNames(
-          params.borderColorClass,
-          'border-t', // because always a singleMonthHeader
-          !data.borderlessBottom && 'border-b',
-          !data.borderlessX && 'border-x',
+          data.multiMonthColumnCount > 1 && `${params.borderColorClass} border`
         )
       },
       timeGrid: {
@@ -483,12 +485,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowBorderColorClass}`,
       },
       list: {
+        listDayClass: (data) => joinClassNames(
+          !data.isLast && `border-b ${params.borderColorClass}`,
+        ),
 
         /* List-View > List-Item Event
         ----------------------------------------------------------------------------------------- */
 
         listItemEventClass: (data) => joinClassNames(
-          `group border-b ${params.borderColorClass} px-3 py-2 gap-3`,
+          `group px-3 py-2 gap-3 border-t ${params.borderColorClass}`,
           data.isInteractive
             ? joinClassNames(params.faintHoverPressableClass, params.outlineInsetClass)
             : params.faintHoverClass,

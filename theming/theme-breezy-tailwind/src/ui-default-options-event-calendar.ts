@@ -133,8 +133,8 @@ export const defaultUiEventCalendarOptions: {
     ),
 
     viewClass: (data) => {
-      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
-      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderTop = data.isFirst && !data.borderlessTop
+      const hasBorderBottom = data.isLast && !data.borderlessBottom
       const hasBorderX = !data.borderlessX
 
       return joinClassNames(
@@ -144,7 +144,7 @@ export const defaultUiEventCalendarOptions: {
         hasBorderX && 'border-x',
         (hasBorderTop && hasBorderX) && 'rounded-t-lg',
         (hasBorderBottom && hasBorderX) && 'rounded-b-lg',
-        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+        !data.isHeightAuto && 'overflow-hidden',
       )
     },
 

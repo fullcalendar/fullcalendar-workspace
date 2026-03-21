@@ -6,7 +6,6 @@ import { ViewApi } from '../api/ViewApi'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { ElProps } from '../content-inject/ContentInjector'
 import { joinClassNames } from '../util/html'
-import { CssDimValue } from '../scrollgrid/util'
 import { memoizeObjArg } from '../util/memoize'
 import { computeViewBorderless } from '../util/misc'
 
@@ -21,12 +20,9 @@ export interface ViewDisplayData {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  options: {
-    height: CssDimValue | undefined,
-    contentHeight: CssDimValue | undefined,
-    headerToolbar: any,
-    footerToolbar: any,
-  }
+  isFirst: boolean
+  isLast: boolean
+  isHeightAuto: boolean
 }
 
 export type ViewMountData = MountData<ViewDisplayData>
@@ -50,13 +46,12 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
         style={props.style}
         renderProps={this.refineRenderProps({
           viewApi: context.viewApi,
-          height: options.height,
-          contentHeight: options.contentHeight,
-          headerToolbar: options.headerToolbar,
-          footerToolbar: options.footerToolbar,
           borderlessX,
           borderlessTop,
           borderlessBottom,
+          isFirst: !options.headerToolbar,
+          isLast: !options.footerToolbar,
+          isHeightAuto: options.height === 'auto' || options.contentHeight === 'auto', // TODO: DRY
         })}
         classNameGenerator={options.viewClass}
         generatorName={undefined}
@@ -71,13 +66,12 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
 
 interface ViewRenderPropsInput {
   viewApi: ViewApi
-  height: CssDimValue | undefined
-  contentHeight: CssDimValue | undefined
-  headerToolbar: any
-  footerToolbar: any
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  isFirst: boolean
+  isLast: boolean
+  isHeightAuto: boolean
 }
 
 function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayData {
@@ -86,11 +80,8 @@ function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayData {
     borderlessX: raw.borderlessX,
     borderlessTop: raw.borderlessTop,
     borderlessBottom: raw.borderlessBottom,
-    options: {
-      height: raw.height,
-      contentHeight: raw.contentHeight,
-      headerToolbar: raw.headerToolbar,
-      footerToolbar: raw.footerToolbar,
-    },
+    isFirst: raw.isFirst,
+    isLast: raw.isLast,
+    isHeightAuto: raw.isHeightAuto,
   }
 }

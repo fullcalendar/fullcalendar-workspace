@@ -120,6 +120,8 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       dateProfile={monthDateProfile}
                       width={cssMonthWidth}
                       colCount={cols}
+                      isFirst={!i}
+                      isLast={i === monthDateProfiles.length - 1}
                       hasLateralSiblings={hasLateralSiblings}
                       heightsRef={singleMonthHeightsRefMap.createRef(monthStr)}
                     />
