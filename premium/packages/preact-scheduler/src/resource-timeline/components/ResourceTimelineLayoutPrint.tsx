@@ -70,7 +70,6 @@ export interface ResourceTimelineLayoutPrintProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 const BG_HEIGHT = 100000
@@ -126,19 +125,20 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         }}
         className={joinArrayishClassNames(
           props.className,
-          options.tableClass,
+          generateClassName(options.tableClass, {
+            borderlessX: props.borderlessX,
+            borderlessBottom: props.borderlessBottom,
+          }),
           classNames.printRoot, // either flexCol or table
         )}
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
-        noEdgeEffects={props.noEdgeEffects}
       >
         <div className={joinClassNames(
           generateClassName(options.tableHeaderClass, {
             isSticky: false,
           }),
-          props.borderlessX && classNames.borderlessX,
           classNames.printHeader, // either flexCol or table-header-group
         )}>
           <div className={classNames.flexRow}>
@@ -249,9 +249,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div
           role='rowgroup'
           className={joinArrayishClassNames(
-            options.tableBodyClass,
-            props.borderlessX && classNames.borderlessX,
-            props.noEdgeEffects && classNames.noEdgeEffects,
+            generateClassName(options.tableBodyClass, {
+              borderlessX: props.borderlessX,
+              borderlessBottom: props.borderlessBottom,
+            }),
             // leave display:block for print!
             classNames.rel,
             classNames.crop,

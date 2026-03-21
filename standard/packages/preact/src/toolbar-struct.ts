@@ -12,6 +12,8 @@ export interface ToolbarModel {
 
 export interface ToolbarData {
   borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
   // TODO: isSticky
 }
 

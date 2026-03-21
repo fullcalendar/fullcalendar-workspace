@@ -6,7 +6,8 @@ import { ViewApi } from '../api/ViewApi'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { ElProps } from '../content-inject/ContentInjector'
 import { joinClassNames } from '../util/html'
-import classNames from '../styles.module.css'
+import { CssDimValue } from '../scrollgrid/util'
+import { memoizeObjArg } from '../util/memoize'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
@@ -15,16 +16,26 @@ export interface ViewContainerProps extends Partial<ElProps> {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 export interface ViewDisplayData {
   view: ViewApi
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
+  options: {
+    height: CssDimValue | undefined,
+    contentHeight: CssDimValue | undefined,
+    headerToolbar: any,
+    footerToolbar: any,
+  }
 }
 
 export type ViewMountData = MountData<ViewDisplayData>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
+  private refineRenderProps = memoizeObjArg(refineRenderProps)
+
   render() {
     let { props, context } = this
     let { options } = context
@@ -36,15 +47,18 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
         attrs={props.attrs}
         className={joinClassNames(
           props.className,
-          props.borderlessX && classNames.borderlessX,
-          props.borderlessTop && classNames.borderlessTop,
-          props.borderlessBottom && classNames.borderlessBottom,
-          props.noEdgeEffects && classNames.noEdgeEffects,
         )}
         style={props.style}
-        renderProps={{
-          view: context.viewApi,
-        }}
+        renderProps={this.refineRenderProps({
+          viewApi: context.viewApi,
+          height: options.height,
+          contentHeight: options.contentHeight,
+          headerToolbar: options.headerToolbar,
+          footerToolbar: options.footerToolbar,
+          borderlessX: props.borderlessX,
+          borderlessTop: props.borderlessTop,
+          borderlessBottom: props.borderlessBottom,
+        })}
         classNameGenerator={options.viewClass}
         generatorName={undefined}
         didMount={options.viewDidMount}
@@ -53,5 +67,31 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
         {() => props.children}
       </ContentContainer>
     )
+  }
+}
+
+interface ViewRenderPropsInput {
+  viewApi: ViewApi
+  height: CssDimValue | undefined
+  contentHeight: CssDimValue | undefined
+  headerToolbar: any
+  footerToolbar: any
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
+}
+
+function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayData {
+  return {
+    view: raw.viewApi,
+    borderlessX: raw.borderlessX,
+    borderlessTop: raw.borderlessTop,
+    borderlessBottom: raw.borderlessBottom,
+    options: {
+      height: raw.height,
+      contentHeight: raw.contentHeight,
+      headerToolbar: raw.headerToolbar,
+      footerToolbar: raw.footerToolbar,
+    },
   }
 }

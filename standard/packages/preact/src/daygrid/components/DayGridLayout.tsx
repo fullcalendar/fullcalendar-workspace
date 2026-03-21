@@ -10,6 +10,7 @@ import { Scroller } from '../../scrollgrid/Scroller'
 import { ViewContainer } from '../../common/ViewContainer'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { joinArrayishClassNames } from '../../util/html'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
@@ -43,7 +44,6 @@ export interface DayGridLayoutProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
@@ -80,12 +80,14 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         className={joinArrayishClassNames(
           props.className,
           classNames.printRoot, // either flexCol or table
-          options.tableClass,
+          generateClassName(options.tableClass, {
+            borderlessX: props.borderlessX,
+            borderlessBottom: props.borderlessBottom,
+          }),
         )}
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
-        noEdgeEffects={props.noEdgeEffects}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

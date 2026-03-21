@@ -63,7 +63,8 @@ import {
   DayCellData,
   PluginDefInput,
 } from './api/structs'
-import { TableHeaderData } from './common/TableAndSubsections'
+import { TableHeaderData, TableData, TableBodyData } from './common/TableAndSubsections'
+import { CalendarDisplayData } from './calendar-root'
 import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting'
 import { parseFieldSpecs } from './util/misc'
@@ -412,8 +413,8 @@ export const BASE_OPTION_REFINERS = {
   customRenderingReplaces: Boolean,
 
   // new
-  class: identity as Identity<string | undefined>,
-  className: identity as Identity<string | undefined>,
+  class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+  className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
 
   popoverClass: identity as Identity<string | undefined>,
   popoverCloseClass: identity as Identity<string | undefined>,
@@ -434,9 +435,9 @@ export const BASE_OPTION_REFINERS = {
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,
   toolbarTitleClass: identity as Identity<string | undefined>,
 
-  tableClass: identity as Identity<string | undefined>,
+  tableClass: identity as Identity<ClassNameGenerator<TableData>>,
   tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderData>>,
-  tableBodyClass: identity as Identity<string | undefined>,
+  tableBodyClass: identity as Identity<ClassNameGenerator<TableBodyData>>,
 
   nonBusinessClass: identity as Identity<string | undefined>,
   highlightClass: identity as Identity<string | undefined>,

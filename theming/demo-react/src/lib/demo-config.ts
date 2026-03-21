@@ -29,7 +29,7 @@ export const eventCalendarProps: EventCalendarProps = {
   weekNumbers: true,
 
   eventInteractive: true,
-  // multiMonthMaxColumns: 1
+  // multiMonthMaxColumns: 1,
   nowIndicator: true,
   navLinks: true,
   editable: true,

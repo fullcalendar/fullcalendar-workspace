@@ -108,12 +108,41 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: 'bg-(--fc-monarch-background) text-(--fc-monarch-foreground) border border-(--fc-monarch-border) rounded-xl overflow-hidden',
+    className: 'text-(--fc-monarch-foreground)',
+
+    viewClass: (data) => {
+      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
+      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderX = !data.borderlessX
+
+      return joinClassNames(
+        'bg-(--fc-monarch-background) border-(--fc-monarch-border)',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        hasBorderX && 'border-x',
+        (hasBorderTop && hasBorderX) && 'rounded-t-xl',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-xl',
+        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+      )
+    },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: 'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
+    toolbarClass: (data) => joinClassNames(
+      'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
+      'bg-(--fc-monarch-background) border-(--fc-monarch-border)',
+      !data.borderlessX && 'border-x',
+    ),
+    headerToolbarClass: (data) => joinClassNames(
+      !data.borderlessTop && 'border-t',
+      !(data.borderlessTop || data.borderlessX) && 'rounded-t-xl',
+    ),
+    footerToolbarClass: (data) => joinClassNames(
+      !data.borderlessBottom && 'border-b',
+      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-xl',
+    ),
+
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 

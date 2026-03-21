@@ -132,13 +132,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 // the below Scrollers if they have liquid flex height
                 !props.forPrint && classNames.flexCol,
                 props.className,
-                options.tableClass,
+                generateClassName(options.tableClass, {
+                  borderlessX: props.borderlessX,
+                  borderlessBottom: props.borderlessBottom,
+                }),
                 classNames.isolate,
               )}
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
               borderlessBottom={props.borderlessBottom}
-              noEdgeEffects={props.noEdgeEffects}
             >
 
               {/* HEADER
@@ -148,7 +150,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   generateClassName(options.tableHeaderClass, {
                     isSticky: stickyHeaderDates,
                   }),
-                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
@@ -222,10 +223,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinArrayishClassNames(
-                  options.tableBodyClass,
-                  props.borderlessX && classNames.borderlessX,
-                  stickyHeaderDates && classNames.borderlessTop,
-                  (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
+                  generateClassName(options.tableBodyClass, {
+                    borderlessX: props.borderlessX,
+                    borderlessBottom: props.borderlessBottom,
+                  }),
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
                 )}

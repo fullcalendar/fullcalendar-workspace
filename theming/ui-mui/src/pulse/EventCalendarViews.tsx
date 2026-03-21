@@ -122,7 +122,8 @@ export const dayRowCommonClasses: CalendarOptions = {
   ),
 }
 
-export interface EventCalendarViewsProps extends CalendarOptions {
+export interface EventCalendarViewsProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   liquidHeight?: boolean
 }
 

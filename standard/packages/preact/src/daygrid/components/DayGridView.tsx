@@ -68,7 +68,6 @@ export class DayGridView extends BaseComponent<ViewProps> {
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
               borderlessBottom={props.borderlessBottom}
-              noEdgeEffects={props.noEdgeEffects}
             />
           )
         }}

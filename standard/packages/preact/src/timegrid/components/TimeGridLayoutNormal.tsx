@@ -71,7 +71,7 @@ export interface TimeGridLayoutNormalProps {
   slatHeightRef?: Ref<number>
 
   borderlessX: boolean
-  noEdgeEffects: boolean
+  borderlessBottom: boolean
 }
 
 interface TimeGridLayoutState {
@@ -163,7 +163,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               generateClassName(options.tableHeaderClass, {
                 isSticky: stickyHeaderDates,
               }),
-              props.borderlessX && classNames.borderlessX,
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
               stickyHeaderDates && classNames.tableHeaderSticky,
@@ -239,10 +238,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         <div // the "body"
           role='rowgroup'
           className={joinArrayishClassNames(
-            options.tableBodyClass,
-            props.borderlessX && classNames.borderlessX,
-            stickyHeaderDates && classNames.borderlessTop,
-            (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
+            generateClassName(options.tableBodyClass, {
+              borderlessX: props.borderlessX,
+              borderlessBottom: props.borderlessBottom,
+            }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
             classNames.isolate,

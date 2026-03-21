@@ -12,6 +12,7 @@ import { ViewContainer } from '../../common/ViewContainer'
 import { afterSize } from '../../component-util/resize-observer'
 import { memoize } from '../../util/memoize'
 import { joinArrayishClassNames } from '../../util/html'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import classNames from '../../styles.module.css'
 import { buildSlatMetas } from '../time-slat-meta'
@@ -59,7 +60,6 @@ export interface TimeGridLayoutProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 interface TimeScroll {
@@ -134,7 +134,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       slatHeightRef: this.handleSlatHeight,
 
       borderlessX: props.borderlessX,
-      noEdgeEffects: props.noEdgeEffects,
+      borderlessBottom: props.borderlessBottom,
     }
 
     return (
@@ -147,7 +147,10 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         }}
         className={joinArrayishClassNames(
           props.className,
-          options.tableClass,
+          generateClassName(options.tableClass, {
+            borderlessX: props.borderlessX,
+            borderlessBottom: props.borderlessBottom,
+          }),
           // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
           // - Chrome works okay, but abs-positioned events cover the repeated header
@@ -161,7 +164,6 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
-        noEdgeEffects={props.noEdgeEffects}
       >
         {dayMinWidth ? (
           <TimeGridLayoutPannable

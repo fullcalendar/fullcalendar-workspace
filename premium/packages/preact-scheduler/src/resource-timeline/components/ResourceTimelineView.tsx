@@ -159,7 +159,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               borderlessX: props.borderlessX,
               borderlessTop: props.borderlessTop,
               borderlessBottom: props.borderlessBottom,
-              noEdgeEffects: props.noEdgeEffects,
             }
 
             return props.forPrint ? (

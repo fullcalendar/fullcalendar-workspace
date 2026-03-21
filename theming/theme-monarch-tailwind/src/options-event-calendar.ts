@@ -520,7 +520,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayCellBottomClass: getShortDayCellBottomClass,
 
-        tableBodyClass: `border ${params.borderColorClass} rounded-sm`,
+        tableBodyClass: (data) => joinClassNames(
+          params.borderColorClass,
+          'border-t', // because always tableHeader
+          !data.borderlessBottom && 'border-b',
+          !data.borderlessX && 'border-x rounded-t-sm overflow-hidden',
+          !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+        ),
         dayHeaderInnerClass: (data) => joinClassNames(!data.inPopover && 'mb-2'),
       },
       timeGrid: {

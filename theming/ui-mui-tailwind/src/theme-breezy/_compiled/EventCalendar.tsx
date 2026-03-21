@@ -25,7 +25,8 @@ const eventCalendarAvailableViews = [
   'multiMonthYear',
 ]
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class'> {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

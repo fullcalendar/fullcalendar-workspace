@@ -127,15 +127,45 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: 'bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden',
+    className: (data) => joinClassNames(
+      'bg-(--fc-breezy-background)', // FYI, toolbar layers "breezy-faint" on top
+      !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-lg',
+    ),
+
+    viewClass: (data) => {
+      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
+      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderX = !data.borderlessX
+
+      return joinClassNames(
+        'border-(--fc-breezy-border)',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        hasBorderX && 'border-x',
+        (hasBorderTop && hasBorderX) && 'rounded-t-lg',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-lg',
+        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+      )
+    },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    headerToolbarClass: 'border-b border-(--fc-breezy-border)',
-    footerToolbarClass: 'border-t border-(--fc-breezy-border)',
+    toolbarClass: (data) => joinClassNames(
+      'px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4 overflow-hidden border-(--fc-breezy-border)',
+      !data.borderlessX && 'border-x',
+    ),
+    headerToolbarClass: (data) => joinClassNames(
+      'border-b',
+      !data.borderlessTop && 'border-t',
+      !(data.borderlessTop || data.borderlessX) && 'rounded-t-lg',
+    ),
+    footerToolbarClass: (data) => joinClassNames(
+      'border-t',
+      !data.borderlessBottom && 'border-b',
+      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-lg',
+    ),
 
-    toolbarClass: 'px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-4',
     toolbarTitleClass: 'text-lg font-semibold text-(--fc-breezy-strong-foreground)',
 

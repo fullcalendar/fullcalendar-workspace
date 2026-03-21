@@ -102,7 +102,6 @@ interface ResourceTimelineLayoutNormalProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 export interface EntityScroll {
@@ -412,13 +411,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         }}
         className={joinArrayishClassNames(
           props.className,
-          options.tableClass,
+          generateClassName(options.tableClass, {
+            borderlessX: props.borderlessX,
+            borderlessBottom: props.borderlessBottom,
+          }),
           classNames.flexCol,
         )}
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
-        noEdgeEffects={props.noEdgeEffects}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
@@ -440,7 +441,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   generateClassName(options.tableHeaderClass, {
                     isSticky: stickyHeaderDates,
                   }),
-                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
@@ -516,10 +516,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinArrayishClassNames(
-                  options.tableBodyClass,
-                  props.borderlessX && classNames.borderlessX,
-                  stickyHeaderDates && classNames.borderlessTop,
-                  (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
+                  generateClassName(options.tableBodyClass, {
+                    borderlessX: props.borderlessX,
+                    borderlessBottom: props.borderlessBottom,
+                  }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,
@@ -587,7 +587,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   generateClassName(options.tableHeaderClass, {
                     isSticky: stickyHeaderDates,
                   }),
-                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
@@ -696,7 +695,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinArrayishClassNames(
-                  options.tableBodyClass,
+                  generateClassName(options.tableBodyClass, {
+                    borderlessX: props.borderlessX,
+                    borderlessBottom: props.borderlessBottom,
+                  }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,

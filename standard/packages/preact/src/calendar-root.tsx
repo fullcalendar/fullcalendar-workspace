@@ -4,6 +4,13 @@ import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
 import { flushSync } from 'react-dom'
 import { joinArrayishClassNames } from './util/html'
+import { generateClassName } from './content-inject/ContentContainer'
+
+export interface CalendarDisplayData {
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
+}
 
 export interface CalendarMediaRootProps {
   emitter: Emitter<Required<CalendarListeners>>
@@ -57,16 +64,18 @@ export function computeRootClassName(options: CalendarOptions, forPrint: boolean
   let borderlessTop = options.borderlessTop ?? options.borderless
   let borderlessBottom = options.borderlessBottom ?? options.borderless
 
+  const calendarDisplayData: CalendarDisplayData = {
+    borderlessX: Boolean(borderlessX),
+    borderlessTop: Boolean(borderlessTop),
+    borderlessBottom: Boolean(borderlessBottom),
+  }
+
   return joinArrayishClassNames(
-    options.class,
-    options.className,
-    borderlessTop && classNames.borderlessTop,
-    borderlessBottom && classNames.borderlessBottom,
-    borderlessX && classNames.borderlessX,
+    generateClassName(options.class, calendarDisplayData),
+    generateClassName(options.className, calendarDisplayData),
     classNames.borderBoxRoot,
     classNames.isolate,
     classNames.flexCol,
     forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
-    (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
   )
 }

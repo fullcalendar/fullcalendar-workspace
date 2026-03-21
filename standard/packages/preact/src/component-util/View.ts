@@ -24,7 +24,6 @@ export interface ViewProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  noEdgeEffects: boolean
 }
 
 // HELPERS

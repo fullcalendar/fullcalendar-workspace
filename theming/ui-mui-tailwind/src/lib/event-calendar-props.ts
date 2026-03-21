@@ -1,6 +1,7 @@
 import { CalendarOptions } from '@fullcalendar/react'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class'> {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

@@ -76,14 +76,18 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       this.unregisterInteractiveComponent,
     )
     let borderlessX = options.borderlessX ?? options.borderless // TODO: DRY
+    let borderlessTop = options.borderlessTop ?? options.borderless
+    let borderlessBottom = options.borderlessBottom ?? options.borderless
 
     return (
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            className={generateClassName(options.headerToolbarClass, { borderlessX })}
+            className={generateClassName(options.headerToolbarClass, { borderlessX, borderlessTop, borderlessBottom: false })}
             model={toolbarConfig.header}
             borderlessX={borderlessX}
+            borderlessTop={borderlessTop}
+            borderlessBottom={false}
             titleId={this.viewTitleId}
             {...props.toolbarProps}
           />
@@ -112,9 +116,11 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
         </div>
         {toolbarConfig.footer && (
           <Toolbar
-            className={generateClassName(options.footerToolbarClass, { borderlessX })}
+            className={generateClassName(options.footerToolbarClass, { borderlessX, borderlessTop: false, borderlessBottom })}
             model={toolbarConfig.footer}
             borderlessX={borderlessX}
+            borderlessTop={false}
+            borderlessBottom={borderlessBottom}
             {...props.toolbarProps}
           />
         )}
@@ -148,7 +154,6 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       borderlessX: calendarBorderlessX,
       borderlessTop: toolbarConfig.header ? false : calendarBorderlessTop,
       borderlessBottom: toolbarConfig.footer ? false : calendarBorderlessBottom,
-      noEdgeEffects: calendarBorderlessX || calendarBorderlessTop || calendarBorderlessBottom,
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)

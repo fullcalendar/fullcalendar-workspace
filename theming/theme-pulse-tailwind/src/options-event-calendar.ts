@@ -523,7 +523,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       multiMonth: {
         ...dayRowCommonClasses,
         viewClass: params.faintBgClass,
-        tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
+        tableBodyClass: (data) => joinClassNames(
+          params.borderColorClass,
+          'border-t', // because always tableHeader
+          !data.borderlessBottom && 'border-b',
+          !data.borderlessX && 'border-x rounded-t-sm overflow-hidden',
+          !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+        ),
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
         dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b ${params.borderColorClass}`),
         dayCellBottomClass: getShortDayCellBottomClass,

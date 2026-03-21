@@ -25,7 +25,8 @@ const schedulerAvailableViews = [
   'resourceTimelineWeek',
 ]
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class'> {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

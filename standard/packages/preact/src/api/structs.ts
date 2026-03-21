@@ -31,6 +31,7 @@ export type {
 } from '../render-hook-misc'
 export type { DayLaneData, DayLaneMountData } from '../common/DayLaneContainer'
 export type { ViewDisplayData, ViewMountData } from '../common/ViewContainer'
+export type { CalendarDisplayData } from '../calendar-root'
 export type { EventClickData } from '../interactions/EventClicking'
 export type { EventHoveringData } from '../interactions/EventHovering'
 export type { DateSelectData, DateUnselectData } from '../calendar-utils'

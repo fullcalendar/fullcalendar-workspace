@@ -97,7 +97,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             borderlessX={props.borderlessX}
             borderlessTop={props.borderlessTop}
             borderlessBottom={props.borderlessBottom}
-            noEdgeEffects={props.noEdgeEffects}
           >
             <Scroller
               vertical={verticalScrolling}

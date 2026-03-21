@@ -74,7 +74,12 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
-    viewClass: 'bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border)',
+    viewClass: (data) => joinClassNames(
+      'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
+      !data.borderlessTop && 'border-t',
+      !data.borderlessBottom && 'border-b',
+      !data.borderlessX && 'border-x',
+    ),
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */

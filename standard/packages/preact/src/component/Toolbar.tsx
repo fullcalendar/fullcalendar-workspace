@@ -8,6 +8,8 @@ export interface ToolbarProps extends ToolbarContent {
   className?: string
   model: ToolbarModel
   borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
   titleId?: string
 }
 
@@ -23,6 +25,8 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
           props.className,
           generateClassName(options.toolbarClass, {
             borderlessX: props.borderlessX,
+            borderlessTop: props.borderlessTop,
+            borderlessBottom: props.borderlessBottom,
           }),
         )}
       >

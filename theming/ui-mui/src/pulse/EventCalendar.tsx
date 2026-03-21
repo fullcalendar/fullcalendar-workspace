@@ -26,7 +26,8 @@ const defaultAvailableViews = [
 const navLinkDayClick = 'timeGridDay'
 const navLinkWeekClick = 'timeGridWeek'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class'> {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

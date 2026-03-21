@@ -424,7 +424,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayCellBottomClass: 'min-h-px',
 
-        tableClass: `border ${params.borderColorClass}`,
+        tableClass: (data) => joinClassNames(
+          params.borderColorClass,
+          'border-t', // because always a singleMonthHeader
+          !data.borderlessBottom && 'border-b',
+          !data.borderlessX && 'border-x',
+        )
       },
       timeGrid: {
         ...dayRowCommonClasses,

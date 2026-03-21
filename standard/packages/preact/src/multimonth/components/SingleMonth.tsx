@@ -144,9 +144,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             generateClassName(options.singleMonthClass, {
               colCount: props.colCount || 0,
             }),
-            props.borderlessX && classNames.borderlessX,
-            props.borderlessTop && classNames.borderlessTop,
-            props.borderlessBottom && classNames.borderlessBottom,
             props.colCount === 1 && classNames.noMargin,
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
@@ -181,10 +178,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           </div>
           <div // the daygrid table
             className={joinArrayishClassNames(
-              options.tableClass,
-              props.borderlessX && classNames.borderlessX,
-              isTitleAndHeaderSticky && classNames.borderlessTop,
-              props.borderlessBottom && classNames.borderlessBottom,
+              generateClassName(options.tableClass, {
+                borderlessX: props.borderlessX,
+                borderlessBottom: props.borderlessBottom,
+              }),
               classNames.flexCol,
             )}
             style={{
@@ -197,7 +194,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 generateClassName(options.tableHeaderClass, {
                   isSticky: isTitleAndHeaderSticky,
                 }),
-                props.borderlessX && classNames.borderlessX,
                 classNames.flexCol,
                 isTitleAndHeaderSticky && classNames.sticky,
               )}
@@ -224,12 +220,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             </div>
             <div
               className={joinArrayishClassNames(
-                options.tableBodyClass,
+                generateClassName(options.tableBodyClass, {
+                  borderlessX: props.borderlessX,
+                  borderlessBottom: props.borderlessBottom,
+                }),
                 classNames.flexCol,
                 isAspectRatio && classNames.rel,
-                props.borderlessX && classNames.borderlessX,
-                isTitleAndHeaderSticky && classNames.borderlessTop,
-                (isTitleAndHeaderSticky || props.noEdgeEffects) && classNames.noEdgeEffects,
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?

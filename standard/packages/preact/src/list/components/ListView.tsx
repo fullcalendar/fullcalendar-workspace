@@ -57,7 +57,6 @@ export class ListView extends DateComponent<ViewProps> {
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
-        noEdgeEffects={props.noEdgeEffects}
       >
         {eventSegs.length ? (
           <Scroller // TODO: don't need heavyweight component

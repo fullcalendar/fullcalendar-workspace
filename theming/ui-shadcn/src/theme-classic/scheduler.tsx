@@ -13,7 +13,8 @@ import { params } from '../lib/option-params.js'
 const navLinkDayClick = 'resourceTimelineDay'
 const navLinkWeekClick = 'resourceTimelineWeek'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class'> {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

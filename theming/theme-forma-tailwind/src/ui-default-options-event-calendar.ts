@@ -115,15 +115,56 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: 'bg-(--fc-forma-background) text-(--fc-forma-foreground) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden',
+    className: (data) => joinClassNames(
+      'text-(--fc-forma-foreground)',
+      !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-sm shadow-xs',
+    ),
+
+    // viewClass: (data) => joinClassNames(
+    //   'bg-(--fc-forma-background) border-(--fc-forma-border)',
+    //   !data.borderlessTop && 'border-t',
+    //   !data.borderlessBottom && 'border-b',
+    //   !data.borderlessX && 'border-x',
+    //   !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
+    //   !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+    //   !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+    // ),
+
+    viewClass: (data) => {
+      const hasBorderTop = !data.options.headerToolbar && !data.borderlessTop
+      const hasBorderBottom = !data.options.footerToolbar && !data.borderlessBottom
+      const hasBorderX = !data.borderlessX
+
+      return joinClassNames(
+        'bg-(--fc-forma-background) border-(--fc-forma-border)',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        hasBorderX && 'border-x',
+        (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+        !(data.options.height === 'auto' || data.options.contentHeight === 'auto') && 'overflow-hidden',
+      )
+    },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    headerToolbarClass: 'border-b border-(--fc-forma-border)',
-    footerToolbarClass: 'border-t border-(--fc-forma-border)',
+    toolbarClass: (data) => joinClassNames(
+      'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
+      'bg-(--fc-forma-background) border-(--fc-forma-border)',
+      !data.borderlessX && 'border-x',
+    ),
+    headerToolbarClass: (data) => joinClassNames(
+      'border-b',
+      !data.borderlessTop && 'border-t',
+      !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
+    ),
+    footerToolbarClass: (data) => joinClassNames(
+      'border-t',
+      !data.borderlessBottom && 'border-b',
+      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+    ),
 
-    toolbarClass: 'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
