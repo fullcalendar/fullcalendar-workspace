@@ -1,14 +1,13 @@
 import { MountData } from '../common/render-hook'
 
 export interface SingleMonthData {
-  colCount: number // initially 0 (unknown)
+  multiMonthColumnCount: number // initially 0 (unknown)
 }
 
 export type SingleMonthMountData = MountData<SingleMonthData>
 
-export interface SingleMonthHeaderData {
-  colCount: number // initially 0 (unknown)
+export type SingleMonthHeaderData = SingleMonthData & {
   isSticky: boolean
-  isNarrow: boolean
+  isNarrow: boolean // TODO: should SingleMonthData have this?
   hasNavLink: boolean
 }

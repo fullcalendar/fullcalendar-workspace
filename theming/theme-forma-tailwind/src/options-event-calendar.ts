@@ -448,7 +448,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthClass: 'm-4',
 
       singleMonthHeaderClass: (data) => joinClassNames(
-        data.colCount > 1 ? 'pb-4' : 'py-2',
+        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         'items-center', // h-align
       ),

@@ -479,7 +479,7 @@ export function EventCalendar({
       singleMonthClass="m-4"
       singleMonthHeaderClass={(data) => joinClassNames(
         data.isSticky && 'border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)',
-        data.colCount > 1 ? 'pb-2' : 'py-1',
+        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -644,4 +644,3 @@ function filledRightTriangle(className?: string) {
     </svg>
   )
 }
-

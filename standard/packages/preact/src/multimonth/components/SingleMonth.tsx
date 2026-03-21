@@ -121,7 +121,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const hasNavLink = options.navLinks && props.colCount > 1
     const headerRenderProps: SingleMonthHeaderData = {
-      colCount: props.colCount || 0,
+      multiMonthColumnCount: props.colCount || 0,
       isSticky: isTitleAndHeaderSticky,
       isNarrow: cellIsNarrow,
       hasNavLink,
@@ -143,7 +143,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           data-date={props.isoDateStr}
           className={joinClassNames(
             generateClassName(options.singleMonthClass, {
-              colCount: props.colCount || 0,
+              multiMonthColumnCount: props.colCount || 0,
             }),
             props.colCount === 1 && classNames.noMargin,
             classNames.flexCol,
@@ -183,7 +183,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
-                colCount: props.colCount || 0,
+                multiMonthColumnCount: props.colCount || 0,
               }),
               classNames.flexCol,
             )}
@@ -199,7 +199,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  colCount: props.colCount || 0,
+                  multiMonthColumnCount: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isTitleAndHeaderSticky && classNames.sticky,
@@ -231,7 +231,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  colCount: props.colCount || 0,
+                  multiMonthColumnCount: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isAspectRatio && classNames.rel,

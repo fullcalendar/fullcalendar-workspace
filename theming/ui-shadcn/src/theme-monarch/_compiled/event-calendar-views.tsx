@@ -367,7 +367,7 @@ export function EventCalendarViews({
         singleMonthClass='m-4'
         singleMonthHeaderClass={(data) => cn(
           data.isSticky && 'border-b bg-background',
-          data.colCount > 1 ? 'pb-2' : 'py-1',
+          data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
           'items-center',
         )}
         singleMonthHeaderInnerClass={(data) => cn(
@@ -516,4 +516,3 @@ function filledRightTriangle(className?: string) {
     </svg>
   )
 }
-

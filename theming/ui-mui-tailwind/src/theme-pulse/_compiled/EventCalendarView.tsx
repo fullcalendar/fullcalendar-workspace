@@ -421,7 +421,7 @@ export default function EventCalendarView({
       singleMonthClass="m-3"
       singleMonthHeaderClass={(data) => joinClassNames(
         data.isSticky && `border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)`,
-        data.colCount > 1 ? 'pb-2' : 'py-1',
+        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -555,4 +555,3 @@ export default function EventCalendarView({
     />
   )
 }
-

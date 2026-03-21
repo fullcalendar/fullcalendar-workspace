@@ -135,11 +135,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 !props.forPrint && classNames.flexCol,
                 props.className,
                 generateClassName(options.tableClass, {
-                  isSticky: false,
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  colCount: 0,
+                  multiMonthColumnCount: 0,
                 }),
                 classNames.isolate,
               )}
@@ -154,7 +153,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
@@ -230,11 +229,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 }
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    isSticky: false,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,

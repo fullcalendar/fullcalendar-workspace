@@ -352,7 +352,7 @@ export function EventCalendarViews({
 
         singleMonthClass="m-4"
         singleMonthHeaderClass={(data) => cn(
-          data.colCount > 1 ? 'pb-4' : 'py-2',
+          data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
           data.isSticky && 'border-b bg-background',
           'items-center',
         )}
@@ -481,4 +481,3 @@ export function EventCalendarViews({
     </div>
   )
 }
-

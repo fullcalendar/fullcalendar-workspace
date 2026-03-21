@@ -82,7 +82,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            colCount: 0,
+            multiMonthColumnCount: 0,
           }),
         )}
       >

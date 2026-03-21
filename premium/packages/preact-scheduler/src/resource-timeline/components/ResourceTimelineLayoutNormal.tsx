@@ -411,11 +411,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
-            isSticky: false,
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            colCount: 0,
+            multiMonthColumnCount: 0,
           }),
           classNames.flexCol,
         )}
@@ -442,7 +441,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
@@ -520,11 +519,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 hideScrollbars
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    isSticky: false,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
@@ -595,7 +593,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
@@ -706,11 +704,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    isSticky: false,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    colCount: 0,
+                    multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart

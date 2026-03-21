@@ -285,7 +285,7 @@ export function EventCalendarViews({
         singleMonthClass='m-4'
         singleMonthHeaderClass={(data) => cn(
           data.isSticky && 'border-b bg-background',
-          data.colCount > 1 ? 'pb-4' : 'py-2',
+          data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
           'items-center',
         )}
         singleMonthHeaderInnerClass='text-base font-bold'
@@ -400,4 +400,3 @@ export function EventCalendarViews({
     </div>
   )
 }
-

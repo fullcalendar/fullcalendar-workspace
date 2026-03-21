@@ -349,7 +349,7 @@ export function EventCalendar({
       singleMonthClass="m-4"
       singleMonthHeaderClass={(data) => joinClassNames(
         data.isSticky && 'border-b border-(--fc-classic-border) bg-(--fc-classic-background)',
-        data.colCount > 1 ? 'pb-4' : 'py-2',
+        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
         'items-center',
       )}
       singleMonthHeaderInnerClass="text-base font-bold"

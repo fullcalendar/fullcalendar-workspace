@@ -149,7 +149,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            colCount: 0,
+            multiMonthColumnCount: 0,
           }),
           // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning

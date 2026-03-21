@@ -197,7 +197,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
-                colCount: 0,
+                multiMonthColumnCount: 0,
               }),
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
@@ -312,7 +312,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              colCount: 0,
+              multiMonthColumnCount: 0,
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

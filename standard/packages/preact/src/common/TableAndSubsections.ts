@@ -1,14 +1,14 @@
 
-export type TableData = {
+export type TableDisplayData = {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  colCount: number
+  multiMonthColumnCount: number
   // view: ViewApi -- TODO when easier
 }
 
-export type TableHeaderData = TableData & {
+export type TableHeaderData = TableDisplayData & {
   isSticky: boolean
 }
 
-export type TableBodyData = TableData
+export type TableBodyData = TableDisplayData
