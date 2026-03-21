@@ -194,6 +194,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             className={joinClassNames(
               generateClassName(options.tableHeaderClass, {
                 isSticky: stickyHeaderDates,
+                borderlessX,
+                borderlessTop,
+                borderlessBottom,
+                colCount: 0,
               }),
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
@@ -305,9 +309,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
+              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,
+              colCount: 0,
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

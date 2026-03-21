@@ -120,12 +120,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       dateProfile={monthDateProfile}
                       width={cssMonthWidth}
                       colCount={cols}
-                      // when single-col, kill X border on all items
-                      borderlessX={cols === 1}
-                      // when single-col, kill top border on all items
-                      borderlessTop={cols === 1}
-                      // when single-col, kill bottom border on last item
-                      borderlessBottom={cols === 1 && i === monthDateProfiles.length - 1}
                       hasLateralSiblings={hasLateralSiblings}
                       heightsRef={singleMonthHeightsRefMap.createRef(monthStr)}
                     />

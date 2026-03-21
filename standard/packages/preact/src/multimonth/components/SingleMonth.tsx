@@ -18,6 +18,7 @@ import { buildDayTableModel, createDayHeaderFormatter, dayMicroWidth } from '../
 import { DayGridRows } from '../../daygrid/components/DayGridRows'
 import { DayTableSlicer } from '../../daygrid/DayTableSlicer'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
+import { computeViewBorderless } from '../../util/misc'
 import { SingleMonthData, SingleMonthHeaderData } from '../structs'
 
 export interface SingleMonthHeights {
@@ -33,7 +34,6 @@ export interface SingleMonthProps extends ViewProps {
   titleFormat: DateFormatter
   width?: CssDimValue
   colCount?: number // # of MONTHS, not day columns
-  borderlessBottom: boolean
   hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
   heightsRef?: Ref<SingleMonthHeights>
 }
@@ -78,6 +78,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const { props, state, context } = this
     const { dateProfile, forPrint } = props
     const { options, dateEnv } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
     const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
     const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 
@@ -179,8 +180,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           <div // the daygrid table
             className={joinArrayishClassNames(
               generateClassName(options.tableClass, {
-                borderlessX: props.borderlessX,
-                borderlessBottom: props.borderlessBottom,
+                isSticky: false,
+                borderlessX,
+                borderlessTop,
+                borderlessBottom,
+                colCount: props.colCount || 0,
               }),
               classNames.flexCol,
             )}
@@ -193,6 +197,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               className={joinClassNames(
                 generateClassName(options.tableHeaderClass, {
                   isSticky: isTitleAndHeaderSticky,
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  colCount: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isTitleAndHeaderSticky && classNames.sticky,
@@ -221,8 +229,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               className={joinArrayishClassNames(
                 generateClassName(options.tableBodyClass, {
-                  borderlessX: props.borderlessX,
-                  borderlessBottom: props.borderlessBottom,
+                  isSticky: false,
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  colCount: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isAspectRatio && classNames.rel,

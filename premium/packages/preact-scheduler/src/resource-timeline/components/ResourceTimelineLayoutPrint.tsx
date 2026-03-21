@@ -125,9 +125,11 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
+            isSticky: false,
             borderlessX,
             borderlessTop,
             borderlessBottom,
+            colCount: 0,
           }),
           classNames.printRoot, // either flexCol or table
         )}
@@ -135,6 +137,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div className={joinClassNames(
           generateClassName(options.tableHeaderClass, {
             isSticky: false,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
+            colCount: 0,
           }),
           classNames.printHeader, // either flexCol or table-header-group
         )}>
@@ -247,9 +253,11 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
+              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,
+              colCount: 0,
             }),
             // leave display:block for print!
             classNames.rel,
