@@ -242,7 +242,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,

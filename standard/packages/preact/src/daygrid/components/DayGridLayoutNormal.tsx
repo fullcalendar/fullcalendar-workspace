@@ -119,7 +119,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           vertical={verticalScrollbars}
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,

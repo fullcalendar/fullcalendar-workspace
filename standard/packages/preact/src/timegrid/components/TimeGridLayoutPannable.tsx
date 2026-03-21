@@ -309,7 +309,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,

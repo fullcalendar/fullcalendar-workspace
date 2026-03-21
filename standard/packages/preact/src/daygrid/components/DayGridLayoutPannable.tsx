@@ -136,7 +136,6 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           }
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              isSticky: false,
               borderlessX,
               borderlessTop,
               borderlessBottom,

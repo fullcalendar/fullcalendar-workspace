@@ -180,7 +180,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           <div // the daygrid table
             className={joinArrayishClassNames(
               generateClassName(options.tableClass, {
-                isSticky: false,
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
@@ -229,7 +228,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               className={joinArrayishClassNames(
                 generateClassName(options.tableBodyClass, {
-                  isSticky: false,
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,

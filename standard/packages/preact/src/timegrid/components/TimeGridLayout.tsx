@@ -146,7 +146,6 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
-            isSticky: false,
             borderlessX,
             borderlessTop,
             borderlessBottom,
