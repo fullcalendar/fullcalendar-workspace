@@ -8,14 +8,12 @@ import { ElProps } from '../content-inject/ContentInjector'
 import { joinClassNames } from '../util/html'
 import { CssDimValue } from '../scrollgrid/util'
 import { memoizeObjArg } from '../util/memoize'
+import { computeViewBorderless } from '../util/misc'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
   attrs?: any // TODO
   children?: ReactNode
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 export interface ViewDisplayData {
@@ -39,6 +37,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
   render() {
     let { props, context } = this
     let { options } = context
+    let { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     return (
       <ContentContainer
@@ -55,9 +54,9 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
           contentHeight: options.contentHeight,
           headerToolbar: options.headerToolbar,
           footerToolbar: options.footerToolbar,
-          borderlessX: props.borderlessX,
-          borderlessTop: props.borderlessTop,
-          borderlessBottom: props.borderlessBottom,
+          borderlessX,
+          borderlessTop,
+          borderlessBottom,
         })}
         classNameGenerator={options.viewClass}
         generatorName={undefined}

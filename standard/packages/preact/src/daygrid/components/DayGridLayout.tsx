@@ -17,6 +17,7 @@ import { DayGridLayoutPannable } from './DayGridLayoutPannable'
 import { computeTopFromDate } from './util'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
+import { computeViewBorderless } from '../../util/misc'
 
 export interface DayGridLayoutProps {
   labelId: string | undefined
@@ -40,10 +41,6 @@ export interface DayGridLayoutProps {
   eventDrag: EventSegUiInteractionState<DayGridRange> | null
   eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
-
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
@@ -60,6 +57,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   render() {
     const { props, context } = this
     const { options } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const commonLayoutProps = {
       ...props,
@@ -81,13 +79,11 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           props.className,
           classNames.printRoot, // either flexCol or table
           generateClassName(options.tableClass, {
-            borderlessX: props.borderlessX,
-            borderlessBottom: props.borderlessBottom,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
           }),
         )}
-        borderlessX={props.borderlessX}
-        borderlessTop={props.borderlessTop}
-        borderlessBottom={props.borderlessBottom}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

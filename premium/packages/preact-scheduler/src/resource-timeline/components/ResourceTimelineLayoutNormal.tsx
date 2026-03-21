@@ -24,7 +24,8 @@ import {
   ViewContainer,
   generateClassName,
   joinArrayishClassNames,
-  debounce
+  debounce,
+  computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
@@ -99,9 +100,6 @@ interface ResourceTimelineLayoutNormalProps {
   initialScroll?: TimeScroll & EntityScroll
   scrollRef?: Ref<TimeScroll & EntityScroll> // NOTE: only an object allowed
 
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 export interface EntityScroll {
@@ -204,6 +202,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     let { props, state, context } = this
     let { dateProfile, hasNesting } = props
     let { options, viewSpec } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
     let { spreadsheetBottomScrollbarWidth, timeTotalWidth, timeClientWidth, timeClientHeight, timeBottomScrollbarWidth } = state
 
     /* date */
@@ -412,14 +411,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
-            borderlessX: props.borderlessX,
-            borderlessBottom: props.borderlessBottom,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
           }),
           classNames.flexCol,
         )}
-        borderlessX={props.borderlessX}
-        borderlessTop={props.borderlessTop}
-        borderlessBottom={props.borderlessBottom}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
@@ -517,8 +514,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 hideScrollbars
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    borderlessX: props.borderlessX,
-                    borderlessBottom: props.borderlessBottom,
+                    borderlessX,
+                    borderlessTop,
+                    borderlessBottom,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
@@ -696,8 +694,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    borderlessX: props.borderlessX,
-                    borderlessBottom: props.borderlessBottom,
+                    borderlessX,
+                    borderlessTop,
+                    borderlessBottom,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart

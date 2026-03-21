@@ -11,7 +11,8 @@ import {
   rangeContainsMarker,
   SlicedProps,
   SplittableProps,
-  ViewContainer
+  ViewContainer,
+  computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createGroupId, GenericNode } from '../../resource/common/resource-hierarchy'
@@ -67,9 +68,6 @@ export interface ResourceTimelineLayoutPrintProps {
   slotWidth: number | undefined
   indentWidth: number | undefined
 
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 const BG_HEIGHT = 100000
@@ -88,6 +86,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     let { props, context } = this
     let { dateProfile } = props
     let { options, viewSpec } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const { tDateProfile, todayRange, nowDate, hasNesting } = props
     const { slotWidth, timeCanvasWidth } = props
@@ -126,14 +125,12 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
-            borderlessX: props.borderlessX,
-            borderlessBottom: props.borderlessBottom,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
           }),
           classNames.printRoot, // either flexCol or table
         )}
-        borderlessX={props.borderlessX}
-        borderlessTop={props.borderlessTop}
-        borderlessBottom={props.borderlessBottom}
       >
         <div className={joinClassNames(
           generateClassName(options.tableHeaderClass, {
@@ -250,8 +247,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              borderlessX: props.borderlessX,
-              borderlessBottom: props.borderlessBottom,
+              borderlessX,
+              borderlessTop,
+              borderlessBottom,
             }),
             // leave display:block for print!
             classNames.rel,

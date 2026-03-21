@@ -20,6 +20,7 @@ export {
   compareByFieldSpecs,
   flexibleCompare,
   guid,
+  computeViewBorderless,
 } from './util/misc'
 
 export {

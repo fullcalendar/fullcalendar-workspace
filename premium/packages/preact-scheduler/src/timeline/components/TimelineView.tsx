@@ -22,6 +22,7 @@ import {
   FooterScrollbar,
   generateClassName,
   joinArrayishClassNames,
+  computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef } from 'react'
@@ -69,6 +70,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   render() {
     const { props, state, context } = this
     const { options } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const { totalWidth, clientWidth } = state
     const endScrollbarWidth = (totalWidth != null && clientWidth != null)
@@ -133,14 +135,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 !props.forPrint && classNames.flexCol,
                 props.className,
                 generateClassName(options.tableClass, {
-                  borderlessX: props.borderlessX,
-                  borderlessBottom: props.borderlessBottom,
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
                 }),
                 classNames.isolate,
               )}
-              borderlessX={props.borderlessX}
-              borderlessTop={props.borderlessTop}
-              borderlessBottom={props.borderlessBottom}
             >
 
               {/* HEADER
@@ -224,8 +224,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 }
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
-                    borderlessX: props.borderlessX,
-                    borderlessBottom: props.borderlessBottom,
+                    borderlessX,
+                    borderlessTop,
+                    borderlessBottom,
                   }),
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,

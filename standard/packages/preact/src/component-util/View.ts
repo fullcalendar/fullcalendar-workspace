@@ -21,9 +21,6 @@ export interface ViewProps {
   // only useful for top-level View, not nested components
   labelId: string | undefined
   labelStr: string | undefined
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 // HELPERS

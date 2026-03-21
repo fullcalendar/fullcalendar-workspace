@@ -6,10 +6,12 @@ export type TableHeaderData = {
 
 export type TableData = {
   borderlessX: boolean
+  borderlessTop: boolean
   borderlessBottom: boolean
 }
 
 export type TableBodyData = {
   borderlessX: boolean
+  borderlessTop: boolean
   borderlessBottom: boolean
 }

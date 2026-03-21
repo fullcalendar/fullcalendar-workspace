@@ -21,6 +21,7 @@ import { TimeGridLayoutPannable } from './TimeGridLayoutPannable'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal'
 import { computeTimeTopFrac } from './util'
 import { RowConfig } from '../../daygrid/header-tier'
+import { computeViewBorderless } from '../../util/misc'
 
 export interface TimeGridLayoutProps {
   labelId: string | undefined
@@ -56,10 +57,6 @@ export interface TimeGridLayoutProps {
 
   // universal content
   eventSelection: string
-
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
 }
 
 interface TimeScroll {
@@ -85,6 +82,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
     const { dateProfile } = props
     const { options, dateEnv } = context
     const { dayMinWidth } = options
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const slatMetas = this.buildSlatMetas(
       dateProfile.slotMinTime,
@@ -133,8 +131,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       timeScrollState: this.scrollState,
       slatHeightRef: this.handleSlatHeight,
 
-      borderlessX: props.borderlessX,
-      borderlessBottom: props.borderlessBottom,
+      borderlessX,
+      borderlessBottom,
     }
 
     return (
@@ -148,8 +146,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         className={joinArrayishClassNames(
           props.className,
           generateClassName(options.tableClass, {
-            borderlessX: props.borderlessX,
-            borderlessBottom: props.borderlessBottom,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
           }),
           // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
@@ -161,9 +160,6 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           classNames.isolate, // for inner z-index of layout. somehow move to layouts?
         )}
         viewSpec={context.viewSpec}
-        borderlessX={props.borderlessX}
-        borderlessTop={props.borderlessTop}
-        borderlessBottom={props.borderlessBottom}
       >
         {dayMinWidth ? (
           <TimeGridLayoutPannable

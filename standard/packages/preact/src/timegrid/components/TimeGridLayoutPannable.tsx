@@ -32,6 +32,7 @@ import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
 import { TimeGridSlatLane } from "./TimeGridSlatLane"
 import { computeSlatHeight } from './util'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
+import { computeViewBorderless } from '../../util/misc'
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"
 import { simplifiedTimeGridPrint } from "./TimeGridCol"
 
@@ -76,9 +77,6 @@ export interface TimeGridLayoutPannableProps {
 
   // dimensions
   dayMinWidth: number
-
-  borderlessX: boolean
-  borderlessBottom: boolean
 }
 
 interface TimeGridLayoutPannableState {
@@ -145,6 +143,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const { nowDate, headerTiers, forPrint } = props
     const { axisWidth, totalWidth, clientWidth, clientHeight, bodyHeight, sticykBottomScrollbarWidth } = state
     const { options } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const endScrollbarWidth = (totalWidth != null && clientWidth != null && axisWidth != null)
       ? totalWidth - clientWidth - (axisWidth + 1) // +1 for hardcoded divider!
@@ -306,8 +305,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              borderlessX: props.borderlessX,
-              borderlessBottom: props.borderlessBottom,
+              borderlessX,
+              borderlessTop,
+              borderlessBottom,
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

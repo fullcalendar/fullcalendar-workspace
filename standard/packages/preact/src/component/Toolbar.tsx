@@ -3,13 +3,11 @@ import { ToolbarModel, ToolbarWidget } from '../toolbar-struct'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection'
 import { joinClassNames } from '../util/html'
 import { generateClassName } from '../content-inject/ContentContainer'
+import { computeViewBorderless } from '../util/misc'
 
 export interface ToolbarProps extends ToolbarContent {
-  className?: string
   model: ToolbarModel
-  borderlessX: boolean
-  borderlessTop: boolean
-  borderlessBottom: boolean
+  isHeader: boolean
   titleId?: string
 }
 
@@ -19,15 +17,14 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
     let options = this.context.options
     let { sectionWidgets } = props.model
 
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+    const toolbarClassOption = props.isHeader ? options.headerToolbarClass : options.footerToolbarClass
+
     return (
       <div
         className={joinClassNames(
-          props.className,
-          generateClassName(options.toolbarClass, {
-            borderlessX: props.borderlessX,
-            borderlessTop: props.borderlessTop,
-            borderlessBottom: props.borderlessBottom,
-          }),
+          generateClassName(toolbarClassOption, { borderlessX, borderlessTop, borderlessBottom }),
+          generateClassName(options.toolbarClass, { borderlessX, borderlessTop, borderlessBottom }),
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}

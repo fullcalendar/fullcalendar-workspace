@@ -20,6 +20,7 @@ import { computeColWidth, dayMicroWidth } from './util'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
+import { computeViewBorderless } from '../../util/misc'
 
 export interface DayGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -46,9 +47,6 @@ export interface DayGridLayoutPannableProps {
   // refs
   scrollerRef?: Ref<ScrollerInterface>
   rowHeightRefMap?: RefMap<string, number>
-
-  borderlessX: boolean
-  borderlessBottom: boolean
 }
 
 interface DayGridViewState {
@@ -68,6 +66,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
   render() {
     const { props, state, context } = this
     const { options } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const { totalWidth, clientWidth } = state
     const endScrollbarWidth = (totalWidth != null && clientWidth != null)
@@ -133,8 +132,9 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           }
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              borderlessX: props.borderlessX,
-              borderlessBottom: props.borderlessBottom,
+              borderlessX,
+              borderlessTop,
+              borderlessBottom,
             }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345

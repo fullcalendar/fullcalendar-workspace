@@ -54,9 +54,6 @@ export class ListView extends DateComponent<ViewProps> {
         viewSpec={context.viewSpec}
         className={joinClassNames(props.className, classNames.flexCol)}
         elRef={this.setRootEl}
-        borderlessX={props.borderlessX}
-        borderlessTop={props.borderlessTop}
-        borderlessBottom={props.borderlessBottom}
       >
         {eventSegs.length ? (
           <Scroller // TODO: don't need heavyweight component

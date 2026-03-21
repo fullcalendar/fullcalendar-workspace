@@ -31,6 +31,7 @@ import { TimeGridSlatLane } from "./TimeGridSlatLane"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
 import { computeSlatHeight } from './util'
 import { simplifiedTimeGridPrint } from './TimeGridCol'
+import { computeViewBorderless } from '../../util/misc'
 
 export interface TimeGridLayoutNormalProps {
   dateProfile: DateProfile
@@ -69,9 +70,6 @@ export interface TimeGridLayoutNormalProps {
   // refs
   timeScrollerRef?: Ref<ScrollerInterface>
   slatHeightRef?: Ref<number>
-
-  borderlessX: boolean
-  borderlessBottom: boolean
 }
 
 interface TimeGridLayoutState {
@@ -114,6 +112,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const { nowDate, forPrint } = props
     const { axisWidth, clientWidth, totalWidth } = state
     const { options } = context
+    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
     const endScrollbarWidth = (totalWidth != null && clientWidth != null)
       ? totalWidth - clientWidth
@@ -239,8 +238,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           role='rowgroup'
           className={joinArrayishClassNames(
             generateClassName(options.tableBodyClass, {
-              borderlessX: props.borderlessX,
-              borderlessBottom: props.borderlessBottom,
+              borderlessX,
+              borderlessTop,
+              borderlessBottom,
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

@@ -7,6 +7,7 @@ import { ViewOptions } from '../options'
 import { Duration } from '@full-ui/headless-calendar'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { BaseComponent } from '../vdom-util'
+import { computeViewBorderless } from '../util/misc'
 
 /*
 A view-config represents information for either:
@@ -69,6 +70,13 @@ function createViewHookComponent(options: ViewOptions) {
           className={
             generateClassName(options.viewClass, {
               view: context.viewApi,
+              ...computeViewBorderless(context.options),
+              options: {
+                height: context.options.height,
+                contentHeight: context.options.contentHeight,
+                headerToolbar: context.options.headerToolbar,
+                footerToolbar: context.options.footerToolbar,
+              },
             })
           }
           renderProps={{

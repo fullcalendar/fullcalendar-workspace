@@ -1,5 +1,6 @@
 import { preventDefault } from './dom-event'
 import classNames from '../styles.module.css'
+import { CalendarOptions } from '../options'
 
 export type GenericHash = { [key: string]: any } // already did this somewhere
 
@@ -171,4 +172,13 @@ export function firstDefined(...args) {
 
 export function valuesIdentical<T>(a: T, b: T): boolean {
   return a === b
+}
+
+export function computeViewBorderless(options: CalendarOptions) {
+  const borderless = options.borderless
+  return {
+    borderlessX: Boolean(options.borderlessX ?? borderless),
+    borderlessTop: Boolean(options.borderlessTop ?? borderless),
+    borderlessBottom: Boolean(options.borderlessBottom ?? borderless),
+  }
 }

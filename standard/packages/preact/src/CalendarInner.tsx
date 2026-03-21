@@ -8,7 +8,6 @@ import {
   Interaction, InteractionClass, InteractionSettingsInput, interactionSettingsStore, parseInteractionSettings
 } from './interactions/interaction'
 import classNames from './styles.module.css'
-import { generateClassName } from './content-inject/ContentContainer'
 import { ViewPropsTransformerClass } from './plugin-system-struct'
 import { type ReactElement, Fragment } from 'react'
 import { CalendarData, CalendarToolbarProps } from './reducers/data-types'
@@ -75,19 +74,12 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       this.registerInteractiveComponent,
       this.unregisterInteractiveComponent,
     )
-    let borderlessX = options.borderlessX ?? options.borderless // TODO: DRY
-    let borderlessTop = options.borderlessTop ?? options.borderless
-    let borderlessBottom = options.borderlessBottom ?? options.borderless
-
     return (
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            className={generateClassName(options.headerToolbarClass, { borderlessX, borderlessTop, borderlessBottom: false })}
             model={toolbarConfig.header}
-            borderlessX={borderlessX}
-            borderlessTop={borderlessTop}
-            borderlessBottom={false}
+            isHeader={true}
             titleId={this.viewTitleId}
             {...props.toolbarProps}
           />
@@ -116,11 +108,8 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
         </div>
         {toolbarConfig.footer && (
           <Toolbar
-            className={generateClassName(options.footerToolbarClass, { borderlessX, borderlessTop: false, borderlessBottom })}
             model={toolbarConfig.footer}
-            borderlessX={borderlessX}
-            borderlessTop={false}
-            borderlessBottom={borderlessBottom}
+            isHeader={false}
             {...props.toolbarProps}
           />
         )}
@@ -130,13 +119,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
 
   private renderView(className: string): ReactElement {
     const { props } = this
-    const { pluginHooks, viewSpec, toolbarConfig, toolbarProps, options } = props
-
-    // TODO: DRY
-    let { borderless } = options
-    let calendarBorderlessX = options.borderlessX ?? borderless
-    let calendarBorderlessTop = options.borderlessTop ?? borderless
-    let calendarBorderlessBottom = options.borderlessBottom ?? borderless
+    const { pluginHooks, viewSpec, toolbarConfig, toolbarProps } = props
 
     let viewProps: ViewProps = {
       className,
@@ -151,9 +134,6 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       forPrint: props.forPrint,
       labelId: toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined,
       labelStr: toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : toolbarProps.title,
-      borderlessX: calendarBorderlessX,
-      borderlessTop: toolbarConfig.header ? false : calendarBorderlessTop,
-      borderlessBottom: toolbarConfig.footer ? false : calendarBorderlessBottom,
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)
