@@ -55,6 +55,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isMirror: false,
       isStart: props.isStart,
       isEnd: props.isEnd,
+      isFirst: false,
+      isLast: false,
       isPast: props.isPast,
       isFuture: props.isFuture,
       isToday: props.isToday,

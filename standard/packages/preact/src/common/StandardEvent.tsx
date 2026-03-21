@@ -22,6 +22,8 @@ export interface StandardEventProps {
   slicedEnd?: DateMarker // view-sliced timed/whole-day span
   isStart: boolean // seg could have been split into small pieces
   isEnd: boolean // "
+  isFirst?: boolean
+  isLast?: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isMirror: boolean
@@ -91,6 +93,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isMirror: props.isMirror,
       isStart: Boolean(props.isStart),
       isEnd: Boolean(props.isEnd),
+      isFirst: Boolean(props.isFirst),
+      isLast: Boolean(props.isLast),
       isPast: Boolean(props.isPast), // TODO: don't cast. getDateMeta does it
       isFuture: Boolean(props.isFuture), // TODO: don't cast. getDateMeta does it
       isToday: Boolean(props.isToday), // TODO: don't cast. getDateMeta does it

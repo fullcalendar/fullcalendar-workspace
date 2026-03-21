@@ -217,6 +217,8 @@ export interface MinimalEventProps {
   slicedEnd?: DateMarker // view-sliced timed/whole-day span
   isStart: boolean
   isEnd: boolean
+  isFirst?: boolean
+  isLast?: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isMirror: boolean
@@ -237,6 +239,8 @@ export interface EventDisplayData { // for *Content handlers
   isMirror: boolean
   isStart: boolean
   isEnd: boolean
+  isFirst: boolean
+  isLast: boolean
   isPast: boolean
   isFuture: boolean
   isToday: boolean

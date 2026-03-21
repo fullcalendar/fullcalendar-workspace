@@ -67,8 +67,10 @@ export class ListDay extends BaseComponent<ListDayProps> {
             classNames.flexCol,
           )}
         >
-          {segs.map((seg) => {
+          {segs.map((seg, index) => {
             const key = getEventKey(seg)
+            const isFirst = index === 0
+            const isLast = index === segs.length - 1
 
             return (
               <ListEvent
@@ -78,6 +80,8 @@ export class ListDay extends BaseComponent<ListDayProps> {
                 slicedEnd={seg.slicedEnd}
                 isStart={seg.isStart}
                 isEnd={seg.isEnd}
+                isFirst={isFirst}
+                isLast={isLast}
                 isDragging={false}
                 isResizing={false}
                 isMirror={false}
