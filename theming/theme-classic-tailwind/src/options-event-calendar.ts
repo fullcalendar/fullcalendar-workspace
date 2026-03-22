@@ -374,7 +374,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass: (data) => joinClassNames(
-        'm-4',
+        data.multiMonthColumnCount > 1 && 'm-4',
         (data.multiMonthColumnCount === 1 && !data.isLast) &&
           `${params.borderColorClass} border-b`,
       ),
@@ -391,7 +391,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass: (data) => joinClassNames(data.isSticky && params.bgClass),
+      tableHeaderClass: params.bgClass,
       fillerClass: `border ${params.borderColorClass} opacity-50`,
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

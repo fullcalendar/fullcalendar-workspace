@@ -149,7 +149,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               isLast: props.isLast,
               multiMonthColumnCount: props.colCount || 0,
             }),
-            props.colCount === 1 && classNames.noMargin,
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}

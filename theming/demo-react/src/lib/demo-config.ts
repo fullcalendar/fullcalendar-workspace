@@ -3,10 +3,17 @@ import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 
 import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 
-export const eventCalendarProps: EventCalendarProps = {
+const commonProps = {
   // borderlessTop: true,
   // borderlessBottom: true,
   // borderlessX: true,
+
+  // stickyHeaderDates: true,
+  // height: 'auto',
+}
+
+export const eventCalendarProps: EventCalendarProps = {
+  ...commonProps,
 
   // dayMinWidth: 200
   // slotMaxTime: '08:00:00'
@@ -127,6 +134,7 @@ export const eventCalendarProps: EventCalendarProps = {
 }
 
 export const schedulerProps: SchedulerProps = {
+  ...commonProps,
   now: '2025-07-04T12:00:00',
   // eventOverlap: false
   // datesAboveResources: true
