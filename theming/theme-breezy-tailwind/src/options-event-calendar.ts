@@ -516,11 +516,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass: 'm-4',
+      singleMonthClass: (data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) &&
+          `border-b ${params.borderColorClass}`,
+      ),
 
       singleMonthHeaderClass: (data) => joinClassNames(
-        data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
-        data.multiMonthColumnCount > 1 ? 'pb-1' : 'py-1',
+        data.multiMonthColumnCount > 1
+          ? 'pb-1'
+          : `py-1.5 ${params.bgClass} border-b ${params.borderColorClass}`,
         'items-center', // h-align
       ),
 
@@ -532,6 +537,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
+      tableHeaderClass: params.bgClass,
       fillerClass: `border ${params.mutedBorderColorClass}`,
 
       dayNarrowWidth: 100,
@@ -588,18 +594,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       multiMonth: {
         ...dayRowCommonClasses,
         dayHeaderClass: getNormalDayHeaderBorderClass,
-        dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`),
+        dayHeaderDividerClass: (data) => joinClassNames(
+          data.multiMonthColumnCount === 1 &&
+            `border-b ${params.strongBorderColorClass} shadow-sm`
+        ),
+        tableBodyClass: (data) => joinClassNames(
+          data.multiMonthColumnCount > 1 &&
+            `border ${params.borderColorClass} rounded-md shadow-xs overflow-hidden`
+        ),
         dayCellClass: getNormalDayCellBorderColorClass,
         dayCellBottomClass: getShortDayCellBottomClass,
-
-        tableHeaderClass: (data) => joinClassNames(data.isSticky && params.bgClass),
-        tableBodyClass: (data) => joinClassNames(
-          params.borderColorClass,
-          'border-t', // because always tableHeader
-          !data.borderlessBottom && 'border-b',
-          !data.borderlessX && 'border-x rounded-t-md overflow-hidden shadow-xs',
-          !(data.borderlessBottom || data.borderlessX) && 'rounded-b-md',
-        ),
       },
       timeGrid: {
         ...dayRowCommonClasses,
