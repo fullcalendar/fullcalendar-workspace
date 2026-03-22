@@ -58,6 +58,7 @@ import {
   ToolbarData,
   ButtonDisplay,
   DayHeaderData,
+  DayHeaderDividerData,
   DayHeaderMountData,
   DayCellMountData,
   DayCellData,
@@ -323,7 +324,7 @@ export const BASE_OPTION_REFINERS = {
 
   dayHeaderRowClass: identity as Identity<string | undefined>,
 
-  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isSticky: boolean, options: { allDaySlot: boolean } }>>,
+  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<DayHeaderDividerData>>,
 
   dayRowClass: identity as Identity<string | undefined>,
 

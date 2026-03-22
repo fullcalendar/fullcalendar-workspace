@@ -110,6 +110,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
                 isSticky: stickyHeaderDates,
+                multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
             />

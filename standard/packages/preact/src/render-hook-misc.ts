@@ -44,6 +44,12 @@ export interface DayHeaderData extends DateMeta {
 }
 export type DayHeaderMountData = MountData<DayHeaderData>
 
+export interface DayHeaderDividerData {
+  isSticky: boolean
+  multiMonthColumnCount: number
+  options: { allDaySlot: boolean }
+}
+
 export interface DayCellData extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean

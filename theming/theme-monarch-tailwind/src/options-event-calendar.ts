@@ -521,17 +521,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayRowCommonClasses,
-
-        tableHeaderClass: (data) => joinClassNames(
+        dayHeaderInnerClass: (data) => joinClassNames(!data.inPopover && 'mb-2'),
+        dayHeaderDividerClass: (data) => joinClassNames(
           data.multiMonthColumnCount === 1 &&
             `border-b ${params.borderColorClass}`,
         ),
         tableBodyClass: (data) => joinClassNames(
           data.multiMonthColumnCount > 1 &&
-            `border ${params.borderColorClass} rounded-sm`,
+            `border ${params.borderColorClass} rounded-sm overflow-hidden`,
         ),
-
-        dayHeaderInnerClass: (data) => joinClassNames(!data.inPopover && 'mb-2'),
         dayCellBottomClass: getShortDayCellBottomClass,
       },
       timeGrid: {

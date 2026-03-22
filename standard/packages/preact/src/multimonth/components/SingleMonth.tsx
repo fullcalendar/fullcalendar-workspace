@@ -224,6 +224,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               <div
                 className={generateClassName(options.dayHeaderDividerClass, {
                   isSticky: isTitleAndHeaderSticky,
+                  multiMonthColumnCount: props.colCount || 0,
                   options: { allDaySlot: Boolean(options.allDaySlot) },
                 })}
               />

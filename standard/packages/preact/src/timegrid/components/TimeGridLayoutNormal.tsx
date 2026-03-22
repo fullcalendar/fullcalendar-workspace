@@ -233,6 +233,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
                 isSticky: stickyHeaderDates,
+                multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
             />

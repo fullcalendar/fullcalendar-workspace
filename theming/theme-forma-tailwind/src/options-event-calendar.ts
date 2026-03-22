@@ -445,11 +445,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass: 'm-4',
+      singleMonthClass: (data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) &&
+          `${params.borderColorClass} border-b`,
+      ),
 
       singleMonthHeaderClass: (data) => joinClassNames(
-        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
-        data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
+        data.multiMonthColumnCount > 1
+          ? 'pb-4'
+          : `py-2 border-b ${params.borderColorClass} ${params.bgClass}`,
         'items-center', // h-align
       ),
 
@@ -462,7 +467,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass: (data) => joinClassNames(data.isSticky && params.bgClass),
+      tableHeaderClass: params.bgClass,
       fillerClass: `border ${params.borderColorClass} opacity-50`,
 
       dayNarrowWidth: 100,
@@ -518,17 +523,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayRowCommonClasses,
-        dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b ${params.borderColorClass}`),
-        dayCellBottomClass: getShortDayCellBottomClass,
-
         dayHeaderInnerClass: (data) => joinClassNames(data.isNarrow && params.mutedFgClass),
-        tableBodyClass: (data) => joinClassNames(
-          params.borderColorClass,
-          'border-t', // because always tableHeader
-          !data.borderlessBottom && 'border-b',
-          !data.borderlessX && 'border-x rounded-t-sm overflow-hidden',
-          !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+        dayHeaderDividerClass: (data) => joinClassNames(
+          data.multiMonthColumnCount === 1 &&
+            `border-b ${params.borderColorClass}`,
         ),
+        tableBodyClass: (data) => joinClassNames(
+          data.multiMonthColumnCount > 1 &&
+            `border ${params.borderColorClass} rounded-sm overflow-hidden`,
+        ),
+        dayCellBottomClass: getShortDayCellBottomClass,
       },
       timeGrid: {
         ...dayRowCommonClasses,

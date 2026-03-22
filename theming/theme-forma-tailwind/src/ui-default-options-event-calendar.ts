@@ -120,16 +120,6 @@ export const defaultUiEventCalendarOptions: {
       !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-sm shadow-xs',
     ),
 
-    // viewClass: (data) => joinClassNames(
-    //   'bg-(--fc-forma-background) border-(--fc-forma-border)',
-    //   !data.borderlessTop && 'border-t',
-    //   !data.borderlessBottom && 'border-b',
-    //   !data.borderlessX && 'border-x',
-    //   !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
-    //   !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
-    //   !data.isHeightAuto && 'overflow-hidden',
-    // ),
-
     viewClass: (data) => {
       const hasBorderTop = data.isFirst && !data.borderlessTop
       const hasBorderBottom = data.isLast && !data.borderlessBottom

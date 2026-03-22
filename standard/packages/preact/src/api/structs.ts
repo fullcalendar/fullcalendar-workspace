@@ -25,6 +25,7 @@ export type {
   SlotHeaderData, SlotHeaderMountData,
   AllDayHeaderData, AllDayHeaderMountData,
   DayHeaderData,
+  DayHeaderDividerData,
   DayHeaderMountData,
   DayCellData,
   DayCellMountData,
