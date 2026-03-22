@@ -30,6 +30,11 @@ export function EventCalendar({
         center: 'title',
         end: availableViews.join(','),
       }}
+      // footerToolbar={{
+      //   start: (addButton ? 'add ' : '') + 'prev,today,next',
+      //   center: 'title',
+      //   end: availableViews.join(','),
+      // }}
       buttons={{
         ...defaultButtons,
         ...userButtons,

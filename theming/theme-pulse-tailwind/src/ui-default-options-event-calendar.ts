@@ -114,16 +114,23 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-6',
-    viewClass: (data) => joinClassNames(
-      'border-(--fc-pulse-border)',
-      !data.borderlessTop && 'border-t',
-      !data.borderlessBottom && 'border-b',
-      !data.borderlessX && 'border-x',
-      !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
-      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
-      !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && smallBoxShadowClass,
-      !data.isHeightAuto && 'overflow-hidden'
-    ),
+
+    viewClass: (data) => {
+      const hasBorderTop = !(data.isFirst && data.borderlessTop)
+      const hasBorderBottom = !(data.isLast && data.borderlessBottom)
+      const hasBorderX = !data.borderlessX
+
+      return joinClassNames(
+        'border-(--fc-pulse-border)',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        hasBorderX && 'border-x',
+        (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+        (hasBorderTop && hasBorderBottom && hasBorderX) && smallBoxShadowClass,
+        !data.isHeightAuto && 'overflow-hidden',
+      )
+    },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
