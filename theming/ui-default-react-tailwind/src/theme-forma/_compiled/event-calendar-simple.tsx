@@ -149,7 +149,25 @@ export function EventCalendar({
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      className="bg-(--fc-forma-background) text-(--fc-forma-foreground) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden root-reset"
+      className={(data) => joinClassNames(
+        'text-(--fc-forma-foreground) root-reset',
+        !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-sm shadow-xs',
+      )}
+      viewClass={(data) => {
+        const hasBorderTop = data.isFirst && !data.borderlessTop
+        const hasBorderBottom = data.isLast && !data.borderlessBottom
+        const hasBorderX = !data.borderlessX
+
+        return joinClassNames(
+          'bg-(--fc-forma-background) border-(--fc-forma-border)',
+          hasBorderTop && 'border-t',
+          hasBorderBottom && 'border-b',
+          hasBorderX && 'border-x',
+          (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+          (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+          !data.isHeightAuto && 'overflow-hidden',
+        )
+      }}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -158,9 +176,21 @@ export function EventCalendar({
         start: (addButton ? 'add ' : '') + 'today prev,next title',
         end: availableViews.join(','),
       }}
-      headerToolbarClass="border-b border-(--fc-forma-border)"
-      footerToolbarClass="border-t border-(--fc-forma-border)"
-      toolbarClass="p-3 flex flex-row flex-wrap items-center justify-between gap-3"
+      toolbarClass={(data) => joinClassNames(
+        'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
+        'bg-(--fc-forma-background) border-(--fc-forma-border)',
+        !data.borderlessX && 'border-x',
+      )}
+      headerToolbarClass={(data) => joinClassNames(
+        'border-b',
+        !data.borderlessTop && 'border-t',
+        !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
+      )}
+      footerToolbarClass={(data) => joinClassNames(
+        'border-t',
+        !data.borderlessBottom && 'border-b',
+        !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+      )}
       toolbarSectionClass="shrink-0 flex flex-row items-center gap-3"
       toolbarTitleClass="text-xl"
       buttonGroupClass="flex flex-row items-center"
@@ -461,10 +491,14 @@ export function EventCalendar({
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-4"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-(--fc-forma-border) border-b',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
-        data.isSticky && 'border-b border-(--fc-forma-border) bg-(--fc-forma-background)',
+        data.multiMonthColumnCount > 1
+          ? 'pb-4'
+          : 'py-2 border-b border-(--fc-forma-border) bg-(--fc-forma-background)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -476,7 +510,7 @@ export function EventCalendar({
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass={(data) => joinClassNames(data.isSticky && 'bg-(--fc-forma-background)')}
+      tableHeaderClass='bg-(--fc-forma-background)'
       fillerClass="border border-(--fc-forma-border) opacity-50"
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--fc-forma-border)"
@@ -520,10 +554,14 @@ export function EventCalendar({
         },
         multiMonth: {
           ...dayRowCommonClasses,
-          dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-forma-border)'),
+          dayHeaderDividerClass: (data) => joinClassNames(
+            data.multiMonthColumnCount === 1 && 'border-b border-(--fc-forma-border)',
+          ),
           dayCellBottomClass: getShortDayCellBottomClass,
           dayHeaderInnerClass: (data) => joinClassNames(data.isNarrow && 'text-(--fc-forma-muted-foreground)'),
-          tableBodyClass: 'border border-(--fc-forma-border) rounded-sm overflow-hidden',
+          tableBodyClass: (data) => joinClassNames(
+            data.multiMonthColumnCount > 1 && 'border border-(--fc-forma-border) rounded-sm overflow-hidden',
+          ),
           ...userViews?.multiMonth,
         },
         timeGrid: {
