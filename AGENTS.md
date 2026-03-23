@@ -3,6 +3,15 @@
 
 All themes start out as configuration files and tailwind classnames and are manually transformed through multiple phases. All phases are committed to the codebase. Below is the flow from file-to-file. The developer may make changes to upstream theme config/tailwind, and the explicitly ask to fill-in the downstream conversions.
 
+### Default-UI Tailwind React Components
+
+- Component housing: theming/ui-default-react-tailwind/src/theme-*/{event-calendar,scheduler}.tsx?
+- Incorporates:
+  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler,slots}.tsx?
+  - theming/theme-*-tailwind/src/ui-default-options-{event-calendar,scheduler}.tsx?
+- Compiles to:
+  - theming/ui-default-react-tailwind/src/theme-*/_compiled/{event-calendar,scheduler}(-simple)?.tsx?
+
 ### Default-UI JS Plugin
 
 - Plugin housing: theming/theme-*-tailwind/src/index.tsx?
@@ -13,14 +22,7 @@ All themes start out as configuration files and tailwind classnames and are manu
   - standard/packages/preact/src/themes/*/index.tsx?
   - standard/packages/preact/src/themes/*/theme.css (CSS definitions for tailwind classnames)
 
-### Default-UI Tailwind React Components
-
-- Component housing: theming/ui-default-react-tailwind/src/theme-*/{event-calendar,scheduler}.tsx?
-- Incorporates:
-  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler,slots}.tsx?
-  - theming/theme-*-tailwind/src/ui-default-options-{event-calendar,scheduler}.tsx?
-- Compiles to:
-  - theming/ui-default-react-tailwind/src/theme-*/_compiled/{event-calendar,scheduler}(-simple)?.tsx?
+**Critical:** `theme.css` is a manually compiled CSS file — there is no build step. When propagating changes to `index.tsx`, you must also manually update `theme.css` to add definitions for any newly introduced Tailwind classnames and remove definitions for any classnames that are no longer used anywhere in the file. Each classname maps directly to its CSS equivalent (e.g. `rounded-t-xl` → `border-top-left-radius: 12px; border-top-right-radius: 12px`). Check the existing entries in `theme.css` for the naming/formatting pattern.
 
 ### Default-UI Color Palettes
 
