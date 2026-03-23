@@ -52,7 +52,7 @@ export function EventCalendar({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <EventCalendarView
+        <EventCalendarViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
@@ -70,7 +70,7 @@ const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 const slots = createSlots(params)
 
-export function EventCalendarView({
+export function EventCalendarViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {

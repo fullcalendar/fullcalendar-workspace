@@ -3,11 +3,11 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-tailwind/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { EventCalendarView } from './event-calendar.js'
-import { cn } from '../lib/utils.js'
+import { EventCalendarViews } from './event-calendar.js'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { cn } from '../lib/utils.js'
 import { params } from '../lib/option-params.js'
 import { SchedulerProps } from '../lib/scheduler-props.js'
 
@@ -55,8 +55,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <SchedulerView
-          className='grow min-h-0'
+        <SchedulerViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
@@ -70,12 +69,12 @@ export function Scheduler({
   )
 }
 
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
 }: any) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
