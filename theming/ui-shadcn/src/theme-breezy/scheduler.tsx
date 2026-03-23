@@ -7,7 +7,7 @@ import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { EventCalendarView } from './event-calendar.js'
+import { EventCalendarViews } from './event-calendar.js'
 import { params } from '../lib/option-params.js'
 import { SchedulerProps } from '../lib/scheduler-props.js'
 
@@ -56,7 +56,6 @@ export function Scheduler({
       />
       <div className='grow min-h-0'>
         <SchedulerView
-          className='grow min-h-0'
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
@@ -75,7 +74,7 @@ export function SchedulerView({
   ...restOptions
 }: any) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */

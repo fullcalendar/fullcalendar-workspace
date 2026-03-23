@@ -150,7 +150,6 @@ export default {
         !data.isHeightAuto && 'overflow-hidden',
       )
     },
-    tableBodyClass: 'bg-(--fc-pulse-background)',
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -536,6 +535,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     tableHeaderClass: (data) => joinClassNames(data.isSticky && 'bg-(--fc-pulse-background)'),
+    tableBodyClass: 'bg-(--fc-pulse-background)',
     fillerClass: "border border-(--fc-pulse-border) opacity-50",
     dayNarrowWidth: 100,
     dayHeaderRowClass: "border border-(--fc-pulse-border)",
