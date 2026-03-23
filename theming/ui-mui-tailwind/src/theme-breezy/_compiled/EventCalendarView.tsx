@@ -462,10 +462,12 @@ export default function EventCalendarView({
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-4"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b border-(--mui-palette-divider)',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.isSticky && `bg-(--mui-palette-background-paper) border-b border-(--mui-palette-divider)`,
-        data.multiMonthColumnCount > 1 ? 'pb-1' : 'py-1',
+        data.multiMonthColumnCount > 1 ? 'pb-1' : 'py-1.5 bg-(--mui-palette-background-paper) border-b border-(--mui-palette-divider)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -476,6 +478,7 @@ export default function EventCalendarView({
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
+      tableHeaderClass="bg-(--mui-palette-background-paper)"
       fillerClass="border border-(--mui-palette-divider)"
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--mui-palette-divider)"
@@ -518,11 +521,10 @@ export default function EventCalendarView({
         multiMonth: {
           ...dayRowCommonClasses,
           dayHeaderClass: getNormalDayHeaderBorderClass,
-          dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`),
+          dayHeaderDividerClass: (data) => joinClassNames(data.multiMonthColumnCount === 1 && `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`),
           dayCellClass: getNormalDayCellBorderColorClass,
           dayCellBottomClass: getShortDayCellBottomClass,
-          tableHeaderClass: (data) => joinClassNames(data.isSticky && 'bg-(--mui-palette-background-paper)'),
-          tableBodyClass: `border border-(--mui-palette-divider) rounded-md shadow-xs overflow-hidden`,
+          tableBodyClass: (data) => joinClassNames(data.multiMonthColumnCount > 1 && 'border border-(--mui-palette-divider) rounded-md shadow-xs overflow-hidden'),
           ...userViews?.multiMonth,
         },
         timeGrid: {

@@ -51,7 +51,7 @@ export default function ResourceTimeline({
     <Box
       dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         height,
@@ -62,11 +62,16 @@ export default function ResourceTimeline({
         borderRightWidth: borderlessX ? 0 : 1,
         borderTopWidth: borderlessTop ? 0 : 1,
         borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
-          borderRadius: 1,
-          overflow: 'hidden',
-        })
-      }}
+        ...(!borderlessTop && !borderlessX && {
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+        }),
+        ...(!borderlessBottom && !borderlessX && {
+          borderBottomLeftRadius: theme.shape.borderRadius,
+          borderBottomRightRadius: theme.shape.borderRadius,
+        }),
+        overflow: !isHeightAuto ? 'hidden' : undefined,
+      })}
     >
       <EventCalendarToolbar
         controller={controller}

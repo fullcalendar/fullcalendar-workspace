@@ -47,14 +47,17 @@ export default function Scheduler({
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
+
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
   const borderlessX = restOptions.borderlessX ?? restOptions.borderless
   const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
   const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         height,
@@ -65,12 +68,16 @@ export default function Scheduler({
         borderRightWidth: borderlessX ? 0 : 1,
         borderTopWidth: borderlessTop ? 0 : 1,
         borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
-          borderRadius: 1,
-          overflow: 'hidden',
-        })
-      }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
+        ...(!borderlessTop && !borderlessX && {
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+        }),
+        ...(!borderlessBottom && !borderlessX && {
+          borderBottomLeftRadius: theme.shape.borderRadius,
+          borderBottomRightRadius: theme.shape.borderRadius,
+        }),
+        overflow: !isHeightAuto ? 'hidden' : undefined,
+      })}
     >
       <EventCalendarToolbar
         sx={{
@@ -90,7 +97,7 @@ export default function Scheduler({
         }}
       >
         <SchedulerView
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
           plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}

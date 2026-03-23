@@ -66,6 +66,7 @@ export default function SchedulerViews({
       views={{
         ...userViews,
         timeline: {
+          tableHeaderClass: 'bg-(--mui-palette-background-paper)',
 
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */

@@ -71,7 +71,7 @@ export default function EventCalendar({
         borderlessX={borderlessX}
       />
       <Box
-        sx={{
+        sx={(theme) => ({
           flexGrow: 1,
           minHeight: 0,
           bgcolor: 'background.paper',
@@ -81,11 +81,16 @@ export default function EventCalendar({
           borderRightWidth: borderlessX ? 0 : 1,
           borderTopWidth: 1,
           borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...((borderlessX || borderlessBottom) ? {} : {
-            borderRadius: 1,
-            overflow: 'hidden',
+          ...(!borderlessX && !isHeightAuto && {
+            borderTopLeftRadius: theme.shape.borderRadius,
+            borderTopRightRadius: theme.shape.borderRadius,
           }),
-        }}
+          ...(!borderlessBottom && !borderlessX && !isHeightAuto && {
+            borderBottomLeftRadius: theme.shape.borderRadius,
+            borderBottomRightRadius: theme.shape.borderRadius,
+          }),
+          overflow: !isHeightAuto ? 'hidden' : undefined,
+        })}
       >
         <EventCalendarViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}

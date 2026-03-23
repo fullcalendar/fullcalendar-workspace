@@ -401,8 +401,8 @@ export default function EventCalendarViews({
         'border border-(--mui-palette-divider)',
         data.isMinor && 'border-dotted',
       )}
-      listDayClass="group/day flex flex-col"
-      listDayHeaderClass={`border-b border-(--mui-palette-divider) ${faintSolidBgClass} text-(--mui-palette-text-primary) flex flex-row items-center justify-between`}
+      listDayClass={(data) => joinClassNames('flex flex-col', !data.isLast && 'border-b border-(--mui-palette-divider)')}
+      listDayHeaderClass={`-mb-px border-b border-(--mui-palette-divider) ${faintSolidBgClass} text-(--mui-palette-text-primary) flex flex-row items-center justify-between`}
       listDayHeaderInnerClass={(data) => joinClassNames(
         'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
         !data.level && 'font-semibold',
@@ -412,15 +412,17 @@ export default function EventCalendarViews({
               : tertiaryClass
           : data.hasNavLink && mutedHoverPressableClass,
       )}
-      listDayEventsClass={`group-not-last/day:border-b border-(--mui-palette-divider) px-1.5 py-2 gap-2`}
+      listDayEventsClass="mt-px px-1.5 py-2 gap-2"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-3"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-3',
+        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b border-(--mui-palette-divider)',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.isSticky && 'border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
-        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
+        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1 border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -431,6 +433,7 @@ export default function EventCalendarViews({
       /* Misc Table
       ----------------------------------------------------------------------------------------- */
 
+      tableBodyClass="bg-(--mui-palette-background-paper)"
       tableHeaderClass={(data) => joinClassNames(data.isSticky && 'bg-(--mui-palette-background-paper)')}
       fillerClass="border border-(--mui-palette-divider) opacity-50"
       dayNarrowWidth={100}
@@ -473,7 +476,7 @@ export default function EventCalendarViews({
           dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b border-(--mui-palette-divider)`),
           dayCellBottomClass: getShortDayCellBottomClass,
           viewClass: faintBgClass,
-          tableBodyClass: `border border-(--mui-palette-divider) bg-(--mui-palette-background-paper) rounded-sm overflow-hidden`,
+          tableBodyClass: (data) => joinClassNames(data.multiMonthColumnCount > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
           ...userViews?.multiMonth,
         },
         timeGrid: {
@@ -523,6 +526,7 @@ export default function EventCalendarViews({
           ...userViews?.timeGrid,
         },
         list: {
+          viewClass: 'bg-(--mui-palette-background-paper)',
 
           /* List-View > List-Item Event
           ------------------------------------------------------------------------------------- */

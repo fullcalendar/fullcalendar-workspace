@@ -25,6 +25,7 @@ export default function EventCalendar({
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
       sx={(theme) => ({
         display: 'flex',
@@ -47,7 +48,6 @@ export default function EventCalendar({
         }),
         overflow: !isHeightAuto ? 'hidden' : undefined,
       })}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{

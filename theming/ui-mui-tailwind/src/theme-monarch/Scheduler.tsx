@@ -19,13 +19,14 @@ export default function Scheduler({
 }: SchedulerProps) {
   const controller = useCalendarController()
 
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
   const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
   const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
   const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
-  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
       sx={(theme) => ({
         display: 'flex',
@@ -48,7 +49,6 @@ export default function Scheduler({
         }),
         overflow: !isHeightAuto ? 'hidden' : undefined,
       })}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{ padding: 2 }}

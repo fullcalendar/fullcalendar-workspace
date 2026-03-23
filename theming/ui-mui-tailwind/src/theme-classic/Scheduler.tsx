@@ -25,6 +25,7 @@ export default function Scheduler({
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
       sx={{
         display: 'flex',
@@ -32,7 +33,6 @@ export default function Scheduler({
         gap: 2.5,
         height,
       }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className={!hasBorderX ? 'px-3' : ''}
