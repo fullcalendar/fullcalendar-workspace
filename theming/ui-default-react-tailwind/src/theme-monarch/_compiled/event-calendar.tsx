@@ -160,7 +160,21 @@ export function EventCalendar({
     <FullCalendar
       plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
-      className="bg-(--fc-monarch-background) text-(--fc-monarch-foreground) border border-(--fc-monarch-border) rounded-xl overflow-hidden"
+      className="text-(--fc-monarch-foreground)"
+      viewClass={(data) => {
+        const hasBorderTop = data.isFirst && !data.borderlessTop
+        const hasBorderBottom = data.isLast && !data.borderlessBottom
+        const hasBorderX = !data.borderlessX
+        return joinClassNames(
+          'bg-(--fc-monarch-background) border-(--fc-monarch-border)',
+          hasBorderTop && 'border-t',
+          hasBorderBottom && 'border-b',
+          hasBorderX && 'border-x',
+          (hasBorderTop && hasBorderX) && 'rounded-t-xl',
+          (hasBorderBottom && hasBorderX) && 'rounded-b-xl',
+          !data.isHeightAuto && 'overflow-hidden',
+        )
+      }}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -169,7 +183,19 @@ export function EventCalendar({
         start: (addButton ? 'add ' : '') + 'today prev,next title',
         end: availableViews.join(','),
       }}
-      toolbarClass="p-4 flex flex-row flex-wrap items-center justify-between gap-3"
+      toolbarClass={(data) => joinClassNames(
+        'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
+        'bg-(--fc-monarch-background) border-(--fc-monarch-border)',
+        !data.borderlessX && 'border-x',
+      )}
+      headerToolbarClass={(data) => joinClassNames(
+        !data.borderlessTop && 'border-t',
+        !(data.borderlessTop || data.borderlessX) && 'rounded-t-xl',
+      )}
+      footerToolbarClass={(data) => joinClassNames(
+        !data.borderlessBottom && 'border-b',
+        !(data.borderlessBottom || data.borderlessX) && 'rounded-b-xl',
+      )}
       toolbarSectionClass="shrink-0 flex flex-row items-center gap-3"
       toolbarTitleClass="text-2xl font-bold"
       buttonGroupClass={(data) => joinClassNames(
@@ -477,7 +503,7 @@ export function EventCalendar({
       listDayFormat={{ day: 'numeric' }}
       listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
       listDayClass="not-last:border-b border-(--fc-monarch-border) flex flex-row items-start"
-      listDayHeaderClass="m-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2"
+      listDayHeaderClass="p-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2"
       listDayHeaderInnerClass={(data) => (
         !data.level
           ? joinClassNames(
@@ -499,10 +525,15 @@ export function EventCalendar({
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-4"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) &&
+          'border-(--fc-monarch-border) border-b',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.isSticky && 'border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)',
-        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
+        data.multiMonthColumnCount > 1
+          ? 'pb-2'
+          : 'py-1 border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -513,9 +544,7 @@ export function EventCalendar({
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass={(data) => joinClassNames(
-        data.isSticky && 'border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)'
-      )}
+      tableHeaderClass="bg-(--fc-monarch-background)"
       fillerClass={(data) => joinClassNames(
         'opacity-50 border',
         data.isHeader ? 'border-transparent' : 'border-(--fc-monarch-border)',
@@ -555,8 +584,15 @@ export function EventCalendar({
         multiMonth: {
           ...dayRowCommonClasses,
           dayCellBottomClass: getShortDayCellBottomClass,
-          tableBodyClass: 'border border-(--fc-monarch-border) rounded-sm',
           dayHeaderInnerClass: (data) => joinClassNames(!data.inPopover && 'mb-2'),
+          dayHeaderDividerClass: (data) => joinClassNames(
+            data.multiMonthColumnCount === 1 &&
+              'border-b border-(--fc-monarch-border)',
+          ),
+          tableBodyClass: (data) => joinClassNames(
+            data.multiMonthColumnCount > 1 &&
+              'border border-(--fc-monarch-border) rounded-sm overflow-hidden',
+          ),
           ...userViews?.multiMonth,
         },
         timeGrid: {
