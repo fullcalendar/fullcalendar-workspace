@@ -1,4 +1,5 @@
 import React from 'react'
+import Box from '@mui/material/Box'
 import { CalendarOptions, useCalendarController } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/react/daygrid'
 import timeGridPlugin from '@fullcalendar/react/timegrid'
@@ -7,7 +8,6 @@ import interactionPlugin from '@fullcalendar/react/interaction'
 import multiMonthPlugin from '@fullcalendar/react/multimonth'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import EventCalendarViews from './EventCalendarViews.js'
-import EventCalendarContainer from './EventCalendarContainer.js'
 
 const plugins = [
   dayGridPlugin,
@@ -48,27 +48,56 @@ export default function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const autoHeight = height === 'auto' || contentHeight === 'auto'
+
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
-    <EventCalendarContainer direction={direction} className={className} height={height}>
+    <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
+      className={className}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+        height,
+      }}
+    >
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        borderlessX={restOptions.borderlessX ?? restOptions.borderless}
+        borderlessX={borderlessX}
       />
-      <EventCalendarViews
-        liquidHeight={!autoHeight && height !== undefined}
-        height={autoHeight ? 'auto' : contentHeight}
-        initialView={availableViews[0]}
-        navLinkDayClick={navLinkDayClick}
-        navLinkWeekClick={navLinkWeekClick}
-        controller={controller}
-        plugins={[...plugins, ...userPlugins]}
-        {...restOptions}
-      />
-    </EventCalendarContainer>
+      <Box
+        sx={{
+          flexGrow: 1,
+          minHeight: 0,
+          bgcolor: 'background.paper',
+          borderStyle: 'solid',
+          borderColor: 'divider',
+          borderLeftWidth: borderlessX ? 0 : 1,
+          borderRightWidth: borderlessX ? 0 : 1,
+          borderTopWidth: 1,
+          borderBottomWidth: borderlessBottom ? 0 : 1,
+          ...((borderlessX || borderlessBottom) ? {} : {
+            borderRadius: 1,
+            overflow: 'hidden',
+          }),
+        }}
+      >
+        <EventCalendarViews
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
+          controller={controller}
+          plugins={[...plugins, ...userPlugins]}
+          {...restOptions}
+        />
+      </Box>
+    </Box>
   )
 }
 
