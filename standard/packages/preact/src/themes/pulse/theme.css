@@ -216,6 +216,10 @@
   margin-bottom: 1px
 }
 
+.-mb-px {
+  margin-bottom: -1px
+}
+
 .-ml-1 {
   margin-left: -4px
 }
@@ -838,11 +842,6 @@
 
 .not-last\:border-e-\(--fc-pulse-border\):not(:last-child) {
   border-inline-end-color: var(--fc-pulse-border)
-}
-
-.group-not-last\/day\:border-b:is(:where(.group\/day):not(:last-child) *) {
-  border-bottom-style: var(--fc-pulse-border-style);
-  border-bottom-width: 1px
 }
 
 @media (hover:hover) {

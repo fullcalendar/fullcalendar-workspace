@@ -541,8 +541,11 @@ export function EventCalendar({
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayClass="group/day flex flex-col"
-      listDayHeaderClass="border-b border-(--fc-pulse-border) [background:linear-gradient(var(--fc-pulse-faint),var(--fc-pulse-faint))_var(--fc-pulse-background)] text-(--fc-pulse-foreground) flex flex-row items-center justify-between"
+      listDayClass={(data) => joinClassNames(
+        'flex flex-col',
+        !data.isLast && 'border-b border-(--fc-pulse-border)',
+      )}
+      listDayHeaderClass="-mb-px border-b border-(--fc-pulse-border) [background:linear-gradient(var(--fc-pulse-faint),var(--fc-pulse-faint))_var(--fc-pulse-background)] text-(--fc-pulse-foreground) flex flex-row items-center justify-between"
       listDayHeaderInnerClass={(data) => joinClassNames(
         'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
         !data.level && 'font-semibold',
@@ -552,7 +555,7 @@ export function EventCalendar({
               : tertiaryClass
           : data.hasNavLink && mutedHoverPressableClass,
       )}
-      listDayEventsClass="group-not-last/day:border-b border-(--fc-pulse-border) px-1.5 py-2 gap-2"
+      listDayEventsClass="mt-px px-1.5 py-2 gap-2"
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

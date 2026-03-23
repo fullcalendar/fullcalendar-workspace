@@ -141,7 +141,12 @@ export function EventCalendar({
       plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
       className="gap-5"
-      viewClass="bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border)"
+      viewClass={(data) => joinClassNames(
+        'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
+        !(data.isFirst && data.borderlessTop) && 'border-t',
+        !(data.isLast && data.borderlessBottom) && 'border-b',
+        !data.borderlessX && 'border-x',
+      )}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -363,16 +368,20 @@ export function EventCalendar({
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayHeaderClass="border-b border-(--fc-classic-border) [background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)] flex flex-row items-center justify-between"
+      listDayHeaderClass="border-b border-(--fc-classic-border) [background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)] -mb-px flex flex-row items-center justify-between"
       listDayHeaderInnerClass="px-3 py-2 text-sm font-bold"
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-4"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-4',
+        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b border-(--fc-classic-border)',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.isSticky && 'border-b border-(--fc-classic-border) bg-(--fc-classic-background)',
-        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
+        data.multiMonthColumnCount > 1
+          ? 'pb-4'
+          : 'py-2 border-b border-(--fc-classic-border) bg-(--fc-classic-background)',
         'items-center',
       )}
       singleMonthHeaderInnerClass="text-base font-bold"
@@ -380,7 +389,7 @@ export function EventCalendar({
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass={(data) => joinClassNames(data.isSticky && 'bg-(--fc-classic-background)')}
+      tableHeaderClass="bg-(--fc-classic-background)"
       fillerClass="border border-(--fc-classic-border) opacity-50"
       dayHeaderRowClass="border border-(--fc-classic-border)"
       dayRowClass="border border-(--fc-classic-border)"
@@ -411,7 +420,9 @@ export function EventCalendar({
         multiMonth: {
           ...dayRowCommonClasses,
           dayCellBottomClass: 'min-h-px',
-          tableClass: 'border border-(--fc-classic-border)',
+          tableClass: (data) => joinClassNames(
+            data.multiMonthColumnCount > 1 && 'border-(--fc-classic-border) border',
+          ),
           ...userViews?.multiMonth,
         },
         timeGrid: {
@@ -460,8 +471,11 @@ export function EventCalendar({
           /* List-View > List-Item Event
           --------------------------------------------------------------------------------------- */
 
+          listDayClass: (data) => joinClassNames(
+            !data.isLast && 'border-b border-(--fc-classic-border)',
+          ),
           listItemEventClass: (data) => joinClassNames(
-            'group border-b border-(--fc-classic-border) px-3 py-2 gap-3',
+            'group px-3 py-2 gap-3 border-t border-(--fc-classic-border)',
             data.isInteractive
               ? joinClassNames(faintHoverPressableClass, outlineInsetClass)
               : faintHoverClass,
