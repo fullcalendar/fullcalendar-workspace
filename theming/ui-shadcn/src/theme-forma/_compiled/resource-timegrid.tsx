@@ -7,7 +7,7 @@ import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timeg
 import { EventCalendarToolbar } from './event-calendar-toolbar.js'
 import { SchedulerViews } from './scheduler-views.js'
 import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons.js'
-import { EventCalendarContainer } from './event-calendar-container.js'
+import { cn } from '../../lib/utils.js'
 
 const plugins = [
   adaptivePlugin,
@@ -44,18 +44,27 @@ export function ResourceTimeGrid({
   ...restOptions
 }: ResourceTimeGridProps) {
   const controller = useCalendarController()
-  const autoHeight = height === 'auto' || contentHeight === 'auto'
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
-    <EventCalendarContainer
-      direction={direction}
-      className={className}
-      height={height}
-      autoHeight={autoHeight}
-      borderless={restOptions.borderless}
-      borderlessX={restOptions.borderlessX}
-      borderlessTop={restOptions.borderlessTop}
-      borderlessBottom={restOptions.borderlessBottom}
+    <div
+      className={cn(
+        className,
+        'flex flex-col bg-background',
+        hasBorderX && 'border-x',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+        (hasBorderX && hasBorderTop && hasBorderBottom) && 'shadow-xs',
+        !isHeightAuto && 'overflow-hidden',
+      )}
+      style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         controller={controller}
@@ -65,7 +74,7 @@ export function ResourceTimeGrid({
       <div className='grow min-h-0'>
         <SchedulerViews
           controller={controller}
-          height={autoHeight ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}
@@ -79,6 +88,6 @@ export function ResourceTimeGrid({
           {...restOptions}
         />
       </div>
-    </EventCalendarContainer>
+    </div>
   )
 }
