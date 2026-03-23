@@ -84,22 +84,9 @@ export function EventCalendarViews({
   views: userViews,
   ...restOptions
 }: EventCalendarViewProps) {
-  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
-  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
-
   return (
-    <div
-      className={cn(
-        'bg-background border-t',
-        hasBorderX && 'border-x',
-        hasBorderBottom && 'border-b',
-        hasBorderX && height !== 'auto' && 'rounded-t-sm',
-        (hasBorderBottom && hasBorderX) && height !== 'auto' && 'rounded-b-sm',
-        height !== 'auto' && 'h-full overflow-hidden',
-      )}
-    >
-      <FullCalendar
-        height={height}
+    <FullCalendar
+      height={height}
 
         /* Abstract Event
         ----------------------------------------------------------------------------------------- */
@@ -504,8 +491,7 @@ export function EventCalendarViews({
           },
         }}
 
-        {...restOptions}
-      />
-    </div>
+      {...restOptions}
+    />
   )
 }

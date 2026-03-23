@@ -42,7 +42,7 @@ export function EventCalendar({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <EventCalendarView
+        <EventCalendarViews
           className={cn(
             'bg-background border-t',
             hasBorderX && 'border-x',
@@ -68,7 +68,7 @@ const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 const slots = createSlots(params)
 
-export function EventCalendarView({
+export function EventCalendarViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {

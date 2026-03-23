@@ -7,7 +7,7 @@ import { cn } from '../lib/utils.js'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { EventCalendarView } from './event-calendar.js'
+import { EventCalendarViews } from './event-calendar.js'
 import { params } from '../lib/option-params.js'
 import { SchedulerProps } from '../lib/scheduler-props.js'
 
@@ -45,7 +45,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <SchedulerView
+        <SchedulerViews
           className={cn(
             'bg-background border-t',
             hasBorderX && 'border-x',
@@ -67,12 +67,12 @@ export function Scheduler({
   )
 }
 
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
 }: any) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */

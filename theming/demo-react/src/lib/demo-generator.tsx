@@ -307,7 +307,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           />
         </div>
 
-        <div className='demo-item'>
+        {/* <div className='demo-item'>
           {props.renderEventCalendar({
             ...eventCalendarProps,
             initialView: 'timeGridWeek',
@@ -331,11 +331,37 @@ export function DemoGenerator(props: DemoGeneratorProps) {
               availableViews: ['timeGridWeek', 'timeGridDay', 'dayGridMonth'],
             })}
           />
+        </div> */}
+
+        <div className='demo-item'>
+          {props.renderEventCalendar({
+            ...eventCalendarProps,
+            initialView: 'multiMonthYear',
+            availableViews: ['multiMonthYear'],
+            plugins: [
+              scrollGridPlugin,
+              adaptivePlugin,
+            ],
+          })}
+          <CodeButton
+            onPress={() => setActiveDialog({
+              uiName: props.uiName,
+              themeName: props.themeName as ThemeName,
+              paletteName: props.paletteName,
+              colorScheme: props.colorScheme as ColorScheme,
+              isScheduler: false,
+              pluginMap: {
+                'multiMonthPlugin': '@fullcalendar/react/multimonth',
+              },
+              availableViews: ['multiMonthYear'],
+            })}
+          />
         </div>
 
         <div className='demo-item'>
           {props.renderEventCalendar({
             ...eventCalendarProps,
+            multiMonthMaxColumns: 1,
             initialView: 'multiMonthYear',
             availableViews: ['multiMonthYear'],
             plugins: [
