@@ -8,7 +8,7 @@ import timeGridPlugin from '@fullcalendar/react/timegrid'
 import { EventCalendarViews } from './event-calendar-views.js'
 import { EventCalendarToolbar } from './event-calendar-toolbar.js'
 import { EventCalendarCloseIcon } from './event-calendar-icons.js'
-import { EventCalendarContainer } from './event-calendar-container.js'
+import { cn } from '../../lib/utils.js'
 
 const plugins = [
   dayGridPlugin,
@@ -49,19 +49,34 @@ export function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const autoHeight = height === 'auto' || contentHeight === 'auto'
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
-    <EventCalendarContainer direction={direction} className={className} height={height}>
+    <div
+      className={cn(className, 'flex flex-col gap-5')}
+      style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
+    >
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        borderlessX={restOptions.borderlessX ?? restOptions.borderless}
+        borderlessX={!hasBorderX}
       />
       <div className='grow min-h-0'>
         <EventCalendarViews
-          height={autoHeight ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          className={cn(
+            'bg-background border-t',
+            hasBorderX && 'border-x',
+            hasBorderBottom && 'border-b',
+            (hasBorderX && !isHeightAuto) && 'rounded-t-sm',
+            (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-sm',
+            !isHeightAuto && 'overflow-hidden',
+          )}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}
@@ -73,6 +88,6 @@ export function EventCalendar({
           {...restOptions}
         />
       </div>
-    </EventCalendarContainer>
+    </div>
   )
 }

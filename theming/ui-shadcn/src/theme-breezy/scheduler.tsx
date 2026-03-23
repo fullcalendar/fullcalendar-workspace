@@ -55,7 +55,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <SchedulerView
+        <SchedulerViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
@@ -69,7 +69,7 @@ export function Scheduler({
   )
 }
 
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
 }: any) {

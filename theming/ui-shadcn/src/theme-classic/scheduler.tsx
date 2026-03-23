@@ -4,7 +4,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-classic-tailwind/options-scheduler'
 import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { EventCalendarView } from './event-calendar.js'
+import { EventCalendarViews } from './event-calendar.js'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
@@ -55,7 +55,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <div className='grow min-h-0'>
-        <SchedulerView
+        <SchedulerViews
           className={cn(
             'bg-background border-t',
             hasBorderX && 'border-x',
@@ -77,12 +77,12 @@ export function Scheduler({
   )
 }
 
-export function SchedulerView({
+export function SchedulerViews({
   views: userViews,
   ...restOptions
 }: any) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */

@@ -44,6 +44,7 @@ export function ResourceTimeGrid({
   ...restOptions
 }: ResourceTimeGridProps) {
   const controller = useCalendarController()
+
   const isHeightAuto = height === 'auto' || contentHeight === 'auto'
   const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
   const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
