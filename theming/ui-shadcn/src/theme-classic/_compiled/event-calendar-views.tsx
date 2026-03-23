@@ -80,33 +80,29 @@ const dayRowCommonClasses: CalendarOptions = {
 
 export type EventCalendarViewProps =
   CalendarOptions &
-  Required<Pick<CalendarOptions, 'popoverCloseContent'>> & { // ensure callers define icons
-    liquidHeight?: boolean
-  }
+  Required<Pick<CalendarOptions, 'popoverCloseContent'>> // ensure callers define icons
 
 export function EventCalendarViews({
-  className,
-  liquidHeight,
   height,
   views: userViews,
   ...restOptions
 }: EventCalendarViewProps) {
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
 
   return (
     <div
       className={cn(
         'bg-background border-t',
-        !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
-        !borderlessX && 'border-x',
-        !borderlessBottom && 'border-b',
-        liquidHeight && 'grow min-h-0',
-        className,
+        hasBorderX && 'border-x',
+        hasBorderBottom && 'border-b',
+        hasBorderX && height !== 'auto' && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && height !== 'auto' && 'rounded-b-sm',
+        height !== 'auto' && 'h-full overflow-hidden',
       )}
     >
       <FullCalendar
-        height={liquidHeight ? '100%' : height}
+        height={height}
 
         /* Abstract Event
         ----------------------------------------------------------------------------------------- */
@@ -282,10 +278,12 @@ export function EventCalendarViews({
         /* Single Month (in Multi-Month)
         ----------------------------------------------------------------------------------------- */
 
-        singleMonthClass='m-4'
+        singleMonthClass={(data) => cn(
+          data.multiMonthColumnCount > 1 && 'm-4',
+          (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b',
+        )}
         singleMonthHeaderClass={(data) => cn(
-          data.isSticky && 'border-b bg-background',
-          data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2',
+          data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2 border-b bg-background',
           'items-center',
         )}
         singleMonthHeaderInnerClass='text-base font-bold'
@@ -293,7 +291,7 @@ export function EventCalendarViews({
         /* Misc Table
         ----------------------------------------------------------------------------------------- */
 
-        tableHeaderClass={(data) => cn(data.isSticky && 'bg-background')}
+        tableHeaderClass='bg-background'
         fillerClass='border opacity-50'
         dayHeaderRowClass='border'
         dayRowClass='border'
@@ -324,7 +322,7 @@ export function EventCalendarViews({
           multiMonth: {
             ...dayRowCommonClasses,
             dayCellBottomClass: 'min-h-px',
-            tableClass: 'border',
+            tableClass: (data) => cn(data.multiMonthColumnCount > 1 && 'border'),
             ...userViews?.multiMonth,
           },
           timeGrid: {

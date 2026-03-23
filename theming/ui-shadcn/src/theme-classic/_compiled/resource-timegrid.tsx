@@ -54,22 +54,23 @@ export function ResourceTimeGrid({
         addButton={addButton}
         borderlessX={restOptions.borderlessX ?? restOptions.borderless}
       />
-      <SchedulerViews
-        controller={controller}
-        liquidHeight={!autoHeight && height !== undefined}
-        height={autoHeight ? 'auto' : contentHeight}
-        initialView={availableViews[0]}
-        navLinkDayClick={navLinkDayClick}
-        navLinkWeekClick={navLinkWeekClick}
-        plugins={[...plugins, ...userPlugins]}
-        popoverCloseContent={() => (
-          <EventCalendarCloseIcon />
-        )}
-        resourceExpanderContent={(data) => (
-          <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
-        )}
-        {...restOptions}
-      />
+      <div className='grow min-h-0'>
+        <SchedulerViews
+          controller={controller}
+          height={autoHeight ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
+          plugins={[...plugins, ...userPlugins]}
+          popoverCloseContent={() => (
+            <EventCalendarCloseIcon />
+          )}
+          resourceExpanderContent={(data) => (
+            <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
+          )}
+          {...restOptions}
+        />
+      </div>
     </EventCalendarContainer>
   )
 }

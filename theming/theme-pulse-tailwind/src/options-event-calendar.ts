@@ -169,7 +169,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   return {
     optionDefaults: {
-      tableBodyClass: params.bgClass,
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
@@ -481,6 +480,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       tableHeaderClass: (data) => joinClassNames(data.isSticky && params.bgClass),
+      tableBodyClass: params.bgClass,
       fillerClass: `border ${params.borderColorClass} opacity-50`,
 
       dayNarrowWidth: 100,

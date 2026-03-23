@@ -56,6 +56,7 @@ export function EventCalendar({
       direction={direction}
       className={className}
       height={height}
+      autoHeight={autoHeight}
       borderless={restOptions.borderless}
       borderlessX={restOptions.borderlessX}
       borderlessTop={restOptions.borderlessTop}
@@ -66,19 +67,20 @@ export function EventCalendar({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <EventCalendarViews
-        controller={controller}
-        liquidHeight={!autoHeight && height !== undefined}
-        height={autoHeight ? 'auto' : contentHeight}
-        initialView={availableViews[0]}
-        navLinkDayClick={navLinkDayClick}
-        navLinkWeekClick={navLinkWeekClick}
-        plugins={[...plugins, ...userPlugins]}
-        popoverCloseContent={() => (
-          <EventCalendarCloseIcon />
-        )}
-        {...restOptions}
-      />
+      <div className='grow min-h-0'>
+        <EventCalendarViews
+          controller={controller}
+          height={autoHeight ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
+          plugins={[...plugins, ...userPlugins]}
+          popoverCloseContent={() => (
+            <EventCalendarCloseIcon />
+          )}
+          {...restOptions}
+        />
+      </div>
     </EventCalendarContainer>
   )
 }

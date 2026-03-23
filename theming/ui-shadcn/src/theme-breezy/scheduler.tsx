@@ -41,8 +41,8 @@ export function Scheduler({
         hasBorderX && 'border-x',
         hasBorderTop && 'border-t',
         hasBorderBottom && 'border-b',
-        (hasBorderTop && hasBorderX) && 'rounded-t-lg',
-        (hasBorderBottom && hasBorderX) && 'rounded-b-lg',
+        (hasBorderTop && hasBorderX && !isHeightAuto) && 'rounded-t-lg',
+        (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-lg',
         !isHeightAuto && 'overflow-hidden', // for rounded
       )}
       style={{ height }}
