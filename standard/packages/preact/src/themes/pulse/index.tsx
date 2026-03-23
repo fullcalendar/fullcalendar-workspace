@@ -135,7 +135,21 @@ export default {
   name: 'theme-pulse',
   optionDefaults: {
     className: "gap-6 root-reset",
-    viewClass: `rounded-sm overflow-hidden border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
+    viewClass: (data) => {
+      const hasBorderTop = !(data.isFirst && data.borderlessTop)
+      const hasBorderBottom = !(data.isLast && data.borderlessBottom)
+      const hasBorderX = !data.borderlessX
+      return joinClassNames(
+        'border-(--fc-pulse-border)',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        hasBorderX && 'border-x',
+        (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+        (hasBorderTop && hasBorderBottom && hasBorderX) && smallBoxShadowClass,
+        !data.isHeightAuto && 'overflow-hidden',
+      )
+    },
     tableBodyClass: 'bg-(--fc-pulse-background)',
 
     /* Toolbar
@@ -500,10 +514,14 @@ export default {
     /* Single Month (in Multi-Month)
     --------------------------------------------------------------------------------------------- */
 
-    singleMonthClass: "m-3",
+    singleMonthClass: (data) => joinClassNames(
+      data.multiMonthColumnCount > 1 && 'm-3',
+      (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b border-(--fc-pulse-border)',
+    ),
     singleMonthHeaderClass: (data) => joinClassNames(
-      data.isSticky && 'border-b border-(--fc-pulse-border) bg-(--fc-pulse-background)',
-      data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
+      data.multiMonthColumnCount > 1
+        ? 'pb-2'
+        : 'py-1 border-b border-(--fc-pulse-border) bg-(--fc-pulse-background)',
       'items-center',
     ),
     singleMonthHeaderInnerClass: (data) => joinClassNames(
@@ -581,7 +599,6 @@ export default {
   views: {
     dayGrid: {
       ...dayRowCommonClasses,
-      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
       dayHeaderDividerClass: 'border-b border-(--fc-pulse-border)',
       dayCellBottomClass: getShortDayCellBottomClass,
@@ -589,14 +606,15 @@ export default {
     multiMonth: {
       ...dayRowCommonClasses,
       viewClass: 'bg-(--fc-pulse-faint)',
-      tableBodyClass: 'border border-(--fc-pulse-border) rounded-sm overflow-hidden',
+      tableBodyClass: (data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
+      ),
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
       dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-pulse-border)'),
       dayCellBottomClass: getShortDayCellBottomClass,
     },
     timeGrid: {
       ...dayRowCommonClasses,
-      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
       dayHeaderDividerClass: (data) => joinClassNames(
         'border-b',
@@ -666,7 +684,6 @@ export default {
       noEventsInnerClass: 'py-15',
     },
     timeline: {
-      tableHeaderClass: 'bg-(--fc-pulse-background)',
 
       /* Timeline > Row Event
       ------------------------------------------------------------------------------------------- */

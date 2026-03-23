@@ -147,7 +147,21 @@ export function EventCalendar({
     <FullCalendar
       initialView={availableViews[0]}
       className="gap-6 root-reset"
-      viewClass={`rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`}
+      viewClass={(data) => {
+        const hasBorderTop = !(data.isFirst && data.borderlessTop)
+        const hasBorderBottom = !(data.isLast && data.borderlessBottom)
+        const hasBorderX = !data.borderlessX
+        return joinClassNames(
+          'border-(--fc-pulse-border)',
+          hasBorderTop && 'border-t',
+          hasBorderBottom && 'border-b',
+          hasBorderX && 'border-x',
+          (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+          (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+          (hasBorderTop && hasBorderBottom && hasBorderX) && smallBoxShadowClass,
+          !data.isHeightAuto && 'overflow-hidden',
+        )
+      }}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -519,10 +533,14 @@ export function EventCalendar({
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-3"
+      singleMonthClass={(data) => joinClassNames(
+        data.multiMonthColumnCount > 1 && 'm-3',
+        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b border-(--fc-pulse-border)',
+      )}
       singleMonthHeaderClass={(data) => joinClassNames(
-        data.isSticky && 'border-b border-(--fc-pulse-border) bg-(--fc-pulse-background)',
-        data.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1',
+        data.multiMonthColumnCount > 1
+          ? 'pb-2'
+          : 'py-1 border-b border-(--fc-pulse-border) bg-(--fc-pulse-background)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(data) => joinClassNames(
@@ -575,7 +593,9 @@ export function EventCalendar({
           dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-pulse-border)'),
           dayCellBottomClass: getShortDayCellBottomClass,
           viewClass: 'bg-(--fc-pulse-faint)',
-          tableBodyClass: 'border border-(--fc-pulse-border) bg-(--fc-pulse-background) rounded-sm overflow-hidden',
+          tableBodyClass: (data) => joinClassNames(
+            data.multiMonthColumnCount > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
+          ),
           ...userViews?.multiMonth,
         },
         timeGrid: {
