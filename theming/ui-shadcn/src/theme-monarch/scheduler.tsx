@@ -27,20 +27,23 @@ export function Scheduler({
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <div
       className={cn(
         className,
-        'flex flex-col',
-        'bg-background',
-        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-        !borderlessX && 'border-x',
-        !borderlessTop && 'border-t',
-        !borderlessBottom && 'border-b',
+        'flex flex-col bg-background',
+        hasBorderX && 'border-x',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        (hasBorderTop && hasBorderX) && 'rounded-t-lg',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-lg',
+        !isHeightAuto && 'overflow-hidden', // for rounded
       )}
       style={{ height }}
       dir={direction === 'rtl' ? 'rtl' : undefined}
@@ -53,7 +56,8 @@ export function Scheduler({
       />
       <div className='grow min-h-0'>
         <SchedulerView
-          height={height !== undefined ? '100%' : contentHeight}
+          className='grow min-h-0'
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}

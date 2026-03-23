@@ -24,8 +24,10 @@ export function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <div
@@ -34,7 +36,7 @@ export function EventCalendar({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
-        className={borderlessX ? 'px-3' : ''}
+        className={!hasBorderX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
@@ -43,11 +45,13 @@ export function EventCalendar({
         <EventCalendarView
           className={cn(
             'bg-background border-t',
-            !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
-            !borderlessX && 'border-x',
-            !borderlessBottom && 'border-b',
+            hasBorderX && 'border-x',
+            hasBorderBottom && 'border-b',
+            (hasBorderX && !isHeightAuto) && 'rounded-t-sm',
+            (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-sm',
+            !isHeightAuto && 'overflow-hidden', // for rounded
           )}
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}

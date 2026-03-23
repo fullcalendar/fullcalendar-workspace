@@ -24,19 +24,24 @@ export function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <div
       className={cn(
         className,
         'flex flex-col bg-background',
-        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-sm overflow-hidden shadow-xs',
-        !borderlessX && 'border-x',
-        !borderlessTop && 'border-t',
-        !borderlessBottom && 'border-b',
+        hasBorderX && 'border-x',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        (hasBorderTop && hasBorderX) && 'rounded-t-sm',
+        (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
+        (hasBorderX && hasBorderTop && hasBorderBottom) && 'shadow-xs',
+        !isHeightAuto && 'overflow-hidden', // for rounded
       )}
       style={{ height }}
       dir={direction === 'rtl' ? 'rtl' : undefined}
@@ -49,7 +54,7 @@ export function EventCalendar({
       />
       <div className='grow min-h-0'>
         <EventCalendarView
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}
