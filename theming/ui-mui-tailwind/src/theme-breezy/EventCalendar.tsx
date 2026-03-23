@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import { useCalendarController } from "@fullcalendar/react"
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
-import EventCalendarView from './EventCalendarView.js'
+import EventCalendarViews from './EventCalendarViews.js'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { EventCalendarProps } from '../lib/event-calendar-props.js'
 
@@ -66,7 +66,7 @@ export default function EventCalendar({
           minHeight: 0,
         }}
       >
-        <EventCalendarView
+        <EventCalendarViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}

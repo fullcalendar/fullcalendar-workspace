@@ -1,26 +1,26 @@
 import React from 'react';
 import { CalendarOptions } from "@fullcalendar/react";
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
-import EventCalendarView from './EventCalendarView.js'
+import EventCalendarViews from './EventCalendarViews.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { createSchedulerOnlyOptions } from '@fullcalendar/theme-classic-tailwind/options-scheduler'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-tailwind/options-scheduler'
 import { params } from '../lib/option-params.js'
 
 export const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
-export default function SchedulerView({
+export default function SchedulerViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
 
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
-        userViews || {}
+        userViews || {},
       )}
 
       // spreads

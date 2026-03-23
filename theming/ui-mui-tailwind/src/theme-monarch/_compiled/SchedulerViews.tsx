@@ -1,7 +1,7 @@
 import React from 'react'
 import { CalendarOptions, joinClassNames } from '@fullcalendar/react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EventCalendarView, {
+import EventCalendarViews, {
   faintBgClass,
   mutedHoverPressableClass,
   outlineWidthFocusClass,
@@ -10,19 +10,19 @@ import EventCalendarView, {
   secondaryPressableClass,
   strongSolidPressableClass,
   tertiaryOutlineColorClass,
-} from './EventCalendarView.js'
+} from './EventCalendarViews.js'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',
   dayHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
 }
 
-export default function SchedulerView({
+export default function SchedulerViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
@@ -148,4 +148,3 @@ export default function SchedulerView({
     />
   )
 }
-

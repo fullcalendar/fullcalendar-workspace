@@ -1,8 +1,8 @@
 import React from 'react'
 import FullCalendar, { CalendarOptions } from '@fullcalendar/react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
-import { createEventCalendarOptions } from '@fullcalendar/theme-breezy-tailwind/options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-breezy-tailwind/slots'
+import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-tailwind/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-monarch-tailwind/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { params } from '../lib/option-params.js'
 
@@ -10,7 +10,7 @@ const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 const slots = createSlots(params)
 
-export default function EventCalendarView({
+export default function EventCalendarViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {
@@ -22,7 +22,7 @@ export default function EventCalendarView({
 
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        userViews || {},
+        userViews || {}
       )}
 
       // spreads
