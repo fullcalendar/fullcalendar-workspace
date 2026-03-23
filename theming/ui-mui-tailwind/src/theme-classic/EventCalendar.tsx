@@ -17,8 +17,10 @@ export default function EventCalendar({
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <Box
@@ -32,30 +34,35 @@ export default function EventCalendar({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
-        className={borderlessX ? 'px-3' : ''}
+        className={!hasBorderX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
       <Box
-        sx={{
+        sx={(theme) => ({
           flexGrow: 1,
           minHeight: 0,
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
-          borderLeftWidth: borderlessX ? 0 : 1,
-          borderRightWidth: borderlessX ? 0 : 1,
+          borderLeftWidth: hasBorderX ? 1 : 0,
+          borderRightWidth: hasBorderX ? 1 : 0,
           borderTopWidth: 1,
-          borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...((borderlessX || borderlessBottom) ? {} : {
-            borderRadius: 1,
-            overflow: 'hidden',
-          })
-        }}
+          borderBottomWidth: hasBorderBottom ? 1 : 0,
+          ...(hasBorderX && !isHeightAuto && {
+            borderTopLeftRadius: theme.shape.borderRadius,
+            borderTopRightRadius: theme.shape.borderRadius,
+          }),
+          ...(hasBorderBottom && hasBorderX && !isHeightAuto && {
+            borderBottomLeftRadius: theme.shape.borderRadius,
+            borderBottomRightRadius: theme.shape.borderRadius,
+          }),
+          overflow: !isHeightAuto ? 'hidden' : undefined,
+        })}
       >
         <EventCalendarView
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
           plugins={[...eventCalendarPlugins, ...userPlugins]}

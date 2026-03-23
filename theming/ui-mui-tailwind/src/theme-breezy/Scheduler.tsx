@@ -18,29 +18,36 @@ export default function Scheduler({
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
 
   return (
     <Box
       className={className}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         height,
         bgcolor: 'background.paper',
         borderStyle: 'solid',
         borderColor: 'divider',
-        borderLeftWidth: borderlessX ? 0 : 1,
-        borderRightWidth: borderlessX ? 0 : 1,
-        borderTopWidth: borderlessTop ? 0 : 1,
-        borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
-          borderRadius: 1,
-          overflow: 'hidden',
-        })
-      }}
+        borderLeftWidth: hasBorderX ? 1 : 0,
+        borderRightWidth: hasBorderX ? 1 : 0,
+        borderTopWidth: hasBorderTop ? 1 : 0,
+        borderBottomWidth: hasBorderBottom ? 1 : 0,
+        ...(hasBorderTop && hasBorderX && {
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+        }),
+        ...(hasBorderBottom && hasBorderX && {
+          borderBottomLeftRadius: theme.shape.borderRadius,
+          borderBottomRightRadius: theme.shape.borderRadius,
+        }),
+        overflow: !isHeightAuto ? 'hidden' : undefined,
+      })}
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
@@ -61,7 +68,7 @@ export default function Scheduler({
         }}
       >
         <SchedulerView
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
           plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
