@@ -48,7 +48,7 @@
     "react-dom": "^19.1.0",
     "serve": "^14.2.5",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^4.2.2",
     "typescript": "~5.7.2",
     "wrangler": "^4.54.0",
     "temporal-polyfill": "^0.3.2"
