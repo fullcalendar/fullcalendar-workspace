@@ -67,8 +67,8 @@ export function ResourceTimeGrid({
             'bg-background border-t',
             hasBorderX && 'border-x',
             hasBorderBottom && 'border-b',
-            (hasBorderX && !isHeightAuto) && 'rounded-t-sm',
-            (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-sm',
+            (hasBorderX && !isHeightAuto) && 'rounded-t-xs',
+            (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-xs',
             !isHeightAuto && 'overflow-hidden',
           )}
           controller={controller}

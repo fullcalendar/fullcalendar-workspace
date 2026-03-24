@@ -58,8 +58,8 @@ export function ResourceTimeGrid({
         hasBorderX && 'border-x',
         hasBorderTop && 'border-t',
         hasBorderBottom && 'border-b',
-        (hasBorderTop && hasBorderX && !isHeightAuto) && 'rounded-t-lg',
-        (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-lg',
+        (hasBorderTop && hasBorderX && !isHeightAuto) && 'rounded-t-md',
+        (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-md',
         !isHeightAuto && 'overflow-hidden',
       )}
       style={{ height }}
