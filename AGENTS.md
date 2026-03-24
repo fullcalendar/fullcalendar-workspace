@@ -50,21 +50,31 @@ The split per-palette files (`palettes/X.css`) each contain only one palette's v
 
 ### Shadcn Components
 
-- Component housing: theming/ui-shadcn/src/theme-*/{event-calendar,scheduler}.tsx?
+- Component housing:
+  - theming/ui-shadcn/src/theme-*/{event-calendar,scheduler}.tsx?
 - Incorporates:
-  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler,slots}.tsx?
+  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler}.ts
+  - theming/theme-*-tailwind/src/slots.tsx? (themes that have slot overrides)
   - theming/ui-shadcn/src/lib/option-params.ts (theme-agnostic)
 - Compiles to:
-  - theming/ui-shadcn/src/theme-*/_compiled/{event-calendar,scheduler}-views.tsx?
+  - theming/ui-shadcn/src/theme-*/_compiled/{event-calendar-toolbar,event-calendar-icons,event-calendar-views,event-calendar}.tsx?
+  - theming/ui-shadcn/src/theme-*/_compiled/{scheduler-views,resource-timegrid,resource-timeline}.tsx?
+
+**Critical:** The AGENTS-listed `*-views.tsx` files are not the whole Shadcn output surface. Wrapper-level DOM, toolbar DOM, and icon/close-button DOM also land in additional `_compiled/*.tsx` files and must be audited when checking end-to-end DOM equivalence.
 
 ### MUI Components
 
-- Component housing: theming/ui-mui-tailwind/src/theme-*/{EventCalendar,Scheduler}View.tsx?
+- Component housing:
+  - theming/ui-mui-tailwind/src/theme-*/{EventCalendar,Scheduler}.tsx?
+  - theming/ui-mui-tailwind/src/theme-*/{EventCalendarViews,SchedulerViews}.tsx?
 - Incorporates:
-  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler,slots}.tsx?
+  - theming/theme-*-tailwind/src/options-{event-calendar,scheduler}.ts
+  - theming/theme-*-tailwind/src/slots.tsx? (themes that have slot overrides)
   - theming/ui-mui-tailwind/src/lib/option-params.ts (theme-agnostic)
 - Compiles to:
-  - theming/ui-mui-tailwind/src/theme-*/_compiled/{EventCalendar,Scheduler}View.tsx?
+  - theming/ui-mui-tailwind/src/theme-*/_compiled/{EventCalendar,EventCalendarToolbar,EventCalendarViews,Scheduler,SchedulerViews}.tsx?
 - Further compiles to:
-  - theming/ui-mui/src/*/{EventCalendar,Scheduler}View.tsx?
+  - theming/ui-mui/src/*/{EventCalendarViews,SchedulerViews}.tsx?
   - theming/ui-mui/src/*/theme.css (CSS definitions for tailwind classnames)
+
+**Critical:** For MUI, the `theme.css` files are also manual compiled artifacts. When propagating changes into the final `theming/ui-mui/src/*` outputs, you must add CSS definitions for any newly introduced Tailwind classnames and remove definitions for classnames that are no longer used anywhere in the corresponding final `.tsx` files.

@@ -64,7 +64,7 @@ export default function Scheduler({
       }}
     >
       <EventCalendarToolbar
-        className={hasBorderX ? 'px-3' : ''}
+        className={!hasBorderX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

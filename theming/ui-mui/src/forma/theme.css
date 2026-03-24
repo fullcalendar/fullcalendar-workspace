@@ -465,7 +465,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)15%, transparent)
+    background-color: color-mix(in oklab, var(--fc-event-color) 15%, transparent)
   }
 }
 @supports not (color:color-mix(in lab, red, red)) {
@@ -490,7 +490,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,var\(--mui-palette-background-paper\)\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)20%, var(--mui-palette-background-paper));
+    background-color: color-mix(in oklab, var(--fc-event-color) 20%, var(--mui-palette-background-paper));
     color: inherit
   }
 }
@@ -502,7 +502,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_30\%\,var\(--mui-palette-background-paper\)\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)30%, var(--mui-palette-background-paper));
+    background-color: color-mix(in oklab, var(--fc-event-color) 30%, var(--mui-palette-background-paper));
     color: inherit
   }
 }
@@ -513,7 +513,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .bg-\[color-mix\(in_oklab\,var\(--mui-palette-text-primary\)_16\%\,var\(--mui-palette-background-paper\)\)\] {
-    background-color: color-mix(in oklab, var(--mui-palette-text-primary)16%, var(--mui-palette-background-paper))
+    background-color: color-mix(in oklab, var(--mui-palette-text-primary) 16%, var(--mui-palette-background-paper))
   }
 }
 
@@ -788,7 +788,7 @@
 
   @supports (color:color-mix(in lab, red, red)) {
     .hover\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_25\%\,var\(--mui-palette-background-paper\)\)\]:hover {
-      background-color: color-mix(in oklab, var(--fc-event-color)25%, var(--mui-palette-background-paper))
+      background-color: color-mix(in oklab, var(--fc-event-color) 25%, var(--mui-palette-background-paper))
     }
   }
 
@@ -798,7 +798,7 @@
 
   @supports (color:color-mix(in lab, red, red)) {
     .hover\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_35\%\,var\(--mui-palette-background-paper\)\)\]:hover {
-      background-color: color-mix(in oklab, var(--fc-event-color)35%, var(--mui-palette-background-paper))
+      background-color: color-mix(in oklab, var(--fc-event-color) 35%, var(--mui-palette-background-paper))
     }
   }
 
@@ -808,7 +808,7 @@
 
   @supports (color:color-mix(in lab, red, red)) {
     .hover\:bg-\[color-mix\(in_oklab\,var\(--mui-palette-text-primary\)_20\%\,var\(--mui-palette-background-paper\)\)\]:hover {
-      background-color: color-mix(in oklab, var(--mui-palette-text-primary)20%, var(--mui-palette-background-paper))
+      background-color: color-mix(in oklab, var(--mui-palette-text-primary) 20%, var(--mui-palette-background-paper))
     }
   }
 
@@ -852,7 +852,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .active\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_30\%\,var\(--mui-palette-background-paper\)\)\]:active {
-    background-color: color-mix(in oklab, var(--fc-event-color)30%, var(--mui-palette-background-paper))
+    background-color: color-mix(in oklab, var(--fc-event-color) 30%, var(--mui-palette-background-paper))
   }
 }
 
@@ -862,7 +862,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .active\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_40\%\,var\(--mui-palette-background-paper\)\)\]:active {
-    background-color: color-mix(in oklab, var(--fc-event-color)40%, var(--mui-palette-background-paper))
+    background-color: color-mix(in oklab, var(--fc-event-color) 40%, var(--mui-palette-background-paper))
   }
 }
 
@@ -872,7 +872,7 @@
 
 @supports (color:color-mix(in lab, red, red)) {
   .active\:bg-\[color-mix\(in_oklab\,var\(--mui-palette-text-primary\)_25\%\,var\(--mui-palette-background-paper\)\)\]:active {
-    background-color: color-mix(in oklab, var(--mui-palette-text-primary)25%, var(--mui-palette-background-paper))
+    background-color: color-mix(in oklab, var(--mui-palette-text-primary) 25%, var(--mui-palette-background-paper))
   }
 }
 
@@ -936,4 +936,9 @@
 
 [dir=rtl] .\[\[dir\=rtl\]_\&\]\:rotate-180 {
   rotate: 180deg
+}
+
+.text-md {
+  font-size: 16px;
+  line-height: calc(1.5 / 1)
 }
