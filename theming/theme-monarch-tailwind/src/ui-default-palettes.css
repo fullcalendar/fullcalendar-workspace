@@ -160,8 +160,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover: var(--fc-monarch-background);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(216 194 188);
-  --fc-monarch-strong-border: rgb(216 194 188);
+  --fc-monarch-border: #e2dedd;
+  --fc-monarch-strong-border: #c9c4c3;
 }
 [data-palette=red][data-color-scheme=dark],
 [data-palette=red] [data-color-scheme=dark] {
@@ -201,8 +201,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover-foreground: rgb(241 223 218);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(83 67 63);
-  --fc-monarch-strong-border: rgb(83 67 63);
+  --fc-monarch-border: #34312f;
+  --fc-monarch-strong-border: #544f4d;
 }
 
 [data-palette=green] {
@@ -241,8 +241,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover: var(--fc-monarch-background);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(197 200 186);
-  --fc-monarch-strong-border: rgb(197 200 186);
+  --fc-monarch-border: #dddfdc;
+  --fc-monarch-strong-border: #c3c5c1;
 }
 [data-palette=green][data-color-scheme=dark],
 [data-palette=green] [data-color-scheme=dark] {
@@ -282,8 +282,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover-foreground: rgb(226 227 216);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(68 72 61);
-  --fc-monarch-strong-border: rgb(68 72 61);
+  --fc-monarch-border: #313330;
+  --fc-monarch-strong-border: #525650;
 }
 
 [data-palette=blue] {
@@ -322,8 +322,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover: var(--fc-monarch-background);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(196 198 208);
-  --fc-monarch-strong-border: rgb(196 198 208);
+  --fc-monarch-border: #dddee1;
+  --fc-monarch-strong-border: #c2c3c7;
 }
 [data-palette=blue][data-color-scheme=dark],
 [data-palette=blue] [data-color-scheme=dark] {
@@ -363,8 +363,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover-foreground: rgb(226 226 233);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(68 71 78);
-  --fc-monarch-strong-border: rgb(68 71 78);
+  --fc-monarch-border: #313234;
+  --fc-monarch-strong-border: #53555a;
 }
 
 [data-palette=yellow] {
@@ -403,8 +403,8 @@ TODO: convert all colors to hex
   --fc-monarch-popover: var(--fc-monarch-background);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(205 198 180);
-  --fc-monarch-strong-border: rgb(205 198 180);
+  --fc-monarch-border: #e0dfdb;
+  --fc-monarch-strong-border: #c5c3bf;
 }
 [data-palette=yellow][data-color-scheme=dark],
 [data-palette=yellow] [data-color-scheme=dark] {
@@ -444,6 +444,6 @@ TODO: convert all colors to hex
   --fc-monarch-popover-foreground: rgb(232 226 212);
 
   /* neutral borders */
-  --fc-monarch-border: rgb(75 71 57);
-  --fc-monarch-strong-border: rgb(75 71 57);
+  --fc-monarch-border: #333230;
+  --fc-monarch-strong-border: #56544f;
 }
