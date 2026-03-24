@@ -43,9 +43,9 @@ export default function ResourceTimeline({
   const controller = useCalendarController()
 
   const isHeightAuto = height === 'auto' || contentHeight === 'auto'
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
 
   return (
     <Box
@@ -58,15 +58,15 @@ export default function ResourceTimeline({
         bgcolor: 'background.paper',
         borderStyle: 'solid',
         borderColor: 'divider',
-        borderLeftWidth: borderlessX ? 0 : 1,
-        borderRightWidth: borderlessX ? 0 : 1,
-        borderTopWidth: borderlessTop ? 0 : 1,
-        borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(!borderlessTop && !borderlessX && {
+        borderLeftWidth: hasBorderX ? 1 : 0,
+        borderRightWidth: hasBorderX ? 1 : 0,
+        borderTopWidth: hasBorderTop ? 1 : 0,
+        borderBottomWidth: hasBorderBottom ? 1 : 0,
+        ...(hasBorderTop && hasBorderX && {
           borderTopLeftRadius: theme.shape.borderRadius,
           borderTopRightRadius: theme.shape.borderRadius,
         }),
-        ...(!borderlessBottom && !borderlessX && {
+        ...(hasBorderBottom && hasBorderX && {
           borderBottomLeftRadius: theme.shape.borderRadius,
           borderBottomRightRadius: theme.shape.borderRadius,
         }),
@@ -93,4 +93,3 @@ export default function ResourceTimeline({
     </Box>
   )
 }
-

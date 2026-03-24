@@ -49,8 +49,8 @@ export default function EventCalendar({
   const controller = useCalendarController()
 
   const isHeightAuto = height === 'auto' || contentHeight === 'auto'
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
 
   return (
     <Box
@@ -64,7 +64,7 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
-        className={borderlessX ? 'px-3' : ''}
+        className={hasBorderX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
@@ -76,18 +76,18 @@ export default function EventCalendar({
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
-          borderLeftWidth: borderlessX ? 0 : 1,
-          borderRightWidth: borderlessX ? 0 : 1,
-          borderTopWidth: 1,
-          borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...(!borderlessX && !isHeightAuto && {
-            borderTopLeftRadius: theme.shape.borderRadius,
-            borderTopRightRadius: theme.shape.borderRadius,
-          }),
-          ...(!borderlessBottom && !borderlessX && !isHeightAuto && {
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-          }),
+        borderLeftWidth: hasBorderX ? 1 : 0,
+        borderRightWidth: hasBorderX ? 1 : 0,
+        borderTopWidth: 1,
+        borderBottomWidth: hasBorderBottom ? 1 : 0,
+        ...(hasBorderX && !isHeightAuto && {
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+        }),
+        ...(hasBorderBottom && hasBorderX && !isHeightAuto && {
+          borderBottomLeftRadius: theme.shape.borderRadius,
+          borderBottomRightRadius: theme.shape.borderRadius,
+        }),
           overflow: !isHeightAuto ? 'hidden' : undefined,
         })}
       >

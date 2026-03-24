@@ -50,8 +50,8 @@ export default function EventCalendar({
   const controller = useCalendarController()
 
   const isHeightAuto = height === 'auto' || contentHeight === 'auto'
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
 
   return (
     <Box
@@ -68,7 +68,7 @@ export default function EventCalendar({
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        borderlessX={borderlessX}
+        borderlessX={!hasBorderX}
       />
       <Box
         sx={(theme) => ({
@@ -77,15 +77,15 @@ export default function EventCalendar({
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
-          borderLeftWidth: borderlessX ? 0 : 1,
-          borderRightWidth: borderlessX ? 0 : 1,
+          borderLeftWidth: hasBorderX ? 1 : 0,
+          borderRightWidth: hasBorderX ? 1 : 0,
           borderTopWidth: 1,
-          borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...(!borderlessX && !isHeightAuto && {
+          borderBottomWidth: hasBorderBottom ? 1 : 0,
+          ...(hasBorderX && !isHeightAuto && {
             borderTopLeftRadius: theme.shape.borderRadius,
             borderTopRightRadius: theme.shape.borderRadius,
           }),
-          ...(!borderlessBottom && !borderlessX && !isHeightAuto && {
+          ...(hasBorderBottom && hasBorderX && !isHeightAuto && {
             borderBottomLeftRadius: theme.shape.borderRadius,
             borderBottomRightRadius: theme.shape.borderRadius,
           }),
@@ -105,4 +105,3 @@ export default function EventCalendar({
     </Box>
   )
 }
-

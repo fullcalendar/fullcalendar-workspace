@@ -13,19 +13,19 @@ export interface EventCalendarContainerProps {
 }
 
 export function EventCalendarContainer(props: EventCalendarContainerProps) {
-  const borderlessX = props.borderlessX ?? props.borderless
-  const borderlessTop = props.borderlessTop ?? props.borderless
-  const borderlessBottom = props.borderlessBottom ?? props.borderless
+  const hasBorderX = !(props.borderlessX ?? props.borderless)
+  const hasBorderTop = !(props.borderlessTop ?? props.borderless)
+  const hasBorderBottom = !(props.borderlessBottom ?? props.borderless)
 
   return (
     <div
       dir={props.direction === 'rtl' ? 'rtl' : undefined}
       className={cn(
         'flex flex-col bg-background',
-        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-        !borderlessX && 'border-x',
-        !borderlessTop && 'border-t',
-        !borderlessBottom && 'border-b',
+        hasBorderX && hasBorderTop && hasBorderBottom && 'rounded-lg overflow-hidden',
+        hasBorderX && 'border-x',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
         props.className,
       )}
       style={{
