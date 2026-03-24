@@ -321,7 +321,10 @@ export function EventCalendarViews({
       /* List Day
       ----------------------------------------------------------------------------------------- */
 
-      listDayClass="not-last:border-b flex flex-row items-start"
+      listDayClass={(data) => cn(
+        !data.isLast && 'border-b',
+        'flex flex-row items-start',
+      )}
       listDayHeaderClass={(data) => cn(
         'shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
         data.isToday && 'border-s-4 border-primary',

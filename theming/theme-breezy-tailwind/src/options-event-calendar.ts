@@ -480,8 +480,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // contains multiple days
       listDaysClass: 'my-10 mx-auto w-full max-w-218 px-4',
 
-      listDayClass: joinClassNames(
-        `not-last:border-b ${params.mutedBorderColorClass}`,
+      listDayClass: (data) => joinClassNames(
+        !data.isLast && `border-b ${params.mutedBorderColorClass}`,
         'flex flex-row items-start gap-2',
       ),
 
@@ -658,7 +658,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         listItemEventClass: (data) => joinClassNames(
-          `group not-last:border-b ${params.mutedBorderColorClass} p-4 items-center gap-3`,
+          'group p-4 items-center gap-3',
+          !data.isLast && `border-b ${params.mutedBorderColorClass}`,
           data.isInteractive
             ? params.faintHoverPressableClass
             : params.faintHoverClass,

@@ -467,7 +467,10 @@ export default {
 
     listDayFormat: { day: 'numeric' },
     listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
-    listDayClass: "not-last:border-b border-(--fc-monarch-border) flex flex-row items-start",
+    listDayClass: (data) => joinClassNames(
+      !data.isLast && 'border-b border-(--fc-monarch-border)',
+      'flex flex-row items-start',
+    ),
     listDayHeaderClass: "p-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2",
     listDayHeaderInnerClass: (data) => (
       !data.level

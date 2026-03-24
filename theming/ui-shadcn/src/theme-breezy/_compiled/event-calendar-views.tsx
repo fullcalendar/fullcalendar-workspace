@@ -360,7 +360,10 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       listDaysClass="my-10 mx-auto w-full max-w-218 px-4"
-      listDayClass="not-last:border-b flex flex-row items-start gap-2"
+      listDayClass={(data) => cn(
+        !data.isLast && 'border-b',
+        'flex flex-row items-start gap-2',
+      )}
       listDayHeaderClass="my-px shrink-0 w-1/4 max-w-50 py-3.5 flex flex-col items-start"
       listDayHeaderInnerClass={(data) => cn(
         'my-0.5 py-0.5 px-2 -mx-2 rounded-full text-sm',
@@ -500,7 +503,8 @@ export function EventCalendarViews({
           ------------------------------------------------------------------------------------- */
 
           listItemEventClass: (data) => cn(
-            'group not-last:border-b p-4 items-center gap-3 hover:bg-muted/50',
+            'group p-4 items-center gap-3 hover:bg-muted/50',
+            !data.isLast && 'border-b',
             data.isInteractive && 'focus-visible:bg-muted/50',
           ),
           listItemEventBeforeClass: 'border-4 border-(--fc-event-color) rounded-full',

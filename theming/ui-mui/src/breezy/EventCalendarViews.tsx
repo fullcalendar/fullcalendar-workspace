@@ -434,7 +434,10 @@ export default function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       listDaysClass="my-10 mx-auto w-full max-w-218 px-4"
-      listDayClass="not-last:border-b border-(--mui-palette-divider) flex flex-row items-start gap-2"
+      listDayClass={(data) => joinClassNames(
+        !data.isLast && 'border-b border-(--mui-palette-divider)',
+        'flex flex-row items-start gap-2',
+      )}
       listDayHeaderClass="my-px shrink-0 w-1/4 max-w-50 py-3.5 flex flex-col items-start"
       listDayHeaderInnerClass={(data) => joinClassNames(
         'my-0.5 py-0.5 px-2 -mx-2 rounded-full text-sm',
@@ -581,7 +584,8 @@ export default function EventCalendarViews({
           ------------------------------------------------------------------------------------- */
 
           listItemEventClass: (data) => joinClassNames(
-            `group not-last:border-b border-(--mui-palette-divider) p-4 items-center gap-3`,
+            'group p-4 items-center gap-3',
+            !data.isLast && 'border-b border-(--mui-palette-divider)',
             data.isInteractive
               ? faintHoverPressableClass
               : faintBgHoverClass,

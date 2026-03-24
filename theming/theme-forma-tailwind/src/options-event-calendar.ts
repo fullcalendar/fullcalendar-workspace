@@ -426,7 +426,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
+      listDayClass: (data) => joinClassNames(
+        !data.isLast && `border-b ${params.borderColorClass}`,
+        'flex flex-row items-start',
+      ),
 
       listDayHeaderClass: (data) => joinClassNames(
         'shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',

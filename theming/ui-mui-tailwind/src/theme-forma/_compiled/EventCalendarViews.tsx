@@ -370,7 +370,10 @@ export default function EventCalendarViews({
           : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       )}
       slotLaneClass={getSlotClass}
-      listDayClass="not-last:border-b border-(--mui-palette-divider) flex flex-row items-start"
+      listDayClass={(data) => joinClassNames(
+        !data.isLast && 'border-b border-(--mui-palette-divider)',
+        'flex flex-row items-start',
+      )}
       listDayHeaderClass={(data) => joinClassNames(
         'shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
         data.isToday && `border-s-4 border-(--mui-palette-primary-main)`,

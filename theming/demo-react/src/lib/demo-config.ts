@@ -10,6 +10,7 @@ const commonProps = {
 
   // stickyHeaderDates: true,
   // height: 'auto',
+  // contentHeight: 'auto',
 }
 
 export const eventCalendarProps: EventCalendarProps = {

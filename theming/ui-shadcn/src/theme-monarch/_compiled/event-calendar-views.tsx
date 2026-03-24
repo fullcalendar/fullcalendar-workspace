@@ -326,7 +326,10 @@ export function EventCalendarViews({
 
       listDayFormat={{ day: 'numeric' }}
       listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
-      listDayClass='not-last:border-b flex flex-row items-start'
+      listDayClass={(data) => cn(
+        !data.isLast && 'border-b',
+        'flex flex-row items-start',
+      )}
       listDayHeaderClass='p-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2'
       listDayHeaderInnerClass={(data) => cn(
         !data.level
