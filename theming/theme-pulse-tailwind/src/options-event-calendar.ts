@@ -479,7 +479,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
-      tableHeaderClass: (data) => joinClassNames(data.isSticky && params.bgClass),
       tableBodyClass: params.bgClass,
       fillerClass: `border ${params.borderColorClass} opacity-50`,
 
@@ -523,6 +522,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayGrid: {
         ...dayRowCommonClasses,
+        tableHeaderClass: params.bgClass,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
         dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
@@ -530,9 +530,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       multiMonth: {
         ...dayRowCommonClasses,
         viewClass: params.faintBgClass,
+        tableHeaderClass: (data) => joinClassNames(
+          data.multiMonthColumnCount === 1 && params.bgClass
+        ),
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
         dayHeaderDividerClass: (data) => joinClassNames(
-          data.isSticky && `border-b ${params.borderColorClass}`,
+          data.multiMonthColumnCount === 1 && `border-b ${params.borderColorClass}`,
         ),
         tableBodyClass: (data) => joinClassNames(
           data.multiMonthColumnCount > 1 &&
@@ -542,6 +545,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowCommonClasses,
+        tableHeaderClass: params.bgClass,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
         dayHeaderDividerClass: (data) => joinClassNames(
           'border-b',
