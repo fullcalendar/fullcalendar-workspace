@@ -607,6 +607,10 @@
   padding-block: 60px
 }
 
+.py-\[0\.1875rem\] {
+  padding-block: 3px
+}
+
 .py-\[0\.1875em\] {
   padding-block: 3px
 }
@@ -650,6 +654,11 @@
 }
 
 .text-base {
+  font-size: 16px;
+  line-height: calc(1.5/1)
+}
+
+.text-md {
   font-size: 16px;
   line-height: calc(1.5/1)
 }
@@ -964,4 +973,3 @@
 [dir=rtl] .\[\[dir\=rtl\]_\&\]\:rotate-180 {
   rotate: 180deg
 }
-
