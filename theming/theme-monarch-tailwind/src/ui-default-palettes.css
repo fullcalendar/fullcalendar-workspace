@@ -15,30 +15,12 @@ TODO: convert all colors to hex
 */
 
 :root {
-  /* neutral backgrounds */
-  --fc-monarch-background: var(--color-white);
-  --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
-  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
-  --fc-monarch-stronger: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
-  --fc-monarch-strongest: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
-
   /* neutral foregrounds */
-  --fc-monarch-foreground: var(--color-gray-950);
   --fc-monarch-faint-foreground: #bebebe; /* TODO */
   --fc-monarch-muted-foreground: #8d8d8d; /* TODO */
 }
 [data-color-scheme=dark] {
-  /* neutral backgrounds */
-  --fc-monarch-background: var(--color-gray-950);
-  --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
-  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
-  --fc-monarch-stronger: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
-  --fc-monarch-strongest: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
-
   /* neutral foregrounds */
-  --fc-monarch-foreground: var(--color-white);
   --fc-monarch-faint-foreground: #898989; /* TODO */
   --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
 }
@@ -57,7 +39,7 @@ TODO: convert all colors to hex
   --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
 
   /* tertiary */
-  --fc-monarch-tertiary: #7D5260;
+  --fc-monarch-tertiary: #895264;
   --fc-monarch-tertiary-foreground: #FFFFFF;
   --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
   --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
@@ -77,6 +59,17 @@ TODO: convert all colors to hex
 
   /* popover */
   --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-white);
+  --fc-monarch-faint: color-mix(in oklab, var(--color-mauve-500) 10%, transparent);
+  --fc-monarch-muted: color-mix(in oklab, var(--color-mauve-500) 15%, transparent);
+  --fc-monarch-strong: color-mix(in oklab, var(--color-mauve-500) 30%, transparent);
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-mauve-500) 35%, transparent);
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-mauve-500) 40%, transparent);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-mauve-950);
 
   /* neutral borders */
   --fc-monarch-border: #dedce1;
@@ -113,11 +106,17 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: #332D41;
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #ff8a9e;
 
   /* popover */
   --fc-monarch-popover: rgb(26 17 15);
   --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-gray-950);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-white);
 
   /* neutral borders */
   --fc-monarch-border: #323036;
@@ -154,10 +153,21 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(255 255 255);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #ff774f;
 
   /* popover */
   --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-white);
+  --fc-monarch-faint: color-mix(in oklab, var(--color-taupe-500) 10%, transparent);
+  --fc-monarch-muted: color-mix(in oklab, var(--color-taupe-500) 15%, transparent);
+  --fc-monarch-strong: color-mix(in oklab, var(--color-taupe-500) 30%, transparent);
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-taupe-500) 35%, transparent);
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-taupe-500) 40%, transparent);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-taupe-950);
 
   /* neutral borders */
   --fc-monarch-border: #e2dedd;
@@ -194,11 +204,17 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(68 42 34);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #f94e1b;
 
   /* popover */
   --fc-monarch-popover: rgb(26 17 15);
   --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-gray-950);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-white);
 
   /* neutral borders */
   --fc-monarch-border: #34312f;
@@ -235,10 +251,21 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(255 255 255);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #9fdb50;
 
   /* popover */
   --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-white);
+  --fc-monarch-faint: color-mix(in oklab, var(--color-olive-500) 10%, transparent);
+  --fc-monarch-muted: color-mix(in oklab, var(--color-olive-500) 15%, transparent);
+  --fc-monarch-strong: color-mix(in oklab, var(--color-olive-500) 30%, transparent);
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-olive-500) 35%, transparent);
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-olive-500) 40%, transparent);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-olive-950);
 
   /* neutral borders */
   --fc-monarch-border: #dddfdc;
@@ -275,11 +302,17 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(42 51 30);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #5bcc3a;
 
   /* popover */
   --fc-monarch-popover: rgb(18 20 14);
   --fc-monarch-popover-foreground: rgb(226 227 216);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-gray-950);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-white);
 
   /* neutral borders */
   --fc-monarch-border: #313330;
@@ -300,7 +333,7 @@ TODO: convert all colors to hex
   --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
 
   /* tertiary */
-  --fc-monarch-tertiary: rgb(112 85 117);
+  --fc-monarch-tertiary: rgb(133 93 140);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
   --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
   --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
@@ -316,10 +349,21 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(255 255 255);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #6687ff;
 
   /* popover */
   --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-white);
+  --fc-monarch-faint: color-mix(in oklab, var(--color-slate-500) 10%, transparent);
+  --fc-monarch-muted: color-mix(in oklab, var(--color-slate-500) 15%, transparent);
+  --fc-monarch-strong: color-mix(in oklab, var(--color-slate-500) 30%, transparent);
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-slate-500) 35%, transparent);
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-slate-500) 40%, transparent);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-slate-950);
 
   /* neutral borders */
   --fc-monarch-border: #dddee1;
@@ -356,11 +400,16 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(40 49 65);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
 
   /* popover */
   --fc-monarch-popover: rgb(17 19 24);
   --fc-monarch-popover-foreground: rgb(226 226 233);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-gray-950);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-white);
 
   /* neutral borders */
   --fc-monarch-border: #313234;
@@ -397,10 +446,21 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(255 255 255);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #ffbd66;
 
   /* popover */
   --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-white);
+  --fc-monarch-faint: color-mix(in oklab, var(--color-olive-500) 10%, transparent);
+  --fc-monarch-muted: color-mix(in oklab, var(--color-olive-500) 15%, transparent);
+  --fc-monarch-strong: color-mix(in oklab, var(--color-olive-500) 30%, transparent);
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-olive-500) 35%, transparent);
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-olive-500) 40%, transparent);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-olive-950);
 
   /* neutral borders */
   --fc-monarch-border: #e0dfdb;
@@ -437,11 +497,17 @@ TODO: convert all colors to hex
   --fc-monarch-selected-foreground: rgb(54 48 22);
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-outline: red; /* TODO */
+  --fc-monarch-outline: #ffe6c5;
 
   /* popover */
   --fc-monarch-popover: rgb(21 19 11);
   --fc-monarch-popover-foreground: rgb(232 226 212);
+
+  /* neutral backgrounds */
+  --fc-monarch-background: var(--color-gray-950);
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-white);
 
   /* neutral borders */
   --fc-monarch-border: #333230;
