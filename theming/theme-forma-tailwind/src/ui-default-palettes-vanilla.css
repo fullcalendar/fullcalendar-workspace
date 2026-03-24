@@ -71,7 +71,7 @@ Further color reference:
 
   /* calendar content */
   --fc-forma-background-event: var(--fc-forma-primary);
-  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
+  --fc-forma-highlight: #0F6CBD59;
   --fc-forma-event: #3788d8;
   --fc-forma-event-contrast: #FFFFFF;
 }
@@ -92,7 +92,7 @@ Further color reference:
 
   /* calendar content */
   --fc-forma-background-event: var(--fc-forma-primary);
-  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
+  --fc-forma-highlight: #d83b0159;
   --fc-forma-event: var(--fc-forma-primary);
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
@@ -113,7 +113,7 @@ Further color reference:
 
   /* calendar content */
   --fc-forma-background-event: var(--fc-forma-primary);
-  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
+  --fc-forma-highlight: #107c4159;
   --fc-forma-event: #0d944b; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
@@ -134,7 +134,7 @@ Further color reference:
 
   /* calendar content */
   --fc-forma-background-event: var(--fc-forma-primary);
-  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
+  --fc-forma-highlight: #74277459;
   --fc-forma-event: #8a3d8a; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }

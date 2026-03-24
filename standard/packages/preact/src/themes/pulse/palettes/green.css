@@ -2,8 +2,8 @@
 :root {
   /* primary */
   --fc-pulse-primary: #26a546;
-  --fc-pulse-primary-over: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
-  --fc-pulse-primary-down: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
+  --fc-pulse-primary-over: #47ae5a;
+  --fc-pulse-primary-down: #5fb86d;
   --fc-pulse-primary-foreground: #fff;
 
   /* secondary */
@@ -16,8 +16,8 @@
 
   /* tertiary */
   --fc-pulse-tertiary: #34c759;
-  --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
-  --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  --fc-pulse-tertiary-over: #54cd6b;
+  --fc-pulse-tertiary-down: #6cd37d;
   --fc-pulse-tertiary-foreground: #fff;
 
   /* calendar content */
@@ -62,8 +62,8 @@
 
   /* tertiary */
   --fc-pulse-tertiary: #30d157;
-  --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
-  --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  --fc-pulse-tertiary-over: #53d66a;
+  --fc-pulse-tertiary-down: #6cdb7c;
 
   /* calendar content */
   --fc-pulse-background-event: #84cc16;

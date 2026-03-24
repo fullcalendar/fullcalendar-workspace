@@ -3,32 +3,32 @@
   /* primary */
   --fc-monarch-primary: rgb(65 95 145);
   --fc-monarch-primary-foreground: rgb(255 255 255);
-  --fc-monarch-primary-over: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
-  --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+  --fc-monarch-primary-over: #526e9c;
+  --fc-monarch-primary-down: #647ea7;
 
   /* secondary */
   --fc-monarch-secondary: rgb(214 227 255);
   --fc-monarch-secondary-foreground: rgb(40 71 119);
-  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 95%, var(--fc-monarch-foreground));
-  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-over: #c9d6f2;
+  --fc-monarch-secondary-down: #bdc9e5;
 
   /* tertiary */
   --fc-monarch-tertiary: rgb(133 93 140);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
-  --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
-  --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+  --fc-monarch-tertiary-over: #916c97;
+  --fc-monarch-tertiary-down: #9d7ca2;
 
   /* calendar content */
   --fc-monarch-event: var(--fc-monarch-primary);
   --fc-monarch-event-contrast: var(--fc-monarch-primary-foreground);
-  --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
+  --fc-monarch-highlight: #d6e3ff4D;
   --fc-monarch-now: rgb(186 26 26);
 
   /* controls */
   --fc-monarch-selected: rgb(86 95 113);
   --fc-monarch-selected-foreground: rgb(255 255 255);
-  --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
-  --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
+  --fc-monarch-selected-over: #656e7e;
+  --fc-monarch-selected-down: #757d8c;
   --fc-monarch-outline: #6687ff;
 
   /* popover */
@@ -56,21 +56,30 @@
   /* primary */
   --fc-monarch-primary: rgb(170 199 255);
   --fc-monarch-primary-foreground: rgb(10 48 95);
+  --fc-monarch-primary-over: #b2cdff;
+  --fc-monarch-primary-down: #bbd2ff;
 
   /* secondary */
   --fc-monarch-secondary: rgb(40 71 119);
   --fc-monarch-secondary-foreground: rgb(214 227 255);
+  --fc-monarch-secondary-over: #32507e;
+  --fc-monarch-secondary-down: #3c5885;
 
   /* tertiary */
   --fc-monarch-tertiary: rgb(221 188 224);
   --fc-monarch-tertiary-foreground: rgb(63 40 68);
+  --fc-monarch-tertiary-over: #e0c3e3;
+  --fc-monarch-tertiary-down: #e4c9e6;
 
   /* calendar content */
+  --fc-monarch-highlight: #2847774D;
   --fc-monarch-now: rgb(255 180 171);
 
   /* controls */
   --fc-monarch-selected: rgb(190 198 220);
   --fc-monarch-selected-foreground: rgb(40 49 65);
+  --fc-monarch-selected-over: #c4cce0;
+  --fc-monarch-selected-down: #cbd1e3;
 
   /* popover */
   --fc-monarch-popover: rgb(17 19 24);

@@ -10,7 +10,7 @@
   --fc-forma-event: #0d944b; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
   --fc-forma-background-event: var(--fc-forma-primary);
-  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
+  --fc-forma-highlight: #107c4159;
 
   /* neutral backgrounds */
   --fc-forma-background: #FFFFFF;

@@ -40,7 +40,13 @@ The source file (`ui-default-palettes.css`) uses Tailwind color references and i
 - `[data-palette=X]` — palette-specific light/default values
 - `[data-palette=X][data-color-scheme=dark]` — palette-specific dark overrides
 
-The vanilla file (`ui-default-palettes-vanilla.css`) mirrors this same structure with resolved color values.
+The vanilla file (`ui-default-palettes-vanilla.css`) mirrors this same structure with resolved color values. When propagating changes from the source to the vanilla file, apply these transforms:
+
+1. **Resolve Tailwind color vars**: Replace every `var(--color-X)` with its hex equivalent using the lookup table in `theming/skills/tailwind-color-convert.md`.
+
+2. **Flatten `color-mix(..., transparent)` to hex+alpha**: When a `color-mix(in oklab, <color> X%, transparent)` references a statically-known color (a direct hex, `rgb()`, or a Tailwind var that was just resolved), convert it to a hex color with an alpha channel byte appended. The alpha byte = `round(X / 100 × 255)` formatted as 2 uppercase hex digits (e.g. `color-mix(in oklab, var(--color-mauve-500) 10%, transparent)` → `#79697b` + alpha for 10% = `1A` → `#79697b1A`). This avoids relying on `color-mix` for browser compatibility. If a `color-mix` argument is a local CSS custom property (e.g. `var(--fc-monarch-secondary)`), look up its literal value from the same selector block and substitute it before applying the conversion — local palette vars defined in the same block are always statically known.
+
+3. **Flatten `color-mix(..., white)` to hex**: When a `color-mix(in oklab, <color> X%, white)` references a statically-known color (direct hex, `rgb()`, or any local palette var defined in the same block), compute the result by interpolating in OKLab color space and write the resulting `rgb()` or hex value. If a `color-mix` argument is a local CSS custom property, substitute its literal value from the same block first. Only leave `color-mix` intact when one of its arguments is itself a CSS custom property whose value is not defined in the same block (e.g. dynamic vars that cascade from an outer context).
 
 The split per-palette files (`palettes/X.css`) each contain only one palette's variables, restructured as:
 - `:root` — combines global light defaults + palette-specific light values
