@@ -174,6 +174,8 @@ export function EventCalendar({
       eventColor="var(--fc-classic-event)"
       eventContrastColor="var(--fc-classic-event-contrast)"
       eventClass={(data) => joinClassNames(
+        data.isDragging && 'root-reset',
+        data.event.url && 'link-reset',
         data.isSelected
           ? joinClassNames(
               outlineWidthClass,

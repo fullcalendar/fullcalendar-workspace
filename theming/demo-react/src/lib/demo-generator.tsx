@@ -307,7 +307,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
           />
         </div>
 
-        {/* <div className='demo-item'>
+        <div className='demo-item'>
           {props.renderEventCalendar({
             ...eventCalendarProps,
             initialView: 'timeGridWeek',
@@ -331,7 +331,7 @@ export function DemoGenerator(props: DemoGeneratorProps) {
               availableViews: ['timeGridWeek', 'timeGridDay', 'dayGridMonth'],
             })}
           />
-        </div> */}
+        </div>
 
         <div className='demo-item'>
           {props.renderEventCalendar({

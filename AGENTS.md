@@ -12,6 +12,8 @@ All themes start out as configuration files and tailwind classnames and are manu
 - Compiles to:
   - theming/ui-default-react-tailwind/src/theme-*/_compiled/{event-calendar,scheduler}(-simple)?.tsx?
 
+The `-simple` compiled files are copy-paste fork templates for end-users. All three reset classnames (see [Reset Classnames](#reset-classnames-root-reset--button-reset--link-reset) below) are obligatory in every `-simple` file. **Stripping for Tailwind users:** the demo generator strips all three from generated code when the user picks Tailwind (`needsThemeCss === false`) via regex in `theming/demo-react/src/lib/demo-generator-code.ts`.
+
 ### Default-UI JS Plugin
 
 - Plugin housing: theming/theme-*-tailwind/src/index.tsx?
@@ -83,4 +85,13 @@ The split per-palette files (`palettes/X.css`) each contain only one palette's v
   - theming/ui-mui/src/*/{EventCalendarViews,SchedulerViews}.tsx?
   - theming/ui-mui/src/*/theme.css (CSS definitions for tailwind classnames)
 
-**Critical:** For MUI, the `theme.css` files are also manual compiled artifacts. When propagating changes into the final `theming/ui-mui/src/*` outputs, you must add CSS definitions for any newly introduced Tailwind classnames and remove definitions for classnames that are no longer used anywhere in the corresponding final `.tsx` files.
+**Critical:** For MUI, the `theme.css` files are also manual compiled artifacts. When propagating changes into the final `theming/ui-mui/src/*` outputs, you must add CSS definitions for any newly introduced Tailwind classnames and remove definitions for classnames that are no longer used anywhere in the corresponding final `.tsx` files. All three reset classnames (see [Reset Classnames](#reset-classnames-root-reset--button-reset--link-reset) below) are required in these output files.
+
+### Reset Classnames: `root-reset` / `button-reset` / `link-reset`
+
+These three classnames are CSS resets defined in each theme's `theme.css` and used in the JS plugin output, the Default-UI `-simple` fork templates, and the MUI output files.
+
+Canonical placements per theme:
+- `root-reset` — on the root container `className` prop and on `popoverClass`
+- `button-reset` — on toolbar button class variables and on `popoverCloseClass`
+- `link-reset` — on `eventClass`, conditionally: `data.event.url && 'link-reset'` (alongside `data.isDragging && 'root-reset'` at the top of the callback)

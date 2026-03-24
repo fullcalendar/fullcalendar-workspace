@@ -127,6 +127,8 @@ export default function EventCalendarViews({
       eventColor="var(--mui-palette-primary-main)"
       eventContrastColor="var(--mui-palette-primary-contrastText)"
       eventClass={(data) => joinClassNames(
+        data.isDragging && 'root-reset',
+        data.event.url && 'link-reset',
         data.isSelected
           ? joinClassNames(
               outlineWidthClass,

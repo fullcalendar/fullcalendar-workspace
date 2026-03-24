@@ -364,10 +364,6 @@ which can't rely on dynamic height detection after print-flag activated.
   align-items: flex-end !important;
 }
 
-.inheritTextDecoration {
-  text-decoration: inherit;
-}
-
 /* Footer Scrollbar */
 /* ------------------------------------------------------------------------------------------------- */
 

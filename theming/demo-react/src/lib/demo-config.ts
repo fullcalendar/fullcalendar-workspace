@@ -106,7 +106,8 @@ export const eventCalendarProps: EventCalendarProps = {
     {
       "url": "http:\/\/google.com\/",
       "title": "Click for Google",
-      "start": "2025-07-28"
+      "start": "2025-07-28",
+      // display: 'background',
     },
     {
       "title": "Meeting",
