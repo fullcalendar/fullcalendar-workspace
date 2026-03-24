@@ -59,7 +59,7 @@ NOTE: button/toolbar UI is not defined here
   /* neutral foregrounds */
   --fc-classic-foreground: var(--color-white);
   --fc-classic-faint-foreground: var(--color-gray-600);
-  --fc-classic-muted-foreground: var(--color-gray-500);
+  --fc-classic-muted-foreground: var(--color-gray-400);
 
   /* neutral borders */
   --fc-classic-border: var(--color-gray-800);

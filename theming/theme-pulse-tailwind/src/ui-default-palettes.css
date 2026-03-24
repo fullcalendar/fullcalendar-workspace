@@ -66,9 +66,9 @@
   --fc-pulse-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-pulse-foreground: #a0aec0;
-  --fc-pulse-faint-foreground: #4a5568;
-  --fc-pulse-muted-foreground: #718096;
+  --fc-pulse-foreground: #d6dee8;
+  --fc-pulse-faint-foreground: #8897ab;
+  --fc-pulse-muted-foreground: #b5c1d0;
 
   /* neutral borders */
   --fc-pulse-border: #1a202c;
