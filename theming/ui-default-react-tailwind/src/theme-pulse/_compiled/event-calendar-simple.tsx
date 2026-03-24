@@ -555,6 +555,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       tableHeaderClass={(data) => joinClassNames(data.isSticky && 'bg-(--fc-pulse-background)')}
+      tableBodyClass="bg-(--fc-pulse-background)"
       fillerClass="border border-(--fc-pulse-border) opacity-50"
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--fc-pulse-border)"
@@ -592,10 +593,10 @@ export function EventCalendar({
         },
         multiMonth: {
           ...dayRowCommonClasses,
+          viewClass: 'bg-(--fc-pulse-faint)',
           dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
           dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-pulse-border)'),
           dayCellBottomClass: getShortDayCellBottomClass,
-          viewClass: 'bg-(--fc-pulse-faint)',
           tableBodyClass: (data) => joinClassNames(
             data.multiMonthColumnCount > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
           ),
@@ -648,6 +649,7 @@ export function EventCalendar({
           ...userViews?.timeGrid,
         },
         list: {
+          viewClass: 'bg-(--fc-pulse-background)',
 
           /* List-View > List-Item Event
           ----------------------------------------------------------------------------------------- */
