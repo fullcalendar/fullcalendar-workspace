@@ -13,9 +13,7 @@
   /* tertiary */
 
   /* calendar content */
-  --fc-pulse-background-event: var(--color-green-500); /* TODO */
-  --fc-pulse-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-  --fc-pulse-now: red; /* TODO */
+  --fc-pulse-now: var(--color-red-500);
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -52,8 +50,6 @@
   --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
   /* calendar content */
-  --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-pulse-now: red; /* TODO */
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -95,6 +91,8 @@
   /* calendar content */
   --fc-pulse-event: #631515;
   --fc-pulse-event-contrast: #fff;
+  --fc-pulse-background-event: var(--color-amber-400);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-rose-400) 15%, transparent);
 }
 [data-palette=red][data-color-scheme=dark],
 [data-palette=red] [data-color-scheme=dark] {
@@ -102,6 +100,9 @@
   --fc-pulse-tertiary: #fd4539; /* slightly lighter than primary */
   --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
   --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, black);
+
+  /* calendar content */
+  --fc-pulse-background-event: var(--color-orange-200);
 }
 
 [data-palette=blue] {
@@ -120,6 +121,8 @@
   /* calendar content */
   --fc-pulse-event: #012e66;
   --fc-pulse-event-contrast: #fff;
+  --fc-pulse-background-event: var(--color-indigo-400);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-sky-400) 10%, transparent);
 }
 [data-palette=blue][data-color-scheme=dark],
 [data-palette=blue] [data-color-scheme=dark] {
@@ -145,6 +148,13 @@
   /* calendar content */
   --fc-pulse-event: #430575;
   --fc-pulse-event-contrast: #fff;
+  --fc-pulse-background-event: var(--color-purple-500);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-pink-500) 10%, transparent);
+}
+[data-palette=purple][data-color-scheme=dark],
+[data-palette=purple] [data-color-scheme=dark] {
+  /* calendar content */
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-pink-400) 10%, transparent);
 }
 
 [data-palette=green] {
@@ -163,6 +173,8 @@
   /* calendar content */
   --fc-pulse-event: #084b19;
   --fc-pulse-event-contrast: #fff;
+  --fc-pulse-background-event: var(--color-lime-400);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-green-500) 10%, transparent);
 }
 [data-palette=green][data-color-scheme=dark],
 [data-palette=green] [data-color-scheme=dark] {
@@ -170,4 +182,7 @@
   --fc-pulse-tertiary: #30d157; /* slightly lighter than primary */
   --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
   --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+
+  /* calendar content */
+  --fc-pulse-background-event: var(--color-lime-500);
 }

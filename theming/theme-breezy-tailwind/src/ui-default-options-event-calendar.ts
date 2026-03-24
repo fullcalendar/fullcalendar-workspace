@@ -111,7 +111,7 @@ export const params: EventCalendarOptionParams = {
   eventFaintPressableClass,
   eventMutedFgClass,
   bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)]',
 
   // misc content
   highlightClass: 'bg-(--fc-breezy-highlight)',

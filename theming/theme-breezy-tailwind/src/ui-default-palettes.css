@@ -11,8 +11,6 @@
   --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
 
   /* calendar content */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-  --fc-breezy-now: red; /* TODO */
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-strong);
@@ -53,8 +51,6 @@
   --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
 
   /* calendar content */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-breezy-now: red; /* TODO */
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-muted);
@@ -100,7 +96,9 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   /* calendar content */
   --fc-breezy-event: var(--color-blue-500);
   --fc-breezy-event-contrast: var(--color-white);
-  --fc-breezy-background-event: var(--color-green-500); /* TODO */
+  --fc-breezy-background-event: var(--color-violet-500);
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-sky-400) 8%, transparent);
+  --fc-breezy-now: var(--color-rose-500);
 }
 [data-palette=indigo][data-color-scheme=dark],
 [data-palette=indigo] [data-color-scheme=dark] { /* shift lighter */
@@ -111,6 +109,7 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   /* calendar content */
   --fc-breezy-event: var(--color-blue-300);
   --fc-breezy-event-contrast: var(--color-black);
+  --fc-breezy-now: var(--color-rose-400);
 }
 
 /*
@@ -127,7 +126,14 @@ https://catalyst.tailwindui.com/docs/button
   /* calendar content */
   --fc-breezy-event: var(--color-pink-500);
   --fc-breezy-event-contrast: var(--color-white);
-  --fc-breezy-background-event: var(--color-green-500); /* TODO */
+  --fc-breezy-background-event: var(--color-orange-500);
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-red-500) 8%, transparent);
+  --fc-breezy-now: var(--color-red-500);
+}
+[data-palette=rose][data-color-scheme=dark],
+[data-palette=rose] [data-color-scheme=dark] {
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-red-400) 8%, transparent);
 }
 
 [data-palette=emerald] {
@@ -139,7 +145,14 @@ https://catalyst.tailwindui.com/docs/button
   /* calendar content */
   --fc-breezy-event: var(--color-green-500);
   --fc-breezy-event-contrast: var(--color-white);
-  --fc-breezy-background-event: var(--color-green-500); /* TODO */
+  --fc-breezy-background-event: var(--color-emerald-400);
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-lime-400) 10%, transparent);
+  --fc-breezy-now: var(--color-rose-500);
+}
+[data-palette=emerald][data-color-scheme=dark],
+[data-palette=emerald] [data-color-scheme=dark] {
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-lime-400) 6%, transparent);
 }
 
 [data-palette=honey] {
@@ -149,7 +162,9 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-foreground: var(--color-amber-950);
 
   /* calendar content */
-  --fc-breezy-event: var(--color-amber-500);
+  --fc-breezy-event: var(--color-amber-600);
   --fc-breezy-event-contrast: var(--color-white);
-  --fc-breezy-background-event: var(--color-green-500); /* TODO */
+  --fc-breezy-background-event: var(--color-yellow-500);
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-orange-500) 10%, transparent);
+  --fc-breezy-now: var(--color-orange-500);
 }
