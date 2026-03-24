@@ -485,7 +485,7 @@ export function EventCalendarViews({
             ------------------------------------------------------------------------------------- */
 
             noEventsClass: 'grow flex flex-col items-center justify-center',
-            noEventsInnerClass: 'py-15',
+            noEventsInnerClass: 'py-15 text-muted-foreground',
 
             ...userViews?.list,
           },

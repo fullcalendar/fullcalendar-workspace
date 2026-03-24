@@ -617,7 +617,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         noEventsClass: 'grow flex flex-col items-center justify-center',
-        noEventsInnerClass: 'py-15',
+        noEventsInnerClass: `py-15 ${params.mutedFgClass}`,
       },
     },
   }

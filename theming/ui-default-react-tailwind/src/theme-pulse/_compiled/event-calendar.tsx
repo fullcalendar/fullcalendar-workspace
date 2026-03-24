@@ -695,7 +695,7 @@ export function EventCalendar({
           ----------------------------------------------------------------------------------------- */
 
           noEventsClass: 'grow flex flex-col items-center justify-center',
-          noEventsInnerClass: 'py-15',
+          noEventsInnerClass: 'py-15 text-(--fc-pulse-muted-foreground)',
 
           ...userViews?.list,
         },
