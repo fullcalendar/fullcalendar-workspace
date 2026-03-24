@@ -299,7 +299,7 @@ export default function EventCalendarViews({
             <div
               className={joinClassNames(
                 data.isToday && 'font-bold',
-                data.isNarrow ? 'text-md' : 'text-lg',
+                data.isNarrow ? 'text-base' : 'text-lg',
               )}
             >{data.dayNumberText}</div>
           )}

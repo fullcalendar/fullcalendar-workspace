@@ -406,7 +406,7 @@ export function EventCalendar({
               className={joinClassNames(
                 'm-0.5 rounded-full flex flex-row items-center justify-center',
                 data.isNarrow
-                  ? 'size-7 text-md'
+                  ? 'size-7 text-base'
                   : 'size-8 text-lg',
                 data.isToday
                   ? (data.hasNavLink ? tertiaryPressableGroupClass : tertiaryClass)
