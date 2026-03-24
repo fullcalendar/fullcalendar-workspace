@@ -21,11 +21,11 @@
   --fc-pulse-tertiary-foreground: var(--fc-pulse-primary-foreground);
 
   /* calendar content */
-  --fc-pulse-background-event: #22c55e;
-  --fc-pulse-highlight: #cffafe66;
-  --fc-pulse-now: red;
   --fc-pulse-event: #430575;
   --fc-pulse-event-contrast: #fff;
+  --fc-pulse-background-event: #a855f7;
+  --fc-pulse-highlight: #ec48991A;
+  --fc-pulse-now: #ef4444;
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -61,8 +61,7 @@
   --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
   /* calendar content */
-  --fc-pulse-highlight: #3b82f633;
-  --fc-pulse-now: red;
+  --fc-pulse-highlight: #f472b61A;
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -79,9 +78,9 @@
   --fc-pulse-strongest: #ffffff33;
 
   /* neutral foregrounds */
-  --fc-pulse-foreground: #a0aec0;
-  --fc-pulse-faint-foreground: #4a5568;
-  --fc-pulse-muted-foreground: #718096;
+  --fc-pulse-foreground: #d6dee8;
+  --fc-pulse-faint-foreground: #8897ab;
+  --fc-pulse-muted-foreground: #b5c1d0;
 
   /* neutral borders */
   --fc-pulse-border: #1a202c;

@@ -534,7 +534,6 @@ export default {
     /* Misc Table
     --------------------------------------------------------------------------------------------- */
 
-    tableHeaderClass: (data) => joinClassNames(data.isSticky && 'bg-(--fc-pulse-background)'),
     tableBodyClass: 'bg-(--fc-pulse-background)',
     fillerClass: "border border-(--fc-pulse-border) opacity-50",
     dayNarrowWidth: 100,
@@ -602,6 +601,7 @@ export default {
   views: {
     dayGrid: {
       ...dayRowCommonClasses,
+      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
       dayHeaderDividerClass: 'border-b border-(--fc-pulse-border)',
       dayCellBottomClass: getShortDayCellBottomClass,
@@ -609,15 +609,19 @@ export default {
     multiMonth: {
       ...dayRowCommonClasses,
       viewClass: 'bg-(--fc-pulse-faint)',
+      tableHeaderClass: (data) => joinClassNames(
+        data.multiMonthColumnCount === 1 && 'bg-(--fc-pulse-background)'
+      ),
       tableBodyClass: (data) => joinClassNames(
         data.multiMonthColumnCount > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
       ),
       dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
-      dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && 'border-b border-(--fc-pulse-border)'),
+      dayHeaderDividerClass: (data) => joinClassNames(data.multiMonthColumnCount === 1 && 'border-b border-(--fc-pulse-border)'),
       dayCellBottomClass: getShortDayCellBottomClass,
     },
     timeGrid: {
       ...dayRowCommonClasses,
+      tableHeaderClass: 'bg-(--fc-pulse-background)',
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
       dayHeaderDividerClass: (data) => joinClassNames(
         'border-b',

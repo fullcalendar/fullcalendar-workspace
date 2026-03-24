@@ -608,21 +608,21 @@
 }
 
 @supports (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color)15%, transparent)
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
+    background-color: color-mix(in oklab, var(--fc-event-color) 8%, transparent)
   }
 }
 @supports not (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
     position: relative;
     isolation: isolate
   }
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\]:before {
+  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\]:before {
     content: '';
     position: absolute;
     inset: 0;
     background-color: var(--fc-event-color);
-    opacity: 0.15;
+    opacity: 0.08;
     z-index: -1
   }
 }

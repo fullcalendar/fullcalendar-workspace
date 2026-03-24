@@ -14,11 +14,11 @@
   --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
 
   /* calendar content */
-  --fc-breezy-highlight: #cffafe66;
-  --fc-breezy-now: red;
-  --fc-breezy-event: #f59e0b;
+  --fc-breezy-event: #d97706;
   --fc-breezy-event-contrast: #fff;
-  --fc-breezy-background-event: #22c55e;
+  --fc-breezy-background-event: #eab308;
+  --fc-breezy-highlight: #f973161A;
+  --fc-breezy-now: #f97316;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-strong);
@@ -55,10 +55,6 @@
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
   --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
-
-  /* calendar content */
-  --fc-breezy-highlight: #3b82f633;
-  --fc-breezy-now: red;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-muted);

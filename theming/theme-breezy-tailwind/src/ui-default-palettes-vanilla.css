@@ -11,8 +11,6 @@
   --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
 
   /* calendar content */
-  --fc-breezy-highlight: #cffafe66;
-  --fc-breezy-now: red;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-strong);
@@ -53,8 +51,6 @@
   --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
 
   /* calendar content */
-  --fc-breezy-highlight: #3b82f633;
-  --fc-breezy-now: red;
 
   /* controls */
   --fc-breezy-selected: var(--fc-breezy-muted);
@@ -100,7 +96,9 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   /* calendar content */
   --fc-breezy-event: #3b82f6;
   --fc-breezy-event-contrast: #fff;
-  --fc-breezy-background-event: #22c55e;
+  --fc-breezy-background-event: #8b5cf6;
+  --fc-breezy-highlight: #38bdf814;
+  --fc-breezy-now: #f43f5e;
 }
 [data-palette=indigo][data-color-scheme=dark],
 [data-palette=indigo] [data-color-scheme=dark] {
@@ -111,6 +109,7 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   /* calendar content */
   --fc-breezy-event: #93c5fd;
   --fc-breezy-event-contrast: #000;
+  --fc-breezy-now: #fb7185;
 }
 
 /*
@@ -127,7 +126,15 @@ https://catalyst.tailwindui.com/docs/button
   /* calendar content */
   --fc-breezy-event: #ec4899;
   --fc-breezy-event-contrast: #fff;
-  --fc-breezy-background-event: #22c55e;
+  --fc-breezy-background-event: #f97316;
+  --fc-breezy-highlight: #ef444414;
+  --fc-breezy-now: #ef4444;
+}
+
+[data-palette=rose][data-color-scheme=dark],
+[data-palette=rose] [data-color-scheme=dark] {
+  /* calendar content */
+  --fc-breezy-highlight: #f8717114;
 }
 
 [data-palette=emerald] {
@@ -139,7 +146,15 @@ https://catalyst.tailwindui.com/docs/button
   /* calendar content */
   --fc-breezy-event: #22c55e;
   --fc-breezy-event-contrast: #fff;
-  --fc-breezy-background-event: #22c55e;
+  --fc-breezy-background-event: #34d399;
+  --fc-breezy-highlight: #a3e6351A;
+  --fc-breezy-now: #f43f5e;
+}
+
+[data-palette=emerald][data-color-scheme=dark],
+[data-palette=emerald] [data-color-scheme=dark] {
+  /* calendar content */
+  --fc-breezy-highlight: #a3e6350F;
 }
 
 [data-palette=honey] {
@@ -149,8 +164,10 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-foreground: #451a03;
 
   /* calendar content */
-  --fc-breezy-event: #f59e0b;
+  --fc-breezy-event: #d97706;
   --fc-breezy-event-contrast: #fff;
-  --fc-breezy-background-event: #22c55e;
+  --fc-breezy-background-event: #eab308;
+  --fc-breezy-highlight: #f973161A;
+  --fc-breezy-now: #f97316;
 }
 

@@ -13,7 +13,7 @@
   --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
 
   /* tertiary */
-  --fc-monarch-tertiary: #7D5260;
+  --fc-monarch-tertiary: #895264;
   --fc-monarch-tertiary-foreground: #FFFFFF;
   --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
   --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
@@ -36,14 +36,14 @@
 
   /* neutral backgrounds */
   --fc-monarch-background: #ffffff;
-  --fc-monarch-faint: #6b72801A;
-  --fc-monarch-muted: #6b728026;
-  --fc-monarch-strong: #6b72804D;
-  --fc-monarch-stronger: #6b728059;
-  --fc-monarch-strongest: #6b728066;
+  --fc-monarch-faint: #79697b1A;
+  --fc-monarch-muted: #79697b26;
+  --fc-monarch-strong: #79697b4D;
+  --fc-monarch-stronger: #79697b59;
+  --fc-monarch-strongest: #79697b66;
 
   /* neutral foregrounds */
-  --fc-monarch-foreground: #030712;
+  --fc-monarch-foreground: #0c090c;
   --fc-monarch-faint-foreground: #bebebe;
   --fc-monarch-muted-foreground: #8d8d8d;
 
@@ -71,7 +71,7 @@
   /* controls */
   --fc-monarch-selected: #CCC2DC;
   --fc-monarch-selected-foreground: #332D41;
-  --fc-monarch-outline: red;
+  --fc-monarch-outline: #ff8a9e;
 
   /* popover */
   --fc-monarch-popover: rgb(26 17 15);
@@ -79,11 +79,6 @@
 
   /* neutral backgrounds */
   --fc-monarch-background: #030712;
-  --fc-monarch-faint: #6b72801A;
-  --fc-monarch-muted: #6b728026;
-  --fc-monarch-strong: #6b72804D;
-  --fc-monarch-stronger: #6b728059;
-  --fc-monarch-strongest: #6b728066;
 
   /* neutral foregrounds */
   --fc-monarch-foreground: #ffffff;

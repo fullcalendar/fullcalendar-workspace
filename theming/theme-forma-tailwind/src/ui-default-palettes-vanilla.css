@@ -18,8 +18,6 @@ Further color reference:
   /* primary */
 
   /* calendar content */
-  --fc-forma-background-event: #22c55e;
-  --fc-forma-highlight: #cffafe66;
 
   /* neutral backgrounds */
   --fc-forma-background: #FFFFFF;
@@ -72,6 +70,8 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
+  --fc-forma-background-event: var(--fc-forma-primary);
+  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
   --fc-forma-event: #3788d8;
   --fc-forma-event-contrast: #FFFFFF;
 }
@@ -91,6 +91,8 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
+  --fc-forma-background-event: var(--fc-forma-primary);
+  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
   --fc-forma-event: var(--fc-forma-primary);
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
@@ -110,6 +112,8 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
+  --fc-forma-background-event: var(--fc-forma-primary);
+  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
   --fc-forma-event: #0d944b; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
@@ -129,6 +133,8 @@ Further color reference:
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
+  --fc-forma-background-event: var(--fc-forma-primary);
+  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
   --fc-forma-event: #8a3d8a; /* a bit lighter than primary */
   --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }

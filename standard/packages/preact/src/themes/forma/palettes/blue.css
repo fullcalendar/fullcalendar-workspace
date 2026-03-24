@@ -7,10 +7,10 @@
   --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
-  --fc-forma-background-event: #22c55e;
-  --fc-forma-highlight: #cffafe66;
   --fc-forma-event: #3788d8;
   --fc-forma-event-contrast: #FFFFFF;
+  --fc-forma-background-event: var(--fc-forma-primary);
+  --fc-forma-highlight: color-mix(in oklab, var(--fc-forma-primary) 35%, transparent);
 
   /* neutral backgrounds */
   --fc-forma-background: #FFFFFF;

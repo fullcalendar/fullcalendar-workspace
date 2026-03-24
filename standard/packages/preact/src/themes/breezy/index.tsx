@@ -266,7 +266,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     backgroundEventColor: 'var(--fc-breezy-background-event)',
-    backgroundEventClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+    backgroundEventClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)]',
     backgroundEventTitleClass: (data) => joinClassNames(
       'opacity-50 italic',
       data.isNarrow

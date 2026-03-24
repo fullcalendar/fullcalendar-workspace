@@ -374,7 +374,6 @@ export function EventCalendarViews({
         /* Misc Table
         ----------------------------------------------------------------------------------------- */
 
-        tableHeaderClass={(data) => cn(data.isSticky && 'bg-background')}
         tableBodyClass='bg-background'
         fillerClass='border opacity-50'
         dayNarrowWidth={100}
@@ -406,6 +405,7 @@ export function EventCalendarViews({
           ...userViews,
           dayGrid: {
             ...dayRowCommonClasses,
+            tableHeaderClass: 'bg-background',
             dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
             dayHeaderDividerClass: 'border-b',
             dayCellBottomClass: getShortDayCellBottomClass,
@@ -413,8 +413,9 @@ export function EventCalendarViews({
           },
           multiMonth: {
             ...dayRowCommonClasses,
+            tableHeaderClass: (data) => cn(data.multiMonthColumnCount === 1 && 'bg-background'),
             dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
-            dayHeaderDividerClass: (data) => cn(data.isSticky && 'border-b'),
+            dayHeaderDividerClass: (data) => cn(data.multiMonthColumnCount === 1 && 'border-b'),
             dayCellBottomClass: getShortDayCellBottomClass,
             viewClass: 'bg-foreground/3',
             tableBodyClass: (data) => cn(data.multiMonthColumnCount > 1 && 'border rounded-sm overflow-hidden'),
@@ -422,6 +423,7 @@ export function EventCalendarViews({
           },
           timeGrid: {
             ...dayRowCommonClasses,
+            tableHeaderClass: 'bg-background',
             dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
             dayHeaderDividerClass: (data) => cn(
               'border-b',

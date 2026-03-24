@@ -435,7 +435,6 @@ export default function EventCalendarViews({
       ------------------------------------------------------------------------------------------- */
 
       tableBodyClass="bg-(--mui-palette-background-paper)"
-      tableHeaderClass={(data) => joinClassNames(data.isSticky && 'bg-(--mui-palette-background-paper)')}
       fillerClass="border border-(--mui-palette-divider) opacity-50"
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--mui-palette-divider)"
@@ -466,6 +465,7 @@ export default function EventCalendarViews({
         ...userViews,
         dayGrid: {
           ...dayRowCommonClasses,
+          tableHeaderClass: 'bg-(--mui-palette-background-paper)',
           dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
           dayHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
           dayCellBottomClass: getShortDayCellBottomClass,
@@ -473,8 +473,9 @@ export default function EventCalendarViews({
         },
         multiMonth: {
           ...dayRowCommonClasses,
+          tableHeaderClass: (data) => joinClassNames(data.multiMonthColumnCount === 1 && 'bg-(--mui-palette-background-paper)'),
           dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
-          dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b border-(--mui-palette-divider)`),
+          dayHeaderDividerClass: (data) => joinClassNames(data.multiMonthColumnCount === 1 && `border-b border-(--mui-palette-divider)`),
           dayCellBottomClass: getShortDayCellBottomClass,
           viewClass: faintBgClass,
           tableBodyClass: (data) => joinClassNames(data.multiMonthColumnCount > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
@@ -482,6 +483,7 @@ export default function EventCalendarViews({
         },
         timeGrid: {
           ...dayRowCommonClasses,
+          tableHeaderClass: 'bg-(--mui-palette-background-paper)',
           dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
           dayHeaderDividerClass: (data) => joinClassNames(
             'border-b',
