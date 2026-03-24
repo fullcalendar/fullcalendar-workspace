@@ -115,6 +115,7 @@ export function EventCalendarViews({
 
       eventShortHeight={50}
       eventColor="var(--chart-2)"
+      eventContrastColor="var(--primary-foreground)"
       eventClass={(data) => cn(
         data.isSelected
           ? [

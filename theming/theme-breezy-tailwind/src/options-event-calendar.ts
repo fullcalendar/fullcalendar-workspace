@@ -212,6 +212,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventShortHeight: 50,
       eventColor: params.eventColor,
+      eventContrastColor: params.eventContrastColor,
 
       eventClass: (data) => joinClassNames(
         data.isSelected
