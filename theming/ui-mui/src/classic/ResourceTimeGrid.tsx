@@ -21,7 +21,7 @@ const defaultAvailableViews = [
 const navLinkDayClick = 'resourceTimeGridDay'
 const navLinkWeekClick = 'resourceTimeGridWeek'
 
-export interface ResourceTimeGridProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimeGridProps extends Omit<CalendarOptions, 'class' | 'className' | 'headerToolbar' | 'footerToolbar'> {
   className?: string
   availableViews?: string[]
   addButton?: {

@@ -20,7 +20,7 @@ const defaultAvailableViews = [
 const navLinkDayClick = 'resourceTimelineDay'
 const navLinkWeekClick = 'resourceTimelineWeek'
 
-export interface ResourceTimelineProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimelineProps extends Omit<CalendarOptions, 'class' | 'className' | 'headerToolbar' | 'footerToolbar'> {
   className?: string
   availableViews?: string[]
   addButton?: {

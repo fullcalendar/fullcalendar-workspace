@@ -121,7 +121,7 @@ export const dayRowCommonClasses: CalendarOptions = {
   ),
 }
 
-export interface EventCalendarViewsProps extends Omit<CalendarOptions, 'class' | 'className'> {}
+export interface EventCalendarViewsProps extends Omit<CalendarOptions, 'class' | 'className' | 'headerToolbar' | 'footerToolbar'> {}
 
 export default function EventCalendarViews({
   views: userViews,
