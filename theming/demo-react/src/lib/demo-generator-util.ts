@@ -1,4 +1,4 @@
-import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
+import { EventCalendarProps } from './demo-config'
 import { ThemeName } from './config'
 
 export const DEFAULT_DATA_ATTRIBUTE = 'data-color-scheme'

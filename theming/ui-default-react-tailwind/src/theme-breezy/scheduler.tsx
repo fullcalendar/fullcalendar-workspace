@@ -2,7 +2,8 @@ import React from 'react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-tailwind/ui-default-options-scheduler'
 import { EventCalendar } from './event-calendar'
-import { schedulerAvailableViews, schedulerOnlyPlugins, SchedulerProps } from '@fullcalendar/theme-common/scheduler'
+import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
+import { SchedulerProps } from '../lib/scheduler-props'
 
 export function Scheduler({
   availableViews = schedulerAvailableViews,

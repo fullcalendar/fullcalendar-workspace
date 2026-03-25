@@ -15,7 +15,6 @@ const relativeImportReplacements = {
   './event-calendar.js': '@/components/event-calendar',
   './event-calendar-toolbar.js': '@/components/event-calendar-toolbar',
   './event-calendar-icons.js': '@/components/event-calendar-icons',
-  './event-calendar-container.js': '@/components/ui/event-calendar-container',
   './event-calendar-views.js': '@/components/ui/event-calendar-views',
   './resource-timeline.js': '@/components/resource-timeline',
   './resource-timegrid.js': '@/components/resource-timegrid',
@@ -118,16 +117,6 @@ async function createEventCalendarConfig(theme, themeTitle) {
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar-icons.tsx'),
-            'utf-8',
-          ),
-        ),
-      },
-      {
-        "type": "registry:ui",
-        "path": "src/registry/default/ui/event-calendar-container.tsx", // fictional
-        "content": transformSrcCode(
-          await readFile(
-            joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar-container.tsx'),
             'utf-8',
           ),
         ),

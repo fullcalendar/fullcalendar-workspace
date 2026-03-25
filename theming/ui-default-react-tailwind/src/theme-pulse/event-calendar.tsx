@@ -3,7 +3,8 @@ import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-pulse-tailwind/ui-default-options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-pulse-tailwind/slots'
-import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
+import { EventCalendarProps } from '../lib/event-calendar-props'
 
 const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
 

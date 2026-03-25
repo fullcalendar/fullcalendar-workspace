@@ -2,7 +2,8 @@ import React from 'react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-tailwind/ui-default-options-event-calendar'
-import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
+import { EventCalendarProps } from '../lib/event-calendar-props'
 
 const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
 

@@ -1,7 +1,27 @@
-import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
-import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
+import { CalendarOptions } from '@fullcalendar/react'
+import type {} from '@fullcalendar/react-scheduler'
 
-import type {} from '@fullcalendar/react-scheduler/resource-timeline'
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className' | 'headerToolbar' | 'footerToolbar'> {
+  className?: string
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
+
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className' | 'headerToolbar' | 'footerToolbar'> {
+  className?: string
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
 
 const commonProps = {
   // borderlessTop: true,
