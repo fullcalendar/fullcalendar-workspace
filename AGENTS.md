@@ -64,11 +64,10 @@ The split per-palette files (`palettes/X.css`) each contain only one palette's v
   - theming/theme-*-tailwind/src/options-{event-calendar,scheduler}.ts
   - theming/theme-*-tailwind/src/slots.tsx? (themes that have slot overrides)
   - theming/ui-shadcn/src/lib/option-params.ts (theme-agnostic)
-- Compiles to:
+- `event-calendar.tsx` compiles to:
   - theming/ui-shadcn/src/theme-*/_compiled/{event-calendar-toolbar,event-calendar-icons,event-calendar-views,event-calendar}.tsx?
+- `scheduler.tsx` compiles to:
   - theming/ui-shadcn/src/theme-*/_compiled/{scheduler-views,resource-timegrid,resource-timeline}.tsx?
-
-**Critical:** The AGENTS-listed `*-views.tsx` files are not the whole Shadcn output surface. Wrapper-level DOM, toolbar DOM, and icon/close-button DOM also land in additional `_compiled/*.tsx` files and must be audited when checking end-to-end DOM equivalence.
 
 ### MUI Components
 
@@ -81,8 +80,9 @@ The split per-palette files (`palettes/X.css`) each contain only one palette's v
   - theming/ui-mui-tailwind/src/lib/option-params.ts (theme-agnostic)
 - Compiles to:
   - theming/ui-mui-tailwind/src/theme-*/_compiled/{EventCalendar,EventCalendarToolbar,EventCalendarViews,Scheduler,SchedulerViews}.tsx?
-- Further compiles to:
-  - theming/ui-mui/src/*/{EventCalendarViews,SchedulerViews}.tsx?
+- Further compiles to (most files pass through 1:1, except `Scheduler.tsx`):
+  - `EventCalendar.tsx`, `EventCalendarToolbar.tsx`, `EventCalendarViews.tsx`, `SchedulerViews.tsx` → theming/ui-mui/src/*/{same filename}
+  - `Scheduler.tsx` → theming/ui-mui/src/*/{ResourceTimeGrid,ResourceTimeline}.tsx? (no `Scheduler.tsx` in final output)
   - theming/ui-mui/src/*/theme.css (CSS definitions for tailwind classnames)
 
 **Critical:** For MUI, the `theme.css` files are also manual compiled artifacts. When propagating changes into the final `theming/ui-mui/src/*` outputs, you must add CSS definitions for any newly introduced Tailwind classnames and remove definitions for classnames that are no longer used anywhere in the corresponding final `.tsx` files. All three reset classnames (see [Reset Classnames](#reset-classnames-root-reset--button-reset--link-reset) below) are required in these output files.

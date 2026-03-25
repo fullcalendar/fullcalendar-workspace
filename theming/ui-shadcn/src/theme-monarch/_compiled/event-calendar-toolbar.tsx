@@ -3,8 +3,10 @@ import { CalendarController } from '@fullcalendar/react'
 import { EventCalendarNextIcon, EventCalendarPrevIcon } from './event-calendar-icons.js'
 import { Button } from '../../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
+import { cn } from '../../lib/utils.js'
 
 export interface EventCalendarToolbarProps {
+  className?: string
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -16,6 +18,7 @@ export interface EventCalendarToolbarProps {
 }
 
 export function EventCalendarToolbar({
+  className,
   controller,
   availableViews,
   addButton,
@@ -23,7 +26,7 @@ export function EventCalendarToolbar({
   const buttons = controller.getButtonState()
 
   return (
-    <div className='flex items-center justify-between flex-wrap gap-3 p-4'>
+    <div className={cn('flex items-center justify-between flex-wrap gap-3', className)}>
       <div className='flex items-center shrink-0 gap-3'>
         {addButton && (
           <Button

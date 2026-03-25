@@ -61,10 +61,10 @@ export function EventCalendar({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
+        className={!hasBorderX ? 'px-3' : undefined}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        borderlessX={!hasBorderX}
       />
       <div className='grow min-h-0'>
         <EventCalendarViews

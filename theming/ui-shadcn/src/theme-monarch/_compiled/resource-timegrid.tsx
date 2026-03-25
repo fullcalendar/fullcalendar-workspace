@@ -66,6 +66,7 @@ export function ResourceTimeGrid({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
+        className='p-4'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/react'
+import { type SxProps } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
@@ -9,6 +10,7 @@ import ToggleButton from '@mui/material/ToggleButton'
 import { EventCalendarPrevIcon, EventCalendarNextIcon } from './icons.js'
 
 export interface EventCalendarToolbarProps {
+  sx?: SxProps
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -17,14 +19,13 @@ export interface EventCalendarToolbarProps {
     hint?: string
     click?: (ev: MouseEvent) => void
   }
-  borderlessX?: boolean
 }
 
 export default function EventCalendarToolbar({
+  sx,
   controller,
   availableViews,
   addButton,
-  borderlessX,
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
@@ -36,7 +37,7 @@ export default function EventCalendarToolbar({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
-        px: borderlessX ? 1.5 : undefined,
+        ...sx,
       }}
     >
       <Box

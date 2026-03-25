@@ -60,10 +60,10 @@ export default function ResourceTimeGrid({
       }}
     >
       <EventCalendarToolbar
+        sx={!hasBorderX ? { px: 1.5 } : undefined}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        borderlessX={!hasBorderX}
       />
       <Box
         sx={(theme) => ({

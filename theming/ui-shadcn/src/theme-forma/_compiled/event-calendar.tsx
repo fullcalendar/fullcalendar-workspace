@@ -72,6 +72,7 @@ export function EventCalendar({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
+        className='border-b p-3'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

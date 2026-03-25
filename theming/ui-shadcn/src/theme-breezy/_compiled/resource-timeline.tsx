@@ -64,6 +64,7 @@ export function ResourceTimeline({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
+        className='border-b p-4 bg-sidebar text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

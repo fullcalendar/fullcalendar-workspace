@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
 import { cn } from '../../lib/utils.js'
 
 export interface EventCalendarToolbarProps {
+  className?: string
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -14,14 +15,13 @@ export interface EventCalendarToolbarProps {
     hint?: string
     click?: (ev: MouseEvent) => void
   }
-  borderlessX?: boolean
 }
 
 export function EventCalendarToolbar({
+  className,
   controller,
   availableViews,
   addButton,
-  borderlessX,
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
@@ -29,7 +29,7 @@ export function EventCalendarToolbar({
     <div
       className={cn(
         'flex items-center justify-between flex-wrap gap-3',
-        borderlessX && 'px-3',
+        className,
       )}
     >
       <div className='flex items-center shrink-0 gap-3'>

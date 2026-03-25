@@ -49,7 +49,7 @@ export function Scheduler({
       dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
-        className='border-b p-4 bg-muted/50 text-sidebar-foreground'
+        className='border-b p-4 bg-sidebar text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
