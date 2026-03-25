@@ -1,5 +1,5 @@
 import React from 'react'
-import FullCalendar, { CalendarOptions, joinClassNames } from '@fullcalendar/react'
+import FullCalendar, { type CalendarOptions, joinClassNames } from '@fullcalendar/react'
 
 // usually 11px font / 12px line-height
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'

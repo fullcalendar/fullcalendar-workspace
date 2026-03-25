@@ -1,5 +1,5 @@
 import React from 'react'
-import FullCalendar, { CalendarOptions, useCalendarController } from '@fullcalendar/react'
+import FullCalendar, { type CalendarOptions, useCalendarController } from '@fullcalendar/react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createEventCalendarOptions } from '@fullcalendar/theme-pulse-tailwind/options-event-calendar'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'

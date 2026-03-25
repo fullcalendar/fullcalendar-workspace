@@ -1,5 +1,5 @@
 import React from 'react'
-import FullCalendar, { CalendarOptions, DayCellData, DayHeaderData, joinClassNames } from '@fullcalendar/react'
+import FullCalendar, { type CalendarOptions, type DayCellData, type DayHeaderData, joinClassNames } from '@fullcalendar/react'
 import CloseIcon from '@mui/icons-material/Close'
 
 // outline

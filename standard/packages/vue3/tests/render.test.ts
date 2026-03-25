@@ -2,7 +2,7 @@ import { test, expect } from 'vitest'
 import { nextTick, ref, reactive, computed, h, onMounted, onBeforeUnmount, onUnmounted, defineAsyncComponent } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { mount } from '@vue/test-utils'
-import FullCalendar, { CalendarOptions } from '../dist'
+import FullCalendar, { type CalendarOptions } from '../dist'
 import classicThemePlugin from '../dist/themes/classic'
 import dayGridPlugin from '../dist/daygrid'
 

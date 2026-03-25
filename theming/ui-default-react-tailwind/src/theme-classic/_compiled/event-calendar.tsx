@@ -1,5 +1,5 @@
 import React from 'react'
-import FullCalendar, { CalendarOptions, joinClassNames } from '@fullcalendar/react'
+import FullCalendar, { type CalendarOptions, joinClassNames } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/react/daygrid'
 import timeGridPlugin from '@fullcalendar/react/timegrid'
 import listPlugin from '@fullcalendar/react/list'

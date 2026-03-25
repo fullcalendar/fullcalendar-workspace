@@ -1,9 +1,5 @@
 import React from 'react'
-import FullCalendar, { CalendarOptions, DayCellData, DayHeaderData, joinClassNames } from '@fullcalendar/react'
-import type {} from '@fullcalendar/react/daygrid'
-import type {} from '@fullcalendar/react/timegrid'
-import type {} from '@fullcalendar/react/list'
-import type {} from '@fullcalendar/react/multimonth'
+import FullCalendar, { type CalendarOptions, type DayCellData, type DayHeaderData, joinClassNames } from '@fullcalendar/react'
 import { EventCalendarCloseIcon } from './icons.js'
 
 // outline

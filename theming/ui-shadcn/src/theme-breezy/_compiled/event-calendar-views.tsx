@@ -1,10 +1,6 @@
 import React from 'react'
 import FullCalendar, { type CalendarOptions, type DayCellData, type DayHeaderData } from '@fullcalendar/react'
 import '@fullcalendar/react/skeleton.css'
-import type {} from '@fullcalendar/react/daygrid'
-import type {} from '@fullcalendar/react/timegrid'
-import type {} from '@fullcalendar/react/list'
-import type {} from '@fullcalendar/react/multimonth'
 import { cn } from '../../lib/utils.js'
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
