@@ -8,17 +8,17 @@ const pkgDir = joinPaths(__dirname, '..')
 const demoThemeDir = joinPaths(pkgDir, 'src', 'theme-breezy')
 
 const themes = ['breezy', 'classic', 'forma', 'monarch', 'pulse']
-const relativeImportReplacements = {
+const relativeImportReplacements: Record<string, string> = {
   '../../ui/button': '@/components/ui/button',
   '../../ui/tabs': '@/components/ui/tabs',
   '../../lib/utils': '@/lib/utils',
-  './event-calendar': '@/components/event-calendar',
-  './event-calendar-toolbar': '@/components/event-calendar-toolbar',
-  './event-calendar-icons': '@/components/event-calendar-icons',
-  './event-calendar-views': '@/components/ui/event-calendar-views',
-  './resource-timeline': '@/components/resource-timeline',
-  './resource-timegrid': '@/components/resource-timegrid',
-  './scheduler-views': '@/components/ui/scheduler-views',
+  './event-calendar': '@/registry/components/event-calendar',
+  './event-calendar-toolbar': '@/registry/components/event-calendar-toolbar',
+  './event-calendar-icons': '@/registry/components/event-calendar-icons',
+  './event-calendar-views': '@/registry/ui/event-calendar-views',
+  './resource-timeline': '@/registry/components/resource-timeline',
+  './resource-timegrid': '@/registry/components/resource-timegrid',
+  './scheduler-views': '@/registry/ui/scheduler-views',
 }
 
 for (const theme of themes) {
@@ -39,14 +39,14 @@ for (const theme of themes) {
     'utf-8',
   )
 
-  // make suitable for registry.json
+  // HACK: make suitable for registry.json
   delete (eventCalendarConfig as any).$schema
   delete (schedulerConfig as any).$schema
   for (const fileMeta of eventCalendarConfig.files) {
-    delete fileMeta.content
+    delete (fileMeta as any).content
   }
   for (const fileMeta of schedulerConfig.files) {
-    delete fileMeta.content
+    delete (fileMeta as any).content
   }
 
   await writeFile(
@@ -64,7 +64,7 @@ for (const theme of themes) {
   )
 }
 
-async function createEventCalendarConfig(theme, themeTitle) {
+async function createEventCalendarConfig(theme: string, themeTitle: string) {
   return {
     "$schema": "https://ui.shadcn.com/schema/registry-item.json",
     "name": "event-calendar",
@@ -83,7 +83,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
     "files": [
       {
         "type": "registry:block",
-        "path": "src/registry/default/blocks/event-calendar-demo.tsx", // fictional
+        "path": "registry/blocks/event-calendar-demo.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(demoThemeDir, '_compiled', 'event-calendar-demo.tsx'),
@@ -93,7 +93,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
       },
       {
         "type": "registry:component",
-        "path": "src/registry/default/components/event-calendar.tsx", // fictional
+        "path": "registry/components/event-calendar.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar.tsx'),
@@ -103,7 +103,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
       },
       {
         "type": "registry:component",
-        "path": "src/registry/default/components/event-calendar-toolbar.tsx", // fictional
+        "path": "registry/components/event-calendar-toolbar.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar-toolbar.tsx'),
@@ -113,7 +113,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
       },
       {
         "type": "registry:component",
-        "path": "src/registry/default/components/event-calendar-icons.tsx", // fictional
+        "path": "registry/components/event-calendar-icons.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar-icons.tsx'),
@@ -123,7 +123,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
       },
       {
         "type": "registry:ui",
-        "path": "src/registry/default/ui/event-calendar-views.tsx", // fictional
+        "path": "registry/ui/event-calendar-views.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar-views.tsx'),
@@ -136,7 +136,7 @@ async function createEventCalendarConfig(theme, themeTitle) {
 
 }
 
-async function createSchedulerConfig(theme, themeTitle) {
+async function createSchedulerConfig(theme: string, themeTitle: string) {
   return {
     "$schema": "https://ui.shadcn.com/schema/registry-item.json",
     "name": "scheduler",
@@ -155,7 +155,7 @@ async function createSchedulerConfig(theme, themeTitle) {
     "files": [
       {
         "type": "registry:block",
-        "path": "src/registry/default/blocks/resource-timeline-demo.tsx", // fictional
+        "path": "registry/blocks/resource-timeline-demo.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(demoThemeDir, '_compiled', 'resource-timeline-demo.tsx'),
@@ -165,7 +165,7 @@ async function createSchedulerConfig(theme, themeTitle) {
       },
       {
         "type": "registry:block",
-        "path": "src/registry/default/blocks/resource-timegrid-demo.tsx", // fictional
+        "path": "registry/blocks/resource-timegrid-demo.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(demoThemeDir, '_compiled', 'resource-timegrid-demo.tsx'),
@@ -175,7 +175,7 @@ async function createSchedulerConfig(theme, themeTitle) {
       },
       {
         "type": "registry:component",
-        "path": "src/registry/default/components/resource-timeline.tsx", // fictional
+        "path": "registry/components/resource-timeline.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'resource-timeline.tsx'),
@@ -185,7 +185,7 @@ async function createSchedulerConfig(theme, themeTitle) {
       },
       {
         "type": "registry:component",
-        "path": "src/registry/default/components/resource-timegrid.tsx", // fictional
+        "path": "registry/components/resource-timegrid.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'resource-timegrid.tsx'),
@@ -195,7 +195,7 @@ async function createSchedulerConfig(theme, themeTitle) {
       },
       {
         "type": "registry:ui",
-        "path": "src/registry/default/ui/scheduler-views.tsx", // fictional
+        "path": "registry/ui/scheduler-views.tsx", // fictional
         "content": transformSrcCode(
           await readFile(
             joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'scheduler-views.tsx'),
@@ -207,7 +207,7 @@ async function createSchedulerConfig(theme, themeTitle) {
   }
 }
 
-function transformSrcCode(code) {
+function transformSrcCode(code: string) {
   return code.replace(
     /import React from ['"]react['"];?\n/g,
     '',
@@ -226,6 +226,6 @@ function transformSrcCode(code) {
   )
 }
 
-function capitalizeFirstLetter(str) {
+function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
