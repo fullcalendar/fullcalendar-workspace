@@ -1,5 +1,5 @@
 import { computeInnerRect } from 'fullcalendar/protected-api'
-import { getStockScrollbarWidths } from '../lib/dom-misc.js'
+import { getStockScrollbarWidths } from '../lib/dom-misc'
 
 describe('computeInnerRect', () => {
   let INNER_WIDTH = 150

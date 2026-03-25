@@ -1,4 +1,4 @@
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('daygrid view with updated dimensions', () => {
   it('reports correct dateClick after resize', (done) => {

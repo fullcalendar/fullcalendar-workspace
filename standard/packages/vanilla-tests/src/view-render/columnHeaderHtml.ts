@@ -1,6 +1,6 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('dayHeaderContent as html', () => { // TODO: rename file
   pushOptions({

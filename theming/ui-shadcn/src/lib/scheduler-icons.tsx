@@ -1,7 +1,7 @@
 import React from 'react'
 import { ChevronDownIcon } from 'lucide-react'
 import { CalendarOptions, joinClassNames } from "@fullcalendar/react"
-import { mutedFgPressableGroupClass } from './option-params.js'
+import { mutedFgPressableGroupClass } from './option-params'
 
 import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 

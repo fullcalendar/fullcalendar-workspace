@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
-import * as svgs from './ui-default-svgs.js'
+import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar'
+import * as svgs from './ui-default-svgs'
 
 // outline
 const outlineWidthClass = 'outline-3'

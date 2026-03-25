@@ -1,4 +1,4 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('event fetching while date-navigating', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/4975

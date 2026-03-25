@@ -1,7 +1,7 @@
 import { Calendar } from 'fullcalendar'
 import internalClassNames from 'fullcalendar/protected-styles'
-import { findElements } from '../../lib/dom-misc.js'
-import { ToolbarWrapper } from './ToolbarWrapper.js'
+import { findElements } from '../../lib/dom-misc'
+import { ToolbarWrapper } from './ToolbarWrapper'
 
 export class CalendarWrapper {
   static EVENT_CLASSNAME = 'fc-event' // TODO: put this everywhere?

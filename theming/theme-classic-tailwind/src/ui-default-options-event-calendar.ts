@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
-import * as svgs from './ui-default-svgs.js'
+import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar'
+import * as svgs from './ui-default-svgs'
 
 // neutral buttons
 const strongSolidPressableClass = '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]'

@@ -1,11 +1,11 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import { useCalendarController } from "@fullcalendar/react"
-import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
-import SchedulerViews from './SchedulerViews.js'
-import { SchedulerProps } from '../lib/scheduler-props.js'
+import SchedulerViews from './SchedulerViews'
+import { SchedulerProps } from '../lib/scheduler-props'
 
 export default function Scheduler({
   availableViews = schedulerAvailableViews,

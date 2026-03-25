@@ -1,5 +1,5 @@
 import React from 'react'
-import { EventCalendar } from './event-calendar.js'
+import { EventCalendar } from './event-calendar'
 
 export function EventCalendarDemo() {
   return (

@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock'
 import { JsonRequestError } from 'fullcalendar'
-import { formatIsoTimeZoneOffset } from '../lib/datelib-utils.js'
-import { plainAndZoneToString } from '../lib/temporal-convert.js'
+import { formatIsoTimeZoneOffset } from '../lib/datelib-utils'
+import { plainAndZoneToString } from '../lib/temporal-convert'
 
 describe('events as a json feed', () => {
   pushOptions({

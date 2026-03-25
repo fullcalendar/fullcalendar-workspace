@@ -1,4 +1,4 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('rerenderDelay', () => {
   it('batches together many event renders', (done) => {

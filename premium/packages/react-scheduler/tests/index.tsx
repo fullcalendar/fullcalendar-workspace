@@ -5,8 +5,8 @@ import FullCalendar from '@fullcalendar/react'
 /*
 Only works on build dist code!
 */
-import adaptivePlugin from '../dist/adaptive.js'
-import resourceTimelinePlugin from '../dist/resource-timeline.js'
+import adaptivePlugin from '../dist/adaptive'
+import resourceTimelinePlugin from '../dist/resource-timeline'
 
 // https://github.com/fullcalendar/fullcalendar/issues/7419
 it('render custom event JSX during print-mode', (done) => {

@@ -1,6 +1,6 @@
 import { filterVisibleEls } from '@fullcalendar-tests/standard/lib/dom-misc'
-import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('eventMaxStack', () => {
   pushOptions({

@@ -1,4 +1,4 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('constructor', () => {
   it('should not modify the options object', () => {

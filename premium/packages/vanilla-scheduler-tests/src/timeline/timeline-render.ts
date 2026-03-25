@@ -1,8 +1,8 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { startOfDay } from 'fullcalendar/protected-api'
 import lvLocale from 'fullcalendar/locales/lv'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline rendering', () => {
   pushOptions({

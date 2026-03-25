@@ -8,8 +8,8 @@ import EventCalendarViews, {
   rowPointerResizerClass,
   rowTouchResizerClass,
   strongSolidPressableClass,
-} from './EventCalendarViews.js'
-import { EventCalendarExpanderIcon } from './icons.js'
+} from './EventCalendarViews'
+import { EventCalendarExpanderIcon } from './icons'
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'

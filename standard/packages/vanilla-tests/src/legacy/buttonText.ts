@@ -1,5 +1,5 @@
 import frLocale from 'fullcalendar/locales/fr'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 xdescribe('button text', () => {
   pushOptions({

@@ -1,5 +1,5 @@
-import * as EventResizeUtils from '../lib/EventResizeUtils.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import * as EventResizeUtils from '../lib/EventResizeUtils'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('validRange event resizing', () => {
   describe('when in month view', () => {

@@ -8,7 +8,7 @@ import EventCalendarViews, {
   pressableIconClass,
   strongSolidPressableClass,
   tertiaryOutlineColorClass,
-} from './EventCalendarViews.js'
+} from './EventCalendarViews'
 
 export default function SchedulerViews({
   views: userViews,

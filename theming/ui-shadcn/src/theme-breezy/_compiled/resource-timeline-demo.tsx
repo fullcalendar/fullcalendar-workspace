@@ -1,5 +1,5 @@
 import React from 'react'
-import { ResourceTimeline } from './resource-timeline.js'
+import { ResourceTimeline } from './resource-timeline'
 
 export function ResourceTimelineDemo() {
   return (

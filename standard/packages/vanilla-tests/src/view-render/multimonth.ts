@@ -1,4 +1,4 @@
-import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper.js'
+import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper'
 import '../lib/dom-geom.js'
 
 describe('multimonth view', () => {

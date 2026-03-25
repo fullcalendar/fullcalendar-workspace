@@ -1,7 +1,7 @@
 import {
   isRect, isRectMostlyAbove, isRectMostlyLeft, isRectMostlyBounded,
   isRectMostlyHBounded, isRectMostlyVBounded, rectsIntersect, rectContainersOther,
-} from './geom.js'
+} from './geom'
 
 // fix bug with jQuery 3 returning 0 height for <td> elements in the IE's
 ['height', 'outerHeight'].forEach((methodName) => {

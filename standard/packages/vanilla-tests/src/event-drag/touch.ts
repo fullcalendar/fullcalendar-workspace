@@ -1,5 +1,5 @@
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { waitEventDrag } from '../lib/wrappers/interaction-util.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitEventDrag } from '../lib/wrappers/interaction-util'
 
 describe('event touch dragging', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5706

@@ -1,5 +1,5 @@
 import enGbLocale from 'fullcalendar/locales/en-gb'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('eventTimeFormat', () => {
   pushOptions({

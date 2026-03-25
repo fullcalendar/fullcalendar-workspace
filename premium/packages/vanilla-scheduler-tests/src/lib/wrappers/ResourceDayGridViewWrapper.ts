@@ -1,7 +1,7 @@
 import { Calendar } from 'fullcalendar'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
-import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
-import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper.js'
+import { ResourceDayGridWrapper } from './ResourceDayGridWrapper'
+import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper'
 
 export class ResourceDayGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {

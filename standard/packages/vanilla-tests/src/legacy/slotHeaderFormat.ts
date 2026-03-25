@@ -1,5 +1,5 @@
 import enGbLocale from 'fullcalendar/locales/en-gb'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('slotHeaderFormat', () => {
   pushOptions({

@@ -1,8 +1,8 @@
 import { Calendar } from 'fullcalendar'
 import internalClassNames from 'fullcalendar/protected-styles'
-import { findElements } from '../../lib/dom-misc.js'
-import { ViewWrapper } from './ViewWrapper.js'
-import { DayGridWrapper } from './DayGridWrapper.js'
+import { findElements } from '../../lib/dom-misc'
+import { ViewWrapper } from './ViewWrapper'
+import { DayGridWrapper } from './DayGridWrapper'
 
 export class MultiMonthViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {

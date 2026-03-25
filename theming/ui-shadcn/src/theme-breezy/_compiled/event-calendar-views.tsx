@@ -1,7 +1,7 @@
 import React from 'react'
 import FullCalendar, { type CalendarOptions, type DayCellData, type DayHeaderData } from '@fullcalendar/react'
 import '@fullcalendar/react/skeleton.css'
-import { cn } from '../../lib/utils.js'
+import { cn } from '../../lib/utils'
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 

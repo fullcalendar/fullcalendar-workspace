@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event drag-n-drop', () => {
   pushOptions({

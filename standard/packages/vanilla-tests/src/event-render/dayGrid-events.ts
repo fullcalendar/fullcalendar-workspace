@@ -1,7 +1,7 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { anyElsIntersect } from '../lib/dom-geom.js'
-import { filterVisibleEls } from '../lib/dom-misc.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { anyElsIntersect } from '../lib/dom-geom'
+import { filterVisibleEls } from '../lib/dom-misc'
 
 describe('dayGrid advanced event rendering', () => {
   pushOptions({

@@ -1,4 +1,4 @@
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('slotHeaderFormat', () => {
   pushOptions({

@@ -1,7 +1,7 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
-import * as svgs from './ui-default-svgs.js'
-import { params, mutedFgPressableGroupClass } from './ui-default-options-event-calendar.js'
-import { createSchedulerOnlyOptions } from './options-scheduler.js'
+import * as svgs from './ui-default-svgs'
+import { params, mutedFgPressableGroupClass } from './ui-default-options-event-calendar'
+import { createSchedulerOnlyOptions } from './options-scheduler'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 

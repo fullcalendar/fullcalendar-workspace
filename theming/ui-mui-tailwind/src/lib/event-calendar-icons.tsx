@@ -1,7 +1,7 @@
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { CalendarOptions } from "@fullcalendar/react"
-import { pressableIconClass } from './option-params.js'
+import { pressableIconClass } from './option-params'
 
 export const eventCalendarIconOptions: CalendarOptions = {
   popoverCloseContent: () => (

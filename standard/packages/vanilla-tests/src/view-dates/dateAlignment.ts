@@ -1,4 +1,4 @@
-import { expectActiveRange } from '../lib/ViewDateUtils.js'
+import { expectActiveRange } from '../lib/ViewDateUtils'
 
 /*
 SEE ALSO: next/prev

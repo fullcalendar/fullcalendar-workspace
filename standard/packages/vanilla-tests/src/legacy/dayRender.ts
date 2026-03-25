@@ -1,6 +1,6 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
-import { formatIsoDay } from '../lib/datelib-utils.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import { formatIsoDay } from '../lib/datelib-utils'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 /*
 TODO: rename file

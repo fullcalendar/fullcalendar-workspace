@@ -3,7 +3,7 @@ SEE ALSO:
 - next (does core of date switching)
 */
 
-import { expectActiveRange } from '../lib/ViewDateUtils.js'
+import { expectActiveRange } from '../lib/ViewDateUtils'
 
 describe('prev', () => {
   pushOptions({

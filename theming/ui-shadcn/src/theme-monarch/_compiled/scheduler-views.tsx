@@ -1,7 +1,7 @@
 import React from 'react'
 import { type CalendarOptions } from '@fullcalendar/react'
-import { type EventCalendarViewProps, EventCalendarViews } from './event-calendar-views.js'
-import { cn } from '../../lib/utils.js'
+import { type EventCalendarViewProps, EventCalendarViews } from './event-calendar-views'
+import { cn } from '../../lib/utils'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',

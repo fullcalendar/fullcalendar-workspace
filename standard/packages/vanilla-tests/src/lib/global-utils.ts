@@ -1,5 +1,5 @@
 import { Calendar, CalendarOptions } from 'fullcalendar'
-import { parseLocalDate, parseUtcDate } from './date-parsing.js'
+import { parseLocalDate, parseUtcDate } from './date-parsing'
 
 // Other Important Global Stuff
 // ---------------------------------------------------------------------------------------------------------------------

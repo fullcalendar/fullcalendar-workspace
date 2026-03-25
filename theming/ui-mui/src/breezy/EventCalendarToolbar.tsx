@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
-import { EventCalendarPrevIcon, EventCalendarNextIcon } from './icons.js'
+import { EventCalendarPrevIcon, EventCalendarNextIcon } from './icons'
 
 export interface EventCalendarToolbarProps extends BoxProps {
   controller: CalendarController

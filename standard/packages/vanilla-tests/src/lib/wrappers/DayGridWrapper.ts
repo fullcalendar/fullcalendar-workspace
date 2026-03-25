@@ -1,7 +1,7 @@
-import { findElements } from '../../lib/dom-misc.js'
-import { formatIsoDay } from '../datelib-utils.js'
-import { getRectCenter, intersectRects, addPoints, subtractPoints } from '../geom.js'
-import { CalendarWrapper } from './CalendarWrapper.js'
+import { findElements } from '../../lib/dom-misc'
+import { formatIsoDay } from '../datelib-utils'
+import { getRectCenter, intersectRects, addPoints, subtractPoints } from '../geom'
+import { CalendarWrapper } from './CalendarWrapper'
 
 export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   static EVENT_IS_START_CLASSNAME = 'fc-event-start'

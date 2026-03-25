@@ -1,5 +1,5 @@
 import { expectRenderRange } from '@fullcalendar-tests/standard/lib/ViewDateUtils'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline date range', () => {
   it('respects firstDay with auto-detected alignment with 7-days', () => {

@@ -2,9 +2,9 @@ import { Calendar } from 'fullcalendar'
 import luxonPlugin from '@fullcalendar/format-luxon3'
 import dayGridPlugin from 'fullcalendar/daygrid'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import timeGridPlugin from 'fullcalendar/timegrid'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('luxon formatting plugin', () => {
   const PLUGINS = [ // for `new Calendar`

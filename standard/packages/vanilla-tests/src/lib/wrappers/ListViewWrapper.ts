@@ -1,8 +1,8 @@
 import { Calendar } from 'fullcalendar'
 import internalClassNames from 'fullcalendar/protected-styles'
-import { findElements } from '../../lib/dom-misc.js'
-import { ViewWrapper } from './ViewWrapper.js'
-import { formatIsoDay } from '../datelib-utils.js'
+import { findElements } from '../../lib/dom-misc'
+import { ViewWrapper } from './ViewWrapper'
+import { formatIsoDay } from '../datelib-utils'
 
 export class ListViewWrapper extends ViewWrapper {
   static EVENT_DOT_CLASSNAME = 'fc-list-event-dot'

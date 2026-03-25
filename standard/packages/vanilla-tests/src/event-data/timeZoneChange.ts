@@ -1,7 +1,7 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import timeGridPlugin from 'fullcalendar/timegrid'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
 
 describe('timeZone change', () => {
   describe('with non-recurring timed events', () => {

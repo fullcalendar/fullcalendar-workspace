@@ -1,6 +1,6 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import timeGridPlugin from 'fullcalendar/timegrid'
 
 describe('recurring events', () => {

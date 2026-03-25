@@ -1,5 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/react'
-import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/react-scheduler/timeline'

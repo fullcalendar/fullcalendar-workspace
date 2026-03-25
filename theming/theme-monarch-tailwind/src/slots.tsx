@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames } from '@fullcalendar/react'
 import { Fragment } from 'react'
-import { EventCalendarOptionParams } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar'
 
 export function createSlots(
   params: EventCalendarOptionParams,

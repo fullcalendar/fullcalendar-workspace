@@ -1,7 +1,7 @@
 import React from 'react'
 import { type CalendarOptions } from '@fullcalendar/react'
-import { type EventCalendarViewProps, EventCalendarViews, xxsTextClass } from './event-calendar-views.js'
-import { cn } from '../../lib/utils.js'
+import { type EventCalendarViewProps, EventCalendarViews, xxsTextClass } from './event-calendar-views'
+import { cn } from '../../lib/utils'
 
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 

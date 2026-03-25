@@ -1,5 +1,5 @@
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
-import { waitDateSelect } from '../lib/wrappers/interaction-util.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitDateSelect } from '../lib/wrappers/interaction-util'
 
 describe('selectAllow', () => {
   pushOptions({

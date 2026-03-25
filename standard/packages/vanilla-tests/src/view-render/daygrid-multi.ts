@@ -1,4 +1,4 @@
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import '../lib/dom-misc.js'
 
 describe('DayGrid w/ multiple weeks/days', () => {

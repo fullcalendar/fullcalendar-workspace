@@ -1,5 +1,5 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper'
 
 describe('list-view event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/6486

@@ -9,8 +9,8 @@ import EventCalendarViews, {
   secondaryPressableClass,
   strongSolidPressableClass,
   tertiaryOutlineColorClass,
-} from './EventCalendarViews.js'
-import { EventCalendarExpanderIcon } from './icons.js'
+} from './EventCalendarViews'
+import { EventCalendarExpanderIcon } from './icons'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',

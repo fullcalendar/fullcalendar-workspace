@@ -6,8 +6,8 @@ import timeGridPlugin from '@fullcalendar/react/timegrid'
 import listPlugin from '@fullcalendar/react/list'
 import interactionPlugin from '@fullcalendar/react/interaction'
 import multiMonthPlugin from '@fullcalendar/react/multimonth'
-import EventCalendarToolbar from './EventCalendarToolbar.js'
-import EventCalendarViews from './EventCalendarViews.js'
+import EventCalendarToolbar from './EventCalendarToolbar'
+import EventCalendarViews from './EventCalendarViews'
 
 export const eventCalendarPlugins = [
   dayGridPlugin,

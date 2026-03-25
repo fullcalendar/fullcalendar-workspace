@@ -1,4 +1,4 @@
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('slotMinTime', () => {
   // root cause of https://github.com/fullcalendar/fullcalendar-vue/issues/88

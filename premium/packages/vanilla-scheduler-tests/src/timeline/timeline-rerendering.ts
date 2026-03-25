@@ -1,5 +1,5 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline view rerendering', () => {
   describe('events, when rerendering', () => {

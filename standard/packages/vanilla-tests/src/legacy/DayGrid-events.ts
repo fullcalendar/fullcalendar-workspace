@@ -1,6 +1,6 @@
-import { directionallyTestSeg } from '../lib/DayGridEventRenderUtils.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { directionallyTestSeg } from '../lib/DayGridEventRenderUtils'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('DayGrid event rendering', () => {
   pushOptions({

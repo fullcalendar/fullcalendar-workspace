@@ -1,5 +1,5 @@
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
-import { anyElsObscured } from '../lib/dom-geom.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { anyElsObscured } from '../lib/dom-geom'
 
 describe('timeGrid event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/6019

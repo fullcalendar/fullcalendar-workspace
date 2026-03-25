@@ -86,7 +86,7 @@ For merging `userViews` or `views`, instead of relying on `mergeViewOptionsMap`,
 Augmenting `joinClassNames`
   Replace all calls to `joinClassNames` with the Shadcn `cn` utility that does something very similar. The import will likely look like this:
 
-    import { cn } from '../../lib/utils.js'
+    import { cn } from '../../lib/utils'
 
 Forced ordering of properties
   For the most part, you will order things based on when they occur in the "main" file and follow dependencies depth-first. However, here are some special ways to order that should override this:

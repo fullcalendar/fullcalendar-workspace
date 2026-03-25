@@ -2,14 +2,14 @@ import React from 'react'
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-tailwind/options-scheduler'
-import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { EventCalendarViews } from './event-calendar.js'
+import { EventCalendarToolbar } from '../lib/event-calendar-toolbar'
+import { EventCalendarViews } from './event-calendar'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
-import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { cn } from '../lib/utils.js'
-import { params } from '../lib/option-params.js'
-import { SchedulerProps } from '../lib/scheduler-props.js'
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons'
+import { cn } from '../lib/utils'
+import { params } from '../lib/option-params'
+import { SchedulerProps } from '../lib/scheduler-props'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 

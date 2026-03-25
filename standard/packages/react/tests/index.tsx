@@ -5,11 +5,11 @@ import { render } from '@testing-library/react'
 /*
 Only works on build dist code!
 */
-import FullCalendar, { sliceEvents } from '../dist/index.js'
-import classicThemePlugin from '../dist/themes/classic.js'
-import dayGridPlugin from '../dist/daygrid.js'
-import listPlugin from '../dist/list.js'
-import { anyElsIntersect } from './utils.js'
+import FullCalendar, { sliceEvents } from '../dist/index'
+import classicThemePlugin from '../dist/themes/classic'
+import dayGridPlugin from '../dist/daygrid'
+import listPlugin from '../dist/list'
+import { anyElsIntersect } from './utils'
 
 const NOW_DATE = new Date()
 const TEST_TOOLBAR_CLASS = 'test-toolbar'

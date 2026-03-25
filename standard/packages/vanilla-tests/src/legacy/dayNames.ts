@@ -1,8 +1,8 @@
 import { addDays } from 'fullcalendar/protected-api'
-import { removeLtrCharCodes, moveDayNumberLast, removeCommas } from '../lib/string.js'
-import { parseUtcDate } from '../lib/date-parsing.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { removeLtrCharCodes, moveDayNumberLast, removeCommas } from '../lib/string'
+import { parseUtcDate } from '../lib/date-parsing'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('day names', () => {
   let sundayDate = parseUtcDate('2019-03-17')

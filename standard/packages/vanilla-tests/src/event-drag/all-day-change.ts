@@ -1,7 +1,7 @@
 import { parseMarker, addMs } from 'fullcalendar/protected-api'
-import { drag } from '../lib/EventDragUtils.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
-import { intersectRects } from '../lib/geom.js'
+import { drag } from '../lib/EventDragUtils'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { intersectRects } from '../lib/geom'
 
 describe('allDay change', () => {
   pushOptions({

@@ -5,7 +5,7 @@ import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 import resourceDayGridPlugin from 'fullcalendar-scheduler/resource-daygrid'
 import resourceTimeGridPlugin from 'fullcalendar-scheduler/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar-tests/standard/lib/global-plugins'
-import themeForTestsPremiumPlugin from './theme-for-tests-premium.js'
+import themeForTestsPremiumPlugin from './theme-for-tests-premium'
 import { pushOptions } from '@fullcalendar-tests/standard/lib/global-utils'
 
 const MORE_DEFAULT_PLUGINS: PluginDefInput[] = [

@@ -3,8 +3,8 @@ import FullCalendar, { type CalendarOptions } from '@fullcalendar/react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createEventCalendarOptions } from '@fullcalendar/theme-pulse-tailwind/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-pulse-tailwind/slots'
-import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { params } from '../lib/option-params.js'
+import { eventCalendarIconOptions } from '../lib/event-calendar-icons'
+import { params } from '../lib/option-params'
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 

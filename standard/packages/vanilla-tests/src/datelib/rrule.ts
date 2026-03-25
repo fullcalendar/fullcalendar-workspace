@@ -1,10 +1,10 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
 import rrulePlugin from '@fullcalendar/rrule'
-import { parseUtcDate, parseLocalDate } from '../lib/date-parsing.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import { parseUtcDate, parseLocalDate } from '../lib/date-parsing'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('rrule plugin', () => {
   pushOptions({

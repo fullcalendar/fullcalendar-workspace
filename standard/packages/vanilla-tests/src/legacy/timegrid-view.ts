@@ -1,5 +1,5 @@
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('timeGrid view rendering', () => {
   pushOptions({

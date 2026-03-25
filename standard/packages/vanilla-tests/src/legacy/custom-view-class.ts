@@ -1,7 +1,7 @@
 import { sliceEvents } from 'fullcalendar'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 xdescribe('custom view class', () => { // TODO: rename file
   it('calls all standard methods with correct parameters', () => {

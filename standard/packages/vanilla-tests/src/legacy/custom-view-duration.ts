@@ -1,9 +1,9 @@
 import frLocale from 'fullcalendar/locales/fr'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('custom view', () => {
   it('renders a 4 day dayGrid view', () => {

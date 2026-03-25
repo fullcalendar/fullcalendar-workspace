@@ -1,5 +1,5 @@
-import { getRectCenter, subtractPoints, addPoints } from './geom.js'
-import { CalendarWrapper } from './wrappers/CalendarWrapper.js'
+import { getRectCenter, subtractPoints, addPoints } from './geom'
+import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
 export function resize(point0, point1, fromStart?, debug?) {
   let eventEl = new CalendarWrapper(currentCalendar).getFirstEventEl()

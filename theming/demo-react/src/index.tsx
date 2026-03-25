@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useDemoChoices } from './lib/demo-choices.js'
-import { DemoGenerator } from './lib/demo-generator.js'
-import { Layout } from './lib/layout.js'
-import { buildToolbarAndButtons } from './lib/demo-generator-util.js'
+import { useDemoChoices } from './lib/demo-choices'
+import { DemoGenerator } from './lib/demo-generator'
+import { Layout } from './lib/layout'
+import { buildToolbarAndButtons } from './lib/demo-generator-util'
 
 import FullCalendar from '@fullcalendar/react'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'

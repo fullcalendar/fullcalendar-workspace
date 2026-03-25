@@ -3,10 +3,10 @@ import { type CalendarOptions, useCalendarController } from '@fullcalendar/react
 import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
 import interactionPlugin from '@fullcalendar/react/interaction'
-import { cn } from '../../lib/utils.js'
-import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons.js'
-import { EventCalendarToolbar } from './event-calendar-toolbar.js'
-import { SchedulerViews } from './scheduler-views.js'
+import { cn } from '../../lib/utils'
+import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons'
+import { EventCalendarToolbar } from './event-calendar-toolbar'
+import { SchedulerViews } from './scheduler-views'
 
 const plugins = [
   adaptivePlugin,

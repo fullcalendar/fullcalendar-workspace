@@ -1,5 +1,5 @@
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('nextDayThreshold', () => {
   // when a view object exposes its nextDayThreshold value (after some refactoring)...

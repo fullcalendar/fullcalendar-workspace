@@ -1,7 +1,7 @@
-import { findElements } from '../../lib/dom-misc.js'
-import { parseIsoAsUtc, formatIsoDay } from '../datelib-utils.js'
-import { parseUtcDate } from '../date-parsing.js'
-import { CalendarWrapper } from './CalendarWrapper.js'
+import { findElements } from '../../lib/dom-misc'
+import { parseIsoAsUtc, formatIsoDay } from '../datelib-utils'
+import { parseUtcDate } from '../date-parsing'
+import { CalendarWrapper } from './CalendarWrapper'
 
 export class DayHeaderWrapper {
   constructor(public el: HTMLElement) {

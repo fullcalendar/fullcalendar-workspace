@@ -1,9 +1,9 @@
 import internalClassNames from 'fullcalendar/protected-styles'
-import { ViewWrapper } from './ViewWrapper.js'
-import { TimeGridWrapper } from './TimeGridWrapper.js'
-import { DayGridWrapper } from './DayGridWrapper.js'
-import { DayHeaderWrapper } from './DayHeaderWrapper.js'
-import { findElements } from '../dom-misc.js'
+import { ViewWrapper } from './ViewWrapper'
+import { TimeGridWrapper } from './TimeGridWrapper'
+import { DayGridWrapper } from './DayGridWrapper'
+import { DayHeaderWrapper } from './DayHeaderWrapper'
+import { findElements } from '../dom-misc'
 
 export class TimeGridViewWrapper extends ViewWrapper {
   constructor(calendar) {

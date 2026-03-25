@@ -1,6 +1,6 @@
 import React from 'react'
 import FullCalendar, { type CalendarOptions, joinClassNames } from '@fullcalendar/react'
-import { EventCalendarCloseIcon } from './icons.js'
+import { EventCalendarCloseIcon } from './icons'
 
 // outline
 export const outlineWidthClass = 'outline-3'

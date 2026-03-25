@@ -1,5 +1,5 @@
-import { ListenerCounter } from '../lib/ListenerCounter.js'
-import { prepareStandardListeners } from '../lib/vdom-misc.js'
+import { ListenerCounter } from '../lib/ListenerCounter'
+import { prepareStandardListeners } from '../lib/vdom-misc'
 
 describe('destroy', () => {
   describe('when calendar is LTR', () => {

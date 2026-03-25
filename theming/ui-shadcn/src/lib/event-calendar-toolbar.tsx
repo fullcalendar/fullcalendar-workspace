@@ -1,9 +1,9 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/react'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import { Button } from '../ui/button.js'
-import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'
-import { cn } from '../lib/utils.js'
+import { Button } from '../ui/button'
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs'
+import { cn } from '../lib/utils'
 
 export interface EventCalendarToolbarProps {
   className?: string

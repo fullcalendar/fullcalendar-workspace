@@ -1,4 +1,4 @@
-import { parseUtcDate, parseLocalDate } from './date-parsing.js'
+import { parseUtcDate, parseLocalDate } from './date-parsing'
 
 beforeEach(() => {
   jasmine.addMatchers({

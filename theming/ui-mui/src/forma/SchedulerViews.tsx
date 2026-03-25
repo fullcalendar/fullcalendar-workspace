@@ -7,8 +7,8 @@ import EventCalendarViews, {
   primaryOutlineColorClass,
   strongSolidPressableClass,
   EventCalendarViewsProps,
-} from './EventCalendarViews.js'
-import { EventCalendarExpanderIcon } from './icons.js'
+} from './EventCalendarViews'
+import { EventCalendarExpanderIcon } from './icons'
 
 export interface SchedulerViewsProps extends EventCalendarViewsProps {}
 

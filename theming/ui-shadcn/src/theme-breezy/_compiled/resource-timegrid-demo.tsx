@@ -1,5 +1,5 @@
 import React from 'react'
-import { ResourceTimeGrid } from './resource-timegrid.js'
+import { ResourceTimeGrid } from './resource-timegrid'
 
 export function ResourceTimeGridDemo() {
   return (

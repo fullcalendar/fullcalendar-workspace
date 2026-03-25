@@ -2,8 +2,8 @@ import React from 'react'
 import FullCalendar, { type CalendarOptions } from '@fullcalendar/react'
 import { mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { createEventCalendarOptions } from '@fullcalendar/theme-classic-tailwind/options-event-calendar'
-import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { params } from '../lib/option-params.js'
+import { eventCalendarIconOptions } from '../lib/event-calendar-icons'
+import { params } from '../lib/option-params'
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 

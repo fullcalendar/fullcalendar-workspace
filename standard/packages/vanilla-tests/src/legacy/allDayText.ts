@@ -1,5 +1,5 @@
 import ptBrLocale from 'fullcalendar/locales/pt-br'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('allDayText', () => {
   describe('when allDaySlots is not set', () => {

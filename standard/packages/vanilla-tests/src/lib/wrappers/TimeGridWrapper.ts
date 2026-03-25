@@ -1,10 +1,10 @@
 import { startOfDay, createDuration, parseMarker, addDays, addMs, getRectCenter, asRoughMs } from 'fullcalendar/protected-api'
-import { findElements } from '../../lib/dom-misc.js'
-import { formatIsoDay, formatIsoTime, ensureDate } from '../datelib-utils.js'
-import { parseUtcDate } from '../date-parsing.js'
-import { getBoundingRect } from '../dom-geom.js'
-import { addPoints } from '../geom.js'
-import { CalendarWrapper } from './CalendarWrapper.js'
+import { findElements } from '../../lib/dom-misc'
+import { formatIsoDay, formatIsoTime, ensureDate } from '../datelib-utils'
+import { parseUtcDate } from '../date-parsing'
+import { getBoundingRect } from '../dom-geom'
+import { addPoints } from '../geom'
+import { CalendarWrapper } from './CalendarWrapper'
 
 export class TimeGridWrapper {
   constructor(public el: HTMLElement) { // el is the scroller

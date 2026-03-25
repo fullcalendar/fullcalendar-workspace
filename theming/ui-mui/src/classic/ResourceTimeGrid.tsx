@@ -5,8 +5,8 @@ import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 import interactionPlugin from '@fullcalendar/react/interaction'
 import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timegrid'
-import EventCalendarToolbar from './EventCalendarToolbar.js'
-import SchedulerViews from './SchedulerViews.js'
+import EventCalendarToolbar from './EventCalendarToolbar'
+import SchedulerViews from './SchedulerViews'
 
 const plugins = [
   adaptivePlugin,

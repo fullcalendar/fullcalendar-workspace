@@ -7,9 +7,9 @@ import timelinePlugin from '@fullcalendar/react-scheduler/timeline'
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timegrid'
 import resourceDayGridPlugin from '@fullcalendar/react-scheduler/resource-daygrid'
-import { eventCalendarPlugins } from './EventCalendar.js'
-import EventCalendarToolbar from './EventCalendarToolbar.js'
-import SchedulerViews from './SchedulerViews.js'
+import { eventCalendarPlugins } from './EventCalendar'
+import EventCalendarToolbar from './EventCalendarToolbar'
+import SchedulerViews from './SchedulerViews'
 
 const schedulerOnlyPlugins = [
   adaptivePlugin,

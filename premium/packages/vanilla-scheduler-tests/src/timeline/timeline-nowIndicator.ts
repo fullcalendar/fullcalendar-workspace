@@ -1,6 +1,6 @@
 import { getBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 /*
 RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.

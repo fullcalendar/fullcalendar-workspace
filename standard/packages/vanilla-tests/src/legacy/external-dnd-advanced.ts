@@ -1,6 +1,6 @@
 import { ThirdPartyDraggable } from 'fullcalendar/interaction'
-import { testEventDrag } from '../lib/dnd-resize-utils.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { testEventDrag } from '../lib/dnd-resize-utils'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 // TODO: Use the built-in Draggable for some of these tests
 

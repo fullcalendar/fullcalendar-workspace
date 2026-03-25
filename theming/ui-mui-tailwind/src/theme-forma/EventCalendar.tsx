@@ -2,9 +2,9 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import { useCalendarController } from "@fullcalendar/react"
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
-import EventCalendarViews from './EventCalendarViews.js'
-import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
-import { EventCalendarProps } from '../lib/event-calendar-props.js'
+import EventCalendarViews from './EventCalendarViews'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar'
+import { EventCalendarProps } from '../lib/event-calendar-props'
 
 export default function EventCalendar({
   availableViews = eventCalendarAvailableViews,

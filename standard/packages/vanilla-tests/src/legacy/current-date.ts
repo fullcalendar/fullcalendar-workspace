@@ -1,7 +1,7 @@
 import { FormatRangeOptions } from 'fullcalendar'
 import { addDays } from 'fullcalendar/protected-api'
-import { parseUtcDate } from '../lib/date-parsing.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
+import { parseUtcDate } from '../lib/date-parsing'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('current date', () => {
   const TITLE_FORMAT: FormatRangeOptions = {

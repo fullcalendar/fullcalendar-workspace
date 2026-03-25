@@ -4,10 +4,10 @@ import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 import interactionPlugin from '@fullcalendar/react/interaction'
 import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
-import { EventCalendarToolbar } from './event-calendar-toolbar.js'
-import { SchedulerViews } from './scheduler-views.js'
-import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons.js'
-import { cn } from '../../lib/utils.js'
+import { EventCalendarToolbar } from './event-calendar-toolbar'
+import { SchedulerViews } from './scheduler-views'
+import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from './event-calendar-icons'
+import { cn } from '../../lib/utils'
 
 const plugins = [
   adaptivePlugin,

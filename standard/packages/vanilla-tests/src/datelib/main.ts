@@ -9,10 +9,10 @@ import {
   diffDayAndTime,
 } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
-import themeForTestsPlugin from '../lib/theme-for-tests.js' // "
+import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
-import { getDSTDeadZone } from '../lib/dst-dead-zone.js'
-import { formatPrettyTimeZoneOffset, formatIsoTimeZoneOffset, formatIsoWithoutTz } from '../lib/datelib-utils.js'
+import { getDSTDeadZone } from '../lib/dst-dead-zone'
+import { formatPrettyTimeZoneOffset, formatIsoTimeZoneOffset, formatIsoWithoutTz } from '../lib/datelib-utils'
 
 describe('datelib', () => {
   let enLocale

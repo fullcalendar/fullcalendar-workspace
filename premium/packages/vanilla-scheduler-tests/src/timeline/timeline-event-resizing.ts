@@ -1,6 +1,6 @@
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?

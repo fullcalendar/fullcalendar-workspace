@@ -6,8 +6,8 @@ import { paletteMetaMap as fcPulsePaletteOptions } from '@fullcalendar/theme-pul
 import { paletteMetaMap as fcBreezyPaletteOptions } from '@fullcalendar/theme-breezy-tailwind/ui-default-palettes-meta'
 import { demoPaletteMap as shadcnPaletteOptions } from '@fullcalendar/ui-shadcn/demo-palettes-meta'
 import { demoPaletteMap as muiPaletteOptions } from '@fullcalendar/ui-mui-tailwind/demo-palettes-meta'
-import { themeOptions, colorSchemeOptions, ColorScheme, UIName, ThemeName } from './config.js'
-import { useLocalStorageState } from './hooks.js'
+import { themeOptions, colorSchemeOptions, ColorScheme, UIName, ThemeName } from './config'
+import { useLocalStorageState } from './hooks'
 
 const themeOptionValues = Object.keys(themeOptions) as ThemeName[]
 const fcMonarchPaletteValues = Object.keys(fcMonarchPaletteOptions)

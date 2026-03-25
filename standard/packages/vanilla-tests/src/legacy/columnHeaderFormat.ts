@@ -1,8 +1,8 @@
 import frLocale from 'fullcalendar/locales/fr'
 import enGbLocale from 'fullcalendar/locales/en-gb'
 import koLocale from 'fullcalendar/locales/ko'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('dayHeaderFormat', () => { // TODO: rename file
   describe('when not set', () => {

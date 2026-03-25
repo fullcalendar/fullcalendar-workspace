@@ -1,5 +1,5 @@
 import { CalendarOptions, DayCellData, joinClassNames, ViewOptions } from '@fullcalendar/react'
-import { filledRightTriangle } from './svgs.js'
+import { filledRightTriangle } from './svgs'
 
 /*
 COLOR TODO:

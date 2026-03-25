@@ -1,5 +1,5 @@
-import { expectActiveRange } from '../lib/ViewDateUtils.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { expectActiveRange } from '../lib/ViewDateUtils'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('next', () => {
   pushOptions({

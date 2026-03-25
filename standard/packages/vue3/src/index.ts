@@ -1,5 +1,5 @@
-import FullCalendarComponent from './FullCalendar.js'
-import { useCalendarController } from './hooks.js'
+import FullCalendarComponent from './FullCalendar'
+import { useCalendarController } from './hooks'
 
 export * from 'fullcalendar/public-api'
 export { useCalendarController }

@@ -1,5 +1,5 @@
-import { expectActiveRange } from '../lib/ViewDateUtils.js'
-import { expectDay } from '../lib/ViewRenderUtils.js'
+import { expectActiveRange } from '../lib/ViewDateUtils'
+import { expectDay } from '../lib/ViewRenderUtils'
 
 describe('dayCount', () => {
   pushOptions({

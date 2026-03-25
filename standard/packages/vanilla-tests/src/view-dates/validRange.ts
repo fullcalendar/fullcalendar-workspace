@@ -1,5 +1,5 @@
-import { expectActiveRange, expectRenderRange } from '../lib/ViewDateUtils.js'
-import { parseUtcDate } from '../lib/date-parsing.js'
+import { expectActiveRange, expectRenderRange } from '../lib/ViewDateUtils'
+import { parseUtcDate } from '../lib/date-parsing'
 
 describe('validRange', () => {
   pushOptions({

@@ -3,8 +3,8 @@ import classicThemePlugin from 'fullcalendar/themes/classic'
 import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import themeForTests from '@fullcalendar-tests/standard/lib/theme-for-tests'
-import themeForTestsPremium from '../lib/theme-for-tests-premium.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import themeForTestsPremium from '../lib/theme-for-tests-premium'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 function buildOptions() {
   return {

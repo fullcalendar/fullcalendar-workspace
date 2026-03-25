@@ -1,4 +1,4 @@
-import { findElements } from "../dom-misc.js"
+import { findElements } from '../dom-misc'
 
 export class ToolbarWrapper {
   constructor(private el: HTMLElement) {

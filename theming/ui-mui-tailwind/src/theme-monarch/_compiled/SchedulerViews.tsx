@@ -10,7 +10,7 @@ import EventCalendarViews, {
   secondaryPressableClass,
   strongSolidPressableClass,
   tertiaryOutlineColorClass,
-} from './EventCalendarViews.js'
+} from './EventCalendarViews'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',

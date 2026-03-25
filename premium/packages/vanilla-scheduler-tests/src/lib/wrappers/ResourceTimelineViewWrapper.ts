@@ -1,9 +1,9 @@
 import { Calendar } from 'fullcalendar'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
-import { ResourceTimelineGridWrapper } from './ResourceTimelineGridWrapper.js'
-import { ResourceDataGridWrapper } from './ResourceDataGridWrapper.js'
-import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
-import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper.js'
+import { ResourceTimelineGridWrapper } from './ResourceTimelineGridWrapper'
+import { ResourceDataGridWrapper } from './ResourceDataGridWrapper'
+import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
+import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper'
 
 export class ResourceTimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {

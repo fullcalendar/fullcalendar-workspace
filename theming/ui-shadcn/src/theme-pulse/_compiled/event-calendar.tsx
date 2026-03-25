@@ -5,10 +5,10 @@ import interactionPlugin from '@fullcalendar/react/interaction'
 import listPlugin from '@fullcalendar/react/list'
 import multiMonthPlugin from '@fullcalendar/react/multimonth'
 import timeGridPlugin from '@fullcalendar/react/timegrid'
-import { EventCalendarToolbar } from './event-calendar-toolbar.js'
-import { EventCalendarViews } from './event-calendar-views.js'
-import { EventCalendarCloseIcon } from './event-calendar-icons.js'
-import { cn } from '../../lib/utils.js'
+import { EventCalendarToolbar } from './event-calendar-toolbar'
+import { EventCalendarViews } from './event-calendar-views'
+import { EventCalendarCloseIcon } from './event-calendar-icons'
+import { cn } from '../../lib/utils'
 
 const plugins = [
   dayGridPlugin,

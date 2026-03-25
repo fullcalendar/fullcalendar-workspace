@@ -1,6 +1,6 @@
 import { addDays } from 'fullcalendar/protected-api'
-import { formatIsoDay } from './datelib-utils.js'
-import { CalendarWrapper } from './wrappers/CalendarWrapper.js'
+import { formatIsoDay } from './datelib-utils'
+import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
 export function expectDayRange(start, end) {
   if (typeof start === 'string') {

@@ -1,8 +1,8 @@
 import esLocale from 'fullcalendar/locales/es'
 import frLocale from 'fullcalendar/locales/fr'
 import arLocale from 'fullcalendar/locales/ar'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('locale', () => {
   pushOptions({

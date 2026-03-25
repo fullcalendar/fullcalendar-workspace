@@ -1,6 +1,6 @@
 import { getLeadingBoundingRect, sortBoundingRects } from '@fullcalendar-tests/standard/lib/dom-geom'
 import { DayGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridViewWrapper'
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view dateClick', () => {
   pushOptions({

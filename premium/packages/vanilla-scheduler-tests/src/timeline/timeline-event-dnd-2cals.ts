@@ -3,8 +3,8 @@ import interactionPlugin from 'fullcalendar/interaction'
 import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 import classicThemePlugin from 'fullcalendar/themes/classic'
 import themeForTests from '@fullcalendar-tests/standard/lib/theme-for-tests'
-import themeForTestsPremium from '../lib/theme-for-tests-premium.js'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import themeForTestsPremium from '../lib/theme-for-tests-premium'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline dragging events between calendars', () => {
   let DEFAULT_DATE = '2019-01-01'

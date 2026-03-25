@@ -1,7 +1,7 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/react'
-import * as svgs from './ui-default-svgs.js'
-import { params } from './ui-default-options-event-calendar.js'
-import { createSchedulerOnlyOptions } from './options-scheduler.js'
+import * as svgs from './ui-default-svgs'
+import { params } from './ui-default-options-event-calendar'
+import { createSchedulerOnlyOptions } from './options-scheduler'
 
 const expanderIconClass = 'size-4 not-group-hover:opacity-65'
 

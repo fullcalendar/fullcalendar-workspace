@@ -1,8 +1,8 @@
 import { addDays } from 'fullcalendar/protected-api'
-import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
-import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
-import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
+import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper'
 
 describe('navLinks', () => {
   pushOptions({

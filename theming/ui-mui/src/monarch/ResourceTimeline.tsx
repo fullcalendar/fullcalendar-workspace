@@ -4,8 +4,8 @@ import { CalendarOptions, useCalendarController } from '@fullcalendar/react'
 import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
 import interactionPlugin from '@fullcalendar/react/interaction'
-import EventCalendarToolbar from './EventCalendarToolbar.js'
-import SchedulerViews from './SchedulerViews.js'
+import EventCalendarToolbar from './EventCalendarToolbar'
+import SchedulerViews from './SchedulerViews'
 
 const plugins = [
   adaptivePlugin,

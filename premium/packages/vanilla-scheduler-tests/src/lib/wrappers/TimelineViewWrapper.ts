@@ -1,8 +1,8 @@
 import { Calendar } from 'fullcalendar'
 import internalClassNames from 'fullcalendar/protected-styles'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
-import { TimelineGridWrapper } from './TimelineGridWrapper.js'
-import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
+import { TimelineGridWrapper } from './TimelineGridWrapper'
+import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
 
 export class TimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {

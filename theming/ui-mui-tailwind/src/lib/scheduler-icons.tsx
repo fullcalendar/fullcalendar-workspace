@@ -1,7 +1,7 @@
 import React from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { CalendarOptions, joinClassNames } from "@fullcalendar/react"
-import { pressableIconClass } from './option-params.js'
+import { pressableIconClass } from './option-params'
 
 import type {} from '@fullcalendar/react-scheduler/resource-timeline'
 

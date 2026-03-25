@@ -1,5 +1,5 @@
-import { filterVisibleEls } from '../lib/dom-misc.js'
-import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper.js'
+import { filterVisibleEls } from '../lib/dom-misc'
+import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper'
 
 describe('multi-month-view event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/7573

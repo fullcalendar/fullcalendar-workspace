@@ -1,8 +1,8 @@
 import { parseMarker, addDays } from 'fullcalendar/protected-api'
-import { formatIsoDay } from './datelib-utils.js'
-import { TimeGridViewWrapper } from './wrappers/TimeGridViewWrapper.js'
-import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper.js'
-import { CalendarWrapper } from './wrappers/CalendarWrapper.js'
+import { formatIsoDay } from './datelib-utils'
+import { TimeGridViewWrapper } from './wrappers/TimeGridViewWrapper'
+import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper'
+import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
 export function testEventDrag(options, dropDate, expectSuccess, callback, eventClassName?) {
   let initialized = false

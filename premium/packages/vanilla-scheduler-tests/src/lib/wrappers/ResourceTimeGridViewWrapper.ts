@@ -2,9 +2,9 @@ import { Calendar } from 'fullcalendar'
 import internalClassNames from 'fullcalendar/protected-styles'
 import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
-import { ResourceTimeGridWrapper } from './ResourceTimeGridWrapper.js'
-import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper.js'
-import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
+import { ResourceTimeGridWrapper } from './ResourceTimeGridWrapper'
+import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper'
+import { ResourceDayGridWrapper } from './ResourceDayGridWrapper'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {

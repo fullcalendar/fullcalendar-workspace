@@ -1,8 +1,8 @@
 import { PluginDefInput } from '@fullcalendar/react'
 import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
-import { defaultUiEventCalendarOptions, params } from './ui-default-options-event-calendar.js'
-import { defaultUiSchedulerOnlyOptions } from './ui-default-options-scheduler.js'
-import { createSlots } from './slots.js'
+import { defaultUiEventCalendarOptions, params } from './ui-default-options-event-calendar'
+import { defaultUiSchedulerOnlyOptions } from './ui-default-options-scheduler'
+import { createSlots } from './slots'
 
 export default {
   name: '@fullcalendar/theme-pulse',
