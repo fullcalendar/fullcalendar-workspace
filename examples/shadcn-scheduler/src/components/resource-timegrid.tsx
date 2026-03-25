@@ -3,7 +3,7 @@ import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 import interactionPlugin from '@fullcalendar/react/interaction'
 import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timegrid'
-import { EventCalendarContainer } from '@/components/ui/event-calendar-container'
+import { cn } from '@/lib/utils'
 import { EventCalendarToolbar } from '@/components/event-calendar-toolbar'
 import { SchedulerViews } from '@/components/ui/scheduler-views'
 import { EventCalendarCloseIcon, EventCalendarExpanderIcon } from '@/components/event-calendar-icons'
@@ -43,39 +43,50 @@ export function ResourceTimeGrid({
   ...restOptions
 }: ResourceTimeGridProps) {
   const controller = useCalendarController()
-  const autoHeight = height === 'auto' || contentHeight === 'auto'
+
+  const isHeightAuto = height === 'auto' || contentHeight === 'auto'
+  const hasBorderX = !(restOptions.borderlessX ?? restOptions.borderless)
+  const hasBorderTop = !(restOptions.borderlessTop ?? restOptions.borderless)
+  const hasBorderBottom = !(restOptions.borderlessBottom ?? restOptions.borderless)
 
   return (
-    <EventCalendarContainer
-      direction={direction}
-      className={className}
-      height={height}
-      borderless={restOptions.borderless}
-      borderlessX={restOptions.borderlessX}
-      borderlessTop={restOptions.borderlessTop}
-      borderlessBottom={restOptions.borderlessBottom}
+    <div
+      className={cn(
+        className,
+        'flex flex-col bg-background',
+        hasBorderX && 'border-x',
+        hasBorderTop && 'border-t',
+        hasBorderBottom && 'border-b',
+        (hasBorderTop && hasBorderX && !isHeightAuto) && 'rounded-t-md',
+        (hasBorderBottom && hasBorderX && !isHeightAuto) && 'rounded-b-md',
+        !isHeightAuto && 'overflow-hidden',
+      )}
+      style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
+        className='border-b p-4 bg-sidebar text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <SchedulerViews
-        controller={controller}
-        liquidHeight={!autoHeight && height !== undefined}
-        height={autoHeight ? 'auto' : contentHeight}
-        initialView={availableViews[0]}
-        navLinkDayClick={navLinkDayClick}
-        navLinkWeekClick={navLinkWeekClick}
-        plugins={[...plugins, ...userPlugins]}
-        popoverCloseContent={() => (
-          <EventCalendarCloseIcon />
-        )}
-        resourceExpanderContent={(data) => (
-          <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
-        )}
-        {...restOptions}
-      />
-    </EventCalendarContainer>
+      <div className='grow min-h-0'>
+        <SchedulerViews
+          controller={controller}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
+          plugins={[...plugins, ...userPlugins]}
+          popoverCloseContent={() => (
+            <EventCalendarCloseIcon />
+          )}
+          resourceExpanderContent={(data) => (
+            <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
+          )}
+          {...restOptions}
+        />
+      </div>
+    </div>
   )
 }

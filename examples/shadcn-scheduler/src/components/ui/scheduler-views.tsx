@@ -1,8 +1,4 @@
 import { type CalendarOptions } from '@fullcalendar/react'
-import type {} from '@fullcalendar/react-scheduler/timeline'
-import type {} from '@fullcalendar/react-scheduler/resource-timeline'
-import type {} from '@fullcalendar/react-scheduler/resource-daygrid'
-import type {} from '@fullcalendar/react-scheduler/resource-timegrid'
 import { type EventCalendarViewProps, EventCalendarViews } from '@/components/ui/event-calendar-views'
 import { cn } from '@/lib/utils'
 

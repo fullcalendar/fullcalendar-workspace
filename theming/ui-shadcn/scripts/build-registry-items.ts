@@ -9,16 +9,16 @@ const demoThemeDir = joinPaths(pkgDir, 'src', 'theme-breezy')
 
 const themes = ['breezy', 'classic', 'forma', 'monarch', 'pulse']
 const relativeImportReplacements = {
-  '../../ui/button.js': '@/components/ui/button',
-  '../../ui/tabs.js': '@/components/ui/tabs',
-  '../../lib/utils.js': '@/lib/utils',
-  './event-calendar.js': '@/components/event-calendar',
-  './event-calendar-toolbar.js': '@/components/event-calendar-toolbar',
-  './event-calendar-icons.js': '@/components/event-calendar-icons',
-  './event-calendar-views.js': '@/components/ui/event-calendar-views',
-  './resource-timeline.js': '@/components/resource-timeline',
-  './resource-timegrid.js': '@/components/resource-timegrid',
-  './scheduler-views.js': '@/components/ui/scheduler-views',
+  '../../ui/button': '@/components/ui/button',
+  '../../ui/tabs': '@/components/ui/tabs',
+  '../../lib/utils': '@/lib/utils',
+  './event-calendar': '@/components/event-calendar',
+  './event-calendar-toolbar': '@/components/event-calendar-toolbar',
+  './event-calendar-icons': '@/components/event-calendar-icons',
+  './event-calendar-views': '@/components/ui/event-calendar-views',
+  './resource-timeline': '@/components/resource-timeline',
+  './resource-timegrid': '@/components/resource-timegrid',
+  './scheduler-views': '@/components/ui/scheduler-views',
 }
 
 for (const theme of themes) {
