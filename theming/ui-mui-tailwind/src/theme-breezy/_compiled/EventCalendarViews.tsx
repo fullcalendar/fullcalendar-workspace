@@ -601,7 +601,7 @@ export default function EventCalendarViews({
           --------------------------------------------------------------------------------------- */
 
           noEventsClass: 'grow flex flex-col items-center justify-center',
-          noEventsInnerClass: 'py-15 text-(--fc-breezy-muted-foreground)',
+          noEventsInnerClass: 'py-15 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
 
           ...userViews?.list,
         },

@@ -13,8 +13,8 @@ const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColo
 // neutral buttons
 const strongSolidPressableClass = joinClassNames(
   '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
-  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
+  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-forma-background)]',
+  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-forma-background)]',
 )
 const mutedPressableClass = `bg-(--fc-forma-muted) hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'

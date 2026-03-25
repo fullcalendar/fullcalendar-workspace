@@ -857,8 +857,8 @@
     text-decoration-line: underline
   }
 
-  .hover\:\[background\:linear-gradient\(var\(--fc-forma-stronger\)\,var\(--fc-forma-stronger\)\)_var\(--fc-monarch-background\)\]:hover {
-    background: linear-gradient(var(--fc-forma-stronger), var(--fc-forma-stronger))var(--fc-monarch-background)
+  .hover\:\[background\:linear-gradient\(var\(--fc-forma-stronger\)\,var\(--fc-forma-stronger\)\)_var\(--fc-forma-background\)\]:hover {
+    background: linear-gradient(var(--fc-forma-stronger), var(--fc-forma-stronger))var(--fc-forma-background)
   }
 }
 
@@ -907,8 +907,8 @@
   }
 }
 
-.active\:\[background\:linear-gradient\(var\(--fc-forma-strongest\)\,var\(--fc-forma-strongest\)\)_var\(--fc-monarch-background\)\]:active {
-  background: linear-gradient(var(--fc-forma-strongest), var(--fc-forma-strongest))var(--fc-monarch-background)
+.active\:\[background\:linear-gradient\(var\(--fc-forma-strongest\)\,var\(--fc-forma-strongest\)\)_var\(--fc-forma-background\)\]:active {
+  background: linear-gradient(var(--fc-forma-strongest), var(--fc-forma-strongest))var(--fc-forma-background)
 }
 
 @media print {
