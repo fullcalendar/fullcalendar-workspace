@@ -19,10 +19,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@fullcalendar-breezy": "https://shadcn-registry.fullcalendar.io/breezy/{name}.json",
-    "@fullcalendar-classic": "https://shadcn-registry.fullcalendar.io/classic/{name}.json",
-    "@fullcalendar-forma": "https://shadcn-registry.fullcalendar.io/forma/{name}.json",
-    "@fullcalendar-monarch": "https://shadcn-registry.fullcalendar.io/monarch/{name}.json",
-    "@fullcalendar-pulse": "https://shadcn-registry.fullcalendar.io/pulse/{name}.json"
+    "@fullcalendar": "https://shadcn-registry.fullcalendar.io/{name}.json"
   }
 }

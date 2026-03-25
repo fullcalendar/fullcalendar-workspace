@@ -21,20 +21,23 @@ const relativeImportReplacements: Record<string, string> = {
   './scheduler-views': '@/registry/ui/scheduler-views',
 }
 
+const rootItems: any[] = []
+await mkdir(joinPaths(pkgDir, 'registry-dist'))
+
 for (const theme of themes) {
-  await mkdir(joinPaths(pkgDir, 'registry-dist', theme), { recursive: true })
+  // await mkdir(joinPaths(pkgDir, 'registry-dist', theme), { recursive: true })
 
   const themeTitle = capitalizeFirstLetter(theme)
   const eventCalendarConfig = await createEventCalendarConfig(theme, themeTitle)
   const schedulerConfig = await createSchedulerConfig(theme, themeTitle)
 
   await writeFile(
-    joinPaths(pkgDir, 'registry-dist', theme, 'event-calendar.json'),
+    joinPaths(pkgDir, 'registry-dist', `${theme}-event-calendar.json`),
     JSON.stringify(eventCalendarConfig, undefined, 2),
     'utf-8',
   )
   await writeFile(
-    joinPaths(pkgDir, 'registry-dist', theme, 'scheduler.json'),
+    joinPaths(pkgDir, 'registry-dist', `${theme}-scheduler.json`),
     JSON.stringify(schedulerConfig, undefined, 2),
     'utf-8',
   )
@@ -49,25 +52,24 @@ for (const theme of themes) {
     delete (fileMeta as any).content
   }
 
-  await writeFile(
-    joinPaths(pkgDir, 'registry-dist', theme, 'registry.json'),
-    JSON.stringify({
-      "$schema": "https://ui.shadcn.com/schema/registry.json",
-      "name": `fullcalendar-${theme}`,
-      "homepage": "https://fullcalendar.io",
-      "items": [
-        eventCalendarConfig,
-        schedulerConfig,
-      ],
-    }, undefined, 2),
-    'utf-8',
-  )
+  rootItems.push(eventCalendarConfig, schedulerConfig)
 }
+
+await writeFile(
+  joinPaths(pkgDir, 'registry-dist', 'registry.json'),
+  JSON.stringify({
+    "$schema": "https://ui.shadcn.com/schema/registry.json",
+    "name": 'fullcalendar',
+    "homepage": "https://fullcalendar.io", // TODO: change to shadcn?
+    "items": rootItems,
+  }, undefined, 2),
+  'utf-8',
+)
 
 async function createEventCalendarConfig(theme: string, themeTitle: string) {
   return {
     "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-    "name": "event-calendar",
+    "name": `${theme}-event-calendar`,
     "title": `EventCalendar (${themeTitle})`,
     "description": `A standard event calendar in the ${themeTitle} theme-flavor`,
     "dependencies": [
@@ -139,7 +141,7 @@ async function createEventCalendarConfig(theme: string, themeTitle: string) {
 async function createSchedulerConfig(theme: string, themeTitle: string) {
   return {
     "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-    "name": "scheduler",
+    "name": `${theme}-scheduler`,
     "title": `Scheduler (${themeTitle})`,
     "description": `A premium event scheduler in the ${themeTitle} theme-flavor`,
     "dependencies": [
@@ -149,7 +151,7 @@ async function createSchedulerConfig(theme: string, themeTitle: string) {
       "temporal-polyfill@^0.3.2"
     ],
     "registryDependencies": [
-      `@fullcalendar-${theme}/event-calendar`
+      `@fullcalendar/${theme}-event-calendar`
     ],
     "type": "registry:block",
     "files": [
