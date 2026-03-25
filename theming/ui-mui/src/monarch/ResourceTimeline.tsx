@@ -74,6 +74,7 @@ export default function ResourceTimeline({
       })}
     >
       <EventCalendarToolbar
+        sx={{ padding: 2 }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

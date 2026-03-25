@@ -76,6 +76,12 @@ export default function ResourceTimeGrid({
       })}
     >
       <EventCalendarToolbar
+        sx={{
+          padding: 2,
+          bgcolor: 'action.hover',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

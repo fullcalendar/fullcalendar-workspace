@@ -1,7 +1,6 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/react'
-import { type SxProps } from '@mui/material'
-import Box from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -9,8 +8,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
 import { EventCalendarPrevIcon, EventCalendarNextIcon } from './icons.js'
 
-export interface EventCalendarToolbarProps {
-  sx?: SxProps
+export interface EventCalendarToolbarProps extends BoxProps {
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -22,22 +20,23 @@ export interface EventCalendarToolbarProps {
 }
 
 export default function EventCalendarToolbar({
-  sx,
   controller,
   availableViews,
   addButton,
+  ...boxProps
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <Box
+      {...boxProps}
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
-        ...sx,
+        ...boxProps.sx,
       }}
     >
       <Box
@@ -97,10 +96,9 @@ export default function EventCalendarToolbar({
             value={availableView}
             aria-label={buttons[availableView]?.hint}
             color="primary"
+            sx={{ px: 2 }}
           >
-            <Box sx={{ px: 1 }}>
-              {buttons[availableView]?.text}
-            </Box>
+            {buttons[availableView]?.text}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>

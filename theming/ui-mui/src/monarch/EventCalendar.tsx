@@ -81,6 +81,7 @@ export default function EventCalendar({
       })}
     >
       <EventCalendarToolbar
+        sx={{ padding: 2 }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

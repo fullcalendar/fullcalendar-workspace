@@ -64,7 +64,7 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
-        className={!hasBorderX ? 'px-3' : ''}
+        sx={!hasBorderX ? { px: 1.5 } : undefined}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
@@ -76,18 +76,18 @@ export default function EventCalendar({
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
-        borderLeftWidth: hasBorderX ? 1 : 0,
-        borderRightWidth: hasBorderX ? 1 : 0,
-        borderTopWidth: 1,
-        borderBottomWidth: hasBorderBottom ? 1 : 0,
-        ...(hasBorderX && !isHeightAuto && {
-          borderTopLeftRadius: theme.shape.borderRadius,
-          borderTopRightRadius: theme.shape.borderRadius,
-        }),
-        ...(hasBorderBottom && hasBorderX && !isHeightAuto && {
-          borderBottomLeftRadius: theme.shape.borderRadius,
-          borderBottomRightRadius: theme.shape.borderRadius,
-        }),
+          borderLeftWidth: hasBorderX ? 1 : 0,
+          borderRightWidth: hasBorderX ? 1 : 0,
+          borderTopWidth: 1,
+          borderBottomWidth: hasBorderBottom ? 1 : 0,
+          ...(hasBorderX && !isHeightAuto && {
+            borderTopLeftRadius: theme.shape.borderRadius,
+            borderTopRightRadius: theme.shape.borderRadius,
+          }),
+          ...(hasBorderBottom && hasBorderX && !isHeightAuto && {
+            borderBottomLeftRadius: theme.shape.borderRadius,
+            borderBottomRightRadius: theme.shape.borderRadius,
+          }),
           overflow: !isHeightAuto ? 'hidden' : undefined,
         })}
       >

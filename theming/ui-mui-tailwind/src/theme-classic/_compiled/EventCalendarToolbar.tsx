@@ -97,10 +97,9 @@ export default function EventCalendarToolbar({
             value={availableView}
             aria-label={buttons[availableView]?.hint}
             color="primary"
+            sx={{ px: 2 }}
           >
-            <span style={{ paddingLeft: 8, paddingRight: 8 }}>
-              {buttons[availableView]?.text}
-            </span>
+            {buttons[availableView]?.text}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>

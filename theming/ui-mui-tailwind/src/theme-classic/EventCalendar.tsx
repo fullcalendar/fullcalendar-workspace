@@ -34,7 +34,7 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
-        className={!hasBorderX ? 'px-3' : ''}
+        sx={!hasBorderX ? { px: 1.5 } : undefined}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
