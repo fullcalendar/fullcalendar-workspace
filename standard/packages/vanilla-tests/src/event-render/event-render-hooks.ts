@@ -1,3 +1,4 @@
+import { createElement } from 'fullcalendar/preact'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { RED_REGEX } from '../lib/dom-misc'
@@ -13,7 +14,7 @@ describe('eventContent', () => {
 
   it('can inject vdom nodes', () => {
     let calendar = initCalendar({
-      eventContent(info, createElement) {
+      eventContent(info) {
         return (
           createElement('span', {},
             createElement('b', {}, info.timeText),

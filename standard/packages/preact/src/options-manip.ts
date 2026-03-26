@@ -91,11 +91,11 @@ export function mergeContentInjectors(
 ): CustomContentGenerator<any> {
   if (typeof contentGenerator1 === 'function') {
     // fabricate new function
-    const combinedFunc = (renderProps: any, createElement: any) => {
-      const res = contentGenerator1(renderProps, createElement)
+    const combinedFunc = (renderProps: any) => {
+      const res = contentGenerator1(renderProps)
       if (res === true) { // `true` indicates use-fallback
         if (typeof contentGenerator0 === 'function') {
-          return contentGenerator0(renderProps, createElement)
+          return contentGenerator0(renderProps)
         }
         return contentGenerator0
       }

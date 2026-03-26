@@ -55,7 +55,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 
     if (customGenerator != null) {
       const customGeneratorRes = typeof customGenerator === 'function' ?
-        customGenerator(renderProps, createElement) :
+        customGenerator(renderProps) :
         customGenerator
 
       if (customGeneratorRes === true) {

@@ -12,5 +12,5 @@ export interface ObjCustomContent {
 }
 
 export type CustomContent = ReactNode | ObjCustomContent
-export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true | void | undefined))
+export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps) => (CustomContent | true | void | undefined))
 export type ClassNameGenerator<RenderProps> = string | undefined | ((renderProps: RenderProps) => string | undefined)
