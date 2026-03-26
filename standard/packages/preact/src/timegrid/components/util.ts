@@ -25,7 +25,8 @@ export function buildDayRanges(dayTableModel: DayTableModel, dateProfile: DatePr
 export function computeSlatHeight(
   expandRows: boolean,
   slatCnt: number,
-  slatInnerHeight: number | undefined,
+  explicitSlatMinHeight: number = 0,
+  slatInnerHeight: number | undefined, // from the "inner" i think
   scrollerHeight: number | undefined,
 ): [
   slatHeight: number | undefined,
@@ -35,7 +36,7 @@ export function computeSlatHeight(
     return [undefined, false]
   }
 
-  const slatMinHeight = slatInnerHeight + 1
+  const slatMinHeight = Math.max(slatInnerHeight + 1, explicitSlatMinHeight)
   const slatLiquidHeight = scrollerHeight / slatCnt
   let slatLiquid: boolean
   let slatHeight: number

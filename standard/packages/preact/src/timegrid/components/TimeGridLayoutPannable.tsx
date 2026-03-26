@@ -165,6 +165,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const [slatHeight, slatLiquidHeight] = computeSlatHeight( // TODO: memo?
       verticalScrolling && options.expandRows,
       slatCnt,
+      options.slotMinHeight,
       state.slatInnerHeight,
       clientHeight,
     )

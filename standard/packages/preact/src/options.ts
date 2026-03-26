@@ -347,7 +347,8 @@ export const BASE_OPTION_REFINERS = {
 
   timedText: String,
 
-  slotMinWidth: Number, // move to timeline?
+  slotMinWidth: Number,
+  slotMinHeight: Number,
   navLinks: Boolean,
   eventTimeFormat: createFormatter,
   rerenderDelay: Number, // TODO: move to vanilla right? nah keep here

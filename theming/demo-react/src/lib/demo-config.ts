@@ -31,6 +31,8 @@ const commonProps = {
   // stickyHeaderDates: true,
   // height: 'auto',
   // contentHeight: 'auto',
+
+  // slotMinHeight: 100,
 }
 
 export const eventCalendarProps: EventCalendarProps = {

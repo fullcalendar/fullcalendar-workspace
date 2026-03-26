@@ -125,6 +125,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const [slatHeight, slatLiquidHeight] = computeSlatHeight(
       verticalScrolling && options.expandRows,
       slatCnt,
+      options.slotMinHeight,
       state.slatInnerHeight,
       state.clientHeight,
     )
