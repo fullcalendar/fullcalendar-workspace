@@ -21,7 +21,7 @@ import { TimeGridMoreLink } from './TimeGridMoreLink'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine'
 
 // Firefox is terrible at rendering absolute elements that span across multiple print pages
-export const simplifiedTimeGridPrint = /* true || */ (
+export const isBrowserPrintQuirky = /* true || */ (
   typeof navigator !== 'undefined' &&
   navigator.userAgent.toLowerCase().includes('firefox')
 )
@@ -84,7 +84,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       zIndex: 1, // get above slots
     }
 
-    const isStack = props.forPrint && simplifiedTimeGridPrint
+    const isStack = this.getIsStack()
     const renderProps: DayLaneData = {
       ...dateMeta,
       ...props.renderProps,
@@ -171,7 +171,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   ) {
     const { props } = this
 
-    if (props.forPrint && simplifiedTimeGridPrint) {
+    if (this.getIsStack()) {
       return renderPlainFgSegs(sortedFgSegs, props, isMirror)
     }
 
@@ -336,7 +336,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   renderNowIndicator(segs: TimeGridRange[]) {
     let { props } = this
 
-    if (props.forPrint && simplifiedTimeGridPrint) {
+    if (this.getIsStack()) {
       return
     }
 
@@ -379,6 +379,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     return props
+  }
+
+  getIsStack() {
+    const { eventPrintLayout } = this.context.options
+    return this.props.forPrint && (
+      eventPrintLayout === 'stack' ||
+      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
+    )
   }
 }
 

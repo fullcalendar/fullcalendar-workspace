@@ -202,6 +202,7 @@ export const BASE_OPTION_REFINERS = {
   eventOrder: parseFieldSpecs,
   eventOrderStrict: Boolean,
   eventSlicing: Boolean, // default: true
+  eventPrintLayout: String as Identity<'auto' | 'stack' | 'grid'>,
 
   longPressDelay: Number,
   eventDragMinDistance: Number,
@@ -523,6 +524,7 @@ export const BASE_OPTION_DEFAULTS = {
   unselectAuto: true,
   dropAccept: '*',
   eventOrder: 'start,-duration,allDay,title',
+  eventPrintLayout: 'auto',
   dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
   longPressDelay: 1000,
   eventDragMinDistance: 5, // only applies to mouse

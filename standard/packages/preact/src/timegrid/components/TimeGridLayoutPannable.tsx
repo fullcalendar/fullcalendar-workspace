@@ -34,7 +34,7 @@ import { computeSlatHeight } from './util'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
 import { computeViewBorderless } from '../../util/misc'
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"
-import { simplifiedTimeGridPrint } from "./TimeGridCol"
+import { isBrowserPrintQuirky } from "./TimeGridCol"
 
 export interface TimeGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -153,8 +153,15 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !forPrint && getStickyFooterScrollbar(options)
 
-    const absPrint = forPrint && !simplifiedTimeGridPrint
-    const simplePrint = forPrint && simplifiedTimeGridPrint
+    // TODO: DRY with getIsStack
+    const { eventPrintLayout } = options
+    const printStackEnabled = (
+      eventPrintLayout === 'stack' ||
+      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
+    )
+
+    const absPrint = forPrint && !printStackEnabled
+    const simplePrint = forPrint && printStackEnabled
 
     const colCount = props.cells.length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)

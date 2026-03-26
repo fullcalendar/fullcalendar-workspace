@@ -30,7 +30,7 @@ import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
 import { TimeGridSlatLane } from "./TimeGridSlatLane"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
 import { computeSlatHeight } from './util'
-import { simplifiedTimeGridPrint } from './TimeGridCol'
+import { isBrowserPrintQuirky } from './TimeGridCol'
 import { computeViewBorderless } from '../../util/misc'
 
 export interface TimeGridLayoutNormalProps {
@@ -137,8 +137,15 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const rowsNotExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
 
-    const absPrint = forPrint && !simplifiedTimeGridPrint
-    const simplePrint = forPrint && simplifiedTimeGridPrint
+    // TODO: DRY with getIsStack
+    const { eventPrintLayout } = options
+    const printStackEnabled = (
+      eventPrintLayout === 'stack' ||
+      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
+    )
+
+    const absPrint = forPrint && !printStackEnabled
+    const simplePrint = forPrint && printStackEnabled
 
     // for printing
     // in Chrome, slats and columns both need abs positioning within a relative container for them
