@@ -1,5 +1,5 @@
 import { CssDimValue } from '../../scrollgrid/util'
-import { joinClassNames, joinArrayishClassNames, fracToCssDim } from '../../util/html'
+import { joinClassNames, joinArrayishClassNames } from '../../util/html'
 import { afterSize, watchHeight, watchWidth } from '../../component-util/resize-observer'
 import { buildNavLinkAttrs } from '../../common/nav-link'
 import { DateComponent } from '../../component/DateComponent'
@@ -102,7 +102,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const isTitleAndHeaderSticky = !forPrint && props.colCount === 1
     const isAspectRatio = !forPrint || props.hasLateralSiblings
-    const invAspectRatio = 1 / options.aspectRatio
 
     const cellColCnt = dayTableModel.cellRows[0].length
     const colWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
@@ -110,7 +109,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     const rowHeightGuess = state.gridWidth != null
-      ? invAspectRatio * state.gridWidth / 6
+      ? (1 / options.aspectRatio) * state.gridWidth / 6
       : undefined
 
     const headerStickyBottom = isTitleAndHeaderSticky
@@ -243,7 +242,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               style={{
                 zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?
                 marginTop: headerStickyBottom != null ? -headerStickyBottom : undefined,
-                paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
+                aspectRatio: isAspectRatio ? String(options.aspectRatio) : undefined,
               }}
             >
               <DayGridRows

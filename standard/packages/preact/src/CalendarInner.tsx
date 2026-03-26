@@ -84,7 +84,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
             {...props.toolbarProps}
           />
         )}
-        <div
+        <div // wrapper needed for containing license message
           className={joinClassNames(
             classNames.flexCol,
             classNames.rel,
@@ -92,9 +92,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
           )}
           style={{
             height: viewHeight,
-            paddingBottom: viewAspectRatio != null
-              ? `${(1 / viewAspectRatio) * 100}%`
-              : undefined
+            aspectRatio: viewAspectRatio != null ? String(viewAspectRatio) : undefined,
           }}
         >
           {this.renderView(
