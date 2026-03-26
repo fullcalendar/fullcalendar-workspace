@@ -57,7 +57,7 @@ function processSectionItems(sectionEl: HTMLElement) {
     if (childEl.classList.contains('fc-button')) {
       return {
         type: 'button',
-        name: childEl.className.match(/fc-(\w+)-button/)[1],
+        name: extractButtonName(childEl.className),
       }
     }
     if (childEl.classList.contains('fc-button-group')) {
@@ -73,4 +73,17 @@ function processSectionItems(sectionEl: HTMLElement) {
     }
     throw new Error('Unknown type of content in toolbar')
   })
+}
+
+function extractButtonName(className: string): string {
+  const classNames = className.split(' ')
+
+  for (const classNamePart of classNames) {
+    const match = classNamePart.match(/^fc-(\w+)-button$/)
+    if (match) {
+      return match[1]
+    }
+  }
+
+  throw new Error(`Unknown button class name: ${className}`)
 }
