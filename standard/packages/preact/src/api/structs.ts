@@ -59,9 +59,4 @@ export { ListDayHeaderData, ListDayHeaderInnerData, ListDayHeaderMountData, List
 
 export { SingleMonthData, SingleMonthMountData, SingleMonthHeaderData } from '../multimonth/structs'
 
-export { ExternalDraggable as Draggable } from '../interaction-plugin/interactions-external/ExternalDraggable'
-export { ThirdPartyDraggable } from '../interaction-plugin/interactions-external/ThirdPartyDraggable'
-export { DateClickData } from '../interaction-plugin/interactions/DateClicking'
-export { EventDragStartData, EventDragStopData } from '../interaction-plugin/interactions/EventDragging'
-export { EventResizeStartData, EventResizeStopData, EventResizeDoneData } from '../interaction-plugin/interactions/EventResizing'
-export { DropData, EventReceiveData, EventLeaveData } from '../interaction-plugin/utils'
+export * from '../interaction-plugin/public-structs'
