@@ -13,7 +13,7 @@ import { getDateMeta, DateMeta } from '../../component-util/date-rendering'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { memoize, memoizeObjArg } from '../../util/memoize'
 import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
-import { findDayNumberText, findMonthText } from '../../util/date-format'
+import { findDayNumberText, findMonthText, findWeekdayText } from '../../util/date-format'
 import { joinArrayishClassNames } from '../../util/html'
 import classNames from '../../styles.module.css'
 import {
@@ -298,6 +298,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
     isNarrow: raw.isNarrow,
     inPopover: false,
     hasNavLink,
+    get weekdayText() { return findWeekdayText(textParts) },
     get dayNumberText() { return findDayNumberText(textParts) },
     get monthText() { return findMonthText(textParts) },
     options: { businessHours },

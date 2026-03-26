@@ -75,6 +75,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isNarrow: false,
       inPopover: true,
       hasNavLink: false,
+      get weekdayText() { return findWeekdayText(textParts) },
       get dayNumberText() { return findDayNumberText(textParts) },
       get monthText() { return findMonthText(textParts) },
       view: viewApi,

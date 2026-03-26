@@ -59,6 +59,7 @@ export interface DayCellData extends DateMeta {
   view: ViewApi
   text: string
   textParts: Intl.DateTimeFormatPart[]
+  weekdayText: string
   dayNumberText: string
   monthText: string
   options: { businessHours: boolean }

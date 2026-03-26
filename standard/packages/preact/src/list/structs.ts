@@ -20,6 +20,7 @@ export interface ListDayEventsData extends DateMeta {
 export interface ListDayHeaderInnerData extends DateMeta {
   text: string
   textParts: Intl.DateTimeFormatPart[]
+  weekdayText: string
   dayNumberText: string
   hasNavLink: boolean
   level: number // 0 for listDayFormat, 1 for listDaySideFormat
