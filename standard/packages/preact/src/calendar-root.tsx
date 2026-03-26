@@ -54,7 +54,7 @@ export class CalendarMediaRoot extends Component<CalendarMediaRootProps, Calenda
 
   private handleAfterPrint = () => {
     flushSync(() => {
-      this.setState({ forPrint: true })
+      this.setState({ forPrint: false })
     })
   }
 }
