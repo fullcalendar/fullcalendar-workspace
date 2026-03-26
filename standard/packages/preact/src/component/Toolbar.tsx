@@ -39,6 +39,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
 
     return (
       <ToolbarSection
+        key={name}
         name={name}
         widgetGroups={widgetGroups}
         title={props.title}
