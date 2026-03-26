@@ -14,12 +14,15 @@
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "temporal-polyfill": "^0.3.2",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "vitest": "^4.0.16"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:dev": "vitest"
   },
   "type": "module",
   "buildConfig": {
