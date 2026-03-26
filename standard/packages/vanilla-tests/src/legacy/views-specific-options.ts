@@ -134,7 +134,7 @@ describe('view-specific options', () => {
           views: {
             superBasic: {
               type: 'dayGrid', // explicitly extend
-              content: 'hello world',
+              viewContent: 'hello world',
             },
           },
         },

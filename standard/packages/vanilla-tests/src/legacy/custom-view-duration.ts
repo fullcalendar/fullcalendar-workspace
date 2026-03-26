@@ -283,7 +283,7 @@ describe('custom view', () => {
             name: 'test-plugin',
             views: {
               crazy: {
-                content: 'hello world',
+                viewContent: 'hello world',
               },
             },
           },

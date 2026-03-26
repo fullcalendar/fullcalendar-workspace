@@ -42,7 +42,6 @@ import {
   OverlapFunc,
   SlotHeaderData, SlotHeaderMountData,
   SlotLaneData, SlotLaneMountData,
-  SpecificViewData, SpecificViewMountData,
   ToolbarInput,
   ViewComponentType,
   ViewDisplayData,
@@ -413,10 +412,6 @@ export const BASE_OPTION_REFINERS = {
   customRenderingMetaMap: identity as Identity<{ [optionName: string]: any }>,
   customRenderingReplaces: Boolean,
 
-  // new
-  class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
-  className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
-
   popoverClass: identity as Identity<string | undefined>,
   popoverCloseClass: identity as Identity<string | undefined>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
@@ -605,6 +600,10 @@ export interface CalendarListenersRefined extends RefinedOptionsFromRefiners<Cal
 // ---------------------------------------------
 
 export const CALENDAR_ONLY_OPTION_REFINERS = { // does not include base nor calendar listeners
+  // new
+  class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+  className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
   plugins: identity as Identity<PluginDefInput[]>,
   initialEvents: identity as Identity<EventSourceInput>,
@@ -619,20 +618,13 @@ type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionR
 // view-specific options
 // ---------------------
 
-export const VIEW_ONLY_OPTION_REFINERS: {
-  [name: string]: any
-} = {
+export const VIEW_ONLY_OPTION_REFINERS = {
   type: String,
   component: identity as Identity<ViewComponentType>,
+  viewContent: identity as Identity<CustomContentGenerator<ViewDisplayData>>,
   buttonTextKey: String, // internal only
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
-
-  class: identity as Identity<ClassNameGenerator<SpecificViewData>>,
-  className: identity as Identity<ClassNameGenerator<SpecificViewData>>,
-  content: identity as Identity<CustomContentGenerator<SpecificViewData>>,
-  didMount: identity as Identity<DidMountHandler<SpecificViewMountData>>,
-  willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountData>>,
 }
 
 type ViewOnlyRefiners = typeof VIEW_ONLY_OPTION_REFINERS

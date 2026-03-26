@@ -5,6 +5,7 @@ import { sliceEventStore, EventRenderRange } from './event-rendering'
 import { DateSpan } from '../structs/date-span'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { Duration } from '@full-ui/headless-calendar'
+import { ViewDisplayData } from '../common/ViewContainer'
 
 export interface ViewProps {
   className?: string
@@ -25,12 +26,16 @@ export interface ViewProps {
 
 // HELPERS
 
+export type ViewDisplayPropsExtra = ViewProps & ViewDisplayData & {
+  nextDayThreshold: Duration
+}
+
 /*
 if nextDayThreshold is specified, slicing is done in an all-day fashion.
 you can get nextDayThreshold from context.nextDayThreshold
 */
 export function sliceEvents(
-  props: ViewProps & { dateProfile: DateProfile, nextDayThreshold: Duration },
+  props: ViewDisplayPropsExtra,
   allDay?: boolean,
 ): EventRenderRange[] {
   return sliceEventStore(

@@ -1,11 +1,10 @@
-import { ViewProps } from '../component-util/View'
+import { ViewDisplayPropsExtra, ViewProps } from '../component-util/View'
 import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
-import { MountData } from '../common/render-hook'
 import { ViewContextType } from '../ViewContext'
 import { ViewOptions } from '../options'
+import { ContentContainer } from '../content-inject/ContentContainer'
 import { Duration } from '@full-ui/headless-calendar'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 
@@ -39,13 +38,13 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
     input
   let { component } = rawOptions
 
-  if (rawOptions.content) {
+  if (rawOptions.viewContent) {
     // TODO: remove content/classNames/didMount/etc from options?
     component = createViewHookComponent(rawOptions)
   } else if (component && !((component as any).prototype instanceof BaseComponent)) {
     // WHY?: people were using `component` property for `content`
     // TODO: converge on one setting name
-    component = createViewHookComponent({ ...rawOptions, content: component })
+    component = createViewHookComponent({ ...rawOptions, viewContent: component as any })
   }
 
   return {
@@ -55,38 +54,34 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
   }
 }
 
-export interface SpecificViewData extends ViewProps {
-  nextDayThreshold: Duration
-}
-
-export type SpecificViewMountData = MountData<SpecificViewData>
-
 function createViewHookComponent(options: ViewOptions) {
   return (viewProps: ViewProps) => (
     <ViewContextType.Consumer
-      children={(context) => (
-        <ContentContainer
-          tag="div"
-          className={
-            generateClassName(options.viewClass, {
-              view: context.viewApi,
-              ...computeViewBorderless(context.options),
-              isFirst: !context.options.headerToolbar,
-              isLast: !context.options.footerToolbar,
-              isHeightAuto: context.options.height === 'auto' || context.options.contentHeight === 'auto',
-            })
-          }
-          renderProps={{
-            ...viewProps,
-            nextDayThreshold: options.nextDayThreshold,
-          }}
-          generatorName={undefined}
-          customGenerator={options.content as any}
-          classNameGenerator={(options.class ?? options.className) as any}
-          didMount={options.didMount as any}
-          willUnmount={options.willUnmount as any}
-        />
-      )}
+      children={(context) => {
+        const renderProps: ViewDisplayPropsExtra = {
+          // ViewDisplayProp...
+          ...computeViewBorderless(context.options),
+          isFirst: !context.options.headerToolbar,
+          isLast: !context.options.footerToolbar,
+          isHeightAuto: context.options.height === 'auto' || context.options.contentHeight === 'auto',
+          view: context.viewApi,
+          // the "extra" props, for sliceEvents...
+          ...viewProps,
+          nextDayThreshold: options.nextDayThreshold as Duration,
+        }
+
+        return (
+          <ContentContainer
+            tag="div"
+            classNameGenerator={options.viewClass}
+            renderProps={renderProps}
+            generatorName={undefined}
+            customGenerator={options.viewContent}
+            didMount={options.viewDidMount}
+            willUnmount={options.viewWillUnmount}
+          />
+        )
+      }}
     />
   )
 }
