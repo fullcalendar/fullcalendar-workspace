@@ -7,6 +7,7 @@ import { ContentContainer } from '../content-inject/ContentContainer'
 import { ElProps } from '../content-inject/ContentInjector'
 import { memoizeObjArg } from '../util/memoize'
 import { computeViewBorderless } from '../util/misc'
+import { getIsHeightAuto } from '../scrollgrid/util'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
@@ -44,7 +45,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
           ...computeViewBorderless(options),
           isFirst: !options.headerToolbar,
           isLast: !options.footerToolbar,
-          isHeightAuto: options.height === 'auto' || options.contentHeight === 'auto', // TODO: DRY
+          isHeightAuto: getIsHeightAuto(options),
           viewApi: context.viewApi,
         })}
         classNameGenerator={options.viewClass}

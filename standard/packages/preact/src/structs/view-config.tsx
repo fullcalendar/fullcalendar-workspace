@@ -9,6 +9,7 @@ import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 import { CustomContentGenerator } from '../common/render-hook'
 import { ViewDisplayData } from '../common/ViewContainer'
+import { getIsHeightAuto } from '../scrollgrid/util'
 
 /*
 A view-config represents information for either:
@@ -72,7 +73,7 @@ function createViewHookComponent(viewContent: CustomContentGenerator<ViewDisplay
           ...computeViewBorderless(options),
           isFirst: !options.headerToolbar,
           isLast: !options.footerToolbar,
-          isHeightAuto: options.height === 'auto' || options.contentHeight === 'auto', // TODO: DRY
+          isHeightAuto: getIsHeightAuto(options),
           view: context.viewApi,
         }
 
