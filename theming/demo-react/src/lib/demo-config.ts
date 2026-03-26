@@ -33,6 +33,8 @@ const commonProps = {
   // contentHeight: 'auto',
 
   // slotMinHeight: 100,
+
+  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // for extra plugins
 }
 
 export const eventCalendarProps: EventCalendarProps = {
@@ -59,7 +61,6 @@ export const eventCalendarProps: EventCalendarProps = {
   },
   navLinkDayClick: 'timeGridDay',
   navLinkWeekClick: 'timeGridWeek',
-  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // for extra plugins
   weekNumbers: true,
 
   eventInteractive: true,
@@ -180,7 +181,6 @@ export const schedulerProps: SchedulerProps = {
   eventMaxStack: 1,
   navLinkDayClick: 'resourceTimelineDay',
   navLinkWeekClick: 'resourceTimelineWeek',
-  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
   timeZone: 'UTC',
   dayMinWidth: 200,
   editable: true,
