@@ -1,12 +1,14 @@
 import { ViewDisplayPropsExtra, ViewProps } from '../component-util/View'
 import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
-import { ViewContextType } from '../ViewContext'
+import { ViewContext, ViewContextType } from '../ViewContext'
 import { ViewOptions } from '../options'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { Duration } from '@full-ui/headless-calendar'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
+import { CustomContentGenerator } from '../common/render-hook'
+import { ViewDisplayData } from '../common/ViewContainer'
 
 /*
 A view-config represents information for either:
@@ -36,38 +38,42 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
   let rawOptions: ViewOptions = typeof input === 'function' ?
     { component: input } :
     input
+
   let { component } = rawOptions
 
   if (rawOptions.viewContent) {
-    // TODO: remove content/classNames/didMount/etc from options?
-    component = createViewHookComponent(rawOptions)
+    component = createViewHookComponent(rawOptions.viewContent)
   } else if (component && !((component as any).prototype instanceof BaseComponent)) {
     // WHY?: people were using `component` property for `content`
     // TODO: converge on one setting name
-    component = createViewHookComponent({ ...rawOptions, viewContent: component as any })
+    component = createViewHookComponent(component as any)
   }
 
   return {
-    superType: rawOptions.viewType,
+    superType: rawOptions.type,
     component: component as any,
     rawOptions, // includes type and component too :(
   }
 }
 
-function createViewHookComponent(options: ViewOptions) {
+/*
+TODO: converge with ViewContainer
+*/
+function createViewHookComponent(viewContent: CustomContentGenerator<ViewDisplayData>) {
   return (viewProps: ViewProps) => (
     <ViewContextType.Consumer
-      children={(context) => {
+      children={(context: ViewContext) => {
+        const { options } = context
         const renderProps: ViewDisplayPropsExtra = {
-          // ViewDisplayProp...
-          ...computeViewBorderless(context.options),
-          isFirst: !context.options.headerToolbar,
-          isLast: !context.options.footerToolbar,
-          isHeightAuto: context.options.height === 'auto' || context.options.contentHeight === 'auto',
-          view: context.viewApi,
           // the "extra" props, for sliceEvents...
           ...viewProps,
           nextDayThreshold: options.nextDayThreshold as Duration,
+          // ViewDisplayProp...
+          ...computeViewBorderless(options),
+          isFirst: !options.headerToolbar,
+          isLast: !options.footerToolbar,
+          isHeightAuto: options.height === 'auto' || options.contentHeight === 'auto', // TODO: DRY
+          view: context.viewApi,
         }
 
         return (
@@ -76,7 +82,7 @@ function createViewHookComponent(options: ViewOptions) {
             classNameGenerator={options.viewClass}
             renderProps={renderProps}
             generatorName={undefined}
-            customGenerator={options.viewContent}
+            customGenerator={viewContent}
             didMount={options.viewDidMount}
             willUnmount={options.viewWillUnmount}
           />

@@ -68,7 +68,7 @@ describe('dayCount', () => {
       hiddenDays: [0, 6], // sunday, saturday
       views: {
         timeGridTwoDay: {
-          viewType: 'timeGrid',
+          type: 'timeGrid',
           dayCount: 2,
           dateIncrement: { days: 1 },
         },

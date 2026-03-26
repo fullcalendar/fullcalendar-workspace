@@ -3,7 +3,7 @@ import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
-xdescribe('custom view class', () => { // TODO: rename file
+describe('custom view class', () => { // TODO: rename file
   it('calls all standard methods with correct parameters', () => {
     const CustomViewConfig = {
       viewClass: 'awesome-view',

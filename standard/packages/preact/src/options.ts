@@ -619,11 +619,9 @@ type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionR
 // ---------------------
 
 export const VIEW_ONLY_OPTION_REFINERS = {
-  viewType: String,
-  viewContent: identity as Identity<CustomContentGenerator<ViewDisplayData>>,
-
-  // will remove in future. no use renaming
+  type: String,
   component: identity as Identity<ViewComponentType>,
+  viewContent: identity as Identity<CustomContentGenerator<ViewDisplayData>>,
 
   // internal only
   buttonTextKey: String,

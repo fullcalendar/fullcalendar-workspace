@@ -136,7 +136,7 @@ describe('dayHeaderFormat', () => { // TODO: rename file
       let calendar = initCalendar({
         views: {
           dayGridTwoYear: {
-            viewType: 'dayGrid',
+            type: 'dayGrid',
             duration: { years: 2 },
           },
         },
@@ -151,7 +151,7 @@ describe('dayHeaderFormat', () => { // TODO: rename file
       let calendar = initCalendar({
         views: {
           dayGridTwoMonth: {
-            viewType: 'dayGrid',
+            type: 'dayGrid',
             duration: { months: 2 },
           },
         },
@@ -166,7 +166,7 @@ describe('dayHeaderFormat', () => { // TODO: rename file
       let calendar = initCalendar({
         views: {
           dayGridTwoWeek: {
-            viewType: 'dayGrid',
+            type: 'dayGrid',
             duration: { weeks: 2 },
           },
         },
@@ -181,7 +181,7 @@ describe('dayHeaderFormat', () => { // TODO: rename file
       let calendar = initCalendar({
         views: {
           multiDay: {
-            viewType: 'dayGrid',
+            type: 'dayGrid',
             duration: { days: 2 },
           },
         },
