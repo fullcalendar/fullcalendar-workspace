@@ -40,7 +40,7 @@ describe('visibleRange', () => {
         initCalendar({
           views: {
             myCustomView: {
-              type: 'timeGrid',
+              viewType: 'timeGrid',
               visibleRange: {
                 start: startInput,
                 end: endInput,

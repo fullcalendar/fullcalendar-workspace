@@ -48,7 +48,7 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
   }
 
   return {
-    superType: rawOptions.type as any,
+    superType: rawOptions.viewType,
     component: component as any,
     rawOptions, // includes type and component too :(
   }

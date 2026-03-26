@@ -10,7 +10,7 @@ describe('custom view', () => {
     let calendar = initCalendar({
       views: {
         dayGridFourDay: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 4 },
         },
       },
@@ -29,7 +29,7 @@ describe('custom view', () => {
     let calendar = initCalendar({
       views: {
         dayGridTwoWeek: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { weeks: 2 },
         },
       },
@@ -50,7 +50,7 @@ describe('custom view', () => {
     let calendar = initCalendar({
       views: {
         dayGridFourDay: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 4 },
           titleFormat() { return 'special' },
         },
@@ -68,7 +68,7 @@ describe('custom view', () => {
           titleFormat() { return 'dayGridtitle' },
         },
         dayGridFourDay: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 4 },
         },
       },
@@ -85,7 +85,7 @@ describe('custom view', () => {
           titleFormat() { return 'dayGridtitle' },
         },
         dayGridFourDay: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 4 },
           titleFormat() { return 'dayGridfourweekttitle' },
         },
@@ -103,7 +103,7 @@ describe('custom view', () => {
           titleFormat() { return 'weektitle' },
         },
         dayGridOneWeek: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { weeks: 1 },
         },
       },
@@ -123,7 +123,7 @@ describe('custom view', () => {
           titleFormat() { return 'dayGridtitle' },
         },
         dayGridOneWeek: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { weeks: 1 },
         },
       },
@@ -142,7 +142,7 @@ describe('custom view', () => {
           titleFormat() { return 'weektitle' },
         },
         dayGridTwoWeek: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { weeks: 2 },
         },
       },
@@ -157,7 +157,7 @@ describe('custom view', () => {
       initialDate: '2014-12-25',
       views: {
         timeGridFourDay: {
-          type: 'timeGrid',
+          viewType: 'timeGrid',
           duration: { days: 4 },
         },
       },
@@ -177,7 +177,7 @@ describe('custom view', () => {
       initialDate: '2014-12-25',
       views: {
         timeGridTwoWeek: {
-          type: 'timeGrid',
+          viewType: 'timeGrid',
           duration: { weeks: 2 },
         },
       },
@@ -197,7 +197,7 @@ describe('custom view', () => {
       initialDate: '2014-11-27',
       views: {
         timeGridTwoWeek: {
-          type: 'timeGrid',
+          viewType: 'timeGrid',
           duration: { months: 2 },
         },
       },
@@ -218,7 +218,7 @@ describe('custom view', () => {
       initialDate: '2014-11-27',
       views: {
         dayGridTwoWeek: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { months: 2 },
         },
       },
@@ -238,7 +238,7 @@ describe('custom view', () => {
       initialDate: '2014-11-27',
       views: {
         dayGridYear: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { years: 1 },
         },
       },
@@ -261,7 +261,7 @@ describe('custom view', () => {
         initialView: 'custom',
         views: {
           custom: {
-            type: 'dayGrid',
+            viewType: 'dayGrid',
             duration: { days: 1 },
           },
         },
@@ -308,7 +308,7 @@ describe('custom view', () => {
         initialView: 'month',
         views: {
           month: {
-            type: 'month',
+            viewType: 'month',
           },
         },
       })

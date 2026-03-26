@@ -88,7 +88,7 @@ xdescribe('titleFormat', () => {
       let calendar = initCalendar({
         views: {
           multiYear: {
-            type: 'dayGrid',
+            viewType: 'dayGrid',
             duration: { years: 2 },
           },
         },
@@ -104,7 +104,7 @@ xdescribe('titleFormat', () => {
       let calendar = initCalendar({
         views: {
           multiMonth: {
-            type: 'dayGrid',
+            viewType: 'dayGrid',
             duration: { months: 2 },
           },
         },
@@ -120,7 +120,7 @@ xdescribe('titleFormat', () => {
       let calendar = initCalendar({
         views: {
           multiWeek: {
-            type: 'dayGrid',
+            viewType: 'dayGrid',
             duration: { weeks: 2 },
           },
         },
@@ -136,7 +136,7 @@ xdescribe('titleFormat', () => {
       let calendar = initCalendar({
         views: {
           multiDay: {
-            type: 'dayGrid',
+            viewType: 'dayGrid',
             duration: { days: 2 },
           },
         },

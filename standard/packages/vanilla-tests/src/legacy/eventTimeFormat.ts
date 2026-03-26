@@ -65,7 +65,7 @@ describe('eventTimeFormat', () => {
     pushOptions({
       views: {
         dayGridTwoDay: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 2 },
         },
       },

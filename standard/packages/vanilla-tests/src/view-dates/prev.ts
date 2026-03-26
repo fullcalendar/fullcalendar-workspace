@@ -64,7 +64,7 @@ describe('prev', () => {
       initialView: 'dayGridFourWeeks',
       views: {
         dayGridFourWeeks: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { weeks: 4 },
           dateIncrement: { weeks: 1 },
         },

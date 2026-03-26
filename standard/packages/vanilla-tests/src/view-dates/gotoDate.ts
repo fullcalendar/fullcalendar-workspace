@@ -45,7 +45,7 @@ describe('gotoDate', () => {
       initialView: 'dayGridFourDays',
       views: {
         dayGridFourDays: {
-          type: 'dayGrid',
+          viewType: 'dayGrid',
           duration: { days: 4 },
           dateAlignment: 'day',
         },
