@@ -10,6 +10,7 @@ import resourceTimeGridPlugin from '@fullcalendar/react-scheduler/resource-timeg
 import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import timelinePlugin from '@fullcalendar/react-scheduler/timeline'
+import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 
 const basePlugins: PluginDefInput[] = [
   interactionPlugin,
@@ -25,6 +26,7 @@ export const plugins: PluginDefInput[] = [
   resourceTimelinePlugin as any, // !!!
   scrollGridPlugin as any, // !!!
   timelinePlugin as any, // !!!
+  adaptivePlugin as any, // !!!
 ]
 
 export class Calendar extends BareCalendar {

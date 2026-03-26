@@ -11,6 +11,7 @@ import resourceTimeGridPlugin from './resource-timegrid/plugin'
 import resourceTimelinePlugin from './resource-timeline/plugin'
 import scrollGridPlugin from './scrollgrid/plugin'
 import timelinePlugin from './timeline/plugin'
+import adaptivePlugin from './adaptive/plugin'
 
 import './ambient'
 import './side-effects'
@@ -29,6 +30,7 @@ export const plugins: PluginDefInput[] = [
   resourceTimelinePlugin,
   scrollGridPlugin,
   timelinePlugin,
+  adaptivePlugin,
 ]
 
 export function Calendar(options: CalendarOptions = {}): ReactNode {
