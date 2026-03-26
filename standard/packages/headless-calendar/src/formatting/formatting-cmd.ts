@@ -1,6 +1,6 @@
 import { DateFormatter, DateFormattingContext, createVerboseFormattingArg } from './DateFormatter'
 import { joinDateTimeFormatParts } from './formatting-utils'
-import { ZonedMarker } from './zoned-marker'
+import { ZonedMarker } from '../zoned-marker'
 
 /*
 TODO: fix the terminology of "formatter" vs "formatting func"

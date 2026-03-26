@@ -18,8 +18,8 @@ export type {
   CmdFormatterFunc,
   DateFormattingContext,
   DateFormatter,
-} from './DateFormatter'
-export { createVerboseFormattingArg } from './DateFormatter'
+} from './formatting/DateFormatter'
+export { createVerboseFormattingArg } from './formatting/DateFormatter'
 
 export type { DurationInput, DurationObjectInput, Duration } from './duration'
 export {
@@ -43,10 +43,10 @@ export {
 export type { WeekNumberCalculation, DateEnvSettings, DateInput, DateMarkerMeta } from './env'
 export { DateEnv } from './env'
 
-export { CmdFormatter } from './formatting-cmd'
+export { CmdFormatter } from './formatting/formatting-cmd'
 
-export type { FuncFormatterFunc } from './formatting-func'
-export { FuncFormatter } from './formatting-func'
+export type { FuncFormatterFunc } from './formatting/formatting-func'
+export { FuncFormatter } from './formatting/formatting-func'
 
 export {
   buildIsoString,
@@ -55,7 +55,7 @@ export {
   formatIsoTimeString,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
-} from './formatting-utils'
+} from './formatting/formatting-utils'
 
 export type { LocaleCodeArg, Locale } from './locale'
 

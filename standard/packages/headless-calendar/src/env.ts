@@ -10,8 +10,8 @@ import {
 import { CalendarSystem, createCalendarSystem } from './calendar-system'
 import { Locale } from './locale'
 import { Duration, asRoughYears, asRoughMonths, asRoughDays, asRoughMs } from './duration'
-import { DateFormatter, CmdFormatterFunc } from './DateFormatter'
-import { buildIsoString } from './formatting-utils'
+import { DateFormatter, CmdFormatterFunc } from './formatting/DateFormatter'
+import { buildIsoString } from './formatting/formatting-utils'
 import { parse } from './parsing'
 import { isInt } from './utils'
 

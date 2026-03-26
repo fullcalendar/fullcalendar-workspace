@@ -1,7 +1,7 @@
-import { DateMarker } from './marker'
-import { CalendarSystem } from './calendar-system'
-import { Locale } from './locale'
-import { ZonedMarker, ExpandedZonedMarker, expandZonedMarker } from './zoned-marker'
+import { DateMarker } from '../marker'
+import { CalendarSystem } from '../calendar-system'
+import { Locale } from '../locale'
+import { ZonedMarker, ExpandedZonedMarker, expandZonedMarker } from '../zoned-marker'
 
 export interface VerboseFormattingData {
   date: ExpandedZonedMarker
