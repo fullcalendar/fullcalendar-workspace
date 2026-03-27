@@ -140,7 +140,9 @@ export class NativeDateFormatter implements DateFormatter {
     }
 
     const { normalFormat, zeroFormat } = this.getFormats(context)
-    const format = zeroFormat && !date.marker.getUTCMinutes() ? zeroFormat : normalFormat
+    const format = (zeroFormat && !date.marker.getUTCMinutes())
+      ? zeroFormat
+      : normalFormat
     const parts = format.formatToParts(date.marker)
     return postProcessParts(parts, date, standardOptions, extendedOptions)
   }
@@ -161,8 +163,11 @@ export class NativeDateFormatter implements DateFormatter {
       })
     }
 
-    const { normalFormat } = this.getFormats(context)
-    const parts = normalFormat.formatRangeToParts(start.marker, end.marker)
+    const { normalFormat, zeroFormat } = this.getFormats(context)
+    const format = (zeroFormat && !start.marker.getUTCMinutes() && !end.marker.getUTCMinutes())
+      ? zeroFormat
+      : normalFormat
+    const parts = format.formatRangeToParts(start.marker, end.marker)
     return postProcessRangeParts(parts, start, end, standardOptions, extendedOptions)
   }
 
