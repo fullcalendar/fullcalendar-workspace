@@ -219,13 +219,12 @@ describe('NativeDateFormatterNew', () => {
       expect(parts[0]).toEqual({ type: 'timeZoneName', value: 'GMT+0' })
     })
 
-    it('does NOT activate for timeZoneName:"long" (goes through normal Intl path)', () => {
-      // 'long' is downgraded to 'short' by sanitizeSettings, and hour+minute are injected,
-      // so the result includes more than just a timezone part
+    it('activates for timeZoneName:"long" because it is normalized to the short timezone fast path', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'long' })
-      const parts = fmt.formatMarkerToParts(MON_1430, makeContext('en-US'))
-      expect(parts.length).toBeGreaterThan(1)
-      expect(parts.some((p) => p.type === 'hour')).toBe(true)
+      const marker = makeMarker('2024-01-15T14:30:00Z', 300)
+      const parts = fmt.formatMarkerToParts(marker, makeContext('en-US'))
+      expect(parts).toHaveLength(1)
+      expect(parts[0]).toEqual({ type: 'timeZoneName', value: 'GMT+5' })
     })
 
     it('does NOT activate when timeZoneName is combined with other props', () => {
@@ -551,9 +550,9 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric' })
       const ctx = makeContext('en-US')
       fmt.formatMarkerToParts(MON_NOON, ctx)
-      const cachedFormats = (fmt as any)._cachedFormats
+      const cachedFormats = (fmt as any).cachedFormats
       fmt.formatMarkerToParts(MON_1430, ctx)
-      expect((fmt as any)._cachedFormats).toBe(cachedFormats)
+      expect((fmt as any).cachedFormats).toBe(cachedFormats)
     })
 
     it('different context objects replace the cached formats', () => {
@@ -561,16 +560,16 @@ describe('NativeDateFormatterNew', () => {
       const ctx1 = makeContext('en-US')
       const ctx2 = makeContext('en-US') // distinct object, same values
       fmt.formatMarkerToParts(MON_NOON, ctx1)
-      const cachedAfterFirst = (fmt as any)._cachedFormats
+      const cachedAfterFirst = (fmt as any).cachedFormats
       fmt.formatMarkerToParts(MON_1430, ctx2)
-      const cachedAfterSecond = (fmt as any)._cachedFormats
+      const cachedAfterSecond = (fmt as any).cachedFormats
       expect(cachedAfterSecond).not.toBe(cachedAfterFirst)
     })
 
     it('omitZeroMinute populates both normalFormat and zeroFormat', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit', omitZeroMinute: true })
       fmt.formatMarkerToParts(MON_0700, makeContext('en-US'))
-      const { normalFormat, zeroFormat } = (fmt as any)._cachedFormats
+      const { normalFormat, zeroFormat } = (fmt as any).cachedFormats
       expect(normalFormat).toBeDefined()
       expect(zeroFormat).toBeDefined()
       expect(normalFormat).not.toBe(zeroFormat)

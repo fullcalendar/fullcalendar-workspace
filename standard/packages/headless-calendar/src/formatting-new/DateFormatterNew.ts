@@ -16,7 +16,11 @@ export type DateTimeFormatPartWithWeekNew = Omit<Intl.DateTimeFormatPart, 'type'
   type: Intl.DateTimeFormatPart['type'] | 'week'
 }
 
+export type DateTimeRangeFormatPartWithWeekNew = Omit<Intl.DateTimeRangeFormatPart, 'type'> & {
+  type: Intl.DateTimeRangeFormatPart['type'] | 'week'
+}
+
 export interface DateFormatterNew {
-  formatMarkerToParts(date: ZonedMarker, context: FormattingContextNew): DateTimeFormatPartWithWeekNew[]
-  formatMarkerRange(start: ZonedMarker, end: ZonedMarker, context: FormattingContextNew): string
+  formatToParts(date: ZonedMarker, context: FormattingContextNew): DateTimeFormatPartWithWeekNew[]
+  formatRangeToParts(start: ZonedMarker, end: ZonedMarker, context: FormattingContextNew): DateTimeRangeFormatPartWithWeekNew[]
 }
