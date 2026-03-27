@@ -1,6 +1,6 @@
 import { BaseOptions } from '@fullcalendar/core/protected-api'
 import { DateProfile } from '../DateProfileGenerator'
-import { diffWholeDays, DateRange, DateEnv, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
+import { diffWholeDays, DateRange, DateEnv, joinDateTimeFormatParts, DateTimeRangeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import { createFormatter, FormatterInput } from '../datelib/formatting'
 
 // Computes what the title at the top of the calendarApi should be for this view
@@ -18,48 +18,80 @@ export function buildTitle(
     range = dateProfile.activeRange
   }
 
-  return joinDateTimeFormatParts(
-    dateEnv.formatRangeToParts(
+  let parts: DateTimeRangeFormatPartWithWeek[]
+  const options = { isEndExclusive: dateProfile.isRangeAllDay }
+
+  if (viewOptions.titleFormat) {
+    parts = dateEnv.formatRangeToParts(
       range.start,
       range.end,
-      createFormatter(viewOptions.titleFormat || buildTitleFormat(dateProfile, dateEnv)),
-      {
-        isEndExclusive: dateProfile.isRangeAllDay,
-      },
-    ),
-  )
+      createFormatter(viewOptions.titleFormat),
+      options,
+    )
+  } else {
+    parts = dateEnv.formatRangeToParts(
+      range.start,
+      range.end,
+      createFormatter(buildTitleFormat(dateProfile, 'long')),
+      options,
+    )
+
+    if (hasTwoMonths(parts)) {
+      parts = dateEnv.formatRangeToParts(
+        range.start,
+        range.end,
+        createFormatter(buildTitleFormat(dateProfile, 'short')),
+        options,
+      )
+    }
+  }
+
+  return joinDateTimeFormatParts(parts)
 }
 
 // Generates the format string that should be used to generate the title for the current date range.
 // Attempts to compute the most appropriate format if not explicitly specified with `titleFormat`.
 function buildTitleFormat(
   dateProfile: DateProfile,
-  dateEnv: DateEnv,
+  monthFormat: 'long' | 'short'
 ): FormatterInput {
-  let { currentRangeUnit } = dateProfile
+  const { currentRangeUnit } = dateProfile
 
   if (currentRangeUnit === 'year') {
     return { year: 'numeric' }
   }
 
   if (currentRangeUnit === 'month') {
-    return { year: 'numeric', month: 'long' } // like "September 2014"
+    return { year: 'numeric', month: monthFormat }
   }
 
-  let days = diffWholeDays(
+  // currentRangeUnit is 'weeks' or 'days' ...
+
+  const days = diffWholeDays(
     dateProfile.currentRange.start,
     dateProfile.currentRange.end,
   )
 
+  // not a single-day view
   if (days !== null && days > 1) {
     return {
       year: 'numeric',
-      month: dateEnv.getMonth(dateProfile.activeRange.start) !== dateEnv.getMonth(dateProfile.activeRange.end)
-        ? 'short' // different months? do "Sep - Oct 2014"
-        : 'long', // same month? do "September 2014"
+      month: monthFormat,
     }
   }
 
   // one day. longer, like "September 9 2014"
   return { year: 'numeric', month: 'long', day: 'numeric' }
+}
+
+function hasTwoMonths(parts: DateTimeRangeFormatPartWithWeek[]): boolean {
+  let hasStartMonth = false
+  let hasEndMonth = false
+  for (const part of parts) {
+    if (part.type === 'month') {
+      if (part.source === 'startRange') hasStartMonth = true
+      if (part.source === 'endRange') hasEndMonth = true
+    }
+  }
+  return hasStartMonth && hasEndMonth
 }

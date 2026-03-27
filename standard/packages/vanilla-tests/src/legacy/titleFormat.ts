@@ -2,7 +2,7 @@ import frLocale from 'fullcalendar/locales/fr'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { enUsSep } from '../lib/misc'
 
-xdescribe('titleFormat', () => {
+describe('titleFormat', () => {
   describe('when default', () => {
     pushOptions({
       initialDate: '2014-06-12',
@@ -10,8 +10,8 @@ xdescribe('titleFormat', () => {
 
     const VIEWS_WITH_FORMATS = [
       { view: 'dayGridMonth', expected: 'June 2014' },
-      { view: 'dayGridWeek', expected: new RegExp(`Jun 8${enUsSep}14,? 2014`) },
-      { view: 'timeGridWeek', expected: new RegExp(`Jun 8${enUsSep}14,? 2014`) },
+      { view: 'dayGridWeek', expected: 'June 2014' },
+      { view: 'timeGridWeek', expected: 'June 2014' },
       { view: 'dayGridDay', expected: /June 12,? 2014/ },
       { view: 'timeGridDay', expected: /June 12,? 2014/ },
     ]
@@ -64,8 +64,8 @@ xdescribe('titleFormat', () => {
 
     const VIEWS_WITH_FORMATS = [
       { view: 'dayGridMonth', expected: 'juin 2014' },
-      { view: 'dayGridWeek', expected: `9${enUsSep}15 juin 2014` },
-      { view: 'timeGridWeek', expected: `9${enUsSep}15 juin 2014` },
+      { view: 'dayGridWeek', expected: 'juin 2014' },
+      { view: 'timeGridWeek', expected: 'juin 2014' },
       { view: 'dayGridDay', expected: '12 juin 2014' },
       { view: 'timeGridDay', expected: '12 juin 2014' },
     ]
@@ -97,6 +97,9 @@ xdescribe('titleFormat', () => {
       expect(toolbarWrapper.getTitleText()).toBe(`2014${enUsSep}2015`)
     })
 
+    /*
+    TODO: we want more tests like this! date-range spanning multi unit!
+    */
     it('multi-month default only displays month/year', () => {
       let calendar = initCalendar({
         views: {
@@ -109,9 +112,12 @@ xdescribe('titleFormat', () => {
         initialDate: '2014-12-25',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toBe(`December 2014${enUsSep}January 2015`)
+      expect(toolbarWrapper.getTitleText()).toBe(`Dec 2014${enUsSep}Jan 2015`)
     })
 
+    /*
+    TODO: we want more tests like this! date-range spanning multi unit!
+    */
     it('multi-week default displays short full date', () => {
       let calendar = initCalendar({
         views: {
@@ -124,7 +130,7 @@ xdescribe('titleFormat', () => {
         initialDate: '2014-12-25',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`Dec 21,? 2014${enUsSep}Jan 3,? 2015`))
+      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`Dec 2014${enUsSep}Jan 2015`))
     })
 
     it('multi-day default displays short full date', () => {
@@ -139,7 +145,7 @@ xdescribe('titleFormat', () => {
         initialDate: '2014-12-25',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`Dec 25${enUsSep}26,? 2014`))
+      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`December 2014`))
     })
   })
 
@@ -151,7 +157,7 @@ xdescribe('titleFormat', () => {
         weekends: false,
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toBe(`Feb 13${enUsSep}17, 2017`) // does not include Sunday
+      expect(toolbarWrapper.getTitleText()).toBe(`February 2017`) // does not include Sunday
     })
   })
 })
