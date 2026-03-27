@@ -14,6 +14,7 @@ export interface TimelineDateProfile {
   slotDuration: Duration
   slotsPerLabel: number
   headerFormats: any
+  headerFormatUnits: (string | null)[]
   isTimeScale: boolean
   largeUnit: string
   snapDuration: Duration
@@ -80,12 +81,23 @@ export function buildTimelineDateProfile(
   ensureSlotDuration(tDateProfile, dateProfile, dateEnv)
 
   let input = allOptions.slotHeaderFormat
-  let rawFormats =
-    Array.isArray(input) ? input :
-      (input != null) ? [input] :
-        computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
+  let rawFormats: any[]
+  let headerFormatUnits: (string | null)[]
+
+  if (Array.isArray(input)) {
+    rawFormats = input
+    headerFormatUnits = input.map(() => null)
+  } else if (input != null) {
+    rawFormats = [input]
+    headerFormatUnits = [null]
+  } else {
+    const computed = computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
+    rawFormats = computed.formats
+    headerFormatUnits = computed.units
+  }
 
   tDateProfile.headerFormats = rawFormats.map((rawFormat) => createFormatter(rawFormat))
+  tDateProfile.headerFormatUnits = headerFormatUnits
 
   tDateProfile.isTimeScale = Boolean(tDateProfile.slotDuration.milliseconds)
 
@@ -394,14 +406,17 @@ function computeHeaderFormats(
   dateProfile: DateProfile,
   dateEnv: DateEnv,
   allOptions: BaseOptionsRefined,
-) {
+): { formats: any[], units: (string | null)[] } {
   let format1
   let format2
+  let unit1: string | null = null
+  let unit2: string | null = null
   const { labelInterval } = tDateProfile
   const { currentRange } = dateProfile
   let unit = greatestDurationDenominator(labelInterval).unit
   const weekNumbersVisible = allOptions.weekNumbers
   let format0 = (format1 = (format2 = null))
+  let unit0: string | null = null
 
   // NOTE: weekNumber computation function wont work
 
@@ -412,45 +427,56 @@ function computeHeaderFormats(
   switch (unit) {
     case 'year':
       format0 = { year: 'numeric' } // '2015'
+      unit0 = 'year'
       break
 
     case 'month':
       if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric' } // '2015'
+        unit0 = 'year'
       }
 
       format1 = { month: 'short' } // 'Jan'
+      unit1 = 'month'
       break
 
     case 'week':
       if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric' } // '2015'
+        unit0 = 'year'
       }
 
       format1 = { week: 'narrow' } // 'Wk4'
+      unit1 = 'week'
       break
 
     case 'day':
       if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric', month: 'long' } // 'January 2014'
+        unit0 = 'month'
       } else if (dateEnv.diffWholeMonths(currentRange.start, currentRange.end) > 1) {
         format0 = { month: 'long' } // 'January'
+        unit0 = 'month'
       }
 
       if (weekNumbersVisible) {
         format1 = { week: 'short' } // 'Wk 4'
+        unit1 = 'week'
       }
 
       format2 = { weekday: 'narrow', day: 'numeric' } // 'Su 9'
+      unit2 = 'day'
       break
 
     case 'hour':
       if (weekNumbersVisible) {
         format0 = { week: 'short' } // 'Wk 4'
+        unit0 = 'week'
       }
 
       if (diffWholeDays(currentRange.start, currentRange.end) > 1) {
         format1 = { weekday: 'short', day: 'numeric', month: 'numeric', omitCommas: true } // Sat 4/7
+        unit1 = 'day'
       }
 
       format2 = {
@@ -459,6 +485,7 @@ function computeHeaderFormats(
         omitZeroMinute: true,
         meridiem: 'short',
       }
+      unit2 = null
       break
 
     case 'minute':
@@ -500,7 +527,18 @@ function computeHeaderFormats(
       break
   }
 
-  return [].concat(format0 || [], format1 || [], format2 || [])
+  return {
+    formats: ([] as any[]).concat(
+      format0 || [],
+      format1 || [],
+      format2 || []
+    ),
+    units: ([] as (string | null)[]).concat(
+      format0 ? [unit0] : [],
+      format1 ? [unit1] : [],
+      format2 ? [unit2] : [],
+    ),
+  }
 }
 
 function buildCellRows(
@@ -518,9 +556,7 @@ function buildCellRows(
         null
 
   // specifically for navclicks
-  let rowUnitsFromFormats = formats.map(
-    (format) => (format.getSmallestUnit ? format.getSmallestUnit() : null),
-  )
+  let rowUnitsFromFormats = tDateProfile.headerFormatUnits
 
   // builds cellRows and slotCells
   for (let i = 0; i < slotDates.length; i += 1) {
