@@ -1790,6 +1790,12 @@ importers:
       '@fullcalendar/preact-scheduler':
         specifier: workspace:7.0.0-beta.8
         version: link:../preact-scheduler/dist
+      archiver:
+        specifier: ^7.0.1
+        version: 7.0.1
+      globby:
+        specifier: ^13.1.2
+        version: 13.2.2
       temporal-polyfill:
         specifier: ^0.3.2
         version: 0.3.2(patch_hash=09230b8453f9d3dd8679c5ed36824f25de366824c7c51de20a6d3bd0f5e0ff84)
