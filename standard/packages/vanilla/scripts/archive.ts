@@ -2,9 +2,10 @@
 
 import archiver from 'archiver'
 import { createWriteStream } from 'fs'
-import { rm } from 'fs/promises'
+import { mkdir, rm } from 'fs/promises'
 import { finished } from 'stream/promises'
 import {
+  dirname as dirnamePath,
   join as joinPaths,
   resolve as resolvePath,
   sep as pathSeparator,
@@ -13,9 +14,9 @@ import { fileURLToPath } from 'url'
 import { globby } from 'globby'
 
 const thisPkgDir = joinPaths(fileURLToPath(import.meta.url), '../..')
-const archivePath = joinPaths(thisPkgDir, 'fullcalendar.zip')
-const archiveRootDir = 'fullcalendar'
+const archivePath = joinPaths(thisPkgDir, 'archives', 'fullcalendar.zip')
 const licensePath = joinPaths(thisPkgDir, '..', '..', 'LICENSE.md')
+const archiveRootDir = 'fullcalendar'
 
 const archivePatterns = [
   'dist/all.global.js',
@@ -31,6 +32,7 @@ const archivePatterns = [
 
 export default async function archiveVanillaZip() {
   await rm(archivePath, { force: true })
+  await mkdir(dirnamePath(archivePath), { recursive: true })
 
   const output = createWriteStream(archivePath)
   const archive = archiver('zip', { zlib: { level: 9 } })
