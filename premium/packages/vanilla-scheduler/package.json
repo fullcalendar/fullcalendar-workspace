@@ -14,6 +14,7 @@
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
+    "@types/archiver": "^5.3.4",
     "@fullcalendar/preact": "workspace:7.0.0-beta.8",
     "@fullcalendar/preact-scheduler": "workspace:7.0.0-beta.8",
     "archiver": "^7.0.1",
