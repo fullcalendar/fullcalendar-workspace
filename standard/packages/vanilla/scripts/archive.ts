@@ -2,7 +2,7 @@
 
 import archiver from 'archiver'
 import { createWriteStream } from 'fs'
-import { mkdir, rm } from 'fs/promises'
+import { mkdir, readFile, rm } from 'fs/promises'
 import { finished } from 'stream/promises'
 import {
   dirname as dirnamePath,
@@ -13,10 +13,10 @@ import {
 import { fileURLToPath } from 'url'
 import { globby } from 'globby'
 
+const archiveName = 'fullcalendar'
 const thisPkgDir = joinPaths(fileURLToPath(import.meta.url), '../..')
-const archivePath = joinPaths(thisPkgDir, 'archives', 'fullcalendar.zip')
+const archivePath = joinPaths(thisPkgDir, 'archives', `${archiveName}.zip`)
 const licensePath = joinPaths(thisPkgDir, '..', '..', 'LICENSE.md')
-const archiveRootDir = 'fullcalendar'
 
 const archivePatterns = [
   'dist/all.global.js',
@@ -28,6 +28,16 @@ const archivePatterns = [
   'dist/themes/*/palette.css',
   'dist/themes/*/palettes/**/*',
   'examples/**/*',
+]
+
+// Keys and values are posix-relative paths within the archive
+const fileRenames: Record<string, string> = {
+  'dist/all.global.js': 'dist/fullcalendar.global.js',
+}
+
+// Applied to all examples/**/*.html files
+const htmlReplacements: [from: string, to: string][] = [
+  ['../dist/all.global.js', '../dist/fullcalendar.global.js'],
 ]
 
 export default async function archiveVanillaZip() {
@@ -59,13 +69,23 @@ export default async function archiveVanillaZip() {
   })).sort((left, right) => left.localeCompare(right))
 
   for (const relPath of relPaths) {
-    archive.file(joinPaths(thisPkgDir, relPath), {
-      name: [archiveRootDir, relPath.split(pathSeparator).join('/')].join('/'),
-    })
+    const relPosixPath = relPath.split(pathSeparator).join('/')
+    const renamedPosixPath = fileRenames[relPosixPath] ?? relPosixPath
+    const entryName = `${archiveName}/${renamedPosixPath}`
+
+    if (relPosixPath.startsWith('examples/') && relPosixPath.endsWith('.html')) {
+      let content = await readFile(joinPaths(thisPkgDir, relPath), 'utf8')
+      for (const [from, to] of htmlReplacements) {
+        content = content.replaceAll(from, to)
+      }
+      archive.append(content, { name: entryName })
+    } else {
+      archive.file(joinPaths(thisPkgDir, relPath), { name: entryName })
+    }
   }
 
   archive.file(licensePath, {
-    name: `${archiveRootDir}/LICENSE.md`,
+    name: `${archiveName}/LICENSE.md`,
   })
 
   await archive.finalize()
