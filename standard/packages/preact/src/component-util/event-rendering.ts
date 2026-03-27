@@ -12,6 +12,7 @@ import {
   DateMarker,
   startOfDay,
   joinDateTimeFormatParts,
+  DateTimeRangeFormatPartWithWeek,
 } from '@full-ui/headless-calendar'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc'
 import { computeVisibleDayRange } from '../util/date'
@@ -319,7 +320,19 @@ export function buildEventRangeTimeText(
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
-      return joinDateTimeFormatParts(dateEnv.formatRangeToParts(startDate, endDate, timeFormat))
+      // TODO: put this functionality in @full-ui/headless-calendar ?
+      // NOTE: produces strings like '12:00pm - 1:00pm', without condensing dayPeriod,
+      // but that's okay since it's technically a different dayPeriod on a different day
+      const rangeParts = dateEnv.formatRangeToParts(startDate, endDate, timeFormat)
+      const multiDaySeparator = detectMultiDayTimes(rangeParts)
+      //
+      if (multiDaySeparator != null) {
+        return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat)) +
+          multiDaySeparator +
+          joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat))
+      }
+
+      return joinDateTimeFormatParts(rangeParts)
     }
 
     if (isStart) {
@@ -328,6 +341,23 @@ export function buildEventRangeTimeText(
   }
 
   return ''
+}
+
+const dateUnits = new Set(['year', 'month', 'day']) // TODO: DRY
+
+function detectMultiDayTimes(parts: DateTimeRangeFormatPartWithWeek[]): string | undefined {
+  let sharedPart: DateTimeRangeFormatPartWithWeek | undefined
+  let hasDatePart = false
+
+  for (const part of parts) {
+    if (part.source === 'shared') {
+      sharedPart = part
+    } if (dateUnits.has(part.type)) {
+      hasDatePart = true
+    }
+  }
+
+  return hasDatePart ? sharedPart.value : undefined
 }
 
 export function getEventRangeMeta(

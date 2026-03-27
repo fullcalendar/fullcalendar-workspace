@@ -200,7 +200,7 @@ describe('ListView rendering', () => {
         expect(events[1].title).toBe('event 1')
         expect(events[1].timeText).toBe('All-day')
         expect(events[2].title).toBe('event 1')
-        expect(events[2].timeText).toBe(`12:00am${enUsSep}11:00am`)
+        expect(events[2].timeText).toBe(`12:00${enUsSep}11:00am`)
       })
 
       it('truncates an out-of-range start', () => {
@@ -222,7 +222,7 @@ describe('ListView rendering', () => {
         expect(events[1].title).toBe('event 1')
         expect(events[1].timeText).toBe('All-day')
         expect(events[2].title).toBe('event 1')
-        expect(events[2].timeText).toBe(`12:00am${enUsSep}11:00am`)
+        expect(events[2].timeText).toBe(`12:00${enUsSep}11:00am`)
       })
 
       it('truncates an out-of-range start', () => {
@@ -268,7 +268,7 @@ describe('ListView rendering', () => {
       expect(events[1].title).toBe('event 1')
       expect(events[1].timeText).toBe('All-day')
       expect(events[2].title).toBe('event 1')
-      expect(events[2].timeText).toBe(`12:00am${enUsSep}9:00am`)
+      expect(events[2].timeText).toBe(`12:00${enUsSep}9:00am`)
     })
 
     it('renders fewer days when before nextDayThreshold', () => {

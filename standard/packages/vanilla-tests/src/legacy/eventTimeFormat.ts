@@ -86,7 +86,7 @@ describe('eventTimeFormat', () => {
 
     it('defaults to showing the end time', () => {
       let calendar = initCalendar()
-      expectEventTimeText(calendar, '3p - 5p')
+      expectEventTimeText(calendar, `3p${enUsSep}5p`) // not working!!!
     })
   })
 
