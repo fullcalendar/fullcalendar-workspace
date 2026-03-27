@@ -1,4 +1,5 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { enUsSep } from '../lib/misc'
 
 xdescribe('calendar title', () => {
   pushOptions({
@@ -14,7 +15,7 @@ xdescribe('calendar title', () => {
 
       expect(toolbarWrapper.getTitleText()).toBe('March 2017')
       currentCalendar.changeView('timeGridWeek')
-      expect(toolbarWrapper.getTitleText()).toBe('Mar 26 – Apr 1, 2017')
+      expect(toolbarWrapper.getTitleText()).toBe(`Mar 26${enUsSep}Apr 1, 2017`)
       currentCalendar.changeView('dayGridMonth')
       expect(toolbarWrapper.getTitleText()).toBe('March 2017')
     })

@@ -524,8 +524,8 @@ describe('NativeDateFormatter', () => {
   // weekdayJustify
   // ==========================================================================
   describe('weekdayJustify', () => {
-    // Use omitCommas to normalize any ", " separator to " " so the
-    // weekdayJustify guard (parts[1].value === ' ') reliably fires.
+    // Use omitCommas so the separator is whitespace-only and the
+    // weekdayJustify guard recognizes it as a separator.
     const ctx = makeContext('en-US')
     const date = MON_NOON
 
@@ -562,13 +562,30 @@ describe('NativeDateFormatter', () => {
       expect(baseParts.length).toBeGreaterThan(3)
       expect(justifyParts.map((p) => p.type)).toEqual(baseParts.map((p) => p.type))
     })
+
+    it('weekdayJustify treats thin-space literals as separators', () => {
+      const fmt = new NativeDateFormatterNew({ weekdayJustify: 'start' })
+      ;(fmt as any).getFormats = () => ({
+        normalFormat: {
+          formatToParts: () => [
+            { type: 'day', value: '15' },
+            { type: 'literal', value: '\u2009' },
+            { type: 'weekday', value: 'Monday' },
+          ],
+        },
+      })
+
+      const parts = fmt.formatToParts(date, ctx)
+      expect(parts.map((p) => p.type)).toEqual(['weekday', 'literal', 'day'])
+      expect(parts[1].value).toBe('\u2009')
+    })
   })
 
   // ==========================================================================
   // forceCommas
   // ==========================================================================
   describe('forceCommas', () => {
-    it('converts space-only literals to ", "', () => {
+    it('prepends commas to space-only literals', () => {
       // en-US { month, day } → "January 15" where the space is a literal
       const fmt = new NativeDateFormatterNew({ month: 'long', day: 'numeric', forceCommas: true })
       const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
@@ -585,6 +602,42 @@ describe('NativeDateFormatter', () => {
       parts.filter((p) => p.type === 'literal').forEach((p) => {
         expect(p.value).not.toMatch(/^,+,/)
       })
+    })
+
+    it('prepends commas to thin-space literals without requiring normalization', () => {
+      const fmt = new NativeDateFormatterNew({ forceCommas: true })
+      ;(fmt as any).getFormats = () => ({
+        normalFormat: {
+          formatToParts: () => [
+            { type: 'month', value: 'January' },
+            { type: 'literal', value: '\u2009' },
+            { type: 'day', value: '15' },
+          ],
+        },
+      })
+
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
+      expect(parts).toEqual([
+        { type: 'month', value: 'January' },
+        { type: 'literal', value: ',\u2009' },
+        { type: 'day', value: '15' },
+      ])
+    })
+
+    it('preserves thin-space literals when forceCommas is not enabled', () => {
+      const fmt = new NativeDateFormatterNew({ month: 'long', day: 'numeric' })
+      ;(fmt as any).getFormats = () => ({
+        normalFormat: {
+          formatToParts: () => [
+            { type: 'month', value: 'January' },
+            { type: 'literal', value: '\u2009' },
+            { type: 'day', value: '15' },
+          ],
+        },
+      })
+
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
+      expect(parts[1].value).toBe('\u2009')
     })
   })
 

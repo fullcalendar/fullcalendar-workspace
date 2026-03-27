@@ -35,7 +35,7 @@ export interface NativeDateFormatterOptions extends Intl.DateTimeFormatOptions {
   omitCommas?: boolean
 
   /*
-  forces all empty-space literal strings to be ", "
+  prepends "," to all whitespace-only literal strings
   */
   forceCommas?: boolean
 
@@ -58,8 +58,8 @@ const EXTENDED_SETTINGS = new Set([
 
 const MERIDIEM_RE = /([ap])\.?m\.?/i
 const COMMA_RE = /,/g
-const MULTI_SPACE_RE = /\s+/g
 const LTR_RE = /\u200e/g // control character
+const WHITESPACE_ONLY_RE = /^\s+$/
 
 interface CachedFormats {
   normalFormat: Intl.DateTimeFormat
@@ -223,7 +223,6 @@ function processPartsLoop<T extends Intl.DateTimeFormatPart>(
         }
       }
 
-      s = s.replace(MULTI_SPACE_RE, ' ')
       part.value = s
     } else if (part.type === 'timeZoneName') {
       const tzValue = getTzValue(part)
@@ -263,7 +262,7 @@ function postProcessParts(
   if (
     extendedOptions.weekdayJustify &&
     parts.length === 3 &&
-    parts[1].value === ' '
+    WHITESPACE_ONLY_RE.test(parts[1].value)
   ) {
     if (parts[extendedOptions.weekdayJustify === 'start' ? 2 : 0].type === 'weekday') {
       parts.reverse()
@@ -272,8 +271,8 @@ function postProcessParts(
 
   if (extendedOptions.forceCommas) {
     for (const part of parts) {
-      if (part.value === ' ') {
-        part.value = ', '
+      if (part.type === 'literal' && WHITESPACE_ONLY_RE.test(part.value)) {
+        part.value = `,${part.value}`
       }
     }
   }
@@ -298,8 +297,8 @@ function postProcessRangeParts(
 
   if (extendedOptions.forceCommas) {
     for (const part of parts) {
-      if (part.value === ' ') {
-        part.value = ', '
+      if (part.type === 'literal' && WHITESPACE_ONLY_RE.test(part.value)) {
+        part.value = `,${part.value}`
       }
     }
   }

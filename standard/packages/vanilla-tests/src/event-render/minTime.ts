@@ -1,4 +1,5 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('slotMinTime', () => { // TODO: rename file
   pushOptions({
@@ -40,7 +41,7 @@ describe('slotMinTime', () => { // TODO: rename file
         let calendar = initCalendar()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let timeTexts = timeGridWrapper.getEventTimeTexts()
-        expect(timeTexts[0]).toBe('10:00 – 2:00')
+        expect(timeTexts[0]).toBe(`10:00${enUsSep}2:00`)
       })
     })
   })

@@ -8,13 +8,11 @@ describe('current date', () => {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
-    separator: ' - ',
     isEndExclusive: true,
   }
 
   pushOptions({
     titleFormat: TITLE_FORMAT,
-    titleRangeSeparator: ' - ',
     initialDate: '2014-06-01',
     timeZone: 'UTC',
   })

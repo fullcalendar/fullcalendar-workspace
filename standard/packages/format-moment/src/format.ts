@@ -1,7 +1,8 @@
 import { VerboseFormattingData } from '@full-ui/headless-calendar'
 import { convertToMoment } from './convert'
 
-const DEFAULT_RANGE_SEPARATOR = ' - '
+// what Intl.DateTimeFormat::formatRangeToParts produces for en-US
+const DEFAULT_RANGE_SEPARATOR = ' – '
 
 export function formatWithCmdStr(
   cmdStr: string,

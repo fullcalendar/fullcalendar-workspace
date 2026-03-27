@@ -1,17 +1,17 @@
 import frLocale from 'fullcalendar/locales/fr'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { enUsSep } from '../lib/misc'
 
 xdescribe('titleFormat', () => {
   describe('when default', () => {
     pushOptions({
       initialDate: '2014-06-12',
-      titleRangeSeparator: ' - ',
     })
 
     const VIEWS_WITH_FORMATS = [
       { view: 'dayGridMonth', expected: 'June 2014' },
-      { view: 'dayGridWeek', expected: /Jun 8 - 14,? 2014/ },
-      { view: 'timeGridWeek', expected: /Jun 8 - 14,? 2014/ },
+      { view: 'dayGridWeek', expected: new RegExp(`Jun 8${enUsSep}14,? 2014`) },
+      { view: 'timeGridWeek', expected: new RegExp(`Jun 8${enUsSep}14,? 2014`) },
       { view: 'dayGridDay', expected: /June 12,? 2014/ },
       { view: 'timeGridDay', expected: /June 12,? 2014/ },
     ]
@@ -30,7 +30,6 @@ xdescribe('titleFormat', () => {
   describe('when set on a per-view basis', () => {
     pushOptions({
       initialDate: '2014-06-12',
-      titleRangeSeparator: ' - ',
       views: {
         month: { titleFormat: { year: 'numeric', month: 'long' } },
         dayGridWeek: { titleFormat: { day: 'numeric', month: 'short', year: 'numeric' } },
@@ -41,8 +40,8 @@ xdescribe('titleFormat', () => {
 
     const VIEWS_WITH_FORMATS = [
       { view: 'dayGridMonth', expected: 'June 2014' },
-      { view: 'dayGridWeek', expected: 'Jun 8 - 14, 2014' },
-      { view: 'timeGridWeek', expected: 'June 8 - 14, 2014' },
+      { view: 'dayGridWeek', expected: `Jun 8${enUsSep}14, 2014` },
+      { view: 'timeGridWeek', expected: `June 8${enUsSep}14, 2014` },
       { view: 'dayGridDay', expected: 'Thursday, June 12, 2014' },
     ]
 
@@ -60,14 +59,13 @@ xdescribe('titleFormat', () => {
   describe('when default and locale is French', () => {
     pushOptions({
       initialDate: '2014-06-12',
-      titleRangeSeparator: ' - ',
       locale: frLocale,
     })
 
     const VIEWS_WITH_FORMATS = [
       { view: 'dayGridMonth', expected: 'juin 2014' },
-      { view: 'dayGridWeek', expected: '9 - 15 juin 2014' },
-      { view: 'timeGridWeek', expected: '9 - 15 juin 2014' },
+      { view: 'dayGridWeek', expected: `9${enUsSep}15 juin 2014` },
+      { view: 'timeGridWeek', expected: `9${enUsSep}15 juin 2014` },
       { view: 'dayGridDay', expected: '12 juin 2014' },
       { view: 'timeGridDay', expected: '12 juin 2014' },
     ]
@@ -94,10 +92,9 @@ xdescribe('titleFormat', () => {
         },
         initialView: 'multiYear',
         initialDate: '2014-12-25',
-        titleRangeSeparator: ' - ',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toBe('2014 - 2015')
+      expect(toolbarWrapper.getTitleText()).toBe(`2014${enUsSep}2015`)
     })
 
     it('multi-month default only displays month/year', () => {
@@ -110,10 +107,9 @@ xdescribe('titleFormat', () => {
         },
         initialView: 'multiMonth',
         initialDate: '2014-12-25',
-        titleRangeSeparator: ' - ',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toBe('December 2014 - January 2015')
+      expect(toolbarWrapper.getTitleText()).toBe(`December 2014${enUsSep}January 2015`)
     })
 
     it('multi-week default displays short full date', () => {
@@ -126,10 +122,9 @@ xdescribe('titleFormat', () => {
         },
         initialView: 'multiWeek',
         initialDate: '2014-12-25',
-        titleRangeSeparator: ' - ',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toMatch(/Dec 21,? 2014 - Jan 3,? 2015/)
+      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`Dec 21,? 2014${enUsSep}Jan 3,? 2015`))
     })
 
     it('multi-day default displays short full date', () => {
@@ -142,10 +137,9 @@ xdescribe('titleFormat', () => {
         },
         initialView: 'multiDay',
         initialDate: '2014-12-25',
-        titleRangeSeparator: ' - ',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toMatch(/Dec 25 - 26,? 2014/)
+      expect(toolbarWrapper.getTitleText()).toMatch(new RegExp(`Dec 25${enUsSep}26,? 2014`))
     })
   })
 
@@ -155,10 +149,9 @@ xdescribe('titleFormat', () => {
         initialView: 'timeGridWeek',
         initialDate: '2017-02-13',
         weekends: false,
-        titleRangeSeparator: ' - ',
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      expect(toolbarWrapper.getTitleText()).toBe('Feb 13 - 17, 2017') // does not include Sunday
+      expect(toolbarWrapper.getTitleText()).toBe(`Feb 13${enUsSep}17, 2017`) // does not include Sunday
     })
   })
 })

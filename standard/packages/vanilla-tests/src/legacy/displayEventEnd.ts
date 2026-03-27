@@ -1,4 +1,5 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('displayEventEnd', () => {
   pushOptions({
@@ -114,7 +115,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00 – 2:00AM')
+          expectEventTimeText(calendar, `1:00${enUsSep}2:00AM`)
         })
       })
     })

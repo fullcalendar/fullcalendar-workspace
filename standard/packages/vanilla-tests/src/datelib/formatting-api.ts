@@ -1,4 +1,5 @@
 import { formatDate, formatRange } from 'fullcalendar'
+import { enUsSep } from '../lib/misc'
 
 xdescribe('formatDate', () => {
   it('works with no timezone offset', () => {
@@ -31,17 +32,7 @@ xdescribe('formatRange', () => {
       day: 'numeric',
       year: 'numeric',
     })
-    expect(str).toBe('September 4 - October 4, 2018')
-  })
-
-  it('works with custom separator', () => {
-    let str = formatRange('2018-09-04', '2018-10-04', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      separator: ' ... ',
-    })
-    expect(str).toBe('September 4 ... October 4, 2018')
+    expect(str).toBe(`September 4${enUsSep}October 4, 2018`)
   })
 
   it('works with timezone offset', () => {
@@ -54,6 +45,6 @@ xdescribe('formatRange', () => {
       omitCommas: true, // for cross-browser
     })
     expect(str.replace(' at ', ' '))
-      .toBe('September 4 - October 4 2018 12:00 AM GMT-5')
+      .toBe(`September 4${enUsSep}October 4 2018 12:00 AM GMT-5`)
   })
 })

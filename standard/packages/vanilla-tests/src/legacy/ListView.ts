@@ -1,6 +1,7 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import frLocale from 'fullcalendar/locales/fr'
 import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('ListView rendering', () => {
   pushOptions({
@@ -119,7 +120,7 @@ describe('ListView rendering', () => {
         expect(events[0].title).toBe('event 1')
         expect(events[0].timeText).toBe('7:00am')
         expect(events[1].title).toBe('event 2')
-        expect(events[1].timeText).toBe('9:00 – 11:00am')
+        expect(events[1].timeText).toBe(`9:00${enUsSep}11:00am`)
       })
 
       it('doesn\'t render times when displayEventTime is false', () => {
@@ -171,7 +172,7 @@ describe('ListView rendering', () => {
         expect(events[0].title).toBe('event 1')
         expect(events[0].timeText).toMatch(/^0?7:00$/)
         expect(events[1].title).toBe('event 2')
-        expect(events[1].timeText).toMatch(/^0?9:00 – 11:00$/)
+        expect(events[1].timeText).toMatch(new RegExp(`^0?9:00${enUsSep}11:00$`))
       })
     })
 
@@ -195,11 +196,11 @@ describe('ListView rendering', () => {
 
         expect(events.length).toBe(3)
         expect(events[0].title).toBe('event 1')
-        expect(events[0].timeText).toBe('7:00am - 12:00am')
+        expect(events[0].timeText).toBe(`7:00am${enUsSep}12:00am`)
         expect(events[1].title).toBe('event 1')
         expect(events[1].timeText).toBe('All-day')
         expect(events[2].title).toBe('event 1')
-        expect(events[2].timeText).toBe('12:00am - 11:00am')
+        expect(events[2].timeText).toBe(`12:00am${enUsSep}11:00am`)
       })
 
       it('truncates an out-of-range start', () => {
@@ -221,7 +222,7 @@ describe('ListView rendering', () => {
         expect(events[1].title).toBe('event 1')
         expect(events[1].timeText).toBe('All-day')
         expect(events[2].title).toBe('event 1')
-        expect(events[2].timeText).toBe('12:00am - 11:00am')
+        expect(events[2].timeText).toBe(`12:00am${enUsSep}11:00am`)
       })
 
       it('truncates an out-of-range start', () => {
@@ -239,7 +240,7 @@ describe('ListView rendering', () => {
 
         expect(events.length).toBe(3)
         expect(events[0].title).toBe('event 1')
-        expect(events[0].timeText).toBe('7:00am - 12:00am')
+        expect(events[0].timeText).toBe(`7:00am${enUsSep}12:00am`)
         expect(events[1].title).toBe('event 1')
         expect(events[1].timeText).toBe('All-day')
         expect(events[2].title).toBe('event 1')
@@ -263,11 +264,11 @@ describe('ListView rendering', () => {
 
       expect(events.length).toBe(3)
       expect(events[0].title).toBe('event 1')
-      expect(events[0].timeText).toBe('7:00am - 12:00am')
+      expect(events[0].timeText).toBe(`7:00am${enUsSep}12:00am`)
       expect(events[1].title).toBe('event 1')
       expect(events[1].timeText).toBe('All-day')
       expect(events[2].title).toBe('event 1')
-      expect(events[2].timeText).toBe('12:00am - 9:00am')
+      expect(events[2].timeText).toBe(`12:00am${enUsSep}9:00am`)
     })
 
     it('renders fewer days when before nextDayThreshold', () => {
@@ -286,9 +287,9 @@ describe('ListView rendering', () => {
 
       expect(events.length).toBe(2)
       expect(events[0].title).toBe('event 1')
-      expect(events[0].timeText).toBe('7:00am - 12:00am')
+      expect(events[0].timeText).toBe(`7:00am${enUsSep}12:00am`)
       expect(events[1].title).toBe('event 1')
-      expect(events[1].timeText).toBe('12:00am - 8:00am')
+      expect(events[1].timeText).toBe(`12:00am${enUsSep}8:00am`)
     })
   })
 

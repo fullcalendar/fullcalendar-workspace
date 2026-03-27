@@ -7,6 +7,7 @@ import timeGridPlugin from 'fullcalendar/timegrid'
 import 'moment/locale/es' // only test spanish
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('moment formatting plugin', () => {
   const PLUGINS = [classicThemePlugin, themeForTestsPlugin, dayGridPlugin, timeGridPlugin, momentPlugin]
@@ -40,10 +41,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', 'MMMM {D}, YYYY [nice]')
-      expect(s).toEqual('September 3 – 5, 2018 nice')
+      expect(s).toEqual(`September 3${enUsSep}5, 2018 nice`)
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', '{D} MMMM, YYYY [nice]')
-      expect(s).toEqual('3 – 5 September, 2018 nice')
+      expect(s).toEqual(`3${enUsSep}5 September, 2018 nice`)
     })
 
     it('renders with same year but different month', () => {
@@ -53,10 +54,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{MMMM {D}}, YYYY [nice]')
-      expect(s).toEqual('September 3 – October 5, 2018 nice')
+      expect(s).toEqual(`September 3${enUsSep}October 5, 2018 nice`)
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{{D} MMMM}, YYYY [nice]')
-      expect(s).toEqual('3 September – 5 October, 2018 nice')
+      expect(s).toEqual(`3 September${enUsSep}5 October, 2018 nice`)
     })
 
     it('renders with different years', () => {
@@ -66,10 +67,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{MMMM {D}}, YYYY [nice]')
-      expect(s).toEqual('September 3, 2018 nice – October 5, 2019 nice')
+      expect(s).toEqual(`September 3, 2018 nice${enUsSep}October 5, 2019 nice`)
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{{D} MMMM}, YYYY [nice]')
-      expect(s).toEqual('3 September, 2018 nice – 5 October, 2019 nice')
+      expect(s).toEqual(`3 September, 2018 nice${enUsSep}5 October, 2019 nice`)
     })
 
     it('renders the same if same day', () => {
@@ -95,7 +96,7 @@ describe('moment formatting plugin', () => {
       })
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let timeTexts = timeGridWrapper.getEventTimeTexts()
-      expect(timeTexts[0]).toBe('01:00:00 – 02:00:00')
+      expect(timeTexts[0]).toBe(`01:00:00${enUsSep}02:00:00`)
     })
   })
 })

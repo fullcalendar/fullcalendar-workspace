@@ -3,6 +3,7 @@ import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { waitEventResize2 } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('eventResize', () => {
   pushOptions({
@@ -292,7 +293,7 @@ describe('eventResize', () => {
           () => { // onBeforeRelease
             let $mirrorEls = $(timeGridWrapper.getMirrorEls())
             expect($mirrorEls.length).toBe(1)
-            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 – 9:30')
+            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText(`5:00${enUsSep}9:30`)
             onBeforeReleaseCalled = true
           },
         ).then(() => {
@@ -375,7 +376,7 @@ describe('eventResize', () => {
           () => { // onBeforeRelease
             let $mirrorEls = $(timeGridWrapper.getMirrorEls())
             expect($mirrorEls.length).toBe(1)
-            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 – 9:30')
+            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText(`5:00${enUsSep}9:30`)
             onBeforeReleaseCalled = true
           },
         ).then(() => {

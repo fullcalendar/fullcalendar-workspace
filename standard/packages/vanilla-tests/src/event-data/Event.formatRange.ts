@@ -11,7 +11,6 @@ xdescribe('Event::formatRange', () => {
     day: 'numeric',
     year: 'numeric',
     timeZoneName: 'short',
-    separator: ' to ',
     omitCommas: true, // for cross-browser
   }
 

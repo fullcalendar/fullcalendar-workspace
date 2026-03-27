@@ -4,6 +4,7 @@ import { waitEventDrag2 } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { queryEventElInfo } from '../lib/wrappers/TimeGridWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { enUsSep } from '../lib/misc'
 
 describe('eventDrop', () => {
   pushOptions({
@@ -377,7 +378,7 @@ describe('eventDrop', () => {
             dragged = true
             let mirrorEls = timeGridWrapper.getMirrorEls()
             expect(mirrorEls.length).toBe(1)
-            expect(queryEventElInfo(mirrorEls[0]).timeText).toBe('2:30 – 3:30')
+            expect(queryEventElInfo(mirrorEls[0]).timeText).toBe(`2:30${enUsSep}3:30`)
           },
         )
 
