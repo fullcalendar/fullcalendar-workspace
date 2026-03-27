@@ -71,7 +71,7 @@ export class NativeDateFormatterNew implements DateFormatterNew {
 
   constructor(options?: NativeDateFormatterOptions) {
     const standardOptions: Intl.DateTimeFormatOptions = {}
-    const extendedOptions: Partial<NativeDateFormatterOptions> = {}
+    const extendedOptions: NativeDateFormatterOptions = {}
 
     for (const name in options) {
       if (EXTENDED_SETTINGS.has(name)) {

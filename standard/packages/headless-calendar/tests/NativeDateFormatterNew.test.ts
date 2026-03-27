@@ -59,21 +59,21 @@ const MON_1430 = makeMarker('2024-01-15T14:30:00Z', 0)  // 14:30 = 2:30 PM
 describe('NativeDateFormatterNew', () => {
 
   // ==========================================================================
-  // sanitizeSettings (exercised via constructor + formatMarkerToParts)
+  // sanitizeSettings (exercised via constructor + formatToParts)
   // ==========================================================================
   describe('sanitizeSettings', () => {
     it('adds hour and minute props when timeZoneName is combined with other props', () => {
       // { timeZoneName: 'short' } alone takes the timezone-only shortcut and bypasses sanitize.
       // Use a two-prop input to exercise the sanitizeSettings path.
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short', month: 'long' })
-      const parts = fmt.formatMarkerToParts(MON_1430, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_1430, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'hour')).toBe(true)
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
 
     it('does not overwrite explicit hour/minute when timeZoneName is also present', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short', hour: 'numeric', minute: 'numeric' })
-      const parts = fmt.formatMarkerToParts(MON_1430, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_1430, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'hour')).toBe(true)
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
@@ -84,7 +84,7 @@ describe('NativeDateFormatterNew', () => {
       // Seeing "GMT+5" proves both the downgrade and the injection worked.
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'long' })
       const marker = makeMarker('2024-01-15T14:30:00Z', 300)
-      const parts = fmt.formatMarkerToParts(marker, makeContext('en-US'))
+      const parts = fmt.formatToParts(marker, makeContext('en-US'))
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('GMT+5')
     })
 
@@ -93,7 +93,7 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         hour: 'numeric', minute: '2-digit', second: 'numeric', omitZeroMinute: true,
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
 
@@ -101,13 +101,13 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         hour: 'numeric', minute: '2-digit', fractionalSecondDigits: 1, omitZeroMinute: true,
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
 
     it('preserves omitZeroMinute when no seconds options are given', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit', omitZeroMinute: true })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(false)
     })
   })
@@ -119,7 +119,7 @@ describe('NativeDateFormatterNew', () => {
     it('week:"numeric" returns a single week part', () => {
       const fmt = new NativeDateFormatterNew({ week: 'numeric' })
       const ctx = makeContext('en-US', { computeWeekNumber: () => 3 })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(1)
       expect(parts[0].type).toBe('week')
       expect(parts[0].value).toBe('3')
@@ -128,7 +128,7 @@ describe('NativeDateFormatterNew', () => {
     it('week:"long" returns [weekText, space, week]', () => {
       const fmt = new NativeDateFormatterNew({ week: 'long' })
       const ctx = makeContext('en-US', { weekText: 'Week', computeWeekNumber: () => 7 })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0]).toEqual({ type: 'literal', value: 'Week' })
       expect(parts[1]).toEqual({ type: 'literal', value: ' ' })
@@ -138,7 +138,7 @@ describe('NativeDateFormatterNew', () => {
     it('week:"short" returns [weekTextShort, space, week]', () => {
       const fmt = new NativeDateFormatterNew({ week: 'short' })
       const ctx = makeContext('en-US', { weekTextShort: 'Wk', computeWeekNumber: () => 5 })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0]).toEqual({ type: 'literal', value: 'Wk' })
       expect(parts[1]).toEqual({ type: 'literal', value: ' ' })
@@ -148,7 +148,7 @@ describe('NativeDateFormatterNew', () => {
     it('week:"narrow" returns [weekTextShort, week] — no space', () => {
       const fmt = new NativeDateFormatterNew({ week: 'narrow' })
       const ctx = makeContext('en-US', { weekTextShort: 'W', computeWeekNumber: () => 2 })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(2)
       expect(parts[0]).toEqual({ type: 'literal', value: 'W' })
       expect(parts[1].type).toBe('week')
@@ -161,7 +161,7 @@ describe('NativeDateFormatterNew', () => {
         computeWeekNumber: () => 4,
         locale: makeLocale('he', { direction: 'rtl' }),
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0].type).toBe('week')
       expect(parts[2]).toEqual({ type: 'literal', value: 'שבוע' })
@@ -173,7 +173,7 @@ describe('NativeDateFormatterNew', () => {
         computeWeekNumber: () => 4,
         locale: makeLocale('he', { direction: 'rtl' }),
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(1)
       expect(parts[0].type).toBe('week')
     })
@@ -181,11 +181,11 @@ describe('NativeDateFormatterNew', () => {
     it('uses locale.simpleNumberFormat to format the week number', () => {
       const fmt = new NativeDateFormatterNew({ week: 'numeric' })
       const ctx = makeContext('en-US', { computeWeekNumber: () => 42 })
-      const parts = fmt.formatMarkerToParts(MON_NOON, ctx)
+      const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts[0].value).toBe(new Intl.NumberFormat('en-US').format(42))
     })
 
-    it('formatMarkerRange with week-only formats start only', () => {
+    it('formatRangeToParts with week-only formats start only', () => {
       const fmt = new NativeDateFormatterNew({ week: 'long' })
       const start = makeMarker('2024-01-15T00:00:00Z', 0)
       const end = makeMarker('2024-01-22T00:00:00Z', 0)
@@ -193,7 +193,8 @@ describe('NativeDateFormatterNew', () => {
         weekText: 'Week',
         computeWeekNumber: (d) => (d === start.marker ? 3 : 99),
       })
-      const result = fmt.formatMarkerRange(start, end, ctx)
+      const parts = fmt.formatRangeToParts(start, end, ctx)
+      const result = joinDateTimeFormatParts(parts)
       expect(result).toContain('3')
       expect(result).not.toContain('99')
     })
@@ -206,7 +207,7 @@ describe('NativeDateFormatterNew', () => {
     it('returns a single timeZoneName part with the formatted offset', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short' })
       const marker = makeMarker('2024-01-15T14:30:00Z', 300) // UTC+5
-      const parts = fmt.formatMarkerToParts(marker, makeContext('en-US'))
+      const parts = fmt.formatToParts(marker, makeContext('en-US'))
       expect(parts).toHaveLength(1)
       expect(parts[0]).toEqual({ type: 'timeZoneName', value: 'GMT+5' })
     })
@@ -214,7 +215,7 @@ describe('NativeDateFormatterNew', () => {
     it('returns "GMT+0" when timeZoneOffset is null (formatTimeZoneOffset does not special-case null)', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short' })
       const marker = { marker: new Date('2024-01-15T14:30:00Z'), timeZoneOffset: null as any }
-      const parts = fmt.formatMarkerToParts(marker, makeContext('en-US'))
+      const parts = fmt.formatToParts(marker, makeContext('en-US'))
       expect(parts).toHaveLength(1)
       expect(parts[0]).toEqual({ type: 'timeZoneName', value: 'GMT+0' })
     })
@@ -222,22 +223,23 @@ describe('NativeDateFormatterNew', () => {
     it('activates for timeZoneName:"long" because it is normalized to the short timezone fast path', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'long' })
       const marker = makeMarker('2024-01-15T14:30:00Z', 300)
-      const parts = fmt.formatMarkerToParts(marker, makeContext('en-US'))
+      const parts = fmt.formatToParts(marker, makeContext('en-US'))
       expect(parts).toHaveLength(1)
       expect(parts[0]).toEqual({ type: 'timeZoneName', value: 'GMT+5' })
     })
 
     it('does NOT activate when timeZoneName is combined with other props', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short', hour: 'numeric' })
-      const parts = fmt.formatMarkerToParts(MON_1430, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_1430, makeContext('en-US'))
       expect(parts.length).toBeGreaterThan(1)
     })
 
-    it('formatMarkerRange with timezone-only uses start marker only', () => {
+    it('formatRangeToParts with timezone-only uses start marker only', () => {
       const fmt = new NativeDateFormatterNew({ timeZoneName: 'short' })
       const start = makeMarker('2024-01-15T09:00:00Z', 300)
       const end = makeMarker('2024-01-15T17:00:00Z', -300)
-      const result = fmt.formatMarkerRange(start, end, makeContext('en-US'))
+      const parts = fmt.formatRangeToParts(start, end, makeContext('en-US'))
+      const result = joinDateTimeFormatParts(parts)
       expect(result).toBe('GMT+5') // start's offset, not end's
     })
   })
@@ -249,18 +251,18 @@ describe('NativeDateFormatterNew', () => {
     const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit', omitZeroMinute: true })
 
     it('hides the minute part when minute=0', () => {
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(false)
     })
 
     it('shows the minute part when minute≠0', () => {
-      const parts = fmt.formatMarkerToParts(MON_1230, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_1230, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
 
     it('without omitZeroMinute, minute is always present even at :00', () => {
       const fmtNormal = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit' })
-      const parts = fmtNormal.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmtNormal.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.type === 'minute')).toBe(true)
     })
   })
@@ -271,7 +273,7 @@ describe('NativeDateFormatterNew', () => {
   describe('LTR control character stripping', () => {
     it('output contains no \\u200e control characters', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit' })
-      const parts = fmt.formatMarkerToParts(MON_1430, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_1430, makeContext('en-US'))
       const joined = parts.map((p) => p.value).join('')
       expect(joined).not.toContain('\u200e')
     })
@@ -286,13 +288,13 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         weekday: 'long', month: 'long', day: 'numeric', omitCommas: true,
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       parts.forEach((p) => expect(p.value).not.toContain(','))
     })
 
     it('preserves commas when omitCommas is not set', () => {
       const fmt = new NativeDateFormatterNew({ weekday: 'long', month: 'long', day: 'numeric' })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.some((p) => p.value.includes(','))).toBe(true)
     })
   })
@@ -306,19 +308,19 @@ describe('NativeDateFormatterNew', () => {
 
     it('meridiem:false removes the dayPeriod part entirely', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: false })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       expect(parts.find((p) => p.type === 'dayPeriod')).toBeUndefined()
     })
 
     it('meridiem:false leaves no empty-value parts in output', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: false })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       expect(parts.every((p) => p.value.length > 0)).toBe(true)
     })
 
     it('meridiem:"lowercase" lowercases the dayPeriod', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'lowercase' })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       const dp = parts.find((p) => p.type === 'dayPeriod')
       expect(dp).toBeDefined()
       expect(dp!.value).toBe(dp!.value.toLocaleLowerCase())
@@ -326,45 +328,45 @@ describe('NativeDateFormatterNew', () => {
 
     it('meridiem:"narrow" PM produces "p"', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'narrow' })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       expect(parts.find((p) => p.type === 'dayPeriod')?.value).toBe('p')
     })
 
     it('meridiem:"narrow" AM produces "a"', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'narrow' })
-      const parts = fmt.formatMarkerToParts(MON_0730, ctx)
+      const parts = fmt.formatToParts(MON_0730, ctx)
       expect(parts.find((p) => p.type === 'dayPeriod')?.value).toBe('a')
     })
 
     it('meridiem:"short" PM produces "pm"', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'short' })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       expect(parts.find((p) => p.type === 'dayPeriod')?.value).toBe('pm')
     })
 
     it('meridiem:"short" AM produces "am"', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'short' })
-      const parts = fmt.formatMarkerToParts(MON_0730, ctx)
+      const parts = fmt.formatToParts(MON_0730, ctx)
       expect(parts.find((p) => p.type === 'dayPeriod')?.value).toBe('am')
     })
 
     it('meridiem:"short" trims trailing space before dayPeriod ("7 PM" → "7pm")', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'short' })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       const joined = joinDateTimeFormatParts(parts)
       expect(joined).toMatch(/\dpm$/)
     })
 
     it('meridiem:"narrow" trims trailing space before dayPeriod ("7 PM" → "7p")', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: 'narrow' })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       const joined = joinDateTimeFormatParts(parts)
       expect(joined).toMatch(/\dp$/)
     })
 
     it('meridiem:true (default) leaves the dayPeriod unchanged', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', meridiem: true })
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       const dp = parts.find((p) => p.type === 'dayPeriod')
       expect(dp).toBeDefined()
       // Value is Intl-produced — just verify it starts with 'a' or 'p'
@@ -381,24 +383,24 @@ describe('NativeDateFormatterNew', () => {
 
     it('replaces Intl UTC timezone value with formatted positive offset', () => {
       const marker = makeMarker('2024-01-15T14:30:00Z', 300) // UTC+5
-      const parts = fmt.formatMarkerToParts(marker, ctx)
+      const parts = fmt.formatToParts(marker, ctx)
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('GMT+5')
     })
 
     it('formats zero offset as "GMT+0"', () => {
-      const parts = fmt.formatMarkerToParts(MON_1430, ctx)
+      const parts = fmt.formatToParts(MON_1430, ctx)
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('GMT+0')
     })
 
     it('formats negative offset as "GMT-5"', () => {
       const marker = makeMarker('2024-01-15T14:30:00Z', -300) // UTC-5
-      const parts = fmt.formatMarkerToParts(marker, ctx)
+      const parts = fmt.formatToParts(marker, ctx)
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('GMT-5')
     })
 
     it('formats offset with sub-hour minutes as "GMT+5:30"', () => {
       const marker = makeMarker('2024-01-15T14:30:00Z', 330) // UTC+5:30 (IST)
-      const parts = fmt.formatMarkerToParts(marker, ctx)
+      const parts = fmt.formatToParts(marker, ctx)
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('GMT+5:30')
     })
 
@@ -407,7 +409,7 @@ describe('NativeDateFormatterNew', () => {
       // which has the explicit null → 'UTC' conversion. The timezone-only shortcut path does not.
       const fmtWithHour = new NativeDateFormatterNew({ timeZoneName: 'short', hour: 'numeric' })
       const marker = { marker: new Date('2024-01-15T14:30:00Z'), timeZoneOffset: null as any }
-      const parts = fmtWithHour.formatMarkerToParts(marker, ctx)
+      const parts = fmtWithHour.formatToParts(marker, ctx)
       expect(parts.find((p) => p.type === 'timeZoneName')?.value).toBe('UTC')
     })
   })
@@ -425,7 +427,7 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         weekday: 'long', day: 'numeric', omitCommas: true, weekdayJustify: 'start',
       })
-      const parts = fmt.formatMarkerToParts(date, ctx)
+      const parts = fmt.formatToParts(date, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0].type).toBe('weekday')
       expect(parts[2].type).toBe('day')
@@ -435,7 +437,7 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         weekday: 'long', day: 'numeric', omitCommas: true, weekdayJustify: 'end',
       })
-      const parts = fmt.formatMarkerToParts(date, ctx)
+      const parts = fmt.formatToParts(date, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0].type).toBe('day')
       expect(parts[2].type).toBe('weekday')
@@ -449,8 +451,8 @@ describe('NativeDateFormatterNew', () => {
       const fmtJustify = new NativeDateFormatterNew({
         weekday: 'long', month: 'long', day: 'numeric', omitCommas: true, weekdayJustify: 'end',
       })
-      const baseParts = fmtBase.formatMarkerToParts(date, ctx)
-      const justifyParts = fmtJustify.formatMarkerToParts(date, ctx)
+      const baseParts = fmtBase.formatToParts(date, ctx)
+      const justifyParts = fmtJustify.formatToParts(date, ctx)
       expect(baseParts.length).toBeGreaterThan(3)
       expect(justifyParts.map((p) => p.type)).toEqual(baseParts.map((p) => p.type))
     })
@@ -463,7 +465,7 @@ describe('NativeDateFormatterNew', () => {
     it('converts space-only literals to ", "', () => {
       // en-US { month, day } → "January 15" where the space is a literal
       const fmt = new NativeDateFormatterNew({ month: 'long', day: 'numeric', forceCommas: true })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       expect(parts.find((p) => p.type === 'literal' && p.value === ' ')).toBeUndefined()
       expect(parts.find((p) => p.type === 'literal' && p.value === ', ')).toBeDefined()
     })
@@ -473,7 +475,7 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({
         weekday: 'long', month: 'long', day: 'numeric', forceCommas: true,
       })
-      const parts = fmt.formatMarkerToParts(MON_NOON, makeContext('en-US'))
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
       parts.filter((p) => p.type === 'literal').forEach((p) => {
         expect(p.value).not.toMatch(/^,+,/)
       })
@@ -481,16 +483,15 @@ describe('NativeDateFormatterNew', () => {
   })
 
   // ==========================================================================
-  // formatMarkerRange
+  // formatRangeToParts
   // ==========================================================================
-  describe('formatMarkerRange', () => {
-    it('returns a non-empty string', () => {
+  describe('formatRangeToParts', () => {
+    it('returns a non-empty parts array', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit' })
       const start = makeMarker('2024-01-15T09:00:00Z', 0)
       const end = makeMarker('2024-01-15T17:30:00Z', 0)
-      const result = fmt.formatMarkerRange(start, end, makeContext('en-US'))
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
+      const parts = fmt.formatRangeToParts(start, end, makeContext('en-US'))
+      expect(parts.length).toBeGreaterThan(0)
     })
 
     it('range result is different from formatting either endpoint alone', () => {
@@ -498,14 +499,14 @@ describe('NativeDateFormatterNew', () => {
       const start = makeMarker('2024-01-15T09:00:00Z', 0)
       const end = makeMarker('2024-01-15T17:00:00Z', 0)
       const ctx = makeContext('en-US')
-      const rangeResult = fmt.formatMarkerRange(start, end, ctx)
-      const startOnly = joinDateTimeFormatParts(fmt.formatMarkerToParts(start, ctx))
-      const endOnly = joinDateTimeFormatParts(fmt.formatMarkerToParts(end, ctx))
-      expect(rangeResult).not.toBe(startOnly)
-      expect(rangeResult).not.toBe(endOnly)
+      const rangeParts = fmt.formatRangeToParts(start, end, ctx)
+      const startOnly = fmt.formatToParts(start, ctx)
+      const endOnly = fmt.formatToParts(end, ctx)
+      expect(rangeParts).not.toEqual(startOnly)
+      expect(rangeParts).not.toEqual(endOnly)
     })
 
-    it('week-only: formatMarkerRange uses start marker only', () => {
+    it('week-only: formatRangeToParts uses start marker only', () => {
       const fmt = new NativeDateFormatterNew({ week: 'long' })
       const start = makeMarker('2024-01-15T00:00:00Z', 0)
       const end = makeMarker('2024-01-22T00:00:00Z', 0)
@@ -513,9 +514,12 @@ describe('NativeDateFormatterNew', () => {
         weekText: 'Week',
         computeWeekNumber: (d) => (d === start.marker ? 3 : 99),
       })
-      const result = fmt.formatMarkerRange(start, end, ctx)
-      expect(result).toContain('3')
-      expect(result).not.toContain('99')
+      const parts = fmt.formatRangeToParts(start, end, ctx)
+      expect(parts).toEqual([
+        { source: 'shared', type: 'literal', value: 'Week' },
+        { source: 'shared', type: 'literal', value: ' ' },
+        { source: 'startRange', type: 'week', value: '3' },
+      ])
     })
 
     it('forceCommas applies to range output', () => {
@@ -524,18 +528,18 @@ describe('NativeDateFormatterNew', () => {
       const start = makeMarker('2024-01-15T00:00:00Z', 0)
       const end = makeMarker('2024-02-20T00:00:00Z', 0)
       const ctx = makeContext('en-US')
-      const withCommas = fmtCommas.formatMarkerRange(start, end, ctx)
-      const withoutCommas = fmtPlain.formatMarkerRange(start, end, ctx)
-      expect(withCommas).toContain(', ')
-      expect(withCommas).not.toBe(withoutCommas)
+      const withCommas = fmtCommas.formatRangeToParts(start, end, ctx)
+      const withoutCommas = fmtPlain.formatRangeToParts(start, end, ctx)
+      expect(withCommas).not.toEqual(withoutCommas)
+      expect(withCommas.some((p) => p.type === 'literal' && p.value === ', ')).toBe(true)
     })
 
     it('timeZoneName injection works in range output', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })
       const start = makeMarker('2024-01-15T09:00:00Z', 300) // UTC+5
       const end = makeMarker('2024-01-15T17:00:00Z', 300)
-      const result = fmt.formatMarkerRange(start, end, makeContext('en-US'))
-      expect(result).toContain('GMT+5')
+      const parts = fmt.formatRangeToParts(start, end, makeContext('en-US'))
+      expect(parts).toContainEqual({ source: 'shared', type: 'timeZoneName', value: 'GMT+5' })
     })
   })
 
@@ -549,9 +553,9 @@ describe('NativeDateFormatterNew', () => {
     it('same context object reuses cached formats (same object reference)', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric' })
       const ctx = makeContext('en-US')
-      fmt.formatMarkerToParts(MON_NOON, ctx)
+      fmt.formatToParts(MON_NOON, ctx)
       const cachedFormats = (fmt as any).cachedFormats
-      fmt.formatMarkerToParts(MON_1430, ctx)
+      fmt.formatToParts(MON_1430, ctx)
       expect((fmt as any).cachedFormats).toBe(cachedFormats)
     })
 
@@ -559,16 +563,16 @@ describe('NativeDateFormatterNew', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric' })
       const ctx1 = makeContext('en-US')
       const ctx2 = makeContext('en-US') // distinct object, same values
-      fmt.formatMarkerToParts(MON_NOON, ctx1)
+      fmt.formatToParts(MON_NOON, ctx1)
       const cachedAfterFirst = (fmt as any).cachedFormats
-      fmt.formatMarkerToParts(MON_1430, ctx2)
+      fmt.formatToParts(MON_1430, ctx2)
       const cachedAfterSecond = (fmt as any).cachedFormats
       expect(cachedAfterSecond).not.toBe(cachedAfterFirst)
     })
 
     it('omitZeroMinute populates both normalFormat and zeroFormat', () => {
       const fmt = new NativeDateFormatterNew({ hour: 'numeric', minute: '2-digit', omitZeroMinute: true })
-      fmt.formatMarkerToParts(MON_0700, makeContext('en-US'))
+      fmt.formatToParts(MON_0700, makeContext('en-US'))
       const { normalFormat, zeroFormat } = (fmt as any).cachedFormats
       expect(normalFormat).toBeDefined()
       expect(zeroFormat).toBeDefined()
