@@ -15,11 +15,13 @@ export {
 
 export type {
   VerboseFormattingData,
-  CmdFormatterFunc,
+  CmdDateFormatterFunc,
   DateFormattingContext,
+  DateTimeFormatPartWithWeek,
+  DateTimeRangeFormatPartWithWeek,
   DateFormatter,
-} from './formatting/DateFormatter'
-export { createVerboseFormattingArg } from './formatting/DateFormatter'
+} from './formatting-interface'
+export { createVerboseFormattingArg } from './formatting-interface'
 
 export type { DurationInput, DurationObjectInput, Duration } from './duration'
 export {
@@ -43,11 +45,11 @@ export {
 export type { WeekNumberCalculation, DateEnvSettings, DateInput, DateMarkerMeta } from './env'
 export { DateEnv } from './env'
 
-export { CmdFormatter } from './formatting/formatting-cmd'
-
-export type { FuncFormatterFunc } from './formatting/formatting-func'
-export { FuncFormatter } from './formatting/formatting-func'
-
+export type { NativeDateFormatterOptions } from './formatting-native'
+export { NativeDateFormatter } from './formatting-native'
+export { CmdDateFormatter } from './formatting-cmd'
+export type { FuncDateFormatterFunc } from './formatting-func'
+export { FuncDateFormatter } from './formatting-func'
 export {
   buildIsoString,
   formatDayString,
@@ -55,7 +57,7 @@ export {
   formatIsoTimeString,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
-} from './formatting/formatting-utils'
+} from './formatting-utils'
 
 export type { LocaleCodeArg, Locale } from './locale'
 

@@ -10,8 +10,13 @@ import {
 import { CalendarSystem, createCalendarSystem } from './calendar-system'
 import { Locale } from './locale'
 import { Duration, asRoughYears, asRoughMonths, asRoughDays, asRoughMs } from './duration'
-import { DateFormatter, CmdFormatterFunc } from './formatting/DateFormatter'
-import { buildIsoString } from './formatting/formatting-utils'
+import {
+  DateFormatter,
+  CmdDateFormatterFunc,
+  DateTimeFormatPartWithWeek,
+  DateTimeRangeFormatPartWithWeek,
+} from './formatting-interface'
+import { buildIsoString } from './formatting-utils'
 import { parse } from './parsing'
 import { isInt } from './utils'
 
@@ -25,8 +30,7 @@ export interface DateEnvSettings {
   firstDay?: number, // will override what the locale wants
   weekText?: string,
   weekTextShort?: string
-  cmdFormatter?: CmdFormatterFunc
-  defaultSeparator?: string
+  cmdFormatter?: CmdDateFormatterFunc
 }
 
 export type DateInput = Date | string | number | number[]
@@ -45,8 +49,7 @@ export class DateEnv {
   weekNumberFunc: any
   weekText: string // DON'T LIKE how options are confused with local
   weekTextShort: string
-  cmdFormatter?: CmdFormatterFunc
-  defaultSeparator: string
+  cmdFormatter?: CmdDateFormatterFunc
 
   constructor(settings: DateEnvSettings) {
     this.timeZone = settings.timeZone
@@ -72,7 +75,6 @@ export class DateEnv {
     this.weekTextShort = settings.weekTextShort ?? settings.weekText
 
     this.cmdFormatter = settings.cmdFormatter
-    this.defaultSeparator = settings.defaultSeparator
   }
 
   // Creating / Parsing
@@ -338,9 +340,11 @@ export class DateEnv {
     return weekOfYear(marker, this.weekDow, this.weekDoy)
   }
 
-  // TODO: choke on timeZoneName: long
-  format(marker: DateMarker, formatter: DateFormatter) {
-    return formatter.format(
+  formatToParts(
+    marker: DateMarker,
+    formatter: DateFormatter,
+  ): DateTimeFormatPartWithWeek[] {
+    return formatter.formatToParts(
       {
         marker,
         timeZoneOffset: this.offsetForMarker(marker),
@@ -349,18 +353,17 @@ export class DateEnv {
     )
   }
 
-  // Unlike format(), returns plain string!
-  formatRange(
+  formatRangeToParts(
     start: DateMarker,
     end: DateMarker,
     formatter: DateFormatter,
-    dateOptions: { isEndExclusive?: boolean, defaultSeparator?: string } = {},
-  ): string {
+    dateOptions: { isEndExclusive?: boolean } = {},
+  ): DateTimeRangeFormatPartWithWeek[] {
     if (dateOptions.isEndExclusive) {
       end = addMs(end, -1)
     }
 
-    return formatter.formatRange(
+    return formatter.formatRangeToParts(
       {
         marker: start,
         timeZoneOffset: this.offsetForMarker(start),
@@ -370,7 +373,6 @@ export class DateEnv {
         timeZoneOffset: this.offsetForMarker(end),
       },
       this,
-      dateOptions.defaultSeparator,
     )
   }
 
@@ -378,7 +380,7 @@ export class DateEnv {
   DUMB: the omitTime arg is dumb. if we omit the time, we want to omit the timezone offset. and if we do that,
   might as well use buildIsoString or some other util directly
   */
-  formatIso(marker: DateMarker, extraOptions: any = {}) {
+  formatIso(marker: DateMarker, extraOptions: any = {}): string {
     let timeZoneOffset = null
 
     if (!extraOptions.omitTimeZoneOffset) {

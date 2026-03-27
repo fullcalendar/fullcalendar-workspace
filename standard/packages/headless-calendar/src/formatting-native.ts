@@ -1,12 +1,17 @@
-import { Locale } from '../locale'
-import { ZonedMarker } from '../zoned-marker'
-import { DateFormatterNew, DateTimeFormatPartWithWeekNew, DateTimeRangeFormatPartWithWeekNew, FormattingContextNew } from './DateFormatterNew'
-import { formatTimeZoneOffset } from './formatting-utils-new'
+import { Locale } from './locale'
+import { ZonedMarker } from './zoned-marker'
+import {
+  DateFormatter,
+  DateTimeFormatPartWithWeek,
+  DateTimeRangeFormatPartWithWeek,
+  DateFormattingContext,
+} from './formatting-interface'
+import { formatTimeZoneOffset } from './formatting-utils'
 
 export interface NativeDateFormatterOptions extends Intl.DateTimeFormatOptions {
   /*
   If specified, must be the only option.
-  Outputs a part with type:'week', aka DateTimeFormatPartWithWeekNew
+  Outputs a part with type:'week', aka DateTimeFormatPartWithWeek
   */
   week?: 'long' | 'short' | 'narrow' | 'numeric'
 
@@ -61,12 +66,12 @@ interface CachedFormats {
   zeroFormat?: Intl.DateTimeFormat
 }
 
-export class NativeDateFormatterNew implements DateFormatterNew {
+export class NativeDateFormatter implements DateFormatter {
   private standardOptions: Intl.DateTimeFormatOptions
   private extendedOptions: Partial<NativeDateFormatterOptions>
   private weekOnly: boolean
   private timeZoneOnly: boolean
-  private cachedContext: FormattingContextNew | undefined
+  private cachedContext: DateFormattingContext | undefined
   private cachedFormats: CachedFormats | undefined
 
   constructor(options?: NativeDateFormatterOptions) {
@@ -81,7 +86,6 @@ export class NativeDateFormatterNew implements DateFormatterNew {
       }
     }
 
-    // only support short timezone names
     if (standardOptions.timeZoneName === 'long') {
       standardOptions.timeZoneName = 'short'
     }
@@ -92,7 +96,6 @@ export class NativeDateFormatterNew implements DateFormatterNew {
     this.weekOnly = Boolean(!Object.keys(standardOptions).length && extendedOptions.week)
 
     if (!this.timeZoneOnly) {
-      // formatting the timezone requires hour/minute to be present (browser inconsistency)
       if (standardOptions.timeZoneName) {
         if (!standardOptions.hour) {
           standardOptions.hour = '2-digit'
@@ -102,7 +105,6 @@ export class NativeDateFormatterNew implements DateFormatterNew {
         }
       }
 
-      // omitZeroMinute is incompatible with seconds
       if (
         extendedOptions.omitZeroMinute &&
         (standardOptions.second || standardOptions.fractionalSecondDigits)
@@ -117,7 +119,7 @@ export class NativeDateFormatterNew implements DateFormatterNew {
     this.extendedOptions = extendedOptions
   }
 
-  formatToParts(date: ZonedMarker, context: FormattingContextNew): DateTimeFormatPartWithWeekNew[] {
+  formatToParts(date: ZonedMarker, context: DateFormattingContext): DateTimeFormatPartWithWeek[] {
     const { standardOptions, extendedOptions } = this
 
     if (this.timeZoneOnly) {
@@ -143,10 +145,13 @@ export class NativeDateFormatterNew implements DateFormatterNew {
     return postProcessParts(parts, date, standardOptions, extendedOptions)
   }
 
-  formatRangeToParts(start: ZonedMarker, end: ZonedMarker, context: FormattingContextNew): DateTimeRangeFormatPartWithWeekNew[] {
+  formatRangeToParts(
+    start: ZonedMarker,
+    end: ZonedMarker,
+    context: DateFormattingContext,
+  ): DateTimeRangeFormatPartWithWeek[] {
     const { standardOptions, extendedOptions } = this
 
-    // timezone-only or week-only: format start only, not a range
     if (this.timeZoneOnly || this.weekOnly) {
       return this.formatToParts(start, context).map((part) => {
         return {
@@ -161,7 +166,7 @@ export class NativeDateFormatterNew implements DateFormatterNew {
     return postProcessRangeParts(parts, start, end, standardOptions, extendedOptions)
   }
 
-  private getFormats(context: FormattingContextNew): CachedFormats {
+  private getFormats(context: DateFormattingContext): CachedFormats {
     if (this.cachedContext !== context) {
       const { standardOptions, extendedOptions } = this
       const { codes } = context.locale
@@ -182,8 +187,6 @@ export class NativeDateFormatterNew implements DateFormatterNew {
   }
 }
 
-// Runs the shared per-part transforms in-place. Returns the last literal seen and whether
-// any timeZoneName part was written (used by postProcessParts for tz fallback injection).
 function processPartsLoop<T extends Intl.DateTimeFormatPart>(
   parts: T[],
   extendedOptions: Partial<NativeDateFormatterOptions>,
@@ -203,7 +206,7 @@ function processPartsLoop<T extends Intl.DateTimeFormatPart>(
         s = s.replace(COMMA_RE, '')
       }
 
-      if (!isLiteral) { // dayPeriod
+      if (!isLiteral) {
         const { meridiem } = extendedOptions
         if (meridiem === false) {
           s = s.replace(MERIDIEM_RE, '')
@@ -215,7 +218,6 @@ function processPartsLoop<T extends Intl.DateTimeFormatPart>(
           s = s.replace(MERIDIEM_RE, (m0: string) => m0.toLocaleLowerCase())
         }
 
-        // remove prior space: "7 pm" → "7pm"
         if (priorLiteral) {
           priorLiteral.value = priorLiteral.value.trimEnd()
         }
@@ -242,7 +244,7 @@ function postProcessParts(
   date: ZonedMarker,
   standardOptions: Intl.DateTimeFormatOptions,
   extendedOptions: Partial<NativeDateFormatterOptions>,
-): DateTimeFormatPartWithWeekNew[] {
+): DateTimeFormatPartWithWeek[] {
   const injectableTz = standardOptions.timeZoneName === 'short'
     ? (date.timeZoneOffset == null ? 'UTC' : formatTimeZoneOffset(date.timeZoneOffset))
     : undefined
@@ -268,7 +270,6 @@ function postProcessParts(
     }
   }
 
-  // TODO: DRY
   if (extendedOptions.forceCommas) {
     for (const part of parts) {
       if (part.value === ' ') {
@@ -277,7 +278,6 @@ function postProcessParts(
     }
   }
 
-  // filter away empty
   return parts.filter((part) => part.value)
 }
 
@@ -287,7 +287,7 @@ function postProcessRangeParts(
   end: ZonedMarker,
   standardOptions: Intl.DateTimeFormatOptions,
   extendedOptions: Partial<NativeDateFormatterOptions>,
-): Intl.DateTimeRangeFormatPart[] {
+): DateTimeRangeFormatPartWithWeek[] {
   const injectTz = standardOptions.timeZoneName === 'short'
 
   processPartsLoop(parts, extendedOptions, (part) => {
@@ -296,7 +296,6 @@ function postProcessRangeParts(
     return offset == null ? 'UTC' : formatTimeZoneOffset(offset)
   })
 
-  // TODO: DRY
   if (extendedOptions.forceCommas) {
     for (const part of parts) {
       if (part.value === ' ') {
@@ -305,7 +304,6 @@ function postProcessRangeParts(
     }
   }
 
-  // filter away empty
   return parts.filter((part) => part.value)
 }
 
@@ -315,8 +313,8 @@ function formatWeekNumberParts(
   weekTextShort: string,
   locale: Locale,
   display?: 'numeric' | 'narrow' | 'short' | 'long',
-): DateTimeFormatPartWithWeekNew[] {
-  const parts: DateTimeFormatPartWithWeekNew[] = []
+): DateTimeFormatPartWithWeek[] {
+  const parts: DateTimeFormatPartWithWeek[] = []
 
   if (display === 'long') {
     parts.push({ type: 'literal', value: weekText })
@@ -324,8 +322,6 @@ function formatWeekNumberParts(
     parts.push({ type: 'literal', value: weekTextShort })
   }
 
-  // TODO: probably not okay to have consecutive literals?
-  // (but need it for RTL, right?)
   if (display === 'long' || display === 'short') {
     parts.push({ type: 'literal', value: ' ' })
   }
@@ -335,7 +331,6 @@ function formatWeekNumberParts(
     value: locale.simpleNumberFormat.format(num),
   })
 
-  // TODO: use control characters instead?
   if (locale.options.direction === 'rtl') {
     parts.reverse()
   }

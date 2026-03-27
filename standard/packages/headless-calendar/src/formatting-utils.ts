@@ -1,5 +1,5 @@
-import { DateMarker } from '../marker'
-import { padStart } from '../utils'
+import { DateMarker } from './marker'
+import { padStart } from './utils'
 
 // timeZoneOffset is in minutes
 export function buildIsoString(marker: DateMarker, timeZoneOffset?: number, stripZeroTime: boolean = false) {
@@ -11,21 +11,17 @@ export function buildIsoString(marker: DateMarker, timeZoneOffset?: number, stri
     s = s.replace('T00:00:00Z', '')
   }
 
-  if (s.length > 10) { // time part wasn't stripped, can add timezone info
+  if (s.length > 10) {
     if (timeZoneOffset == null) {
       s = s.replace('Z', '')
     } else if (timeZoneOffset !== 0) {
       s = s.replace('Z', formatTimeZoneOffset(timeZoneOffset, true))
     }
-    // otherwise, its UTC-0 and we want to keep the Z
   }
 
   return s
 }
 
-// formats the date, but with no time part
-// TODO: somehow merge with buildIsoString and stripZeroTime
-// TODO: rename. omit "string"
 export function formatDayString(marker: DateMarker) {
   return marker.toISOString().replace(/T.*$/, '')
 }
@@ -34,7 +30,6 @@ export function formatIsoMonthStr(marker: DateMarker) {
   return marker.toISOString().match(/^\d{4}-\d{2}/)[0]
 }
 
-// TODO: use Date::toISOString and use everything after the T?
 export function formatIsoTimeString(marker: DateMarker) {
   return padStart(marker.getUTCHours(), 2) + ':' +
     padStart(marker.getUTCMinutes(), 2) + ':' +
@@ -53,9 +48,7 @@ export function formatTimeZoneOffset(minutes: number, doIso = false) {
   return `GMT${sign}${hours}${mins ? `:${padStart(mins, 2)}` : ''}`
 }
 
-export function joinDateTimeFormatParts(
-  parts: { value: string }[], // intentionally flexible, for DateTimeFormatPartWithWeek
-): string {
+export function joinDateTimeFormatParts(parts: { value: string }[]): string {
   let s = ''
 
   for (const part of parts) {

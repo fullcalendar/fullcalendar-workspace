@@ -2,9 +2,9 @@
 
 import type { Locale } from '../src/locale'
 import type { ZonedMarker } from '../src/zoned-marker'
-import type { FormattingContextNew } from '../src/formatting-new/DateFormatterNew'
-import { NativeDateFormatterNew } from '../src/formatting-new/NativeDateFormatterNew'
-import { joinDateTimeFormatParts } from '../src/formatting-new/formatting-utils-new'
+import type { DateFormattingContext as FormattingContextNew } from '../src/formatting-interface'
+import { NativeDateFormatter as NativeDateFormatterNew } from '../src/formatting-native'
+import { joinDateTimeFormatParts } from '../src/formatting-utils'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -56,7 +56,7 @@ const MON_1430 = makeMarker('2024-01-15T14:30:00Z', 0)  // 14:30 = 2:30 PM
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('NativeDateFormatterNew', () => {
+describe('NativeDateFormatter', () => {
 
   // ==========================================================================
   // sanitizeSettings (exercised via constructor + formatToParts)
