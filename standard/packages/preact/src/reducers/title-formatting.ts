@@ -1,6 +1,6 @@
 import { BaseOptions } from '@fullcalendar/core/protected-api'
 import { DateProfile } from '../DateProfileGenerator'
-import { diffWholeDays, DateRange, DateEnv } from '@full-ui/headless-calendar'
+import { diffWholeDays, DateRange, DateEnv, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { createFormatter, FormatterInput } from '../datelib/formatting'
 
 // Computes what the title at the top of the calendarApi should be for this view
@@ -18,14 +18,15 @@ export function buildTitle(
     range = dateProfile.activeRange
   }
 
-  return dateEnv.formatRange(
-    range.start,
-    range.end,
-    createFormatter(viewOptions.titleFormat || buildTitleFormat(dateProfile, dateEnv)),
-    {
-      isEndExclusive: dateProfile.isRangeAllDay,
-      defaultSeparator: viewOptions.titleRangeSeparator,
-    },
+  return joinDateTimeFormatParts(
+    dateEnv.formatRangeToParts(
+      range.start,
+      range.end,
+      createFormatter(viewOptions.titleFormat || buildTitleFormat(dateProfile, dateEnv)),
+      {
+        isEndExclusive: dateProfile.isRangeAllDay,
+      },
+    ),
   )
 }
 

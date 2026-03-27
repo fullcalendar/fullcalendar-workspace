@@ -1,4 +1,5 @@
 import { ViewApi } from '../api/ViewApi'
+import type { DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../component-util/date-rendering'
 import type { MountData } from '../common/render-hook'
 
@@ -19,7 +20,7 @@ export interface ListDayEventsData extends DateMeta {
 
 export interface ListDayHeaderInnerData extends DateMeta {
   text: string
-  textParts: Intl.DateTimeFormatPart[]
+  textParts: DateTimeFormatPartWithWeek[]
   weekdayText: string
   dayNumberText: string
   hasNavLink: boolean

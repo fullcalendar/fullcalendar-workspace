@@ -12,7 +12,7 @@ import { dateSelectionJoinTransformer } from './interactions/date-selecting'
 import { ExternalDefTransform } from './interactions/external-element-dragging'
 import { InteractionClass } from './interactions/interaction'
 import { EventSourceDef } from './structs/event-source-def'
-import { CmdFormatterFunc } from '@full-ui/headless-calendar'
+import { CmdDateFormatterFunc } from '@full-ui/headless-calendar'
 import { RecurringType } from './structs/recurring-event'
 import { ElementDraggingClass } from './interactions/ElementDragging'
 import type { ReactNode } from 'react'
@@ -47,7 +47,7 @@ export interface PluginDefInput {
   componentInteractions?: InteractionClass[]
   calendarInteractions?: CalendarInteractionClass[]
   eventSourceDefs?: EventSourceDef<any>[]
-  cmdFormatter?: CmdFormatterFunc
+  cmdFormatter?: CmdDateFormatterFunc
   recurringTypes?: RecurringType<any>[]
   initialView?: string
   elementDraggingImpl?: ElementDraggingClass
@@ -82,7 +82,7 @@ export interface PluginHooks {
   componentInteractions: InteractionClass[]
   calendarInteractions: CalendarInteractionClass[]
   eventSourceDefs: EventSourceDef<any>[]
-  cmdFormatter?: CmdFormatterFunc
+  cmdFormatter?: CmdDateFormatterFunc
   recurringTypes: RecurringType<any>[]
   initialView: string
   elementDraggingImpl?: ElementDraggingClass

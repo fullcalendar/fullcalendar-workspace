@@ -1,5 +1,5 @@
 import { DateComponent } from '../component/DateComponent'
-import { DateRange, DateMarker, formatDayString } from '@full-ui/headless-calendar'
+import { DateRange, DateMarker, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator'
 import { Hit } from '../interactions/hit'
 import { Dictionary } from '../options'
@@ -52,7 +52,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { options, dateEnv, viewApi } = context
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
-    let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
+    let textParts = dateEnv.formatToParts(startDate, options.dayPopoverFormat)
+    let text = joinDateTimeFormatParts(textParts)
 
     const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,

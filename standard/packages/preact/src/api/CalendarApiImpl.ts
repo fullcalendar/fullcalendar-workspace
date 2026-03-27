@@ -1,5 +1,6 @@
 import { FormatterInput, createFormatter } from '../datelib/formatting'
 import { createDuration } from '@full-ui/headless-calendar'
+import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { parseDateSpan } from '../structs/date-span'
 import { parseEventSource } from '../structs/event-source-parse'
 import { parseEvent } from '../structs/event-parse'
@@ -262,21 +263,25 @@ export class CalendarApiImpl implements CalendarApi {
   formatDate(d: DateInput, formatter: FormatterInput): string {
     let { dateEnv } = this.getCurrentData()
 
-    return dateEnv.format(
-      dateEnv.createMarker(d),
-      createFormatter(formatter),
-    )[0]
+    return joinDateTimeFormatParts(
+      dateEnv.formatToParts(
+        dateEnv.createMarker(d),
+        createFormatter(formatter),
+      ),
+    )
   }
 
   // `settings` is for formatter AND isEndExclusive
   formatRange(d0: DateInput, d1: DateInput, settings: any): string { // TODO: settings type
     let { dateEnv } = this.getCurrentData()
 
-    return dateEnv.formatRange(
-      dateEnv.createMarker(d0),
-      dateEnv.createMarker(d1),
-      createFormatter(settings),
-      settings,
+    return joinDateTimeFormatParts(
+      dateEnv.formatRangeToParts(
+        dateEnv.createMarker(d0),
+        dateEnv.createMarker(d1),
+        createFormatter(settings),
+        settings,
+      ),
     )
   }
 

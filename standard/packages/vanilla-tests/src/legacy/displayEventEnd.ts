@@ -114,7 +114,7 @@ describe('displayEventEnd', () => {
               allDay: false,
             }],
           })
-          expectEventTimeText(calendar, '1:00AM - 2:00AM')
+          expectEventTimeText(calendar, '1:00 – 2:00AM')
         })
       })
     })

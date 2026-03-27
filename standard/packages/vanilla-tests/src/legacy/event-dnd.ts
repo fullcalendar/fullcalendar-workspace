@@ -377,7 +377,7 @@ describe('eventDrop', () => {
             dragged = true
             let mirrorEls = timeGridWrapper.getMirrorEls()
             expect(mirrorEls.length).toBe(1)
-            expect(queryEventElInfo(mirrorEls[0]).timeText).toBe('2:30 - 3:30')
+            expect(queryEventElInfo(mirrorEls[0]).timeText).toBe('2:30 – 3:30')
           },
         )
 

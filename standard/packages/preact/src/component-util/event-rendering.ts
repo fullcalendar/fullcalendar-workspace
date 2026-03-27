@@ -11,6 +11,7 @@ import {
   addMs,
   DateMarker,
   startOfDay,
+  joinDateTimeFormatParts,
 } from '@full-ui/headless-calendar'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc'
 import { computeVisibleDayRange } from '../util/date'
@@ -318,11 +319,11 @@ export function buildEventRangeTimeText(
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
-      return dateEnv.formatRange(startDate, endDate, timeFormat)
+      return joinDateTimeFormatParts(dateEnv.formatRangeToParts(startDate, endDate, timeFormat))
     }
 
     if (isStart) {
-      return dateEnv.format(startDate, timeFormat)[0]
+      return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat))
     }
   }
 

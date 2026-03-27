@@ -1,6 +1,8 @@
 import { VerboseFormattingData } from '@full-ui/headless-calendar'
 import { convertToMoment } from './convert'
 
+const DEFAULT_RANGE_SEPARATOR = ' - '
+
 export function formatWithCmdStr(
   cmdStr: string,
   data: VerboseFormattingData,
@@ -24,7 +26,7 @@ export function formatWithCmdStr(
       cmd,
       createMomentFormatFunc(startMom),
       createMomentFormatFunc(endMom),
-      data.defaultSeparator,
+      DEFAULT_RANGE_SEPARATOR,
     )
   }
 

@@ -1,3 +1,4 @@
+import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { BaseOptionsRefined } from '@fullcalendar/core/protected-api'
 import { Duration } from '@fullcalendar/preact/public-api'
 import {
@@ -536,7 +537,7 @@ function buildCellRows(
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
 
       if (isSuperRow) {
-        let [text] = dateEnv.format(date, format)
+        let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
         if (!leadingCell || (leadingCell.text !== text)) {
           newCell = buildCellObject(date, isMajor, text, rowUnit)
         } else {
@@ -550,7 +551,7 @@ function buildCellRows(
           tDateProfile.labelInterval,
         ))
       ) {
-        let [text] = dateEnv.format(date, format)
+        let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
         newCell = buildCellObject(date, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1

@@ -47,10 +47,10 @@ describe('luxon formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', 'MMMM {d}, yyyy \'asdf\'')
-      expect(s).toEqual('September 3 - 5, 2018 asdf')
+      expect(s).toEqual('September 3 – 5, 2018 asdf')
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', '{d} MMMM, yyyy \'asdf\'')
-      expect(s).toEqual('3 - 5 September, 2018 asdf')
+      expect(s).toEqual('3 – 5 September, 2018 asdf')
     })
 
     it('renders with same year but different month', () => {
@@ -60,10 +60,10 @@ describe('luxon formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{MMMM {d}}, yyyy \'asdf\'')
-      expect(s).toEqual('September 3 - October 5, 2018 asdf')
+      expect(s).toEqual('September 3 – October 5, 2018 asdf')
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{{d} MMMM}, yyyy \'asdf\'')
-      expect(s).toEqual('3 September - 5 October, 2018 asdf')
+      expect(s).toEqual('3 September – 5 October, 2018 asdf')
     })
 
     it('renders with different years', () => {
@@ -73,10 +73,10 @@ describe('luxon formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{MMMM {d}}, yyyy \'asdf\'')
-      expect(s).toEqual('September 3, 2018 asdf - October 5, 2019 asdf')
+      expect(s).toEqual('September 3, 2018 asdf – October 5, 2019 asdf')
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{{d} MMMM}, yyyy \'asdf\'')
-      expect(s).toEqual('3 September, 2018 asdf - 5 October, 2019 asdf')
+      expect(s).toEqual('3 September, 2018 asdf – 5 October, 2019 asdf')
     })
 
     it('renders the same if same day', () => {
@@ -87,26 +87,6 @@ describe('luxon formatting plugin', () => {
 
       s = calendar.formatRange('2018-09-03T00:00:00', '2018-09-03T23:59:59', 'MMMM d yyyy')
       expect(s).toEqual('September 3 2018')
-    })
-
-    it('inherits defaultRangeSeparator', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: PLUGINS,
-        defaultRangeSeparator: ' to ',
-      })
-      let s = calendar.formatRange('2018-09-03', '2018-09-05', 'MMMM d, yyyy \'asdf\'')
-      expect(s).toEqual('September 3, 2018 asdf to September 5, 2018 asdf')
-    })
-
-    it('produces title with titleRangeSeparator', () => {
-      initCalendar({ // need to render the calendar to get view.title :(
-        plugins: PLUGINS,
-        initialView: 'dayGridWeek',
-        now: '2018-09-06',
-        titleFormat: 'MMMM {d} yy \'yup\'',
-        titleRangeSeparator: ' to ',
-      })
-      expect(currentCalendar.view.title).toBe('September 2 to 8 18 yup')
     })
   })
 })

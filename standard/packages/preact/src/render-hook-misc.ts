@@ -1,5 +1,5 @@
 import { DateMeta } from './component-util/date-rendering'
-import { Duration, DateMarker } from '@full-ui/headless-calendar'
+import { Duration, DateMarker, DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import { ViewApi } from './api/ViewApi'
 import { MountData } from './common/render-hook'
 
@@ -36,7 +36,7 @@ export interface DayHeaderData extends DateMeta {
   hasNavLink: boolean
   level: number
   text: string
-  textParts: Intl.DateTimeFormatPart[]
+  textParts: DateTimeFormatPartWithWeek[]
   weekdayText: string
   dayNumberText: string
   view: ViewApi
@@ -58,7 +58,7 @@ export interface DayCellData extends DateMeta {
   hasNavLink: boolean
   view: ViewApi
   text: string
-  textParts: Intl.DateTimeFormatPart[]
+  textParts: DateTimeFormatPartWithWeek[]
   weekdayText: string
   dayNumberText: string
   monthText: string

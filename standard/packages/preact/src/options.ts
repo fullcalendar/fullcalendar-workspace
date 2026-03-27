@@ -135,8 +135,6 @@ export const BASE_OPTION_REFINERS = {
   snapDuration: createDuration,
   headerToolbar: identity as Identity<ToolbarInput | false>,
   footerToolbar: identity as Identity<ToolbarInput | false>,
-  defaultRangeSeparator: String,
-  titleRangeSeparator: String,
   forceEventDuration: Boolean,
 
   // TODO: move to timegrid
@@ -375,7 +373,7 @@ export const BASE_OPTION_REFINERS = {
   fixedWeekCount: Boolean,
   validRange: identity as Identity<DateRangeInput | ((this: CalendarApi, nowDate: Date) => DateRangeInput)>, // `this` works?
   visibleRange: identity as Identity<DateRangeInput | ((this: CalendarApi, currentDate: Date) => DateRangeInput)>, // `this` works?
-  titleFormat: identity as Identity<FormatterInput>, // DONT parse just yet. we need to inject titleSeparator
+  titleFormat: identity as Identity<FormatterInput>,
 
   eventInteractive: Boolean,
 
@@ -493,8 +491,6 @@ declare module '@fullcalendar/core/protected-api' {
 export const BASE_OPTION_DEFAULTS = {
   buttonDisplay: 'auto',
   eventDisplay: 'auto',
-  defaultRangeSeparator: ' - ',
-  titleRangeSeparator: ' \u2013 ', // en dash
   defaultTimedEventDuration: '01:00:00',
   defaultAllDayEventDuration: { day: 1 },
   forceEventDuration: false,

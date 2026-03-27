@@ -119,7 +119,7 @@ describe('ListView rendering', () => {
         expect(events[0].title).toBe('event 1')
         expect(events[0].timeText).toBe('7:00am')
         expect(events[1].title).toBe('event 2')
-        expect(events[1].timeText).toBe('9:00am - 11:00am')
+        expect(events[1].timeText).toBe('9:00 – 11:00am')
       })
 
       it('doesn\'t render times when displayEventTime is false', () => {
@@ -171,7 +171,7 @@ describe('ListView rendering', () => {
         expect(events[0].title).toBe('event 1')
         expect(events[0].timeText).toMatch(/^0?7:00$/)
         expect(events[1].title).toBe('event 2')
-        expect(events[1].timeText).toMatch(/^0?9:00 - 11:00$/)
+        expect(events[1].timeText).toMatch(/^0?9:00 – 11:00$/)
       })
     })
 

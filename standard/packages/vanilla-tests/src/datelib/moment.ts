@@ -40,10 +40,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', 'MMMM {D}, YYYY [nice]')
-      expect(s).toEqual('September 3 - 5, 2018 nice')
+      expect(s).toEqual('September 3 – 5, 2018 nice')
 
       s = calendar.formatRange('2018-09-03', '2018-09-05', '{D} MMMM, YYYY [nice]')
-      expect(s).toEqual('3 - 5 September, 2018 nice')
+      expect(s).toEqual('3 – 5 September, 2018 nice')
     })
 
     it('renders with same year but different month', () => {
@@ -53,10 +53,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{MMMM {D}}, YYYY [nice]')
-      expect(s).toEqual('September 3 - October 5, 2018 nice')
+      expect(s).toEqual('September 3 – October 5, 2018 nice')
 
       s = calendar.formatRange('2018-09-03', '2018-10-05', '{{D} MMMM}, YYYY [nice]')
-      expect(s).toEqual('3 September - 5 October, 2018 nice')
+      expect(s).toEqual('3 September – 5 October, 2018 nice')
     })
 
     it('renders with different years', () => {
@@ -66,10 +66,10 @@ describe('moment formatting plugin', () => {
       let s
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{MMMM {D}}, YYYY [nice]')
-      expect(s).toEqual('September 3, 2018 nice - October 5, 2019 nice')
+      expect(s).toEqual('September 3, 2018 nice – October 5, 2019 nice')
 
       s = calendar.formatRange('2018-09-03', '2019-10-05', '{{D} MMMM}, YYYY [nice]')
-      expect(s).toEqual('3 September, 2018 nice - 5 October, 2019 nice')
+      expect(s).toEqual('3 September, 2018 nice – 5 October, 2019 nice')
     })
 
     it('renders the same if same day', () => {
@@ -80,25 +80,6 @@ describe('moment formatting plugin', () => {
 
       s = calendar.formatRange('2018-09-03T00:00:00', '2018-09-03T23:59:59', 'MMM Do YY')
       expect(s).toEqual('Sep 3rd 18')
-    })
-
-    it('inherits defaultRangeSeparator', () => {
-      let calendar = new Calendar(document.createElement('div'), {
-        plugins: PLUGINS,
-        defaultRangeSeparator: ' to ',
-      })
-      let s = calendar.formatRange('2018-09-03', '2018-09-05', 'MMMM D, YYYY [nice]')
-      expect(s).toEqual('September 3, 2018 nice to September 5, 2018 nice')
-    })
-
-    it('produces title with titleRangeSeparator', () => {
-      initCalendar({ // need to render the calendar to get view.title :(
-        initialView: 'dayGridWeek',
-        now: '2018-09-06',
-        titleFormat: 'MMMM {D} YY [yup]',
-        titleRangeSeparator: ' to ',
-      })
-      expect(currentCalendar.view.title).toBe('September 2 to 8 18 yup')
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/5493
@@ -114,7 +95,7 @@ describe('moment formatting plugin', () => {
       })
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let timeTexts = timeGridWrapper.getEventTimeTexts()
-      expect(timeTexts[0]).toBe('01:00:00 - 02:00:00')
+      expect(timeTexts[0]).toBe('01:00:00 – 02:00:00')
     })
   })
 })

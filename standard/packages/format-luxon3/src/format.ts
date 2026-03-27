@@ -1,6 +1,8 @@
 import { VerboseFormattingData } from '@full-ui/headless-calendar'
 import { arrayToLuxon } from './convert'
 
+const DEFAULT_RANGE_SEPARATOR = ' - '
+
 export function formatWithCmdStr(
   cmdStr: string,
   data: VerboseFormattingData,
@@ -22,7 +24,7 @@ export function formatWithCmdStr(
       cmd,
       start.toFormat.bind(start),
       end.toFormat.bind(end),
-      data.defaultSeparator,
+      DEFAULT_RANGE_SEPARATOR,
     )
   }
 

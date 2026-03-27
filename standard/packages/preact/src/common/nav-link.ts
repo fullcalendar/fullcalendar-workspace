@@ -1,4 +1,4 @@
-import { DateMarker } from '@full-ui/headless-calendar'
+import { DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { joinArrayishClassNames } from '../util/html'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { formatWithOrdinals } from '../util/misc'
@@ -14,7 +14,9 @@ export function buildDateStr(
   dateMarker: DateMarker,
   viewType = 'day',
 ): string {
-  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : FULL_DATE_FORMAT)[0]
+  return joinDateTimeFormatParts(
+    context.dateEnv.formatToParts(dateMarker, viewType === 'week' ? WEEK_FORMAT : FULL_DATE_FORMAT),
+  )
 }
 
 /*

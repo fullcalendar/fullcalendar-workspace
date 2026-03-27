@@ -1,7 +1,6 @@
 import { Calendar } from 'fullcalendar'
 import {
   DateEnv,
-  createFormatter,
   createDuration,
   startOfDay,
   diffWholeWeeks,
@@ -12,7 +11,7 @@ import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
 import { getDSTDeadZone } from '../lib/dst-dead-zone'
-import { formatPrettyTimeZoneOffset, formatIsoTimeZoneOffset, formatIsoWithoutTz } from '../lib/datelib-utils'
+import { formatIsoWithoutTz } from '../lib/datelib-utils'
 
 describe('datelib', () => {
   let enLocale
@@ -175,93 +174,6 @@ describe('datelib', () => {
       it('detects presence of time even if timezone', () => {
         let res = env.createMarkerMeta('2018-06-08T00:00:00+12:00')
         expect(res.isTimeUnspecified).toBe(false)
-      })
-    })
-
-    it('outputs ISO8601 formatting', () => {
-      let marker = env.createMarker('2018-06-08T00:00:00')
-      let s = env.formatIso(marker)
-      expect(s).toBe('2018-06-08T00:00:00Z')
-    })
-
-    it('outputs pretty format with UTC timezone', () => {
-      let marker = env.createMarker('2018-06-08')
-      let formatter = createFormatter({
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        hour: '2-digit',
-        minute: '2-digit',
-        year: 'numeric',
-        timeZoneName: 'short',
-        omitCommas: true, // for cross-browser
-      })
-      let [s] = env.format(marker, formatter)
-      expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00AM UTC')
-    })
-
-    describe('week number formatting', () => {
-      it('can output only number', () => {
-        let marker = env.createMarker('2018-06-08')
-        let formatter = createFormatter({ week: 'numeric' })
-        let [s] = env.format(marker, formatter)
-        expect(s).toBe('23')
-      })
-
-      it('can output narrow', () => {
-        let marker = env.createMarker('2018-06-08')
-        let formatter = createFormatter({ week: 'narrow' })
-        let [s] = env.format(marker, formatter)
-        expect(s).toBe('W23')
-      })
-
-      it('can output short', () => {
-        let marker = env.createMarker('2018-06-08')
-        let formatter = createFormatter({ week: 'short' })
-        let [s] = env.format(marker, formatter)
-        expect(s).toBe('W 23')
-      })
-    })
-
-    describe('range formatting', () => {
-      let formatter = createFormatter({
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        separator: ' - ',
-      })
-
-      xit('works with different days of same month', () => {
-        let m0 = env.createMarker('2018-06-08')
-        let m1 = env.createMarker('2018-06-09')
-        let s = env.formatRange(m0, m1, formatter)
-        expect(s).toBe('June 8 - 9, 2018')
-      })
-
-      it('works with different days of same month, with inprecise formatter', () => {
-        let otherFormatter = createFormatter({
-          month: 'long',
-          year: 'numeric',
-        })
-        let m0 = env.createMarker('2018-06-08')
-        let m1 = env.createMarker('2018-06-09')
-        let s = env.formatRange(m0, m1, otherFormatter)
-        expect(s).toBe('June 2018')
-      })
-
-      xit('works with different day/month of same year', () => {
-        let m0 = env.createMarker('2018-06-08')
-        let m1 = env.createMarker('2018-07-09')
-        let s = env.formatRange(m0, m1, formatter)
-        expect(s).toBe('June 8 - July 9, 2018')
-      })
-
-      it('works with completely different dates', () => {
-        let m0 = env.createMarker('2018-06-08')
-        let m1 = env.createMarker('2020-07-09')
-        let s = env.formatRange(m0, m1, formatter)
-        expect(s).toBe('June 8, 2018 - July 9, 2020')
       })
     })
 
@@ -555,37 +467,6 @@ describe('datelib', () => {
           // expect(env.formatIso(marker)).not.toMatch(s)
         }
       })
-    })
-
-    it('outputs ISO8601 formatting', () => {
-      let marker = env.createMarker('2018-06-08T00:00:00')
-      let s = env.formatIso(marker)
-      let realTzo = formatIsoTimeZoneOffset(new Date(2018, 5, 8))
-      expect(s).toBe('2018-06-08T00:00:00' + realTzo)
-    })
-
-    it('outputs pretty format with local timezone', () => {
-      let marker = env.createMarker('2018-06-08')
-      let formatter = createFormatter({
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZoneName: 'short',
-        omitCommas: true, // for cross-browser
-      })
-      let [s] = env.format(marker, formatter)
-      expect(s.replace(' at ', ' '))
-        .toBe('Friday June 8 2018 12:00AM ' + formatPrettyTimeZoneOffset(new Date(2018, 5, 8)))
-    })
-
-    it('can output a timezone only', () => {
-      let marker = env.createMarker('2018-06-08')
-      let formatter = createFormatter({ timeZoneName: 'short' })
-      let [s] = env.format(marker, formatter)
-      expect(s).toBe(formatPrettyTimeZoneOffset(new Date(2018, 5, 8)))
     })
 
     // because `new Date(year)` is error-prone

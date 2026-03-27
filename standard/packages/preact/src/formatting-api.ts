@@ -1,18 +1,16 @@
-import { DateEnv } from '@full-ui/headless-calendar'
+import { DateEnv, NativeDateFormatterOptions, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting'
-import { NativeFormatterOptions } from './datelib/formatting-native'
 import { organizeRawLocales, buildLocale } from './datelib/locale'
 import { BASE_OPTION_DEFAULTS } from './options'
 
 // public
 import { DateInput } from './api/structs'
 
-export interface FormatDateOptions extends NativeFormatterOptions {
+export interface FormatDateOptions extends NativeDateFormatterOptions {
   locale?: string
 }
 
 export interface FormatRangeOptions extends FormatDateOptions {
-  separator?: string
   isEndExclusive?: boolean
 }
 
@@ -25,7 +23,7 @@ export function formatDate(dateInput: DateInput, options: FormatDateOptions = {}
     return ''
   }
 
-  return dateEnv.format(dateMeta.marker, formatter)[0]
+  return joinDateTimeFormatParts(dateEnv.formatToParts(dateMeta.marker, formatter))
 }
 
 export function formatRange(
@@ -42,10 +40,11 @@ export function formatRange(
     return ''
   }
 
-  return dateEnv.formatRange(startMeta.marker, endMeta.marker, formatter, {
-    isEndExclusive: options.isEndExclusive,
-    defaultSeparator: BASE_OPTION_DEFAULTS.defaultRangeSeparator,
-  })
+  return joinDateTimeFormatParts(
+    dateEnv.formatRangeToParts(startMeta.marker, endMeta.marker, formatter, {
+      isEndExclusive: options.isEndExclusive,
+    }),
+  )
 }
 
 // TODO: more DRY and optimized

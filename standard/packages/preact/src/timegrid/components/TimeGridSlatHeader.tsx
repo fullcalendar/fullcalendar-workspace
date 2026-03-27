@@ -1,4 +1,4 @@
-import { Duration, DateFormatter, DateMarker } from '@full-ui/headless-calendar'
+import { Duration, DateFormatter, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { SlotHeaderData } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
@@ -160,7 +160,7 @@ function createRenderProps(
     ...getDateMeta(date, context.dateEnv),
 
     level: 0, // axis level (for when multiple axes)
-    text: context.dateEnv.format(date, headerFormat)[0],
+    text: joinDateTimeFormatParts(context.dateEnv.formatToParts(date, headerFormat)),
     time: time,
     isMajor: false,
     isMinor,

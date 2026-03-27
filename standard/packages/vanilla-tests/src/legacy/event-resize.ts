@@ -292,7 +292,7 @@ describe('eventResize', () => {
           () => { // onBeforeRelease
             let $mirrorEls = $(timeGridWrapper.getMirrorEls())
             expect($mirrorEls.length).toBe(1)
-            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 - 9:30')
+            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 – 9:30')
             onBeforeReleaseCalled = true
           },
         ).then(() => {
@@ -375,7 +375,7 @@ describe('eventResize', () => {
           () => { // onBeforeRelease
             let $mirrorEls = $(timeGridWrapper.getMirrorEls())
             expect($mirrorEls.length).toBe(1)
-            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 - 9:30')
+            expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText('5:00 – 9:30')
             onBeforeReleaseCalled = true
           },
         ).then(() => {

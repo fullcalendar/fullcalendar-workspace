@@ -2,6 +2,7 @@ import { ViewApi } from '../../api/ViewApi'
 import { DayCellData } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { DateMarker, DateRange, DateEnv, addMs, DateFormatter, formatDayString } from '@full-ui/headless-calendar'
+import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DateComponent, EventSegUiInteractionState } from '../../component/DateComponent'
 import { DateProfile } from '../../DateProfileGenerator'
 import { Dictionary } from '../../options'
@@ -285,9 +286,13 @@ interface DayCellRenderPropsInput {
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
   let { date, dateEnv, hasLabel, hasMonthLabel, hasNavLink, businessHours } = raw
-  let [text, textParts] = hasLabel
-    ? dateEnv.format(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)
-    : ['', []]
+  let textParts = []
+  let text = ''
+
+  if (hasLabel) {
+    textParts = dateEnv.formatToParts(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)
+    text = joinDateTimeFormatParts(textParts)
+  }
 
   return {
     ...raw.dateMeta,

@@ -43,21 +43,21 @@ describe('eventTimeFormat', () => {
 
     it('renders correctly when default', () => {
       let calendar = initCalendar()
-      expectEventTimeText(calendar, '3:00 - 5:00')
+      expectEventTimeText(calendar, '3:00 – 5:00')
     })
 
     it('renders correctly when default and the locale is customized', () => {
       let calendar = initCalendar({
         locale: enGbLocale,
       })
-      expectEventTimeText(calendar, '15:00 - 17:00')
+      expectEventTimeText(calendar, '15:00–17:00')
     })
 
     it('renders correctly when customized', () => {
       let calendar = initCalendar({
         eventTimeFormat: { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false },
       })
-      expectEventTimeText(calendar, '15:00:00 - 17:00:00')
+      expectEventTimeText(calendar, '15:00:00 – 17:00:00')
     })
   })
 

@@ -20,7 +20,7 @@ describe('TimeGrid event rendering', () => {
     let eventEl = calendarWrapper.getFirstEventEl()
     let eventText = calendarWrapper.getEventElInfo(eventEl).timeText
 
-    expect(eventText).toBe('2:00 - 10:00')
+    expect(eventText).toBe('2:00 – 10:00')
   })
 
   it('renders time to/from midnight for an event that spans two days', () => {
@@ -37,8 +37,8 @@ describe('TimeGrid event rendering', () => {
     let eventText0 = calendarWrapper.getEventElInfo(eventEls[0]).timeText
     let eventText1 = calendarWrapper.getEventElInfo(eventEls[1]).timeText
 
-    expect(eventText0).toBe('2:00 - 12:00')
-    expect(eventText1).toBe('12:00 - 10:00')
+    expect(eventText0).toBe('2:00 – 12:00')
+    expect(eventText1).toBe('12:00 – 10:00')
   })
 
   it('renders no time on an event segment that spans through an entire day', () => {

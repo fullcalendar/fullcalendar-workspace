@@ -1,19 +1,25 @@
-import { NativeFormatter, NativeFormatterOptions } from './formatting-native'
-import { CmdFormatter, FuncFormatter, FuncFormatterFunc, DateFormatter } from '@full-ui/headless-calendar'
+import {
+  NativeDateFormatter,
+  NativeDateFormatterOptions,
+  CmdDateFormatter,
+  FuncDateFormatter,
+  FuncDateFormatterFunc,
+  DateFormatter,
+} from '@full-ui/headless-calendar'
 
-export type FormatterInput = NativeFormatterOptions | string | FuncFormatterFunc
+export type FormatterInput = NativeDateFormatterOptions | string | FuncDateFormatterFunc
 
 export function createFormatter(input: FormatterInput): DateFormatter {
   if (typeof input === 'object' && input) { // non-null object
-    return new NativeFormatter(input)
+    return new NativeDateFormatter(input)
   }
 
   if (typeof input === 'string') {
-    return new CmdFormatter(input)
+    return new CmdDateFormatter(input)
   }
 
   if (typeof input === 'function') {
-    return new FuncFormatter(input as FuncFormatterFunc)
+    return new FuncDateFormatter(input as FuncDateFormatterFunc)
   }
 
   return null

@@ -411,7 +411,6 @@ export class CalendarDataManager {
       refinedOptions.weekTextShort,
       pluginHooks,
       availableLocaleData,
-      refinedOptions.defaultRangeSeparator,
     )
 
     let viewSpecs = this.buildViewSpecs(pluginHooks.views, this.stableOptionOverrides, this.stableDynamicOptionOverrides)
@@ -629,7 +628,6 @@ function buildDateEnv(
   weekTextShort,
   pluginHooks: PluginHooks,
   availableLocaleData: RawLocaleInfo,
-  defaultSeparator: string,
 ) {
   let locale = buildLocale(explicitLocale || availableLocaleData.defaultCode, availableLocaleData.map)
 
@@ -642,7 +640,6 @@ function buildDateEnv(
     weekText,
     weekTextShort,
     cmdFormatter: pluginHooks.cmdFormatter,
-    defaultSeparator,
   })
 }
 

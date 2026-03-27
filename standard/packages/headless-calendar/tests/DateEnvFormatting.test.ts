@@ -5,7 +5,7 @@ import { FuncDateFormatter } from '../src/formatting-func'
 import { CmdDateFormatter } from '../src/formatting-cmd'
 import type { CmdDateFormatterFunc } from '../src/formatting-interface'
 import type { Locale } from '../src/locale'
-import { joinDateTimeFormatParts } from '../src/formatting-utils'
+import { formatTimeZoneOffset, joinDateTimeFormatParts } from '../src/formatting-utils'
 
 function makeLocale(code: string): Locale {
   return {
@@ -68,5 +68,23 @@ describe('DateEnv formatting', () => {
   it('formatIso keeps existing omitTime behavior', () => {
     const env = makeEnv()
     expect(env.formatIso(new Date('2024-01-15T00:00:00Z'), { omitTime: true })).toBe('2024-01-15')
+  })
+
+  it('formatIso preserves the UTC suffix when timeZone is UTC', () => {
+    const env = makeEnv()
+    expect(env.formatIso(new Date('2024-01-15T00:00:00Z'))).toBe('2024-01-15T00:00:00Z')
+  })
+
+  it('formatIso preserves the local offset when timeZone is local', () => {
+    const env = new DateEnv({
+      timeZone: 'local',
+      calendarSystem: 'gregory',
+      locale: makeLocale('en-US'),
+      weekText: 'Week',
+      weekTextShort: 'W',
+    })
+    const marker = new Date(Date.UTC(2018, 5, 8, 0, 0, 0))
+    const expectedOffset = formatTimeZoneOffset(-marker.getTimezoneOffset(), true)
+    expect(env.formatIso(marker)).toBe('2018-06-08T00:00:00' + expectedOffset)
   })
 })

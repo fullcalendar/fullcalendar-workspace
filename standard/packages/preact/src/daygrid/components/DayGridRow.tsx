@@ -1,7 +1,7 @@
 import { InlineWeekNumberData } from '../../common/WeekNumberContainer'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { BaseComponent, setRef } from '../../vdom-util'
-import { DateRange, DateMarker } from '@full-ui/headless-calendar'
+import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { getEventRangeMeta, sortEventSegs, EventRangeProps } from '../../component-util/event-rendering'
 import { SlicedCoordRange } from '../../coord-range'
 import { DateProfile } from '../../DateProfileGenerator'
@@ -462,10 +462,11 @@ function buildWeekNumberRenderProps(
 ): InlineWeekNumberData {
   const { dateEnv, options } = context
   const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
-  const [weekNumText, weekNumTextParts] = dateEnv.format(
+  const weekNumTextParts = dateEnv.formatToParts(
     weekDateMarker,
-    options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
+    options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT,
   )
+  const weekNumText = joinDateTimeFormatParts(weekNumTextParts)
   const weekDateZoned = dateEnv.toDate(weekDateMarker)
   return {
     num: weekNum,

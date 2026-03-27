@@ -42,6 +42,23 @@ function makeMarker(isoString: string, tzOffsetMinutes: number): ZonedMarker {
   return { marker: new Date(isoString), timeZoneOffset: tzOffsetMinutes }
 }
 
+function formatParts(
+  formatter: NativeDateFormatterNew,
+  marker: ZonedMarker,
+  context: FormattingContextNew,
+) {
+  return joinDateTimeFormatParts(formatter.formatToParts(marker, context))
+}
+
+function formatRangeParts(
+  formatter: NativeDateFormatterNew,
+  start: ZonedMarker,
+  end: ZonedMarker,
+  context: FormattingContextNew,
+) {
+  return joinDateTimeFormatParts(formatter.formatRangeToParts(start, end, context))
+}
+
 // ---------------------------------------------------------------------------
 // Test date constants — Monday 2024-01-15, various times
 // ---------------------------------------------------------------------------
@@ -51,6 +68,21 @@ const MON_0700 = makeMarker('2024-01-15T07:00:00Z', 0)  // 07:00 UTC = 7 AM, min
 const MON_0730 = makeMarker('2024-01-15T07:30:00Z', 0)  // 07:30 UTC = 7:30 AM, minute=30
 const MON_1230 = makeMarker('2024-01-15T12:30:00Z', 0)  // 12:30, minute=30
 const MON_1430 = makeMarker('2024-01-15T14:30:00Z', 0)  // 14:30 = 2:30 PM
+
+const PRETTY_DATE_TIME_OPTIONS = {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZoneName: 'short',
+  omitCommas: true,
+} as const
+
+function makePrettyDateTimeFormatter() {
+  return new NativeDateFormatterNew(PRETTY_DATE_TIME_OPTIONS)
+}
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -241,6 +273,80 @@ describe('NativeDateFormatter', () => {
       const parts = fmt.formatRangeToParts(start, end, makeContext('en-US'))
       const result = joinDateTimeFormatParts(parts)
       expect(result).toBe('GMT+5') // start's offset, not end's
+    })
+  })
+
+  // ==========================================================================
+  // datelib main.ts compatibility
+  // ==========================================================================
+  describe('datelib main.ts compatibility', () => {
+    it('formats a pretty UTC date/time string', () => {
+      const result = formatParts(
+        makePrettyDateTimeFormatter(),
+        makeMarker('2018-06-08T00:00:00Z', 0),
+        makeContext('en-US'),
+      ).replace(' at ', ' ')
+      expect(result).toBe('Friday June 8 2018 12:00AM GMT+0')
+    })
+
+    it('formats a pretty date/time string with a non-zero offset', () => {
+      const result = formatParts(
+        makePrettyDateTimeFormatter(),
+        makeMarker('2018-06-08T00:00:00Z', 300),
+        makeContext('en-US'),
+      ).replace(' at ', ' ')
+      expect(result).toBe('Friday June 8 2018 12:00AM GMT+5')
+    })
+
+    it('formats week numbers like the legacy strings', () => {
+      const ctx = makeContext('en-US', {
+        computeWeekNumber: () => 23,
+        weekText: 'W',
+        weekTextShort: 'W',
+      })
+
+      expect(joinDateTimeFormatParts(new NativeDateFormatterNew({ week: 'numeric' }).formatToParts(MON_NOON, ctx))).toBe('23')
+      expect(joinDateTimeFormatParts(new NativeDateFormatterNew({ week: 'short' }).formatToParts(MON_NOON, ctx))).toBe('W 23')
+      expect(joinDateTimeFormatParts(new NativeDateFormatterNew({ week: 'narrow' }).formatToParts(MON_NOON, ctx))).toBe('W23')
+    })
+
+    it('compresses the legacy range cases', () => {
+      const ctx = makeContext('en-US')
+      const formatter = new NativeDateFormatterNew({ day: 'numeric', month: 'long', year: 'numeric' })
+
+      const sameMonth = formatRangeParts(
+        formatter,
+        makeMarker('2018-06-08T00:00:00Z', 0),
+        makeMarker('2018-06-09T00:00:00Z', 0),
+        ctx,
+      )
+      expect(sameMonth).toMatch(/^June 8.*9, 2018$/)
+
+      const monthOnly = formatRangeParts(
+        new NativeDateFormatterNew({ month: 'long', year: 'numeric' }),
+        makeMarker('2018-06-08T00:00:00Z', 0),
+        makeMarker('2018-06-09T00:00:00Z', 0),
+        ctx,
+      )
+      expect(monthOnly).toBe('June 2018')
+
+      const differentMonth = formatRangeParts(
+        formatter,
+        makeMarker('2018-06-08T00:00:00Z', 0),
+        makeMarker('2018-07-09T00:00:00Z', 0),
+        ctx,
+      )
+      expect(differentMonth).toContain('June 8')
+      expect(differentMonth).toContain('July 9, 2018')
+
+      const differentYears = formatRangeParts(
+        formatter,
+        makeMarker('2018-06-08T00:00:00Z', 0),
+        makeMarker('2020-07-09T00:00:00Z', 0),
+        ctx,
+      )
+      expect(differentYears).toContain('June 8, 2018')
+      expect(differentYears).toContain('July 9, 2020')
     })
   })
 

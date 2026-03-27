@@ -5,6 +5,7 @@ import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui'
 import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
 import { diffDates, computeAlignedDayRange } from '../util/date'
 import { createDuration, durationsEqual } from '@full-ui/headless-calendar'
+import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
 import { CalendarContext } from '../CalendarContext'
 import { getRelevantEvents, EventStore } from '../structs/event-store'
@@ -201,9 +202,11 @@ export class EventImpl implements EventApi {
     let formatter = createFormatter(formatInput)
 
     if (this._def.hasEnd) {
-      return dateEnv.formatRange(instance.range.start, instance.range.end, formatter)
+      return joinDateTimeFormatParts(
+        dateEnv.formatRangeToParts(instance.range.start, instance.range.end, formatter),
+      )
     }
-    return dateEnv.format(instance.range.start, formatter)[0]
+    return joinDateTimeFormatParts(dateEnv.formatToParts(instance.range.start, formatter))
   }
 
   mutate(mutation: EventMutation): void { // meant to be private. but plugins need access

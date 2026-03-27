@@ -2,7 +2,7 @@ import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmoun
 import { DayHeaderData } from '../render-hook-misc'
 import { buildDateStr, buildNavLinkAttrs } from '../common/nav-link'
 import { computeMajorUnit, isMajorUnit } from '../DateProfileGenerator'
-import { DateFormatter, DateMarker, DateRange, addDays, formatDayString } from '@full-ui/headless-calendar'
+import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DateMeta, getDateMeta } from '../component-util/date-rendering'
 import { DateProfile } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
@@ -161,7 +161,8 @@ export function buildDateDataConfigs(
     ? dateMarkers.map((dateMarker, i) => { // Date
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const [text, textParts] = dateEnv.format(dateMarker, dayHeaderFormat)
+        const textParts = dateEnv.formatToParts(dateMarker, dayHeaderFormat)
+        const text = joinDateTimeFormatParts(textParts)
         const hasNavLink = options.navLinks && !dateMeta.isDisabled &&
           dateMarkers.length > 1 // don't show navlink to day if only one day
         const renderProps: DayHeaderData = {
@@ -214,7 +215,8 @@ export function buildDateDataConfigs(
           isOther: false,
         }
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const [text, textParts] = dateEnv.format(normDate, dayHeaderFormat)
+        const textParts = dateEnv.formatToParts(normDate, dayHeaderFormat)
+        const text = joinDateTimeFormatParts(textParts)
         const renderProps: DayHeaderData = {
           ...dateMeta,
           date: dowDates[dow],
@@ -231,7 +233,7 @@ export function buildDateDataConfigs(
           get dayNumberText() { return datesRepDistinctDays ? findDayNumberText(textParts) : '' },
           ...extraRenderProps,
         }
-        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_ONLY_FORMAT)[0]
+        const fullWeekDayStr = joinDateTimeFormatParts(dateEnv.formatToParts(normDate, WEEKDAY_ONLY_FORMAT))
 
         // for DayGridHeaderCell
         return {

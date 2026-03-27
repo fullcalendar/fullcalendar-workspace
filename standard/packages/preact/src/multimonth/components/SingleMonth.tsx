@@ -3,7 +3,7 @@ import { joinClassNames, joinArrayishClassNames } from '../../util/html'
 import { afterSize, watchHeight, watchWidth } from '../../component-util/resize-observer'
 import { buildNavLinkAttrs } from '../../common/nav-link'
 import { DateComponent } from '../../component/DateComponent'
-import { DateFormatter, DateRange } from '@full-ui/headless-calendar'
+import { DateFormatter, DateRange, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DayTableCell } from '../../common/DayTableModel'
 import { generateClassName } from '../../content-inject/ContentContainer'
 
@@ -176,7 +176,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 navLinkAttrs.className,
               )}
             >
-              {dateEnv.format(monthStartDate, props.titleFormat)[0]}
+              {joinDateTimeFormatParts(dateEnv.formatToParts(monthStartDate, props.titleFormat))}
             </div>
           </div>
           <div // the daygrid table

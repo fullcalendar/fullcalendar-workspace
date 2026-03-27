@@ -5,7 +5,7 @@ import { ContentContainer, renderText, generateClassName } from '../../content-i
 import { DateProfile } from '../../DateProfileGenerator'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { createFormatter } from '../../datelib/formatting'
-import { diffDays } from '@full-ui/headless-calendar'
+import { diffDays, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { watchSize } from '../../component-util/resize-observer'
 import classNames from '../../styles.module.css'
 import { type Ref, createRef } from 'react'
@@ -45,10 +45,11 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     let fullDateStr = buildDateStr(context, weekDateMarker, 'week')
 
     let weekNum = dateEnv.computeWeekNumber(weekDateMarker)
-    let [weekText, weekTextParts] = dateEnv.format(
+    let weekTextParts = dateEnv.formatToParts(
       weekDateMarker,
-      options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
+      options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT,
     )
+    let weekText = joinDateTimeFormatParts(weekTextParts)
     let weekDateZoned = dateEnv.toDate(weekDateMarker)
 
     const weekNumberRenderProps = {

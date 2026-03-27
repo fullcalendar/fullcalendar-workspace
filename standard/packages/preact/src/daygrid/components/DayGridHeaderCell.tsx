@@ -7,6 +7,7 @@ import type { Ref } from 'react'
 import { CellDataConfig, CellRenderConfig } from '../header-tier'
 import { dayHeaderMicroFormat } from './util'
 import classNames from '../../styles.module.css'
+import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 
 export interface DayGridHeaderCellProps<RenderProps> {
   renderConfig: CellRenderConfig<RenderProps>
@@ -44,7 +45,8 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     }
     if (props.cellIsMicro) {
       // TODO: only if not distinct dates
-      const [microText, microTextParts] = context.dateEnv.format(dataConfig.dateMarker, dayHeaderMicroFormat)
+      const microTextParts = context.dateEnv.formatToParts(dataConfig.dateMarker, dayHeaderMicroFormat)
+      const microText = joinDateTimeFormatParts(microTextParts)
       finalRenderProps.text = (finalRenderProps as any).weekdayText = microText
       ;(finalRenderProps as any).textParts = microTextParts
     }
