@@ -24,6 +24,7 @@
   "scripts": {
     "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
+    "archive": "node ./scripts/archive.ts",
     "lint": "eslint ."
   },
   "type": "module",

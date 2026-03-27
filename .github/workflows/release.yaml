@@ -92,10 +92,8 @@ jobs:
           pnpm \
             --filter '!./examples/**' \
             --filter '!@fullcalendar-tests/*' \
-            run build
-
-      # zip archiving temporarily disabled after build
-      # pnpm run archive
+            run build && \
+          pnpm run archive
 
       # execute only connector-package tests, as "smoke" tests. they're fast
       # FYI, @fullcalendar/vue3 uses playwright, which we don't have set up yet
