@@ -101,7 +101,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
       state.slotInnerWidth, // is ACTUALLY the label width. rename?
-      state.totalWidth,
+      clientWidth,
     )
     this.slotWidth = slotWidth
 

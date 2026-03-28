@@ -86,8 +86,7 @@ interface ResourceTimelineLayoutNormalProps {
   indentWidth: number | undefined
 
   spreadsheetClientWidthRef?: Ref<number>
-
-  timeTotalWidthRef?: Ref<number>
+  timeClientWidthRef: Ref<number>
   slotInnerWidthRef: Ref<number>
 
   // handlers
@@ -975,13 +974,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private handleTimeTotalWidth = (timeTotalWidth: number) => {
-    setRef(this.props.timeTotalWidthRef, timeTotalWidth)
     this.setState({
       timeTotalWidth,
     })
   }
 
   private handleTimeClientWidth = (timeClientWidth: number) => {
+    setRef(this.props.timeClientWidthRef, timeClientWidth)
+
     this.setState({
       timeClientWidth,
     })

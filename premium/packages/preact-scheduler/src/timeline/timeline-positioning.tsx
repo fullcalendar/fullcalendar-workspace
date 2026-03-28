@@ -15,9 +15,6 @@ export function computeSlotWidth(
   slatsPerLabel: number,
   slatMinWidth: number | undefined,
   labelInnerWidth: number | undefined,
-
-  // no longer contains the scrollbar width (to avoid circular resize loop)
-  // TODO: subtract fake scrollbar dimensions
   viewportWidth: number | undefined,
 ): [
   canvasWidth: number | undefined,
