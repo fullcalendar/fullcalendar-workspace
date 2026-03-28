@@ -26,7 +26,7 @@ import { ResourceExpander } from './spreadsheet/ResourceExpander'
 interface ResourceTimelineViewState {
   colWidthOverrides?: SiblingDimConfig[]
   spreadsheetClientWidth?: number // pixel-width of scroll inner area
-  timeClientWidth?: number
+  timeTotalWidth?: number
   slotInnerWidth?: number
   expanderWidth?: number
 }
@@ -107,7 +107,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
       state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
-      state.timeClientWidth
+      state.timeTotalWidth
     )
 
     /* event display */
@@ -173,7 +173,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <ResourceTimelineLayoutNormal
                 {...baseProps}
                 slotLiquid={slotLiquid}
-                timeClientWidthRef={this.handleTimeClientWidth}
+                timeTotalWidthRef={this.handleTimeTotalWidth}
                 slotInnerWidthRef={this.handleSlotInnerWidth}
                 initialSpreadsheetWidth={
                   this.spreadsheetResizedWidthRef.current ??
@@ -221,9 +221,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
-  handleTimeClientWidth = (timeClientWidth: number | null) => {
-    if (timeClientWidth != null) {
-      this.setState({ timeClientWidth })
+  handleTimeTotalWidth = (timeTotalWidth: number | null) => {
+    if (timeTotalWidth != null) {
+      this.setState({ timeTotalWidth })
     }
   }
 
