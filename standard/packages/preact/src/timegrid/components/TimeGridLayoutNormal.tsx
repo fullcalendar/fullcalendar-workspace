@@ -155,9 +155,14 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
     const colCount = props.cells.length
-    const colWidth = clientWidth != null ? clientWidth / colCount : undefined
-    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
+
+    // Not an actual cell-width, just used for computing is-micro/is-narrow
+    // Based off totalWidth (w/o scrollbars) to avoid circular dimension dep issue
+    // TODO: subtract fake scrollbar dimensions
+    const prelimColWidth = totalWidth != null ? totalWidth / colCount : undefined
+
+    const cellIsMicro = prelimColWidth != null && prelimColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (prelimColWidth != null && prelimColWidth <= options.dayNarrowWidth)
 
     return (
       <>

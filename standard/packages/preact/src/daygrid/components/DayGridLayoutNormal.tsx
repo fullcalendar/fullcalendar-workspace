@@ -73,9 +73,14 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     const colCount = props.cellRows[0].length
-    const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
-    const cellIsMicro = cellWidth != null && cellWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (cellWidth != null && cellWidth <= options.dayNarrowWidth)
+
+    // Not an actual cell-width, just used for computing is-micro/is-narrow
+    // Based off totalWidth (w/o scrollbars) to avoid circular dimension dep issue
+    // TODO: subtract fake scrollbar dimensions
+    const prelimCellWidth = totalWidth != null ? totalWidth / colCount : undefined
+
+    const cellIsMicro = prelimCellWidth != null && prelimCellWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (prelimCellWidth != null && prelimCellWidth <= options.dayNarrowWidth)
 
     return (
       <>
