@@ -18,8 +18,10 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
     return (
       <DayGridRow
         {...this.props}
+
+        /* BAD: these overwrite the props! caller might want to pass them */
         rootElRef={this.handleRootEl}
-        heightRef={this.heightRef}
+        heightRef={this.heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
       />
     )
   }

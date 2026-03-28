@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+
+<script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
+<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../vanilla-scheduler/dist/all.global.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        start: 'title',
+        end: 'today prev,next',
+      },
+      now: '2015-11-16',
+      initialView: 'resourceTimeGridWeek',
+      dayMinWidth: 350,
+      weekNumbers: true, // i think this is necessary to recreate the bug too
+      resources(info, callback) {
+        setTimeout(() => {
+          callback([
+            { id: 'a', title: 'Resource A' },
+            { id: 'b', title: 'Resource B' },
+          ])
+        }, 1000)
+      },
+    });
+
+    calendar.render();
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 13px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 50px auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+
+</body>
+</html>

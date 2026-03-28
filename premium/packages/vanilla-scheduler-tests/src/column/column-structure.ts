@@ -231,7 +231,7 @@ describe('vresource structure', () => {
       resources(info, callback) {
         setTimeout(() => {
           callback([
-            { id: 'a', title: 'Resource A ' },
+            { id: 'a', title: 'Resource A' },
             { id: 'b', title: 'Resource B' },
           ])
         }, 100)

@@ -7,7 +7,7 @@ describe('timeline resource rerendering', () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: [
-        { id: 'a', title: 'Resource A ' },
+        { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' },
       ],
       resourceCellContent(info) {

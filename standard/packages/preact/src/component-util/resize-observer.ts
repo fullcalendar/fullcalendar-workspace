@@ -119,6 +119,9 @@ function initNative(): [WatchSize, UpdateSizeSync] {
   const globalResizeObserver = new ResizeObserver((entries) => {
     isHandling = true
 
+    // // debugging
+    // console.log('ENTRIES', entries.map((entry) => entry.target))
+
     for (let entry of entries) {
       const el = entry.target
       const config = configMap.get(el)
