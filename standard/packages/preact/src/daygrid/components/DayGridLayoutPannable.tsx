@@ -78,16 +78,9 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     const colCount = props.cellRows[0].length
-
-    // Not an actual col-width, just used for computing is-micro/is-narrow
-    // Based off totalWidth (w/o scrollbars) to avoid circular dimension dep issue
-    // TODO: subtract fake scrollbar dimensions
-    const [, prelimColWidth] = computeColWidth(colCount, props.dayMinWidth, totalWidth)
-
-    const cellIsMicro = prelimColWidth != null && prelimColWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (prelimColWidth != null && prelimColWidth <= options.dayNarrowWidth)
-
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
+    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
       <>

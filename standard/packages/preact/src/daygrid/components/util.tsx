@@ -26,11 +26,7 @@ export function buildDayTableModel(
   return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit)
 }
 
-export function computeColWidth(
-  colCount: number,
-  colMinWidth: number,
-  viewportWidth: number | undefined,
-): [
+export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [
   canvasWidth: number | undefined, // does NOT include scrollbar gutter
   colWidth: number | undefined,
 ] {
