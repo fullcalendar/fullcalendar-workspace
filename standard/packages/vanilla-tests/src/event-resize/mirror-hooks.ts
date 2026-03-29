@@ -3,6 +3,7 @@ import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { waitEventResize } from '../lib/wrappers/interaction-util'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('event resize mirror', () => {
   pushOptions({
@@ -19,7 +20,7 @@ describe('event resize mirror', () => {
       ],
     })
 
-    it('gets passed through render hooks', (done) => {
+    it('gets passed through render hooks', async () => {
       let mirrorMountCalls = 0
       let mirrorContentCalls = 0
       let mirrorUnmountCalls = 0
@@ -42,6 +43,7 @@ describe('event resize mirror', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
       let resizing = dayGridWrapper.resizeEvent( // drag TWO days
         dayGridWrapper.getEventEls()[0],
@@ -49,12 +51,10 @@ describe('event resize mirror', () => {
         '2018-12-05',
       )
 
-      waitEventResize(calendar, resizing).then(() => {
-        expect(mirrorMountCalls).toBe(1 * strictModeFactor)
-        expect(mirrorContentCalls).toBe(3 * strictModeFactor)
-        expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
-        done()
-      })
+      await waitEventResize(calendar, resizing)
+      expect(mirrorMountCalls).toBe(1 * strictModeFactor)
+      expect(mirrorContentCalls).toBe(3 * strictModeFactor)
+      expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
     })
   })
 
@@ -69,7 +69,7 @@ describe('event resize mirror', () => {
       ],
     })
 
-    it('gets passed through eventWillUnmount', (done) => {
+    it('gets passed through eventWillUnmount', async () => {
       let mirrorMountCalls = 0
       let mirrorContentCalls = 0
       let mirrorUnmountCalls = 0
@@ -92,6 +92,7 @@ describe('event resize mirror', () => {
         },
       })
 
+      await waitTimeout()
       let eventEl = new CalendarWrapper(calendar).getFirstEventEl()
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let resizing = timeGridWrapper.resizeEvent(
@@ -100,12 +101,10 @@ describe('event resize mirror', () => {
         '2018-12-25T04:00:00', // drag TWO snaps
       )
 
-      waitEventResize(calendar, resizing).then(() => {
-        expect(mirrorMountCalls).toBe(1 * strictModeFactor)
-        expect(mirrorContentCalls).toBe(3 * strictModeFactor)
-        expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
-        done()
-      })
+      await waitEventResize(calendar, resizing)
+      expect(mirrorMountCalls).toBe(1 * strictModeFactor)
+      expect(mirrorContentCalls).toBe(3 * strictModeFactor)
+      expect(mirrorUnmountCalls).toBe(1 * strictModeFactor)
     })
   })
 })

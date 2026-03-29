@@ -2,7 +2,7 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { anyElsIntersect } from '../lib/dom-geom'
 import { filterVisibleEls } from '../lib/dom-misc'
-import { waitFrame, waitTimeout } from '../lib/misc'
+import { waitTimeout } from '../lib/misc'
 
 describe('dayGrid advanced event rendering', () => {
   pushOptions({
@@ -250,15 +250,16 @@ describe('dayGrid advanced event rendering', () => {
     }, $container.find('div'))
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    await waitTimeout()
     let origEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
 
     $container.css('height', SMALL_HEIGHT)
-    await waitFrame()
+    await waitTimeout()
     let smallEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(smallEventCnt).not.toBe(origEventCnt)
 
     $container.css('height', LARGE_HEIGHT)
-    await waitFrame()
+    await waitTimeout()
     let largeEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(largeEventCnt).toBe(origEventCnt)
 

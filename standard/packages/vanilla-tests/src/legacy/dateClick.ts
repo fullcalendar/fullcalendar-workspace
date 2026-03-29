@@ -22,7 +22,11 @@ describe('dateClick', () => {
           initialView: 'dayGridMonth',
         })
 
-        it('fires correctly when clicking on a cell', (done) => {
+        it('fires correctly when clicking on a cell', async () => {
+          let clickResolve: () => void
+          let clickPromise = new Promise<void>((resolve) => {
+            clickResolve = resolve
+          })
           let calendar = initCalendar({
             dateClick(data) {
               expect(data.date instanceof Date).toEqual(true)
@@ -31,11 +35,13 @@ describe('dateClick', () => {
               expect(data.allDay).toEqual(true)
               expect(data.date).toEqualDate('2014-05-07')
               expect(data.dateStr).toEqual('2014-05-07')
-              done()
+              clickResolve()
             },
           })
+          await waitTimeout()
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
           dayGridWrapper.clickDate('2014-05-07')
+          await clickPromise
         })
       })
 
@@ -44,7 +50,11 @@ describe('dateClick', () => {
           initialView: 'timeGridWeek',
         })
 
-        it('fires correctly when clicking on an all-day slot', (done) => {
+        it('fires correctly when clicking on an all-day slot', async () => {
+          let clickResolve: () => void
+          let clickPromise = new Promise<void>((resolve) => {
+            clickResolve = resolve
+          })
           let calendar = initCalendar({
             dateClick(data) {
               expect(data.date instanceof Date).toEqual(true)
@@ -53,14 +63,20 @@ describe('dateClick', () => {
               expect(data.allDay).toEqual(true)
               expect(data.date).toEqualDate('2014-05-28')
               expect(data.dateStr).toEqual('2014-05-28')
-              done()
+              clickResolve()
             },
           })
+          await waitTimeout()
           let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
           dayGridWrapper.clickDate('2014-05-28')
+          await clickPromise
         })
 
-        it('fires correctly when clicking on a timed slot', (done) => {
+        it('fires correctly when clicking on a timed slot', async () => {
+          let clickResolve: () => void
+          let clickPromise = new Promise<void>((resolve) => {
+            clickResolve = resolve
+          })
           let calendar = initCalendar({
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '07:00:00',
@@ -71,15 +87,21 @@ describe('dateClick', () => {
               expect(data.allDay).toEqual(false)
               expect(data.date).toEqualDate('2014-05-28T09:00:00Z')
               expect(data.dateStr).toEqual('2014-05-28T09:00:00Z')
-              done()
+              clickResolve()
             },
           })
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
           timeGridWrapper.clickDate('2014-05-28T09:00:00')
+          await clickPromise
         })
 
         // issue 2217
-        it('fires correctly when clicking on a timed slot, with slotMinTime set', (done) => {
+        it('fires correctly when clicking on a timed slot, with slotMinTime set', async () => {
+          let clickResolve: () => void
+          let clickPromise = new Promise<void>((resolve) => {
+            clickResolve = resolve
+          })
           let calendar = initCalendar({
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '07:00:00',
@@ -91,15 +113,21 @@ describe('dateClick', () => {
               expect(data.allDay).toEqual(false)
               expect(data.date).toEqualDate('2014-05-28T11:00:00Z')
               expect(data.dateStr).toEqual('2014-05-28T11:00:00Z')
-              done()
+              clickResolve()
             },
           })
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
           timeGridWrapper.clickDate('2014-05-28T11:00:00')
+          await clickPromise
         })
 
         // https://github.com/fullcalendar/fullcalendar/issues/4539
-        it('fires correctly when clicking on a timed slot NEAR END', (done) => {
+        it('fires correctly when clicking on a timed slot NEAR END', async () => {
+          let clickResolve: () => void
+          let clickPromise = new Promise<void>((resolve) => {
+            clickResolve = resolve
+          })
           let calendar = initCalendar({
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '23:00:00',
@@ -110,17 +138,23 @@ describe('dateClick', () => {
               expect(data.allDay).toEqual(false)
               expect(data.date).toEqualDate('2014-05-28T23:30:00Z')
               expect(data.dateStr).toEqual('2014-05-28T23:30:00Z')
-              done()
+              clickResolve()
             },
           })
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
           timeGridWrapper.clickDate('2014-05-28T23:30:00')
+          await clickPromise
         })
       })
     })
   })
 
-  it('will still fire if clicked on background event', (done) => {
+  it('will still fire if clicked on background event', async () => {
+    let clickResolve: () => void
+    let clickPromise = new Promise<void>((resolve) => {
+      clickResolve = resolve
+    })
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       events: [{
@@ -129,15 +163,21 @@ describe('dateClick', () => {
       }],
       dateClick(info) {
         expect(info.dateStr).toBe('2014-05-06')
-        done()
+        clickResolve()
       },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     $.simulateMouseClick(dayGridWrapper.getBgEventEls()[0])
+    await clickPromise
   })
 
   describe('when touch', () => {
-    it('fires correctly when simulated short drag on a cell', (done) => {
+    it('fires correctly when simulated short drag on a cell', async () => {
+      let clickResolve: () => void
+      let clickPromise = new Promise<void>((resolve) => {
+        clickResolve = resolve
+      })
       let calendar = initCalendar({
         dateClick(data) {
           expect(data.date instanceof Date).toEqual(true)
@@ -146,34 +186,43 @@ describe('dateClick', () => {
           expect(data.allDay).toEqual(true)
           expect(data.date).toEqualDate('2014-05-07')
           expect(data.dateStr).toEqual('2014-05-07')
-          done()
+          clickResolve()
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
       $.simulateTouchClick(dayGridWrapper.getDayEl('2014-05-07'))
+      await clickPromise
     })
 
-    it('won\'t fire if touch moves outside of date cell', (done) => {
+    it('won\'t fire if touch moves outside of date cell', async () => {
       let dateClickSpy = spyOnCalendarCallback('dateClick')
       let calendar = initCalendar()
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       let startCell = dayGridWrapper.getDayEl('2014-05-07')
       let endCell = dayGridWrapper.getDayEl('2014-05-08')
 
-      $(startCell).simulate('drag', {
-        // FYI, when debug:true, not a good representation because the minimal  delay is required
-        // to recreate bug #3332
-        isTouch: true,
-        end: endCell,
-        callback() {
-          expect(dateClickSpy).not.toHaveBeenCalled()
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        $(startCell).simulate('drag', {
+          // FYI, when debug:true, not a good representation because the minimal  delay is required
+          // to recreate bug #3332
+          isTouch: true,
+          end: endCell,
+          callback() {
+            expect(dateClickSpy).not.toHaveBeenCalled()
+            resolve()
+          },
+        })
       })
     })
 
-    it('fires correctly when simulated click on a cell', (done) => {
+    it('fires correctly when simulated click on a cell', async () => {
+      let clickResolve: () => void
+      let clickPromise = new Promise<void>((resolve) => {
+        clickResolve = resolve
+      })
       let calendar = initCalendar({
         dateClick(data) {
           expect(data.date instanceof Date).toEqual(true)
@@ -182,15 +231,15 @@ describe('dateClick', () => {
           expect(data.allDay).toEqual(true)
           expect(data.date).toEqualDate('2014-05-07')
           expect(data.dateStr).toEqual('2014-05-07')
-          done()
+          clickResolve()
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      waitTimeout().then(() => {
-        let dayCell = dayGridWrapper.getDayEl('2014-05-07')
-        $.simulateTouchClick(dayCell)
-      })
+      let dayCell = dayGridWrapper.getDayEl('2014-05-07')
+      $.simulateTouchClick(dayCell)
+      await clickPromise
     })
   })
 })

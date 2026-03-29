@@ -1,4 +1,5 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('validRange event dragging', () => {
   describe('when start constraint', () => {
@@ -13,7 +14,7 @@ describe('validRange event dragging', () => {
         editable: true,
       })
 
-      it('won\'t go before validRange', (done) => {
+      it('won\'t go before validRange', async () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
@@ -21,14 +22,17 @@ describe('validRange event dragging', () => {
             modifiedEvent = data.event
           },
         })
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        $(dayGridWrapper.getEventEls()).simulate('drag', {
-          end: dayGridWrapper.getDayEl('2017-06-06').previousElementSibling, // the invalid day before
-          callback() {
-            expect(modifiedEvent).toBe(false)
-            done()
-          },
+        await new Promise<void>((resolve) => {
+          $(dayGridWrapper.getEventEls()).simulate('drag', {
+            end: dayGridWrapper.getDayEl('2017-06-06').previousElementSibling, // the invalid day before
+            callback() {
+              expect(modifiedEvent).toBe(false)
+              resolve()
+            },
+          })
         })
       })
     })
@@ -46,7 +50,7 @@ describe('validRange event dragging', () => {
         editable: true,
       })
 
-      it('won\'t go after validRange', (done) => {
+      it('won\'t go after validRange', async () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
@@ -54,14 +58,17 @@ describe('validRange event dragging', () => {
             modifiedEvent = data.event
           },
         })
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        $(dayGridWrapper.getEventEls()).simulate('drag', {
-          end: dayGridWrapper.getDayEl('2017-06-08').nextElementSibling, // the invalid day after
-          callback() {
-            expect(modifiedEvent).toBe(false)
-            done()
-          },
+        await new Promise<void>((resolve) => {
+          $(dayGridWrapper.getEventEls()).simulate('drag', {
+            end: dayGridWrapper.getDayEl('2017-06-08').nextElementSibling, // the invalid day after
+            callback() {
+              expect(modifiedEvent).toBe(false)
+              resolve()
+            },
+          })
         })
       })
     })

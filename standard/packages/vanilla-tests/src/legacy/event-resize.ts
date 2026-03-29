@@ -3,7 +3,7 @@ import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { waitEventResize2 } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
-import { enUsSep } from '../lib/misc'
+import { enUsSep, waitTimeout } from '../lib/misc'
 
 describe('eventResize', () => {
   pushOptions({
@@ -19,7 +19,7 @@ describe('eventResize', () => {
     })
 
     describe('when resizing an all-day event with mouse', () => {
-      it('should have correct arguments with a whole-day delta', (done) => {
+      it('should have correct arguments with a whole-day delta', async () => {
         let calendar = initCalendar({
           events: [{
             title: 'all-day event',
@@ -27,6 +27,7 @@ describe('eventResize', () => {
             allDay: true,
           }],
         })
+        await waitTimeout()
         checkCalendarTriggers(calendar)
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -34,20 +35,17 @@ describe('eventResize', () => {
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ day: 5 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ day: 5 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11')
-          expect(data.event.end).toEqualDate('2014-06-17')
+        expect(data.event.start).toEqualDate('2014-06-11')
+        expect(data.event.end).toEqualDate('2014-06-17')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11')
-          expect(event.end).toBeNull()
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11')
+        expect(event.end).toBeNull()
       })
     })
 
@@ -57,7 +55,7 @@ describe('eventResize', () => {
         describe('when eventStartEditable is ' + eventStartEditable, () => {
           pushOptions({ eventStartEditable })
 
-          it('should have correct arguments with a whole-day delta', (done) => {
+          it('should have correct arguments with a whole-day delta', async () => {
             let calendar = initCalendar({
               dragRevertDuration: 0, // so that eventDragStop happens immediately after touchend
               events: [{
@@ -66,33 +64,31 @@ describe('eventResize', () => {
                 allDay: true,
               }],
             })
+            await waitTimeout()
 
             let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
             let resizing = dayGridWrapper.resizeEventTouch(
               dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
             )
 
-            waitEventResize2(calendar, resizing).then((data) => {
-              expect(data.endDelta).toEqual(createDuration({ day: 5 }))
+            let data = await waitEventResize2(calendar, resizing)
+            expect(data.endDelta).toEqual(createDuration({ day: 5 }))
 
-              expect(data.event.start).toEqualDate('2014-06-11')
-              expect(data.event.end).toEqualDate('2014-06-17')
+            expect(data.event.start).toEqualDate('2014-06-11')
+            expect(data.event.end).toEqualDate('2014-06-17')
 
-              data.revert()
-              let event = calendar.getEvents()[0]
+            data.revert()
+            let event = calendar.getEvents()[0]
 
-              expect(event.start).toEqualDate('2014-06-11')
-              expect(event.end).toBeNull()
-
-              done()
-            })
+            expect(event.start).toEqualDate('2014-06-11')
+            expect(event.end).toBeNull()
           })
         })
       })
     })
 
     describe('when rendering a timed event', () => {
-      it('should not have resize capabilities', () => {
+      it('should not have resize capabilities', async () => {
         initCalendar({
           events: [{
             title: 'timed event',
@@ -100,6 +96,7 @@ describe('eventResize', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
         expect(
           $(`.${CalendarWrapper.EVENT_CLASSNAME} .${CalendarWrapper.EVENT_RESIZER_CLASSNAME}`),
         ).not.toBeInDOM()
@@ -113,7 +110,7 @@ describe('eventResize', () => {
     })
 
     describe('when resizing an all-day event', () => {
-      it('should have correct arguments with a whole-day delta', (done) => {
+      it('should have correct arguments with a whole-day delta', async () => {
         let calendar = initCalendar({
           events: [{
             title: 'all-day event',
@@ -121,26 +118,24 @@ describe('eventResize', () => {
             allDay: true,
           }],
         })
+        await waitTimeout()
 
         let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
         let resizing = dayGridWrapper.resizeEvent(
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-13',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ day: 2 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ day: 2 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11')
-          expect(data.event.end).toEqualDate('2014-06-14')
+        expect(data.event.start).toEqualDate('2014-06-11')
+        expect(data.event.end).toEqualDate('2014-06-14')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11')
-          expect(event.end).toBeNull()
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11')
+        expect(event.end).toBeNull()
       })
     })
 
@@ -154,139 +149,130 @@ describe('eventResize', () => {
         }],
       })
 
-      it('should have correct arguments with a timed delta', (done) => {
+      it('should have correct arguments with a timed delta', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let resizing = timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
+        expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
       })
 
-      it('should have correct arguments with a timed delta via touch', (done) => {
+      it('should have correct arguments with a timed delta via touch', async () => {
         let calendar = initCalendar({
           dragRevertDuration: 0, // so that eventDragStop happens immediately after touchend
         })
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-11T09:30:00Z',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
+        expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
       })
 
       // TODO: test RTL
-      it('should have correct arguments with a timed delta when resized to a different day', (done) => {
+      it('should have correct arguments with a timed delta when resized to a different day', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-12T09:30:00Z',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ day: 1, hour: 2, minute: 30 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ day: 1, hour: 2, minute: 30 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(data.event.end).toEqualDate('2014-06-12T09:30:00Z')
+        expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(data.event.end).toEqualDate('2014-06-12T09:30:00Z')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
+        expect(event.end).toEqualDate('2014-06-11T07:00:00Z')
       })
 
-      it('should have correct arguments with a timed delta, when timezone is local', (done) => {
+      it('should have correct arguments with a timed delta, when timezone is local', async () => {
         let calendar = initCalendar({
           timeZone: 'local',
         })
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(data.event.start).toEqualLocalDate('2014-06-11T05:00:00')
-          expect(data.event.end).toEqualLocalDate('2014-06-11T09:30:00')
+        expect(data.event.start).toEqualLocalDate('2014-06-11T05:00:00')
+        expect(data.event.end).toEqualLocalDate('2014-06-11T09:30:00')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualLocalDate('2014-06-11T05:00:00')
-          expect(event.end).toEqualLocalDate('2014-06-11T07:00:00')
-
-          done()
-        })
+        expect(event.start).toEqualLocalDate('2014-06-11T05:00:00')
+        expect(event.end).toEqualLocalDate('2014-06-11T07:00:00')
       })
 
-      it('should have correct arguments with a timed delta, when timezone is UTC', (done) => {
+      it('should have correct arguments with a timed delta, when timezone is UTC', async () => {
         let calendar = initCalendar({
           timeZone: 'UTC',
         })
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((data) => {
-          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        let data = await waitEventResize2(calendar, resizing)
+        expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(data.event.start).toEqualDate('2014-06-11T05:00:00+00:00')
-          expect(data.event.end).toEqualDate('2014-06-11T09:30:00+00:00')
+        expect(data.event.start).toEqualDate('2014-06-11T05:00:00+00:00')
+        expect(data.event.end).toEqualDate('2014-06-11T09:30:00+00:00')
 
-          data.revert()
-          let event = calendar.getEvents()[0]
+        data.revert()
+        let event = calendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T05:00:00')
-          expect(event.end).toEqualDate('2014-06-11T07:00:00+00:00')
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T05:00:00')
+        expect(event.end).toEqualDate('2014-06-11T07:00:00+00:00')
       })
 
-      it('should display the correct time text while resizing', (done) => {
+      it('should display the correct time text while resizing', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let onBeforeReleaseCalled = false // don't trust ourselves :(
 
-        timeGridWrapper.resizeEvent(
+        await timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(),
           '2014-06-11T07:00:00Z',
           '2014-06-11T09:30:00Z',
@@ -296,22 +282,21 @@ describe('eventResize', () => {
             expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText(`5:00${enUsSep}9:30`)
             onBeforeReleaseCalled = true
           },
-        ).then(() => {
-          expect(onBeforeReleaseCalled).toBe(true)
-          done()
-        })
+        )
+        expect(onBeforeReleaseCalled).toBe(true)
       })
 
-      it('should run the temporarily rendered event through eventDidMount', (done) => {
+      it('should run the temporarily rendered event through eventDidMount', async () => {
         let calendar = initCalendar({
           eventDidMount(data) {
             $(data.el).addClass('eventDidRender')
           },
         })
+        await waitTimeout()
 
         let onBeforeReleaseCalled = false // don't trust ourselves :(
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        timeGridWrapper.resizeEvent(
+        await timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(),
           '2014-06-11T07:00:00Z',
           '2014-06-11T09:30:00Z',
@@ -321,35 +306,31 @@ describe('eventResize', () => {
             expect($mirrorEls).toHaveClass('eventDidRender')
             onBeforeReleaseCalled = true
           },
-        ).then(() => {
-          expect(onBeforeReleaseCalled).toBe(true)
-          done()
-        })
+        )
+        expect(onBeforeReleaseCalled).toBe(true)
       })
 
       // https://github.com/fullcalendar/fullcalendar/issues/7099
-      it('should handle two consecutive resizes', (done) => {
+      it('should handle two consecutive resizes', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-        timeGridWrapper.resizeEvent(
+        await timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(),
           '2014-06-11T07:00:00Z',
           '2014-06-11T12:00:00Z',
-        ).then(() => {
-          let event = calendar.getEvents()[0]
-          expect(event.end).toEqualDate('2014-06-11T12:00:00Z')
+        )
+        let event = calendar.getEvents()[0]
+        expect(event.end).toEqualDate('2014-06-11T12:00:00Z')
 
-          timeGridWrapper.resizeEvent(
-            timeGridWrapper.getFirstEventEl(),
-            '2014-06-11T12:00:00Z',
-            '2014-06-11T09:00:00Z',
-          ).then(() => {
-            event = calendar.getEvents()[0]
-            expect(event.end).toEqualDate('2014-06-11T09:00:00Z')
-            done()
-          })
-        })
+        await timeGridWrapper.resizeEvent(
+          timeGridWrapper.getFirstEventEl(),
+          '2014-06-11T12:00:00Z',
+          '2014-06-11T09:00:00Z',
+        )
+        event = calendar.getEvents()[0]
+        expect(event.end).toEqualDate('2014-06-11T09:00:00Z')
       })
     })
 
@@ -364,12 +345,13 @@ describe('eventResize', () => {
       })
 
       // copied and pasted from other test :(
-      it('should display the correct time text while resizing', (done) => {
+      it('should display the correct time text while resizing', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let onBeforeReleaseCalled = false // don't trust ourselves :(
 
-        timeGridWrapper.resizeEvent(
+        await timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(),
           '2014-06-11T07:00:00Z',
           '2014-06-11T09:30:00Z',
@@ -379,10 +361,8 @@ describe('eventResize', () => {
             expect($mirrorEls.find('.' + CalendarWrapper.EVENT_TIME_CLASSNAME)).toHaveText(`5:00${enUsSep}9:30`)
             onBeforeReleaseCalled = true
           },
-        ).then(() => {
-          expect(onBeforeReleaseCalled).toBe(true)
-          done()
-        })
+        )
+        expect(onBeforeReleaseCalled).toBe(true)
       })
     })
   })

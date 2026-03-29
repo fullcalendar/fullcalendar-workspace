@@ -5,6 +5,7 @@ import dayGridPlugin from 'fullcalendar/daygrid'
 import interactionPlugin from 'fullcalendar/interaction'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 // UNFORTUNATELY, these tests are affected by the window height b/c of autoscrolling
 
@@ -24,7 +25,7 @@ describe('select callback', () => {
         initialView: 'dayGridMonth',
       })
 
-      it('gets fired correctly when the user selects cells', (done) => {
+      it('gets fired correctly when the user selects cells', async () => {
         let options = {
           select(data) {
             expect(data.start instanceof Date).toEqual(true)
@@ -41,15 +42,14 @@ describe('select callback', () => {
         spyOn(options, 'select').and.callThrough()
 
         let calendar = initCalendar(options)
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.selectDates('2014-04-28', '2014-05-06').then(() => {
-          expect(options.select).toHaveBeenCalled()
-          done()
-        })
+        await dayGridWrapper.selectDates('2014-04-28', '2014-05-06')
+        expect(options.select).toHaveBeenCalled()
       })
 
-      it('gets fired correctly when the user selects cells via touch', (done) => {
+      it('gets fired correctly when the user selects cells via touch', async () => {
         let options = {
           select(data) {
             expect(data.start instanceof Date).toEqual(true)
@@ -66,19 +66,18 @@ describe('select callback', () => {
         spyOn(options, 'select').and.callThrough()
 
         let calendar = initCalendar(options)
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.selectDatesTouch(
+        await dayGridWrapper.selectDatesTouch(
           '2014-04-28',
           '2014-05-06',
           true, // debug. HACK
-        ).then(() => {
-          expect(options.select).toHaveBeenCalled()
-          done()
-        })
+        )
+        expect(options.select).toHaveBeenCalled()
       })
 
-      it('gets fired correctly when the user selects just one cell', (done) => {
+      it('gets fired correctly when the user selects just one cell', async () => {
         let options = {
           select(data) {
             expect(data.start instanceof Date).toEqual(true)
@@ -95,12 +94,11 @@ describe('select callback', () => {
         spyOn(options, 'select').and.callThrough()
 
         let calendar = initCalendar(options)
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.selectDates('2014-04-28', '2014-04-28').then(() => {
-          expect(options.select).toHaveBeenCalled()
-          done()
-        })
+        await dayGridWrapper.selectDates('2014-04-28', '2014-04-28')
+        expect(options.select).toHaveBeenCalled()
       })
     })
 
@@ -110,7 +108,7 @@ describe('select callback', () => {
       })
 
       describe('when selecting all-day slots', () => {
-        it('gets fired correctly when the user selects cells', (done) => {
+        it('gets fired correctly when the user selects cells', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -127,15 +125,14 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
 
-          dayGridWrapper.selectDates('2014-05-28', '2014-05-29').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await dayGridWrapper.selectDates('2014-05-28', '2014-05-29')
+          expect(options.select).toHaveBeenCalled()
         })
 
-        it('gets fired correctly when the user selects a single cell', (done) => {
+        it('gets fired correctly when the user selects a single cell', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -152,17 +149,16 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
 
-          dayGridWrapper.selectDates('2014-05-28', '2014-05-28').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await dayGridWrapper.selectDates('2014-05-28', '2014-05-28')
+          expect(options.select).toHaveBeenCalled()
         })
       })
 
       describe('when selecting timed slots', () => {
-        it('gets fired correctly when the user selects slots', (done) => {
+        it('gets fired correctly when the user selects slots', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -179,16 +175,15 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-          timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-28T10:30:00').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-28T10:30:00')
+          expect(options.select).toHaveBeenCalled()
         })
 
         // https://github.com/fullcalendar/fullcalendar/issues/4505
-        it('gets fired correctly when the user selects slots NEAR THE END', (done) => {
+        it('gets fired correctly when the user selects slots NEAR THE END', async () => {
           let options = {
             scrollTime: '24:00',
             select(data) {
@@ -199,15 +194,14 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-          timeGridWrapper.selectDates('2014-05-28T16:00:00', '2014-05-29T00:00:00').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await timeGridWrapper.selectDates('2014-05-28T16:00:00', '2014-05-29T00:00:00')
+          expect(options.select).toHaveBeenCalled()
         })
 
-        it('gets fired correctly when the user selects slots via touch', (done) => {
+        it('gets fired correctly when the user selects slots via touch', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -224,21 +218,19 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-          setTimeout(() => { // HACK: sometimes touch dragging wouldn't grab onto anything
-            timeGridWrapper.selectDatesTouch(
-              '2014-05-28T09:00:00',
-              '2014-05-28T10:30:00',
-              true, // debug. HACK
-            ).then(() => {
-              expect(options.select).toHaveBeenCalled()
-              done()
-            })
-          }, 100)
+          await waitTimeout(100) // HACK: sometimes touch dragging wouldn't grab onto anything
+          await timeGridWrapper.selectDatesTouch(
+            '2014-05-28T09:00:00',
+            '2014-05-28T10:30:00',
+            true, // debug. HACK
+          )
+          expect(options.select).toHaveBeenCalled()
         })
 
-        it('gets fired correctly when the user selects slots in a different day', (done) => {
+        it('gets fired correctly when the user selects slots in a different day', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -255,15 +247,14 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-          timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-29T10:30:00').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-29T10:30:00')
+          expect(options.select).toHaveBeenCalled()
         })
 
-        it('gets fired correctly when the user selects a single slot', (done) => {
+        it('gets fired correctly when the user selects a single slot', async () => {
           let options = {
             select(data) {
               expect(data.start instanceof Date).toEqual(true)
@@ -280,12 +271,11 @@ describe('select callback', () => {
           spyOn(options, 'select').and.callThrough()
 
           let calendar = initCalendar(options)
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
-          timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-28T09:30:00').then(() => {
-            expect(options.select).toHaveBeenCalled()
-            done()
-          })
+          await timeGridWrapper.selectDates('2014-05-28T09:00:00', '2014-05-28T09:30:00')
+          expect(options.select).toHaveBeenCalled()
         })
       })
     })
@@ -296,41 +286,47 @@ describe('select callback', () => {
       selectMinDistance: 10,
     })
 
-    it('will fire when dragged beyond distance', (done) => {
+    it('will fire when dragged beyond distance', async () => {
       let options = {
         select() {},
       }
       spyOn(options, 'select').and.callThrough()
 
       let calendar = initCalendar(options)
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      $(dayGridWrapper.getDayEl('2014-04-28')).simulate('drag', {
-        dx: 12,
-        dy: 0,
-        callback() {
-          expect(options.select).toHaveBeenCalled()
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        $(dayGridWrapper.getDayEl('2014-04-28')).simulate('drag', {
+          dx: 12,
+          dy: 0,
+          callback() {
+            expect(options.select).toHaveBeenCalled()
+            resolve()
+          },
+        })
       })
     })
 
-    it('will not fire when not dragged beyond distance', (done) => {
+    it('will not fire when not dragged beyond distance', async () => {
       let options = {
         select() {},
       }
       spyOn(options, 'select').and.callThrough()
 
       let calendar = initCalendar(options)
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      $(dayGridWrapper.getDayEl('2014-04-28')).simulate('drag', {
-        dx: 8,
-        dy: 0,
-        callback() {
-          expect(options.select).not.toHaveBeenCalled()
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        $(dayGridWrapper.getDayEl('2014-04-28')).simulate('drag', {
+          dx: 8,
+          dy: 0,
+          callback() {
+            expect(options.select).not.toHaveBeenCalled()
+            resolve()
+          },
+        })
       })
     })
   })

@@ -1,4 +1,5 @@
 import frLocale from 'fullcalendar/locales/fr'
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('dayPopoverFormat', () => {
@@ -13,43 +14,40 @@ describe('dayPopoverFormat', () => {
     ],
   })
 
-  it('can be set to a custom value', (done) => {
+  it('can be set to a custom value', async () => {
     let calendar = initCalendar({
       dayPopoverFormat: { month: 'long', day: 'numeric' },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     $(dayGridWrapper.getMoreEl()).simulate('click')
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverTitle()).toBe('July 29')
-      done()
-    })
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverTitle()).toBe('July 29')
   })
 
-  it('is affected by the current locale when the value is default', (done) => {
+  it('is affected by the current locale when the value is default', async () => {
     let calendar = initCalendar({
       locale: frLocale,
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     $(dayGridWrapper.getMoreEl()).simulate('click')
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverTitle()).toBe('29 juillet 2014')
-      done()
-    })
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverTitle()).toBe('29 juillet 2014')
   })
 
-  it('still maintains the same format when explicitly set, and there is a locale', (done) => {
+  it('still maintains the same format when explicitly set, and there is a locale', async () => {
     let calendar = initCalendar({
       locale: frLocale,
       dayPopoverFormat: { year: 'numeric' },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     $(dayGridWrapper.getMoreEl()).simulate('click')
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverTitle()).toBe('2014')
-      done()
-    })
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverTitle()).toBe('2014')
   })
 })

@@ -1,6 +1,5 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
-import { waitFrame } from '../lib/misc'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { waitTimeout } from '../lib/misc'
 import { waitEventDrag } from '../lib/wrappers/interaction-util'
 import { filterVisibleEls } from '../lib/dom-misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
@@ -31,17 +30,17 @@ describe('event dragging on repeating events', () => {
     // event range needs out large (month) then scope down (week)
     // so that the new view receives out-of-range events.
     currentCalendar.changeView('timeGridWeek')
-    await waitFrame()
+    await waitTimeout()
 
-    let eventEl = new CalendarWrapper(calendar).getFirstEventEl()
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+    let eventEl = timeGridWrapper.getFirstEventEl()
     let dragging = timeGridWrapper.dragEventToDate(eventEl, '2017-02-16T12:00:00')
 
     const res = await waitEventDrag(calendar, dragging)
     expect(typeof res).toBe('object')
   })
 
-  it('hides other repeating events when dragging', (done) => {
+  it('hides other repeating events when dragging', async () => {
     let dayGridWrapper
     let calendar = initCalendar({
       eventDragStart() {
@@ -50,22 +49,23 @@ describe('event dragging on repeating events', () => {
           expect(visibleEventEls.length).toBe(0)
         }, 0)
       },
-      eventDrop() {
-        setTimeout(() => {
-          done()
-        }, 10)
-      },
     })
 
+    await waitTimeout()
     dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    $(dayGridWrapper.getFirstEventEl()).simulate('drag', {
-      dx: 100,
-      duration: 100, // ample time for separate eventDragStart/eventDrop
+    await new Promise<void>((resolve) => {
+      $(dayGridWrapper.getFirstEventEl()).simulate('drag', {
+        dx: 100,
+        duration: 100, // ample time for separate eventDragStart/eventDrop
+        callback() {
+          setTimeout(() => resolve(), 10)
+        },
+      })
     })
   })
 
   // inverse of above test
-  it('doesnt accidentally hide all non-id events when dragging', (done) => {
+  it('doesnt accidentally hide all non-id events when dragging', async () => {
     let dayGridWrapper
     let calendar = initCalendar({
       events: [
@@ -85,18 +85,18 @@ describe('event dragging on repeating events', () => {
           expect(visibleEventEls.length).toBe(1) // the dragging event AND the other regular event
         }, 0)
       },
-
-      eventDrop() {
-        setTimeout(() => {
-          done()
-        }, 10)
-      },
     })
 
+    await waitTimeout()
     dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    $(dayGridWrapper.getFirstEventEl()).simulate('drag', {
-      dx: 100,
-      duration: 100, // ample time for separate eventDragStart/eventDrop
+    await new Promise<void>((resolve) => {
+      $(dayGridWrapper.getFirstEventEl()).simulate('drag', {
+        dx: 100,
+        duration: 100, // ample time for separate eventDragStart/eventDrop
+        callback() {
+          setTimeout(() => resolve(), 10)
+        },
+      })
     })
   })
 })

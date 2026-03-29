@@ -1,12 +1,13 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { waitEventResize } from '../lib/wrappers/interaction-util'
+import { waitTimeout } from '../lib/misc'
 
 describe('event mirror rendering', () => {
   pushOptions({
     editable: true,
   })
 
-  it('maintains vertical position while dragging', (done) => {
+  it('maintains vertical position while dragging', async () => {
     let calendar = initCalendar({
       initialDate: '2019-08-26',
       initialView: 'dayGridMonth',
@@ -16,6 +17,7 @@ describe('event mirror rendering', () => {
         { start: '2019-08-27', title: 'event1' },
       ],
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
 
@@ -32,6 +34,6 @@ describe('event mirror rendering', () => {
       },
     )
 
-    waitEventResize(calendar, resizing).then(() => done())
+    await waitEventResize(calendar, resizing)
   })
 })

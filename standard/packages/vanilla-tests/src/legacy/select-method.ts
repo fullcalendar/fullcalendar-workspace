@@ -1,5 +1,6 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('select method', () => {
   pushOptions({
@@ -113,9 +114,11 @@ describe('select method', () => {
             expect(timeGridWrapper.getHighlightEls()).toBeVisible()
           })
 
-          it('renders a selection over the slot area', () => {
+          it('renders a selection over the slot area', async () => {
             let calendar = initCalendar()
+            await waitTimeout()
             calendar.select('2014-05-26T06:00:00', '2014-05-26T08:00:00')
+            await waitTimeout()
             let viewWrapper = new TimeGridViewWrapper(calendar)
             let highlightEls = viewWrapper.timeGrid.getHighlightEls()
             expect(highlightEls).toBeVisible()
@@ -155,9 +158,11 @@ describe('select method', () => {
             allDaySlot: true,
           })
 
-          it('renders a selection over the day area', () => {
+          it('renders a selection over the day area', async () => {
             let calendar = initCalendar()
+            await waitTimeout()
             calendar.select('2014-05-26', '2014-05-28')
+            await waitTimeout()
             let viewWrapper = new TimeGridViewWrapper(calendar)
             let highlightEls = viewWrapper.dayGrid.getHighlightEls()
             expect(highlightEls).toBeVisible()

@@ -22,9 +22,13 @@ describe('unselectAuto', () => {
     })
 
     describe('when clicking away', () => {
-      it('unselects the current selection when clicking elsewhere in DOM', (done) => {
+      it('unselects the current selection when clicking elsewhere in DOM', async () => {
         let isDone = false // hack against dragging continuing after destroy
         let dayGridWrapper
+        let unselectResolve: () => void
+        let unselectPromise = new Promise<void>((resolve) => {
+          unselectResolve = resolve
+        })
         let calendar = initCalendar({
           unselect(data) {
             if (!isDone) {
@@ -32,25 +36,33 @@ describe('unselectAuto', () => {
               expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
               expect(typeof data.view).toBe('object')
               isDone = true
-              done()
+              unselectResolve()
             }
           },
         })
+        await waitTimeout()
         dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         calendar.select('2014-12-01', '2014-12-03')
+        await waitTimeout()
         expect(dayGridWrapper.getHighlightEls().length).toBeGreaterThan(0)
 
         $('#otherthing')
           .simulate('mousedown')
           .simulate('mouseup')
           .simulate('click')
+
+        await unselectPromise
       })
     })
 
     describe('when clicking another date', () => {
-      it('unselects the current selection when clicking elsewhere in DOM', (done) => {
+      it('unselects the current selection when clicking elsewhere in DOM', async () => {
         let isDone = false // hack against dragging continuing after destroy
         let dayGridWrapper
+        let unselectResolve: () => void
+        let unselectPromise = new Promise<void>((resolve) => {
+          unselectResolve = resolve
+        })
         let calendar = initCalendar({
           unselect(data) {
             if (!isDone) {
@@ -58,14 +70,18 @@ describe('unselectAuto', () => {
               expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
               expect(typeof data.view).toBe('object')
               isDone = true
-              done()
+              unselectResolve()
             }
           },
         })
+        await waitTimeout()
         dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         calendar.select('2014-12-01', '2014-12-03')
+        await waitTimeout()
         expect(dayGridWrapper.getHighlightEls().length).toBeGreaterThan(0)
-        $(dayGridWrapper.getDayEl('2014-12-04')).simulate('drag')
+        dayGridWrapper.clickDate('2014-12-04')
+
+        await unselectPromise
       })
     })
   })
@@ -77,9 +93,11 @@ describe('unselectAuto', () => {
 
     it('keeps current selection when clicking elsewhere in DOM', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       calendar.select('2014-12-01', '2014-12-03')
+      await waitTimeout()
       expect(dayGridWrapper.getHighlightEls().length).toBeGreaterThan(0)
 
       $('#otherthing')

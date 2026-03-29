@@ -4,7 +4,7 @@ import { waitEventDrag2 } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { queryEventElInfo } from '../lib/wrappers/TimeGridWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
-import { enUsSep } from '../lib/misc'
+import { enUsSep, waitTimeout } from '../lib/misc'
 
 describe('eventDrop', () => {
   pushOptions({
@@ -26,7 +26,7 @@ describe('eventDrop', () => {
     [false, true].forEach((isTouch) => {
       describe('with ' + (isTouch ? 'touch' : 'mouse'), () => {
         describe('when dragging an all-day event to another day', () => {
-          it('should be given correct arguments, with whole-day delta', (done) => {
+          it('should be given correct arguments, with whole-day delta', async () => {
             let calendar = initCalendarWithSpies({
               events: [{
                 title: 'all-day event',
@@ -34,6 +34,7 @@ describe('eventDrop', () => {
                 allDay: true,
               }],
             })
+            await waitTimeout()
 
             let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
             let dragging = dayGridWrapper.dragEventToDate(
@@ -43,28 +44,26 @@ describe('eventDrop', () => {
               isTouch,
             )
 
-            waitEventDrag2(calendar, dragging).then((data) => {
-              let delta = createDuration({ day: 9 })
-              expect(data.delta).toEqual(delta)
+            let data = await waitEventDrag2(calendar, dragging)
+            let delta = createDuration({ day: 9 })
+            expect(data.delta).toEqual(delta)
 
-              expect(data.event.start).toEqualDate('2014-06-20')
-              expect(data.event.end).toBeNull()
+            expect(data.event.start).toEqualDate('2014-06-20')
+            expect(data.event.end).toBeNull()
 
-              data.revert()
-              let event = currentCalendar.getEvents()[0]
+            data.revert()
+            await waitTimeout()
+            let event = currentCalendar.getEvents()[0]
 
-              expect(event.start).toEqualDate('2014-06-11')
-              expect(event.end).toBeNull()
-
-              done()
-            })
+            expect(event.start).toEqualDate('2014-06-11')
+            expect(event.end).toBeNull()
           })
         })
       })
     })
 
     describe('when gragging a timed event to another day', () => {
-      it('should be given correct arguments, with whole-day delta', (done) => {
+      it('should be given correct arguments, with whole-day delta', async () => {
         let calendar = initCalendarWithSpies({
           events: [{
             title: 'timed event',
@@ -72,6 +71,7 @@ describe('eventDrop', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         let dragging = dayGridWrapper.dragEventToDate(
@@ -80,27 +80,25 @@ describe('eventDrop', () => {
           '2014-06-16',
         )
 
-        waitEventDrag2(calendar, dragging).then((data) => {
-          let delta = createDuration({ day: 5 })
-          expect(data.delta).toEqual(delta)
+        let data = await waitEventDrag2(calendar, dragging)
+        let delta = createDuration({ day: 5 })
+        expect(data.delta).toEqual(delta)
 
-          expect(data.event.start).toEqualDate('2014-06-16T06:00:00Z')
-          expect(data.event.end).toBeNull()
+        expect(data.event.start).toEqualDate('2014-06-16T06:00:00Z')
+        expect(data.event.end).toBeNull()
 
-          data.revert()
-          let event = currentCalendar.getEvents()[0]
+        data.revert()
+        await waitTimeout()
+        let event = currentCalendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
-          expect(event.end).toBeNull()
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
+        expect(event.end).toBeNull()
       })
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/4458
     describe('when dragging an event back in time when duration not editable', () => {
-      it('should work', (done) => {
+      it('should work', async () => {
         let calendar = initCalendarWithSpies({
           initialDate: '2019-01-16',
           eventDurationEditable: false,
@@ -110,6 +108,7 @@ describe('eventDrop', () => {
             end: '2019-01-16T12:30:00+00:00',
           }],
         })
+        await waitTimeout()
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         let dragging = dayGridWrapper.dragEventToDate(
@@ -118,17 +117,15 @@ describe('eventDrop', () => {
           '2019-01-14',
         )
 
-        waitEventDrag2(calendar, dragging).then((data) => {
-          expect(data.delta).toEqual(createDuration({ day: -2 }))
-          expect(data.event.start).toEqualDate('2019-01-14T10:30:00+00:00')
-          expect(data.event.end).toEqualDate('2019-01-14T12:30:00+00:00')
-          done()
-        })
+        let data = await waitEventDrag2(calendar, dragging)
+        expect(data.delta).toEqual(createDuration({ day: -2 }))
+        expect(data.event.start).toEqualDate('2019-01-14T10:30:00+00:00')
+        expect(data.event.end).toEqualDate('2019-01-14T12:30:00+00:00')
       })
     })
 
     // TODO: tests for eventMouseEnter/eventMouseLeave firing correctly when no dragging
-    it('should not fire any eventMouseEnter/eventMouseLeave events while dragging', (done) => { // issue 1297
+    it('should not fire any eventMouseEnter/eventMouseLeave events while dragging', async () => { // issue 1297
       let eventMouseEnterSpy = spyOnCalendarCallback('eventMouseEnter')
       let eventMouseLeaveSpy = spyOnCalendarCallback('eventMouseLeave')
       let calendar = initCalendar({
@@ -147,29 +144,33 @@ describe('eventDrop', () => {
           },
         ],
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      $('.event1').simulate('drag', {
-        end: dayGridWrapper.getDayEl('2014-06-20'),
-        moves: 10,
-        duration: 1000,
-        onRelease() {
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        $('.event1').simulate('drag', {
+          end: dayGridWrapper.getDayEl('2014-06-20'),
+          moves: 10,
+          duration: 1000,
+          onRelease() {
+            resolve()
+          },
+        })
+
+        setTimeout(() => { // wait until half way through drag
+          $('.event2')
+            .simulate('mouseover')
+            .simulate('mouseenter')
+            .simulate('mouseout')
+            .simulate('mouseleave')
+
+          setTimeout(() => {
+            expect(eventMouseEnterSpy).not.toHaveBeenCalled()
+            expect(eventMouseLeaveSpy).not.toHaveBeenCalled()
+            resolve()
+          }, 0)
+        }, 500)
       })
-
-      setTimeout(() => { // wait until half way through drag
-        $('.event2')
-          .simulate('mouseover')
-          .simulate('mouseenter')
-          .simulate('mouseout')
-          .simulate('mouseleave')
-
-        setTimeout(() => {
-          expect(eventMouseEnterSpy).not.toHaveBeenCalled()
-          expect(eventMouseLeaveSpy).not.toHaveBeenCalled()
-        }, 0)
-      }, 500)
     })
   })
 
@@ -181,7 +182,7 @@ describe('eventDrop', () => {
     [false, true].forEach((isTouch) => {
       describe('with ' + (isTouch ? 'touch' : 'mouse'), () => {
         describe('when dragging a timed event to another time on a different day', () => {
-          it('should be given correct arguments and delta with days/time', (done) => {
+          it('should be given correct arguments and delta with days/time', async () => {
             let calendar = initCalendarWithSpies({
               events: [{
                 title: 'timed event',
@@ -189,34 +190,33 @@ describe('eventDrop', () => {
                 allDay: false,
               }],
             })
+            await waitTimeout()
             let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
             let dragging = timeGridWrapper.dragEventToDate(
               timeGridWrapper.getFirstEventEl(),
               '2014-06-12T07:30:00',
             )
 
-            waitEventDrag2(calendar, dragging).then((data) => {
-              let delta = createDuration({ day: 1, hour: 1, minute: 30 })
-              expect(data.delta).toEqual(delta)
+            let data = await waitEventDrag2(calendar, dragging)
+            let delta = createDuration({ day: 1, hour: 1, minute: 30 })
+            expect(data.delta).toEqual(delta)
 
-              expect(data.event.start).toEqualDate('2014-06-12T07:30:00Z')
-              expect(data.event.end).toBeNull()
+        expect(data.event.start).toEqualDate('2014-06-12T07:30:00Z')
+        expect(data.event.end).toBeNull()
 
-              data.revert()
-              let event = currentCalendar.getEvents()[0]
+        data.revert()
+        await waitTimeout()
+        let event = currentCalendar.getEvents()[0]
 
-              expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
-              expect(event.end).toBeNull()
-
-              done()
-            })
+            expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
+            expect(event.end).toBeNull()
           })
         })
       })
     })
 
     describe('when dragging an all-day event to another all-day', () => {
-      it('should be given correct arguments, with whole-day delta', (done) => {
+      it('should be given correct arguments, with whole-day delta', async () => {
         let calendar = initCalendarWithSpies({
           events: [{
             title: 'all-day event',
@@ -224,6 +224,7 @@ describe('eventDrop', () => {
             allDay: true,
           }],
         })
+        await waitTimeout()
         let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
         let dragging = dayGridWrapper.dragEventToDate(
           dayGridWrapper.getFirstEventEl(),
@@ -231,26 +232,24 @@ describe('eventDrop', () => {
           '2014-06-13',
         )
 
-        waitEventDrag2(calendar, dragging).then((data) => {
-          let delta = createDuration({ day: 2 })
-          expect(data.delta).toEqual(delta)
+        let data = await waitEventDrag2(calendar, dragging)
+        let delta = createDuration({ day: 2 })
+        expect(data.delta).toEqual(delta)
 
-          expect(data.event.start).toEqualDate('2014-06-13')
-          expect(data.event.end).toBeNull()
+        expect(data.event.start).toEqualDate('2014-06-13')
+        expect(data.event.end).toBeNull()
 
-          data.revert()
-          let event = currentCalendar.getEvents()[0]
+        data.revert()
+        await waitTimeout()
+        let event = currentCalendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11')
-          expect(event.end).toBeNull()
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11')
+        expect(event.end).toBeNull()
       })
     })
 
     describe('when dragging an all-day event to a time slot on a different day', () => {
-      it('should be given correct arguments and delta with days/time', (done) => {
+      it('should be given correct arguments and delta with days/time', async () => {
         let calendar = initCalendarWithSpies({
           scrollTime: '01:00:00',
           height: 400, // short enough to make scrolling happen
@@ -260,34 +259,33 @@ describe('eventDrop', () => {
             allDay: true,
           }],
         })
+        await waitTimeout()
         let viewWrapper = new TimeGridViewWrapper(calendar)
         let dragging = viewWrapper.timeGrid.dragEventToDate(
           viewWrapper.dayGrid.getFirstEventEl(),
           '2014-06-10T01:00:00',
         )
 
-        waitEventDrag2(calendar, dragging).then((data) => {
-          let delta = createDuration({ day: -1, hour: 1 })
-          expect(data.delta).toEqual(delta)
+        let data = await waitEventDrag2(calendar, dragging)
+        let delta = createDuration({ day: -1, hour: 1 })
+        expect(data.delta).toEqual(delta)
 
-          expect(data.event.start).toEqualDate('2014-06-10T01:00:00Z')
-          expect(data.event.end).toBeNull()
-          expect(data.event.allDay).toBe(false)
+        expect(data.event.start).toEqualDate('2014-06-10T01:00:00Z')
+        expect(data.event.end).toBeNull()
+        expect(data.event.allDay).toBe(false)
 
-          data.revert()
-          let event = currentCalendar.getEvents()[0]
+        data.revert()
+        await waitTimeout()
+        let event = currentCalendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11')
-          expect(event.end).toBeNull()
-          expect(event.allDay).toBe(true)
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11')
+        expect(event.end).toBeNull()
+        expect(event.allDay).toBe(true)
       })
     })
 
     describe('when dragging a timed event to an all-day slot on a different day', () => {
-      it('should be given correct arguments, with whole-day delta', (done) => {
+      it('should be given correct arguments, with whole-day delta', async () => {
         let calendar = initCalendarWithSpies({
           scrollTime: '01:00:00',
           height: 400, // short enough to make scrolling happen
@@ -297,6 +295,7 @@ describe('eventDrop', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
         let viewWrapper = new TimeGridViewWrapper(calendar)
         let dragging = viewWrapper.dayGrid.dragEventToDate(
           viewWrapper.timeGrid.getFirstEventEl(),
@@ -304,28 +303,26 @@ describe('eventDrop', () => {
           '2014-06-10',
         )
 
-        waitEventDrag2(calendar, dragging).then((data) => {
-          let delta = createDuration({ day: -1 })
-          expect(data.delta).toEqual(delta)
+        let data = await waitEventDrag2(calendar, dragging)
+        let delta = createDuration({ day: -1 })
+        expect(data.delta).toEqual(delta)
 
-          expect(data.event.start).toEqualDate('2014-06-10')
-          expect(data.event.end).toBeNull()
-          expect(data.event.allDay).toBe(true)
+        expect(data.event.start).toEqualDate('2014-06-10')
+        expect(data.event.end).toBeNull()
+        expect(data.event.allDay).toBe(true)
 
-          data.revert()
-          let event = currentCalendar.getEvents()[0]
+        data.revert()
+        await waitTimeout()
+        let event = currentCalendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T01:00:00Z')
-          expect(event.end).toBeNull()
-          expect(event.allDay).toBe(false)
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T01:00:00Z')
+        expect(event.end).toBeNull()
+        expect(event.allDay).toBe(false)
       })
     })
 
     describe('when dragging a timed event with no end time', () => {
-      it('should continue to only show the updated start time', (done) => {
+      it('should continue to only show the updated start time', async () => {
         let dragged = false
         let calendar = initCalendarWithSpies({
           scrollTime: '01:00:00',
@@ -336,6 +333,7 @@ describe('eventDrop', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
         let dragging = timeGridWrapper.dragEventToDate(
@@ -349,15 +347,13 @@ describe('eventDrop', () => {
           },
         )
 
-        waitEventDrag2(calendar, dragging).then(() => {
-          expect(dragged).toBe(true)
-          done()
-        })
+        await waitEventDrag2(calendar, dragging)
+        expect(dragged).toBe(true)
       })
     })
 
     describe('when dragging a timed event with an end time', () => {
-      it('should continue to show the updated start and end time', (done) => {
+      it('should continue to show the updated start and end time', async () => {
         let dragged = false
         let calendar = initCalendarWithSpies({
           scrollTime: '01:00:00',
@@ -369,6 +365,7 @@ describe('eventDrop', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
         let dragging = timeGridWrapper.dragEventToDate(
@@ -382,16 +379,14 @@ describe('eventDrop', () => {
           },
         )
 
-        waitEventDrag2(calendar, dragging).then(() => {
-          expect(dragged).toBe(true)
-          done()
-        })
+        await waitEventDrag2(calendar, dragging)
+        expect(dragged).toBe(true)
       })
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/4503
     describe('when dragging to one of the last slots', () => {
-      it('should work', (done) => {
+      it('should work', async () => {
         let calendar = initCalendarWithSpies({
           scrollTime: '23:00:00',
           height: 400, // short enough to make scrolling happen
@@ -401,6 +396,7 @@ describe('eventDrop', () => {
             allDay: false,
           }],
         })
+        await waitTimeout()
 
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let dragging = timeGridWrapper.dragEventToDate(
@@ -408,15 +404,12 @@ describe('eventDrop', () => {
           '2014-06-11T23:30:00',
         )
 
-        waitEventDrag2(calendar, dragging).then(() => {
-          let event = currentCalendar.getEvents()[0]
+        await waitEventDrag2(calendar, dragging)
+        let event = currentCalendar.getEvents()[0]
 
-          expect(event.start).toEqualDate('2014-06-11T23:30:00Z')
-          expect(event.end).toBeNull()
-          expect(event.allDay).toBe(false)
-
-          done()
-        })
+        expect(event.start).toEqualDate('2014-06-11T23:30:00Z')
+        expect(event.end).toBeNull()
+        expect(event.allDay).toBe(false)
       })
     })
   })
