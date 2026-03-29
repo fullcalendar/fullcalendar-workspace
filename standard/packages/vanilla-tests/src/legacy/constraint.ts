@@ -9,7 +9,7 @@ describe('event constraint', () => {
   describe('when used with a specific date range', () => {
     describe('when an event is being dragged', () => {
       describe('to the middle of the constraint range', () => {
-        it('allows a drag', (done) => {
+        it('allows a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-10T01:00:00',
@@ -20,11 +20,11 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-10T04:00:00', true, done)
+          await testEventDrag(options, '2014-11-10T04:00:00', true)
         })
 
         describe('when in month view with timed event', () => {
-          it('allows a drag, respects time of day', (done) => {
+          it('allows a drag, respects time of day', async () => {
             let options = {
               initialView: 'dayGridMonth',
               events: [{
@@ -36,18 +36,16 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-14', true, () => {
-              let event = currentCalendar.getEvents()[0]
-              expect(event.start).toEqualDate('2014-11-14T05:00:00Z')
-              expect(event.end).toEqualDate('2014-11-14T07:00:00Z')
-              done()
-            })
+            await testEventDrag(options, '2014-11-14', true)
+            let event = currentCalendar.getEvents()[0]
+            expect(event.start).toEqualDate('2014-11-14T05:00:00Z')
+            expect(event.end).toEqualDate('2014-11-14T07:00:00Z')
           })
         })
       })
 
       describe('to the start of the constraint range', () => {
-        it('allows a drag', (done) => {
+        it('allows a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-10T01:00:00',
@@ -58,13 +56,13 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-10T03:00:00', true, done)
+          await testEventDrag(options, '2014-11-10T03:00:00', true)
         })
       })
 
       describe('to the end of the constraint range', () => {
         describe('when the event has an explicit end', () => {
-          it('allows a drag', (done) => {
+          it('allows a drag', async () => {
             let options = {
               events: [{
                 start: '2014-11-10T01:00:00',
@@ -75,11 +73,11 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T05:00:00', true, done)
+            await testEventDrag(options, '2014-11-10T05:00:00', true)
           })
         })
         describe('when the event has an implied end', () => {
-          it('allows a drag', (done) => {
+          it('allows a drag', async () => {
             let options = {
               defaultTimedEventDuration: '01:30:00',
               events: [{
@@ -90,13 +88,13 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T04:30:00', true, done)
+            await testEventDrag(options, '2014-11-10T04:30:00', true)
           })
         })
       })
 
       describe('before a constraint range', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-10T01:00:00',
@@ -107,14 +105,14 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-10T02:00:00', false, done)
+          await testEventDrag(options, '2014-11-10T02:00:00', false)
         })
       })
 
       describe('after a constraint range', () => {
         describe('using an event object\'s constraint', () => {
           describe('when in week view with timed events', () => {
-            it('does not allow a drag', (done) => {
+            it('does not allow a drag', async () => {
               let options = {
                 events: [{
                   start: '2014-11-10T01:00:00',
@@ -125,13 +123,13 @@ describe('event constraint', () => {
                   },
                 }],
               }
-              testEventDrag(options, '2014-11-10T06:00:00', false, done)
+              await testEventDrag(options, '2014-11-10T06:00:00', false)
             })
           })
           describe('when in month view', () => {
             pushOptions({ initialView: 'dayGridMonth' })
             describe('with timed event and all-day constraint', () => {
-              it('does not allow a drag', (done) => {
+              it('does not allow a drag', async () => {
                 let options = {
                   events: [{
                     start: '2014-11-10T01:00:00',
@@ -142,11 +140,11 @@ describe('event constraint', () => {
                     },
                   }],
                 }
-                testEventDrag(options, '2014-11-12', false, done)
+                await testEventDrag(options, '2014-11-12', false)
               })
             })
             describe('with timed event and timed constraint', () => {
-              it('does not allow a drag', (done) => {
+              it('does not allow a drag', async () => {
                 let options = {
                   events: [{
                     start: '2014-11-10T01:00:00',
@@ -157,11 +155,11 @@ describe('event constraint', () => {
                     },
                   }],
                 }
-                testEventDrag(options, '2014-11-12', false, done)
+                await testEventDrag(options, '2014-11-12', false)
               })
             })
             describe('with all-day event and all-day constraint', () => {
-              it('does not allow a drag', (done) => {
+              it('does not allow a drag', async () => {
                 let options = {
                   events: [{
                     start: '2014-11-10',
@@ -172,11 +170,11 @@ describe('event constraint', () => {
                     },
                   }],
                 }
-                testEventDrag(options, '2014-11-13', false, done)
+                await testEventDrag(options, '2014-11-13', false)
               })
             })
             describe('with all-day event and timed constraint', () => {
-              it('does not allow a drag', (done) => {
+              it('does not allow a drag', async () => {
                 let options = {
                   events: [{
                     start: '2014-11-10',
@@ -187,13 +185,13 @@ describe('event constraint', () => {
                     },
                   }],
                 }
-                testEventDrag(options, '2014-11-13', false, done)
+                await testEventDrag(options, '2014-11-13', false)
               })
             })
           })
         })
         describe('using an event source\'s constraint', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               eventSources: [{
                 events: [{
@@ -206,11 +204,11 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T06:00:00', false, done)
+            await testEventDrag(options, '2014-11-10T06:00:00', false)
           })
         })
         describe('using eventConstraint', () => {
-          it('does not allow a drag and doesnt call eventDataTransform', (done) => {
+          it('does not allow a drag and doesnt call eventDataTransform', async () => {
             let options = {
               events: [{
                 start: '2014-11-10T01:00:00',
@@ -227,17 +225,15 @@ describe('event constraint', () => {
 
             spyOn(options, 'eventDataTransform').and.callThrough()
 
-            testEventDrag(options, '2014-11-10T06:00:00', false, () => {
-              expect(options.eventDataTransform.calls.count()).toBe(1) // only initial parse
-              done()
-            })
+            await testEventDrag(options, '2014-11-10T06:00:00', false)
+            expect(options.eventDataTransform.calls.count()).toBe(1) // only initial parse
           })
         })
       })
 
       describe('intersecting the constraint start', () => {
         describe('with no timezone', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               events: [{
                 start: '2014-11-10T03:00:00',
@@ -248,11 +244,11 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T02:00:00', false, done)
+            await testEventDrag(options, '2014-11-10T02:00:00', false)
           })
         })
         describe('with UTC timezone', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               timeZone: 'UTC',
               events: [{
@@ -264,14 +260,14 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T02:00:00+00:00', false, done)
+            await testEventDrag(options, '2014-11-10T02:00:00+00:00', false)
           })
         })
       })
 
       describe('intersecting the constraint end', () => {
         describe('when the event has an explicit end', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               events: [{
                 start: '2014-11-10T03:00:00',
@@ -282,11 +278,11 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T05:00:00', false, done)
+            await testEventDrag(options, '2014-11-10T05:00:00', false)
           })
         })
         describe('when the event has an implied end', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               defaultTimedEventDuration: '02:30',
               events: [{
@@ -297,11 +293,11 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T10:00:00', false, done)
+            await testEventDrag(options, '2014-11-10T10:00:00', false)
           })
         })
         describe('with UTC timezone', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               timeZone: 'UTC',
               events: [{
@@ -313,13 +309,13 @@ describe('event constraint', () => {
                 },
               }],
             }
-            testEventDrag(options, '2014-11-10T05:00:00+00:00', false, done)
+            await testEventDrag(options, '2014-11-10T05:00:00+00:00', false)
           })
         })
       })
 
       describe('into a constraint it encompasses', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-10T01:00:00',
@@ -330,14 +326,14 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-10T10:00:00', false, done)
+          await testEventDrag(options, '2014-11-10T10:00:00', false)
         })
       })
     })
 
     describe('when an event is being resized', () => {
       describe('when the start is already outside the constraint', () => {
-        it('does not allow a resize', (done) => {
+        it('does not allow a resize', async () => {
           let options = {
             events: [{
               start: '2014-11-12T01:00:00',
@@ -348,12 +344,12 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventResize(options, '2014-11-12T10:00:00', false, done)
+          await testEventResize(options, '2014-11-12T10:00:00', false)
         })
       })
 
       describe('when resized well within the constraint', () => {
-        it('allows a resize', (done) => {
+        it('allows a resize', async () => {
           let options = {
             events: [{
               start: '2014-11-12T02:00:00',
@@ -364,12 +360,12 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventResize(options, '2014-11-12T10:00:00', true, done)
+          await testEventResize(options, '2014-11-12T10:00:00', true)
         })
       })
 
       describe('when resized to the end of the constraint', () => {
-        it('allows a resize', (done) => {
+        it('allows a resize', async () => {
           let options = {
             events: [{
               start: '2014-11-12T02:00:00',
@@ -380,12 +376,12 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventResize(options, '2014-11-12T06:00:00', true, done)
+          await testEventResize(options, '2014-11-12T06:00:00', true)
         })
       })
 
       describe('when resized past the end of the constraint', () => {
-        it('does not allow a resize', (done) => {
+        it('does not allow a resize', async () => {
           let options = {
             events: [{
               start: '2014-11-12T02:00:00',
@@ -396,7 +392,7 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventResize(options, '2014-11-12T07:00:00', false, done)
+          await testEventResize(options, '2014-11-12T07:00:00', false)
         })
       })
     })
@@ -405,7 +401,7 @@ describe('event constraint', () => {
   describe('when used with a recurring date range', () => {
     describe('when an event is being dragged', () => {
       describe('to the middle of the constraint range', () => {
-        it('allows a drag', (done) => {
+        it('allows a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-12T01:00:00',
@@ -416,12 +412,12 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-12T05:00:00', true, done)
+          await testEventDrag(options, '2014-11-12T05:00:00', true)
         })
       })
 
       describe('outside of a constraint range', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-12T01:00:00',
@@ -432,12 +428,12 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-12T07:00:00', false, done)
+          await testEventDrag(options, '2014-11-12T07:00:00', false)
         })
       })
 
       describe('on an off-day of a constraint range', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [{
               start: '2014-11-12T01:00:00',
@@ -449,7 +445,7 @@ describe('event constraint', () => {
               },
             }],
           }
-          testEventDrag(options, '2014-11-13T05:00:00', false, done) // drag to Thursday
+          await testEventDrag(options, '2014-11-13T05:00:00', false) // drag to Thursday
         })
       })
     })
@@ -458,7 +454,7 @@ describe('event constraint', () => {
   describe('when used with businessHours', () => {
     describe('when an event is being dragged', () => {
       describe('to the middle of the constraint range', () => {
-        it('allows a drag', (done) => {
+        it('allows a drag', async () => {
           let options = {
             businessHours: {
               startTime: '02:00',
@@ -470,12 +466,12 @@ describe('event constraint', () => {
               constraint: 'businessHours',
             }],
           }
-          testEventDrag(options, '2014-11-12T03:00:00', true, done)
+          await testEventDrag(options, '2014-11-12T03:00:00', true)
         })
       })
 
       describe('outside of a constraint range', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             businessHours: {
               startTime: '02:00',
@@ -487,12 +483,12 @@ describe('event constraint', () => {
               constraint: 'businessHours',
             }],
           }
-          testEventDrag(options, '2014-11-12T05:00:00', false, done)
+          await testEventDrag(options, '2014-11-12T05:00:00', false)
         })
       })
 
       describe('on an off-day of a constraint range', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             businessHours: {
               startTime: '02:00',
@@ -505,7 +501,7 @@ describe('event constraint', () => {
               constraint: 'businessHours',
             }],
           }
-          testEventDrag(options, '2014-11-14T03:00:00', false, done) // Friday
+          await testEventDrag(options, '2014-11-14T03:00:00', false) // Friday
         })
       })
     })
@@ -514,7 +510,7 @@ describe('event constraint', () => {
   describe('when used with an event group ID', () => {
     describe('when an event is being dragged', () => {
       describe('to the middle of the constraint range', () => {
-        it('allows a drag', (done) => {
+        it('allows a drag', async () => {
           let options = {
             events: [
               {
@@ -530,13 +526,13 @@ describe('event constraint', () => {
               },
             ],
           }
-          testEventDrag(options, '2014-11-13T02:00:00', true, done, 'dragging-event')
+          await testEventDrag(options, '2014-11-13T02:00:00', true, 'dragging-event')
         })
       })
 
       describe('outside of a foreground event constraint', () => {
         describe('with an explicit end time', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               events: [
                 {
@@ -552,11 +548,11 @@ describe('event constraint', () => {
                 },
               ],
             }
-            testEventDrag(options, '2014-11-13T04:00:00', false, done, 'dragging-event')
+            await testEventDrag(options, '2014-11-13T04:00:00', false, 'dragging-event')
           })
         })
         describe('when an implied end time', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               defaultTimedEventDuration: '01:00:00',
               events: [
@@ -572,13 +568,13 @@ describe('event constraint', () => {
                 },
               ],
             }
-            testEventDrag(options, '2014-11-13T01:00:00', false, done, 'dragging-event')
+            await testEventDrag(options, '2014-11-13T01:00:00', false, 'dragging-event')
           })
         })
       })
 
       describe('outside of a background-event constraint', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [
               {
@@ -595,12 +591,12 @@ describe('event constraint', () => {
               },
             ],
           }
-          testEventDrag(options, '2014-11-13T04:00:00', false, done, 'dragging-event')
+          await testEventDrag(options, '2014-11-13T04:00:00', false, 'dragging-event')
         })
       })
 
       describe('when the event ID constraint matches no events', () => {
-        it('does not allow a drag', (done) => {
+        it('does not allow a drag', async () => {
           let options = {
             events: [
               {
@@ -610,14 +606,14 @@ describe('event constraint', () => {
               },
             ],
           }
-          testEventDrag(options, '2014-11-13T04:00:00', false, done)
+          await testEventDrag(options, '2014-11-13T04:00:00', false)
         })
       })
 
       describe('when in month view', () => {
         pushOptions({ initialView: 'dayGridMonth' })
         describe('when the event ID constraint matches no events', () => {
-          it('does not allow a drag', (done) => {
+          it('does not allow a drag', async () => {
             let options = {
               events: [
                 {
@@ -627,7 +623,7 @@ describe('event constraint', () => {
                 },
               ],
             }
-            testEventDrag(options, '2014-11-13', false, done)
+            await testEventDrag(options, '2014-11-13', false)
           })
         })
       })
@@ -644,110 +640,110 @@ describe('selectConstraint', () => {
 
   describe('when used with a specific date range', () => {
     describe('when dragged clearly within', () => {
-      it('allows a selection', (done) => {
+      it('allows a selection', async () => {
         let options = {
           selectConstraint: {
             start: '2014-11-12T01:00:00',
             end: '2014-11-12T20:00:00',
           },
         }
-        testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T10:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T10:00:00Z', true)
       })
     })
 
     describe('when dragged within, starting with the constraint start', () => {
-      it('allows a selection', (done) => {
+      it('allows a selection', async () => {
         let options = {
           selectConstraint: {
             start: '2014-11-12T01:00:00',
             end: '2014-11-12T20:00:00',
           },
         }
-        testSelection(options, '2014-11-12T01:00:00Z', '2014-11-12T05:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T01:00:00Z', '2014-11-12T05:00:00Z', true)
       })
     })
 
     describe('when dragged within, ending with the constraint end', () => {
-      it('allows a selection', (done) => {
+      it('allows a selection', async () => {
         let options = {
           selectConstraint: {
             start: '2014-11-12T01:00:00',
             end: '2014-11-12T05:00:00',
           },
         }
-        testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T05:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T05:00:00Z', true)
       })
     })
 
     describe('when dragged intersecting the constraint start', () => {
-      it('does not allow a selection', (done) => {
+      it('does not allow a selection', async () => {
         let options = {
           selectConstraint: {
             start: '2014-11-12T03:00:00',
             end: '2014-11-12T20:00:00',
           },
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', false)
       })
     })
 
     describe('when dragged intersecting the constraint end', () => {
-      it('does not allow a selection', (done) => {
+      it('does not allow a selection', async () => {
         let options = {
           selectConstraint: {
             start: '2014-11-12T03:00:00',
             end: '2014-11-12T07:00:00',
           },
         }
-        testSelection(options, '2014-11-12T04:00:00Z', '2014-11-12T08:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T04:00:00Z', '2014-11-12T08:00:00Z', false)
       })
     })
 
     describe('when dragged after the constraint', () => {
       describe('when in week view with timed events', () => {
-        it('does not allow a selection', (done) => {
+        it('does not allow a selection', async () => {
           let options = {
             selectConstraint: {
               start: '2014-11-12T03:00:00',
               end: '2014-11-12T05:00:00',
             },
           }
-          testSelection(options, '2014-11-12T05:00:00Z', '2014-11-12T07:00:00Z', false, done)
+          await testSelection(options, '2014-11-12T05:00:00Z', '2014-11-12T07:00:00Z', false)
         })
       })
       describe('when in month view', () => {
         pushOptions({ initialView: 'dayGridMonth' })
         describe('when an all-day constraint', () => {
-          it('does not allow a selection', (done) => {
+          it('does not allow a selection', async () => {
             let options = {
               selectConstraint: {
                 start: '2014-11-13',
                 end: '2014-11-14',
               },
             }
-            testSelection(options, '2014-11-12', '2014-11-14', false, done)
+            await testSelection(options, '2014-11-12', '2014-11-14', false)
           })
         })
         describe('when a timed constraint, out of bounds', () => {
-          it('does not allow a selection', (done) => {
+          it('does not allow a selection', async () => {
             let options = {
               selectConstraint: {
                 start: '2014-11-12T01:00:00',
                 end: '2014-11-14T00:00:00',
               },
             }
-            testSelection(options, '2014-11-12', '2014-11-14', false, done)
+            await testSelection(options, '2014-11-12', '2014-11-14', false)
           })
         })
         describe('when a timed constraint, in bounds', () => {
-          it('allows a selection', (done) => {
+          it('allows a selection', async () => {
             let options = {
               selectConstraint: {
                 start: '2014-11-12T00:00:00',
                 end: '2014-11-14T00:00:00',
               },
             }
-            testSelection(options, '2014-11-12', '2014-11-14', true, done)
+            await testSelection(options, '2014-11-12', '2014-11-14', true)
           })
         })
       })
@@ -756,42 +752,42 @@ describe('selectConstraint', () => {
 
   describe('when used with a recurring date range', () => {
     describe('to the middle of the constraint range', () => {
-      it('allows a selection when in bounds', (done) => {
+      it('allows a selection when in bounds', async () => {
         let options = {
           selectConstraint: {
             startTime: '01:00:00',
             endTime: '05:00:00',
           },
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', true)
       })
     })
 
     describe('outside of a constraint range', () => {
-      it('does not allow a selection when single day', (done) => {
+      it('does not allow a selection when single day', async () => {
         let options = {
           selectConstraint: {
             startTime: '01:00:00',
             endTime: '05:00:00',
           },
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T06:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T06:00:00Z', false)
       })
-      it('does not allow a selection when multiday', (done) => {
+      it('does not allow a selection when multiday', async () => {
         let options = {
           selectConstraint: {
             startTime: '01:00:00',
             endTime: '05:00:00',
           },
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-14T04:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-14T04:00:00Z', false)
       })
     })
   })
 
   describe('when used with businessHours', () => {
     describe('to the middle of the constraint range', () => {
-      it('allows a selection', (done) => {
+      it('allows a selection', async () => {
         let options = {
           businessHours: {
             startTime: '01:00:00',
@@ -799,12 +795,12 @@ describe('selectConstraint', () => {
           },
           selectConstraint: 'businessHours',
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', true)
       })
     })
 
     describe('outside of a constraint range', () => {
-      it('does not allow a selection', (done) => {
+      it('does not allow a selection', async () => {
         let options = {
           businessHours: {
             startTime: '01:00:00',
@@ -812,12 +808,12 @@ describe('selectConstraint', () => {
           },
           selectConstraint: 'businessHours',
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T06:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T06:00:00Z', false)
       })
     })
 
     describe('with a custom dow when dragged to a dead day', () => {
-      it('does not allow a selection', (done) => {
+      it('does not allow a selection', async () => {
         let options = {
           businessHours: {
             startTime: '01:00:00',
@@ -826,14 +822,14 @@ describe('selectConstraint', () => {
           },
           selectConstraint: 'businessHours',
         }
-        testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', false, done) // Wed
+        await testSelection(options, '2014-11-12T02:00:00Z', '2014-11-12T04:00:00Z', false) // Wed
       })
     })
   })
 
   describe('when used with an event group ID', () => {
     describe('to the middle of the constraint range', () => {
-      it('allows a selection', (done) => {
+      it('allows a selection', async () => {
         let options = {
           events: [{
             groupId: 'yo',
@@ -843,12 +839,12 @@ describe('selectConstraint', () => {
           }],
           selectConstraint: 'yo',
         }
-        testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T04:00:00Z', true, done)
+        await testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T04:00:00Z', true)
       })
     })
 
     describe('outside of a constraint range', () => {
-      it('does not allow a selection', (done) => {
+      it('does not allow a selection', async () => {
         let options = {
           events: [{
             groupId: 'yo',
@@ -858,26 +854,26 @@ describe('selectConstraint', () => {
           }],
           selectConstraint: 'yo',
         }
-        testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T06:00:00Z', false, done)
+        await testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T06:00:00Z', false)
       })
     })
 
     describe('when event ID does not match any events', () => {
       describe('when in week view', () => {
-        it('does not allow a selection', (done) => {
+        it('does not allow a selection', async () => {
           let options = {
             selectConstraint: 'yooo',
           }
-          testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T06:00:00Z', false, done)
+          await testSelection(options, '2014-11-12T03:00:00Z', '2014-11-12T06:00:00Z', false)
         })
       })
       describe('when in month view', () => {
-        it('does not allow a selection', (done) => {
+        it('does not allow a selection', async () => {
           let options = {
             initialView: 'dayGridMonth',
             selectConstraint: 'yooo',
           }
-          testSelection(options, '2014-11-12', '2014-11-15', false, done)
+          await testSelection(options, '2014-11-12', '2014-11-15', false)
         })
       })
     })

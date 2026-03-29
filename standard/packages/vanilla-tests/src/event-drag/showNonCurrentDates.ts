@@ -1,6 +1,7 @@
 import * as EventDragUtils from '../lib/EventDragUtils'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { waitEventDrag } from '../lib/wrappers/interaction-util'
+import { waitTimeout } from '../lib/misc'
 
 describe('showNonCurrentDates event dragging', () => {
   pushOptions({
@@ -14,36 +15,33 @@ describe('showNonCurrentDates event dragging', () => {
   })
 
   describe('when dragging pointer into disabled region', () => {
-    it('won\'t allow the drop', (done) => {
+    it('won\'t allow the drop', async () => {
       let calendar = initCalendar()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      EventDragUtils.drag(
+      await waitTimeout()
+      let res = await EventDragUtils.drag(
         dayGridWrapper.getDayEl('2017-06-08').getBoundingClientRect(),
         dayGridWrapper.getDisabledDayEls()[3].getBoundingClientRect(), // the cell before Jun 1
       )
-        .then((res) => {
-          expect(res).toBe(false)
-        })
-        .then(() => done())
+      expect(res).toBe(false)
     })
   })
 
   describe('when dragging an event\'s start into a disabled region', () => {
-    it('allow the drop if the cursor stays over non-disabled cells', (done) => {
+    it('allow the drop if the cursor stays over non-disabled cells', async () => {
       let calendar = initCalendar()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+      await waitTimeout()
       let dragging = dayGridWrapper.dragEventToDate(
         dayGridWrapper.getEventEls()[0],
         '2017-06-08',
         '2017-06-01',
       )
 
-      waitEventDrag(calendar, dragging).then((res) => {
-        expect(typeof res).toBe('object')
-        done()
-      })
+      let res = await waitEventDrag(calendar, dragging)
+      expect(typeof res).toBe('object')
     })
   })
 })

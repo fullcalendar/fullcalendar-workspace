@@ -1,5 +1,6 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 // SEE ALSO: event-color.js
 
@@ -328,7 +329,7 @@ describe('background events', () => {
     pushOptions({ initialView: 'timeGridWeek' })
 
     describe('when LTR', () => {
-      it('render correctly on one day', () => {
+      it('render correctly on one day', async () => {
         let calendar = initCalendar({
           events: [{
             start: '2014-11-04T01:00:00',
@@ -337,6 +338,7 @@ describe('background events', () => {
           }],
         })
 
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let allBgEvents = timeGridWrapper.getBgEventEls()
 
@@ -432,7 +434,7 @@ describe('background events', () => {
         direction: 'rtl',
       })
 
-      it('render correctly on one day', () => {
+      it('render correctly on one day', async () => {
         let calendar = initCalendar({
           events: [{
             start: '2014-11-04T01:00:00',
@@ -441,6 +443,7 @@ describe('background events', () => {
           }],
         })
 
+        await waitTimeout()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         let allBgEls = timeGridWrapper.getBgEventEls()
 
@@ -611,7 +614,7 @@ describe('background events', () => {
           // TODO: maybe check y coords
         })
 
-        it('render correctly with two related events, nested', () => {
+        it('render correctly with two related events, nested', async () => {
           let calendar = initCalendar({
             events: [
               {
@@ -628,6 +631,7 @@ describe('background events', () => {
               },
             ],
           })
+          await waitTimeout()
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
           let allBgEls = timeGridWrapper.getBgEventEls()
 

@@ -1,7 +1,7 @@
 // most other businessHours tests are in background-events.js
 
 import { doElsMatchSegs } from '../lib/segs'
-import { waitFrame } from '../lib/misc'
+import { waitTimeout } from '../lib/misc'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
@@ -19,7 +19,7 @@ describe('businessHours', () => {
     currentCalendar.changeView('timeGridWeek')
     currentCalendar.next() // move out of the original month range...
     currentCalendar.next() // ... out. should render correctly.
-    await waitFrame()
+    await waitTimeout()
 
     // whole days
     let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
@@ -78,7 +78,7 @@ describe('businessHours', () => {
   })
 
   describe('for multiple day-of-week definitions', () => {
-    it('rendes two day-of-week groups', () => {
+    it('rendes two day-of-week groups', async () => {
       let calendar = initCalendar({
         initialDate: '2014-12-07',
         initialView: 'timeGridWeek',
@@ -96,6 +96,7 @@ describe('businessHours', () => {
         ],
       })
 
+      await waitTimeout()
       // timed area
       expect(isTimeGridNonBusinessSegsRendered(calendar, [
         // sun
@@ -120,7 +121,7 @@ describe('businessHours', () => {
       ])).toBe(true)
     })
 
-    it('wont\'t process businessHour items that omit dow', () => {
+    it('wont\'t process businessHour items that omit dow', async () => {
       let calendar = initCalendar({
         initialDate: '2014-12-07',
         initialView: 'timeGridWeek',
@@ -138,6 +139,7 @@ describe('businessHours', () => {
         ],
       })
 
+      await waitTimeout()
       // timed area
       expect(isTimeGridNonBusinessSegsRendered(calendar, [
         // sun
@@ -160,13 +162,14 @@ describe('businessHours', () => {
     })
   })
 
-  it('will grey-out a totally non-business-hour view', () => {
+  it('will grey-out a totally non-business-hour view', async () => {
     let calendar = initCalendar({
       initialDate: '2016-07-23', // sat
       initialView: 'timeGridDay',
       businessHours: true,
     })
 
+    await waitTimeout()
     // timed area
     expect(isTimeGridNonBusinessSegsRendered(calendar, [
       { start: '2016-07-23T00:00', end: '2016-07-24T00:00' },

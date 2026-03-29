@@ -1,9 +1,10 @@
 import { filterVisibleEls } from '../lib/dom-misc'
 import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('multi-month-view event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/7573
-  it('will not incorrectly put events under +more link', () => {
+  it('will not incorrectly put events under +more link', async () => {
     const calendarEl = document.createElement('div')
     calendarEl.style.width = '1000px'
     calendarEl.style.maxWidth = '1000px'
@@ -30,7 +31,7 @@ describe('multi-month-view event rendering', () => {
         },
       ],
     }, calendarEl)
-
+    await waitTimeout()
     const viewWrapper = new MultiMonthViewWrapper(calendar)
     const dayGridWrapper = viewWrapper.getDayGrid(0)
     const visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())

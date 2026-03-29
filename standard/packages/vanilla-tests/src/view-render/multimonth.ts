@@ -1,5 +1,6 @@
 import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper'
 import '../lib/dom-geom.js'
+import { waitTimeout } from '../lib/misc'
 
 describe('multimonth view', () => {
   it('computes start/end for multiMonthYear', () => {
@@ -23,69 +24,76 @@ describe('multimonth view', () => {
     expect(calendar.view.currentEnd).toEqualDate('2023-08-01')
   })
 
-  it('having small singleMonthMinWidth results in side-by-side months', () => {
+  it('having small singleMonthMinWidth results in side-by-side months', async () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
       singleMonthMinWidth: 100,
     })
 
+    await waitTimeout()
+
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
     expect(monthWrappers.length).toBe(12)
     expect(monthWrappers[0].el).toBeLeftOf(monthWrappers[1].el)
   })
 
-  it('having large singleMonthMinWidth results in stacking months', () => {
+  it('having large singleMonthMinWidth results in stacking months', async () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
       singleMonthMinWidth: 600,
     })
 
+    await waitTimeout()
+
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
     expect(monthWrappers.length).toBe(12)
     expect(monthWrappers[0].el).not.toBeLeftOf(monthWrappers[1].el)
     expect(monthWrappers[0].el).toBeAbove(monthWrappers[1].el)
   })
 
-  it('can have forced single column with multiMonthMaxColumns', () => {
+  it('can have forced single column with multiMonthMaxColumns', async () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
       multiMonthMaxColumns: 1,
     })
+
+    await waitTimeout()
 
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
     expect(monthWrappers[0].el).not.toBeLeftOf(monthWrappers[1].el)
     expect(monthWrappers[0].el).toBeAbove(monthWrappers[1].el)
   })
 
-  it('is scrolled to current date initially', (callback) => {
+  it('is scrolled to current date initially', async () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
       multiMonthMaxColumns: 1,
     })
 
+    await waitTimeout()
+
     const viewWrapper = new MultiMonthViewWrapper(calendar)
     const monthWrappers = viewWrapper.getMonths()
     const scrollerEl = viewWrapper.getScrollerEl()
 
-    setTimeout(() => { // wait for sizing to settle
-      expect(
-        Math.abs(
-          scrollerEl.getBoundingClientRect().top -
-          monthWrappers[5].el.getBoundingClientRect().top,
-        ),
-      ).toBeLessThan(2)
+    expect(
+      Math.abs(
+        scrollerEl.getBoundingClientRect().top -
+        monthWrappers[5].el.getBoundingClientRect().top,
+      ),
+    ).toBeLessThan(2)
 
-      expect(scrollerEl.scrollTop).not.toBe(0)
-      calendar.next()
-      calendar.prev()
-      expect(scrollerEl.scrollTop).toBe(0)
+    expect(scrollerEl.scrollTop).not.toBe(0)
+    calendar.next()
+    calendar.prev()
 
-      callback()
-    }, 0)
+    await waitTimeout()
+
+    expect(scrollerEl.scrollTop).toBe(0)
   })
 
   it('renders events when weekends: false', () => {

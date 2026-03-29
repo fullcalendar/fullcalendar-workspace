@@ -1,5 +1,6 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('eventOrder', () => {
   pushOptions({
@@ -19,8 +20,9 @@ describe('eventOrder', () => {
       ],
     })
 
-    it('will sort by start time by default', () => {
+    it('will sort by start time by default', async () => {
       initCalendar()
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['x', 'y', 'z'])
     })
   })
@@ -34,22 +36,25 @@ describe('eventOrder', () => {
       ],
     })
 
-    it('sorts by title by default', () => {
+    it('sorts by title by default', async () => {
       initCalendar()
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['z', 'y', 'x'])
     })
 
-    it('can sort by a standard prop', () => {
+    it('can sort by a standard prop', async () => {
       initCalendar({
         eventOrder: 'id',
       })
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['x', 'y', 'z'])
     })
 
-    it('can sort by a non-standard prop', () => {
+    it('can sort by a non-standard prop', async () => {
       initCalendar({
         eventOrder: 'myOrder',
       })
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['y', 'x', 'z'])
     })
   })
@@ -63,10 +68,11 @@ describe('eventOrder', () => {
       ],
     })
 
-    it('sorting by a prop will override date-determined order', () => {
+    it('sorting by a prop will override date-determined order', async () => {
       initCalendar({
         eventOrder: 'myOrder',
       })
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['y', 'x', 'z'])
     })
   })
@@ -80,10 +86,11 @@ describe('eventOrder', () => {
       ],
     })
 
-    it('sorting by a prop will override duration-determined order', () => {
+    it('sorting by a prop will override duration-determined order', async () => {
       initCalendar({
         eventOrder: 'myOrder',
       })
+      await waitTimeout()
       expect(getEventOrder()).toEqual(['y', 'x', 'z'])
     })
   })
@@ -97,10 +104,11 @@ describe('eventOrder', () => {
       ],
     })
 
-    it('should prioritize eventOrder duration', () => {
+    it('should prioritize eventOrder duration', async () => {
       let calendar = initCalendar({
         eventOrder: '-duration',
       })
+      await waitTimeout()
       let dayGrid = new DayGridViewWrapper(calendar).dayGrid
       let rowEls = dayGrid.getRowEls()
       let xEvent0 = rowEls[0].querySelector('[data-event-id="x"]')

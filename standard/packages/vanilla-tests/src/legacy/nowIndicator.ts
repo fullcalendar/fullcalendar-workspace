@@ -1,4 +1,5 @@
 import { getBoundingRect } from '../lib/dom-geom'
+import { waitTimeout } from '../lib/misc'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
 describe('now indicator', () => {
@@ -31,15 +32,17 @@ describe('now indicator', () => {
         expect(timeGridWrapper.hasNowIndicator()).toBe(false)
       })
 
-      it('renders on correct time', () => {
+      it('renders on correct time', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
         isNowIndicatorRenderedAt(calendar, '2015-12-26T06:00:00Z')
       })
 
-      it('renders on correct time2', () => {
+      it('renders on correct time2', async () => {
         let calendar = initCalendar({
           now: '2015-12-20T02:30:00',
         })
+        await waitTimeout()
         isNowIndicatorRenderedAt(calendar, '2015-12-20T02:30:00Z')
       })
     })

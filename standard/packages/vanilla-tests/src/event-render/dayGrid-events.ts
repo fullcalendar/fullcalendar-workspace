@@ -2,7 +2,7 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { anyElsIntersect } from '../lib/dom-geom'
 import { filterVisibleEls } from '../lib/dom-misc'
-import { waitFrame } from '../lib/misc'
+import { waitFrame, waitTimeout } from '../lib/misc'
 
 describe('dayGrid advanced event rendering', () => {
   pushOptions({
@@ -10,7 +10,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5408
-  it('renders without intersecting', () => {
+  it('renders without intersecting', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2020-05-01',
@@ -22,6 +22,7 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-05-04', title: 'event e' },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -30,7 +31,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5771
-  it('renders more-links correctly when first obscured event is longer than event before it', () => {
+  it('renders more-links correctly when first obscured event is longer than event before it', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2020-08-01',
@@ -42,6 +43,7 @@ describe('dayGrid advanced event rendering', () => {
         { title: 'big2', start: '2020-07-25', end: '2020-07-28' },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -54,7 +56,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5790
-  it('positions more-links correctly in columns that have empty space', () => {
+  it('positions more-links correctly in columns that have empty space', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2020-09-01',
@@ -67,6 +69,7 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-09-02', end: '2020-09-04' },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -84,7 +87,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5883
-  it('it renders without gaps when ordered by title', () => {
+  it('it renders without gaps when ordered by title', async () => {
     let calendar = initCalendar({
       initialDate: '2020-10-01',
       eventOrder: 'title',
@@ -112,6 +115,7 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -123,7 +127,7 @@ describe('dayGrid advanced event rendering', () => {
     expect(anyElsIntersect(visibleEventEls.concat(moreLinkEls))).toBe(false)
   })
 
-  it('won\'t intersect when doing custom rendering', () => {
+  it('won\'t intersect when doing custom rendering', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2020-06-01',
@@ -141,6 +145,7 @@ describe('dayGrid advanced event rendering', () => {
         }
       },
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -300,7 +305,7 @@ describe('dayGrid advanced event rendering', () => {
     expect(renderedMoreLink).toBe(false)
   })
 
-  it('can render events with strict ordering', () => {
+  it('can render events with strict ordering', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       eventOrder: 'id',
@@ -314,6 +319,7 @@ describe('dayGrid advanced event rendering', () => {
         data.el.setAttribute('data-event-id', data.event.id) // TODO: more formal system for this
       },
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -331,7 +337,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5767
-  it('consumes empty gaps in space when strict ordering', () => {
+  it('consumes empty gaps in space when strict ordering', async () => {
     let calendar = initCalendar({
       initialDate: '2020-08-23',
       initialView: 'dayGridWeek',
@@ -380,6 +386,7 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -392,7 +399,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6393
-  it('doesn\'t overlap with eventOrderStrict', () => {
+  it('doesn\'t overlap with eventOrderStrict', async () => {
     let calendar = initCalendar({
       initialDate: '2021-06-21',
       initialView: 'dayGridWeek',
@@ -425,6 +432,7 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -433,7 +441,7 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6397
-  it('doesn\'t show duplicate events in popover when eventOrder by start date', (done) => {
+  it('doesn\'t show duplicate events in popover when eventOrder by start date', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2021-07-07',
@@ -507,17 +515,16 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     dayGridWrapper.openMorePopover(4) // on July 9th
-    setTimeout(() => {
-      let eventEls = dayGridWrapper.getMorePopoverEventEls()
-      expect(eventEls.length).toBe(9)
-      done()
-    })
+    await waitTimeout()
+    let eventEls = dayGridWrapper.getMorePopoverEventEls()
+    expect(eventEls.length).toBe(9)
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7447
-  it('Doesn\'t error or overlap event positions when white-space:normal', () => {
+  it('Doesn\'t error or overlap event positions when white-space:normal', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridWeek',
       initialDate: '2023-04-09',
@@ -581,6 +588,7 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
@@ -676,7 +684,7 @@ describe('dayGrid advanced event rendering', () => {
     })
   })
 
-  it('will limit events to dayMaxEventRows:1', () => {
+  it('will limit events to dayMaxEventRows:1', async () => {
     const calendar = initCalendar({
       initialDate: '2021-10-31',
       dayMaxEventRows: 1,
@@ -686,6 +694,7 @@ describe('dayGrid advanced event rendering', () => {
         { title: 'C', start:'2021-10-28 12:00:00', end:'2021-10-31 12:00:00' },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())

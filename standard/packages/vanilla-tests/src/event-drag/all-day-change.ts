@@ -2,6 +2,7 @@ import { parseMarker, addMs } from 'fullcalendar/protected-api'
 import { drag } from '../lib/EventDragUtils'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { intersectRects } from '../lib/geom'
+import { waitTimeout } from '../lib/misc'
 
 describe('allDay change', () => {
   pushOptions({
@@ -38,43 +39,43 @@ describe('allDay change', () => {
       return drag(startRect, endRect, false) // debug=false
     }
 
-    it('discards duration when allDayMaintainDuration:false', (done) => {
+    it('discards duration when allDayMaintainDuration:false', async () => {
       initCalendar({
         allDayMaintainDuration: false,
       })
-      doDrag().then(() => {
-        let event = currentCalendar.getEventById('1')
-        expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
-        expect(event.end).toBe(null)
-      }).then(() => done())
+      await waitTimeout()
+      await doDrag()
+      let event = currentCalendar.getEventById('1')
+      expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
+      expect(event.end).toBe(null)
     })
 
-    it('keeps duration when allDayMaintainDuration:true', (done) => {
+    it('keeps duration when allDayMaintainDuration:true', async () => {
       initCalendar({
         allDayMaintainDuration: true,
       })
-      doDrag().then(() => {
-        let event = currentCalendar.getEventById('1')
-        expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
-        expect(event.end).toEqualDate('2018-09-05T02:00:00Z')
-      }).then(() => done())
+      await waitTimeout()
+      await doDrag()
+      let event = currentCalendar.getEventById('1')
+      expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
+      expect(event.end).toEqualDate('2018-09-05T02:00:00Z')
     })
 
-    it('sets a default duration when forceEventDuration:true', (done) => {
+    it('sets a default duration when forceEventDuration:true', async () => {
       initCalendar({
         forceEventDuration: true,
         defaultTimedEventDuration: '04:00',
       })
-      doDrag().then(() => {
-        let event = currentCalendar.getEventById('1')
-        expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
-        expect(event.end).toEqualDate('2018-09-03T06:00:00Z')
-      }).then(() => done())
+      await waitTimeout()
+      await doDrag()
+      let event = currentCalendar.getEventById('1')
+      expect(event.start).toEqualDate('2018-09-03T02:00:00Z')
+      expect(event.end).toEqualDate('2018-09-03T06:00:00Z')
     })
   })
 
   describe('when dragging from timed to all-day', () => {
-    it('sets a default duration when forceEventDuration:true', (done) => {
+    it('sets a default duration when forceEventDuration:true', async () => {
       initCalendar({
         forceEventDuration: true,
         defaultAllDayEventDuration: { days: 2 },
@@ -82,6 +83,7 @@ describe('allDay change', () => {
           { id: '1', start: '2018-09-03T01:00:00', end: '2018-09-03T02:00:00' },
         ],
       })
+      await waitTimeout()
 
       let viewWrapper = new TimeGridViewWrapper(currentCalendar)
       let dayGridWrapper = viewWrapper.dayGrid
@@ -89,16 +91,14 @@ describe('allDay change', () => {
       let startRect = timeGridWrapper.getEventEls()[0].getBoundingClientRect()
       let endRect = dayGridWrapper.getDayEls('2018-09-03')[0].getBoundingClientRect()
 
-      drag(startRect, endRect, false).then(() => { // debug=false
-        let event = currentCalendar.getEventById('1')
-        expect(event.start).toEqualDate('2018-09-03T00:00:00Z')
-        expect(event.end).toEqualDate('2018-09-05T00:00:00Z')
-        done()
-      })
+      await drag(startRect, endRect, false) // debug=false
+      let event = currentCalendar.getEventById('1')
+      expect(event.start).toEqualDate('2018-09-03T00:00:00Z')
+      expect(event.end).toEqualDate('2018-09-05T00:00:00Z')
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/7222
-    it('from more-popover', (done) => {
+    it('from more-popover', async () => {
       initCalendar({
         eventMaxStack: 1,
         events: [
@@ -106,25 +106,23 @@ describe('allDay change', () => {
           { id: '2', start: '2018-09-03T01:00:00', end: '2018-09-03T02:00:00' }, // in popover
         ],
       })
+      await waitTimeout()
 
       let viewWrapper = new TimeGridViewWrapper(currentCalendar)
       let dayGridWrapper = viewWrapper.dayGrid
       let timeGridWrapper = viewWrapper.timeGrid
 
       timeGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let popoverEventEl = timeGridWrapper.getMorePopoverEventEls()[0]
-        let startRect = popoverEventEl.getBoundingClientRect()
-        let endRect = dayGridWrapper.getDayEls('2018-09-03')[0].getBoundingClientRect()
+      await waitTimeout()
+      let popoverEventEl = timeGridWrapper.getMorePopoverEventEls()[0]
+      let startRect = popoverEventEl.getBoundingClientRect()
+      let endRect = dayGridWrapper.getDayEls('2018-09-03')[0].getBoundingClientRect()
 
-        drag(startRect, endRect, false, popoverEventEl).then(() => { // debug=false
-          let event = currentCalendar.getEventById('2')
-          expect(event.start).toEqualDate('2018-09-03T00:00:00Z')
-          expect(event.end).toBe(null)
-          expect(event.allDay).toBe(true)
-          done()
-        })
-      })
+      await drag(startRect, endRect, false, popoverEventEl) // debug=false
+      let event = currentCalendar.getEventById('2')
+      expect(event.start).toEqualDate('2018-09-03T00:00:00Z')
+      expect(event.end).toBe(null)
+      expect(event.allDay).toBe(true)
     })
   })
 })

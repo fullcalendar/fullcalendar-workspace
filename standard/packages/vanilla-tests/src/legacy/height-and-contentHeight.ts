@@ -1,6 +1,7 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 import '../lib/dom-misc'
 
 ['height', 'contentHeight'].forEach((heightProp) => {
@@ -100,8 +101,9 @@ import '../lib/dom-misc'
                     events: repeatClone({ title: 'event', start: '2014-08-04' }, 9),
                   })
 
-                  it('should take away height from other rows, but not do scrollbars', () => {
+                  it('should take away height from other rows, but not do scrollbars', async () => {
                     let calendar = init(testInfo.height)
+                    await waitTimeout()
                     let viewWrapper = new DayGridViewWrapper(calendar)
                     let $rows = $(viewWrapper.dayGrid.getRowEls())
                     let $tallRow = $rows.eq(1)
@@ -133,8 +135,9 @@ import '../lib/dom-misc'
                     ),
                   })
 
-                  it('height is correct and scrollbars show up', () => {
+                  it('height is correct and scrollbars show up', async () => {
                     let calendar = init(testInfo.height)
+                    await waitTimeout()
                     let viewWrapper = new DayGridViewWrapper(calendar)
 
                     expectHeight(600)
@@ -156,8 +159,9 @@ import '../lib/dom-misc'
                 ),
               })
 
-              it('height is really tall and there are no scrollbars', () => {
+              it('height is really tall and there are no scrollbars', async () => {
                 let calendar = init('auto')
+                await waitTimeout()
                 let viewWrapper = new DayGridViewWrapper(calendar)
 
                 expect(heightEl.offsetHeight).toBeGreaterThan(1000) // pretty tall
@@ -198,8 +202,9 @@ import '../lib/dom-misc'
                       events: repeatClone({ title: 'event', start: '2014-08-01' }, 100),
                     })
 
-                    it('should have the correct height, with scrollbars', () => {
+                    it('should have the correct height, with scrollbars', async () => {
                       let calendar = init(testInfo.height)
+                      await waitTimeout()
                       let viewWrapper = new DayGridViewWrapper(calendar)
 
                       expectHeight(600)
@@ -213,8 +218,9 @@ import '../lib/dom-misc'
                 pushOptions({
                   events: repeatClone({ title: 'event', start: '2014-08-01' }, 100),
                 })
-                it('should be really tall with no scrollbars', () => {
+                it('should be really tall with no scrollbars', async () => {
                   let calendar = init('auto')
+                  await waitTimeout()
                   let viewWrapper = new DayGridViewWrapper(calendar)
 
                   expect(heightEl.offsetHeight).toBeGreaterThan(1000) // pretty tall
@@ -282,8 +288,9 @@ import '../lib/dom-misc'
                     slotMaxTime: '24:00:00',
                   })
 
-                  it('should be really tall with no scrollbars nor horizontal rule', () => {
+                  it('should be really tall with no scrollbars nor horizontal rule', async () => {
                     let calendar = init('auto')
+                    await waitTimeout()
                     let viewWrapper = new TimeGridViewWrapper(calendar)
 
                     expect(heightEl.offsetHeight).toBeGreaterThan(900) // pretty tall

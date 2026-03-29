@@ -1,15 +1,17 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('scrollTime', () => {
   pushOptions({
     initialView: 'timeGridWeek',
   })
 
-  it('accepts a string Duration', () => {
+  it('accepts a string Duration', async () => {
     let calendar = initCalendar({
       scrollTime: '02:00:00',
       height: 400, // short enough to make scrolling happen
     })
+    await waitTimeout()
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let timeGridWrapper = viewWrapper.timeGrid
     let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') - $(timeGridWrapper.getCanvasEl()).offset().top
@@ -21,11 +23,12 @@ describe('scrollTime', () => {
     expect(diff).toBeLessThan(3)
   })
 
-  it('accepts a Duration object', () => {
+  it('accepts a Duration object', async () => {
     let calendar = initCalendar({
       scrollTime: { hours: 2 },
       height: 400, // short enough to make scrolling happen
     })
+    await waitTimeout()
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let timeGridWrapper = viewWrapper.timeGrid
     let slotTop = timeGridWrapper.getTimeTop('02:00:00') - $(timeGridWrapper.getCanvasEl()).offset().top

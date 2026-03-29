@@ -1,9 +1,10 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { anyElsObscured } from '../lib/dom-geom'
+import { waitTimeout } from '../lib/misc'
 
 describe('timeGrid event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/6019
-  it('renders without intersecting when sorted by title', () => {
+  it('renders without intersecting when sorted by title', async () => {
     let calendar = initCalendar({
       initialView: 'timeGridWeek',
       initialDate: '2020-12-15',
@@ -49,6 +50,7 @@ describe('timeGrid event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     let eventEls = timeGridWrapper.getEventEls()
@@ -58,7 +60,7 @@ describe('timeGrid event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/2758
-  it('renders without intersecting for certain arrangement', () => {
+  it('renders without intersecting for certain arrangement', async () => {
     let calendar = initCalendar({
       initialDate: '2015-04-22',
       initialView: 'timeGridDay',
@@ -128,6 +130,7 @@ describe('timeGrid event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     let eventEls = timeGridWrapper.getEventEls()
@@ -137,7 +140,7 @@ describe('timeGrid event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5004
-  it('renders event widths somewhat equally', () => {
+  it('renders event widths somewhat equally', async () => {
     let calendar = initCalendar({
       initialView: 'timeGridDay',
       initialDate: '2019-08-01',
@@ -160,6 +163,7 @@ describe('timeGrid event rendering', () => {
         { start: '2019-08-01 10:00', end: '2019-08-01 11:00' },
       ],
     })
+    await waitTimeout()
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     let eventEls = timeGridWrapper.getEventEls()
     let eventWidths = eventEls.map((eventEl) => eventEl.getBoundingClientRect().width)

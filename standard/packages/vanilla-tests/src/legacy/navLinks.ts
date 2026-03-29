@@ -1,5 +1,5 @@
 import { addDays } from 'fullcalendar/protected-api'
-import { waitFrame } from '../lib/misc'
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
@@ -22,25 +22,29 @@ describe('navLinks', () => {
         initialView: 'dayGridMonth',
       })
 
-      it('moves to day', () => {
+      it('moves to day', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let calendar = initCalendar()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
+        await waitTimeout()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
       })
 
       // https://github.com/fullcalendar/fullcalendar/issues/4619
-      it('moves to day when no toolbars', () => {
+      it('moves to day when no toolbars', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let calendar = initCalendar({
           headerToolbar: null,
         })
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
+        await waitTimeout()
         expectDayView(calendar, 'dayGridDay', tz.parseDate('2016-08-09')) // is hash-key order-dependent I think :(
         expect(dateClickSpy).not.toHaveBeenCalled()
       })
@@ -51,44 +55,49 @@ describe('navLinks', () => {
         let calendar = initCalendar()
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
-        await waitFrame()
+        await waitTimeout()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
 
         calendar.changeView('dayGridMonth')
-        await waitFrame()
+        await waitTimeout()
         let dayGridWrapper2 = new DayGridViewWrapper(calendar).dayGrid
         dayGridWrapper2.clickNavLink('2016-08-10')
-        await waitFrame()
+        await waitTimeout()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-10'))
       })
 
-      it('moves to day specifically', () => {
+      it('moves to day specifically', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let calendar = initCalendar({
           navLinkDayClick: 'day',
         })
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
+        await waitTimeout()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
       })
 
-      it('moves to dayGridDay specifically', () => {
+      it('moves to dayGridDay specifically', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let calendar = initCalendar({
           navLinkDayClick: 'dayGridDay',
         })
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
+        await waitTimeout()
         expectDayView(calendar, 'dayGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
       })
 
-      it('executes a custom handler', () => {
+      it('executes a custom handler', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let navLinkDayClickSpy = spyOnCalendarCallback('navLinkDayClick', (date, ev) => {
           expect(date).toEqualDate(tz.parseDate('2016-08-09'))
@@ -97,7 +106,9 @@ describe('navLinks', () => {
         let calendar = initCalendar()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+        await waitTimeout()
         dayGridWrapper.clickNavLink('2016-08-09')
+        await waitTimeout()
         expect(dateClickSpy).not.toHaveBeenCalled()
         expect(navLinkDayClickSpy).toHaveBeenCalled()
       })
@@ -107,12 +118,14 @@ describe('navLinks', () => {
           weekNumbers: true,
         })
 
-        it('moves to week', () => {
+        it('moves to week', async () => {
           let dateClickSpy = spyOnCalendarCallback('dateClick')
           let calendar = initCalendar()
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
+          await waitTimeout()
           $.simulateMouseClick(dayGridWrapper.getWeekNavLinkEls()[1])
+          await waitTimeout()
           expectWeekView(calendar, 'timeGridWeek', tz.parseDate('2016-08-07'))
           expect(dateClickSpy).not.toHaveBeenCalled()
         })

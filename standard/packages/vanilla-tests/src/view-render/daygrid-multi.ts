@@ -1,4 +1,5 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 import '../lib/dom-misc.js'
 
 describe('DayGrid w/ multiple weeks/days', () => {
@@ -12,13 +13,14 @@ describe('DayGrid w/ multiple weeks/days', () => {
     expect(calendar.view.currentEnd).toEqualDate('2024-01-01')
   })
 
-  it('renders scrollbars when 7 weeks', () => {
+  it('renders scrollbars when 7 weeks', async () => {
     const calendar = initCalendar({
       initialDate: '2023-01-25',
       initialView: 'dayGrid',
       duration: { weeks: 7 },
     })
 
+    await waitTimeout()
     const dayGridView = new DayGridViewWrapper(calendar)
     expect(dayGridView.getScrollerEl()).toHaveScrollbars()
   })

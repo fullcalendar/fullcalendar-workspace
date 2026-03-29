@@ -1,6 +1,7 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { waitEventDrag } from '../lib/wrappers/interaction-util'
+import { waitTimeout } from '../lib/misc'
 
 describe('eventAllow', () => {
   pushOptions({
@@ -16,7 +17,7 @@ describe('eventAllow', () => {
     ],
   })
 
-  it('disallows dragging when returning false', (done) => { // and given correct params
+  it('disallows dragging when returning false', async () => { // and given correct params
     let options = {
       eventAllow(dropInfo, event) {
         expect(typeof dropInfo).toBe('object')
@@ -30,6 +31,7 @@ describe('eventAllow', () => {
     spyOn(options, 'eventAllow').and.callThrough()
 
     let calendar = initCalendar(options)
+    await waitTimeout()
     let calendarWrapper = new CalendarWrapper(calendar)
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
@@ -38,14 +40,12 @@ describe('eventAllow', () => {
       '2016-09-04T03:00:00',
     )
 
-    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-      expect(modifiedEvent).toBeFalsy() // drop failure?
-      expect(options.eventAllow).toHaveBeenCalled()
-      done()
-    })
+    let modifiedEvent = await waitEventDrag(calendar, dragging)
+    expect(modifiedEvent).toBeFalsy() // drop failure?
+    expect(options.eventAllow).toHaveBeenCalled()
   })
 
-  it('allows dragging when returning true', (done) => {
+  it('allows dragging when returning true', async () => {
     let options = {
       eventAllow() {
         return true
@@ -54,6 +54,7 @@ describe('eventAllow', () => {
     spyOn(options, 'eventAllow').and.callThrough()
 
     let calendar = initCalendar(options)
+    await waitTimeout()
     let calendarWrapper = new CalendarWrapper(calendar)
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
@@ -62,10 +63,8 @@ describe('eventAllow', () => {
       '2016-09-04T03:00:00Z',
     )
 
-    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-      expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
-      expect(options.eventAllow).toHaveBeenCalled()
-      done()
-    })
+    let modifiedEvent = await waitEventDrag(calendar, dragging)
+    expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+    expect(options.eventAllow).toHaveBeenCalled()
   })
 })

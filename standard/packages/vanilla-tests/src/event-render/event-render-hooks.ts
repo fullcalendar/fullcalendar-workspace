@@ -2,6 +2,7 @@ import { createElement } from 'fullcalendar/preact'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { RED_REGEX } from '../lib/dom-misc'
+import { waitTimeout } from '../lib/misc'
 
 describe('eventContent', () => {
   pushOptions({
@@ -117,7 +118,7 @@ describe('eventContent', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6079
-  it('can handle view-specific custom content generators', () => {
+  it('can handle view-specific custom content generators', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridWeek',
       initialDate: '2021-01-07',
@@ -136,12 +137,13 @@ describe('eventContent', () => {
       ],
     })
 
+    await waitTimeout()
     let dayGrid = new DayGridViewWrapper(calendar).dayGrid
     let eventEl = dayGrid.getEventEls()[0]
     expect(eventEl.innerText.trim()).toBe('test dayGridWeek')
 
     calendar.changeView('dayGridMonth')
-
+    await waitTimeout()
     dayGrid = new DayGridViewWrapper(calendar).dayGrid
     eventEl = dayGrid.getEventEls()[0]
     expect(eventEl.innerText.trim()).toBe('default title')

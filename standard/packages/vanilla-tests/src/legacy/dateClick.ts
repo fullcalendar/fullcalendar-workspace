@@ -1,3 +1,4 @@
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
@@ -186,8 +187,10 @@ describe('dateClick', () => {
       })
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      let dayCell = dayGridWrapper.getDayEl('2014-05-07')
-      $.simulateTouchClick(dayCell)
+      waitTimeout().then(() => {
+        let dayCell = dayGridWrapper.getDayEl('2014-05-07')
+        $.simulateTouchClick(dayCell)
+      })
     })
   })
 })

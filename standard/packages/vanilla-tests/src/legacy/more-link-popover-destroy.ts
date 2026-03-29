@@ -1,4 +1,5 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('more-link popover', () => {
   pushOptions({
@@ -13,7 +14,7 @@ describe('more-link popover', () => {
     ],
   })
 
-  it('closes when user clicks the X and trigger eventWillUnmount for every render', (done) => {
+  it('closes when user clicks the X and trigger eventWillUnmount for every render', async () => {
     let eventsRendered = {}
     let renderCount = 0
     let activated = false
@@ -36,21 +37,19 @@ describe('more-link popover', () => {
 
     // Activate flags and pop event limit popover
     activated = true
+    await waitTimeout()
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
 
-      dayGridWrapper.closeMorePopover()
-      setTimeout(() => {
-        expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
-        expect(Object.keys(eventsRendered).length).toEqual(0)
-        expect(renderCount).toEqual(0)
-        done()
-      })
-    })
+    dayGridWrapper.closeMorePopover()
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
+    expect(Object.keys(eventsRendered).length).toEqual(0)
+    expect(renderCount).toEqual(0)
   })
 
-  it('closes when user clicks outside of the popover and trigger eventWillUnmount for every render', (done) => {
+  it('closes when user clicks outside of the popover and trigger eventWillUnmount for every render', async () => {
     let eventsRendered = {}
     let renderCount = 0
     let activated = false
@@ -73,17 +72,15 @@ describe('more-link popover', () => {
 
     // Activate flags and pop event limit popover
     activated = true
+    await waitTimeout()
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
 
-      $('body').simulate('mousedown').simulate('click')
-      setTimeout(() => {
-        expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
-        expect(Object.keys(eventsRendered).length).toEqual(0)
-        expect(renderCount).toEqual(0)
-        done()
-      })
-    })
+    $('body').simulate('mousedown').simulate('click')
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
+    expect(Object.keys(eventsRendered).length).toEqual(0)
+    expect(renderCount).toEqual(0)
   })
 })

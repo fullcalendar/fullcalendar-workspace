@@ -1,5 +1,6 @@
 import { directionallyTestSeg } from '../lib/DayGridEventRenderUtils'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('event rendering with slotMaxTime', () => { // TODO: rename file
   pushOptions({
@@ -16,8 +17,9 @@ describe('event rendering with slotMaxTime', () => { // TODO: rename file
       ],
     })
 
-    it('renders two event elements in the correct places', () => {
+    it('renders two event elements in the correct places', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let res = timeGridWrapper.checkEventRendering(
         '2017-03-22T00:00:00Z',

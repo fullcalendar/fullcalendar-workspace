@@ -1,8 +1,9 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('refetchEvents', () => {
-  it('retains scroll when in month view', () => {
+  it('retains scroll when in month view', async () => {
     let el = $('<div id="calendar" style="width:300px"/>').appendTo('body')
     let scrollEl
     let scrollTop
@@ -21,6 +22,8 @@ describe('refetchEvents', () => {
         { start: '2017-04-04', title: 'event' },
       ],
     }, el)
+
+    await waitTimeout()
 
     let calendarWrapper = new CalendarWrapper(calendar)
 

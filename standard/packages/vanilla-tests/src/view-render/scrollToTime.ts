@@ -1,14 +1,17 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('scrollToTime method', () => {
-  it('accepts a object duration input', () => {
+  it('accepts a object duration input', async () => {
     let calendar = initCalendar({
       scrollTime: 0,
       initialView: 'timeGridWeek',
     })
     let viewWrapper = new TimeGridViewWrapper(calendar)
 
+    await waitTimeout()
     calendar.scrollToTime({ hours: 2 })
+    await waitTimeout()
 
     // NOTE: c&p'd from scrollTime tests
     let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') -

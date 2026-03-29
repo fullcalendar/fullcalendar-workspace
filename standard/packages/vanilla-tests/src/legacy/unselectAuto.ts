@@ -1,3 +1,4 @@
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('unselectAuto', () => {
@@ -74,7 +75,7 @@ describe('unselectAuto', () => {
       unselectAuto: false,
     })
 
-    it('keeps current selection when clicking elsewhere in DOM', (done) => {
+    it('keeps current selection when clicking elsewhere in DOM', async () => {
       let calendar = initCalendar()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
@@ -86,10 +87,8 @@ describe('unselectAuto', () => {
         .simulate('mouseup')
         .simulate('click')
 
-      setTimeout(() => {
-        expect(dayGridWrapper.getHighlightEls().length).toBeGreaterThan(0)
-        done()
-      })
+      await waitTimeout()
+      expect(dayGridWrapper.getHighlightEls().length).toBeGreaterThan(0)
     })
   })
 })

@@ -1,9 +1,10 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('named time zones', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5753
   describe('now-date', () => {
-    it('adapts to switching timeZone', () => {
+    it('adapts to switching timeZone', async () => {
       const calendar = initCalendar({
         timeZone: 'America/Chicago',
         initialView: 'timeGridDay',
@@ -12,11 +13,13 @@ describe('named time zones', () => {
       })
       const timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
+      await waitTimeout()
       let nowIndicatorLineEl = timeGridWrapper.getNowIndicatorLineEl()
       let nowIndicatorY0 = nowIndicatorLineEl.getBoundingClientRect().top
 
       calendar.setOption('timeZone', 'Europe/London')
 
+      await waitTimeout()
       nowIndicatorLineEl = timeGridWrapper.getNowIndicatorLineEl()
       let nowIndicatorY1 = nowIndicatorLineEl.getBoundingClientRect().top
 

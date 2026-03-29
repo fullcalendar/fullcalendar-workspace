@@ -2,6 +2,7 @@ import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('moreLinkClick', () => {
   pushOptions({
@@ -21,15 +22,14 @@ describe('moreLinkClick', () => {
       moreLinkClick: 'popover',
     })
 
-    it('renders a popover upon click', (done) => {
+    it('renders a popover upon click', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
-        done()
-      })
+      await waitTimeout()
+      expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
     })
 
     // more popover tests are done in *-popover.js
@@ -40,7 +40,7 @@ describe('moreLinkClick', () => {
       moreLinkClick: 'week',
     })
 
-    it('should go to dayGridWeek if it is one of the available views', (done) => {
+    it('should go to dayGridWeek if it is one of the available views', async () => {
       let calendar = initCalendar({
         headerToolbar: {
           left: 'prev,next today',
@@ -48,17 +48,16 @@ describe('moreLinkClick', () => {
           right: 'dayGridMonth,dayGridWeek,dayGridDay',
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let view = currentCalendar.view
-        expect(view.type).toBe('dayGridWeek')
-        done()
-      })
+      await waitTimeout()
+      let view = currentCalendar.view
+      expect(view.type).toBe('dayGridWeek')
     })
 
-    it('should go to week if it is one of the available views', (done) => {
+    it('should go to week if it is one of the available views', async () => {
       let calendar = initCalendar({
         headerToolbar: {
           left: 'prev,next today',
@@ -66,14 +65,13 @@ describe('moreLinkClick', () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let view = currentCalendar.view
-        expect(view.type).toBe('timeGridWeek')
-        done()
-      })
+      await waitTimeout()
+      let view = currentCalendar.view
+      expect(view.type).toBe('timeGridWeek')
     })
   })
 
@@ -82,7 +80,7 @@ describe('moreLinkClick', () => {
       moreLinkClick: 'day',
     })
 
-    it('should go to dayGridDay if it is one of the available views', (done) => {
+    it('should go to dayGridDay if it is one of the available views', async () => {
       let calendar = initCalendar({
         headerToolbar: {
           left: 'prev,next today',
@@ -90,17 +88,16 @@ describe('moreLinkClick', () => {
           right: 'dayGridMonth,dayGridWeek,dayGridDay',
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let view = currentCalendar.view
-        expect(view.type).toBe('dayGridDay')
-        done()
-      })
+      await waitTimeout()
+      let view = currentCalendar.view
+      expect(view.type).toBe('dayGridDay')
     })
 
-    it('should go to day if it is one of the available views', (done) => {
+    it('should go to day if it is one of the available views', async () => {
       let calendar = initCalendar({
         headerToolbar: {
           left: 'prev,next today',
@@ -108,18 +105,17 @@ describe('moreLinkClick', () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let view = currentCalendar.view
-        expect(view.type).toBe('timeGridDay')
-        done()
-      })
+      await waitTimeout()
+      let view = currentCalendar.view
+      expect(view.type).toBe('timeGridDay')
     })
   })
 
-  it('works with an explicit view name', (done) => {
+  it('works with an explicit view name', async () => {
     let calendar = initCalendar({
       moreLinkClick: 'timeGridWeek',
       headerToolbar: {
@@ -128,17 +124,16 @@ describe('moreLinkClick', () => {
         right: 'dayGridMonth,dayGridWeek,dayGridDay',
       },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      let view = currentCalendar.view
-      expect(view.type).toBe('timeGridWeek')
-      done()
-    })
+    await waitTimeout()
+    let view = currentCalendar.view
+    expect(view.type).toBe('timeGridWeek')
   })
 
-  it('works with custom function and all the arguments are correct', (done) => {
+  it('works with custom function and all the arguments are correct', async () => {
     let handled = false
     let calendar = initCalendar({
       moreLinkClick(data) {
@@ -150,29 +145,27 @@ describe('moreLinkClick', () => {
         handled = true
       },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      expect(handled).toBe(true)
-      done()
-    })
+    await waitTimeout()
+    expect(handled).toBe(true)
   })
 
-  it('works with custom function, and can return a view name', (done) => {
+  it('works with custom function, and can return a view name', async () => {
     let calendar = initCalendar({
       moreLinkClick() {
         return 'timeGridDay'
       },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      let view = currentCalendar.view
-      expect(view.type).toBe('timeGridDay')
-      done()
-    })
+    await waitTimeout()
+    let view = currentCalendar.view
+    expect(view.type).toBe('timeGridDay')
   })
 
   describe('with moment-timezone resolution', () => {
@@ -181,7 +174,7 @@ describe('moreLinkClick', () => {
       timeZone: 'Asia/Hong_Kong',
     })
 
-    it('gives date data correct timezone', (done) => {
+    it('gives date data correct timezone', async () => {
       let handled = false
       let calendar = initCalendar({
         moreLinkClick(data) {
@@ -190,13 +183,12 @@ describe('moreLinkClick', () => {
           handled = true
         },
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        expect(handled).toBe(true)
-        done()
-      })
+      await waitTimeout()
+      expect(handled).toBe(true)
     })
   })
 })

@@ -1,6 +1,7 @@
 import { ThirdPartyDraggable } from 'fullcalendar/interaction'
 import { testEventDrag } from '../lib/dnd-resize-utils'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { waitTimeout } from '../lib/misc'
 
 // TODO: Use the built-in Draggable for some of these tests
 
@@ -59,11 +60,11 @@ describe('advanced external dnd', () => {
       })
 
       function defineTests() {
-        it('fires correctly', (done) => {
-          testExternalElDrag({}, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true, done)
+        it('fires correctly', async () => {
+          await testExternalElDrag({}, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true)
         })
 
-        it('is not affected by eventOverlap:false', (done) => {
+        it('is not affected by eventOverlap:false', async () => {
           let options = {
             eventOverlap: false,
             events: [{
@@ -71,10 +72,10 @@ describe('advanced external dnd', () => {
               end: '2014-11-13T05:00:00',
             }],
           }
-          testExternalElDrag(options, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true, done)
+          await testExternalElDrag(options, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true)
         })
 
-        it('is not affected by an event object\'s overlap:false', (done) => {
+        it('is not affected by an event object\'s overlap:false', async () => {
           let options = {
             events: [{
               start: '2014-11-13T01:00:00',
@@ -82,17 +83,17 @@ describe('advanced external dnd', () => {
               overlap: false,
             }],
           }
-          testExternalElDrag(options, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true, done)
+          await testExternalElDrag(options, '2014-11-13T03:00:00Z', '2014-11-13T03:00:00Z', true)
         })
 
-        it('is not affected by eventConstraint', (done) => {
+        it('is not affected by eventConstraint', async () => {
           let options = {
             eventConstraint: {
               start: '03:00',
               end: '10:00',
             },
           }
-          testExternalElDrag(options, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true, done)
+          await testExternalElDrag(options, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
         })
 
         describe('with selectOverlap:false', () => {
@@ -104,8 +105,8 @@ describe('advanced external dnd', () => {
             }],
           })
 
-          it('is not allowed to overlap an event', (done) => {
-            testExternalElDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', false, done)
+          it('is not allowed to overlap an event', async () => {
+            await testExternalElDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', false)
           })
         })
 
@@ -117,23 +118,23 @@ describe('advanced external dnd', () => {
             },
           })
 
-          it('can be dropped within', (done) => {
-            testExternalElDrag({}, '2014-11-13T05:30:00Z', '2014-11-13T05:30:00Z', true, done)
+          it('can be dropped within', async () => {
+            await testExternalElDrag({}, '2014-11-13T05:30:00Z', '2014-11-13T05:30:00Z', true)
           })
 
-          it('cannot be dropped when not fully contained', (done) => {
-            testExternalElDrag({}, '2014-11-13T06:00:00Z', '2014-11-13T06:00:00Z', false, done)
+          it('cannot be dropped when not fully contained', async () => {
+            await testExternalElDrag({}, '2014-11-13T06:00:00Z', '2014-11-13T06:00:00Z', false)
           })
         })
       }
     })
 
     describe('when event data is given', () => {
-      it('fires correctly', (done) => {
+      it('fires correctly', async () => {
         dragEl.attr('data-event', JSON.stringify({
           title: 'hey',
         }))
-        testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true, done)
+        await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
       })
 
       describe('when given a start time', () => {
@@ -144,8 +145,8 @@ describe('advanced external dnd', () => {
             }))
           })
 
-          it('voids the given time when dropped on a timed slot', (done) => {
-            testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true, done)
+          it('voids the given time when dropped on a timed slot', async () => {
+            await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
             // will test the resulting event object's start
           })
         })
@@ -159,13 +160,11 @@ describe('advanced external dnd', () => {
             }))
           })
 
-          it('accepts the given duration when dropped on a timed slot', (done) => {
-            testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true, () => {
-              let event = currentCalendar.getEvents()[0]
-              expect(event.start).toEqualDate('2014-11-13T02:00:00Z')
-              expect(event.end).toEqualDate('2014-11-13T07:00:00Z')
-              done()
-            })
+          it('accepts the given duration when dropped on a timed slot', async () => {
+            await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
+            let event = currentCalendar.getEvents()[0]
+            expect(event.start).toEqualDate('2014-11-13T02:00:00Z')
+            expect(event.end).toEqualDate('2014-11-13T07:00:00Z')
           })
         })
       })
@@ -178,18 +177,15 @@ describe('advanced external dnd', () => {
             }))
           })
 
-          it('keeps the event when navigating away and back', (done) => {
-            testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true, () => {
-              setTimeout(() => { // make sure to escape handlers
-                let calendarWrapper = new CalendarWrapper(currentCalendar)
-                expect(calendarWrapper.getEventEls().length).toBe(1)
-                currentCalendar.next()
-                expect(calendarWrapper.getEventEls().length).toBe(0)
-                currentCalendar.prev()
-                expect(calendarWrapper.getEventEls().length).toBe(1)
-                done()
-              }, 0)
-            })
+          it('keeps the event when navigating away and back', async () => {
+            await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
+            await waitTimeout()
+            let calendarWrapper = new CalendarWrapper(currentCalendar)
+            expect(calendarWrapper.getEventEls().length).toBe(1)
+            currentCalendar.next()
+            expect(calendarWrapper.getEventEls().length).toBe(0)
+            currentCalendar.prev()
+            expect(calendarWrapper.getEventEls().length).toBe(1)
           })
         })
       })
@@ -245,11 +241,11 @@ describe('advanced external dnd', () => {
         })
 
         function defineTests() {
-          it('allows a drop when not colliding with the other event', (done) => {
-            testExternalEventDrag({}, '2014-11-13T08:00:00Z', '2014-11-13T08:00:00Z', true, done)
+          it('allows a drop when not colliding with the other event', async () => {
+            await testExternalEventDrag({}, '2014-11-13T08:00:00Z', '2014-11-13T08:00:00Z', true)
           })
-          it('prevents a drop when colliding with the other event', (done) => {
-            testExternalEventDrag({}, '2014-11-13T06:00:00Z', '2014-11-13T06:00:00Z', false, done)
+          it('prevents a drop when colliding with the other event', async () => {
+            await testExternalEventDrag({}, '2014-11-13T06:00:00Z', '2014-11-13T06:00:00Z', false)
           })
         }
       })
@@ -287,11 +283,11 @@ describe('advanced external dnd', () => {
         })
 
         function defineTests() {
-          it('allows a drop when inside the constraint', (done) => {
-            testExternalEventDrag({}, '2014-11-13T05:00:00Z', '2014-11-13T05:00:00Z', true, done)
+          it('allows a drop when inside the constraint', async () => {
+            await testExternalEventDrag({}, '2014-11-13T05:00:00Z', '2014-11-13T05:00:00Z', true)
           })
-          it('disallows a drop when partially outside of the constraint', (done) => {
-            testExternalEventDrag({}, '2014-11-13T07:00:00Z', '2014-11-13T07:00:00Z', false, done)
+          it('disallows a drop when partially outside of the constraint', async () => {
+            await testExternalEventDrag({}, '2014-11-13T07:00:00Z', '2014-11-13T07:00:00Z', false)
           })
         }
       })
@@ -306,11 +302,11 @@ describe('advanced external dnd', () => {
     })
 
     describe('when event data is given', () => {
-      it('fires correctly', (done) => {
+      it('fires correctly', async () => {
         dragEl.attr('data-event', JSON.stringify({
           title: 'hey',
         }))
-        testExternalEventDrag({}, '2014-11-13', '2014-11-13', true, done)
+        await testExternalEventDrag({}, '2014-11-13', '2014-11-13', true)
       })
 
       describe('when given a start time', () => {
@@ -321,20 +317,18 @@ describe('advanced external dnd', () => {
             }))
           })
 
-          it('accepts the given start time for the dropped day', (done) => {
-            testExternalEventDrag({}, '2014-11-13', '2014-11-13T05:00:00Z', true, () => {
-              // the whole-day start was already checked. we still need to check the exact time
-              let event = currentCalendar.getEvents()[0]
-              expect(event.start).toEqualDate('2014-11-13T05:00:00Z')
-              done()
-            })
+          it('accepts the given start time for the dropped day', async () => {
+            await testExternalEventDrag({}, '2014-11-13', '2014-11-13T05:00:00Z', true)
+            // the whole-day start was already checked. we still need to check the exact time
+            let event = currentCalendar.getEvents()[0]
+            expect(event.start).toEqualDate('2014-11-13T05:00:00Z')
           })
         })
       })
     })
   })
 
-  function testExternalElDrag(options, dragToDate, expectedDate, expectSuccess, callback) { // with NO event creation
+  async function testExternalElDrag(options, dragToDate, expectedDate, expectSuccess) { // with NO event creation
     options.droppable = true
     options.drop = (data) => {
       expect(data.date instanceof Date).toBe(true)
@@ -345,18 +339,17 @@ describe('advanced external dnd', () => {
     spyOn(options, 'drop').and.callThrough()
     spyOn(options, 'eventReceive').and.callThrough()
 
-    testEventDrag(options, dragToDate, expectSuccess, () => {
-      if (expectSuccess) {
-        expect(options.drop).toHaveBeenCalled()
-      } else {
-        expect(options.drop).not.toHaveBeenCalled()
-      }
-      expect(options.eventReceive).not.toHaveBeenCalled()
-      callback()
-    }, 'drag') // .drag className
+    await testEventDrag(options, dragToDate, expectSuccess, 'drag') // .drag className
+
+    if (expectSuccess) {
+      expect(options.drop).toHaveBeenCalled()
+    } else {
+      expect(options.drop).not.toHaveBeenCalled()
+    }
+    expect(options.eventReceive).not.toHaveBeenCalled()
   }
 
-  function testExternalEventDrag(options, dragToDate, expectedDate, expectSuccess, callback) {
+  async function testExternalEventDrag(options, dragToDate, expectedDate, expectSuccess) {
     let expectedAllDay = dragToDate.indexOf('T') === -1 // for the drop callback only!
 
     options.droppable = true
@@ -372,15 +365,14 @@ describe('advanced external dnd', () => {
     spyOn(options, 'drop').and.callThrough()
     spyOn(options, 'eventReceive').and.callThrough()
 
-    testEventDrag(options, dragToDate, expectSuccess, () => {
-      if (expectSuccess) {
-        expect(options.drop).toHaveBeenCalled()
-        expect(options.eventReceive).toHaveBeenCalled()
-      } else {
-        expect(options.drop).not.toHaveBeenCalled()
-        expect(options.eventReceive).not.toHaveBeenCalled()
-      }
-      callback()
-    }, 'drag') // .drag className
+    await testEventDrag(options, dragToDate, expectSuccess, 'drag') // .drag className
+
+    if (expectSuccess) {
+      expect(options.drop).toHaveBeenCalled()
+      expect(options.eventReceive).toHaveBeenCalled()
+    } else {
+      expect(options.drop).not.toHaveBeenCalled()
+      expect(options.eventReceive).not.toHaveBeenCalled()
+    }
   }
 })

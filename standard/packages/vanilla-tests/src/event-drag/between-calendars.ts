@@ -1,5 +1,4 @@
 import { Calendar } from 'fullcalendar'
-import { waitFrame } from '../lib/misc'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import interactionPlugin from 'fullcalendar/interaction'
@@ -9,6 +8,7 @@ import { getRectCenter } from '../lib/geom'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('dragging events between calendars', () => {
   let DEFAULT_DATE = '2019-01-01'
@@ -93,7 +93,7 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
-    waitFrame().then(() => {
+    waitTimeout().then(() => {
       let dayGridWrapper0 = new DayGridViewWrapper(calendar0).dayGrid
       let dayGridWrapper1 = new DayGridViewWrapper(calendar1).dayGrid
 
@@ -140,7 +140,7 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
-    waitFrame().then(() => {
+    waitTimeout().then(() => {
       let eventEl = new CalendarWrapper(calendar0).getEventEls()[0] // of the source calendar
       let destViewWrapper = new TimeGridViewWrapper(calendar1)
       let point1 = getRectCenter(destViewWrapper.getScrollerEl().getBoundingClientRect())
