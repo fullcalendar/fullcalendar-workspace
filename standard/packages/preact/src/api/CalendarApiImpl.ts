@@ -27,8 +27,6 @@ import {
   EventSourceInput,
   EventInput,
 } from './structs'
-import { updateSizeSync } from '../component-util/resize-observer'
-import { flushUpdates } from '../vdom'
 import { NavButtonState, ButtonStateMap } from '../structs/button-state'
 import { formatWithOrdinals } from '../util/misc'
 
@@ -47,14 +45,6 @@ export class CalendarApiImpl implements CalendarApi {
 
   batchRendering(callback: () => void): void { // subclasses should implement
     callback()
-  }
-
-  updateSize(): void {
-    let cycleCount = 0
-
-    while (cycleCount++ < 3 && updateSizeSync()) {
-      flushUpdates()
-    }
   }
 
   // Options

@@ -1,4 +1,5 @@
 import { Calendar } from 'fullcalendar'
+import { waitFrame } from '../lib/misc'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import interactionPlugin from 'fullcalendar/interaction'
@@ -92,22 +93,22 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
-    calendar1.updateSize()
+    waitFrame().then(() => {
+      let dayGridWrapper0 = new DayGridViewWrapper(calendar0).dayGrid
+      let dayGridWrapper1 = new DayGridViewWrapper(calendar1).dayGrid
 
-    let dayGridWrapper0 = new DayGridViewWrapper(calendar0).dayGrid
-    let dayGridWrapper1 = new DayGridViewWrapper(calendar1).dayGrid
+      eventEl = dayGridWrapper0.getEventEls()[0]
+      let dayEl = dayGridWrapper1.getDayEls('2019-01-05')[0]
+      let point1 = getRectCenter(dayEl.getBoundingClientRect())
 
-    eventEl = dayGridWrapper0.getEventEls()[0]
-    let dayEl = dayGridWrapper1.getDayEls('2019-01-05')[0]
-    let point1 = getRectCenter(dayEl.getBoundingClientRect())
-
-    $(eventEl).simulate('drag', {
-      end: point1,
-      callback() {
-        expect(triggerNames).toEqual(['eventLeave', 'drop', 'eventReceive'])
-        expect(eventAllowCalled).toBe(true)
-        done()
-      },
+      $(eventEl).simulate('drag', {
+        end: point1,
+        callback() {
+          expect(triggerNames).toEqual(['eventLeave', 'drop', 'eventReceive'])
+          expect(eventAllowCalled).toBe(true)
+          done()
+        },
+      })
     })
   })
 
@@ -139,14 +140,14 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
-    calendar1.updateSize()
+    waitFrame().then(() => {
+      let eventEl = new CalendarWrapper(calendar0).getEventEls()[0] // of the source calendar
+      let destViewWrapper = new TimeGridViewWrapper(calendar1)
+      let point1 = getRectCenter(destViewWrapper.getScrollerEl().getBoundingClientRect())
 
-    let eventEl = new CalendarWrapper(calendar0).getEventEls()[0] // of the source calendar
-    let destViewWrapper = new TimeGridViewWrapper(calendar1)
-    let point1 = getRectCenter(destViewWrapper.getScrollerEl().getBoundingClientRect())
-
-    $(eventEl).simulate('drag', {
-      end: point1,
+      $(eventEl).simulate('drag', {
+        end: point1,
+      })
     })
   })
 })

@@ -1,6 +1,7 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { filterVisibleEls } from '../lib/dom-misc'
+import { waitTimeout } from '../lib/misc'
 
 describe('dayMaxEventRows', () => {
   pushOptions({
@@ -39,7 +40,7 @@ describe('dayMaxEventRows', () => {
         expect(dayGridWrapper.getMoreEls().length).toBe(0)
       })
 
-      it('displays a more link when limit is less than the # of events', () => {
+      it('displays a more link when limit is less than the # of events', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-29' },
@@ -48,13 +49,14 @@ describe('dayMaxEventRows', () => {
             { title: 'event2', start: '2014-07-29' },
           ],
         })
+        await waitTimeout()
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let moreEls = dayGridWrapper.getMoreEls()
         expect(moreEls.length).toBe(1)
         expect(moreEls[0]).toHaveText('+2 more')
       })
 
-      it('displays one more per day, when a multi-day event is above', () => {
+      it('displays one more per day, when a multi-day event is above', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-29', end: '2014-07-31' },
@@ -63,6 +65,7 @@ describe('dayMaxEventRows', () => {
             { title: 'event2', start: '2014-07-29', end: '2014-07-31' },
           ],
         })
+        await waitTimeout()
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let moreEls = dayGridWrapper.getMoreEls()
         let cells = dayGridWrapper.getDayElsInRow(0)
@@ -73,7 +76,7 @@ describe('dayMaxEventRows', () => {
         expect(moreEls[1]).toBeBoundedBy(cells[3])
       })
 
-      it('will render a pertially hidden single-day event', () => {
+      it('will render a pertially hidden single-day event', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-29', end: '2014-07-31' },
@@ -83,6 +86,7 @@ describe('dayMaxEventRows', () => {
           ],
         })
 
+        await waitTimeout()
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let eventEls = dayGridWrapper.getEventEls()
         let visibleEventEls = filterVisibleEls(eventEls)
@@ -95,7 +99,7 @@ describe('dayMaxEventRows', () => {
       })
 
       // https://github.com/fullcalendar/fullcalendar/issues/6187
-      it('will render a partially multi-day hidden event', () => {
+      it('will render a partially multi-day hidden event', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-28', end: '2014-07-30' },
@@ -105,8 +109,7 @@ describe('dayMaxEventRows', () => {
           ],
         })
 
-        // HACK for multiple rounds of sizing
-        calendar.updateSize()
+        await waitTimeout()
 
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let eventEls = dayGridWrapper.getEventEls()
@@ -119,7 +122,7 @@ describe('dayMaxEventRows', () => {
         expect(moreEls[0]).toBeBoundedBy(cells[2])
       })
 
-      it('will render a link in place of a hidden single day event, if covered by a multi-day', () => {
+      it('will render a link in place of a hidden single day event, if covered by a multi-day', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-28', end: '2014-07-30' },
@@ -128,6 +131,7 @@ describe('dayMaxEventRows', () => {
             { title: 'event4', start: '2014-07-28' },
           ],
         })
+        await waitTimeout()
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let cells = dayGridWrapper.getDayElsInRow(0)
         let moreEls = dayGridWrapper.getMoreEls()
@@ -138,7 +142,7 @@ describe('dayMaxEventRows', () => {
 
       it('will render a link in place of a hidden single day event, if covered by a multi-day ' +
         'and in its second column',
-      () => {
+      async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-28', end: '2014-07-30' },
@@ -147,6 +151,7 @@ describe('dayMaxEventRows', () => {
             { title: 'event4', start: '2014-07-29' },
           ],
         })
+        await waitTimeout()
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let cells = dayGridWrapper.getDayElsInRow(0)
         let moreEls = dayGridWrapper.getMoreEls()
@@ -198,9 +203,10 @@ describe('dayMaxEventRows', () => {
         })
       })
 
-      it('renders a more link when there are obviously too many events', () => {
+      it('renders a more link when there are obviously too many events', async () => {
         let $el = $('<div id="calendar">').appendTo('body').width(800)
         let calendar = initCalendar({}, $el)
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         let moreEls = dayGridWrapper.getMoreEls()
         expect(moreEls.length).toBe(1)
@@ -227,7 +233,7 @@ describe('dayMaxEventRows', () => {
         initialView: 'timeGridWeek',
       })
 
-      it('behaves as if limit is 5', () => {
+      it('behaves as if limit is 5', async () => {
         let calendar = initCalendar({
           events: [
             { title: 'event1', start: '2014-07-29' },
@@ -239,6 +245,7 @@ describe('dayMaxEventRows', () => {
             { title: 'event2', start: '2014-07-29' },
           ],
         })
+        await waitTimeout()
         let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid
         let eventEls = filterVisibleEls(dayGridWrapper.getEventEls())
         let moreEls = dayGridWrapper.getMoreEls()

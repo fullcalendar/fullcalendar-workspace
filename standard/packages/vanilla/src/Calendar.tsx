@@ -117,10 +117,6 @@ export class Calendar extends CalendarApiImpl {
     }
 
     this.renderRunner.request()
-
-    if (wasRendering) {
-      this.updateSize()
-    }
   }
 
   destroy(): void {

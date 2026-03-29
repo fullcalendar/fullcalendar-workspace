@@ -2,6 +2,7 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { anyElsIntersect } from '../lib/dom-geom'
 import { filterVisibleEls } from '../lib/dom-misc'
+import { waitFrame } from '../lib/misc'
 
 describe('dayGrid advanced event rendering', () => {
   pushOptions({
@@ -223,7 +224,7 @@ describe('dayGrid advanced event rendering', () => {
     expect(dayGridWrapper.isEventListItem(eventEl)).toBe(false)
   })
 
-  it('adjusts more link when getting bigger then smaller with liquid height', () => {
+  it('adjusts more link when getting bigger then smaller with liquid height', async () => {
     const LARGE_HEIGHT = 800
     const SMALL_HEIGHT = 500
     let $container = $(
@@ -247,12 +248,12 @@ describe('dayGrid advanced event rendering', () => {
     let origEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
 
     $container.css('height', SMALL_HEIGHT)
-    calendar.updateSize()
+    await waitFrame()
     let smallEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(smallEventCnt).not.toBe(origEventCnt)
 
     $container.css('height', LARGE_HEIGHT)
-    calendar.updateSize()
+    await waitFrame()
     let largeEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(largeEventCnt).toBe(origEventCnt)
 

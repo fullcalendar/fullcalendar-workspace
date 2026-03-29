@@ -3,6 +3,7 @@ import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import timeGridPlugin from 'fullcalendar/timegrid'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitFrame } from '../lib/misc'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 function buildOptions() {
@@ -32,10 +33,10 @@ describe('mutateOptions', () => { // TODO: rename file
     $calendarEl.remove()
   })
 
-  it('will react to a single option and keep scroll', () => {
+  it('will react to a single option and keep scroll', async () => {
     calendar = new Calendar($calendarEl[0], buildOptions())
     calendar.render()
-    calendar.updateSize()
+    await waitFrame()
 
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let scrollEl = viewWrapper.getScrollerEl()
@@ -45,7 +46,7 @@ describe('mutateOptions', () => { // TODO: rename file
     expect(scrollTop).toBeGreaterThan(0)
 
     calendar.setOption('allDaySlot', false)
-    calendar.updateSize()
+    await waitFrame()
 
     expect(calendar.getOption('allDaySlot')).toBe(false)
     expect(viewWrapper.dayGrid).toBeFalsy()

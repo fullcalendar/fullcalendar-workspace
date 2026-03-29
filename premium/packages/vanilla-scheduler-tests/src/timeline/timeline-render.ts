@@ -124,7 +124,6 @@ describe('timeline rendering', () => {
       resources(fetchInfo, success) {
         setTimeout(() => {
           success(buildResources(20))
-          calendar.updateSize() // HACK to prevent ResizeObserver error (warning?) that ends test
         }, 100)
       },
     })

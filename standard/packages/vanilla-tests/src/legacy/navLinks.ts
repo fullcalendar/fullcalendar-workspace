@@ -1,4 +1,5 @@
 import { addDays } from 'fullcalendar/protected-api'
+import { waitFrame } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
@@ -45,21 +46,21 @@ describe('navLinks', () => {
       })
 
       // https://github.com/fullcalendar/fullcalendar/issues/3869
-      it('moves to two different days', () => {
+      it('moves to two different days', async () => {
         let dateClickSpy = spyOnCalendarCallback('dateClick')
         let calendar = initCalendar()
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         dayGridWrapper.clickNavLink('2016-08-09')
-        calendar.updateSize()
+        await waitFrame()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
 
         calendar.changeView('dayGridMonth')
-        calendar.updateSize()
+        await waitFrame()
         let dayGridWrapper2 = new DayGridViewWrapper(calendar).dayGrid
         dayGridWrapper2.clickNavLink('2016-08-10')
-        calendar.updateSize()
+        await waitFrame()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-10'))
       })
 

@@ -1,3 +1,4 @@
+import { waitFrame } from '@fullcalendar-tests/standard/lib/misc'
 import { doElsMatchSegs } from '@fullcalendar-tests/standard/lib/segs'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
@@ -160,7 +161,7 @@ xdescribe('timeline businessHours', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/414
-  it('can switch views with resource override', () => {
+  it('can switch views with resource override', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: [
@@ -175,7 +176,7 @@ xdescribe('timeline businessHours', () => {
     calendar.changeView('dayGridMonth')
 
     calendar.changeView('resourceTimelineDay')
-    calendar.updateSize()
+    await waitFrame()
     viewWrapper = new ResourceTimelineViewWrapper(calendar)
     expectResourceOverride(viewWrapper)
   })

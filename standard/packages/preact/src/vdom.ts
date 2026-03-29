@@ -35,7 +35,3 @@ class FakeComponent extends preact.Component {
   render() { return preact.createElement('div', {}) }
   componentDidMount() { this.setState({}) }
 }
-
-// HACK
-// for ResizeObserver fallback
-export const preactOptions: any = preact.options

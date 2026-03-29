@@ -1,4 +1,5 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitFrame } from '../lib/misc'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { waitEventDrag } from '../lib/wrappers/interaction-util'
 import { filterVisibleEls } from '../lib/dom-misc'
@@ -24,22 +25,20 @@ describe('event dragging on repeating events', () => {
   })
 
   // bug where offscreen instance of a repeating event was being incorrectly dragged
-  it('drags correct instance of event', (done) => {
+  it('drags correct instance of event', async () => {
     let calendar = initCalendar()
 
     // event range needs out large (month) then scope down (week)
     // so that the new view receives out-of-range events.
     currentCalendar.changeView('timeGridWeek')
-    currentCalendar.updateSize()
+    await waitFrame()
 
     let eventEl = new CalendarWrapper(calendar).getFirstEventEl()
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     let dragging = timeGridWrapper.dragEventToDate(eventEl, '2017-02-16T12:00:00')
 
-    waitEventDrag(calendar, dragging).then((res) => {
-      expect(typeof res).toBe('object')
-      done()
-    })
+    const res = await waitEventDrag(calendar, dragging)
+    expect(typeof res).toBe('object')
   })
 
   it('hides other repeating events when dragging', (done) => {

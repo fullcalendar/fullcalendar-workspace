@@ -1,4 +1,5 @@
 import * as EventResizeUtils from '../lib/EventResizeUtils'
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
 describe('validRange event resizing', () => {
@@ -13,16 +14,17 @@ describe('validRange event resizing', () => {
       editable: true,
     })
 
-    it('won\'t go after validRange', (done) => {
+    it('won\'t go after validRange', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      EventResizeUtils.resize(
+      const res = await EventResizeUtils.resize(
         dayGridWrapper.getDayEl('2017-06-06').getBoundingClientRect(),
         dayGridWrapper.getDisabledDayEls()[0].getBoundingClientRect(), // where Jun 9th would be
-      ).then((res) => {
-        expect(res).toBe(false)
-      }).then(() => done())
+      )
+
+      expect(res).toBe(false)
     })
   })
 })

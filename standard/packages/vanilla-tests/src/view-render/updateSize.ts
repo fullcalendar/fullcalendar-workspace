@@ -1,7 +1,8 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { waitFrame } from '../lib/misc'
 
 describe('updateSize method', () => {
-  it('updates size of a previously hidden element', () => {
+  it('updates size of a previously hidden element', async () => {
     let $el = $('<div style="display:none" />').appendTo('body')
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
@@ -10,7 +11,7 @@ describe('updateSize method', () => {
     let calendarWrapper = new CalendarWrapper(calendar)
 
     $el.show()
-    calendar.updateSize()
+    await waitFrame()
     expect(calendarWrapper.getViewOuterEl().offsetHeight).toBeCloseTo(600, 0)
 
     $el.remove()

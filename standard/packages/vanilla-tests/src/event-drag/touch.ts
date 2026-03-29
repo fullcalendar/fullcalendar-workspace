@@ -1,9 +1,10 @@
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { waitEventDrag } from '../lib/wrappers/interaction-util'
 
 describe('event touch dragging', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5706
-  it('keeps event selected when initiated on custom element', (done) => {
+  it('keeps event selected when initiated on custom element', async () => {
     let calendar = initCalendar({
       initialDate: '2020-08-12',
       editable: true,
@@ -15,6 +16,7 @@ describe('event touch dragging', () => {
     })
     let gridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEl = gridWrapper.getEventEls()[0]
+    await waitTimeout()
 
     let dragging = gridWrapper.dragEventToDate(
       eventEl.querySelector('i'),
@@ -23,9 +25,7 @@ describe('event touch dragging', () => {
       true,
     )
 
-    waitEventDrag(calendar, dragging).then((event) => {
-      expect(event.startStr).toBe('2020-08-13')
-      done()
-    })
+    const event = await waitEventDrag(calendar, dragging)
+    expect(event.startStr).toBe('2020-08-13')
   })
 })

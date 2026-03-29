@@ -1,6 +1,8 @@
 import { directionallyTestSeg } from '../lib/DayGridEventRenderUtils'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import '../lib/dom-geom'
+import { waitTimeout } from '../lib/misc'
 
 describe('DayGrid event rendering', () => {
   pushOptions({
@@ -16,7 +18,7 @@ describe('DayGrid event rendering', () => {
   })
 
   function initMonthTesting(direction) {
-    it('correctly renders an event starting before view\'s start', () => {
+    it('correctly renders an event starting before view\'s start', async () => {
       let options = {
         events: [
           { start: '2014-07-26', end: '2014-07-30' },
@@ -28,10 +30,10 @@ describe('DayGrid event rendering', () => {
         isStart: false,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event starting at view\'s start', () => {
+    it('correctly renders an event starting at view\'s start', async () => {
       let options = {
         events: [
           { start: '2014-07-27', end: '2014-07-29' },
@@ -43,10 +45,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event starting after view\'s start', () => {
+    it('correctly renders an event starting after view\'s start', async () => {
       let options = {
         events: [
           { start: '2014-08-01', end: '2014-08-02' },
@@ -58,10 +60,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event starting on a hidden day at week start', () => {
+    it('correctly renders an event starting on a hidden day at week start', async () => {
       let options = {
         weekends: false,
         events: [
@@ -74,10 +76,10 @@ describe('DayGrid event rendering', () => {
         isStart: false,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event starting on a hidden day in middle of week', () => {
+    it('correctly renders an event starting on a hidden day in middle of week', async () => {
       let options = {
         hiddenDays: [2], // hide Tues
         events: [
@@ -90,10 +92,10 @@ describe('DayGrid event rendering', () => {
         isStart: false,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending before view\'s end', () => {
+    it('correctly renders an event ending before view\'s end', async () => {
       let options = {
         events: [
           { start: '2014-09-02', end: '2014-09-05' },
@@ -106,10 +108,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending at view\'s end', () => {
+    it('correctly renders an event ending at view\'s end', async () => {
       let options = {
         events: [
           { start: '2014-09-04', end: '2014-09-07' },
@@ -122,10 +124,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending after view\'s end', () => {
+    it('correctly renders an event ending after view\'s end', async () => {
       let options = {
         events: [
           { start: '2014-09-04', end: '2014-09-08' },
@@ -138,10 +140,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: false,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending at a week\'s end', () => {
+    it('correctly renders an event ending at a week\'s end', async () => {
       let options = {
         events: [
           { start: '2014-08-28', end: '2014-08-31' },
@@ -154,10 +156,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: true,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending on a hidden day at week end', () => {
+    it('correctly renders an event ending on a hidden day at week end', async () => {
       let options = {
         weekends: false,
         events: [
@@ -170,10 +172,10 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: false,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    it('correctly renders an event ending on a hidden day in middle of week', () => {
+    it('correctly renders an event ending on a hidden day in middle of week', async () => {
       let options = {
         hiddenDays: [4], // Thurs
         events: [
@@ -186,17 +188,18 @@ describe('DayGrid event rendering', () => {
         isStart: true,
         isEnd: false,
       }
-      testSeg(options, testSegOptions)
+      await testSeg(options, testSegOptions)
     })
 
-    function testSeg(calendarOptions, testSegOptions) {
+    async function testSeg(calendarOptions, testSegOptions) {
       calendarOptions.direction = direction
       initCalendar(calendarOptions)
+      await waitTimeout()
       directionallyTestSeg(testSegOptions)
     }
   }
 
-  it('rendering of events across weeks stays consistent', () => {
+  it('rendering of events across weeks stays consistent', async () => {
     let calendar = initCalendar({
       events: [
         {
@@ -213,6 +216,7 @@ describe('DayGrid event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     let row0 = dayGridWrapper.getRowEl(0)

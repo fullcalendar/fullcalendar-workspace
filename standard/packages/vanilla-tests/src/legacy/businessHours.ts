@@ -1,6 +1,7 @@
 // most other businessHours tests are in background-events.js
 
 import { doElsMatchSegs } from '../lib/segs'
+import { waitFrame } from '../lib/misc'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
@@ -12,13 +13,13 @@ describe('businessHours', () => {
     businessHours: true,
   })
 
-  it('doesn\'t break when starting out in a larger month time range', () => {
+  it('doesn\'t break when starting out in a larger month time range', async () => {
     let calendar = initCalendar() // start out in the month range
 
     currentCalendar.changeView('timeGridWeek')
     currentCalendar.next() // move out of the original month range...
     currentCalendar.next() // ... out. should render correctly.
-    currentCalendar.updateSize()
+    await waitFrame()
 
     // whole days
     let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid

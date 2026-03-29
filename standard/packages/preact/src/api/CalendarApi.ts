@@ -14,7 +14,6 @@ import {
 
 export interface CalendarApi {
   view: ViewApi
-  updateSize(): void
 
   // Options
   // -----------------------------------------------------------------------------------------------------------------

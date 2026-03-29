@@ -1,5 +1,5 @@
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
-import { enUsSep } from '../lib/misc'
+import { enUsSep, waitTimeout } from '../lib/misc'
 
 describe('slotMinTime', () => { // TODO: rename file
   pushOptions({
@@ -17,9 +17,10 @@ describe('slotMinTime', () => { // TODO: rename file
         ],
       })
 
-      it('renders two event elements in the correct places', () => {
+      it('renders two event elements in the correct places', async () => {
         let calendar = initCalendar()
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+        await waitTimeout()
         let res = timeGridWrapper.checkEventRendering(
           '2017-03-22T22:00:00Z',
           '2017-03-23T00:00:00Z',

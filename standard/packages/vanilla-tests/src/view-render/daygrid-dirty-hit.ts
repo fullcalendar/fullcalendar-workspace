@@ -1,4 +1,5 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitFrame } from '../lib/misc'
 
 describe('daygrid view with updated dimensions', () => {
   it('reports correct dateClick after resize', (done) => {
@@ -18,9 +19,9 @@ describe('daygrid view with updated dimensions', () => {
     }, $wrapper.children().get(0))
 
     $wrapper.width(400)
-    calendar.updateSize()
-
-    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    $(dayGridWrapper.getDayEl('2019-04-02')).simulate('drag') // a click
+    waitFrame().then(() => {
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      $(dayGridWrapper.getDayEl('2019-04-02')).simulate('drag') // a click
+    })
   })
 })

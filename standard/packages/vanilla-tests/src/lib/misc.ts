@@ -1,4 +1,14 @@
 
+export function waitFrame() {
+  return new Promise(requestAnimationFrame)
+}
+
+export function waitTimeout(ms = 100) {
+  return new Promise((successCallback) => setTimeout(successCallback, ms))
+}
+
+// ---
+
 export const enUsSep = getRangeSeparatorForLocale('en-US')
 export const enGbSep = getRangeSeparatorForLocale('en-GB')
 

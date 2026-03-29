@@ -1,4 +1,5 @@
 import { Calendar } from 'fullcalendar'
+import { waitFrame } from '@fullcalendar-tests/standard/lib/misc'
 import interactionPlugin from 'fullcalendar/interaction'
 import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 import classicThemePlugin from 'fullcalendar/themes/classic'
@@ -83,13 +84,13 @@ describe('timeline dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
-    calendar1.updateSize()
+    waitFrame().then(() => {
+      let timelineGrid0 = new ResourceTimelineViewWrapper(calendar0).timelineGrid
+      let timelineGrid1 = new ResourceTimelineViewWrapper(calendar1).timelineGrid
 
-    let timelineGrid0 = new ResourceTimelineViewWrapper(calendar0).timelineGrid
-    let timelineGrid1 = new ResourceTimelineViewWrapper(calendar1).timelineGrid
-
-    timelineGrid0.dragEventTo(
-      timelineGrid1.getFirstEventEl(), 'b', DEFAULT_DATE + 'T00:00:00',
-    )
+      timelineGrid0.dragEventTo(
+        timelineGrid1.getFirstEventEl(), 'b', DEFAULT_DATE + 'T00:00:00',
+      )
+    })
   })
 })

@@ -1,4 +1,5 @@
 import { EventInput } from 'fullcalendar'
+import { waitFrame } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
@@ -535,7 +536,7 @@ xdescribe('more-link popover', () => {
     })
   })
 
-  it('displays latest events after refetch', (done) => {
+  it('displays latest events after refetch', async () => {
     let fetchCnt = 0
     let newTitle = 'cool'
     let calendar = initCalendar({
@@ -556,14 +557,11 @@ xdescribe('more-link popover', () => {
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    calendar.updateSize()
-    setTimeout(() => {
-      calendar.refetchEvents()
-      calendar.updateSize()
-      let eventEls = dayGridWrapper.getMorePopoverEventEls()
-      let eventInfo = DayGridWrapper.getEventElInfo(eventEls[2])
-      expect(eventInfo.title).toBe(newTitle)
-      done()
-    })
+    await waitFrame()
+    calendar.refetchEvents()
+    await waitFrame()
+    let eventEls = dayGridWrapper.getMorePopoverEventEls()
+    let eventInfo = DayGridWrapper.getEventElInfo(eventEls[2])
+    expect(eventInfo.title).toBe(newTitle)
   })
 })
