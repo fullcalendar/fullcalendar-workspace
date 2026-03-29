@@ -1,7 +1,6 @@
 import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
 import { type ScriptContext } from './utils/script-runner.ts'
-import { deleteMonorepoArchives } from './archive.ts'
 import { runTurboTasks } from './utils/turbo.ts'
 import { type MonorepoStruct, traverseMonorepoGreedy } from './utils/monorepo-struct.ts'
 import { cleanPkg } from './pkg/clean.ts'
@@ -14,7 +13,6 @@ export default async function(this: ScriptContext, ...args: string[]) {
   await Promise.all([
     deleteRootDist(monorepoDir),
     deleteGlobalTurboCache(monorepoDir),
-    deleteMonorepoArchives(monorepoStruct),
     isAll ?
       runTurboTasks(monorepoDir, ['clean']) :
       cleanPkgsDirectly(monorepoStruct),
