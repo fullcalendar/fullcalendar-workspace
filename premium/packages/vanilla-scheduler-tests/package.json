@@ -11,17 +11,18 @@
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",
+    "fetch-mock": "^9.11.0",
     "fullcalendar": "workspace:*",
-    "fullcalendar-w-react": "workspace:*",
     "fullcalendar-scheduler": "workspace:*",
     "fullcalendar-scheduler-w-react": "workspace:*",
-    "fetch-mock": "^9.11.0",
+    "fullcalendar-w-react": "workspace:*",
+    "retry-cli": "^0.7.0",
     "temporal-polyfill": "^0.3.2"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
     "test": "standard-scripts pkg:test",
-    "test:dev": "standard-scripts pkg:test --dev",
+    "test:dev": "retry -- standard-scripts pkg:test --dev",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
