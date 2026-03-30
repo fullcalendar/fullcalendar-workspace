@@ -1,5 +1,6 @@
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { waitEventResize } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -25,13 +26,14 @@ describe('timeGrid-view event resizing', () => {
       initialView: 'timeGridWeek',
     })
 
-    it('allows non-resource resize', (done) => {
+    it('allows non-resource resize', async () => {
       let calendar = initCalendar({
         events: [
           { title: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' },
         ],
       })
 
+      await waitTimeout()
       let calendarWrapper = new CalendarWrapper(calendar)
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let resizing = timeGridWrapper.resizeEvent(
@@ -40,15 +42,12 @@ describe('timeGrid-view event resizing', () => {
         '2015-11-23T04:30:00',
       )
 
-      waitEventResize(calendar, resizing).then((modifiedEvent) => {
-        expect(modifiedEvent.start).toEqualDate('2015-11-23T02:00:00Z')
-        expect(modifiedEvent.end).toEqualDate('2015-11-23T04:30:00Z')
+      let modifiedEvent = await waitEventResize(calendar, resizing)
+      expect(modifiedEvent.start).toEqualDate('2015-11-23T02:00:00Z')
+      expect(modifiedEvent.end).toEqualDate('2015-11-23T04:30:00Z')
 
-        let resources = modifiedEvent.getResources()
-        expect(resources.length).toBe(0)
-
-        done()
-      })
+      let resources = modifiedEvent.getResources()
+      expect(resources.length).toBe(0)
     })
   })
 
@@ -57,7 +56,7 @@ describe('timeGrid-view event resizing', () => {
       initialView: 'resourceTimeGridThreeDay',
     })
 
-    it('allows a same-day resize', (done) => {
+    it('allows a same-day resize', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -74,16 +73,15 @@ describe('timeGrid-view event resizing', () => {
           })),
       })
 
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'b', '2015-11-29T03:00:00', '2015-11-29T04:30:00',
-      ).then(() => {
-        expect(resizeSpy).toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).toHaveBeenCalled()
     })
 
-    it('allows a different-day resize', (done) => {
+    it('allows a different-day resize', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -98,18 +96,17 @@ describe('timeGrid-view event resizing', () => {
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),
+      })
 
-      })
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'b', '2015-11-29T03:00:00', '2015-11-30T04:30:00Z',
-      ).then(() => {
-        expect(resizeSpy).toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).toHaveBeenCalled()
     })
 
-    it('disallows a resize across resources', (done) => {
+    it('disallows a resize across resources', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -119,13 +116,12 @@ describe('timeGrid-view event resizing', () => {
           (resizeSpy = spyCall()),
       })
 
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'b', '2015-11-29T03:00:00', '2015-11-30T04:00:00',
-      ).then(() => {
-        expect(resizeSpy).not.toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).not.toHaveBeenCalled()
     })
   })
 
@@ -135,7 +131,7 @@ describe('timeGrid-view event resizing', () => {
       datesAboveResources: true,
     })
 
-    it('allows a same-day resize', (done) => {
+    it('allows a same-day resize', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -152,16 +148,15 @@ describe('timeGrid-view event resizing', () => {
           })),
       })
 
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'b', '2015-11-30T03:00:00', '2015-11-30T04:30:00',
-      ).then(() => {
-        expect(resizeSpy).toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).toHaveBeenCalled()
     })
 
-    it('allows a multi-day resize', (done) => {
+    it('allows a multi-day resize', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -178,16 +173,15 @@ describe('timeGrid-view event resizing', () => {
           })),
       })
 
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'a', '2015-11-29T03:00:00', '2015-11-30T04:30:00',
-      ).then(() => {
-        expect(resizeSpy).toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).toHaveBeenCalled()
     })
 
-    it('disallows a resize across resources', (done) => {
+    it('disallows a resize across resources', async () => {
       let resizeSpy
       let calendar = initCalendar({
         events: [
@@ -197,13 +191,12 @@ describe('timeGrid-view event resizing', () => {
           (resizeSpy = spyCall()),
       })
 
+      await waitTimeout()
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
-      resourceTimeGridWrapper.resizeEvent(
+      await resourceTimeGridWrapper.resizeEvent(
         $('.event1')[0], 'b', '2015-11-29T03:00:00', '2015-11-29T04:00:00',
-      ).then(() => {
-        expect(resizeSpy).not.toHaveBeenCalled()
-        done()
-      })
+      )
+      expect(resizeSpy).not.toHaveBeenCalled()
     })
   })
 })

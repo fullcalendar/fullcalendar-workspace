@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('scrollToTime method', () => {
@@ -7,9 +8,11 @@ describe('scrollToTime method', () => {
       slotDuration: { hours: 12 },
     })
 
-    it('can scroll to a date', () => {
+    it('can scroll to a date', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       currentCalendar.scrollToTime({ days: 2 })
+      await waitTimeout()
 
       let viewWrapper = new TimelineViewWrapper(calendar)
       let timelineGridWrapper = viewWrapper.timelineGrid

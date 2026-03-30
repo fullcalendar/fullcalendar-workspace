@@ -1,8 +1,9 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline resource rerendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5586
-  it('adjusts height of resource row', () => {
+  it('adjusts height of resource row', async () => {
     let isBig = false
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
@@ -23,6 +24,7 @@ describe('timeline resource rerendering', () => {
     let view = new ResourceTimelineViewWrapper(calendar)
     let dataTd = view.dataGrid.getResourceInfo()[0].cellEl
     let laneTd = view.timelineGrid.getResourceLaneEls()[0]
+    await waitTimeout()
     let origHeight = dataTd.offsetHeight
 
     expect(
@@ -32,6 +34,7 @@ describe('timeline resource rerendering', () => {
 
     isBig = true
     calendar.render()
+    await waitTimeout()
 
     expect(dataTd.offsetHeight).toBeGreaterThan(origHeight)
 

@@ -1,5 +1,6 @@
 // TODO: test isRtl?
 
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view event drag-n-drop', () => {
@@ -19,7 +20,7 @@ describe('timeGrid-view event drag-n-drop', () => {
       'resources above dates': { datesAboveResources: false },
       'dates above resources': { datesAboveResources: true },
     }, () => {
-      it('allows switching date and resource', (done) => {
+      it('allows switching date and resource', async () => {
         let dropSpy
         let calendar = initCalendar({
           events: [
@@ -37,17 +38,22 @@ describe('timeGrid-view event drag-n-drop', () => {
         })
         let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
-        $('.event0').simulate('drag', {
-          localPoint: {
-            top: 1, // fudge for IE10 :(
-            left: '50%',
-          },
-          end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
-          callback() {
-            expect(dropSpy).toHaveBeenCalled()
-            done()
-          },
+        await waitTimeout()
+
+        await new Promise<void>((resolve) => {
+          $('.event0').simulate('drag', {
+            localPoint: {
+              top: 1, // fudge for IE10 :(
+              left: '50%',
+            },
+            end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
+            callback() {
+              resolve()
+            },
+          })
         })
+
+        expect(dropSpy).toHaveBeenCalled()
       })
     })
   })

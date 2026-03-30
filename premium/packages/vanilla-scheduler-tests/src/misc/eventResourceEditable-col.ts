@@ -1,4 +1,5 @@
 import { parseUtcDate } from '@fullcalendar-tests/standard/lib/date-parsing'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('eventResourceEditable in vertical resource view', () => {
@@ -27,18 +28,20 @@ describe('eventResourceEditable in vertical resource view', () => {
         expect(resources[0].id).toBe('b')
       })),
     })
-    let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+    waitTimeout().then(() => {
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
-    $(resourceTimeGridWrapper.getFirstEventEl()).simulate('drag', {
-      localPoint: {
-        top: 1, // fudge for IE10 :(
-        left: '50%',
-      },
-      end: resourceTimeGridWrapper.getPoint('b', '2019-08-01T05:00:00'),
-      callback() {
-        expect(dropSpy).toHaveBeenCalled()
-        done()
-      },
+      $(resourceTimeGridWrapper.getFirstEventEl()).simulate('drag', {
+        localPoint: {
+          top: 1, // fudge for IE10 :(
+          left: '50%',
+        },
+        end: resourceTimeGridWrapper.getPoint('b', '2019-08-01T05:00:00'),
+        callback() {
+          expect(dropSpy).toHaveBeenCalled()
+          done()
+        },
+      })
     })
   })
 })

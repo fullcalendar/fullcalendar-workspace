@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimeGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/TimeGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -97,18 +98,20 @@ describe('column event dragging with constraint', () => {
             dropped = true
           },
           eventDragStop() {
-            setTimeout(() => { // will call after the drop
+            waitTimeout().then(() => {
               expect(dropped).toBe(bool)
               done()
             })
           },
         })
 
-        $('.event1').simulate('drag', {
-          localPoint: { left: '50%', top: 0 },
-          end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
-            ? new ResourceTimeGridViewWrapper(calendar).timeGrid.getPoint('a', '2016-02-14T04:00:00')
-            : new TimeGridViewWrapper(calendar).timeGrid.getPoint('2016-02-14T04:00:00'),
+        waitTimeout().then(() => {
+          $('.event1').simulate('drag', {
+            localPoint: { left: '50%', top: 0 },
+            end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
+              ? new ResourceTimeGridViewWrapper(calendar).timeGrid.getPoint('a', '2016-02-14T04:00:00')
+              : new TimeGridViewWrapper(calendar).timeGrid.getPoint('2016-02-14T04:00:00'),
+          })
         })
       }
     })

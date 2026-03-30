@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { DayGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridViewWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
@@ -22,7 +23,7 @@ describe('dayGrid-view event resizing', () => {
       initialView: 'dayGridWeek',
     })
 
-    it('allows non-resource resizing', (done) => {
+    it('allows non-resource resizing', async () => {
       let resizeCalled = false
       let calendar = initCalendar({
         events: [
@@ -38,13 +39,12 @@ describe('dayGrid-view event resizing', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-      dayGridWrapper.resizeEvent(
+      await dayGridWrapper.resizeEvent(
         $('.event1')[0], '2015-11-23', '2015-11-24',
-      ).then(() => {
-        expect(resizeCalled).toBe(true)
-        done()
-      })
+      )
+      expect(resizeCalled).toBe(true)
     })
   })
 
@@ -53,7 +53,7 @@ describe('dayGrid-view event resizing', () => {
       initialView: 'resourceDayGridThreeDay',
     })
 
-    it('allows resizing', (done) => {
+    it('allows resizing', async () => {
       let resizeCalled = false
       let calendar = initCalendar({
         events: [
@@ -70,18 +70,17 @@ describe('dayGrid-view event resizing', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
-      dayGridWrapper.resizeEvent(
+      await dayGridWrapper.resizeEvent(
         $('.event1')[0],
         { resourceId: 'a', date: '2015-11-29' },
         { resourceId: 'a', date: '2015-11-30' },
-      ).then(() => {
-        expect(resizeCalled).toBe(true)
-        done()
-      })
+      )
+      expect(resizeCalled).toBe(true)
     })
 
-    it('disallows resizing across resources', (done) => {
+    it('disallows resizing across resources', async () => {
       let resizeCalled = false
       let calendar = initCalendar({
         events: [
@@ -92,15 +91,14 @@ describe('dayGrid-view event resizing', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
-      dayGridWrapper.resizeEvent(
+      await dayGridWrapper.resizeEvent(
         $('.event1')[0],
         { resourceId: 'a', date: '2015-11-29' },
         { resourceId: 'b', date: '2015-11-30' },
-      ).then(() => {
-        expect(resizeCalled).toBe(false)
-        done()
-      })
+      )
+      expect(resizeCalled).toBe(false)
     })
   })
 
@@ -110,7 +108,7 @@ describe('dayGrid-view event resizing', () => {
       datesAboveResources: true,
     })
 
-    it('allows resizing', (done) => {
+    it('allows resizing', async () => {
       let resizeCalled = false
       let calendar = initCalendar({
         events: [
@@ -127,18 +125,17 @@ describe('dayGrid-view event resizing', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
-      dayGridWrapper.resizeEvent(
+      await dayGridWrapper.resizeEvent(
         $('.event1')[0],
         { resourceId: 'b', date: '2015-11-28' },
         { resourceId: 'b', date: '2015-11-30' },
-      ).then(() => {
-        expect(resizeCalled).toBe(true)
-        done()
-      })
+      )
+      expect(resizeCalled).toBe(true)
     })
 
-    it('disallows resizing across resources', (done) => {
+    it('disallows resizing across resources', async () => {
       let resizeCalled = false
       let calendar = initCalendar({
         events: [
@@ -149,15 +146,14 @@ describe('dayGrid-view event resizing', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
-      dayGridWrapper.resizeEvent(
+      await dayGridWrapper.resizeEvent(
         $('.event1')[0],
         { resourceId: 'a', date: '2015-11-28' },
         { resourceId: 'b', date: '2015-11-30' },
-      ).then(() => {
-        expect(resizeCalled).toBe(false)
-        done()
-      })
+      )
+      expect(resizeCalled).toBe(false)
     })
   })
 })

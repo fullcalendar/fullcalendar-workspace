@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline column resizing', () => { // better renamed to 'sizing'
@@ -37,23 +38,28 @@ describe('timeline column resizing', () => { // better renamed to 'sizing'
       expect(headCellWidths).toEqual(bodyCellWidths)
     }
 
-    expectColWidthsToMatch()
+    waitTimeout().then(() => {
+      expectColWidthsToMatch()
 
-    $(dataHeaderWrapper.getColResizerEls()[0]).simulate('drag', {
-      dx: 20,
-      callback() {
-        expectColWidthsToMatch()
-        done()
-      },
+      $(dataHeaderWrapper.getColResizerEls()[0]).simulate('drag', {
+        dx: 20,
+        callback() {
+          waitTimeout().then(() => {
+            expectColWidthsToMatch()
+            done()
+          })
+        },
+      })
     })
   })
 
-  it('is affected by resourceColumn[].width settings', () => {
+  it('is affected by resourceColumn[].width settings', async () => {
     let calendar = initCalendar()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let dataHeaderWrapper = viewWrapper.dataHeader
     let dataGridWrapper = viewWrapper.dataGrid
 
+    await waitTimeout()
     let initialHeadWidths = getHeadCellWidths(dataHeaderWrapper)
 
     calendar.setOption('resourceColumns', [
@@ -69,6 +75,7 @@ describe('timeline column resizing', () => { // better renamed to 'sizing'
       },
     ])
 
+    await waitTimeout()
     let updatedHeadWidths = getHeadCellWidths(dataHeaderWrapper)
 
     // *any* sort of change? easier to do this than guess how tables distribute width

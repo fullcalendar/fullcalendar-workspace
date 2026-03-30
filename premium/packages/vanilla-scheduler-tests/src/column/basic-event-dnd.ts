@@ -1,5 +1,6 @@
 // TODO: test isRtl?
 
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event drag-n-drop', () => {
@@ -18,7 +19,7 @@ describe('dayGrid-view event drag-n-drop', () => {
       'resources above dates': { datesAboveResources: false },
       'dates above resources': { datesAboveResources: true },
     }, () => {
-      it('allows switching date and resource', (done) => {
+      it('allows switching date and resource', async () => {
         let dropSpy
         let calendar = initCalendar({
           events: [
@@ -37,19 +38,24 @@ describe('dayGrid-view event drag-n-drop', () => {
 
         let resourceDayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
 
-        $('.event0').simulate('drag', {
-          end: resourceDayGridWrapper.getDayEl('a', '2015-12-01'),
-          callback() {
-            expect(dropSpy).toHaveBeenCalled()
-            done()
-          },
+        await waitTimeout()
+
+        await new Promise<void>((resolve) => {
+          $('.event0').simulate('drag', {
+            end: resourceDayGridWrapper.getDayEl('a', '2015-12-01'),
+            callback() {
+              resolve()
+            },
+          })
         })
+
+        expect(dropSpy).toHaveBeenCalled()
       })
     })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5593
-  it('can drag from +more link to a different resource', (done) => {
+  it('can drag from +more link to a different resource', async () => {
     let dropSpy
     let calendar = initCalendar({
       initialView: 'resourceDayGridMonth',
@@ -69,19 +75,22 @@ describe('dayGrid-view event drag-n-drop', () => {
     })
 
     let resourceDayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+    await waitTimeout()
     let moreEl = resourceDayGridWrapper.getMoreEl()
 
     $(moreEl).simulate('click')
-    setTimeout(() => {
-      let eventEl = resourceDayGridWrapper.getMorePopoverEventEls()[0]
+    await waitTimeout()
+    let eventEl = resourceDayGridWrapper.getMorePopoverEventEls()[0]
 
+    await new Promise<void>((resolve) => {
       $(eventEl).simulate('drag', {
         end: resourceDayGridWrapper.getDayEl('b', '2015-11-18'),
         callback() {
-          expect(dropSpy).toHaveBeenCalled()
-          done()
+          resolve()
         },
       })
-    }, 100)
+    })
+
+    expect(dropSpy).toHaveBeenCalled()
   })
 })

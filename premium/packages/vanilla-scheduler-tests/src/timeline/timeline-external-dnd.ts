@@ -2,6 +2,7 @@
 
 import { Draggable } from 'fullcalendar/interaction'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline-view external element drag-n-drop', () => {
@@ -37,7 +38,7 @@ describe('timeline-view external element drag-n-drop', () => {
   })
 
   describeTimeZones((tz) => {
-    it('allows dropping onto a resource', (done) => {
+    it('allows dropping onto a resource', async () => {
       let dropSpy
       let receiveSpy
       let calendar = initCalendar({
@@ -57,14 +58,14 @@ describe('timeline-view external element drag-n-drop', () => {
           })),
       })
 
+      await waitTimeout()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-      timelineGridWrapper.dragEventTo(
+      await timelineGridWrapper.dragEventTo(
         $('.external-event')[0], 'b', '2015-11-29T05:00:00',
-      ).then(() => {
-        expect(dropSpy).toHaveBeenCalled()
-        expect(receiveSpy).toHaveBeenCalled()
-        done()
-      })
+      )
+      await waitTimeout()
+      expect(dropSpy).toHaveBeenCalled()
+      expect(receiveSpy).toHaveBeenCalled()
     })
   })
 
@@ -81,7 +82,7 @@ describe('timeline-view external element drag-n-drop', () => {
       ],
     })
 
-    it('doesn\'t allow the drop on an event', (done) => {
+    it('doesn\'t allow the drop on an event', async () => {
       let dropSpy
       let receiveSpy
       let calendar = initCalendar({
@@ -89,14 +90,14 @@ describe('timeline-view external element drag-n-drop', () => {
         eventReceive: (receiveSpy = jasmine.createSpy('receive')),
       })
 
+      await waitTimeout()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-      timelineGridWrapper.dragEventTo(
+      await timelineGridWrapper.dragEventTo(
         $('.external-event')[0], 'a', '2015-11-29T02:00:00',
-      ).then(() => {
-        expect(dropSpy).not.toHaveBeenCalled()
-        expect(receiveSpy).not.toHaveBeenCalled()
-        done()
-      })
+      )
+      await waitTimeout()
+      expect(dropSpy).not.toHaveBeenCalled()
+      expect(receiveSpy).not.toHaveBeenCalled()
     })
   })
 
@@ -133,17 +134,16 @@ describe('timeline-view external element drag-n-drop', () => {
     })
   })
 
-  it('works after a view switch', (done) => {
+  it('works after a view switch', async () => {
     let calendar = initCalendar()
     currentCalendar.changeView('resourceTimelineWeek')
 
+    await waitTimeout()
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-    timelineGridWrapper.dragEventTo(
+    await timelineGridWrapper.dragEventTo(
       $('.external-event')[0], 'b', '2015-11-29T05:00:00',
-    ).then(() => {
-      // all we care about is no JS errors
-      done()
-    })
+    )
+    await waitTimeout()
   })
 
   it('works after calling destroy', (done) => {

@@ -1,6 +1,7 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { startOfDay } from 'fullcalendar/protected-api'
 import lvLocale from 'fullcalendar/locales/lv'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
@@ -17,13 +18,14 @@ describe('timeline rendering', () => {
     return resources
   }
 
-  it('has correct vertical scroll and gutters', () => {
+  it('has correct vertical scroll and gutters', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimeline',
       resources: buildResources(50),
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
+    await waitTimeout()
     let spreadsheetEl = viewWrapper.getDataGridBodyEl()
     let timeEl = viewWrapper.getTimeBodyEl()
 
@@ -132,7 +134,7 @@ describe('timeline rendering', () => {
     let dataGridWrapper = viewWrapper.dataGrid
     let timelineGridWrapper = viewWrapper.timelineGrid
 
-    setTimeout(() => {
+    waitTimeout().then(() => {
       let dataGridHeight = dataGridWrapper.getRootEl().offsetHeight
       let timelineGridHeight = timelineGridWrapper.getRootEl().offsetHeight
 
@@ -140,6 +142,6 @@ describe('timeline rendering', () => {
       expect(Math.abs(dataGridHeight - timelineGridHeight)).toBeLessThan(20)
 
       done()
-    }, 200)
+    })
   })
 })

@@ -1,4 +1,5 @@
 import { filterVisibleEls } from '@fullcalendar-tests/standard/lib/dom-misc'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
@@ -15,7 +16,7 @@ describe('eventMaxStack', () => {
     ],
   })
 
-  it('puts hidden events in a popover', (done) => {
+  it('puts hidden events in a popover', async () => {
     let calendar = initCalendar({
       events: [
         { start: '2021-05-07T00:00:00', end: '2021-05-07T01:00:00', resourceId: 'a' },
@@ -24,18 +25,17 @@ describe('eventMaxStack', () => {
       ],
     })
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    await waitTimeout()
     let moreLinkEls = timelineGrid.getMoreEls()
     expect(moreLinkEls.length).toBe(1)
 
     timelineGrid.openMorePopover()
-    setTimeout(() => {
-      let moreEventEls = timelineGrid.getMorePopoverEventEls()
-      expect(moreEventEls.length).toBe(1)
-      done()
-    })
+    await waitTimeout()
+    let moreEventEls = timelineGrid.getMorePopoverEventEls()
+    expect(moreEventEls.length).toBe(1)
   })
 
-  it('can drag events out of popover', (done) => {
+  it('can drag events out of popover', async () => {
     let calendar = initCalendar({
       editable: true,
       events: [
@@ -45,25 +45,29 @@ describe('eventMaxStack', () => {
       ],
     })
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    await waitTimeout()
     timelineGrid.openMorePopover()
-    setTimeout(() => {
-      let moreEventEls = timelineGrid.getMorePopoverEventEls()
-      let newStart = '2021-05-07T04:00:00'
-      let endPoint = timelineGrid.getPoint('c', newStart)
-      endPoint.left += 1 // has trouble overcoming border
+    await waitTimeout()
+    let moreEventEls = timelineGrid.getMorePopoverEventEls()
+    let newStart = '2021-05-07T04:00:00'
+    let endPoint = timelineGrid.getPoint('c', newStart)
+    endPoint.left += 1 // has trouble overcoming border
+
+    await new Promise<void>((resolve) => {
       $(moreEventEls).simulate('drag', {
         end: endPoint,
         onRelease() {
-          let event = calendar.getEventById('3')
-          expect(event.start).toEqualDate(newStart)
-          expect(event.getResources()[0].id).toBe('c')
-          done()
+          resolve()
         },
       })
     })
+
+    let event = calendar.getEventById('3')
+    expect(event.start).toEqualDate(newStart)
+    expect(event.getResources()[0].id).toBe('c')
   })
 
-  it('causes separate adjacent more links', () => {
+  it('causes separate adjacent more links', async () => {
     let calendar = initCalendar({
       events: [
         { start: '2021-05-07T00:00:00', end: '2021-05-07T01:00:00', resourceId: 'a' },
@@ -75,11 +79,12 @@ describe('eventMaxStack', () => {
       ],
     })
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    await waitTimeout()
     let moreLinkEls = timelineGrid.getMoreEls()
     expect(moreLinkEls.length).toBe(2)
   })
 
-  it('puts overlapping hidden events in same popover, respecting eventOrder', (done) => {
+  it('puts overlapping hidden events in same popover, respecting eventOrder', async () => {
     let calendar = initCalendar({
       eventOrder: 'title',
       events: [
@@ -91,6 +96,7 @@ describe('eventMaxStack', () => {
     })
 
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    await waitTimeout()
     let moreLinkEls = timelineGrid.getMoreEls()
     expect(moreLinkEls.length).toBe(1)
     expect(moreLinkEls[0].style.visibility).not.toBe('hidden') // was having trouble finishing positioning process
@@ -104,16 +110,14 @@ describe('eventMaxStack', () => {
     expect(moreLinkTop).toBeGreaterThan(10)
 
     timelineGrid.openMorePopover()
-    setTimeout(() => {
-      let moreEventEls = timelineGrid.getMorePopoverEventEls()
-      expect(moreEventEls.length).toBe(2)
-      expect(ResourceTimelineGridWrapper.getEventElInfo(moreEventEls[0]).title).toBe('3')
-      done()
-    })
+    await waitTimeout()
+    let moreEventEls = timelineGrid.getMorePopoverEventEls()
+    expect(moreEventEls.length).toBe(2)
+    expect(ResourceTimelineGridWrapper.getEventElInfo(moreEventEls[0]).title).toBe('3')
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6543
-  it('does not display hidden events', () => {
+  it('does not display hidden events', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       eventOrder: 'title',
@@ -144,6 +148,7 @@ describe('eventMaxStack', () => {
       ],
     })
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    await waitTimeout()
     let eventEls = timelineGrid.getEventEls()
     let visibleEventEls = filterVisibleEls(eventEls)
     expect(visibleEventEls.length).toBe(2)

@@ -1,4 +1,5 @@
 import { getLeadingBoundingRect, getTrailingBoundingRect, sortBoundingRects } from '@fullcalendar-tests/standard/lib/dom-geom'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { DayGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridViewWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
@@ -23,32 +24,39 @@ describe('dayGrid-view selection', () => {
       initialView: 'dayGridWeek',
     })
 
-    it('allows non-resource selects', (done) => {
+    it('allows non-resource selects', async () => {
       let selectCalled = false
+      let selectData = null
       let calendar = initCalendar({
         select(data) {
           selectCalled = true
-          expect(data.start).toEqualDate('2015-11-23')
-          expect(data.end).toEqualDate('2015-11-25')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource).toBeFalsy()
+          selectData = data
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
       let monEls = dayGridWrapper.getDowEls('mon')
       let tueEls = dayGridWrapper.getDowEls('tue')
 
       expect(monEls.length).toBe(1)
       expect(tueEls.length).toBe(1)
-      $(monEls[0]).simulate('drag', {
-        end: tueEls[0],
-        callback() {
-          expect(selectCalled).toBe(true)
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        $(monEls[0]).simulate('drag', {
+          end: tueEls[0],
+          callback() {
+            resolve()
+          },
+        })
       })
+
+      expect(selectCalled).toBe(true)
+      expect(selectData).toBeTruthy()
+      expect(selectData.start).toEqualDate('2015-11-23')
+      expect(selectData.end).toEqualDate('2015-11-25')
+      expect(typeof selectData.jsEvent).toBe('object')
+      expect(typeof selectData.view).toBe('object')
+      expect(selectData.resource).toBeFalsy()
     })
   })
 
@@ -57,33 +65,40 @@ describe('dayGrid-view selection', () => {
       initialView: 'resourceDayGridThreeDay',
     })
 
-    it('allows a resource selects', (done) => {
+    it('allows a resource selects', async () => {
       let selectCalled = false
+      let selectData = null
       let calendar = initCalendar({
         select(data) {
           selectCalled = true
-          expect(data.start).toEqualDate('2015-11-29')
-          expect(data.end).toEqualDate('2015-12-01')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('a')
+          selectData = data
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
       let monAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
 
-      sunAEl.simulate('drag', {
-        end: monAEl,
-        callback() {
-          expect(selectCalled).toBe(true)
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        sunAEl.simulate('drag', {
+          end: monAEl,
+          callback() {
+            resolve()
+          },
+        })
       })
+
+      expect(selectCalled).toBe(true)
+      expect(selectData).toBeTruthy()
+      expect(selectData.start).toEqualDate('2015-11-29')
+      expect(selectData.end).toEqualDate('2015-12-01')
+      expect(typeof selectData.jsEvent).toBe('object')
+      expect(typeof selectData.view).toBe('object')
+      expect(selectData.resource.id).toBe('a')
     })
 
-    it('disallows a selection across resources', (done) => {
+    it('disallows a selection across resources', async () => {
       let selectCalled = false
       let calendar = initCalendar({
         select() {
@@ -91,17 +106,21 @@ describe('dayGrid-view selection', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
       let monBEl = $(getTrailingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
 
-      sunAEl.simulate('drag', {
-        end: monBEl,
-        callback() {
-          expect(selectCalled).toBe(false)
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        sunAEl.simulate('drag', {
+          end: monBEl,
+          callback() {
+            resolve()
+          },
+        })
       })
+
+      expect(selectCalled).toBe(false)
     })
   })
 
@@ -111,35 +130,42 @@ describe('dayGrid-view selection', () => {
       datesAboveResources: true,
     })
 
-    it('allows a resource selection', (done) => {
+    it('allows a resource selection', async () => {
       let selectCalled = false
+      let selectData = null
       let calendar = initCalendar({
         select(data) {
           selectCalled = true
-          expect(data.start).toEqualDate('2015-11-28')
-          expect(data.end).toEqualDate('2015-12-01')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('b')
+          selectData = data
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
       let monBEl = $(monRects[1].node)
       let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))
       let satBEl = $(satRects[1].node)
 
-      monBEl.simulate('drag', {
-        end: satBEl,
-        callback() {
-          expect(selectCalled).toBe(true)
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        monBEl.simulate('drag', {
+          end: satBEl,
+          callback() {
+            resolve()
+          },
+        })
       })
+
+      expect(selectCalled).toBe(true)
+      expect(selectData).toBeTruthy()
+      expect(selectData.start).toEqualDate('2015-11-28')
+      expect(selectData.end).toEqualDate('2015-12-01')
+      expect(typeof selectData.jsEvent).toBe('object')
+      expect(typeof selectData.view).toBe('object')
+      expect(selectData.resource.id).toBe('b')
     })
 
-    it('disallows a selection across resources', (done) => {
+    it('disallows a selection across resources', async () => {
       let selectCalled = false
       let calendar = initCalendar({
         select() {
@@ -147,19 +173,23 @@ describe('dayGrid-view selection', () => {
         },
       })
 
+      await waitTimeout()
       let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
       let monBEl = $(monRects[1].node)
       let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))
       let satAEl = $(satRects[0].node)
 
-      monBEl.simulate('drag', {
-        end: satAEl,
-        callback() {
-          expect(selectCalled).toBe(false)
-          done()
-        },
+      await new Promise<void>((resolve) => {
+        monBEl.simulate('drag', {
+          end: satAEl,
+          callback() {
+            resolve()
+          },
+        })
       })
+
+      expect(selectCalled).toBe(false)
     })
   })
 })

@@ -1,5 +1,6 @@
 import { joinRects } from '@fullcalendar-tests/standard/lib/geom'
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -239,13 +240,13 @@ describe('vresource structure', () => {
     })
     let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
 
-    setTimeout(() => {
+    waitTimeout().then(() => {
       const rowElsByIndex = viewWrapper.getHeaderRowsGroupByRowIndex()
 
       expect(rowElsByIndex['1'][0].offsetHeight).toBe(rowElsByIndex['1'][1].offsetHeight)
       expect(rowElsByIndex['2'][0].offsetHeight).toBe(rowElsByIndex['2'][1].offsetHeight)
 
       done()
-    }, 200)
+    })
   })
 })

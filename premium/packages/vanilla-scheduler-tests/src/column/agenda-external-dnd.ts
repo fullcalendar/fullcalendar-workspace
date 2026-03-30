@@ -1,6 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from 'fullcalendar/interaction'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -21,7 +22,7 @@ describe('timeGrid-view event drag-n-drop', () => {
       'resources above dates': { datesAboveResources: false },
       'dates above resources': { datesAboveResources: true },
     }, () => {
-      it('allows dropping onto a resource', (done) => {
+      it('allows dropping onto a resource', async () => {
         let dropSpy
         let receiveSpy
         let dragEl = $(
@@ -53,16 +54,23 @@ describe('timeGrid-view event drag-n-drop', () => {
         })
         let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
-        $('.external-event').simulate('drag', {
-          localPoint: { left: '50%', top: 0 },
-          end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
-          callback() {
-            expect(dropSpy).toHaveBeenCalled()
-            expect(receiveSpy).toHaveBeenCalled()
-            dragEl.remove()
-            done()
-          },
+        await waitTimeout()
+
+        await new Promise<void>((resolve) => {
+          $('.external-event').simulate('drag', {
+            localPoint: { left: '50%', top: 0 },
+            end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
+            callback() {
+              resolve()
+            },
+          })
         })
+
+        await waitTimeout()
+
+        expect(dropSpy).toHaveBeenCalled()
+        expect(receiveSpy).toHaveBeenCalled()
+        dragEl.remove()
       })
     })
   })

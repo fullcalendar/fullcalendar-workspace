@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
@@ -27,8 +28,12 @@ describe('timeline dateClick', () => {
               initialView: 'timelineDay',
             })
 
-            it('reports date with no resource', (done) => {
+            it('reports date with no resource', async () => {
               let dateClickCalled = false
+              let clickResolve: () => void
+              let clickPromise = new Promise<void>((resolve) => {
+                clickResolve = resolve
+              })
               let calendar = initCalendar({
                 dateClick(data) {
                   dateClickCalled = true
@@ -36,14 +41,15 @@ describe('timeline dateClick', () => {
                   expect(typeof data.jsEvent).toBe('object')
                   expect(typeof data.view).toBe('object')
                   expect(data.resource).toBeFalsy()
+                  clickResolve()
                 },
               })
 
+              await waitTimeout()
               let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-              timelineGrid.clickDate('2015-11-28T04:30:00').then(() => {
-                expect(dateClickCalled).toBe(true)
-                done()
-              })
+              await timelineGrid.clickDate('2015-11-28T04:30:00')
+              await clickPromise
+              expect(dateClickCalled).toBe(true)
             })
           })
 
@@ -66,8 +72,12 @@ describe('timeline dateClick', () => {
               })
             })
 
-            it('reports click on a resource', (done) => {
+            it('reports click on a resource', async () => {
               let dateClickCalled = false
+              let clickResolve: () => void
+              let clickPromise = new Promise<void>((resolve) => {
+                clickResolve = resolve
+              })
               let calendar = initCalendar({
                 dateClick(data) {
                   dateClickCalled = true
@@ -75,14 +85,15 @@ describe('timeline dateClick', () => {
                   expect(typeof data.jsEvent).toBe('object')
                   expect(typeof data.view).toBe('object')
                   expect(data.resource.id).toBe('b')
+                  clickResolve()
                 },
               })
 
+              await waitTimeout()
               let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGrid.click('b', '2015-11-28T04:30:00').then(() => {
-                expect(dateClickCalled).toBe(true)
-                done()
-              })
+              await timelineGrid.click('b', '2015-11-28T04:30:00')
+              await clickPromise
+              expect(dateClickCalled).toBe(true)
             })
           })
         })
@@ -93,8 +104,12 @@ describe('timeline dateClick', () => {
             snapDuration: '00:15',
           })
 
-          it('reports a smaller granularity', (done) => {
+          it('reports a smaller granularity', async () => {
             let dateClickCalled = false
+            let clickResolve: () => void
+            let clickPromise = new Promise<void>((resolve) => {
+              clickResolve = resolve
+            })
             let calendar = initCalendar({
               dateClick(data) {
                 dateClickCalled = true
@@ -102,14 +117,15 @@ describe('timeline dateClick', () => {
                 expect(typeof data.jsEvent).toBe('object')
                 expect(typeof data.view).toBe('object')
                 expect(data.resource.id).toBe('b')
+                clickResolve()
               },
             })
 
+            await waitTimeout()
             let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-            timelineGrid.click('b', '2015-11-28T04:15:00').then(() => {
-              expect(dateClickCalled).toBe(true)
-              done()
-            })
+            await timelineGrid.click('b', '2015-11-28T04:15:00')
+            await clickPromise
+            expect(dateClickCalled).toBe(true)
           })
         })
       })
@@ -121,8 +137,12 @@ describe('timeline dateClick', () => {
         slotDuration: { days: 1 },
       })
 
-      it('reports untimed dates', (done) => {
+      it('reports untimed dates', async () => {
         let dateClickCalled = false
+        let clickResolve: () => void
+        let clickPromise = new Promise<void>((resolve) => {
+          clickResolve = resolve
+        })
         let calendar = initCalendar({
           dateClick(data) {
             dateClickCalled = true
@@ -130,14 +150,15 @@ describe('timeline dateClick', () => {
             expect(typeof data.jsEvent).toBe('object')
             expect(typeof data.view).toBe('object')
             expect(data.resource.id).toBe('a')
+            clickResolve()
           },
         })
 
+        await waitTimeout()
         let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGrid.click('a', '2015-11-03').then(() => {
-          expect(dateClickCalled).toBe(true)
-          done()
-        })
+        await timelineGrid.click('a', '2015-11-03')
+        await clickPromise
+        expect(dateClickCalled).toBe(true)
       })
     })
 
@@ -147,8 +168,12 @@ describe('timeline dateClick', () => {
         slotDuration: { weeks: 1 },
       })
 
-      it('reports untimed dates', (done) => {
+      it('reports untimed dates', async () => {
         let dateClickCalled = false
+        let clickResolve: () => void
+        let clickPromise = new Promise<void>((resolve) => {
+          clickResolve = resolve
+        })
         let calendar = initCalendar({
           dateClick(data) {
             dateClickCalled = true
@@ -156,14 +181,15 @@ describe('timeline dateClick', () => {
             expect(typeof data.jsEvent).toBe('object')
             expect(typeof data.view).toBe('object')
             expect(data.resource.id).toBe('a')
+            clickResolve()
           },
         })
 
+        await waitTimeout()
         let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGrid.click('a', '2015-01-18').then(() => {
-          expect(dateClickCalled).toBe(true)
-          done()
-        })
+        await timelineGrid.click('a', '2015-01-18')
+        await clickPromise
+        expect(dateClickCalled).toBe(true)
       })
     })
   })

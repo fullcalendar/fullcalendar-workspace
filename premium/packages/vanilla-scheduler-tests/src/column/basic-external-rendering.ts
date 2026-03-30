@@ -1,6 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from 'fullcalendar/interaction'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
@@ -20,7 +21,7 @@ describe('dayGrid-view event drag-n-drop', () => {
       'resources above dates': { datesAboveResources: false },
       'dates above resources': { datesAboveResources: true },
     }, () => {
-      it('allows dropping onto a resource', (done) => {
+      it('allows dropping onto a resource', async () => {
         let dropSpy
         let receiveSpy
         let dragEl = $('<a' +
@@ -56,16 +57,21 @@ describe('dayGrid-view event drag-n-drop', () => {
 
         let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
 
-        $('.external-event').simulate('drag', {
-          localPoint: { left: '50%', top: 0 },
-          end: dayGridWrapper.getDayEl('a', '2015-12-01'),
-          callback() {
-            expect(dropSpy).toHaveBeenCalled()
-            expect(receiveSpy).toHaveBeenCalled()
-            dragEl.remove()
-            done()
-          },
+        await waitTimeout()
+
+        await new Promise<void>((resolve) => {
+          $('.external-event').simulate('drag', {
+            localPoint: { left: '50%', top: 0 },
+            end: dayGridWrapper.getDayEl('a', '2015-12-01'),
+            callback() {
+              resolve()
+            },
+          })
         })
+
+        expect(dropSpy).toHaveBeenCalled()
+        expect(receiveSpy).toHaveBeenCalled()
+        dragEl.remove()
       })
     })
   })

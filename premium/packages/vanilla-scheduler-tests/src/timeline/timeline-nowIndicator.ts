@@ -1,4 +1,5 @@
 import { getBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
@@ -38,8 +39,9 @@ describe('timeline now-indicator', () => {
         expect(hasNowIndicator).toBe(false)
       })
 
-      it('renders when in view', () => {
+      it('renders when in view', async () => {
         initCalendar()
+        await waitTimeout()
         nowIndicatorRendersAt('2015-12-26T02:30:00')
       })
     })
@@ -57,13 +59,15 @@ describe('timeline now-indicator', () => {
         },
       },
     })
-    setTimeout(() => {
-      nowIndicatorRendersAt('2015-12-26T00:00:01')
+    waitTimeout().then(() => {
       setTimeout(() => {
-        nowIndicatorRendersAt('2015-12-26T00:00:02')
-        done()
+        nowIndicatorRendersAt('2015-12-26T00:00:01')
+        setTimeout(() => {
+          nowIndicatorRendersAt('2015-12-26T00:00:02')
+          done()
+        }, 1000)
       }, 1000)
-    }, 1000)
+    })
   })
 
   it('refreshes on resize when slot width changes', (done) => {
@@ -77,14 +81,16 @@ describe('timeline now-indicator', () => {
         },
       },
     })
-    nowIndicatorRendersAt('2015-12-26T02:30:00')
-    $('#calendar').width('50%')
-    $(window).trigger('resize') // simulate the window resize, even tho the container is just resizing
-    setTimeout(() => {
+    waitTimeout().then(() => {
       nowIndicatorRendersAt('2015-12-26T02:30:00')
-      $('#calendar').width('') // undo
-      done()
-    }, 500)
+      $('#calendar').width('50%')
+      $(window).trigger('resize') // simulate the window resize, even tho the container is just resizing
+      setTimeout(() => {
+        nowIndicatorRendersAt('2015-12-26T02:30:00')
+        $('#calendar').width('') // undo
+        done()
+      }, 500)
+    })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5999
@@ -96,10 +102,12 @@ describe('timeline now-indicator', () => {
       now: '2020-12-02',
     })
 
-    setTimeout(() => { // bug happens after position updates
-      nowIndicatorRendersAt('2020-12-01')
-      done()
-    }, 100)
+    waitTimeout().then(() => {
+      setTimeout(() => { // bug happens after position updates
+        nowIndicatorRendersAt('2020-12-01')
+        done()
+      }, 100)
+    })
   })
 
   function nowIndicatorRendersAt(date, thresh = PIXEL_THRESHOLD) {
@@ -134,8 +142,9 @@ describe('timeline now-indicator', () => {
     // https://github.com/fullcalendar/fullcalendar/issues/6175
 
     describe('when nowIndicatorSnap:auto', () => { // the default
-      it('renders now-indicator snapped to the hour (slot-duration)', () => {
+      it('renders now-indicator snapped to the hour (slot-duration)', async () => {
         initCalendar()
+        await waitTimeout()
         nowIndicatorRendersAt('2025-01-05T01:00:00', 5)
       })
     })
@@ -145,8 +154,9 @@ describe('timeline now-indicator', () => {
         nowIndicatorSnap: false,
       })
 
-      it('renders now-indicator with granular coordinates', () => {
+      it('renders now-indicator with granular coordinates', async () => {
         initCalendar()
+        await waitTimeout()
         nowIndicatorRendersAt('2025-01-05T01:35:00', 5)
       })
     })

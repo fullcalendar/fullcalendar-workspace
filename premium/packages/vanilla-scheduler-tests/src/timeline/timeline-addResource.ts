@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline addResource', () => {
@@ -6,7 +7,7 @@ describe('timeline addResource', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/179
-  it('works when switching views', () => {
+  it('works when switching views', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: [
@@ -20,19 +21,23 @@ describe('timeline addResource', () => {
       return new ResourceTimelineViewWrapper(calendar).timelineGrid.getResourceIds()
     }
 
+    await waitTimeout()
     expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
     currentCalendar.changeView('resourceTimelineWeek')
+    await waitTimeout()
     expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
     currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
+    await waitTimeout()
     expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
 
     currentCalendar.changeView('resourceTimelineDay')
+    await waitTimeout()
     expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
   })
 
-  it('renders new row with correct height', () => {
+  it('renders new row with correct height', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: buildResources(50),
@@ -41,7 +46,9 @@ describe('timeline addResource', () => {
     let dataGridWrapper = viewWrapper.dataGrid
     let timelineGridWrapper = viewWrapper.timelineGrid
 
+    await waitTimeout()
     calendar.addResource({ id: 'last', title: 'last resource' }, true)
+    await waitTimeout()
 
     const spreadsheetCellEl = dataGridWrapper.getResourceCellEl('last')
     const spreadsheetRowHeight = spreadsheetCellEl.offsetHeight
@@ -51,14 +58,16 @@ describe('timeline addResource', () => {
     expect(spreadsheetRowHeight).toEqual(timeRowHeight)
   })
 
-  it('scrolls correctly with scroll param', () => {
+  it('scrolls correctly with scroll param', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: buildResources(50),
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
+    await waitTimeout()
     currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
+    await waitTimeout()
 
     const spreadsheetScrollerEl = viewWrapper.getDataGridBodyEl()
     const maxScroll = spreadsheetScrollerEl.scrollHeight - spreadsheetScrollerEl.clientHeight

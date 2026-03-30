@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimeGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/TimeGridViewWrapper'
 
 describe('timegrid height with horizontal scrolling', () => {
@@ -7,11 +8,12 @@ describe('timegrid height with horizontal scrolling', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5674
-  it('syncs with expandRows', () => {
+  it('syncs with expandRows', async () => {
     let calendar = initCalendar({
       slotDuration: '04:00',
       expandRows: true,
     })
+    await waitTimeout()
     expectSlotsEqualHeight(calendar)
   })
 

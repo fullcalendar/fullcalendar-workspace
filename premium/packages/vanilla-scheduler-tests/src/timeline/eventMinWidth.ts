@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('eventMinWidth', () => {
@@ -10,17 +11,19 @@ describe('eventMinWidth', () => {
     ],
   })
 
-  it('has a default value (a min width)', () => {
+  it('has a default value (a min width)', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let eventEl = timelineGrid.getFirstEventEl()
     expect(eventEl.getBoundingClientRect().width).toBeGreaterThan(10)
   })
 
-  it('can be given a pretty big value', () => {
+  it('can be given a pretty big value', async () => {
     let calendar = initCalendar({
       eventMinWidth: 100,
     })
+    await waitTimeout()
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let eventEl = timelineGrid.getFirstEventEl()
     expect(eventEl.getBoundingClientRect().width).toBeGreaterThan(98)
