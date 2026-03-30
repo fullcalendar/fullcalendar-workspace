@@ -44,28 +44,6 @@ function flushAfterSize() {
   }
 }
 
-function storeConfigDims(
-  config: SizeConfig,
-  width: number,
-  height: number,
-): boolean { // returns whether dirty
-  let shouldFire = false
-
-  // we use it because ResizeObserver's results could be slightly off from getBoundingClientRect
-
-  if (!isDimsEqual(config.width, width)) {
-    config.width = width
-    shouldFire = config.watchWidth
-  }
-
-  if (!isDimsEqual(config.height, height)) {
-    config.height = height
-    shouldFire ||= config.watchHeight
-  }
-
-  return shouldFire
-}
-
 // Native
 // -------------------------------------------------------------------------------------------------
 
@@ -89,7 +67,16 @@ const globalResizeObserver = new ResizeObserver((entries) => {
       ({ width, height } = el.getBoundingClientRect())
     }
 
-    if (storeConfigDims(config, width, height)) {
+    let shouldFire = false
+    if (!isDimsEqual(config.width, width)) {
+      config.width = width
+      shouldFire = config.watchWidth
+    }
+    if (!isDimsEqual(config.height, height)) {
+      config.height = height
+      shouldFire ||= config.watchHeight
+    }
+    if (shouldFire) {
       config.callback(width, height)
     }
   }
