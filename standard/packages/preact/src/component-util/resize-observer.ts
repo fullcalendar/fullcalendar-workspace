@@ -53,6 +53,9 @@ function flushAfterSize() {
 const globalResizeObserver = new ResizeObserver((entries) => {
   isHandling = true
 
+  // // debug
+  // console.log('RESIZE-OBSERVER', entries.map((entry) => entry.target))
+
   for (let entry of entries) {
     const el = entry.target
     const config = configMap.get(el)

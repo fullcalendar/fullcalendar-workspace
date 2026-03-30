@@ -10,12 +10,13 @@ import { createFormatter } from '../../datelib/formatting'
 import { NowTimer } from '../../NowTimer'
 import { getIsHeightAuto } from '../../scrollgrid/util'
 import { Scroller } from '../../scrollgrid/Scroller'
-import { afterSize, watchWidth } from '../../component-util/resize-observer'
+import { afterSize } from '../../component-util/resize-observer'
 import { fracToCssDim } from '../../util/html'
 import { RefMap } from '../../util/RefMap'
 import classNames from '../../styles.module.css'
 import { buildDayTableRenderRange } from '../../daygrid/TableDateProfileGenerator'
 import { createRef } from 'react'
+import { Ruler } from '../../scrollgrid/Ruler'
 import { SingleMonth, SingleMonthHeights } from './SingleMonth'
 
 interface MultiMonthViewState {
@@ -31,14 +32,12 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   // ref
   private scrollerRef = createRef<Scroller>()
-  private innerElRef = createRef<HTMLDivElement>()
   private singleMonthHeightsRefMap = new RefMap<string, SingleMonthHeights>(() => {
     afterSize(this.handleSingleMonthHeights)
   })
 
   // internal
   private _isUnmounting: boolean
-  private disconnectInnerWidth?: () => void
   private scrollDate: DateMarker | null = null
   private cols: number | undefined
   private monthDateProfiles: DateProfile[]
@@ -105,7 +104,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                 aria-labelledby={props.labelId}
                 aria-label={props.labelStr}
                 className={classNames.safeTiles}
-                ref={this.innerElRef}
               >
                 {monthDateProfiles.map((monthDateProfile, i) => {
                   const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
@@ -129,6 +127,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                 })}
               </div>
             </Scroller>
+            <Ruler widthRef={this.handleInnerWidth} />
           </ViewContainer>
         )}
       </NowTimer>
@@ -141,13 +140,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   componentDidMount(): void {
     this._isUnmounting = false
     this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
-
-    this.disconnectInnerWidth = watchWidth(this.innerElRef.current, (innerWidth: number) => {
-      afterSize(() => {
-        this.setState({ innerWidth })
-      })
-    })
-
     this.resetScroll()
   }
 
@@ -164,12 +156,15 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   componentWillUnmount() {
     this._isUnmounting = true
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
-
-    this.disconnectInnerWidth()
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
+
+  private handleInnerWidth = (innerWidth: number) => {
+    if (this._isUnmounting) return
+    this.setState({ innerWidth })
+  }
 
   private handleSingleMonthHeights = () => {
     if (this._isUnmounting) return
