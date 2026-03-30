@@ -1,15 +1,15 @@
 import { CssDimValue } from '../../scrollgrid/util'
 import { joinClassNames, joinArrayishClassNames } from '../../util/html'
-import { afterSize, watchHeight, watchWidth } from '../../component-util/resize-observer'
+import { afterSize, watchHeight } from '../../component-util/resize-observer'
 import { buildNavLinkAttrs } from '../../common/nav-link'
 import { DateComponent } from '../../component/DateComponent'
 import { DateFormatter, DateRange, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DayTableCell } from '../../common/DayTableModel'
 import { generateClassName } from '../../content-inject/ContentContainer'
-
 import { memoize } from '../../util/memoize'
 import { RefMap } from '../../util/RefMap'
 import { setRef } from '../../vdom-util'
+import { Ruler } from '../../scrollgrid/Ruler'
 import { ViewProps } from '../../component-util/View'
 import classNames from '../../styles.module.css'
 import { createRef, type Ref } from 'react'
@@ -55,7 +55,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private buildDateRowConfig = memoize(buildDateRowConfig)
 
   // ref
-  private gridElRef = createRef<HTMLDivElement>()
   private titleElRef = createRef<HTMLDivElement>()
   private tableHeaderElRef = createRef<HTMLDivElement>()
   private rowHeightRefMap = new RefMap<string, number>(() => {
@@ -71,7 +70,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private get titleId() {
     return this.context.baseId + 'month-' + this.props.isoDateStr
   }
-  private disconnectGridWidth?: () => void
   private disconnectTitleHeight?: () => void
   private disconnectTableHeaderHeight?: () => void
   private cellRows: DayTableCell[][]
@@ -138,7 +136,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
         style={{ width: props.width }}
       >
         <div
-          ref={this.gridElRef}
           role='grid'
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
@@ -152,6 +149,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}
         >
+          <Ruler widthRef={this.handleGridWidth} />
           <div
             id={this.titleId}
             ref={this.titleElRef}
@@ -298,9 +296,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
   componentDidMount(): void {
     this._isUnmounting = false
-    this.disconnectGridWidth = watchWidth(this.gridElRef.current, (width) => {
-      this.setState({ gridWidth: width })
-    })
     this.disconnectTitleHeight = watchHeight(this.titleElRef.current, (height) => {
       this.setState({ titleHeight: this.titleHeight = height })
       afterSize(this.handleHeights)
@@ -315,7 +310,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const { options } = this.context
 
     this._isUnmounting = true
-    this.disconnectGridWidth()
     this.disconnectTitleHeight()
     this.disconnectTableHeaderHeight()
 
@@ -323,6 +317,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       el: this.rootEl,
       ...this.renderProps!,
     })
+  }
+
+  private handleGridWidth = (gridWidth: number) => {
+    if (this._isUnmounting) return
+    this.setState({ gridWidth })
   }
 
   private handleHeights = () => {

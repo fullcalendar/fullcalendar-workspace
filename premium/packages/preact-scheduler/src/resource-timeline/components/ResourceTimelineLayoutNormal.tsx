@@ -533,7 +533,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 }}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
-                bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               >
                 <BodySection
                   rowPositions={rowPositions}
@@ -718,8 +717,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 }}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
-                clientHeightRef={this.handleTimeClientHeight}
-                bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
+                clientHeightRef={
+                  verticalScrolling
+                    ? this.handleTimeClientHeight
+                    : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
+                }
+                bottomScrollbarWidthRef={
+                  verticalScrolling
+                    ? this.handleTimeBottomScrollbarWidth
+                    : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
+                }
               >
                 <div
                   className={joinClassNames(

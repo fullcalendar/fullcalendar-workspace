@@ -1,4 +1,17 @@
 
+## Relevant Files
+
+Unless otherwise noted, work in these directories:
+
+- standard/packages/preact
+- standard/packages/vanilla
+- standard/packages/vanilla-tests
+- premium/packages/preact-scheduler
+- premium/packages/vanilla-scheduler
+- premium/packages/vanilla-scheduler-tests
+
+Much of the other code is superfluous or mechanically derived from the above directories.
+
 ## Theme Pipeline
 
 All themes start out as configuration files and tailwind classnames and are manually transformed through multiple phases. All phases are committed to the codebase. Below is the flow from file-to-file. The developer may make changes to upstream theme config/tailwind, and the explicitly ask to fill-in the downstream conversions.
