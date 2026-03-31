@@ -1,4 +1,4 @@
-import { ViewDisplayPropsExtra, ViewProps } from '../component-util/View'
+import { ViewContentData, ViewProps } from '../component-util/View'
 import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
 import { ViewContext, ViewContextType } from '../ViewContext'
@@ -8,7 +8,6 @@ import { Duration } from '@full-ui/headless-calendar'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 import { CustomContentGenerator } from '../common/render-hook'
-import { ViewDisplayData } from '../common/ViewContainer'
 import { getIsHeightAuto } from '../scrollgrid/util'
 
 /*
@@ -60,12 +59,12 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
 /*
 TODO: converge with ViewContainer
 */
-function createViewHookComponent(viewContent: CustomContentGenerator<ViewDisplayData>) {
+function createViewHookComponent(viewContent: CustomContentGenerator<ViewContentData>) {
   return (viewProps: ViewProps) => (
     <ViewContextType.Consumer
       children={(context: ViewContext) => {
         const { options } = context
-        const renderProps: ViewDisplayPropsExtra = {
+        const renderProps: ViewContentData = {
           // the "extra" props, for sliceEvents...
           ...viewProps,
           nextDayThreshold: options.nextDayThreshold as Duration,

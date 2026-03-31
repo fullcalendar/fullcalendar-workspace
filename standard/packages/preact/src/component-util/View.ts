@@ -26,7 +26,7 @@ export interface ViewProps {
 
 // HELPERS
 
-export type ViewDisplayPropsExtra = ViewProps & ViewDisplayData & {
+export type ViewContentData = ViewProps & ViewDisplayData & {
   nextDayThreshold: Duration
 }
 
@@ -35,7 +35,7 @@ if nextDayThreshold is specified, slicing is done in an all-day fashion.
 you can get nextDayThreshold from context.nextDayThreshold
 */
 export function sliceEvents(
-  props: ViewDisplayPropsExtra,
+  props: ViewContentData,
   allDay?: boolean,
 ): EventRenderRange[] {
   return sliceEventStore(

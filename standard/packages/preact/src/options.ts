@@ -78,6 +78,7 @@ import { EventDragStartData, EventDragStopData } from './interaction-plugin/inte
 import { EventDropData } from './event-crud'
 import { EventResizeStartData, EventResizeStopData, EventResizeDoneData } from './interaction-plugin/interactions/EventResizing'
 import { DropData, EventReceiveData, EventLeaveData } from './interaction-plugin/utils'
+import { ViewContentData } from './component-util/View'
 
 // base options
 // ------------
@@ -620,7 +621,7 @@ type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionR
 export const VIEW_ONLY_OPTION_REFINERS = {
   type: String,
   component: identity as Identity<ViewComponentType>,
-  viewContent: identity as Identity<CustomContentGenerator<ViewDisplayData>>,
+  viewContent: identity as Identity<CustomContentGenerator<ViewContentData>>,
 
   // internal only
   buttonTextKey: String,
