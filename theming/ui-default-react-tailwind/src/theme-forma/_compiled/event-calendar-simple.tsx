@@ -589,7 +589,7 @@ export function EventCalendar({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (data) => joinClassNames(
-            'p-2 whitespace-pre text-end',
+            'p-2 text-end',
             data.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: 'border-b border-(--fc-forma-border)',

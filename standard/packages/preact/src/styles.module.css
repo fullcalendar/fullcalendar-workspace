@@ -257,6 +257,11 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   white-space: nowrap !important;
 }
 
+.rigidPre {
+  flex-shrink: 0 !important;
+  white-space: pre !important;
+}
+
 /* Misc Utils */
 /* ------------------------------------------------------------------------------------------------- */
 

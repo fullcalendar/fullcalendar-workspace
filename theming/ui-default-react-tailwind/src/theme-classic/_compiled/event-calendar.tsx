@@ -443,7 +443,7 @@ export function EventCalendar({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (data) => joinClassNames(
-            'px-1 py-2 whitespace-pre text-end',
+            'px-1 py-2 text-end',
             data.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: 'border-y border-(--fc-classic-border) pb-0.5 bg-(--fc-classic-muted)',

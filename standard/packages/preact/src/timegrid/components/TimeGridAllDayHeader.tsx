@@ -58,7 +58,7 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
             tag='div'
             className={joinClassNames(
               generateClassName(options.allDayHeaderInnerClass, renderProps),
-              classNames.rigid,
+              classNames.rigidPre, // with white-space:pre ... respects line-breaks for localized text
             )}
             elRef={this.innerElRef}
           />

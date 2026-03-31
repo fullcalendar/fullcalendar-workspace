@@ -438,7 +438,7 @@ export function EventCalendarViews({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (data) => cn(
-            'p-2 whitespace-pre text-end',
+            'p-2 text-end',
             data.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: 'border-b',
