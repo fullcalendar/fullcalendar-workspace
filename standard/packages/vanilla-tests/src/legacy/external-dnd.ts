@@ -9,7 +9,7 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
-xdescribe('external drag and drop with jquery UI', () => {
+describe('external drag and drop with jquery UI', () => {
   pushOptions({
     plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, classicThemePlugin, themeForTestsPlugin],
     initialDate: '2014-08-23',

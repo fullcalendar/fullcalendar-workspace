@@ -1,7 +1,7 @@
 import { waitEventDrag } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-xdescribe('eventConstraint', () => {
+describe('eventConstraint', () => {
   pushOptions({
     now: '2016-09-04',
     initialView: 'resourceTimelineWeek',

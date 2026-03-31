@@ -1,5 +1,5 @@
 import { EventInput } from 'fullcalendar'
-import { waitFrame } from '../lib/misc'
+import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
@@ -28,40 +28,34 @@ xdescribe('more-link popover', () => {
   }, (viewName) => {
     let ViewWrapper = viewName.match(/^dayGrid/) ? DayGridViewWrapper : TimeGridViewWrapper
 
-    it('aligns horizontally with left edge of cell if LTR', (done) => {
+    it('aligns horizontally with left edge of cell if LTR', async () => {
       let calendar = initCalendar({
         direction: 'ltr',
       })
-      setTimeout(() => {
-        let dayGridWrapper = new ViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new ViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          let cellLeft = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().left
-          let popoverLeft = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().left
-          let diff = Math.abs(cellLeft - popoverLeft)
-          expect(diff).toBeLessThan(2)
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      let cellLeft = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().left
+      let popoverLeft = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().left
+      let diff = Math.abs(cellLeft - popoverLeft)
+      expect(diff).toBeLessThan(2)
     })
 
-    it('aligns horizontally with left edge of cell if RTL', (done) => {
+    it('aligns horizontally with left edge of cell if RTL', async () => {
       let calendar = initCalendar({
         direction: 'rtl',
       })
-      setTimeout(() => {
-        let dayGridWrapper = new ViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new ViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          let cellRight = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().right
-          let popoverRight = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().right
-          let diff = Math.abs(cellRight - popoverRight)
-          expect(diff).toBeLessThan(2)
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      let cellRight = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().right
+      let popoverRight = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().right
+      let diff = Math.abs(cellRight - popoverRight)
+      expect(diff).toBeLessThan(2)
     })
   })
 
@@ -70,23 +64,20 @@ xdescribe('more-link popover', () => {
       initialView: 'dayGridMonth',
     })
 
-    it('aligns with top of cell', (done) => {
+    it('aligns with top of cell', async () => {
       let calendar = initCalendar()
-      setTimeout(() => {
-        let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          let cellTop = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().top
-          let popoverTop = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().top
-          let diff = Math.abs(cellTop - popoverTop)
-          expect(diff).toBeLessThan(2)
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      let cellTop = dayGridWrapper.getDayEl('2014-07-29').getBoundingClientRect().top
+      let popoverTop = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().top
+      let diff = Math.abs(cellTop - popoverTop)
+      expect(diff).toBeLessThan(2)
     })
 
-    it('works with background events', (done) => {
+    it('works with background events', async () => {
       let calendar = initCalendar({
         events: testEvents.concat([
           {
@@ -95,19 +86,16 @@ xdescribe('more-link popover', () => {
           },
         ]),
       })
-      setTimeout(() => {
-        let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          expect(dayGridWrapper.getMorePopoverEventCnt()).toBeGreaterThan(1)
-          expect(dayGridWrapper.getMorePopoverBgEventCnt()).toBe(0)
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      expect(dayGridWrapper.getMorePopoverEventCnt()).toBeGreaterThan(1)
+      expect(dayGridWrapper.getMorePopoverBgEventCnt()).toBe(0)
     })
 
-    it('works with events that have invalid end times', (done) => {
+    it('works with events that have invalid end times', async () => {
       let calendar = initCalendar({
         events: [
           { title: 'event1', start: '2014-07-29', end: '2014-07-29' },
@@ -116,19 +104,16 @@ xdescribe('more-link popover', () => {
           { title: 'event4', start: '2014-07-29T00:00:00', end: '2014-07-28T23:00:00' },
         ],
       })
-      setTimeout(() => {
-        let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          expect(dayGridWrapper.getMorePopoverEventCnt()).toBe(4)
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      expect(dayGridWrapper.getMorePopoverEventCnt()).toBe(4)
     })
 
     // issue 2385
-    it('orders events correctly regardless of ID', (done) => {
+    it('orders events correctly regardless of ID', async () => {
       let calendar = initCalendar({
         initialDate: '2012-03-22',
         dayMaxEventRows: 3,
@@ -184,22 +169,19 @@ xdescribe('more-link popover', () => {
           },
         ],
       })
-      setTimeout(() => {
-        let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      await waitTimeout()
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        dayGridWrapper.openMorePopover()
-        setTimeout(() => {
-          let titles = dayGridWrapper.getMorePopoverEventTitles()
-          expect(titles).toEqual([
-            'event01', 'event05', 'event07', 'event03', 'event02', 'event08', 'event04',
-          ])
-          done()
-        })
-      })
+      dayGridWrapper.openMorePopover()
+      await waitTimeout()
+      let titles = dayGridWrapper.getMorePopoverEventTitles()
+      expect(titles).toEqual([
+        'event01', 'event05', 'event07', 'event03', 'event02', 'event08', 'event04',
+      ])
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/3856
-    it('displays multi-day events only once', (done) => {
+    it('displays multi-day events only once', async () => {
       let calendar = initCalendar({
         initialDate: '2017-10-04',
         events: [
@@ -227,34 +209,34 @@ xdescribe('more-link popover', () => {
           },
         ],
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let popoverEl = dayGridWrapper.getMorePopoverEl()
-        let eventEls = dayGridWrapper.getMorePopoverEventEls()
+      await waitTimeout()
+      let popoverEl = dayGridWrapper.getMorePopoverEl()
+      let eventEls = dayGridWrapper.getMorePopoverEventEls()
 
-        expect(eventEls.length).toBe(4)
+      expect(eventEls.length).toBe(4)
 
-        let $longEventEl = $('.long-event', popoverEl)
-        let $meetingEventEl = $('.meeting-event', popoverEl)
-        let $lunch1EventEl = $('.lunch1-event', popoverEl)
-        let $lunch2EventEl = $('.lunch2-event', popoverEl)
+      let $longEventEl = $('.long-event', popoverEl)
+      let $meetingEventEl = $('.meeting-event', popoverEl)
+      let $lunch1EventEl = $('.lunch1-event', popoverEl)
+      let $lunch2EventEl = $('.lunch2-event', popoverEl)
 
-        expect($longEventEl).not.toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
-        expect($longEventEl).not.toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME);
+      expect($longEventEl).not.toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
+      expect($longEventEl).not.toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
 
-        [$meetingEventEl, $lunch1EventEl, $lunch2EventEl].forEach(($el) => {
-          expect($el).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
-          expect($el).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
-        })
+      let singleDayEventEls = [$meetingEventEl, $lunch1EventEl, $lunch2EventEl]
 
-        done()
+      singleDayEventEls.forEach(($el) => {
+        expect($el).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
+        expect($el).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
       })
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/4331
-    it('displays events that were collapsed in previous days', (done) => {
+    it('displays events that were collapsed in previous days', async () => {
       let calendar = initCalendar({
         initialDate: '2018-10-01',
         events: [
@@ -282,9 +264,10 @@ xdescribe('more-link popover', () => {
           },
         ],
       })
+      await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
       dayGridWrapper.openMorePopover(1) // click the second +more link
-      setTimeout(done)
+      await waitTimeout()
     })
   })
 
@@ -294,42 +277,39 @@ xdescribe('more-link popover', () => {
   }, (viewName) => {
     let ViewWrapper = viewName.match(/^dayGrid/) ? DayGridViewWrapper : TimeGridViewWrapper
 
-    it('aligns with top of header', (done) => {
+    it('aligns with top of header', async () => {
       let calendar = initCalendar()
+      await waitTimeout()
       let viewWrapper = new ViewWrapper(calendar)
       let dayGridWrapper = viewWrapper.dayGrid
 
       dayGridWrapper.openMorePopover()
-      setTimeout(() => {
-        let popoverTop = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().top
-        let headTop = viewWrapper.header.el.getBoundingClientRect().top
-        let diff = Math.abs(popoverTop - headTop)
-        expect(diff).toBeLessThan(3) // fudge :( -- will be fixed when view border moved outward
-        done()
-      })
+      await waitTimeout()
+      let popoverTop = dayGridWrapper.getMorePopoverEl().getBoundingClientRect().top
+      let headTop = viewWrapper.header.el.getBoundingClientRect().top
+      let diff = Math.abs(popoverTop - headTop)
+      expect(diff).toBeLessThan(3) // fudge :( -- will be fixed when view border moved outward
     })
   })
 
   // TODO: somehow test how the popover does to the edge of any scroll container
 
-  it('closes when user clicks the X', (done) => {
+  it('closes when user clicks the X', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).toBeVisible()
 
-      dayGridWrapper.closeMorePopover()
-      setTimeout(() => {
-        expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
-        done()
-      })
-    })
+    dayGridWrapper.closeMorePopover()
+    await waitTimeout()
+    expect(dayGridWrapper.getMorePopoverEl()).not.toBeVisible()
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4584
-  it('doesn\'t fire a dateClick', (done) => {
+  it('doesn\'t fire a dateClick', async () => {
     let dateClickCalled = false
 
     spyOnCalendarCallback('dateClick', () => {
@@ -337,53 +317,47 @@ xdescribe('more-link popover', () => {
     })
 
     let calendar = initCalendar()
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      $.simulateMouseClick(dayGridWrapper.getMorePopoverHeaderEl())
-      setTimeout(() => { // because click would take some time to register
-        expect(dateClickCalled).toBe(false)
-        done()
-      }, 500)
-    })
+    await waitTimeout()
+    $.simulateMouseClick(dayGridWrapper.getMorePopoverHeaderEl())
+    await waitTimeout()
+    expect(dateClickCalled).toBe(false)
   })
 
-  it('doesn\'t close when user clicks somewhere inside of the popover', (done) => {
+  it('doesn\'t close when user clicks somewhere inside of the popover', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      let popoverEl = dayGridWrapper.getMorePopoverEl()
-      let popoverHeaderEl = dayGridWrapper.getMorePopoverHeaderEl()
+    await waitTimeout()
+    let popoverEl = dayGridWrapper.getMorePopoverEl()
+    let popoverHeaderEl = dayGridWrapper.getMorePopoverHeaderEl()
 
-      expect(popoverEl).toBeVisible()
-      expect(popoverHeaderEl).toBeInDOM()
+    expect(popoverEl).toBeVisible()
+    expect(popoverHeaderEl).toBeInDOM()
 
-      $(popoverHeaderEl).simulate('mousedown').simulate('click')
-      setTimeout(() => {
-        expect(popoverEl).toBeVisible()
-        done()
-      })
-    })
+    $(popoverHeaderEl).simulate('mousedown').simulate('click')
+    await waitTimeout()
+    expect(popoverEl).toBeVisible()
   })
 
-  it('closes when user clicks outside of the popover', (done) => {
+  it('closes when user clicks outside of the popover', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      let popoverEl = dayGridWrapper.getMorePopoverEl()
-      expect(popoverEl).toBeVisible()
+    await waitTimeout()
+    let popoverEl = dayGridWrapper.getMorePopoverEl()
+    expect(popoverEl).toBeVisible()
 
-      $('body').simulate('mousedown').simulate('click')
-      setTimeout(() => {
-        expect(popoverEl).not.toBeVisible()
-        done()
-      })
-    })
+    $('body').simulate('mousedown').simulate('click')
+    await waitTimeout()
+    expect(popoverEl).not.toBeVisible()
   })
 
   describe('when dragging events out', () => {
@@ -392,102 +366,118 @@ xdescribe('more-link popover', () => {
     })
 
     describe('when dragging an all-day event to a different day', () => {
-      it('should have the new day and remain all-day', (done) => {
-        let calendar = initCalendar({
-          eventDrop(data) {
-            expect(data.event.start).toEqualDate('2014-07-28')
-            expect(data.event.allDay).toBe(true)
-            done()
-          },
+      it('should have the new day and remain all-day', async () => {
+        let dropReceived = new Promise<void>((resolve) => {
+          initCalendar({
+            eventDrop(data) {
+              expect(data.event.start).toEqualDate('2014-07-28')
+              expect(data.event.allDay).toBe(true)
+              resolve()
+            },
+          })
         })
+        let calendar = currentCalendar
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
         dayGridWrapper.openMorePopover()
-        setTimeout(() => { // simulate was getting confused about which thing was being clicked :(
-          $('.event4', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
-            end: dayGridWrapper.getDayEl('2014-07-28'),
-          })
-        }, 0)
+        await waitTimeout()
+        $('.event4', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
+          end: dayGridWrapper.getDayEl('2014-07-28'),
+        })
+        await dropReceived
       })
     })
 
     describe('when dragging a timed event to a whole day', () => {
-      it('should move to new day but maintain its time', (done) => {
-        let calendar = initCalendar({
-          events: testEvents.concat([
-            {
-              title: 'event5',
-              start: '2014-07-29T13:00:00',
-              className: 'event5',
+      it('should move to new day but maintain its time', async () => {
+        let dropReceived = new Promise<void>((resolve) => {
+          initCalendar({
+            events: testEvents.concat([
+              {
+                title: 'event5',
+                start: '2014-07-29T13:00:00',
+                className: 'event5',
+              },
+            ]),
+            eventDrop(data) {
+              expect(data.event.start).toEqualDate('2014-07-28T13:00:00Z')
+              expect(data.event.allDay).toBe(false)
+              resolve()
             },
-          ]),
-          eventDrop(data) {
-            expect(data.event.start).toEqualDate('2014-07-28T13:00:00Z')
-            expect(data.event.allDay).toBe(false)
-            done()
-          },
+          })
         })
+        let calendar = currentCalendar
+        await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
         dayGridWrapper.openMorePopover()
-        setTimeout(() => { // simulate was getting confused about which thing was being clicked :(
-          $('.event5', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
-            end: dayGridWrapper.getDayEl('2014-07-28T13:00:00'),
-          })
-        }, 0)
+        await waitTimeout()
+        $('.event5', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
+          end: dayGridWrapper.getDayEl('2014-07-28T13:00:00'),
+        })
+        await dropReceived
       })
     })
 
     describe('when dragging a whole day event to a timed slot', () => {
-      it('should assume the new time, with a cleared end', (done) => {
-        let calendar = initCalendar({
-          initialView: 'timeGridWeek',
-          scrollTime: '00:00:00',
-          eventDrop(data) {
-            expect(data.event.start).toEqualDate('2014-07-30T03:00:00Z')
-            expect(data.event.allDay).toBe(false)
-            done()
-          },
+      it('should assume the new time, with a cleared end', async () => {
+        let dropReceived = new Promise<void>((resolve) => {
+          initCalendar({
+            initialView: 'timeGridWeek',
+            scrollTime: '00:00:00',
+            eventDrop(data) {
+              expect(data.event.start).toEqualDate('2014-07-30T03:00:00Z')
+              expect(data.event.allDay).toBe(false)
+              resolve()
+            },
+          })
         })
+        let calendar = currentCalendar
+        await waitTimeout()
         let viewWrapper = new TimeGridViewWrapper(calendar)
         let dayGridWrapper = viewWrapper.dayGrid
 
         dayGridWrapper.openMorePopover()
-        setTimeout(() => { // simulate was getting confused about which thing was being clicked :(
-          $('.event4', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
-            localPoint: { left: '0%', top: '50%' }, // leftmost is guaranteed to be over the 30th
-            end: viewWrapper.timeGrid.getPoint('2014-07-30T03:00:00'),
-          })
-        }, 0)
+        await waitTimeout()
+        $('.event4', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
+          localPoint: { left: '0%', top: '50%' }, // leftmost is guaranteed to be over the 30th
+          end: viewWrapper.timeGrid.getPoint('2014-07-30T03:00:00'),
+        })
+        await dropReceived
       })
     })
 
     describe('when a single-day event isn\'t dragged out all the way', () => {
-      it('shouldn\'t do anything', (done) => {
+      it('shouldn\'t do anything', async () => {
         let dayGridWrapper
-        let calendar = initCalendar({
-          eventDragStop() {
-            setTimeout(() => { // try to wait until drag is over. eventMutation won't fire BTW
+        let dragStopped = new Promise<void>((resolve) => {
+          initCalendar({
+            eventDragStop() {
+              waitTimeout().then(() => {
               expect(dayGridWrapper.getMorePopoverEl()).toBeInDOM()
-              done()
-            }, 0)
-          },
+                resolve()
+              })
+            },
+          })
         })
+        let calendar = currentCalendar
         let viewWrapper = new DayGridViewWrapper(calendar)
         dayGridWrapper = viewWrapper.dayGrid
+        await waitTimeout()
         dayGridWrapper.openMorePopover()
+        await waitTimeout()
 
-        setTimeout(() => { // simulate was getting confused about which thing was being clicked :(
-          $('.event1', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
-            localPoint: { left: '0%', top: '50%' }, // leftmost is guaranteed to be over the 30th
-            dx: 20,
-          })
-        }, 0)
+        $('.event1', dayGridWrapper.getMorePopoverEl()).simulate('drag', {
+          localPoint: { left: '0%', top: '50%' }, // leftmost is guaranteed to be over the 30th
+          dx: 20,
+        })
+        await dragStopped
       })
     })
   })
 
-  it('calls event render handlers', (done) => {
+  it('calls event render handlers', async () => {
     let options = {
       events: [
         { title: 'event1', start: '2014-07-28', end: '2014-07-30', className: 'event1' },
@@ -518,22 +508,19 @@ xdescribe('more-link popover', () => {
     expect(options.eventWillUnmount.calls.count()).toBe(0)
 
     resetCounts()
+    await waitTimeout()
     dayGridWrapper.openMorePopover()
-    setTimeout(() => {
-      expect(options.eventDidMount.calls.count()).toBe(4)
-      expect(options.eventContent.calls.count()).toBe(4)
-      expect(options.eventWillUnmount.calls.count()).toBe(0)
+    await waitTimeout()
+    expect(options.eventDidMount.calls.count()).toBe(4)
+    expect(options.eventContent.calls.count()).toBe(4)
+    expect(options.eventWillUnmount.calls.count()).toBe(0)
 
-      resetCounts()
-      dayGridWrapper.closeMorePopover()
-      setTimeout(() => {
-        expect(options.eventDidMount.calls.count()).toBe(0)
-        expect(options.eventContent.calls.count()).toBe(0)
-        expect(options.eventWillUnmount.calls.count()).toBe(4)
-
-        done()
-      })
-    })
+    resetCounts()
+    dayGridWrapper.closeMorePopover()
+    await waitTimeout()
+    expect(options.eventDidMount.calls.count()).toBe(0)
+    expect(options.eventContent.calls.count()).toBe(0)
+    expect(options.eventWillUnmount.calls.count()).toBe(4)
   })
 
   it('displays latest events after refetch', async () => {
@@ -554,12 +541,13 @@ xdescribe('more-link popover', () => {
         }
       },
     })
+    await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    await waitFrame()
+    await waitTimeout()
     calendar.refetchEvents()
-    await waitFrame()
+    await waitTimeout()
     let eventEls = dayGridWrapper.getMorePopoverEventEls()
     let eventInfo = DayGridWrapper.getEventElInfo(eventEls[2])
     expect(eventInfo.title).toBe(newTitle)

@@ -1,6 +1,7 @@
 import { FormatterInput } from 'fullcalendar'
+import { enUsSep } from '../lib/misc'
 
-xdescribe('Event::formatRange', () => {
+describe('Event::formatRange', () => {
   pushOptions({
     timeZone: 'America/New_York', // for forced timezone offsets
     locale: 'en',
@@ -25,8 +26,8 @@ xdescribe('Event::formatRange', () => {
       initCalendar()
       let event = currentCalendar.getEvents()[0]
       let str = event.formatRange(FORMAT_SETTINGS)
-      expect(str.replace(' at ', ' '))
-        .toBe('September 4 to 5 2018 12:00 PM GMT-5')
+      expect(str.replaceAll(' at ', ' '))
+        .toBe(`September 4 2018 1:00PM GMT-4${enUsSep}September 5 2018 1:00PM GMT-4`)
     })
   })
 
@@ -42,7 +43,7 @@ xdescribe('Event::formatRange', () => {
       let event = currentCalendar.getEvents()[0]
       let str = event.formatRange(FORMAT_SETTINGS)
       expect(str.replace(' at ', ' '))
-        .toBe('September 4 2018 12:00 PM GMT-5')
+        .toBe('September 4 2018 01:00PM GMT-4')
     })
   })
 })

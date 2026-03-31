@@ -78,6 +78,7 @@ describe('eventContent', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5916
+  // KNOWN BUG most likely not-yet-fixed
   xit('can render multiple appearance changes in eventDidMount', () => {
     let calendar = initCalendar({
       initialView: 'timeGridWeek',

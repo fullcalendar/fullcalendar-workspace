@@ -1,7 +1,7 @@
 import { formatDate, formatRange } from 'fullcalendar'
 import { enUsSep } from '../lib/misc'
 
-xdescribe('formatDate', () => {
+describe('formatDate', () => {
   it('works with no timezone offset', () => {
     let str = formatDate('2018-09-04', {
       month: 'long',
@@ -17,15 +17,15 @@ xdescribe('formatDate', () => {
       day: 'numeric',
       year: 'numeric',
       timeZoneName: 'short',
-      timeZone: 'America/New_York', // but with no named tz implementation
+      timeZone: 'America/New_York',
       omitCommas: true, // for cross-browser
     })
     expect(str.replace(' at ', ' '))
-      .toBe('September 4 2018 12:00AM GMT-5')
+      .toBe('September 4 2018 01:00AM GMT-4')
   })
 })
 
-xdescribe('formatRange', () => {
+describe('formatRange', () => {
   it('works with no timezone offset', () => {
     let str = formatRange('2018-09-04', '2018-10-04', {
       month: 'long',
@@ -44,7 +44,7 @@ xdescribe('formatRange', () => {
       timeZone: 'America/New_York', // but with no named tz implementation
       omitCommas: true, // for cross-browser
     })
-    expect(str.replace(' at ', ' '))
-      .toBe(`September 4${enUsSep}October 4 2018 12:00 AM GMT-5`)
+    expect(str.replaceAll(' at ', ' '))
+      .toBe(`September 4 2018 1:00AM GMT-4${enUsSep}October 4 2018 1:00AM GMT-4`)
   })
 })

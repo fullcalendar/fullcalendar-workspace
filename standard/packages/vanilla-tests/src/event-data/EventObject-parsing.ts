@@ -33,6 +33,7 @@ describe('Event Object parsing', () => {
     expect(events[0].end).toBe(null)
   })
 
+  // BEHAVIOR NOT-YET-IMPLEMENTED it seems
   xit('won\'t accept two events with the same ID', () => {
     initCalendar({
       initialView: 'dayGridDay',

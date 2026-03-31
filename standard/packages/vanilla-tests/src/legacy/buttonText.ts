@@ -1,7 +1,7 @@
 import frLocale from 'fullcalendar/locales/fr'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
-xdescribe('button text', () => {
+describe('button text', () => {
   pushOptions({
     headerToolbar: {
       left: 'prevYear,prev,today,next,nextYear',
@@ -31,16 +31,19 @@ xdescribe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
+          buttonDisplay: 'text', // needed!
           buttons: {
             prev: { text: '<-' },
             next: { text: '->' },
             prevYear: { text: '<--' },
             nextYear: { text: '-->' },
             today: { text: 'tidei' },
-            month: { text: 'mun' },
-            week: { text: 'wiki' },
-            day: { text: 'dei' },
           },
+          // text for view-intervals must go here
+          // unfortunately this muddles the meaning of the test
+          monthText: 'mun',
+          weekText: 'wiki',
+          dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
@@ -59,7 +62,7 @@ xdescribe('button text', () => {
 
     describe('with buttonIcons turned off', () => {
       pushOptions({
-        // TODO: disable all the buttons somehow
+        buttonDisplay: 'text',
       })
 
       it('should contain default text values', () => {
@@ -67,10 +70,10 @@ xdescribe('button text', () => {
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
         // will have actual text now
-        expect(toolbarWrapper.getButtonInfo('next').text).toBe('next')
-        expect(toolbarWrapper.getButtonInfo('nextYear').text).toBe('next year')
-        expect(toolbarWrapper.getButtonInfo('prev').text).toBe('prev')
-        expect(toolbarWrapper.getButtonInfo('prevYear').text).toBe('prev year')
+        expect(toolbarWrapper.getButtonInfo('next').text).toBe('Next')
+        expect(toolbarWrapper.getButtonInfo('nextYear').text).toBe('Next year')
+        expect(toolbarWrapper.getButtonInfo('prev').text).toBe('Prev')
+        expect(toolbarWrapper.getButtonInfo('prevYear').text).toBe('Prev year')
 
         expect(toolbarWrapper.getButtonInfo('today').text).toBe('Today')
         expect(toolbarWrapper.getButtonInfo('dayGridMonth').text).toBe('Month')
@@ -81,16 +84,19 @@ xdescribe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
+          buttonDisplay: 'text', // needed!
           buttons: {
             prev: { text: '<-' },
             next: { text: '->' },
             prevYear: { text: '<--' },
             nextYear: { text: '-->' },
             today: { text: 'tidei' },
-            month: { text: 'mun' },
-            week: { text: 'wiki' },
-            day: { text: 'dei' },
           },
+          // text for view-intervals must go here
+          // unfortunately this muddles the meaning of the test
+          monthText: 'mun',
+          weekText: 'wiki',
+          dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
@@ -133,16 +139,19 @@ xdescribe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
+          buttonDisplay: 'text', // needed!
           buttons: {
             prev: { text: '<-' },
             next: { text: '->' },
             prevYear: { text: '<--' },
             nextYear: { text: '-->' },
             today: { text: 'tidei' },
-            month: { text: 'mun' },
-            week: { text: 'wiki' },
-            day: { text: 'dei' },
           },
+          // text for view-intervals must go here
+          // unfortunately this muddles the meaning of the test
+          monthText: 'mun',
+          weekText: 'wiki',
+          dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
@@ -161,7 +170,7 @@ xdescribe('button text', () => {
 
     describe('with buttonIcons turned off', () => {
       pushOptions({
-        // TODO: somehow disable all icons
+        buttonDisplay: 'text',
       })
 
       it('should contain default text values', () => {
@@ -185,16 +194,19 @@ xdescribe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
+          buttonDisplay: 'text',
           buttons: {
             prev: { text: '<-' },
             next: { text: '->' },
             prevYear: { text: '<--' },
             nextYear: { text: '-->' },
             today: { text: 'tidei' },
-            month: { text: 'mun' },
-            week: { text: 'wiki' },
-            day: { text: 'dei' },
           },
+          // text for view-intervals must go here
+          // unfortunately this muddles the meaning of the test
+          monthText: 'mun',
+          weekText: 'wiki',
+          dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 

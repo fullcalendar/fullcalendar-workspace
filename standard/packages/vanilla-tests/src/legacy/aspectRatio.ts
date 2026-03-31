@@ -1,28 +1,27 @@
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
-xdescribe('aspectRatio', () => {
+describe('aspectRatio', () => {
   function getCalendarElement(width) {
     return $('<div id="calendar" style="max-width:none">').appendTo('body').width(width)[0]
   }
 
   describe('when default settings are used', () => {
+    const defaultAspectRatio = 1.35
     const calendarWidth = 677
-    const viewWidth = calendarWidth - 2 // subtract fc-view-outer's left and right border
 
     it('view div should use the ratio 1.35 to set height', () => {
       let calendar = initCalendar({}, getCalendarElement(calendarWidth))
       let viewEl = new CalendarWrapper(calendar).getViewEl()
-
-      let rect = viewEl.getBoundingClientRect()
-      expect(Math.round(rect.height)).toEqual(500)
+      expect(viewEl.offsetHeight).toEqual(Math.round(calendarWidth / defaultAspectRatio))
     })
 
+    /*
+    Sort of a silly test, but was more important when the aspectRatio was INSIDE the view's border
+    */
     it('view div should have width of div', () => {
       let calendar = initCalendar({}, getCalendarElement(calendarWidth))
       let viewEl = new CalendarWrapper(calendar).getViewEl()
-
-      let rect = viewEl.getBoundingClientRect()
-      expect(Math.round(rect.width)).toEqual(viewWidth)
+      expect(viewEl.offsetWidth).toEqual(calendarWidth)
     })
   })
 

@@ -18,6 +18,7 @@ describe('timeline date range', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4937
+  // KNOWN BUG. revive this test when fixed
   xit('can do day slotDuration when slotHeaderInterval is month', () => {
     let calendar = initCalendar({
       initialDate: '2019-05-16',

@@ -1,4 +1,5 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 
 /*
 TODO: write tests for text/render functions
@@ -32,8 +33,9 @@ xdescribe('timeline column grouping', () => {
     ],
   })
 
-  it('renders row heights correctly when grouping columns', () => {
+  it('renders row heights correctly when grouping columns', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
     let resourceDataCells = viewWrapper.dataGrid.getResourceInfo().map((info) => info.cellEl)
@@ -54,8 +56,9 @@ xdescribe('timeline column grouping', () => {
     }
   })
 
-  it('doesnt render twice when date nav', () => {
+  it('doesnt render twice when date nav', async () => {
     let calendar = initCalendar()
+    await waitTimeout()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
     expect(viewWrapper.getResourceCnt()).toBe(6)
