@@ -1,3 +1,4 @@
+/// <reference types="vitest/globals" />
 import React, { createRef, act } from 'react'
 import { render } from '@testing-library/react'
 import FullCalendar from '@fullcalendar/react'
@@ -7,10 +8,14 @@ Only works on build dist code!
 */
 import adaptivePlugin from '../dist/adaptive'
 import resourceTimelinePlugin from '../dist/resource-timeline'
+import timeGridPlugin from '@fullcalendar/react/timegrid'
+
+const NOW_DATE = new Date()
+const PRINT_EVENT_CLASS = 'print-test-event'
 
 // https://github.com/fullcalendar/fullcalendar/issues/7419
-it('render custom event JSX during print-mode', (done) => {
-  let calendarRef = createRef<FullCalendar>()
+it('render custom event JSX during print-mode', async () => {
+  let calendarRef = createRef<React.ComponentRef<typeof FullCalendar>>()
 
   const { container } = render(
     <FullCalendar
@@ -25,22 +30,28 @@ it('render custom event JSX during print-mode', (done) => {
         }
       ]}
       eventContent={(data) => <i>{data.event.title}</i>}
+      eventClass={PRINT_EVENT_CLASS}
     />
   )
 
-  act(() => {
-    const api = calendarRef.current.getApi()
-    api.trigger('_beforeprint')
-
-    // HACK: this timeout is not accurate. printing should not rely on timeout.
-    // However, the feature ultimately works in live testing when triggering browser printing.
-    // TODO: refactor synchronicity
-    setTimeout(() => {
-      const eventEls = getEventEls(container)
-      expect(eventEls[0].querySelector('i')).toBeTruthy()
-      done()
-    })
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
   })
+
+  act(() => {
+    const api = calendarRef.current!.getApi()
+    api.trigger('_beforeprint')
+  })
+
+  // HACK: this timeout is not accurate. printing should not rely on timeout.
+  // However, the feature ultimately works in live testing when triggering browser printing.
+  // TODO: refactor synchronicity
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
+
+  const eventEls = getEventEls(container, PRINT_EVENT_CLASS)
+  expect(eventEls[0].querySelector('i')).toBeTruthy()
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7153
@@ -93,6 +104,6 @@ it('renders resourceGroupLaneContent function', () => {
 // DOM utils
 // -------------------------------------------------------------------------------------------------
 
-function getEventEls(container: HTMLElement): HTMLElement[] {
-  return [...(container.querySelectorAll('.fc-event') as NodeListOf<HTMLElement>)]
+function getEventEls(container: HTMLElement, className: string): HTMLElement[] {
+  return [...(container.querySelectorAll(`.${className}`) as NodeListOf<HTMLElement>)]
 }
