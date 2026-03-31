@@ -101,15 +101,23 @@ export function watchSize(
 ): DisconnectSize {
   configMap.set(el, { callback, watchWidth, watchHeight })
 
-  globalResizeObserver.observe(el, {
-    box: nativeBorderBoxEnabled
-      ? 'border-box'
-      : undefined // default is 'content-box'
-  })
+  // if statement is for jsdom and other shim environments that execute component effects, but
+  // haven't implemented ResizeObserver. Reference: https://github.com/jsdom/jsdom/issues/3368
+  if (globalResizeObserver) {
+    globalResizeObserver.observe(el, {
+      box: nativeBorderBoxEnabled
+        ? 'border-box'
+        : undefined // default is 'content-box'
+    })
+  }
 
   return () => {
     configMap.delete(el)
-    globalResizeObserver.unobserve(el)
+
+    // same reasoning as above
+    if (globalResizeObserver) {
+      globalResizeObserver.unobserve(el)
+    }
   }
 }
 
