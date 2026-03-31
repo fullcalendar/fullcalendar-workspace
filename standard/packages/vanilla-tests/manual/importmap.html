@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel='stylesheet' href='../../packages/core/dist/skeleton.css' />
+    <link rel='stylesheet' href='../../vanilla/dist/skeleton.css' />
     <link rel='stylesheet' href='../../vanilla/dist/themes/classic/theme.css' />
     <link rel='stylesheet' href='../../vanilla/dist/themes/classic/palette.css' />
 
+    <!-- NOTE: you must run this from a WEB SERVER (localhost) or else CORS problems  -->
     <!-- TODO: update importmap.public.html with public version of these URLs -->
     <script type='importmap'>
       {
         "imports": {
-          "preact": "../../packages/core/node_modules/preact/dist/preact.mjs",
-          "preact/compat": "../../packages/core/node_modules/preact/compat/dist/compat.mjs",
-          "preact/hooks": "../../packages/core/node_modules/preact/hooks/dist/hooks.mjs",
-          "@fullcalendar/core": "../../packages/core/dist/esm/index.js",
-          "@fullcalendar/core/internal": "../../packages/core/dist/esm/internal.js",
-          "@fullcalendar/core/internal-classnames": "../../packages/core/dist/esm/internal-classnames.js",
-          "@fullcalendar/core/vdom": "../../packages/core/dist/esm/vdom.js",
-          "@fullcalendar/theme-classic": "../../vanilla/dist/themes/classic/esm/index.js",
-          "@fullcalendar/daygrid": "../../packages/daygrid/dist/esm/index.js",
-          "@fullcalendar/daygrid/internal": "../../packages/daygrid/dist/esm/internal.js",
-          "@fullcalendar/timegrid": "../../packages/timegrid/dist/esm/index.js",
-          "@fullcalendar/timegrid/internal": "../../packages/timegrid/dist/esm/internal.js",
-          "@fullcalendar/list": "../../packages/list/dist/esm/index.js",
-          "@fullcalendar/list/internal": "../../packages/list/dist/esm/internal.js"
+          "preact": "../../vanilla/node_modules/preact/dist/preact.mjs",
+          "preact/hooks": "../../vanilla/node_modules/preact/hooks/dist/hooks.mjs",
+          "preact/jsx-runtime": "../../vanilla/node_modules/preact/jsx-runtime/dist/jsxRuntime.mjs",
+          "preact/compat": "../../vanilla/node_modules/preact/compat/dist/compat.mjs",
+          "preact/compat/client": "../../vanilla/node_modules/preact/compat/client.mjs",
+          "temporal-polyfill/fns/zoneddatetime": "../../vanilla/node_modules/temporal-polyfill/fns/zoneddatetime.js",
+          "temporal-polyfill/fns/plaindatetime": "../../vanilla/node_modules/temporal-polyfill/fns/plaindatetime.js",
+          "temporal-polyfill/fns/instant": "../../vanilla/node_modules/temporal-polyfill/fns/instant.js",
+          "@full-ui/headless-calendar": "../../vanilla/node_modules/@full-ui/headless-calendar/index.js",
+          "fullcalendar": "../../vanilla/dist/index.js",
+          "fullcalendar/themes/classic": "../../vanilla/dist/themes/classic.js",
+          "fullcalendar/interaction": "../../vanilla/dist/interaction.js",
+          "fullcalendar/daygrid": "../../vanilla/dist/daygrid.js",
+          "fullcalendar/timegrid": "../../vanilla/dist/timegrid.js",
+          "fullcalendar/list": "../../vanilla/dist/list.js"
         }
       }
     </script>
     <script type='module'>
-      import { Calendar } from '@fullcalendar/core'
-      import classicThemePlugin from '@fullcalendar/theme-classic'
-      import dayGridPlugin from '@fullcalendar/daygrid'
-      import timeGridPlugin from '@fullcalendar/timegrid'
-      import listPlugin from '@fullcalendar/list'
+      import { Calendar } from 'fullcalendar'
+      import classicThemePlugin from 'fullcalendar/themes/classic'
+      import interactionPlugin from 'fullcalendar/interaction'
+      import dayGridPlugin from 'fullcalendar/daygrid'
+      import timeGridPlugin from 'fullcalendar/timegrid'
+      import listPlugin from 'fullcalendar/list'
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new Calendar(calendarEl, {
-          plugins: [classicThemePlugin, dayGridPlugin, timeGridPlugin, listPlugin],
+          plugins: [classicThemePlugin, interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',

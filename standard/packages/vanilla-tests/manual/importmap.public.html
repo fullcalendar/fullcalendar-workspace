@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/skeleton.css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/themes/classic/theme.css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/themes/classic/palette.css' />
     <script type='importmap'>
       {
         "imports": {
           "preact": "https://cdn.jsdelivr.net/npm/preact@10.19.5/dist/preact.mjs",
-          "preact/compat": "https://cdn.jsdelivr.net/npm/preact@10.19.5/compat/dist/compat.mjs",
           "preact/hooks": "https://cdn.jsdelivr.net/npm/preact@10.19.5/hooks/dist/hooks.mjs",
-          "@fullcalendar/core": "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.js",
-          "@fullcalendar/core/index.js": "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.js",
-          "@fullcalendar/core/internal.js": "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/internal.js",
-          "@fullcalendar/core/vdom": "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/vdom.js",
-          "@fullcalendar/daygrid": "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.js",
-          "@fullcalendar/daygrid/internal.js": "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/internal.js",
-          "@fullcalendar/timegrid": "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/index.js",
-          "@fullcalendar/timegrid/internal.js": "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/internal.js",
-          "@fullcalendar/list": "https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.10/index.js",
-          "@fullcalendar/list/internal.js": "https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.10/internal.js"
+          "preact/jsx-runtime": "https://cdn.jsdelivr.net/npm/preact@10.19.5/jsx-runtime/dist/jsxRuntime.mjs",
+          "preact/compat": "https://cdn.jsdelivr.net/npm/preact@10.19.5/compat/dist/compat.mjs",
+          "preact/compat/client": "https://cdn.jsdelivr.net/npm/preact@10.19.5/compat/client.mjs",
+          "temporal-polyfill/fns/zoneddatetime": "https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.2/fns/zoneddatetime.js",
+          "temporal-polyfill/fns/plaindatetime": "https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.2/fns/plaindatetime.js",
+          "temporal-polyfill/fns/instant": "https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.2/fns/instant.js",
+          "@full-ui/headless-calendar": "https://cdn.jsdelivr.net/npm/@full-ui/headless-calendar@7.0.0-beta.8/index.js",
+          "fullcalendar": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/index.js",
+          "fullcalendar/themes/classic": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/themes/classic.js",
+          "fullcalendar/interaction": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/interaction.js",
+          "fullcalendar/daygrid": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/daygrid.js",
+          "fullcalendar/timegrid": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/timegrid.js",
+          "fullcalendar/list": "https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0-beta.8/list.js"
         }
       }
     </script>
     <script type='module'>
-      import { Calendar } from '@fullcalendar/core'
-      import dayGridPlugin from '@fullcalendar/daygrid'
-      import timeGridPlugin from '@fullcalendar/timegrid'
-      import listPlugin from '@fullcalendar/list'
+      import { Calendar } from 'fullcalendar'
+      import classicThemePlugin from 'fullcalendar/themes/classic'
+      import interactionPlugin from 'fullcalendar/interaction'
+      import dayGridPlugin from 'fullcalendar/daygrid'
+      import timeGridPlugin from 'fullcalendar/timegrid'
+      import listPlugin from 'fullcalendar/list'
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new Calendar(calendarEl, {
-          plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
+          plugins: [classicThemePlugin, interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
