@@ -611,7 +611,7 @@ it('eventContent render can return true to use default rendering', () => {
 
 
 ;[
-  'content', // https://github.com/fullcalendar/fullcalendar/issues/7160
+  'viewContent', // https://github.com/fullcalendar/fullcalendar/issues/7160
   'component', // https://github.com/fullcalendar/fullcalendar/issues/7207
 ].forEach((settingName) => {
   it(`can render custom content in a custom view (with ${settingName} setting)`, () => {
@@ -631,7 +631,7 @@ it('eventContent render can return true to use default rendering', () => {
 })
 
 ;[
-  'content',
+  'viewContent',
   'component',
 ].forEach((settingName) => {
   it(`can render custom content AS FUNCTION in a custom view (with ${settingName} setting)`, () => {
@@ -669,7 +669,7 @@ it('custom view receives enough props for slicing', () => {
       ]}
       views={{
         customView: {
-          content: (props) => {
+          viewContent: (props) => {
             const segs = sliceEvents(props, true); // allDay=true
             return (
               <>
