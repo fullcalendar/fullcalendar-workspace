@@ -1,4 +1,4 @@
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline addResource', () => {
@@ -21,20 +21,22 @@ describe('timeline addResource', () => {
       return new ResourceTimelineViewWrapper(calendar).timelineGrid.getResourceIds()
     }
 
-    await waitTimeout()
-    expect(getResourceIds()).toEqual(['a', 'b', 'c'])
+    await ignoreResizeObserverLoops(async () => {
+      await waitTimeout()
+      expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-    currentCalendar.changeView('resourceTimelineWeek')
-    await waitTimeout()
-    expect(getResourceIds()).toEqual(['a', 'b', 'c'])
+      currentCalendar.changeView('resourceTimelineWeek')
+      await waitTimeout()
+      expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-    currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
-    await waitTimeout()
-    expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
+      currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
+      await waitTimeout()
+      expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
 
-    currentCalendar.changeView('resourceTimelineDay')
-    await waitTimeout()
-    expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
+      currentCalendar.changeView('resourceTimelineDay')
+      await waitTimeout()
+      expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
+    })
   })
 
   it('renders new row with correct height', async () => {
