@@ -50,7 +50,7 @@ function flushAfterSize() {
 // Single global ResizeObserver does batching and uses less memory than individuals
 // Will always fire with delay after DOM mutation, but before repaint,
 // thus doesn't need !isHandling check like checkConfigMap
-const globalResizeObserver = new ResizeObserver((entries) => {
+const globalResizeObserver = typeof ResizeObserver !== 'undefined' && new ResizeObserver((entries) => {
   isHandling = true
 
   // // debug
