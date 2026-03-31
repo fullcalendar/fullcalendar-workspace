@@ -1,3 +1,4 @@
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('resource timeGrid now-indicator', () => {
@@ -28,7 +29,7 @@ describe('resource timeGrid now-indicator', () => {
 
   // big compound test
   // https://github.com/fullcalendar/fullcalendar/issues/3918
-  xit('plays nice with refetchResourcesOnNavigate and view switching', (done) => {
+  it('plays nice with refetchResourcesOnNavigate and view switching', async () => {
     const calendar = initCalendar({
       initialView: 'resourceTimeGridWeek',
       initialDate: '2016-11-04',
@@ -37,40 +38,37 @@ describe('resource timeGrid now-indicator', () => {
       nowIndicator: true,
       refetchResourcesOnNavigate: true,
       resources(arg, callback) {
-        setTimeout(() => {
+        waitTimeout(10).then(() => {
           callback([
             { title: 'resource a', id: 'a' },
             { title: 'resource b', id: 'b' },
           ])
-        }, 10)
+        })
       },
       events(arg, callback) {
-        setTimeout(() => {
+        waitTimeout(10).then(() => {
           callback([
             { title: 'event1', start: '2016-12-04T01:00:00', resourceId: 'a' },
             { title: 'event2', start: '2016-12-04T02:00:00', resourceId: 'b' },
             { title: 'event3', start: '2016-12-05T03:00:00', resourceId: 'a' },
           ])
-        }, 10)
+        })
       },
     })
 
-    setTimeout(() => {
+    await ignoreResizeObserverLoops(async () => {
+      await waitTimeout()
       calendar.changeView('resourceTimeGridDay')
+      await waitTimeout()
 
-      setTimeout(() => {
-        calendar.today()
+      calendar.today()
+      await waitTimeout()
 
-        setTimeout(() => {
-          calendar.changeView('resourceTimeGridWeek')
+      calendar.changeView('resourceTimeGridWeek')
+      await waitTimeout()
 
-          setTimeout(() => {
-            calendar.changeView('resourceTimeGridDay')
-
-            setTimeout(done, 100)
-          }, 100)
-        }, 100)
-      }, 100)
-    }, 100)
+      calendar.changeView('resourceTimeGridDay')
+      await waitTimeout()
+    })
   })
 })

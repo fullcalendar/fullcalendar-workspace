@@ -1,5 +1,5 @@
 import { doElsMatchSegs } from '@fullcalendar-tests/standard/lib/segs'
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
@@ -51,47 +51,50 @@ describe('vresource businessHours', () => {
       }, () => {
         it('greys out sat and sun', async () => {
           initCalendar()
-          await waitTimeout()
-          expect(isResourceTimeGridNonBusinessSegsRendered([
-            // sun
-            { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
-            // mon
-            { resourceId: 'a', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
-            { resourceId: 'a', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
-            // tue
-            { resourceId: 'a', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
-            { resourceId: 'a', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
-            // wed
-            { resourceId: 'a', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
-            { resourceId: 'a', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
-            // thu
-            { resourceId: 'a', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
-            { resourceId: 'a', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
-            // fru
-            { resourceId: 'a', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
-            { resourceId: 'a', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
-            // sat
-            { resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
-            // sun
-            { resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
-            // mon
-            { resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
-            { resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
-            // tue
-            { resourceId: 'b', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
-            { resourceId: 'b', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
-            // wed
-            { resourceId: 'b', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
-            { resourceId: 'b', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
-            // thu
-            { resourceId: 'b', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
-            { resourceId: 'b', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
-            // fri
-            { resourceId: 'b', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
-            { resourceId: 'b', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
-            // sat
-            { resourceId: 'b', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
-          ])).toBe(true)
+
+          await ignoreResizeObserverLoops(async () => {
+            await waitTimeout()
+            expect(isResourceTimeGridNonBusinessSegsRendered([
+              // sun
+              { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
+              // mon
+              { resourceId: 'a', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
+              { resourceId: 'a', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
+              // tue
+              { resourceId: 'a', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
+              { resourceId: 'a', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
+              // wed
+              { resourceId: 'a', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
+              { resourceId: 'a', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
+              // thu
+              { resourceId: 'a', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
+              { resourceId: 'a', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
+              // fru
+              { resourceId: 'a', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
+              { resourceId: 'a', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
+              // sat
+              { resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
+              // sun
+              { resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
+              // mon
+              { resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
+              { resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
+              // tue
+              { resourceId: 'b', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
+              { resourceId: 'b', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
+              // wed
+              { resourceId: 'b', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
+              { resourceId: 'b', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
+              // thu
+              { resourceId: 'b', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
+              { resourceId: 'b', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
+              // fri
+              { resourceId: 'b', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
+              { resourceId: 'b', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
+              // sat
+              { resourceId: 'b', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
+            ])).toBe(true)
+          })
         })
       })
     })

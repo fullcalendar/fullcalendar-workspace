@@ -1,6 +1,6 @@
 import { joinRects } from '@fullcalendar-tests/standard/lib/geom'
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -224,7 +224,7 @@ describe('vresource structure', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5684
-  it('resyncs header row heights when horizontal scrolling and dynamic resources', (done) => {
+  it('resyncs header row heights when horizontal scrolling and dynamic resources', async () => {
     let calendar = initCalendar({
       initialView: 'resourceTimeGridWeek',
       dayMinWidth: 350,
@@ -240,13 +240,13 @@ describe('vresource structure', () => {
     })
     let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
 
-    waitTimeout().then(() => {
+    await ignoreResizeObserverLoops(async () => {
+      await waitTimeout()
+
       const rowElsByIndex = viewWrapper.getHeaderRowsGroupByRowIndex()
 
       expect(rowElsByIndex['1'][0].offsetHeight).toBe(rowElsByIndex['1'][1].offsetHeight)
       expect(rowElsByIndex['2'][0].offsetHeight).toBe(rowElsByIndex['2'][1].offsetHeight)
-
-      done()
     })
   })
 })
