@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-inject": "^5.0.5",
     "@rollup/plugin-json": "^4.0.3",
     "@rollup/plugin-node-resolve": "^14.0.1",
     "@rollup/plugin-replace": "^5.0.1",

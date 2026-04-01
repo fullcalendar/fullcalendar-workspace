@@ -10,6 +10,7 @@ export default {
   },
   importRemaps: process.env.FORCE_REACT ? {
     'fullcalendar': 'fullcalendar-w-react',
+    'fullcalendar/preact': 'fullcalendar-w-react/react',
     'fullcalendar/*': 'fullcalendar-w-react/*',
   } : undefined,
 }

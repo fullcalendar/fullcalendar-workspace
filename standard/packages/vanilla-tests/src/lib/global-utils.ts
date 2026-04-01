@@ -31,7 +31,7 @@ afterEach(() => {
 // Calendar Options and Initialization
 // ---------------------------------------------------------------------------------------------------------------------
 
-export function pushOptions(options: CalendarOptions) {
+function pushOptions(options: CalendarOptions) {
   beforeEach(() => {
     optionsStack.push(options)
   })
@@ -299,7 +299,13 @@ declare global {
 
 }
 
-Object.assign(window, {
+/*
+These functions are not actually attached to globalThis anymore,
+thus the name of this file doesn't really apply anymore! (tho TS types are still global)
+This list of exports is mirrored by standard/scripts/src/pkg/utils/rollup-presets.ts
+injectPlugin
+*/
+export {
   spyOnCalendarCallback,
   pushOptions,
   initCalendar,
@@ -311,7 +317,7 @@ Object.assign(window, {
   oneCall,
   spyOnMethod,
   spyCall,
-})
+}
 
 pushOptions({
   timeZone: 'UTC',

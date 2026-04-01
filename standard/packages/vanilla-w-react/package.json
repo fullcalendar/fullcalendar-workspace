@@ -58,6 +58,9 @@
       "./protected-styles": {
         "format": "module"
       },
+      "./react": {
+        "format": "module"
+      },
       "./locales-all": {
         "format": "module",
         "generator": "./scripts/generate-locales-all.ts"

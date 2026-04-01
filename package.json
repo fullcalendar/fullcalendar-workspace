@@ -55,8 +55,7 @@
     },
     "patchedDependencies": {
       "@angular/build@18.2.21": "scripts/patches/@angular__build@18.patch",
-      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch",
-      "temporal-polyfill@0.3.2": "standard/scripts/patches/temporal-polyfill@0.3.2.patch"
+      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch"
     }
   }
 }

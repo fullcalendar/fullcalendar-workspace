@@ -2,10 +2,11 @@ import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
 import nodeResolvePlugin from '@rollup/plugin-node-resolve'
 import replacePluginLib from '@rollup/plugin-replace'
+import injectPluginLib from '@rollup/plugin-inject'
 import { readFileSync } from 'fs'
 import { readFile } from 'fs/promises'
 import handlebars from 'handlebars'
-import { dirname, join as joinPaths } from 'path'
+import { dirname, join as joinPaths, resolve as resolvePath } from 'path'
 import { fileURLToPath } from 'url'
 import { type OutputOptions, type Plugin, type RollupOptions } from 'rollup'
 import dtsPlugin from 'rollup-plugin-dts'
@@ -44,6 +45,7 @@ const commonjsPlugin = cjsInterop(commonjsPluginLib)
 const jsonPlugin = cjsInterop(jsonPluginLib)
 const postcssPlugin = cjsInterop(postcssPluginLib)
 const replacePlugin = cjsInterop(replacePluginLib)
+const injectPlugin = cjsInterop(injectPluginLib)
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const debugDir = joinPaths(__dirname, 'debug')
@@ -202,7 +204,9 @@ async function buildGlobalOutputOptions(
   const { isTests } = analyzePkg(pkgDir)
 
   return {
-    // format: 'esm', // for DEBUGGING as ESM
+    format: isTests
+      ? 'iife' // for tests, which HACKILY don't use iifeSplitPlugin
+      : 'esm', // for iifeSplitPlugin. also for DEBUGGING as ESM
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
     entryFileNames: '[name].js',
     // chunkFileNames: 'global-chunks/[name]-[hash]' + esmExtension, // for DEBUGGING as ESM
@@ -276,7 +280,27 @@ async function buildGlobalPlugins(
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { isPublicMui, isTests } = analyzePkg(pkgDir)
 
+  // HACK. path to other package
+  const jasmineUtilsFile = resolvePath(
+    joinPaths(__dirname, '../../../../packages/vanilla-tests/dist/.tsout/lib/global-utils.js')
+  )
+
   return [
+    isTests &&
+      injectPlugin({
+        // NOTE: keel in sync with standard/packages/vanilla-tests/src/lib/global-utils.ts
+        spyOnCalendarCallback: [jasmineUtilsFile, 'spyOnCalendarCallback'],
+        pushOptions: [jasmineUtilsFile, 'pushOptions'],
+        initCalendar: [jasmineUtilsFile, 'initCalendar'],
+        getCurrentOptions: [jasmineUtilsFile, 'getCurrentOptions'],
+        describeOptions: [jasmineUtilsFile, 'describeOptions'],
+        describeValues: [jasmineUtilsFile, 'describeValues'],
+        describeTimeZones: [jasmineUtilsFile, 'describeTimeZones'],
+        describeTimeZone: [jasmineUtilsFile, 'describeTimeZone'],
+        oneCall: [jasmineUtilsFile, 'oneCall'],
+        spyOnMethod: [jasmineUtilsFile, 'spyOnMethod'],
+        spyCall: [jasmineUtilsFile, 'spyCall'],
+      }),
     remapImportsPlugin({
       mappings: pkgBundleStruct.importRemaps || {},
     }),
