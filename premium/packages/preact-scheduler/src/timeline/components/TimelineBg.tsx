@@ -20,7 +20,7 @@ export interface TimelineBgProps {
   eventResizeSegs: (TimelineRange & EventRangeProps)[] | null
 
   // dimensions
-  slotWidth: number
+  slotWidth: number | undefined
 
   // virtualization (optional)
   clipStart?: number
@@ -51,35 +51,36 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
     return (
       <>
         {segs.map((seg) => {
-          let { start, size } = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)!
-          let end = start + size
+          if (slotWidth != null) {
+            let { start, size } = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)!
+            let end = start + size
+            start = Math.max(start, clipStart)
+            end = Math.min(end, clipEnd)
 
-          start = Math.max(start, clipStart)
-          end = Math.min(end, clipEnd)
-
-          if (start < end) {
-            return (
-              <div
-                key={buildEventRangeKey(seg.eventRange)}
-                className={classNames.fillY}
-                style={{
-                  insetInlineStart: start - clipStart,
-                  width: end - start,
-                }}
-              >
-                {fillType === 'bg-event' ? (
-                  <BgEvent
-                    eventRange={seg.eventRange}
-                    isStart={seg.isStart}
-                    isEnd={seg.isEnd}
-                    isVertical={false}
-                    {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
-                  />
-                ) : (
-                  renderFill(fillType, options)
-                )}
-              </div>
-            )
+            if (start < end) {
+              return (
+                <div
+                  key={buildEventRangeKey(seg.eventRange)}
+                  className={classNames.fillY}
+                  style={{
+                    insetInlineStart: start - clipStart,
+                    width: end - start,
+                  }}
+                >
+                  {fillType === 'bg-event' ? (
+                    <BgEvent
+                      eventRange={seg.eventRange}
+                      isStart={seg.isStart}
+                      isEnd={seg.isEnd}
+                      isVertical={false}
+                      {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+                    />
+                  ) : (
+                    renderFill(fillType, options)
+                  )}
+                </div>
+              )
+            }
           }
         })}
       </>

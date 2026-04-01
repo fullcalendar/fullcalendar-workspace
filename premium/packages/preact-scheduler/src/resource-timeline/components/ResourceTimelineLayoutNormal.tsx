@@ -354,7 +354,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         ? groupRowPositionShift[1]
         : 0
 
-    const yFillHeight = yFillBottom - yFillTop
+    const yFillHeight = Math.max(yFillBottom, timeClientHeight) - yFillTop
 
     const forcedTimeScroll = this.computeTimeScroll()
     const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, virtualizationDisabled, forcedTimeScroll)
@@ -728,7 +728,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
                 }
               >
-                <div
+                <div // canvas that expands to height of scroller (at least)
                   className={joinClassNames(
                     classNames.rel, // origin for canvas?
                     classNames.grow,
@@ -748,6 +748,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   ref={this.handleBodyEl}
                 >
                   <div
+                    // roving-origin for anything that fills y-axis,
+                    // like slots or non-resource bg events
+                    // is ZERO-width, but has defined top/bottom
                     className={classNames.abs}
                     style={{
                       top: yFillTop,
@@ -791,6 +794,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     )}
                   </div>
                   <div
+                    // roving-origin for all types of resource(-group)-rows
+                    // is ZERO-height, always fixed to top, but has definet x-coordinate and width
                     role='rowgroup'
                     className={classNames.abs}
                     style={{
@@ -865,8 +870,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       className={joinArrayishClassNames(
                         generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyT,
+                        classNames.fillX,
                       )}
-                      style={{ minHeight: timelineBottomFiller }}
+                      style={{
+                        top: yFillBottom,
+                        minHeight: timelineBottomFiller
+                      }}
                     />
                   )}
                 </div>
