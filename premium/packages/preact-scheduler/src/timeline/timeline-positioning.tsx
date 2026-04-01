@@ -5,8 +5,6 @@ import { Duration } from '@fullcalendar/preact/public-api'
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------
 
-const MIN_SLOT_WIDTH = 30 // for real
-
 /*
 TODO: DRY with computeSlatHeight?
 */
@@ -26,9 +24,8 @@ export function computeSlotWidth(
   }
 
   slatMinWidth = Math.max(
-    slatMinWidth || 0,
+    slatMinWidth,
     (labelInnerWidth + 1) / slatsPerLabel,
-    MIN_SLOT_WIDTH,
   )
   const slatTryWidth = viewportWidth / slatCnt
   let slotLiquid: boolean
