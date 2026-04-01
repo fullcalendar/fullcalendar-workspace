@@ -1666,18 +1666,72 @@ importers:
 
   premium/packages/angular-scheduler:
     devDependencies:
+      '@angular-devkit/build-angular':
+        specifier: ^16.2.16
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)
+      '@angular/cli':
+        specifier: ^16.2.16
+        version: 16.2.16(chokidar@3.6.0)
+      '@angular/common':
+        specifier: ^16.2.0
+        version: 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2)
+      '@angular/compiler':
+        specifier: ^16.2.0
+        version: 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))
+      '@angular/compiler-cli':
+        specifier: ^16.2.0
+        version: 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
+      '@angular/core':
+        specifier: ^16.2.0
+        version: 16.2.12(rxjs@7.8.2)(zone.js@0.13.3)
+      '@angular/platform-browser':
+        specifier: ^16.2.0
+        version: 16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))
+      '@angular/platform-browser-dynamic':
+        specifier: ^16.2.0
+        version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))(rxjs@7.8.2))(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))
       '@fullcalendar/angular':
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/angular/dist/lib
+      '@types/jasmine':
+        specifier: ~4.3.0
+        version: 4.3.6
       fullcalendar:
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/vanilla/dist
       fullcalendar-scheduler:
         specifier: workspace:7.0.0-beta.8
         version: link:../vanilla-scheduler/dist
+      jasmine-core:
+        specifier: ~4.6.0
+        version: 4.6.1
+      karma:
+        specifier: ~6.4.0
+        version: 6.4.4
+      karma-chrome-launcher:
+        specifier: ~3.2.0
+        version: 3.2.0
+      karma-coverage:
+        specifier: ~2.2.0
+        version: 2.2.1
+      karma-jasmine:
+        specifier: ~5.1.0
+        version: 5.1.0(karma@6.4.4)
+      karma-jasmine-html-reporter:
+        specifier: ~2.1.0
+        version: 2.1.0(jasmine-core@4.6.1)(karma-jasmine@5.1.0(karma@6.4.4))(karma@6.4.4)
+      rxjs:
+        specifier: ~7.8.0
+        version: 7.8.2
       temporal-polyfill:
         specifier: ^0.3.2
         version: 0.3.2(patch_hash=09230b8453f9d3dd8679c5ed36824f25de366824c7c51de20a6d3bd0f5e0ff84)
+      typescript:
+        specifier: ~5.1.3
+        version: 5.1.6
+      zone.js:
+        specifier: ~0.13.0
+        version: 0.13.3
     publishDirectory: ./dist
 
   premium/packages/headless-grid:
@@ -27265,25 +27319,49 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/base64@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/base64@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/buffers@1.2.1(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/buffers@1.2.1(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/buffers@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/buffers@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/codegen@1.0.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/codegen@1.0.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/codegen@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/codegen@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-core@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -27291,6 +27369,13 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-core@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -27300,9 +27385,21 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -27311,10 +27408,22 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -27327,11 +27436,28 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-node@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
+      glob-to-regex.js: 1.2.0(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-print@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-print@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -27340,6 +27466,14 @@ snapshots:
       '@jsonjoy.com/json-pack': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/json-pack': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/json-pack@1.21.0(tslib@2.6.3)':
     dependencies:
@@ -27353,6 +27487,18 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/json-pack@1.21.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/base64': 1.1.2(tslib@2.8.1)
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      '@jsonjoy.com/json-pointer': 1.0.2(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      hyperdyperid: 1.2.0
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/json-pack@17.65.0(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/base64': 17.65.0(tslib@2.6.3)
@@ -27365,16 +27511,39 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/json-pack@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/base64': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/json-pointer': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      hyperdyperid: 1.2.0
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/json-pointer@1.0.2(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
       '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/json-pointer@1.0.2(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/json-pointer@17.65.0(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/json-pointer@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/util@1.9.0(tslib@2.6.3)':
     dependencies:
@@ -27382,11 +27551,23 @@ snapshots:
       '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/util@1.9.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/util@17.65.0(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/buffers': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/codegen': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/util@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jspm/core@2.1.0': {}
 
@@ -31633,7 +31814,7 @@ snapshots:
 
   '@types/jasmine-jquery@1.5.37':
     dependencies:
-      '@types/jasmine': 3.10.19
+      '@types/jasmine': 5.1.15
       '@types/jquery': 3.5.33
 
   '@types/jasmine@3.10.19': {}
@@ -32341,10 +32522,10 @@ snapshots:
       vite: 7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
       vue: 3.5.27(typescript@5.9.3)
 
-  '@vitest/browser-playwright@4.0.18(playwright@1.58.1)(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)':
+  '@vitest/browser-playwright@4.0.18(playwright@1.58.1)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)':
     dependencies:
-      '@vitest/browser': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)
-      '@vitest/mocker': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))
+      '@vitest/browser': 4.0.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))
       playwright: 1.58.1
       tinyrainbow: 3.0.3
       vitest: 4.0.18(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
@@ -32368,9 +32549,9 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/browser@4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)':
+  '@vitest/browser@4.0.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)':
     dependencies:
-      '@vitest/mocker': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))
       '@vitest/utils': 4.0.18
       magic-string: 0.30.21
       pixelmatch: 7.1.0
@@ -32411,15 +32592,6 @@ snapshots:
       '@vitest/utils': 4.0.18
       chai: 6.2.2
       tinyrainbow: 3.0.3
-
-  '@vitest/mocker@4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))':
-    dependencies:
-      '@vitest/spy': 4.0.18
-      estree-walker: 3.0.3
-      magic-string: 0.30.21
-    optionalDependencies:
-      vite: 7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2)
-    optional: true
 
   '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))':
     dependencies:
@@ -36452,6 +36624,10 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
+  glob-to-regex.js@1.2.0(tslib@2.8.1):
+    dependencies:
+      tslib: 2.8.1
+
   glob-to-regexp@0.4.1: {}
 
   glob@10.5.0:
@@ -38637,19 +38813,19 @@ snapshots:
 
   memfs@4.56.10(tslib@2.8.1):
     dependencies:
-      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.6.3)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
-      glob-to-regex.js: 1.2.0(tslib@2.6.3)
-      thingies: 2.5.0(tslib@2.6.3)
-      tree-dump: 1.1.0(tslib@2.6.3)
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      glob-to-regex.js: 1.2.0(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
 
   memory-fs@0.5.0:
@@ -43560,6 +43736,10 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
+  thingies@2.5.0(tslib@2.8.1):
+    dependencies:
+      tslib: 2.8.1
+
   through2@2.0.5:
     dependencies:
       readable-stream: 2.3.8
@@ -43659,6 +43839,10 @@ snapshots:
   tree-dump@1.1.0(tslib@2.6.3):
     dependencies:
       tslib: 2.6.3
+
+  tree-dump@1.1.0(tslib@2.8.1):
+    dependencies:
+      tslib: 2.8.1
 
   tree-kill@1.2.2: {}
 
@@ -44652,7 +44836,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.10.9
-      '@vitest/browser-playwright': 4.0.18(playwright@1.58.1)(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)
+      '@vitest/browser-playwright': 4.0.18(playwright@1.58.1)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.0.18)
       jsdom: 27.4.0
     transitivePeerDependencies:
       - jiti
