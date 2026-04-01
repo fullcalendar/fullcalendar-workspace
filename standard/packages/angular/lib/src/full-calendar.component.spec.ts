@@ -354,25 +354,22 @@ describe('DeepHostComponent', () => {
     expect(component.eventRenderCnt).toBe(3); // +2 (the two events were freshly rendered)
   });
 
-  it('should render event mutation', (done) => {
+  it('should render event mutation', async () => {
     expect(component.eventRenderCnt).toBe(1);
 
     component.updateEventTitle('another title');
     fixture.detectChanges();
 
-    setTimeout(() => { // wait for event positioning
-      expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
-      expect(component.eventRenderCnt).toBe(2); // +1
+    await new Promise(resolve => setTimeout(resolve, 100)); // wait for event positioning
+    expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
+    expect(component.eventRenderCnt).toBe(2); // +1
 
-      component.updateEventTitle('another title');
-      fixture.detectChanges();
+    component.updateEventTitle('another title');
+    fixture.detectChanges();
 
-      setTimeout(() => { // wait for event positioning
-        expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
-        expect(component.eventRenderCnt).toBe(2); // +0 (didn't rerender anything)
-        done()
-      })
-    })
+    await new Promise(resolve => setTimeout(resolve, 100)); // wait for event positioning
+    expect(fixture.nativeElement.querySelector('.my-event-title').innerText).toBe('another title');
+    expect(component.eventRenderCnt).toBe(2); // +0 (didn't rerender anything)
   });
 
   it('should handle new events async function', (done) => {
