@@ -678,10 +678,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       heights[tierNum] = Math.max(headerLabelInnerHeightMap.get(tierNum) || 0, mainHeight)
     }
 
-    const { headerTierHeights } = this.state
-    if (!isArraysEqual(headerTierHeights, heights)) {
-      this.setState({ headerTierHeights: heights })
-    }
+    this.setState({ headerTierHeights: heights })
   }
 
   private handleSlatInnerHeights = () => {
@@ -751,3 +748,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     setRef(this.props.timeScrollerRef, null)
   }
 }
+
+TimeGridLayoutPannable.addPropsEquality({
+  headerTierHeights: isArraysEqual,
+})
