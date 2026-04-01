@@ -527,7 +527,10 @@ function cjsInterop<DefaultExport>(namespace: { default: DefaultExport }): Defau
   return namespace.default || (namespace as DefaultExport)
 }
 
-const pkgManifestJson = readFileSync('./package.json', 'utf8')
+const pkgManifestJson = readFileSync(
+  joinPaths(__dirname, '..', '..', '..', '..', 'package.json'), // in standard root
+  'utf8',
+)
 const pkgManifest = JSON.parse(pkgManifestJson)
 if (!pkgManifest.version) {
   throw new Error('Must have package.json#version')
