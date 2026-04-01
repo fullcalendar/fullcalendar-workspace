@@ -1,9 +1,9 @@
-import { waitFrame } from '@fullcalendar-tests/standard/lib/misc'
+import { waitFrame, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { doElsMatchSegs } from '@fullcalendar-tests/standard/lib/segs'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-xdescribe('timeline businessHours', () => {
+describe('timeline businessHours', () => {
   pushOptions({
     initialView: 'timelineDay',
     now: '2016-02-15',
@@ -14,7 +14,7 @@ xdescribe('timeline businessHours', () => {
     'when LTR': 'ltr',
     'when RTL': 'rtl',
   }, () => {
-    it('renders when on a day with business hours', () => {
+    it('renders when on a day with business hours', async () => {
       let calendar = initCalendar({
         businessHours: {
           startTime: '10:00',
@@ -22,11 +22,12 @@ xdescribe('timeline businessHours', () => {
         },
         slotDuration: { hours: 1 },
       })
+      await waitTimeout()
       let viewWrapper = new TimelineViewWrapper(calendar)
       expect10to4(viewWrapper)
     })
 
-    it('renders all-day on a day completely outside of business hours', () => {
+    it('renders all-day on a day completely outside of business hours', async () => {
       let calendar = initCalendar({
         now: '2016-02-14', // weekend
         businessHours: {
@@ -35,6 +36,7 @@ xdescribe('timeline businessHours', () => {
         },
         slotDuration: { hours: 1 },
       })
+      await waitTimeout()
       let viewWrapper = new TimelineViewWrapper(calendar)
 
       expect(isTimelineNonBusinessSegsRendered(viewWrapper, [
@@ -42,7 +44,7 @@ xdescribe('timeline businessHours', () => {
       ])).toBe(true)
     })
 
-    it('renders once even with resources', () => {
+    it('renders once even with resources', async () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         resources: [
@@ -52,11 +54,12 @@ xdescribe('timeline businessHours', () => {
         ],
         businessHours: true,
       })
+      await waitTimeout()
       let viewWrapper = new ResourceTimelineViewWrapper(calendar)
       expect9to5(viewWrapper)
     })
 
-    it('render differently with resource override', () => {
+    it('render differently with resource override', async () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         resources: [
@@ -66,11 +69,12 @@ xdescribe('timeline businessHours', () => {
         ],
         businessHours: true,
       })
+      await waitTimeout()
       let viewWrapper = new ResourceTimelineViewWrapper(calendar)
       expectResourceOverride(viewWrapper)
     })
 
-    it('renders full height with resource override and expandRow', () => {
+    it('renders full height with resource override and expandRow', async () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         expandRows: true,
@@ -81,6 +85,7 @@ xdescribe('timeline businessHours', () => {
         ],
         businessHours: true,
       })
+      await waitTimeout()
       let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
       let laneEls = timelineGrid.getResourceLaneEls()
       let totalLaneHeight = 0 // for calculating ave height
@@ -100,7 +105,7 @@ xdescribe('timeline businessHours', () => {
       }
     })
 
-    it('renders dynamically with resource override', (done) => {
+    it('renders dynamically with resource override', async () => {
       let specialResourceInput = {
         id: 'b',
         title: 'b',
@@ -116,19 +121,18 @@ xdescribe('timeline businessHours', () => {
         ],
         businessHours: true,
       })
+      await waitTimeout()
       let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
       expectResourceOverride(viewWrapper)
-      setTimeout(() => {
-        calendar.getResourceById(specialResourceInput.id).remove()
-        expect9to5(viewWrapper)
-        calendar.addResource(specialResourceInput)
-        expectResourceOverride(viewWrapper)
-        done()
-      })
+      await waitTimeout()
+      calendar.getResourceById(specialResourceInput.id).remove()
+      expect9to5(viewWrapper)
+      calendar.addResource(specialResourceInput)
+      expectResourceOverride(viewWrapper)
     })
 
-    it('renders dynamically with resource override amidst other custom rows', (done) => {
+    it('renders dynamically with resource override amidst other custom rows', async () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         resources: [
@@ -140,6 +144,7 @@ xdescribe('timeline businessHours', () => {
         ],
         businessHours: true,
       })
+      await waitTimeout()
       let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
       expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
@@ -147,16 +152,14 @@ xdescribe('timeline businessHours', () => {
         { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
       ])).toBe(true)
 
-      setTimeout(() => {
-        calendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
-        expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
-          { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
-          { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
-          { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
-          { resourceId: 'b', start: '2016-02-15T22:00', end: '2016-02-16T00:00' },
-        ])).toBe(true)
-        done()
-      })
+      await waitTimeout()
+      calendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
+      expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
+        { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
+        { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
+        { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
+        { resourceId: 'b', start: '2016-02-15T22:00', end: '2016-02-16T00:00' },
+      ])).toBe(true)
     })
   })
 
@@ -171,6 +174,7 @@ xdescribe('timeline businessHours', () => {
       ],
       businessHours: true,
     })
+    await waitTimeout()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     expectResourceOverride(viewWrapper)
     calendar.changeView('dayGridMonth')
@@ -198,25 +202,24 @@ xdescribe('timeline businessHours', () => {
         ],
       })
 
-      it('renders when expanded', (done) => {
+      it('renders when expanded', async () => {
         let calendar = initCalendar()
+        await waitTimeout()
         let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
         viewWrapper.dataGrid.clickFirstExpander()
 
-        setTimeout(() => { // wait for animation to finish
-          expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
-            { resourceId: 'a1', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
-            { resourceId: 'a1', start: '2016-02-15T22:00', end: '2016-02-16T00:00' },
-          ])).toBe(true)
-          done()
-        }, 500)
+        await waitTimeout(500) // wait for animation to finish
+        expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
+          { resourceId: 'a1', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
+          { resourceId: 'a1', start: '2016-02-15T22:00', end: '2016-02-16T00:00' },
+        ])).toBe(true)
       })
     })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7934
-  it('displays business hours >24hrs in short window of time', () => {
+  it('displays business hours >24hrs in short window of time', async () => {
     const startTime = '26:00'
     const endTime = '28:00'
     const calendar = initCalendar({
@@ -226,6 +229,7 @@ xdescribe('timeline businessHours', () => {
       slotMaxTime: endTime,
       businessHours: { startTime, endTime },
     })
+    await waitTimeout()
     const viewWrapper = new ResourceTimelineViewWrapper(calendar)
     expect(viewWrapper.timelineGrid.getNonBusinessDayEls().length).toBe(0)
   })

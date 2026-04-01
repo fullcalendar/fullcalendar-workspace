@@ -1,7 +1,8 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-xdescribe('timeline selection', () => {
+describe('timeline selection', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
@@ -28,7 +29,7 @@ xdescribe('timeline selection', () => {
               initialView: 'timelineDay',
             })
 
-            it('reports selection with no resource', (done) => {
+            it('reports selection with no resource', async () => {
               let selectCalled = false
               let calendar = initCalendar({
                 select(data) {
@@ -40,42 +41,48 @@ xdescribe('timeline selection', () => {
                   expect(data.resource).toBeFalsy()
                 },
               })
+              await waitTimeout()
 
               let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
               let slatEl = timelineGridWrapper.getSlatElByDate('2015-11-28T04:00:00')
 
-              $(slatEl).simulate('drag', {
-                end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
-                callback() {
-                  expect(selectCalled).toBe(true)
-                  done()
-                },
+              await new Promise<void>((resolve) => {
+                $(slatEl).simulate('drag', {
+                  end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
+                  callback() {
+                    expect(selectCalled).toBe(true)
+                    resolve()
+                  },
+                })
               })
             })
           })
 
           describe('when resources', () => {
-            it('won\'t report anything if not selected on resource', (done) => {
+            it('won\'t report anything if not selected on resource', async () => {
               let selectCalled = false
               let calendar = initCalendar({
                 select() {
                   selectCalled = true
                 },
               })
+              await waitTimeout()
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
               let slatEl = timelineGridWrapper.getSlatElByDate('2015-11-28T04:00:00')
 
-              $(slatEl).simulate('drag', {
-                end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
-                callback() {
-                  expect(selectCalled).toBe(false)
-                  done()
-                },
+              await new Promise<void>((resolve) => {
+                $(slatEl).simulate('drag', {
+                  end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
+                  callback() {
+                    expect(selectCalled).toBe(false)
+                    resolve()
+                  },
+                })
               })
             })
 
-            it('reports selection on a resource', (done) => {
+            it('reports selection on a resource', async () => {
               let selectCalled = false
               let calendar = initCalendar({
                 select(data) {
@@ -87,18 +94,17 @@ xdescribe('timeline selection', () => {
                   expect(data.resource.id).toBe('b')
                 },
               })
+              await waitTimeout()
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.selectDates(
+              await timelineGridWrapper.selectDates(
                 { resourceId: 'b', date: '2015-11-28T04:00:00' },
                 { resourceId: 'b', date: '2015-11-28T07:30:00' },
-              ).then(() => {
-                expect(selectCalled).toBe(true)
-                done()
-              })
+              )
+              expect(selectCalled).toBe(true)
             })
 
-            it('reports selection across resources', (done) => {
+            it('reports selection across resources', async () => {
               let selectCalled = false
               let calendar = initCalendar({
                 select(data) {
@@ -110,15 +116,14 @@ xdescribe('timeline selection', () => {
                   expect(data.resource.id).toBe('b')
                 },
               })
+              await waitTimeout()
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.selectDates(
+              await timelineGridWrapper.selectDates(
                 { resourceId: 'b', date: '2015-11-28T04:00:00' },
                 { resourceId: 'a', date: '2015-11-28T07:30:00' },
-              ).then(() => {
-                expect(selectCalled).toBe(true)
-                done()
-              })
+              )
+              expect(selectCalled).toBe(true)
             })
           })
         })
@@ -129,7 +134,7 @@ xdescribe('timeline selection', () => {
             snapDuration: '00:15',
           })
 
-          it('reports a smaller granularity', (done) => {
+          it('reports a smaller granularity', async () => {
             let selectCalled = false
             let calendar = initCalendar({
               select(data) {
@@ -141,15 +146,14 @@ xdescribe('timeline selection', () => {
                 expect(data.resource.id).toBe('b')
               },
             })
+            await waitTimeout()
 
             let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-            timelineGridWrapper.selectDates(
+            await timelineGridWrapper.selectDates(
               { resourceId: 'b', date: '2015-11-28T04:15:00' },
               { resourceId: 'b', date: '2015-11-28T07:45:00' },
-            ).then(() => {
-              expect(selectCalled).toBe(true)
-              done()
-            })
+            )
+            expect(selectCalled).toBe(true)
           })
         })
       })
@@ -161,7 +165,7 @@ xdescribe('timeline selection', () => {
         slotDuration: { days: 1 },
       })
 
-      it('reports untimed dates', (done) => {
+      it('reports untimed dates', async () => {
         let selectCalled = false
         let calendar = initCalendar({
           select(data) {
@@ -173,15 +177,14 @@ xdescribe('timeline selection', () => {
             expect(data.resource.id).toBe('a')
           },
         })
+        await waitTimeout()
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGridWrapper.selectDates(
+        await timelineGridWrapper.selectDates(
           { resourceId: 'a', date: '2015-11-03' },
           { resourceId: 'a', date: '2015-11-05' },
-        ).then(() => {
-          expect(selectCalled).toBe(true)
-          done()
-        })
+        )
+        expect(selectCalled).toBe(true)
       })
     })
 
@@ -192,7 +195,7 @@ xdescribe('timeline selection', () => {
         slotMinWidth: 50,
       })
 
-      it('reports untimed dates', (done) => {
+      it('reports untimed dates', async () => {
         let selectCalled = false
         let calendar = initCalendar({
           select(data) {
@@ -204,20 +207,19 @@ xdescribe('timeline selection', () => {
             expect(data.resource.id).toBe('a')
           },
         })
+        await waitTimeout()
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGridWrapper.selectDates(
+        await timelineGridWrapper.selectDates(
           { resourceId: 'a', date: '2015-01-18' },
           { resourceId: 'a', date: '2015-02-08' },
-        ).then(() => {
-          expect(selectCalled).toBe(true)
-          done()
-        })
+        )
+        expect(selectCalled).toBe(true)
       })
     })
   })
 
-  it('reports selection on a resource via touch', (done) => {
+  it('reports selection on a resource via touch', async () => {
     let selectCalled = false
     let calendar = initCalendar({
       longPressDelay: 100,
@@ -231,17 +233,20 @@ xdescribe('timeline selection', () => {
         expect(data.resource.id).toBe('b')
       },
     })
+    await waitTimeout()
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-    $.simulateByPoint('drag', {
-      isTouch: true,
-      delay: 200,
-      point: timelineGridWrapper.getPoint('b', '2015-11-28T04:00:00'),
-      end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
-      callback() {
-        expect(selectCalled).toBe(true)
-        done()
-      },
+    await new Promise<void>((resolve) => {
+      $.simulateByPoint('drag', {
+        isTouch: true,
+        delay: 200,
+        point: timelineGridWrapper.getPoint('b', '2015-11-28T04:00:00'),
+        end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          resolve()
+        },
+      })
     })
   })
 })
