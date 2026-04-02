@@ -532,7 +532,7 @@ export const BASE_OPTION_DEFAULTS = {
   eventMinWidth: 30,
   eventShortHeight: 30,
   monthStartFormat: { month: 'long', day: 'numeric' },
-  dayCellFormat: { day: 'numeric' },
+  dayCellFormat: { day: 'numeric', omitTrailing: true },
   headingLevel: 2, // like H2
   outerBorder: true,
   dayNarrowWidth: 80,

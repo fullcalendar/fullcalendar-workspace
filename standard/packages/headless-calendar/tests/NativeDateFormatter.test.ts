@@ -406,6 +406,47 @@ describe('NativeDateFormatter', () => {
   })
 
   // ==========================================================================
+  // omitTrailing
+  // ==========================================================================
+  describe('omitTrailing', () => {
+    it('removes trailing literal punctuation from single-date output', () => {
+      const ctx = makeContext('nb')
+      const fmt = new NativeDateFormatterNew({ weekday: 'short', day: 'numeric', omitTrailing: true })
+      const parts = fmt.formatToParts(MON_NOON, ctx)
+
+      expect(parts.map((part) => part.type)).toEqual(['weekday', 'literal', 'day'])
+      expect(joinDateTimeFormatParts(parts)).toBe('man. 15')
+    })
+
+    it('removes only the last literal part from range output', () => {
+      const ctx = makeContext('nb')
+      const fmt = new NativeDateFormatterNew({ weekday: 'short', day: 'numeric', omitTrailing: true })
+      const start = makeMarker('2024-01-15T12:00:00Z', 0)
+      const end = makeMarker('2024-01-16T12:00:00Z', 0)
+      const parts = fmt.formatRangeToParts(start, end, ctx)
+
+      expect(joinDateTimeFormatParts(parts)).toBe('man. 15.–tir. 16')
+      expect(parts[parts.length - 1]).toEqual({ source: 'endRange', type: 'day', value: '16' })
+      expect(parts.some((part) => part.type === 'literal' && part.value === '.–')).toBe(true)
+    })
+
+    it('removes the last part when trimming empties a trailing literal', () => {
+      const fmt = new NativeDateFormatterNew({ omitTrailing: true })
+      ;(fmt as any).getFormats = () => ({
+        normalFormat: {
+          formatToParts: () => [
+            { type: 'month', value: 'January' },
+            { type: 'literal', value: ' ., ' },
+          ],
+        },
+      })
+
+      const parts = fmt.formatToParts(MON_NOON, makeContext('en-US'))
+      expect(parts).toEqual([{ type: 'month', value: 'January' }])
+    })
+  })
+
+  // ==========================================================================
   // meridiem
   // ==========================================================================
   describe('meridiem', () => {

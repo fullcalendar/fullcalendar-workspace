@@ -40,6 +40,11 @@ export interface NativeDateFormatterOptions extends Intl.DateTimeFormatOptions {
   forceCommas?: boolean
 
   /*
+  strips whitespace, periods, and commas from the final part if it is a literal
+  */
+  omitTrailing?: boolean
+
+  /*
   can force a weekday like "Saturday 1" to the end like "1 Saturday"
   can force a weekday like "2 Sunday" to the start like "Sunday 1"
   only expected to work when there are three parts: weekday, an empty-space literal, and something else
@@ -53,12 +58,14 @@ const EXTENDED_SETTINGS = new Set([
   'omitZeroMinute',
   'omitCommas',
   'forceCommas',
+  'omitTrailing',
   'weekdayJustify',
 ])
 
 const MERIDIEM_RE = /([ap])\.?m\.?/i
 const COMMA_RE = /,/g
 const LTR_RE = /\u200e/g // control character
+const TRAILING_RE = /[\s.,]+$/
 const WHITESPACE_ONLY_RE = /^\s+$/
 
 interface CachedFormats {
@@ -282,6 +289,10 @@ function postProcessParts(
     }
   }
 
+  if (extendedOptions.omitTrailing) {
+    stripTrailingLiteral(parts)
+  }
+
   return parts.filter((part) => part.value)
 }
 
@@ -308,7 +319,23 @@ function postProcessRangeParts(
     }
   }
 
+  if (extendedOptions.omitTrailing) {
+    stripTrailingLiteral(parts)
+  }
+
   return parts.filter((part) => part.value)
+}
+
+function stripTrailingLiteral<T extends { type: string, value: string }>(parts: T[]): void {
+  const lastPart = parts[parts.length - 1]
+
+  if (lastPart?.type === 'literal') {
+    lastPart.value = lastPart.value.replace(TRAILING_RE, '')
+
+    if (!lastPart.value) {
+      parts.pop()
+    }
+  }
 }
 
 function formatWeekNumberParts(

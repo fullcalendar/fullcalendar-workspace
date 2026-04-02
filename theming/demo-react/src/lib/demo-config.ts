@@ -34,6 +34,10 @@ const commonProps = {
 
   // slotMinHeight: 100,
 
+  // locale: 'da',
+  // locale: 'nb',
+  // locale: 'es',
+
   schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // for extra plugins
 }
 
