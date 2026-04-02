@@ -17,7 +17,8 @@ export class ListEvent extends BaseComponent<ListEventProps> {
     let { props, context } = this
     let { eventRange } = props
 
-    let forcedTimeText = (eventRange.def.allDay || (!props.isStart && !props.isEnd))
+    const { displayEventTime } = context.options
+    let forcedTimeText = (displayEventTime !== false) && (eventRange.def.allDay || (!props.isStart && !props.isEnd))
       ? context.options.allDayText
       : undefined
 
