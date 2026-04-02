@@ -82,27 +82,26 @@ function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInp
   /*
   IDs/names, etc
   */
-  function addDefs(defs: PluginDefInput[], warnDuplicate?: boolean) {
+  function addDefs(defs: PluginDefInput[]) {
     for (let unrefinedDef of defs) {
       const { name } = unrefinedDef
       if (!name) {
         throw new Error('Plugin must specify a name')
       }
+
       if (!pluginsByName[name]) {
         const def = pluginsByName[name] = refinePluginDef(unrefinedDef)
         hooks = combineHooks(hooks, def)
         addDefs(unrefinedDef.deps || [])
-      } else if (warnDuplicate) {
-        console.warn(`Duplicate plugin '${name}'`)
       }
     }
   }
 
   if (pluginDefs) { // how could this be undefined?
-    addDefs(pluginDefs, /* warnDuplicate = */ true)
+    addDefs(pluginDefs)
   }
 
-  addDefs(globalDefs)
+  addDefs(globalDefs) // GLOBAL plugins
 
   return hooks
 }
