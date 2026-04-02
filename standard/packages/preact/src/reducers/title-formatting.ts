@@ -1,12 +1,12 @@
-import { BaseOptions } from '@fullcalendar/core/protected-api'
 import { DateProfile } from '../DateProfileGenerator'
 import { diffWholeDays, DateRange, DateEnv, joinDateTimeFormatParts, DateTimeRangeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import { createFormatter, FormatterInput } from '../datelib/formatting'
+import { ViewOptionsRefined } from '../options'
 
 // Computes what the title at the top of the calendarApi should be for this view
 export function buildTitle(
   dateProfile: DateProfile,
-  viewOptions: BaseOptions,
+  viewOptions: ViewOptionsRefined,
   dateEnv: DateEnv,
 ): string {
   let range: DateRange
@@ -32,7 +32,7 @@ export function buildTitle(
     parts = dateEnv.formatRangeToParts(
       range.start,
       range.end,
-      createFormatter(buildTitleFormat(dateProfile, 'long')),
+      createFormatter(buildTitleFormat(dateProfile, viewOptions.disallowAmbigTitle, 'long')),
       options,
     )
 
@@ -40,7 +40,7 @@ export function buildTitle(
       parts = dateEnv.formatRangeToParts(
         range.start,
         range.end,
-        createFormatter(buildTitleFormat(dateProfile, 'short')),
+        createFormatter(buildTitleFormat(dateProfile, viewOptions.disallowAmbigTitle, 'short')),
         options,
       )
     }
@@ -53,6 +53,7 @@ export function buildTitle(
 // Attempts to compute the most appropriate format if not explicitly specified with `titleFormat`.
 function buildTitleFormat(
   dateProfile: DateProfile,
+  disallowAmbigTitle: boolean,
   monthFormat: 'long' | 'short'
 ): FormatterInput {
   const { currentRangeUnit } = dateProfile
@@ -65,18 +66,17 @@ function buildTitleFormat(
     return { year: 'numeric', month: monthFormat }
   }
 
-  // currentRangeUnit is 'weeks' or 'days' ...
+  if (!disallowAmbigTitle) {
+    const days = diffWholeDays(
+      dateProfile.currentRange.start,
+      dateProfile.currentRange.end,
+    )
 
-  const days = diffWholeDays(
-    dateProfile.currentRange.start,
-    dateProfile.currentRange.end,
-  )
-
-  // not a single-day view
-  if (days !== null && days > 1) {
-    return {
-      year: 'numeric',
-      month: monthFormat,
+    if (days !== null && days > 1) {
+      return {
+        year: 'numeric',
+        month: monthFormat,
+      }
     }
   }
 

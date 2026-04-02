@@ -628,6 +628,7 @@ export const VIEW_ONLY_OPTION_REFINERS = {
   buttonTextKey: String,
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean,
+  disallowAmbigTitle: Boolean,
 }
 
 type ViewOnlyRefiners = typeof VIEW_ONLY_OPTION_REFINERS

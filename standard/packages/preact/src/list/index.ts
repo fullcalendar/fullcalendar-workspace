@@ -7,6 +7,7 @@ export default {
     list: {
       component: ListView,
       buttonTextKey: 'listText', // what to lookup in locale files
+      disallowAmbigTitle: true,
     },
     listDay: {
       type: 'list',
