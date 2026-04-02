@@ -1,12 +1,23 @@
-import { PropsWithoutRef, Ref, FunctionComponent } from 'react'
+import {
+  PropsWithoutRef,
+  Ref,
+  FunctionComponent,
+  forwardRef,
+  useId,
+  useState,
+  useEffect,
+  useImperativeHandle,
+} from 'react'
+import { flushSync } from 'react-dom'
 import { CalendarDataManager } from './reducers/CalendarDataManager'
 import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
-import { forwardRef, useId, useState, useEffect, useImperativeHandle } from 'react'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
-import { guid } from './protected-api'
+import { CalendarData } from './reducers/data-types'
+import { Action } from './reducers/Action'
+import { guid } from './util/misc'
 
 export interface CalendarRef {
   getApi(): CalendarApi
@@ -19,14 +30,17 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
   const baseId = useStableId(props.id) // for DOM ids
 
   const [_revision, setRevision] = useState('')
-  function updateRevision() {
-    setRevision(guid())
+
+  function handleDataChange(_data: CalendarData, actions: Action[]) {
+    (needsSyncRender(actions) ? flushSync : runNormal)(() => {
+      setRevision(guid())
+    })
   }
 
   const [calendarApi] = useState(() => new CalendarApiImpl())
   const [calendarDataManager] = useState(() => new CalendarDataManager({
     calendarApi,
-    onDataChange: updateRevision,
+    onDataChange: handleDataChange,
   }))
 
   useEffect(() => { // Cleanup on unmount
@@ -62,6 +76,19 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
     </CalendarMediaRoot>
   )
 })
+
+function needsSyncRender(actions: Action[]): boolean {
+  for (const action of actions) {
+    if (action.type === 'SET_EVENT_DRAG' || action.type === 'SET_EVENT_RESIZE') {
+      return true
+    }
+  }
+  return false
+}
+
+function runNormal(f: () => void) {
+  f()
+}
 
 function useStableId(fallbackId: string | undefined): string {
   // React >= 18
