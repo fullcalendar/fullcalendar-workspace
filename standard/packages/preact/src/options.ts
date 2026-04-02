@@ -237,8 +237,6 @@ export const BASE_OPTION_REFINERS = {
   eventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
   eventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
 
-  backgroundEventColor: String,
-
   eventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
@@ -279,8 +277,12 @@ export const BASE_OPTION_REFINERS = {
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventDidMount: identity as Identity<DidMountHandler<EventMountData>>,
+  backgroundEventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
+  backgroundEventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
   backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
+  backgroundEventColor: String,
 
   selectConstraint: identity as Identity<ConstraintInput>,
   selectOverlap: identity as Identity<boolean | OverlapFunc>,

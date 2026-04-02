@@ -68,14 +68,11 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isNarrow: props.isNarrow || false,
       isShort: props.isShort || false,
       timeClass: '', // never display time
-      titleClass: joinClassNames(
-        generateClassName(options.eventTitleClass, subcontentRenderProps),
-        generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
-      ),
+      titleClass: generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
       options: { eventOverlap: Boolean(options.eventOverlap) },
     }
-    const outerClassName = joinArrayishClassNames( // already includes eventClass below
-      generateClassName(options.backgroundEventClass, renderProps),
+    // does not include backgroundEventClass.. added below
+    const outerClassName = joinArrayishClassNames(
       eventUi.className,
       classNames.fill,
       classNames.internalEvent,
@@ -83,7 +80,6 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       props.isVertical ? classNames.flexCol : classNames.flexRow,
     )
     const innerClassName = joinClassNames(
-      generateClassName(options.eventInnerClass, renderProps),
       generateClassName(options.backgroundEventInnerClass, renderProps),
       classNames.liquid,
     )
@@ -99,11 +95,11 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         defaultGenerator={renderInnerContent}
         elRef={this.handleEl}
         renderProps={renderProps}
-        generatorName="eventContent"
-        customGenerator={options.eventContent}
-        classNameGenerator={options.eventClass}
-        didMount={options.eventDidMount}
-        willUnmount={options.eventWillUnmount}
+        generatorName="backgroundEventContent"
+        customGenerator={options.backgroundEventContent}
+        classNameGenerator={options.backgroundEventClass}
+        didMount={options.backgroundEventDidMount}
+        willUnmount={options.backgroundEventWillUnmount}
       >
         {(InnerContent) => (
           <InnerContent tag='div' className={innerClassName} />

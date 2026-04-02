@@ -43,8 +43,8 @@ export default {
     navLinkClass: 'fc-navlink',
     nonBusinessClass: 'fc-non-business',
     highlightClass: 'fc-highlight',
+    backgroundEventClass: 'fc-bg-event',
     eventClass: (data) => joinClassNames(
-      (data.event.display === 'background' || data.event.display === 'inverse-background') && 'fc-bg-event',
       'fc-event',
       data.isMirror && 'fc-event-mirror',
       data.isStart && 'fc-event-start',

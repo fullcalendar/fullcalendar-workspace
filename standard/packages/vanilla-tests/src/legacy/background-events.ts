@@ -289,7 +289,7 @@ describe('background events', () => {
     })
 
     describe('when in month view', () => {
-      xit('can be activated when rendering set on the source', () => {
+      it('can be activated when rendering set on the source', () => {
         let calendar = initCalendar({
           initialView: 'dayGridMonth',
           eventSources: [{
@@ -307,7 +307,7 @@ describe('background events', () => {
     })
 
     describe('when in timeGrid view and timed event', () => {
-      xit('can be activated when rendering set on the source', () => {
+      it('can be activated when rendering set on the source', () => {
         let calendar = initCalendar({
           initialView: 'timeGridWeek',
           eventSources: [{
