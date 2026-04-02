@@ -1,6 +1,6 @@
 import { joinClassNames, joinArrayishClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
-import { DateMarker, DateRange, rangeContainsMarker } from '@full-ui/headless-calendar'
+import { DateMarker, DateRange, rangeContainsMarker, startOfDay } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../common/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
@@ -141,6 +141,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       slatLabelInnerHeightRefMap,
     } = this
     const { nowDate, headerTiers, forPrint } = props
+    const nowTimeMs = nowDate.valueOf() - startOfDay(nowDate).valueOf()
     const { axisWidth, totalWidth, clientWidth, clientHeight, bodyHeight, sticykBottomScrollbarWidth } = state
     const { options } = context
     const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
@@ -468,7 +469,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         />
                       ))}
                     </div>
-                    {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                    {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) &&
+                      nowTimeMs >= props.dateProfile.slotMinTime.milliseconds &&
+                      nowTimeMs < props.dateProfile.slotMaxTime.milliseconds && (
                       <TimeGridNowIndicatorArrow
                         nowDate={nowDate}
                         dateProfile={props.dateProfile}
