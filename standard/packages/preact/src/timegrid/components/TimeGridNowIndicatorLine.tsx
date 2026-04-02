@@ -11,6 +11,7 @@ export interface TimeGridNowIndicatorLineProps {
   dayDate: DateMarker
   dateProfile: DateProfile
   totalHeight: number | undefined
+  showDot?: boolean
 }
 
 /*
@@ -39,10 +40,12 @@ export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
         style={{ top }}
         date={props.nowDate}
       />
-      <NowIndicatorDot
-        className={joinClassNames(classNames.abs, classNames.start0)}
-        style={{ top }}
-      />
+      {(props.showDot ?? true) && (
+        <NowIndicatorDot
+          className={joinClassNames(classNames.abs, classNames.start0)}
+          style={{ top }}
+        />
+      )}
     </div>
   )
 }

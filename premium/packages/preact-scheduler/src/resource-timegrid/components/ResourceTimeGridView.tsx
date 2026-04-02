@@ -150,7 +150,15 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
             let nonResourceSegs = options.nowIndicator
               ? this.timedResourceSlicers[''].sliceNowDate(nowDate, this.props.dateProfile, this.context.options.nextDayThreshold, this.context, this.dayRanges)
               : [] // TODO: breaks memoization?
-            return this.timedResourceJoiner.expandSegs(resourceDayTableModel, nonResourceSegs)
+            const expandedSegs = this.timedResourceJoiner.expandSegs(resourceDayTableModel, nonResourceSegs)
+            const dayCnt = resourceDayTableModel.dayTableModel.colCount
+            const resourceCnt = resourceDayTableModel.resources.length
+            return expandedSegs.map((seg) => ({
+              ...seg,
+              showDot: !options.datesAboveResources && dayCnt > 1
+                ? true
+                : seg.col % resourceCnt === 0,
+            }))
           })(), colCount)
           let dateSelectionSegsByCol = this.splitDateSelectionSegs(timedResourceJoinedProps.dateSelectionSegs, colCount)
           let eventDragByCol = this.splitEventDrag(timedResourceJoinedProps.eventDrag, colCount)

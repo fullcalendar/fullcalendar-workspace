@@ -10,6 +10,7 @@ export interface TimeGridRange {
   endDate: DateMarker
   isStart: boolean
   isEnd: boolean
+  showDot?: boolean
 }
 
 export type TimeGridCoordRange = TimeGridRange & CoordRange

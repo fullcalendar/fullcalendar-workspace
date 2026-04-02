@@ -353,6 +353,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         dayDate={props.date}
         dateProfile={props.dateProfile}
         totalHeight={props.slatHeight != null ? props.slatHeight * props.slatCnt : undefined}
+        showDot={seg.showDot ?? true}
       />
     ))
   }
