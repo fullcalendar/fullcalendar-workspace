@@ -248,7 +248,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 }
 
 ResourceTimelineView.addStateEquality({
-  spreadsheetColWidthOverrides: isArraysEqual,
+  colWidthOverrides: isArraysEqual,
 })
 
 function computeHasResourceBusinessHours(resourceHierarchy: GenericNode[]): boolean {
