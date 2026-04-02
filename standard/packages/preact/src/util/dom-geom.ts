@@ -81,6 +81,9 @@ export function computeRect(el): Rect {
   }
 }
 
+/*
+Returns relative to viewport origin
+*/
 export function computeClippedClientRect(el: HTMLElement): Rect | null {
   let clippingParents = getClippingParents(el)
   let rect: Rect = el.getBoundingClientRect()

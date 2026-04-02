@@ -5,7 +5,7 @@ import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridWrapper } from '../lib/wrappers/DayGridWrapper'
 
-xdescribe('more-link popover', () => {
+describe('more-link popover', () => {
   let testEvents: EventInput[] = [
     { title: 'event1', start: '2014-07-28', end: '2014-07-30', className: 'event1' },
     { title: 'event2', start: '2014-07-29', end: '2014-07-31', className: 'event2' },

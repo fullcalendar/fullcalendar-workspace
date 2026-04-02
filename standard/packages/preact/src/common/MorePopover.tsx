@@ -32,7 +32,7 @@ export interface MorePopoverProps {
   onClose?: () => void
 }
 
-const PADDING_FROM_VIEWPORT = 10
+const SPACE_FROM_VIEWPORT = 10
 const ROW_BORDER_WIDTH = 1
 
 export class MorePopover extends DateComponent<MorePopoverProps> {
@@ -44,8 +44,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
   private closeRef = createRef<HTMLDivElement>()
   private focusStartRef = createRef<HTMLDivElement>()
   private focusEndRef = createRef<HTMLDivElement>()
-
-
 
   render() {
     let { props, context } = this
@@ -112,6 +110,12 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           classNames.borderBoxRoot,
           classNames.internalPopover,
         )}
+        style={{
+          // positioning is mutated directly in updateSize, HOWEVER, we don't want popover to start
+          // low on screen because might cause unnecessary scrollbars
+          top: 0,
+          left: 0,
+        }}
         // HACK because of portal
         dir={isRtl ? 'rtl' : undefined}
         data-color-scheme={options.colorScheme || undefined}
@@ -275,36 +279,45 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
 
   private updateSize() {
     let { alignEl, alignParentTop } = this.props
-    let { rootEl } = this
+    let { rootEl: popoverEl } = this
 
     const isRtl = computeElIsRtl(alignEl)
+
+    // position relative to viewport
     const alignmentRect = computeClippedClientRect(alignEl)
 
     if (alignmentRect) {
-      let popoverDims = rootEl.getBoundingClientRect()
+      let popoverDims = popoverEl.getBoundingClientRect()
 
       // position relative to viewport
-      let popoverTop = alignParentTop
+      let popoverVPTop = alignParentTop
         // HACK: subtract 1 for DayGrid, which has borders on row-bottom. Only view that uses alignParentTop
         ? alignEl.closest(alignParentTop).getBoundingClientRect().top - ROW_BORDER_WIDTH
         : alignmentRect.top
-
-      let popoverLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left
+      let popoverVPLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left
 
       // constrain
-      popoverTop = Math.max(popoverTop, PADDING_FROM_VIEWPORT)
-      popoverLeft = Math.min(popoverLeft, document.documentElement.clientWidth - PADDING_FROM_VIEWPORT - popoverDims.width)
-      popoverLeft = Math.max(popoverLeft, PADDING_FROM_VIEWPORT)
+      popoverVPTop = Math.max(popoverVPTop, SPACE_FROM_VIEWPORT)
+      popoverVPLeft = Math.min(popoverVPLeft, document.documentElement.clientWidth - SPACE_FROM_VIEWPORT - popoverDims.width)
+      popoverVPLeft = Math.max(popoverVPLeft, SPACE_FROM_VIEWPORT)
 
-      let rootNode = getAppendableRoot(alignEl)
-      let origin = (rootNode as HTMLElement).getBoundingClientRect
-        ? (rootNode as HTMLElement).getBoundingClientRect()
-        : (rootNode as ShadowRoot).firstElementChild.getBoundingClientRect() // yuck
+      const { offsetParent } = popoverEl
 
-      applyStyle(rootEl, {
-        top: popoverTop - origin.top,
-        left: popoverLeft - origin.left,
-      })
+      // final popover position, relative to offsetParent
+      let top: number
+      let left: number
+
+      // TODO: account for RTL
+      if (!offsetParent || offsetParent === document.body) {
+        top = popoverVPTop + window.scrollY
+        left = popoverVPLeft + window.scrollX
+      } else {
+        const offsetParentRect = offsetParent.getBoundingClientRect()
+        top = popoverVPTop - offsetParentRect.top + offsetParent.scrollTop
+        left = popoverVPLeft - offsetParentRect.left + offsetParent.scrollLeft
+      }
+
+      applyStyle(popoverEl, { top, left })
     }
   }
 }
