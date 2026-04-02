@@ -208,7 +208,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           let hStyle = (!isMirror && segRect)
             ? this.computeSegHStyle(segRect)
-            : { left: 0, right: 0 }
+            : { left: 0, right: 0, zIndex: 0 }
+
+          let isSelected = instanceId === eventSelection
+          if (isSelected) {
+            hStyle.zIndex += 1000 // HACK: relies on hardcoded z-index offset; fragile if stacking context changes
+          }
 
           let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
@@ -236,7 +241,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isDragging={isDragging}
                 isResizing={isResizing}
                 isMirror={isMirror}
-                isSelected={instanceId === eventSelection}
+                isSelected={isSelected}
                 level={segRect ? segRect.stackDepth : 0}
                 isNarrow={props.isNarrow}
                 isShort={segVertical.isShort || false}

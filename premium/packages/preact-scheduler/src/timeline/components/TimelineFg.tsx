@@ -146,13 +146,14 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
           const isInvisible = !isMirror && (isDragging || isResizing || !segHorizontalMaybe || segTop == null)
+          const isSelected = instanceId === props.eventSelection
 
           return (
             <TimelineEventHarness
               key={instanceId}
               style={{
                 visibility: isInvisible ? 'hidden' : undefined,
-                zIndex: 1, // scope z-indexes within
+                zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
                 top: segTop || 0,
                 insetInlineStart: segHorizontal.start,
                 width: segHorizontal.size,
@@ -167,7 +168,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isDragging={isDragging}
                 isResizing={isResizing}
                 isMirror={isMirror}
-                isSelected={instanceId === props.eventSelection}
+                isSelected={isSelected}
                 {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
               />
             </TimelineEventHarness>

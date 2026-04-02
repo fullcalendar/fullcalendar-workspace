@@ -277,6 +277,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
       const isInvisible = !isMirror && (isDragging || isResizing || standinFor || top == null)
       const isListItem = hasListItemDisplay(seg)
+      const isSelected = instanceId === eventSelection
 
       nodes.push(
         <DayGridEventHarness
@@ -287,7 +288,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             top,
             insetInlineStart,
             insetInlineEnd,
-            zIndex: 0, // container inner z-indexes
+            zIndex: isSelected ? 1000 : 0, // container inner z-indexes; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
           }}
           heightRef={
             (!standinFor && !isMirror)
@@ -303,7 +304,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isDragging={isDragging}
             isResizing={isResizing}
             isMirror={isMirror}
-            isSelected={instanceId === eventSelection}
+            isSelected={isSelected}
             isNarrow={props.cellIsNarrow}
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
