@@ -179,6 +179,11 @@ This will prevent all ancestors from customizing their box size unless they use 
   border-right: 0 !important;
 }
 
+.borderlessY {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
 /* for matching cell start-border, assumed to be 1px, which can't be guaranteed */
 .fakeBorderS {
   border-inline-start: 1px solid transparent !important;
