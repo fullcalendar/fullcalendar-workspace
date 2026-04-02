@@ -44,6 +44,13 @@ const commonProps = {
 export const eventCalendarProps: EventCalendarProps = {
   ...commonProps,
 
+  views: {
+    timeGridFourDay: {
+      type: 'timeGrid',
+      duration: { days: 4 },
+    }
+  },
+
   // dayMinWidth: 200
   // slotMaxTime: '08:00:00'
   // expandRows: true

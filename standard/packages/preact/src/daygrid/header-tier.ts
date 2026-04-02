@@ -68,7 +68,9 @@ export function buildDateRowConfigs(
   const majorUnit = computeMajorUnit(dateProfile, context.dateEnv)
 
   // HACK mutate isMajor
-  if (datesRepDistinctDays) {
+  // Skip 'day' majorUnit: when each header cell IS a day, every cell would match,
+  // so there's no meaningful boundary to highlight (unlike timeline slots which can be sub-day).
+  if (datesRepDistinctDays && majorUnit !== 'day') {
     for (const dataConfig of rowConfig.dataConfigs) {
       if (isMajorUnit(dataConfig.dateMarker, majorUnit, context.dateEnv)) {
         dataConfig.renderProps.isMajor = true
