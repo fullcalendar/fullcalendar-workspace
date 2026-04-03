@@ -8,9 +8,12 @@ interface GenericGroupSpec { // best place for this?
 }
 
 export interface Group { // TODO: move somewhere more general?
+  id?: string
   spec: GenericGroupSpec
   value: any
 }
+
+type GroupIdPath = [field: string | undefined, value: any][]
 
 // Hierarchy
 // -------------------------------------------------------------------------------------------------
@@ -101,11 +104,18 @@ function insertResourceNode(
   groupSpecs: GenericGroupSpec[],
   groupRowDepth: number,
   resNodes: GenericNode[],
+  groupIdPath: GroupIdPath = [],
 ) {
   if (groupSpecs.length) {
-    let groupNode = ensureGroupNodes(resourceNode, groupSpecs[0], groupRowDepth <= 0, resNodes)
+    const groupSpec = groupSpecs[0]
+    const nextGroupIdPath = buildGroupIdPath(
+      groupIdPath,
+      groupSpec.field,
+      resourceNode.resourceFields[groupSpec.field],
+    )
+    let groupNode = ensureGroupNodes(resourceNode, groupSpec, groupRowDepth <= 0, resNodes, nextGroupIdPath)
 
-    insertResourceNode(resourceNode, orderSpecs, groupSpecs.slice(1), groupRowDepth - 1, groupNode.children)
+    insertResourceNode(resourceNode, orderSpecs, groupSpecs.slice(1), groupRowDepth - 1, groupNode.children, nextGroupIdPath)
   } else {
     insertResourceNodeInSiblings(resourceNode, orderSpecs, resNodes as ResourceNode[])
   }
@@ -116,9 +126,10 @@ function ensureGroupNodes(
   groupSpec: GenericGroupSpec,
   pooledHeight: boolean,
   resNodes: GenericNode[],
+  groupIdPath: GroupIdPath,
 ): GenericNode {
   let groupValue = resourceNode.resourceFields[groupSpec.field]
-  let groupNode: GroupNode
+  let groupNode: GroupNode | undefined
   let newGroupIndex: number
 
   // find an existing group that matches, or determine the position for a new group
@@ -150,6 +161,7 @@ function ensureGroupNodes(
   if (!groupNode) {
     groupNode = {
       entity: {
+        id: buildGroupId(groupIdPath),
         value: groupValue,
         spec: groupSpec,
       },
@@ -226,7 +238,7 @@ export function createEntityId(entity: Resource | Group): string {
 }
 
 export function createGroupId(group: Group): string {
-  return group.spec.field + ':' + group.value
+  return group.id || buildGroupId(buildGroupIdPath([], group.spec.field, group.value))
 }
 
 export function isEntityGroup(entity: Resource | Group): entity is Group {
@@ -234,5 +246,17 @@ export function isEntityGroup(entity: Resource | Group): entity is Group {
 }
 
 export function isGroupsEqual(group0: Group, group1: Group) {
-  return group0.spec === group1.spec && group0.value === group1.value
+  return createGroupId(group0) === createGroupId(group1)
+}
+
+function buildGroupIdPath(
+  parentPath: GroupIdPath,
+  field: string | undefined,
+  value: any,
+): GroupIdPath {
+  return parentPath.concat([[field, value]])
+}
+
+function buildGroupId(path: GroupIdPath): string {
+  return JSON.stringify(path)
 }

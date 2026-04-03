@@ -78,15 +78,4 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
       return inHeader
     }
   }
-
-  getResourceCnt() { // TODO: use this in more places
-    let dataResourceCnt = this.dataGrid.getResourceInfo().length
-    let timeResourceCnt = this.timelineGrid.getResourceLaneEls().length
-
-    if (dataResourceCnt !== timeResourceCnt) {
-      throw new Error('Mismatch in number of rows')
-    }
-
-    return dataResourceCnt
-  }
 }
