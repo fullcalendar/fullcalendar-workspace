@@ -1,10 +1,16 @@
 import * as preact from 'preact'
 
+export function flushSync<R>(f: () => R): R {
+  const res = f()
+  flushUpdates()
+  return res
+}
+
 /*
 Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
 BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929
 */
-export function flushUpdates(): void {
+function flushUpdates(): void {
   let oldDebounceRendering = preact.options.debounceRendering // orig
   let callbackQ = []
 
@@ -20,12 +26,6 @@ export function flushUpdates(): void {
   }
 
   preact.options.debounceRendering = oldDebounceRendering
-}
-
-export function flushSync<R>(f: () => R): R {
-  const res = f()
-  flushUpdates()
-  return res
 }
 
 /*

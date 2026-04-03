@@ -2,7 +2,7 @@ import { Emitter } from './common/Emitter'
 import classNames from './styles.module.css'
 import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
-import { flushSync } from 'react-dom'
+import { flushSync } from './vdom'
 import { joinArrayishClassNames } from './util/html'
 import { generateClassName } from './content-inject/ContentContainer'
 
