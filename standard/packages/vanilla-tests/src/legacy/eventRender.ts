@@ -82,26 +82,26 @@ describe('eventDidMount+eventContent', () => { // TODO: rename file
 
       it('receives correct args AND can modify the element', () => {
         let options = {
-          eventContent(data) {
+          backgroundEventContent(data) {
             expect(typeof data.event).toBe('object')
             expect(data.event.display).toBe('background')
             expect(data.event.start).toBeDefined()
             expect(typeof data.view).toBe('object')
           },
-          eventDidMount(data) {
+          backgroundEventDidMount(data) {
             $(data.el).css('font-size', '20px')
           },
         }
-        spyOn(options, 'eventContent').and.callThrough()
-        spyOn(options, 'eventDidMount').and.callThrough()
+        spyOn(options, 'backgroundEventContent').and.callThrough()
+        spyOn(options, 'backgroundEventDidMount').and.callThrough()
 
         let calendar = initCalendar(options)
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         let bgEventEls = dayGridWrapper.getBgEventEls()
 
         expect(bgEventEls.length).toBe(1)
-        expect(options.eventContent).toHaveBeenCalled()
-        expect(options.eventDidMount).toHaveBeenCalled()
+        expect(options.backgroundEventContent).toHaveBeenCalled()
+        expect(options.backgroundEventDidMount).toHaveBeenCalled()
         expect($(bgEventEls).css('font-size')).toBe('20px')
       })
     })

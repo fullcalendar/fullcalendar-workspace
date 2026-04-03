@@ -56,7 +56,7 @@ describe('day names', () => {
                 dayDate.toLocaleString(locale, { weekday: 'long', day: 'numeric', timeZone: 'UTC' }),
               )
             )
-          )
+          ).replace(/\.$/, '')
 
           it('should be the translation for ' + dayText, () => {
             let calendar = initCalendar({
