@@ -354,7 +354,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         ? groupRowPositionShift[1]
         : 0
 
-    const yFillHeight = Math.max(yFillBottom, timeClientHeight) - yFillTop
+    const yFillHeight = Math.max(yFillBottom, timeClientHeight || 0) - yFillTop
 
     const forcedTimeScroll = this.computeTimeScroll()
     const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, virtualizationDisabled, forcedTimeScroll)
