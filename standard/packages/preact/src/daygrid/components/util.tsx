@@ -23,7 +23,9 @@ export function buildDayTableModel(
   const breakOnWeeks = /year|month|week/.test(dateProfile.currentRangeUnit)
   const majorUnit = !breakOnWeeks && computeMajorUnit(dateProfile, dateEnv)
 
-  return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit)
+  // Exclude 'day': when cells are themselves days, all would match and the boundary
+  // distinction is meaningless (unlike timeline slots which can be sub-day).
+  return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit !== 'day' ? majorUnit : undefined)
 }
 
 export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [
