@@ -1153,9 +1153,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.applyTimeScroll()
   }
 
-  private handleTimeScrollStart = () => {
-    this.scroll.x = undefined
-    this.scroll.time = undefined
+  private handleTimeScrollStart = (isUser: boolean) => {
+    if (isUser) {
+      this.scroll.x = undefined
+      this.scroll.time = undefined
+    }
   }
 
   // HACKY
@@ -1184,7 +1186,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private applyTimeScroll() {
     const x = this.computeTimeScroll()
     if (x != null) {
-      this.scroll.x = x // HACK: store raw pixel value
       this.timeScroller.scrollTo({ x })
     }
   }
@@ -1201,9 +1202,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       if (x) {
         x += 1 // overcome border. TODO: DRY this up
       }
-
-      return x
     }
+
+    return x
   }
 
   // ENTITY (RESOURCE) Scrolling

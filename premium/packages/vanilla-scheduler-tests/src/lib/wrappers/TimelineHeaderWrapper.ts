@@ -14,13 +14,13 @@ export class TimelineHeaderWrapper {
   }
 
   getDateRowCnt() {
-    return this.getScrollerEl().firstElementChild // canvas
+    return this.getScrollerEl().lastElementChild // canvas
       .childElementCount // rows
   }
 
   getDateEls(dateRow = 0) {
     return findElements(
-      this.getScrollerEl().firstElementChild // canvas
+      this.getScrollerEl().lastElementChild // canvas
         .childNodes[dateRow] as HTMLElement,
       '.fc-timeline-slot-label'
     )
@@ -28,7 +28,7 @@ export class TimelineHeaderWrapper {
 
   getDateElByDate(dateStr, dateRow = 0) {
     return (
-      this.getScrollerEl().firstElementChild // canvas
+      this.getScrollerEl().lastElementChild // canvas
         .childNodes[dateRow] as HTMLElement
     ).querySelector(`.fc-timeline-slot-label[data-date="${dateStr}"]`)
   }
