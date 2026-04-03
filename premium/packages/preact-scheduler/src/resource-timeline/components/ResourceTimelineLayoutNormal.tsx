@@ -354,7 +354,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         ? groupRowPositionShift[1]
         : 0
 
-    const yFillHeight = Math.max(yFillBottom, timeClientHeight || 0) - yFillTop
+    let yFillHeight: number
+
+    if (verticalScrolling) {
+      yFillHeight = timeClientHeight != null
+        ? Math.max(yFillBottom, timeClientHeight) - yFillTop
+        : undefined
+    } else {
+      yFillHeight = yFillBottom - yFillTop
+    }
 
     const forcedTimeScroll = this.computeTimeScroll()
     const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, virtualizationDisabled, forcedTimeScroll)
@@ -755,6 +763,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     style={{
                       top: yFillTop,
                       height: yFillHeight,
+                      bottom: yFillHeight == null ? 0 : undefined,
                       insetInlineStart: slotDateShift?.[0],
                     }}
                   >

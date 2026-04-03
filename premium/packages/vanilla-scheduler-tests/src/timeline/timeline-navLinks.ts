@@ -1,3 +1,5 @@
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
+
 describe('timeline navLinks', () => {
   pushOptions({
     navLinks: true,
@@ -36,7 +38,7 @@ describe('timeline navLinks', () => {
   })
 
   describe('clicking', () => {
-    it('correctly navigates do day-view', (done) => {
+    it('correctly navigates do day-view', async () => {
       const calendar = initCalendar({
         navLinks: true,
         initialView: 'resourceTimelineWeek',
@@ -47,10 +49,11 @@ describe('timeline navLinks', () => {
           right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth',
         },
       })
-      $('.fc-navlink').simulate('click')
-      setTimeout(() => {
+      await ignoreResizeObserverLoops(async () => {
+        $('.fc-navlink').simulate('click')
+        await waitTimeout()
+
         expect(calendar.view.type).toBe('resourceTimelineDay')
-        done()
       })
     })
   })

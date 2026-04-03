@@ -1,4 +1,5 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
+import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 
 describe('rerender performance for resource timeline', () => {
   pushOptions({
@@ -12,7 +13,7 @@ describe('rerender performance for resource timeline', () => {
     ],
   })
 
-  it('calls methods a limited number of times', (done) => {
+  it('calls methods a limited number of times', async () => {
     let slotHeaderMountCnt = 0
     let slotHeaderRenderCnt = 0
     let slotLaneRenderCnt = 0
@@ -79,26 +80,28 @@ describe('rerender performance for resource timeline', () => {
     // expect(resourceLaneRenderCnt).toBe(1)
     // expect(eventRenderCnt).toBe(0) // still out of view
 
-    resetCounts()
-    currentCalendar.addResource({ title: 'Resource B' })
+    await ignoreResizeObserverLoops(async () => {
+      resetCounts()
+      currentCalendar.addResource({ title: 'Resource B' })
 
-    expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
-    expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
-    expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
-    expect(resourceLabelRenderCnt).toBe(1 * strictModeFactor) // new resource
-    expect(resourceLaneRenderCnt).toBe(1 * strictModeFactor) // new resource
-    expect(eventRenderCnt).toBe(0 * strictModeFactor)
+      expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
+      expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
+      expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
+      expect(resourceLabelRenderCnt).toBe(1 * strictModeFactor) // new resource
+      expect(resourceLaneRenderCnt).toBe(1 * strictModeFactor) // new resource
+      expect(eventRenderCnt).toBe(0 * strictModeFactor)
 
-    resetCounts()
-    $(window).simulate('resize')
-    setTimeout(() => {
+      resetCounts()
+
+      $(window).simulate('resize')
+      await waitTimeout()
+
       expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
       expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)
       expect(slotLaneRenderCnt).toBe(0 * strictModeFactor)
       expect(resourceLabelRenderCnt).toBe(0 * strictModeFactor)
       expect(resourceLaneRenderCnt).toBe(0 * strictModeFactor)
       expect(eventRenderCnt).toBe(0 * strictModeFactor)
-      done()
-    }, 1)
+    })
   })
 })

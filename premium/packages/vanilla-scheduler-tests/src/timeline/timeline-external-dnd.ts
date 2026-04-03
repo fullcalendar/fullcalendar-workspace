@@ -2,7 +2,7 @@
 
 import { Draggable } from 'fullcalendar/interaction'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline-view external element drag-n-drop', () => {
@@ -136,14 +136,17 @@ describe('timeline-view external element drag-n-drop', () => {
 
   it('works after a view switch', async () => {
     let calendar = initCalendar()
-    currentCalendar.changeView('resourceTimelineWeek')
+    await waitTimeout()
 
-    await waitTimeout()
-    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-    await timelineGridWrapper.dragEventTo(
-      $('.external-event')[0], 'b', '2015-11-29T05:00:00',
-    )
-    await waitTimeout()
+    await ignoreResizeObserverLoops(async () => {
+      currentCalendar.changeView('resourceTimelineWeek')
+      await waitTimeout()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      await timelineGridWrapper.dragEventTo(
+        $('.external-event')[0], 'b', '2015-11-29T05:00:00',
+      )
+      await waitTimeout()
+    })
   })
 
   it('works after calling destroy', (done) => {

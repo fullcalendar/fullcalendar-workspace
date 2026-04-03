@@ -3,6 +3,7 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { plainAndZoneToString, plainAndZoneToDate } from '@fullcalendar-tests/standard/lib/temporal-convert'
+import { waitTimeout, ignoreResizeObserverLoops } from '@fullcalendar-tests/standard/lib/misc'
 
 describe('refetchResourcesOnNavigate', () => {
   pushOptions({
@@ -57,7 +58,7 @@ describe('refetchResourcesOnNavigate', () => {
       expect($('.day2event').length).toBe(2)
     })
 
-    it('refetches async resources on quick navigate', (done) => {
+    it('refetches async resources on quick navigate', async () => {
       let fetchCnt = 0
 
       let calendar = initCalendar({
@@ -72,14 +73,15 @@ describe('refetchResourcesOnNavigate', () => {
         },
       })
 
-      calendar.next()
-      setTimeout(() => {
+      await ignoreResizeObserverLoops(async () => {
         calendar.next()
-        setTimeout(() => {
-          expect(fetchCnt).toBe(3)
-          done()
-        }, 200) // after everything
-      }, 50) // before the refetch returns
+        await waitTimeout(50) // before the refetch returns
+
+        calendar.next()
+        await waitTimeout(200) // after everything
+
+        expect(fetchCnt).toBe(3)
+      })
     })
 
     it('refetches async resources and waits to render events', (done) => {
