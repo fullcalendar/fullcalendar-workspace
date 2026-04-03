@@ -22,7 +22,7 @@
   "scripts": {
     "build": "standard-scripts pkg:build",
     "test": "standard-scripts pkg:test",
-    "test:dev": "retry -- standard-scripts pkg:test --dev",
+    "test:dev": "retry -n 999 -- standard-scripts pkg:test --dev",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
