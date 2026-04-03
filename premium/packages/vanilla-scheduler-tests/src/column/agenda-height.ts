@@ -1,5 +1,7 @@
+import internalClassNames from 'fullcalendar/protected-styles'
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimeGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/TimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timegrid height with horizontal scrolling', () => {
   pushOptions({
@@ -13,6 +15,7 @@ describe('timegrid height with horizontal scrolling', () => {
       slotDuration: '04:00',
       expandRows: true,
     })
+
     await waitTimeout()
     expectSlotsEqualHeight(calendar)
   })
@@ -27,4 +30,42 @@ describe('timegrid height with horizontal scrolling', () => {
       expect(rowEls[0].offsetHeight).toBe(rowEls[1].offsetHeight)
     }
   }
+})
+
+describe('resource timegrid sticky footer scrollbar', () => {
+  pushOptions({
+    initialView: 'resourceTimeGridWeek',
+    dayMinWidth: 350,
+    weekNumbers: true,
+    resources: [
+      { id: 'a', title: 'Resource A' },
+      { id: 'b', title: 'Resource B' },
+    ],
+  })
+
+  it('ignores stickyFooterScrollbar when height is fixed', async () => {
+    let calendar = initCalendar({
+      height: 600,
+      stickyFooterScrollbar: true,
+    })
+
+    await waitTimeout()
+
+    expect(
+      new ResourceTimeGridViewWrapper(calendar).el.querySelector(`.${internalClassNames.footerScrollbarSticky}`),
+    ).toBe(null)
+  })
+
+  it('uses stickyFooterScrollbar when height is auto', async () => {
+    let calendar = initCalendar({
+      height: 'auto',
+      stickyFooterScrollbar: true,
+    })
+
+    await waitTimeout()
+
+    expect(
+      new ResourceTimeGridViewWrapper(calendar).el.querySelector(`.${internalClassNames.footerScrollbarSticky}`),
+    ).not.toBe(null)
+  })
 })

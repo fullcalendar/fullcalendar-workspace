@@ -12,6 +12,10 @@ Unless otherwise noted, work in these directories:
 
 Much of the other code is superfluous or mechanically derived from the above directories.
 
+## Verifying Fixes By Running Tests
+
+Do not bother trying to run automated tests yourself. It's too hard. Just ask for user verification.
+
 ## Theme Pipeline
 
 All themes start out as configuration files and tailwind classnames and are manually transformed through multiple phases. All phases are committed to the codebase. Below is the flow from file-to-file. The developer may make changes to upstream theme config/tailwind, and the explicitly ask to fill-in the downstream conversions.

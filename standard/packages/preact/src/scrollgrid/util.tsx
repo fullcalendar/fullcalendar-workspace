@@ -31,13 +31,14 @@ export function getStickyFooterScrollbar(options: {
   contentHeight?: CssDimValue,
   stickyFooterScrollbar?: boolean | 'auto'
 }): boolean {
+  const isHeightAuto = getIsHeightAuto(options)
   let { stickyFooterScrollbar } = options
 
   if (stickyFooterScrollbar == null || stickyFooterScrollbar === 'auto') {
-    stickyFooterScrollbar = getIsHeightAuto(options)
+    stickyFooterScrollbar = isHeightAuto
   }
 
-  return stickyFooterScrollbar
+  return Boolean(stickyFooterScrollbar) && isHeightAuto
 }
 
 export function getScrollerSyncerClass(pluginHooks: {
