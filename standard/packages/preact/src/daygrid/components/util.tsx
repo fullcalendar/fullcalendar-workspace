@@ -52,7 +52,6 @@ export function computeTopFromDate(
   date: DateMarker,
   cellRows: DayTableCell[][],
   rowHeightMap: Map<string, number>,
-  adjust = 0
 ): number | undefined {
   let top = 0
 
@@ -71,7 +70,7 @@ export function computeTopFromDate(
       return // denote unknown
     }
 
-    top += rowHeight + adjust
+    top += rowHeight
   }
 
   return top

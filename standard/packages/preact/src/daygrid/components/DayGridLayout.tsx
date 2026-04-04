@@ -138,7 +138,6 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         this.scrollDate,
         this.props.cellRows,
         rowHeightMap,
-        1, // HACK to consider *outer* height to include border
       )
 
       if (scrollTop != null) {
