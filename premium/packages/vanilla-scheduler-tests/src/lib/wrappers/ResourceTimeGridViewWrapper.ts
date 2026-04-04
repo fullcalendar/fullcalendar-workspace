@@ -26,7 +26,8 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
   }
 
   getScrollEl(): HTMLElement {
-    return this.el.querySelector(`.fc-timegrid-body .${internalClassNames.internalScroller}`)
+    const els = this.el.querySelectorAll(`.fc-timegrid-body .${internalClassNames.internalScroller}`)
+    return els[els.length - 1] as HTMLElement
   }
 
   /*
