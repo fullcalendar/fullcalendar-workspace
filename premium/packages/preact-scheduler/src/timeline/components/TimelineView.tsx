@@ -57,14 +57,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private footerScrollerRef = createRef<Scroller>()
   private tDateProfile?: TimelineDateProfile
   private bodyEl?: HTMLElement
-  private slotWidth?: number
   private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
     afterSize(this.handleSlotInnerWidths)
   })
 
   // internal
   private syncedScroller: ScrollerSyncerInterface
-  private scrollTime: Duration | null = null
+  private scrollTime?: Duration
+  private scrollX?: number
   private slicer = new TimelineLaneSlicer()
 
   render() {
@@ -103,7 +103,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       state.slotInnerWidth, // is ACTUALLY the label width. rename?
       clientWidth,
     )
-    this.slotWidth = slotWidth
 
     /* sliced */
 
@@ -336,23 +335,34 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     this.updateSyncedScroller()
     this.resetScroll()
     this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.syncedScroller.addScrollStartListener(this.handleTimeScrollStart)
     this.syncedScroller.addScrollEndListener(this.handleTimeScrollEnd)
   }
 
-  componentDidUpdate(prevProps: ViewProps) {
+  componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
+    const { props } = this
+    const { options } = this.context
+
     this.updateSyncedScroller()
 
-    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
-      this.resetScroll()
-    } else {
-      // TODO: inefficient to update so often
-      this.applyTimeScroll()
+    const dateProfileChange = prevProps.dateProfile !== props.dateProfile
+    const slotWidthChange =
+      prevState.clientWidth !== this.state.clientWidth ||
+      prevState.slotInnerWidth !== this.state.slotInnerWidth
+
+    if (dateProfileChange || slotWidthChange) {
+      if (dateProfileChange && options.scrollTimeReset) {
+        this.resetScroll()
+      } else {
+        this.applyTimeScroll()
+      }
     }
   }
 
   componentWillUnmount() {
     this.syncedScroller.destroy()
     this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.syncedScroller.removeScrollStartListener(this.handleTimeScrollStart)
     this.syncedScroller.removeScrollEndListener(this.handleTimeScrollEnd)
   }
 
@@ -396,26 +406,59 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   private handleTimeScrollRequest = (scrollTime: Duration) => {
     this.scrollTime = scrollTime
+    this.scrollX = undefined
     this.applyTimeScroll()
+  }
+
+  private handleTimeScrollStart = (isUser: boolean) => {
+    if (isUser) {
+      this.scrollX = undefined
+      this.scrollTime = undefined
+    }
   }
 
   private handleTimeScrollEnd = (isUser: boolean) => {
     if (isUser) {
-      this.scrollTime = null
+      this.scrollX = this.syncedScroller.x
+      this.scrollTime = undefined
     }
   }
 
   private applyTimeScroll() {
-    const { props, context, tDateProfile, scrollTime, slotWidth } = this
+    const x = this.computeTimeScroll()
 
-    if (scrollTime != null && slotWidth != null) {
-      let x = timeToCoord(scrollTime, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
+    if (x != null) {
+      this.syncedScroller.scrollTo({ x })
+    }
+  }
+
+  private computeTimeScroll() {
+    const { props, context, tDateProfile, scrollTime, scrollX } = this
+    const slotWidth = this.getSlotWidth()
+    let x = scrollX
+
+    if (x == null && scrollTime != null && slotWidth != null) {
+      x = timeToCoord(scrollTime, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
 
       if (x) {
         x += 1 // overcome border. TODO: DRY this up
       }
+    }
 
-      this.syncedScroller.scrollTo({ x })
+    return x
+  }
+
+  private getSlotWidth() {
+    const { tDateProfile, state, context } = this
+
+    if (tDateProfile) {
+      return this.computeSlotWidth(
+        tDateProfile.slotCnt,
+        tDateProfile.slotsPerLabel,
+        context.options.slotMinWidth,
+        state.slotInnerWidth,
+        state.clientWidth,
+      )[1]
     }
   }
 
@@ -433,8 +476,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
-    const { props, context, tDateProfile, slotWidth } = this
+    const { props, context, tDateProfile } = this
     const { dateEnv } = context
+    const slotWidth = this.getSlotWidth()
 
     if (slotWidth) {
       const x = isRtl ? elWidth - positionLeft : positionLeft

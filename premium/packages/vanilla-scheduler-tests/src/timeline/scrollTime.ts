@@ -1,7 +1,39 @@
 import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('scrollTime', () => {
+  it('has correct initial scrollTime in timelineDay', async () => {
+    let calendar = initCalendar({
+      initialDate: '2020-08-09',
+      initialView: 'timelineDay',
+      slotDuration: { minutes: 30 },
+      scrollTime: '06:00',
+    })
+    let viewWrapper = new TimelineViewWrapper(calendar)
+    let headerScrollEl = viewWrapper.getHeaderScrollEl()
+    let bodyScrollEl = viewWrapper.getBodyScrollerEl()
+    let headerSlotEl = viewWrapper.header.getDateElByDate('2020-08-09T06:00:00')
+    let bodySlotEl = viewWrapper.timelineGrid.getSlatElByDate('2020-08-09T06:00:00')
+
+    await waitTimeout()
+
+    expect(headerSlotEl).toBeTruthy()
+    expect(bodySlotEl).toBeTruthy()
+    expect(
+      Math.abs(
+        headerScrollEl.getBoundingClientRect().left -
+        headerSlotEl.getBoundingClientRect().left,
+      ),
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        bodyScrollEl.getBoundingClientRect().left -
+        bodySlotEl.getBoundingClientRect().left,
+      ),
+    ).toBeLessThanOrEqual(1)
+  })
+
   it('has correct initial scrollTime', async () => {
     let calendar = initCalendar({
       initialDate: '2020-08-09',
