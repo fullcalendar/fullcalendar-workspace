@@ -1,6 +1,6 @@
 import { MultiMonthViewWrapper } from '../lib/wrappers/MultiMonthViewWrapper'
+import { ignoreResizeObserverLoops, waitTimeout } from '../lib/misc'
 import '../lib/dom-geom.js'
-import { waitTimeout } from '../lib/misc'
 
 describe('multimonth view', () => {
   it('computes start/end for multiMonthYear', () => {
@@ -74,26 +74,27 @@ describe('multimonth view', () => {
       multiMonthMaxColumns: 1,
     })
 
-    await waitTimeout()
+    await ignoreResizeObserverLoops(async () => {
+      const viewWrapper = new MultiMonthViewWrapper(calendar)
+      const monthWrappers = viewWrapper.getMonths()
+      const scrollerEl = viewWrapper.getScrollerEl()
 
-    const viewWrapper = new MultiMonthViewWrapper(calendar)
-    const monthWrappers = viewWrapper.getMonths()
-    const scrollerEl = viewWrapper.getScrollerEl()
+      await waitTimeout()
+      expect(
+        Math.abs(
+          scrollerEl.getBoundingClientRect().top -
+          monthWrappers[5].el.getBoundingClientRect().top,
+        ),
+      ).toBeLessThan(2)
 
-    expect(
-      Math.abs(
-        scrollerEl.getBoundingClientRect().top -
-        monthWrappers[5].el.getBoundingClientRect().top,
-      ),
-    ).toBeLessThan(2)
+      expect(scrollerEl.scrollTop).not.toBe(0)
+      calendar.next()
+      await waitTimeout()
+      calendar.prev()
+      await waitTimeout()
 
-    expect(scrollerEl.scrollTop).not.toBe(0)
-    calendar.next()
-    calendar.prev()
-
-    await waitTimeout()
-
-    expect(scrollerEl.scrollTop).toBe(0)
+      expect(scrollerEl.scrollTop).toBe(0)
+    })
   })
 
   it('renders events when weekends: false', () => {

@@ -10,17 +10,20 @@ import { createFormatter } from '../../datelib/formatting'
 import { NowTimer } from '../../NowTimer'
 import { getIsHeightAuto } from '../../scrollgrid/util'
 import { Scroller } from '../../scrollgrid/Scroller'
-import { afterSize } from '../../component-util/resize-observer'
 import { fracToCssDim } from '../../util/html'
-import { RefMap } from '../../util/RefMap'
 import classNames from '../../styles.module.css'
 import { buildDayTableRenderRange } from '../../daygrid/TableDateProfileGenerator'
 import { createRef } from 'react'
 import { Ruler } from '../../scrollgrid/Ruler'
-import { SingleMonth, SingleMonthHeights } from './SingleMonth'
+import { SingleMonth } from './SingleMonth'
 
 interface MultiMonthViewState {
   innerWidth?: number
+}
+
+interface MultiMonthScrollState {
+  date?: DateMarker
+  top?: number
 }
 
 export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
@@ -32,22 +35,18 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   // ref
   private scrollerRef = createRef<Scroller>()
-  private singleMonthHeightsRefMap = new RefMap<string, SingleMonthHeights>(() => {
-    afterSize(this.handleSingleMonthHeights)
-  })
+  private tilesElRef = createRef<HTMLDivElement>()
 
   // internal
   private _isUnmounting: boolean
-  private scrollDate: DateMarker | null = null
-  private cols: number | undefined
-  private monthDateProfiles: DateProfile[]
+  private scrollState: MultiMonthScrollState = {}
 
   render() {
-    const { context, props, state, singleMonthHeightsRefMap } = this
+    const { context, props, state } = this
     const { options } = context
     const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
-    const monthDateProfiles = this.monthDateProfiles = this.splitDateProfileByMonth(
+    const monthDateProfiles = this.splitDateProfileByMonth(
       context.dateProfileGenerator,
       props.dateProfile,
       context.dateEnv,
@@ -80,7 +79,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       cssMonthWidth = fracToCssDim(1 / cols)
       hasLateralSiblings = cols > 1
     }
-    this.cols = cols
 
     return (
       <NowTimer unit="day">
@@ -101,6 +99,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             >
               <div
                 role='list'
+                ref={this.tilesElRef}
                 aria-labelledby={props.labelId}
                 aria-label={props.labelStr}
                 className={classNames.safeTiles}
@@ -121,7 +120,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       isFirst={!i}
                       isLast={i === monthDateProfiles.length - 1}
                       hasLateralSiblings={hasLateralSiblings}
-                      heightsRef={singleMonthHeightsRefMap.createRef(monthStr)}
                     />
                   )
                 })}
@@ -139,22 +137,32 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   componentDidMount(): void {
     this._isUnmounting = false
+    this.scrollState.date = this.props.dateProfile.currentDate
+    this.scrollerRef.current.addScrollStartListener(this.handleScrollStart)
     this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
-    this.resetScroll()
+    // this.applyScroll() // definitely not ready yet b/c doesn't have state.innerWidth
+
+    // workaround for off-by-a-few-pixels on first time when multiMonthMaxColumns=1, not sure why
+    setTimeout(() => {
+      this.applyScroll()
+    }, 0)
   }
 
-  componentDidUpdate(prevProps: ViewProps) {
-    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
-      this.resetScroll()
-    } else {
-      // NOT optimal to update so often
-      // TODO: isolate dependencies of scroll coordinate
+  componentDidUpdate(prevProps: ViewProps, prevState: MultiMonthViewState) {
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      if (this.context.options.scrollTimeReset) {
+        this.resetScroll()
+      } else {
+        this.applyScroll()
+      }
+    } else if (prevState.innerWidth !== this.state.innerWidth) {
       this.applyScroll()
     }
   }
 
   componentWillUnmount() {
     this._isUnmounting = true
+    this.scrollerRef.current.removeScrollStartListener(this.handleScrollStart)
     this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
   }
 
@@ -166,87 +174,50 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     this.setState({ innerWidth })
   }
 
-  private handleSingleMonthHeights = () => {
-    if (this._isUnmounting) return
-    this.applyScroll()
-  }
-
   private resetScroll() {
-    this.scrollDate = this.props.dateProfile.currentDate
+    this.scrollState.date = this.props.dateProfile.currentDate
+    this.scrollState.top = undefined
     this.applyScroll()
   }
 
   private applyScroll() {
-    const { monthDateProfiles, cols, scrollDate, singleMonthHeightsRefMap, scrollerRef } = this
-    const scroller = scrollerRef.current
+    const scroller = this.scrollerRef.current
+    const top = this.computeScrollTop()
 
-    if (scroller && monthDateProfiles && cols != null && this.scrollDate != null) {
-      const scrollTop = computeScrollTop(monthDateProfiles, cols, scrollDate, singleMonthHeightsRefMap.current)
-
-      if (scrollTop != null) {
-        scroller.scrollTo({ y: scrollTop })
-      }
+    if (scroller && top != null) {
+      scroller.scrollTo({ y: top })
     }
+  }
+
+  private handleScrollStart = () => {
+    this.scrollState.date = undefined
+    this.scrollState.top = undefined
   }
 
   private handleScrollEnd = (isUser: boolean) => {
-    if (isUser) {
-      this.scrollDate = null
+    const scroller = this.scrollerRef.current
+
+    if (isUser && scroller) {
+      this.scrollState.top = scroller.y
+      this.scrollState.date = undefined
     }
   }
-}
 
-// scroll
-// -------------------------------------------------------------------------------------------------
+  private computeScrollTop() {
+    const { scrollState } = this
 
-// TODO: DRY with computeTopFromDate?
-// TODO: what about gap between months!!??
-function computeScrollTop(
-  monthDateProfiles: DateProfile[],
-  cols: number,
-  scrollDate: DateMarker,
-  singleMonthHeightsMap: Map<string, SingleMonthHeights>
-): number | undefined {
-  const isTitleAndHeaderSticky = cols === 1 // TODO: DRY
-  let index = 0
-  let top = 0
-  let maxRowHeight = 0
-
-  for (const monthDateProfile of monthDateProfiles) {
-    const monthKey = formatIsoMonthStr(monthDateProfile.currentRange.start)
-    const monthHeights = singleMonthHeightsMap.get(monthKey)
-    if (!monthHeights) {
-      return
+    if (scrollState.top != null) {
+      return scrollState.top
     }
 
-    let isCurrentMonth = // because multiple months might contain this date (potentially disabled)
-      scrollDate >= monthDateProfile.currentRange.start &&
-      scrollDate < monthDateProfile.currentRange.end
+    if (scrollState.date != null) {
+      const tilesEl = this.tilesElRef.current
+      const monthEl = tilesEl?.querySelector<HTMLElement>(`[data-date="${formatIsoMonthStr(scrollState.date)}"]`)
+      const monthWrapEl = monthEl?.parentElement as HTMLElement | null
 
-    const titleAndHeaderHeight = monthHeights.titleHeight + monthHeights.tableHeaderHeight
-    let localTop = titleAndHeaderHeight
-
-    for (const cells of monthHeights.cellRows) {
-      const start = cells[0].date
-      const end = cells[cells.length - 1].date
-
-      if (isCurrentMonth && scrollDate >= start && scrollDate < end) {
-        return top + localTop - (isTitleAndHeaderSticky ? titleAndHeaderHeight : 0)
+      if (tilesEl && monthWrapEl) {
+        return monthWrapEl.getBoundingClientRect().top - tilesEl.getBoundingClientRect().top
       }
-
-      const key = cells[0].key
-      const rowHeight = monthHeights.rowHeightMap.get(key)
-      if (rowHeight == null) {
-        return
-      }
-      localTop += rowHeight
-    }
-
-    maxRowHeight = Math.max(maxRowHeight, localTop)
-    index++
-    if (!(index % cols)) { // after increment, at start of next month-row?
-      top += maxRowHeight + 1 // HACK border
-      maxRowHeight = 0
     }
   }
 }
