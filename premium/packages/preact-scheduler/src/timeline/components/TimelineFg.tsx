@@ -114,7 +114,15 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
         {this.renderFgSegs(
           mirrorSegs,
           props.slotWidth // TODO: memoize
-            ? computeManySegHorizontals(mirrorSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
+            ? computeManySegHorizontals(
+              mirrorSegs,
+              options.eventMinWidth,
+              context.dateEnv,
+              tDateProfile,
+              props.slotWidth,
+              props.clipStart,
+              props.clipEnd,
+            )
             : {},
           fgSegTops,
           /* hiddenGroups = */ [],
