@@ -937,7 +937,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
     this.timeScroller.addScrollListener(this.handleTimeScroll)
-    this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
 
     this.bodyScroller.addScrollStartListener(this.handleEntityScrollStart)
     this.bodyScroller.addScrollListener(this.handleEntityScroll)
@@ -983,7 +982,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.spreadsheetScroller.destroy()
     this.destroyWindowScrolling()
 
-    this.timeScroller.removeScrollEndListener(this.handleTimeScrollEnd)
     this.bodyScroller.removeScrollEndListener(this.handleEntityScrollEnd)
     this.bodyScroller.removeScrollListener(this.handleEntityScroll)
 
@@ -1167,33 +1165,25 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   private handleTimeScrollStart = (isUser: boolean) => {
     if (isUser) {
-      this.scroll.x = undefined
       this.scroll.time = undefined
+      this.scroll.x = undefined
     }
   }
 
   // HACKY
-  private timeScroll = 0
   private handleTimeScroll = (isUser: boolean, scroll: number) => {
-    this.timeScroll = scroll
-    this._handleTimeScroll()
+    if (isUser) {
+      this.scroll.time = undefined
+      this.scroll.x = scroll
+      this._handleTimeScroll()
+    }
   }
   private _handleTimeScroll = debounce(() => {
-    this.slotVirtualizer.handleScroll(this.timeScroll)
+    this.slotVirtualizer.handleScroll(this.scroll.x)
     for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
-      timeHeaderVirtualizer.handleScroll(this.timeScroll)
+      timeHeaderVirtualizer.handleScroll(this.scroll.x)
     }
   }, 10)[0]
-
-  /*
-  Captures current values
-  */
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
-      this.scroll.x = this.timeScroller.x
-      this.scroll.time = undefined
-    }
-  }
 
   private applyTimeScroll() {
     const x = this.computeTimeScroll()
