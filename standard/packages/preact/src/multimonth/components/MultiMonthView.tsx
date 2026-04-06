@@ -216,7 +216,10 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       const monthWrapEl = monthEl?.parentElement as HTMLElement | null
 
       if (tilesEl && monthWrapEl) {
-        return monthWrapEl.getBoundingClientRect().top - tilesEl.getBoundingClientRect().top
+        // rounding required for proper alignment
+        const monthTop = Math.round(monthWrapEl.getBoundingClientRect().top)
+        const originTop = Math.round(tilesEl.getBoundingClientRect().top)
+        return monthTop - originTop
       }
     }
   }
