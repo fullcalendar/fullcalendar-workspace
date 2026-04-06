@@ -18,6 +18,7 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   rowIndex?: number // 0-based ... optional?... for aria only?
   rowLevel: number // 0 is closest to body, higher-up is ++
   borderBottom?: boolean
+  stickyInner?: boolean
 }
 
 export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
@@ -60,6 +61,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             cellIsNarrow={props.cellIsNarrow}
             cellIsMicro={props.cellIsMicro}
             rowLevel={props.rowLevel}
+            stickyInner={props.stickyInner}
           />
         ))}
       </div>

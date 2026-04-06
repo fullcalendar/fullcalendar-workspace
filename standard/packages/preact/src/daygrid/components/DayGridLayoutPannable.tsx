@@ -106,6 +106,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 headerTiers={props.headerTiers}
                 colWidth={colWidth}
                 width={canvasWidth}
+                colWidthFraction={colWidth != null && clientWidth != null ? colWidth / clientWidth : undefined}
                 cellIsNarrow={cellIsNarrow}
                 cellIsMicro={cellIsMicro}
               />

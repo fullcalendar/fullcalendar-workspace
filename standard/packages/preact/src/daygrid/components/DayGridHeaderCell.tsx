@@ -18,6 +18,7 @@ export interface DayGridHeaderCellProps<RenderProps> {
   cellIsNarrow: boolean
   cellIsMicro: boolean
   rowLevel: number
+  stickyInner?: boolean
 }
 
 interface DayGridHeaderCellState {
@@ -30,8 +31,6 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
   // internal
   private _isUnmounting: boolean
   private disconnectSize?: () => void
-  private align?: 'start' | 'center' | 'end'
-  private isSticky?: boolean
 
   render() {
     const { props, state, context } = this
@@ -56,13 +55,12 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     TODO: DRY with TimelineHeaderCell
     */
     const alignInput = renderConfig.align
-    const align = this.align =
+    const align =
       typeof alignInput === 'function'
         ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isNarrow: props.cellIsNarrow })
         : alignInput
     const stickyInput = renderConfig.sticky
-    const isSticky = this.isSticky =
-      props.rowLevel && stickyInput !== false
+    const isSticky = props.rowLevel > 0 && stickyInput !== false && props.stickyInner
     let edgeCoord: number | string | undefined
     if (isSticky) {
       if (align === 'center') {
@@ -146,13 +144,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
       this.disconnectSize = watchSize(innerEl, (width, height) => {
         if (this._isUnmounting) return
         setRef(this.props.innerHeightRef, height)
-
-        /*
-        TODO: DRY with TimelineHeaderCell
-        */
-        if (this.align === 'center' && this.isSticky) {
-          this.setState({ innerWidth: width })
-        }
+        this.setState({ innerWidth: width })
       })
     } else {
       setRef(this.props.innerHeightRef, null)
