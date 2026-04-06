@@ -270,6 +270,10 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
 /* Misc Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
+.overflowAnchorNone {
+  overflow-anchor: none;
+}
+
 .crop {
   overflow: hidden !important;
 }

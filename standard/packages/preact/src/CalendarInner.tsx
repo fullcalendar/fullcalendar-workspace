@@ -88,6 +88,13 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
           className={joinClassNames(
             classNames.flexCol,
             classNames.rel,
+
+            // prevents browsers' "scroll anchoring behavior", which cause scroll thrashing
+            // when clicking "Next" for month-view, because rows would flex-grow while other rows
+            // temporarily removed. This behavior probably universally unhelpful for our uses,
+            // esp with virtualization, but maybe in future put on more specific row-based parents
+            classNames.overflowAnchorNone,
+
             viewHeightLiquid && classNames.liquid,
           )}
           style={{
