@@ -46,7 +46,7 @@ describe('addEvent', () => {
 
     let theSource = currentCalendar.getEventSourceById('9')
     let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
-    expect(newEvent.source.id === theSource.id)
+    expect(newEvent.source.id).toEqual(theSource.id)
   })
 
   it('will accept a number source ID', () => {
@@ -64,7 +64,7 @@ describe('addEvent', () => {
 
     let theSource = currentCalendar.getEventSourceById('9')
     let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
-    expect(newEvent.source.id === theSource.id)
+    expect(newEvent.source.id).toEqual(theSource.id)
   })
 
   it('will accept an object source', () => {
@@ -82,6 +82,6 @@ describe('addEvent', () => {
 
     let theSource = currentCalendar.getEventSourceById('9')
     let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, theSource)
-    expect(newEvent.source.id === theSource.id)
+    expect(newEvent.source.id).toEqual(theSource.id)
   })
 })

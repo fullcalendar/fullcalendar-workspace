@@ -48,6 +48,9 @@ export function computeColWidth(colCount: number, colMinWidth: number, viewportW
 // Positioning
 // -------------------------------------------------------------------------------------------------
 
+/*
+TODO: handle hidden-days better. If current day is hidden day, scrolls to way bottom
+*/
 export function computeTopFromDate(
   date: DateMarker,
   cellRows: DayTableCell[][],
@@ -58,9 +61,9 @@ export function computeTopFromDate(
   for (const cells of cellRows) {
     const key = cells[0].key
     const start = cells[0].date
-    const end = cells[cells.length - 1].date
+    const end = cells[cells.length - 1].date // inclusive end
 
-    if (date >= start && date < end) {
+    if (date >= start && date <= end) {
       return top
     }
 

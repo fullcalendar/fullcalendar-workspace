@@ -25,13 +25,14 @@ describe('DayGrid w/ multiple weeks/days', () => {
     expect(dayGridView.getScrollerEl()).toHaveScrollbars()
   })
 
-  it('does NOT render scrollbars when 6 weeks', () => {
+  it('does NOT render scrollbars when 6 weeks', async () => {
     const calendar = initCalendar({
       initialDate: '2023-01-25',
       initialView: 'dayGrid',
       duration: { weeks: 6 },
     })
 
+    await waitTimeout()
     const dayGridView = new DayGridViewWrapper(calendar)
     expect(dayGridView.getScrollerEl()).not.toHaveScrollbars()
   })
@@ -51,12 +52,13 @@ describe('DayGrid w/ multiple weeks/days', () => {
     expect(monthStartEls[1].innerText).toBe('February 1')
   })
 
-  it('scrolls to initialDate', () => {
+  it('scrolls to initialDate', async () => {
     const calendar = initCalendar({
       initialDate: '2023-06-25',
       initialView: 'dayGridYear',
     })
 
+    await waitTimeout()
     const viewWrapper = new DayGridViewWrapper(calendar)
     const scrollerEl = viewWrapper.getScrollerEl()
     const dayGridWrapper = viewWrapper.dayGrid
@@ -66,8 +68,31 @@ describe('DayGrid w/ multiple weeks/days', () => {
       Math.abs(
         initialDayEl.getBoundingClientRect().top -
         scrollerEl.getBoundingClientRect().top,
-      ) < 1,
-    )
+      ),
+    ).toBeLessThan(1)
+  })
+
+  /*
+  Special-case for a past bug when current day is last cell in row; problems with inclusivity
+  */
+  it('scrolls to Jan 1 2028 on initial render', async () => {
+    const calendar = initCalendar({
+      initialDate: '2028-01-01',
+      initialView: 'dayGridYear',
+    })
+
+    await waitTimeout()
+    const viewWrapper = new DayGridViewWrapper(calendar)
+    const scrollerEl = viewWrapper.getScrollerEl()
+    const dayGridWrapper = viewWrapper.dayGrid
+    const initialDayEl = dayGridWrapper.getDayEl('2028-01-01')
+
+    expect(
+      Math.abs(
+        initialDayEl.getBoundingClientRect().top -
+        scrollerEl.getBoundingClientRect().top,
+      ),
+    ).toBeLessThan(1)
   })
 
   it('has customizable monthStartFormat', () => {
