@@ -168,7 +168,7 @@ export function getCellEl(rowEl: HTMLElement, col: number): HTMLElement {
 // Header Formatting
 // -------------------------------------------------------------------------------------------------
 
-export const dayMicroWidth = 50
+export const dayMicroWidth = 60
 
 export const dayHeaderMicroFormat = createFormatter({
   weekday: 'narrow'
