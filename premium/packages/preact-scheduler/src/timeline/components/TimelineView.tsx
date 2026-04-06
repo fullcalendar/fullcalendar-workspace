@@ -62,6 +62,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   })
 
   // internal
+  private _isUnmounting: boolean
   private syncedScroller: ScrollerSyncerInterface
   private scrollTime?: Duration
   private scrollX?: number
@@ -331,6 +332,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
     this.resetScroll()
@@ -360,6 +362,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   componentWillUnmount() {
+    this._isUnmounting = true
     this.syncedScroller.destroy()
     this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
     this.syncedScroller.removeScrollStartListener(this.handleTimeScrollStart)
@@ -370,6 +373,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   handleSlotInnerWidths = () => {
+    if (this._isUnmounting) return
     const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1)
 
     if (headerSlotInnerWidth != null && headerSlotInnerWidth !== this.state.slotInnerWidth) {
@@ -378,12 +382,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   handleTotalWidth = (totalWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({
       totalWidth,
     })
   }
 
   handleClientWidth = (clientWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({
       clientWidth,
     })

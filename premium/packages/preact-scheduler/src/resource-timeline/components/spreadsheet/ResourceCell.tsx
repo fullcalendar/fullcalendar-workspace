@@ -34,6 +34,7 @@ export interface ResourceCellProps {
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
   private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private _isUnmounting: boolean
   private disconnectHeight?: () => void
 
   render() {
@@ -112,12 +113,15 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     this.disconnectHeight = watchHeight(this.innerElRef.current, (height) => {
+      if (this._isUnmounting) return
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.innerHeightRef, null)
   }

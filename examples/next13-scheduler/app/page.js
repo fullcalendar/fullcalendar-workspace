@@ -21,6 +21,7 @@ export default function Home() {
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
+          right: 'resourceTimelineDay,resourceTimelineWeek',
         }}
         initialView="resourceTimelineDay"
         initialDate={todayStr}

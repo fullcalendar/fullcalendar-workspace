@@ -497,6 +497,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
   componentWillUnmount(): void {
     this._isUnmounting = true
+    this.prevSlatHeight = undefined
     setRef(this.props.slatHeightRef, null)
   }
 

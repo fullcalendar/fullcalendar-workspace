@@ -18,6 +18,7 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
   private rootElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectHeight?: () => void
 
   render() {
@@ -35,14 +36,17 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const rootEl = this.rootElRef.current // TODO: make dynamic with useEffect
 
     this.disconnectHeight = watchHeight(rootEl, (height) => {
+      if (this._isUnmounting) return
       setRef(this.props.heightRef, height)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.heightRef, null)
   }

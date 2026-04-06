@@ -87,6 +87,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
 
   componentWillUnmount(): void {
     this._isUnmounting = true
+    this.currentInnerHeight = undefined
     setRef(this.props.innerHeightRef, null)
   }
 }

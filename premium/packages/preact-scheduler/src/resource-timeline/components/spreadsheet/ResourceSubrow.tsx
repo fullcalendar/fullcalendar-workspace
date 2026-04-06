@@ -42,6 +42,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
     afterSize(this.handleInnerHeights)
   })
   private currentInnerHeight: number | null = null
+  private _isUnmounting: boolean
 
   render() {
     const { props, innerHeightRefMap } = this
@@ -95,7 +96,17 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
     )
   }
 
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
+    this.currentInnerHeight = null
+  }
+
   private handleInnerHeights = () => {
+    if (this._isUnmounting) return
     const innerHeightMap = this.innerHeightRefMap.current
     let max: number | null = null
 

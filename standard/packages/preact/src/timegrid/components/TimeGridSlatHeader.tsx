@@ -42,6 +42,7 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectInnerSize?: () => void
 
   render() {
@@ -122,6 +123,7 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const { props } = this
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
@@ -129,6 +131,7 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
       // TODO: only attach this if refs props present
       // TODO: fire width/height independently?
       this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
+        if (this._isUnmounting) return
         setRef(props.innerWidthRef, width)
         setRef(props.innerHeightRef, height)
       })
@@ -138,6 +141,7 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
   componentWillUnmount(): void {
     const { props } = this
 
+    this._isUnmounting = true
     if (this.disconnectInnerSize) {
       this.disconnectInnerSize()
       setRef(props.innerWidthRef, null)

@@ -23,6 +23,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectInnerHeight?: () => void
 
   render() {
@@ -77,14 +78,17 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const innerEl = this.innerElRef.current
 
     this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
+      if (this._isUnmounting) return
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectInnerHeight()
     setRef(this.props.innerHeightRef, null)
   }

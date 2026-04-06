@@ -74,6 +74,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   private slatHeight?: number
 
   // internal
+  private _isUnmounting: boolean
   private currentSlatCnt?: number
   private scrollState: TimeScroll = {} // updated in-place
 
@@ -179,6 +180,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
+    this._isUnmounting = false
     this.resetScroll()
     this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
 
@@ -199,6 +201,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   }
 
   componentWillUnmount() {
+    this._isUnmounting = true
     this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
 
     const timeScroller = this.timeScrollerRef.current
@@ -211,6 +214,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   // -----------------------------------------------------------------------------------------------
 
   private handleSlatHeight = (slatHeight: number | null) => {
+    if (this._isUnmounting) return
     this.slatHeight = slatHeight
 
     if (slatHeight != null) {

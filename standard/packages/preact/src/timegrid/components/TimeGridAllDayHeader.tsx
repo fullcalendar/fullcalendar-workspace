@@ -20,6 +20,7 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectInnerWidth?: () => void
 
   render() {
@@ -68,16 +69,19 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const { props } = this
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     // TODO: only attach this if refs props present
     this.disconnectInnerWidth = watchWidth(innerEl, (width) => {
+      if (this._isUnmounting) return
       setRef(props.innerWidthRef, width)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectInnerWidth()
     setRef(this.props.innerWidthRef, null)
   }

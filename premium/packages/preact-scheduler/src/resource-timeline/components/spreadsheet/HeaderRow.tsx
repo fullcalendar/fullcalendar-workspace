@@ -45,6 +45,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
   private currentInnerHeight?: number
 
   // internal
+  private _isUnmounting: boolean
   private colDraggings: { [index: string]: ElementDragging } = {}
 
   render() {
@@ -86,7 +87,12 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     )
   }
 
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
   private handleInnerHeights = () => {
+    if (this._isUnmounting) return
     const { innerHeightRefMap } = this
     let max = 0
 
@@ -101,6 +107,8 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
+    this.currentInnerHeight = undefined
     setRef(this.props.innerHeightRef, null)
   }
 

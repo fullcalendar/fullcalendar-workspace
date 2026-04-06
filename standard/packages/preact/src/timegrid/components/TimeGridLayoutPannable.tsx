@@ -632,6 +632,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   componentWillUnmount() {
     this._isUnmounting = true
     this.destroyScrollers()
+    this.prevSlatHeight = undefined
 
     setRef(this.props.slatHeightRef, null)
   }

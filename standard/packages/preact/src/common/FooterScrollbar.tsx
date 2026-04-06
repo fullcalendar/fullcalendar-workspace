@@ -15,6 +15,7 @@ export interface FooterScrollbarProps {
 
 export class FooterScrollbar extends BaseComponent<FooterScrollbarProps> {
   rootElRef = createRef<HTMLDivElement>()
+  private _isUnmounting: boolean
   disconnectHeight?: () => void
 
   render() {
@@ -40,12 +41,15 @@ export class FooterScrollbar extends BaseComponent<FooterScrollbarProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     this.disconnectHeight = watchHeight(this.rootElRef.current, (height) => {
+      if (this._isUnmounting) return
       setRef(this.props.scrollbarWidthRef, height)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.scrollbarWidthRef, null)
   }

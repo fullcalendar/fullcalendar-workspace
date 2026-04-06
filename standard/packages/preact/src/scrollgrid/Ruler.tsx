@@ -8,6 +8,7 @@ export interface RulerProps {
 
 export class Ruler extends BaseComponent<RulerProps> {
   private elRef = createRef<HTMLDivElement>()
+  private _isUnmounting: boolean
   private disconnectWidth?: () => void
 
   render() {
@@ -17,15 +18,18 @@ export class Ruler extends BaseComponent<RulerProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const { props } = this
     const el = this.elRef.current
 
     this.disconnectWidth = watchWidth(el, (width) => {
+      if (this._isUnmounting) return
       setRef(props.widthRef, width)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectWidth()
 
     const { props } = this

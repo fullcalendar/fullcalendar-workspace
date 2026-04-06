@@ -53,6 +53,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   // internal
+  private _isUnmounting: boolean
   private disconnectTopHeight?: () => void
   private disconnectBottomHeight?: () => void
   private topHeight?: number
@@ -198,6 +199,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   }
 
   handleEventsHeight = (eventsHeight: number) => { // already executing "after size"
+    if (this._isUnmounting) return
     this.eventsHeight = eventsHeight
     afterSize(this.handleHeight)
   }
@@ -209,6 +211,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     }
     if (topEl) {
       this.disconnectTopHeight = watchHeight(topEl, (topHeight) => {
+        if (this._isUnmounting) return
         this.topHeight = topHeight
         afterSize(this.handleHeight)
       })
@@ -222,6 +225,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     }
     if (footerEl) {
       this.disconnectBottomHeight = watchHeight(footerEl, (bottomHeight) => {
+        if (this._isUnmounting) return
         this.bottomHeight = bottomHeight
         afterSize(this.handleHeight)
       })
@@ -229,10 +233,19 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   }
 
   handleHeight = () => {
+    if (this._isUnmounting) return
     const { topHeight, bottomHeight, eventsHeight } = this
 
     if (topHeight != null && bottomHeight != null && eventsHeight != null) {
       setRef(this.props.heightRef, topHeight + bottomHeight + eventsHeight)
     }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
   }
 }

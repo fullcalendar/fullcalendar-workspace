@@ -47,6 +47,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private spreadsheetResizedWidthRef = createRef<CssDimValue>() // the CSS dimension. could be percent
 
   // internal
+  private _isUnmounting: boolean
   private resourceSplitter = new ResourceSplitter()
   private bgSlicer = new TimelineLaneSlicer()
   private spreadsheetColWidthConfigs?: SiblingDimConfig[]
@@ -204,6 +205,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   handleColResize = (colIndex: number, newWidth: number) => {
+    if (this._isUnmounting) return
     const colWidthOverrides = resizeSiblingDimConfig(
       this.spreadsheetColWidthConfigs,
       this.spreadsheetColWidths,
@@ -216,18 +218,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   handleSpreadsheetClientWidth = (spreadsheetClientWidth: number | null) => {
+    if (this._isUnmounting) return
     if (spreadsheetClientWidth != null) {
       this.setState({ spreadsheetClientWidth })
     }
   }
 
   handleTimeClientWidth = (timeClientWidth: number | null) => {
+    if (this._isUnmounting) return
     if (timeClientWidth != null) {
       this.setState({ timeClientWidth })
     }
   }
 
   handleSlotInnerWidth = (slotInnerWidth: number | null) => {
+    if (this._isUnmounting) return
     if (slotInnerWidth != null) {
       this.setState({ slotInnerWidth })
     }
@@ -241,9 +246,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     if (expanderEl) {
       this.disconnectExpanderWidth = watchWidth(expanderEl, (width) => {
+        if (this._isUnmounting) return
         this.setState({ expanderWidth: width })
       })
     }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
   }
 }
 

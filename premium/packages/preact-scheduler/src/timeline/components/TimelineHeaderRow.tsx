@@ -44,6 +44,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
     afterSize(this.handleInnerHeights)
   })
 
+  // internal
+  private _isUnmounting: boolean
+
   render() {
     const { props, innerWidthRefMap, innerHeightRefMap, state, context } = this
     const { options } = context
@@ -105,7 +108,12 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
     )
   }
 
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
   handleInnerWidths = () => {
+    if (this._isUnmounting) return
     const innerWidthMap = this.innerWidthRefMap.current
     let max = 0
 
@@ -118,6 +126,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
   }
 
   handleInnerHeights = () => {
+    if (this._isUnmounting) return
     const innerHeightMap = this.innerHeightRefMap.current
     let max = 0
 
@@ -131,6 +140,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     setRef(this.props.innerWidthRef, null)
     setRef(this.props.innerHeighRef, null)
   }

@@ -40,6 +40,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   private el?: HTMLDivElement
 
   // internal
+  private _isUnmounting: boolean
   public listener: ScrollListener // public for ScrollerSyncer
   private disconnectHRuler?: () => void
   private disconnectVRuler?: () => void
@@ -86,11 +87,13 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   handleEl = (el: HTMLDivElement | null) => {
     if (this.el) {
       this.el = null
+      this._isUnmounting = true
       this.listener.destroy()
     }
 
     if (el) {
       this.el = el
+      this._isUnmounting = false
       this.listener = new ScrollListener(el)
     }
   }
@@ -108,6 +111,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     if (el) {
       this.disconnectHRuler = watchWidth(el, (clientWidth) => {
+        if (this._isUnmounting) return
         if (clientWidth !== this.clientWidth) {
           this.clientWidth = clientWidth
           setRef(this.props.clientWidthRef, clientWidth)
@@ -129,6 +133,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     if (el) {
       this.disconnectVRuler = watchHeight(el, (clientHeight) => {
+        if (this._isUnmounting) return
         if (clientHeight !== this.clientHeight) {
           this.clientHeight = clientHeight
           setRef(this.props.clientHeightRef, clientHeight)

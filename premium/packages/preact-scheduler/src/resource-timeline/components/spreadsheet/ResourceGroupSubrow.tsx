@@ -35,6 +35,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectInnerHeight?: () => void
 
   render() {
@@ -103,14 +104,17 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const innerEl = this.innerElRef.current
 
     this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
+      if (this._isUnmounting) return
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
     this.disconnectInnerHeight()
     setRef(this.props.innerHeightRef, null)
   }

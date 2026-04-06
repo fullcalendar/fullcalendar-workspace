@@ -63,6 +63,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   })
 
   // internal
+  private _isUnmounting: boolean
   private totalHeight?: number
   private firedTotalHeight?: number
 
@@ -122,6 +123,10 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
         )}
       </div>
     )
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
   }
 
   renderFgSegs(
@@ -203,10 +208,12 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   }
 
   private handleMoreLinkHeights = () => {
+    if (this._isUnmounting) return
     this.setState({ moreLinkHeightRev: this.moreLinkHeightRefMap.rev }) // will trigger rerender
   }
 
   private handleSegHeights = () => {
+    if (this._isUnmounting) return
     this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger rerender
   }
 
@@ -224,6 +231,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   }
 
   componentWillUnmount(): void {
+    this._isUnmounting = true
+    this.firedTotalHeight = undefined
     setRef(this.props.heightRef, null)
   }
 }

@@ -70,6 +70,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   // internal
   private headerHeight?: number
   private disconnectBodyHeight?: () => void
+  private _isUnmounting: boolean
 
   render() {
     let { props, context } = this
@@ -225,6 +226,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     if (bodyEl) {
       // we want to fire on ANY size change, because we do more advanced stuff
       this.disconnectBodyHeight = watchSize(bodyEl, (_bodyWidth, bodyHeight) => {
+        if (this._isUnmounting) return
         const { props } = this
         const mainRect = bodyEl.getBoundingClientRect()
         const rootRect = this.rootElRef.current.getBoundingClientRect()
@@ -240,6 +242,14 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         }
       })
     }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
   }
 }
 

@@ -28,6 +28,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
   state = {} as DayGridHeaderCellState
 
   // internal
+  private _isUnmounting: boolean
   private disconnectSize?: () => void
   private align?: 'start' | 'center' | 'end'
   private isSticky?: boolean
@@ -143,6 +144,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     }
     if (innerEl) {
       this.disconnectSize = watchSize(innerEl, (width, height) => {
+        if (this._isUnmounting) return
         setRef(this.props.innerHeightRef, height)
 
         /*
@@ -155,5 +157,13 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     } else {
       setRef(this.props.innerHeightRef, null)
     }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
   }
 }

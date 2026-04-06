@@ -134,11 +134,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // TODO: make this nice
   // This is a means to recompute row positioning when *HeightMaps change
   private queuedHeightChange = false
+  private _isUnmounting: boolean
   handleHeightChange = () => {
+    if (this._isUnmounting) return
     this.queuedHeightChange = true
     afterSize(this.boundForceUpdate)
   }
   boundForceUpdate = () => {
+    if (this._isUnmounting) return
     this.forceUpdate()
   }
 
@@ -914,6 +917,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   componentDidMount() {
     const { props, context } = this
+    this._isUnmounting = false
 
     this.timeScroller = new ScrollerSyncer(true) // horizontal=true
     this.bodyScroller = new ScrollerSyncer() // horizontal=false
@@ -972,6 +976,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   componentWillUnmount() {
+    this._isUnmounting = true
+    this.slotInnerWidth = undefined
     this.timeScroller.destroy()
     this.bodyScroller.destroy()
     this.spreadsheetScroller.destroy()
@@ -989,6 +995,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // -----------------------------------------------------------------------------------------------
 
   private handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
+    if (this._isUnmounting) return
     setRef(this.props.spreadsheetClientWidthRef, spreadsheetClientWidth)
   }
 
@@ -999,12 +1006,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private handleTimeTotalWidth = (timeTotalWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({
       timeTotalWidth,
     })
   }
 
   private handleTimeClientWidth = (timeClientWidth: number) => {
+    if (this._isUnmounting) return
     setRef(this.props.timeClientWidthRef, timeClientWidth)
 
     this.setState({
@@ -1019,6 +1028,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private handleTimeClientHeight = (timeClientHeight: number) => {
+    if (this._isUnmounting) return
     this.setState({
       timeClientHeight,
     })
@@ -1028,12 +1038,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   private handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
+    if (this._isUnmounting) return
     this.setState({
       timeBottomScrollbarWidth,
     })
   }
 
   private handleSlotInnerWidths = () => {
+    if (this._isUnmounting) return
     const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.props.tDateProfile.cellRows.length - 1)
 
     if (headerSlotInnerWidth != null && headerSlotInnerWidth !== this.slotInnerWidth) {

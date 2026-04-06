@@ -30,6 +30,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
+  private _isUnmounting: boolean
   private disconnectInnerSize?: () => void
 
   render() {
@@ -109,12 +110,14 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const { props } = this
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     // TODO: only attach this if refs props present
     // TODO: handle width/height independently?
     this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
+      if (this._isUnmounting) return
       setRef(props.innerWidthRef, width)
       setRef(props.innerHeightRef, height)
     })
@@ -123,6 +126,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   componentWillUnmount(): void {
     const { props } = this
 
+    this._isUnmounting = true
     this.disconnectInnerSize()
     setRef(props.innerWidthRef, null)
     setRef(props.innerHeightRef, null)
