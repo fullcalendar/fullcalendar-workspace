@@ -326,38 +326,69 @@ it('does not produce overlapping all-day & timed events with custom eventContent
 })
 
 // eventDidMount
-;['auto', 'background'].forEach((eventDisplay) => {
-  it(`during ${eventDisplay} custom event rendering, receives el`, async () => {
-    let eventDidMountCalled = false
+it(`during foreground custom event rendering, receives el`, async () => {
+  let didMountCalled = false
 
-    function TestApp() {
-      return (
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView='dayGridMonth'
-          initialDate='2022-04-01'
-          initialEvents={[
-            { title: 'event 1', start: '2022-04-01', display: eventDisplay },
-          ]}
-          eventContent={(data) => (
-            <i>{data.event.title}</i>
-          )}
-          eventDidMount={(data) => {
-            expect(data.el).toBeTruthy()
-            eventDidMountCalled = true
-          }}
-        />
-      );
-    }
+  function TestApp() {
+    return (
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        initialView='dayGridMonth'
+        initialDate='2022-04-01'
+        initialEvents={[
+          { title: 'event 1', start: '2022-04-01' },
+        ]}
+        eventContent={(data) => (
+          <i>{data.event.title}</i>
+        )}
+        eventDidMount={(data) => {
+          expect(data.el).toBeTruthy()
+          didMountCalled = true
+        }}
+      />
+    );
+  }
 
-    render(<TestApp />)
+  render(<TestApp />)
 
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 100))
-    })
-
-    expect(eventDidMountCalled).toBe(true)
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
   })
+
+  expect(didMountCalled).toBe(true)
+})
+
+// backgroundEventDidMount
+it(`during background custom event rendering, receives el`, async () => {
+  let didMountCalled = false
+
+  function TestApp() {
+    return (
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        initialView='dayGridMonth'
+        initialDate='2022-04-01'
+        initialEvents={[
+          { title: 'event 1', start: '2022-04-01', display: 'background' },
+        ]}
+        backgroundEventContent={(data) => (
+          <i>{data.event.title}</i>
+        )}
+        backgroundEventDidMount={(data) => {
+          expect(data.el).toBeTruthy()
+          didMountCalled = true
+        }}
+      />
+    );
+  }
+
+  render(<TestApp />)
+
+  await act(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  })
+
+  expect(didMountCalled).toBe(true)
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7119
