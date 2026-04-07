@@ -1,8 +1,6 @@
 import { ViewApi } from '../api/ViewApi'
 import type { DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../component-util/date-rendering'
-import type { MountData } from '../common/render-hook'
-
 export interface ListDayData extends DateMeta {
   isFirst: boolean
   isLast: boolean
@@ -12,8 +10,6 @@ export interface ListDayData extends DateMeta {
 export interface ListDayHeaderData extends DateMeta {
   view: ViewApi
 }
-export type ListDayHeaderMountData = MountData<ListDayHeaderData>
-
 export interface ListDayEventsData extends DateMeta {
   view: ViewApi
 }

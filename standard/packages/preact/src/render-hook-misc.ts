@@ -1,16 +1,12 @@
 import { DateMeta } from './component-util/date-rendering'
 import { Duration, DateMarker, DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import { ViewApi } from './api/ViewApi'
-import { MountData } from './common/render-hook'
-
 export interface SlotLaneData extends DateMeta {
   time?: Duration
   isMajor: boolean
   isMinor: boolean
   view: ViewApi
 }
-export type SlotLaneMountData = MountData<SlotLaneData>
-
 export interface SlotHeaderData extends SlotLaneData {
   level: number
   isTime: boolean
@@ -19,15 +15,11 @@ export interface SlotHeaderData extends SlotLaneData {
   hasNavLink: boolean
   isFirst: boolean
 }
-export type SlotHeaderMountData = MountData<SlotHeaderData>
-
 export interface AllDayHeaderData {
   text: string
   view: ViewApi
   isNarrow: boolean
 }
-export type AllDayHeaderMountData = MountData<AllDayHeaderData>
-
 export interface DayHeaderData extends DateMeta {
   date: Date
   isNarrow: boolean
@@ -42,8 +34,6 @@ export interface DayHeaderData extends DateMeta {
   view: ViewApi
   [otherProp: string]: any
 }
-export type DayHeaderMountData = MountData<DayHeaderData>
-
 export interface DayHeaderDividerData {
   isSticky: boolean
   multiMonthColumnCount: number
@@ -65,5 +55,3 @@ export interface DayCellData extends DateMeta {
   options: { businessHours: boolean }
   [extraProp: string]: any // so can include a resource
 }
-
-export type DayCellMountData = MountData<DayCellData>

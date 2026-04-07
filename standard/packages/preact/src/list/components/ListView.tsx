@@ -15,7 +15,6 @@ import { getIsHeightAuto } from '../../scrollgrid/util'
 import { intersectRanges } from '@full-ui/headless-calendar'
 import { joinArrayishClassNames } from '../../util/html'
 import { memoize } from '../../util/memoize'
-import type { MountData } from '../../common/render-hook'
 import { NowTimer } from '../../NowTimer'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { sliceEventStore } from '../../component-util/event-rendering'
@@ -30,8 +29,6 @@ export interface NoEventsData {
   text: string
   view: ViewApi
 }
-
-export type NoEventsMountData = MountData<NoEventsData>
 
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".

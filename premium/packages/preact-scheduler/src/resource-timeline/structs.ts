@@ -1,5 +1,5 @@
 import { ViewApi, ClassNameGenerator } from '@fullcalendar/preact/public-api'
-import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/preact/protected-api'
+import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, CalendarContext } from '@fullcalendar/preact/protected-api'
 import type { ReactNode } from 'react'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { Resource } from '../resource/structs/resource'
@@ -7,7 +7,6 @@ import { Resource } from '../resource/structs/resource'
 export interface ResourceColumnHeaderData {
   view: ViewApi
 }
-export type ResourceColumnHeaderMountData = MountData<ResourceColumnHeaderData>
 
 export interface ResourceCellData {
   resource?: ResourceApi
@@ -15,19 +14,16 @@ export interface ResourceCellData {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceCellMountData = MountData<ResourceCellData>
 
 export interface ResourceGroupHeaderData {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupHeaderMountData = MountData<ResourceGroupHeaderData>
 
 export interface ResourceGroupLaneData {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupLaneMountData = MountData<ResourceGroupLaneData>
 
 export interface ResourceLaneContentArgInput {
   resource: Resource
@@ -39,8 +35,6 @@ export interface ResourceLaneData {
   resource: ResourceApi
   options: { eventOverlap: boolean }
 }
-
-export type ResourceLaneMountData = MountData<ResourceLaneData>
 
 export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneData {
   return {
@@ -62,8 +56,8 @@ export interface ColHeaderRenderHooks {
   headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderData>
   headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
   headerDefault?: (renderProps: ResourceColumnHeaderData) => ReactNode
-  headerDidMount?: DidMountHandler<ResourceColumnHeaderMountData>
-  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderMountData>
+  headerDidMount?: DidMountHandler<ResourceColumnHeaderData>
+  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderData>
 }
 
 export interface ColSpec extends ColHeaderRenderHooks {
@@ -75,16 +69,16 @@ export interface ColSpec extends ColHeaderRenderHooks {
   cellClass?: ClassNameGenerator<ResourceCellData>
   cellInnerClass?: ClassNameGenerator<ResourceCellData>
   cellContent?: CustomContentGenerator<ResourceCellData>
-  cellDidMount?: DidMountHandler<ResourceCellMountData>
-  cellWillUnmount?: WillUnmountHandler<ResourceCellMountData>
+  cellDidMount?: DidMountHandler<ResourceCellData>
+  cellWillUnmount?: WillUnmountHandler<ResourceCellData>
 }
 
 export interface GroupLaneRenderHooks {
   laneClass?: ClassNameGenerator<ResourceCellData>
   laneInnerClass?: ClassNameGenerator<ResourceCellData>
   laneContent?: CustomContentGenerator<ResourceCellData>
-  laneDidMount?: DidMountHandler<ResourceCellMountData>
-  laneWillUnmount?: WillUnmountHandler<ResourceCellMountData>
+  laneDidMount?: DidMountHandler<ResourceCellData>
+  laneWillUnmount?: WillUnmountHandler<ResourceCellData>
 }
 
 export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
@@ -94,6 +88,6 @@ export interface GroupSpec extends GroupLaneRenderHooks { // best place for this
   labelClass?: ClassNameGenerator<ResourceCellData>
   labelInnerClass?: ClassNameGenerator<ResourceCellData>
   labelContent?: CustomContentGenerator<ResourceCellData>
-  labelDidMount?: DidMountHandler<ResourceCellMountData>
-  labelWillUnmount?: WillUnmountHandler<ResourceCellMountData>
+  labelDidMount?: DidMountHandler<ResourceCellData>
+  labelWillUnmount?: WillUnmountHandler<ResourceCellData>
 }

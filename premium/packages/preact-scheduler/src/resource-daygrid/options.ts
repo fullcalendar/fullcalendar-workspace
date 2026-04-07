@@ -12,15 +12,14 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceDayHeaderData,
-  ResourceDayHeaderMountData,
 } from './structs'
 
 export const OPTION_REFINERS = {
   resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
-  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,
+  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderData>>,
+  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderData>>,
   resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number }) => 'start' | 'center' | 'end')>,
   // stickiness for cell-inner-contents laterally. experimental settings
   _resourceDayHeaderSticky: identity as Identity<boolean | number | string>,

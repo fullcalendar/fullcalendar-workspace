@@ -1,4 +1,3 @@
-import { MountData } from './render-hook'
 import { DateMarker } from '@full-ui/headless-calendar'
 import { ViewContextType } from '../ViewContext'
 import { ViewApi } from '../api/ViewApi'
@@ -14,8 +13,6 @@ export interface NowIndicatorHeaderData {
   date: Date
   view: ViewApi
 }
-
-export type NowIndicatorHeaderMountData = MountData<NowIndicatorHeaderData>
 
 export const NowIndicatorHeaderContainer = (props: NowIndicatorHeaderContainerProps) => (
   <ViewContextType.Consumer

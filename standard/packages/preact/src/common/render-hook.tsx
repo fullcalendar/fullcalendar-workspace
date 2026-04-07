@@ -3,8 +3,8 @@
 import type { ReactNode } from 'react'
 
 export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
-export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
-export type WillUnmountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
+export type DidMountHandler<DisplayData> = (mountData: MountData<DisplayData>) => void
+export type WillUnmountHandler<DisplayData> = (mountData: MountData<DisplayData>) => void
 
 export interface ObjCustomContent {
   html?: string

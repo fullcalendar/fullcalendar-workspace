@@ -1,5 +1,3 @@
-import { MountData } from './render-hook'
-
 export type DateTimeFormatPartWithWeek = Omit<Intl.DateTimeFormatPart, 'type'> & {
   type: Intl.DateTimeFormatPart['type'] | 'week'
 }
@@ -16,8 +14,6 @@ export interface WeekNumberHeaderData {
   options: { dayMinWidth: number | undefined }
 }
 
-export type WeekNumberHeaderMountData = MountData<WeekNumberHeaderData>
-
 // week number CELL (eventually)
 
 export interface WeekNumberCellData { // TODO: DRY with inline?
@@ -29,8 +25,6 @@ export interface WeekNumberCellData { // TODO: DRY with inline?
   hasNavLink: boolean
 }
 
-export type WeekNumberCellMountData = MountData<WeekNumberCellData>
-
 // INLINE week number
 
 export interface InlineWeekNumberData {
@@ -41,5 +35,3 @@ export interface InlineWeekNumberData {
   isNarrow: boolean
   hasNavLink: boolean
 }
-
-export type InlineWeekNumberMountData = MountData<InlineWeekNumberData>

@@ -1,5 +1,4 @@
 import { ViewSpec } from '../structs/view-spec'
-import { MountData } from './render-hook'
 import type { ReactNode } from 'react'
 import { BaseComponent } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
@@ -24,8 +23,6 @@ export interface ViewDisplayData {
   isLast: boolean
   isHeightAuto: boolean
 }
-
-export type ViewMountData = MountData<ViewDisplayData>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)

@@ -1,4 +1,4 @@
-import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, MountData, WillUnmountHandler } from './common/render-hook'
+import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from './common/render-hook'
 
 export interface ToolbarModel {
   sectionWidgets: {
@@ -39,13 +39,11 @@ export interface ButtonData {
   inSelectGroup: boolean
 }
 
-export type ButtonMountData = MountData<ButtonData>
-
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
 
 export interface ButtonInput {
-  didMount?: DidMountHandler<ButtonMountData>
-  willUnmount?: DidMountHandler<ButtonMountData>
+  didMount?: DidMountHandler<ButtonData>
+  willUnmount?: WillUnmountHandler<ButtonData>
   click?: (ev: MouseEvent) => void
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
   class?: ClassNameGenerator<ButtonData>
@@ -70,8 +68,8 @@ export interface ToolbarWidget {
   buttonClick?: (ev: MouseEvent) => void
   buttonIsPrimary?: boolean
   buttonClass?: ClassNameGenerator<ButtonData>
-  buttonDidMount?: DidMountHandler<ButtonMountData>
-  buttonWillUnmount?: WillUnmountHandler<ButtonMountData>
+  buttonDidMount?: DidMountHandler<ButtonData>
+  buttonWillUnmount?: WillUnmountHandler<ButtonData>
 }
 
 export interface ToolbarInput {

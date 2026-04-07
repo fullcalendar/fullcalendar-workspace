@@ -10,7 +10,6 @@ import { BaseComponent, setRef } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
 import { ViewContextType } from '../ViewContext'
 import { MorePopover } from './MorePopover'
-import { MountData } from './render-hook'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ElAttrsProps } from '../content-inject/ContentInjector'
 import { createAriaClickAttrs } from '../util/dom-event'
@@ -45,8 +44,6 @@ export interface MoreLinkData {
   isNarrow: boolean
   view: ViewApi
 }
-
-export type MoreLinkMountData = MountData<MoreLinkData>
 
 interface MoreLinkContainerState {
   isPopoverOpen: boolean

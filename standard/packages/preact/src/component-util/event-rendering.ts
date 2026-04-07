@@ -21,7 +21,6 @@ import { EventUi, EventUiHash, combineEventUis } from './event-ui'
 import { mapHash } from '../util/object'
 import { ViewContext } from '../ViewContext'
 import { ViewApi } from '../api/ViewApi'
-import { MountData } from '../common/render-hook'
 import { createAriaKeyboardAttrs } from '../util/dom-event'
 
 export interface EventRenderRange extends EventTuple {
@@ -260,8 +259,6 @@ export interface EventDisplayData { // for *Content handlers
 
   options: { eventOverlap: boolean }
 }
-
-export type EventMountData = MountData<EventDisplayData>
 
 export function computeEventRangeDraggable(eventRange: EventRenderRange, context: ViewContext) {
   let { pluginHooks } = context

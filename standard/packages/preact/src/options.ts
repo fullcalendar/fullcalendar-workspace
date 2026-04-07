@@ -4,7 +4,7 @@ import { CalendarApi } from './api/CalendarApi'
 import { CalendarController } from './CalendarController'
 import { EventApi } from './api/EventApi'
 import {
-  AllDayHeaderData, AllDayHeaderMountData,
+  AllDayHeaderData,
   AllowFunc,
   BusinessHoursInput,
   ButtonInput,
@@ -19,14 +19,12 @@ import {
   DatesSetData,
   DateUnselectData,
   DayLaneData,
-  DayLaneMountData,
   DidMountHandler,
   EventAddData, EventChangeData,
   EventClickData,
   EventDisplayData,
   EventHoveringData,
   EventInput, EventInputTransformer,
-  EventMountData,
   EventRemoveData,
   EventSourceInput,
   FormatterInput,
@@ -34,21 +32,17 @@ import {
   LocaleSingularArg,
   MoreLinkAction,
   MoreLinkData,
-  MoreLinkMountData,
   NowIndicatorHeaderData,
-  NowIndicatorHeaderMountData,
   NowIndicatorLineData,
-  NowIndicatorLineMountData,
   OverlapFunc,
-  SlotHeaderData, SlotHeaderMountData,
-  SlotLaneData, SlotLaneMountData,
+  SlotHeaderData,
+  SlotLaneData,
   ToolbarInput,
   ViewComponentType,
   ViewDisplayData,
-  ViewMountData,
   WeekNumberCalculation,
-  InlineWeekNumberData, InlineWeekNumberMountData,
-  WeekNumberHeaderData, WeekNumberHeaderMountData,
+  InlineWeekNumberData,
+  WeekNumberHeaderData,
   WillUnmountHandler,
   ButtonData,
   ButtonGroupData,
@@ -58,8 +52,6 @@ import {
   ButtonDisplay,
   DayHeaderData,
   DayHeaderDividerData,
-  DayHeaderMountData,
-  DayCellMountData,
   DayCellData,
   PluginDefInput,
 } from './api/structs'
@@ -70,9 +62,9 @@ import { createFormatter } from './datelib/formatting'
 import { parseFieldSpecs } from './util/misc'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object'
 import { isMaybeArraysEqual } from './util/array'
-import { ListDayData, ListDayEventsData, ListDayHeaderData, ListDayHeaderInnerData, ListDayHeaderMountData } from './list/structs'
-import { NoEventsData, NoEventsMountData } from './list/components/ListView'
-import { SingleMonthData, SingleMonthHeaderData, SingleMonthMountData } from './multimonth/structs'
+import { ListDayData, ListDayEventsData, ListDayHeaderData, ListDayHeaderInnerData } from './list/structs'
+import { NoEventsData } from './list/components/ListView'
+import { SingleMonthData, SingleMonthHeaderData } from './multimonth/structs'
 import { DateClickData } from './interaction-plugin/interactions/DateClicking'
 import { EventDragStartData, EventDragStopData } from './interaction-plugin/interactions/EventDragging'
 import { EventDropData } from './event-crud'
@@ -141,8 +133,8 @@ export const BASE_OPTION_REFINERS = {
   // TODO: move to timegrid
   dayLaneClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
   dayLaneInnerClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
-  dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountData>>,
-  dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountData>>,
+  dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneData>>,
+  dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneData>>,
 
   initialView: String,
   aspectRatio: Number,
@@ -154,36 +146,36 @@ export const BASE_OPTION_REFINERS = {
   weekNumberHeaderClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderData>>,
   weekNumberHeaderInnerClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderData>>,
   weekNumberHeaderContent: identity as Identity<CustomContentGenerator<WeekNumberHeaderData>>,
-  weekNumberHeaderDidMount: identity as Identity<DidMountHandler<WeekNumberHeaderMountData>>,
-  weekNumberHeaderWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberHeaderMountData>>,
+  weekNumberHeaderDidMount: identity as Identity<DidMountHandler<WeekNumberHeaderData>>,
+  weekNumberHeaderWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberHeaderData>>,
 
   inlineWeekNumberClass: identity as Identity<ClassNameGenerator<InlineWeekNumberData>>,
   inlineWeekNumberContent: identity as Identity<CustomContentGenerator<InlineWeekNumberData>>,
-  inlineWeekNumberDidMount: identity as Identity<DidMountHandler<InlineWeekNumberMountData>>,
-  inlineWeekNumberWillUnmount: identity as Identity<WillUnmountHandler<InlineWeekNumberMountData>>,
+  inlineWeekNumberDidMount: identity as Identity<DidMountHandler<InlineWeekNumberData>>,
+  inlineWeekNumberWillUnmount: identity as Identity<WillUnmountHandler<InlineWeekNumberData>>,
 
   editable: Boolean,
 
   controller: identity as Identity<CalendarController>,
 
   viewClass: identity as Identity<ClassNameGenerator<ViewDisplayData>>,
-  viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,
-  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountData>>,
+  viewDidMount: identity as Identity<DidMountHandler<ViewDisplayData>>,
+  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewDisplayData>>,
 
   nowIndicator: Boolean,
   nowIndicatorSnap: identity as Identity<boolean | 'auto'>,
 
   nowIndicatorHeaderClass: identity as Identity<ClassNameGenerator<NowIndicatorHeaderData>>,
   nowIndicatorHeaderContent: identity as Identity<CustomContentGenerator<NowIndicatorHeaderData>>,
-  nowIndicatorHeaderDidMount: identity as Identity<DidMountHandler<NowIndicatorHeaderMountData>>,
-  nowIndicatorHeaderWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorHeaderMountData>>,
+  nowIndicatorHeaderDidMount: identity as Identity<DidMountHandler<NowIndicatorHeaderData>>,
+  nowIndicatorHeaderWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorHeaderData>>,
 
   nowIndicatorDotClass: identity as Identity<string | undefined>,
 
   nowIndicatorLineClass: identity as Identity<ClassNameGenerator<NowIndicatorLineData>>,
   nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineData>>,
-  nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountData>>,
-  nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountData>>,
+  nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineData>>,
+  nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineData>>,
 
   showNonCurrentDates: Boolean,
   lazyFetching: Boolean,
@@ -233,8 +225,8 @@ export const BASE_OPTION_REFINERS = {
   eventAllow: identity as Identity<AllowFunc>,
   eventColor: String,
   eventContrastColor: String,
-  eventDidMount: identity as Identity<DidMountHandler<EventMountData>>,
-  eventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
+  eventDidMount: identity as Identity<DidMountHandler<EventDisplayData>>,
+  eventWillUnmount: identity as Identity<WillUnmountHandler<EventDisplayData>>,
   eventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
 
   eventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
@@ -277,8 +269,8 @@ export const BASE_OPTION_REFINERS = {
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  backgroundEventDidMount: identity as Identity<DidMountHandler<EventMountData>>,
-  backgroundEventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
+  backgroundEventDidMount: identity as Identity<DidMountHandler<EventDisplayData>>,
+  backgroundEventWillUnmount: identity as Identity<WillUnmountHandler<EventDisplayData>>,
   backgroundEventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
   backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
@@ -294,14 +286,14 @@ export const BASE_OPTION_REFINERS = {
   slotHeaderFormat: identity as Identity<FormatterInput | FormatterInput[]>,
 
   slotLaneClass: identity as Identity<ClassNameGenerator<SlotLaneData>>,
-  slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountData>>,
-  slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountData>>,
+  slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneData>>,
+  slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneData>>,
 
   slotHeaderClass: identity as Identity<ClassNameGenerator<SlotHeaderData>>,
   slotHeaderInnerClass: identity as Identity<ClassNameGenerator<SlotHeaderData>>,
   slotHeaderContent: identity as Identity<CustomContentGenerator<SlotHeaderData>>,
-  slotHeaderDidMount: identity as Identity<DidMountHandler<SlotHeaderMountData>>,
-  slotHeaderWillUnmount: identity as Identity<WillUnmountHandler<SlotHeaderMountData>>,
+  slotHeaderDidMount: identity as Identity<DidMountHandler<SlotHeaderData>>,
+  slotHeaderWillUnmount: identity as Identity<WillUnmountHandler<SlotHeaderData>>,
   slotHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, isTime: boolean }) => 'start' | 'center' | 'end')>,
   slotHeaderSticky: identity as Identity<boolean | number | string>,
 
@@ -317,8 +309,8 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
   dayHeaderInnerClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
-  dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
-  dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
+  dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderData>>,
+  dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderData>>,
   dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end')>,
   // stickiness for cell-inner-contents laterally. experimental settings
   _dayHeaderSticky: identity as Identity<boolean | number | string>,
@@ -329,8 +321,8 @@ export const BASE_OPTION_REFINERS = {
 
   dayRowClass: identity as Identity<string | undefined>,
 
-  dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountData>>,
-  dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountData>>,
+  dayCellDidMount: identity as Identity<DidMountHandler<DayCellData>>,
+  dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellData>>,
   dayCellClass: identity as Identity<ClassNameGenerator<DayCellData>>,
   dayCellInnerClass: identity as Identity<ClassNameGenerator<DayCellData>>,
 
@@ -344,8 +336,8 @@ export const BASE_OPTION_REFINERS = {
   allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderContent: identity as Identity<CustomContentGenerator<AllDayHeaderData>>,
-  allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayHeaderMountData>>,
-  allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayHeaderMountData>>,
+  allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayHeaderData>>,
+  allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayHeaderData>>,
 
   timedText: String,
 
@@ -393,8 +385,8 @@ export const BASE_OPTION_REFINERS = {
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
   moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkData>>,
-  moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountData>>,
-  moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountData>>,
+  moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkData>>,
+  moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkData>>,
   moreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   moreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
@@ -455,8 +447,8 @@ export const BASE_OPTION_REFINERS = {
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
   listDaySideFormat: createFalsableFormatter, // "
   //
-  listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountData>>,
-  listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountData>>,
+  listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderData>>,
+  listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderData>>,
   listDayHeaderClass: identity as Identity<ClassNameGenerator<ListDayHeaderData>>,
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
@@ -466,8 +458,8 @@ export const BASE_OPTION_REFINERS = {
   noEventsClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
   noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
   noEventsContent: identity as Identity<CustomContentGenerator<NoEventsData>>,
-  noEventsDidMount: identity as Identity<DidMountHandler<NoEventsMountData>>,
-  noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsMountData>>,
+  noEventsDidMount: identity as Identity<DidMountHandler<NoEventsData>>,
+  noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsData>>,
   // noEventsText is defined in base options
 
   // multimonth-only
@@ -475,8 +467,8 @@ export const BASE_OPTION_REFINERS = {
   //
   singleMonthMinWidth: Number,
   singleMonthTitleFormat: createFormatter,
-  singleMonthDidMount: identity as Identity<DidMountHandler<SingleMonthMountData>>,
-  singleMonthWillUnmount: identity as Identity<WillUnmountHandler<SingleMonthMountData>>,
+  singleMonthDidMount: identity as Identity<DidMountHandler<SingleMonthData>>,
+  singleMonthWillUnmount: identity as Identity<WillUnmountHandler<SingleMonthData>>,
   singleMonthClass: identity as Identity<ClassNameGenerator<SingleMonthData>>,
   singleMonthHeaderClass: identity as Identity<ClassNameGenerator<SingleMonthHeaderData>>,
   singleMonthHeaderInnerClass: identity as Identity<ClassNameGenerator<SingleMonthHeaderData>>,

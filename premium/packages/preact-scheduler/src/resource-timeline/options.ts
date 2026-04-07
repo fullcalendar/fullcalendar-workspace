@@ -6,15 +6,10 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceColumnHeaderData,
-  ResourceColumnHeaderMountData,
   ResourceCellData,
-  ResourceCellMountData,
   ResourceGroupHeaderData,
-  ResourceGroupHeaderMountData,
   ResourceGroupLaneData,
-  ResourceGroupLaneMountData,
   ResourceLaneData,
-  ResourceLaneMountData,
   ColSpec,
   ResourceExpanderData,
 } from './structs'
@@ -30,8 +25,8 @@ export const OPTION_REFINERS = {
   resourceColumnHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceColumnResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceColumnHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
-  resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
-  resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,
+  resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderData>>,
+  resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderData>>,
   resourceHeaderRowClass: identity as Identity<string | undefined>,
 
   // For both resources & resource groups
@@ -41,27 +36,27 @@ export const OPTION_REFINERS = {
   resourceCellClass: identity as Identity<ClassNameGenerator<ResourceCellData>>,
   resourceCellInnerClass: identity as Identity<ClassNameGenerator<ResourceCellData>>,
   resourceCellContent: identity as Identity<CustomContentGenerator<ResourceCellData>>,
-  resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellMountData>>,
-  resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellMountData>>,
+  resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellData>>,
+  resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellData>>,
 
   // datagrid, for resource-GROUP entire row
   resourceGroupHeaderClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderData>>,
   resourceGroupHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderData>>,
   resourceGroupHeaderContent: identity as Identity<CustomContentGenerator<ResourceGroupHeaderData>>,
-  resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderMountData>>,
-  resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderMountData>>,
+  resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderData>>,
+  resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderData>>,
 
   // timeline lane, for resource-GROUP
   resourceGroupLaneClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneData>>,
   resourceGroupLaneInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneData>>,
   resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneData>>,
-  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneMountData>>,
-  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneMountData>>,
+  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneData>>,
+  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneData>>,
 
   // timeline, lane, for resource
   resourceLaneClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
-  resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountData>>,
-  resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountData>>,
+  resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneData>>,
+  resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneData>>,
   resourceLaneTopClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
   resourceLaneTopContent: identity as Identity<CustomContentGenerator<ResourceLaneData>>,
   resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,

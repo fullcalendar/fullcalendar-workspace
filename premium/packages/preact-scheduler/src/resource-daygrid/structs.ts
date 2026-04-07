@@ -1,5 +1,5 @@
 import { ViewApi } from '@fullcalendar/preact/public-api'
-import { MountData, DateMeta } from '@fullcalendar/preact/protected-api'
+import { DateMeta } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 
 // uses Partial<DateMeta> because might not be date-specific
@@ -12,4 +12,3 @@ export interface ResourceDayHeaderData extends Partial<DateMeta> {
   isNarrow: boolean
   isMajor: boolean
 }
-export type ResourceDayHeaderMountData = MountData<ResourceDayHeaderData>
