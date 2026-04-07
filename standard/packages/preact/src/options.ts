@@ -665,6 +665,8 @@ export const COMPLEX_OPTION_COMPARATORS: {
 } = {
   // Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
   dateIncrement: isMaybePropsEqualShallow,
+  headerToolbar: isMaybePropsEqualShallow,
+  footerToolbar: isMaybePropsEqualShallow,
   buttons: isMaybePropsEqualDepth1,
   plugins: isMaybeArraysEqual,
   events: isMaybeArraysEqual,
