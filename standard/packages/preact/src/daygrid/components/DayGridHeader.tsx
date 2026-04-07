@@ -5,7 +5,7 @@ import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
 
 export interface DayGridHeaderProps {
-  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
+  headerTiers: RowConfig<any, { text: string, isDisabled: boolean }>[]
   className?: string
   cellIsNarrow: boolean
   cellIsMicro: boolean

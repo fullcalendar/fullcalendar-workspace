@@ -7,7 +7,7 @@ import { RowConfig } from '../header-tier'
 import { DayGridHeaderCell } from './DayGridHeaderCell'
 import classNames from '../../styles.module.css'
 
-export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
+export interface DayGridHeaderRowProps<BaseRenderProps, RenderProps> extends RowConfig<BaseRenderProps, RenderProps> {
   cellIsNarrow: boolean
   cellIsMicro: boolean
   className?: string
@@ -21,7 +21,7 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   stickyInner?: boolean
 }
 
-export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
+export class DayGridHeaderRow<BaseRenderProps extends { isDisabled: boolean }, RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<BaseRenderProps, RenderProps>> {
   // ref
   private innerHeightRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleInnerHeights)

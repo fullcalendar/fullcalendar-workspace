@@ -17,7 +17,7 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<DayHeaderData | ResourceDayHeaderData>[] {
+): RowConfig<any, DayHeaderData | ResourceDayHeaderData>[] {
   if (!resources.length) {
     return [
       buildDateRowConfig(
@@ -108,7 +108,7 @@ export function buildResourceRowConfigs(
       // date row
       {
         isDateRow: true,
-        renderConfig: buildDateRenderConfig(context),
+        renderConfig: buildDateRenderConfig(dayHeaderFormat, datesRepDistinctDays, context),
         dataConfigs: [].concat(...dateDataConfigsPerResource), // flatten
       }
     ]

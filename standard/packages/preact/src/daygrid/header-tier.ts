@@ -6,13 +6,13 @@ import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDat
 import { DateMeta, getDateMeta } from '../component-util/date-rendering'
 import { DateProfile } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
-import { findDayNumberText, findWeekdayText, WEEKDAY_ONLY_FORMAT } from '../util/date-format'
+import { WEEKDAY_ONLY_FORMAT } from '../util/date-format'
 import { ViewContext } from '../ViewContext'
 
 /*
 Just for the HEADER
 */
-export interface CellRenderConfig<RenderProps> {
+export interface CellRenderConfig<BaseRenderProps, RenderProps = BaseRenderProps> {
   generatorName: string
   customGenerator: CustomContentGenerator<RenderProps>
   innerClassNameGenerator: ClassNameGenerator<RenderProps>
@@ -21,6 +21,8 @@ export interface CellRenderConfig<RenderProps> {
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
   align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end'),
   sticky: boolean | number | string,
+  dayHeaderFormat?: DateFormatter,
+  datesRepDistinctDays?: boolean,
 }
 
 export interface CellDataConfig<RenderProps> {
@@ -34,10 +36,19 @@ export interface CellDataConfig<RenderProps> {
   hasNavLink?: boolean
 }
 
-export interface RowConfig<RenderProps> {
+export interface RowConfig<BaseRenderProps, RenderProps = BaseRenderProps> {
   isDateRow: boolean
-  renderConfig: CellRenderConfig<RenderProps>
-  dataConfigs: CellDataConfig<RenderProps>[] // for the CELLs
+  renderConfig: CellRenderConfig<BaseRenderProps, RenderProps>
+  dataConfigs: CellDataConfig<BaseRenderProps>[] // for the CELLs
+}
+
+export interface BaseDayHeaderData extends DateMeta {
+  isMajor: DayHeaderData['isMajor']
+  isSticky: DayHeaderData['isSticky']
+  inPopover: DayHeaderData['inPopover']
+  hasNavLink: DayHeaderData['hasNavLink']
+  view: DayHeaderData['view']
+  [otherProp: string]: any
 }
 
 // TODO: converge types with DayTableCell and DayCellContainer (the component) and refineRenderProps
@@ -56,7 +67,7 @@ export function buildDateRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<DayHeaderData>[] {
+): RowConfig<BaseDayHeaderData, DayHeaderData>[] {
   const rowConfig = buildDateRowConfig(
     dates,
     datesRepDistinctDays,
@@ -94,10 +105,10 @@ export function buildDateRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<DayHeaderData> {
+): RowConfig<BaseDayHeaderData, DayHeaderData> {
   return {
     isDateRow: true,
-    renderConfig: buildDateRenderConfig(context),
+    renderConfig: buildDateRenderConfig(dayHeaderFormat, datesRepDistinctDays, context),
     dataConfigs: buildDateDataConfigs(
       dateMarkers,
       datesRepDistinctDays,
@@ -119,7 +130,11 @@ export function buildDateRowConfig(
 For header cells: how to connect w/ custom rendering
 Applies to all cells in a row
 */
-export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<DayHeaderData> {
+export function buildDateRenderConfig(
+  dayHeaderFormat: DateFormatter,
+  datesRepDistinctDays: boolean,
+  context: ViewContext,
+): CellRenderConfig<BaseDayHeaderData, DayHeaderData> {
   const { options } = context
 
   return {
@@ -131,6 +146,8 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
     willUnmount: options.dayHeaderWillUnmount,
     align: options.dayHeaderAlign,
     sticky: options._dayHeaderSticky,
+    dayHeaderFormat,
+    datesRepDistinctDays,
   }
 }
 
@@ -156,29 +173,21 @@ export function buildDateDataConfigs(
   extraAttrs: Dictionary = {}, // TODO
   className = '',
   isMajorMod?: number,
-): CellDataConfig<DayHeaderData>[] {
+): CellDataConfig<BaseDayHeaderData>[] {
   const { dateEnv, viewApi, options } = context
 
   return datesRepDistinctDays
     ? dateMarkers.map((dateMarker, i) => { // Date
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const textParts = dateEnv.formatToParts(dateMarker, dayHeaderFormat)
-        const text = joinDateTimeFormatParts(textParts)
         const hasNavLink = options.navLinks && !dateMeta.isDisabled &&
           dateMarkers.length > 1 // don't show navlink to day if only one day
-        const renderProps: DayHeaderData = {
+        const renderProps: BaseDayHeaderData = {
           ...dateMeta,
           ...extraRenderProps,
-          text,
-          textParts,
-          get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return datesRepDistinctDays ? findDayNumberText(textParts) : '' },
           isMajor,
-          isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
           inPopover: false,
-          level: 0, // HACK. gets overridden
           hasNavLink,
           view: viewApi,
         }
@@ -217,22 +226,14 @@ export function buildDateDataConfigs(
           isOther: false,
         }
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const textParts = dateEnv.formatToParts(normDate, dayHeaderFormat)
-        const text = joinDateTimeFormatParts(textParts)
-        const renderProps: DayHeaderData = {
+        const renderProps: BaseDayHeaderData = {
           ...dateMeta,
           date: dowDates[dow],
           isMajor,
-          isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
           inPopover: false,
           hasNavLink: false,
-          level: 0, // HACK. gets overridden
           view: viewApi,
-          text,
-          textParts,
-          get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return datesRepDistinctDays ? findDayNumberText(textParts) : '' },
           ...extraRenderProps,
         }
         const fullWeekDayStr = joinDateTimeFormatParts(dateEnv.formatToParts(normDate, WEEKDAY_ONLY_FORMAT))

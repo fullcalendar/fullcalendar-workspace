@@ -36,7 +36,7 @@ export interface TimeGridLayoutProps {
   className: string
 
   // header content
-  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
+  headerTiers: RowConfig<any, { text: string, isDisabled: boolean }>[]
 
   // all-day content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[],

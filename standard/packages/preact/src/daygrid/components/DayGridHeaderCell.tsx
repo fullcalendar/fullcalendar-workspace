@@ -3,15 +3,17 @@ import { ContentContainer, renderText, generateClassName } from '../../content-i
 import { setRef } from '../../vdom-util'
 import { BaseComponent } from '../../vdom-util'
 import { watchSize } from '../../component-util/resize-observer'
+import { memoize } from '../../util/memoize'
 import type { Ref } from 'react'
-import { CellDataConfig, CellRenderConfig } from '../header-tier'
+import { BaseDayHeaderData, CellDataConfig, CellRenderConfig } from '../header-tier'
 import { dayHeaderMicroFormat } from './util'
 import classNames from '../../styles.module.css'
-import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
+import { DateFormatter, DateMarker, DateTimeFormatPartWithWeek, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
+import { findDayNumberText, findWeekdayText } from '../../util/date-format'
 
-export interface DayGridHeaderCellProps<RenderProps> {
-  renderConfig: CellRenderConfig<RenderProps>
-  dataConfig: CellDataConfig<RenderProps>
+export interface DayGridHeaderCellProps<BaseRenderProps, RenderProps> {
+  renderConfig: CellRenderConfig<BaseRenderProps, RenderProps>
+  dataConfig: CellDataConfig<BaseRenderProps>
   borderStart: boolean
   colWidth?: number
   innerHeightRef?: Ref<number>
@@ -25,8 +27,11 @@ interface DayGridHeaderCellState {
   innerWidth?: number
 }
 
-export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>, DayGridHeaderCellState> {
+export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<BaseRenderProps, RenderProps>, DayGridHeaderCellState> {
   state = {} as DayGridHeaderCellState
+
+  // memo
+  private buildDayHeaderText = memoize(buildDayHeaderText)
 
   // internal
   private _isUnmounting: boolean
@@ -38,18 +43,22 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
 
     // HACK
     const isDisabled = dataConfig.renderProps.isDisabled
-    const finalRenderProps = {
-      ...dataConfig.renderProps,
-      isNarrow: props.cellIsNarrow,
-      level: props.rowLevel,
-    }
-    if (props.cellIsMicro) {
-      // TODO: only if not distinct dates
-      const microTextParts = context.dateEnv.formatToParts(dataConfig.dateMarker, dayHeaderMicroFormat)
-      const microText = joinDateTimeFormatParts(microTextParts)
-      finalRenderProps.text = (finalRenderProps as any).weekdayText = microText
-      ;(finalRenderProps as any).textParts = microTextParts
-    }
+    const finalRenderProps = renderConfig.dayHeaderFormat
+      ? this.buildDayHeaderRenderProps(
+          dataConfig.renderProps as unknown as BaseDayHeaderData,
+          props.cellIsNarrow,
+          props.rowLevel,
+          props.cellIsMicro,
+          dataConfig.dateMarker,
+          renderConfig.dayHeaderFormat,
+          Boolean(renderConfig.datesRepDistinctDays),
+          context.dateEnv,
+        ) as unknown as RenderProps
+      : {
+          ...(dataConfig.renderProps as any),
+          isNarrow: props.cellIsNarrow,
+          level: props.rowLevel,
+        }
 
     /*
     TODO: DRY with TimelineHeaderCell
@@ -157,5 +166,62 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
 
   componentWillUnmount(): void {
     this._isUnmounting = true
+  }
+
+  private buildDayHeaderRenderProps(
+    renderProps: BaseDayHeaderData,
+    cellIsNarrow: boolean,
+    rowLevel: number,
+    cellIsMicro: boolean,
+    dateMarker: DateMarker,
+    dayHeaderFormat: DateFormatter,
+    datesRepDistinctDays: boolean,
+    dateEnv,
+  ): DayHeaderRenderProps {
+    const baseText = this.buildDayHeaderText(
+      datesRepDistinctDays ? dateMarker : renderProps.date,
+      dayHeaderFormat,
+      datesRepDistinctDays,
+      dateEnv,
+    )
+
+    const textData = cellIsMicro
+      ? this.buildDayHeaderText(dateMarker, dayHeaderMicroFormat, false, dateEnv)
+      : baseText
+
+    return {
+      ...renderProps,
+      isNarrow: cellIsNarrow,
+      level: rowLevel,
+      text: textData.text,
+      textParts: textData.textParts,
+      weekdayText: cellIsMicro ? textData.text : baseText.weekdayText,
+      dayNumberText: baseText.dayNumberText,
+    }
+  }
+}
+
+interface DayHeaderRenderProps extends BaseDayHeaderData {
+  text: string
+  textParts: DateTimeFormatPartWithWeek[]
+  weekdayText: string
+  dayNumberText: string
+  isNarrow: boolean
+  level: number
+}
+
+function buildDayHeaderText(
+  date: DateMarker,
+  formatter: DateFormatter,
+  includeDayNumber: boolean,
+  dateEnv,
+) {
+  const textParts = dateEnv.formatToParts(date, formatter)
+
+  return {
+    text: joinDateTimeFormatParts(textParts),
+    textParts,
+    weekdayText: findWeekdayText(textParts),
+    dayNumberText: includeDayNumber ? findDayNumberText(textParts) : '',
   }
 }
