@@ -7,7 +7,7 @@ import { DayTableCell } from '../../common/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { generateClassName } from '../../content-inject/ContentContainer'
-import { getIsHeightAuto, getStickyHeaderDates } from '../../scrollgrid/util'
+import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/util'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
 import { Ruler } from '../../scrollgrid/Ruler'
@@ -120,7 +120,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
       : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
+    const tableHeaderSticky = !forPrint && getTableHeaderSticky(options)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquidHeight] = computeSlatHeight(
@@ -169,7 +169,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             role='rowgroup'
             className={joinClassNames(
               generateClassName(options.tableHeaderClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
@@ -177,7 +177,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               }),
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
-              stickyHeaderDates && classNames.tableHeaderSticky,
+              tableHeaderSticky && classNames.tableHeaderSticky,
             )}
             style={{
               zIndex: 1,
@@ -241,7 +241,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             ))}
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}

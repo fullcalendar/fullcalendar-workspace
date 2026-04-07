@@ -43,10 +43,10 @@ describe('resource timegrid sticky footer scrollbar', () => {
     ],
   })
 
-  it('ignores stickyFooterScrollbar when height is fixed', async () => {
+  it('ignores footerScrollbarSticky when height is fixed', async () => {
     let calendar = initCalendar({
       height: 600,
-      stickyFooterScrollbar: true,
+      footerScrollbarSticky: true,
     })
 
     await waitTimeout()
@@ -56,10 +56,10 @@ describe('resource timegrid sticky footer scrollbar', () => {
     ).toBe(null)
   })
 
-  it('uses stickyFooterScrollbar when height is auto', async () => {
+  it('uses footerScrollbarSticky when height is auto', async () => {
     let calendar = initCalendar({
       height: 'auto',
-      stickyFooterScrollbar: true,
+      footerScrollbarSticky: true,
     })
 
     await waitTimeout()

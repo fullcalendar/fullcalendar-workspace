@@ -7,7 +7,7 @@ import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { Hit } from '../../interactions/hit'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
-import { getStickyHeaderDates, getIsHeightAuto } from '../../scrollgrid/util'
+import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/util'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Ruler } from '../../scrollgrid/Ruler'
@@ -70,7 +70,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     }
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    const tableHeaderSticky = !props.forPrint && getTableHeaderSticky(options)
 
     const colCount = props.cellRows[0].length
     const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
@@ -82,14 +82,14 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         {options.dayHeaders && (
           <div className={joinClassNames(
             generateClassName(options.tableHeaderClass, {
-              isSticky: stickyHeaderDates,
+              isSticky: tableHeaderSticky,
               borderlessX,
               borderlessTop,
               borderlessBottom,
               multiMonthColumnCount: 0,
             }),
             classNames.printHeader, // either flexCol or table-header-group
-            stickyHeaderDates && classNames.tableHeaderSticky,
+            tableHeaderSticky && classNames.tableHeaderSticky,
           )}>
             <div className={classNames.flexRow}>
               <DayGridHeader
@@ -109,7 +109,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             </div>
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}

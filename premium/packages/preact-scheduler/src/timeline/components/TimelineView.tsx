@@ -9,8 +9,8 @@ import {
   NowTimer,
   DateMarker,
   DateRange,
-  getStickyHeaderDates,
-  getStickyFooterScrollbar,
+  getTableHeaderSticky,
+  getFooterScrollbarSticky,
   Scroller,
   rangeContainsMarker,
   multiplyDuration,
@@ -92,8 +92,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     /* table settings */
 
     const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    const tableHeaderSticky = !props.forPrint && getTableHeaderSticky(options)
+    const footerScrollbarSticky = !props.forPrint && getFooterScrollbarSticky(options)
 
     /* table positions */
 
@@ -149,14 +149,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <div
                 className={joinClassNames(
                   generateClassName(options.tableHeaderClass, {
-                    isSticky: stickyHeaderDates,
+                    isSticky: tableHeaderSticky,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
                     multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
-                  stickyHeaderDates && classNames.tableHeaderSticky,
+                  tableHeaderSticky && classNames.tableHeaderSticky,
                 )}
                 style={{
                   zIndex: 1,
@@ -224,7 +224,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars={
-                  stickyFooterScrollbar ||
+                  footerScrollbarSticky ||
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinArrayishClassNames(
@@ -312,7 +312,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
               {/* FOOTER scrollbar
               ---------------------------------------------------------------------------------- */}
-              {Boolean(stickyFooterScrollbar) && (
+              {Boolean(footerScrollbarSticky) && (
                 <FooterScrollbar
                   isSticky
                   canvasWidth={canvasWidth}

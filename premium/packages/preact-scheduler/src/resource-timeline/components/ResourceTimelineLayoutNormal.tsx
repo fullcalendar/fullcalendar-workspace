@@ -7,8 +7,8 @@ import {
   DateRange,
   EventStore,
   getIsHeightAuto,
-  getStickyFooterScrollbar,
-  getStickyHeaderDates,
+  getFooterScrollbarSticky,
+  getTableHeaderSticky,
   Hit,
   memoize,
   multiplyDuration,
@@ -216,8 +216,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     /* table settings */
 
     let verticalScrolling = !getIsHeightAuto(options)
-    let stickyHeaderDates = getStickyHeaderDates(options)
-    let stickyFooterScrollbar = getStickyFooterScrollbar(options)
+    let tableHeaderSticky = getTableHeaderSticky(options)
+    let footerScrollbarSticky = getFooterScrollbarSticky(options)
 
     const { colSpecs, groupColCnt, superHeaderRendering } = props
 
@@ -448,14 +448,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 role='rowgroup'
                 className={joinClassNames(
                   generateClassName(options.tableHeaderClass, {
-                    isSticky: stickyHeaderDates,
+                    isSticky: tableHeaderSticky,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
                     multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
-                  stickyHeaderDates && classNames.tableHeaderSticky,
+                  tableHeaderSticky && classNames.tableHeaderSticky,
                 )}
                 style={{
                   zIndex: 1,
@@ -574,12 +574,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
               {/* spreadsheet FOOTER scrollbar
               ----------------------------------------------------------------------------
-              Not just for stickyFooterScrollbar:true,
+              Not just for footerScrollbarSticky:true,
               also just for normal horizontal scrolling,
               because we need to hide the vertical scrollbar, but can't solely show the horizontal one
               */}
               <FooterScrollbar
-                isSticky={stickyFooterScrollbar}
+                isSticky={footerScrollbarSticky}
                 canvasWidth={spreadsheetCanvasWidth}
                 scrollerRef={this.spreadsheetFooterScrollerRef}
                 scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
@@ -599,14 +599,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 className={joinClassNames(
                   generateClassName(options.tableHeaderClass, {
-                    isSticky: stickyHeaderDates,
+                    isSticky: tableHeaderSticky,
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
                     multiMonthColumnCount: 0,
                   }),
                   classNames.flexCol,
-                  stickyHeaderDates && classNames.tableHeaderSticky,
+                  tableHeaderSticky && classNames.tableHeaderSticky,
                 )}
                 style={{
                   zIndex: 1,
@@ -711,7 +711,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
-                hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
+                hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
                 className={joinArrayishClassNames(
                   generateClassName(options.tableBodyClass, {
                     borderlessX,
@@ -895,7 +895,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
               {/* time-area FOOTER
               ---------------------------------------------------------------------------- */}
-              {Boolean(stickyFooterScrollbar) && (
+              {Boolean(footerScrollbarSticky) && (
                 <FooterScrollbar
                   isSticky
                   canvasWidth={timeCanvasWidth}

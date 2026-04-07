@@ -14,7 +14,7 @@ import { ScrollerSyncerInterface } from '../../scrollgrid/ScrollerSyncerInterfac
 import { SlicedCoordRange } from '../../coord-range'
 import { FooterScrollbar } from '../../common/FooterScrollbar'
 import { afterSize } from '../../component-util/resize-observer'
-import { getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates } from '../../scrollgrid/util'
+import { getIsHeightAuto, getScrollerSyncerClass, getFooterScrollbarSticky, getTableHeaderSticky } from '../../scrollgrid/util'
 import { isArraysEqual } from '../../util/array'
 import { generateClassName } from '../../content-inject/ContentContainer'
 import { type Ref, createRef } from 'react'
@@ -151,8 +151,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
-    const stickyFooterScrollbar = !forPrint && getStickyFooterScrollbar(options)
+    const tableHeaderSticky = !forPrint && getTableHeaderSticky(options)
+    const footerScrollbarSticky = !forPrint && getFooterScrollbarSticky(options)
 
     // TODO: DRY with getIsStack
     const { eventPrintLayout } = options
@@ -190,7 +190,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const firstBodyRowIndex = options.dayHeaders ? headerTiers.length + 1 : 1
 
     const bottomScrollbarWidth =
-      stickyFooterScrollbar
+      footerScrollbarSticky
         ? sticykBottomScrollbarWidth
         : (bodyHeight != null && clientHeight != null)
           ? (bodyHeight - clientHeight)
@@ -202,7 +202,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             className={joinClassNames(
               generateClassName(options.tableHeaderClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
@@ -210,7 +210,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               }),
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
-              stickyHeaderDates && classNames.tableHeaderSticky,
+              tableHeaderSticky && classNames.tableHeaderSticky,
             )}
             style={{
               zIndex: 1,
@@ -308,7 +308,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             </div>
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
@@ -511,7 +511,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars={
-                  stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
+                  footerScrollbarSticky || // also means height:auto, so won't need vertical scrollbars anyway
                   forPrint
                 }
                 className={joinClassNames(
@@ -599,7 +599,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   )}
                 </div>
               </Scroller>
-              {Boolean(stickyFooterScrollbar) && (
+              {Boolean(footerScrollbarSticky) && (
                 <FooterScrollbar
                   isSticky
                   canvasWidth={canvasWidth}

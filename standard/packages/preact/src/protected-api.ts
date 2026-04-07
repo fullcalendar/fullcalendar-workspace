@@ -135,8 +135,8 @@ export { BaseComponent, setRef } from './vdom-util'
 export { DelayedRunner } from './util/DelayedRunner'
 
 export {
-  getStickyFooterScrollbar,
-  getStickyHeaderDates,
+  getFooterScrollbarSticky,
+  getTableHeaderSticky,
   getIsHeightAuto,
 } from './scrollgrid/util'
 

@@ -8,7 +8,7 @@ import { Hit } from '../../interactions/hit'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { ScrollerSyncerInterface } from '../../scrollgrid/ScrollerSyncerInterface'
-import { getStickyFooterScrollbar, getStickyHeaderDates, getIsHeightAuto, getScrollerSyncerClass } from '../../scrollgrid/util'
+import { getFooterScrollbarSticky, getTableHeaderSticky, getIsHeightAuto, getScrollerSyncerClass } from '../../scrollgrid/util'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { FooterScrollbar } from '../../common/FooterScrollbar'
@@ -74,8 +74,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
       : undefined
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    const tableHeaderSticky = !props.forPrint && getTableHeaderSticky(options)
+    const footerScrollbarSticky = !props.forPrint && getFooterScrollbarSticky(options)
 
     const colCount = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
@@ -87,14 +87,14 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
         {options.dayHeaders && (
           <div className={joinClassNames(
             generateClassName(options.tableHeaderClass, {
-              isSticky: stickyHeaderDates,
+              isSticky: tableHeaderSticky,
               borderlessX,
               borderlessTop,
               borderlessBottom,
               multiMonthColumnCount: 0,
             }),
             classNames.printHeader, // either flexCol or table-header-group
-            stickyHeaderDates && classNames.tableHeaderSticky,
+            tableHeaderSticky && classNames.tableHeaderSticky,
           )}>
             <Scroller
               horizontal
@@ -122,7 +122,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             </Scroller>
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
-                isSticky: stickyHeaderDates,
+                isSticky: tableHeaderSticky,
                 multiMonthColumnCount: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
@@ -133,7 +133,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           vertical={verticalScrollbars}
           horizontal
           hideScrollbars={
-            stickyFooterScrollbar ||
+            footerScrollbarSticky ||
             props.forPrint // prevents blank space in print-view on Safari
           }
           className={joinArrayishClassNames(
@@ -182,7 +182,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           />
         </Scroller>
 
-        {Boolean(stickyFooterScrollbar) && (
+        {Boolean(footerScrollbarSticky) && (
           <FooterScrollbar
             isSticky
             canvasWidth={canvasWidth}

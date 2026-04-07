@@ -81,7 +81,7 @@ export function App() {
         eventStartEditable={true}
         eventDurationEditable={true}
         eventDragMinDistance={30}
-        stickyHeaderDates={true}
+        tableHeaderSticky={true}
       />
     </div>
   );

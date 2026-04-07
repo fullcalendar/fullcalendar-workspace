@@ -28,7 +28,7 @@ const commonProps = {
   // borderlessBottom: true,
   // borderlessX: true,
 
-  // stickyHeaderDates: true,
+  // tableHeaderSticky: true,
   // height: 'auto',
   // contentHeight: 'auto',
 
@@ -55,7 +55,7 @@ export const eventCalendarProps: EventCalendarProps = {
   // slotMaxTime: '08:00:00'
   // expandRows: true
   // height: 'auto'
-  // stickyHeaderDates: false
+  // tableHeaderSticky: false
   // dayPopoverFormat: { weekday: 'long' }
   // dayHeaderFormat: { weekday: 'long' }
   eventStartEditable: true,
@@ -177,7 +177,7 @@ export const schedulerProps: SchedulerProps = {
   weekNumbers: true,
   navLinks: true,
   // height: 'auto'
-  // stickyHeaderDates: false
+  // tableHeaderSticky: false
   eventStartEditable: true,
   eventResizableFromStart: true,
   // direction: 'rtl'

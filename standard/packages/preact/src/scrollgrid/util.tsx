@@ -12,33 +12,33 @@ export function getIsHeightAuto(options: {
   return options.height === 'auto' || options.contentHeight === 'auto'
 }
 
-export function getStickyHeaderDates(options: {
+export function getTableHeaderSticky(options: {
   height?: CssDimValue,
   contentHeight?: CssDimValue,
-  stickyHeaderDates?: boolean | 'auto'
+  tableHeaderSticky?: boolean | 'auto'
 }): boolean {
-  let { stickyHeaderDates } = options
+  let { tableHeaderSticky } = options
 
-  if (stickyHeaderDates == null || stickyHeaderDates === 'auto') {
-    stickyHeaderDates = getIsHeightAuto(options)
+  if (tableHeaderSticky == null || tableHeaderSticky === 'auto') {
+    tableHeaderSticky = getIsHeightAuto(options)
   }
 
-  return stickyHeaderDates
+  return tableHeaderSticky
 }
 
-export function getStickyFooterScrollbar(options: {
+export function getFooterScrollbarSticky(options: {
   height?: CssDimValue,
   contentHeight?: CssDimValue,
-  stickyFooterScrollbar?: boolean | 'auto'
+  footerScrollbarSticky?: boolean | 'auto'
 }): boolean {
   const isHeightAuto = getIsHeightAuto(options)
-  let { stickyFooterScrollbar } = options
+  let { footerScrollbarSticky } = options
 
-  if (stickyFooterScrollbar == null || stickyFooterScrollbar === 'auto') {
-    stickyFooterScrollbar = isHeightAuto
+  if (footerScrollbarSticky == null || footerScrollbarSticky === 'auto') {
+    footerScrollbarSticky = isHeightAuto
   }
 
-  return Boolean(stickyFooterScrollbar) && isHeightAuto
+  return Boolean(footerScrollbarSticky) && isHeightAuto
 }
 
 export function getScrollerSyncerClass(pluginHooks: {
