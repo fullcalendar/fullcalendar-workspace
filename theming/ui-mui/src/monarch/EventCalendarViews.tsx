@@ -415,7 +415,7 @@ export default function EventCalendarViews({
       tableHeaderClass="bg-(--mui-palette-background-paper)"
       fillerClass={(info) => joinClassNames(
         'opacity-50 border',
-        info.isHeader ? 'border-transparent' : 'border-(--mui-palette-divider)',
+        info.inTableHeader ? 'border-transparent' : 'border-(--mui-palette-divider)',
       )}
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--mui-palette-divider)"
@@ -502,7 +502,7 @@ export default function EventCalendarViews({
           ),
           slotHeaderDividerClass: (info) => joinClassNames(
             'border-e',
-            (info.isHeader && info.options.dayMinWidth === undefined)
+            (info.inTableHeader && info.options.dayMinWidth === undefined)
               ? 'border-transparent'
               : 'border-(--mui-palette-divider)',
           ),

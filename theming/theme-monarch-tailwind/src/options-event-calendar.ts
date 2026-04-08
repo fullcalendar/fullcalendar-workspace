@@ -479,7 +479,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       fillerClass: (info) => joinClassNames(
         'opacity-50 border',
-        info.isHeader ? 'border-transparent' : params.borderColorClass,
+        info.inTableHeader ? 'border-transparent' : params.borderColorClass,
       ),
 
       dayNarrowWidth: 100,
@@ -586,7 +586,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotHeaderDividerClass: (info) => joinClassNames(
           'border-e',
-          (info.isHeader && info.options.dayMinWidth === undefined)
+          (info.inTableHeader && info.options.dayMinWidth === undefined)
             ? 'border-transparent'
             : params.borderColorClass,
         ),

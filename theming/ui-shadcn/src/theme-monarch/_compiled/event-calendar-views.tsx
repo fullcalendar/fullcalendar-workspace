@@ -372,7 +372,7 @@ export function EventCalendarViews({
       tableHeaderClass='bg-background'
       fillerClass={(info) => cn(
         'opacity-50 border',
-        info.isHeader && 'border-transparent',
+        info.inTableHeader && 'border-transparent',
       )}
       dayNarrowWidth={100}
       dayHeaderRowClass='border'
@@ -460,7 +460,7 @@ export function EventCalendarViews({
           ),
           slotHeaderDividerClass: (info) => cn(
             'border-e',
-            (info.isHeader && info.options.dayMinWidth === undefined) && 'border-transparent',
+            (info.inTableHeader && info.options.dayMinWidth === undefined) && 'border-transparent',
           ),
 
           ...userViews?.timeGrid,

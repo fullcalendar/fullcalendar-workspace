@@ -298,7 +298,7 @@ export const BASE_OPTION_REFINERS = {
   slotHeaderSticky: identity as Identity<boolean | number | string>,
 
   slotHeaderRowClass: identity as Identity<string | undefined>,
-  slotHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean, options: { dayMinWidth: number | undefined } }>>,
+  slotHeaderDividerClass: identity as Identity<ClassNameGenerator<{ inTableHeader: boolean, options: { dayMinWidth: number | undefined } }>>,
 
   dayMaxEvents: identity as Identity<boolean | number>,
   dayMaxEventRows: identity as Identity<boolean | number>,
@@ -418,7 +418,7 @@ export const BASE_OPTION_REFINERS = {
   borderlessTop: Boolean,
   borderlessBottom: Boolean,
 
-  fillerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
+  fillerClass: identity as Identity<ClassNameGenerator<{ inTableHeader: boolean }>>,
 
   headerToolbarClass: identity as Identity<ClassNameGenerator<ToolbarInfo>>,
   footerToolbarClass: identity as Identity<ClassNameGenerator<ToolbarInfo>>,

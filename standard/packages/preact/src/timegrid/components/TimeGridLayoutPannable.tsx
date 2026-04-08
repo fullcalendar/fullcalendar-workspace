@@ -261,7 +261,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               </div>
               <div
                 className={generateClassName(options.slotHeaderDividerClass, {
-                  isHeader: true,
+                  inTableHeader: true,
                   options: { dayMinWidth: options.dayMinWidth },
                 })}
               />
@@ -298,7 +298,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      generateClassName(options.fillerClass, { isHeader: true }),
+                      generateClassName(options.fillerClass, { inTableHeader: true }),
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -349,7 +349,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 />
                 <div
                   className={generateClassName(options.slotHeaderDividerClass, {
-                    isHeader: false,
+                    inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
                 />
@@ -395,7 +395,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        generateClassName(options.fillerClass, { isHeader: false }),
+                        generateClassName(options.fillerClass, { inTableHeader: false }),
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -481,7 +481,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
                         className={joinArrayishClassNames(
-                          generateClassName(options.fillerClass, { isHeader: false }),
+                          generateClassName(options.fillerClass, { inTableHeader: false }),
                           classNames.borderOnlyT,
                           rowsNotExpanding && classNames.liquid,
                         )}
@@ -496,7 +496,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             </Scroller>
             <div
               className={generateClassName(options.slotHeaderDividerClass, {
-                isHeader: false,
+                inTableHeader: false,
                 options: { dayMinWidth: options.dayMinWidth },
               })}
             />
@@ -589,7 +589,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {rowsNotExpanding && (
                         <div
                           className={joinArrayishClassNames(
-                            generateClassName(options.fillerClass, { isHeader: false }),
+                            generateClassName(options.fillerClass, { inTableHeader: false }),
                             classNames.borderOnlyT,
                             classNames.liquid,
                           )}

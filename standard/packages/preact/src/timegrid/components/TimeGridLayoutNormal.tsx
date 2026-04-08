@@ -216,7 +216,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 </div>
                 <div
                   className={generateClassName(options.slotHeaderDividerClass, {
-                    isHeader: true,
+                    inTableHeader: true,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
                 />
@@ -231,7 +231,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      generateClassName(options.fillerClass, { isHeader: true }),
+                      generateClassName(options.fillerClass, { inTableHeader: true }),
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -281,7 +281,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 <div
                   className={generateClassName(options.slotHeaderDividerClass, {
-                    isHeader: false,
+                    inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
                 />
@@ -309,7 +309,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      generateClassName(options.fillerClass, { isHeader: false }),
+                      generateClassName(options.fillerClass, { inTableHeader: false }),
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -367,7 +367,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 <div
                   className={generateClassName(options.slotHeaderDividerClass, {
-                    isHeader: false,
+                    inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
                 />
@@ -438,7 +438,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         </div>
                         <div
                           className={generateClassName(options.slotHeaderDividerClass, {
-                            isHeader: false,
+                            inTableHeader: false,
                             options: { dayMinWidth: options.dayMinWidth },
                           })}
                           style={{ visibility: 'hidden' }}
@@ -457,7 +457,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {rowsNotExpanding && (
                     <div
                       className={joinArrayishClassNames(
-                        generateClassName(options.fillerClass, { isHeader: false }),
+                        generateClassName(options.fillerClass, { inTableHeader: false }),
                         classNames.borderOnlyT,
                         classNames.liquid,
                       )}

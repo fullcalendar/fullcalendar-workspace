@@ -550,7 +550,7 @@ export function EventCalendar({
       tableHeaderClass="bg-(--fc-monarch-background)"
       fillerClass={(info) => joinClassNames(
         'opacity-50 border',
-        info.isHeader ? 'border-transparent' : 'border-(--fc-monarch-border)',
+        info.inTableHeader ? 'border-transparent' : 'border-(--fc-monarch-border)',
       )}
       dayNarrowWidth={100}
       dayHeaderRowClass="border border-(--fc-monarch-border)"
@@ -643,7 +643,7 @@ export function EventCalendar({
           ),
           slotHeaderDividerClass: (info) => joinClassNames(
             'border-e',
-            (info.isHeader && info.options.dayMinWidth === undefined)
+            (info.inTableHeader && info.options.dayMinWidth === undefined)
               ? 'border-transparent'
               : 'border-(--fc-monarch-border)',
           ),
