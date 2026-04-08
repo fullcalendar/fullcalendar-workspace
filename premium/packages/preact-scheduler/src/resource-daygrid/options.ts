@@ -6,7 +6,7 @@ import { ClassNameGenerator } from '@fullcalendar/preact/public-api'
 import {
   Identity,
   identity,
-  CustomContentGenerator,
+  ContentGenerator,
   DidMountHandler,
   WillUnmountHandler,
 } from '@fullcalendar/preact/protected-api'
@@ -17,7 +17,7 @@ import {
 export const OPTION_REFINERS = {
   resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
   resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
-  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderContent: identity as Identity<ContentGenerator<ResourceDayHeaderInfo>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderInfo>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderInfo>>,
   resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((info: { level: number }) => 'start' | 'center' | 'end')>,

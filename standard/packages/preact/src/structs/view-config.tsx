@@ -7,7 +7,7 @@ import { ContentContainer } from '../content-inject/ContentContainer'
 import { Duration } from '@full-ui/headless-calendar'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
-import { CustomContentGenerator } from '../common/render-hook'
+import { ContentGenerator } from '../common/render-hook'
 import { getIsHeightAuto } from '../scrollgrid/util'
 
 /*
@@ -59,7 +59,7 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
 /*
 TODO: converge with ViewContainer
 */
-function createViewHookComponent(viewContent: CustomContentGenerator<ViewContentData>) {
+function createViewHookComponent(viewContent: ContentGenerator<ViewContentData>) {
   return (viewProps: ViewProps) => (
     <ViewContextType.Consumer
       children={(context: ViewContext) => {

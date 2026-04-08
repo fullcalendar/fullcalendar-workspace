@@ -1,4 +1,4 @@
-import { CustomContentGenerator } from './common/render-hook'
+import { ContentGenerator } from './common/render-hook'
 import { joinArrayishClassNames } from './util/html'
 import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
@@ -86,9 +86,9 @@ export function joinFuncishClassNames(
 }
 
 export function mergeContentInjectors(
-  contentGenerator0: CustomContentGenerator<any>, // fallback
-  contentGenerator1: CustomContentGenerator<any>
-): CustomContentGenerator<any> {
+  contentGenerator0: ContentGenerator<any>, // fallback
+  contentGenerator1: ContentGenerator<any>
+): ContentGenerator<any> {
   if (typeof contentGenerator1 === 'function') {
     // fabricate new function
     const combinedFunc = (renderProps: any) => {

@@ -148,7 +148,7 @@ export { RefMap } from './util/RefMap'
 
 export { NowTimer } from './NowTimer'
 export type {
-  CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
+  ContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
 } from './common/render-hook'
 export { StandardEvent } from './common/StandardEvent'
 export { NowIndicatorHeaderContainer } from './common/NowIndicatorHeaderContainer'

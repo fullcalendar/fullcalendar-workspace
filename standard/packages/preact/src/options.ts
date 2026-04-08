@@ -11,7 +11,7 @@ import {
   ClassNameGenerator,
   ConstraintInput,
   CssDimValue,
-  CustomContentGenerator,
+  ContentGenerator,
   CustomRenderingHandler,
   DateInput,
   DateRangeInput,
@@ -145,12 +145,12 @@ export const BASE_OPTION_REFINERS = {
 
   weekNumberHeaderClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderInfo>>,
   weekNumberHeaderInnerClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderInfo>>,
-  weekNumberHeaderContent: identity as Identity<CustomContentGenerator<WeekNumberHeaderInfo>>,
+  weekNumberHeaderContent: identity as Identity<ContentGenerator<WeekNumberHeaderInfo>>,
   weekNumberHeaderDidMount: identity as Identity<DidMountHandler<WeekNumberHeaderInfo>>,
   weekNumberHeaderWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberHeaderInfo>>,
 
   inlineWeekNumberClass: identity as Identity<ClassNameGenerator<InlineWeekNumberInfo>>,
-  inlineWeekNumberContent: identity as Identity<CustomContentGenerator<InlineWeekNumberInfo>>,
+  inlineWeekNumberContent: identity as Identity<ContentGenerator<InlineWeekNumberInfo>>,
   inlineWeekNumberDidMount: identity as Identity<DidMountHandler<InlineWeekNumberInfo>>,
   inlineWeekNumberWillUnmount: identity as Identity<WillUnmountHandler<InlineWeekNumberInfo>>,
 
@@ -166,14 +166,14 @@ export const BASE_OPTION_REFINERS = {
   nowIndicatorSnap: identity as Identity<boolean | 'auto'>,
 
   nowIndicatorHeaderClass: identity as Identity<ClassNameGenerator<NowIndicatorHeaderInfo>>,
-  nowIndicatorHeaderContent: identity as Identity<CustomContentGenerator<NowIndicatorHeaderInfo>>,
+  nowIndicatorHeaderContent: identity as Identity<ContentGenerator<NowIndicatorHeaderInfo>>,
   nowIndicatorHeaderDidMount: identity as Identity<DidMountHandler<NowIndicatorHeaderInfo>>,
   nowIndicatorHeaderWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorHeaderInfo>>,
 
   nowIndicatorDotClass: identity as Identity<string | undefined>,
 
   nowIndicatorLineClass: identity as Identity<ClassNameGenerator<NowIndicatorLineInfo>>,
-  nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineInfo>>,
+  nowIndicatorLineContent: identity as Identity<ContentGenerator<NowIndicatorLineInfo>>,
   nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineInfo>>,
   nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineInfo>>,
 
@@ -227,7 +227,7 @@ export const BASE_OPTION_REFINERS = {
   eventContrastColor: String,
   eventDidMount: identity as Identity<DidMountHandler<EventDisplayInfo>>,
   eventWillUnmount: identity as Identity<WillUnmountHandler<EventDisplayInfo>>,
-  eventContent: identity as Identity<CustomContentGenerator<EventDisplayInfo>>,
+  eventContent: identity as Identity<ContentGenerator<EventDisplayInfo>>,
 
   eventClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
   eventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
@@ -256,9 +256,9 @@ export const BASE_OPTION_REFINERS = {
   rowEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
   rowEventTitleSticky: Boolean,
   rowEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
-  rowEventBeforeContent: identity as Identity<CustomContentGenerator<EventDisplayInfo>>,
+  rowEventBeforeContent: identity as Identity<ContentGenerator<EventDisplayInfo>>,
   rowEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
-  rowEventAfterContent: identity as Identity<CustomContentGenerator<EventDisplayInfo>>,
+  rowEventAfterContent: identity as Identity<ContentGenerator<EventDisplayInfo>>,
   //
   columnEventClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
   columnEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
@@ -271,7 +271,7 @@ export const BASE_OPTION_REFINERS = {
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
   backgroundEventDidMount: identity as Identity<DidMountHandler<EventDisplayInfo>>,
   backgroundEventWillUnmount: identity as Identity<WillUnmountHandler<EventDisplayInfo>>,
-  backgroundEventContent: identity as Identity<CustomContentGenerator<EventDisplayInfo>>,
+  backgroundEventContent: identity as Identity<ContentGenerator<EventDisplayInfo>>,
   backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayInfo>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
   backgroundEventColor: String,
@@ -291,7 +291,7 @@ export const BASE_OPTION_REFINERS = {
 
   slotHeaderClass: identity as Identity<ClassNameGenerator<SlotHeaderInfo>>,
   slotHeaderInnerClass: identity as Identity<ClassNameGenerator<SlotHeaderInfo>>,
-  slotHeaderContent: identity as Identity<CustomContentGenerator<SlotHeaderInfo>>,
+  slotHeaderContent: identity as Identity<ContentGenerator<SlotHeaderInfo>>,
   slotHeaderDidMount: identity as Identity<DidMountHandler<SlotHeaderInfo>>,
   slotHeaderWillUnmount: identity as Identity<WillUnmountHandler<SlotHeaderInfo>>,
   slotHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((info: { level: number, isTime: boolean }) => 'start' | 'center' | 'end')>,
@@ -308,7 +308,7 @@ export const BASE_OPTION_REFINERS = {
   // in core because more-popover needs it
   dayHeaderClass: identity as Identity<ClassNameGenerator<DayHeaderInfo>>,
   dayHeaderInnerClass: identity as Identity<ClassNameGenerator<DayHeaderInfo>>,
-  dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderInfo>>,
+  dayHeaderContent: identity as Identity<ContentGenerator<DayHeaderInfo>>,
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderInfo>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderInfo>>,
   dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((info: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end')>,
@@ -326,7 +326,7 @@ export const BASE_OPTION_REFINERS = {
   dayCellClass: identity as Identity<ClassNameGenerator<DayCellInfo>>,
   dayCellInnerClass: identity as Identity<ClassNameGenerator<DayCellInfo>>,
 
-  dayCellTopContent: identity as Identity<CustomContentGenerator<DayCellInfo>>,
+  dayCellTopContent: identity as Identity<ContentGenerator<DayCellInfo>>,
   dayCellTopClass: identity as Identity<ClassNameGenerator<DayCellInfo>>,
   dayCellTopInnerClass: identity as Identity<ClassNameGenerator<DayCellInfo>>,
   dayCellBottomClass: identity as Identity<ClassNameGenerator<DayCellInfo>>,
@@ -335,7 +335,7 @@ export const BASE_OPTION_REFINERS = {
   allDayText: String,
   allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderInfo>>,
   allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderInfo>>,
-  allDayHeaderContent: identity as Identity<CustomContentGenerator<AllDayHeaderInfo>>,
+  allDayHeaderContent: identity as Identity<ContentGenerator<AllDayHeaderInfo>>,
   allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayHeaderInfo>>,
   allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayHeaderInfo>>,
 
@@ -384,7 +384,7 @@ export const BASE_OPTION_REFINERS = {
   headingLevel: Number,
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
-  moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkInfo>>,
+  moreLinkContent: identity as Identity<ContentGenerator<MoreLinkInfo>>,
   moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkInfo>>,
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkInfo>>,
   moreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkInfo>>,
@@ -409,7 +409,7 @@ export const BASE_OPTION_REFINERS = {
 
   popoverClass: identity as Identity<string | undefined>,
   popoverCloseClass: identity as Identity<string | undefined>,
-  popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
+  popoverCloseContent: identity as Identity<ContentGenerator<{}>>,
 
   dayNarrowWidth: Number,
 
@@ -451,13 +451,13 @@ export const BASE_OPTION_REFINERS = {
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderInfo>>,
   listDayHeaderClass: identity as Identity<ClassNameGenerator<ListDayHeaderInfo>>,
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerInfo>>,
-  listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerInfo>>,
+  listDayHeaderContent: identity as Identity<ContentGenerator<ListDayHeaderInnerInfo>>,
   //
   listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayEventsInfo>>,
   //
   noEventsClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
   noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
-  noEventsContent: identity as Identity<CustomContentGenerator<NoEventsInfo>>,
+  noEventsContent: identity as Identity<ContentGenerator<NoEventsInfo>>,
   noEventsDidMount: identity as Identity<DidMountHandler<NoEventsInfo>>,
   noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsInfo>>,
   // noEventsText is defined in base options
@@ -616,7 +616,7 @@ type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionR
 export const VIEW_ONLY_OPTION_REFINERS = {
   type: String,
   component: identity as Identity<ViewComponentType>,
-  viewContent: identity as Identity<CustomContentGenerator<ViewContentData>>,
+  viewContent: identity as Identity<ContentGenerator<ViewContentData>>,
 
   // internal only
   buttonTextKey: String,

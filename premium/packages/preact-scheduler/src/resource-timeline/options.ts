@@ -2,7 +2,7 @@ import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalenda
 import { ClassNameGenerator, CssDimValue } from '@fullcalendar/preact/public-api'
 import {
   Identity, identity,
-  CustomContentGenerator, DidMountHandler, WillUnmountHandler,
+  ContentGenerator, DidMountHandler, WillUnmountHandler,
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceColumnHeaderInfo,
@@ -24,7 +24,7 @@ export const OPTION_REFINERS = {
   resourceColumnHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
   resourceColumnResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
-  resourceColumnHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderInfo>>,
+  resourceColumnHeaderContent: identity as Identity<ContentGenerator<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderInfo>>,
   resourceHeaderRowClass: identity as Identity<string | undefined>,
@@ -35,21 +35,21 @@ export const OPTION_REFINERS = {
   // datagrid cells, for both resources & resource-GROUP
   resourceCellClass: identity as Identity<ClassNameGenerator<ResourceCellInfo>>,
   resourceCellInnerClass: identity as Identity<ClassNameGenerator<ResourceCellInfo>>,
-  resourceCellContent: identity as Identity<CustomContentGenerator<ResourceCellInfo>>,
+  resourceCellContent: identity as Identity<ContentGenerator<ResourceCellInfo>>,
   resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellInfo>>,
   resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellInfo>>,
 
   // datagrid, for resource-GROUP entire row
   resourceGroupHeaderClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
-  resourceGroupHeaderContent: identity as Identity<CustomContentGenerator<ResourceGroupHeaderInfo>>,
+  resourceGroupHeaderContent: identity as Identity<ContentGenerator<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderInfo>>,
 
   // timeline lane, for resource-GROUP
   resourceGroupLaneClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
   resourceGroupLaneInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
-  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneInfo>>,
+  resourceGroupLaneContent: identity as Identity<ContentGenerator<ResourceGroupLaneInfo>>,
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneInfo>>,
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneInfo>>,
 
@@ -58,13 +58,13 @@ export const OPTION_REFINERS = {
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneInfo>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneInfo>>,
   resourceLaneTopClass: identity as Identity<ClassNameGenerator<ResourceLaneInfo>>,
-  resourceLaneTopContent: identity as Identity<CustomContentGenerator<ResourceLaneInfo>>,
+  resourceLaneTopContent: identity as Identity<ContentGenerator<ResourceLaneInfo>>,
   resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneInfo>>,
-  resourceLaneBottomContent: identity as Identity<CustomContentGenerator<ResourceLaneInfo>>,
+  resourceLaneBottomContent: identity as Identity<ContentGenerator<ResourceLaneInfo>>,
 
   resourceIndentClass: identity as Identity<string | undefined>,
   resourceExpanderClass: identity as Identity<ClassNameGenerator<ResourceExpanderInfo>>,
-  resourceExpanderContent: identity as Identity<CustomContentGenerator<ResourceExpanderInfo>>,
+  resourceExpanderContent: identity as Identity<ContentGenerator<ResourceExpanderInfo>>,
 }
 
 type ResourceTimelineOptionRefiners = typeof OPTION_REFINERS

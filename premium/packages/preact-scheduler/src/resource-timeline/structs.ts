@@ -1,5 +1,5 @@
 import { ViewApi, ClassNameGenerator } from '@fullcalendar/preact/public-api'
-import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, CalendarContext } from '@fullcalendar/preact/protected-api'
+import { ContentGenerator, DidMountHandler, WillUnmountHandler, CalendarContext } from '@fullcalendar/preact/protected-api'
 import type { ReactNode } from 'react'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { Resource } from '../resource/structs/resource'
@@ -54,7 +54,7 @@ export interface ColHeaderRenderHooks {
   headerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
   headerInnerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
   headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
-  headerContent?: CustomContentGenerator<ResourceColumnHeaderInfo>
+  headerContent?: ContentGenerator<ResourceColumnHeaderInfo>
   headerDefault?: (renderProps: ResourceColumnHeaderInfo) => ReactNode
   headerDidMount?: DidMountHandler<ResourceColumnHeaderInfo>
   headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderInfo>
@@ -68,7 +68,7 @@ export interface ColSpec extends ColHeaderRenderHooks {
 
   cellClass?: ClassNameGenerator<ResourceCellInfo>
   cellInnerClass?: ClassNameGenerator<ResourceCellInfo>
-  cellContent?: CustomContentGenerator<ResourceCellInfo>
+  cellContent?: ContentGenerator<ResourceCellInfo>
   cellDidMount?: DidMountHandler<ResourceCellInfo>
   cellWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }
@@ -76,7 +76,7 @@ export interface ColSpec extends ColHeaderRenderHooks {
 export interface GroupLaneRenderHooks {
   laneClass?: ClassNameGenerator<ResourceCellInfo>
   laneInnerClass?: ClassNameGenerator<ResourceCellInfo>
-  laneContent?: CustomContentGenerator<ResourceCellInfo>
+  laneContent?: ContentGenerator<ResourceCellInfo>
   laneDidMount?: DidMountHandler<ResourceCellInfo>
   laneWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }
@@ -87,7 +87,7 @@ export interface GroupSpec extends GroupLaneRenderHooks { // best place for this
 
   labelClass?: ClassNameGenerator<ResourceCellInfo>
   labelInnerClass?: ClassNameGenerator<ResourceCellInfo>
-  labelContent?: CustomContentGenerator<ResourceCellInfo>
+  labelContent?: ContentGenerator<ResourceCellInfo>
   labelDidMount?: DidMountHandler<ResourceCellInfo>
   labelWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }

@@ -1,4 +1,4 @@
-import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook'
+import { ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook'
 import { DayHeaderInfo } from '../render-hook-misc'
 import { buildDateStr, buildNavLinkAttrs } from '../common/nav-link'
 import { computeMajorUnit, isMajorUnit } from '../DateProfileGenerator'
@@ -14,7 +14,7 @@ Just for the HEADER
 */
 export interface CellRenderConfig<BaseRenderProps, RenderProps = BaseRenderProps> {
   generatorName: string
-  customGenerator: CustomContentGenerator<RenderProps>
+  customGenerator: ContentGenerator<RenderProps>
   innerClassNameGenerator: ClassNameGenerator<RenderProps>
   classNameGenerator: ClassNameGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>

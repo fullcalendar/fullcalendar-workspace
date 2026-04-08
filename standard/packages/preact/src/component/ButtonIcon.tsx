@@ -1,10 +1,10 @@
-import { CustomContentGenerator } from '../common/render-hook'
+import { ContentGenerator } from '../common/render-hook'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { BaseComponent } from '../vdom-util'
 
 interface IconProps {
   className?: string
-  contentGenerator?: CustomContentGenerator<{}>
+  contentGenerator?: ContentGenerator<{}>
 }
 
 export class ButtonIcon extends BaseComponent<IconProps> {

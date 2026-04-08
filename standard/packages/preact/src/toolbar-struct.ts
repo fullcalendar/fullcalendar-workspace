@@ -1,4 +1,4 @@
-import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from './common/render-hook'
+import { ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler } from './common/render-hook'
 
 export interface ToolbarModel {
   sectionWidgets: {
@@ -50,7 +50,7 @@ export interface ButtonInput {
   className?: ClassNameGenerator<ButtonInfo>
   display?: ButtonDisplay
   iconClass?: string | undefined,
-  iconContent?: CustomContentGenerator<{}>,
+  iconContent?: ContentGenerator<{}>,
   text?: string
   isPrimary?: boolean
 }
@@ -64,7 +64,7 @@ export interface ToolbarWidget {
   buttonHint?: string | ((currentUnit: string) => string)
   buttonDisplay?: ButtonDisplay
   buttonIconClass?: string | undefined
-  buttonIconContent?: CustomContentGenerator<{}>,
+  buttonIconContent?: ContentGenerator<{}>,
   buttonClick?: (ev: MouseEvent) => void
   buttonIsPrimary?: boolean
   buttonClass?: ClassNameGenerator<ButtonInfo>
@@ -83,4 +83,4 @@ export interface ToolbarInput {
 // Custom Elements
 // -------------------------------------------------------------------------------------------------
 
-export type ToolbarElementInput = CustomContentGenerator<{}>
+export type ToolbarElementInput = ContentGenerator<{}>

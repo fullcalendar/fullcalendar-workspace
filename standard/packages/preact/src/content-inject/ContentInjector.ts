@@ -1,5 +1,5 @@
 import { createElement, type ReactNode, type CSSProperties, type Ref, isValidElement } from 'react'
-import { CustomContentGenerator } from '../common/render-hook'
+import { ContentGenerator } from '../common/render-hook'
 import { BaseComponent, setRef } from '../vdom-util'
 import { guid } from '../util/misc'
 import { isArraysEqual } from '../util/array'
@@ -27,7 +27,7 @@ export interface ElProps extends ElAttrsProps {
 export interface ContentGeneratorProps<RenderProps> {
   renderProps: RenderProps
   generatorName: string | undefined // for informing UI-framework if `customGenerator` is undefined
-  customGenerator?: CustomContentGenerator<RenderProps>
+  customGenerator?: ContentGenerator<RenderProps>
   defaultGenerator?: (renderProps: RenderProps) => ReactNode
 }
 
