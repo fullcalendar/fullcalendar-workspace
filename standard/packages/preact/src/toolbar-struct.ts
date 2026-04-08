@@ -25,7 +25,7 @@ export interface ToolbarSectionInfo {
 // -------------------------------------------------------------------------------------------------
 
 export interface ButtonGroupInfo {
-  isSelectGroup: boolean
+  hasSelection: boolean
 }
 
 export interface ButtonInfo {

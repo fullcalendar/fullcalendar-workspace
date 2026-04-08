@@ -144,7 +144,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: (info) => joinClassNames(
       'py-px rounded-sm flex flex-row items-center',
-      info.isSelectGroup
+      info.hasSelection
         ? 'bg-(--fc-pulse-unselected)'
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
     ),

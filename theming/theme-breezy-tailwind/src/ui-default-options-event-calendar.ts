@@ -175,7 +175,7 @@ export const defaultUiEventCalendarOptions: {
     */
     buttonGroupClass: (info) => joinClassNames(
       'flex flex-row items-center',
-      !info.isSelectGroup && 'rounded-md shadow-xs',
+      !info.hasSelection && 'rounded-md shadow-xs',
     ),
     buttonClass: (info) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',

@@ -200,7 +200,7 @@ export function EventCalendar({
       toolbarTitleClass="text-2xl font-bold"
       buttonGroupClass={(info) => joinClassNames(
         'rounded-full flex flex-row items-center',
-        info.isSelectGroup && 'border border-(--fc-monarch-border)'
+        info.hasSelection && 'border border-(--fc-monarch-border)'
       )}
       buttonClass={(info) => joinClassNames(
         'py-2.5 rounded-full flex flex-row items-center text-sm',
