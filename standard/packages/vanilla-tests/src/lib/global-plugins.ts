@@ -1,4 +1,4 @@
-import { PluginDefInput } from 'fullcalendar'
+import { PluginInput } from 'fullcalendar'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from './theme-for-tests' // "
 import interactionPlugin from 'fullcalendar/interaction'
@@ -8,7 +8,7 @@ import listPlugin from 'fullcalendar/list'
 import multiMonthPlugin from 'fullcalendar/multimonth'
 import { pushOptions } from './global-utils'
 
-export const DEFAULT_PLUGINS: PluginDefInput[] = [
+export const DEFAULT_PLUGINS: PluginInput[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,

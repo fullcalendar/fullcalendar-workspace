@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/react'
+import { PluginInput } from '@fullcalendar/react'
 import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/react/protected-api'
 import { defaultUiEventCalendarOptions, params } from './ui-default-options-event-calendar'
 import { defaultUiSchedulerOnlyOptions } from './ui-default-options-scheduler'
@@ -15,4 +15,4 @@ export default {
     defaultUiEventCalendarOptions.views || {},
     defaultUiSchedulerOnlyOptions.views || {},
   ),
-} as PluginDefInput
+} as PluginInput

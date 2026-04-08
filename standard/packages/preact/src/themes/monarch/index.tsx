@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../../plugin-system-struct'
+import { PluginInput } from '../../plugin-system-struct'
 import { CalendarOptions } from '../../options'
 import { DayCellInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
@@ -729,7 +729,7 @@ export default {
       slotHeaderDividerClass: 'border-b border-(--fc-monarch-border)',
     },
   }
-} as PluginDefInput
+} as PluginInput
 
 /* SVGs
 ------------------------------------------------------------------------------------------------- */

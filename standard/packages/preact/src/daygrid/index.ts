@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugin-system-struct'
 import { DayGridView } from './components/DayGridView'
 import { TableDateProfileGenerator } from './TableDateProfileGenerator'
 
@@ -28,4 +28,4 @@ export default {
       duration: { years: 1 },
     },
   },
-} as PluginDefInput
+} as PluginInput

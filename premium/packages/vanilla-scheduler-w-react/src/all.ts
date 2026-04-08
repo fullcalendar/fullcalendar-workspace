@@ -1,5 +1,5 @@
 import { Calendar as BareCalendar } from 'fullcalendar-w-react/public-components'
-import { CalendarOptions, PluginDefInput } from 'fullcalendar-w-react/public-api'
+import { CalendarOptions, PluginInput } from 'fullcalendar-w-react/public-api'
 import interactionPlugin from 'fullcalendar-w-react/interaction'
 import dayGridPlugin from 'fullcalendar-w-react/daygrid'
 import timeGridPlugin from 'fullcalendar-w-react/timegrid'
@@ -12,7 +12,7 @@ import scrollGridPlugin from '@fullcalendar/react-scheduler/scrollgrid'
 import timelinePlugin from '@fullcalendar/react-scheduler/timeline'
 import adaptivePlugin from '@fullcalendar/react-scheduler/adaptive'
 
-const basePlugins: PluginDefInput[] = [
+const basePlugins: PluginInput[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -20,7 +20,7 @@ const basePlugins: PluginDefInput[] = [
   multiMonthPlugin,
 ]
 
-export const plugins: PluginDefInput[] = [
+export const plugins: PluginInput[] = [
   resourceDayGridPlugin as any, // !!!
   resourceTimeGridPlugin as any, // !!!
   resourceTimelinePlugin as any, // !!!

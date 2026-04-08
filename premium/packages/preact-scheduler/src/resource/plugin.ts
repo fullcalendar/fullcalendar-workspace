@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/preact/public-api'
+import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import { ResourceDataAdder, transformIsDraggable } from './View'
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
@@ -37,4 +37,4 @@ export default {
   optionRefiners: OPTION_REFINERS,
   listenerRefiners: LISTENER_REFINERS,
   propSetHandlers: { resourceStore: handleResourceStore },
-} as PluginDefInput
+} as PluginInput

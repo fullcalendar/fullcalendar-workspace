@@ -4,7 +4,7 @@ import { RecurringType } from './recurring-event'
 import { EventRefined } from './event-parse'
 import { SIMPLE_RECURRING_REFINERS } from './recurring-event-simple-refiners'
 import './recurring-event-simple-declare'
-import { PluginDefInput } from '..'
+import { PluginInput } from '..'
 
 /*
 An implementation of recurring events that only supports every-day or weekly recurrences.
@@ -75,7 +75,7 @@ export const simpleRecurringEventsPlugin = {
   name: 'simple-recurring-event',
   recurringTypes: [recurring],
   eventRefiners: SIMPLE_RECURRING_REFINERS,
-} as PluginDefInput
+} as PluginInput
 
 function expandRanges(
   daysOfWeek: number[] | null,

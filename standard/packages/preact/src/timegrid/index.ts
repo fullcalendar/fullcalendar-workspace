@@ -1,5 +1,5 @@
 import dayGridPlugin from '../daygrid/index'
-import { PluginDefInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugin-system-struct'
 import { TimeGridView } from './components/TimeGridView'
 
 export default {
@@ -23,4 +23,4 @@ export default {
       duration: { weeks: 1 },
     },
   },
-} as PluginDefInput
+} as PluginInput

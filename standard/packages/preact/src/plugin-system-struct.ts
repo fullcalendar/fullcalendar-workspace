@@ -22,10 +22,10 @@ import { ScrollerSyncerClass } from './scrollgrid/ScrollerSyncerInterface'
 
 // TODO: easier way to add new hooks? need to update a million things
 
-export interface PluginDefInput {
+export interface PluginInput {
   name: string
   premiumReleaseDate?: string
-  deps?: PluginDefInput[]
+  deps?: PluginInput[]
   reducers?: ReducerFunc[]
   isLoadingFuncs?: ((state: Dictionary) => boolean)[]
   contextInit?: (context: CalendarContext) => void

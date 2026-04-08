@@ -1,4 +1,4 @@
-import { CalendarOptions, joinClassNames, PluginDefInput } from 'fullcalendar'
+import { CalendarOptions, joinClassNames, PluginInput } from 'fullcalendar'
 
 /*
 NOTE: other classnames in theme-for-tests-premium.ts
@@ -125,7 +125,7 @@ export default {
       noEventsClass: 'fc-list-empty',
     }
   }
-} as PluginDefInput
+} as PluginInput
 
 // Utils
 // -------------------------------------------------------------------------------------------------

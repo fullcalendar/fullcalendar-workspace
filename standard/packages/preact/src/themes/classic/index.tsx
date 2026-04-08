@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../../plugin-system-struct'
+import { PluginInput } from '../../plugin-system-struct'
 import { type CalendarOptions } from '../../options'
 import { joinClassNames } from '../../util/html'
 
@@ -535,7 +535,7 @@ export default {
       nowIndicatorLineClass: 'border-s border-(--fc-classic-now)',
     },
   }
-} as PluginDefInput
+} as PluginInput
 
 /* SVGs
 ------------------------------------------------------------------------------------------------- */

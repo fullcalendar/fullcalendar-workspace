@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import { CalendarOptions, PluginDefInput, useCalendarController } from '@fullcalendar/react'
+import { CalendarOptions, PluginInput, useCalendarController } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/react/daygrid'
 import timeGridPlugin from '@fullcalendar/react/timegrid'
 import listPlugin from '@fullcalendar/react/list'
@@ -9,7 +9,7 @@ import multiMonthPlugin from '@fullcalendar/react/multimonth'
 import EventCalendarToolbar from './EventCalendarToolbar'
 import EventCalendarViews from './EventCalendarViews'
 
-const plugins: PluginDefInput[] = [
+const plugins: PluginInput[] = [
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,

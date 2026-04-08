@@ -1,10 +1,10 @@
-import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct'
+import { PluginInput, PluginDef, PluginHooks } from './plugin-system-struct'
 import { isArraysEqual } from './util/array'
 import { mergeViewOptionsMap } from './options-manip'
 
 // TODO: easier way to add new hooks? need to update a million things
 
-function refinePluginDef(input: PluginDefInput): PluginDef {
+function refinePluginDef(input: PluginInput): PluginDef {
   return {
     name: input.name,
     premiumReleaseDate: input.premiumReleaseDate ? new Date(input.premiumReleaseDate): undefined,
@@ -42,7 +42,7 @@ function refinePluginDef(input: PluginDefInput): PluginDef {
   }
 }
 
-function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInput[]): PluginHooks {
+function buildPluginHooks(pluginDefs: PluginInput[], globalDefs: PluginInput[]): PluginHooks {
   let pluginsByName: { [pluginName: string]: PluginDef } = {}
   let hooks: PluginHooks = {
     premiumReleaseDate: undefined,
@@ -82,7 +82,7 @@ function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInp
   /*
   IDs/names, etc
   */
-  function addDefs(defs: PluginDefInput[]) {
+  function addDefs(defs: PluginInput[]) {
     for (let unrefinedDef of defs) {
       const { name } = unrefinedDef
       if (!name) {
@@ -107,11 +107,11 @@ function buildPluginHooks(pluginDefs: PluginDefInput[], globalDefs: PluginDefInp
 }
 
 export function buildBuildPluginHooks() { // memoizes
-  let currentOverrideDefs: PluginDefInput[] = []
-  let currentGlobalDefs: PluginDefInput[] = []
+  let currentOverrideDefs: PluginInput[] = []
+  let currentGlobalDefs: PluginInput[] = []
   let currentHooks: PluginHooks
 
-  return (overrideDefs: PluginDefInput[], globalDefs: PluginDefInput[]) => {
+  return (overrideDefs: PluginInput[], globalDefs: PluginInput[]) => {
     if (!currentHooks || !isArraysEqual(overrideDefs, currentOverrideDefs) || !isArraysEqual(globalDefs, currentGlobalDefs)) {
       currentHooks = buildPluginHooks(overrideDefs, globalDefs)
     }

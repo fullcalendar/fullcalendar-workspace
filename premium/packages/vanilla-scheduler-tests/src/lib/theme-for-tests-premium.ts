@@ -1,4 +1,4 @@
-import { PluginDefInput, joinClassNames } from 'fullcalendar'
+import { PluginInput, joinClassNames } from 'fullcalendar'
 import { getDayClass } from '@fullcalendar-tests/standard/lib/theme-for-tests'
 
 export default {
@@ -52,4 +52,4 @@ export default {
       viewClass: 'fc-resource-daygrid',
     },
   }
-} as PluginDefInput
+} as PluginInput

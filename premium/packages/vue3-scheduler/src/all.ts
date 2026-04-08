@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue'
-import FullCalendar, { PluginDefInput } from '@fullcalendar/vue3'
+import FullCalendar, { PluginInput } from '@fullcalendar/vue3'
 import interactionPlugin from '@fullcalendar/vue3/interaction'
 import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 import timeGridPlugin from '@fullcalendar/vue3/timegrid'
@@ -12,7 +12,7 @@ import scrollGridPlugin from 'fullcalendar-scheduler/scrollgrid'
 import timelinePlugin from 'fullcalendar-scheduler/timeline'
 import adaptivePlugin from 'fullcalendar-scheduler/adaptive'
 
-const basePlugins: PluginDefInput[] = [
+const basePlugins: PluginInput[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -20,7 +20,7 @@ const basePlugins: PluginDefInput[] = [
   multiMonthPlugin,
 ]
 
-export const plugins: PluginDefInput[] = [
+export const plugins: PluginInput[] = [
   resourceDayGridPlugin as any, // !!!
   resourceTimeGridPlugin as any, // !!!
   resourceTimelinePlugin as any, // !!!

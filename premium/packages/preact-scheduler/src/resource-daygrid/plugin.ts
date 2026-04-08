@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/preact/public-api'
+import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import resourcePlugin from '../resource/plugin'
 import dayGridPlugin from '@fullcalendar/preact/daygrid'
@@ -36,4 +36,4 @@ export default {
   },
   optionRefiners: OPTION_REFINERS,
   optionDefaults: OPTION_DEFAULTS,
-} as PluginDefInput
+} as PluginInput

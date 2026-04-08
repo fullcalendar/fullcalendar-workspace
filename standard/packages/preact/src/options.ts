@@ -53,7 +53,7 @@ import {
   DayHeaderInfo,
   DayHeaderDividerInfo,
   DayCellInfo,
-  PluginDefInput,
+  PluginInput,
 } from './api/structs'
 import { TableDisplayData, TableHeaderData, TableBodyData } from './common/TableAndSubsections'
 import { CalendarDisplayInfo } from './calendar-root'
@@ -359,7 +359,7 @@ export const BASE_OPTION_REFINERS = {
   eventMinWidth: Number,
   eventShortHeight: Number,
   slotEventOverlap: Boolean,
-  plugins: identity as Identity<PluginDefInput[]>,
+  plugins: identity as Identity<PluginInput[]>,
   firstDay: Number,
   dayCount: Number,
   dateAlignment: String,
@@ -600,7 +600,7 @@ export const CALENDAR_ONLY_OPTION_REFINERS = { // does not include base nor cale
   className: identity as Identity<ClassNameGenerator<CalendarDisplayInfo>>,
 
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
-  plugins: identity as Identity<PluginDefInput[]>,
+  plugins: identity as Identity<PluginInput[]>,
   initialEvents: identity as Identity<EventSourceInput>,
   events: identity as Identity<EventSourceInput>,
   eventSources: identity as Identity<EventSourceInput[]>,

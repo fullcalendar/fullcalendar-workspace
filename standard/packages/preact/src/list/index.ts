@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugin-system-struct'
 import { ListView } from './components/ListView'
 
 export default {
@@ -26,4 +26,4 @@ export default {
       duration: { year: 1 },
     },
   },
-} as PluginDefInput
+} as PluginInput

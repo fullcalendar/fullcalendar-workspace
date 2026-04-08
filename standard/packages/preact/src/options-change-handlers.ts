@@ -1,5 +1,5 @@
 import { CalendarContext } from './CalendarContext'
-import { CalendarController, PluginDefInput } from './index'
+import { CalendarController, PluginInput } from './index'
 import { EventSource } from './structs/event-source'
 import { hashValuesToArray } from './util/object'
 
@@ -15,7 +15,7 @@ export const changeHandlerPlugin = {
     },
     eventSources: handleEventSources,
   },
-} as PluginDefInput
+} as PluginInput
 
 /*
 BUG: if `event` was supplied, all previously-given `eventSources` will be wiped out

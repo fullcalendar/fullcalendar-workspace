@@ -1,5 +1,5 @@
 import { TableDateProfileGenerator } from '../daygrid/TableDateProfileGenerator'
-import { PluginDefInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugin-system-struct'
 import { MultiMonthView } from './components/MultiMonthView'
 
 export default {
@@ -19,4 +19,4 @@ export default {
       showNonCurrentDates: false, // TODO: looks bad when single-col layout
     },
   },
-} as PluginDefInput
+} as PluginInput

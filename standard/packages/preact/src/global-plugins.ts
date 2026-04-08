@@ -4,7 +4,7 @@ import { arrayEventSourcePlugin } from './event-sources/array-event-source'
 import { funcEventSourcePlugin } from './event-sources/func-event-source'
 import { jsonFeedEventSourcePlugin } from './event-sources/json-feed-event-source'
 import { changeHandlerPlugin } from './options-change-handlers'
-import { PluginDefInput } from './plugin-system-struct'
+import { PluginInput } from './plugin-system-struct'
 import { CalendarDataManagerState } from './reducers/data-types'
 import { computeEventSourcesLoading } from './reducers/eventSources'
 import { simpleRecurringEventsPlugin } from './structs/recurring-event-simple'
@@ -13,7 +13,7 @@ import { simpleRecurringEventsPlugin } from './structs/recurring-event-simple'
 this array is exposed on the root namespace so that UMD plugins can add to it.
 see the rollup-bundles script.
 */
-export const globalPlugins: PluginDefInput[] = [
+export const globalPlugins: PluginInput[] = [
   arrayEventSourcePlugin,
   funcEventSourcePlugin,
   jsonFeedEventSourcePlugin,
@@ -28,5 +28,5 @@ export const globalPlugins: PluginDefInput[] = [
       dateProfile: handleDateProfile,
       eventStore: handleEventStore,
     },
-  } as PluginDefInput,
+  } as PluginInput,
 ]

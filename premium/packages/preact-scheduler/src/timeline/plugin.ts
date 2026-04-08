@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/preact/public-api'
+import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import { TimelineView } from './components/TimelineView'
 import { OPTION_REFINERS } from './options'
@@ -32,4 +32,4 @@ export default {
       duration: { years: 1 },
     },
   },
-} as PluginDefInput
+} as PluginInput

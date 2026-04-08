@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/preact/public-api'
+import { PluginInput } from '@fullcalendar/preact/public-api'
 import timeGridPlugin from '@fullcalendar/preact/timegrid'
 import premiumCommonPlugin from '../common/plugin'
 import resourcePlugin from '../resource/plugin'
@@ -30,4 +30,4 @@ export default {
       duration: { weeks: 1 },
     },
   },
-} as PluginDefInput
+} as PluginInput

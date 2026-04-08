@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { Calendar as BareCalendar } from '@fullcalendar/preact/public-components'
-import { CalendarOptions, PluginDefInput } from '@fullcalendar/preact/public-api'
+import { CalendarOptions, PluginInput } from '@fullcalendar/preact/public-api'
 import interactionPlugin from '@fullcalendar/preact/interaction'
 import dayGridPlugin from '@fullcalendar/preact/daygrid'
 import timeGridPlugin from '@fullcalendar/preact/timegrid'
@@ -16,7 +16,7 @@ import adaptivePlugin from './adaptive/plugin'
 import './ambient'
 import './side-effects'
 
-const basePlugins: PluginDefInput[] = [
+const basePlugins: PluginInput[] = [
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -24,7 +24,7 @@ const basePlugins: PluginDefInput[] = [
   multiMonthPlugin,
 ]
 
-export const plugins: PluginDefInput[] = [
+export const plugins: PluginInput[] = [
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
   resourceTimelinePlugin,

@@ -1,4 +1,4 @@
-import { PluginDefInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugin-system-struct'
 import { buildRangeApiWithTimeZone } from '../structs/date-span'
 import { EventInput } from '../structs/event-parse'
 import { EventSourceDef } from '../structs/event-source-def'
@@ -45,4 +45,4 @@ let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 export const funcEventSourcePlugin = {
   name: 'func-event-source',
   eventSourceDefs: [eventSourceDef],
-} as PluginDefInput
+} as PluginInput

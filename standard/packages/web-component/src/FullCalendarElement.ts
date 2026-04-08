@@ -1,10 +1,10 @@
 import { Calendar } from 'fullcalendar/public-components'
-import { CalendarApi, CalendarOptions, PluginDefInput } from 'fullcalendar/public-api'
+import { CalendarApi, CalendarOptions, PluginInput } from 'fullcalendar/public-api'
 
 export class FullCalendarElement extends HTMLElement {
   _calendar: Calendar | null = null
   _options: CalendarOptions | null = null
-  _forcedPlugins: PluginDefInput[] | null = null
+  _forcedPlugins: PluginInput[] | null = null
 
   constructor() {
     super()

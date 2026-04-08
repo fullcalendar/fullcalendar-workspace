@@ -1,4 +1,4 @@
-import { PluginDefInput } from '@fullcalendar/preact/public-api'
+import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'
@@ -41,4 +41,4 @@ export default {
     },
   },
   optionRefiners: OPTION_REFINERS,
-} as PluginDefInput
+} as PluginInput
