@@ -139,8 +139,8 @@ export function EventCalendar({
       initialView={availableViews[0]}
       className="text-(--fc-monarch-foreground) root-reset"
       viewClass={(info) => {
-        const hasBorderTop = info.isFirst && !info.borderlessTop
-        const hasBorderBottom = info.isLast && !info.borderlessBottom
+        const hasBorderTop = !info.options.headerToolbar && !info.borderlessTop
+        const hasBorderBottom = !info.options.footerToolbar && !info.borderlessBottom
         const hasBorderX = !info.borderlessX
         return joinClassNames(
           'bg-(--fc-monarch-background) border-(--fc-monarch-border)',

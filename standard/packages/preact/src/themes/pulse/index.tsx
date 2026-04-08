@@ -136,8 +136,8 @@ export default {
   optionDefaults: {
     className: "gap-6 root-reset",
     viewClass: (info) => {
-      const hasBorderTop = !(info.isFirst && info.borderlessTop)
-      const hasBorderBottom = !(info.isLast && info.borderlessBottom)
+      const hasBorderTop = info.options.headerToolbar || !info.borderlessTop
+      const hasBorderBottom = info.options.footerToolbar || !info.borderlessBottom
       const hasBorderX = !info.borderlessX
       return joinClassNames(
         'border-(--fc-pulse-border)',

@@ -70,8 +70,7 @@ function createViewHookComponent(viewContent: ContentGenerator<ViewContentData>)
           nextDayThreshold: options.nextDayThreshold as Duration,
           // ViewDisplayProp...
           ...computeViewBorderless(options),
-          isFirst: !options.headerToolbar,
-          isLast: !options.footerToolbar,
+          options: { headerToolbar: options.headerToolbar, footerToolbar: options.footerToolbar },
           isHeightAuto: getIsHeightAuto(options),
           view: context.viewApi,
         }

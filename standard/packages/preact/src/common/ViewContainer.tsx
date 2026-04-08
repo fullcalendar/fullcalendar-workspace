@@ -7,6 +7,7 @@ import { ElProps } from '../content-inject/ContentInjector'
 import { memoizeObjArg } from '../util/memoize'
 import { computeViewBorderless } from '../util/misc'
 import { getIsHeightAuto } from '../scrollgrid/util'
+import type { ToolbarInput } from '../toolbar-struct'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
@@ -19,8 +20,10 @@ export interface ViewDisplayInfo {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  isFirst: boolean
-  isLast: boolean
+  options: {
+    headerToolbar: ToolbarInput | false | undefined
+    footerToolbar: ToolbarInput | false | undefined
+  }
   isHeightAuto: boolean
 }
 
@@ -40,8 +43,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
         style={props.style}
         renderProps={this.refineRenderProps({
           ...computeViewBorderless(options),
-          isFirst: !options.headerToolbar,
-          isLast: !options.footerToolbar,
+          options: { headerToolbar: options.headerToolbar, footerToolbar: options.footerToolbar },
           isHeightAuto: getIsHeightAuto(options),
           viewApi: context.viewApi,
         })}
@@ -61,8 +63,10 @@ interface ViewRenderPropsInput {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  isFirst: boolean
-  isLast: boolean
+  options: {
+    headerToolbar: ToolbarInput | false | undefined
+    footerToolbar: ToolbarInput | false | undefined
+  }
   isHeightAuto: boolean
 }
 
@@ -72,8 +76,7 @@ function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayInfo {
     borderlessX: raw.borderlessX,
     borderlessTop: raw.borderlessTop,
     borderlessBottom: raw.borderlessBottom,
-    isFirst: raw.isFirst,
-    isLast: raw.isLast,
+    options: raw.options,
     isHeightAuto: raw.isHeightAuto,
   }
 }

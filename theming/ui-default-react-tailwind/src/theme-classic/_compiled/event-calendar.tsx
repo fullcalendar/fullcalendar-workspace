@@ -141,12 +141,17 @@ export function EventCalendar({
       plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
       className="gap-5"
-      viewClass={(info) => joinClassNames(
-        'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
-        !(info.isFirst && info.borderlessTop) && 'border-t',
-        !(info.isLast && info.borderlessBottom) && 'border-b',
-        !info.borderlessX && 'border-x',
-      )}
+      viewClass={(info) => {
+        const hasBorderTop = info.options.headerToolbar || !info.borderlessTop
+        const hasBorderBottom = info.options.footerToolbar || !info.borderlessBottom
+        const hasBorderX = !info.borderlessX
+        return joinClassNames(
+          'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
+          hasBorderTop && 'border-t',
+          hasBorderBottom && 'border-b',
+          hasBorderX && 'border-x',
+        )
+      }}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */

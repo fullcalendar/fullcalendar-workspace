@@ -116,8 +116,8 @@ export const defaultUiEventCalendarOptions: {
     className: 'gap-6',
 
     viewClass: (info) => {
-      const hasBorderTop = !(info.isFirst && info.borderlessTop)
-      const hasBorderBottom = !(info.isLast && info.borderlessBottom)
+      const hasBorderTop = info.options.headerToolbar || !info.borderlessTop
+      const hasBorderBottom = info.options.footerToolbar || !info.borderlessBottom
       const hasBorderX = !info.borderlessX
 
       return joinClassNames(
