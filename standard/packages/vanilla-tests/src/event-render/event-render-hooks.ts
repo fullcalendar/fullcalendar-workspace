@@ -83,9 +83,9 @@ describe('eventContent', () => {
     let calendar = initCalendar({
       initialView: 'timeGridWeek',
       initialDate: '2020-12-13',
-      eventDidMount(data) {
-        data.event.setProp('backgroundColor', 'red')
-        data.event.setProp('title', 'name changed')
+      eventDidMount(info) {
+        info.event.setProp('backgroundColor', 'red')
+        info.event.setProp('title', 'name changed')
       },
       events: [
         {

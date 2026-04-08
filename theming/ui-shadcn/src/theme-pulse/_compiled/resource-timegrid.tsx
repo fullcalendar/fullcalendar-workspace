@@ -81,8 +81,8 @@ export function ResourceTimeGrid({
           popoverCloseContent={() => (
             <EventCalendarCloseIcon />
           )}
-          resourceExpanderContent={(data) => (
-            <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
+          resourceExpanderContent={(info) => (
+            <EventCalendarExpanderIcon isExpanded={info.isExpanded} />
           )}
           {...restOptions}
         />

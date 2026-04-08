@@ -31,12 +31,12 @@ describe('timeGrid-view dateClick', () => {
       })
 
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-23T09:00:00Z')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource).toBeFalsy()
+          expect(info.date).toEqualDate('2015-11-23T09:00:00Z')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource).toBeFalsy()
           clickResolve()
         },
       })
@@ -62,12 +62,12 @@ describe('timeGrid-view dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-29T09:00:00Z')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('b')
+          expect(info.date).toEqualDate('2015-11-29T09:00:00Z')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource.id).toBe('b')
           clickResolve()
         },
       })
@@ -101,12 +101,12 @@ describe('timeGrid-view dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-30T09:30:00Z')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('b')
+          expect(info.date).toEqualDate('2015-11-30T09:30:00Z')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource.id).toBe('b')
           clickResolve()
         },
       })

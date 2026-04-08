@@ -5,14 +5,14 @@ import type { DateSpan } from '../structs/date-span'
 import type { CalendarContext } from '../CalendarContext'
 import type { DateEnv } from '@full-ui/headless-calendar'
 
-export interface DropData extends DatePointApi {
+export interface DropInfo extends DatePointApi {
   draggedEl: HTMLElement
   jsEvent: MouseEvent
   view: ViewApi
 }
 
-export type EventReceiveData = EventReceiveLeaveData
-export type EventLeaveData = EventReceiveLeaveData
+export type EventReceiveInfo = EventReceiveLeaveData
+export type EventLeaveInfo = EventReceiveLeaveData
 export interface EventReceiveLeaveData { // will this become public?
   draggedEl: HTMLElement
   event: EventApi

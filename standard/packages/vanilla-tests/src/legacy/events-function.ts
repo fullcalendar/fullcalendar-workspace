@@ -6,22 +6,22 @@ describe('events as a function', () => {
     initialDate: '2014-05-01',
   })
 
-  function testEventFunctionParams(data, callback) {
-    expect(data.start instanceof Date).toEqual(true)
-    expect(data.end instanceof Date).toEqual(true)
+  function testEventFunctionParams(info, callback) {
+    expect(info.start instanceof Date).toEqual(true)
+    expect(info.end instanceof Date).toEqual(true)
     expect(typeof callback).toEqual('function')
   }
 
   it('requests correctly when local timezone', (done) => {
     initCalendar({
       timeZone: 'local',
-      events(data, callback) {
-        testEventFunctionParams(data, callback)
-        expect(data.timeZone).toEqual('local')
-        expect(data.start).toEqualLocalDate('2014-04-27T00:00:00')
-        expect(data.startStr).toMatch(/^2014-04-27T00:00:00[-+]/)
-        expect(data.end).toEqualLocalDate('2014-06-08T00:00:00')
-        expect(data.endStr).toMatch(/^2014-06-08T00:00:00[-+]/)
+      events(info, callback) {
+        testEventFunctionParams(info, callback)
+        expect(info.timeZone).toEqual('local')
+        expect(info.start).toEqualLocalDate('2014-04-27T00:00:00')
+        expect(info.startStr).toMatch(/^2014-04-27T00:00:00[-+]/)
+        expect(info.end).toEqualLocalDate('2014-06-08T00:00:00')
+        expect(info.endStr).toMatch(/^2014-06-08T00:00:00[-+]/)
         callback([])
         setTimeout(done) // :(
       },
@@ -31,13 +31,13 @@ describe('events as a function', () => {
   it('requests correctly when UTC timezone', (done) => {
     initCalendar({
       timeZone: 'UTC',
-      events(data, callback) {
-        testEventFunctionParams(data, callback)
-        expect(data.timeZone).toEqual('UTC')
-        expect(data.start).toEqualDate('2014-04-27T00:00:00Z')
-        expect(data.startStr).toEqual('2014-04-27T00:00:00Z')
-        expect(data.end).toEqualDate('2014-06-08T00:00:00Z')
-        expect(data.endStr).toEqual('2014-06-08T00:00:00Z')
+      events(info, callback) {
+        testEventFunctionParams(info, callback)
+        expect(info.timeZone).toEqual('UTC')
+        expect(info.start).toEqualDate('2014-04-27T00:00:00Z')
+        expect(info.startStr).toEqual('2014-04-27T00:00:00Z')
+        expect(info.end).toEqualDate('2014-06-08T00:00:00Z')
+        expect(info.endStr).toEqual('2014-06-08T00:00:00Z')
         callback([])
         setTimeout(done) // :(
       },
@@ -48,13 +48,13 @@ describe('events as a function', () => {
     const timeZone = 'America/Chicago'
     initCalendar({
       timeZone,
-      events(data, callback) {
-        testEventFunctionParams(data, callback)
-        expect(data.timeZone).toEqual(timeZone)
-        expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27T00:00:00', timeZone))
-        expect(data.startStr).toEqual(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
-        expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08T00:00:00', timeZone))
-        expect(data.endStr).toEqual(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
+      events(info, callback) {
+        testEventFunctionParams(info, callback)
+        expect(info.timeZone).toEqual(timeZone)
+        expect(info.start).toEqualDate(plainAndZoneToDate('2014-04-27T00:00:00', timeZone))
+        expect(info.startStr).toEqual(plainAndZoneToString('2014-04-27T00:00:00', timeZone))
+        expect(info.end).toEqualDate(plainAndZoneToDate('2014-06-08T00:00:00', timeZone))
+        expect(info.endStr).toEqual(plainAndZoneToString('2014-06-08T00:00:00', timeZone))
         callback([])
         setTimeout(done) // :(
       },
@@ -66,20 +66,20 @@ describe('events as a function', () => {
     let callCnt = 0
     let options = {
       timeZone,
-      events(data, callback) {
-        testEventFunctionParams(data, callback)
+      events(info, callback) {
+        testEventFunctionParams(info, callback)
         callCnt += 1
         if (callCnt === 1) {
-          expect(data.timeZone).toEqual(timeZone)
-          expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27', timeZone))
-          expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08', timeZone))
+          expect(info.timeZone).toEqual(timeZone)
+          expect(info.start).toEqualDate(plainAndZoneToDate('2014-04-27', timeZone))
+          expect(info.end).toEqualDate(plainAndZoneToDate('2014-06-08', timeZone))
           setTimeout(() => {
             currentCalendar.setOption('timeZone', 'UTC')
           }, 0)
         } else if (callCnt === 2) {
-          expect(data.timeZone).toEqual('UTC')
-          expect(data.start).toEqualDate(plainAndZoneToDate('2014-04-27', 'UTC'))
-          expect(data.end).toEqualDate(plainAndZoneToDate('2014-06-08', 'UTC'))
+          expect(info.timeZone).toEqual('UTC')
+          expect(info.start).toEqualDate(plainAndZoneToDate('2014-04-27', 'UTC'))
+          expect(info.end).toEqualDate(plainAndZoneToDate('2014-06-08', 'UTC'))
           setTimeout(done) // :(
         }
       },
@@ -91,11 +91,11 @@ describe('events as a function', () => {
   it('requests correctly with event source extended form', (done) => {
     let eventSource = {
       className: 'customeventclass',
-      events(data, callback) {
-        testEventFunctionParams(data, callback)
-        expect(data.timeZone).toEqual('UTC')
-        expect(data.start).toEqualDate('2014-04-27')
-        expect(data.end).toEqualDate('2014-06-08')
+      events(info, callback) {
+        testEventFunctionParams(info, callback)
+        expect(info.timeZone).toEqual('UTC')
+        expect(info.start).toEqualDate('2014-04-27')
+        expect(info.end).toEqualDate('2014-06-08')
         callback([
           {
             title: 'event1',
@@ -109,9 +109,9 @@ describe('events as a function', () => {
     initCalendar({
       timeZone: 'UTC',
       eventSources: [eventSource],
-      eventDidMount(data) {
+      eventDidMount(info) {
         expect(eventSource.events.calls.count()).toEqual(1)
-        expect(data.el).toHaveClass('customeventclass')
+        expect(info.el).toHaveClass('customeventclass')
         setTimeout(done) // :(
       },
     })

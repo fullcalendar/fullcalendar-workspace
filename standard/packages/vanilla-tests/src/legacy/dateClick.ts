@@ -28,13 +28,13 @@ describe('dateClick', () => {
             clickResolve = resolve
           })
           let calendar = initCalendar({
-            dateClick(data) {
-              expect(data.date instanceof Date).toEqual(true)
-              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof data.view).toEqual('object') // "
-              expect(data.allDay).toEqual(true)
-              expect(data.date).toEqualDate('2014-05-07')
-              expect(data.dateStr).toEqual('2014-05-07')
+            dateClick(info) {
+              expect(info.date instanceof Date).toEqual(true)
+              expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof info.view).toEqual('object') // "
+              expect(info.allDay).toEqual(true)
+              expect(info.date).toEqualDate('2014-05-07')
+              expect(info.dateStr).toEqual('2014-05-07')
               clickResolve()
             },
           })
@@ -56,13 +56,13 @@ describe('dateClick', () => {
             clickResolve = resolve
           })
           let calendar = initCalendar({
-            dateClick(data) {
-              expect(data.date instanceof Date).toEqual(true)
-              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof data.view).toEqual('object') // "
-              expect(data.allDay).toEqual(true)
-              expect(data.date).toEqualDate('2014-05-28')
-              expect(data.dateStr).toEqual('2014-05-28')
+            dateClick(info) {
+              expect(info.date instanceof Date).toEqual(true)
+              expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof info.view).toEqual('object') // "
+              expect(info.allDay).toEqual(true)
+              expect(info.date).toEqualDate('2014-05-28')
+              expect(info.dateStr).toEqual('2014-05-28')
               clickResolve()
             },
           })
@@ -80,13 +80,13 @@ describe('dateClick', () => {
           let calendar = initCalendar({
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '07:00:00',
-            dateClick(data) {
-              expect(data.date instanceof Date).toEqual(true)
-              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof data.view).toEqual('object') // "
-              expect(data.allDay).toEqual(false)
-              expect(data.date).toEqualDate('2014-05-28T09:00:00Z')
-              expect(data.dateStr).toEqual('2014-05-28T09:00:00Z')
+            dateClick(info) {
+              expect(info.date instanceof Date).toEqual(true)
+              expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof info.view).toEqual('object') // "
+              expect(info.allDay).toEqual(false)
+              expect(info.date).toEqualDate('2014-05-28T09:00:00Z')
+              expect(info.dateStr).toEqual('2014-05-28T09:00:00Z')
               clickResolve()
             },
           })
@@ -106,13 +106,13 @@ describe('dateClick', () => {
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '07:00:00',
             slotMinTime: '02:00:00',
-            dateClick(data) {
-              expect(data.date instanceof Date).toEqual(true)
-              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof data.view).toEqual('object') // "
-              expect(data.allDay).toEqual(false)
-              expect(data.date).toEqualDate('2014-05-28T11:00:00Z')
-              expect(data.dateStr).toEqual('2014-05-28T11:00:00Z')
+            dateClick(info) {
+              expect(info.date instanceof Date).toEqual(true)
+              expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof info.view).toEqual('object') // "
+              expect(info.allDay).toEqual(false)
+              expect(info.date).toEqualDate('2014-05-28T11:00:00Z')
+              expect(info.dateStr).toEqual('2014-05-28T11:00:00Z')
               clickResolve()
             },
           })
@@ -131,13 +131,13 @@ describe('dateClick', () => {
           let calendar = initCalendar({
             contentHeight: 500, // make sure the click slot will be in scroll view
             scrollTime: '23:00:00',
-            dateClick(data) {
-              expect(data.date instanceof Date).toEqual(true)
-              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof data.view).toEqual('object') // "
-              expect(data.allDay).toEqual(false)
-              expect(data.date).toEqualDate('2014-05-28T23:30:00Z')
-              expect(data.dateStr).toEqual('2014-05-28T23:30:00Z')
+            dateClick(info) {
+              expect(info.date instanceof Date).toEqual(true)
+              expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof info.view).toEqual('object') // "
+              expect(info.allDay).toEqual(false)
+              expect(info.date).toEqualDate('2014-05-28T23:30:00Z')
+              expect(info.dateStr).toEqual('2014-05-28T23:30:00Z')
               clickResolve()
             },
           })
@@ -179,13 +179,13 @@ describe('dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
-          expect(data.date instanceof Date).toEqual(true)
-          expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-          expect(typeof data.view).toEqual('object') // "
-          expect(data.allDay).toEqual(true)
-          expect(data.date).toEqualDate('2014-05-07')
-          expect(data.dateStr).toEqual('2014-05-07')
+        dateClick(info) {
+          expect(info.date instanceof Date).toEqual(true)
+          expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+          expect(typeof info.view).toEqual('object') // "
+          expect(info.allDay).toEqual(true)
+          expect(info.date).toEqualDate('2014-05-07')
+          expect(info.dateStr).toEqual('2014-05-07')
           clickResolve()
         },
       })
@@ -224,13 +224,13 @@ describe('dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
-          expect(data.date instanceof Date).toEqual(true)
-          expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
-          expect(typeof data.view).toEqual('object') // "
-          expect(data.allDay).toEqual(true)
-          expect(data.date).toEqualDate('2014-05-07')
-          expect(data.dateStr).toEqual('2014-05-07')
+        dateClick(info) {
+          expect(info.date instanceof Date).toEqual(true)
+          expect(typeof info.jsEvent).toEqual('object') // TODO: more discrimination
+          expect(typeof info.view).toEqual('object') // "
+          expect(info.allDay).toEqual(true)
+          expect(info.date).toEqualDate('2014-05-07')
+          expect(info.dateStr).toEqual('2014-05-07')
           clickResolve()
         },
       })

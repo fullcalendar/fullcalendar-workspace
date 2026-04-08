@@ -1,5 +1,5 @@
 import { BaseComponent } from '../vdom-util'
-import { EventDisplayData, EventRenderRange, setElEventRange } from '../component-util/event-rendering'
+import { EventDisplayInfo, EventRenderRange, setElEventRange } from '../component-util/event-rendering'
 import { memoize } from '../util/memoize'
 import { EventDef } from '../structs/event-def'
 import { EventInstance } from '../structs/event-instance'
@@ -43,7 +43,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isNarrow: props.isNarrow || false,
       isShort: props.isShort || false,
     }
-    const renderProps: EventDisplayData = {
+    const renderProps: EventDisplayInfo = {
       event: eventApi,
       view: context.viewApi,
       timeText: '', // never display time
@@ -123,7 +123,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
   }
 }
 
-function renderInnerContent(props: EventDisplayData) {
+function renderInnerContent(props: EventDisplayInfo) {
   let { title } = props.event
 
   return title && (

@@ -1,5 +1,5 @@
 import { ViewApi } from '../../api/ViewApi'
-import { DayCellData } from '../../render-hook-misc'
+import { DayCellInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { DateMarker, DateRange, DateEnv, addMs, DateFormatter, formatDayString } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
@@ -256,7 +256,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderTopInner(props: DayCellData): ReactNode {
+function renderTopInner(props: DayCellInfo): ReactNode {
   return props.text || <>&nbsp;</> // TODO: DRY?
 }
 
@@ -294,7 +294,7 @@ interface DayCellRenderPropsInput {
   renderProps?: Dictionary // so can include a resource
 }
 
-function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
+function refineRenderProps(raw: DayCellRenderPropsInput): DayCellInfo {
   let { date, dateEnv, hasLabel, hasMonthLabel, hasNavLink, businessHours } = raw
   let textParts = []
   let text = ''

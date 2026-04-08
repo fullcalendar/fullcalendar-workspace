@@ -26,11 +26,11 @@ describe('dayGrid-view selection', () => {
 
     it('allows non-resource selects', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
 
@@ -51,12 +51,12 @@ describe('dayGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-23')
-      expect(selectData.end).toEqualDate('2015-11-25')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource).toBeFalsy()
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-23')
+      expect(selectInfo.end).toEqualDate('2015-11-25')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource).toBeFalsy()
     })
   })
 
@@ -67,11 +67,11 @@ describe('dayGrid-view selection', () => {
 
     it('allows a resource selects', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
 
@@ -90,12 +90,12 @@ describe('dayGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-29')
-      expect(selectData.end).toEqualDate('2015-12-01')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('a')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-29')
+      expect(selectInfo.end).toEqualDate('2015-12-01')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('a')
     })
 
     it('disallows a selection across resources', async () => {
@@ -132,11 +132,11 @@ describe('dayGrid-view selection', () => {
 
     it('allows a resource selection', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
 
@@ -157,12 +157,12 @@ describe('dayGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-28')
-      expect(selectData.end).toEqualDate('2015-12-01')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('b')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-28')
+      expect(selectInfo.end).toEqualDate('2015-12-01')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('b')
     })
 
     it('disallows a selection across resources', async () => {

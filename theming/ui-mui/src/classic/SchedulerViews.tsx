@@ -27,15 +27,15 @@ export default function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => joinClassNames(
+      resourceDayHeaderClass={(info) => joinClassNames(
         'border',
-        data.isMajor
+        info.isMajor
           ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
           : 'border-(--mui-palette-divider)',
       )}
-      resourceDayHeaderInnerClass={(data) => joinClassNames(
+      resourceDayHeaderInnerClass={(info) => joinClassNames(
         'px-1 py-0.5 flex flex-col',
-        data.isNarrow ? xxsTextClass : 'text-sm',
+        info.isNarrow ? xxsTextClass : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -50,8 +50,8 @@ export default function SchedulerViews({
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-2 -me-1 justify-center"
       resourceExpanderClass={`group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
-      resourceExpanderContent={(data) => (
-        <EventCalendarExpanderIcon isExpanded={data.isExpanded} />
+      resourceExpanderContent={(info) => (
+        <EventCalendarExpanderIcon isExpanded={info.isExpanded} />
       )}
       resourceHeaderRowClass="border border-(--mui-palette-divider)"
       resourceRowClass="border border-(--mui-palette-divider)"
@@ -62,7 +62,7 @@ export default function SchedulerViews({
 
       resourceGroupLaneClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
       resourceLaneClass="border border-(--mui-palette-divider)"
-      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-3')}
+      resourceLaneBottomClass={(info) => joinClassNames(info.options.eventOverlap && 'h-3')}
       timelineBottomClass="h-3"
 
       /* View-Specific Options
@@ -75,29 +75,29 @@ export default function SchedulerViews({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => joinClassNames(
-            data.isEnd && 'me-px',
+          rowEventClass: (info) => joinClassNames(
+            info.isEnd && 'me-px',
             'items-center',
           ),
-          rowEventBeforeClass: (data) => joinClassNames(
-            !data.isStartResizable ? (
-              data.isSelected
+          rowEventBeforeClass: (info) => joinClassNames(
+            !info.isStartResizable ? (
+              info.isSelected
                 ? joinClassNames(rowTouchResizerClass, '-start-1')
                 : joinClassNames(rowPointerResizerClass, '-start-1')
             ) : (
-              !data.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
+              !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
             )
           ),
-          rowEventAfterClass: (data) => joinClassNames(
-            !data.isEndResizable ? (
-              data.isSelected
+          rowEventAfterClass: (info) => joinClassNames(
+            !info.isEndResizable ? (
+              info.isSelected
                 ? joinClassNames(rowTouchResizerClass, '-end-1')
                 : joinClassNames(rowPointerResizerClass, '-end-1')
             ) : (
-              !data.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
+              !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
             )
           ),
-          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-0.5' : 'py-1.5',
+          rowEventInnerClass: (info) => info.options.eventOverlap ? 'py-0.5' : 'py-1.5',
           rowEventTimeClass: 'px-0.5',
           rowEventTitleClass: 'px-0.5',
 
@@ -110,11 +110,11 @@ export default function SchedulerViews({
           /* Timeline > Slot Header
           --------------------------------------------------------------------------------------- */
 
-          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
+          slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => joinClassNames(
+          slotHeaderInnerClass: (info) => joinClassNames(
             'p-2 text-sm',
-            data.hasNavLink && 'hover:underline',
+            info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
 

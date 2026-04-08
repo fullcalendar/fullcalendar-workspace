@@ -25,7 +25,7 @@ export type CalendarInteractionClass = { new(context: CalendarContext): Calendar
 export type OptionChangeHandler = (propValue: any, context: CalendarContext) => void
 export type OptionChangeHandlerMap = { [propName: string]: OptionChangeHandler }
 
-export interface DateSelectData extends DateSpanApi {
+export interface DateSelectInfo extends DateSpanApi {
   jsEvent: MouseEvent | null
   view: ViewApi
 }
@@ -35,10 +35,10 @@ export function triggerDateSelect(selection: DateSpan, pev: PointerDragEvent | n
     ...buildDateSpanApiWithContext(selection, context),
     jsEvent: pev ? pev.origEvent as MouseEvent : null, // Is this always a mouse event? See #4655
     view: context.viewApi || context.calendarApi.view,
-  } as DateSelectData)
+  } as DateSelectInfo)
 }
 
-export interface DateUnselectData {
+export interface DateUnselectInfo {
   jsEvent: MouseEvent
   view: ViewApi
 }
@@ -47,7 +47,7 @@ export function triggerDateUnselect(pev: PointerDragEvent | null, context: Calen
   context.emitter.trigger('unselect', {
     jsEvent: pev ? pev.origEvent as MouseEvent : null, // Is this always a mouse event? See #4655
     view: context.viewApi || context.calendarApi.view,
-  } as DateUnselectData)
+  } as DateUnselectInfo)
 }
 
 export function buildDateSpanApiWithContext(dateSpan: DateSpan, context: CalendarContext) {

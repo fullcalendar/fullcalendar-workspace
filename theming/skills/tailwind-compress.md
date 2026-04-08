@@ -38,11 +38,11 @@ When there's an empty ('') branch.
 
 BEFORE:
 
-  data.isMajor ? 'border-foreground/20' : ''
+  info.isMajor ? 'border-foreground/20' : ''
 
 AFTER:
 
-  data.isMajor && 'border-foreground/20'
+  info.isMajor && 'border-foreground/20'
 
 
 ## Compression: Ternary/boolean collapse
@@ -51,13 +51,13 @@ Further compression when there's an empty ('') branch.
 
 BEFORE:
 
-  data.isOther
+  info.isOther
     ? 'text-muted-foreground'
-    : (data.monthText ? '' : 'text-muted-foreground')
+    : (info.monthText ? '' : 'text-muted-foreground')
 
 AFTER:
 
-  (data.isOther || !data.monthText) && 'text-muted-foreground'
+  (info.isOther || !info.monthText) && 'text-muted-foreground'
 
 
 ## Compression: Eliminate blank strings
@@ -154,7 +154,7 @@ When there's already a conditional/ternary items, keep items distinct
 BEFORE:
   [
     someConst,
-    data.isInteractive
+    info.isInteractive
       ? 'hover:bg-foreground/5'
       : 'hover:bg-foreground/5',
   ]

@@ -34,9 +34,9 @@
           duration: '02:00'
         }
       ],
-      eventClick: function(data) {
+      eventClick: function(info) {
         if (confirm('delete event?')) {
-          data.event.remove()
+          info.event.remove()
         }
       }
     });

@@ -10,25 +10,25 @@ export function createSlots(
     /* Day Header
     --------------------------------------------------------------------------------------------- */
 
-    dayHeaderContent: (data) => (
-      (data.inPopover || !data.dayNumberText || !data.isToday) ? (
+    dayHeaderContent: (info) => (
+      (info.inPopover || !info.dayNumberText || !info.isToday) ? (
         // simple
         // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
-        <Fragment>{data.text}</Fragment>
+        <Fragment>{info.text}</Fragment>
       ) : (
         // circle inside
         <Fragment>
-          {data.textParts.map((textPart, i) => (
+          {info.textParts.map((textPart, i) => (
             <span
               key={i}
               className={joinClassNames(
                 'whitespace-pre',
-                (textPart.type === 'day' && data.isToday)
+                (textPart.type === 'day' && info.isToday)
                   // today-circle
                   ? joinClassNames(
                       'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold',
                       'flex flex-row items-center justify-center', // v-align, h-align
-                      data.hasNavLink
+                      info.hasNavLink
                         ? joinClassNames(
                             params.tertiaryPressableGroupClass,
                             params.outlineWidthGroupFocusClass,
@@ -49,28 +49,28 @@ export function createSlots(
     /* Day Cell
     --------------------------------------------------------------------------------------------- */
 
-    dayCellTopContent: (data) => (
-      !data.isToday ? (
+    dayCellTopContent: (info) => (
+      !info.isToday ? (
         // ghost-button
         // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
-        <Fragment>{data.text}</Fragment>
+        <Fragment>{info.text}</Fragment>
       ) : (
         // circle inside
         <Fragment>
-          {data.textParts.map((textPart, i) => (
+          {info.textParts.map((textPart, i) => (
             <span
               key={i}
               className={joinClassNames(
                 'whitespace-pre',
-                (textPart.type === 'day' && data.isToday)
+                (textPart.type === 'day' && info.isToday)
                   // today-circle
                   ? joinClassNames(
                       'rounded-full font-semibold',
                       'flex flex-row items-center justify-center', // v-align, h-align
-                      data.isNarrow
+                      info.isNarrow
                         ? 'size-5'
                         : 'size-6 first:-ms-1 last:-me-1',
-                      data.hasNavLink
+                      info.hasNavLink
                         ? joinClassNames(
                             params.tertiaryPressableGroupClass,
                             params.outlineWidthGroupFocusClass,
@@ -80,7 +80,7 @@ export function createSlots(
                         : params.tertiaryClass,
                     )
                   // normal text
-                  : (data.monthText ? params.fgClass : params.mutedFgClass),
+                  : (info.monthText ? params.fgClass : params.mutedFgClass),
               )}
             >{textPart.value}</span>
           ))}

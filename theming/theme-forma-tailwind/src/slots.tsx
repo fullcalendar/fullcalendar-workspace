@@ -10,22 +10,22 @@ export function createSlots(
     /* Day Header
     --------------------------------------------------------------------------------------------- */
 
-    dayHeaderContent: (data) => (
+    dayHeaderContent: (info) => (
       <Fragment>
-        {data.isToday && (
+        {info.isToday && (
           // thick line, contained by either dayHeaderClass or dayHeaderInnerClass
           <div className={`absolute top-0 inset-x-0 border-t-4 ${params.primaryBorderColorClass} pointer-events-none`} />
         )}
-        {data.dayNumberText && (
+        {info.dayNumberText && (
           <div
             className={joinClassNames(
-              data.isToday && 'font-bold',
-              data.isNarrow ? 'text-base' : 'text-lg',
+              info.isToday && 'font-bold',
+              info.isNarrow ? 'text-base' : 'text-lg',
             )}
-          >{data.dayNumberText}</div>
+          >{info.dayNumberText}</div>
         )}
-        {data.weekdayText && (
-          <div className='text-xs'>{data.weekdayText}</div>
+        {info.weekdayText && (
+          <div className='text-xs'>{info.weekdayText}</div>
         )}
       </Fragment>
     ),

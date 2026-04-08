@@ -56,19 +56,19 @@
         { id: '5', resourceId: 'd', start: '2020-09-07T10:00:00', end: '2020-09-07T15:00:00', title: 'event 5' }
       ],
 
-      select: function(data) {
+      select: function(info) {
         console.log(
           'select',
-          data.startStr,
-          data.endStr,
-          data.resource ? data.resource.id : '(no resource)'
+          info.startStr,
+          info.endStr,
+          info.resource ? info.resource.id : '(no resource)'
         );
       },
-      dateClick: function(data) {
+      dateClick: function(info) {
         console.log(
           'dateClick',
-          data.date,
-          data.resource ? data.resource.id : '(no resource)'
+          info.date,
+          info.resource ? info.resource.id : '(no resource)'
         );
       }
     });

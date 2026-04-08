@@ -1,4 +1,4 @@
-import { SlotLaneData } from '../../render-hook-misc'
+import { SlotLaneInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
 import { ContentContainer } from '../../content-inject/ContentContainer'
@@ -18,7 +18,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let renderProps: SlotLaneData = {
+    let renderProps: SlotLaneInfo = {
       // this is a time-specific slot. not day-specific, so don't do today/nowRange
       ...this.getDateMeta(props.date, context.dateEnv),
 

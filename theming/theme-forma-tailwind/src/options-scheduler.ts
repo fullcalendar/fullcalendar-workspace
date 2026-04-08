@@ -19,13 +19,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
-      resourceDayHeaderClass: (data) => joinClassNames(
+      resourceDayHeaderClass: (info) => joinClassNames(
         'border',
-        data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
+        info.isMajor ? params.strongBorderColorClass : params.borderColorClass,
       ),
-      resourceDayHeaderInnerClass: (data) => joinClassNames(
+      resourceDayHeaderInnerClass: (info) => joinClassNames(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       ),
 
       /* Resource Data Grid
@@ -57,7 +57,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceHeaderRowClass: `border ${params.borderColorClass}`,
       resourceRowClass: `border ${params.borderColorClass}`,
 
-      // divider between data grid & timeline
+      // divider between info grid & timeline
       resourceColumnDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
 
       /* Timeline Lane
@@ -65,7 +65,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => joinClassNames(data.options.eventOverlap && 'h-2.5'),
+      resourceLaneBottomClass: (info) => joinClassNames(info.options.eventOverlap && 'h-2.5'),
       timelineBottomClass: 'h-2.5',
     },
     views: {
@@ -74,9 +74,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Row Event
         ----------------------------------------------------------------------------------------- */
 
-        rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-        rowEventInnerClass: (data) => (
-          data.options.eventOverlap
+        rowEventClass: (info) => joinClassNames(info.isEnd && 'me-px'),
+        rowEventInnerClass: (info) => (
+          info.options.eventOverlap
             ? 'py-[0.1875rem]' // usually 3px
             : 'py-2'
         ),
@@ -93,12 +93,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Slot Header
         ----------------------------------------------------------------------------------------- */
 
-        slotHeaderAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+        slotHeaderAlign: (info) => info.isTime ? 'start' : 'center', // h-align
 
         slotHeaderClass: 'justify-center', // v-align
-        slotHeaderInnerClass: (data) => joinClassNames(
+        slotHeaderInnerClass: (info) => joinClassNames(
           'p-2 text-sm',
-          data.hasNavLink && 'hover:underline',
+          info.hasNavLink && 'hover:underline',
         ),
 
         // divider between label and lane

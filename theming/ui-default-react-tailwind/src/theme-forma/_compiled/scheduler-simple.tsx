@@ -26,13 +26,13 @@ export function Scheduler({
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
-      resourceDayHeaderClass={(data) => joinClassNames(
+      resourceDayHeaderClass={(info) => joinClassNames(
         'border',
-        data.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
+        info.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
       )}
-      resourceDayHeaderInnerClass={(data) => joinClassNames(
+      resourceDayHeaderInnerClass={(info) => joinClassNames(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -47,10 +47,10 @@ export function Scheduler({
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
-      resourceExpanderContent={(data) => chevronDown(
+      resourceExpanderContent={(info) => chevronDown(
         joinClassNames(
           `size-4 ${mutedFgPressableGroupClass}`,
-          !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
+          !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
         )
       )}
       resourceHeaderRowClass="border border-(--fc-forma-border)"
@@ -62,7 +62,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-forma-border) bg-(--fc-forma-muted)"
       resourceLaneClass="border border-(--fc-forma-border)"
-      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2.5')}
+      resourceLaneBottomClass={(info) => joinClassNames(info.options.eventOverlap && 'h-2.5')}
       timelineBottomClass="h-2.5"
 
       /* View-Specific Options
@@ -75,9 +75,9 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => (
-            data.options.eventOverlap
+          rowEventClass: (info) => joinClassNames(info.isEnd && 'me-px'),
+          rowEventInnerClass: (info) => (
+            info.options.eventOverlap
               ? 'py-[0.1875rem]'
               : 'py-2'
           ),
@@ -91,11 +91,11 @@ export function Scheduler({
           /* Timeline > Slot Header
           --------------------------------------------------------------------------------------- */
 
-          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
+          slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => joinClassNames(
+          slotHeaderInnerClass: (info) => joinClassNames(
             'p-2 text-sm',
-            data.hasNavLink && 'hover:underline',
+            info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b border-(--fc-forma-border)',
 

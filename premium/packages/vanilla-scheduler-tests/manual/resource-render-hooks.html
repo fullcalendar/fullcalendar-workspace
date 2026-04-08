@@ -38,12 +38,12 @@
         }
       },
       resourceColumnHeaderContent: 'Rooms',
-      resourceCellContent: function(data) {
-        return 'Auditorium ' + data.resource.id.toUpperCase();
+      resourceCellContent: function(info) {
+        return 'Auditorium ' + info.resource.id.toUpperCase();
       },
-      resourceCellDidMount: function(data) {
-        if (data.resource.id == 'h') {
-          data.el.style.backgroundColor = 'rgb(255, 243, 206)';
+      resourceCellDidMount: function(info) {
+        if (info.resource.id == 'h') {
+          info.el.style.backgroundColor = 'rgb(255, 243, 206)';
         }
       },
       resources: [

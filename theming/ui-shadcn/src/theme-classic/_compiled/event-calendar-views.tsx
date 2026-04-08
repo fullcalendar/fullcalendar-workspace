@@ -13,16 +13,16 @@ const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color)
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-const getDayClass = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => cn(
+const getDayClass = (info: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => cn(
   'border',
-  data.isMajor && 'border-foreground/20',
-  data.isDisabled ? 'bg-foreground/3' :
-    data.isToday && 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
+  info.isMajor && 'border-foreground/20',
+  info.isDisabled ? 'bg-foreground/3' :
+    info.isToday && 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
 )
 
-const getSlotClass = (data: { isMinor: boolean }) => cn(
+const getSlotClass = (info: { isMinor: boolean }) => cn(
   'border',
-  data.isMinor && 'border-dotted',
+  info.isMinor && 'border-dotted',
 )
 
 const dayRowCommonClasses: CalendarOptions = {
@@ -30,20 +30,20 @@ const dayRowCommonClasses: CalendarOptions = {
   /* Day Row > List-Item Event
   ----------------------------------------------------------------------------------------------- */
 
-  listItemEventClass: (data) => cn(
+  listItemEventClass: (info) => cn(
     'mb-px p-px rounded-sm',
-    data.isNarrow ? 'mx-px' : 'mx-0.5',
-    data.isSelected
-      ? ['bg-foreground/5', data.isDragging && 'shadow-sm']
+    info.isNarrow ? 'mx-px' : 'mx-0.5',
+    info.isSelected
+      ? ['bg-foreground/5', info.isDragging && 'shadow-sm']
       : 'hover:bg-foreground/5',
   ),
-  listItemEventBeforeClass: (data) => cn(
+  listItemEventBeforeClass: (info) => cn(
     'border-4',
-    data.isNarrow ? 'mx-px' : 'mx-1',
+    info.isNarrow ? 'mx-px' : 'mx-1',
   ),
-  listItemEventInnerClass: (data) => cn(
+  listItemEventInnerClass: (info) => cn(
     'flex flex-row items-center py-px gap-0.5',
-    data.isNarrow ? xxsTextClass : 'text-xs',
+    info.isNarrow ? xxsTextClass : 'text-xs',
   ),
   listItemEventTimeClass: 'px-px whitespace-nowrap overflow-hidden shrink-1',
   listItemEventTitleClass: 'px-px font-bold whitespace-nowrap overflow-hidden shrink-100',
@@ -51,9 +51,9 @@ const dayRowCommonClasses: CalendarOptions = {
   /* Day Row > Row Event
   ----------------------------------------------------------------------------------------------- */
 
-  rowEventClass: (data) => cn(
-    data.isStart && ['rounded-s-sm', data.isNarrow ? 'ms-px' : 'ms-0.5'],
-    data.isEnd && ['rounded-e-sm', data.isNarrow ? 'me-px' : 'me-0.5'],
+  rowEventClass: (info) => cn(
+    info.isStart && ['rounded-s-sm', info.isNarrow ? 'ms-px' : 'ms-0.5'],
+    info.isEnd && ['rounded-e-sm', info.isNarrow ? 'me-px' : 'me-0.5'],
   ),
   rowEventInnerClass: 'py-px gap-0.5',
   rowEventTimeClass: 'px-px',
@@ -62,15 +62,15 @@ const dayRowCommonClasses: CalendarOptions = {
   /* Day Row > More-Link
   ----------------------------------------------------------------------------------------------- */
 
-  rowMoreLinkClass: (data) => cn(
+  rowMoreLinkClass: (info) => cn(
     'mb-px border rounded-sm hover:bg-foreground/5',
-    data.isNarrow
+    info.isNarrow
       ? 'mx-px border-primary'
       : 'self-start mx-0.5 border-transparent',
   ),
-  rowMoreLinkInnerClass: (data) => cn(
+  rowMoreLinkInnerClass: (info) => cn(
     'p-px',
-    data.isNarrow ? xxsTextClass : 'text-xs',
+    info.isNarrow ? xxsTextClass : 'text-xs',
   ),
 }
 
@@ -90,9 +90,9 @@ export function EventCalendarViews({
 
       eventColor='var(--primary)'
       eventContrastColor='var(--primary-foreground)'
-      eventClass={(data) => cn(
-        data.isSelected
-          ? ['outline-3', data.isDragging ? 'shadow-lg' : 'shadow-md']
+      eventClass={(info) => cn(
+        info.isSelected
+          ? ['outline-3', info.isDragging ? 'shadow-lg' : 'shadow-md']
           : 'focus-visible:outline-3',
         'outline-ring/50',
       )}
@@ -102,9 +102,9 @@ export function EventCalendarViews({
 
       backgroundEventColor='var(--chart-3)'
       backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
-      backgroundEventTitleClass={(data) => cn(
+      backgroundEventTitleClass={(info) => cn(
         'opacity-50 italic',
-        data.isNarrow
+        info.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1.5 text-xs',
       )}
@@ -118,9 +118,9 @@ export function EventCalendarViews({
       /* Block Event
       ----------------------------------------------------------------------------------------- */
 
-      blockEventClass={(data) => cn(
+      blockEventClass={(info) => cn(
         'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white -outline-offset-1',
-        (data.isDragging && !data.isSelected) && 'opacity-75',
+        (info.isDragging && !info.isSelected) && 'opacity-75',
       )}
       blockEventInnerClass='text-(--fc-event-contrast-color) print:text-black'
       blockEventTimeClass='whitespace-nowrap overflow-hidden shrink-1'
@@ -129,62 +129,62 @@ export function EventCalendarViews({
       /* Row Event
       ----------------------------------------------------------------------------------------- */
 
-      rowEventClass={(data) => cn(
+      rowEventClass={(info) => cn(
         'mb-px border-y',
-        data.isStart && 'border-s',
-        data.isEnd && 'border-e',
+        info.isStart && 'border-s',
+        info.isEnd && 'border-e',
       )}
-      rowEventBeforeClass={(data) => cn(
-        data.isStartResizable && [
-          data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+      rowEventBeforeClass={(info) => cn(
+        info.isStartResizable && [
+          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-1',
         ]
       )}
-      rowEventAfterClass={(data) => cn(
-        data.isEndResizable && [
-          data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+      rowEventAfterClass={(info) => cn(
+        info.isEndResizable && [
+          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1',
         ]
       )}
-      rowEventInnerClass={(data) => cn(
+      rowEventInnerClass={(info) => cn(
         'flex flex-row items-center',
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        info.isNarrow ? xxsTextClass : 'text-xs',
       )}
       rowEventTimeClass='font-bold'
 
       /* Column Event
       ----------------------------------------------------------------------------------------- */
 
-      columnEventClass={(data) => cn(
+      columnEventClass={(info) => cn(
         'border-x ring ring-background',
-        data.isStart && 'border-t rounded-t-sm',
-        data.isEnd && 'mb-px border-b rounded-b-sm',
+        info.isStart && 'border-t rounded-t-sm',
+        info.isEnd && 'mb-px border-b rounded-b-sm',
       )}
-      columnEventBeforeClass={(data) => cn(
-        data.isStartResizable && [
-          data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+      columnEventBeforeClass={(info) => cn(
+        info.isStartResizable && [
+          info.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-top-1',
         ]
       )}
-      columnEventAfterClass={(data) => cn(
-        data.isEndResizable && [
-          data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+      columnEventAfterClass={(info) => cn(
+        info.isEndResizable && [
+          info.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-bottom-1',
         ]
       )}
-      columnEventInnerClass={(data) => cn(
+      columnEventInnerClass={(info) => cn(
         'flex',
-        data.isShort
+        info.isShort
           ? 'p-0.5 flex-row items-center gap-1'
           : 'px-0.5 flex-col',
       )}
-      columnEventTimeClass={(data) => cn(
-        !data.isShort && 'pt-0.5',
+      columnEventTimeClass={(info) => cn(
+        !info.isShort && 'pt-0.5',
         xxsTextClass,
       )}
-      columnEventTitleClass={(data) => cn(
-        !data.isShort && 'py-0.5',
-        (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
+      columnEventTitleClass={(info) => cn(
+        !info.isShort && 'py-0.5',
+        (info.isShort || info.isNarrow) ? xxsTextClass : 'text-xs',
       )}
 
       /* More-Link
@@ -193,25 +193,25 @@ export function EventCalendarViews({
       moreLinkClass="focus-visible:outline-3 outline-ring/50"
       moreLinkInnerClass='whitespace-nowrap overflow-hidden'
       columnMoreLinkClass="mb-px rounded-sm border border-transparent print:border-black bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background -outline-offset-1"
-      columnMoreLinkInnerClass={(data) => cn(
+      columnMoreLinkInnerClass={(info) => cn(
         'p-0.5',
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        info.isNarrow ? xxsTextClass : 'text-xs',
       )}
 
       /* Day Header
       ----------------------------------------------------------------------------------------- */
 
-      dayHeaderAlign={(data) => data.inPopover ? 'start' : 'center'}
-      dayHeaderClass={(data) => cn(
+      dayHeaderAlign={(info) => info.inPopover ? 'start' : 'center'}
+      dayHeaderClass={(info) => cn(
         'justify-center',
-        data.isDisabled && 'bg-foreground/3',
-        data.inPopover
+        info.isDisabled && 'bg-foreground/3',
+        info.inPopover
           ? 'border-b bg-foreground/5'
-          : ['border', data.isMajor && 'border-foreground/20'],
+          : ['border', info.isMajor && 'border-foreground/20'],
       )}
-      dayHeaderInnerClass={(data) => cn(
+      dayHeaderInnerClass={(info) => cn(
         'px-1 py-0.5 flex flex-col',
-        data.isNarrow ? xxsTextClass : 'text-sm',
+        info.isNarrow ? xxsTextClass : 'text-sm',
       )}
       dayHeaderDividerClass='border-b'
 
@@ -219,19 +219,19 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       dayCellClass={getDayClass}
-      dayCellTopClass={(data) => cn(
-        data.isNarrow ? 'min-h-px' : 'min-h-0.5',
+      dayCellTopClass={(info) => cn(
+        info.isNarrow ? 'min-h-px' : 'min-h-0.5',
         'flex flex-row justify-end',
       )}
-      dayCellTopInnerClass={(data) => cn(
+      dayCellTopInnerClass={(info) => cn(
         'px-1 whitespace-nowrap',
-        data.isNarrow
+        info.isNarrow
           ? `py-0.5 ${xxsTextClass}`
           : 'py-1 text-sm',
-        data.isOther && 'text-muted-foreground',
-        data.monthText && 'font-bold',
+        info.isOther && 'text-muted-foreground',
+        info.monthText && 'font-bold',
       )}
-      dayCellInnerClass={(data) => cn(data.inPopover && 'p-2')}
+      dayCellInnerClass={(info) => cn(info.inPopover && 'p-2')}
 
       /* Popover
       ----------------------------------------------------------------------------------------- */
@@ -243,10 +243,10 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       dayLaneClass={getDayClass}
-      dayLaneInnerClass={(data) => (
-        data.isStack
+      dayLaneInnerClass={(info) => (
+        info.isStack
           ? 'm-1'
-          : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
+          : info.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       )}
       slotLaneClass={getSlotClass}
 
@@ -259,12 +259,12 @@ export function EventCalendarViews({
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */
 
-      singleMonthClass={(data) => cn(
-        data.multiMonthColumnCount > 1 && 'm-4',
-        (data.multiMonthColumnCount === 1 && !data.isLast) && 'border-b',
+      singleMonthClass={(info) => cn(
+        info.multiMonthColumnCount > 1 && 'm-4',
+        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b',
       )}
-      singleMonthHeaderClass={(data) => cn(
-        data.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2 border-b bg-background',
+      singleMonthHeaderClass={(info) => cn(
+        info.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2 border-b bg-background',
         'items-center',
       )}
       singleMonthHeaderInnerClass='text-base font-bold'
@@ -283,9 +283,9 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       navLinkClass="hover:underline focus-visible:outline-3 -outline-offset-3 outline-ring/50"
-      inlineWeekNumberClass={(data) => cn(
+      inlineWeekNumberClass={(info) => cn(
         'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-muted-foreground bg-foreground/5',
-        data.isNarrow ? xxsTextClass : 'text-sm',
+        info.isNarrow ? xxsTextClass : 'text-sm',
       )}
       nonBusinessClass='bg-foreground/3'
       highlightClass='bg-chart-1/20'
@@ -303,7 +303,7 @@ export function EventCalendarViews({
         multiMonth: {
           ...dayRowCommonClasses,
           dayCellBottomClass: 'min-h-px',
-          tableClass: (data) => cn(data.multiMonthColumnCount > 1 && 'border'),
+          tableClass: (info) => cn(info.multiMonthColumnCount > 1 && 'border'),
           ...userViews?.multiMonth,
         },
         timeGrid: {
@@ -314,18 +314,18 @@ export function EventCalendarViews({
           ------------------------------------------------------------------------------------- */
 
           weekNumberHeaderClass: 'items-center justify-end',
-          weekNumberHeaderInnerClass: (data) => cn(
+          weekNumberHeaderInnerClass: (info) => cn(
             'px-1 py-0.5',
-            data.isNarrow ? xxsTextClass : 'text-sm',
+            info.isNarrow ? xxsTextClass : 'text-sm',
           ),
 
           /* TimeGrid > All-Day Header
           ------------------------------------------------------------------------------------- */
 
           allDayHeaderClass: 'items-center justify-end',
-          allDayHeaderInnerClass: (data) => cn(
+          allDayHeaderInnerClass: (info) => cn(
             'px-1 py-2 text-end',
-            data.isNarrow ? xxsTextClass : 'text-sm',
+            info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: 'border-y pb-0.5 bg-foreground/5',
 
@@ -333,9 +333,9 @@ export function EventCalendarViews({
           ------------------------------------------------------------------------------------- */
 
           slotHeaderClass: 'justify-end',
-          slotHeaderInnerClass: (data) => cn(
+          slotHeaderInnerClass: (info) => cn(
             'px-1 py-0.5',
-            data.isNarrow ? xxsTextClass : 'text-sm',
+            info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           slotHeaderDividerClass: 'border-e',
 
@@ -352,16 +352,16 @@ export function EventCalendarViews({
           /* List-View > List-Item Event
           ------------------------------------------------------------------------------------- */
 
-          listItemEventClass: (data) => cn(
+          listItemEventClass: (info) => cn(
             'group border-b px-3 py-2 gap-3 hover:bg-muted/50',
-            data.isInteractive && 'focus-visible:bg-muted/50 -outline-offset-3',
+            info.isInteractive && 'focus-visible:bg-muted/50 -outline-offset-3',
           ),
           listItemEventBeforeClass: 'border-5',
           listItemEventInnerClass: '[display:contents]',
           listItemEventTimeClass: "-order-1 shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm",
-          listItemEventTitleClass: (data) => cn(
+          listItemEventTitleClass: (info) => cn(
             'grow min-w-0 whitespace-nowrap overflow-hidden text-sm',
-            data.event.url && 'group-hover:underline',
+            info.event.url && 'group-hover:underline',
           ),
 
           /* No-Events Screen

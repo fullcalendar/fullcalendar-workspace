@@ -7,9 +7,9 @@ NOTE: other classnames in theme-for-tests-premium.ts
 const dayRowCommonClasses: CalendarOptions = {
   dayCellClass: 'fc-daygrid-day',
   dayCellTopClass: 'fc-daygrid-day-header',
-  dayCellTopInnerClass: (data) => joinClassNames(
+  dayCellTopInnerClass: (info) => joinClassNames(
     'fc-daygrid-day-number',
-    data.monthText && 'fc-daygrid-month-start',
+    info.monthText && 'fc-daygrid-month-start',
   ),
   rowEventClass: 'fc-daygrid-event fc-daygrid-block-event',
   listItemEventClass: 'fc-daygrid-event fc-daygrid-dot-event',
@@ -29,13 +29,13 @@ export default {
     footerToolbarClass: 'fc-footer-toolbar',
     toolbarSectionClass: 'fc-toolbar-section',
     toolbarTitleClass: 'fc-toolbar-title',
-    viewClass: (data) => joinClassNames(
+    viewClass: (info) => joinClassNames(
       'fc-view',
-      `fc-${data.view.type}-view`,
+      `fc-${info.view.type}-view`,
     ),
-    buttonClass: (data) => joinClassNames(
+    buttonClass: (info) => joinClassNames(
       'fc-button',
-      `fc-${data.name}-button`,
+      `fc-${info.name}-button`,
     ),
     buttonGroupClass: 'fc-button-group',
     popoverClass: 'fc-more-popover',
@@ -44,32 +44,32 @@ export default {
     nonBusinessClass: 'fc-non-business',
     highlightClass: 'fc-highlight',
     backgroundEventClass: 'fc-bg-event',
-    eventClass: (data) => joinClassNames(
+    eventClass: (info) => joinClassNames(
       'fc-event',
-      data.isMirror && 'fc-event-mirror',
-      data.isStart && 'fc-event-start',
-      data.isEnd && 'fc-event-end',
-      data.isPast && 'fc-event-past',
-      data.isFuture && 'fc-event-future',
+      info.isMirror && 'fc-event-mirror',
+      info.isStart && 'fc-event-start',
+      info.isEnd && 'fc-event-end',
+      info.isPast && 'fc-event-past',
+      info.isFuture && 'fc-event-future',
     ),
     eventTimeClass: 'fc-event-time',
     eventTitleClass: 'fc-event-title',
-    eventBeforeClass: (data) => joinClassNames(
-      data.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
+    eventBeforeClass: (info) => joinClassNames(
+      info.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
     ),
-    eventAfterClass: (data) => joinClassNames(
-      data.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
+    eventAfterClass: (info) => joinClassNames(
+      info.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
     ),
-    dayHeaderClass: (data) => joinClassNames(
-      getDayClass(data),
-      data.inPopover && 'fc-popover-header',
+    dayHeaderClass: (info) => joinClassNames(
+      getDayClass(info),
+      info.inPopover && 'fc-popover-header',
     ),
-    dayHeaderInnerClass: (data) => joinClassNames(
-      data.inPopover && 'fc-popover-title',
+    dayHeaderInnerClass: (info) => joinClassNames(
+      info.inPopover && 'fc-popover-title',
     ),
-    dayCellClass: (data) => getDayClass(data),
-    slotHeaderClass: (data) => getSlotClass(data),
-    slotLaneClass: (data) => getSlotClass(data),
+    dayCellClass: (info) => getDayClass(info),
+    slotHeaderClass: (info) => getSlotClass(info),
+    slotLaneClass: (info) => getSlotClass(info),
   },
   views: {
     dayGrid: {
@@ -88,21 +88,21 @@ export default {
       weekNumberHeaderClass: 'fc-timegrid-axis',
       weekNumberHeaderInnerClass: 'fc-timegrid-axis-inner',
       allDayHeaderClass: 'fc-timegrid-allday-header fc-timegrid-axis',
-      slotHeaderClass: (data) => joinClassNames(
+      slotHeaderClass: (info) => joinClassNames(
         'fc-timegrid-slot-label',
         'fc-timegrid-axis',
-        getTimeGridSlotClass(data),
+        getTimeGridSlotClass(info),
       ),
-      slotLaneClass: (data) => joinClassNames(
+      slotLaneClass: (info) => joinClassNames(
         'fc-timegrid-slot-lane',
-        getTimeGridSlotClass(data),
+        getTimeGridSlotClass(info),
       ),
       dayLaneClass: 'fc-timegrid-day',
       nowIndicatorHeaderClass: 'fc-timegrid-now-indicator-arrow',
       nowIndicatorLineClass: 'fc-timegrid-now-indicator-line',
-      columnEventClass: (data) => joinClassNames(
+      columnEventClass: (info) => joinClassNames(
         'fc-timegrid-event',
-        data.isShort && 'fc-timegrid-event-short',
+        info.isShort && 'fc-timegrid-event-short',
       ),
     },
     multiMonth: {
@@ -115,8 +115,8 @@ export default {
     list: {
       viewClass: 'fc-list',
       listDayHeaderClass: 'fc-list-day',
-      listDayHeaderInnerClass: (data) => (
-        data.level ? 'fc-list-day-side-text' : 'fc-list-day-text'
+      listDayHeaderInnerClass: (info) => (
+        info.level ? 'fc-list-day-side-text' : 'fc-list-day-text'
       ),
       listItemEventClass: 'fc-list-event',
       listItemEventBeforeClass: 'fc-list-event-dot',
@@ -132,39 +132,39 @@ export default {
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-export function getDayClass(data: any): string {
-  return data.isDisabled
+export function getDayClass(info: any): string {
+  return info.isDisabled
     ? joinClassNames(
         'fc-day',
         'fc-day-disabled',
       )
     : joinClassNames(
         'fc-day',
-        `fc-day-${DAY_IDS[data.dow]}`,
-        data.isToday && 'fc-day-today',
-        data.isPast && 'fc-day-past',
-        data.isFuture && 'fc-day-future',
+        `fc-day-${DAY_IDS[info.dow]}`,
+        info.isToday && 'fc-day-today',
+        info.isPast && 'fc-day-past',
+        info.isFuture && 'fc-day-future',
       )
 }
 
-function getSlotClass(data: any): string {
-  return data.isDisabled
+function getSlotClass(info: any): string {
+  return info.isDisabled
     ? joinClassNames(
         'fc-slot',
         'fc-slot-disabled',
       )
     : joinClassNames(
         'fc-slot',
-        `fc-slot-${DAY_IDS[data.dow]}`,
-        data.isToday && 'fc-slot-today',
-        data.isPast && 'fc-slot-past',
-        data.isFuture && 'fc-slot-future',
+        `fc-slot-${DAY_IDS[info.dow]}`,
+        info.isToday && 'fc-slot-today',
+        info.isPast && 'fc-slot-past',
+        info.isFuture && 'fc-slot-future',
       )
 }
 
-function getTimeGridSlotClass(data: any): string {
+function getTimeGridSlotClass(info: any): string {
   return joinClassNames(
     'fc-timegrid-slot',
-    data.isMinor && 'fc-timegrid-slot-minor',
+    info.isMinor && 'fc-timegrid-slot-minor',
   )
 }

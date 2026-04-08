@@ -5,7 +5,7 @@ import { type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
-import { ResourceGroupHeaderData, GroupSpec } from '../../structs'
+import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
 
 export interface ResourceGroupHeaderSubrowProps {
   group: Group
@@ -41,7 +41,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
 
   render() {
     let { props, context } = this
-    let renderProps: ResourceGroupHeaderData = {
+    let renderProps: ResourceGroupHeaderInfo = {
       fieldValue: props.group.value,
       view: context.viewApi,
     }
@@ -152,6 +152,6 @@ ResourceGroupHeaderSubrow.addPropsEquality({
   group: isGroupsEqual,
 })
 
-function renderCellInner(renderProps: ResourceGroupHeaderData): ReactNode {
+function renderCellInner(renderProps: ResourceGroupHeaderInfo): ReactNode {
   return renderProps.fieldValue || <>&nbsp;</>
 }

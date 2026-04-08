@@ -1,7 +1,7 @@
 export type { CalendarOptions, CalendarListeners, ViewOptions } from '../options'
 export type { DateSpanInput } from '../structs/date-span'
 export type { EventSourceInput } from '../structs/event-source-parse'
-export type { EventSourceFunc, EventSourceFuncData } from '../event-sources/func-event-source'
+export type { EventSourceFunc, EventSourceFuncInfo } from '../event-sources/func-event-source'
 export type { EventInput, EventInputTransformer } from '../structs/event-parse'
 export type { CssDimValue } from '../scrollgrid/util'
 export type { BusinessHoursInput } from '../structs/business-hours'
@@ -9,33 +9,33 @@ export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constra
 export type { PluginDefInput } from '../plugin-system-struct'
 export type { ViewComponentType } from '../structs/view-config'
 export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData } from '../common/render-hook'
-export type { NowIndicatorHeaderData } from '../common/NowIndicatorHeaderContainer'
-export type { NowIndicatorLineData } from '../common/NowIndicatorLineContainer'
+export type { NowIndicatorHeaderInfo } from '../common/NowIndicatorHeaderContainer'
+export type { NowIndicatorLineInfo } from '../common/NowIndicatorLineContainer'
 export type {
-  InlineWeekNumberData,
-  WeekNumberHeaderData,
+  InlineWeekNumberInfo,
+  WeekNumberHeaderInfo,
   DateTimeFormatPartWithWeek,
 } from '../common/WeekNumberContainer'
-export type { MoreLinkData } from '../common/MoreLinkContainer'
+export type { MoreLinkInfo } from '../common/MoreLinkContainer'
 export * from '../common/more-link-public-types'
 export type {
-  SlotLaneData,
-  SlotHeaderData,
-  AllDayHeaderData,
-  DayHeaderData,
-  DayHeaderDividerData,
-  DayCellData,
+  SlotLaneInfo,
+  SlotHeaderInfo,
+  AllDayHeaderInfo,
+  DayHeaderInfo,
+  DayHeaderDividerInfo,
+  DayCellInfo,
 } from '../render-hook-misc'
-export type { DayLaneData } from '../common/DayLaneContainer'
-export type { ViewDisplayData } from '../common/ViewContainer'
-export type { CalendarDisplayData } from '../calendar-root'
-export type { EventClickData } from '../interactions/EventClicking'
-export type { EventHoveringData } from '../interactions/EventHovering'
-export type { DateSelectData, DateUnselectData } from '../calendar-utils'
-export type { ToolbarInput, ButtonInput, ButtonGroupData, ButtonData, ButtonDisplay, ToolbarElementInput, ToolbarSectionData, ToolbarData } from '../toolbar-struct'
-export type { EventDisplayData } from '../component-util/event-rendering'
-export type { DatesSetData } from '../dates-set'
-export type { EventAddData, EventChangeData, EventDropData, EventRemoveData } from '../event-crud'
+export type { DayLaneInfo } from '../common/DayLaneContainer'
+export type { ViewDisplayInfo } from '../common/ViewContainer'
+export type { CalendarDisplayInfo } from '../calendar-root'
+export type { EventClickInfo } from '../interactions/EventClicking'
+export type { EventHoveringInfo } from '../interactions/EventHovering'
+export type { DateSelectInfo, DateUnselectInfo } from '../calendar-utils'
+export type { ToolbarInput, ButtonInput, ButtonGroupInfo, ButtonInfo, ButtonDisplay, ToolbarElementInput, ToolbarSectionInfo, ToolbarInfo } from '../toolbar-struct'
+export type { EventDisplayInfo } from '../component-util/event-rendering'
+export type { DatesSetInfo } from '../dates-set'
+export type { EventAddInfo, EventChangeInfo, EventDropInfo, EventRemoveInfo } from '../event-crud'
 export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore'
 export type { DateSpanApi, DatePointApi } from '../structs/date-span'
 export type { DateSelectionApi } from '../calendar-utils'
@@ -50,9 +50,9 @@ export type { DateInput, WeekNumberCalculation } from '@full-ui/headless-calenda
 export type { DurationInput, Duration } from '@full-ui/headless-calendar'
 export type { DateRangeInput } from '@full-ui/headless-calendar'
 
-export { NoEventsData } from '../list/components/ListView'
-export { ListDayHeaderData, ListDayHeaderInnerData, ListDayData } from '../list/structs'
+export { NoEventsInfo } from '../list/components/ListView'
+export { ListDayHeaderInfo, ListDayHeaderInnerInfo, ListDayInfo } from '../list/structs'
 
-export { SingleMonthData, SingleMonthHeaderData } from '../multimonth/structs'
+export { SingleMonthInfo, SingleMonthHeaderInfo } from '../multimonth/structs'
 
 export * from '../interaction-plugin/public-structs'

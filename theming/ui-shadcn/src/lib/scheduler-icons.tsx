@@ -10,11 +10,11 @@ export const schedulerOnlyIconOptions: CalendarOptions = {
   /* Resource Data Grid
   ----------------------------------------------------------------------------------------------- */
 
-  resourceExpanderContent: (data) => (
+  resourceExpanderContent: (info) => (
     <ChevronDownIcon
       className={joinClassNames(
         `size-4 m-px ${mutedFgPressableGroupClass}`,
-        !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
+        !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
       )}
     />
   )

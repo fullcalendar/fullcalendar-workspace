@@ -10,30 +10,30 @@ export function createSlots(
     /* Day Header
     --------------------------------------------------------------------------------------------- */
 
-    dayHeaderContent: (data) => (
-      (!data.dayNumberText && !data.inPopover) ? (
+    dayHeaderContent: (info) => (
+      (!info.dayNumberText && !info.inPopover) ? (
         // small uniform text
         // NOTE: Fragment used to avoid Preact diffing problem
-        <Fragment>{data.text}</Fragment>
+        <Fragment>{info.text}</Fragment>
       ) : (
         // normal-sized varying-color text (needs 'group')
         <Fragment>
-          {data.textParts.map((textPart, i) => (
+          {info.textParts.map((textPart, i) => (
             <span
               key={i}
               className={joinClassNames(
                 'whitespace-pre',
-                data.isNarrow ? 'text-xs' : 'text-sm',
+                info.isNarrow ? 'text-xs' : 'text-sm',
                 textPart.type === 'day'
                   ? joinClassNames(
                       'flex flex-row items-center', // v-align
-                      !data.isNarrow && 'font-semibold',
-                      (data.isToday && !data.inPopover)
+                      !info.isNarrow && 'font-semibold',
+                      (info.isToday && !info.inPopover)
                         // day-number circle
                         ? joinClassNames(
                             'mx-0.5 rounded-full justify-center',
-                            data.isNarrow ? 'size-6' : 'size-8',
-                            data.hasNavLink
+                            info.isNarrow ? 'size-6' : 'size-8',
+                            info.hasNavLink
                               ? joinClassNames(
                                   params.primaryPressableGroupClass,
                                   params.outlineWidthGroupFocusClass,

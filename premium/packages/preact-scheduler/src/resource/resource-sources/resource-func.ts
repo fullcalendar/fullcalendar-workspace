@@ -3,7 +3,7 @@ import { ResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceInput } from '../structs/resource'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
-export interface ResourceFuncData {
+export interface ResourceFuncInfo {
   start?: Date
   end?: Date
   startStr?: string
@@ -13,11 +13,11 @@ export interface ResourceFuncData {
 
 export type ResourceFunc =
   ((
-    data: ResourceFuncData,
+    info: ResourceFuncInfo,
     successCallback: (resourceInputs: ResourceInput[]) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((data: ResourceFuncData) => Promise<ResourceInput[]>)
+  ((info: ResourceFuncInfo) => Promise<ResourceInput[]>)
 
 export const funcResourceSource: ResourceSourceDef<ResourceFunc> = {
 
@@ -28,15 +28,15 @@ export const funcResourceSource: ResourceSourceDef<ResourceFunc> = {
     return null
   },
 
-  fetch(data, successCallback, errorCallback) {
-    const dateEnv = data.context.dateEnv
-    const func = data.resourceSource.meta
+  fetch(info, successCallback, errorCallback) {
+    const dateEnv = info.context.dateEnv
+    const func = info.resourceSource.meta
 
-    const publicData: ResourceFuncData = data.range ? {
-      start: dateEnv.toDate(data.range.start),
-      end: dateEnv.toDate(data.range.end),
-      startStr: dateEnv.formatIso(data.range.start),
-      endStr: dateEnv.formatIso(data.range.end),
+    const publicData: ResourceFuncInfo = info.range ? {
+      start: dateEnv.toDate(info.range.start),
+      end: dateEnv.toDate(info.range.end),
+      startStr: dateEnv.formatIso(info.range.start),
+      endStr: dateEnv.formatIso(info.range.end),
       timeZone: dateEnv.timeZone,
     } : {}
 

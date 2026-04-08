@@ -115,10 +115,10 @@ export const defaultUiEventCalendarOptions: {
 
     className: 'gap-6',
 
-    viewClass: (data) => {
-      const hasBorderTop = !(data.isFirst && data.borderlessTop)
-      const hasBorderBottom = !(data.isLast && data.borderlessBottom)
-      const hasBorderX = !data.borderlessX
+    viewClass: (info) => {
+      const hasBorderTop = !(info.isFirst && info.borderlessTop)
+      const hasBorderBottom = !(info.isLast && info.borderlessBottom)
+      const hasBorderX = !info.borderlessX
 
       return joinClassNames(
         'border-(--fc-pulse-border)',
@@ -128,35 +128,35 @@ export const defaultUiEventCalendarOptions: {
         (hasBorderTop && hasBorderX) && 'rounded-t-sm',
         (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
         (hasBorderTop && hasBorderBottom && hasBorderX) && smallBoxShadowClass,
-        !data.isHeightAuto && 'overflow-hidden',
+        !info.isHeightAuto && 'overflow-hidden',
       )
     },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => joinClassNames(
+    toolbarClass: (info) => joinClassNames(
       'flex flex-row flex-wrap items-center justify-between gap-5',
-      data.borderlessX && 'px-3',
+      info.borderlessX && 'px-3',
     ),
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-5',
     toolbarTitleClass: 'text-2xl font-bold text-(--fc-pulse-foreground)',
 
-    buttonGroupClass: (data) => joinClassNames(
+    buttonGroupClass: (info) => joinClassNames(
       'py-px rounded-sm flex flex-row items-center',
-      data.isSelectGroup
+      info.isSelectGroup
         ? 'bg-(--fc-pulse-unselected)'
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
     ),
 
-    buttonClass: (data) => joinClassNames(
+    buttonClass: (info) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',
-      data.isIconOnly ? 'px-2.5' : 'px-4',
-      data.inSelectGroup
+      info.isIconOnly ? 'px-2.5' : 'px-4',
+      info.inSelectGroup
         // all select-group buttons
         ? joinClassNames(
             'rounded-sm',
-            data.isSelected
+            info.isSelected
               ? selectedButtonClass
               : joinClassNames(
                   unselectedButtonClass,
@@ -166,20 +166,20 @@ export const defaultUiEventCalendarOptions: {
         // primary/secondary buttons
         : joinClassNames(
             'border',
-            !data.inGroup
+            !info.inGroup
               ? 'rounded-sm'
               : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
-            data.isPrimary
+            info.isPrimary
               // primary
               ? joinClassNames(
                   primaryButtonClass,
-                  !data.inGroup && largeBoxShadowClass,
+                  !info.inGroup && largeBoxShadowClass,
                 )
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
                   'border-(--fc-pulse-strong-border)',
-                  !data.inGroup
+                  !info.inGroup
                     ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
                     : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
                 )

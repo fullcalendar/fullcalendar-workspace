@@ -30,13 +30,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceDayHeaderAlign: 'center',
 
-      resourceDayHeaderClass: (data) => joinClassNames(
+      resourceDayHeaderClass: (info) => joinClassNames(
         'border',
-        data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
+        info.isMajor ? params.strongBorderColorClass : params.borderColorClass,
       ),
-      resourceDayHeaderInnerClass: (data) => joinClassNames(
+      resourceDayHeaderInnerClass: (info) => joinClassNames(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       ),
 
       /* Resource Data Grid
@@ -76,7 +76,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.faintBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => joinClassNames(data.options.eventOverlap && 'h-2'),
+      resourceLaneBottomClass: (info) => joinClassNames(info.options.eventOverlap && 'h-2'),
       timelineBottomClass: 'h-2',
     },
     views: {
@@ -87,8 +87,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Row Event
         ----------------------------------------------------------------------------------------- */
 
-        rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-        rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+        rowEventClass: (info) => joinClassNames(info.isEnd && 'me-px'),
+        rowEventInnerClass: (info) => info.options.eventOverlap ? 'py-1' : 'py-2',
 
         /* Timeline > More-Link
         ----------------------------------------------------------------------------------------- */
@@ -105,23 +105,23 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotHeaderSticky: '0.5rem', // for pill
 
-        slotHeaderAlign: (data) => ( // h-align
-          (data.level || data.isTime)
+        slotHeaderAlign: (info) => ( // h-align
+          (info.level || info.isTime)
             // pill OR time
             ? 'start'
             // other
             : 'center'
         ),
 
-        slotHeaderClass: (data) => joinClassNames(
+        slotHeaderClass: (info) => joinClassNames(
           'border',
-          data.level
+          info.level
             // housing for pill
             ? 'border-transparent justify-start' // v-align
             // cell-like
             : joinClassNames(
                 params.borderColorClass,
-                data.isTime
+                info.isTime
                   // time-tick
                   ? 'h-2 self-end justify-end' // self-v-align, v-align
                   // day-header
@@ -129,28 +129,28 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
               ),
         ),
 
-        slotHeaderInnerClass: (data) => joinClassNames(
+        slotHeaderInnerClass: (info) => joinClassNames(
           'text-sm',
-          data.level
+          info.level
             // pill
             ? joinClassNames(
                 'my-0.5 px-2 py-1 rounded-full',
-                data.hasNavLink
+                info.hasNavLink
                   ? params.secondaryPressableClass
                   : params.secondaryClass,
               )
             // cell-like inner
             : joinClassNames(
                 'px-2',
-                data.isTime
+                info.isTime
                   // time-tick inner
                   ? joinClassNames(
                       'pb-3 relative -start-3',
-                      data.isFirst && 'hidden',
+                      info.isFirst && 'hidden',
                     )
                   // day-header inner
                   : 'py-2',
-                data.hasNavLink && 'hover:underline',
+                info.hasNavLink && 'hover:underline',
               )
         ),
 

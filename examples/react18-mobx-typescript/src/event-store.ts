@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { observable, action, makeObservable } from "mobx";
-import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/react";
+import { EventInput, DateSelectInfo, EventChangeInfo } from "@fullcalendar/react";
 
 const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
 
@@ -39,13 +39,13 @@ export class EventStore {
   }
 
   @action
-  addEvent(selectData: DateSelectData, title: string | null) {
+  addEvent(selectInfo: DateSelectInfo, title: string | null) {
     this.events.push({
       id: this.createEventId(),
       title: title || "New Event",
-      start: selectData.start,
-      end: selectData.end,
-      allDay: selectData.allDay,
+      start: selectInfo.start,
+      end: selectInfo.end,
+      allDay: selectInfo.allDay,
     });
   }
 
@@ -58,9 +58,9 @@ export class EventStore {
   }
 
   @action
-  changeEvent(changeData: EventChangeData) {
-    const newEvent = changeData.event;
-    const storedEvent = this.events.find((e) => e.id == changeData.event.id);
+  changeEvent(changeInfo: EventChangeInfo) {
+    const newEvent = changeInfo.event;
+    const storedEvent = this.events.find((e) => e.id == changeInfo.event.id);
     if (storedEvent) {
       storedEvent.title = newEvent.title;
       storedEvent.allDay = newEvent.allDay;

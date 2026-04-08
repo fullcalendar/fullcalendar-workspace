@@ -44,14 +44,14 @@ describe('eventDrop', () => {
               isTouch,
             )
 
-            let data = await waitEventDrag2(calendar, dragging)
+            let info = await waitEventDrag2(calendar, dragging)
             let delta = createDuration({ day: 9 })
-            expect(data.delta).toEqual(delta)
+            expect(info.delta).toEqual(delta)
 
-            expect(data.event.start).toEqualDate('2014-06-20')
-            expect(data.event.end).toBeNull()
+            expect(info.event.start).toEqualDate('2014-06-20')
+            expect(info.event.end).toBeNull()
 
-            data.revert()
+            info.revert()
             await waitTimeout()
             let event = currentCalendar.getEvents()[0]
 
@@ -80,14 +80,14 @@ describe('eventDrop', () => {
           '2014-06-16',
         )
 
-        let data = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag2(calendar, dragging)
         let delta = createDuration({ day: 5 })
-        expect(data.delta).toEqual(delta)
+        expect(info.delta).toEqual(delta)
 
-        expect(data.event.start).toEqualDate('2014-06-16T06:00:00Z')
-        expect(data.event.end).toBeNull()
+        expect(info.event.start).toEqualDate('2014-06-16T06:00:00Z')
+        expect(info.event.end).toBeNull()
 
-        data.revert()
+        info.revert()
         await waitTimeout()
         let event = currentCalendar.getEvents()[0]
 
@@ -117,10 +117,10 @@ describe('eventDrop', () => {
           '2019-01-14',
         )
 
-        let data = await waitEventDrag2(calendar, dragging)
-        expect(data.delta).toEqual(createDuration({ day: -2 }))
-        expect(data.event.start).toEqualDate('2019-01-14T10:30:00+00:00')
-        expect(data.event.end).toEqualDate('2019-01-14T12:30:00+00:00')
+        let info = await waitEventDrag2(calendar, dragging)
+        expect(info.delta).toEqual(createDuration({ day: -2 }))
+        expect(info.event.start).toEqualDate('2019-01-14T10:30:00+00:00')
+        expect(info.event.end).toEqualDate('2019-01-14T12:30:00+00:00')
       })
     })
 
@@ -197,14 +197,14 @@ describe('eventDrop', () => {
               '2014-06-12T07:30:00',
             )
 
-            let data = await waitEventDrag2(calendar, dragging)
+            let info = await waitEventDrag2(calendar, dragging)
             let delta = createDuration({ day: 1, hour: 1, minute: 30 })
-            expect(data.delta).toEqual(delta)
+            expect(info.delta).toEqual(delta)
 
-        expect(data.event.start).toEqualDate('2014-06-12T07:30:00Z')
-        expect(data.event.end).toBeNull()
+        expect(info.event.start).toEqualDate('2014-06-12T07:30:00Z')
+        expect(info.event.end).toBeNull()
 
-        data.revert()
+        info.revert()
         await waitTimeout()
         let event = currentCalendar.getEvents()[0]
 
@@ -232,14 +232,14 @@ describe('eventDrop', () => {
           '2014-06-13',
         )
 
-        let data = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag2(calendar, dragging)
         let delta = createDuration({ day: 2 })
-        expect(data.delta).toEqual(delta)
+        expect(info.delta).toEqual(delta)
 
-        expect(data.event.start).toEqualDate('2014-06-13')
-        expect(data.event.end).toBeNull()
+        expect(info.event.start).toEqualDate('2014-06-13')
+        expect(info.event.end).toBeNull()
 
-        data.revert()
+        info.revert()
         await waitTimeout()
         let event = currentCalendar.getEvents()[0]
 
@@ -266,15 +266,15 @@ describe('eventDrop', () => {
           '2014-06-10T01:00:00',
         )
 
-        let data = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag2(calendar, dragging)
         let delta = createDuration({ day: -1, hour: 1 })
-        expect(data.delta).toEqual(delta)
+        expect(info.delta).toEqual(delta)
 
-        expect(data.event.start).toEqualDate('2014-06-10T01:00:00Z')
-        expect(data.event.end).toBeNull()
-        expect(data.event.allDay).toBe(false)
+        expect(info.event.start).toEqualDate('2014-06-10T01:00:00Z')
+        expect(info.event.end).toBeNull()
+        expect(info.event.allDay).toBe(false)
 
-        data.revert()
+        info.revert()
         await waitTimeout()
         let event = currentCalendar.getEvents()[0]
 
@@ -303,15 +303,15 @@ describe('eventDrop', () => {
           '2014-06-10',
         )
 
-        let data = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag2(calendar, dragging)
         let delta = createDuration({ day: -1 })
-        expect(data.delta).toEqual(delta)
+        expect(info.delta).toEqual(delta)
 
-        expect(data.event.start).toEqualDate('2014-06-10')
-        expect(data.event.end).toBeNull()
-        expect(data.event.allDay).toBe(true)
+        expect(info.event.start).toEqualDate('2014-06-10')
+        expect(info.event.end).toBeNull()
+        expect(info.event.allDay).toBe(true)
 
-        data.revert()
+        info.revert()
         await waitTimeout()
         let event = currentCalendar.getEvents()[0]
 
@@ -417,31 +417,31 @@ describe('eventDrop', () => {
   // Initialize a calendar, run a drag, and do type-checking of all arguments for all handlers.
   // TODO: more discrimination instead of just checking for 'object'
   function initCalendarWithSpies(options) {
-    options.eventDragStart = (data) => {
-      expect(data.el instanceof Element).toBe(true)
-      expect(data.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
-      expect(typeof data.event).toBe('object')
-      expect(typeof data.jsEvent).toBe('object')
-      expect(typeof data.view).toBe('object')
+    options.eventDragStart = (info) => {
+      expect(info.el instanceof Element).toBe(true)
+      expect(info.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
+      expect(typeof info.event).toBe('object')
+      expect(typeof info.jsEvent).toBe('object')
+      expect(typeof info.view).toBe('object')
     }
 
-    options.eventDragStop = (data) => {
+    options.eventDragStop = (info) => {
       expect(options.eventDragStart).toHaveBeenCalled()
-      expect(data.el instanceof Element).toBe(true)
-      expect(data.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
-      expect(typeof data.event).toBe('object')
-      expect(typeof data.jsEvent).toBe('object')
-      expect(typeof data.view).toBe('object')
+      expect(info.el instanceof Element).toBe(true)
+      expect(info.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
+      expect(typeof info.event).toBe('object')
+      expect(typeof info.jsEvent).toBe('object')
+      expect(typeof info.view).toBe('object')
     }
 
-    options.eventDrop = (data) => {
+    options.eventDrop = (info) => {
       expect(options.eventDragStop).toHaveBeenCalled()
-      expect(data.el instanceof Element).toBe(true)
-      expect(data.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
-      expect(typeof data.delta).toBe('object')
-      expect(typeof data.revert).toBe('function')
-      expect(typeof data.jsEvent).toBe('object')
-      expect(typeof data.view).toBe('object')
+      expect(info.el instanceof Element).toBe(true)
+      expect(info.el).toHaveClass(CalendarWrapper.EVENT_CLASSNAME)
+      expect(typeof info.delta).toBe('object')
+      expect(typeof info.revert).toBe('function')
+      expect(typeof info.jsEvent).toBe('object')
+      expect(typeof info.view).toBe('object')
     }
 
     spyOn(options, 'eventDragStart').and.callThrough()

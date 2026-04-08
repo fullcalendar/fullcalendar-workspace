@@ -11,16 +11,16 @@ import {
   WillUnmountHandler,
 } from '@fullcalendar/preact/protected-api'
 import {
-  ResourceDayHeaderData,
+  ResourceDayHeaderInfo,
 } from './structs'
 
 export const OPTION_REFINERS = {
-  resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderData>>,
-  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderData>>,
-  resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number }) => 'start' | 'center' | 'end')>,
+  resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderInfo>>,
+  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderInfo>>,
+  resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((info: { level: number }) => 'start' | 'center' | 'end')>,
   // stickiness for cell-inner-contents laterally. experimental settings
   _resourceDayHeaderSticky: identity as Identity<boolean | number | string>,
 }

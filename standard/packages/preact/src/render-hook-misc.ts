@@ -1,13 +1,13 @@
 import { DateMeta } from './component-util/date-rendering'
 import { Duration, DateMarker, DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import { ViewApi } from './api/ViewApi'
-export interface SlotLaneData extends DateMeta {
+export interface SlotLaneInfo extends DateMeta {
   time?: Duration
   isMajor: boolean
   isMinor: boolean
   view: ViewApi
 }
-export interface SlotHeaderData extends SlotLaneData {
+export interface SlotHeaderInfo extends SlotLaneInfo {
   level: number
   isTime: boolean
   text: string
@@ -15,12 +15,12 @@ export interface SlotHeaderData extends SlotLaneData {
   hasNavLink: boolean
   isFirst: boolean
 }
-export interface AllDayHeaderData {
+export interface AllDayHeaderInfo {
   text: string
   view: ViewApi
   isNarrow: boolean
 }
-export interface DayHeaderData extends DateMeta {
+export interface DayHeaderInfo extends DateMeta {
   date: Date
   isNarrow: boolean
   isMajor: boolean
@@ -34,13 +34,13 @@ export interface DayHeaderData extends DateMeta {
   view: ViewApi
   [otherProp: string]: any
 }
-export interface DayHeaderDividerData {
+export interface DayHeaderDividerInfo {
   isSticky: boolean
   multiMonthColumnCount: number
   options: { allDaySlot: boolean }
 }
 
-export interface DayCellData extends DateMeta {
+export interface DayCellInfo extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
   isNarrow: boolean

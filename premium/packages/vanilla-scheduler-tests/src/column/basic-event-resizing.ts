@@ -29,12 +29,12 @@ describe('dayGrid-view event resizing', () => {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-23' },
         ],
-        eventResize(data) {
+        eventResize(info) {
           resizeCalled = true
-          expect(data.event.start).toEqualDate('2015-11-23')
-          expect(data.event.end).toEqualDate('2015-11-25')
+          expect(info.event.start).toEqualDate('2015-11-23')
+          expect(info.event.end).toEqualDate('2015-11-25')
 
-          let resources = data.event.getResources()
+          let resources = info.event.getResources()
           expect(resources.length).toBe(0)
         },
       })
@@ -59,12 +59,12 @@ describe('dayGrid-view event resizing', () => {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' },
         ],
-        eventResize(data) {
+        eventResize(info) {
           resizeCalled = true
-          expect(data.event.start).toEqualDate('2015-11-29')
-          expect(data.event.end).toEqualDate('2015-12-01')
+          expect(info.event.start).toEqualDate('2015-11-29')
+          expect(info.event.end).toEqualDate('2015-12-01')
 
-          let resources = data.event.getResources()
+          let resources = info.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('a')
         },
@@ -86,7 +86,7 @@ describe('dayGrid-view event resizing', () => {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' },
         ],
-        eventResize(data) {
+        eventResize(info) {
           resizeCalled = true
         },
       })
@@ -114,12 +114,12 @@ describe('dayGrid-view event resizing', () => {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'b' },
         ],
-        eventResize(data) {
+        eventResize(info) {
           resizeCalled = true
-          expect(data.event.start).toEqualDate('2015-11-28')
-          expect(data.event.end).toEqualDate('2015-12-01')
+          expect(info.event.start).toEqualDate('2015-11-28')
+          expect(info.event.end).toEqualDate('2015-12-01')
 
-          let resources = data.event.getResources()
+          let resources = info.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('b')
         },

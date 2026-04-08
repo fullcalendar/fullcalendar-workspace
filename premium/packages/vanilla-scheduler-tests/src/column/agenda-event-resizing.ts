@@ -63,11 +63,11 @@ describe('timeGrid-view event resizing', () => {
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
         ],
         eventResize:
-          (resizeSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-29T02:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-29T04:30:00Z')
+          (resizeSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-29T04:30:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),
@@ -88,11 +88,11 @@ describe('timeGrid-view event resizing', () => {
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
         ],
         eventResize:
-          (resizeSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-29T02:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-30T04:30:00Z')
+          (resizeSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),
@@ -138,11 +138,11 @@ describe('timeGrid-view event resizing', () => {
           { title: 'event1', className: 'event1', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' },
         ],
         eventResize:
-          (resizeSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-30T02:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-30T04:30:00Z')
+          (resizeSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-30T02:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),
@@ -163,11 +163,11 @@ describe('timeGrid-view event resizing', () => {
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
         ],
         eventResize:
-          (resizeSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-29T02:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-30T04:30:00Z')
+          (resizeSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           })),

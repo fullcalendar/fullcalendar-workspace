@@ -1,6 +1,6 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
-import { CalendarOptions, EventApi, DateSelectData, EventClickData } from '@fullcalendar/vue3'
+import { CalendarOptions, EventApi, DateSelectInfo, EventClickInfo } from '@fullcalendar/vue3'
 import FullCalendar from '@fullcalendar/vue3'
 import classicThemePlugin from '@fullcalendar/vue3/themes/classic'
 import dayGridPlugin from '@fullcalendar/vue3/daygrid'
@@ -59,9 +59,9 @@ export default defineComponent({
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
-    handleDateSelect(selectData: DateSelectData) {
+    handleDateSelect(selectInfo: DateSelectInfo) {
       let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectData.view.calendar
+      let calendarApi = selectInfo.view.calendar
 
       calendarApi.unselect() // clear date selection
 
@@ -69,15 +69,15 @@ export default defineComponent({
         calendarApi.addEvent({
           id: createEventId(),
           title,
-          start: selectData.startStr,
-          end: selectData.endStr,
-          allDay: selectData.allDay
+          start: selectInfo.startStr,
+          end: selectInfo.endStr,
+          allDay: selectInfo.allDay
         })
       }
     },
-    handleEventClick(clickData: EventClickData) {
-      if (confirm(`Are you sure you want to delete the event '${clickData.event.title}'`)) {
-        clickData.event.remove()
+    handleEventClick(clickInfo: EventClickInfo) {
+      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+        clickInfo.event.remove()
       }
     },
     handleEvents(events: EventApi[]) {

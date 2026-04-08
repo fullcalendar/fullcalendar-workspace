@@ -4,18 +4,18 @@ import { ResourceHash } from './structs/resource'
 
 export const DEFAULT_RESOURCE_ORDER: OrderSpec<unknown>[] = parseFieldSpecs('id,title')
 
-export interface ResourceAddData {
+export interface ResourceAddInfo {
   resource: ResourceApi
   revert: () => void
 }
 
-export interface ResourceChangeData {
+export interface ResourceChangeInfo {
   oldResource: ResourceApi
   resource: ResourceApi
   revert: () => void
 }
 
-export interface ResourceRemoveData {
+export interface ResourceRemoveInfo {
   resource: ResourceApi
   revert: () => void
 }

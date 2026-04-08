@@ -36,7 +36,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   display: 'row' | 'column'
 }
 
-export interface MoreLinkData {
+export interface MoreLinkInfo {
   num: number
   numericText: string
   longText: string
@@ -77,7 +77,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             : `${numericText} ${moreLinkText}`
           let hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], longText)
 
-          let renderProps: MoreLinkData = {
+          let renderProps: MoreLinkInfo = {
             num: moreCnt,
             numericText,
             longText,
@@ -221,7 +221,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   }
 }
 
-function renderMoreLinkText(props: MoreLinkData) {
+function renderMoreLinkText(props: MoreLinkInfo) {
   return props.text
 }
 

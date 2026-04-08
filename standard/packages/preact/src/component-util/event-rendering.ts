@@ -229,7 +229,7 @@ export interface MinimalEventProps {
   isToday: boolean
 }
 
-export interface EventDisplayData { // for *Content handlers
+export interface EventDisplayInfo { // for *Content handlers
   event: EventImpl
   timeText: string
   color: string // TODO: add other EventUi props?

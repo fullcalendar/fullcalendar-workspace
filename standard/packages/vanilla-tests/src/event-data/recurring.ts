@@ -90,8 +90,8 @@ describe('recurring events', () => {
       events: [
         { startTime: '12:00', daysOfWeek: [2] },
       ],
-      eventContent(data) {
-        timeTexts.push(data.timeText)
+      eventContent(info) {
+        timeTexts.push(info.timeText)
         return true
       },
     })

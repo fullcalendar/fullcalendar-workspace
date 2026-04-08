@@ -16,33 +16,33 @@
   - **Extract common classnames**: If a conditional expression (ternary operator) has common classnames in both branches, extract the common part and place it before the conditional. For example:
     ```js
     // BEFORE
-    data.hasNavLink
+    info.hasNavLink
       ? 'hover:bg-foreground/5 bold focus-visible:bg-foreground/5 -outline-offset-1'
       : 'hover:bg-foreground/5 italic'
 
     // AFTER
     'hover:bg-foreground/5',
-    data.hasNavLink
+    info.hasNavLink
       ? 'bold focus-visible:bg-foreground/5 -outline-offset-1'
       : 'italic'
     ```
   - **Use boolean operators for empty branches**: If one branch of a ternary is completely empty, use a boolean operator instead. For example:
     ```js
     // BEFORE
-    data.isMajor ? 'border-foreground/20' : ''
+    info.isMajor ? 'border-foreground/20' : ''
 
     // AFTER
-    data.isMajor && 'border-foreground/20'
+    info.isMajor && 'border-foreground/20'
     ```
   - **Simplify nested ternaries with empty branches**: When you have nested ternaries where one branch returns an empty string and another returns a value, you can simplify by combining the conditions that should return the value. For example:
     ```js
     // BEFORE
-    data.isOther
+    info.isOther
       ? 'text-muted-foreground'
-      : (data.monthText ? '' : 'text-muted-foreground')
+      : (info.monthText ? '' : 'text-muted-foreground')
 
     // AFTER
-    (data.isOther || !data.monthText) && 'text-muted-foreground'
+    (info.isOther || !info.monthText) && 'text-muted-foreground'
     ```
-    The logic: the value is returned when `data.isOther` is true OR when `data.isOther` is false AND `data.monthText` is false, which simplifies to `data.isOther || !data.monthText`.
+    The logic: the value is returned when `info.isOther` is true OR when `info.isOther` is false AND `info.monthText` is false, which simplifies to `info.isOther || !info.monthText`.
   - **Important**: Apply the common classname extraction (#1) before the empty branch optimization (#2), as #1 may generate empty expressions that need to be cleaned up by #2.

@@ -23,13 +23,13 @@ export function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign='center'
-      resourceDayHeaderClass={(data) => cn(
+      resourceDayHeaderClass={(info) => cn(
         'border',
-        data.isMajor && 'border-foreground/20',
+        info.isMajor && 'border-foreground/20',
       )}
-      resourceDayHeaderInnerClass={(data) => cn(
+      resourceDayHeaderInnerClass={(info) => cn(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -53,7 +53,7 @@ export function SchedulerViews({
 
       resourceGroupLaneClass='border bg-foreground/3'
       resourceLaneClass='border'
-      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-2')}
+      resourceLaneBottomClass={(info) => cn(info.options.eventOverlap && 'h-2')}
       timelineBottomClass='h-2'
 
       /* View-Specific Options
@@ -74,8 +74,8 @@ export function SchedulerViews({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => cn(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+          rowEventClass: (info) => cn(info.isEnd && 'me-px'),
+          rowEventInnerClass: (info) => info.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
@@ -87,33 +87,33 @@ export function SchedulerViews({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderSticky: '0.5rem',
-          slotHeaderAlign: (data) => (
-            (data.level || data.isTime)
+          slotHeaderAlign: (info) => (
+            (info.level || info.isTime)
               ? 'start'
               : 'center'
           ),
-          slotHeaderClass: (data) => cn(
+          slotHeaderClass: (info) => cn(
             'border',
-            data.level
+            info.level
               ? 'border-transparent justify-start'
-              : (data.isTime ? 'h-2 self-end justify-end' : 'justify-center'),
+              : (info.isTime ? 'h-2 self-end justify-end' : 'justify-center'),
           ),
-          slotHeaderInnerClass: (data) => cn(
+          slotHeaderInnerClass: (info) => cn(
             'text-sm',
-            data.level
+            info.level
               ? [
                   'my-0.5 px-2 py-1 rounded-full bg-foreground/10',
-                  data.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
+                  info.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
                 ]
               : [
                   'px-2',
-                  data.isTime
+                  info.isTime
                     ? [
                         'pb-3 relative -start-3',
-                        data.isFirst && 'hidden',
+                        info.isFirst && 'hidden',
                       ]
                     : 'py-2',
-                  data.hasNavLink && 'hover:underline',
+                  info.hasNavLink && 'hover:underline',
                 ],
           ),
           slotHeaderDividerClass: 'border-b',

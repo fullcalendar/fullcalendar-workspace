@@ -5,7 +5,7 @@ import { Interaction, InteractionSettings } from './interaction'
 import { ViewApi } from '../api/ViewApi'
 import classNames from '../styles.module.css'
 
-export interface EventClickData {
+export interface EventClickInfo {
   el: HTMLElement
   event: EventImpl
   jsEvent: MouseEvent
@@ -45,7 +45,7 @@ export class EventClicking extends Interaction {
         ),
         jsEvent: ev as MouseEvent, // Is this always a mouse event? See #4655
         view: context.viewApi,
-      } as EventClickData)
+      } as EventClickInfo)
     }
   }
 }

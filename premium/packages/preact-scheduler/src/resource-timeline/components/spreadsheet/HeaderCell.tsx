@@ -2,7 +2,7 @@ import { createRef, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { ColSpec, ResourceColumnHeaderData } from '../../structs'
+import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
 
 export interface HeaderCellProps {
@@ -32,7 +32,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   render() {
     let { props, context } = this
     let { colSpec } = props
-    let renderProps: ResourceColumnHeaderData = { view: context.viewApi }
+    let renderProps: ResourceColumnHeaderInfo = { view: context.viewApi }
 
     // need empty inner div for abs positioning for resizer
     return (

@@ -4,7 +4,7 @@ import { EventInput } from '../structs/event-parse'
 import { EventSourceDef } from '../structs/event-source-def'
 import { unpromisify } from '../util/promise'
 
-export type EventSourceFuncData = {
+export type EventSourceFuncInfo = {
   start: Date
   end: Date
   startStr: string
@@ -14,11 +14,11 @@ export type EventSourceFuncData = {
 
 export type EventSourceFunc =
   ((
-    data: EventSourceFuncData,
+    info: EventSourceFuncInfo,
     successCallback: (eventInputs: EventInput[]) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((data: EventSourceFuncData) => Promise<EventInput[]>)
+  ((info: EventSourceFuncInfo) => Promise<EventInput[]>)
 
 let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 

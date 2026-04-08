@@ -19,7 +19,7 @@ import { DayGridRows } from '../../daygrid/components/DayGridRows'
 import { DayTableSlicer } from '../../daygrid/DayTableSlicer'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { computeViewBorderless } from '../../util/misc'
-import { SingleMonthData, SingleMonthHeaderData } from '../structs'
+import { SingleMonthInfo, SingleMonthHeaderInfo } from '../structs'
 
 export interface SingleMonthHeights {
   titleHeight: number
@@ -65,7 +65,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private _isUnmounting: boolean
   private slicer = new DayTableSlicer()
   private rootEl?: HTMLElement
-  private renderProps?: SingleMonthData
+  private renderProps?: SingleMonthInfo
 
   private get titleId() {
     return this.context.baseId + 'month-' + this.props.isoDateStr
@@ -119,7 +119,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       : undefined
 
     const hasNavLink = options.navLinks && props.colCount > 1
-    const headerRenderProps: SingleMonthHeaderData = {
+    const headerRenderProps: SingleMonthHeaderInfo = {
       multiMonthColumnCount: props.colCount || 0,
       isSticky: isTitleAndHeaderSticky,
       isNarrow: cellIsNarrow,

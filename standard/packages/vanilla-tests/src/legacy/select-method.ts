@@ -42,10 +42,10 @@ describe('select method', () => {
           })
 
           it('fires a selection event', () => {
-            let selectSpy = spyOnCalendarCallback('select', (data) => {
-              expect(data.allDay).toEqual(true)
-              expect(data.start).toEqualDate('2014-05-07')
-              expect(data.end).toEqualDate('2014-05-09')
+            let selectSpy = spyOnCalendarCallback('select', (info) => {
+              expect(info.allDay).toEqual(true)
+              expect(info.start).toEqualDate('2014-05-07')
+              expect(info.end).toEqualDate('2014-05-09')
             })
             let calendar = initCalendar()
             calendar.select('2014-05-07', '2014-05-09')
@@ -64,9 +64,9 @@ describe('select method', () => {
           /*
           TODO: implement this behavior
           it('doesn\'t fire a selection event', function() {
-            options.select = function(data) {
-              expect(data.start).toEqualDate('2014-05-07');
-              expect(data.end).toEqualDate('2014-05-09');
+            options.select = function(info) {
+              expect(info.start).toEqualDate('2014-05-07');
+              expect(info.end).toEqualDate('2014-05-09');
             };
             spyOn(options, 'select').and.callThrough();
             let calendar = initCalendar(options);
@@ -86,10 +86,10 @@ describe('select method', () => {
         })
 
         it('fires a selection event', () => {
-          let selectSpy = spyOnCalendarCallback('select', (data) => {
-            expect(data.allDay).toEqual(false)
-            expect(data.start).toEqualDate('2014-05-07T06:00:00Z')
-            expect(data.end).toEqualDate('2014-05-09T06:00:00Z')
+          let selectSpy = spyOnCalendarCallback('select', (info) => {
+            expect(info.allDay).toEqual(false)
+            expect(info.start).toEqualDate('2014-05-07T06:00:00Z')
+            expect(info.end).toEqualDate('2014-05-09T06:00:00Z')
           })
           let calendar = initCalendar()
           calendar.select('2014-05-07T06:00:00', '2014-05-09T06:00:00')
@@ -139,9 +139,9 @@ describe('select method', () => {
           /*
           TODO: implement this behavior
           it('doesn\'t fire a selection event', function() {
-            options.select = function(data) {
-              expect(data.start).toEqualDate('2015-05-07T06:00:00Z');
-              expect(data.end).toEqualDate('2015-05-09T07:00:00Z');
+            options.select = function(info) {
+              expect(info.start).toEqualDate('2015-05-07T06:00:00Z');
+              expect(info.end).toEqualDate('2015-05-09T07:00:00Z');
             };
             spyOn(options, 'select').and.callThrough();
             let calendar = initCalendar(options);
@@ -172,10 +172,10 @@ describe('select method', () => {
           })
 
           it('fires a selection event', () => {
-            let selectSpy = spyOnCalendarCallback('select', (data) => {
-              expect(data.allDay).toEqual(true)
-              expect(data.start).toEqualDate('2014-05-26')
-              expect(data.end).toEqualDate('2014-05-28')
+            let selectSpy = spyOnCalendarCallback('select', (info) => {
+              expect(info.allDay).toEqual(true)
+              expect(info.start).toEqualDate('2014-05-26')
+              expect(info.end).toEqualDate('2014-05-28')
             })
             let calendar = initCalendar()
             calendar.select('2014-05-26', '2014-05-28')
@@ -198,10 +198,10 @@ describe('select method', () => {
           /*
           TODO: implement
           it('doesn\'t fire a selection event', function() {
-            options.select = function(data) {
-              expect(data.allDay).toEqual(true);
-              expect(data.start).toEqualDate('2014-05-26');
-              expect(data.end).toEqualDate('2014-05-28');
+            options.select = function(info) {
+              expect(info.allDay).toEqual(true);
+              expect(info.start).toEqualDate('2014-05-26');
+              expect(info.end).toEqualDate('2014-05-28');
             };
             spyOn(options, 'select').and.callThrough();
             let calendar = initCalendar(options);

@@ -14,7 +14,7 @@ export interface ViewContainerProps extends Partial<ElProps> {
   children?: ReactNode
 }
 
-export interface ViewDisplayData {
+export interface ViewDisplayInfo {
   view: ViewApi
   borderlessX: boolean
   borderlessTop: boolean
@@ -66,7 +66,7 @@ interface ViewRenderPropsInput {
   isHeightAuto: boolean
 }
 
-function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayData {
+function refineRenderProps(raw: ViewRenderPropsInput): ViewDisplayInfo {
   return {
     view: raw.viewApi,
     borderlessX: raw.borderlessX,

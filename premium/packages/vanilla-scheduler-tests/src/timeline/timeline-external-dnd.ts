@@ -43,16 +43,16 @@ describe('timeline-view external element drag-n-drop', () => {
       let receiveSpy
       let calendar = initCalendar({
         drop:
-          (dropSpy = spyCall((data) => {
-            expect(data.date).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
+          (dropSpy = spyCall((info) => {
+            expect(info.date).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
           })),
         eventReceive:
-          (receiveSpy = spyCall((data) => {
-            expect(data.event.title).toBe('my external event')
-            expect(data.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
-            expect(data.event.end).toBe(null)
+          (receiveSpy = spyCall((info) => {
+            expect(info.event.title).toBe('my external event')
+            expect(info.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
+            expect(info.event.end).toBe(null)
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),

@@ -3,7 +3,7 @@ import { DateMeta } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 
 // uses Partial<DateMeta> because might not be date-specific
-export interface ResourceDayHeaderData extends Partial<DateMeta> {
+export interface ResourceDayHeaderInfo extends Partial<DateMeta> {
   resource: ResourceApi
   text: string
   level: number

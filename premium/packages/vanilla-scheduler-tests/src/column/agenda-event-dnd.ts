@@ -27,11 +27,11 @@ describe('timeGrid-view event drag-n-drop', () => {
             { title: 'event0', className: 'event0', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' },
           ],
           eventDrop:
-            (dropSpy = spyCall((data) => {
-              expect(data.event.start).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
-              expect(data.event.end).toEqualDate(tz.parseDate('2015-12-01T06:00:00'))
+            (dropSpy = spyCall((info) => {
+              expect(info.event.start).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
+              expect(info.event.end).toEqualDate(tz.parseDate('2015-12-01T06:00:00'))
 
-              let resources = data.event.getResources()
+              let resources = info.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             })),

@@ -4,23 +4,23 @@ import { getDayClass } from '@fullcalendar-tests/standard/lib/theme-for-tests'
 export default {
   name: 'theme-for-tests-premium',
   optionDefaults: {
-    resourceDayHeaderClass: (data) => joinClassNames(
+    resourceDayHeaderClass: (info) => joinClassNames(
       'fc-resource',
-      getDayClass(data),
+      getDayClass(info),
     ),
-    dayHeaderClass: (data) => joinClassNames(
-      data.resource && 'fc-resource',
+    dayHeaderClass: (info) => joinClassNames(
+      info.resource && 'fc-resource',
     ),
-    dayCellClass: (data) => joinClassNames(
-      data.resource && 'fc-resource',
+    dayCellClass: (info) => joinClassNames(
+      info.resource && 'fc-resource',
     ),
     resourceColumnResizerClass: 'fc-datagrid-col-resizer',
     resourceCellClass: 'fc-cell fc-resource',
     resourceCellInnerClass: 'fc-cell-main',
     resourceIndentClass: 'fc-resource-indent',
-    resourceExpanderClass: (data) => joinClassNames(
+    resourceExpanderClass: (info) => joinClassNames(
       'fc-resource-expander',
-      data.isExpanded
+      info.isExpanded
         ? 'fc-resource-expander-expanded'
         : 'fc-resource-expander-collapsed',
     ),

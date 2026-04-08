@@ -127,15 +127,15 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: (data) => joinClassNames(
+    className: (info) => joinClassNames(
       'bg-(--fc-breezy-background)', // FYI, toolbar layers "breezy-faint" on top
-      !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-lg',
+      !(info.borderlessTop || info.borderlessBottom || info.borderlessX) && 'rounded-lg',
     ),
 
-    viewClass: (data) => {
-      const hasBorderTop = data.isFirst && !data.borderlessTop
-      const hasBorderBottom = data.isLast && !data.borderlessBottom
-      const hasBorderX = !data.borderlessX
+    viewClass: (info) => {
+      const hasBorderTop = info.isFirst && !info.borderlessTop
+      const hasBorderBottom = info.isLast && !info.borderlessBottom
+      const hasBorderX = !info.borderlessX
 
       return joinClassNames(
         'border-(--fc-breezy-border)',
@@ -144,26 +144,26 @@ export const defaultUiEventCalendarOptions: {
         hasBorderX && 'border-x',
         (hasBorderTop && hasBorderX) && 'rounded-t-lg',
         (hasBorderBottom && hasBorderX) && 'rounded-b-lg',
-        !data.isHeightAuto && 'overflow-hidden',
+        !info.isHeightAuto && 'overflow-hidden',
       )
     },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => joinClassNames(
+    toolbarClass: (info) => joinClassNames(
       'px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4 overflow-hidden border-(--fc-breezy-border)',
-      !data.borderlessX && 'border-x',
+      !info.borderlessX && 'border-x',
     ),
-    headerToolbarClass: (data) => joinClassNames(
+    headerToolbarClass: (info) => joinClassNames(
       'border-b',
-      !data.borderlessTop && 'border-t',
-      !(data.borderlessTop || data.borderlessX) && 'rounded-t-lg',
+      !info.borderlessTop && 'border-t',
+      !(info.borderlessTop || info.borderlessX) && 'rounded-t-lg',
     ),
-    footerToolbarClass: (data) => joinClassNames(
+    footerToolbarClass: (info) => joinClassNames(
       'border-t',
-      !data.borderlessBottom && 'border-b',
-      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-lg',
+      !info.borderlessBottom && 'border-b',
+      !(info.borderlessBottom || info.borderlessX) && 'rounded-b-lg',
     ),
 
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-4',
@@ -173,24 +173,24 @@ export const defaultUiEventCalendarOptions: {
     TODO: don't make buttons so fat
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
-    buttonGroupClass: (data) => joinClassNames(
+    buttonGroupClass: (info) => joinClassNames(
       'flex flex-row items-center',
-      !data.isSelectGroup && 'rounded-md shadow-xs',
+      !info.isSelectGroup && 'rounded-md shadow-xs',
     ),
-    buttonClass: (data) => joinClassNames(
+    buttonClass: (info) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',
-      data.isIconOnly ? 'px-2' : 'px-3',
-      data.inSelectGroup ? joinClassNames(
+      info.isIconOnly ? 'px-2' : 'px-3',
+      info.inSelectGroup ? joinClassNames(
         'rounded-md font-medium',
-        data.isSelected
+        info.isSelected
           ? selectedClass
           : unselectedClass,
       ) : joinClassNames(
         'font-semibold',
-        data.isPrimary
+        info.isPrimary
           ? primaryButtonClass
           : secondaryButtonClass,
-        data.inGroup
+        info.inGroup
           ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
           : 'rounded-md shadow-xs border',
       ),

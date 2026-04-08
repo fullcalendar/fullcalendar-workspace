@@ -1,4 +1,4 @@
-import { SlotLaneData, joinClassNames } from '@fullcalendar/preact/public-api'
+import { SlotLaneInfo, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   ContentContainer,
@@ -42,7 +42,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         tDateProfile.labelInterval,
       ))
 
-    let renderProps: SlotLaneData = {
+    let renderProps: SlotLaneInfo = {
       ...dateMeta,
       isMajor,
       isMinor,

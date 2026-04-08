@@ -8,7 +8,7 @@ import {
 } from './formatting-interface'
 import { ZonedMarker } from './zoned-marker'
 
-export type FuncDateFormatterFunc = (data: VerboseFormattingData) => string
+export type FuncDateFormatterFunc = (info: VerboseFormattingData) => string
 
 export class FuncDateFormatter implements DateFormatter {
   func: FuncDateFormatterFunc

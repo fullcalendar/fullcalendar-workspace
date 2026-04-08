@@ -15,8 +15,8 @@ describe('timeZone change', () => {
         events: [
           { start: '2023-02-07T12:00:00' },
         ],
-        eventContent(data) {
-          timeTexts.push(data.timeText)
+        eventContent(info) {
+          timeTexts.push(info.timeText)
           return true
         },
       })

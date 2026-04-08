@@ -12,7 +12,7 @@ GOOD EXAMPLE - Code gets shorter:
 
   BEFORE:
     [
-      data.hasNavLink
+      info.hasNavLink
         ? 'hover:bg-foreground/5 bold focus-visible:bg-foreground/5 -outline-offset-1'
         : 'hover:bg-foreground/5 italic'
     ]
@@ -20,7 +20,7 @@ GOOD EXAMPLE - Code gets shorter:
   AFTER:
     [
       'hover:bg-foreground/5',
-      data.hasNavLink
+      info.hasNavLink
         ? 'bold focus-visible:bg-foreground/5 -outline-offset-1'
         : 'italic'
     ]
@@ -28,14 +28,14 @@ GOOD EXAMPLE - Code gets shorter:
 **BAD EXAMPLE - Code gets LONGER (do NOT do this!):**
 
   BEFORE (already optimal):
-    listItemEventTimeClass: (data) => [
-      data.isNarrow ? 'ps-0.5' : 'ps-1',
+    listItemEventTimeClass: (info) => [
+      info.isNarrow ? 'ps-0.5' : 'ps-1',
       'whitespace-nowrap overflow-hidden shrink-1',
     ]
 
   AFTER (WRONG - code is now longer!):
-    listItemEventTimeClass: (data) => [
-      data.isNarrow
+    listItemEventTimeClass: (info) => [
+      info.isNarrow
         ? 'ps-0.5 whitespace-nowrap overflow-hidden shrink-1'
         : 'ps-1 whitespace-nowrap overflow-hidden shrink-1',
     ]

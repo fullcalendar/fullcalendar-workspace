@@ -45,11 +45,11 @@
 
       eventTimeFormat: { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' },
 
-      dateClick: function(data) {
-        console.log('dateClick', calendar.formatIso(data.date));
+      dateClick: function(info) {
+        console.log('dateClick', calendar.formatIso(info.date));
       },
-      select: function(data) {
-        console.log('select', calendar.formatIso(data.start), calendar.formatIso(data.end));
+      select: function(info) {
+        console.log('select', calendar.formatIso(info.start), calendar.formatIso(info.end));
       }
     });
 

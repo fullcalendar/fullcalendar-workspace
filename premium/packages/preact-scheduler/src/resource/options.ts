@@ -3,7 +3,7 @@ import { Identity, identity, parseFieldSpecs } from '@fullcalendar/preact/protec
 import {
   ResourceSourceInput,
   ResourceApi,
-  ResourceAddData, ResourceChangeData, ResourceRemoveData,
+  ResourceAddInfo, ResourceChangeInfo, ResourceRemoveInfo,
 } from './public-api'
 
 export const OPTION_REFINERS = {
@@ -27,9 +27,9 @@ export type ResourceOptionsRefined = RefinedOptionsFromRefiners<ResourceOptionRe
 
 export const LISTENER_REFINERS = {
   resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
-  resourceAdd: identity as Identity<(data: ResourceAddData) => void>,
-  resourceChange: identity as Identity<(data: ResourceChangeData) => void>,
-  resourceRemove: identity as Identity<(data: ResourceRemoveData) => void>,
+  resourceAdd: identity as Identity<(info: ResourceAddInfo) => void>,
+  resourceChange: identity as Identity<(info: ResourceChangeInfo) => void>,
+  resourceRemove: identity as Identity<(info: ResourceRemoveInfo) => void>,
 
   // internal
   _resourceScrollRequest: identity as Identity<(resourceId: string) => void>

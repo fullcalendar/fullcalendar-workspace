@@ -50,9 +50,9 @@ export function Scheduler({
 
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass="border"
-      resourceDayHeaderInnerClass={(data) => joinClassNames(
+      resourceDayHeaderInnerClass={(info) => joinClassNames(
         'p-2 text-(--fc-breezy-foreground) font-semibold',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -67,10 +67,10 @@ export function Scheduler({
       resourceCellInnerClass="p-2 text-(--fc-breezy-foreground) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
-      resourceExpanderContent={(data) => chevronDown(
+      resourceExpanderContent={(info) => chevronDown(
         joinClassNames(
           `size-5 ${mutedFgPressableGroupClass}`,
-          !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
+          !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
         )
       )}
       resourceHeaderRowClass="border border-(--fc-breezy-border)"
@@ -82,7 +82,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-breezy-border) bg-(--fc-breezy-muted)"
       resourceLaneClass="border border-(--fc-breezy-border)"
-      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
+      resourceLaneBottomClass={(info) => joinClassNames(info.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
 
       /* View-Specific Options
@@ -91,16 +91,16 @@ export function Scheduler({
       views={{
         ...userViews,
         resourceDayGrid: {
-          resourceDayHeaderClass: (data) => (
-            data.isMajor
+          resourceDayHeaderClass: (info) => (
+            info.isMajor
               ? 'border-(--fc-breezy-strong-border)'
               : 'border-(--fc-breezy-border)'
           ),
           ...userViews?.resourceDayGrid,
         },
         resourceTimeGrid: {
-          resourceDayHeaderClass: (data) => (
-            data.isMajor
+          resourceDayHeaderClass: (info) => (
+            info.isMajor
               ? 'border-(--fc-breezy-strong-border)'
               : 'border-(--fc-breezy-muted-border)'
           ),
@@ -111,8 +111,8 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+          rowEventClass: (info) => joinClassNames(info.isEnd && 'me-px'),
+          rowEventInnerClass: (info) => info.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
@@ -123,18 +123,18 @@ export function Scheduler({
           /* Timeline > Slot Header
           --------------------------------------------------------------------------------------- */
 
-          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
-          slotHeaderClass: (data) => joinClassNames(
-            data.level > 0 && 'border border-(--fc-breezy-muted-border)',
+          slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
+          slotHeaderClass: (info) => joinClassNames(
+            info.level > 0 && 'border border-(--fc-breezy-muted-border)',
             'justify-end',
           ),
-          slotHeaderInnerClass: (data) => joinClassNames(
+          slotHeaderInnerClass: (info) => joinClassNames(
             'px-3 py-2 text-xs',
-            data.isTime && joinClassNames(
+            info.isTime && joinClassNames(
               'relative -start-4',
-              data.isFirst && 'hidden',
+              info.isFirst && 'hidden',
             ),
-            data.hasNavLink && 'hover:underline',
+            info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b border-(--fc-breezy-strong-border) shadow-sm',
 

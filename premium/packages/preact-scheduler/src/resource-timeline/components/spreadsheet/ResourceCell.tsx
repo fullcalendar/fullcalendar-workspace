@@ -14,7 +14,7 @@ import { ResourceApi } from '../../../resource/api/ResourceApi'
 import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
-import { ResourceCellData, ColSpec } from '../../structs'
+import { ResourceCellInfo, ColSpec } from '../../structs'
 
 export interface ResourceCellProps {
   colSpec: ColSpec
@@ -139,7 +139,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 }
 
-function renderResourceInner(renderProps: ResourceCellData): ReactNode {
+function renderResourceInner(renderProps: ResourceCellInfo): ReactNode {
   return renderProps.fieldValue || <>&nbsp;</>
 }
 
@@ -152,7 +152,7 @@ interface RenderPropsInput {
   context: ViewContext
 }
 
-function refineRenderProps(input: RenderPropsInput): ResourceCellData {
+function refineRenderProps(input: RenderPropsInput): ResourceCellInfo {
   return {
     resource: new ResourceApi(input.context, input.resource),
     field: input.field,

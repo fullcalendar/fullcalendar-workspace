@@ -68,8 +68,8 @@ class HostComponent {
   calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
     headerToolbarClass: 'my-header-toolbar',
-    dayCellClass: (data) => {
-      const day = data.date.getDay()
+    dayCellClass: (info) => {
+      const day = info.date.getDay()
       return (day === 0 || day === 6) ? 'my-weekend' : ''
     },
     weekends: true,
@@ -451,8 +451,8 @@ class MonthComponent {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
     dayCellTopClass: 'my-day-cell-top',
-    dayCellTopContent(data) {
-      return { html: `<b>${data.text}</b>` }
+    dayCellTopContent(info) {
+      return { html: `<b>${info.text}</b>` }
     },
   };
 }
@@ -501,8 +501,8 @@ describe('dayGridMonth view dot-event elements, custom content, and eventDidMoun
         { start: '2023-03-20T00:12:00', allDay: false }
       ],
       initialView: 'dayGridMonth',
-      eventDidMount(data) {
-        dotEventEl = data.el
+      eventDidMount(info) {
+        dotEventEl = info.el
         eventDidMountCnt!++
       },
     };

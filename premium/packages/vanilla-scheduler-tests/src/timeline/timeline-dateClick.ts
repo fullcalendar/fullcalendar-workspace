@@ -35,12 +35,12 @@ describe('timeline dateClick', () => {
                 clickResolve = resolve
               })
               let calendar = initCalendar({
-                dateClick(data) {
+                dateClick(info) {
                   dateClickCalled = true
-                  expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
-                  expect(typeof data.jsEvent).toBe('object')
-                  expect(typeof data.view).toBe('object')
-                  expect(data.resource).toBeFalsy()
+                  expect(info.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
+                  expect(typeof info.jsEvent).toBe('object')
+                  expect(typeof info.view).toBe('object')
+                  expect(info.resource).toBeFalsy()
                   clickResolve()
                 },
               })
@@ -79,12 +79,12 @@ describe('timeline dateClick', () => {
                 clickResolve = resolve
               })
               let calendar = initCalendar({
-                dateClick(data) {
+                dateClick(info) {
                   dateClickCalled = true
-                  expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
-                  expect(typeof data.jsEvent).toBe('object')
-                  expect(typeof data.view).toBe('object')
-                  expect(data.resource.id).toBe('b')
+                  expect(info.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
+                  expect(typeof info.jsEvent).toBe('object')
+                  expect(typeof info.view).toBe('object')
+                  expect(info.resource.id).toBe('b')
                   clickResolve()
                 },
               })
@@ -111,12 +111,12 @@ describe('timeline dateClick', () => {
               clickResolve = resolve
             })
             let calendar = initCalendar({
-              dateClick(data) {
+              dateClick(info) {
                 dateClickCalled = true
-                expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
-                expect(typeof data.jsEvent).toBe('object')
-                expect(typeof data.view).toBe('object')
-                expect(data.resource.id).toBe('b')
+                expect(info.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
+                expect(typeof info.jsEvent).toBe('object')
+                expect(typeof info.view).toBe('object')
+                expect(info.resource.id).toBe('b')
                 clickResolve()
               },
             })
@@ -144,12 +144,12 @@ describe('timeline dateClick', () => {
           clickResolve = resolve
         })
         let calendar = initCalendar({
-          dateClick(data) {
+          dateClick(info) {
             dateClickCalled = true
-            expect(data.date).toEqualDate('2015-11-03')
-            expect(typeof data.jsEvent).toBe('object')
-            expect(typeof data.view).toBe('object')
-            expect(data.resource.id).toBe('a')
+            expect(info.date).toEqualDate('2015-11-03')
+            expect(typeof info.jsEvent).toBe('object')
+            expect(typeof info.view).toBe('object')
+            expect(info.resource.id).toBe('a')
             clickResolve()
           },
         })
@@ -175,12 +175,12 @@ describe('timeline dateClick', () => {
           clickResolve = resolve
         })
         let calendar = initCalendar({
-          dateClick(data) {
+          dateClick(info) {
             dateClickCalled = true
-            expect(data.date).toEqualDate('2015-01-18')
-            expect(typeof data.jsEvent).toBe('object')
-            expect(typeof data.view).toBe('object')
-            expect(data.resource.id).toBe('a')
+            expect(info.date).toEqualDate('2015-01-18')
+            expect(typeof info.jsEvent).toBe('object')
+            expect(typeof info.view).toBe('object')
+            expect(info.resource.id).toBe('a')
             clickResolve()
           },
         })

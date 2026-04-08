@@ -10,32 +10,32 @@ export function createSlots(
     /* Day Header
     --------------------------------------------------------------------------------------------- */
 
-    dayHeaderContent: (data) => (
+    dayHeaderContent: (info) => (
       <Fragment>
-        {data.weekdayText && (
+        {info.weekdayText && (
           <div
             className={joinClassNames(
               'text-xs uppercase',
               params.mutedFgClass,
             )}
-          >{data.weekdayText}</div>
+          >{info.weekdayText}</div>
         )}
-        {data.dayNumberText && (
+        {info.dayNumberText && (
           <div
             className={joinClassNames(
               'm-0.5 rounded-full flex flex-row items-center justify-center',
-              data.isNarrow
+              info.isNarrow
                 ? 'size-7 text-base'
                 : 'size-8 text-lg',
-              data.isToday
-                ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
-                : (data.hasNavLink && params.mutedHoverPressableGroupClass),
-              data.hasNavLink && joinClassNames(
+              info.isToday
+                ? (info.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
+                : (info.hasNavLink && params.mutedHoverPressableGroupClass),
+              info.hasNavLink && joinClassNames(
                 params.outlineWidthGroupFocusClass,
                 params.tertiaryOutlineColorClass,
               ),
             )}
-          >{data.dayNumberText}</div>
+          >{info.dayNumberText}</div>
         )}
       </Fragment>
     ),

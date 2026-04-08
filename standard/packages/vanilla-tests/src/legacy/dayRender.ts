@@ -12,10 +12,10 @@ describe('dayCellDidMount', () => {
       initialView: 'dayGridMonth',
       fixedWeekCount: true,
       initialDate: '2014-05-01',
-      dayCellDidMount(data) {
-        expect(data.date instanceof Date).toEqual(true)
-        expect(formatIsoDay(data.date)).toEqual(data.el.getAttribute('data-date'))
-        expect(data.el instanceof HTMLElement).toBe(true)
+      dayCellDidMount(info) {
+        expect(info.date instanceof Date).toEqual(true)
+        expect(formatIsoDay(info.date)).toEqual(info.el.getAttribute('info-date'))
+        expect(info.el instanceof HTMLElement).toBe(true)
       },
     }
 
@@ -28,7 +28,7 @@ describe('dayCellDidMount', () => {
     let options = {
       initialView: 'dayGridWeek',
       initialDate: '2014-05-01',
-      dayCellDidMount(data) { },
+      dayCellDidMount(info) { },
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
@@ -42,7 +42,7 @@ describe('dayCellDidMount', () => {
     let options = {
       initialView: 'dayGridWeek',
       initialDate: '2014-05-01',
-      dayCellDidMount(data) { },
+      dayCellDidMount(info) { },
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
@@ -57,9 +57,9 @@ describe('dayCellDidMount', () => {
       initialView: 'dayGridMonth',
       fixedWeekCount: true,
       initialDate: '2014-05-01',
-      dayCellDidMount(data) {
-        if (formatIsoDay(data.date) === '2014-05-01') {
-          data.el.classList.add('mycustomclass')
+      dayCellDidMount(info) {
+        if (formatIsoDay(info.date) === '2014-05-01') {
+          info.el.classList.add('mycustomclass')
         }
       },
     }
@@ -75,10 +75,10 @@ describe('dayCellDidMount', () => {
     let options = {
       initialView: 'timeGridWeek',
       initialDate: '2014-05-01',
-      dayLaneDidMount(data) {
-        expect(data.date instanceof Date).toBe(true)
-        expect(data.el instanceof HTMLElement).toBe(true)
-        expect(typeof data.view).toBe('object')
+      dayLaneDidMount(info) {
+        expect(info.date instanceof Date).toBe(true)
+        expect(info.el instanceof HTMLElement).toBe(true)
+        expect(typeof info.view).toBe('object')
         callCnt += 1
       },
     }

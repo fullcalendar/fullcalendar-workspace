@@ -9,10 +9,10 @@ describe('events as a function', () => {
       initialDate: '2013-06-01', // June 2013 has first day as Saturday, and last as Sunday!
       weekends: false,
       fixedWeekCount: false,
-      events(data, callback) {
-        expect(data.start).toEqualDate('2013-06-03T00:00:00Z')
-        expect(data.end).toEqualDate('2013-06-29T00:00:00Z')
-        expect(data.timeZone).toBe('UTC')
+      events(info, callback) {
+        expect(info.start).toEqualDate('2013-06-03T00:00:00Z')
+        expect(info.end).toEqualDate('2013-06-29T00:00:00Z')
+        expect(info.timeZone).toBe('UTC')
         expect(typeof callback).toBe('function')
         done()
       },
@@ -24,9 +24,9 @@ describe('events as a function', () => {
       initialView: 'dayGridMonth',
       initialDate: '2013-06-01',
       showNonCurrentDates: false,
-      events(data) {
-        expect(data.start).toEqualDate('2013-06-01T00:00:00Z')
-        expect(data.end).toEqualDate('2013-07-01T00:00:00Z')
+      events(info) {
+        expect(info.start).toEqualDate('2013-06-01T00:00:00Z')
+        expect(info.end).toEqualDate('2013-07-01T00:00:00Z')
         done()
       },
     })
@@ -37,9 +37,9 @@ describe('events as a function', () => {
       initialView: 'timeGridWeek',
       initialDate: '2017-06-08',
       slotMinTime: { hours: -2 },
-      events(data) {
-        expect(data.start).toEqualDate('2017-06-03T22:00:00Z')
-        expect(data.end).toEqualDate('2017-06-11T00:00:00Z')
+      events(info) {
+        expect(info.start).toEqualDate('2017-06-03T22:00:00Z')
+        expect(info.end).toEqualDate('2017-06-11T00:00:00Z')
         done()
       },
     })
@@ -50,9 +50,9 @@ describe('events as a function', () => {
       initialView: 'timeGridWeek',
       initialDate: '2017-06-08',
       slotMaxTime: '26:00',
-      events(data) {
-        expect(data.start).toEqualDate('2017-06-04T00:00:00Z')
-        expect(data.end).toEqualDate('2017-06-11T02:00:00Z')
+      events(info) {
+        expect(info.start).toEqualDate('2017-06-04T00:00:00Z')
+        expect(info.end).toEqualDate('2017-06-11T02:00:00Z')
         done()
       },
     })
@@ -65,7 +65,7 @@ describe('events as a function', () => {
       loading(bool) {
         loadingCallArgs.push(bool)
       },
-      events(data, callback) {
+      events(info, callback) {
         setTimeout(() => {
           expect(loadingCallArgs).toEqual([true])
           callback([])
@@ -86,12 +86,12 @@ describe('events as a function', () => {
         loadingCallArgs.push(bool)
       },
       eventSources: [
-        (data, callback) => {
+        (info, callback) => {
           setTimeout(() => {
             callback([])
           }, 0)
         },
-        (data, callback) => {
+        (info, callback) => {
           setTimeout(() => {
             callback([])
           }, 10)
@@ -109,7 +109,7 @@ describe('events as a function', () => {
     let calledFailure = false
 
     initCalendar({
-      events(data, successCallback, failureCallback) {
+      events(info, successCallback, failureCallback) {
         failureCallback(new Error())
       },
       eventSourceFailure(error) {

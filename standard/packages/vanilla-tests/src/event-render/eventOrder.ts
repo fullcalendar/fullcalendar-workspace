@@ -6,8 +6,8 @@ describe('eventOrder', () => {
   pushOptions({
     initialDate: '2018-01-01',
     initialView: 'dayGridMonth',
-    eventDidMount(data) {
-      data.el.setAttribute('data-event-id', data.event.id)
+    eventDidMount(info) {
+      info.el.setAttribute('data-event-id', info.event.id)
     },
   })
 

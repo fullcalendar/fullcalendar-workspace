@@ -27,8 +27,8 @@ export function resize(point0, point1, fromStart?, debug?) {
     debug,
   })
 
-  currentCalendar.on('eventResize', (data) => {
-    deferred.resolve(data)
+  currentCalendar.on('eventResize', (info) => {
+    deferred.resolve(info)
   })
 
   currentCalendar.on('_noEventResize', () => {

@@ -18,15 +18,15 @@ describe('eventDidMount+eventContent', () => { // TODO: rename file
     describe('with foreground event', () => {
       it('receives correct args AND can modify the element', () => {
         let options = {
-          eventContent(data) {
-            expect(typeof data.event).toBe('object')
-            expect(data.event.display).toBe('auto')
-            expect(data.event.start).toBeDefined()
-            expect(typeof data.view).toBe('object')
-            expect(data.isMirror).toBe(false)
+          eventContent(info) {
+            expect(typeof info.event).toBe('object')
+            expect(info.event.display).toBe('auto')
+            expect(info.event.start).toBeDefined()
+            expect(typeof info.view).toBe('object')
+            expect(info.isMirror).toBe(false)
           },
-          eventDidMount(data) {
-            $(data.el).css('font-size', '20px')
+          eventDidMount(info) {
+            $(info.el).css('font-size', '20px')
           },
         }
         spyOn(options, 'eventContent').and.callThrough()
@@ -82,14 +82,14 @@ describe('eventDidMount+eventContent', () => { // TODO: rename file
 
       it('receives correct args AND can modify the element', () => {
         let options = {
-          backgroundEventContent(data) {
-            expect(typeof data.event).toBe('object')
-            expect(data.event.display).toBe('background')
-            expect(data.event.start).toBeDefined()
-            expect(typeof data.view).toBe('object')
+          backgroundEventContent(info) {
+            expect(typeof info.event).toBe('object')
+            expect(info.event.display).toBe('background')
+            expect(info.event.start).toBeDefined()
+            expect(typeof info.view).toBe('object')
           },
-          backgroundEventDidMount(data) {
-            $(data.el).css('font-size', '20px')
+          backgroundEventDidMount(info) {
+            $(info.el).css('font-size', '20px')
           },
         }
         spyOn(options, 'backgroundEventContent').and.callThrough()

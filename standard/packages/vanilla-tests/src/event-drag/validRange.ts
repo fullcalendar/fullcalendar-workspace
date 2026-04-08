@@ -18,8 +18,8 @@ describe('validRange event dragging', () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
-          eventDrop(data) {
-            modifiedEvent = data.event
+          eventDrop(info) {
+            modifiedEvent = info.event
           },
         })
         await waitTimeout()
@@ -54,8 +54,8 @@ describe('validRange event dragging', () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
-          eventDrop(data) {
-            modifiedEvent = data.event
+          eventDrop(info) {
+            modifiedEvent = info.event
           },
         })
         await waitTimeout()

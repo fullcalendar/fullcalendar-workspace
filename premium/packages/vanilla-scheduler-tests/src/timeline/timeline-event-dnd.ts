@@ -25,14 +25,14 @@ xdescribe('timeline-view event drag-n-drop', () => {
           { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
         ],
         eventDrop:
-          (dropSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
-            expect(data.event.end).toEqualDate(tz.parseDate('2015-11-29T06:00:00'))
+          (dropSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
+            expect(info.event.end).toEqualDate(tz.parseDate('2015-11-29T06:00:00'))
 
-            expect(data.oldResource.id).toBe('b')
-            expect(data.newResource.id).toBe('a')
+            expect(info.oldResource.id).toBe('b')
+            expect(info.newResource.id).toBe('a')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           })),
@@ -95,14 +95,14 @@ xdescribe('timeline-view event drag-n-drop', () => {
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
       eventDrop:
-        (dropSpy = spyCall((data) => {
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
+        (dropSpy = spyCall((info) => {
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
 
-          expect(data.oldResource).toBeNull()
-          expect(data.newResource).toBeNull()
+          expect(info.oldResource).toBeNull()
+          expect(info.newResource).toBeNull()
 
-          let resources = data.event.getResources()
+          let resources = info.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('b')
         })),
@@ -119,12 +119,12 @@ xdescribe('timeline-view event drag-n-drop', () => {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
-      eventDrop(data) {
+      eventDrop(info) {
         setTimeout(() => { // let the drop rerender
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
 
-          let resourceIds = data.event.getResources().map((resource) => resource.id)
+          let resourceIds = info.event.getResources().map((resource) => resource.id)
           resourceIds.sort()
           expect(resourceIds).toEqual(['b', 'c'])
           done()
@@ -178,12 +178,12 @@ xdescribe('timeline-view event drag-n-drop', () => {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
-      eventDrop(data) {
+      eventDrop(info) {
         setTimeout(() => { // let the drop rerender
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(data.event.getResources().length).toBe(1)
-          expect(data.event.getResources()[0].id).toBe('b')
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
+          expect(info.event.getResources().length).toBe(1)
+          expect(info.event.getResources()[0].id).toBe('b')
           done()
         })
       },
@@ -201,11 +201,11 @@ xdescribe('timeline-view event drag-n-drop', () => {
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
       eventDrop:
-        (dropSpy = spyCall((data) => {
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
+        (dropSpy = spyCall((info) => {
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
 
-          let resources = data.event.getResources()
+          let resources = info.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('a')
         })),
@@ -222,13 +222,13 @@ xdescribe('timeline-view event drag-n-drop', () => {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
-      eventDrop(data) {
+      eventDrop(info) {
         setTimeout(() => { // let the drop rerender
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(data.event.getResources().length).toBe(1)
-          expect(data.event.getResources()[0].id).toBe('a')
-          data.revert()
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
+          expect(info.event.getResources().length).toBe(1)
+          expect(info.event.getResources()[0].id).toBe('a')
+          info.revert()
 
           let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -248,15 +248,15 @@ xdescribe('timeline-view event drag-n-drop', () => {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
-      eventDrop(data) {
+      eventDrop(info) {
         setTimeout(() => { // let the drop rerender
           let resourceIds
 
-          expect(data.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(data.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          resourceIds = data.event.getResources().map((resource) => resource.id)
+          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
+          resourceIds = info.event.getResources().map((resource) => resource.id)
           expect(resourceIds).toEqual(['b', 'c'])
-          data.revert()
+          info.revert()
 
           let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -292,11 +292,11 @@ xdescribe('timeline-view event drag-n-drop', () => {
         ],
         scrollTime: '04:00:00',
         eventDrop:
-          (dropSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-27T05:00Z')
-            expect(data.event.end).toEqualDate('2015-11-27T06:00Z')
+          (dropSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-27T05:00Z')
+            expect(info.event.end).toEqualDate('2015-11-27T06:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           })),
@@ -321,11 +321,11 @@ xdescribe('timeline-view event drag-n-drop', () => {
           { title: 'event0', className: 'event0', start: '2015-11-27T09:00', end: '2015-11-27T10:00', resourceId: 'b' },
         ],
         eventDrop:
-          (dropSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-27T05:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-27T06:00:00Z')
+          (dropSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-27T05:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-27T06:00:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           })),

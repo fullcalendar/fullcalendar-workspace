@@ -60,11 +60,11 @@
       },
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
-      drop: function(data) {
+      drop: function(info) {
         // is the "remove after drop" checkbox checked?
         if (document.getElementById('drop-remove').checked) {
           // if so, remove the element from the "Draggable Events" list
-          data.draggedEl.parentNode.removeChild(data.draggedEl);
+          info.draggedEl.parentNode.removeChild(info.draggedEl);
         }
       }
     });

@@ -42,8 +42,8 @@ test('handles a single prop change', async () => {
   let options = {
     ...DEFAULT_OPTIONS,
     weekends: true,
-    dayCellClass: (data) => {
-      const day = data.date.getUTCDay()
+    dayCellClass: (info) => {
+      const day = info.date.getUTCDay()
       return (day === 0 || day === 6) ? 'my-weekend' : ''
     }
   }
@@ -87,8 +87,8 @@ test('handles multiple prop changes, including event reset', async () => {
   let options = {
     ...DEFAULT_OPTIONS,
     eventClass: 'my-event',
-    dayCellClass: (data) => {
-      const day = data.date.getUTCDay()
+    dayCellClass: (info) => {
+      const day = info.date.getUTCDay()
       return (day === 0 || day === 6) ? 'my-weekend' : ''
     },
     events: [
@@ -217,8 +217,8 @@ const COMPONENT_FOR_OPTION_MANIP = {
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
       eventClass: 'my-event',
-      dayCellClass: (data: any) => {
-        const day = data.date.getUTCDay()
+      dayCellClass: (info: any) => {
+        const day = info.date.getUTCDay()
         return (day === 0 || day === 6) ? 'my-weekend' : ''
       },
       events: [
@@ -560,8 +560,8 @@ const COMPONENT_WITH_SLOTS2 = {
       events: [
         { title: 'event0', start: INITIAL_DATE }
       ],
-      eventContent: (data: any) => {
-        return h('i', {}, data.event.title)
+      eventContent: (info: any) => {
+        return h('i', {}, info.event.title)
       }
     }
 
@@ -592,8 +592,8 @@ const COMPONENT_WITH_SLOTS3 = {
       events: [
         { title: 'event0', start: INITIAL_DATE }
       ],
-      eventContent: (data: any) => {
-        return { html: `<i>${data.event.title}</i>` }
+      eventContent: (info: any) => {
+        return { html: `<i>${info.event.title}</i>` }
       }
     }
 

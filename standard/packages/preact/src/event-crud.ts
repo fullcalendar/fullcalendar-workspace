@@ -4,20 +4,20 @@ import { EventImpl, buildEventApis } from './api/EventImpl'
 import { Duration } from '@full-ui/headless-calendar'
 import { ViewApi } from './index'
 
-export interface EventAddData {
+export interface EventAddInfo {
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void
 }
 
-export interface EventChangeData {
+export interface EventChangeInfo {
   oldEvent: EventImpl
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void
 }
 
-export interface EventDropData extends EventChangeData { // not best place. deals w/ UI
+export interface EventDropInfo extends EventChangeInfo { // not best place. deals w/ UI
   el: HTMLElement
   delta: Duration
   jsEvent: MouseEvent
@@ -25,7 +25,7 @@ export interface EventDropData extends EventChangeData { // not best place. deal
   // and other "transformed" things
 }
 
-export interface EventRemoveData {
+export interface EventRemoveInfo {
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void

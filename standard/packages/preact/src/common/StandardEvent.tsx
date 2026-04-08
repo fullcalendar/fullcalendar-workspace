@@ -1,5 +1,5 @@
 import { BaseComponent, setRef } from '../vdom-util'
-import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayData, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering'
+import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayInfo, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ElRef } from '../content-inject/ContentInjector'
@@ -81,7 +81,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isShort: props.isShort || false,
       timeText,
     }
-    const renderProps: EventDisplayData = {
+    const renderProps: EventDisplayInfo = {
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
       view: context.viewApi,
       timeText: timeText,
@@ -167,7 +167,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     const afterContent = props.display === 'row' && options.rowEventAfterContent
 
     return (
-      <ContentContainer<EventDisplayData>
+      <ContentContainer<EventDisplayInfo>
         tag={tag}
         attrs={{
           ...props.attrs,
@@ -218,7 +218,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 )}
               >
                 {beforeContent && (
-                  <ContentContainer<EventDisplayData>
+                  <ContentContainer<EventDisplayInfo>
                     tag='div'
                     style={{ display: 'contents' }}
                     attrs={{ 'aria-hidden': true }}
@@ -257,7 +257,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 )}
               >
                 {afterContent && (
-                  <ContentContainer<EventDisplayData>
+                  <ContentContainer<EventDisplayInfo>
                     tag='div'
                     style={{ display: 'contents' }}
                     attrs={{ 'aria-hidden': true }}
@@ -298,7 +298,7 @@ StandardEvent.addPropsEquality({
   seg: isPropsEqualShallow,
 })
 
-function renderInnerContent(innerProps: EventDisplayData) {
+function renderInnerContent(innerProps: EventDisplayInfo) {
   return (
     <>
       {innerProps.timeText && (

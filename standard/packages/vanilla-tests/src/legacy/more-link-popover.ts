@@ -369,9 +369,9 @@ describe('more-link popover', () => {
       it('should have the new day and remain all-day', async () => {
         let dropReceived = new Promise<void>((resolve) => {
           initCalendar({
-            eventDrop(data) {
-              expect(data.event.start).toEqualDate('2014-07-28')
-              expect(data.event.allDay).toBe(true)
+            eventDrop(info) {
+              expect(info.event.start).toEqualDate('2014-07-28')
+              expect(info.event.allDay).toBe(true)
               resolve()
             },
           })
@@ -400,9 +400,9 @@ describe('more-link popover', () => {
                 className: 'event5',
               },
             ]),
-            eventDrop(data) {
-              expect(data.event.start).toEqualDate('2014-07-28T13:00:00Z')
-              expect(data.event.allDay).toBe(false)
+            eventDrop(info) {
+              expect(info.event.start).toEqualDate('2014-07-28T13:00:00Z')
+              expect(info.event.allDay).toBe(false)
               resolve()
             },
           })
@@ -426,9 +426,9 @@ describe('more-link popover', () => {
           initCalendar({
             initialView: 'timeGridWeek',
             scrollTime: '00:00:00',
-            eventDrop(data) {
-              expect(data.event.start).toEqualDate('2014-07-30T03:00:00Z')
-              expect(data.event.allDay).toBe(false)
+            eventDrop(info) {
+              expect(info.event.start).toEqualDate('2014-07-30T03:00:00Z')
+              expect(info.event.allDay).toBe(false)
               resolve()
             },
           })

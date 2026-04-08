@@ -17,7 +17,7 @@ export const defaultUiSchedulerOnlyOptions: {
     /* Resource Data Grid
     --------------------------------------------------------------------------------------------- */
 
-    resourceExpanderContent: (data) => data.isExpanded
+    resourceExpanderContent: (info) => info.isExpanded
       ? svgs.minusSquare(expanderIconClass)
       : svgs.plusSquare(expanderIconClass),
   },

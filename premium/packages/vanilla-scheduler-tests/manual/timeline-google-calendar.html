@@ -42,12 +42,12 @@
       // US Holidays
       events: 'usa__en@holiday.calendar.google.com',
 
-      eventClick: function(data) {
+      eventClick: function(info) {
         // opens events in a popup window
-        window.open(data.event.url, 'gcalevent', 'width=700,height=600');
+        window.open(info.event.url, 'gcalevent', 'width=700,height=600');
 
         // prevent browser from visiting event's URL in the current tab
-        data.jsEvent.preventDefault();
+        info.jsEvent.preventDefault();
       }
     });
 

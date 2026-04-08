@@ -47,11 +47,11 @@ describe('timeGrid-view selection', () => {
 
     it('allows a same-day resource selection', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
       await waitTimeout()
@@ -68,21 +68,21 @@ describe('timeGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-29T02:00:00Z')
-      expect(selectData.end).toEqualDate('2015-11-29T04:30:00Z')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('b')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-29T02:00:00Z')
+      expect(selectInfo.end).toEqualDate('2015-11-29T04:30:00Z')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('b')
     })
 
     it('allows a different-day resource selection', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
       await waitTimeout()
@@ -99,12 +99,12 @@ describe('timeGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-29T02:00:00Z')
-      expect(selectData.end).toEqualDate('2015-11-30T04:30:00Z')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('b')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-29T02:00:00Z')
+      expect(selectInfo.end).toEqualDate('2015-11-30T04:30:00Z')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('b')
     })
 
     it('disallows a selection across resources', async () => {
@@ -139,11 +139,11 @@ describe('timeGrid-view selection', () => {
 
     it('allows a same-day resource selection', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
       await waitTimeout()
@@ -160,21 +160,21 @@ describe('timeGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-30T02:00:00Z')
-      expect(selectData.end).toEqualDate('2015-11-30T04:30:00Z')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('b')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-30T02:00:00Z')
+      expect(selectInfo.end).toEqualDate('2015-11-30T04:30:00Z')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('b')
     })
 
     it('allows a multi-day resource selection', async () => {
       let selectCalled = false
-      let selectData = null
+      let selectInfo = null
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
-          selectData = data
+          selectInfo = info
         },
       })
       await waitTimeout()
@@ -191,18 +191,18 @@ describe('timeGrid-view selection', () => {
       })
 
       expect(selectCalled).toBe(true)
-      expect(selectData).toBeTruthy()
-      expect(selectData.start).toEqualDate('2015-11-29T04:00:00Z')
-      expect(selectData.end).toEqualDate('2015-11-30T02:30:00Z')
-      expect(typeof selectData.jsEvent).toBe('object')
-      expect(typeof selectData.view).toBe('object')
-      expect(selectData.resource.id).toBe('b')
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.start).toEqualDate('2015-11-29T04:00:00Z')
+      expect(selectInfo.end).toEqualDate('2015-11-30T02:30:00Z')
+      expect(typeof selectInfo.jsEvent).toBe('object')
+      expect(typeof selectInfo.view).toBe('object')
+      expect(selectInfo.resource.id).toBe('b')
     })
 
     it('disallows a selection across resources', async () => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(data) {
+        select(info) {
           selectCalled = true
         },
       })

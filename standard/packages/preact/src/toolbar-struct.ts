@@ -10,25 +10,25 @@ export interface ToolbarModel {
   hasTitle: boolean
 }
 
-export interface ToolbarData {
+export interface ToolbarInfo {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
   // TODO: isSticky
 }
 
-export interface ToolbarSectionData {
+export interface ToolbarSectionInfo {
   name: string
 }
 
 // Button / Toolbar
 // -------------------------------------------------------------------------------------------------
 
-export interface ButtonGroupData {
+export interface ButtonGroupInfo {
   isSelectGroup: boolean
 }
 
-export interface ButtonData {
+export interface ButtonInfo {
   name: string
   text: string
   isPrimary: boolean
@@ -42,12 +42,12 @@ export interface ButtonData {
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
 
 export interface ButtonInput {
-  didMount?: DidMountHandler<ButtonData>
-  willUnmount?: WillUnmountHandler<ButtonData>
+  didMount?: DidMountHandler<ButtonInfo>
+  willUnmount?: WillUnmountHandler<ButtonInfo>
   click?: (ev: MouseEvent) => void
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
-  class?: ClassNameGenerator<ButtonData>
-  className?: ClassNameGenerator<ButtonData>
+  class?: ClassNameGenerator<ButtonInfo>
+  className?: ClassNameGenerator<ButtonInfo>
   display?: ButtonDisplay
   iconClass?: string | undefined,
   iconContent?: CustomContentGenerator<{}>,
@@ -67,9 +67,9 @@ export interface ToolbarWidget {
   buttonIconContent?: CustomContentGenerator<{}>,
   buttonClick?: (ev: MouseEvent) => void
   buttonIsPrimary?: boolean
-  buttonClass?: ClassNameGenerator<ButtonData>
-  buttonDidMount?: DidMountHandler<ButtonData>
-  buttonWillUnmount?: WillUnmountHandler<ButtonData>
+  buttonClass?: ClassNameGenerator<ButtonInfo>
+  buttonDidMount?: DidMountHandler<ButtonInfo>
+  buttonWillUnmount?: WillUnmountHandler<ButtonInfo>
 }
 
 export interface ToolbarInput {

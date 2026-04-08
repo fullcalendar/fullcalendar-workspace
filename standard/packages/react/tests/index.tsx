@@ -224,8 +224,8 @@ it('slot rendering inherits parent context', () => {
         events={[
           { title: 'event 1', date: '2022-04-01' },
         ]}
-        eventContent={(data) => (
-          <span style={{ color: themeColor }}>{data.event.title}</span>
+        eventContent={(info) => (
+          <span style={{ color: themeColor }}>{info.event.title}</span>
         )}
       />
     )
@@ -261,8 +261,8 @@ it('does not produce overlapping multiday events with custom eventContent', asyn
     { title: 'event 2', date: '2022-04-05', end: '2022-04-08' }
   ]
 
-  function renderEvent(data) {
-    return <i>{data.event.title}</i>
+  function renderEvent(info) {
+    return <i>{info.event.title}</i>
   }
 
   function TestApp() {
@@ -297,8 +297,8 @@ it('does not produce overlapping all-day & timed events with custom eventContent
     { title: 'event 2', date: '2022-04-05T12:00:00' }
   ]
 
-  function renderEvent(data) {
-    return <i>{data.event.title}</i>
+  function renderEvent(info) {
+    return <i>{info.event.title}</i>
   }
 
   function TestApp() {
@@ -338,11 +338,11 @@ it(`during foreground custom event rendering, receives el`, async () => {
         initialEvents={[
           { title: 'event 1', start: '2022-04-01' },
         ]}
-        eventContent={(data) => (
-          <i>{data.event.title}</i>
+        eventContent={(info) => (
+          <i>{info.event.title}</i>
         )}
-        eventDidMount={(data) => {
-          expect(data.el).toBeTruthy()
+        eventDidMount={(info) => {
+          expect(info.el).toBeTruthy()
           didMountCalled = true
         }}
       />
@@ -371,11 +371,11 @@ it(`during background custom event rendering, receives el`, async () => {
         initialEvents={[
           { title: 'event 1', start: '2022-04-01', display: 'background' },
         ]}
-        backgroundEventContent={(data) => (
-          <i>{data.event.title}</i>
+        backgroundEventContent={(info) => (
+          <i>{info.event.title}</i>
         )}
-        backgroundEventDidMount={(data) => {
-          expect(data.el).toBeTruthy()
+        backgroundEventDidMount={(info) => {
+          expect(info.el).toBeTruthy()
           didMountCalled = true
         }}
       />
@@ -412,8 +412,8 @@ it('rerenders content-injection with latest render-func closure', async () => {
         initialView='dayGridMonth'
         initialDate={DATE}
         initialEvents={EVENTS}
-        eventContent={(data) => (
-          <i>{data.event.title + ' - ' + counter}</i>
+        eventContent={(info) => (
+          <i>{info.event.title + ' - ' + counter}</i>
         )}
         eventClass={TEST_EVENT_CLASS}
       />
@@ -470,9 +470,9 @@ it('no unnecessary rerenders, using events, when parent rerenders', async () => 
     )
   }
 
-  function renderEvent(data) {
+  function renderEvent(info) {
     customRenderCnt++
-    return <i>{data.event.title}</i>
+    return <i>{info.event.title}</i>
   }
 
   render(<TestApp />)
@@ -515,9 +515,9 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', async 
     )
   }
 
-  function renderEvent(data) {
+  function renderEvent(info) {
     customRenderCnt++
-    return <i>{data.event.title}</i>
+    return <i>{info.event.title}</i>
   }
 
   render(<TestApp />)
@@ -607,7 +607,7 @@ it('does not infinite loop on certain eventContent', () => {
         initialView='dayGridMonth'
         dayMaxEvents={2}
         events={EVENTS}
-        eventContent={(data) => <i>{data.event.title}</i>}
+        eventContent={(info) => <i>{info.event.title}</i>}
       />
     );
   }
@@ -728,7 +728,7 @@ it('custom view receives enough props for slicing', () => {
 })
 
 
-// FullCalendar data utils
+// FullCalendar info utils
 // -------------------------------------------------------------------------------------------------
 
 function buildToolbar() {

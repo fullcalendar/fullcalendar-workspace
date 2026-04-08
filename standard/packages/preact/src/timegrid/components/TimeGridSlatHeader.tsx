@@ -1,5 +1,5 @@
 import { Duration, DateFormatter, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { SlotHeaderData } from '../../render-hook-misc'
+import { SlotHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
@@ -158,7 +158,7 @@ function createRenderProps(
   isFirst: boolean,
   headerFormat: DateFormatter,
   context: ViewContext,
-): SlotHeaderData {
+): SlotHeaderInfo {
   return {
     // this is a time-specific slot. not day-specific, so don't do today/nowRange
     ...getDateMeta(date, context.dateEnv),

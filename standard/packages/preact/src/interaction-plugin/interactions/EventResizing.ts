@@ -1,6 +1,6 @@
 import { ViewApi } from '../../api/ViewApi'
 import { EventApi } from '../../api/EventApi'
-import type { EventChangeData } from '../../event-crud'
+import type { EventChangeInfo } from '../../event-crud'
 import type { EventRenderRange } from '../../component-util/event-rendering'
 import type { Duration } from '@full-ui/headless-calendar'
 import type { Hit } from '../../interactions/hit'
@@ -25,8 +25,8 @@ import classNames from '../../styles.module.css'
 import { HitDragging, isHitsEqual } from './HitDragging'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 
-export type EventResizeStartData = EventResizeStartStopData
-export type EventResizeStopData = EventResizeStartStopData
+export type EventResizeStartInfo = EventResizeStartStopData
+export type EventResizeStopInfo = EventResizeStartStopData
 
 export interface EventResizeStartStopData {
   el: HTMLElement
@@ -35,7 +35,7 @@ export interface EventResizeStartStopData {
   view: ViewApi
 }
 
-export interface EventResizeDoneData extends EventChangeData {
+export interface EventResizeDoneInfo extends EventChangeInfo {
   el: HTMLElement
   startDelta: Duration
   endDelta: Duration
@@ -110,7 +110,7 @@ export class EventResizing extends Interaction {
       event: new EventImpl(context, eventRange.def, eventRange.instance),
       jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
       view: context.viewApi,
-    } as EventResizeStartData)
+    } as EventResizeStartInfo)
   }
 
   handleHitUpdate = (hit: Hit | null, isFinal: boolean, ev: PointerDragEvent) => {
@@ -192,7 +192,7 @@ export class EventResizing extends Interaction {
       event: eventApi,
       jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
       view: context.viewApi,
-    } as EventResizeStopData)
+    } as EventResizeStopInfo)
 
     if (this.validMutation) {
       let updatedEventApi = new EventImpl(
@@ -206,7 +206,7 @@ export class EventResizing extends Interaction {
         eventStore: mutatedRelevantEvents,
       })
 
-      let eventChangeData: EventChangeData = {
+      let eventChangeData: EventChangeInfo = {
         oldEvent: eventApi,
         event: updatedEventApi,
         relatedEvents: buildEventApis(mutatedRelevantEvents, context, eventInstance),

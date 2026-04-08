@@ -74,37 +74,37 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
-    viewClass: (data) => joinClassNames(
+    viewClass: (info) => joinClassNames(
       'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
-      !(data.isFirst && data.borderlessTop) && 'border-t',
-      !(data.isLast && data.borderlessBottom) && 'border-b',
-      !data.borderlessX && 'border-x',
+      !(info.isFirst && info.borderlessTop) && 'border-t',
+      !(info.isLast && info.borderlessBottom) && 'border-b',
+      !info.borderlessX && 'border-x',
     ),
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => joinClassNames(
+    toolbarClass: (info) => joinClassNames(
       'flex flex-row flex-wrap items-center justify-between gap-3',
-      data.borderlessX && 'px-3',
+      info.borderlessX && 'px-3',
     ),
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
     buttonGroupClass: 'flex flex-row items-center',
-    buttonClass: (data) => joinClassNames(
+    buttonClass: (info) => joinClassNames(
       'py-2 border-x flex flex-row items-center',
       'focus-visible:outline-3 outline-(--fc-classic-button-outline)',
       'print:bg-white',
       'text-sm text-(--fc-classic-button-foreground) print:text-black',
-      data.isIconOnly ? 'px-2.5' : 'px-3',
-      data.inGroup
+      info.isIconOnly ? 'px-2.5' : 'px-3',
+      info.inGroup
         ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
         : 'rounded-[4px]',
-      data.isSelected // implies inGroup
+      info.isSelected // implies inGroup
         ? 'border-(--fc-classic-button-strong-border) bg-(--fc-classic-button-strong)'
         : 'border-(--fc-classic-button-border) hover:border-(--fc-classic-button-strong-border) active:border-(--fc-classic-button-strong-border) print:border-(--fc-classic-button-strong-border) bg-(--fc-classic-button) hover:bg-(--fc-classic-button-strong) active:bg-(--fc-classic-button-strong)',
-      data.isDisabled
+      info.isDisabled
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ),
 

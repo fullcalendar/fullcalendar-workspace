@@ -1,20 +1,20 @@
 import { ViewApi } from '../api/ViewApi'
 import type { DateTimeFormatPartWithWeek } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../component-util/date-rendering'
-export interface ListDayData extends DateMeta {
+export interface ListDayInfo extends DateMeta {
   isFirst: boolean
   isLast: boolean
   view: ViewApi
 }
 
-export interface ListDayHeaderData extends DateMeta {
+export interface ListDayHeaderInfo extends DateMeta {
   view: ViewApi
 }
 export interface ListDayEventsData extends DateMeta {
   view: ViewApi
 }
 
-export interface ListDayHeaderInnerData extends DateMeta {
+export interface ListDayHeaderInnerInfo extends DateMeta {
   text: string
   textParts: DateTimeFormatPartWithWeek[]
   weekdayText: string

@@ -2,7 +2,7 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
-import { ResourceExpanderData } from '../../structs'
+import { ResourceExpanderInfo } from '../../structs'
 
 export interface ResourceExpanderProps {
   isExpanded: boolean
@@ -18,7 +18,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
     const classNameGenerator = options.resourceExpanderClass
     const contentGenerator = options.resourceExpanderContent
 
-    const renderProps: ResourceExpanderData = {
+    const renderProps: ResourceExpanderInfo = {
       isExpanded: props.isExpanded,
     }
 
@@ -37,7 +37,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
         ref={props.elRef}
       >
         {contentGenerator && (
-          <ContentContainer<ResourceExpanderData>
+          <ContentContainer<ResourceExpanderInfo>
             tag='span'
             style={{ display: 'contents' }}
             attrs={{ 'aria-hidden': true }}

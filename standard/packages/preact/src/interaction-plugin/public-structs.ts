@@ -1,5 +1,5 @@
 
-export { EventDragStartData, EventDragStopData } from './interactions/EventDragging'
-export { EventResizeStartData, EventResizeStopData, EventResizeDoneData } from './interactions/EventResizing'
-export { DateClickData } from './interactions/DateClicking'
-export { DropData, EventReceiveData, EventLeaveData } from './utils'
+export { EventDragStartInfo, EventDragStopInfo } from './interactions/EventDragging'
+export { EventResizeStartInfo, EventResizeStopInfo, EventResizeDoneInfo } from './interactions/EventResizing'
+export { DateClickInfo } from './interactions/DateClicking'
+export { DropInfo, EventReceiveInfo, EventLeaveInfo } from './utils'

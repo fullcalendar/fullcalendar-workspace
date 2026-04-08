@@ -15,10 +15,10 @@ export const defaultUiSchedulerOnlyOptions: {
     /* Resource Data Grid
     --------------------------------------------------------------------------------------------- */
 
-    resourceExpanderContent: (data) => svgs.chevronDown(
+    resourceExpanderContent: (info) => svgs.chevronDown(
       joinClassNames(
         `size-5 ${mutedFgPressableGroupClass}`,
-        !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
+        !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
       )
     )
   },

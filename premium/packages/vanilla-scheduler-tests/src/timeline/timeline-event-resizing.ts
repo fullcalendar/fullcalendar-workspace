@@ -39,11 +39,11 @@ xdescribe('timeline event resizing', () => {
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall((data) => {
-                    expect(data.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                    expect(data.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  (resizeSpy = spyCall((info) => {
+                    expect(info.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(info.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
-                    let resources = data.event.getResources()
+                    let resources = info.event.getResources()
                     expect(resources.length).toBe(0)
                   })),
               })
@@ -68,11 +68,11 @@ xdescribe('timeline event resizing', () => {
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall((data) => {
-                    expect(data.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                    expect(data.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  (resizeSpy = spyCall((info) => {
+                    expect(info.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(info.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
-                    let resources = data.event.getResources()
+                    let resources = info.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
                   })),
@@ -95,11 +95,11 @@ xdescribe('timeline event resizing', () => {
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall((data) => {
-                    expect(data.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                    expect(data.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  (resizeSpy = spyCall((info) => {
+                    expect(info.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(info.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
-                    let resources = data.event.getResources()
+                    let resources = info.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
                   })),
@@ -125,11 +125,11 @@ xdescribe('timeline event resizing', () => {
                   resourceIds: ['a', 'b'],
                 }],
                 eventResize:
-                  (resizeSpy = spyCall((data) => {
-                    expect(data.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                    expect(data.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  (resizeSpy = spyCall((info) => {
+                    expect(info.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(info.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
-                    let resourceIds = data.event.getResources().map((resource) => resource.id)
+                    let resourceIds = info.event.getResources().map((resource) => resource.id)
                     resourceIds.sort()
                     expect(resourceIds).toEqual(['a', 'b'])
                   })),
@@ -159,11 +159,11 @@ xdescribe('timeline event resizing', () => {
                 { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
               ],
               eventResize:
-                (resizeSpy = spyCall((data) => {
-                  expect(data.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                  expect(data.event.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
+                (resizeSpy = spyCall((info) => {
+                  expect(info.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(info.event.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
 
-                  let resources = data.event.getResources()
+                  let resources = info.event.getResources()
                   expect(resources.length).toBe(1)
                   expect(resources[0].id).toBe('b')
                 })),
@@ -190,11 +190,11 @@ xdescribe('timeline event resizing', () => {
           { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
         ],
         eventResize:
-          (resizeSpy = spyCall((data) => {
-            expect(data.event.start).toEqualDate('2015-11-28T04:00:00Z')
-            expect(data.event.end).toEqualDate('2015-11-28T07:30:00Z')
+          (resizeSpy = spyCall((info) => {
+            expect(info.event.start).toEqualDate('2015-11-28T04:00:00Z')
+            expect(info.event.end).toEqualDate('2015-11-28T07:30:00Z')
 
-            let resources = data.event.getResources()
+            let resources = info.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           })),
@@ -234,11 +234,11 @@ xdescribe('timeline event resizing', () => {
             { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' },
           ],
           eventResize:
-            (resizeSpy = spyCall((data) => {
-              expect(data.event.start).toEqualDate('2015-11-03')
-              expect(data.event.end).toEqualDate('2015-11-06')
+            (resizeSpy = spyCall((info) => {
+              expect(info.event.start).toEqualDate('2015-11-03')
+              expect(info.event.end).toEqualDate('2015-11-06')
 
-              let resources = data.event.getResources()
+              let resources = info.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             })),
@@ -268,11 +268,11 @@ xdescribe('timeline event resizing', () => {
             { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' },
           ],
           eventResize:
-            (resizeSpy = spyCall((data) => {
-              expect(data.event.start).toEqualDate('2015-01-18')
-              expect(data.event.end).toEqualDate('2015-02-15')
+            (resizeSpy = spyCall((info) => {
+              expect(info.event.start).toEqualDate('2015-01-18')
+              expect(info.event.end).toEqualDate('2015-02-15')
 
-              let resources = data.event.getResources()
+              let resources = info.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             })),

@@ -4,23 +4,23 @@ import type { ReactNode } from 'react'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { Resource } from '../resource/structs/resource'
 
-export interface ResourceColumnHeaderData {
+export interface ResourceColumnHeaderInfo {
   view: ViewApi
 }
 
-export interface ResourceCellData {
+export interface ResourceCellInfo {
   resource?: ResourceApi
   field: string
   fieldValue: any
   view: ViewApi
 }
 
-export interface ResourceGroupHeaderData {
+export interface ResourceGroupHeaderInfo {
   fieldValue: any
   view: ViewApi
 }
 
-export interface ResourceGroupLaneData {
+export interface ResourceGroupLaneInfo {
   fieldValue: any
   view: ViewApi
 }
@@ -31,19 +31,19 @@ export interface ResourceLaneContentArgInput {
   eventOverlap: boolean
 }
 
-export interface ResourceLaneData {
+export interface ResourceLaneInfo {
   resource: ResourceApi
   options: { eventOverlap: boolean }
 }
 
-export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneData {
+export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
   return {
     resource: new ResourceApi(input.context, input.resource),
     options: { eventOverlap: input.eventOverlap },
   }
 }
 
-export interface ResourceExpanderData {
+export interface ResourceExpanderInfo {
   isExpanded: boolean
 }
 
@@ -51,13 +51,13 @@ export interface ResourceExpanderData {
 // -------------------------------------------------------------------------------------------------
 
 export interface ColHeaderRenderHooks {
-  headerClass?: ClassNameGenerator<ResourceColumnHeaderData>
-  headerInnerClass?: ClassNameGenerator<ResourceColumnHeaderData>
-  headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderData>
-  headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
-  headerDefault?: (renderProps: ResourceColumnHeaderData) => ReactNode
-  headerDidMount?: DidMountHandler<ResourceColumnHeaderData>
-  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderData>
+  headerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
+  headerInnerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
+  headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderInfo>
+  headerContent?: CustomContentGenerator<ResourceColumnHeaderInfo>
+  headerDefault?: (renderProps: ResourceColumnHeaderInfo) => ReactNode
+  headerDidMount?: DidMountHandler<ResourceColumnHeaderInfo>
+  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderInfo>
 }
 
 export interface ColSpec extends ColHeaderRenderHooks {
@@ -66,28 +66,28 @@ export interface ColSpec extends ColHeaderRenderHooks {
   width?: number | string // string for percentage like '50%'
   field?: string
 
-  cellClass?: ClassNameGenerator<ResourceCellData>
-  cellInnerClass?: ClassNameGenerator<ResourceCellData>
-  cellContent?: CustomContentGenerator<ResourceCellData>
-  cellDidMount?: DidMountHandler<ResourceCellData>
-  cellWillUnmount?: WillUnmountHandler<ResourceCellData>
+  cellClass?: ClassNameGenerator<ResourceCellInfo>
+  cellInnerClass?: ClassNameGenerator<ResourceCellInfo>
+  cellContent?: CustomContentGenerator<ResourceCellInfo>
+  cellDidMount?: DidMountHandler<ResourceCellInfo>
+  cellWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }
 
 export interface GroupLaneRenderHooks {
-  laneClass?: ClassNameGenerator<ResourceCellData>
-  laneInnerClass?: ClassNameGenerator<ResourceCellData>
-  laneContent?: CustomContentGenerator<ResourceCellData>
-  laneDidMount?: DidMountHandler<ResourceCellData>
-  laneWillUnmount?: WillUnmountHandler<ResourceCellData>
+  laneClass?: ClassNameGenerator<ResourceCellInfo>
+  laneInnerClass?: ClassNameGenerator<ResourceCellInfo>
+  laneContent?: CustomContentGenerator<ResourceCellInfo>
+  laneDidMount?: DidMountHandler<ResourceCellInfo>
+  laneWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }
 
 export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
   field?: string
   order?: number
 
-  labelClass?: ClassNameGenerator<ResourceCellData>
-  labelInnerClass?: ClassNameGenerator<ResourceCellData>
-  labelContent?: CustomContentGenerator<ResourceCellData>
-  labelDidMount?: DidMountHandler<ResourceCellData>
-  labelWillUnmount?: WillUnmountHandler<ResourceCellData>
+  labelClass?: ClassNameGenerator<ResourceCellInfo>
+  labelInnerClass?: ClassNameGenerator<ResourceCellInfo>
+  labelContent?: CustomContentGenerator<ResourceCellInfo>
+  labelDidMount?: DidMountHandler<ResourceCellInfo>
+  labelWillUnmount?: WillUnmountHandler<ResourceCellInfo>
 }

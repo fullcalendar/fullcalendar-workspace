@@ -1,6 +1,6 @@
 import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FullCalendarModule, CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/angular';
+import { FullCalendarModule, CalendarOptions, DateSelectInfo, EventClickInfo, EventApi } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/angular/interaction';
 import dayGridPlugin from '@fullcalendar/angular/daygrid';
 import timeGridPlugin from '@fullcalendar/angular/timegrid';
@@ -63,9 +63,9 @@ export class AppComponent {
     }));
   }
 
-  handleDateSelect(selectData: DateSelectData) {
+  handleDateSelect(selectInfo: DateSelectInfo) {
     const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectData.view.calendar;
+    const calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
@@ -73,16 +73,16 @@ export class AppComponent {
       calendarApi.addEvent({
         id: createEventId(),
         title,
-        start: selectData.startStr,
-        end: selectData.endStr,
-        allDay: selectData.allDay
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
       });
     }
   }
 
-  handleEventClick(clickData: EventClickData) {
-    if (confirm(`Are you sure you want to delete the event '${clickData.event.title}'`)) {
-      clickData.event.remove();
+  handleEventClick(clickInfo: EventClickInfo) {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove();
     }
   }
 

@@ -1,4 +1,4 @@
-import { SlotHeaderData, joinClassNames } from '@fullcalendar/preact/public-api'
+import { SlotHeaderInfo, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -193,6 +193,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderInnerContent(renderProps: SlotHeaderData) {
+function renderInnerContent(renderProps: SlotHeaderInfo) {
   return renderProps.text
 }

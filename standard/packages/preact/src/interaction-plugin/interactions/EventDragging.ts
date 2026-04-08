@@ -1,6 +1,6 @@
 import { EventApi } from '../../api/EventApi'
 import { ViewApi } from '../../api/ViewApi'
-import type { EventChangeData, EventAddData, EventRemoveData } from '../../event-crud'
+import type { EventChangeInfo, EventAddInfo, EventRemoveInfo } from '../../event-crud'
 import type { EventRenderRange } from '../../component-util/event-rendering'
 import { DateComponent } from '../../component/DateComponent'
 import type { PointerDragEvent } from '../../interactions/pointer'
@@ -29,10 +29,10 @@ import { HitDragging, isHitsEqual } from './HitDragging'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 import { buildDatePointApiWithContext } from '../utils'
 
-export type EventDragStopData = EventDragData
-export type EventDragStartData = EventDragData
+export type EventDragStopInfo = EventDragInfo
+export type EventDragStartInfo = EventDragInfo
 
-export interface EventDragData {
+export interface EventDragInfo {
   el: HTMLElement
   event: EventApi
   jsEvent: MouseEvent
@@ -142,7 +142,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
         event: new EventImpl(initialContext, eventRange.def, eventRange.instance),
         jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
         view: initialContext.viewApi,
-      } as EventDragStartData)
+      } as EventDragStartInfo)
     }
   }
 
@@ -258,7 +258,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
         event: eventApi,
         jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
         view: initialView,
-      } as EventDragStopData)
+      } as EventDragStopInfo)
 
       if (validMutation) {
         // dropped within same calendar
@@ -274,7 +274,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             eventStore: mutatedRelevantEvents,
           })
 
-          let eventChangeData: EventChangeData = {
+          let eventChangeData: EventChangeInfo = {
             oldEvent: eventApi,
             event: updatedEventApi,
             relatedEvents: buildEventApis(mutatedRelevantEvents, initialContext, eventInstance),
@@ -304,7 +304,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
         // dropped in different calendar
         } else if (receivingContext) {
-          let eventRemoveData: EventRemoveData = {
+          let eventRemoveData: EventRemoveInfo = {
             event: eventApi,
             relatedEvents: buildEventApis(relevantEvents, initialContext, eventInstance),
             revert() {
@@ -337,7 +337,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             eventStore: mutatedRelevantEvents,
           })
 
-          let eventAddData: EventAddData = {
+          let eventAddData: EventAddInfo = {
             event: addedEventApi,
             relatedEvents: buildEventApis(mutatedRelevantEvents, receivingContext, addedEventInstance),
             revert() {

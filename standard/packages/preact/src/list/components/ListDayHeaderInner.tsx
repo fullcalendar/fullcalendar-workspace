@@ -5,7 +5,7 @@ import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../../component-util/date-rendering'
 import { findDayNumberText, findWeekdayText } from '../../util/date-format'
-import { ListDayHeaderInnerData } from '../structs'
+import { ListDayHeaderInnerInfo } from '../structs'
 
 export interface ListDayHeaderInnerProps {
   dayDate: DateMarker
@@ -23,7 +23,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
     const text = joinDateTimeFormatParts(textParts)
 
     const hasNavLink = options.navLinks
-    const renderProps: ListDayHeaderInnerData = {
+    const renderProps: ListDayHeaderInnerInfo = {
       ...props.dateMeta,
       view: context.viewApi,
       text,

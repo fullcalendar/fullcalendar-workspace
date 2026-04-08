@@ -6,7 +6,7 @@ import { flushSync } from './vdom'
 import { joinArrayishClassNames } from './util/html'
 import { generateClassName } from './content-inject/ContentContainer'
 
-export interface CalendarDisplayData {
+export interface CalendarDisplayInfo {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
@@ -64,7 +64,7 @@ export function computeRootClassName(options: CalendarOptions, forPrint: boolean
   let borderlessTop = options.borderlessTop ?? options.borderless
   let borderlessBottom = options.borderlessBottom ?? options.borderless
 
-  const calendarDisplayData: CalendarDisplayData = {
+  const calendarDisplayData: CalendarDisplayInfo = {
     borderlessX: Boolean(borderlessX),
     borderlessTop: Boolean(borderlessTop),
     borderlessBottom: Boolean(borderlessBottom),

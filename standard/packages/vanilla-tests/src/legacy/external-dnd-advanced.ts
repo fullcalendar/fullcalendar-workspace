@@ -330,10 +330,10 @@ describe('advanced external dnd', () => {
 
   async function testExternalElDrag(options, dragToDate, expectedDate, expectSuccess) { // with NO event creation
     options.droppable = true
-    options.drop = (data) => {
-      expect(data.date instanceof Date).toBe(true)
-      expect(data.date).toEqualDate(expectedDate)
-      expect(typeof data.jsEvent).toBe('object')
+    options.drop = (info) => {
+      expect(info.date instanceof Date).toBe(true)
+      expect(info.date).toEqualDate(expectedDate)
+      expect(typeof info.jsEvent).toBe('object')
     }
     options.eventReceive = () => {}
     spyOn(options, 'drop').and.callThrough()
@@ -353,14 +353,14 @@ describe('advanced external dnd', () => {
     let expectedAllDay = dragToDate.indexOf('T') === -1 // for the drop callback only!
 
     options.droppable = true
-    options.drop = (data) => {
-      expect(data.date instanceof Date).toBe(true)
-      expect(data.date).toEqualDate(dragToDate)
-      expect(data.allDay).toBe(expectedAllDay)
-      expect(typeof data.jsEvent).toBe('object')
+    options.drop = (info) => {
+      expect(info.date instanceof Date).toBe(true)
+      expect(info.date).toEqualDate(dragToDate)
+      expect(info.allDay).toBe(expectedAllDay)
+      expect(typeof info.jsEvent).toBe('object')
     }
-    options.eventReceive = (data) => {
-      expect(data.event.start).toEqualDate(expectedDate)
+    options.eventReceive = (info) => {
+      expect(info.event.start).toEqualDate(expectedDate)
     }
     spyOn(options, 'drop').and.callThrough()
     spyOn(options, 'eventReceive').and.callThrough()

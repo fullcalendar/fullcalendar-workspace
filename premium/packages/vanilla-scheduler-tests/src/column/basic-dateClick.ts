@@ -30,12 +30,12 @@ describe('dayGrid-view dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-23')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource).toBeFalsy()
+          expect(info.date).toEqualDate('2015-11-23')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource).toBeFalsy()
           clickResolve()
         },
       })
@@ -69,12 +69,12 @@ describe('dayGrid-view dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-29')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('a')
+          expect(info.date).toEqualDate('2015-11-29')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource.id).toBe('a')
           clickResolve()
         },
       })
@@ -108,12 +108,12 @@ describe('dayGrid-view dateClick', () => {
         clickResolve = resolve
       })
       let calendar = initCalendar({
-        dateClick(data) {
+        dateClick(info) {
           dateClickCalled = true
-          expect(data.date).toEqualDate('2015-11-30')
-          expect(typeof data.jsEvent).toBe('object')
-          expect(typeof data.view).toBe('object')
-          expect(data.resource.id).toBe('b')
+          expect(info.date).toEqualDate('2015-11-30')
+          expect(typeof info.jsEvent).toBe('object')
+          expect(typeof info.view).toBe('object')
+          expect(info.resource.id).toBe('b')
           clickResolve()
         },
       })

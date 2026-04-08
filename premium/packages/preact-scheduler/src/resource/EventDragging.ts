@@ -1,4 +1,4 @@
-import { EventDropData } from '@fullcalendar/preact/public-api'
+import { EventDropInfo } from '@fullcalendar/preact/public-api'
 import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/preact/protected-api'
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
@@ -65,7 +65,7 @@ export function computeResourceEditable(eventDef: EventDef, context: CalendarCon
   return resourceEditable
 }
 
-export function transformEventDrop(mutation: EventMutation, context: CalendarContext): Partial<EventDropData> {
+export function transformEventDrop(mutation: EventMutation, context: CalendarContext): Partial<EventDropInfo> {
   let { resourceMutation } = mutation
 
   if (resourceMutation) {

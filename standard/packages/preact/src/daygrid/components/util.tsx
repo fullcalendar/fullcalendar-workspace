@@ -1,5 +1,5 @@
 import { CssDimValue } from '../../scrollgrid/util'
-import { DayHeaderData } from '../../render-hook-misc'
+import { DayHeaderInfo } from '../../render-hook-misc'
 import { computeMajorUnit } from '../../DateProfileGenerator'
 import { createFormatter } from '../../datelib/formatting'
 import { DateEnv, DateFormatter, DateMarker } from '@full-ui/headless-calendar'
@@ -10,7 +10,7 @@ import { fracToCssDim } from '../../util/html'
 import { SlicedCoordRange } from '../../coord-range'
 import type { ReactNode } from 'react'
 
-export function renderInner(renderProps: DayHeaderData): ReactNode {
+export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
 }
 

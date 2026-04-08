@@ -6,10 +6,10 @@ import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentC
 
 export interface NowIndicatorLineContainerProps extends Partial<ElProps> {
   date: DateMarker
-  children?: InnerContainerFunc<NowIndicatorLineData>
+  children?: InnerContainerFunc<NowIndicatorLineInfo>
 }
 
-export interface NowIndicatorLineData {
+export interface NowIndicatorLineInfo {
   date: Date
   view: ViewApi
 }
@@ -18,7 +18,7 @@ export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps)
   <ViewContextType.Consumer
     children={(context) => {
       let { options } = context
-      let renderProps: NowIndicatorLineData = {
+      let renderProps: NowIndicatorLineInfo = {
         date: context.dateEnv.toDate(props.date),
         view: context.viewApi,
       }

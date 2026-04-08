@@ -9,7 +9,7 @@ import { getDateMeta } from '../component-util/date-rendering'
 import { memoize } from '../util/memoize'
 import { generateClassName } from '../content-inject/ContentContainer'
 import { ContentContainer } from '../content-inject/ContentContainer'
-import { DayCellData, DayHeaderData } from '../api/structs'
+import { DayCellInfo, DayHeaderInfo } from '../api/structs'
 import classNames from '../styles.module.css'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
 import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot } from '../util/dom-manip'
@@ -53,7 +53,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let textParts = dateEnv.formatToParts(startDate, options.dayPopoverFormat)
     let text = joinDateTimeFormatParts(textParts)
 
-    const dayHeaderRenderProps: DayHeaderData = {
+    const dayHeaderRenderProps: DayHeaderInfo = {
       ...dateMeta,
       isMajor: false,
       isNarrow: false,
@@ -68,7 +68,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       view: viewApi,
       // TODO: should know about the resource!
     }
-    const dayCellRenderProps: DayCellData = {
+    const dayCellRenderProps: DayCellInfo = {
       ...dateMeta,
       isMajor: false,
       isNarrow: false,
@@ -323,6 +323,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
 }
 
 // TODO: DRY
-function renderText(renderProps: DayHeaderData): ReactNode {
+function renderText(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
 }

@@ -25,7 +25,7 @@ import classNames from '../../styles.module.css'
 import { type ReactNode, type ReactElement } from 'react'
 import { ListDay, ListSeg } from './ListDay'
 
-export interface NoEventsData {
+export interface NoEventsInfo {
   text: string
   view: ViewApi
 }
@@ -81,7 +81,7 @@ export class ListView extends DateComponent<ViewProps> {
 
   renderEmptyMessage() {
     let { options, viewApi } = this.context
-    let renderProps: NoEventsData = {
+    let renderProps: NoEventsInfo = {
       text: options.noEventsText,
       view: viewApi,
     }
@@ -226,7 +226,7 @@ export class ListView extends DateComponent<ViewProps> {
   }
 }
 
-function renderNoEventsInner(renderProps: NoEventsData): ReactNode {
+function renderNoEventsInner(renderProps: NoEventsInfo): ReactNode {
   return renderProps.text
 }
 

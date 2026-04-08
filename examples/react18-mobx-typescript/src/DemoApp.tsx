@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import {
-  EventDisplayData,
-  EventClickData,
-  DateSelectData,
-  EventChangeData,
+  EventDisplayInfo,
+  EventClickInfo,
+  DateSelectInfo,
+  EventChangeInfo,
 } from "@fullcalendar/react";
 import FullCalendar from "@fullcalendar/react";
 import themePlugin from "@fullcalendar/react/themes/classic";
@@ -22,25 +22,25 @@ import { eventStoreContext } from "./event-store";
 export const DemoApp = observer(function DemoApp() {
   const eventStore = useContext(eventStoreContext);
 
-  function handleEventClick(clickData: EventClickData) {
+  function handleEventClick(clickInfo: EventClickInfo) {
     if (
       confirm(
-        `Are you sure you want to delete the event '${clickData.event.title}'`
+        `Are you sure you want to delete the event '${clickInfo.event.title}'`
       )
     ) {
-      eventStore.deleteEvent(clickData.event.id);
+      eventStore.deleteEvent(clickInfo.event.id);
     }
   }
 
-  function handleDateSelect(selectData: DateSelectData) {
+  function handleDateSelect(selectInfo: DateSelectInfo) {
     let title = prompt("Please enter a new title for your event");
-    const calendarApi = selectData.view.calendar;
+    const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // clear date selection
-    eventStore.addEvent(selectData, title);
+    eventStore.addEvent(selectInfo, title);
   }
 
-  function handleEventChange(changeData: EventChangeData) {
-    eventStore.changeEvent(changeData);
+  function handleEventChange(changeInfo: EventChangeInfo) {
+    eventStore.changeEvent(changeInfo);
   }
 
   return (
@@ -75,11 +75,11 @@ export const DemoApp = observer(function DemoApp() {
   );
 });
 
-function renderEventContent(data: EventDisplayData) {
+function renderEventContent(info: EventDisplayInfo) {
   return (
     <>
-      <b>{data.timeText}</b>
-      <i>{data.event.title}</i>
+      <b>{info.timeText}</b>
+      <i>{info.event.title}</i>
     </>
   );
 }

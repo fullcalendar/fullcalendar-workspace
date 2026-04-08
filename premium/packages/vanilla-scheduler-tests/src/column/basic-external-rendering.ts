@@ -44,12 +44,12 @@ describe('dayGrid-view event drag-n-drop', () => {
           // https://github.com/fullcalendar/fullcalendar/issues/2955
           // expect(date).toEqualDate('2015-12-01')
           eventReceive:
-            (receiveSpy = spyCall((data) => {
-              expect(data.event.title).toBe('my external event')
-              expect(data.event.start).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
-              expect(data.event.end).toBe(null)
+            (receiveSpy = spyCall((info) => {
+              expect(info.event.title).toBe('my external event')
+              expect(info.event.start).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
+              expect(info.event.end).toBe(null)
 
-              let resources = data.event.getResources()
+              let resources = info.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             })),

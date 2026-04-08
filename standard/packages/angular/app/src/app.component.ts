@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FullCalendarComponent, CalendarOptions, DateClickData, EventClickData } from '@fullcalendar/angular';
+import { FullCalendarComponent, CalendarOptions, DateClickInfo, EventClickInfo } from '@fullcalendar/angular';
 import classicThemePlugin from '@fullcalendar/angular/themes/classic';
 import dayGridPlugin from '@fullcalendar/angular/daygrid';
-import interactionPlugin, { EventDragStopData } from '@fullcalendar/angular/interaction';
+import interactionPlugin, { EventDragStopInfo } from '@fullcalendar/angular/interaction';
 
 @Component({
   selector: 'app-root',
@@ -38,16 +38,16 @@ export class AppComponent implements OnInit {
     };
   }
 
-  handleDateClick(data: DateClickData) {
-    console.log(data);
+  handleDateClick(info: DateClickInfo) {
+    console.log(info);
   }
 
-  handleEventClick(data: EventClickData) {
-    console.log(data);
+  handleEventClick(info: EventClickInfo) {
+    console.log(info);
   }
 
-  handleEventDragStop(data: EventDragStopData) {
-    console.log(data);
+  handleEventDragStop(info: EventDragStopInfo) {
+    console.log(info);
   }
 
   updateHeader() {

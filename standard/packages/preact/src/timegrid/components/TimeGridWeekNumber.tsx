@@ -1,4 +1,4 @@
-import { WeekNumberHeaderData } from '../../common/WeekNumberContainer'
+import { WeekNumberHeaderInfo } from '../../common/WeekNumberContainer'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { ContentContainer, renderText, generateClassName } from '../../content-inject/ContentContainer'
@@ -64,7 +64,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     }
 
     return (
-      <ContentContainer<WeekNumberHeaderData>
+      <ContentContainer<WeekNumberHeaderInfo>
         tag='div'
         attrs={{
           role: 'gridcell', // doesn't always describe other cells in row, so make generic

@@ -78,19 +78,19 @@
         { id: '4', resourceId: 'e', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
         { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' }
       ],
-      select: function(data) {
+      select: function(info) {
         console.log(
           'select callback',
-          data.startStr,
-          data.endStr,
-          data.resource ? data.resource.id : '(no resource)'
+          info.startStr,
+          info.endStr,
+          info.resource ? info.resource.id : '(no resource)'
         );
       },
-      dateClick: function(data) {
+      dateClick: function(info) {
         console.log(
           'dateClick',
-          data.date,
-          data.resource ? data.resource.id : '(no resource)'
+          info.date,
+          info.resource ? info.resource.id : '(no resource)'
         );
       }
     });

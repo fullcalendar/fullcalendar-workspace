@@ -4,7 +4,7 @@ export type DateTimeFormatPartWithWeek = Omit<Intl.DateTimeFormatPart, 'type'> &
 
 // week number HEADER
 
-export interface WeekNumberHeaderData {
+export interface WeekNumberHeaderInfo {
   num?: number // undefined if not for specific date
   date?: Date // undefined if not for specific date
   text: string
@@ -27,7 +27,7 @@ export interface WeekNumberCellData { // TODO: DRY with inline?
 
 // INLINE week number
 
-export interface InlineWeekNumberData {
+export interface InlineWeekNumberInfo {
   num: number
   date: Date
   text: string

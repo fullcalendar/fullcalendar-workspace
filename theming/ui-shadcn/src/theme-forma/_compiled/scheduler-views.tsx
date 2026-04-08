@@ -17,13 +17,13 @@ export function SchedulerViews({
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
-      resourceDayHeaderClass={(data) => cn(
+      resourceDayHeaderClass={(info) => cn(
         'border',
-        data.isMajor && 'border-foreground/20',
+        info.isMajor && 'border-foreground/20',
       )}
-      resourceDayHeaderInnerClass={(data) => cn(
+      resourceDayHeaderInnerClass={(info) => cn(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -47,7 +47,7 @@ export function SchedulerViews({
 
       resourceGroupLaneClass="border bg-foreground/5"
       resourceLaneClass="border"
-      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-2.5')}
+      resourceLaneBottomClass={(info) => cn(info.options.eventOverlap && 'h-2.5')}
       timelineBottomClass="h-2.5"
 
       /* View-Specific Options
@@ -60,9 +60,9 @@ export function SchedulerViews({
           /* Timeline > Row Event
           ----------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => cn(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => (
-            data.options.eventOverlap
+          rowEventClass: (info) => cn(info.isEnd && 'me-px'),
+          rowEventInnerClass: (info) => (
+            info.options.eventOverlap
               ? 'py-[0.1875rem]'
               : 'py-2'
           ),
@@ -76,11 +76,11 @@ export function SchedulerViews({
           /* Timeline > Slot Header
           ----------------------------------------------------------------------------------------- */
 
-          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
+          slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => cn(
+          slotHeaderInnerClass: (info) => cn(
             'p-2 text-sm',
-            data.hasNavLink && 'hover:underline',
+            info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b',
 

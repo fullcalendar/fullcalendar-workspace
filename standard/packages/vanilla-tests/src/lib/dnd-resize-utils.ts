@@ -227,11 +227,11 @@ export function testSelection(options, start, end, expectSuccess) {
     }
 
     options.selectable = true
-    options.select = (data) => {
+    options.select = (info) => {
       successfulSelection =
-        data.allDay === allDay &&
-        data.start.valueOf() === start.valueOf() &&
-        data.end.valueOf() === end.valueOf()
+        info.allDay === allDay &&
+        info.start.valueOf() === start.valueOf() &&
+        info.end.valueOf() === end.valueOf()
     }
     spyOn(options, 'select').and.callThrough()
 

@@ -3,7 +3,7 @@ import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNa
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { Group } from '../../../resource/common/resource-hierarchy'
-import { GroupSpec, ResourceGroupLaneData } from '../../structs'
+import { GroupSpec, ResourceGroupLaneInfo } from '../../structs'
 
 export interface GroupLaneProps {
   group: Group
@@ -37,7 +37,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     let { props, context } = this
     let { group } = props
     let groupSpec = group.spec as GroupSpec // type HACK
-    let renderProps: ResourceGroupLaneData = {
+    let renderProps: ResourceGroupLaneInfo = {
       fieldValue: group.value,
       view: context.viewApi,
     }

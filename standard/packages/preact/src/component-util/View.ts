@@ -5,7 +5,7 @@ import { sliceEventStore, EventRenderRange } from './event-rendering'
 import { DateSpan } from '../structs/date-span'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { Duration } from '@full-ui/headless-calendar'
-import { ViewDisplayData } from '../common/ViewContainer'
+import { ViewDisplayInfo } from '../common/ViewContainer'
 
 export interface ViewProps {
   className?: string
@@ -26,7 +26,7 @@ export interface ViewProps {
 
 // HELPERS
 
-export type ViewContentData = ViewProps & ViewDisplayData & {
+export type ViewContentData = ViewProps & ViewDisplayInfo & {
   nextDayThreshold: Duration
 }
 

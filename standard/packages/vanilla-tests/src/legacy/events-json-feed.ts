@@ -117,8 +117,8 @@ describe('events as a json feed', () => {
         className: 'customeventclass',
       }],
       timeZone,
-      eventDidMount(data) {
-        expect(data.el).toHaveClass('customeventclass')
+      eventDidMount(info) {
+        expect(info.el).toHaveClass('customeventclass')
         done()
       },
     })

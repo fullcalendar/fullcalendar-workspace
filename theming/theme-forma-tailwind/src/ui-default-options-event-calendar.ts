@@ -115,15 +115,15 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: (data) => joinClassNames(
+    className: (info) => joinClassNames(
       'text-(--fc-forma-foreground)',
-      !(data.borderlessTop || data.borderlessBottom || data.borderlessX) && 'rounded-sm shadow-xs',
+      !(info.borderlessTop || info.borderlessBottom || info.borderlessX) && 'rounded-sm shadow-xs',
     ),
 
-    viewClass: (data) => {
-      const hasBorderTop = data.isFirst && !data.borderlessTop
-      const hasBorderBottom = data.isLast && !data.borderlessBottom
-      const hasBorderX = !data.borderlessX
+    viewClass: (info) => {
+      const hasBorderTop = info.isFirst && !info.borderlessTop
+      const hasBorderBottom = info.isLast && !info.borderlessBottom
+      const hasBorderX = !info.borderlessX
 
       return joinClassNames(
         'bg-(--fc-forma-background) border-(--fc-forma-border)',
@@ -132,46 +132,46 @@ export const defaultUiEventCalendarOptions: {
         hasBorderX && 'border-x',
         (hasBorderTop && hasBorderX) && 'rounded-t-sm',
         (hasBorderBottom && hasBorderX) && 'rounded-b-sm',
-        !data.isHeightAuto && 'overflow-hidden',
+        !info.isHeightAuto && 'overflow-hidden',
       )
     },
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => joinClassNames(
+    toolbarClass: (info) => joinClassNames(
       'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
       'bg-(--fc-forma-background) border-(--fc-forma-border)',
-      !data.borderlessX && 'border-x',
+      !info.borderlessX && 'border-x',
     ),
-    headerToolbarClass: (data) => joinClassNames(
+    headerToolbarClass: (info) => joinClassNames(
       'border-b',
-      !data.borderlessTop && 'border-t',
-      !(data.borderlessTop || data.borderlessX) && 'rounded-t-sm',
+      !info.borderlessTop && 'border-t',
+      !(info.borderlessTop || info.borderlessX) && 'rounded-t-sm',
     ),
-    footerToolbarClass: (data) => joinClassNames(
+    footerToolbarClass: (info) => joinClassNames(
       'border-t',
-      !data.borderlessBottom && 'border-b',
-      !(data.borderlessBottom || data.borderlessX) && 'rounded-b-sm',
+      !info.borderlessBottom && 'border-b',
+      !(info.borderlessBottom || info.borderlessX) && 'rounded-b-sm',
     ),
 
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
     buttonGroupClass: 'flex flex-row items-center',
-    buttonClass: (data) => joinClassNames(
+    buttonClass: (info) => joinClassNames(
       'group py-1.5 rounded-sm flex flex-row items-center text-sm',
-      data.isIconOnly ? 'px-2' : 'px-3',
-      data.isIconOnly
+      info.isIconOnly ? 'px-2' : 'px-3',
+      info.isIconOnly
         // ghost-button
         ? mutedHoverButtonClass
-        : data.inSelectGroup
-          ? data.isSelected
+        : info.inSelectGroup
+          ? info.isSelected
             // select-group SELECTED
             ? selectedButtonClass
             // select-group NOT-selected
             : unselectedButtonClass
-          : data.isPrimary
+          : info.isPrimary
             // primary button
             ? primaryButtonClass
             // secondary button

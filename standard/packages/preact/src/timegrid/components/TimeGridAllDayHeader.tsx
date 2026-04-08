@@ -1,4 +1,4 @@
-import { AllDayHeaderData } from '../../render-hook-misc'
+import { AllDayHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { BaseComponent, setRef } from '../../vdom-util'
@@ -26,7 +26,7 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
   render() {
     let { props } = this
     let { options, viewApi } = this.context
-    let renderProps: AllDayHeaderData = {
+    let renderProps: AllDayHeaderInfo = {
       text: options.allDayText,
       view: viewApi,
       isNarrow: props.isNarrow,
@@ -87,6 +87,6 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
   }
 }
 
-function renderAllDayInner(renderProps: AllDayHeaderData): ReactNode {
+function renderAllDayInner(renderProps: AllDayHeaderInfo): ReactNode {
   return renderProps.text
 }

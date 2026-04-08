@@ -20,13 +20,13 @@ export function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign='center'
-      resourceDayHeaderClass={(data) => cn(
+      resourceDayHeaderClass={(info) => cn(
         'border',
-        data.isMajor && 'border-foreground/20',
+        info.isMajor && 'border-foreground/20',
       )}
-      resourceDayHeaderInnerClass={(data) => cn(
+      resourceDayHeaderInnerClass={(info) => cn(
         'px-1 py-0.5 flex flex-col',
-        data.isNarrow ? xxsTextClass : 'text-sm',
+        info.isNarrow ? xxsTextClass : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -50,7 +50,7 @@ export function SchedulerViews({
 
       resourceGroupLaneClass='border bg-foreground/5'
       resourceLaneClass='border'
-      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-3')}
+      resourceLaneBottomClass={(info) => cn(info.options.eventOverlap && 'h-3')}
       timelineBottomClass='h-3'
 
       /* View-Specific Options
@@ -63,18 +63,18 @@ export function SchedulerViews({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => cn(
-            data.isEnd && 'me-px',
+          rowEventClass: (info) => cn(
+            info.isEnd && 'me-px',
             'items-center',
           ),
-          rowEventBeforeClass: (data) => cn(
-            !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+          rowEventBeforeClass: (info) => cn(
+            !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
           ),
-          rowEventAfterClass: (data) => cn(
-            !data.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+          rowEventAfterClass: (info) => cn(
+            !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
           ),
-          rowEventInnerClass: (data) => (
-            data.options.eventOverlap
+          rowEventInnerClass: (info) => (
+            info.options.eventOverlap
               ? 'py-0.5'
               : 'py-1.5'
           ),
@@ -90,11 +90,11 @@ export function SchedulerViews({
           /* Timeline > Slot Header
           --------------------------------------------------------------------------------------- */
 
-          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
+          slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => cn(
+          slotHeaderInnerClass: (info) => cn(
             'p-2 text-sm',
-            data.hasNavLink && 'hover:underline',
+            info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b',
 

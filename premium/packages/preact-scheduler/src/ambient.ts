@@ -27,7 +27,7 @@ declare module '@fullcalendar/preact/public-api' {
     resource?: ResourceApi
   }
 
-  interface EventDropData {
+  interface EventDropInfo {
     oldResource?: ResourceApi
     newResource?: ResourceApi
   }

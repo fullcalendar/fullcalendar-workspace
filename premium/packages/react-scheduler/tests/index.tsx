@@ -29,7 +29,7 @@ it('render custom event JSX during print-mode', async () => {
           start: NOW_DATE,
         }
       ]}
-      eventContent={(data) => <i>{data.event.title}</i>}
+      eventContent={(info) => <i>{data.event.title}</i>}
       eventClass={PRINT_EVENT_CLASS}
     />
   )

@@ -136,11 +136,11 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-06-05', end: '2020-06-09', title: 'event b' },
         { start: '2020-06-08T12:00:00', title: 'event c' },
       ],
-      eventContent(data) { // creates varying-height events, which revealed the bug
+      eventContent(info) { // creates varying-height events, which revealed the bug
         return {
           html: `
-            <b>${data.timeText}</b>
-            <i>${data.event.title}</i>
+            <b>${info.timeText}</b>
+            <i>${info.event.title}</i>
           `,
         }
       },
@@ -316,8 +316,8 @@ describe('dayGrid advanced event rendering', () => {
         { id: '2', start: '2020-05-03', end: '2020-05-08' },
         { id: '3', start: '2020-05-04' },
       ],
-      eventDidMount(data) {
-        data.el.setAttribute('data-event-id', data.event.id) // TODO: more formal system for this
+      eventDidMount(info) {
+        info.el.setAttribute('info-event-id', info.event.id) // TODO: more formal system for this
       },
     })
     await waitTimeout()
@@ -327,9 +327,9 @@ describe('dayGrid advanced event rendering', () => {
     let visibleEventEls = filterVisibleEls(eventEls)
     expect(anyElsIntersect(visibleEventEls)).toBe(false)
 
-    let el1 = document.querySelector('[data-event-id="1"]')
-    let el2 = document.querySelector('[data-event-id="2"]')
-    let el3 = document.querySelector('[data-event-id="3"]')
+    let el1 = document.querySelector('[info-event-id="1"]')
+    let el2 = document.querySelector('[info-event-id="2"]')
+    let el3 = document.querySelector('[info-event-id="3"]')
     let top1 = el1.getBoundingClientRect().top
     let top2 = el2.getBoundingClientRect().top
     let top3 = el3.getBoundingClientRect().top
@@ -345,8 +345,8 @@ describe('dayGrid advanced event rendering', () => {
       eventOrder: 'title',
       eventOrderStrict: true,
       dayMaxEventRows: 4,
-      eventDidMount(data) {
-        data.el.setAttribute('data-event-id', data.event.id) // TODO: more formal system for this
+      eventDidMount(info) {
+        info.el.setAttribute('info-event-id', info.event.id) // TODO: more formal system for this
       },
       events: [
         {
@@ -394,8 +394,8 @@ describe('dayGrid advanced event rendering', () => {
     let visibleEventEls = filterVisibleEls(eventEls)
     expect(anyElsIntersect(visibleEventEls)).toBe(false)
 
-    let rect0 = document.querySelector('[data-event-id="d"]').getBoundingClientRect()
-    let rect1 = document.querySelector('[data-event-id="f"]').getBoundingClientRect()
+    let rect0 = document.querySelector('[info-event-id="d"]').getBoundingClientRect()
+    let rect1 = document.querySelector('[info-event-id="f"]').getBoundingClientRect()
     expect(rect1.top - rect0.bottom).toBeLessThan(2)
   })
 

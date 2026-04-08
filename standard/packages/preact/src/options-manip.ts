@@ -4,7 +4,7 @@ import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
 
 type ClassNameInput = string | undefined
-type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput
+type FuncishClassNameInput = ((info: any) => ClassNameInput) | ClassNameInput
 
 const classNamesRe = /(^c|C)lass(Name)?$/
 const contentRe = /Content$/
@@ -72,10 +72,10 @@ export function joinFuncishClassNames(
   const isFunc1 = typeof input1 === 'function'
 
   if (isFunc0 || isFunc1) {
-    const combinedFunc = (data: any) => {
+    const combinedFunc = (info: any) => {
       return joinArrayishClassNames(
-        isFunc0 ? input0(data) : input0,
-        isFunc1 ? input1(data) : input1
+        isFunc0 ? input0(info) : input0,
+        isFunc1 ? input1(info) : input1
       )
     }
     (combinedFunc as any).parts = [input0, input1] // see CalendarDataManager::processRawCalendarOptions

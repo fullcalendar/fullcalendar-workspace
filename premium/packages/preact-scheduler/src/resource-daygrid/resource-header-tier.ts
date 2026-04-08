@@ -2,11 +2,11 @@ import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, get
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { Resource } from '../resource/structs/resource'
-import { ResourceDayHeaderData } from './structs'
+import { ResourceDayHeaderInfo } from './structs'
 
 // TODO: figure out plugin-types
-// import { DayHeaderData } from '../../../../standard/packages/daygrid/src/structs'
-type DayHeaderData = any
+// import { DayHeaderInfo } from '../../../../standard/packages/daygrid/src/structs'
+type DayHeaderInfo = any
 
 export function buildResourceRowConfigs(
   resources: Resource[],
@@ -17,7 +17,7 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<any, DayHeaderData | ResourceDayHeaderData>[] {
+): RowConfig<any, DayHeaderInfo | ResourceDayHeaderInfo>[] {
   if (!resources.length) {
     return [
       buildDateRowConfig(
@@ -126,7 +126,7 @@ function buildResourceRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<ResourceDayHeaderData> {
+): RowConfig<ResourceDayHeaderInfo> {
   return {
     isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
@@ -142,7 +142,7 @@ function buildResourceRowConfig(
   }
 }
 
-function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceDayHeaderData> {
+function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceDayHeaderInfo> {
   const { options } = context
 
   return {
@@ -165,7 +165,7 @@ function buildResourceDataConfigs(
   context: ViewContext,
   colSpan = 1,
   isMajorMod?: number,
-): CellDataConfig<ResourceDayHeaderData>[] {
+): CellDataConfig<ResourceDayHeaderInfo>[] {
   const dateMeta = dateMarker
     ? getDateMeta(dateMarker, context.dateEnv, dateProfile, todayRange)
     : {}

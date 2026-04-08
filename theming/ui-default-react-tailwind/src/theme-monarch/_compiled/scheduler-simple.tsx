@@ -32,13 +32,13 @@ export function Scheduler({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => joinClassNames(
+      resourceDayHeaderClass={(info) => joinClassNames(
         'border',
-        data.isMajor ? 'border-(--fc-monarch-strong-border)' : 'border-(--fc-monarch-border)',
+        info.isMajor ? 'border-(--fc-monarch-strong-border)' : 'border-(--fc-monarch-border)',
       )}
-      resourceDayHeaderInnerClass={(data) => joinClassNames(
+      resourceDayHeaderInnerClass={(info) => joinClassNames(
         'p-2 flex flex-col',
-        data.isNarrow ? 'text-xs' : 'text-sm',
+        info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
       /* Resource Data Grid
@@ -53,10 +53,10 @@ export function Scheduler({
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-1 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass}`}
-      resourceExpanderContent={(data) => chevronDown(
+      resourceExpanderContent={(info) => chevronDown(
         joinClassNames(
           `size-4 ${mutedFgPressableGroupClass}`,
-          !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
+          !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
         ),
       )}
       resourceHeaderRowClass="border border-(--fc-monarch-border)"
@@ -68,7 +68,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-monarch-border) bg-(--fc-monarch-faint)"
       resourceLaneClass="border border-(--fc-monarch-border)"
-      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
+      resourceLaneBottomClass={(info) => joinClassNames(info.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
 
       /* View-Specific Options
@@ -89,8 +89,8 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+          rowEventClass: (info) => joinClassNames(info.isEnd && 'me-px'),
+          rowEventInnerClass: (info) => info.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
@@ -102,40 +102,40 @@ export function Scheduler({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderSticky: '0.5rem',
-          slotHeaderAlign: (data) => (
-            (data.level || data.isTime)
+          slotHeaderAlign: (info) => (
+            (info.level || info.isTime)
               ? 'start'
               : 'center'
           ),
-          slotHeaderClass: (data) => joinClassNames(
+          slotHeaderClass: (info) => joinClassNames(
             'border',
-            data.level
+            info.level
               ? 'border-transparent justify-start'
               : joinClassNames(
                   'border-(--fc-monarch-border)',
-                  data.isTime
+                  info.isTime
                     ? 'h-2 self-end justify-end'
                     : 'justify-center',
                 ),
           ),
-          slotHeaderInnerClass: (data) => joinClassNames(
+          slotHeaderInnerClass: (info) => joinClassNames(
             'text-sm',
-            data.level
+            info.level
               ? joinClassNames(
                   'my-0.5 px-2 py-1 rounded-full',
-                  data.hasNavLink
+                  info.hasNavLink
                     ? secondaryPressableClass
                     : secondaryClass,
                 )
               : joinClassNames(
                   'px-2',
-                  data.isTime
+                  info.isTime
                     ? joinClassNames(
                         'pb-3 relative -start-3',
-                        data.isFirst && 'hidden',
+                        info.isFirst && 'hidden',
                       )
                     : 'py-2',
-                  data.hasNavLink && 'hover:underline',
+                  info.hasNavLink && 'hover:underline',
                 )
           ),
           slotHeaderDividerClass: 'border-b border-(--fc-monarch-border)',

@@ -30,11 +30,11 @@ describe('unselectAuto', () => {
           unselectResolve = resolve
         })
         let calendar = initCalendar({
-          unselect(data) {
+          unselect(info) {
             if (!isDone) {
               expect(dayGridWrapper.getHighlightEls().length).toBe(0)
-              expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
-              expect(typeof data.view).toBe('object')
+              expect('currentTarget' in info.jsEvent).toBe(true) // a JS event
+              expect(typeof info.view).toBe('object')
               isDone = true
               unselectResolve()
             }
@@ -64,11 +64,11 @@ describe('unselectAuto', () => {
           unselectResolve = resolve
         })
         let calendar = initCalendar({
-          unselect(data) {
+          unselect(info) {
             if (!isDone) {
               expect(dayGridWrapper.getHighlightEls().length).toBe(0)
-              expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
-              expect(typeof data.view).toBe('object')
+              expect('currentTarget' in info.jsEvent).toBe(true) // a JS event
+              expect(typeof info.view).toBe('object')
               isDone = true
               unselectResolve()
             }

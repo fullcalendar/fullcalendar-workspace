@@ -1,5 +1,5 @@
 import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook'
-import { DayHeaderData } from '../render-hook-misc'
+import { DayHeaderInfo } from '../render-hook-misc'
 import { buildDateStr, buildNavLinkAttrs } from '../common/nav-link'
 import { computeMajorUnit, isMajorUnit } from '../DateProfileGenerator'
 import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
@@ -19,7 +19,7 @@ export interface CellRenderConfig<BaseRenderProps, RenderProps = BaseRenderProps
   classNameGenerator: ClassNameGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
-  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end'),
+  align: 'start' | 'center' | 'end' | ((info: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end'),
   sticky: boolean | number | string,
   dayHeaderFormat?: DateFormatter,
   datesRepDistinctDays?: boolean,
@@ -43,11 +43,11 @@ export interface RowConfig<BaseRenderProps, RenderProps = BaseRenderProps> {
 }
 
 export interface BaseDayHeaderData extends DateMeta {
-  isMajor: DayHeaderData['isMajor']
-  isSticky: DayHeaderData['isSticky']
-  inPopover: DayHeaderData['inPopover']
-  hasNavLink: DayHeaderData['hasNavLink']
-  view: DayHeaderData['view']
+  isMajor: DayHeaderInfo['isMajor']
+  isSticky: DayHeaderInfo['isSticky']
+  inPopover: DayHeaderInfo['inPopover']
+  hasNavLink: DayHeaderInfo['hasNavLink']
+  view: DayHeaderInfo['view']
   [otherProp: string]: any
 }
 
@@ -67,7 +67,7 @@ export function buildDateRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<BaseDayHeaderData, DayHeaderData>[] {
+): RowConfig<BaseDayHeaderData, DayHeaderInfo>[] {
   const rowConfig = buildDateRowConfig(
     dates,
     datesRepDistinctDays,
@@ -105,7 +105,7 @@ export function buildDateRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<BaseDayHeaderData, DayHeaderData> {
+): RowConfig<BaseDayHeaderData, DayHeaderInfo> {
   return {
     isDateRow: true,
     renderConfig: buildDateRenderConfig(dayHeaderFormat, datesRepDistinctDays, context),
@@ -134,7 +134,7 @@ export function buildDateRenderConfig(
   dayHeaderFormat: DateFormatter,
   datesRepDistinctDays: boolean,
   context: ViewContext,
-): CellRenderConfig<BaseDayHeaderData, DayHeaderData> {
+): CellRenderConfig<BaseDayHeaderData, DayHeaderInfo> {
   const { options } = context
 
   return {

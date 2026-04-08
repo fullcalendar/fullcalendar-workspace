@@ -2,7 +2,7 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
-import { ColSpec, ResourceGroupHeaderData } from '../../structs'
+import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
 
 export interface ResourceGroupSubrowProps {
   colSpec: ColSpec
@@ -42,7 +42,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
     let { props, context } = this
     let { options } = context
     let { colSpec } = props
-    let renderProps: ResourceGroupHeaderData = {
+    let renderProps: ResourceGroupHeaderInfo = {
       fieldValue: props.fieldValue,
       view: context.viewApi,
     }
@@ -120,6 +120,6 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
   }
 }
 
-function renderGroupInner(renderProps: ResourceGroupHeaderData): ReactNode {
+function renderGroupInner(renderProps: ResourceGroupHeaderInfo): ReactNode {
   return renderProps.fieldValue || <>&nbsp;</>
 }

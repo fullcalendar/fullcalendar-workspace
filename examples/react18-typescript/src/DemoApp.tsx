@@ -1,9 +1,9 @@
 import React from 'react'
 import {
   EventApi,
-  DateSelectData,
-  EventClickData,
-  EventDisplayData,
+  DateSelectInfo,
+  EventClickInfo,
+  EventDisplayInfo,
   formatDate,
 } from '@fullcalendar/react'
 import FullCalendar from '@fullcalendar/react'
@@ -100,9 +100,9 @@ export default class DemoApp extends React.Component<{}, DemoAppState> {
     })
   }
 
-  handleDateSelect = (selectData: DateSelectData) => {
+  handleDateSelect = (selectInfo: DateSelectInfo) => {
     let title = prompt('Please enter a new title for your event')
-    let calendarApi = selectData.view.calendar
+    let calendarApi = selectInfo.view.calendar
 
     calendarApi.unselect() // clear date selection
 
@@ -110,16 +110,16 @@ export default class DemoApp extends React.Component<{}, DemoAppState> {
       calendarApi.addEvent({
         id: createEventId(),
         title,
-        start: selectData.startStr,
-        end: selectData.endStr,
-        allDay: selectData.allDay
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
       })
     }
   }
 
-  handleEventClick = (clickData: EventClickData) => {
-    if (confirm(`Are you sure you want to delete the event '${clickData.event.title}'`)) {
-      clickData.event.remove()
+  handleEventClick = (clickInfo: EventClickInfo) => {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove()
     }
   }
 
@@ -131,11 +131,11 @@ export default class DemoApp extends React.Component<{}, DemoAppState> {
 
 }
 
-function renderEventContent(data: EventDisplayData) {
+function renderEventContent(info: EventDisplayInfo) {
   return (
     <>
-      <b>{data.timeText}</b>
-      <i>{data.event.title}</i>
+      <b>{info.timeText}</b>
+      <i>{info.event.title}</i>
     </>
   )
 }

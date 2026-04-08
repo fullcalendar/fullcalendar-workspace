@@ -1,4 +1,4 @@
-import { InlineWeekNumberData } from '../../common/WeekNumberContainer'
+import { InlineWeekNumberInfo } from '../../common/WeekNumberContainer'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
@@ -158,7 +158,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         ref={this.handleRootEl}
       >
         {(props.showWeekNumbers && !props.cellIsMicro) && (
-          <ContentContainer<InlineWeekNumberData>
+          <ContentContainer<InlineWeekNumberInfo>
             tag='div'
             attrs={{
               ...(
@@ -461,7 +461,7 @@ function buildWeekNumberRenderProps(
   context: ViewContext,
   isNarrow: boolean,
   hasNavLink: boolean,
-): InlineWeekNumberData {
+): InlineWeekNumberInfo {
   const { dateEnv, options } = context
   const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
   const weekNumTextParts = dateEnv.formatToParts(

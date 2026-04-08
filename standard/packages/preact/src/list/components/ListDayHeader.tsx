@@ -6,7 +6,7 @@ import { formatDayString } from '@full-ui/headless-calendar'
 import type { ViewSpec } from '../../structs/view-spec'
 import { WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from '../../util/date-format'
 import classNames from '../../styles.module.css'
-import { ListDayHeaderData } from '../structs'
+import { ListDayHeaderInfo } from '../structs'
 import { ListDayHeaderInner } from "./ListDayHeaderInner";
 
 export interface ListDayHeaderProps {
@@ -24,7 +24,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     const listDayFormat = options.listDayFormat ?? createDefaultListDayFormat(viewSpec)
     const listDaySideFormat = options.listDaySideFormat ?? createDefaultListDaySideFormat(viewSpec)
 
-    let renderProps: ListDayHeaderData = {
+    let renderProps: ListDayHeaderInfo = {
       ...dateMeta,
       view: viewApi,
     }

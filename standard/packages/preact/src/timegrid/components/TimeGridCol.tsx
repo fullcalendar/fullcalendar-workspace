@@ -1,4 +1,4 @@
-import { DayLaneData } from '../../common/DayLaneContainer'
+import { DayLaneInfo } from '../../common/DayLaneContainer'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
 import { BgEvent, renderFill } from '../../common/bg-fill'
@@ -85,7 +85,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     const isStack = this.getIsStack()
-    const renderProps: DayLaneData = {
+    const renderProps: DayLaneInfo = {
       ...dateMeta,
       ...props.renderProps,
       isStack,

@@ -8,8 +8,8 @@ describe('print preview', () => {
       { id: '2', start: '2019-04-08T05:00:00' },
       { id: '1', start: '2019-04-08T01:00:00' },
     ],
-    eventDidMount(data) {
-      data.el.setAttribute('data-id', data.event.id)
+    eventDidMount(info) {
+      info.el.setAttribute('data-id', info.event.id)
     },
   })
 
