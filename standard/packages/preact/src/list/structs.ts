@@ -10,7 +10,7 @@ export interface ListDayInfo extends DateMeta {
 export interface ListDayHeaderInfo extends DateMeta {
   view: ViewApi
 }
-export interface ListDayEventsData extends DateMeta {
+export interface ListDayEventsInfo extends DateMeta {
   view: ViewApi
 }
 

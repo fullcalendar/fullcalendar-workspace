@@ -728,7 +728,7 @@ it('custom view receives enough props for slicing', () => {
 })
 
 
-// FullCalendar info utils
+// FullCalendar data utils
 // -------------------------------------------------------------------------------------------------
 
 function buildToolbar() {

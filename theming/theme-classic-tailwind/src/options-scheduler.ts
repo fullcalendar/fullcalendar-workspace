@@ -60,7 +60,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceHeaderRowClass: `border ${params.borderColorClass}`,
       resourceRowClass: `border ${params.borderColorClass}`,
 
-      // divider between info grid & timeline
+      // divider between data grid & timeline
       resourceColumnDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
 
       /* Timeline Lane

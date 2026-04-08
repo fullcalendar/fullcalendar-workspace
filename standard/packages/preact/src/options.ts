@@ -62,7 +62,7 @@ import { createFormatter } from './datelib/formatting'
 import { parseFieldSpecs } from './util/misc'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object'
 import { isMaybeArraysEqual } from './util/array'
-import { ListDayInfo, ListDayEventsData, ListDayHeaderInfo, ListDayHeaderInnerInfo } from './list/structs'
+import { ListDayInfo, ListDayEventsInfo, ListDayHeaderInfo, ListDayHeaderInnerInfo } from './list/structs'
 import { NoEventsInfo } from './list/components/ListView'
 import { SingleMonthInfo, SingleMonthHeaderInfo } from './multimonth/structs'
 import { DateClickInfo } from './interaction-plugin/interactions/DateClicking'
@@ -453,7 +453,7 @@ export const BASE_OPTION_REFINERS = {
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerInfo>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerInfo>>,
   //
-  listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayEventsData>>,
+  listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayEventsInfo>>,
   //
   noEventsClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
   noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
