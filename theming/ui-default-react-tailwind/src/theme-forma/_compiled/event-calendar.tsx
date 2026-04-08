@@ -222,7 +222,7 @@ export function EventCalendar({
         info.isIconOnly ? 'px-2' : 'px-3',
         info.isIconOnly
           ? mutedHoverButtonClass
-          : info.inSelectGroup
+          : info.buttonGroup?.hasSelection
             ? info.isSelected
               ? selectedButtonClass
               : unselectedButtonClass

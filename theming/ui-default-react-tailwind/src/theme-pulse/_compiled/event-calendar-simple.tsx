@@ -186,7 +186,7 @@ export function EventCalendar({
       buttonClass={(info) => joinClassNames(
         'group py-2 flex flex-row items-center text-sm button-reset',
         info.isIconOnly ? 'px-2.5' : 'px-4',
-        info.inSelectGroup
+        info.buttonGroup?.hasSelection
           ? joinClassNames(
               'rounded-sm',
               info.isSelected
@@ -198,18 +198,18 @@ export function EventCalendar({
             )
           : joinClassNames(
               'border',
-              !info.inGroup
+              !info.buttonGroup
                 ? 'rounded-sm'
                 : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
               info.isPrimary
                 ? joinClassNames(
                     primaryButtonClass,
-                    !info.inGroup && largeBoxShadowClass,
+                    !info.buttonGroup && largeBoxShadowClass,
                   )
                 : joinClassNames(
                     secondaryButtonClass,
                     'border-(--fc-pulse-strong-border)',
-                    !info.inGroup
+                    !info.buttonGroup
                       ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
                       : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
                   )

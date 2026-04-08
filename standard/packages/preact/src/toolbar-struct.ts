@@ -35,8 +35,7 @@ export interface ButtonInfo {
   isSelected: boolean
   isDisabled: boolean
   isIconOnly: boolean
-  inGroup: boolean
-  inSelectGroup: boolean
+  buttonGroup: ButtonGroupInfo | null
 }
 
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'

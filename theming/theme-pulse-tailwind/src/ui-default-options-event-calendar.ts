@@ -152,7 +152,7 @@ export const defaultUiEventCalendarOptions: {
     buttonClass: (info) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',
       info.isIconOnly ? 'px-2.5' : 'px-4',
-      info.inSelectGroup
+      info.buttonGroup?.hasSelection
         // all select-group buttons
         ? joinClassNames(
             'rounded-sm',
@@ -166,20 +166,20 @@ export const defaultUiEventCalendarOptions: {
         // primary/secondary buttons
         : joinClassNames(
             'border',
-            !info.inGroup
+            !info.buttonGroup
               ? 'rounded-sm'
               : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
             info.isPrimary
               // primary
               ? joinClassNames(
                   primaryButtonClass,
-                  !info.inGroup && largeBoxShadowClass,
+                  !info.buttonGroup && largeBoxShadowClass,
                 )
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
                   'border-(--fc-pulse-strong-border)',
-                  !info.inGroup
+                  !info.buttonGroup
                     ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
                     : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
                 )

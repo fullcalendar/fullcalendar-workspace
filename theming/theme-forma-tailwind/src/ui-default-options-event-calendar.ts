@@ -165,7 +165,7 @@ export const defaultUiEventCalendarOptions: {
       info.isIconOnly
         // ghost-button
         ? mutedHoverButtonClass
-        : info.inSelectGroup
+        : info.buttonGroup?.hasSelection
           ? info.isSelected
             // select-group SELECTED
             ? selectedButtonClass

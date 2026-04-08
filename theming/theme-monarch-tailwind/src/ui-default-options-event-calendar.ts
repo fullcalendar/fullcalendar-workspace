@@ -153,8 +153,8 @@ export const defaultUiEventCalendarOptions: {
     buttonClass: (info) => joinClassNames(
       'py-2.5 rounded-full flex flex-row items-center text-sm',
       info.isIconOnly ? 'px-2.5' : 'px-5',
-      info.inSelectGroup && '-m-px', // overcome select-group border
-      (info.isIconOnly || (info.inSelectGroup && !info.isSelected))
+      info.buttonGroup?.hasSelection && '-m-px', // overcome select-group border
+      (info.isIconOnly || (info.buttonGroup?.hasSelection && !info.isSelected))
         ? unselectedButtonClass
         : info.isSelected
           ? selectedButtonClass

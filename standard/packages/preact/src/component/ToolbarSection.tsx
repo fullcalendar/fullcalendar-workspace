@@ -1,6 +1,6 @@
 import { createElement, type ReactNode, type ReactElement } from 'react'
 import { BaseComponent } from '../vdom-util'
-import { ToolbarWidget, ButtonInfo } from '../toolbar-struct'
+import { ToolbarWidget, ButtonInfo, ButtonGroupInfo } from '../toolbar-struct'
 import { joinArrayishClassNames, joinClassNames } from '../util/html'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ButtonIcon } from './ButtonIcon'
@@ -100,7 +100,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         }
 
         let inGroup = widgetGroup.length > 1 && isOnlyButtons
-        let inViewGroup = inGroup && isOnlyView
+        let buttonGroup: ButtonGroupInfo | null = inGroup ? { hasSelection: isOnlyView } : null
         let renderProps: ButtonInfo = {
           name,
           text: widget.buttonText,
@@ -108,8 +108,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           isSelected,
           isDisabled,
           isIconOnly: buttonDisplay === 'icon',
-          inGroup,
-          inSelectGroup: inViewGroup,
+          buttonGroup,
         }
 
         children.push(

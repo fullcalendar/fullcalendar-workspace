@@ -98,10 +98,10 @@ export const defaultUiEventCalendarOptions: {
       'print:bg-white',
       'text-sm text-(--fc-classic-button-foreground) print:text-black',
       info.isIconOnly ? 'px-2.5' : 'px-3',
-      info.inGroup
+      info.buttonGroup
         ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
         : 'rounded-[4px]',
-      info.isSelected // implies inGroup
+      info.isSelected
         ? 'border-(--fc-classic-button-strong-border) bg-(--fc-classic-button-strong)'
         : 'border-(--fc-classic-button-border) hover:border-(--fc-classic-button-strong-border) active:border-(--fc-classic-button-strong-border) print:border-(--fc-classic-button-strong-border) bg-(--fc-classic-button) hover:bg-(--fc-classic-button-strong) active:bg-(--fc-classic-button-strong)',
       info.isDisabled

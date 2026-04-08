@@ -143,7 +143,7 @@ export function EventCalendar({
       buttonClass={(info) => joinClassNames(
         'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-(--fc-classic-button-outline) print:bg-white text-sm text-(--fc-classic-button-foreground) print:text-black button-reset',
         info.isIconOnly ? 'px-2.5' : 'px-3',
-        info.inGroup
+        info.buttonGroup
           ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
           : 'rounded-[4px]',
         info.isSelected

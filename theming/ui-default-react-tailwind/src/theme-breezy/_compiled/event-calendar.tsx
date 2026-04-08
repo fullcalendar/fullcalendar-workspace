@@ -248,7 +248,7 @@ export function EventCalendar({
       buttonClass={(info) => joinClassNames(
         'group py-2 flex flex-row items-center text-sm',
         info.isIconOnly ? 'px-2' : 'px-3',
-        info.inSelectGroup ? joinClassNames(
+        info.buttonGroup?.hasSelection ? joinClassNames(
           'rounded-md font-medium',
           info.isSelected
             ? selectedClass
@@ -258,7 +258,7 @@ export function EventCalendar({
           info.isPrimary
             ? primaryButtonClass
             : secondaryButtonClass,
-          info.inGroup
+          info.buttonGroup
             ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
             : 'rounded-md shadow-xs border',
         ),
