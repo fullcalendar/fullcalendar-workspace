@@ -512,7 +512,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
       ),
 
-      listDayEventsClass: `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md`,
+      listDayBodyClass: `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md`,
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

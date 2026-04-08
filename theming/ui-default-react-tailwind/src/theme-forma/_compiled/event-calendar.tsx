@@ -474,7 +474,7 @@ export function EventCalendar({
       /* Popover
       ------------------------------------------------------------------------------------------- */
 
-      dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
+      popoverFormat={{ day: 'numeric', weekday: 'long' }}
       popoverClass="border border-(--fc-forma-border) bg-(--fc-forma-background) text-(--fc-forma-foreground) shadow-md min-w-55"
       popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => dismiss(`size-5 ${mutedFgPressableGroupClass}`)}
@@ -512,7 +512,7 @@ export function EventCalendar({
           : 'text-xs',
         info.hasNavLink && 'hover:underline',
       )}
-      listDayEventsClass="grow min-w-0 p-4 gap-4"
+      listDayBodyClass="grow min-w-0 p-4 gap-4"
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

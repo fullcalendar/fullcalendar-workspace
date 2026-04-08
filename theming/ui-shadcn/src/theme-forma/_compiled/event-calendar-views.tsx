@@ -295,7 +295,7 @@ export function EventCalendarViews({
       /* Popover
       ----------------------------------------------------------------------------------------- */
 
-      dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
+      popoverFormat={{ day: 'numeric', weekday: 'long' }}
       popoverClass="border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-55"
       popoverCloseClass="group absolute top-1 end-1 p-1 rounded-sm hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
 
@@ -332,7 +332,7 @@ export function EventCalendarViews({
           : 'text-xs',
         info.hasNavLink && 'hover:underline',
       )}
-      listDayEventsClass="grow min-w-0 p-4 gap-4"
+      listDayBodyClass="grow min-w-0 p-4 gap-4"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */

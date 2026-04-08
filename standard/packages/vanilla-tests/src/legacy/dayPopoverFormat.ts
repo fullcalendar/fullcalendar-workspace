@@ -2,7 +2,7 @@ import frLocale from 'fullcalendar/locales/fr'
 import { waitTimeout } from '../lib/misc'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 
-describe('dayPopoverFormat', () => {
+describe('popoverFormat', () => {
   pushOptions({
     initialDate: '2014-08-01',
     dayMaxEventRows: 3,
@@ -16,7 +16,7 @@ describe('dayPopoverFormat', () => {
 
   it('can be set to a custom value', async () => {
     let calendar = initCalendar({
-      dayPopoverFormat: { month: 'long', day: 'numeric' },
+      popoverFormat: { month: 'long', day: 'numeric' },
     })
     await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -41,7 +41,7 @@ describe('dayPopoverFormat', () => {
   it('still maintains the same format when explicitly set, and there is a locale', async () => {
     let calendar = initCalendar({
       locale: frLocale,
-      dayPopoverFormat: { year: 'numeric' },
+      popoverFormat: { year: 'numeric' },
     })
     await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid

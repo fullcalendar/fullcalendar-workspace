@@ -410,7 +410,7 @@ export default function EventCalendarViews({
               : tertiaryClass
           : info.hasNavLink && mutedHoverPressableClass,
       )}
-      listDayEventsClass="mt-px px-1.5 py-2 gap-2"
+      listDayBodyClass="mt-px px-1.5 py-2 gap-2"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */

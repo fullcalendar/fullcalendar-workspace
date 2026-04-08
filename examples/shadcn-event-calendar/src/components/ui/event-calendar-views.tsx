@@ -380,7 +380,7 @@ export function EventCalendarViews({
               info.hasNavLink && 'hover:bg-foreground/5 hover:text-muted-foreground',
             ]
       )}
-      listDayEventsClass="my-4 grow min-w-0 border rounded-md"
+      listDayBodyClass="my-4 grow min-w-0 border rounded-md"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */

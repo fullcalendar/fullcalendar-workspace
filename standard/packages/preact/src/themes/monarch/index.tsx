@@ -439,7 +439,7 @@ export default {
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    dayPopoverFormat: { day: 'numeric', weekday: 'short' },
+    popoverFormat: { day: 'numeric', weekday: 'short' },
     popoverClass: "border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60 root-reset",
     popoverCloseClass: `group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
@@ -488,7 +488,7 @@ export default {
             info.hasNavLink && 'hover:underline',
           )
     ),
-    listDayEventsClass: "grow min-w-0 py-2 gap-1",
+    listDayBodyClass: "grow min-w-0 py-2 gap-1",
 
     /* Single Month (in Multi-Month)
     --------------------------------------------------------------------------------------------- */

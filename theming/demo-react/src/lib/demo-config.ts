@@ -56,7 +56,7 @@ export const eventCalendarProps: EventCalendarProps = {
   // expandRows: true
   // height: 'auto'
   // tableHeaderSticky: false
-  // dayPopoverFormat: { weekday: 'long' }
+  // popoverFormat: { weekday: 'long' }
   // dayHeaderFormat: { weekday: 'long' }
   eventStartEditable: true,
   eventResizableFromStart: true,

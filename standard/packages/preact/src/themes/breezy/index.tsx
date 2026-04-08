@@ -532,7 +532,7 @@ export default {
             info.hasNavLink && `${mutedHoverPressableClass} hover:text-(--fc-breezy-muted-foreground)`,
           ),
     ),
-    listDayEventsClass: "my-4 grow min-w-0 border border-(--fc-breezy-border) rounded-md",
+    listDayBodyClass: "my-4 grow min-w-0 border border-(--fc-breezy-border) rounded-md",
 
     /* Single Month (in Multi-Month)
     --------------------------------------------------------------------------------------------- */

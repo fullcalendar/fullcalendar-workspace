@@ -354,7 +354,7 @@ export default function EventCalendarViews({
       /* Popover
       ----------------------------------------------------------------------------------------- */
 
-      dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
+      popoverFormat={{ day: 'numeric', weekday: 'long' }}
       popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 root-reset"
       popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
       popoverCloseContent={() => <EventCalendarCloseIcon />}
@@ -384,7 +384,7 @@ export default function EventCalendarViews({
           : 'text-xs',
         info.hasNavLink && 'hover:underline',
       )}
-      listDayEventsClass="grow min-w-0 p-4 gap-4"
+      listDayBodyClass="grow min-w-0 p-4 gap-4"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */

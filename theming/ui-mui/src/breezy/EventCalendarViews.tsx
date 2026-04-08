@@ -459,7 +459,7 @@ export default function EventCalendarViews({
               ),
             )
       )}
-      listDayEventsClass="my-4 grow min-w-0 border border-(--mui-palette-divider) rounded-md"
+      listDayBodyClass="my-4 grow min-w-0 border border-(--mui-palette-divider) rounded-md"
 
       /* Single Month (in Multi-Month)
       ----------------------------------------------------------------------------------------- */

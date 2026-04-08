@@ -396,7 +396,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Popover
       ------------------------------------------------------------------------------------------- */
 
-      dayPopoverFormat: { day: 'numeric', weekday: 'long' },
+      popoverFormat: { day: 'numeric', weekday: 'long' },
 
       popoverClass: `${params.popoverClass} min-w-55`,
 
@@ -443,7 +443,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         info.hasNavLink && 'hover:underline',
       ),
 
-      listDayEventsClass: 'grow min-w-0 p-4 gap-4',
+      listDayBodyClass: 'grow min-w-0 p-4 gap-4',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

@@ -123,7 +123,7 @@ export const BASE_OPTION_REFINERS = {
   scrollTimeReset: Boolean,
   slotMinTime: createDuration,
   slotMaxTime: createDuration,
-  dayPopoverFormat: createFormatter,
+  popoverFormat: createFormatter,
   slotDuration: createDuration,
   snapDuration: createDuration,
   headerToolbar: identity as Identity<ToolbarInput | false>,
@@ -453,7 +453,7 @@ export const BASE_OPTION_REFINERS = {
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerInfo>>,
   listDayHeaderContent: identity as Identity<ContentGenerator<ListDayHeaderInnerInfo>>,
   //
-  listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayEventsInfo>>,
+  listDayBodyClass: identity as Identity<ClassNameGenerator<ListDayEventsInfo>>,
   //
   noEventsClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
   noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsInfo>>,
@@ -516,7 +516,7 @@ export const BASE_OPTION_DEFAULTS = {
   dropAccept: '*',
   eventOrder: 'start,-duration,allDay,title',
   eventPrintLayout: 'auto',
-  dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
+  popoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
   longPressDelay: 1000,
   eventDragMinDistance: 5, // only applies to mouse
   expandRows: false,

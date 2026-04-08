@@ -50,7 +50,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { options, dateEnv, viewApi } = context
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
-    let textParts = dateEnv.formatToParts(startDate, options.dayPopoverFormat)
+    let textParts = dateEnv.formatToParts(startDate, options.popoverFormat)
     let text = joinDateTimeFormatParts(textParts)
 
     const dayHeaderRenderProps: DayHeaderInfo = {

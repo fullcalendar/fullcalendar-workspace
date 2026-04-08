@@ -349,7 +349,7 @@ export function EventCalendarViews({
               ]
             : info.hasNavLink && 'hover:bg-foreground/5',
         )}
-        listDayEventsClass='group-not-last/day:border-b px-1.5 py-2 gap-2'
+        listDayBodyClass='group-not-last/day:border-b px-1.5 py-2 gap-2'
 
         /* Single Month (in Multi-Month)
         ----------------------------------------------------------------------------------------- */

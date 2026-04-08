@@ -72,7 +72,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
           role='list'
           aria-label={options.eventsHint}
           className={joinClassNames(
-            generateClassName(options.listDayEventsClass, listDayEventsData),
+            generateClassName(options.listDayBodyClass, listDayEventsData),
             classNames.flexCol,
           )}
         >
