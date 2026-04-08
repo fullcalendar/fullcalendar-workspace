@@ -466,7 +466,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     listDayFormat: { day: 'numeric' },
-    listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+    listDayAltFormat: { month: 'short', weekday: 'short', forceCommas: true },
     listDayClass: (info) => joinClassNames(
       !info.isLast && 'border-b border-(--fc-monarch-border)',
       'flex flex-row items-start',

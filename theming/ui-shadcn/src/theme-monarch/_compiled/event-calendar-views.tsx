@@ -321,7 +321,7 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       listDayFormat={{ day: 'numeric' }}
-      listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
+      listDayAltFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
       listDayClass={(info) => cn(
         !info.isLast && 'border-b',
         'flex flex-row items-start',

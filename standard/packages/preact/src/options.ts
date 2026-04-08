@@ -445,7 +445,7 @@ export const BASE_OPTION_REFINERS = {
   listDayClass: identity as Identity<ClassNameGenerator<ListDayInfo>>,
   //
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
-  listDaySideFormat: createFalsableFormatter, // "
+  listDayAltFormat: createFalsableFormatter, // "
   //
   listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderInfo>>,
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderInfo>>,

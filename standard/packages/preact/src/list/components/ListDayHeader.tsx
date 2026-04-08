@@ -22,7 +22,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     let stickyHeaderDates = !this.props.forPrint
 
     const listDayFormat = options.listDayFormat ?? createDefaultListDayFormat(viewSpec)
-    const listDaySideFormat = options.listDaySideFormat ?? createDefaultListDaySideFormat(viewSpec)
+    const listDayAltFormat = options.listDayAltFormat ?? createDefaultListDaySideFormat(viewSpec)
 
     let renderProps: ListDayHeaderInfo = {
       ...dateMeta,
@@ -54,10 +54,10 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
                 level={0}
               />
             )}
-            {Boolean(listDaySideFormat) && (
+            {Boolean(listDayAltFormat) && (
               <ListDayHeaderInner
                 dayDate={dayDate}
-                dayFormat={listDaySideFormat}
+                dayFormat={listDayAltFormat}
                 isTabbable={false}
                 dateMeta={dateMeta}
                 level={1}

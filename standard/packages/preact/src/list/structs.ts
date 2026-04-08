@@ -20,6 +20,6 @@ export interface ListDayHeaderInnerInfo extends DateMeta {
   weekdayText: string
   dayNumberText: string
   hasNavLink: boolean
-  level: number // 0 for listDayFormat, 1 for listDaySideFormat
+  level: number // 0 for listDayFormat, 1 for listDayAltFormat
   view: ViewApi
 }

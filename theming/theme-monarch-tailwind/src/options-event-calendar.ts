@@ -422,7 +422,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       listDayFormat: { day: 'numeric' },
-      listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+      listDayAltFormat: { month: 'short', weekday: 'short', forceCommas: true },
 
       listDayClass: (info) => joinClassNames(
         !info.isLast && `border-b ${params.borderColorClass}`,

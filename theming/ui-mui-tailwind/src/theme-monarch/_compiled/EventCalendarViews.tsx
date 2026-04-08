@@ -372,7 +372,7 @@ export default function EventCalendarViews({
         info.isMinor && 'border-dotted',
       )}
       listDayFormat={{ day: 'numeric' }}
-      listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
+      listDayAltFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
       listDayClass={(info) => joinClassNames(
         !info.isLast && 'border-b border-(--mui-palette-divider)',
         'flex flex-row items-start',
