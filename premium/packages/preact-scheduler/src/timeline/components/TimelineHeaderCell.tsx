@@ -107,7 +107,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
       <ContentContainer
         tag="div"
         className={joinArrayishClassNames(
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.flexCol,
           props.isFirst ? classNames.borderNone : classNames.borderOnlyS,
           align === 'center' ? classNames.alignCenter :
@@ -140,7 +141,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
             ref={this.innerWrapperElRef}
             className={joinClassNames(
               classNames.flexCol,
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
               isSticky && classNames.sticky,
             )}
             style={{

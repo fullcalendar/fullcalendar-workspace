@@ -109,7 +109,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           }}
           className={joinClassNames(
             classNames.liquid,
-            classNames.tight,
+            classNames.noMargin,
+            classNames.noPadding,
             classNames.flexCol,
             classNames.contentBox,
             props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,

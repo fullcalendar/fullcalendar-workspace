@@ -42,7 +42,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           role: 'columnheader',
         }}
         className={joinClassNames(
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           classNames.rel, // for resizer abs positioning
@@ -73,7 +74,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
               <div
                 ref={this.innerElRef}
                 className={joinClassNames(
-                  classNames.rigid,
+                  classNames.noShrink,
+                  classNames.whiteSpaceNoWrap,
                   classNames.flexRow,
                 )}
               >

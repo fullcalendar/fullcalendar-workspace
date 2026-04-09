@@ -75,7 +75,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             'aria-rowspan': props.rowSpan,
           }}
           className={joinClassNames(
-            classNames.tight,
+            classNames.noMargin,
+            classNames.noPadding,
             classNames.liquid,
             props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           )}
@@ -92,7 +93,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
               tag="div"
               className={joinClassNames(
                 generateClassName(colSpec.cellInnerClass, renderProps),
-                classNames.rigid,
+                classNames.noShrink,
+                classNames.whiteSpaceNoWrap,
                 classNames.stickyT,
               )}
               elRef={this.innerElRef}

@@ -68,7 +68,8 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
       props.liquidHeight && classNames.liquid,
       classNames.flexRow,
       classNames.alignStart,
-      classNames.tight,
+      classNames.noMargin,
+      classNames.noPadding,
       props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
     )
 
@@ -108,7 +109,8 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
               classNames.flexRow,
             )}
           >

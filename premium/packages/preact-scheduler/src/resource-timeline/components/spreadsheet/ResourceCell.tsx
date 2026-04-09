@@ -57,7 +57,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'data-resource-id': props.resource.id,
         }}
         className={joinClassNames(
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.flexCol,
           classNames.alignStart,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
@@ -80,7 +81,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
               classNames.flexRow,
             )}
             style={{

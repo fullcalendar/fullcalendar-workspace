@@ -94,7 +94,8 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
         }}
         className={joinClassNames(
           dataConfig.className,
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           align === 'center' ? classNames.alignCenter :
@@ -125,7 +126,8 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
             ref={this.handleInnerEl}
             className={joinClassNames(
               classNames.flexCol,
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
               isSticky && classNames.sticky,
             )}
             style={{

@@ -65,7 +65,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           }}
           className={joinClassNames(
             classNames.liquid, // expand to whole row
-            classNames.tight,
+            classNames.noMargin,
+            classNames.noPadding,
             classNames.flexCol,
             classNames.contentBox,
             props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,

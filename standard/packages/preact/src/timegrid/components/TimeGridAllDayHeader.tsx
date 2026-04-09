@@ -40,7 +40,8 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
         }}
         className={joinClassNames(
           classNames.flexRow,
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.contentBox,
         )}
         style={{
@@ -59,7 +60,8 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
             tag='div'
             className={joinClassNames(
               generateClassName(options.allDayHeaderInnerClass, renderProps),
-              classNames.rigidPre, // with white-space:pre ... respects line-breaks for localized text
+              classNames.noShrink,
+              classNames.whiteSpacePre, // with white-space:pre ... respects line-breaks for localized text
             )}
             elRef={this.innerElRef}
           />

@@ -70,7 +70,8 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           }}
           className={joinClassNames(
             classNames.liquid, // expand to whole row
-            classNames.tight,
+            classNames.noMargin,
+            classNames.noPadding,
             classNames.flexCol,
             classNames.alignStart, // h-align
             classNames.crop,
@@ -92,7 +93,8 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                classNames.rigid,
+                classNames.noShrink,
+                classNames.whiteSpaceNoWrap,
                 classNames.flexRow,
               )}
               style={{

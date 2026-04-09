@@ -39,7 +39,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         }}
         className={joinClassNames(
           classNames.liquid,
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.flexCol,
           classNames.alignStart,
           classNames.borderNone,
@@ -57,7 +58,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
               classNames.flexRow,
             )}
           >

@@ -53,7 +53,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       <ContentContainer
         tag="div"
         className={joinClassNames(
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.alignStart, // shrinks width of InnerContent
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           classNames.internalTimelineSlot,

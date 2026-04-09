@@ -72,7 +72,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         }}
         className={joinClassNames(
           classNames.flexRow,
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           props.isLiquid ? classNames.liquid : classNames.contentBox,
         )}
         style={{
@@ -91,7 +92,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
             ref={this.innerElRef}
             className={joinClassNames(
               classNames.flexRow,
-              classNames.rigid,
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
             )}
           >
             <InnerContent

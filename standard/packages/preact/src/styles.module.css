@@ -234,11 +234,6 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
 /* Table Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
-.tight {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
 .noPadding {
   padding: 0 !important;
 }
@@ -257,13 +252,11 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   margin-right: 0 !important;
 }
 
-.rigid {
-  flex-shrink: 0 !important;
+.whiteSpaceNoWrap {
   white-space: nowrap !important;
 }
 
-.rigidPre {
-  flex-shrink: 0 !important;
+.whiteSpacePre {
   white-space: pre !important;
 }
 

@@ -35,7 +35,8 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           'data-time': props.isoTimeStr,
         }}
         className={joinClassNames(
-          classNames.tight,
+          classNames.noMargin,
+          classNames.noPadding,
           classNames.liquid,
           props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
         )}
