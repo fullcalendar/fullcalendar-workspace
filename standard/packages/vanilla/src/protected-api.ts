@@ -1,3 +1,3 @@
 
 export * from '@fullcalendar/preact/protected-api'
-export { strictModeFactor } from './vdom-strict-mode'
+export { strictModeFactor, vdomExtraRenders } from './vdom-config'

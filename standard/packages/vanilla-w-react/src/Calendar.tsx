@@ -17,7 +17,7 @@ import {
   RenderId,
   guid,
 } from '@fullcalendar/react/protected-api'
-import { StrictMode } from './vdom-strict-mode'
+import { StrictMode } from './vdom-config'
 
 /*
 Vanilla JS API

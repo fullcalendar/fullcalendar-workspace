@@ -1,7 +1,8 @@
-import { strictModeFactor } from 'fullcalendar/protected-api'
+import { strictModeFactor, vdomExtraRenders } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import timeGridPlugin from 'fullcalendar/timegrid'
+import { waitTimeout } from '../lib/misc'
 
 describe('recurring events', () => {
   describe('when timed events in local timezone', () => {
@@ -80,7 +81,7 @@ describe('recurring events', () => {
     })
   })
 
-  it('when timeZone changes, events with unspecified timezone offsets move', () => {
+  it('when timeZone changes, events with unspecified timezone offsets move', async () => {
     const timeTexts = []
     const calendar = initCalendar({
       plugins: [classicThemePlugin, themeForTestsPlugin, timeGridPlugin],
@@ -95,6 +96,7 @@ describe('recurring events', () => {
         return true
       },
     })
+    await waitTimeout()
 
     let events = calendar.getEvents()
     expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
@@ -102,15 +104,19 @@ describe('recurring events', () => {
     expect(timeTexts[0 * strictModeFactor]).toBe('12:00')
 
     calendar.setOption('timeZone', 'America/Chicago')
+    await waitTimeout()
     expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-    expect(timeTexts.length).toBe(2 * strictModeFactor)
-    expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
+    expect(timeTexts.length).toBe(2 * strictModeFactor + vdomExtraRenders)
+    expect(timeTexts[1 * strictModeFactor + vdomExtraRenders]).toBe('11:00')
 
     calendar.next() // renders next week's event
+    await waitTimeout()
     calendar.prev() // renders prev week's event
+    await waitTimeout()
     calendar.setOption('timeZone', 'America/Chicago')
+    await waitTimeout()
     expect(events[0].start).toEqualDate('2023-02-07T17:00:00Z')
-    expect(timeTexts.length).toBe(4 * strictModeFactor)
-    expect(timeTexts[1 * strictModeFactor]).toBe('11:00')
+    expect(timeTexts.length).toBe(4 * strictModeFactor + vdomExtraRenders)
+    expect(timeTexts[1 * strictModeFactor + vdomExtraRenders]).toBe('11:00')
   })
 })

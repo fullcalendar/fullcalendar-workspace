@@ -1,10 +1,11 @@
-import { strictModeFactor } from 'fullcalendar/protected-api'
+import { strictModeFactor, vdomExtraRenders } from 'fullcalendar/protected-api'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
 import dayGridPlugin from 'fullcalendar/daygrid'
 import rrulePlugin from '@fullcalendar/rrule'
 import { parseUtcDate, parseLocalDate } from '../lib/date-parsing'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('rrule plugin', () => {
   pushOptions({
@@ -552,7 +553,7 @@ describe('rrule plugin', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5273
-  it('updates rrule timed events when timeZone changes', () => {
+  it('updates rrule timed events when timeZone changes', async () => {
     const timeTexts = []
 
     const calendar = initCalendar({
@@ -575,6 +576,7 @@ describe('rrule plugin', () => {
         return true
       },
     })
+    await waitTimeout()
 
     let events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
@@ -583,20 +585,23 @@ describe('rrule plugin', () => {
     expect(timeTexts[0 * strictModeFactor]).toBe('12p')
 
     calendar.setOption('timeZone', 'America/Chicago')
+    await waitTimeout()
     events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
     expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-    expect(timeTexts.length).toBe(2 * strictModeFactor)
-    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
+    expect(timeTexts.length).toBe(2 * strictModeFactor + vdomExtraRenders)
+    expect(timeTexts[1 * strictModeFactor + vdomExtraRenders]).toBe('11a')
 
     // ensure bug doesn't occur when refetching (this happened)
     calendar.next()
+    await waitTimeout()
     calendar.prev()
+    await waitTimeout()
     events = calendar.getEvents()
     expect(events[0].allDay).toBe(false)
     expect(events[0].start).toEqualDate('2023-02-10T17:00:00Z')
-    expect(timeTexts.length).toBe(3 * strictModeFactor)
-    expect(timeTexts[1 * strictModeFactor]).toBe('11a')
+    expect(timeTexts.length).toBe(3 * strictModeFactor + vdomExtraRenders)
+    expect(timeTexts[1 * strictModeFactor + vdomExtraRenders]).toBe('11a')
   })
 
   // utils
