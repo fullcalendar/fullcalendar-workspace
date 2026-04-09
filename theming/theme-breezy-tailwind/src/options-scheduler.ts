@@ -24,7 +24,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceDayHeaderClass: 'border',
       resourceDayHeaderInnerClass: (info) => joinClassNames(
-        `p-2 ${params.fgClass} font-semibold`,
+        `m-2 ${params.fgClass} font-semibold`,
         info.isNarrow ? 'text-xs' : 'text-sm',
       ),
 
@@ -33,16 +33,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // column header
       resourceColumnHeaderClass: `border ${params.mutedBorderColorClass} justify-center`, // v-align
-      resourceColumnHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
+      resourceColumnHeaderInnerClass: `m-2 ${params.fgClass} text-sm`,
       resourceColumnResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       // group header
       resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
-      resourceGroupHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
+      resourceGroupHeaderInnerClass: `m-2 ${params.fgClass} text-sm`,
 
       // cell
       resourceCellClass: `border ${params.mutedBorderColorClass}`,
-      resourceCellInnerClass: `p-2 ${params.fgClass} text-sm`,
+      resourceCellInnerClass: `m-2 ${params.fgClass} text-sm`,
 
       // row expander
       resourceIndentClass: 'ms-1 -me-1.5 justify-center', // v-align
@@ -110,7 +110,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           'justify-end', // v-align
         ),
         slotHeaderInnerClass: (info) => joinClassNames(
-          'px-3 py-2 text-xs',
+          'mx-3 my-2 text-xs',
           info.isTime && joinClassNames(
             'relative -start-4',
             info.isFirst && 'hidden',

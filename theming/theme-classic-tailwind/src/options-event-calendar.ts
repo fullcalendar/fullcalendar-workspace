@@ -310,7 +310,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       dayHeaderInnerClass: (info) => joinClassNames(
-        'px-1 py-0.5 flex flex-col',
+        'mx-1 my-0.5 flex flex-col',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
 
@@ -327,10 +327,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       dayCellTopInnerClass: (info) => joinClassNames(
-        'px-1 whitespace-nowrap',
+        'mx-1 whitespace-nowrap',
         info.isNarrow
-          ? `py-0.5 ${xxsTextClass}`
-          : 'py-1 text-sm',
+          ? `my-0.5 ${xxsTextClass}`
+          : 'my-1 text-sm',
         info.isOther && params.faintFgClass,
         info.monthText && 'font-bold',
       ),
@@ -442,7 +442,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: 'items-center justify-end', // v-align, h-align
         weekNumberHeaderInnerClass: (info) => joinClassNames(
-          'px-1 py-0.5',
+          'mx-1 my-0.5',
           info.isNarrow ? xxsTextClass : 'text-sm',
         ),
 
@@ -451,7 +451,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         allDayHeaderClass: 'items-center justify-end', // v-align, h-align
         allDayHeaderInnerClass: (info) => joinClassNames(
-          'px-1 py-2 text-end',
+          'mx-1 my-2 text-end',
           info.isNarrow ? xxsTextClass : 'text-sm',
         ),
 
@@ -462,7 +462,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotHeaderClass: 'justify-end', // h-align
         slotHeaderInnerClass: (info) => joinClassNames(
-          'px-1 py-0.5',
+          'mx-1 my-0.5',
           info.isNarrow ? xxsTextClass : 'text-sm',
         ),
 

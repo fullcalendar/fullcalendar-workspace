@@ -559,7 +559,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         allDayHeaderInnerClass: (info) => joinClassNames(
           /*
           */
-          'p-2 text-end',
+          'm-2 text-end',
           info.isNarrow ? xxsTextClass : 'text-xs',
         ),
 
@@ -570,7 +570,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotHeaderClass: 'justify-end', // h-align
         slotHeaderInnerClass: (info) => joinClassNames(
-          'p-2',
+          'm-2',
           info.isNarrow ? xxsTextClass : 'text-xs',
         ),
 

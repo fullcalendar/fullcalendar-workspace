@@ -24,7 +24,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         info.isMajor ? params.strongBorderColorClass : params.borderColorClass,
       ),
       resourceDayHeaderInnerClass: (info) => joinClassNames(
-        'p-2 flex flex-col',
+        'm-2 flex flex-col',
         info.isNarrow ? 'text-xs' : 'text-sm',
       ),
 
@@ -33,16 +33,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // column header
       resourceColumnHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
-      resourceColumnHeaderInnerClass: 'p-2 text-sm',
+      resourceColumnHeaderInnerClass: 'm-2 text-sm',
       resourceColumnResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       // group header
       resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
-      resourceGroupHeaderInnerClass: 'p-2 text-sm',
+      resourceGroupHeaderInnerClass: 'm-2 text-sm',
 
       // cell
       resourceCellClass: `border ${params.borderColorClass}`,
-      resourceCellInnerClass: 'p-2 text-sm',
+      resourceCellInnerClass: 'm-2 text-sm',
 
       // row expander
       resourceIndentClass: 'ms-1 -me-1.5 justify-center', // v-align
@@ -97,7 +97,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotHeaderClass: 'justify-center', // v-align
         slotHeaderInnerClass: (info) => joinClassNames(
-          'p-2 text-sm',
+          'm-2 text-sm',
           info.hasNavLink && 'hover:underline',
         ),
 
