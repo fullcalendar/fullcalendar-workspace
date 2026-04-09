@@ -130,7 +130,6 @@ export { isPropsValid } from './validation'
 
 export { requestJson } from './util/requestJson'
 
-export { flushSync } from './vdom'
 export { BaseComponent, setRef } from './vdom-util'
 export { DelayedRunner } from './util/DelayedRunner'
 

@@ -1775,8 +1775,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/preact/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
       temporal-polyfill:
         specifier: ^0.3.2
         version: 0.3.2
@@ -1841,8 +1841,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/vanilla/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar/preact':
         specifier: workspace:7.0.0-beta.8
@@ -1957,8 +1957,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/core-types/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar/vue3':
         specifier: workspace:7.0.0-beta.8
@@ -1989,8 +1989,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../../../standard/packages/core-types/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar/web-component':
         specifier: workspace:7.0.0-beta.8
@@ -2244,8 +2244,8 @@ importers:
         specifier: ^4.1.2
         version: 4.7.8
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
       temporal-polyfill:
         specifier: ^0.3.2
         version: 0.3.2
@@ -2327,8 +2327,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../core-types/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2365,8 +2365,8 @@ importers:
         specifier: ^0.5.40
         version: 0.5.48
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
       xhr-mock:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2464,8 +2464,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../core-types/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2517,8 +2517,8 @@ importers:
         specifier: workspace:7.0.0-beta.8
         version: link:../core-types/dist
       preact:
-        specifier: ~10.23.1
-        version: 10.23.2
+        specifier: ^10.29.0
+        version: 10.29.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -18818,8 +18818,8 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact@10.23.2:
-    resolution: {integrity: sha512-kKYfePf9rzKnxOAKDpsWhg/ysrHPqT+yQ7UW4JjdnqjFIeNUnNcEJvhuA8fDenxAGWzUqtd51DfVg7xp/8T9NA==}
+  preact@10.29.1:
+    resolution: {integrity: sha512-gQCLc/vWroE8lIpleXtdJhTFDogTdZG9AjMUpVkDf2iTCNwYNWA+u16dL41TqUDJO4gm2IgrcMv3uTpjd4Pwmg==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -26828,7 +26828,7 @@ snapshots:
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
       '@fullcalendar/vue3': file:standard/packages/vue3/dist(temporal-polyfill@0.3.2)(vue@3.5.27(typescript@4.9.5))
-      preact: 10.23.2
+      preact: 10.29.1
       temporal-polyfill: 0.3.2
       vue: 3.5.27(typescript@4.9.5)
 
@@ -26836,7 +26836,7 @@ snapshots:
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.23.2
+      preact: 10.29.1
       temporal-polyfill: 0.3.2
       vue: 3.5.27(typescript@4.9.5)
 
@@ -26844,7 +26844,7 @@ snapshots:
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.23.2
+      preact: 10.29.1
       temporal-polyfill: 0.3.2
       vue: 3.5.27(typescript@5.9.3)
 
@@ -41680,7 +41680,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  preact@10.23.2: {}
+  preact@10.29.1: {}
 
   prelude-ls@1.2.1: {}
 

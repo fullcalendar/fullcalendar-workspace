@@ -1,3 +1,4 @@
+import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 import {
   CssDimValue,
@@ -14,7 +15,6 @@ import {
   CalendarMediaRoot,
   computeRootClassName,
   RenderId,
-  flushSync,
   guid,
 } from '@fullcalendar/react/protected-api'
 import { StrictMode } from './vdom-strict-mode'

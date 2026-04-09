@@ -1,3 +1,4 @@
+import { flushSync } from 'preact/compat'
 import { createRoot } from 'preact/compat/client'
 import {
   CssDimValue,
@@ -14,7 +15,6 @@ import {
   CalendarMediaRoot,
   computeRootClassName,
   RenderId,
-  flushSync,
   guid,
 } from '@fullcalendar/preact/protected-api'
 import { StrictMode } from './vdom-strict-mode'

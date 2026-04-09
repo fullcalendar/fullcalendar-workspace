@@ -1,4 +1,4 @@
-import { flushSync } from '../vdom'
+import { flushSync } from 'react-dom'
 import { isDimsEqual } from './rendering-misc'
 
 const nativeBorderBoxEnabled = true

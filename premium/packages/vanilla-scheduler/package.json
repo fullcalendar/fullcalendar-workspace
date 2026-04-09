@@ -7,7 +7,7 @@
     "@full-ui/headless-calendar": "workspace:7.0.0-beta.8",
     "@full-ui/headless-grid": "workspace:7.0.0-beta.8",
     "@fullcalendar/core": "workspace:7.0.0-beta.8",
-    "preact": "~10.23.1"
+    "preact": "^10.29.0"
   },
   "peerDependencies": {
     "fullcalendar": "workspace:7.0.0-beta.8",

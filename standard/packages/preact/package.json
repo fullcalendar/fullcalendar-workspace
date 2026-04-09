@@ -8,14 +8,14 @@
     "@fullcalendar/core": "workspace:7.0.0-beta.8"
   },
   "peerDependencies": {
-    "preact": "~10.23.1",
+    "preact": "^10.29.0",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
-    "preact": "~10.23.1",
+    "preact": "^10.29.0",
     "temporal-polyfill": "^0.3.2"
   },
   "scripts": {
