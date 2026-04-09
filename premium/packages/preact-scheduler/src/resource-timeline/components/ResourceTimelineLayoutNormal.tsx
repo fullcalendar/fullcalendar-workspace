@@ -654,8 +654,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       const rowLevel = cellRows.length - rowIndex - 1
 
                       const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
-                      const shift = computeShift(headerCellPositions) || []
-                      if (!shift.length) {
+                      const shift = computeShift(headerCellPositions)
+                      if (shift) {
                         timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
                       }
 
@@ -672,8 +672,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           slotWidth={slotWidth}
                           innerWidthRef={this.headerRowInnerWidthMap.createRef(rowIndex)}
                           innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
-                          insetInlineStart={shift[0]}
-                          cellStartIndex={shift[2]}
+                          insetInlineStart={shift && shift[0]}
+                          width={shift ? (shift[1] - shift[0]) : undefined}
+                          cellStartIndex={shift && shift[2]}
                           cellCount={headerCellPositions.length}
                         />
                       )
