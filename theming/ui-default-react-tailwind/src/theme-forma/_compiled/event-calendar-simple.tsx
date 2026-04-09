@@ -448,7 +448,7 @@ export function EventCalendar({
             ),
         info.monthText && 'font-bold',
       )}
-      dayCellInnerClass={(info) => joinClassNames(info.inPopover && 'p-2')}
+      dayCellInnerClass={(info) => joinClassNames(info.inPopover && 'm-2')}
 
       /* Popover
       ------------------------------------------------------------------------------------------- */
@@ -589,7 +589,7 @@ export function EventCalendar({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-end',
+            'm-2 text-end',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: 'border-b border-(--fc-forma-border)',
@@ -599,7 +599,7 @@ export function EventCalendar({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'p-2',
+            'm-2',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           slotHeaderDividerClass: 'border-e border-(--fc-forma-border)',

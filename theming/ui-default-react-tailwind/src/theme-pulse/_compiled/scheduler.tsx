@@ -51,7 +51,7 @@ export function Scheduler({
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass={(info) => joinClassNames(info.isMajor && 'border border-(--fc-pulse-strong-border)')}
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        'p-2 flex flex-row items-center text-(--fc-pulse-muted-foreground)',
+        'm-2 flex flex-row items-center text-(--fc-pulse-muted-foreground)',
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -59,12 +59,12 @@ export function Scheduler({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--fc-pulse-border) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-(--fc-pulse-foreground) text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-(--fc-pulse-foreground) text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass="border border-(--fc-pulse-border) bg-(--fc-pulse-muted)"
-      resourceGroupHeaderInnerClass="p-2 text-(--fc-pulse-foreground) text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-(--fc-pulse-foreground) text-sm"
       resourceCellClass="border border-(--fc-pulse-border)"
-      resourceCellInnerClass="p-2 text-(--fc-pulse-foreground) text-sm"
+      resourceCellInnerClass="m-2 text-(--fc-pulse-foreground) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       resourceExpanderContent={(info) => chevronDown(
@@ -114,7 +114,7 @@ export function Scheduler({
             'justify-center',
           ),
           slotHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-sm',
+            'm-2 text-sm',
             info.isTime && joinClassNames(
               'relative -start-3',
               info.isFirst && 'hidden',

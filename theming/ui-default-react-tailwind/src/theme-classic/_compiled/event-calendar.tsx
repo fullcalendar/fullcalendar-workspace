@@ -329,7 +329,7 @@ export function EventCalendar({
             ),
       )}
       dayHeaderInnerClass={(info) => joinClassNames(
-        'px-1 py-0.5 flex flex-col',
+        'mx-1 my-0.5 flex flex-col',
         info.isNarrow ? xxsTextClass : 'text-sm',
       )}
       dayHeaderDividerClass="border-b border-(--fc-classic-border)"
@@ -343,10 +343,10 @@ export function EventCalendar({
         'flex flex-row justify-end',
       )}
       dayCellTopInnerClass={(info) => joinClassNames(
-        'px-1 whitespace-nowrap',
+        'mx-1 whitespace-nowrap',
         info.isNarrow
-          ? `py-0.5 ${xxsTextClass}`
-          : 'py-1 text-sm',
+          ? `my-0.5 ${xxsTextClass}`
+          : 'my-1 text-sm',
         info.isOther && 'text-(--fc-classic-faint-foreground)',
         info.monthText && 'font-bold',
       )}
@@ -439,7 +439,7 @@ export function EventCalendar({
 
           weekNumberHeaderClass: 'items-center justify-end',
           weekNumberHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-0.5',
+            'mx-1 my-0.5',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
 
@@ -448,7 +448,7 @@ export function EventCalendar({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-2 text-end',
+            'mx-1 my-2 text-end',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: 'border-y border-(--fc-classic-border) pb-0.5 bg-(--fc-classic-muted)',
@@ -458,7 +458,7 @@ export function EventCalendar({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-0.5',
+            'mx-1 my-0.5',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           slotHeaderDividerClass: 'border-e border-(--fc-classic-border)',

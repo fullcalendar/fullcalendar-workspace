@@ -508,7 +508,7 @@ export default function EventCalendarViews({
 
           allDayHeaderClass: 'items-center',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            `p-2 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]`,
+            `m-2 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]`,
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
@@ -518,7 +518,7 @@ export default function EventCalendarViews({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'relative p-2',
+            'relative m-2',
             info.isNarrow
               ? `-top-3.5 ${xxsTextClass}`
               : '-top-4 text-xs',

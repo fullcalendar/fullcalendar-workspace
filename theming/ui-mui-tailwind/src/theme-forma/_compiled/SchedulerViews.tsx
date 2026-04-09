@@ -27,7 +27,7 @@ export default function SchedulerViews({
           : 'border-(--mui-palette-divider)',
       )}
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        'p-2 flex flex-col',
+        'm-2 flex flex-col',
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -35,12 +35,12 @@ export default function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--mui-palette-divider) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
-      resourceGroupHeaderInnerClass="p-2 text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-sm"
       resourceCellClass="border border-(--mui-palette-divider)"
-      resourceCellInnerClass="p-2 text-sm"
+      resourceCellInnerClass="m-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(info) => (
@@ -93,7 +93,7 @@ export default function SchedulerViews({
           slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-sm',
+            'm-2 text-sm',
             info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: `border-b border-(--mui-palette-divider)`,

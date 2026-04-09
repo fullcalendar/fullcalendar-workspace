@@ -548,7 +548,7 @@ export default {
       info.isMajor ? 'border-(--fc-monarch-strong-border)' : 'border-(--fc-monarch-border)',
     ),
     resourceDayHeaderInnerClass: (info) => joinClassNames(
-      'p-2 flex flex-col',
+      'm-2 flex flex-col',
       info.isNarrow ? 'text-xs' : 'text-sm',
     ),
 
@@ -556,12 +556,12 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     resourceColumnHeaderClass: "border border-(--fc-monarch-border) justify-center",
-    resourceColumnHeaderInnerClass: "p-2 text-sm",
+    resourceColumnHeaderInnerClass: "m-2 text-sm",
     resourceColumnResizerClass: "absolute inset-y-0 w-[5px] end-[-3px]",
     resourceGroupHeaderClass: "border border-(--fc-monarch-border) bg-(--fc-monarch-faint)",
-    resourceGroupHeaderInnerClass: "p-2 text-sm",
+    resourceGroupHeaderInnerClass: "m-2 text-sm",
     resourceCellClass: "border border-(--fc-monarch-border)",
-    resourceCellInnerClass: "p-2 text-sm",
+    resourceCellInnerClass: "m-2 text-sm",
     resourceIndentClass: "ms-1 -me-1.5 justify-center",
     resourceExpanderClass: `group p-1 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass}`,
     resourceExpanderContent: (info) => chevronDown(
@@ -624,7 +624,7 @@ export default {
 
       allDayHeaderClass: 'items-center justify-end',
       allDayHeaderInnerClass: (info) => joinClassNames(
-        'p-2 text-end',
+        'm-2 text-end',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
       allDayDividerClass: 'border-b border-(--fc-monarch-border)',
@@ -637,7 +637,7 @@ export default {
         info.isMinor && 'border-dotted',
       ),
       slotHeaderInnerClass: (info) => joinClassNames(
-        'relative ps-2 pe-3 py-2',
+        'relative ms-2 me-3 my-2',
         info.isNarrow
           ? `-top-4 ${xxsTextClass}`
           : '-top-5 text-sm',

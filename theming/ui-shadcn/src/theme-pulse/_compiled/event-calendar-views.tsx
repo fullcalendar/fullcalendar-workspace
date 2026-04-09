@@ -442,7 +442,7 @@ export function EventCalendarViews({
 
             allDayHeaderClass: 'items-center',
             allDayHeaderInnerClass: (info) => cn(
-              'p-2 text-muted-foreground',
+              'm-2 text-muted-foreground',
               info.isNarrow ? xxsTextClass : 'text-xs',
             ),
             allDayDividerClass: 'border-b border-foreground/20 shadow-sm',
@@ -452,7 +452,7 @@ export function EventCalendarViews({
 
             slotHeaderClass: 'justify-end',
             slotHeaderInnerClass: (info) => cn(
-              'relative p-2',
+              'relative m-2',
               info.isNarrow
                 ? `-top-3.5 ${xxsTextClass}`
                 : '-top-4 text-xs',

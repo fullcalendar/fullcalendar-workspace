@@ -369,7 +369,7 @@ export default {
           ),
     ),
     dayHeaderInnerClass: (info) => joinClassNames(
-      'p-2 flex flex-col',
+      'm-2 flex flex-col',
       info.isToday && info.level && 'relative',
       info.hasNavLink && `${mutedHoverPressableClass} ${outlineInsetClass}`,
     ),
@@ -428,7 +428,7 @@ export default {
           ),
       info.monthText && 'font-bold',
     ),
-    dayCellInnerClass: (info) => joinClassNames(info.inPopover && 'p-2'),
+    dayCellInnerClass: (info) => joinClassNames(info.inPopover && 'm-2'),
 
     /* Popover
     --------------------------------------------------------------------------------------------- */
@@ -529,7 +529,7 @@ export default {
       info.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
     ),
     resourceDayHeaderInnerClass: (info) => joinClassNames(
-      'p-2 flex flex-col',
+      'm-2 flex flex-col',
       info.isNarrow ? 'text-xs' : 'text-sm',
     ),
 
@@ -537,12 +537,12 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     resourceColumnHeaderClass: "border border-(--fc-forma-border) justify-center",
-    resourceColumnHeaderInnerClass: "p-2 text-sm",
+    resourceColumnHeaderInnerClass: "m-2 text-sm",
     resourceColumnResizerClass: "absolute inset-y-0 w-[5px] end-[-3px]",
     resourceGroupHeaderClass: "border border-(--fc-forma-border) bg-(--fc-forma-muted)",
-    resourceGroupHeaderInnerClass: "p-2 text-sm",
+    resourceGroupHeaderInnerClass: "m-2 text-sm",
     resourceCellClass: "border border-(--fc-forma-border)",
-    resourceCellInnerClass: "p-2 text-sm",
+    resourceCellInnerClass: "m-2 text-sm",
     resourceIndentClass: "ms-1 -me-1.5 justify-center",
     resourceExpanderClass: `group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
     resourceExpanderContent: (info) => chevronDown(
@@ -604,7 +604,7 @@ export default {
 
       allDayHeaderClass: 'items-center justify-end',
       allDayHeaderInnerClass: (info) => joinClassNames(
-        'p-2 text-end',
+        'm-2 text-end',
         info.isNarrow ? xxsTextClass : 'text-xs',
       ),
       allDayDividerClass: 'border-b border-(--fc-forma-border)',
@@ -614,7 +614,7 @@ export default {
 
       slotHeaderClass: 'justify-end',
       slotHeaderInnerClass: (info) => joinClassNames(
-        'p-2',
+        'm-2',
         info.isNarrow ? xxsTextClass : 'text-xs',
       ),
       slotHeaderDividerClass: 'border-e border-(--fc-forma-border)',

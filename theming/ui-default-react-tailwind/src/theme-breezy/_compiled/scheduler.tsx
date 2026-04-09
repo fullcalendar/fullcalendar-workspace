@@ -51,7 +51,7 @@ export function Scheduler({
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass="border"
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        'p-2 text-(--fc-breezy-foreground) font-semibold',
+        'm-2 text-(--fc-breezy-foreground) font-semibold',
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -59,12 +59,12 @@ export function Scheduler({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--fc-breezy-muted-border) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-(--fc-breezy-foreground) text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-(--fc-breezy-foreground) text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass="border border-(--fc-breezy-border) bg-(--fc-breezy-muted)"
-      resourceGroupHeaderInnerClass="p-2 text-(--fc-breezy-foreground) text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-(--fc-breezy-foreground) text-sm"
       resourceCellClass="border border-(--fc-breezy-muted-border)"
-      resourceCellInnerClass="p-2 text-(--fc-breezy-foreground) text-sm"
+      resourceCellInnerClass="m-2 text-(--fc-breezy-foreground) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(info) => chevronDown(
@@ -129,7 +129,7 @@ export function Scheduler({
             'justify-end',
           ),
           slotHeaderInnerClass: (info) => joinClassNames(
-            'px-3 py-2 text-xs',
+            'mx-3 my-2 text-xs',
             info.isTime && joinClassNames(
               'relative -start-4',
               info.isFirst && 'hidden',

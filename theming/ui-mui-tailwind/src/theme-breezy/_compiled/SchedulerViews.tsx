@@ -23,7 +23,7 @@ export default function SchedulerViews({
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass="border"
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        `p-2 text-(--mui-palette-text-primary) font-semibold`,
+        `m-2 text-(--mui-palette-text-primary) font-semibold`,
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -31,12 +31,12 @@ export default function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--mui-palette-divider) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-(--mui-palette-text-primary) text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
-      resourceGroupHeaderInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-(--mui-palette-text-primary) text-sm"
       resourceCellClass="border border-(--mui-palette-divider)"
-      resourceCellInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
+      resourceCellInnerClass="m-2 text-(--mui-palette-text-primary) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-0.5 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(info) => (
@@ -104,7 +104,7 @@ export default function SchedulerViews({
             'justify-end',
           ),
           slotHeaderInnerClass: (info) => joinClassNames(
-            'px-3 py-2 text-xs',
+            'mx-3 my-2 text-xs',
             info.isTime && joinClassNames(
               'relative -start-4',
               info.isFirst && 'hidden',

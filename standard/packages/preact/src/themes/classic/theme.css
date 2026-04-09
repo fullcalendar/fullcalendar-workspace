@@ -104,6 +104,10 @@
   margin: 4px
 }
 
+.m-2 {
+  margin: 8px
+}
+
 .m-4 {
   margin: 16px
 }
@@ -122,6 +126,18 @@
 
 .mx-px {
   margin-inline: 1px
+}
+
+.my-0\.5 {
+  margin-block: 2px
+}
+
+.my-1 {
+  margin-block: 4px
+}
+
+.my-2 {
+  margin-block: 8px
 }
 
 .ms-0\.5 {
@@ -571,10 +587,6 @@
 
 .px-0\.5 {
   padding-inline: 2px
-}
-
-.px-1 {
-  padding-inline: 4px
 }
 
 .px-2\.5 {

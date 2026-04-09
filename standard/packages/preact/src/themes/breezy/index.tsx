@@ -587,7 +587,7 @@ export default {
     resourceDayHeaderAlign: "center",
     resourceDayHeaderClass: "border",
     resourceDayHeaderInnerClass: (info) => joinClassNames(
-      'p-2 text-(--fc-breezy-foreground) font-semibold',
+      'm-2 text-(--fc-breezy-foreground) font-semibold',
       info.isNarrow ? 'text-xs' : 'text-sm',
     ),
 
@@ -595,12 +595,12 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     resourceColumnHeaderClass: "border border-(--fc-breezy-muted-border) justify-center",
-    resourceColumnHeaderInnerClass: "p-2 text-(--fc-breezy-foreground) text-sm",
+    resourceColumnHeaderInnerClass: "m-2 text-(--fc-breezy-foreground) text-sm",
     resourceColumnResizerClass: "absolute inset-y-0 w-[5px] end-[-3px]",
     resourceGroupHeaderClass: "border border-(--fc-breezy-border) bg-(--fc-breezy-muted)",
-    resourceGroupHeaderInnerClass: "p-2 text-(--fc-breezy-foreground) text-sm",
+    resourceGroupHeaderInnerClass: "m-2 text-(--fc-breezy-foreground) text-sm",
     resourceCellClass: "border border-(--fc-breezy-muted-border)",
-    resourceCellInnerClass: "p-2 text-(--fc-breezy-foreground) text-sm",
+    resourceCellInnerClass: "m-2 text-(--fc-breezy-foreground) text-sm",
     resourceIndentClass: "ms-1 -me-1.5 justify-center",
     resourceExpanderClass: `group p-0.5 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
     resourceExpanderContent: (info) => chevronDown(
@@ -669,7 +669,7 @@ export default {
 
       allDayHeaderClass: 'items-center',
       allDayHeaderInnerClass: (info) => joinClassNames(
-        'p-3 text-(--fc-breezy-faint-foreground)',
+        'm-3 text-(--fc-breezy-faint-foreground)',
         info.isNarrow ? xxsTextClass : 'text-xs',
       ),
       allDayDividerClass: 'border-b border-(--fc-breezy-strong-border) shadow-sm',
@@ -679,7 +679,7 @@ export default {
 
       slotHeaderClass: 'justify-end',
       slotHeaderInnerClass: (info) => joinClassNames(
-        'relative px-3 py-2',
+        'relative mx-3 my-2',
         info.isNarrow
           ? `-top-3.5 ${xxsTextClass}`
           : '-top-4 text-xs',
@@ -750,7 +750,7 @@ export default {
         'justify-end',
       ),
       slotHeaderInnerClass: (info) => joinClassNames(
-        'px-3 py-2 text-xs',
+        'mx-3 my-2 text-xs',
         info.isTime && joinClassNames(
           'relative -start-4',
           info.isFirst && 'hidden',

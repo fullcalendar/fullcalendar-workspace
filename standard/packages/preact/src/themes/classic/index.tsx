@@ -291,7 +291,7 @@ export default {
           ),
     ),
     dayHeaderInnerClass: (info) => joinClassNames(
-      'px-1 py-0.5 flex flex-col',
+      'mx-1 my-0.5 flex flex-col',
       info.isNarrow ? xxsTextClass : 'text-sm',
     ),
     dayHeaderDividerClass: "border-b border-(--fc-classic-border)",
@@ -305,10 +305,10 @@ export default {
       'flex flex-row justify-end',
     ),
     dayCellTopInnerClass: (info) => joinClassNames(
-      'px-1 whitespace-nowrap',
+      'mx-1 whitespace-nowrap',
       info.isNarrow
-        ? `py-0.5 ${xxsTextClass}`
-        : 'py-1 text-sm',
+        ? `my-0.5 ${xxsTextClass}`
+        : 'my-1 text-sm',
       info.isOther && 'text-(--fc-classic-faint-foreground)',
       info.monthText && 'font-bold',
     ),
@@ -383,7 +383,7 @@ export default {
       info.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
     ),
     resourceDayHeaderInnerClass: (info) => joinClassNames(
-      'px-1 py-0.5 flex flex-col',
+      'mx-1 my-0.5 flex flex-col',
       info.isNarrow ? xxsTextClass : 'text-sm',
     ),
 
@@ -391,12 +391,12 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     resourceColumnHeaderClass: "border border-(--fc-classic-border) justify-center",
-    resourceColumnHeaderInnerClass: "p-2 text-sm",
+    resourceColumnHeaderInnerClass: "m-2 text-sm",
     resourceColumnResizerClass: "absolute inset-y-0 w-[5px] end-[-3px]",
     resourceGroupHeaderClass: "border border-(--fc-classic-border) bg-(--fc-classic-muted)",
-    resourceGroupHeaderInnerClass: "p-2 text-sm",
+    resourceGroupHeaderInnerClass: "m-2 text-sm",
     resourceCellClass: "border border-(--fc-classic-border)",
-    resourceCellInnerClass: "p-2 text-sm",
+    resourceCellInnerClass: "m-2 text-sm",
     resourceIndentClass: "ms-2 -me-1 justify-center",
     resourceExpanderClass: `group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
     resourceExpanderContent: (info) => info.isExpanded
@@ -435,7 +435,7 @@ export default {
 
       weekNumberHeaderClass: 'items-center justify-end',
       weekNumberHeaderInnerClass: (info) => joinClassNames(
-        'px-1 py-0.5',
+        'mx-1 my-0.5',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
 
@@ -444,7 +444,7 @@ export default {
 
       allDayHeaderClass: 'items-center justify-end',
       allDayHeaderInnerClass: (info) => joinClassNames(
-        'px-1 py-2 text-end',
+        'mx-1 my-2 text-end',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
       allDayDividerClass: 'border-y border-(--fc-classic-border) pb-0.5 bg-(--fc-classic-muted)',
@@ -454,7 +454,7 @@ export default {
 
       slotHeaderClass: 'justify-end',
       slotHeaderInnerClass: (info) => joinClassNames(
-        'px-1 py-0.5',
+        'mx-1 my-0.5',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
       slotHeaderDividerClass: 'border-e border-(--fc-classic-border)',

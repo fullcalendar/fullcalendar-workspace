@@ -22,7 +22,7 @@ export function SchedulerViews({
         info.isMajor && 'border-foreground/20',
       )}
       resourceDayHeaderInnerClass={(info) => cn(
-        'p-2 flex flex-col',
+        'm-2 flex flex-col',
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -30,12 +30,12 @@ export function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass="border bg-foreground/5"
-      resourceGroupHeaderInnerClass="p-2 text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-sm"
       resourceCellClass="border"
-      resourceCellInnerClass="p-2 text-sm"
+      resourceCellInnerClass="m-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass="group p-0.5 rounded-sm hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
       resourceHeaderRowClass="border"
@@ -79,7 +79,7 @@ export function SchedulerViews({
           slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
           slotHeaderInnerClass: (info) => cn(
-            'p-2 text-sm',
+            'm-2 text-sm',
             info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b',

@@ -121,6 +121,10 @@
   margin: 8px
 }
 
+.m-3 {
+  margin: 12px
+}
+
 .m-4 {
   margin: 16px
 }
@@ -139,6 +143,10 @@
 
 .mx-2 {
   margin-inline: 8px
+}
+
+.mx-3 {
+  margin-inline: 12px
 }
 
 .mx-auto {

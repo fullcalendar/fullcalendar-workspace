@@ -557,7 +557,7 @@ export default function EventCalendarViews({
 
           allDayHeaderClass: 'items-center',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            `p-3 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]`,
+            `m-3 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]`,
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
@@ -567,7 +567,7 @@ export default function EventCalendarViews({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'relative px-3 py-2',
+            'relative mx-3 my-2',
             info.isNarrow
               ? `-top-3.5 ${xxsTextClass}`
               : '-top-4 text-xs',

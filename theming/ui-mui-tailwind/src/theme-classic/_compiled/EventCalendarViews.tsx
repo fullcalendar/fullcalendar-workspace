@@ -250,7 +250,7 @@ export default function EventCalendarViews({
             ),
       )}
       dayHeaderInnerClass={(info) => joinClassNames(
-        'px-1 py-0.5 flex flex-col',
+        'mx-1 my-0.5 flex flex-col',
         info.isNarrow ? xxsTextClass : 'text-sm',
       )}
       dayHeaderDividerClass="border-b border-(--mui-palette-divider)"
@@ -264,10 +264,10 @@ export default function EventCalendarViews({
         'flex flex-row justify-end',
       )}
       dayCellTopInnerClass={(info) => joinClassNames(
-        'px-1 whitespace-nowrap',
+        'mx-1 whitespace-nowrap',
         info.isNarrow
-          ? `py-0.5 ${xxsTextClass}`
-          : 'py-1 text-sm',
+          ? `my-0.5 ${xxsTextClass}`
+          : 'my-1 text-sm',
         info.isOther && 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.38)]',
         info.monthText && 'font-bold',
       )}
@@ -361,7 +361,7 @@ export default function EventCalendarViews({
 
           weekNumberHeaderClass: 'items-center justify-end',
           weekNumberHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-0.5',
+            'mx-1 my-0.5',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
 
@@ -370,7 +370,7 @@ export default function EventCalendarViews({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-2 text-end',
+            'mx-1 my-2 text-end',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: `border-y border-(--mui-palette-divider) pb-0.5 ${mutedBgClass}`,
@@ -380,7 +380,7 @@ export default function EventCalendarViews({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'px-1 py-0.5',
+            'mx-1 my-0.5',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           slotHeaderDividerClass: `border-e border-(--mui-palette-divider)`,

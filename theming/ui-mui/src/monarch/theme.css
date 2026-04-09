@@ -204,6 +204,10 @@
   margin-inline-end: .25rem
 }
 
+.me-3 {
+  margin-inline-end: .75rem
+}
+
 .me-2 {
   margin-inline-end: .5rem
 }
@@ -681,16 +685,8 @@
   padding-inline-start: .25rem
 }
 
-.ps-2 {
-  padding-inline-start: .5rem
-}
-
 .pe-1 {
   padding-inline-end: .25rem
-}
-
-.pe-3 {
-  padding-inline-end: .75rem
 }
 
 .pb-0\.5 {

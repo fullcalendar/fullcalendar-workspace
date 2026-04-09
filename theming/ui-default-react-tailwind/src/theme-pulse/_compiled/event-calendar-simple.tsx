@@ -632,7 +632,7 @@ export function EventCalendar({
 
           allDayHeaderClass: 'items-center',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-(--fc-pulse-muted-foreground)',
+            'm-2 text-(--fc-pulse-muted-foreground)',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: 'border-b border-(--fc-pulse-strong-border) shadow-sm',
@@ -642,7 +642,7 @@ export function EventCalendar({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'relative p-2',
+            'relative m-2',
             info.isNarrow
               ? `-top-3.5 ${xxsTextClass}`
               : '-top-4 text-xs',

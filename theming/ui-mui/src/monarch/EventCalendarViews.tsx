@@ -481,7 +481,7 @@ export default function EventCalendarViews({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-end',
+            'm-2 text-end',
             info.isNarrow ? xxsTextClass : 'text-sm',
           ),
           allDayDividerClass: `border-b border-(--mui-palette-divider)`,
@@ -494,7 +494,7 @@ export default function EventCalendarViews({
             info.isMinor && 'border-dotted',
           ),
           slotHeaderInnerClass: (info) => joinClassNames(
-            'relative ps-2 pe-3 py-2',
+            'relative ms-2 me-3 my-2',
             info.isNarrow
               ? `-top-4 ${xxsTextClass}`
               : '-top-5 text-sm',

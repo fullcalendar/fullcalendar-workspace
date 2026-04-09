@@ -35,7 +35,7 @@ export default function SchedulerViews({
           : 'border-(--mui-palette-divider)',
       )}
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        'p-2 flex flex-col',
+        'm-2 flex flex-col',
         info.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -43,12 +43,12 @@ export default function SchedulerViews({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--mui-palette-divider) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass={`border border-(--mui-palette-divider) ${faintBgClass}`}
-      resourceGroupHeaderInnerClass="p-2 text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-sm"
       resourceCellClass="border border-(--mui-palette-divider)"
-      resourceCellInnerClass="p-2 text-sm"
+      resourceCellInnerClass="m-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
       resourceExpanderClass={`group p-1 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       resourceExpanderContent={(info) => (

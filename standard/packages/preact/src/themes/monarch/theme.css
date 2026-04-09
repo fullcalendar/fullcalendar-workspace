@@ -204,6 +204,10 @@
   margin-inline-end: 4px
 }
 
+.me-3 {
+  margin-inline-end: 12px
+}
+
 .me-2 {
   margin-inline-end: 8px
 }
@@ -727,16 +731,8 @@
   padding-inline-start: 4px
 }
 
-.ps-2 {
-  padding-inline-start: 8px
-}
-
 .pe-1 {
   padding-inline-end: 4px
-}
-
-.pe-3 {
-  padding-inline-end: 12px
 }
 
 .pb-0\.5 {

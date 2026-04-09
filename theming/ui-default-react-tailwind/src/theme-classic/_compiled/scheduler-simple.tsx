@@ -35,7 +35,7 @@ export function Scheduler({
         info.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
       )}
       resourceDayHeaderInnerClass={(info) => joinClassNames(
-        'px-1 py-0.5 flex flex-col',
+        'mx-1 my-0.5 flex flex-col',
         info.isNarrow ? xxsTextClass : 'text-sm',
       )}
 
@@ -43,12 +43,12 @@ export function Scheduler({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--fc-classic-border) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-sm"
+      resourceColumnHeaderInnerClass="m-2 text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
       resourceGroupHeaderClass="border border-(--fc-classic-border) bg-(--fc-classic-muted)"
-      resourceGroupHeaderInnerClass="p-2 text-sm"
+      resourceGroupHeaderInnerClass="m-2 text-sm"
       resourceCellClass="border border-(--fc-classic-border)"
-      resourceCellInnerClass="p-2 text-sm"
+      resourceCellInnerClass="m-2 text-sm"
       resourceIndentClass="ms-2 -me-1 justify-center"
       resourceExpanderClass={`group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(info) => info.isExpanded
@@ -106,7 +106,7 @@ export function Scheduler({
           slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
           slotHeaderInnerClass: (info) => joinClassNames(
-            'p-2 text-sm',
+            'm-2 text-sm',
             info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',

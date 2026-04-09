@@ -290,7 +290,7 @@ export function EventCalendarViews({
             ],
         info.monthText && 'font-bold',
       )}
-      dayCellInnerClass={(info) => cn(info.inPopover && 'p-2')}
+      dayCellInnerClass={(info) => cn(info.inPopover && 'm-2')}
 
       /* Popover
       ----------------------------------------------------------------------------------------- */
@@ -422,7 +422,7 @@ export function EventCalendarViews({
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (info) => cn(
-            'p-2 text-end',
+            'm-2 text-end',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           allDayDividerClass: 'border-b',
@@ -432,7 +432,7 @@ export function EventCalendarViews({
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (info) => cn(
-            'p-2',
+            'm-2',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
           slotHeaderDividerClass: 'border-e',

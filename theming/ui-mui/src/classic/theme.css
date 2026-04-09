@@ -124,6 +124,18 @@
   margin-inline: 1px
 }
 
+.my-0\.5 {
+  margin-block: 0.125rem
+}
+
+.my-1 {
+  margin-block: .25rem
+}
+
+.my-2 {
+  margin-block: .5rem
+}
+
 .ms-0\.5 {
   margin-inline-start: 0.125rem
 }
@@ -533,10 +545,6 @@
 
 .px-0\.5 {
   padding-inline: 0.125rem
-}
-
-.px-1 {
-  padding-inline: .25rem
 }
 
 .px-3 {
