@@ -36,13 +36,6 @@ export interface ResourceLaneInfo {
   options: { eventOverlap: boolean }
 }
 
-export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
-  return {
-    resource: new ResourceApi(input.context, input.resource),
-    options: { eventOverlap: input.eventOverlap },
-  }
-}
-
 export interface ResourceExpanderInfo {
   isExpanded: boolean
 }

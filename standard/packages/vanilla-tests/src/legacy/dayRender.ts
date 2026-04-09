@@ -14,7 +14,7 @@ describe('dayCellDidMount', () => {
       initialDate: '2014-05-01',
       dayCellDidMount(info) {
         expect(info.date instanceof Date).toEqual(true)
-        expect(formatIsoDay(info.date)).toEqual(info.el.getAttribute('info-date'))
+        expect(formatIsoDay(info.date)).toEqual(info.el.getAttribute('data-date'))
         expect(info.el instanceof HTMLElement).toBe(true)
       },
     }

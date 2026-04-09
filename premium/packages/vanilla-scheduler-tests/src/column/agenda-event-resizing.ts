@@ -41,12 +41,11 @@ describe('timeGrid-view event resizing', () => {
         '2015-11-23T03:00:00',
         '2015-11-23T04:30:00',
       )
+      let info = await waitEventResize(calendar, resizing)
+      expect(info.event.start).toEqualDate('2015-11-23T02:00:00Z')
+      expect(info.event.end).toEqualDate('2015-11-23T04:30:00Z')
 
-      let modifiedEvent = await waitEventResize(calendar, resizing)
-      expect(modifiedEvent.start).toEqualDate('2015-11-23T02:00:00Z')
-      expect(modifiedEvent.end).toEqualDate('2015-11-23T04:30:00Z')
-
-      let resources = modifiedEvent.getResources()
+      let resources = info.event.getResources()
       expect(resources.length).toBe(0)
     })
   })

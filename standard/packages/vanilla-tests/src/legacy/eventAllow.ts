@@ -39,9 +39,8 @@ describe('eventAllow', () => {
       calendarWrapper.getFirstEventEl(),
       '2016-09-04T03:00:00',
     )
-
-    let modifiedEvent = await waitEventDrag(calendar, dragging)
-    expect(modifiedEvent).toBeFalsy() // drop failure?
+    let info = await waitEventDrag(calendar, dragging)
+    expect(info).toBeFalsy() // drop failure?
     expect(options.eventAllow).toHaveBeenCalled()
   })
 
@@ -62,9 +61,8 @@ describe('eventAllow', () => {
       calendarWrapper.getFirstEventEl(),
       '2016-09-04T03:00:00Z',
     )
-
-    let modifiedEvent = await waitEventDrag(calendar, dragging)
-    expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+    let info = await waitEventDrag(calendar, dragging)
+    expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
     expect(options.eventAllow).toHaveBeenCalled()
   })
 })

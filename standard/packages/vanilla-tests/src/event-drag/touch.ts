@@ -18,14 +18,13 @@ describe('event touch dragging', () => {
     let eventEl = gridWrapper.getEventEls()[0]
     await waitTimeout()
 
-    let dragging = gridWrapper.dragEventToDate(
+    const dragging = gridWrapper.dragEventToDate(
       eventEl.querySelector('i'),
       null, // don't specify start date. start drag on center of given element
       '2020-08-13',
       true,
     )
-
-    const event = await waitEventDrag(calendar, dragging)
-    expect(event.startStr).toBe('2020-08-13')
+    const info = await waitEventDrag(calendar, dragging)
+    expect(info.event.startStr).toBe('2020-08-13')
   })
 })

@@ -1,89 +1,82 @@
 import { Calendar } from 'fullcalendar'
+import type { CalendarListeners } from 'fullcalendar/protected-api'
 
-export function waitEventDrag(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let modifiedEvent: any = false
-
-    calendar.on('eventDrop', (info) => {
-      modifiedEvent = info.event
-    })
-
-    calendar.on('_noEventDrop', () => {
-      resolve(false)
-    })
-
-    dragging.then(() => {
-      setTimeout(() => { // wait for eventDrop to fire
-        resolve(modifiedEvent)
-      })
-    })
-  })
+export function waitEventDrag(calendar: Calendar, dragging: Promise<any> | (() => Promise<any>)) {
+  return waitForDragOutcome(calendar, dragging, 'eventDrop', '_noEventDrop', (info) => info)
 }
 
-export function waitEventDrag2(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let theData: any = false
-
-    calendar.on('eventDrop', (info) => {
-      theData = info
-    })
-
-    calendar.on('_noEventDrop', () => {
-      resolve(false)
-    })
-
-    dragging.then(() => {
-      setTimeout(() => { // wait for eventDrop to fire
-        resolve(theData)
-      })
-    })
-  })
+export function waitEventResize(calendar: Calendar, dragging: Promise<any> | (() => Promise<any>)) {
+  return waitForDragOutcome(calendar, dragging, 'eventResize', null, (info) => info)
 }
 
-export function waitEventResize(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let modifiedEvent: any = false
-
-    calendar.on('eventResize', (info) => {
-      modifiedEvent = info.event
-    })
-
-    dragging.then(() => {
-      setTimeout(() => { // wait for eventResize to fire
-        resolve(modifiedEvent)
-      })
-    })
-  })
+export function waitDateSelect(calendar: Calendar, dragging: Promise<any> | (() => Promise<any>)) {
+  return waitForDragOutcome(calendar, dragging, 'select', null, (info) => info)
 }
 
-export function waitEventResize2(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let theData: any = false
+function waitForDragOutcome<T>(
+  calendar: Calendar,
+  dragging: Promise<any> | (() => Promise<any>),
+  successEventName: keyof CalendarListeners,
+  failureEventName: keyof CalendarListeners | null,
+  transform: (info: any) => T,
+) {
+  return new Promise<T | false>((resolve, reject) => {
+    let isDragDone = false
+    let hasOutcome = false
+    let outcome: T | false = false
+    let timeoutId: number | null = null
 
-    calendar.on('eventResize', (info) => {
-      theData = info
-    })
+    const cleanup = () => {
+      calendar.off(successEventName, onSuccess)
 
-    dragging.then(() => {
-      setTimeout(() => { // wait for eventResize to fire
-        resolve(theData)
-      })
-    })
-  })
-}
+      if (failureEventName) {
+        calendar.off(failureEventName, onFailure)
+      }
 
-export function waitDateSelect(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let selectInfo = null
+      if (timeoutId != null) {
+        clearTimeout(timeoutId)
+      }
+    }
 
-    calendar.on('select', (info) => {
-      selectInfo = info
-    })
+    const flush = () => {
+      if (isDragDone && hasOutcome) {
+        cleanup()
+        resolve(outcome)
+      }
+    }
 
-    dragging.then(() => {
-      setTimeout(() => { // wait for select to fire
-        resolve(selectInfo)
-      })
+    const onSuccess = (info) => {
+      hasOutcome = true
+      outcome = transform(info)
+      flush()
+    }
+
+    const onFailure = () => {
+      hasOutcome = true
+      outcome = false
+      flush()
+    }
+
+    calendar.on(successEventName, onSuccess)
+
+    if (failureEventName) {
+      calendar.on(failureEventName, onFailure)
+    }
+
+    const draggingPromise = typeof dragging === 'function' ? dragging() : dragging
+
+    draggingPromise.then(() => {
+      isDragDone = true
+
+      timeoutId = window.setTimeout(() => {
+        cleanup()
+        reject(new Error('Timed out waiting for drag outcome'))
+      }, 1000)
+
+      flush()
+    }, (error) => {
+      cleanup()
+      reject(error)
     })
   })
 }

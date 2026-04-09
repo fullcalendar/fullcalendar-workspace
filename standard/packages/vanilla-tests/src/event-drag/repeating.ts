@@ -34,8 +34,7 @@ describe('event dragging on repeating events', () => {
 
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     let eventEl = timeGridWrapper.getFirstEventEl()
-    let dragging = timeGridWrapper.dragEventToDate(eventEl, '2017-02-16T12:00:00')
-
+    const dragging = timeGridWrapper.dragEventToDate(eventEl, '2017-02-16T12:00:00')
     const res = await waitEventDrag(calendar, dragging)
     expect(typeof res).toBe('object')
   })

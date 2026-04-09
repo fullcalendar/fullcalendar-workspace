@@ -39,7 +39,6 @@ describe('showNonCurrentDates event dragging', () => {
         '2017-06-08',
         '2017-06-01',
       )
-
       let res = await waitEventDrag(calendar, dragging)
       expect(typeof res).toBe('object')
     })

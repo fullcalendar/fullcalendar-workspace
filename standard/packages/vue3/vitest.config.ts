@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [vue()],
   test: {
     include: ['tests/**/*.test.ts'],
+
+    // We could NOT use js-dom or happy-dom because there was a bug where refs wouldn't correctly
+    // populate onMount... recreate an file a bug with Vitest or someone?
     browser: {
       provider: playwright(),
       enabled: true,

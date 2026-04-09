@@ -7,7 +7,8 @@ import { TimelineDateProfile } from '../../../timeline/timeline-date-profile'
 import { TimelineFg } from '../../../timeline/components/TimelineFg'
 import { TimelineBg } from '../../../timeline/components/TimelineBg'
 import { TimelineLaneSlicer } from '../../../timeline/TimelineLaneSlicer'
-import { refineRenderProps } from '../../structs'
+import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../structs'
+import { ResourceApi } from '../../../resource/public-api'
 
 export interface ResourceLaneProps {
   dateProfile: DateProfile
@@ -248,5 +249,12 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
   componentWillUnmount(): void {
     this._isUnmounting = true
+  }
+}
+
+function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
+  return {
+    resource: new ResourceApi(input.context, input.resource),
+    options: { eventOverlap: input.eventOverlap },
   }
 }

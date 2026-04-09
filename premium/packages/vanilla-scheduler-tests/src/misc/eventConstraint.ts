@@ -38,8 +38,8 @@ describe('eventConstraint', () => {
         timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
       )
 
-      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-        expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+      waitEventDrag(calendar, dragging).then((info) => {
+        expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })
@@ -51,8 +51,8 @@ describe('eventConstraint', () => {
         timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
       )
 
-      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-        expect(modifiedEvent).toBeFalsy() // failure
+      waitEventDrag(calendar, dragging).then((info) => {
+        expect(info).toBeFalsy() // failure
         done()
       })
     })
@@ -72,8 +72,8 @@ describe('eventConstraint', () => {
         timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
       )
 
-      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-        expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+      waitEventDrag(calendar, dragging).then((info) => {
+        expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })
@@ -85,8 +85,8 @@ describe('eventConstraint', () => {
         timelineGridWrapper.getFirstEventEl(), 'a', '2016-09-04T03:00:00',
       )
 
-      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-        expect(modifiedEvent).toBeFalsy() // failure
+      waitEventDrag(calendar, dragging).then((info) => {
+        expect(info).toBeFalsy() // failure
         done()
       })
     })

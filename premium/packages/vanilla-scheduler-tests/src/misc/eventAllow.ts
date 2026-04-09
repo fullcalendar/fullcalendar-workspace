@@ -40,8 +40,8 @@ describe('eventAllow', () => {
       timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
     )
 
-    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-      expect(modifiedEvent).toBeFalsy() // drop failure?
+    waitEventDrag(calendar, dragging).then((info) => {
+      expect(info).toBeFalsy() // drop failure?
       expect(isACalled).toBe(true)
       expect(isBCalled).toBe(true)
       done()
@@ -62,11 +62,11 @@ describe('eventAllow', () => {
       timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
     )
 
-    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
-      expect(typeof modifiedEvent).toBe('object')
-      expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
-      expect(modifiedEvent.getResources().length).toBe(1)
-      expect(modifiedEvent.getResources()[0].id).toBe('b')
+    waitEventDrag(calendar, dragging).then((info) => {
+      expect(typeof info).toBe('object')
+      expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
+      expect(info.event.getResources().length).toBe(1)
+      expect(info.event.getResources()[0].id).toBe('b')
       expect(isCalled).toBe(true)
       done()
     })

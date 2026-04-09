@@ -1,6 +1,6 @@
 import { createDuration } from 'fullcalendar/protected-api'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
-import { waitEventResize2 } from '../lib/wrappers/interaction-util'
+import { waitEventResize } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { enUsSep, waitTimeout } from '../lib/misc'
@@ -34,8 +34,7 @@ describe('eventResize', () => {
         let resizing = dayGridWrapper.resizeEvent(
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ day: 5 }))
 
         expect(info.event.start).toEqualDate('2014-06-11')
@@ -70,8 +69,7 @@ describe('eventResize', () => {
             let resizing = dayGridWrapper.resizeEventTouch(
               dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
             )
-
-            let info = await waitEventResize2(calendar, resizing)
+            let info = await waitEventResize(calendar, resizing)
             expect(info.endDelta).toEqual(createDuration({ day: 5 }))
 
             expect(info.event.start).toEqualDate('2014-06-11')
@@ -124,8 +122,7 @@ describe('eventResize', () => {
         let resizing = dayGridWrapper.resizeEvent(
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-13',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ day: 2 }))
 
         expect(info.event.start).toEqualDate('2014-06-11')
@@ -157,8 +154,7 @@ describe('eventResize', () => {
         let resizing = timeGridWrapper.resizeEvent(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
         expect(info.event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -181,8 +177,7 @@ describe('eventResize', () => {
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-11T09:30:00Z',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
         expect(info.event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -204,8 +199,7 @@ describe('eventResize', () => {
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-12T09:30:00Z',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ day: 1, hour: 2, minute: 30 }))
 
         expect(info.event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -228,8 +222,7 @@ describe('eventResize', () => {
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
         expect(info.event.start).toEqualLocalDate('2014-06-11T05:00:00')
@@ -252,8 +245,7 @@ describe('eventResize', () => {
         let resizing = timeGridWrapper.resizeEventTouch(
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
-
-        let info = await waitEventResize2(calendar, resizing)
+        let info = await waitEventResize(calendar, resizing)
         expect(info.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
         expect(info.event.start).toEqualDate('2014-06-11T05:00:00+00:00')

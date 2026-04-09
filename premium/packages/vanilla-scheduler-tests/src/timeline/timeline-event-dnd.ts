@@ -1,9 +1,10 @@
 import { waitEventDrag } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 // TODO: test isRtl?
 
-xdescribe('timeline-view event drag-n-drop', () => {
+describe('timeline-view event drag-n-drop', () => {
   pushOptions({
     editable: true,
     now: '2015-11-29',
@@ -17,7 +18,7 @@ xdescribe('timeline-view event drag-n-drop', () => {
   })
 
   describeTimeZones((tz) => {
-    it('allows switching date and resource', (done) => {
+    it('allows switching date and resource', async () => {
       let dropSpy
 
       initCalendar({
@@ -38,15 +39,15 @@ xdescribe('timeline-view event drag-n-drop', () => {
           })),
       })
 
-      dragElTo($('.event0'), 'a', '2015-11-29T05:00:00', () => {
-        expect(dropSpy).toHaveBeenCalled()
-        done()
-      })
+      await waitTimeout()
+      await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+      await waitTimeout()
+      expect(dropSpy).toHaveBeenCalled()
     })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/3900
-  it('can drag past midnight with extended slotMaxTime', (done) => {
+  it('can drag past midnight with extended slotMaxTime', async () => {
     let calendar = initCalendar({
       slotDuration: '04:00',
       slotMaxTime: '36:00',
@@ -55,19 +56,15 @@ xdescribe('timeline-view event drag-n-drop', () => {
       ],
     })
 
-    setTimeout(() => { // wait for scrollTime
-      let grid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-      let eventEl = grid.getEventEls()[0]
-      let dragging = grid.dragEventTo(eventEl, 'b', '2015-11-30T04:00:00')
-
-      waitEventDrag(calendar, dragging).then((event) => {
-        expect(event.startStr).toBe('2015-11-30T04:00:00Z')
-        done()
-      })
-    })
+    await waitTimeout()
+    let grid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let eventEl = grid.getEventEls()[0]
+    let dragging = grid.dragEventTo(eventEl, 'b', '2015-11-30T04:00:00')
+    let info = await waitEventDrag(calendar, dragging)
+    expect(info.event.startStr).toBe('2015-11-30T04:00:00Z')
   })
 
-  it('receives correct eventAllow args when switching date and resource', (done) => {
+  it('receives correct eventAllow args when switching date and resource', async () => {
     let calledEventAllow = false
 
     initCalendar({
@@ -81,13 +78,13 @@ xdescribe('timeline-view event drag-n-drop', () => {
       },
     })
 
-    dragElTo($('.event0'), 'a', '2015-11-29T05:00:00', () => {
-      expect(calledEventAllow).toBe(true)
-      done()
-    })
+    await waitTimeout()
+    await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+    await waitTimeout()
+    expect(calledEventAllow).toBe(true)
   })
 
-  it('allows switching date only', (done) => {
+  it('allows switching date only', async () => {
     let dropSpy
 
     initCalendar({
@@ -108,91 +105,93 @@ xdescribe('timeline-view event drag-n-drop', () => {
         })),
     })
 
-    dragElTo($('.event0'), 'b', '2015-11-29T05:00:00', () => {
-      expect(dropSpy).toHaveBeenCalled()
-      done()
-    })
+    await waitTimeout()
+    await dragElTo($('.event0'), 'b', '2015-11-29T05:00:00')
+    await waitTimeout()
+    expect(dropSpy).toHaveBeenCalled()
   })
 
-  it('can drag one of multiple event occurences', (done) => {
+  it('can drag one of multiple event occurences', async () => {
+    let dropInfo: any
+
     initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
       eventDrop(info) {
-        setTimeout(() => { // let the drop rerender
-          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
-
-          let resourceIds = info.event.getResources().map((resource) => resource.id)
-          resourceIds.sort()
-          expect(resourceIds).toEqual(['b', 'c'])
-          done()
-        })
+        dropInfo = info
       },
     })
 
-    dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await waitTimeout()
+    await dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await waitTimeout() // let the drop rerender
+
+    expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(dropInfo.event.end).toEqualDate('2015-11-29T06:00:00Z')
+
+    let resourceIds = dropInfo.event.getResources().map((resource) => resource.id)
+    resourceIds.sort()
+    expect(resourceIds).toEqual(['b', 'c'])
   })
 
-  it('can drag one of multiple event occurences, linked by same event-IDs', (done) => {
+  it('can drag one of multiple event occurences, linked by same event-IDs', async () => {
     let calendar = initCalendar({
       events: [
         { groupId: '1', title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
         { groupId: '1', title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
-      eventDrop() {
-        setTimeout(() => { // let the drop rerender
-          const events = currentCalendar.getEvents()
-
-          expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(events[0].getResources().length).toBe(1)
-          expect(events[0].getResources()[0].id).toBe('c')
-
-          expect(events[1].start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(events[1].end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(events[1].getResources().length).toBe(1)
-          expect(events[1].getResources()[0].id).toBe('b')
-
-          done()
-        })
-      },
     })
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
-    dragElTo(
+    await waitTimeout()
+    await dragElTo(
       $('.event0:first'),
       'c',
       '2015-11-29T05:00:00',
-      null, // callback
       () => { // onBeforeRelease (happens BEFORE callback)
         expect(timelineGridWrapper.getMirrorEventEls().length).toBe(2) // rendered two mirrors
       },
     )
+    await waitTimeout() // let the drop rerender
+
+    const events = currentCalendar.getEvents()
+
+    expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
+    expect(events[0].getResources().length).toBe(1)
+    expect(events[0].getResources()[0].id).toBe('c')
+
+    expect(events[1].start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(events[1].end).toEqualDate('2015-11-29T06:00:00Z')
+    expect(events[1].getResources().length).toBe(1)
+    expect(events[1].getResources()[0].id).toBe('b')
   })
 
-  it('can drag one of multiple event occurences onto an already-assigned resource', (done) => {
+  it('can drag one of multiple event occurences onto an already-assigned resource', async () => {
+    let dropInfo: any
+
     initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
       eventDrop(info) {
-        setTimeout(() => { // let the drop rerender
-          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(info.event.getResources().length).toBe(1)
-          expect(info.event.getResources()[0].id).toBe('b')
-          done()
-        })
+        dropInfo = info
       },
     })
 
-    dragElTo($('.event0:first'), 'b', '2015-11-29T05:00:00')
+    await waitTimeout()
+    await dragElTo($('.event0:first'), 'b', '2015-11-29T05:00:00')
+    await waitTimeout() // let the drop rerender
+
+    expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(dropInfo.event.end).toEqualDate('2015-11-29T06:00:00Z')
+    expect(dropInfo.event.getResources().length).toBe(1)
+    expect(dropInfo.event.getResources()[0].id).toBe('b')
   })
 
-  it('allows dragging via touch', (done) => {
+  it('allows dragging via touch', async () => {
     let dropSpy
 
     initCalendar({
@@ -211,64 +210,71 @@ xdescribe('timeline-view event drag-n-drop', () => {
         })),
     })
 
-    touchDragElTo($('.event0'), 200, 'a', '2015-11-29T05:00:00', () => {
-      expect(dropSpy).toHaveBeenCalled()
-      setTimeout(done, 1000) // wait, so next tests don't have mousedown ignored :(
-    })
+    await waitTimeout()
+    await touchDragElTo($('.event0'), 200, 'a', '2015-11-29T05:00:00')
+    await waitTimeout()
+    expect(dropSpy).toHaveBeenCalled()
+    await new Promise<void>((resolve) => setTimeout(resolve, 1000)) // wait, so next tests don't have mousedown ignored :(
   })
 
-  it('restores resource correctly with revert', (done) => {
+  it('restores resource correctly with revert', async () => {
+    let dropInfo: any
+
     initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
       eventDrop(info) {
-        setTimeout(() => { // let the drop rerender
-          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(info.event.getResources().length).toBe(1)
-          expect(info.event.getResources()[0].id).toBe('a')
-          info.revert()
-
-          let event = currentCalendar.getEvents()[0]
-          expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
-          expect(event.getResources().length).toBe(1)
-          expect(event.getResources()[0].id).toBe('b')
-          done()
-        })
+        dropInfo = info
       },
     })
 
-    dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+    await waitTimeout()
+    await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+    await waitTimeout() // let the drop rerender
+
+    expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(dropInfo.event.end).toEqualDate('2015-11-29T06:00:00Z')
+    expect(dropInfo.event.getResources().length).toBe(1)
+    expect(dropInfo.event.getResources()[0].id).toBe('a')
+    dropInfo.revert()
+
+    let event = currentCalendar.getEvents()[0]
+    expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+    expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
+    expect(event.getResources().length).toBe(1)
+    expect(event.getResources()[0].id).toBe('b')
   })
 
-  it('restores multiple resources correctly with revert', (done) => {
+  it('restores multiple resources correctly with revert', async () => {
+    let dropInfo: any
+
     initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
       eventDrop(info) {
-        setTimeout(() => { // let the drop rerender
-          let resourceIds
-
-          expect(info.event.start).toEqualDate('2015-11-29T05:00:00Z')
-          expect(info.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          resourceIds = info.event.getResources().map((resource) => resource.id)
-          expect(resourceIds).toEqual(['b', 'c'])
-          info.revert()
-
-          let event = currentCalendar.getEvents()[0]
-          expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
-          resourceIds = event.getResources().map((resource) => resource.id)
-          expect(resourceIds).toEqual(['a', 'b'])
-          done()
-        })
+        dropInfo = info
       },
     })
 
-    dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await waitTimeout()
+    await dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await waitTimeout() // let the drop rerender
+
+    let resourceIds
+
+    expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
+    expect(dropInfo.event.end).toEqualDate('2015-11-29T06:00:00Z')
+    resourceIds = dropInfo.event.getResources().map((resource) => resource.id)
+    expect(resourceIds).toEqual(['b', 'c'])
+    dropInfo.revert()
+
+    let event = currentCalendar.getEvents()[0]
+    expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+    expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
+    resourceIds = event.getResources().map((resource) => resource.id)
+    expect(resourceIds).toEqual(['a', 'b'])
   })
 
   describe('when per-resource businessHours and eventConstraint', () => {
@@ -278,7 +284,7 @@ xdescribe('timeline-view event drag-n-drop', () => {
       eventConstraint: 'businessHours',
     })
 
-    it('allow dragging into custom matching range', (done) => {
+    it('allow dragging into custom matching range', async () => {
       let dropSpy
 
       initCalendar({
@@ -302,13 +308,13 @@ xdescribe('timeline-view event drag-n-drop', () => {
           })),
       })
 
-      dragElTo($('.event0'), 'a', '2015-11-27T05:00', () => {
-        expect(dropSpy).toHaveBeenCalled()
-        done()
-      })
+      await waitTimeout()
+      await dragElTo($('.event0'), 'a', '2015-11-27T05:00')
+      await waitTimeout()
+      expect(dropSpy).toHaveBeenCalled()
     })
 
-    it('disallow dragging into custom non-matching range', (done) => {
+    it('disallow dragging into custom non-matching range', async () => {
       let dropSpy
 
       initCalendar({
@@ -331,33 +337,37 @@ xdescribe('timeline-view event drag-n-drop', () => {
           })),
       })
 
-      dragElTo($('.event0'), 'a', '2015-11-27T09:00:00', () => {
-        expect(dropSpy).not.toHaveBeenCalled()
-        done()
-      })
+      await waitTimeout()
+      await dragElTo($('.event0'), 'a', '2015-11-27T09:00:00')
+      await waitTimeout()
+      expect(dropSpy).not.toHaveBeenCalled()
     })
   })
 
-  function dragElTo(el, resourceId, date, callback?, onBeforeRelease?) {
-    let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+  function dragElTo(el, resourceId, date, onBeforeRelease?) {
+    return new Promise<void>((resolve) => {
+      let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
 
-    el.simulate('drag', {
-      localPoint: { left: 1, top: '50%' },
-      end: timelineGrid.getPoint(resourceId, date),
-      onBeforeRelease,
-      callback,
+      el.simulate('drag', {
+        localPoint: { left: 1, top: '50%' },
+        end: timelineGrid.getPoint(resourceId, date),
+        onBeforeRelease,
+        callback: resolve,
+      })
     })
   }
 
-  function touchDragElTo(el, delay, resourceId, date, callback?) {
-    let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+  function touchDragElTo(el, delay, resourceId, date) {
+    return new Promise<void>((resolve) => {
+      let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
 
-    $('.event0').simulate('drag', {
-      isTouch: true,
-      delay,
-      localPoint: { left: 1, top: '50%' },
-      end: timelineGrid.getPoint(resourceId, date),
-      callback,
+      el.simulate('drag', {
+        isTouch: true,
+        delay,
+        localPoint: { left: 1, top: '50%' },
+        end: timelineGrid.getPoint(resourceId, date),
+        callback: resolve,
+      })
     })
   }
 })

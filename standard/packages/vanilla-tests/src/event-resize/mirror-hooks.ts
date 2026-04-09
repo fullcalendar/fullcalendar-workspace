@@ -50,7 +50,6 @@ describe('event resize mirror', () => {
         '2018-12-03',
         '2018-12-05',
       )
-
       await waitEventResize(calendar, resizing)
       expect(mirrorMountCalls).toBe(1 * strictModeFactor)
       expect(mirrorContentCalls).toBe(3 * strictModeFactor)
@@ -100,7 +99,6 @@ describe('event resize mirror', () => {
         '2018-12-25T02:00:00',
         '2018-12-25T04:00:00', // drag TWO snaps
       )
-
       await waitEventResize(calendar, resizing)
       expect(mirrorMountCalls).toBe(1 * strictModeFactor)
       expect(mirrorContentCalls).toBe(3 * strictModeFactor)

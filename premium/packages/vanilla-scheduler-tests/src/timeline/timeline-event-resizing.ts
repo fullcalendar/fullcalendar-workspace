@@ -1,3 +1,4 @@
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
@@ -5,7 +6,7 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?
 
-xdescribe('timeline event resizing', () => {
+describe('timeline event resizing', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
@@ -32,7 +33,7 @@ xdescribe('timeline event resizing', () => {
               initialView: 'timelineDay',
             })
 
-            it('reports resize with no resource', (done) => {
+            it('reports resize with no resource', async () => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
@@ -49,19 +50,18 @@ xdescribe('timeline event resizing', () => {
               })
 
               let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.resizeEvent(
+              await waitTimeout()
+              await timelineGridWrapper.resizeEvent(
                 $('.event1')[0],
                 '2015-11-28T07:30:00',
-              ).then(() => {
-                expect(resizeSpy).toHaveBeenCalled()
-                expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
-                done()
-              })
+              )
+              expect(resizeSpy).toHaveBeenCalled()
+              expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
             })
           })
 
           describe('when resources', () => {
-            it('reports resize on a resource', (done) => {
+            it('reports resize on a resource', async () => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
@@ -79,16 +79,15 @@ xdescribe('timeline event resizing', () => {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.resizeEvent(
+              await waitTimeout()
+              await timelineGridWrapper.resizeEvent(
                 $('.event1')[0], 'b', '2015-11-28T07:30:00',
-              ).then(() => {
-                expect(resizeSpy).toHaveBeenCalled()
-                expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
-                done()
-              })
+              )
+              expect(resizeSpy).toHaveBeenCalled()
+              expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
             })
 
-            it('reports resize across resources', (done) => {
+            it('reports resize across resources', async () => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
@@ -106,15 +105,14 @@ xdescribe('timeline event resizing', () => {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.resizeEvent(
+              await waitTimeout()
+              await timelineGridWrapper.resizeEvent(
                 $('.event1')[0], 'a', '2015-11-28T07:30:00',
-              ).then(() => {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              })
+              )
+              expect(resizeSpy).toHaveBeenCalled()
             })
 
-            it('reports resize on one event of multiple resources', (done) => {
+            it('reports resize on one event of multiple resources', async () => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [{
@@ -136,12 +134,11 @@ xdescribe('timeline event resizing', () => {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-              timelineGridWrapper.resizeEvent(
+              await waitTimeout()
+              await timelineGridWrapper.resizeEvent(
                 $('.event1:first')[0], 'a', '2015-11-28T07:30:00',
-              ).then(() => {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              })
+              )
+              expect(resizeSpy).toHaveBeenCalled()
             })
           })
         })
@@ -152,7 +149,7 @@ xdescribe('timeline event resizing', () => {
             snapDuration: '00:15',
           })
 
-          it('reports a smaller granularity', (done) => {
+          it('reports a smaller granularity', async () => {
             let resizeSpy
             let calendar = initCalendar({
               events: [
@@ -170,12 +167,11 @@ xdescribe('timeline event resizing', () => {
             })
 
             let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-            timelineGridWrapper.resizeEvent(
+            await waitTimeout()
+            await timelineGridWrapper.resizeEvent(
               $('.event1')[0], 'b', '2015-11-28T07:45:00',
-            ).then(() => {
-              expect(resizeSpy).toHaveBeenCalled()
-              done()
-            })
+            )
+            expect(resizeSpy).toHaveBeenCalled()
           })
         })
       })
@@ -202,7 +198,7 @@ xdescribe('timeline event resizing', () => {
 
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
-      $('.event1').simulate('drag', {
+      waitTimeout().then(() => $('.event1').simulate('drag', {
         isTouch: true,
         delay: 200,
         callback() {
@@ -218,7 +214,7 @@ xdescribe('timeline event resizing', () => {
             },
           })
         },
-      })
+      }))
     })
 
     describe('when day scale', () => {
@@ -227,7 +223,7 @@ xdescribe('timeline event resizing', () => {
         slotDuration: { days: 1 },
       })
 
-      it('reports untimed dates', (done) => {
+      it('reports untimed dates', async () => {
         let resizeSpy
         let calendar = initCalendar({
           events: [
@@ -245,12 +241,11 @@ xdescribe('timeline event resizing', () => {
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGridWrapper.resizeEvent(
+        await waitTimeout()
+        await timelineGridWrapper.resizeEvent(
           $('.event1')[0], 'a', '2015-11-06',
-        ).then(() => {
-          expect(resizeSpy).toHaveBeenCalled()
-          done()
-        })
+        )
+        expect(resizeSpy).toHaveBeenCalled()
       })
     })
 
@@ -261,7 +256,7 @@ xdescribe('timeline event resizing', () => {
         slotMinWidth: 50,
       })
 
-      it('reports untimed dates', (done) => { // TODO: this is desired behavior when no end???
+      it('reports untimed dates', async () => { // TODO: this is desired behavior when no end???
         let resizeSpy
         let calendar = initCalendar({
           events: [
@@ -279,18 +274,17 @@ xdescribe('timeline event resizing', () => {
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-        timelineGridWrapper.resizeEvent(
+        await waitTimeout()
+        await timelineGridWrapper.resizeEvent(
           $('.event1')[0], 'a', '2015-02-15',
-        ).then(() => {
-          expect(resizeSpy).toHaveBeenCalled()
-          done()
-        })
+        )
+        expect(resizeSpy).toHaveBeenCalled()
       })
     })
   })
 
   describe('mirror', () => {
-    it('gets passed into render hooks', (done) => {
+    it('gets passed into render hooks', async () => {
       let mirrorMountCnt = 0
       let mirrorContentCnt = 0
       let mirrorUnmountCnt = 0
@@ -322,15 +316,13 @@ xdescribe('timeline event resizing', () => {
 
       // move two slots
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-      timelineGridWrapper.resizeEvent(
+      await waitTimeout()
+      await timelineGridWrapper.resizeEvent(
         timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00',
-      ).then(() => {
-        expect(mirrorMountCnt).toBe(1)
-        expect(mirrorContentCnt).toBe(3)
-        expect(mirrorUnmountCnt).toBe(1)
-
-        done()
-      })
+      )
+      expect(mirrorMountCnt).toBe(1)
+      expect(mirrorContentCnt).toBe(3)
+      expect(mirrorUnmountCnt).toBe(1)
     })
   })
 })

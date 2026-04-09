@@ -8,6 +8,7 @@ import { ListenerCounter } from '../lib/ListenerCounter'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('external drag and drop with jquery UI', () => {
   pushOptions({
@@ -65,15 +66,15 @@ describe('external drag and drop with jquery UI', () => {
               calendar.next()
               calendar.prev()
 
-              setTimeout(() => { // weird
+              waitTimeout().then(() => {
                 $('#sidebar .event1').remove()
                 $('#sidebar .event2').simulate('drag', {
                   end: dayGridWrapper.getDayEl('2014-08-06'),
                 })
-              }, 0)
+              })
             } else if (callCnt === 1) {
               expect(info.date).toEqualDate('2014-08-06')
-              setTimeout(done) // weird
+              waitTimeout().then(done)
             }
 
             callCnt += 1
@@ -82,7 +83,7 @@ describe('external drag and drop with jquery UI', () => {
         dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
         initDnd()
-        setTimeout(() => { // weird
+        waitTimeout().then(() => {
           $('#sidebar .event1').simulate('drag', {
             end: dayGridWrapper.getDayEl('2014-08-06'),
           })
@@ -101,7 +102,7 @@ describe('external drag and drop with jquery UI', () => {
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: dayGridWrapper.getDayEl('2014-08-06'),
               callback() {
@@ -123,7 +124,7 @@ describe('external drag and drop with jquery UI', () => {
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: dayGridWrapper.getDayEl('2014-08-06'),
               callback() {
@@ -148,7 +149,7 @@ describe('external drag and drop with jquery UI', () => {
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: dayGridWrapper.getDayEl('2014-08-06'),
               callback() {
@@ -173,7 +174,7 @@ describe('external drag and drop with jquery UI', () => {
           let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: dayGridWrapper.getDayEl('2014-08-06'),
               callback() {
@@ -204,15 +205,15 @@ describe('external drag and drop with jquery UI', () => {
               currentCalendar.next()
               currentCalendar.prev()
 
-              setTimeout(() => { // weird
+              waitTimeout().then(() => {
                 $('#sidebar .event1').remove()
                 $('#sidebar .event2').simulate('drag', {
                   end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
                 })
-              }, 0)
+              })
             } else if (callCnt === 1) {
               expect(info.date).toEqualDate('2014-08-20T01:00:00Z')
-              setTimeout(done) // weird
+              waitTimeout().then(done)
             }
 
             callCnt += 1
@@ -221,7 +222,7 @@ describe('external drag and drop with jquery UI', () => {
         timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
         initDnd()
-        setTimeout(() => { // weird
+        waitTimeout().then(() => {
           $('#sidebar .event1').simulate('drag', {
             end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
           })
@@ -239,7 +240,7 @@ describe('external drag and drop with jquery UI', () => {
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
         initDnd()
-        setTimeout(() => {
+        waitTimeout().then(() => {
           $('#sidebar .event1').simulate('drag', {
             end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
           })
@@ -257,7 +258,7 @@ describe('external drag and drop with jquery UI', () => {
         let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
         initDnd()
-        setTimeout(() => { // weird
+        waitTimeout().then(() => {
           $('#sidebar .event1').simulate('drag', {
             end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
           })
@@ -276,7 +277,7 @@ describe('external drag and drop with jquery UI', () => {
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
               callback() {
@@ -298,7 +299,7 @@ describe('external drag and drop with jquery UI', () => {
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
               callback() {
@@ -323,7 +324,7 @@ describe('external drag and drop with jquery UI', () => {
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
               callback() {
@@ -348,7 +349,7 @@ describe('external drag and drop with jquery UI', () => {
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
           initDnd()
-          setTimeout(() => { // weird
+          waitTimeout().then(() => {
             $('#sidebar .event1').simulate('drag', {
               end: timeGridWrapper.getPoint('2014-08-20T01:00:00'),
               callback() {
@@ -394,7 +395,7 @@ describe('external drag and drop with jquery UI', () => {
     let calendar = initCalendarInContainer(options)
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-    setTimeout(() => { // weird
+    waitTimeout().then(() => {
       $('#sidebar .event1').draggable().simulate('drag', {
         end: dayGridWrapper.getDayEl('2014-08-06'),
         callback() {

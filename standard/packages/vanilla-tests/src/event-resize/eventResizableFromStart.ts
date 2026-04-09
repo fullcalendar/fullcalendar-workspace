@@ -28,7 +28,6 @@ describe('eventResizableFromStart', () => {
         '2019-08-26',
         true, // resize-from-start
       )
-
       await waitEventResize(calendar, resizing)
       let event = calendar.getEvents()[0]
       expect(event.start).toEqualDate('2019-08-26')

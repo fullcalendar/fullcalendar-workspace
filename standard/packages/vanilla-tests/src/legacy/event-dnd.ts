@@ -1,6 +1,6 @@
 import { createDuration } from 'fullcalendar/protected-api'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
-import { waitEventDrag2 } from '../lib/wrappers/interaction-util'
+import { waitEventDrag } from '../lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { queryEventElInfo } from '../lib/wrappers/TimeGridWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
@@ -43,8 +43,7 @@ describe('eventDrop', () => {
               '2014-06-20',
               isTouch,
             )
-
-            let info = await waitEventDrag2(calendar, dragging)
+            let info = await waitEventDrag(calendar, dragging)
             let delta = createDuration({ day: 9 })
             expect(info.delta).toEqual(delta)
 
@@ -62,7 +61,7 @@ describe('eventDrop', () => {
       })
     })
 
-    describe('when gragging a timed event to another day', () => {
+    describe('when dragging a timed event to another day', () => {
       it('should be given correct arguments, with whole-day delta', async () => {
         let calendar = initCalendarWithSpies({
           events: [{
@@ -79,8 +78,7 @@ describe('eventDrop', () => {
           '2014-06-11',
           '2014-06-16',
         )
-
-        let info = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag(calendar, dragging)
         let delta = createDuration({ day: 5 })
         expect(info.delta).toEqual(delta)
 
@@ -116,8 +114,7 @@ describe('eventDrop', () => {
           '2019-01-16',
           '2019-01-14',
         )
-
-        let info = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag(calendar, dragging)
         expect(info.delta).toEqual(createDuration({ day: -2 }))
         expect(info.event.start).toEqualDate('2019-01-14T10:30:00+00:00')
         expect(info.event.end).toEqualDate('2019-01-14T12:30:00+00:00')
@@ -196,17 +193,16 @@ describe('eventDrop', () => {
               timeGridWrapper.getFirstEventEl(),
               '2014-06-12T07:30:00',
             )
-
-            let info = await waitEventDrag2(calendar, dragging)
+            let info = await waitEventDrag(calendar, dragging)
             let delta = createDuration({ day: 1, hour: 1, minute: 30 })
             expect(info.delta).toEqual(delta)
 
-        expect(info.event.start).toEqualDate('2014-06-12T07:30:00Z')
-        expect(info.event.end).toBeNull()
+            expect(info.event.start).toEqualDate('2014-06-12T07:30:00Z')
+            expect(info.event.end).toBeNull()
 
-        info.revert()
-        await waitTimeout()
-        let event = currentCalendar.getEvents()[0]
+            info.revert()
+            await waitTimeout()
+            let event = currentCalendar.getEvents()[0]
 
             expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
             expect(event.end).toBeNull()
@@ -231,8 +227,7 @@ describe('eventDrop', () => {
           '2014-06-11',
           '2014-06-13',
         )
-
-        let info = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag(calendar, dragging)
         let delta = createDuration({ day: 2 })
         expect(info.delta).toEqual(delta)
 
@@ -265,8 +260,7 @@ describe('eventDrop', () => {
           viewWrapper.dayGrid.getFirstEventEl(),
           '2014-06-10T01:00:00',
         )
-
-        let info = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag(calendar, dragging)
         let delta = createDuration({ day: -1, hour: 1 })
         expect(info.delta).toEqual(delta)
 
@@ -302,8 +296,7 @@ describe('eventDrop', () => {
           null,
           '2014-06-10',
         )
-
-        let info = await waitEventDrag2(calendar, dragging)
+        let info = await waitEventDrag(calendar, dragging)
         let delta = createDuration({ day: -1 })
         expect(info.delta).toEqual(delta)
 
@@ -346,8 +339,7 @@ describe('eventDrop', () => {
             expect(queryEventElInfo(mirrorEls[0]).timeText).toBe('2:30')
           },
         )
-
-        await waitEventDrag2(calendar, dragging)
+        await waitEventDrag(calendar, dragging)
         expect(dragged).toBe(true)
       })
     })
@@ -378,8 +370,7 @@ describe('eventDrop', () => {
             expect(queryEventElInfo(mirrorEls[0]).timeText).toBe(`2:30${enUsSep}3:30`)
           },
         )
-
-        await waitEventDrag2(calendar, dragging)
+        await waitEventDrag(calendar, dragging)
         expect(dragged).toBe(true)
       })
     })
@@ -403,8 +394,7 @@ describe('eventDrop', () => {
           timeGridWrapper.getFirstEventEl(),
           '2014-06-11T23:30:00',
         )
-
-        await waitEventDrag2(calendar, dragging)
+        await waitEventDrag(calendar, dragging)
         let event = currentCalendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11T23:30:00Z')
