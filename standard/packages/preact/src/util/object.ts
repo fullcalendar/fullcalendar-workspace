@@ -132,16 +132,28 @@ export function isPropsEqualWithMap(
   props1: any,
   equalityFuncMap: {
     [key: string | symbol]: (val0: any, val1: any) => boolean
-  }
+  },
+  // debugMessage?: string
 ) {
   return isPropsEqualWithFunc(
     props0,
     props1,
     (val0, val1, key) => {
       const equalityFunc = equalityFuncMap[key]
-      return equalityFunc
+      const isEqual = equalityFunc
         ? equalityFunc(val0, val1)
         : val0 === val1
+
+      // if (debugMessage && !isEqual) {
+      //   console.log(
+      //     debugMessage, key, 'NOT EQUAL', 'rerunning...',
+      //     equalityFunc
+      //       ? equalityFunc(val0, val1)
+      //       : val0 === val1
+      //   )
+      // }
+
+      return isEqual
     }
   )
 }

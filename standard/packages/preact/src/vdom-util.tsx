@@ -3,7 +3,6 @@
 import { Component, type Ref } from 'react'
 import { ViewContextType, ViewContext } from './ViewContext'
 import { isPropsEqualWithMap } from './util/object'
-// import { getUnequalProps } from './util/object'
 import { Dictionary } from './options'
 
 export type EqualityFunc<T> = (a: T, b: T) => boolean
@@ -23,12 +22,8 @@ export abstract class PureComponent<Props=Dictionary, State=Dictionary> extends 
   // debug: boolean
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    // if (this.debug) {
-    //   console.log(getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state))
-    // }
-
-    return !isPropsEqualWithMap(this.props, nextProps, this.propEquality) ||
-      !isPropsEqualWithMap(this.state, nextState, this.stateEquality)
+    return !isPropsEqualWithMap(this.props, nextProps, this.propEquality /*, this.debug && 'props' */) ||
+      !isPropsEqualWithMap(this.state, nextState, this.stateEquality /*, this.debug && 'state' */)
   }
 }
 
