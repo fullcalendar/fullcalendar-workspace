@@ -288,6 +288,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       borderBottom={tierNum < props.headerTiers.length - 1}
                       height={state.headerTierHeights[tierNum]}
                       colWidth={colWidth}
+                      viewportWidth={clientWidth}
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                       cellIsNarrow={cellIsNarrow}
                       cellIsMicro={cellIsMicro}

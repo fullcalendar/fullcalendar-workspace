@@ -224,9 +224,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
+                  colWidth={colWidth}
+                  viewportWidth={clientWidth}
                   cellIsNarrow={cellIsNarrow}
                   cellIsMicro={cellIsMicro}
-                  rowLevel={0}
+                  rowLevel={props.headerTiers.length - tierNum - 1}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div

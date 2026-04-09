@@ -13,12 +13,12 @@ export interface DayGridHeaderRowProps<BaseRenderProps, RenderProps> extends Row
   className?: string
   height?: number
   colWidth?: number
+  viewportWidth?: number
   innerHeightRef?: Ref<number>
   role?: string
   rowIndex?: number // 0-based ... optional?... for aria only?
   rowLevel: number // 0 is closest to body, higher-up is ++
   borderBottom?: boolean
-  stickyInner?: boolean
 }
 
 export class DayGridHeaderRow<BaseRenderProps extends { isDisabled: boolean }, RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<BaseRenderProps, RenderProps>> {
@@ -57,11 +57,11 @@ export class DayGridHeaderRow<BaseRenderProps extends { isDisabled: boolean }, R
             dataConfig={dataConfig}
             borderStart={Boolean(cellI)}
             colWidth={props.colWidth}
+            viewportWidth={props.viewportWidth}
             innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
             cellIsNarrow={props.cellIsNarrow}
             cellIsMicro={props.cellIsMicro}
             rowLevel={props.rowLevel}
-            stickyInner={props.stickyInner}
           />
         ))}
       </div>

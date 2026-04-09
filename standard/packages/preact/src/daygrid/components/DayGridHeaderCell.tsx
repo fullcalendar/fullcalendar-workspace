@@ -16,11 +16,11 @@ export interface DayGridHeaderCellProps<BaseRenderProps, RenderProps> {
   dataConfig: CellDataConfig<BaseRenderProps>
   borderStart: boolean
   colWidth?: number
+  viewportWidth?: number
   innerHeightRef?: Ref<number>
   cellIsNarrow: boolean
   cellIsMicro: boolean
   rowLevel: number
-  stickyInner?: boolean
 }
 
 interface DayGridHeaderCellState {
@@ -40,6 +40,9 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
   render() {
     const { props, state, context } = this
     const { renderConfig, dataConfig } = props
+    const totalColWidth = props.colWidth != null
+      ? props.colWidth * (dataConfig.colSpan || 1)
+      : undefined
 
     // HACK
     const isDisabled = dataConfig.renderProps.isDisabled
@@ -69,7 +72,18 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
         ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isNarrow: props.cellIsNarrow })
         : alignInput
     const stickyInput = renderConfig.sticky
-    const isSticky = props.rowLevel > 0 && stickyInput !== false && props.stickyInner
+    const isSticky =
+      props.rowLevel > 0 &&
+      stickyInput !== false && (
+        // if center-aligned, and wants to be sticky, must be >75% viewport width,
+        // to avoid looking awkwardly aligned
+        alignInput !== 'center' || (
+          totalColWidth != null &&
+          props.viewportWidth != null &&
+          totalColWidth > props.viewportWidth * 0.75
+        )
+      )
+
     let edgeCoord: number | string | undefined
     if (isSticky) {
       if (align === 'center') {
@@ -105,9 +119,7 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
           !isSticky && classNames.crop,
         )}
         style={{
-          width: props.colWidth != null
-            ? props.colWidth * (dataConfig.colSpan || 1)
-            : undefined,
+          width: totalColWidth,
         }}
         renderProps={finalRenderProps}
         generatorName={renderConfig.generatorName}

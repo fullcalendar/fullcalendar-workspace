@@ -13,7 +13,7 @@ export interface DayGridHeaderProps {
   // dimensions
   width?: number
   colWidth?: number
-  colWidthFraction?: number // percentage-float of viewport that single column takes up
+  viewportWidth?: number
 }
 
 /*
@@ -43,13 +43,10 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
             role='row'
             borderBottom={i < headerTiers.length - 1}
             colWidth={props.colWidth}
+            viewportWidth={props.viewportWidth}
             cellIsNarrow={props.cellIsNarrow}
             cellIsMicro={props.cellIsMicro}
             rowLevel={headerTiers.length - i - 1}
-            stickyInner={
-              props.colWidthFraction != null &&
-              props.colWidthFraction * (rowConfig.dataConfigs[0]?.colSpan ?? 1) >= 0.75
-            }
           />
         ))}
       </div>
