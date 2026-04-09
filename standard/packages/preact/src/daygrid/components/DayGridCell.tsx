@@ -86,6 +86,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
       props.width != null ? '' : classNames.liquid,
       classNames.flexCol,
+      classNames.noMargin,
+      classNames.noPadding,
     )
 
     const hasNavLink = options.navLinks

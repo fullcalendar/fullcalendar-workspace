@@ -56,15 +56,19 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
         willUnmount={options.allDayHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag='div'
+          <div
             className={joinClassNames(
-              generateClassName(options.allDayHeaderInnerClass, renderProps),
+              classNames.flexRow,
               classNames.noShrink,
-              classNames.whiteSpacePre, // with white-space:pre ... respects line-breaks for localized text
+              classNames.whiteSpacePre, // respects line-breaks for localized text
             )}
-            elRef={this.innerElRef}
-          />
+            ref={this.innerElRef}
+          >
+            <InnerContent
+              tag='div'
+              className={generateClassName(options.allDayHeaderInnerClass, renderProps)}
+            />
+          </div>
         )}
       </ContentContainer>
     )

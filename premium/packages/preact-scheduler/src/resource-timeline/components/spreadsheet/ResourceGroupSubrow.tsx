@@ -50,7 +50,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
     // a grouped cell. no data that is specific to this specific resource
     // `colSpec` is for the group. a GroupSpec :(
     return (
-      <div
+      <div // the "row"
         role={props.role as any} // !!!
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
@@ -68,7 +68,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           flexGrow: props.grow,
         }}
       >
-        <ContentContainer
+        <ContentContainer // the "cell"
           tag="div"
           attrs={{
             role: 'rowheader',
@@ -77,7 +77,9 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           className={joinClassNames(
             classNames.noMargin,
             classNames.noPadding,
-            classNames.liquid,
+            classNames.flexCol,
+            classNames.alignStart,
+            classNames.liquid, // liquid-height
             props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           )}
           renderProps={renderProps}
@@ -89,16 +91,20 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           willUnmount={colSpec.cellWillUnmount}
         >
           {(InnerContent) => (
-            <InnerContent
-              tag="div"
+            <div // measures the "inner"
+              ref={this.innerElRef}
               className={joinClassNames(
-                generateClassName(colSpec.cellInnerClass, renderProps),
                 classNames.noShrink,
                 classNames.whiteSpaceNoWrap,
+                classNames.flexRow, // mimics what ResourceCell does
                 classNames.stickyT,
               )}
-              elRef={this.innerElRef}
-            />
+            >
+              <InnerContent // the "inner"
+                tag="div"
+                className={generateClassName(colSpec.cellInnerClass, renderProps)}
+              />
+            </div>
           )}
         </ContentContainer>
       </div>
