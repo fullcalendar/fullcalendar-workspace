@@ -11,7 +11,7 @@ import { SlicedCoordRange } from '../../coord-range'
 import { ViewContainer } from '../../common/ViewContainer'
 import { afterSize } from '../../component-util/resize-observer'
 import { memoize } from '../../util/memoize'
-import { joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import classNames from '../../styles.module.css'
@@ -144,7 +144,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           generateClassName(options.tableClass, {
             borderlessX,

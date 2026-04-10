@@ -3,7 +3,7 @@ import classNames from './styles.module.css'
 import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
 import { flushSync } from 'react-dom'
-import { joinArrayishClassNames } from './util/html'
+import { joinClassNames } from './util/html'
 import { generateClassName } from './content-inject/ContentContainer'
 
 export interface CalendarDisplayInfo {
@@ -70,7 +70,7 @@ export function computeRootClassName(options: CalendarOptions, forPrint: boolean
     borderlessBottom: Boolean(borderlessBottom),
   }
 
-  return joinArrayishClassNames(
+  return joinClassNames(
     generateClassName(options.class, calendarDisplayData),
     generateClassName(options.className, calendarDisplayData),
     classNames.borderBoxRoot,

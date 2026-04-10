@@ -1,6 +1,6 @@
 import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/protected-api'
 import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constraint'
-import { joinArrayishClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import { CalendarContext } from '../CalendarContext'
 import { identity, Identity } from '../options'
 
@@ -88,6 +88,6 @@ function combineTwoEventUis(item0: EventUi, item1: EventUi): EventUi { // hash1 
     allows: item0.allows.concat(item1.allows),
     color: item1.color || item0.color,
     contrastColor: item1.contrastColor || item0.contrastColor,
-    className: joinArrayishClassNames(item0.className, item1.className),
+    className: joinClassNames(item0.className, item1.className),
   }
 }

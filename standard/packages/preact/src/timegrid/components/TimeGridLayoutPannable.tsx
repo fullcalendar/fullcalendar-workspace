@@ -1,4 +1,4 @@
-import { joinClassNames, joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { DateMarker, DateRange, rangeContainsMarker, startOfDay } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
@@ -229,7 +229,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     key={tierNum}
                     role='row'
                     aria-rowindex={tierNum + 1}
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       options.dayHeaderRowClass,
                       classNames.flexRow,
                       classNames.contentBox,
@@ -298,7 +298,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </div>
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: true }),
                       classNames.borderOnlyS,
                     )}
@@ -318,7 +318,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         )}
         <div // the "body"
           role='rowgroup'
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             generateClassName(options.tableBodyClass, {
               borderlessX,
               borderlessTop,
@@ -395,7 +395,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   </div>
                   {Boolean(endScrollbarWidth) && (
                     <div
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
                         classNames.borderOnlyS,
                       )}
@@ -406,7 +406,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               </div>
               {/* TODO: don't show div if no classname */}
               <div
-                className={joinArrayishClassNames(options.allDayDividerClass)}
+                className={joinClassNames(options.allDayDividerClass)}
                 style={{ zIndex: 2 }}
               />
             </>
@@ -481,7 +481,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     )}
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
-                        className={joinArrayishClassNames(
+                        className={joinClassNames(
                           generateClassName(options.fillerClass, { inTableHeader: false }),
                           classNames.borderOnlyT,
                           rowsNotExpanding && classNames.liquid,
@@ -589,7 +589,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       </div>
                       {rowsNotExpanding && (
                         <div
-                          className={joinArrayishClassNames(
+                          className={joinClassNames(
                             generateClassName(options.fillerClass, { inTableHeader: false }),
                             classNames.borderOnlyT,
                             classNames.liquid,

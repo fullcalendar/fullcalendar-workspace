@@ -11,7 +11,7 @@ import { RefMap } from '../../util/RefMap'
 import { createFormatter } from '../../datelib/formatting'
 import { watchHeight, afterSize } from '../../component-util/resize-observer'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
-import { joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { renderText, ContentContainer } from '../../content-inject/ContentContainer'
 import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
@@ -143,7 +143,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             ? fullWeekStr
             : undefined // can't have label on non-role div
         }
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           options.dayRowClass,
           props.className,
           classNames.flexRow,

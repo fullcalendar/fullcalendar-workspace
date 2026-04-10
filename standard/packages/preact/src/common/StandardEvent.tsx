@@ -8,7 +8,7 @@ import { EventDef } from '../structs/event-def'
 import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
-import { joinArrayishClassNames, joinClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import classNames from '../styles.module.css'
 import { isPropsEqualShallow } from '../util/object'
 
@@ -123,7 +123,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       ),
       options: { eventOverlap: Boolean(options.eventOverlap) },
     }
-    const outerClassName = joinArrayishClassNames( // already includes eventClass below
+    const outerClassName = joinClassNames( // already includes eventClass below
       isBlock && generateClassName(options.blockEventClass, renderProps),
       props.display === 'row' && generateClassName(options.rowEventClass, renderProps),
       props.display === 'column' && generateClassName(options.columnEventClass, renderProps),

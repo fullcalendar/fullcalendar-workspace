@@ -1,4 +1,4 @@
-import { Duration, joinClassNames } from '@fullcalendar/preact/public-api'
+import { Duration } from '@fullcalendar/preact/public-api'
 import {
   ViewProps,
   memoize,
@@ -21,7 +21,7 @@ import {
   Ruler,
   FooterScrollbar,
   generateClassName,
-  joinArrayishClassNames,
+  joinClassNames,
   computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -129,7 +129,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              className={joinArrayishClassNames(
+              className={joinClassNames(
                 // HACK for Safari print-mode, where noScrollbars won't take effect for
                 // the below Scrollers if they have liquid flex height
                 !props.forPrint && classNames.flexCol,
@@ -202,7 +202,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   </div>
                   {Boolean(endScrollbarWidth) && (
                     <div
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: true }),
                         classNames.borderOnlyS,
                       )}
@@ -227,7 +227,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   footerScrollbarSticky ||
                   props.forPrint // prevents blank space in print-view on Safari
                 }
-                className={joinArrayishClassNames(
+                className={joinClassNames(
                   generateClassName(options.tableBodyClass, {
                     borderlessX,
                     borderlessTop,
@@ -276,7 +276,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     slotWidth={slotWidth}
                   />
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       options.timelineTopClass,
                     )}
                   />
@@ -296,7 +296,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     slotWidth={slotWidth}
                   />
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       options.timelineBottomClass,
                     )}
                   />

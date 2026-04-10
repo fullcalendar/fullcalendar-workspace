@@ -1,4 +1,4 @@
-import { SlotHeaderInfo, joinClassNames } from '@fullcalendar/preact/public-api'
+import { SlotHeaderInfo } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -8,7 +8,7 @@ import {
   DateRange,
   generateClassName,
   getDateMeta,
-  joinArrayishClassNames,
+  joinClassNames,
   memoize,
   setRef,
   watchSize
@@ -106,7 +106,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     return (
       <ContentContainer
         tag="div"
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           classNames.noMargin,
           classNames.noPadding,
           classNames.flexCol,

@@ -1,4 +1,4 @@
-import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/preact/public-api'
+import { CssDimValue, Duration } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
   DateComponent,
@@ -23,7 +23,7 @@ import {
   FooterScrollbar,
   ViewContainer,
   generateClassName,
-  joinArrayishClassNames,
+  joinClassNames,
   debounce,
   computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
@@ -422,7 +422,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           generateClassName(options.tableClass, {
             borderlessX,
@@ -477,7 +477,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       role="row"
                       aria-rowindex={1}
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         options.resourceHeaderRowClass,
                         classNames.flexRow,
                         classNames.grow,
@@ -531,7 +531,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars
-                className={joinArrayishClassNames(
+                className={joinClassNames(
                   generateClassName(options.tableBodyClass, {
                     borderlessX,
                     borderlessTop,
@@ -566,7 +566,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 />
                 {spreadsheetNeedsBottomFiller && (
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: false }),
                       classNames.borderOnlyT,
                     )}
@@ -694,7 +694,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
                   {Boolean(endScrollbarWidth) && (
                     <div
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: true }),
                         classNames.borderOnlyS,
                       )}
@@ -716,7 +716,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
-                className={joinArrayishClassNames(
+                className={joinClassNames(
                   generateClassName(options.tableBodyClass, {
                     borderlessX,
                     borderlessTop,
@@ -833,7 +833,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
                           aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                           aria-expanded={groupRowLayout.isExpanded}
-                          className={joinArrayishClassNames(
+                          className={joinClassNames(
                             classNames.fillX,
                             classNames.flexRow,
                           )}
@@ -893,7 +893,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   {timelineNeedsBottomFiller && (
                     <div
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
                         classNames.borderOnlyT,
                         classNames.fillX,

@@ -1,4 +1,3 @@
-import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   DateMarker,
@@ -6,7 +5,7 @@ import {
   DateRange,
   EventStore,
   generateClassName,
-  joinArrayishClassNames,
+  joinClassNames,
   memoize,
   rangeContainsMarker,
   SlicedProps,
@@ -122,7 +121,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           generateClassName(options.tableClass, {
             borderlessX,
@@ -154,7 +153,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               {Boolean(superHeaderRendering) && (
                 <div
                   role='row'
-                  className={joinArrayishClassNames(
+                  className={joinClassNames(
                     options.resourceHeaderRowClass,
                     classNames.flexRow,
                     classNames.grow,
@@ -195,7 +194,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             </div>
 
             <div
-              className={joinArrayishClassNames(options.resourceColumnDividerClass)}
+              className={joinClassNames(options.resourceColumnDividerClass)}
             />
 
             {/* Timeline HEADER */}
@@ -252,7 +251,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         {/* Must crop the 200% vertical-line fill */}
         <div
           role='rowgroup'
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             generateClassName(options.tableBodyClass, {
               borderlessX,
               borderlessTop,
@@ -401,7 +400,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     </div>
                   </div>
                   <div
-                    className={joinArrayishClassNames(options.resourceColumnDividerClass)}
+                    className={joinClassNames(options.resourceColumnDividerClass)}
                   />
                   <div // serves as timeline viewport
                     className={joinClassNames(
@@ -459,7 +458,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     />
                   </div>
                   <div
-                    className={joinArrayishClassNames(options.resourceColumnDividerClass)}
+                    className={joinClassNames(options.resourceColumnDividerClass)}
                   />
                   <div className={joinClassNames(
                     classNames.crop,

@@ -1,7 +1,7 @@
 import { createElement, type ReactNode, type ReactElement } from 'react'
 import { BaseComponent } from '../vdom-util'
 import { ToolbarWidget, ButtonInfo, ButtonGroupInfo } from '../toolbar-struct'
-import { joinArrayishClassNames, joinClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ButtonIcon } from './ButtonIcon'
 import classNames from '../styles.module.css'
@@ -62,7 +62,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             role='heading'
             aria-level={options.headingLevel}
             id={props.titleId}
-            className={joinArrayishClassNames(options.toolbarTitleClass)}
+            className={joinClassNames(options.toolbarTitleClass)}
           >{props.title}</div>,
         )
       } else if (customElement) {

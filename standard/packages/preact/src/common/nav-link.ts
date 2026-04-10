@@ -1,5 +1,5 @@
 import { DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { joinArrayishClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { formatWithOrdinals } from '../util/misc'
 import { ViewContext } from '../ViewContext'
@@ -51,7 +51,7 @@ export function buildNavLinkAttrs(
   return {
     'role': ('link' as any), // TODO
     'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
-    'className': joinArrayishClassNames(
+    'className': joinClassNames(
       options.navLinkClass,
       classNames.cursorPointer,
       classNames.internalNavLink,

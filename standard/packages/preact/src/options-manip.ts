@@ -1,5 +1,5 @@
 import { ContentGenerator } from './common/render-hook'
-import { joinArrayishClassNames } from './util/html'
+import { joinClassNames } from './util/html'
 import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
 
@@ -73,7 +73,7 @@ export function joinFuncishClassNames(
 
   if (isFunc0 || isFunc1) {
     const combinedFunc = (info: any) => {
-      return joinArrayishClassNames(
+      return joinClassNames(
         isFunc0 ? input0(info) : input0,
         isFunc1 ? input1(info) : input1
       )
@@ -82,7 +82,7 @@ export function joinFuncishClassNames(
     return combinedFunc
   }
 
-  return joinArrayishClassNames(input0 as ClassNameInput, input1 as ClassNameInput)
+  return joinClassNames(input0 as ClassNameInput, input1 as ClassNameInput)
 }
 
 export function mergeContentInjectors(

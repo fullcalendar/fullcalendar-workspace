@@ -1,5 +1,5 @@
-import { CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/preact/protected-api'
+import { CssDimValue } from '@fullcalendar/preact/public-api'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinClassNames, computeElIsRtl } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
@@ -59,7 +59,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           {props.startContent}
         </div>
         <div
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             options.resourceColumnDividerClass,
             classNames.rel, // for hitX
           )}

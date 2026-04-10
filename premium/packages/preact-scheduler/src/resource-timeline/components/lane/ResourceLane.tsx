@@ -1,5 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinClassNames } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
@@ -91,7 +90,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         aria-expanded={props.expanded}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className, // probably contains fillX
           classNames.flexRow,
         )}

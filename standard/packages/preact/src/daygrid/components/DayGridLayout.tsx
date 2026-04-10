@@ -9,7 +9,7 @@ import { RefMap } from '../../util/RefMap'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ViewContainer } from '../../common/ViewContainer'
 import { EventRangeProps } from '../../component-util/event-rendering'
-import { joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
@@ -75,7 +75,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           classNames.printRoot, // either flexCol or table
           generateClassName(options.tableClass, {

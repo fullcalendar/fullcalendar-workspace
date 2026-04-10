@@ -1,4 +1,4 @@
-import { BaseComponent, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, joinClassNames } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { ReactNode } from 'react'
 
@@ -15,7 +15,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
 
     return (
       <div
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           context.options.resourceIndentClass,
           classNames.noShrink,
           classNames.flexCol,

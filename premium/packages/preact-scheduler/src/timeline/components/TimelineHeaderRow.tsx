@@ -1,5 +1,5 @@
 import type { Ref } from 'react'
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinClassNames, RefMap, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile"
 import { TimelineHeaderCell } from './TimelineHeaderCell'
@@ -59,7 +59,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
 
     return (
       <div
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           options.slotHeaderRowClass,
           classNames.flexRow,

@@ -1,5 +1,5 @@
 import { ViewContextType } from '../ViewContext'
-import { joinArrayishClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 
 export interface NowIndicatorDotProps {
   className?: string
@@ -13,7 +13,7 @@ export const NowIndicatorDot = (props: NowIndicatorDotProps) => (
 
       return (
         <div
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             props.className,
             options.nowIndicatorDotClass,
           )}

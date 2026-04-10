@@ -13,7 +13,6 @@ import { formatDayString } from '@full-ui/headless-calendar'
 import { generateClassName } from '../../content-inject/ContentContainer'
 import { getIsHeightAuto } from '../../scrollgrid/util'
 import { intersectRanges } from '@full-ui/headless-calendar'
-import { joinArrayishClassNames } from '../../util/html'
 import { memoize } from '../../util/memoize'
 import { NowTimer } from '../../NowTimer'
 import { Scroller } from '../../scrollgrid/Scroller'
@@ -122,7 +121,7 @@ export class ListView extends DateComponent<ViewProps> {
         aria-label={this.props.labelStr}
         className={joinClassNames(
           classNames.flexCol,
-          joinArrayishClassNames(options.listDaysClass),
+          joinClassNames(options.listDaysClass),
         )}
       >
         <NowTimer unit="day">

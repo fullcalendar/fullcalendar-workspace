@@ -1,4 +1,4 @@
-import { joinClassNames, joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { afterSize } from '../../component-util/resize-observer'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { DateMarker, DateRange, rangeContainsMarker, startOfDay } from '@full-ui/headless-calendar'
@@ -190,7 +190,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 className={classNames.flexRow}
               >
                 <div
-                  className={joinArrayishClassNames(
+                  className={joinClassNames(
                     options.dayHeaderRowClass,
                     classNames.flexRow,
                     tierNum < props.headerTiers.length - 1
@@ -232,7 +232,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: true }),
                       classNames.borderOnlyS,
                     )}
@@ -252,7 +252,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         )}
         <div // the "body"
           role='rowgroup'
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             generateClassName(options.tableBodyClass, {
               borderlessX,
               borderlessTop,
@@ -310,7 +310,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className={joinArrayishClassNames(
+                    className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: false }),
                       classNames.borderOnlyS,
                     )}
@@ -320,7 +320,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               </div>
               {/* TODO: don't show div if no classname */}
               <div
-                className={joinArrayishClassNames(options.allDayDividerClass)}
+                className={joinClassNames(options.allDayDividerClass)}
                 style={{ zIndex: 2 }}
               />
             </>
@@ -458,7 +458,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
                   {rowsNotExpanding && (
                     <div
-                      className={joinArrayishClassNames(
+                      className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
                         classNames.borderOnlyT,
                         classNames.liquid,

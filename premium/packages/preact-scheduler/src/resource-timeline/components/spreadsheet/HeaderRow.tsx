@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinClassNames, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
@@ -60,7 +60,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       <div
         role="row"
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           options.resourceHeaderRowClass,
           classNames.flexRow,
           classNames.grow,

@@ -11,7 +11,7 @@ import { generateClassName } from '../content-inject/ContentContainer'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { DayCellInfo, DayHeaderInfo } from '../api/structs'
 import classNames from '../styles.module.css'
-import { joinArrayishClassNames, joinClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot } from '../util/dom-manip'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { computeClippedClientRect } from '../util/dom-geom'
@@ -102,7 +102,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         id={props.id}
         role='dialog'
         aria-labelledby={props.titleId}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           options.popoverClass,
           classNames.flexCol,
           classNames.popoverZ,
@@ -159,7 +159,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
               ...createAriaClickAttrs(this.handleClose)
             }}
             elRef={this.closeRef}
-            className={joinArrayishClassNames(
+            className={joinClassNames(
               options.popoverCloseClass,
               classNames.flexRow,
               classNames.cursorPointer,

@@ -5,7 +5,7 @@ import { EventDef } from '../structs/event-def'
 import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
-import { joinArrayishClassNames, joinClassNames } from '../util/html'
+import { joinClassNames } from '../util/html'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ViewOptionsRefined } from '../options'
 import classNames from '../styles.module.css'
@@ -72,7 +72,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       options: { eventOverlap: Boolean(options.eventOverlap) },
     }
     // does not include backgroundEventClass.. added below
-    const outerClassName = joinArrayishClassNames(
+    const outerClassName = joinClassNames(
       eventUi.className,
       classNames.fill,
       classNames.internalEvent,
@@ -136,7 +136,7 @@ function renderInnerContent(props: EventDisplayInfo) {
 
 export function renderFill(fillType: string, options: ViewOptionsRefined) {
   return (
-    <div className={joinArrayishClassNames(
+    <div className={joinClassNames(
       fillType === 'non-business' ? options.nonBusinessClass :
         fillType === 'highlight' ? options.highlightClass : undefined,
       classNames.fill,

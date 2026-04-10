@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
+import { afterSize, BaseComponent, isArraysEqual, joinClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'
@@ -71,7 +71,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         aria-expanded={props.expanded}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           options.resourceRowClass,
           props.className, // what for???
           classNames.flexRow,

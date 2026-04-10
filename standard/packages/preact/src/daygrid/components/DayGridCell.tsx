@@ -15,7 +15,6 @@ import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { memoize, memoizeObjArg } from '../../util/memoize'
 import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
 import { findDayNumberText, findMonthText, findWeekdayText } from '../../util/date-format'
-import { joinArrayishClassNames } from '../../util/html'
 import classNames from '../../styles.module.css'
 import {
   type Ref,
@@ -112,7 +111,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         <div
           role='gridcell'
           aria-disabled
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             generateClassName(options.dayCellClass, renderProps),
             props.className,
             baseClassName,

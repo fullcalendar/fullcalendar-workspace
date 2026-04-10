@@ -1,4 +1,4 @@
-import { joinClassNames, joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DateRange } from '@full-ui/headless-calendar'
@@ -99,7 +99,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               />
               {Boolean(endScrollbarWidth) && (
                 <div
-                  className={joinArrayishClassNames(
+                  className={joinClassNames(
                     generateClassName(options.fillerClass, { inTableHeader: true }),
                     classNames.borderOnlyS,
                   )}
@@ -118,7 +118,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         )}
         <Scroller
           vertical={verticalScrollbars}
-          className={joinArrayishClassNames(
+          className={joinClassNames(
             generateClassName(options.tableBodyClass, {
               borderlessX,
               borderlessTop,

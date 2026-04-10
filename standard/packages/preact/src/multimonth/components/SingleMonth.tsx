@@ -1,5 +1,5 @@
 import { CssDimValue } from '../../scrollgrid/util'
-import { joinClassNames, joinArrayishClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { afterSize, watchHeight } from '../../component-util/resize-observer'
 import { buildNavLinkAttrs } from '../../common/nav-link'
 import { DateComponent } from '../../component/DateComponent'
@@ -178,7 +178,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             </div>
           </div>
           <div // the daygrid table
-            className={joinArrayishClassNames(
+            className={joinClassNames(
               generateClassName(options.tableClass, {
                 borderlessX,
                 borderlessTop,
@@ -227,7 +227,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               />
             </div>
             <div
-              className={joinArrayishClassNames(
+              className={joinClassNames(
                 generateClassName(options.tableBodyClass, {
                   borderlessX,
                   borderlessTop,

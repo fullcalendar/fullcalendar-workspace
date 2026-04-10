@@ -1,5 +1,4 @@
-import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
@@ -54,7 +53,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         role={props.role as any} // !!!
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           options.resourceRowClass,
           props.className,
           classNames.flexRow,
