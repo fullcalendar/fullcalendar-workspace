@@ -470,7 +470,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         />
                       ))}
                     </div>
-                    {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) &&
+                    {!forPrint && options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) &&
                       nowTimeMs >= props.dateProfile.slotMinTime.milliseconds &&
                       nowTimeMs < props.dateProfile.slotMaxTime.milliseconds && (
                       <TimeGridNowIndicatorArrow

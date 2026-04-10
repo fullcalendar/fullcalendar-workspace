@@ -121,6 +121,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       <NowTimer unit={timerUnit} unitValue={timerUnitValue}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           const enableNowIndicator = // TODO: DRY
+            !props.forPrint &&
             options.nowIndicator &&
             slotWidth != null &&
             rangeContainsMarker(props.dateProfile.currentRange, nowDate)

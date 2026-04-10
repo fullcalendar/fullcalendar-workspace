@@ -7,7 +7,6 @@ import {
   EventStore,
   generateClassName,
   memoize,
-  rangeContainsMarker,
   SlicedProps,
   SplittableProps,
   ViewContainer,
@@ -19,8 +18,6 @@ import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntity
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineHeaderRow } from '../../timeline/components/TimelineHeaderRow'
 import { TimelineBg } from '../../timeline/components/TimelineBg'
-import { TimelineNowIndicatorArrow } from '../../timeline/components/TimelineNowIndicatorArrow'
-import { TimelineNowIndicatorLine } from '../../timeline/components/TimelineNowIndicatorLine'
 import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
 import { flexifyDimConfigs, SiblingDimConfig } from '@full-ui/headless-grid'
@@ -107,11 +104,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-
-    const enableNowIndicator = // TODO: DRY
-      options.nowIndicator &&
-      slotWidth != null &&
-      rangeContainsMarker(props.dateProfile.currentRange, nowDate)
 
     return (
       <ViewContainer
@@ -228,14 +220,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     />
                   )
                 })}
-                {enableNowIndicator && (
-                  // TODO: make this positioned WITHIN padding
-                  <TimelineNowIndicatorArrow
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    slotWidth={slotWidth}
-                  />
-                )}
               </div>
             </div>
 
@@ -328,13 +312,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   // dimensions
                   slotWidth={slotWidth}
                 />
-                {enableNowIndicator && (
-                  <TimelineNowIndicatorLine
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    slotWidth={slotWidth}
-                  />
-                )}
               </div>
             </div>
           </div>

@@ -341,11 +341,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   renderNowIndicator(segs: TimeGridRange[]) {
     let { props } = this
 
-    if (this.getIsStack()) {
+    if (props.forPrint || this.getIsStack()) {
       return
     }
 
-    // TODO: what if nowIndicator turned OFF??
     return segs.map((seg, i) => (
       <TimeGridNowIndicatorLine
         key={i}
