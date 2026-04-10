@@ -407,7 +407,7 @@ which can't rely on dynamic height detection after print-flag activated.
   table-layout: fixed !important;
   width: 100% !important;
   border-spacing: 0 !important;
-  border-collapse: collapse !important;
+  border-collapse: separate !important;
 }
 
 .calendarPrintRoot .printHeader {
