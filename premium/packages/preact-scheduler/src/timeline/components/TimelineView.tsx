@@ -268,9 +268,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
                     // content
                     bgEventSegs={slicedProps.bgEventSegs}
-                    businessHourSegs={slicedProps.businessHourSegs}
-                    dateSelectionSegs={slicedProps.dateSelectionSegs}
-                    eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
+                    businessHourSegs={props.forPrint ? null : slicedProps.businessHourSegs}
+                    dateSelectionSegs={props.forPrint ? null : slicedProps.dateSelectionSegs}
+                    eventResizeSegs={props.forPrint ? null : (slicedProps.eventResize ? slicedProps.eventResize.segs : null)}
 
                     // dimensions
                     slotWidth={slotWidth}
@@ -288,8 +288,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
                     // content
                     fgEventSegs={slicedProps.fgEventSegs}
-                    eventDrag={slicedProps.eventDrag}
-                    eventResize={slicedProps.eventResize}
+                    eventDrag={props.forPrint ? null : slicedProps.eventDrag}
+                    eventResize={props.forPrint ? null : slicedProps.eventResize}
                     eventSelection={slicedProps.eventSelection}
 
                     // dimensions

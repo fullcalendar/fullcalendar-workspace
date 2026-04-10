@@ -117,6 +117,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const titleStickyBottom = isTitleAndHeaderSticky && rowHeightGuess != null && state.tableHeaderHeight != null
       ? rowHeightGuess + state.tableHeaderHeight + 1
       : undefined
+    const businessHourSegs = forPrint ? [] : slicedProps.businessHourSegs
+    const dateSelectionSegs = forPrint ? [] : slicedProps.dateSelectionSegs
+    const eventDrag = forPrint ? null : slicedProps.eventDrag
+    const eventResize = forPrint ? null : slicedProps.eventResize
 
     const hasNavLink = options.navLinks && props.colCount > 1
     const headerRenderProps: SingleMonthHeaderInfo = {
@@ -258,10 +262,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 // content
                 fgEventSegs={slicedProps.fgEventSegs}
                 bgEventSegs={slicedProps.bgEventSegs}
-                businessHourSegs={slicedProps.businessHourSegs}
-                dateSelectionSegs={slicedProps.dateSelectionSegs}
-                eventDrag={slicedProps.eventDrag}
-                eventResize={slicedProps.eventResize}
+                businessHourSegs={businessHourSegs}
+                dateSelectionSegs={dateSelectionSegs}
+                eventDrag={eventDrag}
+                eventResize={eventResize}
                 eventSelection={slicedProps.eventSelection}
 
                 // dimensions

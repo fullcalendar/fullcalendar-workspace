@@ -86,7 +86,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
     const { tDateProfile, todayRange, nowDate, hasNesting } = props
     const { slotWidth, timeCanvasWidth } = props
-    const { hasResourceBusinessHours, fallbackBusinessHours } = props
     const { splitProps, bgSlicedProps, timeAreaOffset } = props
     const { superHeaderRendering, groupColCnt, colSpecs } = props
 
@@ -305,9 +304,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
                   // content
                   bgEventSegs={bgSlicedProps.bgEventSegs}
-                  businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                  dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                  eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
+                  businessHourSegs={null}
+                  dateSelectionSegs={null}
+                  eventResizeSegs={null}
 
                   // dimensions
                   slotWidth={slotWidth}
@@ -397,7 +396,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       tDateProfile={tDateProfile}
                       nowDate={nowDate}
                       todayRange={todayRange}
-                      businessHours={resource.businessHours || fallbackBusinessHours}
+                      businessHours={null}
+                      dateSelection={null}
+                      eventDrag={null}
+                      eventResize={null}
                       width={timeCanvasWidth}
                       slotWidth={slotWidth}
                       insetInlineStart={-timeAreaOffset}
