@@ -177,6 +177,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     )
   }
 
+  // BE AWARE React StrictMode might execute this twice
   componentDidMount() {
     const { props } = this
 
@@ -186,6 +187,11 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     let { propSetHandlers } = props.pluginHooks
     for (let propName in propSetHandlers) {
       propSetHandlers[propName](props[propName], props)
+    }
+
+    // call contextInit
+    for (let callback of props.pluginHooks.contextInit) {
+      callback(props)
     }
   }
 
@@ -200,6 +206,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     }
   }
 
+  // BE AWARE React StrictMode might execute this twice
   componentWillUnmount() {
     const { props } = this
 
@@ -208,6 +215,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     }
     this.calendarInteractions = []
 
+    // will likely undo what was done by contextInit
     props.emitter.trigger('_unmount')
   }
 

@@ -175,10 +175,6 @@ export class CalendarDataManager {
       if (controllerOption) {
         controllerOption._setApi(this.config.calendarApi)
       }
-
-      for (let callback of calendarContext.pluginHooks.contextInit) {
-        callback(calendarContext)
-      }
     }
 
     if (!isInit && actionsComplete.length) {
