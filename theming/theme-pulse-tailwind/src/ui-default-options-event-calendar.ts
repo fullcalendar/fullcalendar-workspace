@@ -97,7 +97,7 @@ export const params: EventCalendarOptionParams = {
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
   bgEventColor: 'var(--fc-pulse-background-event)',
-  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)',
+  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-1 print:border-(--fc-event-color)',
 
   // misc content
   highlightClass: 'bg-(--fc-pulse-highlight)',

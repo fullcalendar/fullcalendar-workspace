@@ -51,7 +51,7 @@ export const params: EventCalendarOptionParams = {
   eventColor: 'var(--fc-classic-event)',
   eventContrastColor: 'var(--fc-classic-event-contrast)',
   bgEventColor: 'var(--fc-classic-background-event)',
-  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)] print:border-2 print:border-(--fc-event-color)',
+  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)] print:border-1 print:border-(--fc-event-color)',
   bgEventFgOpacityClass: 'opacity-(--fc-classic-background-event-foreground-opacity)',
   smallDotBorderClass: 'border-[calc(var(--fc-classic-small-dot-width)/2)]',
   largeDotBorderClass: 'border-[calc(var(--fc-classic-large-dot-width)/2)]',

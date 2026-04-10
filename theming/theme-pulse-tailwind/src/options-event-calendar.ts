@@ -551,7 +551,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'border-b',
           info.options.allDaySlot
             ? params.borderColorClass
-            : `${params.strongBorderColorClass} shadow-sm`
+            : `${params.strongBorderColorClass} not-print:shadow-sm`
         ),
         dayCellBottomClass: tallDayCellBottomClass,
 
@@ -574,7 +574,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           info.isNarrow ? xxsTextClass : 'text-xs',
         ),
 
-        allDayDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
+        allDayDividerClass: `border-b ${params.strongBorderColorClass} not-print:shadow-sm`,
 
         /* TimeGrid > Slot Header
         ----------------------------------------------------------------------------------------- */

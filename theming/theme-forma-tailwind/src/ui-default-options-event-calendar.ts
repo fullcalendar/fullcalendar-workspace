@@ -99,7 +99,7 @@ export const params: EventCalendarOptionParams = {
   eventMutedBgClass,
   eventMutedPressableClass,
   bgEventColor: 'var(--fc-forma-background-event)',
-  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)',
+  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-1 print:border-(--fc-event-color)',
 
   // misc content
   highlightClass: 'bg-(--fc-forma-highlight)',

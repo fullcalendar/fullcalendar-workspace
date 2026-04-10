@@ -92,7 +92,7 @@ export const params: EventCalendarOptionParams = {
   eventColor: 'var(--fc-monarch-event)',
   eventContrastColor: 'var(--fc-monarch-event-contrast)',
   bgEventColor: 'var(--fc-monarch-tertiary)',
-  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)',
+  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-1 print:border-(--fc-event-color)',
 
   // misc content
   highlightClass: 'bg-(--fc-monarch-highlight)',
