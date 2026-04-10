@@ -98,8 +98,7 @@ interface ResourceTimelineLayoutNormalProps {
 
   // scroll
   initialScroll?: TimeScroll & EntityScroll
-  scrollRef?: Ref<TimeScroll & EntityScroll> // NOTE: only an object allowed
-
+  scrollRef?: Ref<TimeScroll & EntityScroll>
 }
 
 export interface EntityScroll {
@@ -174,7 +173,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private timeScroller: ScrollerSyncerInterface
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
-  private scroll: EntityScroll & TimeScroll = {} // updated in-place
+
+  // updated in-place
+  // .time takes precedence
+  // to operate on pixel value (.x), clear time
+  private scroll: EntityScroll & TimeScroll = {}
 
   // virtualizers
   private getEntityTop = (key) => this.bodyTops.get(key)
@@ -824,18 +827,28 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       const groupKey = groupRowPosition.key
 
                       return (
-                        <GroupLane
+                        <div
                           key={groupKey}
                           role='row'
-                          group={group}
-                          rowIndex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
-                          level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                          expanded={groupRowLayout.isExpanded}
-                          borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
-                          innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                          top={groupRowPosition.start}
-                          height={groupRowPosition.size}
-                        />
+                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
+                          aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
+                          aria-expanded={groupRowLayout.isExpanded}
+                          className={joinArrayishClassNames(
+                            classNames.fillX,
+                            classNames.flexRow,
+                          )}
+                          style={{
+                            top: groupRowPosition.start,
+                          }}
+                        >
+                          <GroupLane
+                            group={group}
+                            expanded={groupRowLayout.isExpanded}
+                            borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
+                            innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
+                            height={groupRowPosition.size}
+                          />
+                        </div>
                       )
                     })}
 
@@ -934,10 +947,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     } else {
       this.resetTimeScroll()
     }
-    setRef(props.scrollRef, this.scroll)
 
-    this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
+    // this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
     this.timeScroller.addScrollListener(this.handleTimeScroll)
+    this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
 
     this.bodyScroller.addScrollStartListener(this.handleEntityScrollStart)
     this.bodyScroller.addScrollListener(this.handleEntityScroll)
@@ -1160,16 +1173,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   private handleTimeScrollRequest = (timeScroll: Duration) => {
     this.scroll.time = timeScroll
-    this.scroll.x = undefined
     this.applyTimeScroll()
   }
 
-  private handleTimeScrollStart = (isUser: boolean) => {
-    if (isUser) {
-      this.scroll.time = undefined
-      this.scroll.x = undefined
-    }
-  }
+  // NOTE: isUser is malfuncioning. FIX
+  // but using handleTimeScroll to reset the scroll.time is okay too
+  // private handleTimeScrollStart = (isUser: boolean) => {
+  // }
 
   // HACKY
   private handleTimeScroll = (isUser: boolean, scroll: number) => {
@@ -1186,10 +1196,22 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }, 10)[0]
 
+  private handleTimeScrollEnd = (isUser: boolean) => {
+    if (isUser) {
+      setRef(this.props.scrollRef, this.scroll)
+    }
+  }
+
   private applyTimeScroll() {
     const x = this.computeTimeScroll()
-    if (x != null) {
+
+    if (x !== undefined) {
       this.timeScroller.scrollTo({ x })
+
+      if (this.scroll.x !== x) {
+        this.scroll.x = x
+        setRef(this.props.scrollRef, this.scroll)
+      }
     }
   }
 
@@ -1199,7 +1221,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const slotWidth = props.slotWidth ?? defaultSlotWidth
     let { x, time } = scroll
 
-    if (x == null && time) {
+    if (time) {
       x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
 
       if (x) {

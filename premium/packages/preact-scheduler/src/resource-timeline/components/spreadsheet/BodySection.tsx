@@ -7,6 +7,7 @@ import { ResourceSubrow } from "./ResourceSubrow"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout"
 import { ColSpec } from '../../structs'
 import { ItemPosition } from '../../virtual/virtualizer'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 
 export interface BodySectionProps {
   rowPositions: ItemPosition<ResourceLayout>[]
@@ -107,21 +108,31 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
 
             return (
-              <ResourceGroupHeaderSubrow
+              <div
                 key={groupKey}
-                group={group}
-                isExpanded={groupRowLayout.isExpanded}
-                innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                 role='row'
-                rowIndex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                colSpan={props.colSpecs.length}
-                borderBottom={isNotLast}
-                top={groupRowPosition.start}
-                height={groupRowPosition.size}
-                indentWidth={props.indentWidth}
-                className={classNames.fillX}
-              />
+                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
+                aria-expanded={groupRowLayout.isExpanded}
+                className={joinClassNames(
+                  classNames.fillX,
+                  classNames.flexRow,
+                )}
+                style={{
+                  top: groupRowPosition.start,
+                }}
+              >
+                <ResourceGroupHeaderSubrow
+                  group={group}
+                  isExpanded={groupRowLayout.isExpanded}
+                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                  colSpan={props.colSpecs.length}
+                  borderBottom={isNotLast}
+                  height={groupRowPosition.size}
+                  indentWidth={props.indentWidth}
+                  className={classNames.fillX}
+                />
+              </div>
             )
           })}
 

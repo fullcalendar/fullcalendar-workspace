@@ -115,7 +115,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const { options } = context
     const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
-    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null && !forPrint)
       ? totalWidth - clientWidth
       : undefined
 

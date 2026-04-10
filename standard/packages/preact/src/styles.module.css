@@ -138,6 +138,10 @@ This will prevent all ancestors from customizing their box size unless they use 
   user-select: none;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 /* Border Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -210,6 +214,10 @@ This will prevent all ancestors from customizing their box size unless they use 
   flex-grow: 1 !important;
   flex-basis: 0 !important;
   min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.minHeight0 {
   min-height: 0 !important;
 }
 

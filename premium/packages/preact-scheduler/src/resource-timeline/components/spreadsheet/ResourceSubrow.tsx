@@ -34,6 +34,7 @@ export interface ResourceSubrowProps {
   // positioning
   top?: number
   height?: number
+  totalX?: boolean
 }
 
 export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewContext> {
@@ -52,6 +53,18 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
     const colWidths = props.colWidths || []
     const colGrows = props.colGrows || []
 
+    let totalColWidth: number
+    let totalColGrow: number
+
+    if (props.totalX) {
+      if (props.colWidths) {
+        totalColWidth = totalColDims(props.colWidths, props.colStartIndex, colSpecs.length)
+      }
+      if (props.colGrows) {
+        totalColGrow = totalColDims(props.colGrows, props.colStartIndex, colSpecs.length)
+      }
+    }
+
     return (
       <div
         role={props.role as any} // !!!
@@ -67,6 +80,8 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         style={{
           top: props.top,
           height: props.height,
+          width: totalColWidth,
+          flexGrow: totalColGrow,
         }}
       >
         {mapRange(props.colStartIndex, colSpecs.length, (i) => {
@@ -129,7 +144,6 @@ ResourceSubrow.addPropsEquality({
 
 // Utils
 // -------------------------------------------------------------------------------------------------
-// TODO: make public
 
 function mapRange<Item>(start: number, end: number, func: (index: number) => Item): Item[] {
   const items: Item[] = []
@@ -139,4 +153,14 @@ function mapRange<Item>(start: number, end: number, func: (index: number) => Ite
   }
 
   return items
+}
+
+function totalColDims(colDims: number[], startIndex: number, endIndex: number): number {
+  let total = 0
+
+  for (let i = startIndex; i < endIndex; i++) {
+    total += colDims[i]
+  }
+
+  return total
 }

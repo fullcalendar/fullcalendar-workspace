@@ -95,6 +95,10 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
             // esp with virtualization, but maybe in future put on more specific row-based parents
             classNames.overflowAnchorNone,
 
+            // workaround for Safari pushing content area extremely wide after returning from
+            // print-view. probably a good idea regardless, to circumvent 'auto' dimentions
+            classNames.minHeight0,
+
             viewHeightLiquid && classNames.liquid,
           )}
           style={{

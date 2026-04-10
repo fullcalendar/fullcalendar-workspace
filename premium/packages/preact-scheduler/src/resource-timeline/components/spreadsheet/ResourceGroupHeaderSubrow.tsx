@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
@@ -15,16 +15,10 @@ export interface ResourceGroupHeaderSubrowProps {
   className?: string // not ultimately user-supplied. internally-supplied
   indentWidth: number | undefined
 
-  // aria
-  role?: string
-  rowIndex?: number
-  level?: number
-
   // refs
   innerHeightRef?: Ref<number>
 
   // position
-  top?: number
   height?: number // does NOT include the border
 }
 
@@ -48,78 +42,64 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
     let spec = props.group.spec as GroupSpec // type HACK
 
     return (
-      <div
-        role={props.role as any} // !!!
-        aria-rowindex={props.rowIndex}
-        aria-level={props.level}
-        aria-expanded={props.isExpanded}
-        className={joinArrayishClassNames(
-          props.className, // probably contains fillX
-          classNames.flexRow,
+      <ContentContainer
+        tag="div"
+        attrs={{
+          role: 'rowheader',
+          'aria-colspan': props.colSpan,
+          'aria-expanded': props.isExpanded,
+        }}
+        className={joinClassNames(
+          classNames.liquid, // expand to whole row
+          classNames.noMargin,
+          classNames.noPadding,
+          classNames.flexCol,
+          classNames.alignStart, // h-align
+          classNames.crop,
+          classNames.contentBox,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
-          top: props.top,
+          height: props.height,
         }}
+        renderProps={renderProps}
+        generatorName="resourceGroupHeaderContent"
+        customGenerator={spec.labelContent}
+        defaultGenerator={renderCellInner}
+        classNameGenerator={spec.labelClass}
+        didMount={spec.labelDidMount}
+        willUnmount={spec.labelWillUnmount}
       >
-        <ContentContainer
-          tag="div"
-          attrs={{
-            role: 'rowheader',
-            'aria-colspan': props.colSpan,
-            'aria-expanded': props.isExpanded,
-          }}
-          className={joinClassNames(
-            classNames.liquid, // expand to whole row
-            classNames.noMargin,
-            classNames.noPadding,
-            classNames.flexCol,
-            classNames.alignStart, // h-align
-            classNames.crop,
-            classNames.contentBox,
-            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
-          )}
-          style={{
-            height: props.height,
-          }}
-          renderProps={renderProps}
-          generatorName="resourceGroupHeaderContent"
-          customGenerator={spec.labelContent}
-          defaultGenerator={renderCellInner}
-          classNameGenerator={spec.labelClass}
-          didMount={spec.labelDidMount}
-          willUnmount={spec.labelWillUnmount}
-        >
-          {(InnerContent) => (
-            <div
-              ref={this.innerElRef}
-              className={joinClassNames(
-                classNames.noShrink,
-                classNames.whiteSpaceNoWrap,
-                classNames.flexRow,
-              )}
-              style={{
-                isolation: 'isolate', // TODO: className
-              }}
+        {(InnerContent) => (
+          <div
+            ref={this.innerElRef}
+            className={joinClassNames(
+              classNames.noShrink,
+              classNames.whiteSpaceNoWrap,
+              classNames.flexRow,
+            )}
+            style={{
+              isolation: 'isolate', // TODO: className
+            }}
+          >
+            <ResourceIndent
+              level={1}
+              indentWidth={props.indentWidth}
+              style={{ zIndex: 2 }}
             >
-              <ResourceIndent
-                level={1}
-                indentWidth={props.indentWidth}
-                style={{ zIndex: 2 }}
-              >
-                <ResourceExpander
-                  isExpanded={props.isExpanded}
-                  onExpanderClick={this.onExpanderClick}
-                />
-              </ResourceIndent>
-              <InnerContent
-                tag='div'
-                className={generateClassName(spec.labelInnerClass, renderProps)}
-                style={{ zIndex: 1 }}
+              <ResourceExpander
+                isExpanded={props.isExpanded}
+                onExpanderClick={this.onExpanderClick}
               />
-            </div>
-          )}
-        </ContentContainer>
-      </div>
+            </ResourceIndent>
+            <InnerContent
+              tag='div'
+              className={generateClassName(spec.labelInnerClass, renderProps)}
+              style={{ zIndex: 1 }}
+            />
+          </div>
+        )}
+      </ContentContainer>
     )
   }
 

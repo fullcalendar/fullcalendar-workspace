@@ -2,6 +2,7 @@ import { BaseComponent } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { Group } from '../../../resource/common/resource-hierarchy'
 import { ResourceGroupSubrow } from './ResourceGroupSubrow'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 
 export interface ResourceGroupSubrowsProps {
   colGroups: Group[]
@@ -15,7 +16,8 @@ Just for print
 */
 export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProps> {
   render() {
-    const { props } = this
+    const { props, context } = this
+    const { options } = context
     const { colGroups, colGroupStats } = props
 
     const colWidths = props.colWidths || []
@@ -39,7 +41,10 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
             ) : (
               <div
                 // TODO: make className DRY somehow?
-                className={stats.borderBottom ? classNames.borderOnlyB : classNames.borderNone}
+                className={joinClassNames(
+                  options.resourceRowClass,
+                  stats.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+                )}
                 style={{
                   minWidth: 0,
                   width: colWidths[i],

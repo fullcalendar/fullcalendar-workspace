@@ -169,15 +169,17 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   />
                 </div>
               )}
-              <div className={joinClassNames(
-                classNames.flexCol,
-                classNames.grow,
-                classNames.crop,
-              )}>
-                <div
+              <div // pseudo-viewport
+                className={joinClassNames(
+                  classNames.flexCol,
+                  classNames.grow,
+                  classNames.crop,
+                )}
+              >
+                <div // canvas
                   className={joinClassNames(
+                    classNames.grow, // height-grow, for matching height with timeline axis
                     classNames.flexCol,
-                    classNames.grow,
                   )}
                   style={{ minWidth: spreadsheetCanvasWidth }}
                 >
@@ -270,7 +272,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             aria-hidden
             className={joinClassNames(
               classNames.fillY,
-              classNames.crop,
+              classNames.flexRow
             )}
             style={{
               // HACK for print where header-height prevents absolutely-positioned events
@@ -282,45 +284,59 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               insetInlineEnd: 0,
             }}
           >
-            <div
-              className={classNames.fillY}
-              style={{
-                width: timeCanvasWidth,
-                height: BG_HEIGHT, // HACK
-                insetInlineStart:  -timeAreaOffset,
-              }}
+            <div // needed for width
+              className={joinClassNames(
+                options.resourceColumnDividerClass,
+                classNames.invisible,
+              )}
+            />
+            <div // viewport
+              className={joinClassNames(
+                classNames.liquidX,
+                classNames.crop,
+                classNames.rel,
+              )}
             >
-              <TimelineSlats
-                dateProfile={dateProfile}
-                tDateProfile={tDateProfile}
-                nowDate={nowDate}
-                todayRange={todayRange}
-                height={BG_HEIGHT} // HACK
-
-                // dimensions
-                slotWidth={slotWidth}
-              />
-              <TimelineBg
-                tDateProfile={tDateProfile}
-                nowDate={nowDate}
-                todayRange={todayRange}
-
-                // content
-                bgEventSegs={bgSlicedProps.bgEventSegs}
-                businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
-
-                // dimensions
-                slotWidth={slotWidth}
-              />
-              {enableNowIndicator && (
-                <TimelineNowIndicatorLine
+              <div
+                className={classNames.fillY}
+                style={{
+                  width: timeCanvasWidth,
+                  height: BG_HEIGHT, // HACK
+                  insetInlineStart:  -timeAreaOffset,
+                }}
+              >
+                <TimelineSlats
+                  dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   nowDate={nowDate}
+                  todayRange={todayRange}
+                  height={BG_HEIGHT} // HACK
+
+                  // dimensions
                   slotWidth={slotWidth}
                 />
-              )}
+                <TimelineBg
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  todayRange={todayRange}
+
+                  // content
+                  bgEventSegs={bgSlicedProps.bgEventSegs}
+                  businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                  dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                  eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
+
+                  // dimensions
+                  slotWidth={slotWidth}
+                />
+                {enableNowIndicator && (
+                  <TimelineNowIndicatorLine
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    slotWidth={slotWidth}
+                  />
+                )}
+              </div>
             </div>
           </div>
 
@@ -347,27 +363,27 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     classNames.breakInsideAvoid,
                   )}
                 >
-                  <div
+                  <div // serves as datagrid viewport
                     className={joinClassNames(
-                      classNames.flexCol,
+                      classNames.flexCol, // mimics what non-print scrollpane does
                       classNames.crop,
                     )}
                     style={{ width: props.spreadsheetWidth }}
                   >
-                    <div
+                    <div // serves as datagrid row
                       className={joinClassNames(
+                        classNames.grow, // height-grow, for matching tall timeline heights
                         classNames.flexRow,
-                        classNames.grow,
                       )}
                       style={{ minWidth: spreadsheetCanvasWidth }}
                     >
-                      <ResourceGroupSubrows
+                      <ResourceGroupSubrows // usually does NOT have bottom-line
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
                         colWidths={colWidths}
                         colGrows={colGrows}
                       />
-                      <ResourceSubrow
+                      <ResourceSubrow // almost always has bottom-line
                         resource={resource}
                         resourceFields={(printLayout as ResourcePrintLayout).resourceFields}
                         indent={(printLayout as ResourcePrintLayout).indent}
@@ -380,20 +396,26 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         borderStart={Boolean(groupColCnt)}
                         borderBottom={isNotLast}
                         indentWidth={props.indentWidth}
+                        totalX // set width and flexgrow on this subrow
                       />
                     </div>
                   </div>
                   <div
                     className={joinArrayishClassNames(options.resourceColumnDividerClass)}
                   />
-                  <div className={joinClassNames(
-                    classNames.flexCol,
-                    classNames.crop,
-                    classNames.liquid,
-                  )}>
+                  <div // serves as timeline viewport
+                    className={joinClassNames(
+                      classNames.flexCol,
+                      classNames.crop,
+                      classNames.liquid,
+                    )}
+                  >
                     <ResourceLane
                       {...splitProps[resource.id]}
-                      className={classNames.rel}
+                      className={joinClassNames(
+                        classNames.rel,
+                        classNames.grow, // height-grow
+                      )}
                       resource={resource}
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
