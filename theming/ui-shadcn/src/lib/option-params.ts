@@ -51,7 +51,7 @@ const eventFaintPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
 )
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
+const bgEventBgClass = 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)] print:border-2 print:border-(--fc-event-color)'
 
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'

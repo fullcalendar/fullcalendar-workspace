@@ -155,7 +155,7 @@ export const params: ThemeOptionParams = {
   eventMutedFgClass,
   eventFaintBgClass,
   eventFaintPressableClass,
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  bgEventBgClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)',
   bgEventFgOpacityClass: 'opacity-50',
   smallDotBorderClass: 'border-4',
   largeDotBorderClass: 'border-5',
