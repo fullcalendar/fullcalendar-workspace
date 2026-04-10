@@ -66,6 +66,7 @@ export interface ResourceTimelineLayoutPrintProps {
 
 }
 
+const MAX_ROWS_FOR_PRINT = 1000
 const BG_HEIGHT = 100000
 
 /*
@@ -97,12 +98,17 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     const { cellRows } = tDateProfile
 
     const { resourceHierarchy } = props
-    const printLayouts = this.buildPrintLayouts(
+    let printLayouts = this.buildPrintLayouts(
       resourceHierarchy,
       hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
+
+    if (printLayouts.length > MAX_ROWS_FOR_PRINT) {
+      printLayouts = printLayouts.slice(0, MAX_ROWS_FOR_PRINT)
+      console.warn(`Too many rows for print. Only including first ${MAX_ROWS_FOR_PRINT}`)
+    }
 
     return (
       <ViewContainer
