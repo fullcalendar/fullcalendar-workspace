@@ -33,7 +33,8 @@
     "tag-and-release": "workspace-scripts tag-and-release",
     "publish": "changeset publish --no-git-tag",
     "classnames": "workspace-scripts classnames",
-    "filesizes": "workspace-scripts filesizes"
+    "filesizes": "workspace-scripts filesizes",
+    "cb": "./scripts/bin/clean-and-build.sh"
   },
   "type": "module",
   "monorepoConfig": {
