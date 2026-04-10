@@ -55,9 +55,11 @@ The `-simple` compiled files are copy-paste fork templates for end-users. All th
 
 The source file (`ui-default-palettes.css`) uses Tailwind color references and is structured as:
 - `:root` — global light-mode defaults (palette-agnostic)
-- `[data-color-scheme=dark]` — global dark-mode overrides (palette-agnostic)
+- `@media not print { [data-color-scheme=dark] { … } }` — global dark-mode overrides (palette-agnostic)
 - `[data-palette=X]` — palette-specific light/default values
-- `[data-palette=X][data-color-scheme=dark]` — palette-specific dark overrides
+- `@media not print { [data-palette=X][data-color-scheme=dark], [data-palette=X] [data-color-scheme=dark] { … } }` — palette-specific dark overrides
+
+**All dark-mode declarations must be wrapped in `@media not print { … }`** so that dark-mode styles are suppressed when printing. This applies to every `[data-color-scheme=dark]` selector at every level (global and palette-specific) in all three file stages: source, vanilla, and split per-palette files.
 
 The vanilla file (`ui-default-palettes-vanilla.css`) mirrors this same structure with resolved color values. When propagating changes from the source to the vanilla file, apply these transforms:
 
@@ -69,9 +71,9 @@ The vanilla file (`ui-default-palettes-vanilla.css`) mirrors this same structure
 
 The split per-palette files (`palettes/X.css`) each contain only one palette's variables, restructured as:
 - `:root` — combines global light defaults + palette-specific light values
-- `[data-color-scheme=dark]` — combines global dark overrides + palette-specific dark overrides
+- `@media not print { [data-color-scheme=dark] { … } }` — combines global dark overrides + palette-specific dark overrides
 
-**Critical:** When propagating changes, preserve the light/dark context. A variable defined in `[data-palette=X]` (light) in the source belongs in `:root` in the split file — **not** in `[data-color-scheme=dark]`. A variable in `[data-palette=X][data-color-scheme=dark]` (dark) belongs in `[data-color-scheme=dark]` in the split file.
+**Critical:** When propagating changes, preserve the light/dark context. A variable defined in `[data-palette=X]` (light) in the source belongs in `:root` in the split file — **not** in the dark block. A variable in `[data-palette=X][data-color-scheme=dark]` (dark) belongs inside the `@media not print { [data-color-scheme=dark] { … } }` block in the split file.
 
 ### Shadcn Components
 

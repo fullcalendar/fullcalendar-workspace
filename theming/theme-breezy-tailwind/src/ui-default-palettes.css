@@ -39,44 +39,46 @@
   --fc-breezy-strong-border: var(--color-gray-300);
 }
 
-[data-color-scheme=dark] {
-  /* primary */
+@media not print {
+  [data-color-scheme=dark] {
+    /* primary */
 
-  /* secondary */
-  --fc-breezy-secondary: var(--fc-breezy-muted);
-  --fc-breezy-secondary-over: var(--fc-breezy-strong);
-  --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
-  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
-  --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
-  --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
+    /* secondary */
+    --fc-breezy-secondary: var(--fc-breezy-muted);
+    --fc-breezy-secondary-over: var(--fc-breezy-strong);
+    --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
+    --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
+    --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
+    --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
 
-  /* calendar content */
+    /* calendar content */
 
-  /* controls */
-  --fc-breezy-selected: var(--fc-breezy-muted);
+    /* controls */
+    --fc-breezy-selected: var(--fc-breezy-muted);
 
-  /* popovers */
-  --fc-breezy-popover: var(--color-gray-800);
-  --fc-breezy-popover-border: var(--fc-breezy-border);
+    /* popovers */
+    --fc-breezy-popover: var(--color-gray-800);
+    --fc-breezy-popover-border: var(--fc-breezy-border);
 
-  /* neutral backgrounds */
-  --fc-breezy-background: var(--color-gray-900);
-  --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
-  --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
-  --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
-  --fc-breezy-stronger: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
-  --fc-breezy-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
+    /* neutral backgrounds */
+    --fc-breezy-background: var(--color-gray-900);
+    --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
+    --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+    --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+    --fc-breezy-stronger: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+    --fc-breezy-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
-  /* neutral foregrounds */
-  --fc-breezy-foreground: var(--color-gray-300);
-  --fc-breezy-muted-foreground: var(--color-gray-400);
-  --fc-breezy-faint-foreground: var(--color-gray-500);
-  --fc-breezy-strong-foreground: var(--color-white);
+    /* neutral foregrounds */
+    --fc-breezy-foreground: var(--color-gray-300);
+    --fc-breezy-muted-foreground: var(--color-gray-400);
+    --fc-breezy-faint-foreground: var(--color-gray-500);
+    --fc-breezy-strong-foreground: var(--color-white);
 
-  /* neutral borders */
-  --fc-breezy-border: color-mix(in oklab, var(--color-white) 10%, transparent);
-  --fc-breezy-muted-border: color-mix(in oklab, var(--color-white) 5%, transparent);
-  --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
+    /* neutral borders */
+    --fc-breezy-border: color-mix(in oklab, var(--color-white) 10%, transparent);
+    --fc-breezy-muted-border: color-mix(in oklab, var(--color-white) 5%, transparent);
+    --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
+  }
 }
 
 /* Colors
@@ -100,16 +102,18 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
   --fc-breezy-highlight: color-mix(in oklab, var(--color-sky-400) 8%, transparent);
   --fc-breezy-now: var(--color-rose-500);
 }
-[data-palette=indigo][data-color-scheme=dark],
-[data-palette=indigo] [data-color-scheme=dark] { /* shift lighter */
-  /* primary */
-  --fc-breezy-primary: var(--color-indigo-500);
-  --fc-breezy-primary-over: var(--color-indigo-400);
+@media not print {
+  [data-palette=indigo][data-color-scheme=dark],
+  [data-palette=indigo] [data-color-scheme=dark] { /* shift lighter */
+    /* primary */
+    --fc-breezy-primary: var(--color-indigo-500);
+    --fc-breezy-primary-over: var(--color-indigo-400);
 
-  /* calendar content */
-  --fc-breezy-event: var(--color-blue-300);
-  --fc-breezy-event-contrast: var(--color-black);
-  --fc-breezy-now: var(--color-rose-400);
+    /* calendar content */
+    --fc-breezy-event: var(--color-blue-300);
+    --fc-breezy-event-contrast: var(--color-black);
+    --fc-breezy-now: var(--color-rose-400);
+  }
 }
 
 /*
@@ -130,10 +134,12 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-highlight: color-mix(in oklab, var(--color-red-500) 8%, transparent);
   --fc-breezy-now: var(--color-red-500);
 }
-[data-palette=rose][data-color-scheme=dark],
-[data-palette=rose] [data-color-scheme=dark] {
-  /* calendar content */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-red-400) 8%, transparent);
+@media not print {
+  [data-palette=rose][data-color-scheme=dark],
+  [data-palette=rose] [data-color-scheme=dark] {
+    /* calendar content */
+    --fc-breezy-highlight: color-mix(in oklab, var(--color-red-400) 8%, transparent);
+  }
 }
 
 [data-palette=emerald] {
@@ -149,10 +155,12 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-highlight: color-mix(in oklab, var(--color-lime-400) 10%, transparent);
   --fc-breezy-now: var(--color-rose-500);
 }
-[data-palette=emerald][data-color-scheme=dark],
-[data-palette=emerald] [data-color-scheme=dark] {
-  /* calendar content */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-lime-400) 6%, transparent);
+@media not print {
+  [data-palette=emerald][data-color-scheme=dark],
+  [data-palette=emerald] [data-color-scheme=dark] {
+    /* calendar content */
+    --fc-breezy-highlight: color-mix(in oklab, var(--color-lime-400) 6%, transparent);
+  }
 }
 
 [data-palette=honey] {

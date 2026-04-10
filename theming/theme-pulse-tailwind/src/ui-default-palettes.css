@@ -38,41 +38,43 @@
   --fc-pulse-border: #e5e7eb;
   --fc-pulse-strong-border: #d5d5d6;
 }
-[data-color-scheme=dark] {
-  /* primary */
+@media not print {
+  [data-color-scheme=dark] {
+    /* primary */
 
-  /* secondary */
-  --fc-pulse-secondary: var(--fc-pulse-muted);
-  --fc-pulse-secondary-over: var(--fc-pulse-strong);
-  --fc-pulse-secondary-down: var(--fc-pulse-stronger);
-  --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
-  --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
+    /* secondary */
+    --fc-pulse-secondary: var(--fc-pulse-muted);
+    --fc-pulse-secondary-over: var(--fc-pulse-strong);
+    --fc-pulse-secondary-down: var(--fc-pulse-stronger);
+    --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
+    --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
-  /* calendar content */
+    /* calendar content */
 
-  /* controls */
-  --fc-pulse-unselected: var(--fc-pulse-muted);
-  --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-selected: var(--fc-pulse-strong);
-  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+    /* controls */
+    --fc-pulse-unselected: var(--fc-pulse-muted);
+    --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-selected: var(--fc-pulse-strong);
+    --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
 
-  /* neutral backgrounds */
-  --fc-pulse-background: var(--color-gray-950);
-  --fc-pulse-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
-  --fc-pulse-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
-  --fc-pulse-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
-  --fc-pulse-stronger: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
-  --fc-pulse-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
+    /* neutral backgrounds */
+    --fc-pulse-background: var(--color-gray-950);
+    --fc-pulse-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
+    --fc-pulse-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+    --fc-pulse-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+    --fc-pulse-stronger: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+    --fc-pulse-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
-  /* neutral foregrounds */
-  --fc-pulse-foreground: #d6dee8;
-  --fc-pulse-faint-foreground: #8897ab;
-  --fc-pulse-muted-foreground: #b5c1d0;
+    /* neutral foregrounds */
+    --fc-pulse-foreground: #d6dee8;
+    --fc-pulse-faint-foreground: #8897ab;
+    --fc-pulse-muted-foreground: #b5c1d0;
 
-  /* neutral borders */
-  --fc-pulse-border: #1a202c;
-  --fc-pulse-strong-border: #374257; /* TODO */
+    /* neutral borders */
+    --fc-pulse-border: #1a202c;
+    --fc-pulse-strong-border: #374257; /* TODO */
+  }
 }
 
 [data-palette=red] {
@@ -94,15 +96,17 @@
   --fc-pulse-background-event: var(--color-amber-400);
   --fc-pulse-highlight: color-mix(in oklab, var(--color-rose-400) 15%, transparent);
 }
-[data-palette=red][data-color-scheme=dark],
-[data-palette=red] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #fd4539; /* slightly lighter than primary */
-  --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
-  --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, black);
+@media not print {
+  [data-palette=red][data-color-scheme=dark],
+  [data-palette=red] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #fd4539; /* slightly lighter than primary */
+    --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
+    --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, black);
 
-  /* calendar content */
-  --fc-pulse-background-event: var(--color-orange-200);
+    /* calendar content */
+    --fc-pulse-background-event: var(--color-orange-200);
+  }
 }
 
 [data-palette=blue] {
@@ -124,12 +128,14 @@
   --fc-pulse-background-event: var(--color-indigo-400);
   --fc-pulse-highlight: color-mix(in oklab, var(--color-sky-400) 10%, transparent);
 }
-[data-palette=blue][data-color-scheme=dark],
-[data-palette=blue] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #1284ff; /* slightly lighter than primary */
-  --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
-  --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+@media not print {
+  [data-palette=blue][data-color-scheme=dark],
+  [data-palette=blue] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #1284ff; /* slightly lighter than primary */
+    --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+    --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  }
 }
 
 [data-palette=purple] {
@@ -151,10 +157,12 @@
   --fc-pulse-background-event: var(--color-purple-500);
   --fc-pulse-highlight: color-mix(in oklab, var(--color-pink-500) 10%, transparent);
 }
-[data-palette=purple][data-color-scheme=dark],
-[data-palette=purple] [data-color-scheme=dark] {
-  /* calendar content */
-  --fc-pulse-highlight: color-mix(in oklab, var(--color-pink-400) 10%, transparent);
+@media not print {
+  [data-palette=purple][data-color-scheme=dark],
+  [data-palette=purple] [data-color-scheme=dark] {
+    /* calendar content */
+    --fc-pulse-highlight: color-mix(in oklab, var(--color-pink-400) 10%, transparent);
+  }
 }
 
 [data-palette=green] {
@@ -176,13 +184,15 @@
   --fc-pulse-background-event: var(--color-lime-400);
   --fc-pulse-highlight: color-mix(in oklab, var(--color-green-500) 10%, transparent);
 }
-[data-palette=green][data-color-scheme=dark],
-[data-palette=green] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #30d157; /* slightly lighter than primary */
-  --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
-  --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+@media not print {
+  [data-palette=green][data-color-scheme=dark],
+  [data-palette=green] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #30d157; /* slightly lighter than primary */
+    --fc-pulse-tertiary-over: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+    --fc-pulse-tertiary-down: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
 
-  /* calendar content */
-  --fc-pulse-background-event: var(--color-lime-500);
+    /* calendar content */
+    --fc-pulse-background-event: var(--color-lime-500);
+  }
 }

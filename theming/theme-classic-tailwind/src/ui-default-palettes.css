@@ -45,23 +45,25 @@ NOTE: button/toolbar UI is not defined here
   --fc-classic-strong-border: var(--color-gray-400);
 }
 
-[data-color-scheme=dark] {
-  /* calendar content */
-  --fc-classic-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-classic-today: color-mix(in oklab, var(--color-yellow-200) 10%, transparent);
+@media not print {
+  [data-color-scheme=dark] {
+    /* calendar content */
+    --fc-classic-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+    --fc-classic-today: color-mix(in oklab, var(--color-yellow-200) 10%, transparent);
 
-  /* neutral backgrounds */
-  --fc-classic-background: var(--color-gray-950);
-  --fc-classic-faint: color-mix(in oklab, var(--color-white) 4%, transparent); /* TODO */
-  --fc-classic-muted: color-mix(in oklab, var(--color-white) 8%, transparent); /* TODO */
-  --fc-classic-strong: color-mix(in oklab, var(--color-white) 14%, transparent); /* TODO */
+    /* neutral backgrounds */
+    --fc-classic-background: var(--color-gray-950);
+    --fc-classic-faint: color-mix(in oklab, var(--color-white) 4%, transparent); /* TODO */
+    --fc-classic-muted: color-mix(in oklab, var(--color-white) 8%, transparent); /* TODO */
+    --fc-classic-strong: color-mix(in oklab, var(--color-white) 14%, transparent); /* TODO */
 
-  /* neutral foregrounds */
-  --fc-classic-foreground: var(--color-white);
-  --fc-classic-faint-foreground: var(--color-gray-600);
-  --fc-classic-muted-foreground: var(--color-gray-400);
+    /* neutral foregrounds */
+    --fc-classic-foreground: var(--color-white);
+    --fc-classic-faint-foreground: var(--color-gray-600);
+    --fc-classic-muted-foreground: var(--color-gray-400);
 
-  /* neutral borders */
-  --fc-classic-border: var(--color-gray-800);
-  --fc-classic-strong-border: var(--color-gray-700);
+    /* neutral borders */
+    --fc-classic-border: var(--color-gray-800);
+    --fc-classic-strong-border: var(--color-gray-700);
+  }
 }

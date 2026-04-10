@@ -38,39 +38,41 @@
   --fc-pulse-border: #e5e7eb;
   --fc-pulse-strong-border: #d5d5d6;
 }
-[data-color-scheme=dark] {
-  /* primary */
+@media not print {
+  [data-color-scheme=dark] {
+    /* primary */
 
-  /* secondary */
-  --fc-pulse-secondary: var(--fc-pulse-muted);
-  --fc-pulse-secondary-over: var(--fc-pulse-strong);
-  --fc-pulse-secondary-down: var(--fc-pulse-stronger);
-  --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
-  --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
+    /* secondary */
+    --fc-pulse-secondary: var(--fc-pulse-muted);
+    --fc-pulse-secondary-over: var(--fc-pulse-strong);
+    --fc-pulse-secondary-down: var(--fc-pulse-stronger);
+    --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
+    --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
-  /* controls */
-  --fc-pulse-unselected: var(--fc-pulse-muted);
-  --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-selected: var(--fc-pulse-strong);
-  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+    /* controls */
+    --fc-pulse-unselected: var(--fc-pulse-muted);
+    --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-selected: var(--fc-pulse-strong);
+    --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
 
-  /* neutral backgrounds */
-  --fc-pulse-background: #030712;
-  --fc-pulse-faint: #ffffff08;
-  --fc-pulse-muted: #ffffff12;
-  --fc-pulse-strong: #ffffff1F;
-  --fc-pulse-stronger: #ffffff29;
-  --fc-pulse-strongest: #ffffff33;
+    /* neutral backgrounds */
+    --fc-pulse-background: #030712;
+    --fc-pulse-faint: #ffffff08;
+    --fc-pulse-muted: #ffffff12;
+    --fc-pulse-strong: #ffffff1F;
+    --fc-pulse-stronger: #ffffff29;
+    --fc-pulse-strongest: #ffffff33;
 
-  /* neutral foregrounds */
-  --fc-pulse-foreground: #d6dee8;
-  --fc-pulse-faint-foreground: #8897ab;
-  --fc-pulse-muted-foreground: #b5c1d0;
+    /* neutral foregrounds */
+    --fc-pulse-foreground: #d6dee8;
+    --fc-pulse-faint-foreground: #8897ab;
+    --fc-pulse-muted-foreground: #b5c1d0;
 
-  /* neutral borders */
-  --fc-pulse-border: #1a202c;
-  --fc-pulse-strong-border: #374257;
+    /* neutral borders */
+    --fc-pulse-border: #1a202c;
+    --fc-pulse-strong-border: #374257;
+  }
 }
 
 [data-palette=red] {
@@ -92,15 +94,17 @@
   --fc-pulse-background-event: #fbbf24;
   --fc-pulse-highlight: #fb718526;
 }
-[data-palette=red][data-color-scheme=dark],
-[data-palette=red] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #fd4539;
-  --fc-pulse-tertiary-over: #dc3b30;
-  --fc-pulse-tertiary-down: #bc3128;
+@media not print {
+  [data-palette=red][data-color-scheme=dark],
+  [data-palette=red] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #fd4539;
+    --fc-pulse-tertiary-over: #dc3b30;
+    --fc-pulse-tertiary-down: #bc3128;
 
-  /* calendar content */
-  --fc-pulse-background-event: #fed7aa;
+    /* calendar content */
+    --fc-pulse-background-event: #fed7aa;
+  }
 }
 
 [data-palette=blue] {
@@ -122,12 +126,14 @@
   --fc-pulse-background-event: #818cf8;
   --fc-pulse-highlight: #38bdf81A;
 }
-[data-palette=blue][data-color-scheme=dark],
-[data-palette=blue] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #1284ff;
-  --fc-pulse-tertiary-over: #3992ff;
-  --fc-pulse-tertiary-down: #539fff;
+@media not print {
+  [data-palette=blue][data-color-scheme=dark],
+  [data-palette=blue] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #1284ff;
+    --fc-pulse-tertiary-over: #3992ff;
+    --fc-pulse-tertiary-down: #539fff;
+  }
 }
 
 [data-palette=purple] {
@@ -149,10 +155,12 @@
   --fc-pulse-background-event: #a855f7;
   --fc-pulse-highlight: #ec48991A;
 }
-[data-palette=purple][data-color-scheme=dark],
-[data-palette=purple] [data-color-scheme=dark] {
-  /* calendar content */
-  --fc-pulse-highlight: #f472b61A;
+@media not print {
+  [data-palette=purple][data-color-scheme=dark],
+  [data-palette=purple] [data-color-scheme=dark] {
+    /* calendar content */
+    --fc-pulse-highlight: #f472b61A;
+  }
 }
 
 [data-palette=green] {
@@ -174,14 +182,16 @@
   --fc-pulse-background-event: #a3e635;
   --fc-pulse-highlight: #22c55e1A;
 }
-[data-palette=green][data-color-scheme=dark],
-[data-palette=green] [data-color-scheme=dark] {
-  /* tertiary */
-  --fc-pulse-tertiary: #30d157;
-  --fc-pulse-tertiary-over: #53d66a;
-  --fc-pulse-tertiary-down: #6cdb7c;
+@media not print {
+  [data-palette=green][data-color-scheme=dark],
+  [data-palette=green] [data-color-scheme=dark] {
+    /* tertiary */
+    --fc-pulse-tertiary: #30d157;
+    --fc-pulse-tertiary-over: #53d66a;
+    --fc-pulse-tertiary-down: #6cdb7c;
 
-  /* calendar content */
-  --fc-pulse-background-event: #84cc16;
+    /* calendar content */
+    --fc-pulse-background-event: #84cc16;
+  }
 }
 

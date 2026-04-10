@@ -51,44 +51,46 @@
   --fc-pulse-strong-border: #d5d5d6;
 }
 
-[data-color-scheme=dark] {
-  /* secondary */
-  --fc-pulse-secondary: var(--fc-pulse-muted);
-  --fc-pulse-secondary-over: var(--fc-pulse-strong);
-  --fc-pulse-secondary-down: var(--fc-pulse-stronger);
-  --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
-  --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
+@media not print {
+  [data-color-scheme=dark] {
+    /* secondary */
+    --fc-pulse-secondary: var(--fc-pulse-muted);
+    --fc-pulse-secondary-over: var(--fc-pulse-strong);
+    --fc-pulse-secondary-down: var(--fc-pulse-stronger);
+    --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
+    --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
-  /* tertiary */
-  --fc-pulse-tertiary: #30d157;
-  --fc-pulse-tertiary-over: #53d66a;
-  --fc-pulse-tertiary-down: #6cdb7c;
+    /* tertiary */
+    --fc-pulse-tertiary: #30d157;
+    --fc-pulse-tertiary-over: #53d66a;
+    --fc-pulse-tertiary-down: #6cdb7c;
 
-  /* calendar content */
-  --fc-pulse-background-event: #84cc16;
+    /* calendar content */
+    --fc-pulse-background-event: #84cc16;
 
-  /* controls */
-  --fc-pulse-unselected: var(--fc-pulse-muted);
-  --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
-  --fc-pulse-selected: var(--fc-pulse-strong);
-  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+    /* controls */
+    --fc-pulse-unselected: var(--fc-pulse-muted);
+    --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
+    --fc-pulse-selected: var(--fc-pulse-strong);
+    --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
 
-  /* neutral backgrounds */
-  --fc-pulse-background: #030712;
-  --fc-pulse-faint: #ffffff08;
-  --fc-pulse-muted: #ffffff12;
-  --fc-pulse-strong: #ffffff1F;
-  --fc-pulse-stronger: #ffffff29;
-  --fc-pulse-strongest: #ffffff33;
+    /* neutral backgrounds */
+    --fc-pulse-background: #030712;
+    --fc-pulse-faint: #ffffff08;
+    --fc-pulse-muted: #ffffff12;
+    --fc-pulse-strong: #ffffff1F;
+    --fc-pulse-stronger: #ffffff29;
+    --fc-pulse-strongest: #ffffff33;
 
-  /* neutral foregrounds */
-  --fc-pulse-foreground: #d6dee8;
-  --fc-pulse-faint-foreground: #8897ab;
-  --fc-pulse-muted-foreground: #b5c1d0;
+    /* neutral foregrounds */
+    --fc-pulse-foreground: #d6dee8;
+    --fc-pulse-faint-foreground: #8897ab;
+    --fc-pulse-muted-foreground: #b5c1d0;
 
-  /* neutral borders */
-  --fc-pulse-border: #1a202c;
-  --fc-pulse-strong-border: #374257;
+    /* neutral borders */
+    --fc-pulse-border: #1a202c;
+    --fc-pulse-strong-border: #374257;
+  }
 }
 

@@ -52,50 +52,52 @@
   --fc-monarch-strong-border: #c5c3bf;
 }
 
-[data-color-scheme=dark] {
-  /* primary */
-  --fc-monarch-primary: rgb(219 198 110);
-  --fc-monarch-primary-foreground: rgb(58 48 0);
-  --fc-monarch-primary-over: #dfcc7e;
-  --fc-monarch-primary-down: #e2d28d;
+@media not print {
+  [data-color-scheme=dark] {
+    /* primary */
+    --fc-monarch-primary: rgb(219 198 110);
+    --fc-monarch-primary-foreground: rgb(58 48 0);
+    --fc-monarch-primary-over: #dfcc7e;
+    --fc-monarch-primary-down: #e2d28d;
 
-  /* secondary */
-  --fc-monarch-secondary: rgb(83 70 0);
-  --fc-monarch-secondary-foreground: rgb(248 226 135);
-  --fc-monarch-secondary-over: #5b4e13;
-  --fc-monarch-secondary-down: #625722;
+    /* secondary */
+    --fc-monarch-secondary: rgb(83 70 0);
+    --fc-monarch-secondary-foreground: rgb(248 226 135);
+    --fc-monarch-secondary-over: #5b4e13;
+    --fc-monarch-secondary-down: #625722;
 
-  /* tertiary */
-  --fc-monarch-tertiary: rgb(169 208 179);
-  --fc-monarch-tertiary-foreground: rgb(20 55 35);
-  --fc-monarch-tertiary-over: #b2d5ba;
-  --fc-monarch-tertiary-down: #bad9c2;
+    /* tertiary */
+    --fc-monarch-tertiary: rgb(169 208 179);
+    --fc-monarch-tertiary-foreground: rgb(20 55 35);
+    --fc-monarch-tertiary-over: #b2d5ba;
+    --fc-monarch-tertiary-down: #bad9c2;
 
-  /* calendar content */
-  --fc-monarch-highlight: #5346004D;
-  --fc-monarch-now: rgb(255 180 171);
+    /* calendar content */
+    --fc-monarch-highlight: #5346004D;
+    --fc-monarch-now: rgb(255 180 171);
 
-  /* controls */
-  --fc-monarch-selected: rgb(209 198 161);
-  --fc-monarch-selected-foreground: rgb(54 48 22);
-  --fc-monarch-selected-over: #d6ccaa;
-  --fc-monarch-selected-down: #dad1b4;
-  --fc-monarch-outline: #ffe6c5;
+    /* controls */
+    --fc-monarch-selected: rgb(209 198 161);
+    --fc-monarch-selected-foreground: rgb(54 48 22);
+    --fc-monarch-selected-over: #d6ccaa;
+    --fc-monarch-selected-down: #dad1b4;
+    --fc-monarch-outline: #ffe6c5;
 
-  /* popover */
-  --fc-monarch-popover: rgb(21 19 11);
-  --fc-monarch-popover-foreground: rgb(232 226 212);
+    /* popover */
+    --fc-monarch-popover: rgb(21 19 11);
+    --fc-monarch-popover-foreground: rgb(232 226 212);
 
-  /* neutral backgrounds */
-  --fc-monarch-background: #030712;
+    /* neutral backgrounds */
+    --fc-monarch-background: #030712;
 
-  /* neutral foregrounds */
-  --fc-monarch-foreground: #ffffff;
-  --fc-monarch-faint-foreground: #898989;
-  --fc-monarch-muted-foreground: #b0b0b0;
+    /* neutral foregrounds */
+    --fc-monarch-foreground: #ffffff;
+    --fc-monarch-faint-foreground: #898989;
+    --fc-monarch-muted-foreground: #b0b0b0;
 
-  /* neutral borders */
-  --fc-monarch-border: #333230;
-  --fc-monarch-strong-border: #56544f;
+    /* neutral borders */
+    --fc-monarch-border: #333230;
+    --fc-monarch-strong-border: #56544f;
+  }
 }
 
