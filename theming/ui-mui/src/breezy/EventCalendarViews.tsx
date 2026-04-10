@@ -182,7 +182,7 @@ export default function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       backgroundEventColor="var(--mui-palette-secondary-main)"
-      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)] print:border-2 print:border-(--fc-event-color)"
+      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)] print:border-1 print:border-(--fc-event-color)"
       backgroundEventTitleClass={(info) => joinClassNames(
         'opacity-50 italic text-(--mui-palette-text-primary)',
         info.isNarrow
@@ -536,7 +536,7 @@ export default function EventCalendarViews({
             'border-b',
             info.options.allDaySlot
               ? 'border-(--mui-palette-divider)'
-              : `border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
+              : `border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] not-print:shadow-sm`,
           ),
           dayCellClass: getMutedDayCellBorderColorClass,
           dayCellBottomClass: tallDayCellBottomClass,
@@ -559,7 +559,7 @@ export default function EventCalendarViews({
             `m-3 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]`,
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
-          allDayDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
+          allDayDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] not-print:shadow-sm`,
 
           /* TimeGrid > Slot Header
           ------------------------------------------------------------------------------------- */

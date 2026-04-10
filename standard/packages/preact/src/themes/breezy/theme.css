@@ -616,6 +616,12 @@
 }
 
 @media not print {
+  .not-print\:shadow-sm {
+    box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a
+  }
+}
+
+@media not print {
   @supports (color:color-mix(in lab, red, red)) {
     .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
       background-color: color-mix(in oklab, var(--fc-event-color) 8%, transparent)
@@ -1052,8 +1058,8 @@
 }
 
 @media print {
-  .print\:border-2 {
-    border-width: 2px
+  .print\:border-1 {
+    border-width: 1px
   }
 
   .print\:border-\(--fc-event-color\) {

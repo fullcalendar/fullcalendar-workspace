@@ -266,7 +266,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     backgroundEventColor: 'var(--fc-breezy-background-event)',
-    backgroundEventClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)] print:border-2 print:border-(--fc-event-color)',
+    backgroundEventClass: 'not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_8%,transparent)] print:border-1 print:border-(--fc-event-color)',
     backgroundEventTitleClass: (info) => joinClassNames(
       'opacity-50 italic',
       info.isNarrow
@@ -649,7 +649,7 @@ export default {
         'border-b',
         info.options.allDaySlot
           ? 'border-(--fc-breezy-border)'
-          : 'border-(--fc-breezy-strong-border) shadow-sm',
+          : 'border-(--fc-breezy-strong-border) not-print:shadow-sm',
       ),
       dayCellClass: getMutedDayCellBorderColorClass,
       dayCellBottomClass: tallDayCellBottomClass,
@@ -672,7 +672,7 @@ export default {
         'm-3 text-(--fc-breezy-faint-foreground)',
         info.isNarrow ? xxsTextClass : 'text-xs',
       ),
-      allDayDividerClass: 'border-b border-(--fc-breezy-strong-border) shadow-sm',
+      allDayDividerClass: 'border-b border-(--fc-breezy-strong-border) not-print:shadow-sm',
 
       /* TimeGrid > Slot Header
       ------------------------------------------------------------------------------------------- */

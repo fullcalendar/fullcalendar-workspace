@@ -453,7 +453,7 @@ export function EventCalendarViews({
           dayHeaderClass: getMutedDayHeaderBorderClass,
           dayHeaderDividerClass: (info) => cn(
             'border-b',
-            !info.options.allDaySlot && 'border-foreground/20 shadow-sm',
+            !info.options.allDaySlot && 'border-foreground/20 not-print:shadow-sm',
           ),
           dayCellClass: getMutedDayCellBorderColorClass,
           dayCellBottomClass: tallDayCellBottomClass,
@@ -476,7 +476,7 @@ export function EventCalendarViews({
             'p-3 text-muted-foreground',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
-          allDayDividerClass: 'border-b border-foreground/20 shadow-sm',
+          allDayDividerClass: 'border-b border-foreground/20 not-print:shadow-sm',
 
           /* TimeGrid > Slot Header
           ------------------------------------------------------------------------------------- */

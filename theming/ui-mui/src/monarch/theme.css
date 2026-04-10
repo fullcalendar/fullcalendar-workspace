@@ -986,8 +986,8 @@
 }
 
 @media print {
-  .print\:border-2 {
-    border-width: 2px
+  .print\:border-1 {
+    border-width: 1px
   }
 
   .print\:border-\(--fc-event-color\) {

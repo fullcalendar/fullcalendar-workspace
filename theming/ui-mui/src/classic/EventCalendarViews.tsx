@@ -138,7 +138,7 @@ export default function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       backgroundEventColor="var(--mui-palette-secondary-main)"
-      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)"
+      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-1 print:border-(--fc-event-color)"
       backgroundEventTitleClass={(info) => joinClassNames(
         'opacity-50 italic',
         info.isNarrow

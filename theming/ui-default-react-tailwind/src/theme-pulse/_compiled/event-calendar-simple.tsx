@@ -265,7 +265,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       backgroundEventColor="var(--fc-pulse-background-event)"
-      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-2 print:border-(--fc-event-color)"
+      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)] print:border-1 print:border-(--fc-event-color)"
       backgroundEventTitleClass={(info) => joinClassNames(
         'opacity-50 italic',
         (info.isNarrow || info.isShort)
@@ -613,7 +613,7 @@ export function EventCalendar({
             'border-b',
             info.options.allDaySlot
               ? 'border-(--fc-pulse-border)'
-              : 'border-(--fc-pulse-strong-border) shadow-sm'
+              : 'border-(--fc-pulse-strong-border) not-print:shadow-sm'
           ),
           dayCellBottomClass: tallDayCellBottomClass,
 
@@ -635,7 +635,7 @@ export function EventCalendar({
             'm-2 text-(--fc-pulse-muted-foreground)',
             info.isNarrow ? xxsTextClass : 'text-xs',
           ),
-          allDayDividerClass: 'border-b border-(--fc-pulse-strong-border) shadow-sm',
+          allDayDividerClass: 'border-b border-(--fc-pulse-strong-border) not-print:shadow-sm',
 
           /* TimeGrid > Slot Header
           ----------------------------------------------------------------------------------------- */

@@ -101,7 +101,7 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         backgroundEventColor='var(--chart-3)'
-        backgroundEventClass='not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)] print:border-2 print:border-(--fc-event-color)'
+        backgroundEventClass='not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)] print:border-1 print:border-(--fc-event-color)'
         backgroundEventTitleClass={(info) => cn(
           'opacity-50 italic',
           (info.isNarrow || info.isShort)
@@ -423,7 +423,7 @@ export function EventCalendarViews({
             dayHeaderAlign: (info) => info.inPopover ? 'start' : 'center',
             dayHeaderDividerClass: (info) => cn(
               'border-b',
-              !info.options.allDaySlot && 'border-foreground/20 shadow-sm',
+              !info.options.allDaySlot && 'border-foreground/20 not-print:shadow-sm',
             ),
             dayCellBottomClass: tallDayCellBottomClass,
 
@@ -445,7 +445,7 @@ export function EventCalendarViews({
               'm-2 text-muted-foreground',
               info.isNarrow ? xxsTextClass : 'text-xs',
             ),
-            allDayDividerClass: 'border-b border-foreground/20 shadow-sm',
+            allDayDividerClass: 'border-b border-foreground/20 not-print:shadow-sm',
 
             /* TimeGrid > Slot Header
             ------------------------------------------------------------------------------------- */
