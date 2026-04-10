@@ -541,23 +541,25 @@
   background-color: var(--fc-event-color)
 }
 
-@supports (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color) var(--fc-classic-background-event-opacity), transparent)
+@media not print {
+  @supports (color:color-mix(in lab, red, red)) {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
+      background-color: color-mix(in oklab, var(--fc-event-color) var(--fc-classic-background-event-opacity), transparent)
+    }
   }
-}
-@supports not (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
-    position: relative;
-    isolation: isolate
-  }
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\]:before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: var(--fc-event-color);
-    opacity: var(--fc-classic-background-event-opacity);
-    z-index: -1
+  @supports not (color:color-mix(in lab, red, red)) {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
+      position: relative;
+      isolation: isolate
+    }
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\]:before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: var(--fc-event-color);
+      opacity: var(--fc-classic-background-event-opacity);
+      z-index: -1
+    }
   }
 }
 
@@ -877,6 +879,10 @@
 }
 
 @media print {
+  .print\:border-2 {
+    border-width: 2px
+  }
+
   .print\:border-\(--fc-classic-button-strong-border\) {
     border-color: var(--fc-classic-button-strong-border)
   }

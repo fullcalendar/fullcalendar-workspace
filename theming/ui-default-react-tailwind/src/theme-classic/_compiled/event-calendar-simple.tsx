@@ -194,7 +194,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       backgroundEventColor="var(--fc-classic-background-event)"
-      backgroundEventClass="bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)]"
+      backgroundEventClass="not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)] print:border-2 print:border-(--fc-event-color)"
       backgroundEventTitleClass={(info) => joinClassNames(
         'opacity-(--fc-classic-background-event-foreground-opacity) italic',
         info.isNarrow

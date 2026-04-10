@@ -553,23 +553,25 @@
   background-color: var(--mui-palette-primary-main)
 }
 
-@supports (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
-    background-color: color-mix(in oklab, var(--fc-event-color) 8%, transparent)
+@media not print {
+  @supports (color:color-mix(in lab, red, red)) {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
+      background-color: color-mix(in oklab, var(--fc-event-color) 8%, transparent)
+    }
   }
-}
-@supports not (color:color-mix(in lab, red, red)) {
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
-    position: relative;
-    isolation: isolate
-  }
-  .bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\]:before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: var(--fc-event-color);
-    opacity: 0.08;
-    z-index: -1
+  @supports not (color:color-mix(in lab, red, red)) {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\] {
+      position: relative;
+      isolation: isolate
+    }
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_8\%\,transparent\)\]:before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: var(--fc-event-color);
+      opacity: 0.08;
+      z-index: -1
+    }
   }
 }
 
@@ -979,6 +981,10 @@
 }
 
 @media print {
+  .print\:border-2 {
+    border-width: 2px
+  }
+
   .print\:border-\(--fc-event-color\) {
     border-color: var(--fc-event-color)
   }
