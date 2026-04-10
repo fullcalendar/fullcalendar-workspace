@@ -1,4 +1,4 @@
-import { Duration } from '@fullcalendar/preact/public-api'
+import { Duration, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   ViewProps,
   memoize,
@@ -21,7 +21,6 @@ import {
   Ruler,
   FooterScrollbar,
   generateClassName,
-  joinClassNames,
   computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'

@@ -1,4 +1,5 @@
-import { afterSize, BaseComponent, isArraysEqual, joinClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { afterSize, BaseComponent, isArraysEqual, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'

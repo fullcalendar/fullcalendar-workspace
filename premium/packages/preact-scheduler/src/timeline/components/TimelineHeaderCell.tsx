@@ -1,4 +1,4 @@
-import { SlotHeaderInfo } from '@fullcalendar/preact/public-api'
+import { SlotHeaderInfo, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -8,7 +8,6 @@ import {
   DateRange,
   generateClassName,
   getDateMeta,
-  joinClassNames,
   memoize,
   setRef,
   watchSize

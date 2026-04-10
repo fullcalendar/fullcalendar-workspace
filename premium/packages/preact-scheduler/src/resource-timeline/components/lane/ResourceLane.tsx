@@ -1,4 +1,5 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinClassNames } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'

@@ -1,4 +1,5 @@
-import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'

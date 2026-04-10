@@ -1,4 +1,5 @@
-import { config, isValidDate, addDays, CalendarContext, joinClassNames } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { config, isValidDate, addDays, CalendarContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too

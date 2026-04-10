@@ -1,4 +1,5 @@
-import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinClassNames, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'

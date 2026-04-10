@@ -1,4 +1,4 @@
-import { CssDimValue, Duration } from '@fullcalendar/preact/public-api'
+import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
   DateComponent,
@@ -23,7 +23,6 @@ import {
   FooterScrollbar,
   ViewContainer,
   generateClassName,
-  joinClassNames,
   debounce,
   computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'

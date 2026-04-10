@@ -54,7 +54,6 @@ export {
   computeElIsRtl,
   applyStyleProp,
 } from './util/dom-manip'
-export { joinClassNames } from './util/html'
 
 export type { EventStore } from './structs/event-store'
 export {

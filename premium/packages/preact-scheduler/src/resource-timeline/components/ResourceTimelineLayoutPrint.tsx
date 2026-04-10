@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   DateMarker,
@@ -5,7 +6,6 @@ import {
   DateRange,
   EventStore,
   generateClassName,
-  joinClassNames,
   memoize,
   rangeContainsMarker,
   SlicedProps,
