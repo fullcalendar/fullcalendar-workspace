@@ -1,5 +1,5 @@
 import { ThemeName } from './config'
-import { buildToolbarAndButtons, DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util'
+import { buildToolbarAndButtons, DEFAULT_DARK_CLASS_NAME, DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util'
 
 import breezyEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-breezy/_compiled/event-calendar-simple.tsx?raw'
 import classicEventCalendarRaw from '../../../ui-default-react-tailwind/src/theme-classic/_compiled/event-calendar-simple.tsx?raw'
@@ -136,21 +136,72 @@ export function getPaletteCss(
   const entry = paletteCssByTheme[themeName]
   let css = typeof entry === 'string' ? entry : entry?.[paletteName]
 
+  /*
+  NOTE: source CSS takes this form:
+  @media not print {
+    [data-color-scheme=dark] {
+      --fc-breezy-secondary: var(--fc-breezy-muted);
+    }
+  }
+  */
+
   if (dataAttributeOverride) {
     css = css.replaceAll('[data-color-scheme=dark]', `[${dataAttributeOverride}=dark]`)
   } else if (classNameOverride) {
     css = css.replaceAll('[data-color-scheme=dark]', `.dark`)
   } else if (mediaQueryOverride) {
-    css = css.replace(
-      /\[data-color-scheme=dark\]\s*\{([\s\S]*?)\}/g,
-      (_, inner) => {
-        const reindented = inner.replace(/^  /mg, '    ')
-        return `@media (prefers-color-scheme: dark) {\n  :root {${reindented}  }\n}`
-      }
-    )
+    css = css.replaceAll('@media not print', '@media (prefers-color-scheme: dark) and (not print)')
+    css = css.replaceAll('[data-color-scheme=dark]', ':root')
   }
 
   return css.trim()
+}
+
+export function getAppCss(
+  themeName: ThemeName,
+  colorSchemeTechnique: 'component-prop' | 'data-attribute' | 'class-name' | 'media-query',
+  colorSchemeDataAttribute: string,
+): string {
+  const fontFamily = (
+    themeName === 'monarch' ? '\'Roboto Variable\', sans-serif' :
+    themeName === 'forma' ? '\'Noto Sans Variable\', sans-serif' :
+    themeName === 'breezy' ? '\'Inter Variable\', sans-serif' :
+    'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+  )
+
+  const colorSchemeCss = (
+    colorSchemeTechnique === 'component-prop' ? (
+      `@media not print {
+  [data-color-scheme=dark] {
+    color-scheme: dark;
+  }
+}`
+    ) : colorSchemeTechnique === 'data-attribute' ? (
+      `@media not print {
+  [${colorSchemeDataAttribute}=dark] {
+    color-scheme: dark;
+  }
+}`
+    ) : colorSchemeTechnique === 'class-name' ? (
+      `@media not print {
+  .${DEFAULT_DARK_CLASS_NAME} {
+    color-scheme: dark;
+  }
+}`
+    ) : (
+      `@media (prefers-color-scheme: dark) and (not print) {
+  :root {
+    color-scheme: dark;
+  }
+}`
+    )
+  )
+
+  return `body {
+  font-family: ${fontFamily};
+}
+
+${colorSchemeCss}`.trim()
 }
 
 export function getStockAppCode({
@@ -182,6 +233,7 @@ ${Object.keys(pluginMap).map((importSymbol) => (
   `import ${importSymbol} from '${pluginMap[importSymbol]}'`
 )).join('\n')}
 
+import './app.css'
 import '@fullcalendar/react/skeleton.css'
 import '@fullcalendar/react/themes/${themeName}/theme.css'
 ${(
@@ -267,6 +319,7 @@ ${isScheduler ? (
 ) : (
   `import { EventCalendar } from './event-calendar'`
 )}
+import './app.css'
 
 ${
   colorSchemeTechnique === 'data-attribute' ? (

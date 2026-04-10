@@ -16,7 +16,7 @@ import SlTabPanel from '@shoelace-style/shoelace/dist/react/tab-panel/index.js'
 import SlTooltip from '@shoelace-style/shoelace/dist/react/tooltip/index.js'
 import { DEFAULT_DATA_ATTRIBUTE } from './demo-generator-util.js'
 import { ColorScheme, ThemeName } from './config.js'
-import { getCompiledEventCalendar, getCompiledScheduler, getForkedAppCode, getPaletteCss, getStockAppCode, getThemeCss } from './demo-generator-code.js'
+import { getAppCss, getCompiledEventCalendar, getCompiledScheduler, getForkedAppCode, getPaletteCss, getStockAppCode, getThemeCss } from './demo-generator-code.js'
 
 /*
 TODO: redirect for MUI and Shadcn
@@ -119,6 +119,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
 
   const sourceFiles: Record<string, string> = {}
 
+  // a "safe" value that is always valid
   const effectiveDataAttribute = VALID_IDENTIFIER_RE.test(dataAttribute) ? dataAttribute : DEFAULT_DATA_ATTRIBUTE
 
   if (activeDialog) {
@@ -144,6 +145,12 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
           initialView: activeDialog?.initialView,
         })
 
+    sourceFiles['app.css'] = getAppCss(
+      activeDialog.themeName,
+      colorSchemeTechnique,
+      effectiveDataAttribute,
+    )
+
     if (isFork) {
       if (activeDialog.isScheduler) {
         sourceFiles['scheduler.tsx'] = getCompiledScheduler(activeDialog.themeName)
@@ -167,7 +174,7 @@ function CodeDialog({ activeDialog, onClose }: { activeDialog: CodeDialogParams 
       const paletteCss = getPaletteCss(
         activeDialog.themeName,
         activeDialog.paletteName,
-        colorSchemeTechnique === 'data-attribute' ? dataAttribute : '',
+        colorSchemeTechnique === 'data-attribute' ? effectiveDataAttribute : '',
         colorSchemeTechnique === 'class-name',
         colorSchemeTechnique === 'media-query',
       )
