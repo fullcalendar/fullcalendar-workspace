@@ -959,8 +959,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     context.emitter.on('_resourceScrollRequest', this.handleResourceScrollRequest)
   }
 
-  componentDidUpdate(prevProps: ResourceTimelineLayoutNormalProps) {
-    const { props } = this
+  componentDidUpdate(prevProps: ResourceTimelineLayoutNormalProps, prevState: ResourceTimelineViewState) {
+    const { props, state } = this
     const { options } = this.context
 
     this.updateScrollersSyncers()
@@ -968,8 +968,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const dateProfileChange = prevProps.dateProfile !== props.dateProfile
     const slotWidthChange = prevProps.slotWidth !== props.slotWidth
+    const timeCanvasWidthChange = prevProps.timeCanvasWidth !== props.timeCanvasWidth
+    const timeClientWidthChange = prevState.timeClientWidth !== state.timeClientWidth
 
-    if (dateProfileChange || slotWidthChange) {
+    if (dateProfileChange || slotWidthChange || timeCanvasWidthChange || timeClientWidthChange) {
       if (dateProfileChange && options.scrollTimeReset) {
         this.resetTimeScroll()
       } else {
