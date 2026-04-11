@@ -140,13 +140,13 @@
         "format": "css",
         "import": "fullcalendar/themes/breezy/theme.css"
       },
+      "./themes/breezy/palettes/amber.css": {
+        "format": "css",
+        "import": "fullcalendar/themes/breezy/palettes/amber.css"
+      },
       "./themes/breezy/palettes/emerald.css": {
         "format": "css",
         "import": "fullcalendar/themes/breezy/palettes/emerald.css"
-      },
-      "./themes/breezy/palettes/honey.css": {
-        "format": "css",
-        "import": "fullcalendar/themes/breezy/palettes/honey.css"
       },
       "./themes/breezy/palettes/indigo.css": {
         "format": "css",

@@ -163,7 +163,7 @@ https://catalyst.tailwindui.com/docs/button
   }
 }
 
-[data-palette=honey] {
+[data-palette=amber] {
   /* primary */
   --fc-breezy-primary: var(--color-amber-400);
   --fc-breezy-primary-over: var(--color-amber-300);

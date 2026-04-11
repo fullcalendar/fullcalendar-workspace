@@ -70,8 +70,8 @@ src/
     rose.ts
     emerald.css
     emerald.ts
-    honey.css
-    honey.ts
+    amber.css
+    amber.ts
   palettes.css  (original file, kept for reference or can be removed)
 ```
 

@@ -19,8 +19,8 @@ import formaThemeCssRaw from '../../../../standard/packages/preact/src/themes/fo
 import monarchThemeCssRaw from '../../../../standard/packages/preact/src/themes/monarch/theme.css?raw'
 import pulseThemeCssRaw from '../../../../standard/packages/preact/src/themes/pulse/theme.css?raw'
 
+import breezyPaletteAmberRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/amber.css?raw'
 import breezyPaletteEmeraldRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/emerald.css?raw'
-import breezyPaletteHoneyRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/honey.css?raw'
 import breezyPaletteIndigoRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/indigo.css?raw'
 import breezyPaletteRoseRaw from '../../../../standard/packages/preact/src/themes/breezy/palettes/rose.css?raw'
 import classicPaletteRaw from '../../../../standard/packages/preact/src/themes/classic/palette.css?raw'
@@ -64,8 +64,8 @@ const themeCssByTheme: Record<string, string> = {
 
 const paletteCssByTheme: Record<string, string | Record<string, string>> = {
   breezy: {
+    amber: breezyPaletteAmberRaw,
     emerald: breezyPaletteEmeraldRaw,
-    honey: breezyPaletteHoneyRaw,
     indigo: breezyPaletteIndigoRaw,
     rose: breezyPaletteRoseRaw,
   },

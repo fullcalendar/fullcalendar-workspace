@@ -121,10 +121,10 @@
       "./themes/breezy/theme.css": {
         "format": "css"
       },
-      "./themes/breezy/palettes/emerald.css": {
+      "./themes/breezy/palettes/amber.css": {
         "format": "css"
       },
-      "./themes/breezy/palettes/honey.css": {
+      "./themes/breezy/palettes/emerald.css": {
         "format": "css"
       },
       "./themes/breezy/palettes/indigo.css": {
