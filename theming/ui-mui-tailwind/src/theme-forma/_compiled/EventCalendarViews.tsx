@@ -345,7 +345,7 @@ export default function EventCalendarViews({
             ),
         info.monthText && 'font-bold',
       )}
-      dayCellInnerClass={(info) => joinClassNames(info.inPopover && 'm-2')}
+      dayCellInnerClass={(info) => joinClassNames(info.inPopover && 'p-2')}
 
       /* Popover
       ------------------------------------------------------------------------------------------- */

@@ -57,7 +57,6 @@ export function Scheduler({
       />
       <div className='grow min-h-0'>
         <SchedulerViews
-          className='grow min-h-0'
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           navLinkDayClick={navLinkDayClick}

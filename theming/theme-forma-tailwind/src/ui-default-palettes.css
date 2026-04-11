@@ -18,8 +18,6 @@ Further color reference:
   /* primary */
 
   /* calendar content */
-  --fc-forma-background-event: var(--color-green-500); /* TODO */
-  --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
 
   /* neutral backgrounds */
   --fc-forma-background: #FFFFFF;
@@ -44,7 +42,6 @@ Further color reference:
     /* primary */
 
     /* calendar content */
-    --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
 
     /* neutral backgrounds */
     --fc-forma-background: var(--color-gray-950);

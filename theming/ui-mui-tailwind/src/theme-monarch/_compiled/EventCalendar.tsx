@@ -92,7 +92,7 @@ export default function EventCalendar({
         }}
       >
         <EventCalendarViews
-          height={height !== undefined ? '100%' : contentHeight}
+          height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
           plugins={[...eventCalendarPlugins, ...userPlugins]}

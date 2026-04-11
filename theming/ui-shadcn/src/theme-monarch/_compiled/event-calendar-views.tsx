@@ -138,24 +138,26 @@ export function EventCalendarViews({
         info.isStart ? 'border-s rounded-s-sm' : (!info.isNarrow && 'ms-2'),
         info.isEnd ? 'border-e rounded-e-sm' : (!info.isNarrow && 'me-2'),
       )}
-      rowEventBeforeClass={(info) => cn(
-        info.isStartResizable && [
-          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-          '-start-1',
-        ],
-        (!info.isStart && !info.isNarrow) && 'absolute -start-2 w-2 -top-px -bottom-px'
+      rowEventBeforeClass={(info) => (
+        info.isStartResizable
+          ? cn(
+              info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+              '-start-1',
+            )
+          : (!info.isStart && !info.isNarrow) ? 'absolute -start-2 w-2 -top-px -bottom-px' : ''
       )}
       rowEventBeforeContent={(info) => (
         (!info.isStart && !info.isNarrow) ? filledRightTriangle(
           'size-full rotate-180 [[dir=rtl]_&]:rotate-0 text-(--fc-event-color)',
         ) : <></> // HACK for React vdom
       )}
-      rowEventAfterClass={(info) => cn(
-        info.isEndResizable && [
-          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-          '-end-1',
-        ],
-        (!info.isEnd && !info.isNarrow) && 'absolute -end-2 w-2 -top-px -bottom-px'
+      rowEventAfterClass={(info) => (
+        info.isEndResizable
+          ? cn(
+              info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+              '-end-1',
+            )
+          : (!info.isEnd && !info.isNarrow) ? 'absolute -end-2 w-2 -top-px -bottom-px' : ''
       )}
       rowEventAfterContent={(info) => (
         (!info.isEnd && !info.isNarrow) ? filledRightTriangle(
@@ -251,7 +253,7 @@ export function EventCalendarViews({
                       'bg-chart-1/50',
                       info.hasNavLink && 'group-hover:bg-chart-1/60',
                     ]
-                  : (info.hasNavLink && 'hover:bg-foreground/5'),
+                  : (info.hasNavLink && 'group-hover:bg-foreground/5'),
                 info.hasNavLink && 'group-focus-visible:outline-3 outline-ring/50',
               )}
             >{info.dayNumberText}</div>

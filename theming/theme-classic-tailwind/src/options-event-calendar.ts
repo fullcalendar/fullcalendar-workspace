@@ -482,6 +482,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayClass: (info) => joinClassNames(
+          'flex flex-col',
           !info.isLast && `border-b ${params.borderColorClass}`,
         ),
 

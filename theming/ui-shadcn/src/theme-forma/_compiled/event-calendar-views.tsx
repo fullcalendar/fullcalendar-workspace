@@ -123,11 +123,11 @@ export function EventCalendarViews({
       /* Block Event
       ----------------------------------------------------------------------------------------- */
 
-      blockEventClass={(info) => cn(
-        'group relative border-(--fc-event-color) print:bg-white bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))] -outline-offset-3',
-        info.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
-        (info.isDragging && !info.isSelected) && 'opacity-75',
-      )}
+blockEventClass={(info) => cn(
+  'group relative border-(--fc-event-color) print:bg-white bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+  info.isInteractive && 'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
+  (info.isDragging && !info.isSelected) && 'opacity-75',
+)}
       blockEventTimeClass="whitespace-nowrap overflow-hidden shrink-1"
       blockEventTitleClass="whitespace-nowrap overflow-hidden shrink-100"
 
@@ -139,25 +139,27 @@ export function EventCalendarViews({
         info.isStart && 'border-s-6 rounded-s-sm',
         info.isEnd && 'not-print:pe-px print:border-e rounded-e-sm',
       )}
-      rowEventBeforeClass={(info) => cn(
-        info.isStartResizable && [
-          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-          '-start-2',
-        ],
-        (!info.isStart && !info.isNarrow) && [
-          'ms-1 size-2 border-t-1 border-s-1 border-muted-foreground',
-          '-rotate-45 [[dir=rtl]_&]:rotate-45',
-        ]
+      rowEventBeforeClass={(info) => (
+        info.isStartResizable
+          ? cn(
+              info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+              '-start-2',
+            )
+          : (!info.isStart && !info.isNarrow) ? cn(
+              'ms-1 size-2 border-t-1 border-s-1 border-muted-foreground',
+              '-rotate-45 [[dir=rtl]_&]:rotate-45',
+            ) : ''
       )}
-      rowEventAfterClass={(info) => cn(
-        info.isEndResizable && [
-          info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-          '-end-1',
-        ],
-        (!info.isEnd && !info.isNarrow) && [
-          'me-1 size-2 border-t-1 border-e-1 border-muted-foreground',
-          'rotate-45 [[dir=rtl]_&]:-rotate-45',
-        ]
+      rowEventAfterClass={(info) => (
+        info.isEndResizable
+          ? cn(
+              info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+              '-end-1',
+            )
+          : (!info.isEnd && !info.isNarrow) ? cn(
+              'me-1 size-2 border-t-1 border-e-1 border-muted-foreground',
+              'rotate-45 [[dir=rtl]_&]:-rotate-45',
+            ) : ''
       )}
       rowEventInnerClass={(info) => cn(
         'flex flex-row items-center',
@@ -211,7 +213,7 @@ export function EventCalendarViews({
 
       moreLinkClass="focus-visible:outline-3 outline-ring/50"
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass="mb-px border border-transparent print:border-black rounded-sm bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background -outline-offset-3"
+      columnMoreLinkClass="mb-px border border-transparent print:border-black rounded-sm bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background"
       columnMoreLinkInnerClass={(info) => (
         info.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -290,7 +292,7 @@ export function EventCalendarViews({
             ],
         info.monthText && 'font-bold',
       )}
-      dayCellInnerClass={(info) => cn(info.inPopover && 'm-2')}
+      dayCellInnerClass={(info) => cn(info.inPopover && 'p-2')}
 
       /* Popover
       ----------------------------------------------------------------------------------------- */

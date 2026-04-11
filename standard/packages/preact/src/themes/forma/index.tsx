@@ -20,8 +20,8 @@ const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColo
 // neutral buttons
 const strongSolidPressableClass = joinClassNames(
   '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
-  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
+  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-forma-background)]',
+  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-forma-background)]',
 )
 const mutedPressableClass = `bg-(--fc-forma-muted) hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
@@ -369,7 +369,7 @@ export default {
           ),
     ),
     dayHeaderInnerClass: (info) => joinClassNames(
-      'm-2 flex flex-col',
+      'p-2 flex flex-col',
       info.isToday && info.level && 'relative',
       info.hasNavLink && `${mutedHoverPressableClass} ${outlineInsetClass}`,
     ),
@@ -428,7 +428,7 @@ export default {
           ),
       info.monthText && 'font-bold',
     ),
-    dayCellInnerClass: (info) => joinClassNames(info.inPopover && 'm-2'),
+    dayCellInnerClass: (info) => joinClassNames(info.inPopover && 'p-2'),
 
     /* Popover
     --------------------------------------------------------------------------------------------- */
@@ -667,7 +667,7 @@ export default {
       slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
       slotHeaderClass: 'justify-center',
       slotHeaderInnerClass: (info) => joinClassNames(
-        'p-2 text-sm',
+        'm-2 text-sm',
         info.hasNavLink && 'hover:underline',
       ),
       slotHeaderDividerClass: 'border-b border-(--fc-forma-border)',

@@ -83,7 +83,7 @@ export default function ResourceTimeline({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <Box sx={!isHeightAuto && height !== undefined ? { flexGrow: 1, minHeight: 0 } : {}}>
+      <Box sx={{ flexGrow: 1, minHeight: 0 }}>
         <SchedulerViews
           height={isHeightAuto ? 'auto' : height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}

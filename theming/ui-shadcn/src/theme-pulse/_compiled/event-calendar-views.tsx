@@ -242,7 +242,7 @@ export function EventCalendarViews({
                     (textPart.type === 'day' && info.isToday)
                       ? [
                           'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold flex flex-row items-center justify-center bg-chart-1/50',
-                          info.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                          info.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 outline-ring/50',
                         ]
                       : 'text-muted-foreground',
                   )}
@@ -296,7 +296,7 @@ export function EventCalendarViews({
                     (textPart.type === 'day' && info.isToday)
                       ? [
                           'rounded-full font-semibold flex flex-row items-center justify-center bg-chart-1/50',
-                          info.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                          info.hasNavLink && 'group-hover:bg-chart-1/60 group-focus-visible:outline-3 outline-ring/50',
                           info.isNarrow
                             ? 'size-5'
                             : 'size-6 first:-ms-1 last:-me-1',
@@ -337,19 +337,22 @@ export function EventCalendarViews({
         /* List Day
         ----------------------------------------------------------------------------------------- */
 
-        listDayClass='group/day flex flex-col'
-        listDayHeaderClass="border-b bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))] flex flex-row items-center justify-between"
+        listDayClass={(info) => cn(
+          'flex flex-col',
+          !info.isLast && 'border-b',
+        )}
+        listDayHeaderClass="-mb-px border-b bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))] flex flex-row items-center justify-between"
         listDayHeaderInnerClass={(info) => cn(
           'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
           !info.level && 'font-semibold',
           (!info.level && info.isToday)
             ? [
                 'bg-chart-1/50',
-                info.hasNavLink && 'hover:bg-chart-1/60 focus-visible:outline-3 -outline-offset-1 outline-ring/50',
+                info.hasNavLink && 'hover:bg-chart-1/60 focus-visible:outline-3 outline-ring/50',
               ]
             : info.hasNavLink && 'hover:bg-foreground/5',
         )}
-        listDayBodyClass='group-not-last/day:border-b px-1.5 py-2 gap-2'
+        listDayBodyClass='mt-px px-1.5 py-2 gap-2'
 
         /* Single Month (in Multi-Month)
         ----------------------------------------------------------------------------------------- */

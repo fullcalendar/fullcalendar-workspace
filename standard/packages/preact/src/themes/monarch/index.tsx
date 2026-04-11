@@ -284,11 +284,10 @@ export default {
       info.isEnd ? 'border-e rounded-e-sm' : (!info.isNarrow && 'me-2'),
     ),
     rowEventBeforeClass: (info) => joinClassNames(
-      info.isStartResizable && joinClassNames(
+      info.isStartResizable ? joinClassNames(
         info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-1',
-      ),
-      (!info.isStart && !info.isNarrow) && 'absolute -start-2 w-2 -top-px -bottom-px'
+      ) : (!info.isStart && !info.isNarrow) && 'absolute -start-2 w-2 -top-px -bottom-px'
     ),
     rowEventBeforeContent: (info) => (
       (!info.isStart && !info.isNarrow) ? filledRightTriangle(
@@ -296,11 +295,10 @@ export default {
       ) : <></>
     ),
     rowEventAfterClass: (info) => joinClassNames(
-      info.isEndResizable && joinClassNames(
+      info.isEndResizable ? joinClassNames(
         info.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
-      ),
-      (!info.isEnd && !info.isNarrow) && 'absolute -end-2 w-2 -top-px -bottom-px'
+      ) : (!info.isEnd && !info.isNarrow) && 'absolute -end-2 w-2 -top-px -bottom-px'
     ),
     rowEventAfterContent: (info) => (
       (!info.isEnd && !info.isNarrow) ? filledRightTriangle(

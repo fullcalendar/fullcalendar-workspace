@@ -456,6 +456,7 @@ export function EventCalendar({
           --------------------------------------------------------------------------------------- */
 
           listDayClass: (info) => joinClassNames(
+            'flex flex-col',
             !info.isLast && 'border-b border-(--fc-classic-border)',
           ),
           listItemEventClass: (info) => joinClassNames(

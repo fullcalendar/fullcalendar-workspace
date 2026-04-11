@@ -42,7 +42,6 @@ Further color reference:
     /* primary */
 
     /* calendar content */
-    --fc-forma-highlight: #3b82f633;
 
     /* neutral backgrounds */
     --fc-forma-background: #030712;
@@ -84,6 +83,9 @@ Further color reference:
     --fc-forma-primary: #3788d8;
     --fc-forma-primary-over: #4A9BE8;
     --fc-forma-primary-down: #5DAEF8;
+
+    /* calendar content */
+    --fc-forma-highlight: #3788d859;
   }
 }
 
@@ -107,6 +109,9 @@ Further color reference:
     --fc-forma-primary: #E84A11;
     --fc-forma-primary-over: #F15D21;
     --fc-forma-primary-down: #FA7031;
+
+    /* calendar content */
+    --fc-forma-highlight: #E84A1159;
   }
 }
 
@@ -130,6 +135,9 @@ Further color reference:
     --fc-forma-primary: #218D52;
     --fc-forma-primary-over: #329E63;
     --fc-forma-primary-down: #43AF74;
+
+    /* calendar content */
+    --fc-forma-highlight: #218D5259;
   }
 }
 
@@ -153,6 +161,9 @@ Further color reference:
     --fc-forma-primary: #853885;
     --fc-forma-primary-over: #964996;
     --fc-forma-primary-down: #A75AA7;
+
+    /* calendar content */
+    --fc-forma-highlight: #85388559;
   }
 }
 

@@ -528,7 +528,7 @@ export default {
       slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
       slotHeaderClass: 'justify-center',
       slotHeaderInnerClass: (info) => joinClassNames(
-        'p-2 text-sm',
+        'm-2 text-sm',
         info.hasNavLink && 'hover:underline',
       ),
       slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',

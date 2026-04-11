@@ -73,6 +73,8 @@
     --fc-monarch-tertiary-down: #b3d9d5;
 
     /* calendar content */
+    --fc-monarch-event: var(--fc-monarch-primary);
+    --fc-monarch-event-contrast: var(--fc-monarch-primary-foreground);
     --fc-monarch-highlight: #354e164D;
     --fc-monarch-now: rgb(255 180 171);
 

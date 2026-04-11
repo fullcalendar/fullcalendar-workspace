@@ -119,7 +119,7 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       blockEventClass={(info) => cn(
-        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white -outline-offset-1',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white',
         (info.isDragging && !info.isSelected) && 'opacity-75',
       )}
       blockEventInnerClass='text-(--fc-event-contrast-color) print:text-black'
@@ -192,7 +192,7 @@ export function EventCalendarViews({
 
       moreLinkClass="focus-visible:outline-3 outline-ring/50"
       moreLinkInnerClass='whitespace-nowrap overflow-hidden'
-      columnMoreLinkClass="mb-px rounded-sm border border-transparent print:border-black bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background -outline-offset-1"
+      columnMoreLinkClass="mb-px rounded-sm border border-transparent print:border-black bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background"
       columnMoreLinkInnerClass={(info) => cn(
         'p-0.5',
         info.isNarrow ? xxsTextClass : 'text-xs',
@@ -253,7 +253,7 @@ export function EventCalendarViews({
       /* List Day
       ----------------------------------------------------------------------------------------- */
 
-      listDayHeaderClass="border-b bg-muted flex flex-row items-center justify-between"
+      listDayHeaderClass="-mb-px border-b bg-muted flex flex-row items-center justify-between"
       listDayHeaderInnerClass='px-3 py-2 text-sm font-bold'
 
       /* Single Month (in Multi-Month)
@@ -348,12 +348,16 @@ export function EventCalendarViews({
           ...userViews?.timeGrid,
         },
         list: {
+          listDayClass: (info) => cn(
+            !info.isLast && 'border-b',
+            'flex flex-col',
+          ),
 
           /* List-View > List-Item Event
           ------------------------------------------------------------------------------------- */
 
           listItemEventClass: (info) => cn(
-            'group border-b px-3 py-2 gap-3 hover:bg-muted/50',
+            'group border-t px-3 py-2 gap-3 hover:bg-muted/50',
             info.isInteractive && 'focus-visible:bg-muted/50 -outline-offset-3',
           ),
           listItemEventBeforeClass: 'border-5',
