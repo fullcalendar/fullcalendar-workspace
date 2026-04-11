@@ -371,7 +371,7 @@ export default {
       'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-(--fc-classic-muted-foreground) bg-(--fc-classic-muted)',
       info.isNarrow ? xxsTextClass : 'text-sm',
     ),
-    nonBusinessClass: "bg-(--fc-classic-faint)",
+    nonBusinessHoursClass: "bg-(--fc-classic-faint)",
     highlightClass: "bg-(--fc-classic-highlight)",
 
     /* Resource Day Header

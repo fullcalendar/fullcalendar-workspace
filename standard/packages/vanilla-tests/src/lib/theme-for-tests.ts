@@ -41,7 +41,7 @@ export default {
     popoverClass: 'fc-more-popover',
     popoverCloseClass: 'fc-popover-close',
     navLinkClass: 'fc-navlink',
-    nonBusinessClass: 'fc-non-business',
+    nonBusinessHoursClass: 'fc-non-business',
     highlightClass: 'fc-highlight',
     backgroundEventClass: 'fc-bg-event',
     eventClass: (info) => joinClassNames(

@@ -598,7 +598,7 @@ export function EventCalendar({
           : mutedHoverClass,
       )}
       highlightClass="bg-(--fc-breezy-highlight)"
-      nonBusinessClass="bg-(--fc-breezy-faint)"
+      nonBusinessHoursClass="bg-(--fc-breezy-faint)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-breezy-now)"
       nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-breezy-now) size-0 rounded-full ring-2 ring-(--fc-breezy-background)"
 

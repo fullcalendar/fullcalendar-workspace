@@ -430,7 +430,7 @@ export const BASE_OPTION_REFINERS = {
   tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderData>>,
   tableBodyClass: identity as Identity<ClassNameGenerator<TableBodyData>>,
 
-  nonBusinessClass: identity as Identity<string | undefined>,
+  nonBusinessHoursClass: identity as Identity<string | undefined>,
   highlightClass: identity as Identity<string | undefined>,
 
   // daygrid-only

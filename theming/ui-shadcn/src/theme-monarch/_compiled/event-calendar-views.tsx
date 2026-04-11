@@ -391,7 +391,7 @@ export function EventCalendarViews({
           : 'top-1.5 start-1 h-6 px-2 rounded-full text-sm',
         info.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
       )}
-      nonBusinessClass='bg-foreground/3'
+      nonBusinessHoursClass='bg-foreground/3'
       highlightClass='bg-chart-1/20'
       nowIndicatorLineClass='-m-px border-1 border-destructive'
       nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"

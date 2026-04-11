@@ -532,7 +532,7 @@ export default {
         ? secondaryPressableClass
         : secondaryClass,
     ),
-    nonBusinessClass: "bg-(--fc-monarch-faint)",
+    nonBusinessHoursClass: "bg-(--fc-monarch-faint)",
     highlightClass: "bg-(--fc-monarch-highlight)",
     nowIndicatorLineClass: "-m-px border-1 border-(--fc-monarch-now)",
     nowIndicatorDotClass: "-m-[6px] border-6 border-(--fc-monarch-now) size-0 rounded-full ring-2 ring-(--fc-monarch-background)",

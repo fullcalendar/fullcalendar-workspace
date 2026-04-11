@@ -375,7 +375,7 @@ blockEventClass={(info) => cn(
           : 'top-1 p-1 text-xs',
         info.hasNavLink && 'hover:bg-foreground/10',
       )}
-      nonBusinessClass="bg-foreground/3"
+      nonBusinessHoursClass="bg-foreground/3"
       highlightClass="bg-chart-1/15"
       nowIndicatorLineClass="-m-px border-1 border-destructive"
       nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"

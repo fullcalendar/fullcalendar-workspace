@@ -569,7 +569,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       highlightClass: params.highlightClass,
-      nonBusinessClass: params.faintBgClass,
+      nonBusinessHoursClass: params.faintBgClass,
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
       nowIndicatorDotClass: joinClassNames(

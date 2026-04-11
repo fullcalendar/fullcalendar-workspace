@@ -503,7 +503,7 @@ export default function EventCalendarViews({
           : mutedBgHoverClass,
       )}
       highlightClass="bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]"
-      nonBusinessClass={faintBgClass}
+      nonBusinessHoursClass={faintBgClass}
       nowIndicatorLineClass="-m-px border-1 border-(--mui-palette-error-main)"
       nowIndicatorDotClass="-m-[6px] border-6 border-(--mui-palette-error-main) size-0 rounded-full ring-2 ring-(--mui-palette-background-paper)"
 

@@ -287,7 +287,7 @@ export function EventCalendarViews({
         'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-muted-foreground bg-foreground/5',
         info.isNarrow ? xxsTextClass : 'text-sm',
       )}
-      nonBusinessClass='bg-foreground/3'
+      nonBusinessHoursClass='bg-foreground/3'
       highlightClass='bg-chart-1/20'
 
       /* View-Specific Options

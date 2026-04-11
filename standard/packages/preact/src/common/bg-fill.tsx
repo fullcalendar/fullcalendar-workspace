@@ -137,7 +137,7 @@ function renderInnerContent(props: EventDisplayInfo) {
 export function renderFill(fillType: string, options: ViewOptionsRefined) {
   return (
     <div className={joinClassNames(
-      fillType === 'non-business' ? options.nonBusinessClass :
+      fillType === 'non-business' ? options.nonBusinessHoursClass :
         fillType === 'highlight' ? options.highlightClass : undefined,
       classNames.fill,
     )} />

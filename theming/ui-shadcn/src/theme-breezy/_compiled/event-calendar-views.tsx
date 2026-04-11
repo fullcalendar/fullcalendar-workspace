@@ -422,7 +422,7 @@ export function EventCalendarViews({
         info.hasNavLink && '-outline-offset-1',
       )}
       highlightClass="bg-chart-1/15"
-      nonBusinessClass="bg-foreground/3"
+      nonBusinessHoursClass="bg-foreground/3"
       nowIndicatorLineClass="-m-px border-1 border-destructive"
       nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
 

@@ -498,7 +498,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.mutedBgClass,
       ),
 
-      nonBusinessClass: params.faintBgClass,
+      nonBusinessHoursClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,

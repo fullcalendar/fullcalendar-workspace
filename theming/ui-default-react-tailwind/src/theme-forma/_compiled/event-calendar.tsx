@@ -557,7 +557,7 @@ export function EventCalendar({
           ? mutedPressableClass
           : 'bg-(--fc-forma-muted)',
       )}
-      nonBusinessClass="bg-(--fc-forma-faint)"
+      nonBusinessHoursClass="bg-(--fc-forma-faint)"
       highlightClass="bg-(--fc-forma-highlight)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-forma-primary)"
       nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-forma-primary) size-0 rounded-full ring-2 ring-(--fc-forma-background)"

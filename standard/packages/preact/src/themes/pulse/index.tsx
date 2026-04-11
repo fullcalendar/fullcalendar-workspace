@@ -554,7 +554,7 @@ export default {
       info.hasNavLink && mutedHoverPressableClass,
     ),
     highlightClass: "bg-(--fc-pulse-highlight)",
-    nonBusinessClass: "bg-(--fc-pulse-faint)",
+    nonBusinessHoursClass: "bg-(--fc-pulse-faint)",
     nowIndicatorLineClass: "-m-px border-1 border-(--fc-pulse-now)",
     nowIndicatorDotClass: "-m-[6px] border-6 border-(--fc-pulse-now) size-0 rounded-full ring-2 ring-(--fc-pulse-background)",
 

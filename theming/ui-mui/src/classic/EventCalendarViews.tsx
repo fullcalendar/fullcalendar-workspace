@@ -330,7 +330,7 @@ export default function EventCalendarViews({
         `absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] ${mutedBgClass}`,
         info.isNarrow ? xxsTextClass : 'text-sm',
       )}
-      nonBusinessClass={faintBgClass}
+      nonBusinessHoursClass={faintBgClass}
       highlightClass="bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]"
 
       /* View-Specific Options

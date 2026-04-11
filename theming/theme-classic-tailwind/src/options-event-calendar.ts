@@ -417,7 +417,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
 
-      nonBusinessClass: params.faintBgClass,
+      nonBusinessHoursClass: params.faintBgClass,
       highlightClass: params.highlightClass,
     },
     views: {
