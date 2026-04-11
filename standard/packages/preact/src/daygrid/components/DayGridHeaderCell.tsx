@@ -67,7 +67,7 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
     TODO: DRY with TimelineHeaderCell
     */
     const alignInput = renderConfig.align
-    const align =
+    const align = // normalized string-enum value
       typeof alignInput === 'function'
         ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isNarrow: props.cellIsNarrow })
         : alignInput
@@ -77,7 +77,7 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
       stickyInput !== false && (
         // if center-aligned, and wants to be sticky, must be >75% viewport width,
         // to avoid looking awkwardly aligned
-        alignInput !== 'center' || (
+        align !== 'center' || (
           totalColWidth != null &&
           props.viewportWidth != null &&
           totalColWidth > props.viewportWidth * 0.75
