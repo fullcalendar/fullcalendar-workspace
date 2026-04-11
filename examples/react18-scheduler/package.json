@@ -10,8 +10,8 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@fullcalendar/react": "7.0.0-beta.8",
-    "@fullcalendar/react-scheduler": "7.0.0-beta.8",
+    "@fullcalendar/react": "7.0.0-rc.1",
+    "@fullcalendar/react-scheduler": "7.0.0-rc.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "temporal-polyfill": "^0.3.2"

@@ -1,21 +1,21 @@
 {
   "name": "@fullcalendar/react-scheduler",
-  "version": "7.0.0-beta.8",
+  "version": "7.0.0-rc.1",
   "title": "FullCalendar React Scheduler",
   "description": "FullCalendar React Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-beta.8",
-    "@full-ui/headless-grid": "workspace:7.0.0-beta.8",
-    "@fullcalendar/core": "workspace:7.0.0-beta.8"
+    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
+    "@full-ui/headless-grid": "workspace:7.0.0-rc.1",
+    "@fullcalendar/core": "workspace:7.0.0-rc.1"
   },
   "peerDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-beta.8",
+    "@fullcalendar/react": "workspace:7.0.0-rc.1",
     "react": "^16.7.0 || ^17 || ^18 || ^19",
     "react-dom": "^16.7.0 || ^17 || ^18 || ^19",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-beta.8",
+    "@fullcalendar/react": "workspace:7.0.0-rc.1",
     "@fullcalendar-scripts/standard": "workspace:*",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.9",

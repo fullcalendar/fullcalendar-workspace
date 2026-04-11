@@ -1,9 +1,7 @@
 
-## v7.0.0-beta.8
+## v7.0.0-rc.1
 
-- fix: stock themes, sizing relative to component rather than `<html>` tag, and uses em units
-- fix: stock themes, should reset `<a>` tag color and underline
-- fix: stock/MUI themes, fallbacks when browser does not support color-mix
+Changelog WIP
 
 
 ## v7.0.0-beta.8
