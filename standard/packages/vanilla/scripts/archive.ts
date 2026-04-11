@@ -15,7 +15,7 @@ import { globby } from 'globby'
 
 const archiveName = 'fullcalendar'
 const thisPkgDir = joinPaths(fileURLToPath(import.meta.url), '../..')
-const archivePath = joinPaths(thisPkgDir, 'archives', `${archiveName}.zip`)
+const packageJsonPath = joinPaths(thisPkgDir, 'package.json')
 const licensePath = joinPaths(thisPkgDir, '..', '..', 'LICENSE.md')
 
 const archivePatterns = [
@@ -41,6 +41,12 @@ const htmlReplacements: [from: string, to: string][] = [
 ]
 
 export default async function archiveVanillaZip() {
+  const { version: packageVersion } = JSON.parse(await readFile(packageJsonPath, 'utf8')) as {
+    version: string
+  }
+  const archiveRootName = `${archiveName}-${packageVersion}`
+  const archivePath = joinPaths(thisPkgDir, 'archives', `${archiveRootName}.zip`)
+
   await rm(archivePath, { force: true })
   await mkdir(dirnamePath(archivePath), { recursive: true })
 
@@ -71,7 +77,7 @@ export default async function archiveVanillaZip() {
   for (const relPath of relPaths) {
     const relPosixPath = relPath.split(pathSeparator).join('/')
     const renamedPosixPath = fileRenames[relPosixPath] ?? relPosixPath
-    const entryName = `${archiveName}/${renamedPosixPath}`
+    const entryName = `${archiveRootName}/${renamedPosixPath}`
 
     if (relPosixPath.startsWith('examples/') && relPosixPath.endsWith('.html')) {
       let content = await readFile(joinPaths(thisPkgDir, relPath), 'utf8')
@@ -85,7 +91,7 @@ export default async function archiveVanillaZip() {
   }
 
   archive.file(licensePath, {
-    name: `${archiveName}/LICENSE.md`,
+    name: `${archiveRootName}/LICENSE.md`,
   })
 
   await archive.finalize()

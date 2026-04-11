@@ -52,7 +52,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
     tagName,
     version,
     monorepoDir,
-    `premium/dist/fullcalendar-scheduler-${version}.zip`,
+    `premium/packages/vanilla-scheduler/archives/fullcalendar-scheduler-${version}.zip`,
     true, // linkToStandard
   )
 }
@@ -92,7 +92,7 @@ async function tagAndReleaseSubrepo(
     tagName, // the tag the remote uses
     version,
     monorepoDir,
-    subrepoSubdir === 'standard' && `standard/dist/fullcalendar-${version}.zip`,
+    subrepoSubdir === 'standard' && `standard/packages/vanilla/archives/fullcalendar-${version}.zip`,
     subrepoSubdir !== 'standard', // linkToStandard
   )
 }
