@@ -9,5 +9,5 @@ pkg_dir="$(dirname "$script_dir")"
 rm -rf "$pkg_dir/src"
 cp -r "$pkg_dir/../preact/src" "$pkg_dir/src"
 
-# Merge overrides into src (silently overwrite)
-cp -r "$pkg_dir/src-overrides/." "$pkg_dir/src/"
+# # Merge overrides into src (silently overwrite)
+# cp -r "$pkg_dir/src-overrides/." "$pkg_dir/src/"
