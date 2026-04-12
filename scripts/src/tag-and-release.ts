@@ -15,11 +15,14 @@ export default async function() {
     errorMap['.'] = error
   })
 
-  for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
-    await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
-      .catch((error: Error) => {
-        errorMap[subrepoSubdir] = error
-      })
+  // temporarily disable for v7
+  if (false) {
+    for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
+      await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
+        .catch((error: Error) => {
+          errorMap[subrepoSubdir] = error
+        })
+    }
   }
 
   const errorCnt = Object.keys(errorMap).length
@@ -105,9 +108,6 @@ async function createGithubRelease(
   filePath?: string | false,
   linkToStandard?: boolean,
 ): Promise<void> {
-  // temporary for v7, until archives fixed
-  filePath = false
-
   const execOpts = { cwd: monorepoDir }
   const releaseNotes = linkToStandard
     // TODO: make DRY by using package.json for repo URL
