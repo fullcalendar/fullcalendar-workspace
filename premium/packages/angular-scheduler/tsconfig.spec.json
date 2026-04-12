@@ -26,6 +26,7 @@
     "src/**/*.ts",
     "src/**/*.d.ts"
   ],
+  "exclude": [],
   "references": [],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -36,7 +36,7 @@
   "scripts": {
     "ng": "ng",
     "build": "standard-scripts pkg:build",
-    "clean": "standard-scripts pkg:clean",
+    "clean": "standard-scripts pkg:clean && rm -rf .angular/cache",
     "lint": "eslint .",
     "test": "ng test lib --watch=false --browsers ChromeHeadless",
     "test:dev": "ng test lib"

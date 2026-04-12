@@ -1,6 +1,8 @@
 {
   "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": false,
     "rootDir": "./src",
     "outDir": "./dist/.tsout"
   },
