@@ -10,8 +10,8 @@
   },
   "peerDependencies": {
     "@fullcalendar/react": "workspace:7.0.0-rc.1",
-    "react": "^16.7.0 || ^17 || ^18 || ^19",
-    "react-dom": "^16.7.0 || ^17 || ^18 || ^19",
+    "react": "^17 || ^18 || ^19",
+    "react-dom": "^17 || ^18 || ^19",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
