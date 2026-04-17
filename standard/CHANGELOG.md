@@ -1,14 +1,69 @@
 
 ## v7.0.0-rc.1
 
-Changelog WIP
+### Changes from v6
+
+- FEATURE: `omitTrailing` option added to Intl date formatting objects
+- FEATURE: `eventPrintLayout` setting for controlling TimeGrid print behavior
+- BREAKING: `stickyHeaderDates` renamed to `tableHeaderSticky`
+- BREAKING: `stickyFooterScrollbar` renamed to `footerScrollbarSticky`
+- BREAKING: `listDaySideFormat` renamed to `listDayAltFormat`
+- BREAKING: `dayPopoverFormat` renamed to `popoverFormat`
+- BREAKING: Custom view `.classNames` replaced by `.viewClass`; `.content`/`.didMount`/`.willUnmount` prefixed with `view`
+- BREAKING: `weekText` renamed to `weekTextShort`; `weekTextLong` renamed to `weekText`
+- BREAKING: `nonBusinessClass` renamed to `nonBusinessHoursClass`
+- BREAKING: `titleRangeSeparator` removed — range separator now determined by Intl API
+- BREAKING: `defaultRangeSeparator` removed — range separator now determined by Intl API
+- BREAKING: `.updateSize()` method removed — sizing is now automatic
+- BREAKING: `eventClass`, `eventContent`, `eventDidMount`, `eventWillUnmount` no longer apply to background events (use `backgroundEventClass` etc. to restore)
+- BREAKING: `tableHeaderSticky` (formerly `stickyHeaderDates`) no longer applies to list-view day-headers — those are now unconditionally sticky
+- BREAKING: `validRange` callback now receives start-of-day of "now" (stable), not the exact `now` timestamp
+- BREAKING: Date range formatting uses Intl and output has subtle differences (e.g. `"10:00 – 11:00AM"` vs old `"10:00 AM – 11:00 AM"`)
+- BREAKING: All packages distributed as ESM only — no more CJS
+- BREAKING: The `fullcalendar` package no longer ships `.global.min.js` files (though JSDelivr still auto-minifies)
+- BREAKING: Render hook arg types renamed from `*Data` to `*Info` pattern (e.g. `EventDisplayData` → `EventDisplayInfo`, `ViewDisplayData` → `ViewDisplayInfo`, `DayHeaderData` → `DayHeaderInfo`, etc.)
+- FIX: `scrollTime` slightly off when switching from Timeline month to week view ([#5686](https://github.com/fullcalendar/fullcalendar/issues/5686))
+- FIX: Background events now print with 1px colored borders instead of white-out
+- FIX: Print-view limited to 1000 resources to prevent browser's print dialog from crashing
+
+### Changes from the v7 Betas
+
+- BREAKING: The render-hook callbacks argument types renamed from `*Data` -> `*Info` (ex: `ListDayData` -> `ListDayInfo`)
+- BREAKING: `fillerClass` setting's `inHeader` info prop renamed to `inTableHeader`.
+- BREAKING: `buttonGroup*` settings' `inSelectionGroup` info prop renamed to `hasSelection`
+- BREAKING: `button*` settings' `inGroup` info prop removed. Use boolean check on `buttonGroup` object prop instead
+- BREAKING: `button*` settings' `inSelectGroup` info prop removed. Use `buttonGroup?.hasSelection` instead
+- BREAKING: renamed Breezy theme palette file from honey.css -> amber.css
+- BREAKING: `singleMonth*` and `singleMonthHeader*` settings' `colCount` info prop renamed to `multiMonthColumnCount`
+- BREAKING: `viewClass` info props `isFirst`/`isLast` removed (expressed DOM sibling relationship). Test for `.options.headerToolbar/footerToolbar` instead.
+- BREAKING: `updateSize` was originally retained to force *synchronous* sizing adjustment, but now removed
+- FIX: ResizeObserver loop error w/ height:auto ([#7929](https://github.com/fullcalendar/fullcalendar/issues/7929))
+- FIX: day headers disappear on every other week ([#8041](https://github.com/fullcalendar/fullcalendar/issues/8041))
+- FIX: virtualization & dragging: Event is not at same position of mouse pointer ([#8048](https://github.com/fullcalendar/fullcalendar/issues/8048))
+- FIX: slotMinWidth has no effect in v7 ([#7910](https://github.com/fullcalendar/fullcalendar/issues/7910))
+- FIX: navLinks on day labels in timeline views cannot be disabled in v7 ([#7911](https://github.com/fullcalendar/fullcalendar/issues/7911))
+- FIX: date-formatting with "today" circle looks strange with some locales (trailing ".") ([#8020](https://github.com/fullcalendar/fullcalendar/issues/8020))
+- FIX: some stock themes incorrectly inheriting browser-default `<a>` tag color and underline
+- FIX: CSS fallbacks for browsers that don't suppport `color-mix`
+- FIX: stock themes font size defined with pixel units, more predictable
+- FIX: colorScheme='dark' on per-component level had lots of visual glitches
+- FIX: scheduler bundles accidentally omitted "adaptive" plugin (aka print plugin)
+- FIX: adaptive plugin, after print dialog, would be stuck in print-mode
+- FIX: broken styling in `@fullcalendar/angular/skeleton.css` (mismatch w/ HTML structure)
+- FIX: more-link badly positioned with disabled cells in day-row
+- FIX: more-link *popover* poorly positioned when opened
+- FIX: React drag-n-drop double event ghost
+- FIX: when displayEventTime:false, all-day list-view events still show "All-day"
+- FIX: now-indicator arrow in classic should have been clipped if past slotMaxTime
+- FIX: weird double-border at top of timeline views
+- FIX: print problems via window.print()
 
 
 ## v7.0.0-beta.8
 
-- feature: `colorScheme` prop on component
-- feature: `resourceCell*` hooks now receive `.field` in data
-- feature: new Classic theme CSS variables:
+- FEATURE: `colorScheme` prop on component
+- FEATURE: `resourceCell*` hooks now receive `.field` in data
+- FEATURE: new Classic theme CSS variables:
   - `--fc-classic-button`
   - `--fc-classic-button-border`
   - `--fc-classic-button-strong`
