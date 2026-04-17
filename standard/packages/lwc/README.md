@@ -63,7 +63,7 @@ After initialization, the wrapper applies top-level `options` changes with `goto
 The component exposes `themePalette` and `locale` in Lightning App Builder.
 
 - `themePalette` accepts generated `theme/palette` pairs such as `classic/default` or `forma/blue`.
-- `locale` is free text. Enter the locale code that matches a bundled FullCalendar locale such as `fr` or `en-gb`.
+- `locale` is exposed as a generated dropdown of bundled FullCalendar locale codes such as `fr` or `en-gb`.
 
 Programmatic consumers can also pass `theme`, `palette`, and `locale` directly as component props.
 

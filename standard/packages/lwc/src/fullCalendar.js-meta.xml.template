@@ -22,6 +22,7 @@
                 name="locale"
                 type="String"
                 label="Locale"
+                datasource="{{LOCALE_DATASOURCE}}"
             />
         </targetConfig>
     </targetConfigs>

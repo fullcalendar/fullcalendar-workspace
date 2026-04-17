@@ -53,7 +53,7 @@ async function buildLwcPackage() {
   const themes = await readThemes(join(fcDistDir, 'themes'))
   const locales = await readLocales(join(fcDistDir, 'locales'))
 
-  await copyLwcSource(themes)
+  await copyLwcSource(themes, locales)
   await copyStaticResources(fcDistDir, themes, locales)
   await writeFile(
     join(outputStaticResourcesDir, 'fullCalendarLib.resource-meta.xml'),
@@ -71,7 +71,7 @@ function resolveDistDirFromPackageJson(packageJsonPath: string) {
     : join(packageDirPath, 'dist')
 }
 
-async function copyLwcSource(themes: Map<string, ThemeSpec>) {
+async function copyLwcSource(themes: Map<string, ThemeSpec>, locales: string[]) {
   await mkdir(outputLwcDir, { recursive: true })
 
   await copyFile(join(sourceLwcDir, 'fullCalendar.html'), join(outputLwcDir, 'fullCalendar.html'))
@@ -80,11 +80,14 @@ async function copyLwcSource(themes: Map<string, ThemeSpec>) {
   const themePaletteDatasource = Array.from(themes.entries())
     .flatMap(([themeName, themeSpec]) => themeSpec.palettes.map((paletteName) => `${themeName}/${paletteName}`))
     .join(',')
+  const localeDatasource = locales.join(',')
   const metaTemplate = await readFile(join(sourceLwcDir, 'fullCalendar.js-meta.xml.template'), 'utf8')
 
   await writeFile(
     join(outputLwcDir, 'fullCalendar.js-meta.xml'),
-    metaTemplate.replace('{{THEME_PALETTE_DATASOURCE}}', themePaletteDatasource),
+    metaTemplate
+      .replace('{{THEME_PALETTE_DATASOURCE}}', themePaletteDatasource)
+      .replace('{{LOCALE_DATASOURCE}}', localeDatasource),
   )
 }
 
