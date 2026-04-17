@@ -1,0 +1,20 @@
+{
+  "name": "@fullcalendar/lwc",
+  "version": "7.0.0-rc.1",
+  "title": "FullCalendar LWC",
+  "description": "Salesforce Lightning Web Component wrapper for FullCalendar",
+  "type": "module",
+  "scripts": {
+    "build": "./scripts/build.ts"
+  },
+  "dependencies": {
+    "fullcalendar": "workspace:7.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@lwc/eslint-plugin-lwc": "^3.3.0",
+    "@types/archiver": "^6.0.3",
+    "@types/node": "^24.5.2",
+    "archiver": "^7.0.1",
+    "typescript": "^5.9.3"
+  }
+}

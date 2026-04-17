@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+  <description>Manual smoke-test application for the FullCalendar LWC wrapper.</description>
+  <formFactors>Large</formFactors>
+  <label>Calendar Demo</label>
+  <navType>Standard</navType>
+  <tabs>standard-home</tabs>
+  <uiType>Lightning</uiType>
+</CustomApplication>
