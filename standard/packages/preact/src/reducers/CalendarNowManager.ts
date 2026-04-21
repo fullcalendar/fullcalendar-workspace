@@ -22,11 +22,13 @@ export class CalendarNowManager {
       if (typeof nowInput === 'function') {
         this.nowFn = nowInput
       } else if (!oldDateEnv) { // first time?
-        this.nowAnchorDate = dateEnv.toDate(
-          nowInput
-            ? dateEnv.createMarker(nowInput)
-            : dateEnv.createNowMarker(),
-        )
+        // real "now" keeps its exact epoch (marker round-trips are ambiguous during DST folds).
+        // a `now` INPUT still round-trips through a marker and resolves ambiguous civil times
+        // to the first occurrence. TODO (see TODO-instant-fidelity.md): preserve explicit
+        // instants from string/Date inputs via parse-time capture
+        this.nowAnchorDate = nowInput
+          ? dateEnv.toDate(dateEnv.createMarker(nowInput))
+          : new Date()
         this.nowAnchorQueried = Date.now()
       }
 
@@ -43,11 +45,18 @@ export class CalendarNowManager {
 
   getDateMarker(): DateMarker {
     return this.nowAnchorDate
-      ? this.dateEnv.timestampToMarker(
-        this.nowAnchorDate.valueOf() +
-        (Date.now() - this.nowAnchorQueried),
-      )
+      ? this.dateEnv.timestampToMarker(this.getEpochMs())
       : this.dateEnv.createMarker(this.nowFn!())
+  }
+
+  /*
+  The exact instant of "now". Unlike a DateMarker, unambiguous during DST transitions.
+  When `now` was supplied as a function returning a civil time, resolves deterministically.
+  */
+  getEpochMs(): number {
+    return this.nowAnchorDate
+      ? this.nowAnchorDate.valueOf() + (Date.now() - this.nowAnchorQueried)
+      : this.dateEnv.toDate(this.dateEnv.createMarker(this.nowFn!())).valueOf()
   }
 
   addResetListener(handler: () => void): void {

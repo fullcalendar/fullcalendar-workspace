@@ -1,6 +1,7 @@
-import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/preact/protected-api';
+import { DateEnv, DateMarker, DateProfile, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact/public-api'
+import { computeDateSnapCoverage, computeMsSlotCoverage } from './TimelineCoords'
 
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------
@@ -42,6 +43,10 @@ export function computeSlotWidth(
   return [slatWidth * slatCnt, slatWidth, slotLiquid]
 }
 
+/*
+`time` has wall-clock semantics (scrollTime: '06:00' targets civil 06:00, even on DST days
+where that's not 6 elapsed hours from midnight), hence the civil dateEnv.add.
+*/
 export function timeToCoord( // pixels
   time: Duration,
   dateEnv: DateEnv,
@@ -64,39 +69,74 @@ export function dateToCoord( // pixels
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
 ): number {
+  if (tDateProfile.timeAxis) {
+    return msToCoord(dateEnv.toDate(date).valueOf(), tDateProfile, slotWidth)
+  }
+
   let snapCoverage = computeDateSnapCoverage(date, tDateProfile, dateEnv)
   let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
   return slotCoverage * slotWidth
 }
 
+// for TIMED axes only (tDateProfile.timeAxis must be populated)
+export function msToCoord( // pixels
+  dateMs: number,
+  tDateProfile: TimelineDateProfile,
+  slotWidth: number,
+): number {
+  return computeMsSlotCoverage(dateMs, tDateProfile) * slotWidth
+}
+
+export interface TimelineSnapRange {
+  start: DateMarker
+  end: DateMarker
+  startMs: number | null // populated for timed axes
+  endMs: number | null // populated for timed axes
+}
+
 /*
-returned value is between 0 and the number of snaps
+The date range of a single snap-cell, for hit-detection.
+Timed axes read the canonical instant-based axis; whole-day axes use civil-marker arithmetic.
+Returns null when the snap has no real span (e.g. the tail of a slot truncated by a DST
+transition, which renders at full width but represents a shorter real duration).
 */
-function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
-  let snapDiff = dateEnv.countDurationsBetween(
-    tDateProfile.normalizedRange.start,
-    date,
-    tDateProfile.snapDuration,
+export function computeSnapRange(
+  slatIndex: number,
+  localSnapIndex: number, // the snap # relative to start of slat
+  tDateProfile: TimelineDateProfile,
+  dateEnv: DateEnv,
+): TimelineSnapRange | null {
+  const { timeAxis } = tDateProfile
+
+  if (timeAxis) {
+    if (slatIndex >= timeAxis.slotStartMs.length) {
+      return null
+    }
+
+    const startMs = timeAxis.slotStartMs[slatIndex] + (localSnapIndex * timeAxis.snapStepMs)
+    const endMs = Math.min(startMs + timeAxis.snapStepMs, timeAxis.slotEndMs[slatIndex])
+
+    if (startMs >= endMs) {
+      return null
+    }
+
+    return {
+      start: dateEnv.timestampToMarker(startMs),
+      end: dateEnv.timestampToMarker(endMs),
+      startMs,
+      endMs,
+    }
+  }
+
+  const start = dateEnv.add(
+    tDateProfile.slotDates[slatIndex],
+    multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
   )
 
-  if (snapDiff < 0) {
-    return 0
+  return {
+    start,
+    end: dateEnv.add(start, tDateProfile.snapDuration),
+    startMs: null,
+    endMs: null,
   }
-
-  if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
-    return tDateProfile.snapCnt
-  }
-
-  let snapDiffInt = Math.floor(snapDiff)
-  let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
-
-  if (isInt(snapCoverage)) { // not an in-between value
-    snapCoverage += snapDiff - snapDiffInt // add the remainder
-  } else {
-    // a fractional value, meaning the date is not visible
-    // always round up in this case. works for start AND end dates in a range.
-    snapCoverage = Math.ceil(snapCoverage)
-  }
-
-  return snapCoverage
 }

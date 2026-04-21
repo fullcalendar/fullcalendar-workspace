@@ -16,6 +16,12 @@ export interface EventMutation {
   datesDelta?: Duration // body start+end moving together. for dragging
   startDelta?: Duration // for resizing
   endDelta?: Duration // for resizing
+  // When hits carry exact instants (instant-aware views like timed timeline), the delta is also
+  // expressed in absolute ms so DST gaps/folds don't get reinterpreted through civil-marker
+  // arithmetic. Takes precedence over the corresponding Duration when present.
+  instantDatesDeltaMs?: number
+  instantStartDeltaMs?: number
+  instantEndDeltaMs?: number
   standardProps?: any // for the def. should not include extendedProps
   extendedProps?: any // for the def
 }
@@ -90,7 +96,6 @@ function applyMutationToEventInstance(
   mutation: EventMutation,
   context: CalendarContext,
 ): EventInstance {
-  let { dateEnv } = context
   let forceAllDay = mutation.standardProps && mutation.standardProps.allDay === true
   let clearEnd = mutation.standardProps && mutation.standardProps.hasEnd === false
   let copy = { ...eventInstance } as EventInstance
@@ -101,14 +106,14 @@ function applyMutationToEventInstance(
 
   if (mutation.datesDelta && eventConfig.startEditable) {
     copy.range = {
-      start: dateEnv.add(copy.range.start, mutation.datesDelta),
-      end: dateEnv.add(copy.range.end, mutation.datesDelta),
+      start: addDeltaToMarker(copy.range.start, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
+      end: addDeltaToMarker(copy.range.end, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
     }
   }
 
   if (mutation.startDelta && eventConfig.durationEditable) {
     copy.range = {
-      start: dateEnv.add(copy.range.start, mutation.startDelta),
+      start: addDeltaToMarker(copy.range.start, mutation.startDelta, mutation.instantStartDeltaMs, context),
       end: copy.range.end,
     }
   }
@@ -116,7 +121,7 @@ function applyMutationToEventInstance(
   if (mutation.endDelta && eventConfig.durationEditable) {
     copy.range = {
       start: copy.range.start,
-      end: dateEnv.add(copy.range.end, mutation.endDelta),
+      end: addDeltaToMarker(copy.range.end, mutation.endDelta, mutation.instantEndDeltaMs, context),
     }
   }
 
@@ -142,4 +147,23 @@ function applyMutationToEventInstance(
   }
 
   return copy
+}
+
+/*
+When instantDeltaMs is given, moves the marker by an exact instant amount. The result is always
+a real local time in the current timeZone; ambiguous civil times resolve deterministically.
+*/
+export function addDeltaToMarker(
+  marker: Date,
+  delta: Duration,
+  instantDeltaMs: number | undefined,
+  context: CalendarContext,
+): Date {
+  if (instantDeltaMs != null) {
+    return context.dateEnv.timestampToMarker(
+      context.dateEnv.toDate(marker).valueOf() + instantDeltaMs,
+    )
+  }
+
+  return context.dateEnv.add(marker, delta)
 }

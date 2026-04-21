@@ -88,6 +88,7 @@ export type { ViewProps } from './component-util/View'
 export type { DateProfile } from './DateProfileGenerator'
 export { DateProfileGenerator, computeMajorUnit, isMajorUnit } from './DateProfileGenerator'
 export type { DateSpan } from './structs/date-span'
+export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/date-span'
 
 export {
   SegHierarchy,

@@ -45,6 +45,7 @@ export interface ResourceTimelineLayoutPrintProps {
   hasNesting: boolean
 
   nowDate: DateMarker
+  nowMs: number // exact instant of nowDate
   todayRange: DateRange
 
   colSpecs: ColSpec[]

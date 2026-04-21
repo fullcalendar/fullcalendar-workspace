@@ -11,7 +11,6 @@ import {
   getTableHeaderSticky,
   Hit,
   memoize,
-  multiplyDuration,
   rangeContainsMarker,
   RefMap,
   Ruler,
@@ -40,7 +39,7 @@ import { TimelineNowIndicatorArrow } from '../../timeline/components/TimelineNow
 import { TimelineNowIndicatorLine } from '../../timeline/components/TimelineNowIndicatorLine'
 import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
-import { timeToCoord } from '../../timeline/timeline-positioning'
+import { computeSnapRange, timeToCoord } from '../../timeline/timeline-positioning'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
 import {
   buildResourceLayouts,
@@ -72,6 +71,7 @@ interface ResourceTimelineLayoutNormalProps {
   hasNesting: boolean
 
   nowDate: DateMarker
+  nowMs: number // exact instant of nowDate
   todayRange: DateRange
 
   colSpecs: ColSpec[]
@@ -197,8 +197,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.boundForceUpdate,
   )
   private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
-  private slotVirtualizer = new Virtualizer<DateMarker>(
-    (dateMarker) => dateMarker.toISOString(),
+  private slotVirtualizer = new Virtualizer<string>( // virtualizes tDateProfile.slotKeys
+    (slotKey) => slotKey,
     (_key, index) => index * (this.props.slotWidth ?? defaultSlotWidth),
     () => this.props.slotWidth ?? defaultSlotWidth,
     this.boundForceUpdate,
@@ -273,7 +273,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     if (newLen > oldLen) {
       for (let i = oldLen; i < newLen; i++) {
         timeHeaderVirtualizers[i] = new Virtualizer<TimelineHeaderCellData>(
-          (cell) => cell.rowUnit + ':' + cell.date.toISOString(), // TODO: DRY with TimelineHeaderRow
+          (cell) => cell.key,
           undefined, // getItemStart (let Virtualizer compute it)
           (key, index, cell) => cell.colspan * (this.props.slotWidth ?? defaultSlotWidth),
           this.boundForceUpdate,
@@ -378,7 +378,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
 
     const forcedTimeScroll = this.computeTimeScroll()
-    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotDates, virtualizationDisabled, forcedTimeScroll)
+    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotKeys, virtualizationDisabled, forcedTimeScroll)
     const slotDateShift = computeShift(slotDatePositions)
 
     /* */
@@ -715,7 +715,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       // TODO: make this positioned WITHIN padding
                       <TimelineNowIndicatorArrow
                         tDateProfile={tDateProfile}
-                        nowDate={props.nowDate}
+                        nowMs={props.nowMs}
                         slotWidth={slotWidth}
                       />
                     )}
@@ -837,7 +837,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     {enableNowIndicator && (
                       <TimelineNowIndicatorLine
                         tDateProfile={tDateProfile}
-                        nowDate={props.nowDate}
+                        nowMs={props.nowMs}
                         slotWidth={slotWidth}
                         clipStart={slotDateShift?.[0]}
                       />
@@ -1385,12 +1385,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         const slatLeft = slatIndex * slotWidth
         const partial = (x - slatLeft) / slotWidth // floating point number between 0 and 1
         const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+        const snap = computeSnapRange(slatIndex, localSnapIndex, tDateProfile, dateEnv)
 
-        let start = dateEnv.add(
-          tDateProfile.slotDates[slatIndex],
-          multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-        )
-        let end = dateEnv.add(start, tDateProfile.snapDuration)
+        if (!snap) { // in the dead tail of a DST-truncated slot
+          return null
+        }
 
         // TODO: generalize this coord stuff to TimeGrid?
 
@@ -1410,9 +1409,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         return {
           dateProfile,
           dateSpan: {
-            range: { start, end },
+            range: { start: snap.start, end: snap.end },
             allDay: !tDateProfile.isTimeScale,
             resourceId: resource.id,
+            ...(snap.startMs != null ? {
+              instantStartMs: snap.startMs,
+              instantEndMs: snap.endMs,
+            } : {}),
           },
           rect: {
             left,

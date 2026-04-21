@@ -13,3 +13,19 @@ export interface Hit {
   layer: number
   largeUnit?: string // TODO: have timeline set this!
 }
+
+/*
+When both hits come from an instant-aware component (their dateSpans carry exact instants),
+returns the drag distance in absolute ms. Otherwise null, and callers should fall back to
+civil-duration diffing.
+*/
+export function computeHitInstantDeltaMs(hit0: Hit, hit1: Hit): number | null {
+  const startMs0 = hit0.dateSpan.allDay ? null : hit0.dateSpan.instantStartMs
+  const startMs1 = hit1.dateSpan.allDay ? null : hit1.dateSpan.instantStartMs
+
+  if (startMs0 != null && startMs1 != null) {
+    return startMs1 - startMs0
+  }
+
+  return null
+}

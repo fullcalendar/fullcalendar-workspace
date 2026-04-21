@@ -1,4 +1,4 @@
-import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration } from '@full-ui/headless-calendar'
+import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration, buildIsoString } from '@full-ui/headless-calendar'
 import { createEventInstance } from './event-instance'
 import { parseEventDef, refineEventDef } from './event-parse'
 import { EventRenderRange, compileEventUi } from '../component-util/event-rendering'
@@ -28,6 +28,13 @@ export interface DateSpanInput extends OpenDateSpanInput {
 export interface OpenDateSpan {
   range: OpenDateRange
   allDay: boolean
+  // Exact epoch instants, stamped by instant-aware views (e.g. timed timeline axes) when
+  // producing hits/selections. Transient interaction data only — never persisted on event data.
+  // Needed because a DateMarker alone cannot distinguish repeated civil times during a
+  // fall-back DST transition. When absent, derive via dateEnv.toDate() (resolves ambiguity
+  // deterministically). See getDateSpanInstantStartMs/getDateSpanInstantEndMs.
+  instantStartMs?: number
+  instantEndMs?: number
   [otherProp: string]: any
 }
 
@@ -134,7 +141,7 @@ function isSpanPropsEqual(span0: DateSpan, span1: DateSpan): boolean {
 
 export function buildDateSpanApi(span: DateSpan, dateEnv: DateEnv): DateSpanApi {
   return {
-    ...buildRangeApi(span.range, dateEnv, span.allDay),
+    ...buildRangeApi(span.range, dateEnv, span.allDay, span),
     allDay: span.allDay,
   }
 }
@@ -146,13 +153,39 @@ export function buildRangeApiWithTimeZone(range: DateRange, dateEnv: DateEnv, om
   }
 }
 
-export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean): RangeApi {
+export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean, rangeMeta?: { instantStartMs?: number, instantEndMs?: number }): RangeApi {
+  if (!omitTime && rangeMeta?.instantStartMs != null && rangeMeta?.instantEndMs != null) {
+    return {
+      start: new Date(rangeMeta.instantStartMs),
+      end: new Date(rangeMeta.instantEndMs),
+      startStr: formatInstantIso(rangeMeta.instantStartMs, dateEnv),
+      endStr: formatInstantIso(rangeMeta.instantEndMs, dateEnv),
+    }
+  }
+
   return {
     start: dateEnv.toDate(range.start),
     end: dateEnv.toDate(range.end),
     startStr: dateEnv.formatIso(range.start, { omitTime }),
     endStr: dateEnv.formatIso(range.end, { omitTime }),
   }
+}
+
+// like dateEnv.formatIso, but for an exact instant, so the offset stays correct even for
+// civil times that are ambiguous in the current timeZone
+export function formatInstantIso(ms: number, dateEnv: DateEnv): string {
+  const marker = dateEnv.timestampToMarker(ms)
+  const offsetMinutes = Math.round((marker.valueOf() - ms) / 60000)
+
+  return buildIsoString(marker, offsetMinutes)
+}
+
+export function getDateSpanInstantStartMs(dateSpan: DateSpan, dateEnv: DateEnv): number {
+  return dateSpan.instantStartMs ?? dateEnv.toDate(dateSpan.range.start).valueOf()
+}
+
+export function getDateSpanInstantEndMs(dateSpan: DateSpan, dateEnv: DateEnv): number {
+  return dateSpan.instantEndMs ?? dateEnv.toDate(dateSpan.range.end).valueOf()
 }
 
 export function fabricateEventRange(dateSpan: DateSpan, eventUiBases: EventUiHash, context: CalendarContext): EventRenderRange {

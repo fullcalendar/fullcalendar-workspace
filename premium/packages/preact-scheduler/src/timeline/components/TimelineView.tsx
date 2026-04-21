@@ -13,7 +13,6 @@ import {
   getFooterScrollbarSticky,
   Scroller,
   rangeContainsMarker,
-  multiplyDuration,
   afterSize,
   ScrollerSyncerInterface,
   getIsHeightAuto,
@@ -29,7 +28,7 @@ import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineHeaderRow } from './TimelineHeaderRow'
-import { computeSlotWidth, timeToCoord } from '../timeline-positioning'
+import { computeSlotWidth, computeSnapRange, timeToCoord } from '../timeline-positioning'
 import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow'
 import { getTimelineSlotEl } from './util'
@@ -119,7 +118,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     return (
       <NowTimer unit={timerUnit} unitValue={timerUnitValue}>
-        {(nowDate: DateMarker, todayRange: DateRange) => {
+        {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
           const enableNowIndicator = // TODO: DRY
             !props.forPrint &&
             options.nowIndicator &&
@@ -195,7 +194,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     {enableNowIndicator && (
                       <TimelineNowIndicatorArrow
                         tDateProfile={tDateProfile}
-                        nowDate={nowDate}
+                        nowMs={nowMs}
                         slotWidth={slotWidth}
                       />
                     )}
@@ -303,7 +302,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   {enableNowIndicator && (
                     <TimelineNowIndicatorLine
                       tDateProfile={tDateProfile}
-                      nowDate={nowDate}
+                      nowMs={nowMs}
                       slotWidth={slotWidth}
                     />
                   )}
@@ -492,12 +491,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       const slatX = slatIndex * slotWidth
       const partial = (x - slatX) / slotWidth // floating point number between 0 and 1
       const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+      const snap = computeSnapRange(slatIndex, localSnapIndex, tDateProfile, dateEnv)
 
-      let startDate = dateEnv.add(
-        tDateProfile.slotDates[slatIndex],
-        multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-      )
-      let endDate = dateEnv.add(startDate, tDateProfile.snapDuration)
+      if (!snap) { // in the dead tail of a DST-truncated slot
+        return null
+      }
 
       // TODO: generalize this coord stuff to TimeGrid?
 
@@ -517,8 +515,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       return {
         dateProfile: props.dateProfile,
         dateSpan: {
-          range: { start: startDate, end: endDate },
+          range: { start: snap.start, end: snap.end },
           allDay: !tDateProfile.isTimeScale,
+          ...(snap.startMs != null ? {
+            instantStartMs: snap.startMs,
+            instantEndMs: snap.endMs,
+          } : {}),
         },
         rect: {
           left,

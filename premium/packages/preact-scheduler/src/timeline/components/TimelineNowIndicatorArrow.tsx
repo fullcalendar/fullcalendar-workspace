@@ -1,12 +1,12 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, DateMarker, NowIndicatorHeaderContainer } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, NowIndicatorHeaderContainer } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
-import { dateToCoord } from '../timeline-positioning'
+import { dateToCoord, msToCoord } from '../timeline-positioning'
 
 export interface TimelineNowIndicatorArrowProps {
   tDateProfile: TimelineDateProfile
-  nowDate: DateMarker
+  nowMs: number // exact instant. unlike a marker, unambiguous during DST folds
 
   // dimensions
   slotWidth: number | undefined
@@ -18,12 +18,15 @@ TODO: DRY with other NowIndicator components
 export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicatorArrowProps> {
   render() {
     const { props, context } = this
+    const nowDate = context.dateEnv.timestampToMarker(props.nowMs)
 
     const xStyle: { insetInlineStart?: number } =
       props.slotWidth == null
         ? {}
         : {
-            insetInlineStart: dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+            insetInlineStart: props.tDateProfile.timeAxis
+              ? msToCoord(props.nowMs, props.tDateProfile, props.slotWidth)
+              : dateToCoord(nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
           }
 
     return (
@@ -39,7 +42,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
         <NowIndicatorHeaderContainer
           className={classNames.abs}
           style={xStyle}
-          date={props.nowDate}
+          date={nowDate}
         />
       </div>
     )

@@ -5,9 +5,10 @@ import type { EventRenderRange } from '../../component-util/event-rendering'
 import { DateComponent } from '../../component/DateComponent'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { Hit } from '../../interactions/hit'
+import { computeHitInstantDeltaMs } from '../../interactions/hit'
 import type { EventMutation } from '../../structs/event-mutation'
 import { applyMutationToEventStore } from '../../structs/event-mutation'
-import { startOfDay } from '@full-ui/headless-calendar'
+import { createDuration, startOfDay } from '@full-ui/headless-calendar'
 import type { EventStore } from '../../structs/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
@@ -459,13 +460,16 @@ function computeEventMutation(
     }
   }
 
-  let delta = diffDates(
-    date0, date1,
-    hit0.context.dateEnv,
-    hit0.componentId === hit1.componentId ?
-      hit0.largeUnit :
-      null,
-  )
+  const instantDeltaMs = computeHitInstantDeltaMs(hit0, hit1)
+  let delta = instantDeltaMs != null
+    ? createDuration(instantDeltaMs)
+    : diffDates(
+      date0, date1,
+      hit0.context.dateEnv,
+      hit0.componentId === hit1.componentId ?
+        hit0.largeUnit :
+        null,
+    )
 
   if (delta.milliseconds) { // has hours/minutes/seconds
     standardProps.allDay = false
@@ -473,6 +477,7 @@ function computeEventMutation(
 
   let mutation: EventMutation = {
     datesDelta: delta,
+    ...(instantDeltaMs != null ? { instantDatesDeltaMs: instantDeltaMs } : {}),
     standardProps,
   }
 

@@ -2,6 +2,7 @@ import { compareNumbers, enableCursor, disableCursor } from '../../util/misc'
 import { DateComponent } from '../../component/DateComponent'
 import type { Hit } from '../../interactions/hit'
 import type { DateSpan } from '../../structs/date-span'
+import { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from '../../structs/date-span'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { dateSelectionJoinTransformer } from '../../interactions/date-selecting'
 import { Interaction } from '../../interactions/interaction'
@@ -129,14 +130,22 @@ function getComponentTouchDelay(component: DateComponent<any>): number {
 function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan
-  let ms = [
-    dateSpan0.range.start,
-    dateSpan0.range.end,
-    dateSpan1.range.start,
-    dateSpan1.range.end,
+
+  // Only instant-aware components (currently timed timeline axes) may sort by instant, which
+  // orders repeated civil times during DST fall-back correctly. For civil-only components,
+  // deriving instants would reorder nonexistent spring-forward times (a civil 02:30 resolves
+  // to instant 03:30, past a civil 03:00), so their edges must keep the civil marker sort.
+  let hasInstants = dateSpan0.instantStartMs != null || dateSpan1.instantStartMs != null
+  let entries = [
+    { date: dateSpan0.range.start, ms: getDateSpanInstantStartMs(dateSpan0, hit0.context.dateEnv) },
+    { date: dateSpan0.range.end, ms: getDateSpanInstantEndMs(dateSpan0, hit0.context.dateEnv) },
+    { date: dateSpan1.range.start, ms: getDateSpanInstantStartMs(dateSpan1, hit1.context.dateEnv) },
+    { date: dateSpan1.range.end, ms: getDateSpanInstantEndMs(dateSpan1, hit1.context.dateEnv) },
   ]
 
-  ms.sort(compareNumbers)
+  entries.sort(hasInstants
+    ? (entry0, entry1) => compareNumbers(entry0.ms, entry1.ms)
+    : (entry0, entry1) => compareNumbers(entry0.date.valueOf(), entry1.date.valueOf()))
 
   let props = {} as DateSpan
 
@@ -152,8 +161,13 @@ function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: 
     }
   }
 
-  props.range = { start: ms[0], end: ms[3] }
+  props.range = { start: entries[0].date, end: entries[3].date }
   props.allDay = dateSpan0.allDay
+
+  if (hasInstants) {
+    props.instantStartMs = entries[0].ms
+    props.instantEndMs = entries[3].ms
+  }
 
   return props
 }

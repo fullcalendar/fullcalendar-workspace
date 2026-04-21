@@ -11,6 +11,7 @@ export interface NowTimerRunnerInput {
 
 export interface NowTimerRunnerOutput {
   nowDate: DateMarker
+  nowMs: number // exact instant of nowDate. unambiguous during DST transitions
   todayRange: DateRange
 }
 
@@ -24,6 +25,7 @@ export class NowTimerRunner {
 
   // output
   private nowDate: DateMarker
+  private nowMs: number
   private todayRange: DateRange
 
   // internal
@@ -48,6 +50,7 @@ export class NowTimerRunner {
       // init outputs
       const timing = this.computeTiming()
       this.nowDate = timing.nowDate
+      this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
 
       // init listeners
@@ -79,6 +82,7 @@ export class NowTimerRunner {
 
     return {
       nowDate: this.nowDate,
+      nowMs: this.nowMs,
       todayRange: this.todayRange,
     }
   }
@@ -97,8 +101,9 @@ export class NowTimerRunner {
   }
 
   private computeTiming() {
-    let unroundedNow = this.nowManager.getDateMarker()
     let { unit, unitValue, nowIndicatorSnap, dateEnv } = this
+    let unroundedNowMs = this.nowManager.getEpochMs()
+    let unroundedNow = dateEnv.timestampToMarker(unroundedNowMs)
 
     if (nowIndicatorSnap === 'auto') {
       nowIndicatorSnap =
@@ -109,14 +114,17 @@ export class NowTimerRunner {
     }
 
     let nowDate: DateMarker
+    let nowMs: number
     let waitMs: number
 
     if (nowIndicatorSnap) {
       nowDate = dateEnv.startOf(unroundedNow, unit) // aka currentUnitStart
+      nowMs = resolveSnappedInstant(nowDate, unroundedNowMs, dateEnv)
       let nextUnitStart = dateEnv.add(nowDate, createDuration(1, unit))
       waitMs = nextUnitStart.valueOf() - unroundedNow.valueOf()
     } else {
       nowDate = unroundedNow
+      nowMs = unroundedNowMs
       waitMs = 1000 * 60 // 1 minute
     }
 
@@ -126,6 +134,7 @@ export class NowTimerRunner {
 
     return {
       nowDate,
+      nowMs,
       todayRange: buildDayRange(nowDate),
       waitMs,
     }
@@ -139,6 +148,7 @@ export class NowTimerRunner {
       // This is why use use same waitMs from computeTiming
       const timing = this.computeTiming()
       this.nowDate = timing.nowDate
+      this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
       this.handleChange()
       this.setTimeout(timing.waitMs)
@@ -154,8 +164,12 @@ export class NowTimerRunner {
   private handleRefresh = () => {
     let timing = this.computeTiming()
 
-    if (timing.nowDate.valueOf() !== this.nowDate.valueOf()) {
+    if (
+      timing.nowDate.valueOf() !== this.nowDate.valueOf() ||
+      timing.nowMs !== this.nowMs // marker alone can't detect fold-hour changes
+    ) {
       this.nowDate = timing.nowDate
+      this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
       this.handleChange()
     }
@@ -169,6 +183,23 @@ export class NowTimerRunner {
       this.handleRefresh()
     }
   }
+}
+
+/*
+The instant of `snappedMarker` (a civil rounding of the time at `rawMs`), choosing the
+occurrence on the same side of any DST transition as `rawMs` — during a fall-back fold, a
+snapped civil time exists twice. Falls back to deterministic first-occurrence resolution
+when the same-offset guess doesn't round-trip (e.g. snapping crossed the transition).
+*/
+function resolveSnappedInstant(snappedMarker: DateMarker, rawMs: number, dateEnv: DateEnv): number {
+  const offsetMs = dateEnv.timestampToMarker(rawMs).valueOf() - rawMs
+  const candidateMs = snappedMarker.valueOf() - offsetMs
+
+  if (dateEnv.timestampToMarker(candidateMs).valueOf() === snappedMarker.valueOf()) {
+    return candidateMs
+  }
+
+  return dateEnv.toDate(snappedMarker).valueOf()
 }
 
 function buildDayRange(date: DateMarker): DateRange { // TODO: make this a general util

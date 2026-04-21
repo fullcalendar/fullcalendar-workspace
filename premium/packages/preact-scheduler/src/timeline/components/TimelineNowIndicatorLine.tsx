@@ -1,12 +1,12 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, DateMarker, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
-import { dateToCoord } from '../timeline-positioning'
+import { dateToCoord, msToCoord } from '../timeline-positioning'
 
 export interface TimelineNowIndicatorLineProps {
   tDateProfile: TimelineDateProfile
-  nowDate: DateMarker
+  nowMs: number // exact instant. unlike a marker, unambiguous during DST folds
 
   // dimensions
   slotWidth: number | undefined
@@ -19,12 +19,17 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
   render() {
     const { props, context } = this
     const clipStart = props.clipStart ?? 0
+    const nowDate = context.dateEnv.timestampToMarker(props.nowMs)
 
     const xStyle: { insetInlineStart?: number } =
       props.slotWidth == null
         ? {}
         : {
-            insetInlineStart: dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth) - clipStart
+            insetInlineStart: (
+              props.tDateProfile.timeAxis
+                ? msToCoord(props.nowMs, props.tDateProfile, props.slotWidth)
+                : dateToCoord(nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+            ) - clipStart
           }
 
     return (
@@ -42,7 +47,7 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
             classNames.borderlessY,
           )}
           style={xStyle}
-          date={props.nowDate}
+          date={nowDate}
         />
         <div
           className={joinClassNames(

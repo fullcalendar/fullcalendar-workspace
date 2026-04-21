@@ -134,7 +134,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     return (
       <>
         <NowTimer unit={timerUnit} unitValue={timeUnitValue}>
-          {(nowDate: DateMarker, todayRange: DateRange) => {
+          {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
             const baseProps = {
               className: props.className,
               labelId: props.labelId,
@@ -145,6 +145,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               resourceEntityExpansions: props.resourceEntityExpansions,
               hasNesting,
               nowDate,
+              nowMs,
               todayRange,
               colSpecs,
               groupColCnt,

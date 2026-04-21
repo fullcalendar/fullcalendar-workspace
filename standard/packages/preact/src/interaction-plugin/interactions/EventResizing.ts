@@ -4,8 +4,9 @@ import type { EventChangeInfo } from '../../event-crud'
 import type { EventRenderRange } from '../../component-util/event-rendering'
 import type { Duration } from '@full-ui/headless-calendar'
 import type { Hit } from '../../interactions/hit'
+import { computeHitInstantDeltaMs } from '../../interactions/hit'
 import type { EventMutation } from '../../structs/event-mutation'
-import { applyMutationToEventStore } from '../../structs/event-mutation'
+import { addDeltaToMarker, applyMutationToEventStore } from '../../structs/event-mutation'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { EventStore } from '../../structs/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
@@ -251,22 +252,29 @@ function computeMutation(
   isFromStart: boolean,
   instanceRange: DateRange,
 ): EventMutation | null {
-  let dateEnv = hit0.context.dateEnv
   let date0 = hit0.dateSpan.range.start
   let date1 = hit1.dateSpan.range.start
-
-  let delta = diffDates(
-    date0, date1,
-    dateEnv,
-    hit0.largeUnit,
-  )
+  const instantDeltaMs = computeHitInstantDeltaMs(hit0, hit1)
+  let delta = instantDeltaMs != null
+    ? createDuration(instantDeltaMs)
+    : diffDates(
+      date0, date1,
+      hit0.context.dateEnv,
+      hit0.largeUnit,
+    )
 
   if (isFromStart) {
-    if (dateEnv.add(instanceRange.start, delta) < instanceRange.end) {
-      return { startDelta: delta }
+    if (addDeltaToMarker(instanceRange.start, delta, instantDeltaMs ?? undefined, hit0.context) < instanceRange.end) {
+      return {
+        startDelta: delta,
+        ...(instantDeltaMs != null ? { instantStartDeltaMs: instantDeltaMs } : {}),
+      }
     }
-  } else if (dateEnv.add(instanceRange.end, delta) > instanceRange.start) {
-    return { endDelta: delta }
+  } else if (addDeltaToMarker(instanceRange.end, delta, instantDeltaMs ?? undefined, hit0.context) > instanceRange.start) {
+    return {
+      endDelta: delta,
+      ...(instantDeltaMs != null ? { instantEndDeltaMs: instantDeltaMs } : {}),
+    }
   }
 
   return null

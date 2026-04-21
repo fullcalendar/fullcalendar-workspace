@@ -9,6 +9,7 @@ import {
   isMajorUnit,
   warn,
 } from '@fullcalendar/preact/protected-api'
+import { buildTimelineTimeAxis, TimelineTimeAxis } from './timeline-time-axis'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -22,16 +23,24 @@ export interface TimelineDateProfile {
   snapsPerSlot: number
   normalizedRange: DateRange // snaps to unit. adds in slotMinTime/slotMaxTime
   timeWindowMs: number
+  // Canonical source for timed slot identity, offsets, and per-slot instant boundaries.
+  // slotDates/slotKeys are hydrated from it. Null for whole-day axes.
+  timeAxis: TimelineTimeAxis | null
   slotDates: DateMarker[]
+  // Stable per-slot identity for React keys and virtualizers. Aligned 1:1 with slotDates.
+  // For timed axes, includes the timezone offset so repeated civil times during DST
+  // fall-back stay distinct.
+  slotKeys: string[]
   slotDatesMajor: boolean[]
-  snapDiffToIndex: number[]
-  snapIndexToDiff: number[]
+  snapDiffToIndex: number[] // only used by the civil day-axis coverage path. empty for timed axes
   snapCnt: number
   slotCnt: number
   cellRows: TimelineHeaderCellData[][]
 }
 
 export interface TimelineHeaderCellData {
+  key: string // rowUnit + the slot's slotKey. stable identity for virtualizers and React keys
+
   date: DateMarker
   isMajor: boolean
   text: string
@@ -158,48 +167,68 @@ export function buildTimelineDateProfile(
 
   tDateProfile.timeWindowMs = timeWindowMs
   tDateProfile.normalizedRange = { start: normalizedStart, end: normalizedEnd }
+  // Timed axes slice/position in instant (epoch-ms) space and are sourced from a canonical
+  // epoch-driven builder. Whole-day axes stay in civil space and keep the
+  // dateEnv.add/dateEnv.countDurationsBetween arithmetic below.
+  tDateProfile.timeAxis = tDateProfile.isTimeScale
+    ? buildTimelineTimeAxis({
+      normalizedRange: tDateProfile.normalizedRange,
+      slotDuration: tDateProfile.slotDuration,
+      snapDuration: tDateProfile.snapDuration,
+      dateEnv,
+      isDateVisible: (date) => isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator),
+    })
+    : null
 
   let slotDates: DateMarker[] = []
-  let slotDatesMajor: boolean[] = []
-  let date = normalizedStart
+  let slotKeys: string[]
   let majorUnit = computeMajorUnit(dateProfile, dateEnv)
 
-  while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      slotDates.push(date)
-      slotDatesMajor.push(isMajorUnit(date, majorUnit, dateEnv))
+  if (tDateProfile.timeAxis) {
+    slotDates = tDateProfile.timeAxis.slotDates
+    slotKeys = tDateProfile.timeAxis.slotKeys
+  } else {
+    let date = normalizedStart
+
+    while (date < normalizedEnd) {
+      if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
+        slotDates.push(date)
+      }
+      date = dateEnv.add(date, tDateProfile.slotDuration)
     }
-    date = dateEnv.add(date, tDateProfile.slotDuration)
+
+    slotKeys = slotDates.map((slotDate) => slotDate.toISOString())
   }
 
   tDateProfile.slotDates = slotDates
-  tDateProfile.slotDatesMajor = slotDatesMajor
+  tDateProfile.slotKeys = slotKeys
+  tDateProfile.slotDatesMajor = slotDates.map((slotDate) => isMajorUnit(slotDate, majorUnit, dateEnv))
 
-  // more...
+  if (tDateProfile.timeAxis) {
+    // visible slots are the authority for timed-axis geometry. a DST-transition day is not
+    // necessarily divisible by slotDuration, so slotCnt must NOT be derived from snap counts
+    tDateProfile.snapDiffToIndex = [] // only consulted by the civil day-axis coverage path
+    tDateProfile.snapCnt = slotDates.length * tDateProfile.snapsPerSlot
+    tDateProfile.slotCnt = slotDates.length
+  } else {
+    let snapIndex = -1
+    const snapDiffToIndex = []
+    let date = normalizedStart
 
-  let snapIndex = -1
-  let snapDiff = 0 // index of the diff :(
-  const snapDiffToIndex = []
-  const snapIndexToDiff = []
-
-  date = normalizedStart
-  while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      snapIndex += 1
-      snapDiffToIndex.push(snapIndex)
-      snapIndexToDiff.push(snapDiff)
-    } else {
-      snapDiffToIndex.push(snapIndex + 0.5)
+    while (date < normalizedEnd) {
+      if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
+        snapIndex += 1
+        snapDiffToIndex.push(snapIndex)
+      } else {
+        snapDiffToIndex.push(snapIndex + 0.5)
+      }
+      date = dateEnv.add(date, tDateProfile.snapDuration)
     }
-    date = dateEnv.add(date, tDateProfile.snapDuration)
-    snapDiff += 1
+
+    tDateProfile.snapDiffToIndex = snapDiffToIndex
+    tDateProfile.snapCnt = snapIndex + 1 // is always one behind
+    tDateProfile.slotCnt = tDateProfile.snapCnt / tDateProfile.snapsPerSlot
   }
-
-  tDateProfile.snapDiffToIndex = snapDiffToIndex
-  tDateProfile.snapIndexToDiff = snapIndexToDiff
-
-  tDateProfile.snapCnt = snapIndex + 1 // is always one behind
-  tDateProfile.slotCnt = tDateProfile.snapCnt / tDateProfile.snapsPerSlot
 
   // more...
 
@@ -600,11 +629,12 @@ function buildCellRows(
       let isMajor = isMajorUnit(date, majorUnit, dateEnv)
       let newCell = null
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
+      const key = rowUnit + ':' + tDateProfile.slotKeys[i]
 
       if (isSuperRow) {
         let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, isMajor, text, rowUnit)
+          newCell = buildCellObject(key, date, isMajor, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -617,7 +647,7 @@ function buildCellRows(
         ))
       ) {
         let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
-        newCell = buildCellObject(date, isMajor, text, rowUnit)
+        newCell = buildCellObject(key, date, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
@@ -631,6 +661,6 @@ function buildCellRows(
   return cellRows
 }
 
-function buildCellObject(date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
-  return { date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
+function buildCellObject(key: string, date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
+  return { key, date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
 }
