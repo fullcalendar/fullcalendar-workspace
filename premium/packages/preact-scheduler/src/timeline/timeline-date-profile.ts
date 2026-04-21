@@ -8,6 +8,7 @@ import {
   computeMajorUnit,
   isMajorUnit,
 } from '@fullcalendar/preact/protected-api'
+import { buildTimelineTimeAxis, TimelineTimeAxis } from './timeline-time-axis'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -21,6 +22,10 @@ export interface TimelineDateProfile {
   snapsPerSlot: number
   normalizedRange: DateRange // snaps to unit. adds in slotMinTime/slotMaxTime
   timeWindowMs: number
+  // Supplemental data for timed axes only. When present, slotDates and slotDatesMajor
+  // are hydrated from it. This is the canonical source for timed slot/snap identity,
+  // offsets, and lookup tables. Null for whole-day axes.
+  timeAxis: TimelineTimeAxis | null
   slotDates: DateMarker[]
   slotDatesMajor: boolean[]
   snapDiffToIndex: number[]
@@ -31,6 +36,9 @@ export interface TimelineDateProfile {
 }
 
 export interface TimelineHeaderCellData {
+  // Stable identity for virtualizers and React keys. For timed axes this includes the
+  // canonical time-axis offset so repeated civil local times remain distinct.
+  key: string
   date: DateMarker
   isMajor: boolean
   text: string
@@ -157,41 +165,67 @@ export function buildTimelineDateProfile(
 
   tDateProfile.timeWindowMs = timeWindowMs
   tDateProfile.normalizedRange = { start: normalizedStart, end: normalizedEnd }
+  // Timed axes are sourced from a canonical epoch-driven builder. Timed slot/snap identity,
+  // offsets, and snap lookup tables all flow from timeAxis. Whole-day axes keep the legacy
+  // dateEnv.add/dateEnv.countDurationsBetween behavior below.
+  tDateProfile.timeAxis = tDateProfile.isTimeScale
+    ? buildTimelineTimeAxis({
+      normalizedRange: tDateProfile.normalizedRange,
+      slotDuration: tDateProfile.slotDuration,
+      snapDuration: tDateProfile.snapDuration,
+      isTimeScale: tDateProfile.isTimeScale,
+      dateProfile,
+      dateEnv,
+      dateProfileGenerator,
+    })
+    : null
 
   let slotDates: DateMarker[] = []
   let slotDatesMajor: boolean[] = []
-  let date = normalizedStart
   let majorUnit = computeMajorUnit(dateProfile, dateEnv)
 
-  while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      slotDates.push(date)
-      slotDatesMajor.push(isMajorUnit(date, majorUnit, dateEnv))
+  if (tDateProfile.timeAxis) {
+    slotDates = tDateProfile.timeAxis.slotDates
+    slotDatesMajor = slotDates.map((slotDate) => isMajorUnit(slotDate, majorUnit, dateEnv))
+  } else {
+    // Legacy whole-day slot generation path.
+    let date = normalizedStart
+
+    while (date < normalizedEnd) {
+      if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
+        slotDates.push(date)
+        slotDatesMajor.push(isMajorUnit(date, majorUnit, dateEnv))
+      }
+      date = dateEnv.add(date, tDateProfile.slotDuration)
     }
-    date = dateEnv.add(date, tDateProfile.slotDuration)
   }
 
   tDateProfile.slotDates = slotDates
   tDateProfile.slotDatesMajor = slotDatesMajor
-
-  // more...
 
   let snapIndex = -1
   let snapDiff = 0 // index of the diff :(
   const snapDiffToIndex = []
   const snapIndexToDiff = []
 
-  date = normalizedStart
-  while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      snapIndex += 1
-      snapDiffToIndex.push(snapIndex)
-      snapIndexToDiff.push(snapDiff)
-    } else {
-      snapDiffToIndex.push(snapIndex + 0.5)
+  if (tDateProfile.timeAxis) {
+    snapDiffToIndex.push(...tDateProfile.timeAxis.snapDiffToIndex)
+    snapIndexToDiff.push(...tDateProfile.timeAxis.snapIndexToDiff)
+    snapIndex = tDateProfile.timeAxis.snapDates.length - 1
+  } else {
+    let date = normalizedStart
+
+    while (date < normalizedEnd) {
+      if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
+        snapIndex += 1
+        snapDiffToIndex.push(snapIndex)
+        snapIndexToDiff.push(snapDiff)
+      } else {
+        snapDiffToIndex.push(snapIndex + 0.5)
+      }
+      date = dateEnv.add(date, tDateProfile.snapDuration)
+      snapDiff += 1
     }
-    date = dateEnv.add(date, tDateProfile.snapDuration)
-    snapDiff += 1
   }
 
   tDateProfile.snapDiffToIndex = snapDiffToIndex
@@ -571,11 +605,14 @@ function buildCellRows(
       let isMajor = isMajorUnit(date, majorUnit, dateEnv)
       let newCell = null
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
+      const key = tDateProfile.timeAxis
+        ? rowUnit + ':' + tDateProfile.timeAxis.slotKeys[i]
+        : rowUnit + ':' + date.toISOString()
 
       if (isSuperRow) {
         let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, isMajor, text, rowUnit)
+          newCell = buildCellObject(key, date, isMajor, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -588,7 +625,7 @@ function buildCellRows(
         ))
       ) {
         let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
-        newCell = buildCellObject(date, isMajor, text, rowUnit)
+        newCell = buildCellObject(key, date, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
@@ -602,6 +639,6 @@ function buildCellRows(
   return cellRows
 }
 
-function buildCellObject(date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
-  return { date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
+function buildCellObject(key: string, date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
+  return { key, date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
 }

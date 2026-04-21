@@ -7,7 +7,7 @@ import type { PointerDragEvent } from '../../interactions/pointer'
 import type { Hit } from '../../interactions/hit'
 import type { EventMutation } from '../../structs/event-mutation'
 import { applyMutationToEventStore } from '../../structs/event-mutation'
-import { startOfDay } from '@full-ui/headless-calendar'
+import { createDuration, startOfDay } from '@full-ui/headless-calendar'
 import type { EventStore } from '../../structs/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
@@ -459,13 +459,16 @@ function computeEventMutation(
     }
   }
 
-  let delta = diffDates(
-    date0, date1,
-    hit0.context.dateEnv,
-    hit0.componentId === hit1.componentId ?
-      hit0.largeUnit :
-      null,
-  )
+  const instantDeltaMs = computeTimelineInstantDeltaMs(hit0, hit1)
+  let delta = instantDeltaMs != null
+    ? createDuration(instantDeltaMs)
+    : diffDates(
+      date0, date1,
+      hit0.context.dateEnv,
+      hit0.componentId === hit1.componentId ?
+        hit0.largeUnit :
+        null,
+    )
 
   if (delta.milliseconds) { // has hours/minutes/seconds
     standardProps.allDay = false
@@ -473,6 +476,7 @@ function computeEventMutation(
 
   let mutation: EventMutation = {
     datesDelta: delta,
+    ...(instantDeltaMs != null ? { instantDatesDeltaMs: instantDeltaMs } : {}),
     standardProps,
   }
 
@@ -481,6 +485,17 @@ function computeEventMutation(
   }
 
   return mutation
+}
+
+function computeTimelineInstantDeltaMs(hit0: Hit, hit1: Hit): number | null {
+  const startMs0 = hit0.dateSpan.allDay ? null : hit0.dateSpan.timelineStartMs
+  const startMs1 = hit1.dateSpan.allDay ? null : hit1.dateSpan.timelineStartMs
+
+  if (startMs0 != null && startMs1 != null) {
+    return startMs1 - startMs0
+  }
+
+  return null
 }
 
 function getComponentTouchDelay(component: DateComponent<any>): number | null {

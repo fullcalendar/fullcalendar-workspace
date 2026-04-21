@@ -83,7 +83,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
           // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
           // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
           // TODO: use rowUnit to key the Row itself?
-          const key = cell.rowUnit + ':' + cell.date.toISOString()
+          const key = cell.key
 
           return (
             <TimelineHeaderCell

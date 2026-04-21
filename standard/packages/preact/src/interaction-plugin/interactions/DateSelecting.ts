@@ -129,14 +129,14 @@ function getComponentTouchDelay(component: DateComponent<any>): number {
 function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan
-  let ms = [
-    dateSpan0.range.start,
-    dateSpan0.range.end,
-    dateSpan1.range.start,
-    dateSpan1.range.end,
+  let entries = [
+    { date: dateSpan0.range.start, ms: getDateSpanBoundaryMs(hit0, 'start') },
+    { date: dateSpan0.range.end, ms: getDateSpanBoundaryMs(hit0, 'end') },
+    { date: dateSpan1.range.start, ms: getDateSpanBoundaryMs(hit1, 'start') },
+    { date: dateSpan1.range.end, ms: getDateSpanBoundaryMs(hit1, 'end') },
   ]
 
-  ms.sort(compareNumbers)
+  entries.sort((entry0, entry1) => compareNumbers(entry0.ms, entry1.ms))
 
   let props = {} as DateSpan
 
@@ -152,8 +152,25 @@ function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: 
     }
   }
 
-  props.range = { start: ms[0], end: ms[3] }
+  props.range = { start: entries[0].date, end: entries[3].date }
   props.allDay = dateSpan0.allDay
 
+  if (
+    hasDateSpanInstantIdentity(dateSpan0) ||
+    hasDateSpanInstantIdentity(dateSpan1)
+  ) {
+    props.timelineStartMs = entries[0].ms
+    props.timelineEndMs = entries[3].ms
+  }
+
   return props
+}
+
+function getDateSpanBoundaryMs(hit: Hit, edge: 'start' | 'end'): number {
+  const propName = edge === 'start' ? 'timelineStartMs' : 'timelineEndMs'
+  return hit.dateSpan[propName] ?? hit.context.dateEnv.toDate(hit.dateSpan.range[edge]).valueOf()
+}
+
+function hasDateSpanInstantIdentity(dateSpan: DateSpan): boolean {
+  return dateSpan.timelineStartMs != null || dateSpan.timelineEndMs != null
 }

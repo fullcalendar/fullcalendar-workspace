@@ -28,6 +28,8 @@ export interface DateSpanInput extends OpenDateSpanInput {
 export interface OpenDateSpan {
   range: OpenDateRange
   allDay: boolean
+  timelineStartMs?: number
+  timelineEndMs?: number
   [otherProp: string]: any
 }
 
@@ -134,7 +136,7 @@ function isSpanPropsEqual(span0: DateSpan, span1: DateSpan): boolean {
 
 export function buildDateSpanApi(span: DateSpan, dateEnv: DateEnv): DateSpanApi {
   return {
-    ...buildRangeApi(span.range, dateEnv, span.allDay),
+    ...buildRangeApi(span.range, dateEnv, span.allDay, span),
     allDay: span.allDay,
   }
 }
@@ -146,13 +148,46 @@ export function buildRangeApiWithTimeZone(range: DateRange, dateEnv: DateEnv, om
   }
 }
 
-export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean): RangeApi {
+export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean, rangeMeta?: { timelineStartMs?: number, timelineEndMs?: number }): RangeApi {
+  if (!omitTime && rangeMeta?.timelineStartMs != null && rangeMeta?.timelineEndMs != null) {
+    const start = new Date(rangeMeta.timelineStartMs)
+    const end = new Date(rangeMeta.timelineEndMs)
+
+    return {
+      start,
+      end,
+      startStr: formatInstantIso(rangeMeta.timelineStartMs, dateEnv),
+      endStr: formatInstantIso(rangeMeta.timelineEndMs, dateEnv),
+    }
+  }
+
   return {
     start: dateEnv.toDate(range.start),
     end: dateEnv.toDate(range.end),
     startStr: dateEnv.formatIso(range.start, { omitTime }),
     endStr: dateEnv.formatIso(range.end, { omitTime }),
   }
+}
+
+function formatInstantIso(ms: number, dateEnv: DateEnv): string {
+  const marker = dateEnv.timestampToMarker(ms)
+  const offsetMinutes = Math.round((marker.valueOf() - ms) / 60000)
+  let iso = marker.toISOString().replace('.000', '')
+
+  if (offsetMinutes !== 0) {
+    iso = `${iso.slice(0, -1)}${formatIsoOffset(offsetMinutes)}`
+  }
+
+  return iso
+}
+
+function formatIsoOffset(offsetMinutes: number): string {
+  const sign = offsetMinutes < 0 ? '-' : '+'
+  const absMinutes = Math.abs(offsetMinutes)
+  const hours = Math.floor(absMinutes / 60)
+  const minutes = absMinutes % 60
+
+  return `${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
 }
 
 export function fabricateEventRange(dateSpan: DateSpan, eventUiBases: EventUiHash, context: CalendarContext): EventRenderRange {

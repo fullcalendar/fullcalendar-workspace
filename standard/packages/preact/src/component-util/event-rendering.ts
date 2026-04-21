@@ -1,6 +1,7 @@
 import { EventDef, EventDefHash } from '../structs/event-def'
 import { EventTuple } from '../structs/event-parse'
 import { EventStore } from '../structs/event-store'
+import { EventInstanceRange } from '../structs/event-instance'
 import {
   DateRange,
   invertRanges,
@@ -29,7 +30,7 @@ export interface EventRenderRange extends EventTuple {
   // a transformed version of eventInstance.range
   // if view renders whole-days, `range` is all-day
   // otherwise, `range` is timed
-  range: DateRange
+  range: EventInstanceRange
   isStart: boolean
   isEnd: boolean
 }
@@ -83,6 +84,8 @@ export function sliceEventStore(eventStore: EventStore, eventUiBases: EventUiHas
     let slicedRange = intersectRanges(normalRange, framingRange)
 
     if (slicedRange) {
+      slicedRange = buildSlicedEventRange(normalRange as EventInstanceRange, slicedRange)
+
       if (ui.display === 'inverse-background') {
         if (def.groupId) {
           inverseBgByGroupId[def.groupId].push(slicedRange)
@@ -138,6 +141,18 @@ export function sliceEventStore(eventStore: EventStore, eventUiBases: EventUiHas
   }
 
   return { bg: bgRanges, fg: fgRanges }
+}
+
+function buildSlicedEventRange(normalRange: EventInstanceRange, slicedRange: DateRange): EventInstanceRange {
+  return {
+    ...slicedRange,
+    ...(normalRange.timelineStartMs != null && slicedRange.start.valueOf() === normalRange.start.valueOf()
+      ? { timelineStartMs: normalRange.timelineStartMs }
+      : {}),
+    ...(normalRange.timelineEndMs != null && slicedRange.end.valueOf() === normalRange.end.valueOf()
+      ? { timelineEndMs: normalRange.timelineEndMs }
+      : {}),
+  }
 }
 
 export function hasBgRendering(def: EventDef) {

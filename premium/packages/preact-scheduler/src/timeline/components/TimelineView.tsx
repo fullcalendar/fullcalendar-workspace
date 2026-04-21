@@ -13,7 +13,6 @@ import {
   getFooterScrollbarSticky,
   Scroller,
   rangeContainsMarker,
-  multiplyDuration,
   afterSize,
   ScrollerSyncerInterface,
   getIsHeightAuto,
@@ -27,6 +26,7 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef } from 'react'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile'
+import { getTimelineAxisSnapEnd } from '../timeline-time-axis'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineHeaderRow } from './TimelineHeaderRow'
 import { computeSlotWidth, timeToCoord } from '../timeline-positioning'
@@ -492,12 +492,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       const slatX = slatIndex * slotWidth
       const partial = (x - slatX) / slotWidth // floating point number between 0 and 1
       const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+      const snapIndex = (slatIndex * tDateProfile.snapsPerSlot) + localSnapIndex
+      const timeAxis = tDateProfile.timeAxis
+      const startMs = timeAxis ? timeAxis.snapBoundaryMs[timeAxis.snapIndexToDiff[snapIndex]] : null
+      const endMs = timeAxis ? timeAxis.snapBoundaryMs[timeAxis.snapIndexToDiff[snapIndex] + 1] : null
 
-      let startDate = dateEnv.add(
-        tDateProfile.slotDates[slatIndex],
-        multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-      )
-      let endDate = dateEnv.add(startDate, tDateProfile.snapDuration)
+      let startDate = timeAxis?.snapDates[snapIndex] ?? tDateProfile.slotDates[slatIndex]
+      let endDate = timeAxis
+        ? getTimelineAxisSnapEnd(dateEnv, timeAxis, snapIndex)
+        : dateEnv.add(startDate, tDateProfile.snapDuration)
 
       // TODO: generalize this coord stuff to TimeGrid?
 
@@ -519,6 +522,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         dateSpan: {
           range: { start: startDate, end: endDate },
           allDay: !tDateProfile.isTimeScale,
+          ...(startMs != null && endMs != null ? {
+            timelineStartMs: startMs,
+            timelineEndMs: endMs,
+          } : {}),
         },
         rect: {
           left,

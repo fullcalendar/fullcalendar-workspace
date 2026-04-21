@@ -8,7 +8,7 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import { TimelineCoordRange, TimelineRange } from './TimelineLaneSlicer'
 import { TimelineDateProfile } from './timeline-date-profile'
-import { dateToCoord } from './timeline-positioning'
+import { dateToCoord, msToCoord } from './timeline-positioning'
 
 export function computeManySegHorizontals(
   segs: (TimelineRange & EventRangeProps)[],
@@ -48,8 +48,12 @@ export function computeSegHorizontals(
   clipStart = 0, // uses it as a new origin!
   clipEnd = Infinity,
 ): CoordSpan | undefined {
-  let startCoord = dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
-  let endCoord = dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
+  let startCoord = seg.startMs != null
+    ? msToCoord(seg.startMs, tDateProfile, slotWidth)
+    : dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
+  let endCoord = seg.endMs != null
+    ? msToCoord(seg.endMs, tDateProfile, slotWidth)
+    : dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
 
   startCoord = Math.max(startCoord, clipStart)
   endCoord = Math.min(endCoord, clipEnd)

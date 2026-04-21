@@ -48,7 +48,8 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         }}
       >
         {slotDates.map((slotDate, i) => {
-          let key = slotDate.toISOString()
+          const slatIndex = slatStartIndex + i
+          let key = tDateProfile.timeAxis?.slotKeys[slatIndex] ?? slotDate.toISOString()
 
           return (
             <TimelineSlatCell
@@ -58,8 +59,8 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               tDateProfile={tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
-              isMajor={slotDatesMajor[slatStartIndex + i]}
-              borderStart={Boolean(slatStartIndex + i)}
+              isMajor={slotDatesMajor[slatIndex]}
+              borderStart={Boolean(slatIndex)}
 
               // dimensions
               width={slotWidth}

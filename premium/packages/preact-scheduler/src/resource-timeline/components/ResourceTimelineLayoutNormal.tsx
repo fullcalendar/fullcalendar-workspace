@@ -11,7 +11,6 @@ import {
   getTableHeaderSticky,
   Hit,
   memoize,
-  multiplyDuration,
   rangeContainsMarker,
   RefMap,
   Ruler,
@@ -51,6 +50,7 @@ import { BodySection } from './spreadsheet/BodySection'
 import { HeaderRow } from './spreadsheet/HeaderRow'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, Virtualizer } from '../virtual/virtualizer'
+import { getTimelineAxisSnapEnd } from '../../timeline/timeline-time-axis'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -195,13 +195,24 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   )
   private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
   private slotVirtualizer = new Virtualizer<DateMarker>(
-    (dateMarker) => dateMarker.toISOString(),
+    (dateMarker) => this.getSlotKey(dateMarker),
     (_key, index) => index * (this.props.slotWidth ?? defaultSlotWidth),
     () => this.props.slotWidth ?? defaultSlotWidth,
     this.boundForceUpdate,
     /* overscan = */ 3,
   )
   private timeHeaderVirtualizers: Virtualizer<TimelineHeaderCellData>[] = []
+
+  private getSlotKey(dateMarker: DateMarker): string {
+    const { tDateProfile } = this.props
+    const slotIndex = tDateProfile.slotDates.indexOf(dateMarker)
+
+    if (slotIndex !== -1) {
+      return tDateProfile.timeAxis?.slotKeys[slotIndex] ?? dateMarker.toISOString()
+    }
+
+    return dateMarker.toISOString()
+  }
 
   render() {
     let { props, state, context } = this
@@ -271,7 +282,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     if (newLen > oldLen) {
       for (let i = oldLen; i < newLen; i++) {
         timeHeaderVirtualizers[i] = new Virtualizer<TimelineHeaderCellData>(
-          (cell) => cell.rowUnit + ':' + cell.date.toISOString(), // TODO: DRY with TimelineHeaderRow
+          (cell) => cell.key,
           undefined, // getItemStart (let Virtualizer compute it)
           (key, index, cell) => cell.colspan * (this.props.slotWidth ?? defaultSlotWidth),
           this.boundForceUpdate,
@@ -1358,12 +1369,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         const slatLeft = slatIndex * slotWidth
         const partial = (x - slatLeft) / slotWidth // floating point number between 0 and 1
         const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+        const snapIndex = (slatIndex * tDateProfile.snapsPerSlot) + localSnapIndex
+        const timeAxis = tDateProfile.timeAxis
+        const startMs = timeAxis ? timeAxis.snapBoundaryMs[timeAxis.snapIndexToDiff[snapIndex]] : null
+        const endMs = timeAxis ? timeAxis.snapBoundaryMs[timeAxis.snapIndexToDiff[snapIndex] + 1] : null
 
-        let start = dateEnv.add(
-          tDateProfile.slotDates[slatIndex],
-          multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-        )
-        let end = dateEnv.add(start, tDateProfile.snapDuration)
+        let start = timeAxis?.snapDates[snapIndex] ?? tDateProfile.slotDates[slatIndex]
+        let end = timeAxis
+          ? getTimelineAxisSnapEnd(dateEnv, timeAxis, snapIndex)
+          : dateEnv.add(start, tDateProfile.snapDuration)
 
         // TODO: generalize this coord stuff to TimeGrid?
 
@@ -1386,6 +1400,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             range: { start, end },
             allDay: !tDateProfile.isTimeScale,
             resourceId: resource.id,
+            ...(startMs != null && endMs != null ? {
+              timelineStartMs: startMs,
+              timelineEndMs: endMs,
+            } : {}),
           },
           rect: {
             left,

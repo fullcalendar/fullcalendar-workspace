@@ -1,6 +1,8 @@
-import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/preact/protected-api';
+import { DateEnv, DateMarker, DateProfile, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact/public-api'
+import { asRoughMs } from '@fullcalendar/preact/protected-api'
+import { computeDateSnapCoverage, computeDateSnapCoverageFromMs } from './TimelineCoords'
 
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------
@@ -49,7 +51,9 @@ export function timeToCoord( // pixels
   tDateProfile: TimelineDateProfile,
   slowWidth: number,
 ): number {
-  let date = dateEnv.add(dateProfile.activeRange.start, time)
+  let date = tDateProfile.isTimeScale
+    ? dateEnv.timestampToMarker(dateEnv.toDate(dateProfile.activeRange.start).valueOf() + asRoughMs(time))
+    : dateEnv.add(dateProfile.activeRange.start, time)
 
   if (!tDateProfile.isTimeScale) {
     date = startOfDay(date)
@@ -69,34 +73,12 @@ export function dateToCoord( // pixels
   return slotCoverage * slotWidth
 }
 
-/*
-returned value is between 0 and the number of snaps
-*/
-function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
-  let snapDiff = dateEnv.countDurationsBetween(
-    tDateProfile.normalizedRange.start,
-    date,
-    tDateProfile.snapDuration,
-  )
-
-  if (snapDiff < 0) {
-    return 0
-  }
-
-  if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
-    return tDateProfile.snapCnt
-  }
-
-  let snapDiffInt = Math.floor(snapDiff)
-  let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
-
-  if (isInt(snapCoverage)) { // not an in-between value
-    snapCoverage += snapDiff - snapDiffInt // add the remainder
-  } else {
-    // a fractional value, meaning the date is not visible
-    // always round up in this case. works for start AND end dates in a range.
-    snapCoverage = Math.ceil(snapCoverage)
-  }
-
-  return snapCoverage
+export function msToCoord(
+  dateMs: number,
+  tDateProfile: TimelineDateProfile,
+  slotWidth: number,
+): number {
+  let snapCoverage = computeDateSnapCoverageFromMs(dateMs, tDateProfile)
+  let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
+  return slotCoverage * slotWidth
 }

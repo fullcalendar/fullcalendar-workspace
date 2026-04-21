@@ -5,7 +5,7 @@ import type { EventRenderRange } from '../../component-util/event-rendering'
 import type { Duration } from '@full-ui/headless-calendar'
 import type { Hit } from '../../interactions/hit'
 import type { EventMutation } from '../../structs/event-mutation'
-import { applyMutationToEventStore } from '../../structs/event-mutation'
+import { addMutationToMarker, applyMutationToEventStore } from '../../structs/event-mutation'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { EventStore } from '../../structs/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
@@ -254,19 +254,48 @@ function computeMutation(
   let dateEnv = hit0.context.dateEnv
   let date0 = hit0.dateSpan.range.start
   let date1 = hit1.dateSpan.range.start
-
-  let delta = diffDates(
-    date0, date1,
-    dateEnv,
-    hit0.largeUnit,
-  )
+  const instantDeltaMs = computeTimelineInstantDeltaMs(hit0, hit1)
+  let delta = instantDeltaMs != null
+    ? createDuration(instantDeltaMs)
+    : diffDates(
+      date0, date1,
+      dateEnv,
+      hit0.largeUnit,
+    )
 
   if (isFromStart) {
-    if (dateEnv.add(instanceRange.start, delta) < instanceRange.end) {
-      return { startDelta: delta }
+    const nextStartValid = instantDeltaMs != null
+      ? dateEnv.toDate(instanceRange.start).valueOf() + instantDeltaMs < dateEnv.toDate(instanceRange.end).valueOf()
+      : addMutationToMarker(instanceRange.start, delta, instantDeltaMs ?? undefined, hit0.context) < instanceRange.end
+
+    if (nextStartValid) {
+      return {
+        startDelta: delta,
+        ...(instantDeltaMs != null ? { instantStartDeltaMs: instantDeltaMs } : {}),
+      }
     }
-  } else if (dateEnv.add(instanceRange.end, delta) > instanceRange.start) {
-    return { endDelta: delta }
+  } else {
+    const nextEndValid = instantDeltaMs != null
+      ? dateEnv.toDate(instanceRange.end).valueOf() + instantDeltaMs > dateEnv.toDate(instanceRange.start).valueOf()
+      : addMutationToMarker(instanceRange.end, delta, instantDeltaMs ?? undefined, hit0.context) > instanceRange.start
+
+    if (nextEndValid) {
+    return {
+      endDelta: delta,
+      ...(instantDeltaMs != null ? { instantEndDeltaMs: instantDeltaMs } : {}),
+    }
+    }
+  }
+
+  return null
+}
+
+function computeTimelineInstantDeltaMs(hit0: Hit, hit1: Hit): number | null {
+  const startMs0 = hit0.dateSpan.allDay ? null : hit0.dateSpan.timelineStartMs
+  const startMs1 = hit1.dateSpan.allDay ? null : hit1.dateSpan.timelineStartMs
+
+  if (startMs0 != null && startMs1 != null) {
+    return startMs1 - startMs0
   }
 
   return null

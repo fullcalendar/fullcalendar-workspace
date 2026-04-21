@@ -16,6 +16,11 @@ export interface EventMutation {
   datesDelta?: Duration // body start+end moving together. for dragging
   startDelta?: Duration // for resizing
   endDelta?: Duration // for resizing
+  // Timeline timed hits can carry canonical instant deltas so DST gaps/folds do not get
+  // reinterpreted through generic civil-marker arithmetic when applying mutations.
+  instantDatesDeltaMs?: number
+  instantStartDeltaMs?: number
+  instantEndDeltaMs?: number
   standardProps?: any // for the def. should not include extendedProps
   extendedProps?: any // for the def
 }
@@ -90,7 +95,6 @@ function applyMutationToEventInstance(
   mutation: EventMutation,
   context: CalendarContext,
 ): EventInstance {
-  let { dateEnv } = context
   let forceAllDay = mutation.standardProps && mutation.standardProps.allDay === true
   let clearEnd = mutation.standardProps && mutation.standardProps.hasEnd === false
   let copy = { ...eventInstance } as EventInstance
@@ -100,24 +104,30 @@ function applyMutationToEventInstance(
   }
 
   if (mutation.datesDelta && eventConfig.startEditable) {
-    copy.range = {
-      start: dateEnv.add(copy.range.start, mutation.datesDelta),
-      end: dateEnv.add(copy.range.end, mutation.datesDelta),
-    }
+    copy.range = mutation.instantDatesDeltaMs != null
+      ? buildTimelineMutatedRange(copy.range, mutation.instantDatesDeltaMs, mutation.instantDatesDeltaMs, context)
+      : {
+        start: addMutationToMarker(copy.range.start, mutation.datesDelta, undefined, context),
+        end: addMutationToMarker(copy.range.end, mutation.datesDelta, undefined, context),
+      }
   }
 
   if (mutation.startDelta && eventConfig.durationEditable) {
-    copy.range = {
-      start: dateEnv.add(copy.range.start, mutation.startDelta),
-      end: copy.range.end,
-    }
+    copy.range = mutation.instantStartDeltaMs != null
+      ? buildTimelineMutatedRange(copy.range, mutation.instantStartDeltaMs, 0, context)
+      : {
+        start: addMutationToMarker(copy.range.start, mutation.startDelta, undefined, context),
+        end: copy.range.end,
+      }
   }
 
   if (mutation.endDelta && eventConfig.durationEditable) {
-    copy.range = {
-      start: copy.range.start,
-      end: dateEnv.add(copy.range.end, mutation.endDelta),
-    }
+    copy.range = mutation.instantEndDeltaMs != null
+      ? buildTimelineMutatedRange(copy.range, 0, mutation.instantEndDeltaMs, context)
+      : {
+        start: copy.range.start,
+        end: addMutationToMarker(copy.range.end, mutation.endDelta, undefined, context),
+      }
   }
 
   if (clearEnd) {
@@ -142,4 +152,45 @@ function applyMutationToEventInstance(
   }
 
   return copy
+}
+
+export function addMutationToMarker(
+  marker: Date,
+  delta: Duration,
+  instantDeltaMs: number | undefined,
+  context: CalendarContext,
+): Date {
+  if (instantDeltaMs != null) {
+    return context.dateEnv.timestampToMarker(
+      context.dateEnv.toDate(marker).valueOf() + instantDeltaMs,
+    )
+  }
+
+  return context.dateEnv.add(marker, delta)
+}
+
+function buildTimelineMutatedRange(
+  range: EventInstance['range'],
+  startDeltaMs: number,
+  endDeltaMs: number,
+  context: CalendarContext,
+): EventInstance['range'] {
+  const startMs = getRangeBoundaryMs(range, 'start', context) + startDeltaMs
+  const endMs = getRangeBoundaryMs(range, 'end', context) + endDeltaMs
+
+  return {
+    start: context.dateEnv.timestampToMarker(startMs),
+    end: context.dateEnv.timestampToMarker(endMs),
+    timelineStartMs: startMs,
+    timelineEndMs: endMs,
+  }
+}
+
+function getRangeBoundaryMs(
+  range: EventInstance['range'],
+  edge: 'start' | 'end',
+  context: CalendarContext,
+): number {
+  const propName = edge === 'start' ? 'timelineStartMs' : 'timelineEndMs'
+  return range[propName] ?? context.dateEnv.toDate(range[edge]).valueOf()
 }
