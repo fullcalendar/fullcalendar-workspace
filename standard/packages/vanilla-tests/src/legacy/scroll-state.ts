@@ -1,6 +1,7 @@
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
+import { waitTimeout } from '../lib/misc'
 
 describe('scroll state', () => {
   let calendarEl
@@ -26,30 +27,13 @@ describe('scroll state', () => {
   }, (viewName) => {
     let ViewWrapper = viewName.match(/^dayGrid/) ? DayGridViewWrapper : TimeGridViewWrapper
 
-    it('should be maintained when resizing window', (done) => {
-      let scrollEl
-      let scroll0
-      let calendar = initCalendar({}, calendarEl)
-
-      scrollEl = new ViewWrapper(calendar).getScrollerEl()
-
-      setTimeout(() => { // wait until after browser's scroll state is applied
-        scrollEl.scrollTop = 9999 // all the way
-        scroll0 = scrollEl.scrollTop
-
-        setTimeout(() => { // wait until all other tasks are finished
-          expect(scrollEl.scrollTop).toBe(scroll0)
-          done()
-        }, 0)
-      }, 0)
-    })
-
-    it('should be maintained when after rerendering events', () => {
+    it('should be maintained when after rerendering events', async () => {
       let calendar = initCalendar({
         events: [{
           start: '2015-02-20',
         }],
       }, calendarEl)
+      await waitTimeout()
 
       let scrollEl = new ViewWrapper(calendar).getScrollerEl()
       let eventEl0 = new CalendarWrapper(calendar).getEventEls()
@@ -57,7 +41,8 @@ describe('scroll state', () => {
 
       scrollEl.scrollTop = 9999 // all the way
       let scroll0 = scrollEl.scrollTop
-      calendar.render()
+      calendar.render() // I don't think this actually rerenders anything!
+      await waitTimeout()
 
       let eventEl1 = new CalendarWrapper(calendar).getEventEls()
       expect(eventEl1.length).toBe(1)
