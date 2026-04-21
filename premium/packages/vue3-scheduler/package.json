@@ -1,23 +1,23 @@
 {
   "name": "@fullcalendar/vue3-scheduler",
-  "version": "7.0.0-rc.1",
+  "version": "7.1.0-alpha.0",
   "title": "FullCalendar Vue 3",
   "description": "FullCalendar Vue 3 Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
-    "@full-ui/headless-grid": "workspace:7.0.0-rc.1",
-    "@fullcalendar/core": "workspace:7.0.0-rc.1",
+    "@full-ui/headless-calendar": "workspace:7.1.0-alpha.0",
+    "@full-ui/headless-grid": "workspace:7.1.0-alpha.0",
+    "@fullcalendar/core": "workspace:7.1.0-alpha.0",
     "preact": "^10.29.0"
   },
   "peerDependencies": {
-    "@fullcalendar/vue3": "workspace:7.0.0-rc.1",
+    "@fullcalendar/vue3": "workspace:7.1.0-alpha.0",
     "temporal-polyfill": "^0.3.2",
     "vue": "^3.0.11"
   },
   "devDependencies": {
-    "@fullcalendar/vue3": "workspace:7.0.0-rc.1",
-    "fullcalendar": "workspace:7.0.0-rc.1",
-    "fullcalendar-scheduler": "workspace:7.0.0-rc.1",
+    "@fullcalendar/vue3": "workspace:7.1.0-alpha.0",
+    "fullcalendar": "workspace:7.1.0-alpha.0",
+    "fullcalendar-scheduler": "workspace:7.1.0-alpha.0",
     "temporal-polyfill": "^0.3.2",
     "vue": "^3.2.41"
   },

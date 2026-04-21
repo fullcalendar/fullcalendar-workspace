@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fullcalendar/react": "7.0.0-rc.1",
+    "@fullcalendar/react": "7.1.0-alpha.0",
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0",
     "temporal-polyfill": "^0.3.2"
