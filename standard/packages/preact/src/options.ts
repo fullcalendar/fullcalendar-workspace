@@ -564,6 +564,7 @@ export const CALENDAR_LISTENER_REFINERS = {
   _unmount: identity as Identity<() => void>,
   _beforeprint: identity as Identity<() => void>,
   _afterprint: identity as Identity<() => void>,
+  _noDateSelect: identity as Identity<() => void>,
   _noEventDrop: identity as Identity<() => void>,
   _noEventResize: identity as Identity<() => void>,
   _timeScrollRequest: identity as Identity<(time: Duration) => void>,

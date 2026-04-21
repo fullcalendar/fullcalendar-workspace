@@ -17,7 +17,7 @@ describe('dayHeaderContent as text', () => { // TODO: rename file
     it('should contain custom HTML escaped text', () => {
       let calendar = initCalendar({
         dayHeaderContent(info) {
-          return '<div>Custom ' + currentCalendar.formatDate(info.date, { weekday: 'long' }) + '</div>'
+          return '<div>Custom ' + info.view.calendar.formatDate(info.date, { weekday: 'long' }) + '</div>'
         },
       })
       let headerWrapper = new ViewWrapper(calendar).header

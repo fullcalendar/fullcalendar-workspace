@@ -9,7 +9,7 @@ describe('forceEventDuration', () => {
       forceEventDuration: false,
     })
     it('allows a null end date for all-day and timed events', () => {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           {
             id: '1',
@@ -21,7 +21,7 @@ describe('forceEventDuration', () => {
           },
         ],
       })
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events[0].end).toBeNull()
       expect(events[1].end).toBeNull()
     })
@@ -32,7 +32,7 @@ describe('forceEventDuration', () => {
       forceEventDuration: true,
     })
     it('allows a null end date for all-day and timed events', () => {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           {
             id: '1',
@@ -44,7 +44,7 @@ describe('forceEventDuration', () => {
           },
         ],
       })
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events[0].id).toEqual('1')
       expect(events[0].end instanceof Date).toEqual(true)
       expect(events[1].id).toEqual('2')

@@ -12,20 +12,19 @@ import './date-matchers.js'
 // ---------------------------------------------------------------------------------------------------------------------
 
 let optionsStack = null
+let calendarElements = null
 
 beforeEach(() => {
   optionsStack = []
+  calendarElements = []
 })
 
 afterEach(() => {
   optionsStack = null
-
-  if (window.currentCalendar) {
-    window.currentCalendar.destroy()
-    window.currentCalendar = null
+  for (let calendarElement of calendarElements) {
+    calendarElement.remove()
   }
-
-  $('#calendar').remove()
+  calendarElements = null
 })
 
 // Calendar Options and Initialization
@@ -50,44 +49,32 @@ function spyOnCalendarCallback(name, func?) {
   return options[name]
 }
 
-function initCalendar(moreOptions?: CalendarOptions, el?) {
-  let $el
+function createCalendarElement() {
+  let el = document.createElement('div')
+
+  document.body.appendChild(el)
+  calendarElements.push(el)
+
+  return el
+}
+
+function initCalendar(moreOptions?: CalendarOptions, el?: HTMLElement) {
+  let calendarEl
 
   if (moreOptions) {
     optionsStack.push(moreOptions)
   }
 
   if (el) {
-    $el = $(el)
+    calendarEl = el
   } else {
-    $el = $('<div id="calendar">').appendTo('body')
-  }
-
-  if (window.currentCalendar) {
-    window.currentCalendar.destroy()
+    calendarEl = createCalendarElement()
   }
 
   let options = getCurrentOptions()
-  let newCalendar = null
-
-  options.plugins = options.plugins.concat([
-    {
-      name: 'current-calendar-' + Date.now(), // ugh, might be called twice per calendar
-      contextInit(context) {
-        newCalendar = window.currentCalendar = context.calendarApi as Calendar
-      },
-    },
-  ])
-
-  let cool = new Calendar($el[0], options)
-
-  if (newCalendar === window.currentCalendar) {
-    newCalendar.render()
-  } else {
-    newCalendar.destroy()
-  }
-
-  return cool
+  let calendar = new Calendar(calendarEl, options)
+  calendar.render()
+  return calendar
 }
 
 function getCurrentOptions() {
@@ -229,6 +216,7 @@ function spyCall(func?) {
 
 type spyOnCalendarCallbackType = typeof spyOnCalendarCallback
 type pushOptionsType = typeof pushOptions
+type createCalendarElementType = typeof createCalendarElement
 type initCalendarType = typeof initCalendar
 type getCurrentOptionsType = typeof getCurrentOptions
 type describeOptionsType = typeof describeOptions
@@ -241,9 +229,9 @@ type spyCallType = typeof spyCall
 
 declare global {
 
-  let currentCalendar: Calendar
   let spyOnCalendarCallback: spyOnCalendarCallbackType
   let pushOptions: pushOptionsType
+  let createCalendarElement: createCalendarElementType
   let initCalendar: initCalendarType
   let getCurrentOptions: getCurrentOptionsType
   let describeOptions: describeOptionsType
@@ -255,7 +243,6 @@ declare global {
   let spyCall: spyCallType
 
   interface Window { // how to unify this with the above let statements?
-    currentCalendar: Calendar
     karmaConfig: any
   }
 
@@ -308,6 +295,7 @@ injectPlugin
 export {
   spyOnCalendarCallback,
   pushOptions,
+  createCalendarElement,
   initCalendar,
   getCurrentOptions,
   describeOptions,

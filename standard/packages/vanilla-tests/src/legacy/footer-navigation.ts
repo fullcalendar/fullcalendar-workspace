@@ -18,7 +18,7 @@ describe('footerToolbar navigation', () => { // TODO: rename file
       let toolbarWrapper = new CalendarWrapper(calendar).footerToolbar
       $(toolbarWrapper.getButtonEl('next')).simulate('click')
       setTimeout(() => {
-        let newDate = currentCalendar.getDate()
+        let newDate = calendar.getDate()
         expect(newDate).toEqualDate('2010-03-01')
         done()
       })
@@ -33,7 +33,7 @@ describe('footerToolbar navigation', () => { // TODO: rename file
       let toolbarWrapper = new CalendarWrapper(calendar).footerToolbar
       $(toolbarWrapper.getButtonEl('prev')).simulate('click')
       setTimeout(() => {
-        let newDate = currentCalendar.getDate()
+        let newDate = calendar.getDate()
         expect(newDate).toEqualDate('2010-01-01')
         done()
       })
@@ -48,7 +48,7 @@ describe('footerToolbar navigation', () => { // TODO: rename file
       let toolbarWrapper = new CalendarWrapper(calendar).footerToolbar
       $(toolbarWrapper.getButtonEl('prevYear')).simulate('click')
       setTimeout(() => {
-        let newDate = currentCalendar.getDate()
+        let newDate = calendar.getDate()
         expect(newDate).toEqualDate('2009-02-01')
         done()
       })
@@ -63,7 +63,7 @@ describe('footerToolbar navigation', () => { // TODO: rename file
       let toolbarWrapper = new CalendarWrapper(calendar).footerToolbar
       $(toolbarWrapper.getButtonEl('nextYear')).simulate('click')
       setTimeout(() => {
-        let newDate = currentCalendar.getDate()
+        let newDate = calendar.getDate()
         expect(newDate).toEqualDate('2011-02-01')
         done()
       })
@@ -80,7 +80,7 @@ describe('footerToolbar navigation', () => { // TODO: rename file
       let toolbarWrapper = new CalendarWrapper(calendar).footerToolbar
       $(toolbarWrapper.getButtonEl('today')).simulate('click')
       setTimeout(() => {
-        let newDate = currentCalendar.getDate() // will be ambig zone
+        let newDate = calendar.getDate() // will be ambig zone
         expect(newDate).toEqualNow()
         done()
       })

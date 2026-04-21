@@ -27,9 +27,9 @@ describe('event fetching while date-navigating', () => {
     let calendarWrapper = new CalendarWrapper(calendar)
 
     setTimeout(() => {
-      currentCalendar.next()
+      calendar.next()
       setTimeout(() => {
-        currentCalendar.prev()
+        calendar.prev()
         setTimeout(() => {
           expect(calendarWrapper.getEventEls().length).toBe(1)
           done()

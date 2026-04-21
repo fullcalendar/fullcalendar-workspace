@@ -202,8 +202,8 @@ describe('external drag and drop with jquery UI', () => {
             if (callCnt === 0) {
               expect(info.date).toEqualDate('2014-08-20T01:00:00Z')
 
-              currentCalendar.next()
-              currentCalendar.prev()
+              calendar.next()
+              calendar.prev()
 
               waitTimeout().then(() => {
                 $('#sidebar .event1').remove()

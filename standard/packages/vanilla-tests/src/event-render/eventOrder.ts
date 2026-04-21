@@ -21,9 +21,9 @@ describe('eventOrder', () => {
     })
 
     it('will sort by start time by default', async () => {
-      initCalendar()
+      let calendar = initCalendar()
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['x', 'y', 'z'])
+      expect(getEventOrder(calendar)).toEqual(['x', 'y', 'z'])
     })
   })
 
@@ -37,25 +37,25 @@ describe('eventOrder', () => {
     })
 
     it('sorts by title by default', async () => {
-      initCalendar()
+      let calendar = initCalendar()
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['z', 'y', 'x'])
+      expect(getEventOrder(calendar)).toEqual(['z', 'y', 'x'])
     })
 
     it('can sort by a standard prop', async () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventOrder: 'id',
       })
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['x', 'y', 'z'])
+      expect(getEventOrder(calendar)).toEqual(['x', 'y', 'z'])
     })
 
     it('can sort by a non-standard prop', async () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventOrder: 'myOrder',
       })
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['y', 'x', 'z'])
+      expect(getEventOrder(calendar)).toEqual(['y', 'x', 'z'])
     })
   })
 
@@ -69,11 +69,11 @@ describe('eventOrder', () => {
     })
 
     it('sorting by a prop will override date-determined order', async () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventOrder: 'myOrder',
       })
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['y', 'x', 'z'])
+      expect(getEventOrder(calendar)).toEqual(['y', 'x', 'z'])
     })
   })
 
@@ -87,11 +87,11 @@ describe('eventOrder', () => {
     })
 
     it('sorting by a prop will override duration-determined order', async () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventOrder: 'myOrder',
       })
       await waitTimeout()
-      expect(getEventOrder()).toEqual(['y', 'x', 'z'])
+      expect(getEventOrder(calendar)).toEqual(['y', 'x', 'z'])
     })
   })
 
@@ -123,8 +123,8 @@ describe('eventOrder', () => {
     })
   })
 
-  function getEventOrder() {
-    let objs = new CalendarWrapper(currentCalendar).getEventEls().map((el) => ({
+  function getEventOrder(calendar) {
+    let objs = new CalendarWrapper(calendar).getEventEls().map((el) => ({
       id: el.getAttribute('data-event-id'),
       top: el.getBoundingClientRect().top,
     }))

@@ -15,7 +15,7 @@ describe('vresource resource rerendering', () => {
     let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
 
     expect(headerWrapper.getResourceIds()).toEqual(['a', 'b', 'c'])
-    currentCalendar.getResourceById('a').remove()
+    calendar.getResourceById('a').remove()
     expect(headerWrapper.getResourceIds()).toEqual(['b', 'c'])
   })
 
@@ -25,7 +25,7 @@ describe('vresource resource rerendering', () => {
 
     expect(headerWrapper.getResourceIds()).toEqual(['a', 'b', 'c'])
 
-    currentCalendar.addResource({
+    calendar.addResource({
       id: 'd',
       title: 'Auditorium D',
     })

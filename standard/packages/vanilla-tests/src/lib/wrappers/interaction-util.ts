@@ -10,7 +10,7 @@ export function waitEventResize(calendar: Calendar, dragging: Promise<any> | (()
 }
 
 export function waitDateSelect(calendar: Calendar, dragging: Promise<any> | (() => Promise<any>)) {
-  return waitForDragOutcome(calendar, dragging, 'select', null, (info) => info)
+  return waitForDragOutcome(calendar, dragging, 'select', '_noDateSelect' as keyof CalendarListeners, (info) => info)
 }
 
 function waitForDragOutcome<T>(

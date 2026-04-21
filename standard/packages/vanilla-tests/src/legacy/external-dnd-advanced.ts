@@ -161,8 +161,8 @@ describe('advanced external dnd', () => {
           })
 
           it('accepts the given duration when dropped on a timed slot', async () => {
-            await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
-            let event = currentCalendar.getEvents()[0]
+            let calendar = await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
+            let event = calendar.getEvents()[0]
             expect(event.start).toEqualDate('2014-11-13T02:00:00Z')
             expect(event.end).toEqualDate('2014-11-13T07:00:00Z')
           })
@@ -178,13 +178,13 @@ describe('advanced external dnd', () => {
           })
 
           it('keeps the event when navigating away and back', async () => {
-            await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
+            let calendar = await testExternalEventDrag({}, '2014-11-13T02:00:00Z', '2014-11-13T02:00:00Z', true)
             await waitTimeout()
-            let calendarWrapper = new CalendarWrapper(currentCalendar)
+            let calendarWrapper = new CalendarWrapper(calendar)
             expect(calendarWrapper.getEventEls().length).toBe(1)
-            currentCalendar.next()
+            calendar.next()
             expect(calendarWrapper.getEventEls().length).toBe(0)
-            currentCalendar.prev()
+            calendar.prev()
             expect(calendarWrapper.getEventEls().length).toBe(1)
           })
         })
@@ -318,9 +318,9 @@ describe('advanced external dnd', () => {
           })
 
           it('accepts the given start time for the dropped day', async () => {
-            await testExternalEventDrag({}, '2014-11-13', '2014-11-13T05:00:00Z', true)
+            let calendar = await testExternalEventDrag({}, '2014-11-13', '2014-11-13T05:00:00Z', true)
             // the whole-day start was already checked. we still need to check the exact time
-            let event = currentCalendar.getEvents()[0]
+            let event = calendar.getEvents()[0]
             expect(event.start).toEqualDate('2014-11-13T05:00:00Z')
           })
         })
@@ -365,7 +365,7 @@ describe('advanced external dnd', () => {
     spyOn(options, 'drop').and.callThrough()
     spyOn(options, 'eventReceive').and.callThrough()
 
-    await testEventDrag(options, dragToDate, expectSuccess, 'drag') // .drag className
+    let calendar = await testEventDrag(options, dragToDate, expectSuccess, 'drag') // .drag className
 
     if (expectSuccess) {
       expect(options.drop).toHaveBeenCalled()
@@ -374,5 +374,7 @@ describe('advanced external dnd', () => {
       expect(options.drop).not.toHaveBeenCalled()
       expect(options.eventReceive).not.toHaveBeenCalled()
     }
+
+    return calendar
   }
 })

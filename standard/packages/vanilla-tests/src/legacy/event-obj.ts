@@ -11,10 +11,10 @@ describe('event object creation', () => {
   */
 
   function init(singleEventData) {
-    initCalendar({
+    let calendar = initCalendar({
       events: [singleEventData],
     })
-    return currentCalendar.getEvents()[0]
+    return calendar.getEvents()[0]
   }
 
   it('accepts `date` property as alias for `start`', () => {

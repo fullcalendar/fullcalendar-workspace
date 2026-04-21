@@ -30,16 +30,16 @@ describe('timeZone', () => {
   })
 
   it('receives events correctly when local timezone', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'local',
     })
-    expectLocalTimezone()
+    expectLocalTimezone(calendar)
   })
 
-  function expectLocalTimezone() {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectLocalTimezone(calendar) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualLocalDate('2014-05-02T00:00:00')
     expect(timedEvent.allDay).toEqual(false)
@@ -49,16 +49,16 @@ describe('timeZone', () => {
   }
 
   it('receives events correctly when UTC timezone', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'UTC',
     })
-    expectUtcTimezone()
+    expectUtcTimezone(calendar)
   })
 
-  function expectUtcTimezone() {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectUtcTimezone(calendar) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate('2014-05-02')
     expect(timedEvent.allDay).toEqual(false)
@@ -69,14 +69,14 @@ describe('timeZone', () => {
 
   it('receives events correctly when custom timezone', () => {
     const timeZone = 'America/Chicago'
-    initCalendar({ timeZone })
-    expectCustomTimezone(timeZone)
+    let calendar = initCalendar({ timeZone })
+    expectCustomTimezone(calendar, timeZone)
   })
 
-  function expectCustomTimezone(timeZone) {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectCustomTimezone(calendar, timeZone) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate(
       new Date(
@@ -98,16 +98,16 @@ describe('timeZone', () => {
   }
 
   it('can be set dynamically', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'local',
     })
 
-    expectLocalTimezone()
+    expectLocalTimezone(calendar)
 
-    currentCalendar.setOption('timeZone', 'UTC')
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+    calendar.setOption('timeZone', 'UTC')
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate('2014-05-02')
     expect(timedEvent.allDay).toEqual(false)

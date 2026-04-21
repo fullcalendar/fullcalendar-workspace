@@ -11,7 +11,7 @@ describe('scrollToTime method', () => {
     it('can scroll to a date', async () => {
       let calendar = initCalendar()
       await waitTimeout()
-      currentCalendar.scrollToTime({ days: 2 })
+      calendar.scrollToTime({ days: 2 })
       await waitTimeout()
 
       let viewWrapper = new TimelineViewWrapper(calendar)

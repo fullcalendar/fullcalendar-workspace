@@ -217,10 +217,10 @@ describe('events as a json feed', () => {
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, { body: [] })
 
-    initCalendar({
+    let calendar = initCalendar({
       events: { url: givenUrl },
     })
-    expect(currentCalendar.getEventSources()[0].url).toBe(givenUrl)
+    expect(calendar.getEventSources()[0].url).toBe(givenUrl)
   })
 
   it('throws JsonRequestError if mangled JSON', (done) => {

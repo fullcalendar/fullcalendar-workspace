@@ -13,9 +13,9 @@ describe('next', () => {
 
     describe('when dateIncrement not specified', () => {
       it('moves forward by one week', () => {
-        initCalendar()
-        currentCalendar.next()
-        expectActiveRange('2017-06-11', '2017-06-18')
+        let calendar = initCalendar()
+        calendar.next()
+        expectActiveRange(calendar, '2017-06-11', '2017-06-18')
       })
     })
 
@@ -24,9 +24,9 @@ describe('next', () => {
       'when two week dateIncrement specified as a string': '14.00:00:00',
     }, () => {
       it('moves forward by two weeks', () => {
-        initCalendar()
-        currentCalendar.next()
-        expectActiveRange('2017-06-18', '2017-06-25')
+        let calendar = initCalendar()
+        calendar.next()
+        expectActiveRange(calendar, '2017-06-18', '2017-06-25')
       })
     })
 
@@ -45,9 +45,9 @@ describe('next', () => {
 
     describe('when dateIncrement not specified', () => {
       it('moves forward by one month', () => {
-        initCalendar()
-        currentCalendar.next()
-        expectActiveRange('2017-06-25', '2017-08-06')
+        let calendar = initCalendar()
+        calendar.next()
+        expectActiveRange(calendar, '2017-06-25', '2017-08-06')
       })
     })
 
@@ -57,9 +57,9 @@ describe('next', () => {
       })
 
       it('moves forward by two months', () => {
-        initCalendar()
-        currentCalendar.next()
-        expectActiveRange('2017-07-30', '2017-09-10')
+        let calendar = initCalendar()
+        calendar.next()
+        expectActiveRange(calendar, '2017-07-30', '2017-09-10')
       })
     })
   })
@@ -73,9 +73,9 @@ describe('next', () => {
     describe('when no dateAlignment is specified', () => {
       describe('when dateIncrement not specified', () => {
         it('moves forward three days', () => {
-          initCalendar()
-          currentCalendar.next()
-          expectActiveRange('2017-06-11', '2017-06-14')
+          let calendar = initCalendar()
+          calendar.next()
+          expectActiveRange(calendar, '2017-06-11', '2017-06-14')
         })
       })
 
@@ -84,9 +84,9 @@ describe('next', () => {
           dateIncrement: { days: 2 },
         })
         it('moves forward two days', () => {
-          initCalendar()
-          currentCalendar.next()
-          expectActiveRange('2017-06-10', '2017-06-13')
+          let calendar = initCalendar()
+          calendar.next()
+          expectActiveRange(calendar, '2017-06-10', '2017-06-13')
         })
       })
     })
@@ -98,9 +98,9 @@ describe('next', () => {
 
       describe('when dateIncrement not specified', () => {
         it('moves forward one week', () => {
-          initCalendar()
-          currentCalendar.next()
-          expectActiveRange('2017-06-11', '2017-06-14')
+          let calendar = initCalendar()
+          calendar.next()
+          expectActiveRange(calendar, '2017-06-11', '2017-06-14')
         })
       })
 
@@ -112,16 +112,16 @@ describe('next', () => {
         it('does not navigate nor rerender', () => {
           let called
 
-          initCalendar({
+          let calendar = initCalendar({
             dayCellDidMount() {
               called = true
             },
           })
 
           called = false
-          currentCalendar.next()
+          calendar.next()
 
-          expectActiveRange('2017-06-04', '2017-06-07') // the same as how it started
+          expectActiveRange(calendar, '2017-06-04', '2017-06-07') // the same as how it started
           expect(called).toBe(false)
         })
       })
@@ -136,10 +136,10 @@ describe('next', () => {
     })
 
     it('skips over weekends if there would be alignment with weekend', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialDate: '2017-11-09',
       })
-      currentCalendar.next()
+      calendar.next()
     })
   })
 })

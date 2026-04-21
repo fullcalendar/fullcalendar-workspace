@@ -16,9 +16,9 @@ describe('recurring events', () => {
     })
 
     it('expands events with local time', () => {
-      initCalendar()
+      let calendar = initCalendar()
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
 
       expect(events[0].start).toEqualLocalDate('2017-07-04T09:00:00')
       expect(events[0].end).toEqualLocalDate('2017-07-04T11:00:00')
@@ -38,9 +38,9 @@ describe('recurring events', () => {
     })
 
     it('expands within given range', () => {
-      initCalendar()
+      let calendar = initCalendar()
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(3)
 
       expect(events[0].start).toEqualDate('2017-07-05T09:00:00Z')
@@ -54,8 +54,8 @@ describe('recurring events', () => {
       })
 
       it('won\'t render any events', () => {
-        initCalendar()
-        let events = currentCalendar.getEvents()
+        let calendar = initCalendar()
+        let events = calendar.getEvents()
         expect(events.length).toBe(0)
       })
     })
@@ -71,8 +71,8 @@ describe('recurring events', () => {
     })
 
     it('will render from week before', () => {
-      initCalendar()
-      let events = currentCalendar.getEvents()
+      let calendar = initCalendar()
+      let events = calendar.getEvents()
       expect(events[0].start).toEqualDate('2019-06-01')
       expect(events[0].end).toEqualDate('2019-06-03')
       expect(events[1].start).toEqualDate('2019-06-08')

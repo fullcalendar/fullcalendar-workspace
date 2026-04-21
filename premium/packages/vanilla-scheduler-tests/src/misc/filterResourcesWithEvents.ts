@@ -91,7 +91,7 @@ describe('filterResourcesWithEvents', () => {
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b'])
-      currentCalendar.addEvent({ title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' })
+      calendar.addEvent({ title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' })
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b', 'd'])
     })
 
@@ -107,10 +107,10 @@ describe('filterResourcesWithEvents', () => {
 
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b', 'd'])
 
-      currentCalendar.addResource({ id: 'e', title: 'resource e' })
+      calendar.addResource({ id: 'e', title: 'resource e' })
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b', 'd'])
 
-      currentCalendar.addEvent({ title: 'event 3', start: '2016-12-04T02:00:00', resourceId: 'e' })
+      calendar.addEvent({ title: 'event 3', start: '2016-12-04T02:00:00', resourceId: 'e' })
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b', 'd', 'e'])
     })
 
@@ -147,7 +147,7 @@ describe('filterResourcesWithEvents', () => {
       })
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
-      currentCalendar.next()
+      calendar.next()
       expect(timelineGridWrapper.getResourceIds()).toEqual([])
     })
   })

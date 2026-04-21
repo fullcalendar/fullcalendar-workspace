@@ -4,21 +4,21 @@ import { prepareStandardListeners } from '../lib/vdom-misc'
 describe('destroy', () => {
   describe('when calendar is LTR', () => {
     it('cleans up all classNames on the root element', () => {
-      initCalendar({
+      let calendar = initCalendar({
         direction: 'ltr',
       })
-      currentCalendar.destroy()
-      expect(currentCalendar.el.className).toBe('')
+      calendar.destroy()
+      expect(calendar.el.className).toBe('')
     })
   })
 
   describe('when calendar is RTL', () => {
     it('cleans up all classNames on the root element', () => {
-      initCalendar({
+      let calendar = initCalendar({
         direction: 'rtl',
       })
-      currentCalendar.destroy()
-      expect(currentCalendar.el.className).toBe('')
+      calendar.destroy()
+      expect(calendar.el.className).toBe('')
     })
   })
 
@@ -47,8 +47,8 @@ describe('destroy', () => {
       elHandlerCounter.startWatching()
       docHandlerCounter.startWatching()
 
-      initCalendar({}, $el)
-      currentCalendar.destroy()
+      let calendar = initCalendar({}, $el[0])
+      calendar.destroy()
 
       expect(elHandlerCounter.stopWatching()).toBe(standardElListenerCount)
       expect(docHandlerCounter.stopWatching()).toBe(0)

@@ -1,3 +1,4 @@
+import type { Calendar } from 'fullcalendar'
 import { getRectCenter, intersectRects } from './geom'
 import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
@@ -5,10 +6,10 @@ import { CalendarWrapper } from './wrappers/CalendarWrapper'
 TODO: Don't rely on legacy simulateDrag
 Given the rectangles of the origin and destination
 slot or day area.
-*/
-export function drag(rect0, rect1, debug?, eventEl?) {
+ */
+export function drag(calendar: Calendar, rect0, rect1, debug?, eventEl?) {
   if (!eventEl) {
-    eventEl = new CalendarWrapper(currentCalendar).getFirstEventEl()
+    eventEl = new CalendarWrapper(calendar).getFirstEventEl()
   }
 
   let eventRect = eventEl.getBoundingClientRect()
@@ -24,11 +25,11 @@ export function drag(rect0, rect1, debug?, eventEl?) {
     debug,
   })
 
-  currentCalendar.on('eventDrop', (info) => {
+  calendar.on('eventDrop', (info) => {
     deferred.resolve(info)
   })
 
-  currentCalendar.on('_noEventDrop', () => {
+  calendar.on('_noEventDrop', () => {
     deferred.resolve(false)
   })
 

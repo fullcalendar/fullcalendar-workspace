@@ -27,7 +27,7 @@ describe('timeline background events', () => {
 
     expect(timelineGridWrapper.getBgEventEls().length).toBe(1)
 
-    currentCalendar.getEventById('1').remove()
+    calendar.getEventById('1').remove()
     expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
 
     viewWrapper.dataGrid.clickFirstExpander() // close

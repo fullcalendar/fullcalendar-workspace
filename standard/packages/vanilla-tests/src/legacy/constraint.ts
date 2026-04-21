@@ -36,8 +36,8 @@ describe('event constraint', () => {
                 },
               }],
             }
-            await testEventDrag(options, '2014-11-14', true)
-            let event = currentCalendar.getEvents()[0]
+            let calendar = await testEventDrag(options, '2014-11-14', true)
+            let event = calendar.getEvents()[0]
             expect(event.start).toEqualDate('2014-11-14T05:00:00Z')
             expect(event.end).toEqualDate('2014-11-14T07:00:00Z')
           })

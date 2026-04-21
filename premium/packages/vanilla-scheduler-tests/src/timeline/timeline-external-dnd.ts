@@ -120,7 +120,7 @@ describe('timeline-view external element drag-n-drop', () => {
       drop() {
         isDropCalled = true
       },
-    }, calEl) // will render calendar within this el
+    }, calEl[0]) // will render calendar within this el
 
     dragEl.simulate('drag', {
       dy: 10, // some movement
@@ -139,7 +139,7 @@ describe('timeline-view external element drag-n-drop', () => {
     await waitTimeout()
 
     await ignoreResizeObserverLoops(async () => {
-      currentCalendar.changeView('resourceTimelineWeek')
+      calendar.changeView('resourceTimelineWeek')
       await waitTimeout()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       await timelineGridWrapper.dragEventTo(
@@ -150,10 +150,10 @@ describe('timeline-view external element drag-n-drop', () => {
   })
 
   it('works after calling destroy', (done) => {
-    initCalendar()
+    let calendar = initCalendar()
 
     setTimeout(() => { // problems with destroy otherwise
-      currentCalendar.destroy()
+      calendar.destroy()
       $('.external-event').simulate('drag', {
         dx: 100,
         dy: 100,

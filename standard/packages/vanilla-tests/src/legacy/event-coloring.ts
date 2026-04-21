@@ -40,33 +40,33 @@ describe('event coloring', () => {
     let eventOptions = getEventOptions(eventHasTime)
 
     it('should accept the global eventContrastColor', () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventContrastColor: 'red',
         events: [getTestEvent(eventOptions)],
       })
-      expect(getEventCss('color')).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'color')).toMatch(RED_OR_OKLAB_REGEX)
     })
 
     it('should accept an event source\'s textColor', () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventContrastColor: 'blue', // even when there's a more general setting
         eventSources: [{
           contrastColor: 'red',
           events: [getTestEvent(eventOptions)],
         }],
       })
-      expect(getEventCss('color')).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'color')).toMatch(RED_OR_OKLAB_REGEX)
     })
 
     it('should accept an event object\'s textColor', () => {
       let eventInput = getTestEvent(eventOptions, {
         contrastColor: 'red',
       })
-      initCalendar({
+      let calendar = initCalendar({
         eventContrastColor: 'blue', // even when there's a more general setting
         events: [eventInput],
       })
-      expect(getEventCss('color')).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'color')).toMatch(RED_OR_OKLAB_REGEX)
     })
   }
 
@@ -78,49 +78,49 @@ describe('event coloring', () => {
     }
 
     it('should accept the global eventColor for background color', () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventColor: 'red',
         events: [getTestEvent(eventOptions)],
       })
-      expect(getEventCss('background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
     })
 
     it('should accept an event source\'s color for the background', () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventColor: 'blue', // even when there's a more general setting
         eventSources: [{
           color: 'red',
           events: [getTestEvent(eventOptions)],
         }],
       })
-      expect(getEventCss('background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
     })
 
     it('should accept an event source\'s backgroundColor', () => {
-      initCalendar({
+      let calendar = initCalendar({
         eventSources: [{
           color: 'red',
           events: [getTestEvent(eventOptions)],
         }],
       })
-      expect(getEventCss('background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
     })
 
     it('should accept an event object\'s color for the background', () => {
       let eventInput = getTestEvent(eventOptions)
       eventInput.color = 'red'
-      initCalendar({
+      let calendar = initCalendar({
         eventSources: [{
           color: 'blue', // even when there's a more general setting
           events: [eventInput],
         }],
       })
-      expect(getEventCss('background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
+      expect(getEventCss(calendar, 'background-color', display)).toMatch(RED_OR_OKLAB_REGEX)
     })
   }
 
-  function getEventCss(prop, display?) {
-    let calendarWrapper = new CalendarWrapper(currentCalendar)
+  function getEventCss(calendar, prop, display?) {
+    let calendarWrapper = new CalendarWrapper(calendar)
     let eventEl = display === 'background'
       ? calendarWrapper.getBgEventEls()[0]
       : calendarWrapper.getEventEls()[0]

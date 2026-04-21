@@ -52,7 +52,7 @@ describe('eventDrop', () => {
 
             info.revert()
             await waitTimeout()
-            let event = currentCalendar.getEvents()[0]
+            let event = calendar.getEvents()[0]
 
             expect(event.start).toEqualDate('2014-06-11')
             expect(event.end).toBeNull()
@@ -87,7 +87,7 @@ describe('eventDrop', () => {
 
         info.revert()
         await waitTimeout()
-        let event = currentCalendar.getEvents()[0]
+        let event = calendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
         expect(event.end).toBeNull()
@@ -144,7 +144,7 @@ describe('eventDrop', () => {
       await waitTimeout()
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      await new Promise<void>((resolve) => {
+      let dragPromise = new Promise<void>((resolve) => {
         $('.event1').simulate('drag', {
           end: dayGridWrapper.getDayEl('2014-06-20'),
           moves: 10,
@@ -153,7 +153,9 @@ describe('eventDrop', () => {
             resolve()
           },
         })
+      })
 
+      let hoverCheckPromise = new Promise<void>((resolve) => {
         setTimeout(() => { // wait until half way through drag
           $('.event2')
             .simulate('mouseover')
@@ -168,6 +170,8 @@ describe('eventDrop', () => {
           }, 0)
         }, 500)
       })
+
+      await Promise.all([dragPromise, hoverCheckPromise])
     })
   })
 
@@ -202,7 +206,7 @@ describe('eventDrop', () => {
 
             info.revert()
             await waitTimeout()
-            let event = currentCalendar.getEvents()[0]
+            let event = calendar.getEvents()[0]
 
             expect(event.start).toEqualDate('2014-06-11T06:00:00Z')
             expect(event.end).toBeNull()
@@ -236,7 +240,7 @@ describe('eventDrop', () => {
 
         info.revert()
         await waitTimeout()
-        let event = currentCalendar.getEvents()[0]
+        let event = calendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11')
         expect(event.end).toBeNull()
@@ -270,7 +274,7 @@ describe('eventDrop', () => {
 
         info.revert()
         await waitTimeout()
-        let event = currentCalendar.getEvents()[0]
+        let event = calendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11')
         expect(event.end).toBeNull()
@@ -306,7 +310,7 @@ describe('eventDrop', () => {
 
         info.revert()
         await waitTimeout()
-        let event = currentCalendar.getEvents()[0]
+        let event = calendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11T01:00:00Z')
         expect(event.end).toBeNull()
@@ -395,7 +399,7 @@ describe('eventDrop', () => {
           '2014-06-11T23:30:00',
         )
         await waitEventDrag(calendar, dragging)
-        let event = currentCalendar.getEvents()[0]
+        let event = calendar.getEvents()[0]
 
         expect(event.start).toEqualDate('2014-06-11T23:30:00Z')
         expect(event.end).toBeNull()

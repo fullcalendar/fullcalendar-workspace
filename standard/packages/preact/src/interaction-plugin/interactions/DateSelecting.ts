@@ -109,6 +109,8 @@ export class DateSelecting extends Interaction {
       triggerDateSelect(this.dragSelection, pev, this.component.context)
 
       this.dragSelection = null
+    } else {
+      this.component.context.emitter.trigger('_noDateSelect')
     }
   }
 }

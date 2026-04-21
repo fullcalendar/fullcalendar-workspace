@@ -40,10 +40,10 @@ describe('locale', () => {
     expect(toolbarWrapper.getTitleText()).toBe('julio de 2016')
     expect(calendar.getOption('direction')).toBe('ltr')
 
-    currentCalendar.setOption('locale', 'fr')
+    calendar.setOption('locale', 'fr')
     expect(toolbarWrapper.getTitleText()).toBe('juillet 2016')
 
-    currentCalendar.setOption('locale', 'ar') // NOTE: we had problems testing for RTL title text
+    calendar.setOption('locale', 'ar') // NOTE: we had problems testing for RTL title text
     expect(calendar.getOption('direction')).toBe('rtl')
   })
 })

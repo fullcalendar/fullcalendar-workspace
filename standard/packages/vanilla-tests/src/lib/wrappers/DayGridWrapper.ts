@@ -209,6 +209,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
         $(startEl).simulate('drag', {
           debug,
           isTouch: true,
+          delay: 200, // simulate hold
           end: getRectCenter(this.getDayEl(inclusiveEnd).getBoundingClientRect()),
           onRelease: () => resolve(),
         })

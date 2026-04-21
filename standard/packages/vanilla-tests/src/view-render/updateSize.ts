@@ -7,7 +7,7 @@ describe('updateSize method', () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       contentHeight: 600,
-    }, $el)
+    }, $el[0])
     let calendarWrapper = new CalendarWrapper(calendar)
 
     $el.show()

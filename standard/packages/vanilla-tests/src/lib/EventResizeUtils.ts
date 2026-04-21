@@ -1,8 +1,9 @@
+import type { Calendar } from 'fullcalendar'
 import { getRectCenter, subtractPoints, addPoints } from './geom'
 import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
-export function resize(point0, point1, fromStart?, debug?) {
-  let eventEl = new CalendarWrapper(currentCalendar).getFirstEventEl()
+export function resize(calendar: Calendar, point0, point1, fromStart?, debug?) {
+  let eventEl = new CalendarWrapper(calendar).getFirstEventEl()
 
   let $resizerEl = $(eventEl).find(
     '.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME),
@@ -27,11 +28,11 @@ export function resize(point0, point1, fromStart?, debug?) {
     debug,
   })
 
-  currentCalendar.on('eventResize', (info) => {
+  calendar.on('eventResize', (info) => {
     deferred.resolve(info)
   })
 
-  currentCalendar.on('_noEventResize', () => {
+  calendar.on('_noEventResize', () => {
     deferred.resolve(false)
   })
 

@@ -40,7 +40,7 @@ describe('footerToolbar rendering', () => { // TODO: rename file
     })
     let calendarWrapper = new CalendarWrapper(calendar)
     expect(calendarWrapper.footerToolbar).toBeTruthy()
-    currentCalendar.setOption('footerToolbar', false)
+    calendar.setOption('footerToolbar', false)
     expect(calendarWrapper.footerToolbar).toBeFalsy()
   })
 })

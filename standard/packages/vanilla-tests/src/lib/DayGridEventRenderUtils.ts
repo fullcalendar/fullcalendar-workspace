@@ -1,3 +1,4 @@
+import type { Calendar } from 'fullcalendar'
 import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper'
 import { DayGridWrapper } from './wrappers/DayGridWrapper'
 
@@ -9,9 +10,9 @@ opts:
   - lastCol
   - isStart
   - isEnd
-*/
-export function directionallyTestSeg(opts) {
-  let dayGridWrapper = new DayGridViewWrapper(currentCalendar).dayGrid
+ */
+export function directionallyTestSeg(calendar: Calendar, opts) {
+  let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
   let el = opts.el ? $(opts.el) : dayGridWrapper.getEventEls()[0]
 
   let row = opts.row || 0

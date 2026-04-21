@@ -12,8 +12,8 @@ describe('Event::moveEnd', () => {
     })
 
     it('generates a new end', () => {
-      initCalendar()
-      let event = currentCalendar.getEventById('1')
+      let calendar = initCalendar()
+      let event = calendar.getEventById('1')
       event.moveEnd('01:00')
       expect(event.start).toEqualDate('2018-09-03T12:00:00Z')
       expect(event.end).toEqualDate('2018-09-03T14:00:00Z')
@@ -28,8 +28,8 @@ describe('Event::moveEnd', () => {
     })
 
     it('moves end', () => {
-      initCalendar()
-      let event = currentCalendar.getEventById('1')
+      let calendar = initCalendar()
+      let event = calendar.getEventById('1')
       event.moveEnd('01:00')
       expect(event.start).toEqualDate('2018-09-03T12:00:00Z')
       expect(event.end).toEqualDate('2018-09-03T16:00:00Z')

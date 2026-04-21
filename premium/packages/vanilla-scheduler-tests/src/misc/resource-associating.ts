@@ -5,7 +5,7 @@ describe('associating resources with event', () => {
   })
 
   it('works with an Event object\'s resourceId', () => {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: 'a', title: 'room a' },
         { id: 'b', title: 'room b' },
@@ -16,19 +16,19 @@ describe('associating resources with event', () => {
       ],
     })
 
-    const roomAEvents = currentCalendar.getResourceById('a').getEvents()
+    const roomAEvents = calendar.getResourceById('a').getEvents()
     expect(roomAEvents.length).toBe(1)
     expect(roomAEvents[0].title).toBe('event 1')
 
-    const roomBEvents = currentCalendar.getResourceById('b').getEvents()
+    const roomBEvents = calendar.getResourceById('b').getEvents()
     expect(roomBEvents.length).toBe(1)
     expect(roomBEvents[0].title).toBe('event 2')
 
-    const event1Resources = currentCalendar.getEventById('1').getResources()
+    const event1Resources = calendar.getEventById('1').getResources()
     expect(event1Resources.length).toBe(1)
     expect(event1Resources[0].title).toBe('room a')
 
-    const event2Resources = currentCalendar.getEventById('2').getResources()
+    const event2Resources = calendar.getEventById('2').getResources()
     expect(event2Resources.length).toBe(1)
     expect(event2Resources[0].title).toBe('room b')
 
@@ -41,7 +41,7 @@ describe('associating resources with event', () => {
     let one = 1 as any
     let id
 
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: zero, title: 'room a' },
         { id: one, title: 'room b' },
@@ -53,22 +53,22 @@ describe('associating resources with event', () => {
     })
 
     id = 0
-    const roomAEvents = currentCalendar.getResourceById(id).getEvents()
+    const roomAEvents = calendar.getResourceById(id).getEvents()
     expect(roomAEvents.length).toBe(1)
     expect(roomAEvents[0].title).toBe('event 1')
 
     id = 1
-    const roomBEvents = currentCalendar.getResourceById(id).getEvents()
+    const roomBEvents = calendar.getResourceById(id).getEvents()
     expect(roomBEvents.length).toBe(1)
     expect(roomBEvents[0].title).toBe('event 2')
 
     id = 0
-    const event1Resources = currentCalendar.getEventById(id).getResources()
+    const event1Resources = calendar.getEventById(id).getResources()
     expect(event1Resources.length).toBe(1)
     expect(event1Resources[0].title).toBe('room a')
 
     id = 1
-    const event2Resources = currentCalendar.getEventById(id).getResources()
+    const event2Resources = calendar.getEventById(id).getResources()
     expect(event2Resources.length).toBe(1)
     expect(event2Resources[0].title).toBe('room b')
 
@@ -77,7 +77,7 @@ describe('associating resources with event', () => {
   })
 
   it('works asynchronously with resource delay', (done) => {
-    initCalendar({
+    let calendar = initCalendar({
       resources(arg, callback) {
         setTimeout(() => {
           callback([
@@ -95,16 +95,16 @@ describe('associating resources with event', () => {
     })
 
     setTimeout(() => {
-      const roomAEvents = currentCalendar.getResourceById('a').getEvents()
+      const roomAEvents = calendar.getResourceById('a').getEvents()
       expect(roomAEvents.length).toBe(1)
       expect(roomAEvents[0].title).toBe('event 1')
-      const roomBEvents = currentCalendar.getResourceById('b').getEvents()
+      const roomBEvents = calendar.getResourceById('b').getEvents()
       expect(roomBEvents.length).toBe(1)
       expect(roomBEvents[0].title).toBe('event 2')
-      const event1Resources = currentCalendar.getEventById('1').getResources()
+      const event1Resources = calendar.getEventById('1').getResources()
       expect(event1Resources.length).toBe(1)
       expect(event1Resources[0].title).toBe('room a')
-      const event2Resources = currentCalendar.getEventById('2').getResources()
+      const event2Resources = calendar.getEventById('2').getResources()
       expect(event2Resources.length).toBe(1)
       expect(event2Resources[0].title).toBe('room b')
       expect($('.event1').length).toBe(1)
@@ -114,7 +114,7 @@ describe('associating resources with event', () => {
   })
 
   it('works asynchronously with events delay', (done) => {
-    initCalendar({
+    let calendar = initCalendar({
       resources(arg, callback) {
         callback([
           { id: 'a', title: 'room a' },
@@ -132,16 +132,16 @@ describe('associating resources with event', () => {
     })
 
     setTimeout(() => {
-      const roomAEvents = currentCalendar.getResourceById('a').getEvents()
+      const roomAEvents = calendar.getResourceById('a').getEvents()
       expect(roomAEvents.length).toBe(1)
       expect(roomAEvents[0].title).toBe('event 1')
-      const roomBEvents = currentCalendar.getResourceById('b').getEvents()
+      const roomBEvents = calendar.getResourceById('b').getEvents()
       expect(roomBEvents.length).toBe(1)
       expect(roomBEvents[0].title).toBe('event 2')
-      const event1Resources = currentCalendar.getEventById('1').getResources()
+      const event1Resources = calendar.getEventById('1').getResources()
       expect(event1Resources.length).toBe(1)
       expect(event1Resources[0].title).toBe('room a')
-      const event2Resources = currentCalendar.getEventById('2').getResources()
+      const event2Resources = calendar.getEventById('2').getResources()
       expect(event2Resources.length).toBe(1)
       expect(event2Resources[0].title).toBe('room b')
       expect($('.event1').length).toBe(1)
@@ -163,9 +163,9 @@ describe('associating resources with event', () => {
     })
 
     it('works when receiving string IDs', () => {
-      initCalendar()
+      let calendar = initCalendar()
 
-      let event = currentCalendar.getEventById('1')
+      let event = calendar.getEventById('1')
       event.setResources(['b', 'c'])
 
       let newResources = event.getResources()
@@ -175,11 +175,11 @@ describe('associating resources with event', () => {
     })
 
     it('works when receiving Resource objs', () => {
-      initCalendar()
+      let calendar = initCalendar()
 
-      let event = currentCalendar.getEventById('1')
-      let resourceB = currentCalendar.getResourceById('b')
-      let resourceC = currentCalendar.getResourceById('c')
+      let event = calendar.getEventById('1')
+      let resourceB = calendar.getResourceById('b')
+      let resourceC = calendar.getResourceById('c')
       event.setResources([resourceB, resourceC])
 
       let newResources = event.getResources()

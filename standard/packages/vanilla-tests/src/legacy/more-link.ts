@@ -204,8 +204,9 @@ describe('dayMaxEventRows', () => {
       })
 
       it('renders a more link when there are obviously too many events', async () => {
-        let $el = $('<div id="calendar">').appendTo('body').width(800)
-        let calendar = initCalendar({}, $el)
+        let el = createCalendarElement()
+        $(el).width(800)
+        let calendar = initCalendar({}, el)
         await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         let moreEls = dayGridWrapper.getMoreEls()

@@ -20,6 +20,7 @@ describe('validRange event resizing', () => {
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
       const res = await EventResizeUtils.resize(
+        calendar,
         dayGridWrapper.getDayEl('2017-06-06').getBoundingClientRect(),
         dayGridWrapper.getDisabledDayEls()[0].getBoundingClientRect(), // where Jun 9th would be
       )

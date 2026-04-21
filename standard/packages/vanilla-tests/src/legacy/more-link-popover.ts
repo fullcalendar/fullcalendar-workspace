@@ -367,8 +367,9 @@ describe('more-link popover', () => {
 
     describe('when dragging an all-day event to a different day', () => {
       it('should have the new day and remain all-day', async () => {
+        let calendar
         let dropReceived = new Promise<void>((resolve) => {
-          initCalendar({
+          calendar = initCalendar({
             eventDrop(info) {
               expect(info.event.start).toEqualDate('2014-07-28')
               expect(info.event.allDay).toBe(true)
@@ -376,7 +377,6 @@ describe('more-link popover', () => {
             },
           })
         })
-        let calendar = currentCalendar
         await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
@@ -391,8 +391,9 @@ describe('more-link popover', () => {
 
     describe('when dragging a timed event to a whole day', () => {
       it('should move to new day but maintain its time', async () => {
+        let calendar
         let dropReceived = new Promise<void>((resolve) => {
-          initCalendar({
+          calendar = initCalendar({
             events: testEvents.concat([
               {
                 title: 'event5',
@@ -407,7 +408,6 @@ describe('more-link popover', () => {
             },
           })
         })
-        let calendar = currentCalendar
         await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
@@ -422,8 +422,9 @@ describe('more-link popover', () => {
 
     describe('when dragging a whole day event to a timed slot', () => {
       it('should assume the new time, with a cleared end', async () => {
+        let calendar
         let dropReceived = new Promise<void>((resolve) => {
-          initCalendar({
+          calendar = initCalendar({
             initialView: 'timeGridWeek',
             scrollTime: '00:00:00',
             eventDrop(info) {
@@ -433,7 +434,6 @@ describe('more-link popover', () => {
             },
           })
         })
-        let calendar = currentCalendar
         await waitTimeout()
         let viewWrapper = new TimeGridViewWrapper(calendar)
         let dayGridWrapper = viewWrapper.dayGrid
@@ -450,9 +450,10 @@ describe('more-link popover', () => {
 
     describe('when a single-day event isn\'t dragged out all the way', () => {
       it('shouldn\'t do anything', async () => {
+        let calendar
         let dayGridWrapper
         let dragStopped = new Promise<void>((resolve) => {
-          initCalendar({
+          calendar = initCalendar({
             eventDragStop() {
               waitTimeout().then(() => {
               expect(dayGridWrapper.getMorePopoverEl()).toBeInDOM()
@@ -461,7 +462,6 @@ describe('more-link popover', () => {
             },
           })
         })
-        let calendar = currentCalendar
         let viewWrapper = new DayGridViewWrapper(calendar)
         dayGridWrapper = viewWrapper.dayGrid
         await waitTimeout()

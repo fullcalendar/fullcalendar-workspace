@@ -2,7 +2,12 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
 describe('aspectRatio', () => {
   function getCalendarElement(width) {
-    return $('<div id="calendar" style="max-width:none">').appendTo('body').width(width)[0]
+    let el = createCalendarElement()
+
+    el.style.maxWidth = 'none'
+    $(el).width(width)
+
+    return el
   }
 
   describe('when default settings are used', () => {

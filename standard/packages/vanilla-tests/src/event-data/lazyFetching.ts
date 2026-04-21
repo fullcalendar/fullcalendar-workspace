@@ -18,11 +18,11 @@ describe('lazyFetching', () => {
       }
       spyOn(options, 'events').and.callThrough()
 
-      initCalendar(options)
-      currentCalendar.changeView('timeGridWeek')
-      currentCalendar.next()
-      currentCalendar.next()
-      currentCalendar.next()
+      let calendar = initCalendar(options)
+      calendar.changeView('timeGridWeek')
+      calendar.next()
+      calendar.next()
+      calendar.next()
 
       expect(options.events.calls.count()).toBe(1)
 
@@ -45,11 +45,11 @@ describe('lazyFetching', () => {
       }
       spyOn(options, 'events')
 
-      initCalendar(options)
-      currentCalendar.changeView('timeGridWeek')
-      currentCalendar.next()
-      currentCalendar.next()
-      currentCalendar.next()
+      let calendar = initCalendar(options)
+      calendar.changeView('timeGridWeek')
+      calendar.next()
+      calendar.next()
+      calendar.next()
 
       expect(options.events.calls.count()).toBe(5)
 

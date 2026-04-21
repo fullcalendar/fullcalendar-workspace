@@ -4,38 +4,38 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 describe('timeline view rerendering', () => {
   describe('events, when rerendering', () => {
     it('maintains scroll', (done) => {
-      testScrollForEvents(() => {
-        currentCalendar.render()
+      testScrollForEvents((calendar) => {
+        calendar.render()
       }, done)
     })
   })
 
   describe('events, when using refetchEvents', () => {
     it('maintains scroll', (done) => {
-      testScrollForEvents(() => {
-        currentCalendar.refetchEvents()
+      testScrollForEvents((calendar) => {
+        calendar.refetchEvents()
       }, done)
     })
   })
 
   describe('resources, when rerendering', () => {
     it('maintains scroll', (done) => {
-      testScrollForResources(() => {
-        currentCalendar.render()
+      testScrollForResources((calendar) => {
+        calendar.render()
       }, done)
     })
   })
 
   describe('resource, when using refetchResources', () => {
     it('rerenders the DOM', (done) => {
-      testResourceRefetch(() => {
-        currentCalendar.refetchResources()
+      testResourceRefetch((calendar) => {
+        calendar.refetchResources()
       }, done)
     })
 
     it('maintains scroll', (done) => {
-      testResourceRefetch(() => {
-        currentCalendar.refetchResources()
+      testResourceRefetch((calendar) => {
+        calendar.refetchResources()
       }, done)
     })
   })
@@ -55,7 +55,7 @@ describe('timeline view rerendering', () => {
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
       expect(dataGridWrapper.getResourceIds()).toEqual(['a', 'b', 'c'])
-      currentCalendar.getResourceById('a').remove()
+      calendar.getResourceById('a').remove()
       expect(dataGridWrapper.getResourceIds()).toEqual(['b', 'c'])
     })
 
@@ -65,7 +65,7 @@ describe('timeline view rerendering', () => {
 
       expect(dataGridWrapper.getResourceIds()).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.addResource({
+      calendar.addResource({
         id: 'd',
         title: 'Auditorium D',
       })
@@ -86,7 +86,7 @@ describe('timeline view rerendering', () => {
       expect(resourceRenderCnt).toBe(3 * strictModeFactor)
       expect(initialInfos.length).toBe(3)
 
-      currentCalendar.next()
+      calendar.next()
       const secondaryInfos = dataGridWrapper.getResourceInfo()
 
       expect(resourceRenderCnt).toBe(3 * strictModeFactor)
@@ -122,7 +122,7 @@ describe('timeline view rerendering', () => {
       scrollEl.scrollTop = 100
       scrollEl.scrollLeft = 50
 
-      actionFunc()
+      actionFunc(calendar)
       setTimeout(() => {
         expect(Math.abs(scrollEl.scrollTop - 100)).toBeLessThanOrEqual(1) // IE :(
         expect(scrollEl.scrollLeft).toBe(50)
@@ -155,7 +155,7 @@ describe('timeline view rerendering', () => {
       scrollEl.scrollTop = 100
       scrollEl.scrollLeft = 50
 
-      actionFunc()
+      actionFunc(calendar)
       setTimeout(() => {
         expect(scrollEl.scrollTop).toBe(100)
         expect(scrollEl.scrollLeft).toBe(50)
@@ -189,7 +189,7 @@ describe('timeline view rerendering', () => {
     setTimeout(() => {
       let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
       expect(cellText).toBe('Auditorium E0')
-      actionFunc()
+      actionFunc(calendar)
 
       setTimeout(() => {
         cellText = dataGridWrapper.getSpecificResourceInfo('e').text

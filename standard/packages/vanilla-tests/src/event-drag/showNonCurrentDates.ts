@@ -21,6 +21,7 @@ describe('showNonCurrentDates event dragging', () => {
 
       await waitTimeout()
       let res = await EventDragUtils.drag(
+        calendar,
         dayGridWrapper.getDayEl('2017-06-08').getBoundingClientRect(),
         dayGridWrapper.getDisabledDayEls()[3].getBoundingClientRect(), // the cell before Jun 1
       )

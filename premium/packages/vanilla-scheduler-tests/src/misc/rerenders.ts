@@ -21,7 +21,7 @@ describe('rerender performance for resource timeline', () => {
     let resourceLaneRenderCnt = 0
     let eventRenderCnt = 0
 
-    initCalendar({
+    let calendar = initCalendar({
       slotHeaderDidMount() {
         slotHeaderMountCnt += 1
       },
@@ -60,7 +60,7 @@ describe('rerender performance for resource timeline', () => {
     expect(eventRenderCnt).toBe(1 * strictModeFactor)
 
     resetCounts()
-    currentCalendar.next()
+    calendar.next()
 
     expect(slotHeaderMountCnt).toBe(24 * strictModeFactor)
     expect(slotHeaderRenderCnt).toBe(24 * strictModeFactor)
@@ -71,9 +71,9 @@ describe('rerender performance for resource timeline', () => {
 
     // FIRES UNNECESSARY RERENDERS WHEN WE SWITCH VIEWS LIKE THIS FOR SOME REASON
     //
-    // currentCalendar.changeView('listDay') // switch to different view
+    // calendar.changeView('listDay') // switch to different view
     // resetCounts()
-    // currentCalendar.changeView('resourceTimelineDay') // switch back to orig view
+    // calendar.changeView('resourceTimelineDay') // switch back to orig view
     // expect(slotHeaderRenderCnt).toBe(24)
     // expect(slotLaneRenderCnt).toBe(48)
     // expect(resourceLabelRenderCnt).toBe(1)
@@ -82,7 +82,7 @@ describe('rerender performance for resource timeline', () => {
 
     await ignoreResizeObserverLoops(async () => {
       resetCounts()
-      currentCalendar.addResource({ title: 'Resource B' })
+      calendar.addResource({ title: 'Resource B' })
 
       expect(slotHeaderMountCnt).toBe(0 * strictModeFactor)
       expect(slotHeaderRenderCnt).toBe(0 * strictModeFactor)

@@ -247,7 +247,7 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-05-02', end: '2020-05-03', title: 'event e' },
         { start: '2020-05-02', end: '2020-05-03', title: 'event f' },
       ],
-    }, $container.find('div'))
+    }, $container.find('div')[0])
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     await waitTimeout()

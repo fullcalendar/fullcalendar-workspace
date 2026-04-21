@@ -25,15 +25,15 @@ describe('timeline addResource', () => {
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.changeView('resourceTimelineWeek')
+      calendar.changeView('resourceTimelineWeek')
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
+      calendar.addResource({ id: 'd', title: 'Auditorium D' })
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
 
-      currentCalendar.changeView('resourceTimelineDay')
+      calendar.changeView('resourceTimelineDay')
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
     })
@@ -68,7 +68,7 @@ describe('timeline addResource', () => {
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
     await waitTimeout()
-    currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
+    calendar.addResource({ id: 'last', title: 'last resource' }, true)
     await waitTimeout()
 
     const spreadsheetScrollerEl = viewWrapper.getDataGridBodyEl()
@@ -91,7 +91,7 @@ describe('timeline addResource', () => {
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+      calendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       // expanded
       expect(dataGridWrapper.isRowExpanded('a')).toBe(true)
@@ -108,7 +108,7 @@ describe('timeline addResource', () => {
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+      calendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       expect(dataGridWrapper.isRowExpanded('a')).toBe(false)
       expect(dataGridWrapper.getResourceCellEl('a1')).toBeFalsy()

@@ -116,9 +116,8 @@ describe('headerToolbar rendering', () => { // TODO: rename file
   describe('when calendar is within a form', () => {
     it('should not submit the form when clicking the button', (done) => {
       let unloadCalled = false
-      let el = $('<div id="calendar"/>')
+      let el = $(createCalendarElement())
         .wrap('<form action="https://google.com/"></form>')
-        .appendTo('body')
 
       function beforeUnloadHandler() {
         console.log('when calendar is within a form, it submits!!!') // eslint-disable-line no-console
@@ -138,7 +137,7 @@ describe('headerToolbar rendering', () => { // TODO: rename file
           left: 'prev,next',
           right: 'title',
         },
-      }, el)
+      }, el[0])
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
       $(toolbarWrapper.getButtonEl('next')).simulate('click')

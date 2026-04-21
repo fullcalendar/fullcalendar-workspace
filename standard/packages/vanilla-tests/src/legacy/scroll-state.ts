@@ -6,7 +6,8 @@ describe('scroll state', () => {
   let calendarEl
 
   beforeEach(() => {
-    calendarEl = $('<div id="calendar">').width(800).appendTo('body')
+    calendarEl = createCalendarElement()
+    $(calendarEl).width(800)
   })
   afterEach(() => {
     calendarEl.remove()
@@ -56,7 +57,7 @@ describe('scroll state', () => {
 
       scrollEl.scrollTop = 9999 // all the way
       let scroll0 = scrollEl.scrollTop
-      currentCalendar.render()
+      calendar.render()
 
       let eventEl1 = new CalendarWrapper(calendar).getEventEls()
       expect(eventEl1.length).toBe(1)

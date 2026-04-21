@@ -23,13 +23,13 @@ describe('rerenderDelay', () => {
 
     expect(calendarWrapper.getEventEls().length).toBe(2)
 
-    currentCalendar.addEventSource(eventSource2)
+    calendar.addEventSource(eventSource2)
     expect(calendarWrapper.getEventEls().length).toBe(2)
 
-    currentCalendar.addEvent(extraEvent1)
+    calendar.addEvent(extraEvent1)
     expect(calendarWrapper.getEventEls().length).toBe(2)
 
-    let refined2 = currentCalendar.addEvent(extraEvent2)
+    let refined2 = calendar.addEvent(extraEvent2)
     expect(calendarWrapper.getEventEls().length).toBe(2)
 
     refined2.remove()

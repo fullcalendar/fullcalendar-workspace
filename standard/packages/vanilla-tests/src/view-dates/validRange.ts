@@ -18,9 +18,9 @@ describe('validRange', () => {
       })
 
       it('allows full renderRange but restricts activeRange', () => {
-        initCalendar()
-        expectRenderRange('2017-06-04', '2017-06-11')
-        expectActiveRange('2017-06-06', '2017-06-11')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-06-04', '2017-06-11')
+        expectActiveRange(calendar, '2017-06-06', '2017-06-11')
       })
     })
 
@@ -30,9 +30,9 @@ describe('validRange', () => {
       })
 
       it('allows full renderRange but restricts activeRange', () => {
-        initCalendar()
-        expectRenderRange('2017-06-04', '2017-06-11')
-        expectActiveRange('2017-06-04', '2017-06-05')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-06-04', '2017-06-11')
+        expectActiveRange(calendar, '2017-06-04', '2017-06-05')
       })
     })
 
@@ -42,9 +42,9 @@ describe('validRange', () => {
       })
 
       it('initializes at earliest partially visible week', () => {
-        initCalendar()
-        expectRenderRange('2017-06-11', '2017-06-18')
-        expectActiveRange('2017-06-14', '2017-06-18')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-06-11', '2017-06-18')
+        expectActiveRange(calendar, '2017-06-14', '2017-06-18')
       })
     })
 
@@ -54,9 +54,9 @@ describe('validRange', () => {
       })
 
       it('initializes at latest partially visible week', () => {
-        initCalendar()
-        expectRenderRange('2017-05-21', '2017-05-28')
-        expectActiveRange('2017-05-21', '2017-05-24')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-05-21', '2017-05-28')
+        expectActiveRange(calendar, '2017-05-21', '2017-05-24')
       })
     })
 
@@ -76,21 +76,21 @@ describe('validRange', () => {
       it('can return a range object with strings', () => {
         let validRangeSpy = spyOnCalendarCallback('validRange', () => ({ start: '2017-06-06' }))
 
-        initCalendar()
+        let calendar = initCalendar()
 
         expect(validRangeSpy).toHaveBeenCalled()
-        expectRenderRange('2017-06-04', '2017-06-11')
-        expectActiveRange('2017-06-06', '2017-06-11')
+        expectRenderRange(calendar, '2017-06-04', '2017-06-11')
+        expectActiveRange(calendar, '2017-06-06', '2017-06-11')
       })
 
       it('can return a range object with Date objects', () => {
         let validRangeSpy = spyOnCalendarCallback('validRange', () => ({ start: parseUtcDate('2017-06-06') }))
 
-        initCalendar()
+        let calendar = initCalendar()
 
         expect(validRangeSpy).toHaveBeenCalled()
-        expectRenderRange('2017-06-04', '2017-06-11')
-        expectActiveRange('2017-06-06', '2017-06-11')
+        expectRenderRange(calendar, '2017-06-04', '2017-06-11')
+        expectActiveRange(calendar, '2017-06-06', '2017-06-11')
       })
     })
   })
@@ -106,9 +106,9 @@ describe('validRange', () => {
         validRange: { start: '2017-06-14' },
       })
       it('renders earliest three valid days', () => {
-        initCalendar()
-        expectRenderRange('2017-06-14', '2017-06-17')
-        expectActiveRange('2017-06-14', '2017-06-17')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-06-14', '2017-06-17')
+        expectActiveRange(calendar, '2017-06-14', '2017-06-17')
       })
     })
 
@@ -117,9 +117,9 @@ describe('validRange', () => {
         validRange: { end: '2017-05-31' },
       })
       it('renders latest possible valid day and two invalid days', () => {
-        initCalendar()
-        expectRenderRange('2017-05-30', '2017-06-02')
-        expectActiveRange('2017-05-30', '2017-05-31')
+        let calendar = initCalendar()
+        expectRenderRange(calendar, '2017-05-30', '2017-06-02')
+        expectActiveRange(calendar, '2017-05-30', '2017-05-31')
       })
     })
   })
@@ -136,9 +136,9 @@ describe('validRange', () => {
     })
 
     it('pushes view to nearest valid range', () => {
-      initCalendar()
-      expectRenderRange('2036-05-04', '2036-05-10')
-      expectActiveRange('2036-05-04', '2036-05-10')
+      let calendar = initCalendar()
+      expectRenderRange(calendar, '2036-05-04', '2036-05-10')
+      expectActiveRange(calendar, '2036-05-04', '2036-05-10')
     })
   })
 })

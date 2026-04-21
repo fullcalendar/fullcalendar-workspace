@@ -11,8 +11,8 @@ describe('view duration', () => {
       duration: { weeks: 1 },
     })
     it('aligns with start of week', () => {
-      initCalendar()
-      expectActiveRange('2017-03-12', '2017-03-19')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-03-12', '2017-03-19')
     })
   })
 
@@ -21,8 +21,8 @@ describe('view duration', () => {
       duration: { days: 7 },
     })
     it('aligns with start of week', () => {
-      initCalendar()
-      expectActiveRange('2017-03-15', '2017-03-22')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-03-15', '2017-03-22')
     })
   })
 })

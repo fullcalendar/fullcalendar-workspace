@@ -291,6 +291,7 @@ async function buildGlobalPlugins(
         // NOTE: keel in sync with standard/packages/vanilla-tests/src/lib/global-utils.ts
         spyOnCalendarCallback: [jasmineUtilsFile, 'spyOnCalendarCallback'],
         pushOptions: [jasmineUtilsFile, 'pushOptions'],
+        createCalendarElement: [jasmineUtilsFile, 'createCalendarElement'],
         initCalendar: [jasmineUtilsFile, 'initCalendar'],
         getCurrentOptions: [jasmineUtilsFile, 'getCurrentOptions'],
         describeOptions: [jasmineUtilsFile, 'describeOptions'],

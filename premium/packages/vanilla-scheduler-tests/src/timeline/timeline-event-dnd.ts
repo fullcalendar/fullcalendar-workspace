@@ -21,7 +21,7 @@ describe('timeline-view event drag-n-drop', () => {
     it('allows switching date and resource', async () => {
       let dropSpy
 
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
         ],
@@ -40,7 +40,7 @@ describe('timeline-view event drag-n-drop', () => {
       })
 
       await waitTimeout()
-      await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+      await dragElTo(calendar, $('.event0'), 'a', '2015-11-29T05:00:00')
       await waitTimeout()
       expect(dropSpy).toHaveBeenCalled()
     })
@@ -67,7 +67,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('receives correct eventAllow args when switching date and resource', async () => {
     let calledEventAllow = false
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
@@ -79,7 +79,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0'), 'a', '2015-11-29T05:00:00')
     await waitTimeout()
     expect(calledEventAllow).toBe(true)
   })
@@ -87,7 +87,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('allows switching date only', async () => {
     let dropSpy
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
@@ -106,7 +106,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0'), 'b', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0'), 'b', '2015-11-29T05:00:00')
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
   })
@@ -114,7 +114,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('can drag one of multiple event occurences', async () => {
     let dropInfo: any
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
@@ -124,7 +124,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0:first'), 'c', '2015-11-29T05:00:00')
     await waitTimeout() // let the drop rerender
 
     expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
@@ -147,6 +147,7 @@ describe('timeline-view event drag-n-drop', () => {
 
     await waitTimeout()
     await dragElTo(
+      calendar,
       $('.event0:first'),
       'c',
       '2015-11-29T05:00:00',
@@ -156,7 +157,7 @@ describe('timeline-view event drag-n-drop', () => {
     )
     await waitTimeout() // let the drop rerender
 
-    const events = currentCalendar.getEvents()
+    const events = calendar.getEvents()
 
     expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
     expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
@@ -172,7 +173,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('can drag one of multiple event occurences onto an already-assigned resource', async () => {
     let dropInfo: any
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
@@ -182,7 +183,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0:first'), 'b', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0:first'), 'b', '2015-11-29T05:00:00')
     await waitTimeout() // let the drop rerender
 
     expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
@@ -194,7 +195,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('allows dragging via touch', async () => {
     let dropSpy
 
-    initCalendar({
+    let calendar = initCalendar({
       longPressDelay: 100,
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
@@ -211,16 +212,15 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await touchDragElTo($('.event0'), 200, 'a', '2015-11-29T05:00:00')
+    await touchDragElTo(calendar, $('.event0'), 200, 'a', '2015-11-29T05:00:00')
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
-    await new Promise<void>((resolve) => setTimeout(resolve, 1000)) // wait, so next tests don't have mousedown ignored :(
   })
 
   it('restores resource correctly with revert', async () => {
     let dropInfo: any
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' },
       ],
@@ -230,7 +230,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0'), 'a', '2015-11-29T05:00:00')
     await waitTimeout() // let the drop rerender
 
     expect(dropInfo.event.start).toEqualDate('2015-11-29T05:00:00Z')
@@ -239,7 +239,7 @@ describe('timeline-view event drag-n-drop', () => {
     expect(dropInfo.event.getResources()[0].id).toBe('a')
     dropInfo.revert()
 
-    let event = currentCalendar.getEvents()[0]
+    let event = calendar.getEvents()[0]
     expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
     expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
     expect(event.getResources().length).toBe(1)
@@ -249,7 +249,7 @@ describe('timeline-view event drag-n-drop', () => {
   it('restores multiple resources correctly with revert', async () => {
     let dropInfo: any
 
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: ['a', 'b'] },
       ],
@@ -259,7 +259,7 @@ describe('timeline-view event drag-n-drop', () => {
     })
 
     await waitTimeout()
-    await dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+    await dragElTo(calendar, $('.event0:first'), 'c', '2015-11-29T05:00:00')
     await waitTimeout() // let the drop rerender
 
     let resourceIds
@@ -270,7 +270,7 @@ describe('timeline-view event drag-n-drop', () => {
     expect(resourceIds).toEqual(['b', 'c'])
     dropInfo.revert()
 
-    let event = currentCalendar.getEvents()[0]
+    let event = calendar.getEvents()[0]
     expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
     expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
     resourceIds = event.getResources().map((resource) => resource.id)
@@ -287,7 +287,7 @@ describe('timeline-view event drag-n-drop', () => {
     it('allow dragging into custom matching range', async () => {
       let dropSpy
 
-      initCalendar({
+      let calendar = initCalendar({
         resources: [
           { id: 'a', title: 'Resource A', businessHours: { startTime: '02:00', endTime: '22:00' } },
           { id: 'b', title: 'Resource B' },
@@ -309,7 +309,7 @@ describe('timeline-view event drag-n-drop', () => {
       })
 
       await waitTimeout()
-      await dragElTo($('.event0'), 'a', '2015-11-27T05:00')
+      await dragElTo(calendar, $('.event0'), 'a', '2015-11-27T05:00')
       await waitTimeout()
       expect(dropSpy).toHaveBeenCalled()
     })
@@ -317,7 +317,7 @@ describe('timeline-view event drag-n-drop', () => {
     it('disallow dragging into custom non-matching range', async () => {
       let dropSpy
 
-      initCalendar({
+      let calendar = initCalendar({
         resources: [
           { id: 'a', title: 'Resource A', businessHours: { startTime: '10:00', endTime: '16:00' } },
           { id: 'b', title: 'Resource B' },
@@ -338,15 +338,15 @@ describe('timeline-view event drag-n-drop', () => {
       })
 
       await waitTimeout()
-      await dragElTo($('.event0'), 'a', '2015-11-27T09:00:00')
+      await dragElTo(calendar, $('.event0'), 'a', '2015-11-27T09:00:00')
       await waitTimeout()
       expect(dropSpy).not.toHaveBeenCalled()
     })
   })
 
-  function dragElTo(el, resourceId, date, onBeforeRelease?) {
-    return new Promise<void>((resolve) => {
-      let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+  function dragElTo(calendar, el, resourceId, date, onBeforeRelease?) {
+    const dragging = new Promise<void>((resolve) => {
+      let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
       el.simulate('drag', {
         localPoint: { left: 1, top: '50%' },
@@ -355,11 +355,13 @@ describe('timeline-view event drag-n-drop', () => {
         callback: resolve,
       })
     })
+
+    return waitEventDrag(calendar, dragging)
   }
 
-  function touchDragElTo(el, delay, resourceId, date) {
-    return new Promise<void>((resolve) => {
-      let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+  function touchDragElTo(calendar, el, delay, resourceId, date) {
+    const dragging = new Promise<void>((resolve) => {
+      let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
       el.simulate('drag', {
         isTouch: true,
@@ -369,5 +371,7 @@ describe('timeline-view event drag-n-drop', () => {
         callback: resolve,
       })
     })
+
+    return waitEventDrag(calendar, dragging)
   }
 })

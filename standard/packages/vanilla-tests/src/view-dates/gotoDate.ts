@@ -2,14 +2,14 @@ import { expectActiveRange } from '../lib/ViewDateUtils'
 
 describe('gotoDate', () => {
   it('will update calendar\'s date even if no navigation', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2018-12-25',
       initialView: 'dayGridMonth',
     })
 
-    expect(currentCalendar.getDate()).toEqualDate('2018-12-25')
-    currentCalendar.gotoDate('2018-12-30')
-    expect(currentCalendar.getDate()).toEqualDate('2018-12-30')
+    expect(calendar.getDate()).toEqualDate('2018-12-25')
+    calendar.gotoDate('2018-12-30')
+    expect(calendar.getDate()).toEqualDate('2018-12-30')
   })
 
   describe('when asynchronicity', () => {
@@ -22,19 +22,19 @@ describe('gotoDate', () => {
     })
 
     it('works when called right after initialization', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         initialDate: '2017-03-30',
       })
-      currentCalendar.gotoDate('2017-06-01')
+      calendar.gotoDate('2017-06-01')
     })
 
     it('works when called right after initialization when date already in range', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         initialDate: '2017-03-30',
       })
-      currentCalendar.gotoDate('2017-03-01')
+      calendar.gotoDate('2017-03-01')
     })
   })
 
@@ -52,6 +52,6 @@ describe('gotoDate', () => {
       },
     })
     calendar.gotoDate('2019-04-10')
-    expectActiveRange('2019-04-10', '2019-04-14')
+    expectActiveRange(calendar, '2019-04-10', '2019-04-14')
   })
 })

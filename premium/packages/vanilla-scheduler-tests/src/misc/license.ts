@@ -122,7 +122,7 @@ describe('schedulerLicenseKey', () => {
       })
 
       expectOutdated(calendar)
-      currentCalendar.next()
+      calendar.next()
       expectOutdated(calendar)
     })
   })

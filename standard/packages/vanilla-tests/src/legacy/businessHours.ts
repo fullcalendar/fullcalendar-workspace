@@ -16,9 +16,9 @@ describe('businessHours', () => {
   it('doesn\'t break when starting out in a larger month time range', async () => {
     let calendar = initCalendar() // start out in the month range
 
-    currentCalendar.changeView('timeGridWeek')
-    currentCalendar.next() // move out of the original month range...
-    currentCalendar.next() // ... out. should render correctly.
+    calendar.changeView('timeGridWeek')
+    calendar.next() // move out of the original month range...
+    calendar.next() // ... out. should render correctly.
     await waitTimeout()
 
     // whole days
@@ -59,7 +59,7 @@ describe('businessHours', () => {
         let calendarWrapper = new CalendarWrapper(calendar)
 
         expect(calendarWrapper.getNonBusinessDayEls().length).toBe(0)
-        currentCalendar.setOption('businessHours', true)
+        calendar.setOption('businessHours', true)
         expect(calendarWrapper.getNonBusinessDayEls().length).toBeGreaterThan(0)
       })
 
@@ -71,7 +71,7 @@ describe('businessHours', () => {
         let calendarWrapper = new CalendarWrapper(calendar)
 
         expect(calendarWrapper.getNonBusinessDayEls().length).toBeGreaterThan(0)
-        currentCalendar.setOption('businessHours', false)
+        calendar.setOption('businessHours', false)
         expect(calendarWrapper.getNonBusinessDayEls().length).toBe(0)
       })
     })

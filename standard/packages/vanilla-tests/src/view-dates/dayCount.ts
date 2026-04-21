@@ -23,41 +23,41 @@ describe('dayCount', () => {
     },
   }, () => {
     it('renders the exact day count', () => {
-      initCalendar()
-      expectActiveRange('2017-03-15', '2017-03-22')
-      expectDay('2017-03-15', true)
-      expectDay('2017-03-16', true)
-      expectDay('2017-03-17', true)
-      expectDay('2017-03-18', false) // sat
-      expectDay('2017-03-19', false) // sun
-      expectDay('2017-03-20', true)
-      expectDay('2017-03-21', true)
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-03-15', '2017-03-22')
+      expectDay(calendar, '2017-03-15', true)
+      expectDay(calendar, '2017-03-16', true)
+      expectDay(calendar, '2017-03-17', true)
+      expectDay(calendar, '2017-03-18', false) // sat
+      expectDay(calendar, '2017-03-19', false) // sun
+      expectDay(calendar, '2017-03-20', true)
+      expectDay(calendar, '2017-03-21', true)
     })
   })
 
   it('can span multiple weeks', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'timeGrid',
       dayCount: 9,
     })
-    expectActiveRange('2017-03-15', '2017-03-28')
-    expectDay('2017-03-15', true)
-    expectDay('2017-03-16', true)
-    expectDay('2017-03-17', true)
-    expectDay('2017-03-18', false) // sat
-    expectDay('2017-03-19', false) // sun
-    expectDay('2017-03-20', true)
-    expectDay('2017-03-21', true)
-    expectDay('2017-03-22', true)
-    expectDay('2017-03-23', true)
-    expectDay('2017-03-24', true)
-    expectDay('2017-03-25', false) // sat
-    expectDay('2017-03-26', false) // sun
-    expectDay('2017-03-27', true)
+    expectActiveRange(calendar, '2017-03-15', '2017-03-28')
+    expectDay(calendar, '2017-03-15', true)
+    expectDay(calendar, '2017-03-16', true)
+    expectDay(calendar, '2017-03-17', true)
+    expectDay(calendar, '2017-03-18', false) // sat
+    expectDay(calendar, '2017-03-19', false) // sun
+    expectDay(calendar, '2017-03-20', true)
+    expectDay(calendar, '2017-03-21', true)
+    expectDay(calendar, '2017-03-22', true)
+    expectDay(calendar, '2017-03-23', true)
+    expectDay(calendar, '2017-03-24', true)
+    expectDay(calendar, '2017-03-25', false) // sat
+    expectDay(calendar, '2017-03-26', false) // sun
+    expectDay(calendar, '2017-03-27', true)
   })
 
   it('can navigate in reverse with a small dateIncrement split by hidden days', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2018-06-11',
       initialView: 'timeGridTwoDay',
       headerToolbar: {
@@ -79,7 +79,7 @@ describe('dayCount', () => {
         }
       }
     })
-    currentCalendar.prev()
-    expectActiveRange('2018-06-08', '2018-06-12')
+    calendar.prev()
+    expectActiveRange(calendar, '2018-06-08', '2018-06-12')
   })
 })

@@ -22,8 +22,8 @@ describe('getEventSources', () => {
   })
 
   it('does not mutate when removeEventSource is called', (done) => {
-    initCalendar()
-    let eventSources = currentCalendar.getEventSources()
+    let calendar = initCalendar()
+    let eventSources = calendar.getEventSources()
     expect(eventSources.length).toBe(3)
 
     // prove that eventSources is a copy, and wasn't mutated

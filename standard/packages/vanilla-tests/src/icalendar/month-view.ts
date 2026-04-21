@@ -29,69 +29,69 @@ describe('addICalEventSource with month view', () => {
   })
 
   it('adds an all day event', (done) => {
-    loadICalendarWith(alldayEvent, () => {
+    loadICalendarWith(alldayEvent, (calendar) => {
       setTimeout(() => {
-        let events = currentCalendar.getEvents()
+        let events = calendar.getEvents()
         expect(events[0].end).toBe(null)
         events.forEach((event) => expect(event.allDay).toBeTruthy())
-        assertEventCount(1)
+        assertEventCount(calendar, 1)
         done()
       }, 100)
     })
   })
 
   it('adds a single multi-day event', (done) => {
-    loadICalendarWith(multidayEvent, () => {
+    loadICalendarWith(multidayEvent, (calendar) => {
       setTimeout(() => {
-        assertEventCount(1)
-        currentCalendar.getEvents().forEach((event) => expect(event.allDay).toBeTruthy())
+        assertEventCount(calendar, 1)
+        calendar.getEvents().forEach((event) => expect(event.allDay).toBeTruthy())
         done()
       }, 100)
     })
   })
 
   it('adds multiple multi-day events', (done) => {
-    loadICalendarWith(multipleMultidayEvents, () => {
+    loadICalendarWith(multipleMultidayEvents, (calendar) => {
       setTimeout(() => {
-        assertEventCount(2)
-        currentCalendar.getEvents().forEach((event) => expect(event.allDay).toBeTruthy())
+        assertEventCount(calendar, 2)
+        calendar.getEvents().forEach((event) => expect(event.allDay).toBeTruthy())
         done()
       }, 100)
     })
   })
 
   it('adds a one-hour long meeting', (done) => {
-    loadICalendarWith(oneHourMeeting, () => {
+    loadICalendarWith(oneHourMeeting, (calendar) => {
       setTimeout(() => {
-        let events = currentCalendar.getEvents()
+        let events = calendar.getEvents()
         expect(events[0].start).toEqualDate('2019-04-15T09:30:00')
         expect(events[0].end).toEqualDate('2019-04-15T10:30:00')
-        assertEventCount(1)
-        currentCalendar.getEvents().forEach((event) => expect(event.allDay).not.toBeTruthy())
+        assertEventCount(calendar, 1)
+        calendar.getEvents().forEach((event) => expect(event.allDay).not.toBeTruthy())
         done()
       }, 100)
     })
   })
 
   it('adds a repeating weekly meeting', (done) => {
-    loadICalendarWith(recurringWeekly, () => {
+    loadICalendarWith(recurringWeekly, (calendar) => {
       setTimeout(() => {
-        let events = currentCalendar.getEvents()
+        let events = calendar.getEvents()
         expect(events[0].start).toEqualDate('2019-04-01T17:30:00')
         expect(events[0].end).toEqualDate('2019-04-01T18:30:00')
-        assertEventCount(6)
+        assertEventCount(calendar, 6)
         done()
       }, 100)
     })
   })
 
   it('adds a repeating weekly meeting, with null end', (done) => {
-    loadICalendarWith(recurringWeeklyWithoutEnd, () => {
+    loadICalendarWith(recurringWeeklyWithoutEnd, (calendar) => {
       setTimeout(() => {
-        let events = currentCalendar.getEvents()
+        let events = calendar.getEvents()
         expect(events[0].start).toEqualDate('2019-04-01T17:30:00')
         expect(events[0].end).toBe(null)
-        assertEventCount(6)
+        assertEventCount(calendar, 6)
         done()
       }, 100)
     })
@@ -101,27 +101,27 @@ describe('addICalEventSource with month view', () => {
   // this feed starts at beginning of previous month (March 2019) and has 9 total occurences,
   // 5 of which will be visible in the current month (April 2019)
   it('adds a repeating weekly meeting, limited by COUNT, but across months', (done) => {
-    loadICalendarWith(recurringWeeklyWithCount, () => {
+    loadICalendarWith(recurringWeeklyWithCount, (calendar) => {
       setTimeout(() => {
-        assertEventCount(5)
+        assertEventCount(calendar, 5)
         done()
       }, 100)
     })
   })
 
   it('ignores a munged event', (done) => {
-    loadICalendarWith(mungedOneHourMeeting, () => {
+    loadICalendarWith(mungedOneHourMeeting, (calendar) => {
       setTimeout(() => {
-        assertEventCount(0)
+        assertEventCount(calendar, 0)
         done()
       }, 100)
     })
   })
 
   it('adds a valid event and ignores a munged event', (done) => {
-    loadICalendarWith(multipleEventsOneMunged, () => {
+    loadICalendarWith(multipleEventsOneMunged, (calendar) => {
       setTimeout(() => {
-        assertEventCount(1)
+        assertEventCount(calendar, 1)
         done()
       }, 100)
     })
@@ -130,19 +130,21 @@ describe('addICalEventSource with month view', () => {
   it('defaultAllDayEventDuration overrides ical default all day length of one day', (done) => {
     loadICalendarWith(
       alldayEvent,
-      () => {
+      (calendar) => {
         setTimeout(() => {
-          assertEventCount(1)
-          const event = currentCalendar.getEvents()[0]
+          assertEventCount(calendar, 1)
+          const event = calendar.getEvents()[0]
           expect(event.end.getDate()).toEqual(event.start.getDate() + 2)
           done()
         }, 100)
       },
       (source) => {
-        initCalendar({
+        const calendar = initCalendar({
           forceEventDuration: true,
           defaultAllDayEventDuration: { days: 2 },
-        }).addEventSource(source)
+        })
+        calendar.addEventSource(source)
+        return calendar
       },
     )
   })
@@ -179,7 +181,7 @@ describe('addICalEventSource with month view', () => {
     }, 100)
   })
 
-  function loadICalendarWith(rawICal: string, assertions: () => void, calendarSetup?: (source: EventSourceInput) => void) {
+  function loadICalendarWith(rawICal: string, assertions: (calendar) => void, calendarSetup?: (source: EventSourceInput) => any) {
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, {
       headers: { 'content-type': ICAL_MIME_TYPE },
@@ -188,26 +190,28 @@ describe('addICalEventSource with month view', () => {
 
     const source = { url: givenUrl, format: 'ics' } as EventSourceInput
 
+    let calendar
+
     if (calendarSetup) {
-      calendarSetup(source)
+      calendar = calendarSetup(source)
     } else {
-      initCalendar().addEventSource(source)
+      calendar = initCalendar()
+      calendar.addEventSource(source)
     }
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParamStr = new URL(requestUrl).searchParams.toString()
     expect(requestParamStr).toBe('')
 
-    assertions()
+    assertions(calendar)
   }
 
   // Checks to make sure all events have been rendered and that the calendar
   // has internal info on all the events.
-  // TODO: don't use currentCalendar
-  function assertEventCount(expectedCount: number) {
-    expect(currentCalendar.getEvents().length).toEqual(expectedCount)
+  function assertEventCount(calendar, expectedCount: number) {
+    expect(calendar.getEvents().length).toEqual(expectedCount)
 
-    let calendarWrapper = new CalendarWrapper(currentCalendar)
+    let calendarWrapper = new CalendarWrapper(calendar)
     expect(calendarWrapper.getEventEls().length).toEqual(expectedCount)
   }
 })
