@@ -805,6 +805,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         tDateProfile={tDateProfile}
                         nowDate={props.nowDate}
                         slotWidth={slotWidth}
+                        clipStart={slotDateShift?.[0]}
                       />
                     )}
                   </div>
