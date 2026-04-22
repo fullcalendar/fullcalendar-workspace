@@ -2,6 +2,7 @@
 ## v7.0.0-rc.2
 
 - FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width (#8051)
+- FIX: virtualization & scrolling: Slot header is not rendering properly (#8052)
 
 
 ## v7.0.0-rc.1
