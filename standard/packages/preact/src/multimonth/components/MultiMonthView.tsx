@@ -194,10 +194,10 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     this.scrollState.top = undefined
   }
 
-  private handleScrollEnd = (isUser: boolean) => {
+  private handleScrollEnd = (isDevice: boolean) => {
     const scroller = this.scrollerRef.current
 
-    if (isUser && scroller) {
+    if (isDevice && scroller) {
       this.scrollState.top = scroller.y
       this.scrollState.date = undefined
     }

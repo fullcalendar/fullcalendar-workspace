@@ -948,7 +948,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       this.resetTimeScroll()
     }
 
-    // this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
     this.timeScroller.addScrollListener(this.handleTimeScroll)
     this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
 
@@ -1178,30 +1177,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.applyTimeScroll()
   }
 
-  // NOTE: isUser is malfuncioning. FIX
-  // but using handleTimeScroll to reset the scroll.time is okay too
-  // private handleTimeScrollStart = (isUser: boolean) => {
-  // }
-
   // HACKY
-  private handleTimeScroll = (isUser: boolean, scroll: number) => {
-    if (isUser) {
-      this.scroll.time = undefined
-      this.scroll.x = scroll
-      this._handleTimeScroll()
-    }
+  // can't use isDevice because we want programmatic .scrollLeft assignments to work with scroll-virtualization too.
+  // the main reason we use a isDevice gate is to prevent the initial-scroll assignment from triggering handleTimeScroll,
+  // but the debounce luckily helps us in this case
+  private handleTimeScroll = (_isDevice: boolean, scroll: number) => {
+    this.scroll.x = scroll
+    this._handleTimeScroll()
   }
   private _handleTimeScroll = debounce(() => {
-    this.slotVirtualizer.handleScroll(this.scroll.x)
+    this.scroll.time = undefined // prevents computeTimeScroll from computing based on time
+    const scrollX = this.scroll.x
+
+    this.slotVirtualizer.handleScroll(scrollX)
     for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
-      timeHeaderVirtualizer.handleScroll(this.scroll.x)
+      timeHeaderVirtualizer.handleScroll(scrollX)
     }
   }, 10)[0]
 
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
-      setRef(this.props.scrollRef, this.scroll)
-    }
+  private handleTimeScrollEnd = () => {
+    setRef(this.props.scrollRef, this.scroll)
   }
 
   private applyTimeScroll() {
@@ -1217,6 +1212,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
+  // used by render() for virtualization too
   private computeTimeScroll(): number | undefined {
     const { props, context, scroll } = this
     const { tDateProfile } = props
@@ -1243,7 +1239,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.applyEntityScroll()
   }
 
-  private handleEntityScroll = (isUser: boolean, scroll: number) => {
+  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
     if (!getIsHeightAuto(this.context.options)) {
       this.setVirtualizerScroll(scroll)
     }
@@ -1257,8 +1253,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleEntityScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleEntityScrollEnd = () => {
+    if (!this.isTrackingWindowScroll) {
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
 

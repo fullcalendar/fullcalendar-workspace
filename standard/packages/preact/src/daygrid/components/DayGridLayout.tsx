@@ -157,8 +157,8 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     }
   }
 
-  handleScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  handleScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollDate = null
     }
   }

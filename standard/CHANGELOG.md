@@ -4,6 +4,7 @@
 - FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width (#8051)
 - FIX: virtualization & scrolling: Slot header is not rendering properly (#8052)
 - FIX: virtualization: Now indicator not shown (#8053)
+- FIX: virtualization: scrollLeft JS action will not render timeline (#8054)
 
 
 ## v7.0.0-rc.1

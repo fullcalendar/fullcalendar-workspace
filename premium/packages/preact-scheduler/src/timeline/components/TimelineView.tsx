@@ -416,15 +416,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     this.applyTimeScroll()
   }
 
-  private handleTimeScrollStart = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollStart = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollX = undefined
       this.scrollTime = undefined
     }
   }
 
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollX = this.syncedScroller.x
       this.scrollTime = undefined
     }

@@ -262,8 +262,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   /*
   Captures current values
   */
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       const y = this.timeScrollerRef.current.y
 
       // record, but only if not forPrint, which could give bogus values in the case of
