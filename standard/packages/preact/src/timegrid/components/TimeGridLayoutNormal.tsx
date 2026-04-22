@@ -224,7 +224,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
-                  colWidth={colWidth}
                   viewportWidth={clientWidth}
                   cellIsNarrow={cellIsNarrow}
                   cellIsMicro={cellIsMicro}
