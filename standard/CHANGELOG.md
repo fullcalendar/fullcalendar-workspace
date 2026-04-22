@@ -5,6 +5,7 @@
 - FIX: virtualization & scrolling: Slot header is not rendering properly (#8052)
 - FIX: virtualization: Now indicator not shown (#8053)
 - FIX: virtualization: scrollLeft JS action will not render timeline (#8054)
+- FIX: Event color not changing when changed via Event::setProp (#8064)
 
 
 ## v7.0.0-rc.1

@@ -53,9 +53,7 @@ export class EventImpl implements EventApi {
     } else if (name in EVENT_UI_REFINERS) {
       let ui = EVENT_UI_REFINERS[name](val)
 
-      if (name === 'color') {
-        ui = { backgroundColor: val, borderColor: val }
-      } else if (name === 'editable') {
+      if (name === 'editable') {
         ui = { startEditable: val, durationEditable: val }
       } else {
         ui = { [name]: val }
