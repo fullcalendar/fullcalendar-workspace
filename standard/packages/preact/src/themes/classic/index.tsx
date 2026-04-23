@@ -503,10 +503,10 @@ export default {
         'items-center',
       ),
       rowEventBeforeClass: (info) => (
-        !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+        !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
       ),
       rowEventAfterClass: (info) => (
-        !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+        !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
       ),
       rowEventInnerClass: (info) => (
         info.options.eventOverlap

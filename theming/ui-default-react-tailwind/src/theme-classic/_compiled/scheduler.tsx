@@ -103,10 +103,10 @@ export function Scheduler({
             'items-center',
           ),
           rowEventBeforeClass: (info) => joinClassNames(
-            !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+            !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
           ),
           rowEventAfterClass: (info) => joinClassNames(
-            !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+            !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
           ),
           rowEventInnerClass: (info) => (
             info.options.eventOverlap

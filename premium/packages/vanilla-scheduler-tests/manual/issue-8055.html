@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+
+<script src='../../../../standard/packages/vanilla/dist/all.global.js'></script>
+<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../vanilla-scheduler/dist/all.global.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      // editable: true, // for recreating bug, important for events to NOT be resizable
+      initialView: 'resourceTimelineWeek',
+      views: {
+        resourceTimelineWeek: {
+          slotDuration: { days: 1 },
+        },
+      },
+      resources: [
+        {
+          id: '1',
+          title: 'test 1',
+        },
+        {
+          id: '2',
+          title: 'test 2',
+        },
+        {
+          id: '3',
+          title: 'test 3',
+        },
+      ],
+      events: [
+        {
+          resourceId: '1',
+          title: 'event 1',
+          start: new Date(),
+        },
+      ],
+    });
+
+    calendar.render();
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 13px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 50px auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+
+</body>
+</html>
