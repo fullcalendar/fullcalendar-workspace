@@ -7,6 +7,7 @@
 - FIX: virtualization: scrollLeft JS action will not render timeline (#8054)
 - FIX: Event color not changing when changed via Event::setProp (#8064)
 - FIX: Classic theme timeline event arrows appearing unnecessarily (#8055)
+- FIX: slotMinWidth takes precedence over natural min-width created by header cell inner-text (#7910)
 - FIX: more stable useId shim for React 17
 - FIX: revealed TableDisplayInfo/TableHeaderInfo/TableBodyInfo types for tableClass/tableHeaderClass/tableBodyClass
 

@@ -531,7 +531,6 @@ export const BASE_OPTION_DEFAULTS = {
   outerBorder: true,
   dayNarrowWidth: 80,
   eventOverlap: true,
-  slotMinWidth: 30,
   slotHeaderAlign: 'start',
   slotHeaderSticky: true,
   dayHeaderAlign: 'start',
