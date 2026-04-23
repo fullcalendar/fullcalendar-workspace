@@ -1,9 +1,8 @@
-import {
+import React, {
   PropsWithoutRef,
   Ref,
   FunctionComponent,
   forwardRef,
-  useId,
   useState,
   useEffect,
   useImperativeHandle,
@@ -90,16 +89,22 @@ function runNormal(f: () => void) {
   f()
 }
 
+let warnedStableId = false
+
 function useStableId(fallbackId: string | undefined): string {
   // React >= 18
-  if (useId) {
-    return useId()
+  if (React.useId) {
+    return React.useId()
   }
 
-  // React 17
   if (fallbackId) {
     return fallbackId + ':'
   }
-  console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
+
+  if (!warnedStableId) {
+    warnedStableId = true
+    console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
+  }
+
   return `fc:${guid()}:`
 }
