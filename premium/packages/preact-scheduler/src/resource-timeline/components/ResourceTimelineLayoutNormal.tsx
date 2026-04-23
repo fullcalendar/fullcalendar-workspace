@@ -712,7 +712,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area BODY (w/ events)
               ---------------------------------------------------------------------------- */}
               <Scroller
-                vertical={verticalScrolling}
+                vertical={
+                  verticalScrolling &&
+                  // infer whether scrolling would happen. prevents clientHeight thrashing due to horizontal scrollbars
+                  (totalBodyHeight != null && timeClientHeight != null && totalBodyHeight > timeClientHeight)
+                }
                 horizontal
                 hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
                 className={joinClassNames(

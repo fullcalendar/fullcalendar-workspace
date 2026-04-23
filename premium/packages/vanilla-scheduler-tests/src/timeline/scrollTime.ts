@@ -80,11 +80,13 @@ describe('scrollTime', () => {
     let origScroll = scrollEl.scrollLeft
     expect(origScroll).toBeGreaterThan(0)
 
-    calendar.next()
-    await waitTimeout()
+    await ignoreResizeObserverLoops(async () => {
+      calendar.next()
+      await waitTimeout()
 
-    let newScroll = scrollEl.scrollLeft
-    expect(newScroll).toBe(origScroll)
+      let newScroll = scrollEl.scrollLeft
+      expect(newScroll).toBe(origScroll)
+    })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5351#issuecomment-667554437
@@ -102,14 +104,16 @@ describe('scrollTime', () => {
     let origScroll = scrollEl.scrollLeft
     expect(origScroll).toBeGreaterThan(0)
 
-    calendar.next()
-    await waitTimeout()
+    await ignoreResizeObserverLoops(async () => {
+      calendar.next()
+      await waitTimeout()
 
-    calendar.prev()
-    await waitTimeout()
+      calendar.prev()
+      await waitTimeout()
 
-    let newScroll = scrollEl.scrollLeft
-    expect(newScroll).toBe(origScroll)
+      let newScroll = scrollEl.scrollLeft
+      expect(newScroll).toBe(origScroll)
+    })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5645

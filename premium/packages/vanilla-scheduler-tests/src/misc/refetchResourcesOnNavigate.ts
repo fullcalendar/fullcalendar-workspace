@@ -84,7 +84,7 @@ describe('refetchResourcesOnNavigate', () => {
       })
     })
 
-    it('refetches async resources and waits to render events', (done) => {
+    it('refetches async resources and waits to render events', async () => {
       let fetchCnt = 0
       let calendar = initCalendar({
         resources(arg, callback) {
@@ -104,22 +104,21 @@ describe('refetchResourcesOnNavigate', () => {
       expect($('.day1event').length).toBe(0)
 
       // step 2 (wait for initial fetch to finish)
-      setTimeout(() => {
-        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
-        expect($('.day1event').length).toBe(2)
+      await waitTimeout(101)
+      expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
+      expect($('.day1event').length).toBe(2)
 
-        // step 3
+      // step 3
+      await ignoreResizeObserverLoops(async () => {
         calendar.next()
-        setTimeout(() => {
-          expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
-          expect($('.day1event').length).toBe(0)
-          expect($('.day2event').length).toBe(2)
-          done()
-        }, 101)
-      }, 101)
+        await waitTimeout(101)
+        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
+        expect($('.day1event').length).toBe(0)
+        expect($('.day2event').length).toBe(2)
+      })
     })
 
-    it('does resources-function re-call for each navigation', (done) => {
+    it('does resources-function re-call for each navigation', async () => {
       let fetchCnt = 0
       let calendar = initCalendar({
         resources(arg, callback) {
@@ -133,15 +132,14 @@ describe('refetchResourcesOnNavigate', () => {
         },
       })
 
-      setTimeout(() => {
-        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
+      await waitTimeout(101)
+      expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
 
+      await ignoreResizeObserverLoops(async () => {
         calendar.next()
-        setTimeout(() => {
-          expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
-          done()
-        }, 101)
-      }, 101)
+        await waitTimeout(101)
+        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
+      })
     })
   })
 

@@ -1,7 +1,8 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 
 describe('timeline background events', () => {
-  it('does not rerender a removed event when toggling collapse state', (done) => {
+  it('does not rerender a removed event when toggling collapse state', async () => {
     let calendar = initCalendar({
       now: '2017-03-07',
       scrollTime: '00:00',
@@ -25,22 +26,21 @@ describe('timeline background events', () => {
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let timelineGridWrapper = viewWrapper.timelineGrid
 
+    await waitTimeout()
     expect(timelineGridWrapper.getBgEventEls().length).toBe(1)
 
     calendar.getEventById('1').remove()
+    await waitTimeout()
     expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
 
     viewWrapper.dataGrid.clickFirstExpander() // close
+    await waitTimeout()
+    expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
 
-    setTimeout(() => {
-      expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
-      viewWrapper.dataGrid.clickFirstExpander() // open again
+    viewWrapper.dataGrid.clickFirstExpander() // open again
+    await waitTimeout()
 
-      setTimeout(() => {
-        // should stay at zero
-        expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
-        done()
-      }, 100)
-    }, 100)
+    // should stay at zero
+    expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
   })
 })
