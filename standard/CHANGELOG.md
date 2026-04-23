@@ -1,13 +1,13 @@
 
 ## v7.0.0-rc.2
 
-- FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width (#8051)
-- FIX: virtualization & scrolling: Slot header is not rendering properly (#8052)
-- FIX: virtualization: Now indicator not shown (#8053)
-- FIX: virtualization: scrollLeft JS action will not render timeline (#8054)
-- FIX: Event color not changing when changed via Event::setProp (#8064)
-- FIX: Classic theme timeline event arrows appearing unnecessarily (#8055)
-- FIX: slotMinWidth takes precedence over natural min-width created by header cell inner-text (#7910)
+- FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width ([#8051](https://github.com/fullcalendar/fullcalendar/issues/8051))
+- FIX: virtualization & scrolling: Slot header is not rendering properly ([#8052](https://github.com/fullcalendar/fullcalendar/issues/8052))
+- FIX: virtualization: Now indicator not shown ([#8053](https://github.com/fullcalendar/fullcalendar/issues/8053))
+- FIX: virtualization: scrollLeft JS action will not render timeline ([#8054](https://github.com/fullcalendar/fullcalendar/issues/8054))
+- FIX: Event color not changing when changed via Event::setProp ([#8064](https://github.com/fullcalendar/fullcalendar/issues/8064))
+- FIX: Classic theme timeline event arrows appearing unnecessarily ([#8055](https://github.com/fullcalendar/fullcalendar/issues/8055))
+- FIX: slotMinWidth takes precedence over natural min-width created by header cell inner-text ([#7910](https://github.com/fullcalendar/fullcalendar/issues/7910))
 - FIX: more stable useId shim for React 17
 - FIX: revealed TableDisplayInfo/TableHeaderInfo/TableBodyInfo types for tableClass/tableHeaderClass/tableBodyClass
 - FIX: reduced vertical padding on Classic theme timeline header cells
