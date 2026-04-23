@@ -665,7 +665,10 @@ export default {
       ------------------------------------------------------------------------------------------- */
 
       slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
-      slotHeaderClass: 'justify-center',
+      slotHeaderClass: (info) => joinClassNames(
+        'justify-center',
+        !info.level && 'overflow-hidden',
+      ),
       slotHeaderInnerClass: (info) => joinClassNames(
         'm-2 text-sm',
         info.hasNavLink && 'hover:underline',

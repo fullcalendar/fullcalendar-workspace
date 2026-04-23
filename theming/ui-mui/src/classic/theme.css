@@ -120,6 +120,10 @@
   margin-inline: .25rem
 }
 
+.mx-2 {
+  margin-inline: .5rem
+}
+
 .mx-px {
   margin-inline: 1px
 }

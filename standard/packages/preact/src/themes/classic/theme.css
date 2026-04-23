@@ -124,6 +124,10 @@
   margin-inline: 4px
 }
 
+.mx-2 {
+  margin-inline: 8px
+}
+
 .mx-px {
   margin-inline: 1px
 }

@@ -91,9 +91,12 @@ export function SchedulerViews({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
-          slotHeaderClass: 'justify-center',
+          slotHeaderClass: (info) => cn(
+            'justify-center',
+            !info.level && 'overflow-hidden',
+          ),
           slotHeaderInnerClass: (info) => cn(
-            'm-2 text-sm',
+            'mx-2 my-1 text-sm',
             info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b',
