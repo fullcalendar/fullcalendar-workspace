@@ -10,6 +10,7 @@
 - FIX: slotMinWidth takes precedence over natural min-width created by header cell inner-text (#7910)
 - FIX: more stable useId shim for React 17
 - FIX: revealed TableDisplayInfo/TableHeaderInfo/TableBodyInfo types for tableClass/tableHeaderClass/tableBodyClass
+- FIX: reduced vertical padding on Classic theme timeline header cells
 
 
 ## v7.0.0-rc.1
