@@ -116,6 +116,7 @@ export default class DemoApp extends React.Component {
     if (title) {
       calendarApi.addEvent({
         id: createEventId(),
+        resourceId: selectInfo.resource?.id,
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,

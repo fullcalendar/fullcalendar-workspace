@@ -33,9 +33,9 @@ export default defineComponent({
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,resourceTimelineYear'
+          right: 'dayGridMonth,timeGridWeek,resourceTimelineDay'
         },
-        initialView: 'dayGridMonth',
+        initialView: 'resourceTimelineDay',
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
         resources: RESOURCES,
         editable: true,
@@ -84,6 +84,9 @@ export default defineComponent({
     handleEvents(events: EventApi[]) {
       this.currentEvents = events
     },
+    handlePrint() {
+      window.print()
+    },
   }
 })
 
@@ -109,6 +112,9 @@ export default defineComponent({
           />
           toggle weekends
         </label>
+      </div>
+      <div class='demo-app-sidebar-section'>
+        <button @click='handlePrint'>Print</button>
       </div>
       <div class='demo-app-sidebar-section'>
         <h2>All Events ({{ currentEvents.length }})</h2>
@@ -167,6 +173,12 @@ b { /* used for event dates/times */
   line-height: 1.5;
   background: #eaf9ff;
   border-right: 1px solid #d3e2e8;
+}
+
+@media print {
+  .demo-app-sidebar {
+    display: none;
+  }
 }
 
 .demo-app-sidebar-section {
