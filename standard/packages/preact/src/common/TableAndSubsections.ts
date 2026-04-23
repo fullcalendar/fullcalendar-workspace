@@ -1,5 +1,5 @@
 
-export type TableDisplayData = {
+export type TableDisplayInfo = {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
@@ -7,8 +7,8 @@ export type TableDisplayData = {
   // view: ViewApi -- TODO when easier
 }
 
-export type TableHeaderData = TableDisplayData & {
+export type TableHeaderInfo = TableDisplayInfo & {
   isSticky: boolean
 }
 
-export type TableBodyData = TableDisplayData
+export type TableBodyInfo = TableDisplayInfo

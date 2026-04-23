@@ -28,6 +28,7 @@ export type {
 } from '../render-hook-misc'
 export type { DayLaneInfo } from '../common/DayLaneContainer'
 export type { ViewDisplayInfo } from '../common/ViewContainer'
+export type { TableDisplayInfo, TableBodyInfo, TableHeaderInfo } from '../common/TableAndSubsections'
 export type { CalendarDisplayInfo } from '../calendar-root'
 export type { EventClickInfo } from '../interactions/EventClicking'
 export type { EventHoveringInfo } from '../interactions/EventHovering'

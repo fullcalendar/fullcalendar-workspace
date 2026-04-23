@@ -55,7 +55,7 @@ import {
   DayCellInfo,
   PluginInput,
 } from './api/structs'
-import { TableDisplayData, TableHeaderData, TableBodyData } from './common/TableAndSubsections'
+import { TableDisplayInfo, TableHeaderInfo, TableBodyInfo } from './common/TableAndSubsections'
 import { CalendarDisplayInfo } from './calendar-root'
 import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting'
@@ -426,9 +426,9 @@ export const BASE_OPTION_REFINERS = {
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionInfo>>,
   toolbarTitleClass: identity as Identity<string | undefined>,
 
-  tableClass: identity as Identity<ClassNameGenerator<TableDisplayData>>,
-  tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderData>>,
-  tableBodyClass: identity as Identity<ClassNameGenerator<TableBodyData>>,
+  tableClass: identity as Identity<ClassNameGenerator<TableDisplayInfo>>,
+  tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderInfo>>,
+  tableBodyClass: identity as Identity<ClassNameGenerator<TableBodyInfo>>,
 
   nonBusinessHoursClass: identity as Identity<string | undefined>,
   highlightClass: identity as Identity<string | undefined>,
