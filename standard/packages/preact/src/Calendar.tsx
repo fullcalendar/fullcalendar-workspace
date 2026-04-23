@@ -93,9 +93,13 @@ let warnedStableId = false
 
 function useStableId(fallbackId: string | undefined): string {
   // React >= 18
+  // During runtime, will not change
   if (React.useId) {
     return React.useId()
   }
+
+  // Must always execute, regardless of fallbackId, because of hook rules
+  const [uid] = useState(() => guid())
 
   if (fallbackId) {
     return fallbackId + ':'
@@ -106,5 +110,5 @@ function useStableId(fallbackId: string | undefined): string {
     console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
   }
 
-  return `fc:${guid()}:`
+  return `fc:${uid}:`
 }

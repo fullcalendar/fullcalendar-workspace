@@ -7,6 +7,7 @@
 - FIX: virtualization: scrollLeft JS action will not render timeline (#8054)
 - FIX: Event color not changing when changed via Event::setProp (#8064)
 - FIX: Classic theme timeline event arrows appearing unnecessarily (#8055)
+- FIX: more stable useId shim for React 17
 
 
 ## v7.0.0-rc.1
