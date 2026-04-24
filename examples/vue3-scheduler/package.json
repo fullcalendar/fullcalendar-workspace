@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "@fullcalendar-examples/vue3-typescript-scheduler",
-  "title": "FullCalendar Vue 3 + TypeScript Example Project (with Premium)",
+  "name": "@fullcalendar-examples/vue3-scheduler",
+  "title": "FullCalendar Vue 3 Example Project (with Premium)",
   "version": "0.0.1-beta.1",
   "license": "ISC",
   "dependencies": {

@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "@fullcalendar-examples/react19-typescript",
-  "title": "FullCalendar React 19 + TypeScript Example Project",
+  "name": "@fullcalendar-examples/react19-scheduler",
+  "title": "FullCalendar React 19 Example Project (with Premium)",
   "version": "0.0.1-beta.1",
   "license": "ISC",
   "type": "module",
@@ -14,12 +14,16 @@
   },
   "dependencies": {
     "@fullcalendar/react": "7.0.0-rc.2",
+    "@fullcalendar/react-scheduler": "7.0.0-rc.2",
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0",
     "temporal-polyfill": "^0.3.2"
   },
   "dependenciesMeta": {
     "@fullcalendar/react": {
+      "injected": true
+    },
+    "@fullcalendar/react-scheduler": {
       "injected": true
     }
   },

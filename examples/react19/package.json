@@ -9,7 +9,8 @@
     "clean": "rm -rf dist node_modules/.vite",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fullcalendar/react": "7.0.0-rc.2",
@@ -26,6 +27,7 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.5.0",
     "vite": "^5.2.0"
   }
 }

@@ -1,11 +1,13 @@
-<script>
+<script lang='ts'>
 import { defineComponent } from 'vue'
+import { CalendarOptions, EventApi, DateSelectInfo, EventClickInfo } from '@fullcalendar/vue3'
 import FullCalendar from '@fullcalendar/vue3'
 import classicThemePlugin from '@fullcalendar/vue3/themes/classic'
 import dayGridPlugin from '@fullcalendar/vue3/daygrid'
 import timeGridPlugin from '@fullcalendar/vue3/timegrid'
 import interactionPlugin from '@fullcalendar/vue3/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import resourceTimelinePlugin from '@fullcalendar/vue3-scheduler/resource-timeline'
+import { RESOURCES, INITIAL_EVENTS, createEventId } from './event-utils'
 
 import '@fullcalendar/vue3/skeleton.css'
 import '@fullcalendar/vue3/themes/classic/theme.css'
@@ -15,22 +17,27 @@ export default defineComponent({
   components: {
     FullCalendar,
   },
-  data() {
+  data(): {
+    calendarOptions: CalendarOptions
+    currentEvents: EventApi[]
+  } {
     return {
       calendarOptions: {
         plugins: [
           classicThemePlugin,
+          interactionPlugin, // needed for dateClick
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // needed for dateClick
+          resourceTimelinePlugin,
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth,timeGridWeek,resourceTimelineYear'
         },
         initialView: 'dayGridMonth',
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        resources: RESOURCES,
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -44,15 +51,15 @@ export default defineComponent({
         eventChange:
         eventRemove:
         */
-      },
-      currentEvents: [],
+      } as CalendarOptions,
+      currentEvents: [] as EventApi[],
     }
   },
   methods: {
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
-    handleDateSelect(selectInfo) {
+    handleDateSelect(selectInfo: DateSelectInfo) {
       let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
 
@@ -61,6 +68,7 @@ export default defineComponent({
       if (title) {
         calendarApi.addEvent({
           id: createEventId(),
+          resourceId: selectInfo.resource?.id,
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
@@ -68,12 +76,12 @@ export default defineComponent({
         })
       }
     },
-    handleEventClick(clickInfo) {
+    handleEventClick(clickInfo: EventClickInfo) {
       if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
         clickInfo.event.remove()
       }
     },
-    handleEvents(events) {
+    handleEvents(events: EventApi[]) {
       this.currentEvents = events
     },
   }
