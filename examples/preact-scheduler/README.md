@@ -1,6 +1,6 @@
 # FullCalendar Preact Example Project (with Premium)
 
-An example project showing how [FullCalendar's Preact Connector](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/) and the [Scheduler premium plugin](https://fullcalendar.io/docs/scheduler).
+An example project showing how [FullCalendar's Preact implementation](https://fullcalendar.io/docs/preact) can be used with [TypeScript](https://www.typescriptlang.org/) and the [Scheduler premium plugin](https://fullcalendar.io/docs/scheduler).
 
 
 ## Installation

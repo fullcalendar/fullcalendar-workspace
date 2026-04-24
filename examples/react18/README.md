@@ -1,7 +1,7 @@
 
 # FullCalendar React 18 Example Project
 
-An example project showing how [FullCalendar's React Connector](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/).
+An example project showing how [FullCalendar's React implementation](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/).
 
 
 ## Installation

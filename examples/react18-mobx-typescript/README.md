@@ -1,7 +1,7 @@
 
 # FullCalendar React 18 + MobX + TypeScript Example Project
 
-An example project showing how [FullCalendar's React Connector](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/) and [MobX](https://mobx.js.org/) for managing the lifcycle of events outside of the Calendar component in a separate store.
+An example project showing how [FullCalendar's React implementation](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/) and [MobX](https://mobx.js.org/) for managing the lifcycle of events outside of the Calendar component in a separate store.
 
 ## Installation
 

@@ -1,6 +1,6 @@
 # FullCalendar Preact Example Project
 
-An example project showing how [FullCalendar's Preact Connector](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/).
+An example project showing how [FullCalendar's Preact implementation](https://fullcalendar.io/docs/preact) can be used with [TypeScript](https://www.typescriptlang.org/).
 
 
 ## Installation
