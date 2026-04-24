@@ -3,24 +3,29 @@
   "name": "@fullcalendar-examples/typescript-scheduler",
   "version": "0.0.1-beta.1",
   "license": "ISC",
-  "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
+  "type": "module",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "clean": "rm -rf dist tsc"
+    "clean": "rm -rf dist node_modules/.vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "fullcalendar": "7.0.0-rc.2",
     "fullcalendar-scheduler": "7.0.0-rc.2",
     "temporal-polyfill": "^0.3.2"
   },
+  "dependenciesMeta": {
+    "fullcalendar": {
+      "injected": true
+    },
+    "fullcalendar-scheduler": {
+      "injected": true
+    }
+  },
   "devDependencies": {
-    "css-loader": "^4.3.0",
-    "html-webpack-plugin": "^4.5.0",
-    "style-loader": "^2.0.0",
-    "ts-loader": "^8.0.7",
-    "typescript": "^4.0.5",
-    "webpack": "^5.3.0",
-    "webpack-cli": "^4.1.0"
+    "typescript": "^5.5.0",
+    "vite": "^6.0.11"
   }
 }

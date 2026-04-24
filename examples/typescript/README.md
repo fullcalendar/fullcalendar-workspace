@@ -1,9 +1,7 @@
 
 # FullCalendar TypeScript Example Project
 
-This is a fully-buildable example project for FullCalendar and [TypeScript], leveraging [Webpack] and [ts-loader].
-
-[More information on setting up TypeScript with Webpack &raquo;](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html)
+This is a fully-buildable example project for FullCalendar and [TypeScript](https://www.typescriptlang.org/), leveraging [Vite](https://vitejs.dev/).
 
 
 ## Installation
@@ -17,14 +15,7 @@ npm install
 ## Build Commands
 
 ```bash
-npm run build
-npm run watch # continously build
+npm run dev   # builds and opens a web browser
+npm run build # builds files into dist/ directory
 npm run clean # start fresh
 ```
-
-After running `build` or `watch`, open up `dist/index.html` in a browser.
-
-
-[TypeScript]: https://www.typescriptlang.org/
-[Webpack]: https://webpack.js.org/
-[ts-loader]: https://github.com/TypeStrong/ts-loader
