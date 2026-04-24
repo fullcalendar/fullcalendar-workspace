@@ -27,6 +27,8 @@
     "@fullcalendar-examples/next14": "0.1.1-beta.1",
     "@fullcalendar-examples/nuxt3": "0.0.0",
     "@fullcalendar-examples/parcel": "0.0.1-beta.1",
+    "@fullcalendar-examples/preact": "0.0.0",
+    "@fullcalendar-examples/preact-scheduler": "0.0.0",
     "@fullcalendar-examples/react16": "0.0.1-beta.1",
     "@fullcalendar-examples/react17": "0.0.1-beta.1",
     "@fullcalendar-examples/react18": "0.0.0",
