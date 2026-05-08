@@ -105,7 +105,7 @@ export const BASE_OPTION_REFINERS = {
   todayText: String,
   yearText: String,
   monthText: String,
-  weekText: String,
+  weekTextLong: String,
   weekTextShort: String,
   dayText: String,
   listText: identity as Identity<string | false>,

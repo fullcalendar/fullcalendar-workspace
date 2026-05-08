@@ -7,7 +7,7 @@ export default {
   todayText: 'بۈگۈن',
   yearText: 'يىل',
   monthText: 'ئاي',
-  weekText: 'ھەپتە',
+  weekTextLong: 'ھەپتە',
   dayText: 'كۈن',
   listText: 'كۈنتەرتىپ',
   allDayText: 'پۈتۈن كۈن',

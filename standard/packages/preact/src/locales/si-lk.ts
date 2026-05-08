@@ -11,7 +11,7 @@ export default {
   todayText: 'අද',
   yearText: 'අවුරුදු',
   monthText: 'මාසය',
-  weekText: 'සතිය',
+  weekTextLong: 'සතිය',
   weekTextShort: 'සති',
   dayText: 'දවස',
   listText: 'ලැයිස්තුව',

@@ -11,7 +11,7 @@ export default {
   todayText: 'Այսօր',
   yearText: 'Տարի',
   monthText: 'Ամիս',
-  weekText: 'Շաբաթ',
+  weekTextLong: 'Շաբաթ',
   weekTextShort: 'Շաբ',
   dayText: 'Օր',
   listText: 'Օրվա ցուցակ',

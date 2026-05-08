@@ -1,7 +1,7 @@
 import esLocale from 'fullcalendar/locales/es'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
 
-describe('weekText', () => { // TODO: rename file
+describe('weekTextShort', () => { // TODO: rename file
   pushOptions({
     weekNumbers: true,
   });

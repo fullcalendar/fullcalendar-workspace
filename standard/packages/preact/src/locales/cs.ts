@@ -11,7 +11,7 @@ export default {
   todayText: 'Nyní',
   yearText: 'Rok',
   monthText: 'Měsíc',
-  weekText: 'Týden',
+  weekTextLong: 'Týden',
   weekTextShort: 'Týd',
   dayText: 'Den',
   listText: 'Agenda',

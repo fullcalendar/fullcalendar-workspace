@@ -32,7 +32,7 @@ function makeContext(
     locale: makeLocale(localeCode),
     calendarSystem: {} as any,
     computeWeekNumber: () => 1,
-    weekText: 'Week',
+    weekTextLong: 'Week',
     weekTextShort: 'W',
     ...overrides,
   }
@@ -157,9 +157,9 @@ describe('NativeDateFormatter', () => {
       expect(parts[0].value).toBe('3')
     })
 
-    it('week:"long" returns [weekText, space, week]', () => {
+    it('week:"long" returns [weekTextLong, space, week]', () => {
       const fmt = new NativeDateFormatterNew({ week: 'long' })
-      const ctx = makeContext('en-US', { weekText: 'Week', computeWeekNumber: () => 7 })
+      const ctx = makeContext('en-US', { weekTextLong: 'Week', computeWeekNumber: () => 7 })
       const parts = fmt.formatToParts(MON_NOON, ctx)
       expect(parts).toHaveLength(3)
       expect(parts[0]).toEqual({ type: 'literal', value: 'Week' })
@@ -189,7 +189,7 @@ describe('NativeDateFormatter', () => {
     it('RTL locale reverses parts order for week:"long"', () => {
       const fmt = new NativeDateFormatterNew({ week: 'long' })
       const ctx = makeContext('he', {
-        weekText: 'שבוע',
+        weekTextLong: 'שבוע',
         computeWeekNumber: () => 4,
         locale: makeLocale('he', { direction: 'rtl' }),
       })
@@ -222,7 +222,7 @@ describe('NativeDateFormatter', () => {
       const start = makeMarker('2024-01-15T00:00:00Z', 0)
       const end = makeMarker('2024-01-22T00:00:00Z', 0)
       const ctx = makeContext('en-US', {
-        weekText: 'Week',
+        weekTextLong: 'Week',
         computeWeekNumber: (d) => (d === start.marker ? 3 : 99),
       })
       const parts = fmt.formatRangeToParts(start, end, ctx)
@@ -301,7 +301,7 @@ describe('NativeDateFormatter', () => {
     it('formats week numbers like the legacy strings', () => {
       const ctx = makeContext('en-US', {
         computeWeekNumber: () => 23,
-        weekText: 'W',
+        weekTextLong: 'W',
         weekTextShort: 'W',
       })
 
@@ -711,7 +711,7 @@ describe('NativeDateFormatter', () => {
       const start = makeMarker('2024-01-15T00:00:00Z', 0)
       const end = makeMarker('2024-01-22T00:00:00Z', 0)
       const ctx = makeContext('en-US', {
-        weekText: 'Week',
+        weekTextLong: 'Week',
         computeWeekNumber: (d) => (d === start.marker ? 3 : 99),
       })
       const parts = fmt.formatRangeToParts(start, end, ctx)

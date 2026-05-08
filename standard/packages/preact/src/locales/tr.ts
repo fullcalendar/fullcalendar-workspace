@@ -11,7 +11,7 @@ export default {
   todayText: 'bugün',
   yearText: 'Yıl',
   monthText: 'Ay',
-  weekText: 'Hafta',
+  weekTextLong: 'Hafta',
   weekTextShort: 'Hf',
   dayText: 'Gün',
   listText: 'Ajanda',

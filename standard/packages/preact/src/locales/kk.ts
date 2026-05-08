@@ -11,7 +11,7 @@ export default {
   todayText: 'Бүгін',
   yearText: 'Жыл',
   monthText: 'Ай',
-  weekText: 'Апта',
+  weekTextLong: 'Апта',
   dayText: 'Күн',
   listText: 'Күн тәртібі',
   allDayText: 'Күні\nбойы',

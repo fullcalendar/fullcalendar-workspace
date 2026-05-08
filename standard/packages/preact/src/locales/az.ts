@@ -11,7 +11,7 @@ export default {
   todayText: 'Bu Gün',
   yearText: 'Il',
   monthText: 'Ay',
-  weekText: 'Həftə',
+  weekTextLong: 'Həftə',
   dayText: 'Gün',
   listText: 'Gündəm',
   allDayText: 'Bütün\nGün',

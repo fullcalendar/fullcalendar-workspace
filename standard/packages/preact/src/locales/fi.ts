@@ -11,7 +11,7 @@ export default {
   todayText: 'Tänään',
   yearText: 'Vuosi',
   monthText: 'Kuukausi',
-  weekText: 'Viikko',
+  weekTextLong: 'Viikko',
   weekTextShort: 'Vk',
   dayText: 'Päivä',
   listText: 'Tapahtumat',

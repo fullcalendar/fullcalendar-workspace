@@ -11,7 +11,7 @@ export default {
   todayText: 'Dziś',
   yearText: 'Rok',
   monthText: 'Miesiąc',
-  weekText: 'Tydzień',
+  weekTextLong: 'Tydzień',
   weekTextShort: 'Tydz',
   dayText: 'Dzień',
   listText: 'Plan dnia',

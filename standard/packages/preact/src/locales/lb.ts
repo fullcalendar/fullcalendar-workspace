@@ -11,7 +11,7 @@ export default {
   todayText: 'Haut',
   yearText: 'Joer',
   monthText: 'Mount',
-  weekText: 'Woch',
+  weekTextLong: 'Woch',
   weekTextShort: 'W',
   dayText: 'Dag',
   listText: 'Terminiwwersiicht',

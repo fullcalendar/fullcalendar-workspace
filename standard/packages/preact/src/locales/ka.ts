@@ -11,7 +11,7 @@ export default {
   todayText: 'დღეს',
   yearText: 'წელიწადი',
   monthText: 'თვე',
-  weekText: 'კვირა',
+  weekTextLong: 'კვირა',
   weekTextShort: 'კვ',
   dayText: 'დღე',
   listText: 'დღის წესრიგი',

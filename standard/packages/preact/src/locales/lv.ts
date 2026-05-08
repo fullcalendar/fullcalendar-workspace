@@ -11,7 +11,7 @@ export default {
   todayText: 'Šodien',
   yearText: 'Gads',
   monthText: 'Mēnesis',
-  weekText: 'Nedēļa',
+  weekTextLong: 'Nedēļa',
   weekTextShort: 'Ned.',
   dayText: 'Diena',
   listText: 'Dienas kārtība',

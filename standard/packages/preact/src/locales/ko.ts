@@ -7,7 +7,7 @@ export default {
   todayText: '오늘',
   yearText: '년도',
   monthText: '월',
-  weekText: '주',
+  weekTextLong: '주',
   dayText: '일',
   listText: '일정목록',
   allDayText: '종일',

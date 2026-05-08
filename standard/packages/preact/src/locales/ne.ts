@@ -11,7 +11,7 @@ export default {
   todayText: 'आज',
   yearText: 'वर्ष',
   monthText: 'महिना',
-  weekText: 'हप्ता',
+  weekTextLong: 'हप्ता',
   dayText: 'दिन',
   listText: 'सूची',
   allDayText: 'दिनभरि',

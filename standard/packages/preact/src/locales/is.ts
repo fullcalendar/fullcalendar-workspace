@@ -11,7 +11,7 @@ export default {
   todayText: 'Í dag',
   yearText: 'Ár',
   monthText: 'Mánuður',
-  weekText: 'Vika',
+  weekTextLong: 'Vika',
   dayText: 'Dagur',
   listText: 'Dagskrá',
   allDayText: 'Allan\ndaginn',

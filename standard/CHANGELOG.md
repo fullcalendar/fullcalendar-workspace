@@ -10,6 +10,7 @@
 - BREAKING (TODO: update in docs)
   - renamed option multiMonthColumnCount -> multiMonthColumns
   - renamed type MountData -> MountInfo
+  - *reversed* rename of weekText -> weekTextLong. use weekTextLong
 
 
 ## v7.0.0-rc.2

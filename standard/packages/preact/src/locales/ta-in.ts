@@ -11,7 +11,7 @@ export default {
   todayText: 'இன்று',
   yearText: 'ஆண்டு',
   monthText: 'மாதம்',
-  weekText: 'வாரம்',
+  weekTextLong: 'வாரம்',
   dayText: 'நாள்',
   listText: 'தினசரி அட்டவணை',
   allDayText: 'நாள்\nமுழுவதும்',

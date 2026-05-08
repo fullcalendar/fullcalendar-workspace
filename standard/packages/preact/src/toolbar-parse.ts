@@ -94,7 +94,10 @@ function parseSection(
 
           buttonText = buttonInput.text ||
             (buttonTextKey ? calendarOptions[buttonTextKey] : '') ||
-            (viewSpec.singleUnit ? calendarOptions[viewSpec.singleUnit + 'Text'] : '') ||
+            (viewSpec.singleUnit
+              ? (calendarOptions[viewSpec.singleUnit + 'TextLong'] ||
+                  calendarOptions[viewSpec.singleUnit + 'Text'])
+              : '') ||
             name
 
           /*

@@ -87,7 +87,7 @@ describe('datelib', () => {
         timeZone: 'UTC',
         calendarSystem: 'gregory',
         locale: enLocale,
-        weekText: enLocale.options.weekText,
+        weekTextLong: enLocale.options.weekTextLong,
         weekTextShort: enLocale.options.weekTextShort,
       })
     })

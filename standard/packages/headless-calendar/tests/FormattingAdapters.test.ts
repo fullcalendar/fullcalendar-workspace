@@ -23,7 +23,7 @@ function makeContext(overrides: Partial<DateFormattingContext> = {}): DateFormat
     locale: makeLocale('en-US'),
     calendarSystem: createCalendarSystem('gregory'),
     computeWeekNumber: () => 1,
-    weekText: 'Week',
+    weekTextLong: 'Week',
     weekTextShort: 'W',
     ...overrides,
   }

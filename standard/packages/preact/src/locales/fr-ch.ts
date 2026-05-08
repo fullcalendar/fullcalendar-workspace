@@ -11,7 +11,7 @@ export default {
   todayText: 'Courant',
   yearText: 'Année',
   monthText: 'Mois',
-  weekText: 'Semaine',
+  weekTextLong: 'Semaine',
   weekTextShort: 'Sm',
   dayText: 'Jour',
   listText: 'Mon planning',

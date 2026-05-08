@@ -13,7 +13,7 @@ export default {
   yearText: 'ปี',
   todayText: 'วันนี้',
   monthText: 'เดือน',
-  weekText: 'สัปดาห์',
+  weekTextLong: 'สัปดาห์',
   dayText: 'วัน',
   listText: 'กำหนดการ',
   allDayText: 'ตลอดวัน',

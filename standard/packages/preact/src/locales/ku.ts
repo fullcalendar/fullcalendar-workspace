@@ -12,7 +12,7 @@ export default {
   todayText: 'ئەمڕو',
   yearText: 'ساڵ',
   monthText: 'مانگ',
-  weekText: 'هەفتە',
+  weekTextLong: 'هەفتە',
   dayText: 'ڕۆژ',
   listText: 'بەرنامە',
   allDayText: 'هەموو ڕۆژەکە',

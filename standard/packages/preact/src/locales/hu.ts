@@ -11,7 +11,7 @@ export default {
   todayText: 'Ma',
   yearText: 'Év',
   monthText: 'Hónap',
-  weekText: 'Hét',
+  weekTextLong: 'Hét',
   dayText: 'Nap',
   listText: 'Lista',
   allDayText: 'Egész\nnap',

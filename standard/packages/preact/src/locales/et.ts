@@ -11,7 +11,7 @@ export default {
   todayText: 'Täna',
   yearText: 'Aasta',
   monthText: 'Kuu',
-  weekText: 'Nädal',
+  weekTextLong: 'Nädal',
   weekTextShort: 'Näd',
   dayText: 'Päev',
   listText: 'Päevakord',

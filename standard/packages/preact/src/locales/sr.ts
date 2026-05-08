@@ -11,7 +11,7 @@ export default {
   todayText: 'Danas',
   yearText: 'Godina',
   monthText: 'Mеsеc',
-  weekText: 'Nеdеlja',
+  weekTextLong: 'Nеdеlja',
   weekTextShort: 'Sed',
   dayText: 'Dan',
   listText: 'Planеr',

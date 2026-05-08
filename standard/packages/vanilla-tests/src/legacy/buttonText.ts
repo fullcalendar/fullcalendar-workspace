@@ -42,7 +42,7 @@ describe('button text', () => {
           // text for view-intervals must go here
           // unfortunately this muddles the meaning of the test
           monthText: 'mun',
-          weekText: 'wiki',
+          weekTextLong: 'wiki',
           dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -95,7 +95,7 @@ describe('button text', () => {
           // text for view-intervals must go here
           // unfortunately this muddles the meaning of the test
           monthText: 'mun',
-          weekText: 'wiki',
+          weekTextLong: 'wiki',
           dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -150,7 +150,7 @@ describe('button text', () => {
           // text for view-intervals must go here
           // unfortunately this muddles the meaning of the test
           monthText: 'mun',
-          weekText: 'wiki',
+          weekTextLong: 'wiki',
           dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -205,7 +205,7 @@ describe('button text', () => {
           // text for view-intervals must go here
           // unfortunately this muddles the meaning of the test
           monthText: 'mun',
-          weekText: 'wiki',
+          weekTextLong: 'wiki',
           dayText: 'dei',
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar

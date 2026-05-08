@@ -11,7 +11,7 @@ export default {
   todayText: 'Hôm nay',
   yearText: 'Năm',
   monthText: 'Tháng',
-  weekText: 'Tuần',
+  weekTextLong: 'Tuần',
   weekTextShort: 'Tu',
   dayText: 'Ngày',
   listText: 'Lịch biểu',

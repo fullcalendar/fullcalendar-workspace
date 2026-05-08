@@ -11,7 +11,7 @@ export default {
   todayText: 'Danas',
   yearText: 'Godina',
   monthText: 'Mjesec',
-  weekText: 'Sedmica',
+  weekTextLong: 'Sedmica',
   weekTextShort: 'Sed',
   dayText: 'Dan',
   listText: 'Raspored',

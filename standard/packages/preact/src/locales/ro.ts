@@ -11,7 +11,7 @@ export default {
   todayText: 'Azi',
   yearText: 'An',
   monthText: 'Lună',
-  weekText: 'Săptămână',
+  weekTextLong: 'Săptămână',
   weekTextShort: 'Săpt',
   dayText: 'Zi',
   listText: 'Agendă',

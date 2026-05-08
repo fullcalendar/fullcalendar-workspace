@@ -11,7 +11,7 @@ export default {
   todayText: 'Šiandien',
   yearText: 'Metai',
   monthText: 'Mėnuo',
-  weekText: 'Savaitė',
+  weekTextLong: 'Savaitė',
   weekTextShort: 'SAV',
   dayText: 'Diena',
   listText: 'Darbotvarkė',

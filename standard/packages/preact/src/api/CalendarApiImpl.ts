@@ -562,7 +562,10 @@ export class CalendarApiImpl implements CalendarApi {
       const buttonText =
         buttonConfigs[viewSpecName]?.text ||
         (buttonTextKey ? options[buttonTextKey] : '') ||
-        (viewSpec.singleUnit ? options[viewSpec.singleUnit + 'Text'] : '') ||
+        (viewSpec.singleUnit
+          ? (options[viewSpec.singleUnit + 'TextLong'] ||
+              options[viewSpec.singleUnit + 'Text'])
+          : '') ||
         viewSpecName
 
       const buttonHint = formatWithOrdinals(
