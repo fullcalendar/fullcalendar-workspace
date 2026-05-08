@@ -11,7 +11,6 @@ import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { optionChangeHandlers } from './option-change-handlers'
 import { handleResourceStore } from './resources-crud'
-import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
 
 export default {
   name: 'resource',
@@ -34,7 +33,5 @@ export default {
   externalDefTransforms: [transformExternalDef],
   eventDropTransformers: [transformEventDrop],
   optionChangeHandlers,
-  optionRefiners: OPTION_REFINERS,
-  listenerRefiners: LISTENER_REFINERS,
   propSetHandlers: { resourceStore: handleResourceStore },
 } as PluginInput

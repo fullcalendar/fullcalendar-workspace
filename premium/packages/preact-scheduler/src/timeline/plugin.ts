@@ -1,14 +1,12 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import { TimelineView } from './components/TimelineView'
-import { OPTION_REFINERS } from './options'
 
 export default {
   name: 'timeline',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   initialView: 'timelineDay',
-  optionRefiners: OPTION_REFINERS,
   views: {
     timeline: {
       component: TimelineView,
