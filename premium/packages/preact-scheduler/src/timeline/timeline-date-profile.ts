@@ -86,10 +86,10 @@ export function buildTimelineDateProfile(
 
   if (Array.isArray(input)) {
     rawFormats = input
-    headerFormatUnits = input.map(() => null)
+    headerFormatUnits = input.map(inferHeaderFormatUnit)
   } else if (input != null) {
     rawFormats = [input]
-    headerFormatUnits = [null]
+    headerFormatUnits = [inferHeaderFormatUnit(input)]
   } else {
     const computed = computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
     rawFormats = computed.formats
@@ -539,6 +539,34 @@ function computeHeaderFormats(
       format2 ? [unit2] : [],
     ),
   }
+}
+
+function inferHeaderFormatUnit(rawFormat: any): string | null {
+  if (typeof rawFormat === 'object' && rawFormat) {
+    if (
+      rawFormat.fractionalSecondDigits ||
+      rawFormat.second ||
+      rawFormat.minute ||
+      rawFormat.hour ||
+      rawFormat.timeZoneName
+    ) {
+      return 'time'
+    }
+    if (rawFormat.day || rawFormat.weekday) {
+      return 'day'
+    }
+    if (rawFormat.week) {
+      return 'week'
+    }
+    if (rawFormat.month) {
+      return 'month'
+    }
+    if (rawFormat.year) {
+      return 'year'
+    }
+  }
+
+  return null
 }
 
 function buildCellRows(

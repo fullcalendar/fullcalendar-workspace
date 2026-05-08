@@ -1,7 +1,8 @@
 
 ## next v7
 
-- FIX: in React, event flicker after event drag-n-drop
+- FIX: In React, event flicker after event drag-n-drop
+- FIX: With custom slotHeaderFormats, navLinks sometimes disabled (#8064)
 
 
 ## v7.0.0-rc.2
