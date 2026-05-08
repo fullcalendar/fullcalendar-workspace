@@ -8,7 +8,7 @@ export type { BusinessHoursInput } from '../structs/business-hours'
 export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constraint'
 export type { PluginInput } from '../plugin-system-struct'
 export type { ViewComponentType } from '../structs/view-config'
-export type { ClassNameInput, ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler, MountData } from '../common/render-hook'
+export type { ClassNameInput, ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler, MountInfo } from '../common/render-hook'
 export type { NowIndicatorHeaderInfo } from '../common/NowIndicatorHeaderContainer'
 export type { NowIndicatorLineInfo } from '../common/NowIndicatorLineContainer'
 export type {

@@ -147,7 +147,7 @@ export { RefMap } from './util/RefMap'
 
 export { NowTimer } from './NowTimer'
 export type {
-  ContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
+  ContentGenerator, DidMountHandler, WillUnmountHandler, MountInfo,
 } from './common/render-hook'
 export {
   refineClassName,

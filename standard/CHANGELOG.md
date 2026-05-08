@@ -9,6 +9,7 @@
 - FEATURE: Warn on invalid class-name inputs
 - BREAKING (TODO: update in docs)
   - renamed option multiMonthColumnCount -> multiMonthColumns
+  - renamed type MountData -> MountInfo
 
 
 ## v7.0.0-rc.2
