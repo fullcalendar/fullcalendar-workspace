@@ -1,4 +1,9 @@
 
+## next v7
+
+- FIX: in React, event flicker after event drag-n-drop
+
+
 ## v7.0.0-rc.2
 
 - FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width ([#8051](https://github.com/fullcalendar/fullcalendar/issues/8051))
