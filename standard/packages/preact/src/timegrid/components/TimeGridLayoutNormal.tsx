@@ -173,7 +173,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
-                multiMonthColumnCount: 0,
+                multiMonthColumns: 0,
               }),
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
@@ -243,7 +243,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
                 isSticky: tableHeaderSticky,
-                multiMonthColumnCount: 0,
+                multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
             />
@@ -256,7 +256,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              multiMonthColumnCount: 0,
+              multiMonthColumns: 0,
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

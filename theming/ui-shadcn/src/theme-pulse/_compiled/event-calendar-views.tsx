@@ -358,11 +358,11 @@ export function EventCalendarViews({
         ----------------------------------------------------------------------------------------- */
 
         singleMonthClass={(info) => cn(
-          info.multiMonthColumnCount > 1 && 'm-3',
-          (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b',
+          info.multiMonthColumns > 1 && 'm-3',
+          (info.multiMonthColumns === 1 && !info.isLast) && 'border-b',
         )}
         singleMonthHeaderClass={(info) => cn(
-          info.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1 border-b bg-background',
+          info.multiMonthColumns > 1 ? 'pb-2' : 'py-1 border-b bg-background',
           'items-center',
         )}
         singleMonthHeaderInnerClass={(info) => cn(
@@ -412,12 +412,12 @@ export function EventCalendarViews({
           },
           multiMonth: {
             ...dayRowCommonClasses,
-            tableHeaderClass: (info) => cn(info.multiMonthColumnCount === 1 && 'bg-background'),
+            tableHeaderClass: (info) => cn(info.multiMonthColumns === 1 && 'bg-background'),
             dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
-            dayHeaderDividerClass: (info) => cn(info.multiMonthColumnCount === 1 && 'border-b'),
+            dayHeaderDividerClass: (info) => cn(info.multiMonthColumns === 1 && 'border-b'),
             dayCellBottomClass: getShortDayCellBottomClass,
             viewClass: 'bg-foreground/3',
-            tableBodyClass: (info) => cn(info.multiMonthColumnCount > 1 && 'border rounded-sm overflow-hidden'),
+            tableBodyClass: (info) => cn(info.multiMonthColumns > 1 && 'border rounded-sm overflow-hidden'),
             ...userViews?.multiMonth,
           },
           timeGrid: {

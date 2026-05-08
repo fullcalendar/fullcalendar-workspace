@@ -124,7 +124,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const hasNavLink = options.navLinks && props.colCount > 1
     const headerRenderProps: SingleMonthHeaderInfo = {
-      multiMonthColumnCount: props.colCount || 0,
+      multiMonthColumns: props.colCount || 0,
       isSticky: isTitleAndHeaderSticky,
       isNarrow: cellIsNarrow,
       hasNavLink,
@@ -147,7 +147,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             generateClassName(options.singleMonthClass, {
               isFirst: props.isFirst,
               isLast: props.isLast,
-              multiMonthColumnCount: props.colCount || 0,
+              multiMonthColumns: props.colCount || 0,
             }),
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
@@ -187,7 +187,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 borderlessX,
                 borderlessTop,
                 borderlessBottom,
-                multiMonthColumnCount: props.colCount || 0,
+                multiMonthColumns: props.colCount || 0,
               }),
               classNames.flexCol,
             )}
@@ -203,7 +203,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  multiMonthColumnCount: props.colCount || 0,
+                  multiMonthColumns: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isTitleAndHeaderSticky && classNames.sticky,
@@ -225,7 +225,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               <div
                 className={generateClassName(options.dayHeaderDividerClass, {
                   isSticky: isTitleAndHeaderSticky,
-                  multiMonthColumnCount: props.colCount || 0,
+                  multiMonthColumns: props.colCount || 0,
                   options: { allDaySlot: Boolean(options.allDaySlot) },
                 })}
               />
@@ -236,7 +236,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  multiMonthColumnCount: props.colCount || 0,
+                  multiMonthColumns: props.colCount || 0,
                 }),
                 classNames.flexCol,
                 isAspectRatio && classNames.rel,

@@ -260,11 +260,11 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => cn(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b',
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b',
       )}
       singleMonthHeaderClass={(info) => cn(
-        info.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2 border-b bg-background',
+        info.multiMonthColumns > 1 ? 'pb-4' : 'py-2 border-b bg-background',
         'items-center',
       )}
       singleMonthHeaderInnerClass='text-base font-bold'
@@ -303,7 +303,7 @@ export function EventCalendarViews({
         multiMonth: {
           ...dayRowCommonClasses,
           dayCellBottomClass: 'min-h-px',
-          tableClass: (info) => cn(info.multiMonthColumnCount > 1 && 'border'),
+          tableClass: (info) => cn(info.multiMonthColumns > 1 && 'border'),
           ...userViews?.multiMonth,
         },
         timeGrid: {

@@ -125,7 +125,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           classNames.printRoot, // either flexCol or table
         )}
@@ -136,7 +136,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           classNames.printHeader, // either flexCol or table-header-group
         )}>
@@ -246,7 +246,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              multiMonthColumnCount: 0,
+              multiMonthColumns: 0,
             }),
             // leave display:block for print!
             classNames.rel,

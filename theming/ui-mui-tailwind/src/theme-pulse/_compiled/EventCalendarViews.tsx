@@ -419,11 +419,11 @@ export default function EventCalendarViews({
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-3',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b border-(--mui-palette-divider)',
+        info.multiMonthColumns > 1 && 'm-3',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--mui-palette-divider)',
       )}
       singleMonthHeaderClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1 border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
+        info.multiMonthColumns > 1 ? 'pb-2' : 'py-1 border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(info) => joinClassNames(
@@ -473,12 +473,12 @@ export default function EventCalendarViews({
         },
         multiMonth: {
           ...dayRowCommonClasses,
-          tableHeaderClass: (info) => joinClassNames(info.multiMonthColumnCount === 1 && 'bg-(--mui-palette-background-paper)'),
+          tableHeaderClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'bg-(--mui-palette-background-paper)'),
           dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
-          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumnCount === 1 && `border-b border-(--mui-palette-divider)`),
+          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumns === 1 && `border-b border-(--mui-palette-divider)`),
           dayCellBottomClass: getShortDayCellBottomClass,
           viewClass: faintBgClass,
-          tableBodyClass: (info) => joinClassNames(info.multiMonthColumnCount > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
+          tableBodyClass: (info) => joinClassNames(info.multiMonthColumns > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
           ...userViews?.multiMonth,
         },
         timeGrid: {

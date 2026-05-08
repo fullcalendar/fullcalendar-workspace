@@ -354,11 +354,11 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => cn(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b',
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b',
       )}
       singleMonthHeaderClass={(info) => cn(
-        info.multiMonthColumnCount > 1
+        info.multiMonthColumns > 1
           ? 'pb-2'
           : 'py-1 border-b bg-background',
         'items-center',
@@ -410,11 +410,11 @@ export function EventCalendarViews({
           ...dayRowCommonClasses,
           dayCellBottomClass: getShortDayCellBottomClass,
           tableBodyClass: (info) => cn(
-            info.multiMonthColumnCount > 1 && 'border rounded-sm overflow-hidden',
+            info.multiMonthColumns > 1 && 'border rounded-sm overflow-hidden',
           ),
           dayHeaderInnerClass: (info) => cn(!info.inPopover && 'mb-2'),
           dayHeaderDividerClass: (info) => cn(
-            info.multiMonthColumnCount === 1 && 'border-b',
+            info.multiMonthColumns === 1 && 'border-b',
           ),
           ...userViews?.multiMonth,
         },

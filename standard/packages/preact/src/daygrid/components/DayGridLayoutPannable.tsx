@@ -91,7 +91,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              multiMonthColumnCount: 0,
+              multiMonthColumns: 0,
             }),
             classNames.printHeader, // either flexCol or table-header-group
             tableHeaderSticky && classNames.tableHeaderSticky,
@@ -123,7 +123,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             <div
               className={generateClassName(options.dayHeaderDividerClass, {
                 isSticky: tableHeaderSticky,
-                multiMonthColumnCount: 0,
+                multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
             />
@@ -141,7 +141,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              multiMonthColumnCount: 0,
+              multiMonthColumns: 0,
             }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345

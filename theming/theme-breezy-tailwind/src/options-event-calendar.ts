@@ -518,13 +518,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass: (info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) &&
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) &&
           `border-b ${params.borderColorClass}`,
       ),
 
       singleMonthHeaderClass: (info) => joinClassNames(
-        info.multiMonthColumnCount > 1
+        info.multiMonthColumns > 1
           ? 'pb-1'
           : `py-1.5 ${params.bgClass} border-b ${params.borderColorClass}`,
         'items-center', // h-align
@@ -596,11 +596,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayHeaderClass: getNormalDayHeaderBorderClass,
         dayHeaderDividerClass: (info) => joinClassNames(
-          info.multiMonthColumnCount === 1 &&
+          info.multiMonthColumns === 1 &&
             `border-b ${params.strongBorderColorClass} shadow-sm`
         ),
         tableBodyClass: (info) => joinClassNames(
-          info.multiMonthColumnCount > 1 &&
+          info.multiMonthColumns > 1 &&
             `border ${params.borderColorClass} rounded-md shadow-xs overflow-hidden`
         ),
         dayCellClass: getNormalDayCellBorderColorClass,

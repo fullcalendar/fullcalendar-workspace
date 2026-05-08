@@ -3,7 +3,7 @@ export type TableDisplayInfo = {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
-  multiMonthColumnCount: number
+  multiMonthColumns: number
   // view: ViewApi -- TODO when easier
 }
 

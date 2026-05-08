@@ -559,11 +559,11 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b border-(--fc-breezy-border)',
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--fc-breezy-border)',
       )}
       singleMonthHeaderClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1
+        info.multiMonthColumns > 1
           ? 'pb-1'
           : 'py-1.5 bg-(--fc-breezy-background) border-b border-(--fc-breezy-border)',
         'items-center',
@@ -620,12 +620,12 @@ export function EventCalendar({
           ...dayRowCommonClasses,
           dayHeaderClass: getNormalDayHeaderBorderClass,
           dayHeaderDividerClass: (info) => joinClassNames(
-            info.multiMonthColumnCount === 1 && 'border-b border-(--fc-breezy-strong-border) shadow-sm'
+            info.multiMonthColumns === 1 && 'border-b border-(--fc-breezy-strong-border) shadow-sm'
           ),
           dayCellClass: getNormalDayCellBorderColorClass,
           dayCellBottomClass: getShortDayCellBottomClass,
           tableBodyClass: (info) => joinClassNames(
-            info.multiMonthColumnCount > 1 && 'border border-(--fc-breezy-border) rounded-md shadow-xs overflow-hidden'
+            info.multiMonthColumns > 1 && 'border border-(--fc-breezy-border) rounded-md shadow-xs overflow-hidden'
           ),
           ...userViews?.multiMonth,
         },
