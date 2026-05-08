@@ -1,9 +1,8 @@
-import { ContentGenerator } from './common/render-hook'
+import { ClassNameInput, ContentGenerator, refineClassName } from './common/render-hook'
 import { joinClassNames } from './util/html'
 import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
 
-type ClassNameInput = string | undefined
 type FuncishClassNameInput = ((info: any) => ClassNameInput) | ClassNameInput
 
 const classNamesRe = /(^c|C)lass(Name)?$/
@@ -53,7 +52,7 @@ export function mergeCalendarOptions(...optionSets: CalendarOptions[]): any {
           lifecycleRe.test(name) ? mergeLifecycleCallbacks : undefined
         )
         dest[name] = mergeFunc
-          ? mergeFunc(dest[name], options[name])
+          ? (mergeFunc as any)(dest[name], options[name], name)
           : options[name] // last wins
       } else {
         dest[name] = options[name] // last wins
@@ -64,9 +63,22 @@ export function mergeCalendarOptions(...optionSets: CalendarOptions[]): any {
   return dest
 }
 
+/*
+Called while merging raw option objects, before the normal option refinement pass.
+ClassName values are validated here because merging may join raw strings, or build a
+combined function that joins raw generator outputs later. Without checking each part
+before joinClassNames, invalid values like objects/arrays could be stringified into
+valid-looking class strings before refineClassName/refineClassNameGenerator see them.
+
+Ideally this would be a single-pass responsibility: either merge after refinement, or
+store unjoined class parts during raw merging and have one later refiner validate and
+join all parts. For now, this merge helper validates just enough to avoid corrupting
+invalid values before the formal refinement pass.
+*/
 export function joinFuncishClassNames(
   input0: FuncishClassNameInput, // added to string first
-  input1: FuncishClassNameInput
+  input1: FuncishClassNameInput,
+  optionName: string,
 ): FuncishClassNameInput {
   const isFunc0 = typeof input0 === 'function'
   const isFunc1 = typeof input1 === 'function'
@@ -74,15 +86,18 @@ export function joinFuncishClassNames(
   if (isFunc0 || isFunc1) {
     const combinedFunc = (info: any) => {
       return joinClassNames(
-        isFunc0 ? input0(info) : input0,
-        isFunc1 ? input1(info) : input1
+        refineClassName(isFunc0 ? input0(info) : input0, optionName),
+        refineClassName(isFunc1 ? input1(info) : input1, optionName),
       )
     }
     (combinedFunc as any).parts = [input0, input1] // see CalendarDataManager::processRawCalendarOptions
     return combinedFunc
   }
 
-  return joinClassNames(input0 as ClassNameInput, input1 as ClassNameInput)
+  return joinClassNames(
+    refineClassName(input0 as ClassNameInput, optionName),
+    refineClassName(input1 as ClassNameInput, optionName),
+  )
 }
 
 export function mergeContentInjectors(

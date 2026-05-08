@@ -148,6 +148,10 @@ export { NowTimer } from './NowTimer'
 export type {
   ContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
 } from './common/render-hook'
+export {
+  refineClassName,
+  refineClassNameGenerator,
+} from './common/render-hook'
 export { StandardEvent } from './common/StandardEvent'
 export { NowIndicatorHeaderContainer } from './common/NowIndicatorHeaderContainer'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer'
@@ -209,4 +213,3 @@ export { DayGridLayout } from './daygrid/components/DayGridLayout'
 export {
   buildDayTableModel,
 } from './daygrid/components/util'
-

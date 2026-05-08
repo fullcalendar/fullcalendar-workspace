@@ -3,6 +3,7 @@ import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constrain
 import { joinClassNames } from '../util/html'
 import { CalendarContext } from '../CalendarContext'
 import { identity, Identity } from '../options'
+import { refineClassName } from '../common/render-hook'
 
 // TODO: better called "EventSettings" or "EventConfig"
 // TODO: move this file into structs
@@ -16,8 +17,8 @@ export const EVENT_UI_REFINERS = {
   constraint: identity as Identity<any>, // Identity<ConstraintInput>, // circular reference. ts dies. event->constraint->event
   overlap: identity as Identity<boolean>,
   allow: identity as Identity<AllowFunc>,
-  class: identity as Identity<string | undefined>,
-  className: identity as Identity<string | undefined>,
+  class: refineClassName,
+  className: refineClassName,
   color: String,
   contrastColor: String,
 }

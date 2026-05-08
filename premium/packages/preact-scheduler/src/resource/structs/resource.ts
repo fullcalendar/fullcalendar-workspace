@@ -2,7 +2,7 @@ import { identity, Identity, RawOptionsFromRefiners } from '@fullcalendar/core/p
 import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/preact/public-api'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
-  guid, refineProps, createEventUi, Dictionary,
+  guid, refineProps, createEventUi, Dictionary, refineClassName,
 } from '@fullcalendar/preact/protected-api'
 
 const PRIVATE_ID_PREFIX = '_fc:'
@@ -22,7 +22,7 @@ const RESOURCE_REFINERS = {
   eventConstraint: identity as Identity<ConstraintInput>,
   eventOverlap: Boolean, // can NOT be a func, different from OptionsInput
   eventAllow: identity as Identity<AllowFunc>,
-  eventClass: identity as Identity<string | undefined>,
+  eventClass: refineClassName,
   eventColor: String,
   eventContrastColor: String,
 }

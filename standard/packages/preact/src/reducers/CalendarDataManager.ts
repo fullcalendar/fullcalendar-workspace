@@ -472,7 +472,7 @@ export class CalendarDataManager {
       ) {
         refined[optionName] = currentRefined[optionName]
       } else if (refiners[optionName]) {
-        refined[optionName] = refiners[optionName](raw[optionName])
+        refined[optionName] = refiners[optionName](raw[optionName], optionName)
         anyChanges = true
       }
     }
@@ -596,7 +596,7 @@ export class CalendarDataManager {
             refined[optionName] = this.currentCalendarOptionsRefined[optionName]
           }
         } else if (refiners[optionName]) {
-          refined[optionName] = refiners[optionName](raw[optionName])
+          refined[optionName] = refiners[optionName](raw[optionName], optionName)
         }
 
         anyChanges = true

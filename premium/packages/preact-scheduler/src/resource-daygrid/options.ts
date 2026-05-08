@@ -9,14 +9,15 @@ import {
   ContentGenerator,
   DidMountHandler,
   WillUnmountHandler,
+  refineClassNameGenerator,
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceDayHeaderInfo,
 } from './structs'
 
 export const OPTION_REFINERS = {
-  resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
-  resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
+  resourceDayHeaderInnerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceDayHeaderInfo>>,
   resourceDayHeaderContent: identity as Identity<ContentGenerator<ResourceDayHeaderInfo>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderInfo>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderInfo>>,

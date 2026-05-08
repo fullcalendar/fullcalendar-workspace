@@ -115,15 +115,6 @@ describe('event object creation', () => {
     expect(event.end).toEqualDate('2014-05-03T00:00:00Z')
   })
 
-  it('accepts an array `className`', () => {
-    let event = init({
-      start: '2014-05-01',
-      className: ['class1', 'class2'],
-    })
-    expect($.isArray(event.className)).toEqual(true)
-    expect(event.className).toEqual(['class1', 'class2'])
-  })
-
   it('accepts a string `className`', () => {
     let event = init({
       start: '2014-05-01',

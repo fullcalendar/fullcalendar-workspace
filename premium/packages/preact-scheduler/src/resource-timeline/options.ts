@@ -3,6 +3,7 @@ import { ClassNameGenerator, CssDimValue } from '@fullcalendar/preact/public-api
 import {
   Identity, identity,
   ContentGenerator, DidMountHandler, WillUnmountHandler,
+  refineClassName, refineClassNameGenerator,
 } from '@fullcalendar/preact/protected-api'
 import {
   ResourceColumnHeaderInfo,
@@ -18,52 +19,52 @@ export const OPTION_REFINERS = {
   resourceColumnsWidth: identity as Identity<CssDimValue>,
   resourceColumns: identity as Identity<ColSpec[]>,
 
-  resourceColumnDividerClass: identity as Identity<string | undefined>,
+  resourceColumnDividerClass: refineClassName,
 
   // datagrid super-header & normal column headers
-  resourceColumnHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
-  resourceColumnHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
-  resourceColumnResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
+  resourceColumnHeaderClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
+  resourceColumnHeaderInnerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
+  resourceColumnResizerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderContent: identity as Identity<ContentGenerator<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderInfo>>,
   resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderInfo>>,
-  resourceHeaderRowClass: identity as Identity<string | undefined>,
+  resourceHeaderRowClass: refineClassName,
 
   // For both resources & resource groups
-  resourceRowClass: identity as Identity<string | undefined>,
+  resourceRowClass: refineClassName,
 
   // datagrid cells, for both resources & resource-GROUP
-  resourceCellClass: identity as Identity<ClassNameGenerator<ResourceCellInfo>>,
-  resourceCellInnerClass: identity as Identity<ClassNameGenerator<ResourceCellInfo>>,
+  resourceCellClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceCellInfo>>,
+  resourceCellInnerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceCellInfo>>,
   resourceCellContent: identity as Identity<ContentGenerator<ResourceCellInfo>>,
   resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellInfo>>,
   resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellInfo>>,
 
   // datagrid, for resource-GROUP entire row
-  resourceGroupHeaderClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
-  resourceGroupHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
+  resourceGroupHeaderClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
+  resourceGroupHeaderInnerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderContent: identity as Identity<ContentGenerator<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderInfo>>,
   resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderInfo>>,
 
   // timeline lane, for resource-GROUP
-  resourceGroupLaneClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
-  resourceGroupLaneInnerClass: identity as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
+  resourceGroupLaneClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
+  resourceGroupLaneInnerClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceGroupLaneInfo>>,
   resourceGroupLaneContent: identity as Identity<ContentGenerator<ResourceGroupLaneInfo>>,
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneInfo>>,
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneInfo>>,
 
   // timeline, lane, for resource
-  resourceLaneClass: identity as Identity<ClassNameGenerator<ResourceLaneInfo>>,
+  resourceLaneClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceLaneInfo>>,
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneInfo>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneInfo>>,
-  resourceLaneTopClass: identity as Identity<ClassNameGenerator<ResourceLaneInfo>>,
+  resourceLaneTopClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceLaneInfo>>,
   resourceLaneTopContent: identity as Identity<ContentGenerator<ResourceLaneInfo>>,
-  resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneInfo>>,
+  resourceLaneBottomClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceLaneInfo>>,
   resourceLaneBottomContent: identity as Identity<ContentGenerator<ResourceLaneInfo>>,
 
-  resourceIndentClass: identity as Identity<string | undefined>,
-  resourceExpanderClass: identity as Identity<ClassNameGenerator<ResourceExpanderInfo>>,
+  resourceIndentClass: refineClassName,
+  resourceExpanderClass: refineClassNameGenerator as Identity<ClassNameGenerator<ResourceExpanderInfo>>,
   resourceExpanderContent: identity as Identity<ContentGenerator<ResourceExpanderInfo>>,
 }
 
