@@ -22,6 +22,7 @@ export {
   guid,
   computeViewBorderless,
 } from './util/misc'
+export { warn } from './util/warn'
 
 export {
   computeVisibleDayRange,

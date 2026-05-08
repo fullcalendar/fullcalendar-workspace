@@ -17,6 +17,7 @@ import { CalendarData } from '../reducers/data-types'
 import { CalendarApi } from './CalendarApi'
 import { ViewImpl } from './ViewImpl'
 import { EventSourceImpl } from './EventSourceImpl'
+import { warn } from '../util/warn'
 import {
   CalendarOptions,
   CalendarListeners,
@@ -75,7 +76,7 @@ export class CalendarApiImpl implements CalendarApi {
     if (currentDataManager.currentCalendarOptionsRefiners[handlerName]) {
       currentDataManager.emitter.on(handlerName, handler)
     } else {
-      console.warn(`Unknown listener name '${handlerName}'`)
+      warn(`Unknown listener \`${handlerName}\`.`)
     }
   }
 
@@ -359,7 +360,7 @@ export class CalendarApiImpl implements CalendarApi {
       let sourceApi = this.getEventSourceById(sourceInput) // TODO: use an internal function
 
       if (!sourceApi) {
-        console.warn(`Could not find an event source with ID "${sourceInput}"`) // TODO: test
+        warn(`Unknown event source ID \`${sourceInput}\`.`) // TODO: test
         return null
       }
       eventSource = sourceApi.internalEventSource

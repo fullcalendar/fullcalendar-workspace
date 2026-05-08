@@ -80,10 +80,7 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
   Object.freeze(resource.ui.className) // might be simple string, but freeze still works
   Object.freeze(resource.extendedProps)
 
-  if (store[resource.id]) {
-    // console.warn('duplicate resource ID')
-
-  } else {
+  if (!store[resource.id]) { // no duplicate resource ID?
     store[resource.id] = resource
 
     if (refined.children) {

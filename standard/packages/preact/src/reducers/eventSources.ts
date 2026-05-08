@@ -5,6 +5,7 @@ import { DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator'
 import { Action } from './Action'
 import { guid } from '../util/misc'
+import { warn } from '../util/warn'
 import { CalendarContext } from '../CalendarContext'
 import { CalendarOptions } from '../options'
 
@@ -199,7 +200,7 @@ function fetchSource(eventSource: EventSource<any>, fetchRange: DateRange, isRef
       }
 
       if (!errorHandled) {
-        console.warn(error.message, error)
+        warn(`Unhandled event source error: ${error.message}`, error)
       }
 
       context.dispatch({

@@ -1,6 +1,7 @@
 /* eslint max-classes-per-file: off */
 
 import type { ReactNode } from 'react'
+import { warn } from '../util/warn'
 
 export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
 export type DidMountHandler<DisplayData> = (mountData: MountData<DisplayData>) => void
@@ -40,7 +41,7 @@ export function refineClassNameGenerator<RenderProps>(
 
 function warnInvalidClassName(optionName: string): void {
   if (!warnedClassNameOptions[optionName]) {
-    console.warn(`Invalid className value for option '${optionName}'. Expected a string or a falsy value.`)
+    warn(`Invalid option \`${optionName}\`: expected a className string or a falsy value.`)
     warnedClassNameOptions[optionName] = true
   }
 }

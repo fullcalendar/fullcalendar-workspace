@@ -42,6 +42,7 @@ import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData,
 import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
+import { warn } from '../util/warn'
 
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
@@ -729,7 +730,7 @@ function filterKnownOptions(options: any, optionRefiners: any): any {
     if (optionRefiners[optionName]) {
       knownOptions[optionName] = options[optionName]
     } else if (!warnedUnknownOptions[optionName]) {
-      console.warn(`Unknown option '${optionName}'`)
+      warn(`Unknown option \`${optionName}\`.`)
       warnedUnknownOptions[optionName] = true
     }
   }

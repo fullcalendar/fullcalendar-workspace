@@ -17,6 +17,7 @@ import { CalendarInner } from './CalendarInner'
 import { CalendarData } from './reducers/data-types'
 import { Action } from './reducers/Action'
 import { guid } from './util/misc'
+import { warn } from './util/warn'
 
 export interface CalendarRef {
   getApi(): CalendarApi
@@ -114,7 +115,7 @@ function useStableId(fallbackId: string | undefined): string {
 
   if (!warnedStableId) {
     warnedStableId = true
-    console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
+    warn('Missing `id` prop. Provide one for better SSR support in React 17.')
   }
 
   return `fc:${uid}:`

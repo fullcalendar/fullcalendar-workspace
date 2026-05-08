@@ -7,6 +7,7 @@ import {
   asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator,
   computeMajorUnit,
   isMajorUnit,
+  warn,
 } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineDateProfile {
@@ -287,7 +288,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.labelInterval,
     )
     if (labelCnt > config.MAX_TIMELINE_SLOTS) {
-      console.warn('slotHeaderInterval results in too many cells')
+      warn('Invalid option `slotHeaderInterval`: too many timeline cells.')
       tDateProfile.labelInterval = null
     }
   }
@@ -300,7 +301,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.slotDuration,
     )
     if (slotCnt > config.MAX_TIMELINE_SLOTS) {
-      console.warn('slotDuration results in too many cells')
+      warn('Invalid option `slotDuration`: too many timeline cells.')
       tDateProfile.slotDuration = null
     }
   }
@@ -309,7 +310,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   if (tDateProfile.labelInterval && tDateProfile.slotDuration) {
     const slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
     if (slotsPerLabel === null || slotsPerLabel < 1) {
-      console.warn('slotHeaderInterval must be a multiple of slotDuration')
+      warn('Invalid option `slotHeaderInterval`: must be a multiple of `slotDuration`.')
       tDateProfile.slotDuration = null
     }
   }
