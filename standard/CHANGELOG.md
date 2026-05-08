@@ -8,7 +8,7 @@
 - FEATURE: Warn on unknown options
 - FEATURE: Warn on invalid class-name inputs
 - BREAKING (TODO: update in docs)
-  - renamed multiMonthColumnCount -> multiMonthColumns
+  - renamed option multiMonthColumnCount -> multiMonthColumns
 
 
 ## v7.0.0-rc.2

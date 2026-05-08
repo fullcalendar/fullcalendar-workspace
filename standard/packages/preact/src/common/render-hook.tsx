@@ -3,9 +3,9 @@
 import type { ReactNode } from 'react'
 import { warn } from '../util/warn'
 
-export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
-export type DidMountHandler<DisplayData> = (mountData: MountData<DisplayData>) => void
-export type WillUnmountHandler<DisplayData> = (mountData: MountData<DisplayData>) => void
+export type MountData<DisplayInfo> = DisplayInfo & { el: HTMLElement }
+export type DidMountHandler<DisplayInfo> = (mountData: MountData<DisplayInfo>) => void
+export type WillUnmountHandler<DisplayInfo> = (mountData: MountData<DisplayInfo>) => void
 
 export interface ObjCustomContent {
   html?: string

@@ -16,7 +16,7 @@ export interface WeekNumberHeaderInfo {
 
 // week number CELL (eventually)
 
-export interface WeekNumberCellData { // TODO: DRY with inline?
+export interface WeekNumberCellInfo { // TODO: DRY with inline?
   num: number
   date: Date
   text: string
