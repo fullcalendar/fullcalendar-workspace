@@ -20,6 +20,9 @@ describe('timeGrid-view selection', () => {
     },
   })
 
+  /*
+  These test should not be in premium (aside from resource falsy check)
+  */
   describe('when there are no resource columns', () => {
     pushOptions({
       initialView: 'timeGridWeek',
@@ -37,6 +40,29 @@ describe('timeGrid-view selection', () => {
       expect(typeof selectInfo.jsEvent).toBe('object')
       expect(typeof selectInfo.view).toBe('object')
       expect(selectInfo.resource).toBeFalsy()
+    })
+
+    describe('when snap is smaller than slots', () => {
+      pushOptions({
+        slotDuration: '00:30',
+        snapDuration: '00:15',
+      })
+
+      it('allows selection at the smaller granularity', async () => {
+        let calendar = initCalendar({
+          scrollTime: '03:00', // better in-view
+        })
+        await waitTimeout()
+        let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+        let selecting = timeGridWrapper.selectDates('2015-11-23T04:15:00', '2015-11-23T07:45:00')
+
+        let selectInfo = await waitDateSelect(calendar, selecting)
+        expect(selectInfo.start).toEqualDate('2015-11-23T04:15:00Z')
+        expect(selectInfo.end).toEqualDate('2015-11-23T07:45:00Z')
+        expect(typeof selectInfo.jsEvent).toBe('object')
+        expect(typeof selectInfo.view).toBe('object')
+        expect(selectInfo.resource).toBeFalsy()
+      })
     })
   })
 

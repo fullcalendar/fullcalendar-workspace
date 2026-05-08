@@ -3,6 +3,7 @@
 
 - FIX: In React, event flicker after event drag-n-drop
 - FIX: With custom slotHeaderFormats, navLinks sometimes disabled (#8064)
+- FIX: In TimeGrid view, when snapDuration smaller than slotDuration, incorrect date-selection coordinates
 
 
 ## v7.0.0-rc.2
