@@ -720,12 +720,17 @@ function parseContextBusinessHours(calendarContext: CalendarContext) {
   return parseBusinessHours(calendarContext.options.businessHours, calendarContext)
 }
 
+const warnedUnknownOptions: { [optionName: string]: true } = {}
+
 function filterKnownOptions(options: any, optionRefiners: any): any {
   const knownOptions: any = {}
 
   for (const optionName in options) {
     if (optionRefiners[optionName]) {
       knownOptions[optionName] = options[optionName]
+    } else if (!warnedUnknownOptions[optionName]) {
+      console.warn(`Unknown option '${optionName}'`)
+      warnedUnknownOptions[optionName] = true
     }
   }
 

@@ -5,6 +5,7 @@
 - FIX: With custom slotHeaderFormats, navLinks sometimes disabled (#8064)
 - FIX: In TimeGrid view, when snapDuration smaller than slotDuration, incorrect date-selection coordinates
 - FIX: In React/Preact, expose the CalendarRef type
+- FEATURE: Warn on unknown options
 - FEATURE: Warn on invalid class-name inputs
 
 
