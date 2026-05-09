@@ -30,6 +30,7 @@ import {
 } from './structs'
 import { NavButtonState, ButtonStateMap } from '../structs/button-state'
 import { formatWithOrdinals } from '../util/misc'
+import { CalendarOptionsRefined } from '../options'
 
 export class CalendarApiImpl implements CalendarApi {
   currentDataManager?: CalendarDataManager // will be set by CalendarDataManager
@@ -523,22 +524,28 @@ export class CalendarApiImpl implements CalendarApi {
     const buttonConfigs = options.buttons || {}
     const viewSpecs = currentData.viewSpecs
 
+    const currentUnit = currentData.viewSpec.singleUnit
+    const currentHintOrdinal = [
+      currentUnit ? getSingleUnitText(currentUnit, options) : '',
+      currentUnit,
+    ]
+
     const buttonState: ButtonStateMap = {
       today: {
         text: options.todayText,
-        hint: options.todayHint as string,
+        hint: formatWithOrdinals(options.todayHint, currentHintOrdinal, options.todayText),
         isDisabled: !toolbarProps.isTodayEnabled,
       } as NavButtonState,
 
       prev: {
         text: options.prevText,
-        hint: options.prevHint as string,
+        hint: formatWithOrdinals(options.prevHint, currentHintOrdinal, options.prevText),
         isDisabled: !toolbarProps.isPrevEnabled,
       } as NavButtonState,
 
       next: {
         text: options.nextText,
-        hint: options.nextHint as string,
+        hint: formatWithOrdinals(options.nextHint, currentHintOrdinal, options.nextText),
         isDisabled: !toolbarProps.isNextEnabled,
       } as NavButtonState,
 
@@ -557,15 +564,13 @@ export class CalendarApiImpl implements CalendarApi {
 
     for (const viewSpecName in viewSpecs) {
       const viewSpec = viewSpecs[viewSpecName]
-      const buttonTextKey = viewSpec.optionDefaults.buttonTextKey as string
+      const { singleUnit } = viewSpec
+      const buttonTextKey = viewSpec.optionDefaults.buttonTextKey
 
       const buttonText =
         buttonConfigs[viewSpecName]?.text ||
         (buttonTextKey ? options[buttonTextKey] : '') ||
-        (viewSpec.singleUnit
-          ? (options[viewSpec.singleUnit + 'TextLong'] ||
-              options[viewSpec.singleUnit + 'Text'])
-          : '') ||
+        (singleUnit ? getSingleUnitText(singleUnit, options) : '') ||
         viewSpecName
 
       const buttonHint = formatWithOrdinals(
@@ -582,4 +587,8 @@ export class CalendarApiImpl implements CalendarApi {
 
     return buttonState
   }
+}
+
+function getSingleUnitText(singleUnit: string, options: CalendarOptionsRefined): string {
+  return options[singleUnit + 'TextLong'] || options[singleUnit + 'Text']
 }

@@ -112,6 +112,7 @@ export const BASE_OPTION_REFINERS = {
   todayHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
   prevHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
+  // TODO: make type for hint input
 
   buttonDisplay: identity as Identity<ButtonDisplay>,
   buttonGroupClass: refineClassNameGenerator as Identity<ClassNameGenerator<ButtonGroupInfo>>,
