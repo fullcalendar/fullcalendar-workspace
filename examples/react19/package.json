@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@fullcalendar/react": "7.0.0-rc.2",
+    "@fullcalendar/react": "7.0.0-rc.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "temporal-polyfill": "^0.3.2"

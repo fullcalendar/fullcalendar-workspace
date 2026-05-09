@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/angular",
-  "version": "7.0.0-rc.2",
+  "version": "7.0.0-rc.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,7 +18,7 @@
   "peerDependencies": {
     "@angular/common": "16 - 21",
     "@angular/core": "16 - 21",
-    "fullcalendar": "workspace:7.0.0-rc.2",
+    "fullcalendar": "workspace:7.0.0-rc.3",
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
@@ -33,8 +33,8 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
-    "fullcalendar": "workspace:7.0.0-rc.2",
-    "fullcalendar-scheduler": "workspace:7.0.0-rc.2",
+    "fullcalendar": "workspace:7.0.0-rc.3",
+    "fullcalendar-scheduler": "workspace:7.0.0-rc.3",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
