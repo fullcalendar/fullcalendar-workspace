@@ -1,22 +1,22 @@
 
-## next v7
+## v7.0.0-rc.3
 
 - FIX: In React, event flicker after event drag-n-drop
-- FIX: With custom slotHeaderFormats, navLinks sometimes disabled (#8064)
-- FIX: In TimeGrid view, when snapDuration smaller than slotDuration, incorrect date-selection coordinates
 - FIX: In React/Preact, expose the CalendarRef type
+- FIX: In TimeGrid view, when snapDuration smaller than slotDuration, incorrect date-selection coordinates
+- FIX: With custom slotHeaderFormats, navLinks sometimes disabled ([#8064](https://github.com/fullcalendar/fullcalendar/issues/8064))
 - FIX: For Shadcn/MUI toolbars, or users of CalendarController, button hints wrong for certain locales
 - FEATURE: Warn on unknown options
 - FEATURE: Warn on invalid class-name inputs
-- BREAKING (TODO: update in docs)
-  - renamed option multiMonthColumnCount -> multiMonthColumns
-  - renamed type MountData -> MountInfo
-  - *reversed* rename of weekText -> weekTextLong. use weekTextLong
-  - *reversed* renames of some view-specific options
-    - view{}.viewClass -> view{}.class/className
-    - view{}.viewContent -> view{}.content
-    - view{}.viewDidMount -> view{}.didMount
-    - view{}.viewWillUnmount -> view{}.willUnmount
+- BREAKING: Renamed a few things for consistency. Apologies. Please update any forked themes.
+  - Renamed info-prop `.multiMonthColumnCount` to `.multiMonthColumns`
+  - Renamed type `MountData` to `MountInfo`
+  - Reverted rename from `weekTextLong` to `weekText`. Use `weekTextLong`.
+  - Reverted some renames for view-specific options:
+    - Reverted `views{}.viewClass`. Use `views{}.class/className`.
+    - Reverted `views{}.viewContent`. Use `views{}.content`.
+    - Reverted `views{}.viewDidMount`. Use `views{}.didMount`.
+    - Reverted `views{}.viewWillUnmount`. Use `views{}.willUnmount`.
 
 
 ## v7.0.0-rc.2
