@@ -412,11 +412,11 @@ export function EventCalendarViews({
           },
           multiMonth: {
             ...dayRowCommonClasses,
+            className: 'bg-foreground/3',
             tableHeaderClass: (info) => cn(info.multiMonthColumns === 1 && 'bg-background'),
             dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
             dayHeaderDividerClass: (info) => cn(info.multiMonthColumns === 1 && 'border-b'),
             dayCellBottomClass: getShortDayCellBottomClass,
-            viewClass: 'bg-foreground/3',
             tableBodyClass: (info) => cn(info.multiMonthColumns > 1 && 'border rounded-sm overflow-hidden'),
             ...userViews?.multiMonth,
           },

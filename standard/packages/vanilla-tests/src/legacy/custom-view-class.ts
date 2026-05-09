@@ -6,11 +6,11 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 describe('custom view class', () => { // TODO: rename file
   it('calls all standard methods with correct parameters', () => {
     const CustomViewConfig = {
-      viewClass: 'awesome-view',
-      viewDidMount() {},
-      viewWillUnmount() {},
+      className: 'awesome-view',
+      didMount() {},
+      willUnmount() {},
 
-      viewContent(props) {
+      content(props) {
         expect(props.dateProfile.activeRange.start instanceof Date).toBe(true)
         expect(props.dateProfile.activeRange.end instanceof Date).toBe(true)
 
@@ -39,14 +39,14 @@ describe('custom view class', () => { // TODO: rename file
       },
     }
 
-    spyOn(CustomViewConfig, 'viewDidMount').and.callThrough()
-    spyOn(CustomViewConfig, 'viewContent').and.callThrough()
-    spyOn(CustomViewConfig, 'viewWillUnmount').and.callThrough()
+    spyOn(CustomViewConfig, 'didMount').and.callThrough()
+    spyOn(CustomViewConfig, 'content').and.callThrough()
+    spyOn(CustomViewConfig, 'willUnmount').and.callThrough()
 
     function resetCounts() {
-      CustomViewConfig.viewDidMount.calls.reset()
-      CustomViewConfig.viewContent.calls.reset()
-      CustomViewConfig.viewWillUnmount.calls.reset()
+      CustomViewConfig.didMount.calls.reset()
+      CustomViewConfig.content.calls.reset()
+      CustomViewConfig.willUnmount.calls.reset()
     }
 
     let calendar = initCalendar({
@@ -76,26 +76,26 @@ describe('custom view class', () => { // TODO: rename file
     expect(viewEl).toHaveClass('awesome-view')
     expect($(viewEl).find('.hello-world').length).toBe(1)
 
-    expect(CustomViewConfig.viewDidMount.calls.count()).toBe(1)
-    expect(CustomViewConfig.viewContent.calls.count()).toBe(1)
-    expect(CustomViewConfig.viewWillUnmount.calls.count()).toBe(0)
+    expect(CustomViewConfig.didMount.calls.count()).toBe(1)
+    expect(CustomViewConfig.content.calls.count()).toBe(1)
+    expect(CustomViewConfig.willUnmount.calls.count()).toBe(0)
 
     resetCounts()
     calendar.select('2014-12-25', '2014-01-01')
-    expect(CustomViewConfig.viewDidMount.calls.count()).toBe(0)
-    expect(CustomViewConfig.viewContent.calls.count()).toBe(1)
-    expect(CustomViewConfig.viewWillUnmount.calls.count()).toBe(0)
+    expect(CustomViewConfig.didMount.calls.count()).toBe(0)
+    expect(CustomViewConfig.content.calls.count()).toBe(1)
+    expect(CustomViewConfig.willUnmount.calls.count()).toBe(0)
 
     resetCounts()
     calendar.unselect()
-    expect(CustomViewConfig.viewDidMount.calls.count()).toBe(0)
-    expect(CustomViewConfig.viewContent.calls.count()).toBe(1)
-    expect(CustomViewConfig.viewWillUnmount.calls.count()).toBe(0)
+    expect(CustomViewConfig.didMount.calls.count()).toBe(0)
+    expect(CustomViewConfig.content.calls.count()).toBe(1)
+    expect(CustomViewConfig.willUnmount.calls.count()).toBe(0)
 
     resetCounts()
     calendar.destroy()
-    expect(CustomViewConfig.viewDidMount.calls.count()).toBe(0)
-    expect(CustomViewConfig.viewContent.calls.count()).toBe(0)
-    expect(CustomViewConfig.viewWillUnmount.calls.count()).toBe(1)
+    expect(CustomViewConfig.didMount.calls.count()).toBe(0)
+    expect(CustomViewConfig.content.calls.count()).toBe(0)
+    expect(CustomViewConfig.willUnmount.calls.count()).toBe(1)
   })
 })

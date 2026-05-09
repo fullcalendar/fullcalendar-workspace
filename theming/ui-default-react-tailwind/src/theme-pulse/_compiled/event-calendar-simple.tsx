@@ -595,7 +595,7 @@ export function EventCalendar({
         },
         multiMonth: {
           ...dayRowCommonClasses,
-          viewClass: 'bg-(--fc-pulse-faint)',
+          className: 'bg-(--fc-pulse-faint)',
           tableHeaderClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'bg-(--fc-pulse-background)'),
           dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
           dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'border-b border-(--fc-pulse-border)'),
@@ -653,7 +653,7 @@ export function EventCalendar({
           ...userViews?.timeGrid,
         },
         list: {
-          viewClass: 'bg-(--fc-pulse-background)',
+          className: 'bg-(--fc-pulse-background)',
 
           /* List-View > List-Item Event
           ----------------------------------------------------------------------------------------- */

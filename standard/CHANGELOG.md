@@ -12,6 +12,11 @@
   - renamed option multiMonthColumnCount -> multiMonthColumns
   - renamed type MountData -> MountInfo
   - *reversed* rename of weekText -> weekTextLong. use weekTextLong
+  - *reversed* renames of some view-specific options
+    - view{}.viewClass -> view{}.class/className
+    - view{}.viewContent -> view{}.content
+    - view{}.viewDidMount -> view{}.didMount
+    - view{}.viewWillUnmount -> view{}.willUnmount
 
 
 ## v7.0.0-rc.2

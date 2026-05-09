@@ -529,7 +529,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayRowCommonClasses,
-        viewClass: params.faintBgClass,
+        className: params.faintBgClass,
         tableHeaderClass: (info) => joinClassNames(
           info.multiMonthColumns === 1 && params.bgClass
         ),
@@ -591,7 +591,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotHeaderDividerClass: `border-e ${params.borderColorClass}`,
       },
       list: {
-        viewClass: params.bgClass,
+        className: params.bgClass,
 
         /* List-View > List-Item Event
         ----------------------------------------------------------------------------------------- */

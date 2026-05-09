@@ -470,11 +470,11 @@ export default function EventCalendarViews({
         },
         multiMonth: {
           ...dayRowCommonClasses,
+          className: faintBgClass,
           tableHeaderClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'bg-(--mui-palette-background-paper)'),
           dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
           dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumns === 1 && `border-b border-(--mui-palette-divider)`),
           dayCellBottomClass: getShortDayCellBottomClass,
-          viewClass: faintBgClass,
           tableBodyClass: (info) => joinClassNames(info.multiMonthColumns > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
           ...userViews?.multiMonth,
         },
@@ -526,7 +526,7 @@ export default function EventCalendarViews({
           ...userViews?.timeGrid,
         },
         list: {
-          viewClass: 'bg-(--mui-palette-background-paper)',
+          className: 'bg-(--mui-palette-background-paper)',
 
           /* List-View > List-Item Event
           ------------------------------------------------------------------------------------- */

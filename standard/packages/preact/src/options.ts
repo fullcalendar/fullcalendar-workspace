@@ -71,7 +71,7 @@ import { EventDragStartInfo, EventDragStopInfo } from './interaction-plugin/inte
 import { EventDropInfo } from './event-crud'
 import { EventResizeStartInfo, EventResizeStopInfo, EventResizeDoneInfo } from './interaction-plugin/interactions/EventResizing'
 import { DropInfo, EventReceiveInfo, EventLeaveInfo } from './interaction-plugin/utils'
-import { ViewContentData } from './component-util/View'
+import { ViewContentInfo } from './component-util/View'
 
 // base options
 // ------------
@@ -159,10 +159,6 @@ export const BASE_OPTION_REFINERS = {
   editable: Boolean,
 
   controller: identity as Identity<CalendarController>,
-
-  viewClass: refineClassNameGenerator as Identity<ClassNameGenerator<ViewDisplayInfo>>,
-  viewDidMount: identity as Identity<DidMountHandler<ViewDisplayInfo>>,
-  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewDisplayInfo>>,
 
   nowIndicator: Boolean,
   nowIndicatorSnap: identity as Identity<boolean | 'auto'>,
@@ -361,7 +357,6 @@ export const BASE_OPTION_REFINERS = {
   eventMinWidth: Number,
   eventShortHeight: Number,
   slotEventOverlap: Boolean,
-  plugins: identity as Identity<PluginInput[]>,
   firstDay: Number,
   dayCount: Number,
   dateAlignment: String,
@@ -597,9 +592,12 @@ export interface CalendarListenersRefined extends RefinedOptionsFromRefiners<Cal
 // ---------------------------------------------
 
 export const CALENDAR_ONLY_OPTION_REFINERS = { // does not include base nor calendar listeners
-  // new
   class: refineClassNameGenerator as Identity<ClassNameGenerator<CalendarDisplayInfo>>,
   className: refineClassNameGenerator as Identity<ClassNameGenerator<CalendarDisplayInfo>>,
+
+  viewClass: refineClassNameGenerator as Identity<ClassNameGenerator<ViewDisplayInfo>>,
+  viewDidMount: identity as Identity<DidMountHandler<ViewDisplayInfo>>,
+  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewDisplayInfo>>,
 
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
   plugins: identity as Identity<PluginInput[]>,
@@ -618,7 +616,12 @@ type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionR
 export const VIEW_ONLY_OPTION_REFINERS = {
   type: String,
   component: identity as Identity<ViewComponentType>,
-  viewContent: identity as Identity<ContentGenerator<ViewContentData>>,
+
+  class: refineClassNameGenerator as Identity<ClassNameGenerator<ViewDisplayInfo>>,
+  className: refineClassNameGenerator as Identity<ClassNameGenerator<ViewDisplayInfo>>,
+  content: identity as Identity<ContentGenerator<ViewContentInfo>>,
+  didMount: identity as Identity<DidMountHandler<ViewDisplayInfo>>,
+  willUnmount: identity as Identity<WillUnmountHandler<ViewDisplayInfo>>,
 
   // internal only
   buttonTextKey: String,
