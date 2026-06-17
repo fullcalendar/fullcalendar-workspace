@@ -1,4 +1,13 @@
 
+## v7.0.0
+
+Regressions:
+
+- FIX: Resource timeline rows keep a stale height after their events are removed ([#8078](https://github.com/fullcalendar/fullcalendar/issues/8078))
+- FIX: With showNonCurrentDates, events on first or last week of month disappear upon navigation ([#8077](https://github.com/fullcalendar/fullcalendar/issues/8077))
+- FIX: With virtualization, resource invisible after adding resource manually ([#8072](https://github.com/fullcalendar/fullcalendar/issues/8072))
+
+
 ## v7.0.0-rc.3
 
 - FIX: In React, event flicker after event drag-n-drop
