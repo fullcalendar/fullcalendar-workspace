@@ -70,7 +70,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   render() {
     let { props, context, rowHeightRefMap } = this
     let { options } = context
-    let rowCount = props.cellRows.length
+    let { cellRows } = props
+    let rowCount = cellRows.length
+
+    // Will cause rows to not be reused across months
+    let firstCellKey = cellRows[0]?.[0]?.key || ''
 
     let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCount)
     let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCount)
@@ -101,9 +105,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
         style={{ width: props.width }}
         ref={this.handleRootEl}
       >
-        {props.cellRows.map((cells, row) => (
+        {cellRows.map((cells, row) => (
           <DayGridRow
-            key={cells[0].key}
+            key={firstCellKey + ':' + cells[0].key}
             role='row'
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
