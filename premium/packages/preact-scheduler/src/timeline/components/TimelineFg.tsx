@@ -133,10 +133,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
   }
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
   renderFgSegs(
     segs: (TimelineRange & EventRangeProps)[],
     segHorizontals: { [instanceId: string]: CoordSpan },
@@ -225,22 +221,25 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger rerender
   }
 
-  /*
   componentDidMount(): void {
-    // might want to do firedTotalHeight, but won't be ready on first render
+    this._isUnmounting = false
+    this.fireHeight() // could be ready to fire if zero events and zero height
   }
-  */
 
   componentDidUpdate(): void {
-    if (this.totalHeight !== this.firedTotalHeight) {
-      this.firedTotalHeight = this.totalHeight
-      setRef(this.props.heightRef, this.totalHeight)
-    }
+    this.fireHeight()
   }
 
   componentWillUnmount(): void {
     this._isUnmounting = true
     this.firedTotalHeight = undefined
     setRef(this.props.heightRef, null)
+  }
+
+  fireHeight() {
+    if (this.totalHeight !== this.firedTotalHeight) {
+      this.firedTotalHeight = this.totalHeight
+      setRef(this.props.heightRef, this.totalHeight)
+    }
   }
 }
