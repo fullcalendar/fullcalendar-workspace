@@ -66,25 +66,25 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@13.3.12(@angular/animations@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource-timeline/dist
       '@types/jasmine':
         specifier: ~3.10.0
@@ -136,25 +136,25 @@ importers:
         specifier: ^7.9.4
         version: 7.25.9(@babel/core@7.26.0)
       '@fullcalendar/adaptive':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/list':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/timegrid/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
@@ -232,19 +232,19 @@ importers:
         specifier: ^7.12.1
         version: 7.26.0
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../premium/packages/resource-timeline/dist
       '@vue/test-utils':
         specifier: ^1.0.3
@@ -307,10 +307,10 @@ importers:
   contrib/vue3:
     devDependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@vitejs/plugin-vue':
         specifier: ^3.2.0
@@ -1185,22 +1185,22 @@ importers:
         specifier: ^19.0.0
         version: 19.0.1(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1270,22 +1270,22 @@ importers:
         specifier: ^20.0.0
         version: 20.1.6(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.1.6(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: file:contrib/angular/dist/lib(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1355,22 +1355,22 @@ importers:
         specifier: ^21.0.0
         version: 21.0.6(@angular/common@21.0.6(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0))(@angular/platform-browser@21.0.6(@angular/common@21.0.6(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: file:contrib/angular/dist/lib(@angular/common@21.0.6(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@21.0.6(@angular/compiler@21.0.6)(rxjs@7.8.2)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1422,22 +1422,22 @@ importers:
         specifier: ^22.0.2
         version: 22.0.2(@angular/common@22.0.2(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0))(@angular/platform-browser@22.0.2(@angular/common@22.0.2(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0)))(rxjs@7.8.2)
       '@fullcalendar/angular':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: file:contrib/angular/dist/lib(@angular/common@22.0.2(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@22.0.2(@angular/compiler@22.0.2)(rxjs@7.8.2)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.20
+        specifier: ^6.1.21
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -3330,43 +3330,43 @@ importers:
   premium/bundle:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/multimonth/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/resource/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/scrollgrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -3377,14 +3377,14 @@ importers:
   premium/packages/adaptive:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3409,118 +3409,118 @@ importers:
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource-daygrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timegrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../resource-daygrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/scrollgrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../scrollgrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3609,22 +3609,22 @@ importers:
   standard/bundle:
     dependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/multimonth/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -3638,7 +3638,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3648,7 +3648,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3675,7 +3675,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3685,7 +3685,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3695,7 +3695,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       ical.js:
         specifier: ^1.4.0
@@ -3708,7 +3708,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3718,7 +3718,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3728,7 +3728,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       luxon:
         specifier: ^1.12.1
@@ -3741,7 +3741,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       '@types/luxon':
         specifier: ^2.0.9
@@ -3757,7 +3757,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       '@types/luxon':
         specifier: ^3.3.0
@@ -3773,7 +3773,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       moment:
         specifier: ^2.29.1
@@ -3786,7 +3786,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       moment-timezone:
         specifier: ^0.5.40
@@ -3796,14 +3796,14 @@ importers:
   standard/packages/multimonth:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3813,7 +3813,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
       rrule:
         specifier: ^2.6.0
@@ -3823,14 +3823,14 @@ importers:
   standard/packages/timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3840,7 +3840,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.20
+        specifier: ~6.1.21
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -9014,12 +9014,12 @@ packages:
     peerDependencies:
       '@angular/common': 12 - 22
       '@angular/core': 12 - 22
-      '@fullcalendar/core': ~6.1.20
+      '@fullcalendar/core': ~6.1.21
 
   '@fullcalendar/react@file:contrib/react':
     resolution: {directory: contrib/react, type: directory}
     peerDependencies:
-      '@fullcalendar/core': ~6.1.20
+      '@fullcalendar/core': ~6.1.21
       react: ^16.7.0 || ^17 || ^18 || ^19
       react-dom: ^16.7.0 || ^17 || ^18 || ^19
 
@@ -26437,7 +26437,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -26497,8 +26497,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -26524,7 +26524,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -26584,8 +26584,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -27131,12 +27131,12 @@ snapshots:
       webpack: 5.50.0
       webpack-dev-server: 3.11.3(webpack@5.50.0)
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
     transitivePeerDependencies:
       - chokidar
 
@@ -47017,7 +47017,7 @@ snapshots:
   http-proxy-middleware@2.0.7(@types/express@4.17.21):
     dependencies:
       '@types/http-proxy': 1.17.15
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.4.1)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.8
@@ -48599,7 +48599,7 @@ snapshots:
       dom-serialize: 2.2.1
       glob: 7.2.3
       graceful-fs: 4.2.11
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.4.1)
       isbinaryfile: 4.0.10
       lodash: 4.17.21
       log4js: 6.9.1
@@ -48631,7 +48631,7 @@ snapshots:
       dom-serialize: 2.2.1
       glob: 7.2.3
       graceful-fs: 4.2.11
-      http-proxy: 1.18.1(debug@4.3.7(supports-color@6.1.0))
+      http-proxy: 1.18.1(debug@4.4.1)
       isbinaryfile: 4.0.10
       lodash: 4.17.21
       log4js: 6.9.1
@@ -57297,7 +57297,7 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 5.50.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -57659,7 +57659,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -57689,7 +57689,7 @@ snapshots:
       spdy: 4.0.2
       strip-ansi: 7.1.0
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'
