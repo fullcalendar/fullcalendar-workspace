@@ -1,0 +1,54 @@
+{
+  "name": "@fullcalendar-examples/angular22",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "packageManager": "npm@10.7.0",
+  "dependencies": {
+    "@angular/common": "^22.0.2",
+    "@angular/compiler": "^22.0.2",
+    "@angular/core": "^22.0.2",
+    "@angular/forms": "^22.0.2",
+    "@angular/platform-browser": "^22.0.2",
+    "@angular/router": "^22.0.2",
+    "@fullcalendar/angular": "^6.1.20",
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "dependenciesMeta": {
+    "@fullcalendar/angular": {
+      "injected": true
+    }
+  },
+  "devDependencies": {
+    "@angular/build": "^22.0.2",
+    "@angular/cli": "^22.0.2",
+    "@angular/compiler-cli": "^22.0.2",
+    "jsdom": "^27.1.0",
+    "typescript": "~6.0.3",
+    "vitest": "^4.0.8"
+  }
+}
