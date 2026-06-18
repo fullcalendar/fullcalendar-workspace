@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-examples/vue3",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "license": "ISC",
   "dependencies": {
     "@fullcalendar/vue3": "7.0.0-rc.3",

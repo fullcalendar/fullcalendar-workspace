@@ -2,7 +2,7 @@
   "private": true,
   "name": "@fullcalendar-examples/vue3-scheduler",
   "title": "FullCalendar Vue 3 Example Project (with Premium)",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "license": "ISC",
   "dependencies": {
     "@fullcalendar/vue3": "7.0.0-rc.3",

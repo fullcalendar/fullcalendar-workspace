@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-examples/parcel",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
   "dependencies": {

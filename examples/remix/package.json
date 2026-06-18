@@ -3,7 +3,7 @@
   "sideEffects": false,
   "name": "@fullcalendar-examples/remix",
   "title": "FullCalendar Remix Example Project",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "build": "remix vite:build",

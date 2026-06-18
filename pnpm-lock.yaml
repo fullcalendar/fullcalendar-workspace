@@ -23259,7 +23259,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -23320,7 +23320,7 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.32.0)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
@@ -23349,7 +23349,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -23410,7 +23410,7 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.32.0)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
@@ -23694,12 +23694,12 @@ snapshots:
       - webpack-cli
       - yaml
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.18.17)
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
     transitivePeerDependencies:
       - chokidar
 
@@ -46646,15 +46646,6 @@ snapshots:
 
   webidl-conversions@8.0.1: {}
 
-  webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.18.17)):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 3.5.3
-      mime-types: 2.1.35
-      range-parser: 1.2.1
-      schema-utils: 4.3.3
-      webpack: 5.94.0(esbuild@0.18.17)
-
   webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.20.1)):
     dependencies:
       colorette: 2.0.20
@@ -46663,6 +46654,15 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
       webpack: 5.94.0(esbuild@0.20.1)
+
+  webpack-dev-middleware@5.3.4(webpack@5.94.0):
+    dependencies:
+      colorette: 2.0.20
+      memfs: 3.5.3
+      mime-types: 2.1.35
+      range-parser: 1.2.1
+      schema-utils: 4.3.3
+      webpack: 5.94.0(esbuild@0.18.17)
 
   webpack-dev-middleware@6.1.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -46750,7 +46750,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)):
+  webpack-dev-server@4.15.1(webpack@5.94.0):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -46780,7 +46780,7 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 5.3.4(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-middleware: 5.3.4(webpack@5.94.0)
       ws: 8.19.0
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.18.17)
