@@ -5,3 +5,7 @@ packages:
   - './theming/*'
   - './scripts'
   - './examples/*'
+
+  # trouble building. think about removing support
+  - '!./examples/next12'
+  - '!./examples/next12-scheduler'
