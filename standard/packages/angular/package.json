@@ -16,8 +16,8 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": "16 - 21",
-    "@angular/core": "16 - 21",
+    "@angular/common": "16 - 22",
+    "@angular/core": "16 - 22",
     "fullcalendar": "workspace:7.0.0-rc.3",
     "temporal-polyfill": "^0.3.2"
   },

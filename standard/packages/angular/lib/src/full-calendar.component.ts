@@ -10,6 +10,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Calendar, CalendarOptions } from 'fullcalendar';
 import { CustomRendering, CustomRenderingStore } from 'fullcalendar/protected-api';
@@ -34,7 +35,8 @@ import { deepEqual } from './utils/fast-deep-equal';
       ></transport-container>
     </offscreen-fragment>
   `,
-  encapsulation: ViewEncapsulation.None // the styles are root-level, not scoped within the component
+  encapsulation: ViewEncapsulation.None, // the styles are root-level, not scoped within the component
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterContentChecked, OnDestroy {
   @Input() options?: CalendarOptions;
