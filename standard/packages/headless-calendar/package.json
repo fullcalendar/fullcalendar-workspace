@@ -15,7 +15,7 @@
     "@fullcalendar-scripts/standard": "workspace:*",
     "temporal-polyfill": "^1.0.1",
     "typescript": "^4.8.2",
-    "vitest": "^4.0.16"
+    "vitest": "^4.1.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
