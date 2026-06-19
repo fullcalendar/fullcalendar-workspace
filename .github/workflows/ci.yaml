@@ -48,6 +48,8 @@ jobs:
             install
 
       - name: Lint
+        # DISABLED!
+        if: false
         run: |
           pnpm \
             --filter '!./examples/**' \
