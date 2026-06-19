@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@fullcalendar/vue3": "^7.0.0",
-    "nuxt": "^3.3.1",
+    "nuxt": "^3.21.7",
     "temporal-polyfill": "^1.0.1"
   }
 }
