@@ -57,12 +57,21 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          echo "Checking for uncommitted changes BEFORE..."
+          git status --short
+          git diff --stat
+
           pnpm \
             --filter '!./examples/**' \
             --filter '!@fullcalendar-tests/*' \
             install
 
           pnpm run meta:update
+
+          echo "Checking for uncommitted changes AFTER..."
+          git status --short
+          git diff --stat
+
         # ^this hides the nested repo's pnpm meta files
         # required to prevent package scripts from getting confused
         # when was this supposed to be called anyway?
@@ -117,9 +126,6 @@ jobs:
           echo "Checking for uncommitted changes before pull..."
           git status --short
           git diff --stat
-          git diff
-          git diff --cached --stat
-          git diff --cached
 
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
