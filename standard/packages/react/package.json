@@ -24,7 +24,7 @@
     "react-dom": "^19.2.3",
     "temporal-polyfill": "^1.0.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.1.0"
   },
   "scripts": {
     "build": "pnpm run src:generate && standard-scripts pkg:build",
