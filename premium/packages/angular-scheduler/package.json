@@ -12,7 +12,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",
     "@angular/cli": "^16.2.16",
-    "@angular/common": "^16.2.0",
+    "@angular/common": "^20.3.25",
     "@angular/compiler": "^16.2.0",
     "@angular/compiler-cli": "^16.2.0",
     "@angular/core": "^16.2.0",
