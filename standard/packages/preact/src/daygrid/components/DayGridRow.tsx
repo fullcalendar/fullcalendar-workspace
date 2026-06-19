@@ -435,6 +435,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       return props.eventResize.segs
     }
 
+    if (this.context.options.selectMirror) {
+      return props.dateSelectionSegs
+    }
+
     return []
   }
 
@@ -447,6 +451,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     if (props.eventResize && props.eventResize.segs.length) { // messy check
       return props.eventResize.segs
+    }
+
+    if (this.context.options.selectMirror) {
+      return []
     }
 
     return props.dateSelectionSegs
