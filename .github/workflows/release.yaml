@@ -113,8 +113,6 @@ jobs:
       # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
       #
       - name: Sync Repos
-        # DISABLED!
-        if: false
         run: |
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
