@@ -11,7 +11,7 @@
   },
   "peerDependencies": {
     "fullcalendar": "workspace:7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.4",
@@ -19,7 +19,7 @@
     "@fullcalendar/preact-scheduler": "workspace:7.0.0-rc.3",
     "archiver": "^7.0.1",
     "globby": "^13.1.2",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

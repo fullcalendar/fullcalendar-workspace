@@ -11,14 +11,14 @@
   },
   "peerDependencies": {
     "@fullcalendar/vue3": "workspace:7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2",
+    "temporal-polyfill": "^1.0.1",
     "vue": "^3.0.11"
   },
   "devDependencies": {
     "@fullcalendar/vue3": "workspace:7.0.0-rc.3",
     "fullcalendar": "workspace:7.0.0-rc.3",
     "fullcalendar-scheduler": "workspace:7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2",
+    "temporal-polyfill": "^1.0.1",
     "vue": "^3.2.41"
   },
   "scripts": {

@@ -11,14 +11,14 @@
   },
   "peerDependencies": {
     "fullcalendar-w-react": "workspace:7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@fullcalendar/react": "workspace:7.0.0-rc.3",
     "@fullcalendar/react-scheduler": "workspace:7.0.0-rc.3",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

@@ -73,9 +73,9 @@ async function createEventCalendarConfig(theme: string, themeTitle: string) {
     "title": `EventCalendar (${themeTitle})`,
     "description": `A standard event calendar in the ${themeTitle} theme-flavor`,
     "dependencies": [
-      "@fullcalendar/react@beta",
+      "@fullcalendar/react@^7.0.0",
       "lucide-react",
-      "temporal-polyfill@^0.3.2"
+      "temporal-polyfill@^1.0.1"
     ],
     "registryDependencies": [
       "button",
@@ -145,10 +145,10 @@ async function createSchedulerConfig(theme: string, themeTitle: string) {
     "title": `Scheduler (${themeTitle})`,
     "description": `A premium event scheduler in the ${themeTitle} theme-flavor`,
     "dependencies": [
-      "@fullcalendar/react@beta",
-      "@fullcalendar/react-scheduler@beta",
+      "@fullcalendar/react@^7.0.0",
+      "@fullcalendar/react-scheduler@^7.0.0",
       "lucide-react",
-      "temporal-polyfill@^0.3.2"
+      "temporal-polyfill@^1.0.1"
     ],
     "registryDependencies": [
       `@fullcalendar/${theme}-event-calendar`

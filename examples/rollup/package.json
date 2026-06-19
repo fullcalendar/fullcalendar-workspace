@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "fullcalendar": "7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.0.1",

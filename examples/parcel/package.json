@@ -6,7 +6,7 @@
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
   "dependencies": {
     "fullcalendar": "7.0.0-rc.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
