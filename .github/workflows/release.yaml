@@ -114,6 +114,13 @@ jobs:
       #
       - name: Sync Repos
         run: |
+          echo "Checking for uncommitted changes before pull..."
+          git status --short
+          git diff --stat
+          git diff
+          git diff --cached --stat
+          git diff --cached
+
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
 
