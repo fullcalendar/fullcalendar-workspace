@@ -29,7 +29,7 @@
     "components-jqueryui": "^1.12.1",
     "cross-spawn": "^7.0.3",
     "cssnano": "^7.1.2",
-    "esbuild": "^0.15.7",
+    "esbuild": "^0.28.1",
     "eslint": "^8.25.0",
     "eslint-plugin-react": "^7.31.10",
     "globby": "^13.1.2",
