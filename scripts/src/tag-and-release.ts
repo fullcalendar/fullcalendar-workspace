@@ -15,14 +15,11 @@ export default async function() {
     errorMap['.'] = error
   })
 
-  // temporarily disable for v7
-  if (false) {
-    for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
-      await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
-        .catch((error: Error) => {
-          errorMap[subrepoSubdir] = error
-        })
-    }
+  for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
+    await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
+      .catch((error: Error) => {
+        errorMap[subrepoSubdir] = error
+      })
   }
 
   const errorCnt = Object.keys(errorMap).length
