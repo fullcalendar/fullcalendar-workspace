@@ -67,9 +67,11 @@
       },
       "./all": {
         "format": "module",
-        "sideEffects": true
+        "sideEffects": true,
+        "dist": "all/index"
       },
-      "./all.global": {
+      "./all/global": {
+        "src": "all.global",
         "format": "global",
         "primary": true
       },
