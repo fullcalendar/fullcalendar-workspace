@@ -32,7 +32,7 @@
     "pull-from-subrepos": "workspace-scripts pull-from-subrepos",
     "archive": "pnpm -r run archive",
     "tag-and-release": "workspace-scripts tag-and-release",
-    "publish": "changeset publish --no-git-tag",
+    "publish": "changeset publish --tag next --no-git-tag",
     "classnames": "workspace-scripts classnames",
     "filesizes": "workspace-scripts filesizes",
     "cb": "./scripts/bin/clean-and-build.sh"
