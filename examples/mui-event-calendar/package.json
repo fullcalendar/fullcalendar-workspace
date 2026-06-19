@@ -12,8 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@fullcalendar/mui": "7.0.0-rc.3",
-    "@fullcalendar/react": "7.0.0-rc.3",
+    "@fullcalendar/mui": "^7.0.0",
+    "@fullcalendar/react": "^7.0.0",
     "@mui/material": "^7.3.8",
     "react": "^19.0.4",
     "react-dom": "^19.0.4",

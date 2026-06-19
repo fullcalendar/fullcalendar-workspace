@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "fullcalendar": "7.0.0-rc.3",
+    "fullcalendar": "^7.0.0",
     "temporal-polyfill": "^1.0.1"
   },
   "dependenciesMeta": {

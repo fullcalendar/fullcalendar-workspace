@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "license": "ISC",
   "dependencies": {
-    "@fullcalendar/vue3": "7.0.0-rc.3",
-    "@fullcalendar/vue3-scheduler": "7.0.0-rc.3",
+    "@fullcalendar/vue3": "^7.0.0",
+    "@fullcalendar/vue3-scheduler": "^7.0.0",
     "temporal-polyfill": "^1.0.1",
     "vue": "^3.2.45"
   },

@@ -1,22 +1,22 @@
 {
   "name": "fullcalendar-scheduler",
-  "version": "7.0.0-rc.3",
+  "version": "7.0.0",
   "title": "FullCalendar Scheduler (Vanilla JS)",
   "description": "FullCalendar Vanilla JS Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.3",
-    "@full-ui/headless-grid": "workspace:7.0.0-rc.3",
-    "@fullcalendar/core": "workspace:7.0.0-rc.3",
+    "@full-ui/headless-calendar": "workspace:7.0.0",
+    "@full-ui/headless-grid": "workspace:7.0.0",
+    "@fullcalendar/core": "workspace:7.0.0",
     "preact": "^10.29.0"
   },
   "peerDependencies": {
-    "fullcalendar": "workspace:7.0.0-rc.3",
+    "fullcalendar": "workspace:7.0.0",
     "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.4",
-    "@fullcalendar/preact": "workspace:7.0.0-rc.3",
-    "@fullcalendar/preact-scheduler": "workspace:7.0.0-rc.3",
+    "@fullcalendar/preact": "workspace:7.0.0",
+    "@fullcalendar/preact-scheduler": "workspace:7.0.0",
     "archiver": "^7.0.1",
     "globby": "^13.1.2",
     "temporal-polyfill": "^1.0.1"

@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fullcalendar/react": "7.0.0-rc.3",
-    "@fullcalendar/react-scheduler": "7.0.0-rc.3",
+    "@fullcalendar/react": "^7.0.0",
+    "@fullcalendar/react-scheduler": "^7.0.0",
     "next": "^12.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
