@@ -1,4 +1,4 @@
-import { ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
+import { type ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
 import { PkgStruct, traverseMonorepoGreedy } from '@fullcalendar-scripts/standard/utils/monorepo-struct'
 import { analyzePkg } from '@fullcalendar-scripts/standard/utils/pkg-analysis'
 import { PkgSrcs, getPkgSrcs, compileSizes, displayTable } from './pkg/src-size.ts'
