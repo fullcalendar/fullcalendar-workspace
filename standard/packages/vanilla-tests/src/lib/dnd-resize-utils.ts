@@ -6,8 +6,9 @@ import { DayGridViewWrapper } from './wrappers/DayGridViewWrapper'
 import { CalendarWrapper } from './wrappers/CalendarWrapper'
 
 export function testEventDrag(options, dropDate, expectSuccess, eventClassName?) {
-  return new Promise<void>((resolve) => {
+  return new Promise<any>((resolve) => {
     let initialized = false
+    let calendar
 
     options.editable = true
     options.viewDidMount = () => {
@@ -16,7 +17,6 @@ export function testEventDrag(options, dropDate, expectSuccess, eventClassName?)
       initialized = true
 
       setTimeout(() => {
-        let calendar = currentCalendar
         let isDraggingExternal = false
         let $dayEl
         let $eventEl
@@ -94,18 +94,19 @@ export function testEventDrag(options, dropDate, expectSuccess, eventClassName?)
               expect(successfulDrop).toBe(expectSuccess)
             }
 
-            resolve()
+            resolve(calendar)
           },
         })
       }, 100)
     }
-    initCalendar(options)
+    calendar = initCalendar(options)
   })
 }
 
 export function testEventResize(options, resizeDate, expectSuccess, eventClassName?) {
   return new Promise<void>((resolve) => {
     let initialized = false
+    let calendar
 
     options.editable = true
     options.viewDidMount = () => {
@@ -114,7 +115,6 @@ export function testEventResize(options, resizeDate, expectSuccess, eventClassNa
       initialized = true
 
       setTimeout(() => {
-        let calendar = currentCalendar
         let $lastDayEl
         let lastSlatIndex
         let $lastSlatEl
@@ -187,7 +187,7 @@ export function testEventResize(options, resizeDate, expectSuccess, eventClassNa
         })
       }, 100)
     }
-    initCalendar(options)
+    calendar = initCalendar(options)
   })
 }
 
@@ -213,6 +213,7 @@ export function testSelection(options, start, end, expectSuccess) {
     let allDay = false
     let meta
     let initialized = false
+    let calendar
     let calendarWrapper
 
     if (typeof start === 'string') {
@@ -243,10 +244,10 @@ export function testSelection(options, start, end, expectSuccess) {
       initialized = true
 
       await waitTimeout()
-      calendarWrapper = new CalendarWrapper(currentCalendar)
+      calendarWrapper = new CalendarWrapper(calendar)
 
       if (!allDay) {
-        let timeGridWrapper = new TimeGridViewWrapper(currentCalendar).timeGrid
+        let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
         $firstDayEl = $(timeGridWrapper.getDayEls(start))
         $lastDayEl = $(timeGridWrapper.getDayEls(end))
         firstSlatIndex = start.getUTCHours() * 2 + (start.getUTCMinutes() / 30) // assumes slotDuration:'30:00'
@@ -266,7 +267,7 @@ export function testSelection(options, start, end, expectSuccess) {
           left: firstDayRect.left + firstDayRect.width / 2,
         }
       } else {
-        let dayGridWrapper = new DayGridViewWrapper(currentCalendar).dayGrid
+        let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         $firstDayEl = $(dayGridWrapper.getDayEl(start))
         $lastDayEl = $(dayGridWrapper.getDayEl(new Date(end.valueOf() - 1))) // inclusive
         dy = $lastDayEl.offset().top - $firstDayEl.offset().top
@@ -294,6 +295,6 @@ export function testSelection(options, start, end, expectSuccess) {
         },
       })
     }
-    initCalendar(options)
+    calendar = initCalendar(options)
   })
 }

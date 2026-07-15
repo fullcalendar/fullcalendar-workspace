@@ -42,6 +42,7 @@ import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData,
 import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
+import { warn } from '../util/warn'
 
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
@@ -403,7 +404,7 @@ export class CalendarDataManager {
       refinedOptions.locale,
       refinedOptions.weekNumberCalculation,
       refinedOptions.firstDay,
-      refinedOptions.weekText,
+      refinedOptions.weekTextLong,
       refinedOptions.weekTextShort,
       pluginHooks,
       availableLocaleData,
@@ -472,7 +473,7 @@ export class CalendarDataManager {
       ) {
         refined[optionName] = currentRefined[optionName]
       } else if (refiners[optionName]) {
-        refined[optionName] = refiners[optionName](raw[optionName])
+        refined[optionName] = refiners[optionName](raw[optionName], optionName)
         anyChanges = true
       }
     }
@@ -596,7 +597,7 @@ export class CalendarDataManager {
             refined[optionName] = this.currentCalendarOptionsRefined[optionName]
           }
         } else if (refiners[optionName]) {
-          refined[optionName] = refiners[optionName](raw[optionName])
+          refined[optionName] = refiners[optionName](raw[optionName], optionName)
         }
 
         anyChanges = true
@@ -620,7 +621,7 @@ function buildDateEnv(
   explicitLocale: LocaleSingularArg,
   weekNumberCalculation,
   firstDay: number | undefined,
-  weekText,
+  weekTextLong,
   weekTextShort,
   pluginHooks: PluginHooks,
   availableLocaleData: RawLocaleInfo,
@@ -633,7 +634,7 @@ function buildDateEnv(
     locale,
     weekNumberCalculation,
     firstDay,
-    weekText,
+    weekTextLong,
     weekTextShort,
     cmdFormatter: pluginHooks.cmdFormatter,
   })
@@ -720,12 +721,17 @@ function parseContextBusinessHours(calendarContext: CalendarContext) {
   return parseBusinessHours(calendarContext.options.businessHours, calendarContext)
 }
 
+const warnedUnknownOptions: { [optionName: string]: true } = {}
+
 function filterKnownOptions(options: any, optionRefiners: any): any {
   const knownOptions: any = {}
 
   for (const optionName in options) {
     if (optionRefiners[optionName]) {
       knownOptions[optionName] = options[optionName]
+    } else if (!warnedUnknownOptions[optionName]) {
+      warn(`Unknown option \`${optionName}\`.`)
+      warnedUnknownOptions[optionName] = true
     }
   }
 

@@ -1,21 +1,21 @@
 {
   "name": "@fullcalendar/react-scheduler",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "title": "FullCalendar React Scheduler",
   "description": "FullCalendar React Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
-    "@full-ui/headless-grid": "workspace:7.0.0-rc.1",
-    "@fullcalendar/core": "workspace:7.0.0-rc.1"
+    "@full-ui/headless-calendar": "workspace:7.0.0",
+    "@full-ui/headless-grid": "workspace:7.0.0",
+    "@fullcalendar/core": "workspace:7.0.0"
   },
   "peerDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-rc.1",
+    "@fullcalendar/react": "workspace:7.0.0",
     "react": "^17 || ^18 || ^19",
     "react-dom": "^17 || ^18 || ^19",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-rc.1",
+    "@fullcalendar/react": "workspace:7.0.0",
     "@fullcalendar-scripts/standard": "workspace:*",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.9",
@@ -23,7 +23,7 @@
     "jsdom": "^27.4.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "temporal-polyfill": "^0.3.2",
+    "temporal-polyfill": "^1.0.1",
     "vitest": "^4.0.16"
   },
   "scripts": {

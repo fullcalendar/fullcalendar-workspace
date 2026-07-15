@@ -11,7 +11,7 @@ export default {
   todayText: 'Vandag',
   yearText: 'Jaar',
   monthText: 'Maand',
-  weekText: 'Week',
+  weekTextLong: 'Week',
   dayText: 'Dag',
   listText: 'Agenda',
   allDayText: 'Heeldag',

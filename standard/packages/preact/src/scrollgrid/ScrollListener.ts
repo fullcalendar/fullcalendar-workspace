@@ -2,20 +2,15 @@ import { Emitter } from "../common/Emitter"
 import { DelayedRunner } from "../util/DelayedRunner"
 
 /*
-Fires:
-- scrollStart: (isUser) => void
-- scroll: (isUser) => void
-- scrollEnd: (isUser) => void
-
 NOTE: detection is complicated (w/ touch and wheel) because ScrollerSyncer needs to know about it,
 but are we sure we can't just ignore programmatic scrollTo() calls with a flag? and determine the
 the scroll-master simply by who was the newest scroller? Does passive:true do things asynchronously?
 */
 export class ScrollListener {
   public emitter: Emitter<{
-    scrollStart: () => void
-    scroll: (isUser: boolean) => void
-    scrollEnd: (isUser: boolean) => void
+    scrollStart: (isDevice: boolean) => void
+    scroll: (isDevice: boolean) => void
+    scrollEnd: (isDevice: boolean) => void
   }> = new Emitter()
 
   private wheelWaiter: DelayedRunner
@@ -61,8 +56,7 @@ export class ScrollListener {
   private startScroll() {
     if (!this.isScroll) {
       this.isScroll = true
-      this.emitter.trigger('scrollStart')
-      // NOTE: getIsUser() isn't ready here yet!
+      this.emitter.trigger('scrollStart', this.getIsDevice())
     }
   }
 
@@ -73,14 +67,14 @@ export class ScrollListener {
 
       this.isScroll = false
       this.isWheelRecent = false
-      this.emitter.trigger('scrollEnd', this.getIsUser())
+      this.emitter.trigger('scrollEnd', this.getIsDevice())
       this.isMouse = false
       this.isTouch = false
       this.isWheel = false
     }
   }
 
-  private getIsUser() {
+  private getIsDevice() {
     return this.isWheel || this.isMouse || this.isTouch
   }
 
@@ -88,8 +82,6 @@ export class ScrollListener {
   // ----------------------------------------------------------------------------------------------
 
   private handleScroll = () => {
-    this.startScroll()
-    this.emitter.trigger('scroll', this.getIsUser())
     this.isScrollRecent = true
 
     if (this.isMouseDown) {
@@ -102,6 +94,8 @@ export class ScrollListener {
       this.isWheel = true
     }
 
+    this.startScroll()
+    this.emitter.trigger('scroll', this.getIsDevice())
     this.scrollWaiter.request(500)
   }
 

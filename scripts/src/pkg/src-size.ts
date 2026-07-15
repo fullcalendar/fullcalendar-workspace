@@ -4,7 +4,7 @@ import zlib from 'node:zlib'
 import { promisify } from 'node:util'
 import { readFile } from 'fs/promises'
 import * as esbuild from 'esbuild'
-import { ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
+import { type ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
 import { execCapture } from '@fullcalendar-scripts/standard/utils/exec'
 
 const gzip = promisify(zlib.gzip)

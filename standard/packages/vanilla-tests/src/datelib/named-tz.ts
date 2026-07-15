@@ -29,7 +29,7 @@ describe('named time zones', () => {
   })
 
   it('computes correct offset for named timezone for View dates', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'dayGridMonth',
       now: '2018-09-01',
       timeZone: 'Europe/Moscow',
@@ -38,11 +38,11 @@ describe('named time zones', () => {
       ],
     })
 
-    let view = currentCalendar.view
+    let view = calendar.view
     expect(view.currentStart).toEqualDate('2018-09-01T00:00:00+03:00')
 
     // interprets the ambug iso date string correctly
-    let event = currentCalendar.getEvents()[0]
+    let event = calendar.getEvents()[0]
     expect(event.start).toEqualDate('2018-09-05T00:00:00+03:00')
   })
 })

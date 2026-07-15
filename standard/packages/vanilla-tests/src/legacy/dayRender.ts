@@ -32,9 +32,9 @@ describe('dayCellDidMount', () => {
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
-    initCalendar(options)
+    let calendar = initCalendar(options)
     options.dayCellDidMount.calls.reset()
-    currentCalendar.gotoDate('2014-05-04') // a day in the next week
+    calendar.gotoDate('2014-05-04') // a day in the next week
     expect(options.dayCellDidMount.calls.count()).toEqual(7 * strictModeFactor)
   })
 
@@ -46,9 +46,9 @@ describe('dayCellDidMount', () => {
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
-    initCalendar(options)
+    let calendar = initCalendar(options)
     options.dayCellDidMount.calls.reset()
-    currentCalendar.gotoDate('2014-05-02') // a day in the same week
+    calendar.gotoDate('2014-05-02') // a day in the same week
     expect(options.dayCellDidMount.calls.count()).toEqual(0 * strictModeFactor)
   })
 

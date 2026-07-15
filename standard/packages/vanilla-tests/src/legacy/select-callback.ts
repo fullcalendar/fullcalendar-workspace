@@ -5,6 +5,7 @@ import dayGridPlugin from 'fullcalendar/daygrid'
 import interactionPlugin from 'fullcalendar/interaction'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper'
+import { waitDateSelect } from '../lib/wrappers/interaction-util'
 import { waitTimeout } from '../lib/misc'
 
 // UNFORTUNATELY, these tests are affected by the window height b/c of autoscrolling
@@ -69,11 +70,12 @@ describe('select callback', () => {
         await waitTimeout()
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-        await dayGridWrapper.selectDatesTouch(
+        let selectInfo = await waitDateSelect(calendar, dayGridWrapper.selectDatesTouch(
           '2014-04-28',
           '2014-05-06',
-          true, // debug. HACK
-        )
+        ))
+
+        expect(selectInfo).not.toBe(false)
         expect(options.select).toHaveBeenCalled()
       })
 
@@ -222,11 +224,12 @@ describe('select callback', () => {
           let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
 
           await waitTimeout(100) // HACK: sometimes touch dragging wouldn't grab onto anything
-          await timeGridWrapper.selectDatesTouch(
+          let selectInfo = await waitDateSelect(calendar, timeGridWrapper.selectDatesTouch(
             '2014-05-28T09:00:00',
             '2014-05-28T10:30:00',
-            true, // debug. HACK
-          )
+          ))
+
+          expect(selectInfo).not.toBe(false)
           expect(options.select).toHaveBeenCalled()
         })
 

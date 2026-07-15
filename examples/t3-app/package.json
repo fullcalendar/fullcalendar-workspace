@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar-examples/t3-app",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,7 @@
     "next": "^13.4.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "temporal-polyfill": "^0.3.2",
+    "temporal-polyfill": "^1.0.1",
     "zod": "^3.21.4"
   },
   "dependenciesMeta": {
@@ -26,8 +26,8 @@
     }
   },
   "devDependencies": {
-    "@fullcalendar/react": "7.0.0-rc.1",
-    "@fullcalendar/react-scheduler": "7.0.0-rc.1",
+    "@fullcalendar/react": "^7.0.0",
+    "@fullcalendar/react-scheduler": "^7.0.0",
     "@types/eslint": "^8.21.3",
     "@types/node": "^18.15.5",
     "@types/react": "^18.3.3",

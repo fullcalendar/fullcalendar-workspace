@@ -54,7 +54,14 @@ export class Calendar extends CalendarApiImpl {
 
     let renderImmediate = false
     for (const action of actions) {
-      if (action.type === 'SET_EVENT_DRAG' || action.type === 'SET_EVENT_RESIZE') {
+      if (
+        action.type === 'SET_EVENT_DRAG' ||
+        action.type === 'UNSET_EVENT_DRAG' ||
+        action.type === 'SET_EVENT_RESIZE' ||
+        action.type === 'UNSET_EVENT_RESIZE' ||
+        // could happen as a result of a drag or resize and must be part of same sync pipeline
+        action.type === 'MERGE_EVENTS'
+      ) {
         renderImmediate = true
         break
       }

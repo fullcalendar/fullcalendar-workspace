@@ -7,7 +7,7 @@ export default {
   todayText: 'Aso nei',
   yearText: 'Tausaga',
   monthText: 'Masina',
-  weekText: 'Vaiaso',
+  weekTextLong: 'Vaiaso',
   dayText: 'Aso',
   listText: 'Faasologa',
   allDayText: 'Aso atoa',

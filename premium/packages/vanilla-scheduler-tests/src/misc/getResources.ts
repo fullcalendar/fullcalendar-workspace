@@ -8,8 +8,8 @@ describe('getResources', () => {
   })
 
   it('does not mutate when removeResource is called', () => {
-    initCalendar()
-    const resources = currentCalendar.getResources()
+    let calendar = initCalendar()
+    const resources = calendar.getResources()
     expect(resources.length).toBe(3)
     resources[0].remove()
     expect(resources.length).toBe(3)

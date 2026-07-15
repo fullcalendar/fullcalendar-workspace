@@ -3,7 +3,6 @@ import premiumCommonPlugin from '../common/plugin'
 import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'
 import { ResourceTimelineView } from './components/ResourceTimelineView'
-import { OPTION_REFINERS } from './options'
 
 export default {
   name: 'resource-timeline',
@@ -40,5 +39,4 @@ export default {
       duration: { years: 1 },
     },
   },
-  optionRefiners: OPTION_REFINERS,
 } as PluginInput

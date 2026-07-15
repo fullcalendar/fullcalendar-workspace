@@ -1,6 +1,6 @@
 describe('timeline', () => {
   it('can switch views', () => {
-    initCalendar({
+    let calendar = initCalendar({
       now: '2016-01-07',
       editable: true,
       aspectRatio: 1.8,
@@ -36,24 +36,24 @@ describe('timeline', () => {
       ],
     })
 
-    expect(currentCalendar.view.type).toBe('resourceTimelineDay')
-    currentCalendar.changeView('resourceTimelineThreeDays')
+    expect(calendar.view.type).toBe('resourceTimelineDay')
+    calendar.changeView('resourceTimelineThreeDays')
 
-    expect(currentCalendar.view.type).toBe('resourceTimelineThreeDays')
-    currentCalendar.changeView('resourceTimeGridDay')
+    expect(calendar.view.type).toBe('resourceTimelineThreeDays')
+    calendar.changeView('resourceTimeGridDay')
 
-    expect(currentCalendar.view.type).toBe('resourceTimeGridDay')
-    currentCalendar.changeView('resourceTimeGridTwoDay')
+    expect(calendar.view.type).toBe('resourceTimeGridDay')
+    calendar.changeView('resourceTimeGridTwoDay')
 
-    expect(currentCalendar.view.type).toBe('resourceTimeGridTwoDay')
-    currentCalendar.changeView('timeGridWeek')
+    expect(calendar.view.type).toBe('resourceTimeGridTwoDay')
+    calendar.changeView('timeGridWeek')
 
-    expect(currentCalendar.view.type).toBe('timeGridWeek')
-    currentCalendar.changeView('dayGridMonth')
+    expect(calendar.view.type).toBe('timeGridWeek')
+    calendar.changeView('dayGridMonth')
 
-    expect(currentCalendar.view.type).toBe('dayGridMonth')
-    currentCalendar.changeView('resourceTimelineDay')
+    expect(calendar.view.type).toBe('dayGridMonth')
+    calendar.changeView('resourceTimelineDay')
 
-    expect(currentCalendar.view.type).toBe('resourceTimelineDay')
+    expect(calendar.view.type).toBe('resourceTimelineDay')
   })
 })

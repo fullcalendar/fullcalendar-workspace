@@ -16,7 +16,7 @@ describe('rrule plugin', () => {
   })
 
   it('expands events when given an rrule object', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         {
           rrule: {
@@ -26,7 +26,7 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualDate('2018-09-04T13:00:00Z')
     expect(events[0].end).toBe(null)
@@ -37,7 +37,7 @@ describe('rrule plugin', () => {
   })
 
   it('can expand monthly recurrence when given an rrule object', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'dayGridMonth',
       now: '2018-12-25T12:00:00',
       events: [{
@@ -50,14 +50,14 @@ describe('rrule plugin', () => {
       }],
     })
 
-    let events = currentCalendar.getEvents()
+    let events = calendar.getEvents()
     expect(events.length).toBe(1)
     expect(events[0].start).toEqualDate('2018-12-13')
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6059
   it('can specify strings in byweekday', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2021-01-01',
       events: [{
@@ -70,7 +70,7 @@ describe('rrule plugin', () => {
       }],
     })
 
-    let events = currentCalendar.getEvents()
+    let events = calendar.getEvents()
     expect(events.length).toBe(10)
     expect(events[0].start).toEqualDate('2021-01-04')
   })
@@ -174,7 +174,7 @@ describe('rrule plugin', () => {
   })
 
   it('expands events until a date', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         {
           rrule: {
@@ -185,7 +185,7 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(4)
     expect(events[0].start).toEqualDate('2018-09-04T13:00:00Z')
     expect(events[0].end).toBe(null)
@@ -195,7 +195,7 @@ describe('rrule plugin', () => {
   })
 
   it('expands a range that starts exactly at the current view\'s start', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2019-04-02',
       initialView: 'dayGridDay',
       events: [
@@ -210,13 +210,13 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBeGreaterThanOrEqual(1)
     expect(events[0].start).toEqualDate('2019-04-02')
   })
 
   it('expands events with a duration', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         {
           rrule: {
@@ -227,14 +227,14 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualDate('2018-09-04T13:00:00Z')
     expect(events[0].end).toEqualDate('2018-09-04T16:00:00Z')
   })
 
   it('expands events with guessed allDay', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         {
           rrule: {
@@ -244,7 +244,7 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualDate('2018-09-04')
     expect(events[0].end).toBe(null)
@@ -252,7 +252,7 @@ describe('rrule plugin', () => {
   })
 
   it('inherits defaultAllDay from source', () => {
-    initCalendar({
+    let calendar = initCalendar({
       defaultAllDay: false,
       events: [
         {
@@ -263,7 +263,7 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualDate('2018-09-04')
     expect(events[0].end).toBe(null)
@@ -271,7 +271,7 @@ describe('rrule plugin', () => {
   })
 
   it('inherits defaultAllDay from source setting', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [{
         defaultAllDay: false,
         events: [
@@ -284,7 +284,7 @@ describe('rrule plugin', () => {
         ],
       }],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualDate('2018-09-04')
     expect(events[0].end).toBe(null)
@@ -292,7 +292,7 @@ describe('rrule plugin', () => {
   })
 
   it('can generate local dates when given an rrule object', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'local',
       events: [
         {
@@ -303,7 +303,7 @@ describe('rrule plugin', () => {
         },
       ],
     })
-    let events = getSortedEvents()
+    let events = getSortedEvents(calendar)
     expect(events.length).toBe(5)
     expect(events[0].start).toEqualLocalDate('2018-09-04T05:00:00')
     expect(events[0].end).toBe(null)
@@ -312,7 +312,7 @@ describe('rrule plugin', () => {
 
   describe('when given an rrule string', () => {
     it('expands', () => {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           {
             rrule:
@@ -322,7 +322,7 @@ describe('rrule plugin', () => {
         ],
       })
 
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events.length).toBe(5)
       expect(events[0].start).toEqualDate('2018-09-04T13:00:00Z')
       expect(events[0].end).toBe(null)
@@ -334,7 +334,7 @@ describe('rrule plugin', () => {
 
     // https://github.com/fullcalendar/fullcalendar/issues/6126
     it('expands correctly with UNTIL followed by newline', () => {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           {
             rrule:
@@ -345,12 +345,12 @@ describe('rrule plugin', () => {
         ],
       })
 
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events.length).toBe(4)
     })
 
     it('respects allDay', () => {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           {
             allDay: true,
@@ -359,14 +359,14 @@ describe('rrule plugin', () => {
         ],
       })
 
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events[0].start).toEqualDate('2018-09-04') // should round down
       expect(events[0].allDay).toBe(true)
       expect(events[0].extendedProps).toEqual({}) // didnt accumulate allDay or rrule props
     })
 
     it('can expand monthly recurrence in UTC', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         now: '2018-12-25T12:00:00',
         timeZone: 'UTC',
@@ -375,13 +375,13 @@ describe('rrule plugin', () => {
         }],
       })
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(1)
       expect(events[0].start).toEqualDate('2018-12-13')
     })
 
     it('can expand monthly recurrence in local timeZone', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         now: '2018-12-25T12:00:00',
         timeZone: 'local',
@@ -390,13 +390,13 @@ describe('rrule plugin', () => {
         }],
       })
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(1)
       expect(events[0].start).toEqualLocalDate('2018-12-13')
     })
 
     it('can expand weekly timed recurrence in local timeZone', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         now: '2018-12-25T12:00:00',
         timeZone: 'local',
@@ -405,13 +405,13 @@ describe('rrule plugin', () => {
         }],
       })
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(6)
       expect(events[0].start).toEqualLocalDate('2018-12-01')
     })
 
     it('can expand weekly UTC-timed recurrence in local timeZone', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         now: '2018-12-25T12:00:00',
         timeZone: 'local',
@@ -420,13 +420,13 @@ describe('rrule plugin', () => {
         }],
       })
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(6)
       expect(events[0].start).toEqualDate('2018-12-01')
     })
 
     it('can expand weekly UTC-timed recurrence in local timeZone, with exclusion', () => {
-      initCalendar({
+      let calendar = initCalendar({
         initialView: 'dayGridMonth',
         now: '2018-12-25T12:00:00',
         timeZone: 'local',
@@ -435,7 +435,7 @@ describe('rrule plugin', () => {
         }],
       })
 
-      let events = currentCalendar.getEvents()
+      let events = calendar.getEvents()
       expect(events.length).toBe(5)
       expect(events[0].start).toEqualDate('2018-12-01')
     })
@@ -443,7 +443,7 @@ describe('rrule plugin', () => {
     it('can generate local dates', () => {
       let localStart = buildLocalRRuleDateStr('2018-09-04T05:00:00')
 
-      initCalendar({
+      let calendar = initCalendar({
         timeZone: 'local',
         events: [
           {
@@ -452,7 +452,7 @@ describe('rrule plugin', () => {
         ],
       })
 
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events.length).toBe(5)
       expect(events[0].start).toEqualLocalDate('2018-09-04T05:00:00')
       expect(events[0].end).toBe(null)
@@ -463,7 +463,7 @@ describe('rrule plugin', () => {
       let localStart = buildLocalRRuleDateStr('2018-09-04T05:00:00')
       let localExdate = buildLocalRRuleDateStr('2018-09-05T05:00:00')
 
-      initCalendar({
+      let calendar = initCalendar({
         timeZone: 'local',
         events: [
           {
@@ -471,7 +471,7 @@ describe('rrule plugin', () => {
           },
         ],
       })
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events.length).toBe(5)
       expect(events[0].start).toEqualLocalDate('2018-09-04T05:00:00')
       expect(events[0].end).toBe(null)
@@ -480,7 +480,7 @@ describe('rrule plugin', () => {
 
     // https://github.com/fullcalendar/fullcalendar/issues/5726
     it('can generate local dates, including EXDATE, when BYDAY and TZ shifting', () => {
-      initCalendar({
+      let calendar = initCalendar({
         timeZone: 'local',
         initialDate: '2020-09-10',
         events: [
@@ -489,7 +489,7 @@ describe('rrule plugin', () => {
           },
         ],
       })
-      let events = getSortedEvents()
+      let events = getSortedEvents(calendar)
       expect(events.length).toBe(3)
       expect(events[0].start).toEqualDate('2020-09-19T03:00:00')
       expect(events[1].start).toEqualDate('2020-09-26T03:00:00')
@@ -610,8 +610,8 @@ describe('rrule plugin', () => {
     return parseLocalDate(inputStr).toISOString().replace('.000', '').replace(/[-:]/g, '')
   }
 
-  function getSortedEvents() {
-    let events = currentCalendar.getEvents()
+  function getSortedEvents(calendar) {
+    let events = calendar.getEvents()
 
     events.sort((eventA, eventB) => eventA.start.valueOf() - eventB.start.valueOf())
 

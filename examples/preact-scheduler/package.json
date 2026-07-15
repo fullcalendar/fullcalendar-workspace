@@ -1,0 +1,34 @@
+{
+  "private": true,
+  "name": "@fullcalendar-examples/preact-scheduler",
+  "title": "FullCalendar Preact Example Project (with Premium)",
+  "version": "0.0.0",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist node_modules/.vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fullcalendar/preact": "^7.0.0",
+    "@fullcalendar/preact-scheduler": "^7.0.0",
+    "preact": "^10.29.0",
+    "temporal-polyfill": "^1.0.1"
+  },
+  "dependenciesMeta": {
+    "@fullcalendar/preact": {
+      "injected": true
+    },
+    "@fullcalendar/preact-scheduler": {
+      "injected": true
+    }
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.8.0",
+    "typescript": "^5.5.0",
+    "vite": "^6.0.11"
+  }
+}

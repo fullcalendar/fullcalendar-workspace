@@ -11,7 +11,7 @@ export default {
   todayText: 'Sot',
   yearText: 'Viti',
   monthText: 'Muaj',
-  weekText: 'Javë',
+  weekTextLong: 'Javë',
   weekTextShort: 'Ja',
   dayText: 'Ditë',
   listText: 'Listë',

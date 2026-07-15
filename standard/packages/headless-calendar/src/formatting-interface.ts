@@ -16,7 +16,7 @@ export interface DateFormattingContext {
   locale: Locale
   calendarSystem: CalendarSystem
   computeWeekNumber: (d: DateMarker) => number
-  weekText: string
+  weekTextLong: string
   weekTextShort: string
   cmdFormatter?: CmdDateFormatterFunc
 }

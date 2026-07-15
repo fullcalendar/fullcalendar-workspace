@@ -95,7 +95,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotHeaderAlign: (info) => info.isTime ? 'start' : 'center', // h-align
 
-        slotHeaderClass: 'justify-center', // v-align
+        slotHeaderClass: (info) => joinClassNames(
+          'justify-center', // v-align
+          !info.level && 'overflow-hidden', // don't apply to potentially sticky cell-inners
+        ),
         slotHeaderInnerClass: (info) => joinClassNames(
           'm-2 text-sm',
           info.hasNavLink && 'hover:underline',

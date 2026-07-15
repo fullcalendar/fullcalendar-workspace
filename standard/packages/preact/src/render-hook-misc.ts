@@ -36,7 +36,7 @@ export interface DayHeaderInfo extends DateMeta {
 }
 export interface DayHeaderDividerInfo {
   isSticky: boolean
-  multiMonthColumnCount: number
+  multiMonthColumns: number
   options: { allDaySlot: boolean }
 }
 

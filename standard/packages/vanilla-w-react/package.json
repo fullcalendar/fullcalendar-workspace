@@ -1,24 +1,24 @@
 {
   "private": true,
   "name": "fullcalendar-w-react",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
-    "@fullcalendar/core": "workspace:7.0.0-rc.1",
+    "@full-ui/headless-calendar": "workspace:7.0.0",
+    "@fullcalendar/core": "workspace:7.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "peerDependencies": {
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-rc.1",
+    "@fullcalendar/react": "workspace:7.0.0",
     "@fullcalendar-scripts/standard": "workspace:*",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -36,9 +36,11 @@
         "format": "module"
       },
       "./all": {
-        "format": "module"
+        "format": "module",
+        "dist": "all/index"
       },
-      "./all.global": {
+      "./all/global": {
+        "src": "all.global",
         "format": "global",
         "primary": true
       },
@@ -63,18 +65,20 @@
       },
       "./locales-all": {
         "format": "module",
-        "generator": "./scripts/generate-locales-all.ts"
+        "generator": "./scripts/generate-locales-all.ts",
+        "dist": "locales-all/index"
       },
-      "./locales-all.global": {
+      "./locales-all/global": {
         "format": "global",
         "generator": "./scripts/generate-locales-all-global.ts"
       },
       "./locales/*": {
         "format": "module",
         "generator": "./scripts/generate-locales.ts",
-        "types": "locales/locale"
+        "types": "locales/locale",
+        "dist": "locales/*/index"
       },
-      "./locales/*.global": {
+      "./locales/*/global": {
         "format": "global",
         "generator": "./scripts/generate-locales-global.ts"
       },
@@ -95,7 +99,8 @@
       },
       "./themes/classic": {
         "format": "module",
-        "src": "themes/classic/index"
+        "src": "themes/classic/index",
+        "dist": "themes/classic/index"
       },
       "./themes/classic/global": {
         "format": "global"
@@ -110,7 +115,8 @@
       },
       "./themes/monarch": {
         "format": "module",
-        "src": "themes/monarch/index"
+        "src": "themes/monarch/index",
+        "dist": "themes/monarch/index"
       },
       "./themes/monarch/global": {
         "format": "global"
@@ -141,7 +147,8 @@
       },
       "./themes/breezy": {
         "format": "module",
-        "src": "themes/breezy/index"
+        "src": "themes/breezy/index",
+        "dist": "themes/breezy/index"
       },
       "./themes/breezy/global": {
         "format": "global"
@@ -168,7 +175,8 @@
       },
       "./themes/forma": {
         "format": "module",
-        "src": "themes/forma/index"
+        "src": "themes/forma/index",
+        "dist": "themes/forma/index"
       },
       "./themes/forma/global": {
         "format": "global"
@@ -195,7 +203,8 @@
       },
       "./themes/pulse": {
         "format": "module",
-        "src": "themes/pulse/index"
+        "src": "themes/pulse/index",
+        "dist": "themes/pulse/index"
       },
       "./themes/pulse/global": {
         "format": "global"

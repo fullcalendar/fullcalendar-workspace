@@ -5,6 +5,6 @@ export interface ScrollerInterface {
   scrollTo(options: { x?: number, y?: number }): void
   addScrollStartListener(handler: () => void): void
   removeScrollStartListener(handler: () => void): void
-  addScrollEndListener(handler: (isUser: boolean) => void): void
-  removeScrollEndListener(handler: (isUser: boolean) => void): void
+  addScrollEndListener(handler: (isDevice: boolean) => void): void
+  removeScrollEndListener(handler: (isDevice: boolean) => void): void
 }

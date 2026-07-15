@@ -57,13 +57,13 @@ describe('ListView rendering', () => {
       it('filters events through eventWillUnmount', () => {
         let callCnt = 0
 
-        initCalendar({
+        let calendar = initCalendar({
           eventWillUnmount() {
             callCnt += 1
           },
         })
 
-        currentCalendar.destroy()
+        calendar.destroy()
         expect(callCnt).toBe(2 * strictModeFactor)
       })
     })
@@ -443,7 +443,7 @@ describe('ListView rendering', () => {
 
     it('makes scrollbars', () => {
       let $el = $('<div style="width:300px" />').appendTo('body')
-      let calendar = initCalendar({ headerToolbar: false }, $el)
+      let calendar = initCalendar({ headerToolbar: false }, $el[0])
       let viewWrapper = new ListViewWrapper(calendar)
       let scrollEl = viewWrapper.getScrollerEl()
 
@@ -461,7 +461,7 @@ describe('ListView rendering', () => {
       let calendar = initCalendar({
         headerToolbar: false,
         height: 'auto',
-      }, $el)
+      }, $el[0])
       let viewWrapper = new ListViewWrapper(calendar)
       let scrollEl = viewWrapper.getScrollerEl()
 

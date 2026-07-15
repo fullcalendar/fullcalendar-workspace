@@ -139,7 +139,7 @@ export class NativeDateFormatter implements DateFormatter {
     if (this.weekOnly) {
       return formatWeekNumberParts(
         context.computeWeekNumber(date.marker),
-        context.weekText,
+        context.weekTextLong,
         context.weekTextShort,
         context.locale,
         extendedOptions.week,
@@ -340,7 +340,7 @@ function stripTrailingLiteral<T extends { type: string, value: string }>(parts: 
 
 function formatWeekNumberParts(
   num: number,
-  weekText: string,
+  weekTextLong: string,
   weekTextShort: string,
   locale: Locale,
   display?: 'numeric' | 'narrow' | 'short' | 'long',
@@ -348,7 +348,7 @@ function formatWeekNumberParts(
   const parts: DateTimeFormatPartWithWeek[] = []
 
   if (display === 'long') {
-    parts.push({ type: 'literal', value: weekText })
+    parts.push({ type: 'literal', value: weekTextLong })
   } else if (display === 'short' || display === 'narrow') {
     parts.push({ type: 'literal', value: weekTextShort })
   }

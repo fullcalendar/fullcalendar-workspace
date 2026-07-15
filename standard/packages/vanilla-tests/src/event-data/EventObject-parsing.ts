@@ -1,6 +1,6 @@
 describe('Event Object parsing', () => {
   it('records _id as an extended prop', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2017-09-05',
       initialView: 'dayGridMonth',
       events: [
@@ -8,12 +8,12 @@ describe('Event Object parsing', () => {
       ],
     })
 
-    let events = currentCalendar.getEvents()
+    let events = calendar.getEvents()
     expect(events[0].extendedProps._id).toBe('a')
   })
 
   it('parses an all-day event with timed same-day start/end', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2017-11-01',
       timeZone: 'local',
@@ -27,7 +27,7 @@ describe('Event Object parsing', () => {
       ],
     })
 
-    let events = currentCalendar.getEvents()
+    let events = calendar.getEvents()
     expect(events.length).toBe(1)
     expect(events[0].start).toEqualLocalDate('2017-11-01T00:00:00')
     expect(events[0].end).toBe(null)
@@ -35,7 +35,7 @@ describe('Event Object parsing', () => {
 
   // BEHAVIOR NOT-YET-IMPLEMENTED it seems
   xit('won\'t accept two events with the same ID', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'dayGridDay',
       initialDate: '2018-01-01',
       events: [
@@ -44,7 +44,7 @@ describe('Event Object parsing', () => {
       ],
     })
 
-    let events = currentCalendar.getEvents()
+    let events = calendar.getEvents()
     expect(events.length).toBe(1)
     expect(events[0].title).toBe('cool')
   })

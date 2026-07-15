@@ -11,7 +11,7 @@ export default {
   todayText: 'Heddiw',
   yearText: 'Blwyddyn',
   monthText: 'Mis',
-  weekText: 'Wythnos',
+  weekTextLong: 'Wythnos',
   dayText: 'Dydd',
   listText: 'Rhestr',
   allDayText: 'Trwy\'r\ndydd',

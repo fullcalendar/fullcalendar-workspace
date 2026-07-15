@@ -529,12 +529,12 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) &&
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) &&
           'border-(--fc-monarch-border) border-b',
       )}
       singleMonthHeaderClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1
+        info.multiMonthColumns > 1
           ? 'pb-2'
           : 'py-1 border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)',
         'items-center',
@@ -589,11 +589,11 @@ export function EventCalendar({
           dayCellBottomClass: getShortDayCellBottomClass,
           dayHeaderInnerClass: (info) => joinClassNames(!info.inPopover && 'mb-2'),
           dayHeaderDividerClass: (info) => joinClassNames(
-            info.multiMonthColumnCount === 1 &&
+            info.multiMonthColumns === 1 &&
               'border-b border-(--fc-monarch-border)',
           ),
           tableBodyClass: (info) => joinClassNames(
-            info.multiMonthColumnCount > 1 &&
+            info.multiMonthColumns > 1 &&
               'border border-(--fc-monarch-border) rounded-sm overflow-hidden',
           ),
           ...userViews?.multiMonth,

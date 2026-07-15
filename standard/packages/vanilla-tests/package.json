@@ -24,7 +24,8 @@
     "fullcalendar-w-react": "workspace:*",
     "handlebars": "^4.7.7",
     "retry-cli": "^0.7.0",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1",
+    "temporal-utils": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -44,15 +45,15 @@
       },
       "global:locale": {
         "files": [
-          "./node_modules/fullcalendar/all.global.js",
-          "./node_modules/fullcalendar/locales/ar.global.js",
+          "./node_modules/fullcalendar/all/global.js",
+          "./node_modules/fullcalendar/locales/ar/global.js",
           "./src/global-locale.js"
         ]
       },
       "global:locales-all": {
         "files": [
-          "./node_modules/fullcalendar/all.global.js",
-          "./node_modules/fullcalendar/locales-all.global.js",
+          "./node_modules/fullcalendar/all/global.js",
+          "./node_modules/fullcalendar/locales-all/global.js",
           "./src/global-locales-all.js"
         ]
       }

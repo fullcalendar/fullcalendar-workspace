@@ -11,10 +11,10 @@ describe('event object creation', () => {
   */
 
   function init(singleEventData) {
-    initCalendar({
+    let calendar = initCalendar({
       events: [singleEventData],
     })
-    return currentCalendar.getEvents()[0]
+    return calendar.getEvents()[0]
   }
 
   it('accepts `date` property as alias for `start`', () => {
@@ -113,15 +113,6 @@ describe('event object creation', () => {
     expect(event.allDay).toEqual(false)
     expect(event.start).toEqualDate('2014-05-01T00:00:00Z')
     expect(event.end).toEqualDate('2014-05-03T00:00:00Z')
-  })
-
-  it('accepts an array `className`', () => {
-    let event = init({
-      start: '2014-05-01',
-      className: ['class1', 'class2'],
-    })
-    expect($.isArray(event.className)).toEqual(true)
-    expect(event.className).toEqual(['class1', 'class2'])
   })
 
   it('accepts a string `className`', () => {

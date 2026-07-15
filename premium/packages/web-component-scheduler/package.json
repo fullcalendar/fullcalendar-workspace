@@ -1,23 +1,23 @@
 {
   "name": "@fullcalendar/web-component-scheduler",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "title": "FullCalendar Web Component",
   "description": "FullCalendar Web Component Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
-    "@full-ui/headless-grid": "workspace:7.0.0-rc.1",
-    "@fullcalendar/core": "workspace:7.0.0-rc.1",
+    "@full-ui/headless-calendar": "workspace:7.0.0",
+    "@full-ui/headless-grid": "workspace:7.0.0",
+    "@fullcalendar/core": "workspace:7.0.0",
     "preact": "^10.29.0"
   },
   "peerDependencies": {
-    "@fullcalendar/web-component": "workspace:7.0.0-rc.1",
-    "temporal-polyfill": "^0.3.2"
+    "@fullcalendar/web-component": "workspace:7.0.0",
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
-    "@fullcalendar/web-component": "workspace:7.0.0-rc.1",
-    "fullcalendar": "workspace:7.0.0-rc.1",
-    "fullcalendar-scheduler": "workspace:7.0.0-rc.1",
-    "temporal-polyfill": "^0.3.2"
+    "@fullcalendar/web-component": "workspace:7.0.0",
+    "fullcalendar": "workspace:7.0.0",
+    "fullcalendar-scheduler": "workspace:7.0.0",
+    "temporal-polyfill": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -64,9 +64,11 @@
       },
       "./all": {
         "format": "module",
-        "sideEffects": true
+        "sideEffects": true,
+        "dist": "all/index"
       },
-      "./all.global": {
+      "./all/global": {
+        "src": "all.global",
         "format": "global",
         "primary": true
       },

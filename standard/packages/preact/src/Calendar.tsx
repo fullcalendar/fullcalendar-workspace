@@ -1,9 +1,8 @@
-import {
+import React, {
   PropsWithoutRef,
   Ref,
   FunctionComponent,
   forwardRef,
-  useId,
   useState,
   useEffect,
   useImperativeHandle,
@@ -18,6 +17,7 @@ import { CalendarInner } from './CalendarInner'
 import { CalendarData } from './reducers/data-types'
 import { Action } from './reducers/Action'
 import { guid } from './util/misc'
+import { warn } from './util/warn'
 
 export interface CalendarRef {
   getApi(): CalendarApi
@@ -79,7 +79,14 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
 function needsSyncRender(actions: Action[]): boolean {
   for (const action of actions) {
-    if (action.type === 'SET_EVENT_DRAG' || action.type === 'SET_EVENT_RESIZE') {
+    if (
+      action.type === 'SET_EVENT_DRAG' ||
+      action.type === 'UNSET_EVENT_DRAG' ||
+      action.type === 'SET_EVENT_RESIZE' ||
+      action.type === 'UNSET_EVENT_RESIZE' ||
+      // could happen as a result of a drag or resize and must be part of same sync pipeline
+      action.type === 'MERGE_EVENTS'
+    ) {
       return true
     }
   }
@@ -90,16 +97,26 @@ function runNormal(f: () => void) {
   f()
 }
 
+let warnedStableId = false
+
 function useStableId(fallbackId: string | undefined): string {
   // React >= 18
-  if (useId) {
-    return useId()
+  // During runtime, will not change
+  if (React.useId) {
+    return React.useId()
   }
 
-  // React 17
+  // Must always execute, regardless of fallbackId, because of hook rules
+  const [uid] = useState(() => guid())
+
   if (fallbackId) {
     return fallbackId + ':'
   }
-  console.warn('FullCalendar recommends providing an `id` prop for better SSR support in React 17')
-  return `fc:${guid()}:`
+
+  if (!warnedStableId) {
+    warnedStableId = true
+    warn('Missing `id` prop. Provide one for better SSR support in React 17.')
+  }
+
+  return `fc:${uid}:`
 }

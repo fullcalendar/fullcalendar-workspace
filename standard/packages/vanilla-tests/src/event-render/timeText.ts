@@ -33,11 +33,11 @@ describe('the time text on events', () => {
       (should probably move that to a separate file)
       */
       expect(timeText).toEqual([
-        currentCalendar.formatDate(parseLocalDate('2017-07-03T23:00:00'), FORMAT) + enUsSep +
-        currentCalendar.formatDate(parseLocalDate('2017-07-04T00:00:00'), FORMAT),
+        calendar.formatDate(parseLocalDate('2017-07-03T23:00:00'), FORMAT) + enUsSep +
+        calendar.formatDate(parseLocalDate('2017-07-04T00:00:00'), FORMAT),
 
-        currentCalendar.formatDate(parseLocalDate('2017-07-04T00:00:00'), FORMAT) + enUsSep +
-        currentCalendar.formatDate(parseLocalDate('2017-07-04T13:00:00'), FORMAT),
+        calendar.formatDate(parseLocalDate('2017-07-04T00:00:00'), FORMAT) + enUsSep +
+        calendar.formatDate(parseLocalDate('2017-07-04T13:00:00'), FORMAT),
       ])
     })
   })

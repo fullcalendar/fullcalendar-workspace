@@ -168,7 +168,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
@@ -262,8 +262,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   /*
   Captures current values
   */
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       const y = this.timeScrollerRef.current.y
 
       // record, but only if not forPrint, which could give bogus values in the case of

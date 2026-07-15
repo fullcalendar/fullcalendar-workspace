@@ -23,10 +23,10 @@ export function computeSlotWidth(
     return [undefined, undefined, false]
   }
 
-  slatMinWidth = Math.max(
-    slatMinWidth,
-    (labelInnerWidth + 1) / slatsPerLabel,
-  )
+  if (slatMinWidth == null) {
+    slatMinWidth = Math.ceil((labelInnerWidth + 1) / slatsPerLabel)
+  }
+
   const slatTryWidth = viewportWidth / slatCnt
   let slotLiquid: boolean
   let slatWidth: number

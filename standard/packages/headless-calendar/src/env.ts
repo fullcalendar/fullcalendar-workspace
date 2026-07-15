@@ -1,6 +1,6 @@
-import * as ZonedDateTimeFns from 'temporal-polyfill/fns/zoneddatetime'
-import * as PlainDateTimeFns from 'temporal-polyfill/fns/plaindatetime'
-import * as InstantFns from 'temporal-polyfill/fns/instant'
+import * as ZonedDateTimeFns from 'temporal-polyfill/fns/ZonedDateTime'
+import * as PlainDateTimeFns from 'temporal-polyfill/fns/PlainDateTime'
+import * as InstantFns from 'temporal-polyfill/fns/Instant'
 import {
   DateMarker, addMs,
   diffHours, diffMinutes, diffSeconds, diffWholeWeeks, diffWholeDays,
@@ -28,7 +28,7 @@ export interface DateEnvSettings {
   locale: Locale
   weekNumberCalculation?: WeekNumberCalculation
   firstDay?: number, // will override what the locale wants
-  weekText?: string,
+  weekTextLong?: string,
   weekTextShort?: string
   cmdFormatter?: CmdDateFormatterFunc
 }
@@ -47,7 +47,7 @@ export class DateEnv {
   weekDow: number // which day begins the week
   weekDoy: number // which day must be within the year, for computing the first week number
   weekNumberFunc: any
-  weekText: string // DON'T LIKE how options are confused with local
+  weekTextLong: string // DON'T LIKE how options are confused with local
   weekTextShort: string
   cmdFormatter?: CmdDateFormatterFunc
 
@@ -71,8 +71,8 @@ export class DateEnv {
       this.weekNumberFunc = settings.weekNumberCalculation
     }
 
-    this.weekText = settings.weekText
-    this.weekTextShort = settings.weekTextShort ?? settings.weekText
+    this.weekTextLong = settings.weekTextLong
+    this.weekTextShort = settings.weekTextShort ?? settings.weekTextLong
 
     this.cmdFormatter = settings.cmdFormatter
   }
@@ -400,19 +400,20 @@ export class DateEnv {
       return new Date(ms)
     }
 
-    const zdtFields = ZonedDateTimeFns.getFields(
-      InstantFns.toZonedDateTimeISO(InstantFns.fromEpochMilliseconds(ms), this.timeZone),
+    const zdt = InstantFns.toZonedDateTimeISO(
+      InstantFns.fromEpochMilliseconds(ms),
+      this.timeZone,
     )
 
     return new Date( // a "Date Marker", which is like PlainDateTime
       Date.UTC(
-        zdtFields.year,
-        zdtFields.month - 1,
-        zdtFields.day,
-        zdtFields.hour,
-        zdtFields.minute,
-        zdtFields.second,
-        zdtFields.millisecond,
+        zdt.year,
+        zdt.month - 1,
+        zdt.day,
+        zdt.hour,
+        zdt.minute,
+        zdt.second,
+        zdt.millisecond,
       ),
     )
   }
@@ -452,20 +453,18 @@ export class DateEnv {
     }
 
     return new Date(
-      ZonedDateTimeFns.epochMilliseconds(
-        PlainDateTimeFns.toZonedDateTime(
-          PlainDateTimeFns.create(
-            m.getUTCFullYear(),
-            m.getUTCMonth() + 1,
-            m.getUTCDate(),
-            m.getUTCHours(),
-            m.getUTCMinutes(),
-            m.getUTCSeconds(),
-            m.getUTCMilliseconds(),
-          ),
-          this.timeZone,
+      PlainDateTimeFns.toZonedDateTime(
+        PlainDateTimeFns.create(
+          m.getUTCFullYear(),
+          m.getUTCMonth() + 1,
+          m.getUTCDate(),
+          m.getUTCHours(),
+          m.getUTCMinutes(),
+          m.getUTCSeconds(),
+          m.getUTCMilliseconds(),
         ),
-      ),
+        this.timeZone,
+      ).epochMilliseconds,
     )
   }
 }

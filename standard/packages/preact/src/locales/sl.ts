@@ -11,7 +11,7 @@ export default {
   todayText: 'Trenutni',
   yearText: 'Leto',
   monthText: 'Mesec',
-  weekText: 'Teden',
+  weekTextLong: 'Teden',
   dayText: 'Dan',
   listText: 'Dnevni red',
   allDayText: 'Ves dan',

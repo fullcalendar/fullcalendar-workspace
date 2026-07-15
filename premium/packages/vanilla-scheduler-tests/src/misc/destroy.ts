@@ -33,13 +33,12 @@ describe('destroy', () => {
         docListenerCounter.startWatching()
         elListenerCounter.startWatching()
 
-        initCalendar({
+        let calendar = initCalendar({
           allDaySlot: false,
-        }, $el)
+        }, $el[0])
 
         setTimeout(() => {
-          window.currentCalendar.destroy()
-          window.currentCalendar = null // for tests/util.js
+          calendar.destroy()
 
           expect($el.length).toBe(1)
           expect($el.attr('class') || '').toBe('')

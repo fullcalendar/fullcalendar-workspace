@@ -14,16 +14,16 @@ describe('eventSourceSuccess', () => {
   })
 
   it('massages event data with calendar-wide setting', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [FETCH_FUNC],
       eventSourceSuccess: TRANSFORM,
     })
 
-    expect(currentCalendar.getEvents().length).toBe(1)
+    expect(calendar.getEvents().length).toBe(1)
   })
 
   it('massages event data with source setting', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [
         {
           events: FETCH_FUNC,
@@ -32,6 +32,6 @@ describe('eventSourceSuccess', () => {
       ],
     })
 
-    expect(currentCalendar.getEvents().length).toBe(1)
+    expect(calendar.getEvents().length).toBe(1)
   })
 })

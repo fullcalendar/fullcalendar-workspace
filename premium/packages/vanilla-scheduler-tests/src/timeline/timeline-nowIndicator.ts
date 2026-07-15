@@ -40,15 +40,15 @@ describe('timeline now-indicator', () => {
       })
 
       it('renders when in view', async () => {
-        initCalendar()
+        let calendar = initCalendar()
         await waitTimeout()
-        nowIndicatorRendersAt('2015-12-26T02:30:00')
+        nowIndicatorRendersAt(calendar, '2015-12-26T02:30:00')
       })
     })
   })
 
   it('refreshes at intervals', (done) => {
-    initCalendar({
+    let calendar = initCalendar({
       now: '2015-12-26T00:00:00',
       initialView: 'timelineOneMinute',
       views: {
@@ -61,9 +61,9 @@ describe('timeline now-indicator', () => {
     })
     waitTimeout().then(() => {
       setTimeout(() => {
-        nowIndicatorRendersAt('2015-12-26T00:00:01')
+        nowIndicatorRendersAt(calendar, '2015-12-26T00:00:01')
         setTimeout(() => {
-          nowIndicatorRendersAt('2015-12-26T00:00:02')
+          nowIndicatorRendersAt(calendar, '2015-12-26T00:00:02')
           done()
         }, 1000)
       }, 1000)
@@ -71,7 +71,7 @@ describe('timeline now-indicator', () => {
   })
 
   it('refreshes on resize when slot width changes', (done) => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'timeline6hour',
       views: {
         timeline6hour: {
@@ -82,11 +82,11 @@ describe('timeline now-indicator', () => {
       },
     })
     waitTimeout().then(() => {
-      nowIndicatorRendersAt('2015-12-26T02:30:00')
+      nowIndicatorRendersAt(calendar, '2015-12-26T02:30:00')
       $('#calendar').width('50%')
       $(window).trigger('resize') // simulate the window resize, even tho the container is just resizing
       setTimeout(() => {
-        nowIndicatorRendersAt('2015-12-26T02:30:00')
+        nowIndicatorRendersAt(calendar, '2015-12-26T02:30:00')
         $('#calendar').width('') // undo
         done()
       }, 500)
@@ -95,7 +95,7 @@ describe('timeline now-indicator', () => {
 
   // https://github.com/fullcalendar/fullcalendar/issues/5999
   it('positions correctly when with month-interval cells', (done) => {
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'timelineYear',
       slotDuration: { months: 1 },
       initialDate: '2020-11-28',
@@ -104,16 +104,16 @@ describe('timeline now-indicator', () => {
 
     waitTimeout().then(() => {
       setTimeout(() => { // bug happens after position updates
-        nowIndicatorRendersAt('2020-12-01')
+        nowIndicatorRendersAt(calendar, '2020-12-01')
         done()
       }, 100)
     })
   })
 
-  function nowIndicatorRendersAt(date, thresh = PIXEL_THRESHOLD) {
+  function nowIndicatorRendersAt(calendar, date, thresh = PIXEL_THRESHOLD) {
     // wish threshold could do a smaller default threshold, but RTL messing up
 
-    let viewWrapper = new TimelineViewWrapper(currentCalendar)
+    let viewWrapper = new TimelineViewWrapper(calendar)
     let line = viewWrapper.timelineGrid.getLine(date)
     let arrowRect = getBoundingRect(viewWrapper.header.getNowIndicatorEl())
     let lineRect = getBoundingRect(viewWrapper.timelineGrid.getNowIndicatorEl())
@@ -143,9 +143,9 @@ describe('timeline now-indicator', () => {
 
     describe('when nowIndicatorSnap:auto', () => { // the default
       it('renders now-indicator snapped to the hour (slot-duration)', async () => {
-        initCalendar()
+        let calendar = initCalendar()
         await waitTimeout()
-        nowIndicatorRendersAt('2025-01-05T01:00:00', 5)
+        nowIndicatorRendersAt(calendar, '2025-01-05T01:00:00', 5)
       })
     })
 
@@ -155,9 +155,9 @@ describe('timeline now-indicator', () => {
       })
 
       it('renders now-indicator with granular coordinates', async () => {
-        initCalendar()
+        let calendar = initCalendar()
         await waitTimeout()
-        nowIndicatorRendersAt('2025-01-05T01:35:00', 5)
+        nowIndicatorRendersAt(calendar, '2025-01-05T01:35:00', 5)
       })
     })
   })

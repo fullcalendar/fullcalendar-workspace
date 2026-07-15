@@ -5,3 +5,11 @@ packages:
   - './theming/*'
   - './scripts'
   - './examples/*'
+
+  # trouble building. think about removing support
+  - '!./examples/next12'
+  - '!./examples/next12-scheduler'
+
+  # trouble building, related to "temporal-utils/protected-error-messages"
+  # probably just need to upgrade parcel
+  - '!./examples/parcel'

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-examples/rollup",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
   "scripts": {
@@ -10,8 +10,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "fullcalendar": "7.0.0-rc.1",
-    "temporal-polyfill": "^0.3.2"
+    "fullcalendar": "^7.0.0",
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.0.1",

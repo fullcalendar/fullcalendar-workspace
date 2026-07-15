@@ -342,11 +342,11 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     singleMonthClass: (info) => joinClassNames(
-      info.multiMonthColumnCount > 1 && 'm-4',
-      (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b border-(--fc-classic-border)',
+      info.multiMonthColumns > 1 && 'm-4',
+      (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--fc-classic-border)',
     ),
     singleMonthHeaderClass: (info) => joinClassNames(
-      info.multiMonthColumnCount > 1
+      info.multiMonthColumns > 1
         ? 'pb-4'
         : 'py-2 border-b border-(--fc-classic-border) bg-(--fc-classic-background)',
       'items-center',
@@ -423,7 +423,7 @@ export default {
       ...dayRowCommonClasses,
       dayCellBottomClass: 'min-h-px',
       tableClass: (info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'border-(--fc-classic-border) border',
+        info.multiMonthColumns > 1 && 'border-(--fc-classic-border) border',
       ),
     },
     timeGrid: {
@@ -503,10 +503,10 @@ export default {
         'items-center',
       ),
       rowEventBeforeClass: (info) => (
-        !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+        !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
       ),
       rowEventAfterClass: (info) => (
-        !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+        !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
       ),
       rowEventInnerClass: (info) => (
         info.options.eventOverlap
@@ -526,9 +526,12 @@ export default {
       ------------------------------------------------------------------------------------------- */
 
       slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
-      slotHeaderClass: 'justify-center',
+      slotHeaderClass: (info) => joinClassNames(
+        'justify-center',
+        !info.level && 'overflow-hidden',
+      ),
       slotHeaderInnerClass: (info) => joinClassNames(
-        'm-2 text-sm',
+        'mx-2 my-1 text-sm',
         info.hasNavLink && 'hover:underline',
       ),
       slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',

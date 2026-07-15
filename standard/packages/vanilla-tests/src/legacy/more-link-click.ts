@@ -53,7 +53,7 @@ describe('moreLinkClick', () => {
 
       dayGridWrapper.openMorePopover()
       await waitTimeout()
-      let view = currentCalendar.view
+      let view = calendar.view
       expect(view.type).toBe('dayGridWeek')
     })
 
@@ -70,7 +70,7 @@ describe('moreLinkClick', () => {
 
       dayGridWrapper.openMorePopover()
       await waitTimeout()
-      let view = currentCalendar.view
+      let view = calendar.view
       expect(view.type).toBe('timeGridWeek')
     })
   })
@@ -93,7 +93,7 @@ describe('moreLinkClick', () => {
 
       dayGridWrapper.openMorePopover()
       await waitTimeout()
-      let view = currentCalendar.view
+      let view = calendar.view
       expect(view.type).toBe('dayGridDay')
     })
 
@@ -110,7 +110,7 @@ describe('moreLinkClick', () => {
 
       dayGridWrapper.openMorePopover()
       await waitTimeout()
-      let view = currentCalendar.view
+      let view = calendar.view
       expect(view.type).toBe('timeGridDay')
     })
   })
@@ -129,7 +129,7 @@ describe('moreLinkClick', () => {
 
     dayGridWrapper.openMorePopover()
     await waitTimeout()
-    let view = currentCalendar.view
+    let view = calendar.view
     expect(view.type).toBe('timeGridWeek')
   })
 
@@ -164,7 +164,7 @@ describe('moreLinkClick', () => {
 
     dayGridWrapper.openMorePopover()
     await waitTimeout()
-    let view = currentCalendar.view
+    let view = calendar.view
     expect(view.type).toBe('timeGridDay')
   })
 

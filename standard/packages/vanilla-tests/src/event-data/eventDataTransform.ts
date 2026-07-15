@@ -22,8 +22,8 @@ describe('eventDataTransform', () => {
     },
   }, () => {
     it('affects parsing of the event', () => {
-      initCalendar()
-      let eventObj = currentCalendar.getEvents()[0]
+      let calendar = initCalendar()
+      let eventObj = calendar.getEvents()[0]
       expect(eventObj.extendedProps.was_processed).toBe(true)
     })
   })

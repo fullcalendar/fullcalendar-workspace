@@ -7,7 +7,7 @@ export default {
   todayText: 'Денес',
   yearText: 'година',
   monthText: 'Месец',
-  weekText: 'Недела',
+  weekTextLong: 'Недела',
   weekTextShort: 'Сед',
   dayText: 'Ден',
   listText: 'График',

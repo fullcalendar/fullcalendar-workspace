@@ -11,7 +11,7 @@ export default {
   todayText: 'Gaur',
   yearText: 'Urtea',
   monthText: 'Hilabetea',
-  weekText: 'Astea',
+  weekTextLong: 'Astea',
   weekTextShort: 'As',
   dayText: 'Eguna',
   listText: 'Agenda',

@@ -84,7 +84,7 @@ describe('refetchResourcesOnNavigate', () => {
       })
     })
 
-    it('refetches async resources and waits to render events', (done) => {
+    it('refetches async resources and waits to render events', async () => {
       let fetchCnt = 0
       let calendar = initCalendar({
         resources(arg, callback) {
@@ -104,22 +104,21 @@ describe('refetchResourcesOnNavigate', () => {
       expect($('.day1event').length).toBe(0)
 
       // step 2 (wait for initial fetch to finish)
-      setTimeout(() => {
-        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
-        expect($('.day1event').length).toBe(2)
+      await waitTimeout(101)
+      expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
+      expect($('.day1event').length).toBe(2)
 
-        // step 3
+      // step 3
+      await ignoreResizeObserverLoops(async () => {
         calendar.next()
-        setTimeout(() => {
-          expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
-          expect($('.day1event').length).toBe(0)
-          expect($('.day2event').length).toBe(2)
-          done()
-        }, 101)
-      }, 101)
+        await waitTimeout(101)
+        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
+        expect($('.day1event').length).toBe(0)
+        expect($('.day2event').length).toBe(2)
+      })
     })
 
-    it('does resources-function re-call for each navigation', (done) => {
+    it('does resources-function re-call for each navigation', async () => {
       let fetchCnt = 0
       let calendar = initCalendar({
         resources(arg, callback) {
@@ -133,15 +132,14 @@ describe('refetchResourcesOnNavigate', () => {
         },
       })
 
-      setTimeout(() => {
-        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
+      await waitTimeout(101)
+      expect(settings.getResourceTitles(calendar)).toEqual(['resource a-1', 'resource b-1'])
 
-        currentCalendar.next()
-        setTimeout(() => {
-          expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
-          done()
-        }, 101)
-      }, 101)
+      await ignoreResizeObserverLoops(async () => {
+        calendar.next()
+        await waitTimeout(101)
+        expect(settings.getResourceTitles(calendar)).toEqual(['resource a-2', 'resource b-2'])
+      })
     })
   })
 
@@ -173,7 +171,7 @@ describe('refetchResourcesOnNavigate', () => {
     expect(getResourceTitles()).toEqual(['resource a-1', 'resource b-1'])
     expect($('.day1event').length).toBe(2)
 
-    currentCalendar.changeView('resourceTimeGridTwoDay')
+    calendar.changeView('resourceTimeGridTwoDay')
 
     expect(
       getResourceTitles().slice(0, 2), // omit the resource+day cells in second header row
@@ -185,7 +183,7 @@ describe('refetchResourcesOnNavigate', () => {
   it('affects event rendering in non-resource views', (done) => {
     let fetchCnt = 0
 
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'timeGridDay',
 
       resources(arg, callback) {
@@ -209,7 +207,7 @@ describe('refetchResourcesOnNavigate', () => {
       expect(fetchCnt).toBe(1)
       expect($('.resource-a-1').length).toBe(1)
       expect($('.resource-b-1').length).toBe(1)
-      currentCalendar.next()
+      calendar.next()
 
       // step 3 (after fetch from next() happens)
       setTimeout(() => {
@@ -273,7 +271,7 @@ describe('refetchResourcesOnNavigate', () => {
     const timeZone = 'America/Chicago'
     let requestCnt = 0
 
-    initCalendar({
+    let calendar = initCalendar({
       initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone,
@@ -288,7 +286,7 @@ describe('refetchResourcesOnNavigate', () => {
     })
 
     expect(requestCnt).toBe(1)
-    currentCalendar.refetchResources()
+    calendar.refetchResources()
     expect(requestCnt).toBe(2)
   })
 

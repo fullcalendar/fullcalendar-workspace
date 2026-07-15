@@ -94,7 +94,10 @@ function parseSection(
 
           buttonText = buttonInput.text ||
             (buttonTextKey ? calendarOptions[buttonTextKey] : '') ||
-            (viewSpec.singleUnit ? calendarOptions[viewSpec.singleUnit + 'Text'] : '') ||
+            (viewSpec.singleUnit
+              ? (calendarOptions[viewSpec.singleUnit + 'TextLong'] ||
+                  calendarOptions[viewSpec.singleUnit + 'Text'])
+              : '') ||
             name
 
           /*
@@ -115,11 +118,12 @@ function parseSection(
           }
         } else {
           buttonText = buttonInput.text ||
+            calendarOptions[name + 'TextLong'] ||
             calendarOptions[name + 'Text'] ||
             name
 
           /*
-          button{}.hint(currentUnitText, currentUnit)
+          buttons{}.hint(currentUnitText, currentUnit)
           prevHint(currentUnitUnitext, currentUnit)
           nextHint -- same
           todayHint -- same
@@ -140,7 +144,11 @@ function parseSection(
             buttonHint = (currentUnit: string) => { // dynamic
               return formatWithOrdinals(
                 buttonInput.hint || calendarOptions[name + 'Hint'], // todayHint/prevHint/nextHint
-                [calendarOptions[currentUnit + 'Text'], currentUnit], // ordinal arguments
+                [ // ordinal arguments
+                  calendarOptions[currentUnit + 'TextLong'] ||
+                    calendarOptions[currentUnit + 'Text'],
+                  currentUnit
+                ],
                 buttonText, // fallback text
               )
             }

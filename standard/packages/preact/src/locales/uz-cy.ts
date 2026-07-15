@@ -10,7 +10,7 @@ export default {
   nextText: 'Кейин',
   todayText: 'Бугун',
   monthText: 'Ой',
-  weekText: 'Ҳафта',
+  weekTextLong: 'Ҳафта',
   dayText: 'Кун',
   listText: 'Кун тартиби',
   allDayText: 'Кун\nбўйича',

@@ -1,4 +1,62 @@
 
+## v7.0.0
+
+### Changes since v6
+
+Lots! 🎉
+
+- 📋 [Full Changelog](https://v7.fullcalendar.io/changelog)
+- 📚 [V7 Docs](https://v7.fullcalendar.io/)
+- 🎨 [Theme system justification](https://github.com/fullcalendar/fullcalendar/issues/7907)
+- 🛝 [Theme playground](https://themes.fullcalendar.io)
+
+### Changes since v7 pre-releases
+
+- FEATURE: Angular 22 support ([#8074](https://github.com/fullcalendar/fullcalendar/issues/8074))
+- FIX: Resource timeline rows keep a stale height after their events are removed ([#8078](https://github.com/fullcalendar/fullcalendar/issues/8078))
+- FIX: With showNonCurrentDates, events on first or last week of month disappear upon navigation ([#8077](https://github.com/fullcalendar/fullcalendar/issues/8077))
+- FIX: With virtualization, resource invisible after adding resource manually ([#8072](https://github.com/fullcalendar/fullcalendar/issues/8072))
+- BREAKING: Need `temporal-polyfill@^1.0.1` as `peerDependency`
+- BREAKING: Some CDN URLs changed:
+  - /all.global.js -> /all/global.js
+  - /locales-all.global.js -> /locales-all/global.js
+  - /locales/es.global.js -> /locales/es/global.js (and other locales)
+
+
+## v7.0.0-rc.3
+
+- FIX: In React, event flicker after event drag-n-drop
+- FIX: In React/Preact, expose the CalendarRef type
+- FIX: In TimeGrid view, when snapDuration smaller than slotDuration, incorrect date-selection coordinates
+- FIX: With custom slotHeaderFormats, navLinks sometimes disabled ([#8064](https://github.com/fullcalendar/fullcalendar/issues/8064))
+- FIX: For Shadcn/MUI toolbars, or users of CalendarController, button hints wrong for certain locales
+- FEATURE: Warn on unknown options
+- FEATURE: Warn on invalid class-name inputs
+- BREAKING: Renamed a few things for consistency. Apologies. Please update any forked themes.
+  - Renamed info-prop `.multiMonthColumnCount` to `.multiMonthColumns`
+  - Renamed type `MountData` to `MountInfo`
+  - Reverted rename from `weekTextLong` to `weekText`. Use `weekTextLong`.
+  - Reverted some renames for view-specific options:
+    - Reverted `views{}.viewClass`. Use `views{}.class/className`.
+    - Reverted `views{}.viewContent`. Use `views{}.content`.
+    - Reverted `views{}.viewDidMount`. Use `views{}.didMount`.
+    - Reverted `views{}.viewWillUnmount`. Use `views{}.willUnmount`.
+
+
+## v7.0.0-rc.2
+
+- FIX: full-height calendar inside flexed/gridded parent results in infinite loop/endless width ([#8051](https://github.com/fullcalendar/fullcalendar/issues/8051))
+- FIX: virtualization & scrolling: Slot header is not rendering properly ([#8052](https://github.com/fullcalendar/fullcalendar/issues/8052))
+- FIX: virtualization: Now indicator not shown ([#8053](https://github.com/fullcalendar/fullcalendar/issues/8053))
+- FIX: virtualization: scrollLeft JS action will not render timeline ([#8054](https://github.com/fullcalendar/fullcalendar/issues/8054))
+- FIX: Event color not changing when changed via Event::setProp ([#8064](https://github.com/fullcalendar/fullcalendar/issues/8064))
+- FIX: Classic theme timeline event arrows appearing unnecessarily ([#8055](https://github.com/fullcalendar/fullcalendar/issues/8055))
+- FIX: slotMinWidth takes precedence over natural min-width created by header cell inner-text ([#7910](https://github.com/fullcalendar/fullcalendar/issues/7910))
+- FIX: more stable useId shim for React 17
+- FIX: revealed TableDisplayInfo/TableHeaderInfo/TableBodyInfo types for tableClass/tableHeaderClass/tableBodyClass
+- FIX: reduced vertical padding on Classic theme timeline header cells
+
+
 ## v7.0.0-rc.1
 
 ### Changes from v6

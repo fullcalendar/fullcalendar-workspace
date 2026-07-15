@@ -1,24 +1,24 @@
 {
   "private": true,
   "name": "fullcalendar-scheduler-w-react",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0-rc.1",
-    "@full-ui/headless-grid": "workspace:7.0.0-rc.1",
-    "@fullcalendar/core": "workspace:7.0.0-rc.1",
+    "@full-ui/headless-calendar": "workspace:7.0.0",
+    "@full-ui/headless-grid": "workspace:7.0.0",
+    "@fullcalendar/core": "workspace:7.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "peerDependencies": {
-    "fullcalendar-w-react": "workspace:7.0.0-rc.1",
-    "temporal-polyfill": "^0.3.2"
+    "fullcalendar-w-react": "workspace:7.0.0",
+    "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
-    "@fullcalendar/react": "workspace:7.0.0-rc.1",
-    "@fullcalendar/react-scheduler": "workspace:7.0.0-rc.1",
+    "@fullcalendar/react": "workspace:7.0.0",
+    "@fullcalendar/react-scheduler": "workspace:7.0.0",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
-    "temporal-polyfill": "^0.3.2"
+    "temporal-polyfill": "^1.0.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -64,9 +64,11 @@
       },
       "./all": {
         "format": "module",
-        "sideEffects": true
+        "sideEffects": true,
+        "dist": "all/index"
       },
-      "./all.global": {
+      "./all/global": {
+        "src": "all.global",
         "format": "global",
         "primary": true
       },

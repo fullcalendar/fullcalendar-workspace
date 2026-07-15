@@ -31,13 +31,13 @@ describe('visibleRange', () => {
         }),
       }, () => {
         it('gets set to the given range', () => {
-          initCalendar()
-          expectActiveRange(startInput, endInput)
+          let calendar = initCalendar()
+          expectActiveRange(calendar, startInput, endInput)
         })
       })
 
       it('works as a custom view', () => {
-        initCalendar({
+        let calendar = initCalendar({
           views: {
             myCustomView: {
               type: 'timeGrid',
@@ -49,29 +49,29 @@ describe('visibleRange', () => {
           },
           initialView: 'myCustomView',
         })
-        expectActiveRange(startInput, endInput)
+        expectActiveRange(calendar, startInput, endInput)
       })
 
       it('ignores dateAlignment', () => {
-        initCalendar({
+        let calendar = initCalendar({
           dateAlignment: 'dayGridMonth',
           visibleRange: {
             start: startInput,
             end: endInput,
           },
         })
-        expectActiveRange(startInput, endInput)
+        expectActiveRange(calendar, startInput, endInput)
       })
 
       it('works as a dynamic option', () => {
-        initCalendar({
+        let calendar = initCalendar({
           initialView: 'dayGrid',
         })
-        currentCalendar.setOption('visibleRange', {
+        calendar.setOption('visibleRange', {
           start: startInput,
           end: endInput,
         })
-        expectActiveRange(startInput, endInput)
+        expectActiveRange(calendar, startInput, endInput)
       })
     })
 
@@ -81,7 +81,7 @@ describe('visibleRange', () => {
       it('receives the calendar\'s initialDate, with local timezone, and emits local range', () => {
         let matched = false
 
-        initCalendar({
+        let calendar = initCalendar({
           timeZone: 'local',
           initialDate: initialDateInput,
           visibleRange(date) {
@@ -100,13 +100,13 @@ describe('visibleRange', () => {
         })
 
         expect(matched).toBe(true)
-        expectActiveRange(parseLocalDate('2017-06-07'), parseLocalDate('2017-06-10'))
+        expectActiveRange(calendar, parseLocalDate('2017-06-07'), parseLocalDate('2017-06-10'))
       })
 
       it('receives the calendar\'s initialDate, with UTC timezone, and emits UTC range', () => {
         let matched = false
 
-        initCalendar({
+        let calendar = initCalendar({
           timeZone: 'UTC',
           initialDate: initialDateInput,
           visibleRange(date) {
@@ -125,12 +125,12 @@ describe('visibleRange', () => {
         })
 
         expect(matched).toBe(true)
-        expectActiveRange('2017-06-07', '2017-06-10')
+        expectActiveRange(calendar, '2017-06-07', '2017-06-10')
       })
 
       // https://github.com/fullcalendar/fullcalendar/issues/4517
       it('can emit and timed UTC range that will be rounded', () => {
-        initCalendar({
+        let calendar = initCalendar({
           dateIncrement: { days: 3 },
           timeZone: 'UTC',
           initialDate: initialDateInput,
@@ -141,9 +141,9 @@ describe('visibleRange', () => {
             }
           },
         })
-        expectActiveRange('2017-06-07', '2017-06-11')
-        currentCalendar.prev()
-        expectActiveRange('2017-06-04', '2017-06-07') // second computation will round down the end
+        expectActiveRange(calendar, '2017-06-07', '2017-06-11')
+        calendar.prev()
+        expectActiveRange(calendar, '2017-06-04', '2017-06-07') // second computation will round down the end
       })
     })
 
@@ -161,37 +161,37 @@ describe('visibleRange', () => {
         },
       }, () => {
         it('defaults to the initialDate', () => { // TODO: have it report an warning
-          initCalendar({
+          let calendar = initCalendar({
             initialDate: '2017-08-01',
           })
-          expectActiveRange('2017-08-01', '2017-08-02')
+          expectActiveRange(calendar, '2017-08-01', '2017-08-02')
         })
       })
     })
 
     describe('when later switching to a one-day view', () => {
       it('constrains an earlier current date to the start of visibleRange', () => {
-        initCalendar({
+        let calendar = initCalendar({
           initialDate: '2017-06-25',
           visibleRange: {
             start: '2017-06-26',
             end: '2017-06-29',
           },
         })
-        currentCalendar.changeView('timeGridDay')
-        expectActiveRange('2017-06-26', '2017-06-27')
+        calendar.changeView('timeGridDay')
+        expectActiveRange(calendar, '2017-06-26', '2017-06-27')
       })
 
       it('constrains a later current date to the start of visibleRange', () => {
-        initCalendar({
+        let calendar = initCalendar({
           initialDate: '2017-07-01',
           visibleRange: {
             start: '2017-06-26',
             end: '2017-06-29',
           },
         })
-        currentCalendar.changeView('timeGridDay')
-        expectActiveRange('2017-06-26', '2017-06-27')
+        calendar.changeView('timeGridDay')
+        expectActiveRange(calendar, '2017-06-26', '2017-06-27')
       })
     })
   })
@@ -209,8 +209,8 @@ describe('visibleRange', () => {
     })
 
     it('respects the given range', () => {
-      initCalendar()
-      expectActiveRange('2017-06-07', '2017-06-10')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-06-07', '2017-06-10')
     })
   })
 
@@ -222,13 +222,13 @@ describe('visibleRange', () => {
     })
 
     it('ignores the given visibleRange', () => {
-      initCalendar({
+      let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-29',
           end: '2017-07-04',
         },
       })
-      expectActiveRange('2015-06-08', '2015-06-11')
+      expectActiveRange(calendar, '2015-06-08', '2015-06-11')
     })
   })
 
@@ -239,13 +239,13 @@ describe('visibleRange', () => {
     })
 
     it('ignores the given visibleRange', () => {
-      initCalendar({
+      let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-29',
           end: '2017-07-04',
         },
       })
-      expectActiveRange('2015-06-07', '2015-06-14')
+      expectActiveRange(calendar, '2015-06-07', '2015-06-14')
     })
   })
 })

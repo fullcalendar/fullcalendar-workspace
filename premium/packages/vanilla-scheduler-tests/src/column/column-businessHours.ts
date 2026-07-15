@@ -28,9 +28,9 @@ describe('vresource businessHours', () => {
         'when dates above resources': { datesAboveResources: true },
       }, () => {
         it('greys out sat and sun', async () => {
-          initCalendar()
+          let calendar = initCalendar()
           await waitTimeout()
-          expect(isDayGridNonBusinessSegsRendered([
+          expect(isDayGridNonBusinessSegsRendered(calendar, [
             { resourceId: 'a', date: '2015-11-15' },
             { resourceId: 'a', date: '2015-11-21' },
             { resourceId: 'b', date: '2015-11-15' },
@@ -50,11 +50,11 @@ describe('vresource businessHours', () => {
         'when dates above resources': { datesAboveResources: true },
       }, () => {
         it('greys out sat and sun', async () => {
-          initCalendar()
+          let calendar = initCalendar()
 
           await ignoreResizeObserverLoops(async () => {
             await waitTimeout()
-            expect(isResourceTimeGridNonBusinessSegsRendered([
+            expect(isResourceTimeGridNonBusinessSegsRendered(calendar, [
               // sun
               { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
               // mon
@@ -105,26 +105,26 @@ describe('vresource businessHours', () => {
       })
 
       it('renders all with same businessHours', async () => {
-        initCalendar()
+        let calendar = initCalendar()
         await waitTimeout()
-        expectDay9to5()
+        expectDay9to5(calendar)
       })
 
       it('renders a resource override', async () => {
-        initCalendar({
+        let calendar = initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
             { id: 'b', title: 'Resource B', businessHours: { startTime: '02:00', endTime: '22:00' } },
           ],
         })
         await waitTimeout()
-        expectResourceOverride()
+        expectResourceOverride(calendar)
       })
 
       it('renders a resource override dynamically', async () => {
         let specialResourceInput = { id: 'b', title: 'Resource B', businessHours: { startTime: '02:00', endTime: '22:00' } }
 
-        initCalendar({
+        let calendar = initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
             specialResourceInput,
@@ -132,19 +132,19 @@ describe('vresource businessHours', () => {
         })
 
         await waitTimeout()
-        expectResourceOverride()
-        currentCalendar.getResourceById(specialResourceInput.id).remove()
+        expectResourceOverride(calendar)
+        calendar.getResourceById(specialResourceInput.id).remove()
 
         await waitTimeout()
-        expectLonelyDay9to5()
-        currentCalendar.addResource(specialResourceInput)
+        expectLonelyDay9to5(calendar)
+        calendar.addResource(specialResourceInput)
 
         await waitTimeout()
-        expectResourceOverride()
+        expectResourceOverride(calendar)
       })
 
       it('greys out whole day for single resource', async () => {
-        initCalendar({
+        let calendar = initCalendar({
           initialDate: '2016-10-30', // a Sunday
           businessHours: false,
           resources: [
@@ -157,15 +157,15 @@ describe('vresource businessHours', () => {
           ],
         })
         await waitTimeout()
-        expect(isResourceTimeGridNonBusinessSegsRendered([
+        expect(isResourceTimeGridNonBusinessSegsRendered(calendar, [
           { resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' },
         ])).toBe(true)
       })
     })
   })
 
-  function expectDay9to5() {
-    expect(isResourceTimeGridNonBusinessSegsRendered([
+  function expectDay9to5(calendar) {
+    expect(isResourceTimeGridNonBusinessSegsRendered(calendar, [
       { resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
       { resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' },
       { resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
@@ -173,8 +173,8 @@ describe('vresource businessHours', () => {
     ])).toBe(true)
   }
 
-  function expectResourceOverride() { // one resource 2am - 10pm, the rest 9am - 5pm
-    expect(isResourceTimeGridNonBusinessSegsRendered([
+  function expectResourceOverride(calendar) { // one resource 2am - 10pm, the rest 9am - 5pm
+    expect(isResourceTimeGridNonBusinessSegsRendered(calendar, [
       { resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
       { resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' },
       { resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T02:00' },
@@ -182,15 +182,15 @@ describe('vresource businessHours', () => {
     ])).toBe(true)
   }
 
-  function expectLonelyDay9to5() { // only one resource 9am - 5pm
-    expect(isResourceTimeGridNonBusinessSegsRendered([
+  function expectLonelyDay9to5(calendar) { // only one resource 9am - 5pm
+    expect(isResourceTimeGridNonBusinessSegsRendered(calendar, [
       { resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
       { resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' },
     ])).toBe(true)
   }
 
-  function isDayGridNonBusinessSegsRendered(segs) {
-    let resourceDayGridWrapper = new ResourceDayGridViewWrapper(currentCalendar).dayGrid
+  function isDayGridNonBusinessSegsRendered(calendar, segs) {
+    let resourceDayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
 
     return doElsMatchSegs(
       resourceDayGridWrapper.getNonBusinessDayEls(),
@@ -202,8 +202,8 @@ describe('vresource businessHours', () => {
     )
   }
 
-  function isResourceTimeGridNonBusinessSegsRendered(segs) {
-    let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(currentCalendar).timeGrid
+  function isResourceTimeGridNonBusinessSegsRendered(calendar, segs) {
+    let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
     return doElsMatchSegs(
       resourceTimeGridWrapper.getNonBusinessDayEls(),

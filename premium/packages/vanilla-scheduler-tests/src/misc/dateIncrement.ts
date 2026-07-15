@@ -12,8 +12,8 @@ describe('dateIncrement', () => {
     })
 
     it('causes the view to align at initialDate', () => {
-      initCalendar()
-      expectActiveRange('2017-04-12', '2017-05-12')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-04-12', '2017-05-12')
     })
   })
 
@@ -26,8 +26,8 @@ describe('dateIncrement', () => {
     })
 
     it('causes the view to align at initialDate\'s week start', () => {
-      initCalendar()
-      expectActiveRange('2017-04-09', '2017-05-09')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-04-09', '2017-05-09')
     })
   })
 
@@ -40,8 +40,8 @@ describe('dateIncrement', () => {
     })
 
     it('causes the view to align to the smaller of the two units (the month)', () => {
-      initCalendar()
-      expectActiveRange('2017-04-01', '2017-05-01')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-04-01', '2017-05-01')
     })
   })
 })

@@ -340,11 +340,11 @@ blockEventClass={(info) => cn(
       ----------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => cn(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b',
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b',
       )}
       singleMonthHeaderClass={(info) => cn(
-        info.multiMonthColumnCount > 1 ? 'pb-4' : 'py-2 border-b bg-background',
+        info.multiMonthColumns > 1 ? 'pb-4' : 'py-2 border-b bg-background',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(info) => cn(
@@ -398,10 +398,10 @@ blockEventClass={(info) => cn(
         },
         multiMonth: {
           ...dayRowCommonClasses,
-          dayHeaderDividerClass: (info) => cn(info.multiMonthColumnCount === 1 && 'border-b'),
+          dayHeaderDividerClass: (info) => cn(info.multiMonthColumns === 1 && 'border-b'),
           dayCellBottomClass: getShortDayCellBottomClass,
           dayHeaderInnerClass: (info) => cn(info.isNarrow && 'text-muted-foreground'),
-          tableBodyClass: (info) => cn(info.multiMonthColumnCount > 1 && 'border rounded-sm overflow-hidden'),
+          tableBodyClass: (info) => cn(info.multiMonthColumns > 1 && 'border rounded-sm overflow-hidden'),
           ...userViews?.multiMonth,
         },
         timeGrid: {

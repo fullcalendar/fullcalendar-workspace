@@ -90,7 +90,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
         )}
       >
@@ -157,8 +157,8 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     }
   }
 
-  handleScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  handleScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollDate = null
     }
   }

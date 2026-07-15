@@ -4,7 +4,8 @@ import { waitTimeout } from '../lib/misc'
 
 describe('refetchEvents', () => {
   it('retains scroll when in month view', async () => {
-    let el = $('<div id="calendar" style="width:300px"/>').appendTo('body')
+    let el = createCalendarElement()
+    el.style.width = '300px'
     let scrollEl
     let scrollTop
 
@@ -37,7 +38,7 @@ describe('refetchEvents', () => {
     // verify that we queried the correct scroller el
     expect(scrollTop).toBeGreaterThan(10)
 
-    currentCalendar.refetchEvents()
+    calendar.refetchEvents()
     expect(calendarWrapper.getEventEls().length).toBe(8)
     expect(scrollEl.scrollTop).toBe(scrollTop)
   })

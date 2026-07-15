@@ -477,11 +477,11 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     singleMonthClass: (info) => joinClassNames(
-      info.multiMonthColumnCount > 1 && 'm-4',
-      (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-(--fc-forma-border) border-b',
+      info.multiMonthColumns > 1 && 'm-4',
+      (info.multiMonthColumns === 1 && !info.isLast) && 'border-(--fc-forma-border) border-b',
     ),
     singleMonthHeaderClass: (info) => joinClassNames(
-      info.multiMonthColumnCount > 1
+      info.multiMonthColumns > 1
         ? 'pb-4'
         : 'py-2 border-b border-(--fc-forma-border) bg-(--fc-forma-background)',
       'items-center',
@@ -576,12 +576,12 @@ export default {
     multiMonth: {
       ...dayRowCommonClasses,
       dayHeaderDividerClass: (info) => joinClassNames(
-        info.multiMonthColumnCount === 1 && 'border-b border-(--fc-forma-border)',
+        info.multiMonthColumns === 1 && 'border-b border-(--fc-forma-border)',
       ),
       dayCellBottomClass: getShortDayCellBottomClass,
       dayHeaderInnerClass: (info) => info.isNarrow && 'text-(--fc-forma-muted-foreground)',
       tableBodyClass: (info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'border border-(--fc-forma-border) rounded-sm overflow-hidden',
+        info.multiMonthColumns > 1 && 'border border-(--fc-forma-border) rounded-sm overflow-hidden',
       ),
     },
     timeGrid: {
@@ -665,7 +665,10 @@ export default {
       ------------------------------------------------------------------------------------------- */
 
       slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
-      slotHeaderClass: 'justify-center',
+      slotHeaderClass: (info) => joinClassNames(
+        'justify-center',
+        !info.level && 'overflow-hidden',
+      ),
       slotHeaderInnerClass: (info) => joinClassNames(
         'm-2 text-sm',
         info.hasNavLink && 'hover:underline',

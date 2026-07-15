@@ -11,7 +11,7 @@ export default {
   todayText: 'Hodiaŭ',
   yearText: 'Jaro',
   monthText: 'Monato',
-  weekText: 'Semajno',
+  weekTextLong: 'Semajno',
   weekTextShort: 'Sm',
   dayText: 'Tago',
   listText: 'Tagordo',

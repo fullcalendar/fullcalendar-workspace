@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es6",
-    "moduleResolution": "node",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "strict": true,
     "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "tsc"
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src/index.ts"
-  ]
+  "include": ["src"]
 }

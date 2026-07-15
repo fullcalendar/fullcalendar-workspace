@@ -1,5 +1,5 @@
 import { RefinedOptionsFromRefiners, RawOptionsFromRefiners } from '@fullcalendar/core/protected-api'
-import { guid, identity, Identity, refineProps, Dictionary } from '@fullcalendar/preact/protected-api'
+import { guid, identity, Identity, refineProps, Dictionary, warn } from '@fullcalendar/preact/protected-api'
 import { ResourceInput } from './resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'
@@ -83,6 +83,6 @@ function buildResourceSourceMeta(refined: ResourceSourceRefined) {
 
 function warnUnknownProps(props) {
   for (let propName in props) {
-    console.warn(`Unknown resource prop '${propName}'`)
+    warn(`Unknown resource-source property \`${propName}\`.`)
   }
 }

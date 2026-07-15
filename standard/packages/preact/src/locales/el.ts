@@ -11,7 +11,7 @@ export default {
   todayText: 'Σήμερα',
   yearText: 'Ετος',
   monthText: 'Μήνας',
-  weekText: 'Εβδομάδα',
+  weekTextLong: 'Εβδομάδα',
   weekTextShort: 'Εβδ',
   dayText: 'Ημέρα',
   listText: 'Ατζέντα',

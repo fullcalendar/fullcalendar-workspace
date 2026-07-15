@@ -16,18 +16,20 @@ export interface EventRefiners {
 
 export type RawOptionsFromRefiners<Refiners extends GenericRefiners> = {
   [Prop in keyof Refiners]?: // all optional
-    Refiners[Prop] extends ((input: infer RawType) => infer RefinedType)
+    Refiners[Prop] extends ((input: infer RawType, optionName: string) => infer RefinedType)
       ? (any extends RawType ? RefinedType : RawType) // if input type `any`, use output (for Boolean/Number/String)
       : never
 }
 
 export type RefinedOptionsFromRefiners<Refiners extends GenericRefiners> = {
   [Prop in keyof Refiners]?: // all optional
-    Refiners[Prop] extends ((input: any) => infer RefinedType) ? RefinedType : never
+    Refiners[Prop] extends ((input: any, optionName: string) => infer RefinedType)
+      ? RefinedType
+      : never
 }
 
 type GenericRefiners = {
-  [propName: string]: (input: any) => any
+  [propName: string]: (input: any, propName: string) => any
 }
 
 export type Identity<T = any> = (raw: T) => T

@@ -1,14 +1,15 @@
-import { ViewContentData, ViewProps } from '../component-util/View'
+import { ViewContentInfo, ViewProps } from '../component-util/View'
 import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
 import { ViewContext, ViewContextType } from '../ViewContext'
 import { ViewOptions } from '../options'
-import { ContentContainer } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { Duration } from '@full-ui/headless-calendar'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 import { ContentGenerator } from '../common/render-hook'
 import { getIsHeightAuto } from '../scrollgrid/util'
+import { joinClassNames } from '../public-api'
 
 /*
 A view-config represents information for either:
@@ -41,8 +42,8 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
 
   let { component } = rawOptions
 
-  if (rawOptions.viewContent) {
-    component = createViewHookComponent(rawOptions.viewContent)
+  if (rawOptions.content) {
+    component = createViewHookComponent(rawOptions.content)
   } else if (component && !((component as any).prototype instanceof BaseComponent)) {
     // WHY?: people were using `component` property for `content`
     // TODO: converge on one setting name
@@ -59,16 +60,16 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
 /*
 TODO: converge with ViewContainer
 */
-function createViewHookComponent(viewContent: ContentGenerator<ViewContentData>) {
+function createViewHookComponent(contentGenerator: ContentGenerator<ViewContentInfo>) {
   return (viewProps: ViewProps) => (
     <ViewContextType.Consumer
       children={(context: ViewContext) => {
-        const { options } = context
-        const renderProps: ViewContentData = {
+        const { options, viewSpec } = context
+        const renderProps: ViewContentInfo = {
           // the "extra" props, for sliceEvents...
           ...viewProps,
           nextDayThreshold: options.nextDayThreshold as Duration,
-          // ViewDisplayProp...
+          // ViewDisplayInfo...
           ...computeViewBorderless(options),
           options: { headerToolbar: options.headerToolbar, footerToolbar: options.footerToolbar },
           isHeightAuto: getIsHeightAuto(options),
@@ -78,12 +79,19 @@ function createViewHookComponent(viewContent: ContentGenerator<ViewContentData>)
         return (
           <ContentContainer
             tag="div"
-            classNameGenerator={options.viewClass}
+            className={joinClassNames(
+              generateClassName((options as any).viewClass, renderProps),
+              // WORKAROUND for way calendar's className would get merged into view's className
+              generateClassName(viewSpec.optionDefaults.class, renderProps),
+              generateClassName(viewSpec.optionDefaults.className, renderProps),
+              generateClassName(viewSpec.optionOverrides.class, renderProps),
+              generateClassName(viewSpec.optionOverrides.className, renderProps),
+            )}
             renderProps={renderProps}
             generatorName={undefined}
-            customGenerator={viewContent}
-            didMount={options.viewDidMount}
-            willUnmount={options.viewWillUnmount}
+            customGenerator={contentGenerator}
+            didMount={options.didMount || (options as any).viewDidMount} // TODO: should call both
+            willUnmount={options.willUnmount || (options as any).viewWillUnmount} // TODO: should call both
           />
         )
       }}

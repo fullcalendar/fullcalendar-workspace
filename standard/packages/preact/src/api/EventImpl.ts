@@ -10,6 +10,7 @@ import { createFormatter } from '../datelib/formatting'
 import { CalendarContext } from '../CalendarContext'
 import { getRelevantEvents, EventStore } from '../structs/event-store'
 import { Dictionary } from '../options'
+import { warn } from '../util/warn'
 import { EventApi } from './EventApi'
 import { EventSourceImpl } from './EventSourceImpl'
 import {
@@ -36,7 +37,7 @@ export class EventImpl implements EventApi {
   */
   setProp(name: string, val: any): void {
     if (name in EVENT_DATE_REFINERS) {
-      console.warn('Could not set date-related prop \'name\'. Use one of the date-related methods instead.')
+      warn(`Cannot set date-related event property \`${name}\`. Use a method instead.`)
     // TODO: make proper aliasing system?
     } else if (name === 'id') {
       val = EVENT_NON_DATE_REFINERS[name](val)
@@ -53,9 +54,7 @@ export class EventImpl implements EventApi {
     } else if (name in EVENT_UI_REFINERS) {
       let ui = EVENT_UI_REFINERS[name](val)
 
-      if (name === 'color') {
-        ui = { backgroundColor: val, borderColor: val }
-      } else if (name === 'editable') {
+      if (name === 'editable') {
         ui = { startEditable: val, durationEditable: val }
       } else {
         ui = { [name]: val }
@@ -65,7 +64,7 @@ export class EventImpl implements EventApi {
         standardProps: { ui },
       })
     } else {
-      console.warn(`Could not set prop '${name}'. Use setExtendedProp instead.`)
+      warn(`Cannot set event property \`${name}\`. Use setExtendedProp instead.`)
     }
   }
 

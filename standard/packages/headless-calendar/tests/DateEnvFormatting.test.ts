@@ -23,7 +23,7 @@ describe('DateEnv formatting', () => {
       timeZone: 'UTC',
       calendarSystem: 'gregory',
       locale: makeLocale('en-US'),
-      weekText: 'Week',
+      weekTextLong: 'Week',
       weekTextShort: 'W',
       cmdFormatter,
     })
@@ -80,7 +80,7 @@ describe('DateEnv formatting', () => {
       timeZone: 'local',
       calendarSystem: 'gregory',
       locale: makeLocale('en-US'),
-      weekText: 'Week',
+      weekTextLong: 'Week',
       weekTextShort: 'W',
     })
     const marker = new Date(Date.UTC(2018, 5, 8, 0, 0, 0))

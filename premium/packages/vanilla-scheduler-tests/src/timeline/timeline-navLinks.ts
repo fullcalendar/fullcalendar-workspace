@@ -25,6 +25,36 @@ describe('timeline navLinks', () => {
         expect($('.fc-navlink').length).toBeGreaterThan(0)
       })
     })
+
+    /*
+    TODO: test different granularities, array, single-object
+    NOTE: navlinks can get assigned regardless with `guessedSlotUnit`
+    https://github.com/fullcalendar/fullcalendar/issues/8064#issuecomment-4309593371
+    */
+    it('has navLinks with custom slotHeaderFormat', () => {
+      initCalendar({
+        initialView: 'resourceTimelineWeek',
+        slotDuration: { hours: 1 },
+        slotHeaderFormat: [
+          { year: 'numeric', month: 'numeric', day: 'numeric' },
+          { hour: 'numeric' },
+        ],
+      })
+
+      expect($('.fc-navlink').length).toBe(7) // navlink on each day
+    })
+    // similar, but with day slots
+    it('has navLinks with custom slotHeaderFormat, similar', () => {
+      initCalendar({
+        initialView: 'resourceTimelineWeek',
+        slotDuration: { days: 1 },
+        slotHeaderFormat: [
+            { day: 'numeric', month: 'numeric' },
+            { weekday: 'short' },
+        ],
+      })
+      expect($('.fc-navlink').length).toBe(14)
+    })
   })
 
   describeOptions({

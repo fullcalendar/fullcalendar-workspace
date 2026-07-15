@@ -83,11 +83,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ),
 
         rowEventBeforeClass: (info) => joinClassNames(
-          !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+          !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
         ),
 
         rowEventAfterClass: (info) => joinClassNames(
-          !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+          !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
         ),
 
         rowEventInnerClass: (info) => (
@@ -113,9 +113,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotHeaderAlign: (info) => info.isTime ? 'start' : 'center', // h-align
 
-        slotHeaderClass: 'justify-center', // v-align
+        slotHeaderClass: (info) => joinClassNames(
+          'justify-center', // v-align
+          !info.level && 'overflow-hidden', // don't apply to potentially sticky cell-inners
+        ),
         slotHeaderInnerClass: (info) => joinClassNames(
-          'm-2 text-sm',
+          'mx-2 my-1 text-sm',
           info.hasNavLink && 'hover:underline',
         ),
 

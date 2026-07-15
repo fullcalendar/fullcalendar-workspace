@@ -397,11 +397,11 @@ export default function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-4',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-(--mui-palette-divider) border-b',
+        info.multiMonthColumns > 1 && 'm-4',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-(--mui-palette-divider) border-b',
       )}
       singleMonthHeaderClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 ? 'pb-2' : 'py-1 border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
+        info.multiMonthColumns > 1 ? 'pb-2' : 'py-1 border-b border-(--mui-palette-divider) bg-(--mui-palette-background-paper)',
         'items-center',
       )}
       singleMonthHeaderInnerClass={(info) => joinClassNames(
@@ -452,8 +452,8 @@ export default function EventCalendarViews({
         multiMonth: {
           ...dayRowCommonClasses,
           dayHeaderInnerClass: (info) => joinClassNames(!info.inPopover && 'mb-2'),
-          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumnCount === 1 && 'border-b border-(--mui-palette-divider)'),
-          tableBodyClass: (info) => joinClassNames(info.multiMonthColumnCount > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
+          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'border-b border-(--mui-palette-divider)'),
+          tableBodyClass: (info) => joinClassNames(info.multiMonthColumns > 1 && 'border border-(--mui-palette-divider) rounded-sm overflow-hidden'),
           dayCellBottomClass: getShortDayCellBottomClass,
           ...userViews?.multiMonth,
         },

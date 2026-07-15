@@ -539,11 +539,11 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1 && 'm-3',
-        (info.multiMonthColumnCount === 1 && !info.isLast) && 'border-b border-(--fc-pulse-border)',
+        info.multiMonthColumns > 1 && 'm-3',
+        (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--fc-pulse-border)',
       )}
       singleMonthHeaderClass={(info) => joinClassNames(
-        info.multiMonthColumnCount > 1
+        info.multiMonthColumns > 1
           ? 'pb-2'
           : 'py-1 border-b border-(--fc-pulse-border) bg-(--fc-pulse-background)',
         'items-center',
@@ -595,13 +595,13 @@ export function EventCalendar({
         },
         multiMonth: {
           ...dayRowCommonClasses,
-          viewClass: 'bg-(--fc-pulse-faint)',
-          tableHeaderClass: (info) => joinClassNames(info.multiMonthColumnCount === 1 && 'bg-(--fc-pulse-background)'),
+          className: 'bg-(--fc-pulse-faint)',
+          tableHeaderClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'bg-(--fc-pulse-background)'),
           dayHeaderAlign: (info) => info.inPopover ? 'start' : info.isNarrow ? 'center' : 'end',
-          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumnCount === 1 && 'border-b border-(--fc-pulse-border)'),
+          dayHeaderDividerClass: (info) => joinClassNames(info.multiMonthColumns === 1 && 'border-b border-(--fc-pulse-border)'),
           dayCellBottomClass: getShortDayCellBottomClass,
           tableBodyClass: (info) => joinClassNames(
-            info.multiMonthColumnCount > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
+            info.multiMonthColumns > 1 && 'border border-(--fc-pulse-border) rounded-sm overflow-hidden'
           ),
           ...userViews?.multiMonth,
         },
@@ -653,7 +653,7 @@ export function EventCalendar({
           ...userViews?.timeGrid,
         },
         list: {
-          viewClass: 'bg-(--fc-pulse-background)',
+          className: 'bg-(--fc-pulse-background)',
 
           /* List-View > List-Item Event
           ----------------------------------------------------------------------------------------- */

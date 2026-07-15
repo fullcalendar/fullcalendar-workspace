@@ -41,7 +41,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 24.13.0
+          node-version: 24.15.0
           cache: 'pnpm'
 
           # Mutates .npmrc to allow for NPM publishing
@@ -57,12 +57,21 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          echo "Checking for uncommitted changes BEFORE..."
+          git status --short
+          git diff --stat
+
           pnpm \
             --filter '!./examples/**' \
             --filter '!@fullcalendar-tests/*' \
             install
 
-          pnpm run meta:update
+          pnpm run meta:hide
+
+          echo "Checking for uncommitted changes AFTER..."
+          git status --short
+          git diff --stat
+
         # ^this hides the nested repo's pnpm meta files
         # required to prevent package scripts from getting confused
         # when was this supposed to be called anyway?
@@ -113,9 +122,11 @@ jobs:
       # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
       #
       - name: Sync Repos
-        # DISABLED!
-        if: false
         run: |
+          echo "Checking for uncommitted changes before pull..."
+          git status --short
+          git diff --stat
+
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
 

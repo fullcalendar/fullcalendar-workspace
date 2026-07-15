@@ -103,10 +103,10 @@ export function Scheduler({
             'items-center',
           ),
           rowEventBeforeClass: (info) => joinClassNames(
-            !info.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+            !info.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
           ),
           rowEventAfterClass: (info) => joinClassNames(
-            !info.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+            !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
           ),
           rowEventInnerClass: (info) => (
             info.options.eventOverlap
@@ -126,9 +126,12 @@ export function Scheduler({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (info) => info.isTime ? 'start' : 'center',
-          slotHeaderClass: 'justify-center',
+          slotHeaderClass: (info) => joinClassNames(
+            'justify-center',
+            !info.level && 'overflow-hidden',
+          ),
           slotHeaderInnerClass: (info) => joinClassNames(
-            'm-2 text-sm',
+            'mx-2 my-1 text-sm',
             info.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',

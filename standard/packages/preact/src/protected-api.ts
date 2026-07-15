@@ -22,6 +22,7 @@ export {
   guid,
   computeViewBorderless,
 } from './util/misc'
+export { warn } from './util/warn'
 
 export {
   computeVisibleDayRange,
@@ -146,7 +147,11 @@ export { RefMap } from './util/RefMap'
 
 export { NowTimer } from './NowTimer'
 export type {
-  ContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
+  ContentGenerator, DidMountHandler, WillUnmountHandler, MountInfo,
+} from './common/render-hook'
+export {
+  refineClassName,
+  refineClassNameGenerator,
 } from './common/render-hook'
 export { StandardEvent } from './common/StandardEvent'
 export { NowIndicatorHeaderContainer } from './common/NowIndicatorHeaderContainer'
@@ -209,4 +214,3 @@ export { DayGridLayout } from './daygrid/components/DayGridLayout'
 export {
   buildDayTableModel,
 } from './daygrid/components/util'
-

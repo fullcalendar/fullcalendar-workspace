@@ -63,20 +63,20 @@ export class ScrollerSyncer {
     this.isPaused = false
   }
 
-  addScrollEndListener(handler: (isUser: boolean) => void): void {
+  addScrollEndListener(handler: (isDevice: boolean) => void): void {
     this.emitter?.on('scrollEnd', handler)
   }
 
-  removeScrollEndListener(handler: (isUser: boolean) => void): void {
+  removeScrollEndListener(handler: (isDevice: boolean) => void): void {
     this.emitter?.off('scrollEnd', handler)
   }
 
   bindScroller(scroller: Scroller) {
     let { isHorizontal } = this
 
-    const onScroll = (isUser: boolean) => {
+    const onScroll = (isDevice: boolean) => {
       if (!this.isPaused) {
-        if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
+        if (!this.masterScroller || (this.masterScroller !== scroller && isDevice)) {
           this.assignMaster(scroller)
         }
 
@@ -95,7 +95,7 @@ export class ScrollerSyncer {
       }
     }
 
-    const onScrollEnd = (isUser: boolean) => {
+    const onScrollEnd = (isDevice: boolean) => {
       if (this.masterScroller === scroller) {
         this.masterScroller = null
 
@@ -115,7 +115,7 @@ export class ScrollerSyncer {
         }
 
         if (isMoved) {
-          this.emitter?.trigger('scrollEnd', isUser)
+          this.emitter?.trigger('scrollEnd', isDevice)
         }
       }
     }

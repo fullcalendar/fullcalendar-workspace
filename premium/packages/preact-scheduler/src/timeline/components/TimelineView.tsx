@@ -138,7 +138,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   borderlessX,
                   borderlessTop,
                   borderlessBottom,
-                  multiMonthColumnCount: 0,
+                  multiMonthColumns: 0,
                 }),
                 classNames.isolate,
               )}
@@ -153,7 +153,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   tableHeaderSticky && classNames.tableHeaderSticky,
@@ -232,7 +232,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
@@ -416,15 +416,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     this.applyTimeScroll()
   }
 
-  private handleTimeScrollStart = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollStart = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollX = undefined
       this.scrollTime = undefined
     }
   }
 
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleTimeScrollEnd = (isDevice: boolean) => {
+    if (isDevice) {
       this.scrollX = this.syncedScroller.x
       this.scrollTime = undefined
     }

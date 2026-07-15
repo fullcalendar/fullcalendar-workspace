@@ -11,7 +11,7 @@ export default {
   todayText: 'ថ្ងៃនេះ',
   yearText: 'ឆ្នាំ',
   monthText: 'ខែ',
-  weekText: 'សប្តាហ៍',
+  weekTextLong: 'សប្តាហ៍',
   dayText: 'ថ្ងៃ',
   listText: 'បញ្ជី',
   allDayText: 'ពេញមួយថ្ងៃ',

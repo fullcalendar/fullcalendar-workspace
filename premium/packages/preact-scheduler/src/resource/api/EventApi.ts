@@ -1,4 +1,4 @@
-import { EventImpl } from '@fullcalendar/preact/protected-api'
+import { EventImpl, warn } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
 
 declare module '@fullcalendar/preact/public-api' {
@@ -39,7 +39,7 @@ EventImpl.prototype.setResources = function ( // eslint-disable-line func-names
     } else if (resource instanceof ResourceApi) {
       resourceId = resource.id // guaranteed to always have an ID. hmmm
     } else {
-      console.warn('unknown resource type: ' + resource)
+      warn(`Invalid resource value \`${resource}\`. Expected a resource ID or ResourceApi object.`)
     }
 
     if (resourceId) {

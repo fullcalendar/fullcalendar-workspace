@@ -12,8 +12,8 @@ describe('Event::moveStart', () => {
     })
 
     it('moves start and generates an end', () => {
-      initCalendar()
-      let event = currentCalendar.getEventById('1')
+      let calendar = initCalendar()
+      let event = calendar.getEventById('1')
       event.moveStart({ hours: -5 })
       expect(event.start).toEqualDate('2018-09-03T07:00:00Z')
       expect(event.end).toEqualDate('2018-09-03T13:00:00Z')
@@ -28,8 +28,8 @@ describe('Event::moveStart', () => {
     })
 
     it('moves start and keeps end', () => {
-      initCalendar()
-      let event = currentCalendar.getEventById('1')
+      let calendar = initCalendar()
+      let event = calendar.getEventById('1')
       event.moveStart({ hours: -5 })
       expect(event.start).toEqualDate('2018-09-03T07:00:00Z')
       expect(event.end).toEqualDate('2018-09-03T15:00:00Z')
@@ -44,8 +44,8 @@ describe('Event::moveStart', () => {
     })
 
     it('resets end to reflect default duration', () => {
-      initCalendar()
-      let event = currentCalendar.getEventById('1')
+      let calendar = initCalendar()
+      let event = calendar.getEventById('1')
       event.moveStart({ days: 1 })
       expect(event.start).toEqualDate('2018-09-04T12:00:00Z')
       expect(event.end).toEqualDate('2018-09-04T13:00:00Z')

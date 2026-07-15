@@ -11,7 +11,7 @@ export default {
   todayText: 'I dag',
   yearText: 'År',
   monthText: 'Måned',
-  weekText: 'Uke',
+  weekTextLong: 'Uke',
   dayText: 'Dag',
   listText: 'Agenda',
   allDayText: 'Hele\ndagen',

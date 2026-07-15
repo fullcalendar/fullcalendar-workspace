@@ -12,7 +12,7 @@ export default {
   todayText: 'اليوم',
   yearText: 'سنة',
   monthText: 'شهر',
-  weekText: 'أسبوع',
+  weekTextLong: 'أسبوع',
   dayText: 'يوم',
   listText: 'أجندة',
   allDayText: 'اليوم كله',

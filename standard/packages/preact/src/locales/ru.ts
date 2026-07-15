@@ -11,7 +11,7 @@ export default {
   todayText: 'Сегодня',
   yearText: 'Год',
   monthText: 'Месяц',
-  weekText: 'Неделя',
+  weekTextLong: 'Неделя',
   weekTextShort: 'Нед',
   dayText: 'День',
   listText: 'Повестка дня',

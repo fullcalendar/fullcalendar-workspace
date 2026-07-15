@@ -14,22 +14,22 @@ describe('view-specific options', () => {
     views: { },
   })
 
-  function testEachView(viewsAndVals) {
+  function testEachView(calendar, viewsAndVals) {
     $.each(viewsAndVals, (view: string, val) => {
-      currentCalendar.changeView(view)
+      calendar.changeView(view)
       expect($('.fc-toolbar-title')).toHaveText(val)
     })
   }
 
   it('can target a specific view (dayGridMonth)', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         dayGridMonth: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'special!!!',
       dayGridWeek: 'default',
       dayGridDay: 'default',
@@ -39,14 +39,14 @@ describe('view-specific options', () => {
   })
 
   it('can target a specific view (timeGridWeek)', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         timeGridWeek: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'default',
       dayGridWeek: 'default',
       dayGridDay: 'default',
@@ -56,14 +56,14 @@ describe('view-specific options', () => {
   })
 
   it('can target dayGrid views', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         dayGrid: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'special!!!',
       dayGridWeek: 'special!!!',
       dayGridDay: 'special!!!',
@@ -73,14 +73,14 @@ describe('view-specific options', () => {
   })
 
   it('can target timeGrid views', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         timeGrid: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'default',
       dayGridWeek: 'default',
       dayGridDay: 'default',
@@ -90,14 +90,14 @@ describe('view-specific options', () => {
   })
 
   it('can target week views', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         week: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'default',
       dayGridWeek: 'special!!!',
       dayGridDay: 'default',
@@ -107,14 +107,14 @@ describe('view-specific options', () => {
   })
 
   it('can target day views', () => {
-    initCalendar({
+    let calendar = initCalendar({
       views: {
         day: {
           titleFormat() { return 'special!!!' },
         },
       },
     })
-    testEachView({
+    testEachView(calendar, {
       dayGridMonth: 'default',
       dayGridWeek: 'default',
       dayGridDay: 'special!!!',
@@ -124,7 +124,7 @@ describe('view-specific options', () => {
   })
 
   it('views that explicitly extend others inherit options', () => {
-    initCalendar({
+    let calendar = initCalendar({
       plugins: [
         dayGridPlugin,
         classicThemePlugin,
@@ -134,7 +134,7 @@ describe('view-specific options', () => {
           views: {
             superBasic: {
               type: 'dayGrid', // explicitly extend
-              viewContent: 'hello world',
+              content: 'hello world',
             },
           },
         },
@@ -146,7 +146,7 @@ describe('view-specific options', () => {
       },
     })
 
-    testEachView({
+    testEachView(calendar, {
       superBasic: 'special!!!',
       dayGridMonth: 'special!!!',
       dayGridDay: 'special!!!',

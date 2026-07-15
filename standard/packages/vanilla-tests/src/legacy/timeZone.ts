@@ -1,7 +1,7 @@
-import * as PlainDateFns from 'temporal-polyfill/fns/plaindate'
-import * as PlainDateTimeFns from 'temporal-polyfill/fns/plaindatetime'
-import * as InstantFns from 'temporal-polyfill/fns/instant'
-import * as ZonedDateTimeFns from 'temporal-polyfill/fns/zoneddatetime'
+import * as PlainDateFns from 'temporal-polyfill/fns/PlainDate'
+import * as PlainDateTimeFns from 'temporal-polyfill/fns/PlainDateTime'
+import * as InstantFns from 'temporal-polyfill/fns/Instant'
+import * as CalendarFns from 'temporal-polyfill/fns/Calendar'
 
 describe('timeZone', () => {
   // NOTE: Only deals with the processing of *received* events.
@@ -30,16 +30,16 @@ describe('timeZone', () => {
   })
 
   it('receives events correctly when local timezone', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'local',
     })
-    expectLocalTimezone()
+    expectLocalTimezone(calendar)
   })
 
-  function expectLocalTimezone() {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectLocalTimezone(calendar) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualLocalDate('2014-05-02T00:00:00')
     expect(timedEvent.allDay).toEqual(false)
@@ -49,16 +49,16 @@ describe('timeZone', () => {
   }
 
   it('receives events correctly when UTC timezone', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'UTC',
     })
-    expectUtcTimezone()
+    expectUtcTimezone(calendar)
   })
 
-  function expectUtcTimezone() {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectUtcTimezone(calendar) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate('2014-05-02')
     expect(timedEvent.allDay).toEqual(false)
@@ -69,45 +69,49 @@ describe('timeZone', () => {
 
   it('receives events correctly when custom timezone', () => {
     const timeZone = 'America/Chicago'
-    initCalendar({ timeZone })
-    expectCustomTimezone(timeZone)
+    let calendar = initCalendar({ timeZone })
+    expectCustomTimezone(calendar, timeZone)
   })
 
-  function expectCustomTimezone(timeZone) {
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+  function expectCustomTimezone(calendar, timeZone) {
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate(
       new Date(
-        ZonedDateTimeFns.epochMilliseconds(PlainDateFns.toZonedDateTime(PlainDateFns.fromString('2014-05-02'), timeZone)),
+        PlainDateFns.toZonedDateTime(
+          PlainDateFns.fromString('2014-05-02', CalendarFns.getBasic),
+          timeZone,
+        ).epochMilliseconds
       )
     )
     expect(timedEvent.allDay).toEqual(false)
     expect(timedEvent.start).toEqualDate(
       new Date(
-        ZonedDateTimeFns.epochMilliseconds(PlainDateTimeFns.toZonedDateTime(PlainDateTimeFns.fromString('2014-05-10T12:00:00'), timeZone)),
+        PlainDateTimeFns.toZonedDateTime(
+          PlainDateTimeFns.fromString('2014-05-10T12:00:00', CalendarFns.getBasic),
+          timeZone,
+        ).epochMilliseconds
       )
     )
     expect(zonedEvent.allDay).toEqual(false)
     expect(zonedEvent.start).toEqualDate(
-      new Date(
-        InstantFns.epochMilliseconds(InstantFns.fromString('2014-05-10T14:00:00+11:00')),
-      )
+      new Date(InstantFns.fromString('2014-05-10T14:00:00+11:00').epochMilliseconds)
     )
   }
 
   it('can be set dynamically', () => {
-    initCalendar({
+    let calendar = initCalendar({
       timeZone: 'local',
     })
 
-    expectLocalTimezone()
+    expectLocalTimezone(calendar)
 
-    currentCalendar.setOption('timeZone', 'UTC')
-    let allDayEvent = currentCalendar.getEventById('1')
-    let timedEvent = currentCalendar.getEventById('2')
-    let zonedEvent = currentCalendar.getEventById('3')
+    calendar.setOption('timeZone', 'UTC')
+    let allDayEvent = calendar.getEventById('1')
+    let timedEvent = calendar.getEventById('2')
+    let zonedEvent = calendar.getEventById('3')
     expect(allDayEvent.allDay).toEqual(true)
     expect(allDayEvent.start).toEqualDate('2014-05-02')
     expect(timedEvent.allDay).toEqual(false)

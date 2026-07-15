@@ -12,7 +12,7 @@ export default {
   todayText: 'امروز',
   yearText: 'سال',
   monthText: 'ماه',
-  weekText: 'هفته',
+  weekTextLong: 'هفته',
   weekTextShort: 'هف',
   dayText: 'روز',
   listText: 'برنامه',

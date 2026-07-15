@@ -17,8 +17,8 @@ describe('dateAlignment', () => {
       })
 
       it('aligns with the week', () => {
-        initCalendar()
-        expectActiveRange('2017-06-11', '2017-06-14')
+        let calendar = initCalendar()
+        expectActiveRange(calendar, '2017-06-11', '2017-06-14')
       })
     })
 
@@ -29,8 +29,8 @@ describe('dateAlignment', () => {
       })
 
       it('aligns with first visible day of the week', () => {
-        initCalendar()
-        expectActiveRange('2017-06-12', '2017-06-17')
+        let calendar = initCalendar()
+        expectActiveRange(calendar, '2017-06-12', '2017-06-17')
       })
     })
   })
@@ -46,8 +46,8 @@ describe('dateAlignment', () => {
     })
 
     it('aligns with first day of year', () => {
-      initCalendar()
-      expectActiveRange('2017-01-01', '2017-02-05')
+      let calendar = initCalendar()
+      expectActiveRange(calendar, '2017-01-01', '2017-02-05')
     })
   })
 })

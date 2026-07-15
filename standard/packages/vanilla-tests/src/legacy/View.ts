@@ -9,8 +9,8 @@ describe('View object', () => {
 
   describe('title', () => {
     it('is a correctly defined string', () => {
-      initCalendar()
-      let view = currentCalendar.view
+      let calendar = initCalendar()
+      let view = calendar.view
       expect(view.title).toBe('January 2015')
     })
 

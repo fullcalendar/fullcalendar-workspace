@@ -9,7 +9,7 @@ export default {
   yearText: 'Ano',
   todayText: 'Hoje',
   monthText: 'Mês',
-  weekText: 'Semana',
+  weekTextLong: 'Semana',
   weekTextShort: 'Sm',
   dayText: 'Dia',
   listText: 'Lista',

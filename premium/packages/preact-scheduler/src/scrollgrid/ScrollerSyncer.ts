@@ -5,9 +5,9 @@ TODO: detangle and use from @full-ui/headless-grid
 */
 export class ScrollerSyncer implements ScrollerSyncerInterface {
   private emitter: Emitter<{
-    scrollStart: (isUser: boolean) => void
-    scroll: (isUser: boolean, scroll: number) => void
-    scrollEnd: (isUser: boolean) => void
+    scrollStart: (isDevice: boolean) => void
+    scroll: (isDevice: boolean, scroll: number) => void
+    scrollEnd: (isDevice: boolean) => void
   }> = new Emitter()
   private scrollers: Scroller[] = []
   private destroyFuncs: (() => void)[] = []
@@ -53,7 +53,7 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   }
 
   scrollTo(scrollArg: { x?: number, y?: number }): void {
-    this.isPaused = true
+    this.isPaused = true // Not sure how this works, given that scroll handlers fire asynchronously
     const { scrollers } = this
 
     for (let scroller of scrollers) {
@@ -63,40 +63,40 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     this.isPaused = false
   }
 
-  addScrollListener(handler: (isUser: boolean, scroll: number) => void): void {
+  addScrollListener(handler: (isDevice: boolean, scroll: number) => void): void {
     this.emitter.on('scroll', handler)
   }
 
-  removeScrollListener(handler: (isUser: boolean, scroll: number) => void): void {
+  removeScrollListener(handler: (isDevice: boolean, scroll: number) => void): void {
     this.emitter.off('scroll', handler)
   }
 
-  addScrollStartListener(handler: (isUser: boolean) => void): void {
+  addScrollStartListener(handler: (isDevice: boolean) => void): void {
     this.emitter.on('scrollStart', handler)
   }
 
-  removeScrollStartListener(handler: (isUser: boolean) => void): void {
+  removeScrollStartListener(handler: (isDevice: boolean) => void): void {
     this.emitter.off('scrollStart', handler)
   }
 
-  addScrollEndListener(handler: (isUser: boolean) => void): void {
+  addScrollEndListener(handler: (isDevice: boolean) => void): void {
     this.emitter.on('scrollEnd', handler)
   }
 
-  removeScrollEndListener(handler: (isUser: boolean) => void): void {
+  removeScrollEndListener(handler: (isDevice: boolean) => void): void {
     this.emitter.off('scrollEnd', handler)
   }
 
   bindScroller(scroller: Scroller) {
     let { isHorizontal } = this
 
-    const onScroll = (isUser: boolean) => {
+    const onScroll = (isDevice: boolean) => {
       if (!this.isPaused) {
         if (!this.masterScroller) {
-          this.emitter.trigger('scrollStart', isUser)
+          this.emitter.trigger('scrollStart', isDevice)
         }
 
-        if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
+        if (!this.masterScroller || (this.masterScroller !== scroller && isDevice)) {
           this.assignMaster(scroller)
         }
 
@@ -112,12 +112,12 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
             }
           }
 
-          this.emitter.trigger('scroll', isUser, isHorizontal ? scroller.x : scroller.y)
+          this.emitter.trigger('scroll', isDevice, isHorizontal ? scroller.x : scroller.y)
         }
       }
     }
 
-    const onScrollEnd = (isUser: boolean) => {
+    const onScrollEnd = (isDevice: boolean) => {
       if (this.masterScroller === scroller) {
         this.masterScroller = null
 
@@ -137,7 +137,7 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
         }
 
         if (isMoved) {
-          this.emitter.trigger('scrollEnd', isUser)
+          this.emitter.trigger('scrollEnd', isDevice)
         }
       }
     }

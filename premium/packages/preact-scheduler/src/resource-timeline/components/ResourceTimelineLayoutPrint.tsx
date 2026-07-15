@@ -11,6 +11,7 @@ import {
   SplittableProps,
   ViewContainer,
   computeViewBorderless,
+  warn,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createGroupId, GenericNode } from '../../resource/common/resource-hierarchy'
@@ -107,7 +108,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
     if (printLayouts.length > MAX_ROWS_FOR_PRINT) {
       printLayouts = printLayouts.slice(0, MAX_ROWS_FOR_PRINT)
-      console.warn(`Too many rows for print. Only including first ${MAX_ROWS_FOR_PRINT}`)
+      warn(`Rows truncated for print. Only included the first ${MAX_ROWS_FOR_PRINT} rows.`)
     }
 
     return (
@@ -124,7 +125,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           classNames.printRoot, // either flexCol or table
         )}
@@ -135,7 +136,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           classNames.printHeader, // either flexCol or table-header-group
         )}>
@@ -245,7 +246,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               borderlessX,
               borderlessTop,
               borderlessBottom,
-              multiMonthColumnCount: 0,
+              multiMonthColumns: 0,
             }),
             // leave display:block for print!
             classNames.rel,

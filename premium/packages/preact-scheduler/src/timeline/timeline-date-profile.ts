@@ -7,6 +7,7 @@ import {
   asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator,
   computeMajorUnit,
   isMajorUnit,
+  warn,
 } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineDateProfile {
@@ -86,10 +87,10 @@ export function buildTimelineDateProfile(
 
   if (Array.isArray(input)) {
     rawFormats = input
-    headerFormatUnits = input.map(() => null)
+    headerFormatUnits = input.map(inferHeaderFormatUnit)
   } else if (input != null) {
     rawFormats = [input]
-    headerFormatUnits = [null]
+    headerFormatUnits = [inferHeaderFormatUnit(input)]
   } else {
     const computed = computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
     rawFormats = computed.formats
@@ -287,7 +288,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.labelInterval,
     )
     if (labelCnt > config.MAX_TIMELINE_SLOTS) {
-      console.warn('slotHeaderInterval results in too many cells')
+      warn('Invalid option `slotHeaderInterval`: too many timeline cells.')
       tDateProfile.labelInterval = null
     }
   }
@@ -300,7 +301,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.slotDuration,
     )
     if (slotCnt > config.MAX_TIMELINE_SLOTS) {
-      console.warn('slotDuration results in too many cells')
+      warn('Invalid option `slotDuration`: too many timeline cells.')
       tDateProfile.slotDuration = null
     }
   }
@@ -309,7 +310,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   if (tDateProfile.labelInterval && tDateProfile.slotDuration) {
     const slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
     if (slotsPerLabel === null || slotsPerLabel < 1) {
-      console.warn('slotHeaderInterval must be a multiple of slotDuration')
+      warn('Invalid option `slotHeaderInterval`: must be a multiple of `slotDuration`.')
       tDateProfile.slotDuration = null
     }
   }
@@ -539,6 +540,34 @@ function computeHeaderFormats(
       format2 ? [unit2] : [],
     ),
   }
+}
+
+function inferHeaderFormatUnit(rawFormat: any): string | null {
+  if (typeof rawFormat === 'object' && rawFormat) {
+    if (
+      rawFormat.fractionalSecondDigits ||
+      rawFormat.second ||
+      rawFormat.minute ||
+      rawFormat.hour ||
+      rawFormat.timeZoneName
+    ) {
+      return 'time'
+    }
+    if (rawFormat.day || rawFormat.weekday) {
+      return 'day'
+    }
+    if (rawFormat.week) {
+      return 'week'
+    }
+    if (rawFormat.month) {
+      return 'month'
+    }
+    if (rawFormat.year) {
+      return 'year'
+    }
+  }
+
+  return null
 }
 
 function buildCellRows(

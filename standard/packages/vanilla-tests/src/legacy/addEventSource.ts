@@ -14,8 +14,8 @@ describe('addEventSource', () => {
 
   it('correctly adds an array source', (done) => {
     go(
-      () => {
-        currentCalendar.addEventSource(eventArray)
+      (calendar) => {
+        calendar.addEventSource(eventArray)
       },
       null,
       done,
@@ -24,8 +24,8 @@ describe('addEventSource', () => {
 
   it('correctly adds a function source', (done) => {
     go(
-      () => {
-        currentCalendar.addEventSource((arg, callback) => {
+      (calendar) => {
+        calendar.addEventSource((arg, callback) => {
           callback(eventArray)
         })
       },
@@ -36,8 +36,8 @@ describe('addEventSource', () => {
 
   it('correctly adds an extended array source', (done) => {
     go(
-      () => {
-        currentCalendar.addEventSource({
+      (calendar) => {
+        calendar.addEventSource({
           className: 'arraysource',
           events: eventArray,
         })
@@ -51,8 +51,8 @@ describe('addEventSource', () => {
 
   it('correctly adds an extended func source', (done) => {
     go(
-      () => {
-        currentCalendar.addEventSource({
+      (calendar) => {
+        calendar.addEventSource({
           className: 'funcsource',
           events(arg, callback) {
             callback(eventArray)
@@ -67,21 +67,21 @@ describe('addEventSource', () => {
   })
 
   function go(addFunc, extraTestFunc, doneFunc) {
-    initCalendar()
-    addFunc()
+    let calendar = initCalendar()
+    addFunc(calendar)
 
-    checkAllEvents()
+    checkAllEvents(calendar)
     if (extraTestFunc) {
       extraTestFunc()
     }
 
     // move the calendar back out of view, then back in (for issue 2191)
-    currentCalendar.next()
-    currentCalendar.prev()
+    calendar.next()
+    calendar.prev()
 
     // otherwise, prev/next would be cancelled out by doneFunc's calendar destroy
     setTimeout(() => {
-      checkAllEvents()
+      checkAllEvents(calendar)
       if (extraTestFunc) {
         extraTestFunc()
       }
@@ -92,10 +92,10 @@ describe('addEventSource', () => {
 
   // Checks to make sure all events have been rendered and that the calendar
   // has internal info on all the events.
-  function checkAllEvents() {
-    expect(currentCalendar.getEvents().length).toEqual(3)
+  function checkAllEvents(calendar) {
+    expect(calendar.getEvents().length).toEqual(3)
 
-    let calendarWrapper = new CalendarWrapper(currentCalendar)
+    let calendarWrapper = new CalendarWrapper(calendar)
     expect(calendarWrapper.getEventEls().length).toEqual(3)
   }
 })

@@ -12,7 +12,7 @@ export default {
   todayText: '今天',
   yearText: '年',
   monthText: '月',
-  weekText: '周',
+  weekTextLong: '周',
   dayText: '日',
   listText: '日程',
   allDayText: '全天',

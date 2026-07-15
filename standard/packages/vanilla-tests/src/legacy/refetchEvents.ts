@@ -28,7 +28,7 @@ describe('refetchEvents', () => {
 
         scrollEl.scrollTop = 100
         setTimeout(() => {
-          currentCalendar.refetchEvents()
+          calendar.refetchEvents()
 
           setTimeout(() => {
             expect(scrollEl.scrollTop).toBe(100)
@@ -71,9 +71,9 @@ describe('refetchEvents', () => {
 
     describe('and all events are fetched synchronously', () => {
       it('all events are immediately updated', (done) => {
-        initCalendar({ eventSources })
+        let calendar = initCalendar({ eventSources })
         fetchCount += 1
-        currentCalendar.refetchEvents()
+        calendar.refetchEvents()
         expect($('.fetch0').length).toEqual(0)
         expect($('.fetch1').length).toEqual(3)
         done()
@@ -96,13 +96,13 @@ describe('refetchEvents', () => {
           }, 100)
         }
 
-        initCalendar({
+        let calendar = initCalendar({
           eventSources,
         })
 
         setTimeout(() => {
           fetchCount += 1
-          currentCalendar.refetchEvents()
+          calendar.refetchEvents()
           expect($('.fetch0').length).toEqual(3) // original events still on the calendar
           expect($('.fetch1').length).toEqual(0) // new events not yet refetched
 

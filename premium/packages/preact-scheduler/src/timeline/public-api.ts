@@ -1,2 +1,0 @@
-
-export { TimelineOptions } from './options'

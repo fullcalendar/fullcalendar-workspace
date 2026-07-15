@@ -25,10 +25,10 @@ describe('getEventSource', () => {
   })
 
   it('retreives the queried event source', (done) => {
-    initCalendar()
+    let calendar = initCalendar()
 
-    let eventSource1 = currentCalendar.getEventSourceById('source1')
-    let eventSource2 = currentCalendar.getEventSourceById('source2')
+    let eventSource1 = calendar.getEventSourceById('source1')
+    let eventSource2 = calendar.getEventSourceById('source2')
 
     expect(eventSource1.id).toBe('source1')
     expect(eventSource2.id).toBe('source2')

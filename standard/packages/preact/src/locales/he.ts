@@ -8,7 +8,7 @@ export default {
   todayText: 'היום',
   yearText: 'שנה',
   monthText: 'חודש',
-  weekText: 'שבוע',
+  weekTextLong: 'שבוע',
   dayText: 'יום',
   listText: 'סדר יום',
   allDayText: 'כל היום',

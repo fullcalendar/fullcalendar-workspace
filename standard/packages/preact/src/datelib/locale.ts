@@ -31,7 +31,7 @@ const MINIMAL_RAW_EN_LOCALE = {
   nextYearText: 'Next year',
   yearText: 'Year',
   monthText: 'Month',
-  weekText: 'Week',
+  weekTextLong: 'Week',
   dayText: 'Day',
   listText: 'List',
   closeHint: 'Close',
@@ -49,7 +49,7 @@ things that derive from other translatable strings.
 const RAW_EN_LOCALE = {
   ...MINIMAL_RAW_EN_LOCALE,
 
-  // if a locale doesn't define this, fall back to weekText, don't use EN
+  // if a locale doesn't define this, fall back to weekTextLong, don't use EN
   weekTextShort: 'W',
 
   todayHint: (unitText: string, unit: string) => {

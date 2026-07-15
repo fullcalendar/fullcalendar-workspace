@@ -9,7 +9,7 @@ describe('implicit unselection', () => {
     let selectFired = 0
     let unselectFired = 0
 
-    initCalendar({
+    let calendar = initCalendar({
       select() {
         selectFired += 1
       },
@@ -18,11 +18,11 @@ describe('implicit unselection', () => {
       },
     })
 
-    currentCalendar.select('2018-09-24', '2018-10-03') // will still be visible after .next()
+    calendar.select('2018-09-24', '2018-10-03') // will still be visible after .next()
     expect(selectFired).toBe(1)
     expect(unselectFired).toBe(0)
 
-    currentCalendar.next()
+    calendar.next()
     expect(selectFired).toBe(1)
     expect(unselectFired).toBe(1) // unselected
   })
@@ -31,7 +31,7 @@ describe('implicit unselection', () => {
     let selectFired = 0
     let unselectFired = 0
 
-    initCalendar({
+    let calendar = initCalendar({
       select() {
         selectFired += 1
       },
@@ -40,11 +40,11 @@ describe('implicit unselection', () => {
       },
     })
 
-    currentCalendar.select('2018-09-09', '2018-09-14') // will still be visible after view switch
+    calendar.select('2018-09-09', '2018-09-14') // will still be visible after view switch
     expect(selectFired).toBe(1)
     expect(unselectFired).toBe(0)
 
-    currentCalendar.changeView('dayGridWeek')
+    calendar.changeView('dayGridWeek')
     expect(selectFired).toBe(1)
     expect(unselectFired).toBe(1) // unselected
   })

@@ -172,6 +172,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private timeScroller: ScrollerSyncerInterface
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
+  private maxVScroll: number | undefined
 
   // updated in-place
   // .time takes precedence
@@ -217,7 +218,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* table settings */
 
-    let verticalScrolling = !getIsHeightAuto(options)
+    let allowVerticalScrolling = !getIsHeightAuto(options)
     let tableHeaderSticky = getTableHeaderSticky(options)
     let footerScrollbarSticky = getFooterScrollbarSticky(options)
 
@@ -315,7 +316,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
         return Math.max(entitySpreadsheetHeight, entityTimeHeight)
       },
-      /* minHeight = */ (verticalScrolling && options.expandRows)
+      /* minHeight = */ (allowVerticalScrolling && options.expandRows)
         ? timeClientHeight
         : undefined,
     )
@@ -361,7 +362,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     let yFillHeight: number
 
-    if (verticalScrolling) {
+    if (allowVerticalScrolling) {
       yFillHeight = timeClientHeight != null
         ? Math.max(yFillBottom, timeClientHeight) - yFillTop
         : undefined
@@ -406,11 +407,17 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         (timeBottomScrollbarWidth || 0),
     )
 
-    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
-      timeClientHeight != null && timeClientHeight > totalBodyHeight
+    const maxVScroll = this.maxVScroll =
+      (allowVerticalScrolling && timeClientHeight != null)
+        ? Math.max(0, totalBodyHeight - timeClientHeight)
+        : 0
 
-    const spreadsheetNeedsBottomFiller = rowsAreExpanding || Boolean(spreadsheetBottomFiller)
-    const timelineNeedsBottomFiller = rowsAreExpanding || Boolean(timelineBottomFiller)
+    const allowBottomFiller =
+      !options.expandRows && // if rows expand, then we never need filler
+      !maxVScroll // no scrolling possible
+
+    const spreadsheetNeedsBottomFiller = allowBottomFiller || Boolean(spreadsheetBottomFiller)
+    const timelineNeedsBottomFiller = allowBottomFiller || Boolean(timelineBottomFiller)
 
     return (
       <ViewContainer
@@ -427,7 +434,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             borderlessX,
             borderlessTop,
             borderlessBottom,
-            multiMonthColumnCount: 0,
+            multiMonthColumns: 0,
           }),
           classNames.flexCol,
         )}
@@ -435,7 +442,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
           resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
-          className={verticalScrolling ? classNames.liquid : ''}
+          className={allowVerticalScrolling ? classNames.liquid : ''}
 
           /* spreadsheet
           --------------------------------------------------------------------------------- */
@@ -454,7 +461,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   tableHeaderSticky && classNames.tableHeaderSticky,
@@ -527,7 +534,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* spreadsheet BODY
               ---------------------------------------------------------------------------- */}
               <Scroller
-                vertical={verticalScrolling}
+                vertical={allowVerticalScrolling}
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
@@ -535,11 +542,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
-                  verticalScrolling && classNames.liquid,
+                  allowVerticalScrolling && classNames.liquid,
                 )}
                 style={{
                   zIndex: 0,
@@ -605,7 +612,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   tableHeaderSticky && classNames.tableHeaderSticky,
@@ -712,7 +719,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area BODY (w/ events)
               ---------------------------------------------------------------------------- */}
               <Scroller
-                vertical={verticalScrolling}
+                vertical={
+                  allowVerticalScrolling &&
+                  // infer whether scrolling would happen. prevents clientHeight thrashing due to horizontal scrollbars
+                  (totalBodyHeight != null && timeClientHeight != null && totalBodyHeight > timeClientHeight)
+                }
                 horizontal
                 hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
                 className={joinClassNames(
@@ -720,11 +731,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderlessX,
                     borderlessTop,
                     borderlessBottom,
-                    multiMonthColumnCount: 0,
+                    multiMonthColumns: 0,
                   }),
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
-                  verticalScrolling && classNames.liquid,
+                  allowVerticalScrolling && classNames.liquid,
                 )}
                 style={{
                   zIndex: 0,
@@ -732,12 +743,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
                 clientHeightRef={
-                  verticalScrolling
+                  allowVerticalScrolling
                     ? this.handleTimeClientHeight
                     : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
                 }
                 bottomScrollbarWidthRef={
-                  verticalScrolling
+                  allowVerticalScrolling
                     ? this.handleTimeBottomScrollbarWidth
                     : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
                 }
@@ -805,6 +816,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         tDateProfile={tDateProfile}
                         nowDate={props.nowDate}
                         slotWidth={slotWidth}
+                        clipStart={slotDateShift?.[0]}
                       />
                     )}
                   </div>
@@ -947,7 +959,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       this.resetTimeScroll()
     }
 
-    // this.timeScroller.addScrollStartListener(this.handleTimeScrollStart)
     this.timeScroller.addScrollListener(this.handleTimeScroll)
     this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
 
@@ -1177,30 +1188,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.applyTimeScroll()
   }
 
-  // NOTE: isUser is malfuncioning. FIX
-  // but using handleTimeScroll to reset the scroll.time is okay too
-  // private handleTimeScrollStart = (isUser: boolean) => {
-  // }
-
   // HACKY
-  private handleTimeScroll = (isUser: boolean, scroll: number) => {
-    if (isUser) {
-      this.scroll.time = undefined
-      this.scroll.x = scroll
-      this._handleTimeScroll()
-    }
+  // can't use isDevice because we want programmatic .scrollLeft assignments to work with scroll-virtualization too.
+  // the main reason we use a isDevice gate is to prevent the initial-scroll assignment from triggering handleTimeScroll,
+  // but the debounce luckily helps us in this case
+  private handleTimeScroll = (_isDevice: boolean, scroll: number) => {
+    this.scroll.x = scroll
+    this._handleTimeScroll()
   }
   private _handleTimeScroll = debounce(() => {
-    this.slotVirtualizer.handleScroll(this.scroll.x)
+    this.scroll.time = undefined // prevents computeTimeScroll from computing based on time
+    const scrollX = this.scroll.x
+
+    this.slotVirtualizer.handleScroll(scrollX)
     for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
-      timeHeaderVirtualizer.handleScroll(this.scroll.x)
+      timeHeaderVirtualizer.handleScroll(scrollX)
     }
   }, 10)[0]
 
-  private handleTimeScrollEnd = (isUser: boolean) => {
-    if (isUser) {
-      setRef(this.props.scrollRef, this.scroll)
-    }
+  private handleTimeScrollEnd = () => {
+    setRef(this.props.scrollRef, this.scroll)
   }
 
   private applyTimeScroll() {
@@ -1216,6 +1223,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
+  // used by render() for virtualization too
   private computeTimeScroll(): number | undefined {
     const { props, context, scroll } = this
     const { tDateProfile } = props
@@ -1236,13 +1244,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // ENTITY (RESOURCE) Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  private handleResourceScrollRequest = (resoureId: string) => {
-    this.scroll.entityId = resoureId
+  private handleResourceScrollRequest = (resourceId: string) => {
+    this.scroll.entityId = resourceId
     this.scroll.fromBottom = undefined
     this.applyEntityScroll()
   }
 
-  private handleEntityScroll = (isUser: boolean, scroll: number) => {
+  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
     if (!getIsHeightAuto(this.context.options)) {
       this.setVirtualizerScroll(scroll)
     }
@@ -1256,8 +1264,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleEntityScrollEnd = (isUser: boolean) => {
-    if (isUser) {
+  private handleEntityScrollEnd = () => {
+    if (!this.isTrackingWindowScroll) {
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
 
@@ -1297,12 +1305,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
       if (top != null) {
         const bottom = top + height
-        return (
+        const requestedScrollTop =
           fromBottom != null ?
             bottom - fromBottom : // pixels from bottom edge
             top + // just use top edge
               (top ? 1 : 0) // overcome top border
-        )
+
+        return Math.min(this.maxVScroll, requestedScrollTop)
       }
     }
   }

@@ -19,13 +19,13 @@ describe('Resource::remove', () => {
 
       expect(getResourceIds(calendar)).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.getResourceById('a').remove()
+      calendar.getResourceById('a').remove()
       expect(getResourceIds(calendar)).toEqual(['b', 'c'])
 
-      currentCalendar.getResourceById('b').remove()
+      calendar.getResourceById('b').remove()
       expect(getResourceIds(calendar)).toEqual(['c'])
 
-      currentCalendar.getResourceById('c').remove()
+      calendar.getResourceById('c').remove()
       expect(getResourceIds(calendar)).toEqual([])
     })
 

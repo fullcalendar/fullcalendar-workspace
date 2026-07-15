@@ -25,7 +25,10 @@ const resources = [
 
 const theme = createTheme({
   cssVariables: true,
-  colorSchemes: { light: true, dark: true },
+  colorSchemes: {
+    light: true,
+    dark: false, // TODO: enable this, but via UI switcher
+  },
 })
 
 export default function App() {

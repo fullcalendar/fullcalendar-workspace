@@ -13,7 +13,7 @@ describe('defaultTimedEventDuration', () => {
     })
 
     it('correctly calculates an unspecified end when using a Duration object input', () => {
-      initCalendar({
+      let calendar = initCalendar({
         defaultTimedEventDuration: { hours: 2, minutes: 30 },
         events: [
           {
@@ -22,12 +22,12 @@ describe('defaultTimedEventDuration', () => {
           },
         ],
       })
-      let event = currentCalendar.getEvents()[0]
+      let event = calendar.getEvents()[0]
       expect(event.end).toEqualDate('2014-05-05T06:30:00Z')
     })
 
     it('correctly calculates an unspecified end when using a string Duration input', () => {
-      initCalendar({
+      let calendar = initCalendar({
         defaultTimedEventDuration: '03:15:00',
         events: [
           {
@@ -36,7 +36,7 @@ describe('defaultTimedEventDuration', () => {
           },
         ],
       })
-      let event = currentCalendar.getEvents()[0]
+      let event = calendar.getEvents()[0]
       expect(event.end).toEqualDate('2014-05-05T07:15:00Z')
     })
   })

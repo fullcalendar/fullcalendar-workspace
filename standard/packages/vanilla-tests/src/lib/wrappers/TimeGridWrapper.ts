@@ -229,6 +229,7 @@ export class TimeGridWrapper {
         $(dayEls).simulate('drag', {
           debug,
           isTouch: true,
+          delay: 200, // simulate hold
           point: startPoint,
           end: endPoint,
           onRelease: () => resolve(),

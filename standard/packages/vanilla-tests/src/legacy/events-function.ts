@@ -74,7 +74,7 @@ describe('events as a function', () => {
           expect(info.start).toEqualDate(plainAndZoneToDate('2014-04-27', timeZone))
           expect(info.end).toEqualDate(plainAndZoneToDate('2014-06-08', timeZone))
           setTimeout(() => {
-            currentCalendar.setOption('timeZone', 'UTC')
+            calendar.setOption('timeZone', 'UTC')
           }, 0)
         } else if (callCnt === 2) {
           expect(info.timeZone).toEqual('UTC')
@@ -85,7 +85,7 @@ describe('events as a function', () => {
       },
     }
 
-    initCalendar(options)
+    let calendar = initCalendar(options)
   })
 
   it('requests correctly with event source extended form', (done) => {

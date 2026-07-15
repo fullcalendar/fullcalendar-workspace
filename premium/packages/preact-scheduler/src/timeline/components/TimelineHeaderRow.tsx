@@ -116,10 +116,10 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
   handleInnerWidths = () => {
     if (this._isUnmounting) return
     const innerWidthMap = this.innerWidthRefMap.current
-    let max = 0
+    let max: number | null = null
 
     for (const innerWidth of innerWidthMap.values()) {
-      max = Math.max(max, innerWidth)
+      max = Math.max(max || 0, innerWidth)
     }
 
     // TODO: ensure not equal?
@@ -129,10 +129,10 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
   handleInnerHeights = () => {
     if (this._isUnmounting) return
     const innerHeightMap = this.innerHeightRefMap.current
-    let max = 0
+    let max: number | null = null
 
     for (const innerHeight of innerHeightMap.values()) {
-      max = Math.max(max, innerHeight)
+      max = Math.max(max || 0, innerHeight)
     }
 
     // TODO: ensure not equal?

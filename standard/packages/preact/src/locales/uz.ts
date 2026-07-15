@@ -11,7 +11,7 @@ export default {
   todayText: 'Bugun',
   yearText: 'Yil',
   monthText: 'Oy',
-  weekText: 'Xafta',
+  weekTextLong: 'Xafta',
   dayText: 'Kun',
   listText: 'Kun tartibi',
   allDayText: 'Kun bo\'yi',

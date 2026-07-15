@@ -10,17 +10,21 @@ export interface TimelineNowIndicatorLineProps {
 
   // dimensions
   slotWidth: number | undefined
+
+  // virtualization (optional)
+  clipStart?: number
 }
 
 export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicatorLineProps> {
   render() {
     const { props, context } = this
+    const clipStart = props.clipStart ?? 0
 
     const xStyle: { insetInlineStart?: number } =
       props.slotWidth == null
         ? {}
         : {
-            insetInlineStart: dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+            insetInlineStart: dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth) - clipStart
           }
 
     return (

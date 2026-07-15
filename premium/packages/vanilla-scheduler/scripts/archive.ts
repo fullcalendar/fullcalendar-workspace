@@ -24,18 +24,18 @@ const archiveSources: { cwd: string, patterns: string[], renames?: Record<string
   {
     cwd: thisPkgDir,
     patterns: [
-      'dist/all.global.js',
+      'dist/all/global.js',
       'examples/**/*',
     ],
     renames: {
-      'dist/all.global.js': 'dist/fullcalendar-scheduler.global.js',
+      'dist/all/global.js': 'dist/fullcalendar-scheduler.global.js',
     },
   },
   {
     cwd: vanillaPkgDir,
     patterns: [
-      'dist/all.global.js',
-      'dist/locales-all.global.js',
+      'dist/all/global.js',
+      'dist/locales-all/global.js',
       'dist/skeleton.css',
       'dist/locales/*.global.js',
       'dist/themes/*/global.js',
@@ -44,15 +44,15 @@ const archiveSources: { cwd: string, patterns: string[], renames?: Record<string
       'dist/themes/*/palettes/**/*',
     ],
     renames: {
-      'dist/all.global.js': 'dist/fullcalendar.global.js',
+      'dist/all/global.js': 'dist/fullcalendar.global.js',
     },
   },
 ]
 
 // Applied to all examples/**/*.html files
 const htmlReplacements: [from: string, to: string][] = [
-  ['../dist/all.global.js', '../dist/fullcalendar-scheduler.global.js'],
-  ['../../../../standard/packages/vanilla/dist/all.global.js', '../dist/fullcalendar.global.js'],
+  ['../dist/all/global.js', '../dist/fullcalendar-scheduler.global.js'],
+  ['../../../../standard/packages/vanilla/dist/all/global.js', '../dist/fullcalendar.global.js'],
   ['../../../../standard/packages/vanilla/dist/', '../dist/'],
 ]
 

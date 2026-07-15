@@ -37,7 +37,7 @@ describe('timeline date range', () => {
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
   it('can go back by a month', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2019-04-23',
       initialView: 'timelineSpecial',
       views: {
@@ -50,10 +50,10 @@ describe('timeline date range', () => {
       },
     })
 
-    expectRenderRange('2019-04-01', '2019-07-01')
-    currentCalendar.prev()
-    expectRenderRange('2019-03-01', '2019-06-01')
-    currentCalendar.prev()
-    expectRenderRange('2019-02-01', '2019-05-01')
+    expectRenderRange(calendar, '2019-04-01', '2019-07-01')
+    calendar.prev()
+    expectRenderRange(calendar, '2019-03-01', '2019-06-01')
+    calendar.prev()
+    expectRenderRange(calendar, '2019-02-01', '2019-05-01')
   })
 })

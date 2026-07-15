@@ -247,7 +247,7 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-05-02', end: '2020-05-03', title: 'event e' },
         { start: '2020-05-02', end: '2020-05-03', title: 'event f' },
       ],
-    }, $container.find('div'))
+    }, $container.find('div')[0])
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     await waitTimeout()
@@ -710,4 +710,44 @@ describe('dayGrid advanced event rendering', () => {
     // two weeks, two distinct lines of events (one per week)
     expect(Object.keys(offsetTopHash).length).toBe(2)
   })
+
+  // When showNonCurrentDates: false is set, events/bookings that fall in the first or last week of a month disappear when navigating between months using the prev/next buttons.
+  // https://jsfiddle.net/cv02ywmk/1
+  describe('when showNonCurrentDates: false', () => {
+    pushOptions({
+      showNonCurrentDates: false,
+    })
+
+    it('renders asynchronous events without accidentally hiding on prev/next', async () => {
+      const EVENTS = [
+        { // on a day that in next month becomes disabled
+          "url": "http:\/\/google.com\/",
+          "title": "Click for Google",
+          "start": "2026-06-28"
+        }
+      ]
+      const calendar = initCalendar({
+        initialDate: '2026-06-17',
+        events(info, success) {
+          setTimeout(() => {
+            success(EVENTS)
+          }, 100)
+        }
+      })
+      await waitTimeout(200)
+
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())
+      expect(visibleEventEls.length).toBe(1)
+
+      calendar.next()
+      await waitTimeout(200)
+      calendar.prev()
+      await waitTimeout(200)
+
+      visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())
+      expect(visibleEventEls.length).toBe(1)
+    })
+  })
+
 })

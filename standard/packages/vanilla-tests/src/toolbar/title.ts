@@ -14,9 +14,9 @@ describe('calendar title', () => {
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 
       expect(toolbarWrapper.getTitleText()).toBe('March 2017')
-      currentCalendar.changeView('timeGridWeek')
+      calendar.changeView('timeGridWeek')
       expect(toolbarWrapper.getTitleText()).toBe(`Mar${enUsSep}Apr 2017`)
-      currentCalendar.changeView('dayGridMonth')
+      calendar.changeView('dayGridMonth')
       expect(toolbarWrapper.getTitleText()).toBe('March 2017')
     })
   })

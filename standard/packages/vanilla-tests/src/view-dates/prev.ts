@@ -16,9 +16,9 @@ describe('prev', () => {
     })
 
     it('moves back by one week', () => {
-      initCalendar()
-      currentCalendar.prev()
-      expectActiveRange('2017-05-28', '2017-06-04')
+      let calendar = initCalendar()
+      calendar.prev()
+      expectActiveRange(calendar, '2017-05-28', '2017-06-04')
     })
 
     describe('when two week dateIncrement', () => {
@@ -27,33 +27,33 @@ describe('prev', () => {
       })
 
       it('moves back by two weeks', () => {
-        initCalendar()
-        currentCalendar.prev()
-        expectActiveRange('2017-05-21', '2017-05-28')
+        let calendar = initCalendar()
+        calendar.prev()
+        expectActiveRange(calendar, '2017-05-21', '2017-05-28')
       })
     })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4595
   it('can navigate back when starting late in month', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2019-03-31T12:00',
       initialView: 'dayGridMonth',
     })
-    expectActiveRange('2019-02-24', '2019-04-07')
-    currentCalendar.prev()
-    expectActiveRange('2019-01-27', '2019-03-10')
+    expectActiveRange(calendar, '2019-02-24', '2019-04-07')
+    calendar.prev()
+    expectActiveRange(calendar, '2019-01-27', '2019-03-10')
   })
 
   // related to #4595
   it('can navigate forward when starting late in month', () => {
-    initCalendar({
+    let calendar = initCalendar({
       initialDate: '2019-03-31T12:00',
       initialView: 'dayGridMonth',
     })
-    expectActiveRange('2019-02-24', '2019-04-07')
-    currentCalendar.next()
-    expectActiveRange('2019-03-31', '2019-05-12')
+    expectActiveRange(calendar, '2019-02-24', '2019-04-07')
+    calendar.next()
+    expectActiveRange(calendar, '2019-03-31', '2019-05-12')
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5319
@@ -70,10 +70,10 @@ describe('prev', () => {
         },
       },
     })
-    expectActiveRange('2021-06-14', '2021-07-12')
+    expectActiveRange(calendar, '2021-06-14', '2021-07-12')
     calendar.prev() // back a week
-    expectActiveRange('2021-06-07', '2021-07-05')
+    expectActiveRange(calendar, '2021-06-07', '2021-07-05')
     calendar.prev() // back a week
-    expectActiveRange('2021-05-31', '2021-06-28')
+    expectActiveRange(calendar, '2021-05-31', '2021-06-28')
   })
 })

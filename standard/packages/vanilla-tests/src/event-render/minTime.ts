@@ -49,7 +49,7 @@ describe('slotMinTime', () => { // TODO: rename file
 
   it('can be changed dynamically', () => {
     let calendar = initCalendar()
-    currentCalendar.setOption('slotMinTime', '09:00')
+    calendar.setOption('slotMinTime', '09:00')
 
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     expect(timeGridWrapper.getTimeAxisInfo()[0].text).toBe('9am')

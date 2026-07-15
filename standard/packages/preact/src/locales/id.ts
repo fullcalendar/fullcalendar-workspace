@@ -11,7 +11,7 @@ export default {
   todayText: 'hari ini',
   yearText: 'Tahun',
   monthText: 'Bulan',
-  weekText: 'Minggu',
+  weekTextLong: 'Minggu',
   weekTextShort: 'Mg',
   dayText: 'Hari',
   listText: 'Agenda',

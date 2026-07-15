@@ -73,6 +73,7 @@ export class App {
     if (title) {
       calendarApi.addEvent({
         id: createEventId(),
+        resourceId: selectInfo.resource?.id,
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,

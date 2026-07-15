@@ -760,4 +760,49 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
     expect(visibleEventEls.length).toBe(7)
     expect(anyElsIntersect(visibleEventEls)).toBe(false)
   })
+
+  it('removing and readding all resource/events should not retain old resource height', async () => {
+    let resources = [
+      { id: 'a', title: 'Space A' },
+      { id: 'b', title: 'Space B' },
+      { id: 'c', title: 'Space C' },
+    ]
+    let events = [
+      { resourceId: 'a', title: 'Booking A0', start: '2026-06-09', end: '2026-06-12' },
+      { resourceId: 'a', title: 'Booking A1', start: '2026-06-09', end: '2026-06-12' },
+      { resourceId: 'a', title: 'Booking A2', start: '2026-06-09', end: '2026-06-12' },
+      { resourceId: 'a', title: 'Booking A3', start: '2026-06-09', end: '2026-06-12' },
+      { resourceId: 'a', title: 'Booking A4', start: '2026-06-09', end: '2026-06-12' },
+      { resourceId: 'a', title: 'Booking A5', start: '2026-06-09', end: '2026-06-12' },
+    ]
+    let calendar = initCalendar({
+      initialView: 'resourceTimelineWeek',
+      initialDate: '2026-06-10',
+      firstDay: 1,
+      contentHeight: 800,
+      expandRows: false,
+      slotDuration: '24:00:00',
+      resources,
+      events,
+    })
+    await waitTimeout()
+
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let tallLaneHeight = timelineGridWrapper.getResourceLaneEl('a').offsetHeight
+    expect(tallLaneHeight).toBeGreaterThan(timelineGridWrapper.getResourceLaneEl('b').offsetHeight)
+
+    calendar.getResources().forEach((r) => r.remove())
+    await waitTimeout()
+
+    // must happen AFTER the resources removed
+    calendar.removeAllEventSources()
+    await waitTimeout()
+
+    resources.forEach((r) => calendar.addResource(r, false));
+    await waitTimeout()
+
+    let emptyLaneHeight = timelineGridWrapper.getResourceLaneEl('a').offsetHeight
+    expect(emptyLaneHeight).toBe(timelineGridWrapper.getResourceLaneEl('b').offsetHeight)
+    expect(emptyLaneHeight).toBeLessThan(tallLaneHeight)
+  })
 })

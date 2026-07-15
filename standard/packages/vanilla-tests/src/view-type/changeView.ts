@@ -11,13 +11,13 @@ describe('changeView', () => {
   it('can change views', () => {
     let calendar = initCalendar()
     calendar.changeView('timeGridWeek')
-    expectActiveRange('2017-06-04', '2017-06-11')
+    expectActiveRange(calendar, '2017-06-04', '2017-06-11')
   })
 
   it('can change views and navigate date', () => {
     let calendar = initCalendar()
     calendar.changeView('timeGridDay', '2017-06-26')
-    expectActiveRange('2017-06-26', '2017-06-27')
+    expectActiveRange(calendar, '2017-06-26', '2017-06-27')
   })
 
   it('can change views and change activeRange', () => {
@@ -26,7 +26,7 @@ describe('changeView', () => {
       start: '2017-07-04',
       end: '2017-07-08',
     })
-    expectActiveRange('2017-07-04', '2017-07-08')
+    expectActiveRange(calendar, '2017-07-04', '2017-07-08')
   })
 
   describe('when switching away from view, then back', () => {

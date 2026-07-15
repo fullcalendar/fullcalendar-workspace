@@ -38,15 +38,15 @@ export function processColOptions(options: ViewOptionsRefined) {
           : false
       ),
 
-      headerClass: joinFuncishClassNames(options.resourceColumnHeaderClass, colSpec.headerClass),
-      headerInnerClass: joinFuncishClassNames(options.resourceColumnHeaderInnerClass, colSpec.headerInnerClass),
-      headerResizerClass: joinFuncishClassNames(options.resourceColumnResizerClass, colSpec.headerResizerClass),
+      headerClass: joinFuncishClassNames(options.resourceColumnHeaderClass, colSpec.headerClass, 'resourceColumnHeaderClass'),
+      headerInnerClass: joinFuncishClassNames(options.resourceColumnHeaderInnerClass, colSpec.headerInnerClass, 'resourceColumnHeaderInnerClass'),
+      headerResizerClass: joinFuncishClassNames(options.resourceColumnResizerClass, colSpec.headerResizerClass, 'resourceColumnResizerClass'),
       headerContent: mergeContentInjectors(options.resourceColumnHeaderContent, colSpec.headerContent),
       headerDidMount: mergeLifecycleCallbacks(options.resourceColumnHeaderDidMount, colSpec.headerDidMount),
       headerWillUnmount: mergeLifecycleCallbacks(options.resourceColumnHeaderWillUnmount, colSpec.headerWillUnmount),
 
-      cellClass: joinFuncishClassNames(options.resourceCellClass, colSpec.cellClass),
-      cellInnerClass: joinFuncishClassNames(options.resourceCellInnerClass, colSpec.cellInnerClass),
+      cellClass: joinFuncishClassNames(options.resourceCellClass, colSpec.cellClass, 'resourceCellClass'),
+      cellInnerClass: joinFuncishClassNames(options.resourceCellInnerClass, colSpec.cellInnerClass, 'resourceCellInnerClass'),
       cellContent: mergeContentInjectors(options.resourceCellContent, colSpec.cellContent),
       cellDidMount: mergeLifecycleCallbacks(options.resourceCellDidMount, colSpec.cellDidMount),
       cellWillUnmount: mergeLifecycleCallbacks(options.resourceCellWillUnmount, colSpec.cellWillUnmount),

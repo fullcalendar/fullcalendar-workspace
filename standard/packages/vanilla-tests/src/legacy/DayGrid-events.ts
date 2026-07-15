@@ -193,9 +193,9 @@ describe('DayGrid event rendering', () => {
 
     async function testSeg(calendarOptions, testSegOptions) {
       calendarOptions.direction = direction
-      initCalendar(calendarOptions)
+      let calendar = initCalendar(calendarOptions)
       await waitTimeout()
-      directionallyTestSeg(testSegOptions)
+      directionallyTestSeg(calendar, testSegOptions)
     }
   }
 

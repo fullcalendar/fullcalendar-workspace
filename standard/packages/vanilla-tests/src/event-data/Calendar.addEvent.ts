@@ -4,35 +4,35 @@ describe('addEvent', () => {
   })
 
   it('will re-add an event that was previously removed', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { id: 'a', start: '2018-09-07' },
       ],
     })
-    let event = currentCalendar.getEventById('a')
-    expect(currentCalendar.getEvents().length).toBe(1)
+    let event = calendar.getEventById('a')
+    expect(calendar.getEvents().length).toBe(1)
     event.remove()
-    expect(currentCalendar.getEvents().length).toBe(0)
-    let newEvent = currentCalendar.addEvent(event)
-    expect(currentCalendar.getEvents().length).toBe(1)
+    expect(calendar.getEvents().length).toBe(0)
+    let newEvent = calendar.addEvent(event)
+    expect(calendar.getEvents().length).toBe(1)
     expect(newEvent).toBe(event)
   })
 
   it('won\'t double-add an event that was previously added', () => {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { id: 'a', start: '2018-09-07' },
       ],
     })
-    let event = currentCalendar.getEventById('a')
-    expect(currentCalendar.getEvents().length).toBe(1)
-    let newEvent = currentCalendar.addEvent(event)
-    expect(currentCalendar.getEvents().length).toBe(1)
+    let event = calendar.getEventById('a')
+    expect(calendar.getEvents().length).toBe(1)
+    let newEvent = calendar.addEvent(event)
+    expect(calendar.getEvents().length).toBe(1)
     expect(newEvent).toBe(event)
   })
 
   it('will accept a string source ID', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [
         {
           id: '9',
@@ -44,13 +44,13 @@ describe('addEvent', () => {
       ],
     })
 
-    let theSource = currentCalendar.getEventSourceById('9')
-    let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
+    let theSource = calendar.getEventSourceById('9')
+    let newEvent = calendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
     expect(newEvent.source.id).toEqual(theSource.id)
   })
 
   it('will accept a number source ID', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [
         {
           id: '9',
@@ -62,13 +62,13 @@ describe('addEvent', () => {
       ],
     })
 
-    let theSource = currentCalendar.getEventSourceById('9')
-    let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
+    let theSource = calendar.getEventSourceById('9')
+    let newEvent = calendar.addEvent({ id: 'b', start: '2018-09-10' }, '9')
     expect(newEvent.source.id).toEqual(theSource.id)
   })
 
   it('will accept an object source', () => {
-    initCalendar({
+    let calendar = initCalendar({
       eventSources: [
         {
           id: '9',
@@ -80,8 +80,8 @@ describe('addEvent', () => {
       ],
     })
 
-    let theSource = currentCalendar.getEventSourceById('9')
-    let newEvent = currentCalendar.addEvent({ id: 'b', start: '2018-09-10' }, theSource)
+    let theSource = calendar.getEventSourceById('9')
+    let newEvent = calendar.addEvent({ id: 'b', start: '2018-09-10' }, theSource)
     expect(newEvent.source.id).toEqual(theSource.id)
   })
 })

@@ -25,15 +25,15 @@ describe('timeline addResource', () => {
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.changeView('resourceTimelineWeek')
+      calendar.changeView('resourceTimelineWeek')
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c'])
 
-      currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
+      calendar.addResource({ id: 'd', title: 'Auditorium D' })
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
 
-      currentCalendar.changeView('resourceTimelineDay')
+      calendar.changeView('resourceTimelineDay')
       await waitTimeout()
       expect(getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
     })
@@ -68,7 +68,7 @@ describe('timeline addResource', () => {
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
     await waitTimeout()
-    currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
+    calendar.addResource({ id: 'last', title: 'last resource' }, true)
     await waitTimeout()
 
     const spreadsheetScrollerEl = viewWrapper.getDataGridBodyEl()
@@ -91,7 +91,7 @@ describe('timeline addResource', () => {
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+      calendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       // expanded
       expect(dataGridWrapper.isRowExpanded('a')).toBe(true)
@@ -108,10 +108,52 @@ describe('timeline addResource', () => {
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+      calendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       expect(dataGridWrapper.isRowExpanded('a')).toBe(false)
       expect(dataGridWrapper.getResourceCellEl('a1')).toBeFalsy()
+    })
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/8072
+  describe('when adding resources with scrollTo with virtualization', () => {
+    describeValues({
+      'when height undefined': undefined,
+      'when height auto': 'auto',
+    }, (height) => {
+      it('positions resources correctly', async () => {
+        await ignoreResizeObserverLoops(async () => {
+          let calendar = initCalendar({
+            virtualization: true,
+            nowIndicator: true,
+            height,
+            initialView: 'resourceTimelineTest',
+            views: {
+              resourceTimelineTest: {
+                type: 'resourceTimeline',
+                slotDuration: { days: 1 },
+                visibleRange: { start: '2026-01-01', end: '2027-01-01' },
+              },
+            },
+            resources: [
+              { id: 'a', title: 'A', parentId: '' },
+              { id: 'b', title: 'B', parentId: 'a' },
+              { id: 'c', title: 'C', parentId: 'b' },
+              { id: 'd', title: 'D', parentId: 'c' },
+            ],
+          })
+          await waitTimeout()
+
+          let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
+          expect(dataGridWrapper.getResourceIds()).toEqual(['a', 'b', 'c', 'd'])
+
+          calendar.addResource({ id: 'e', title: 'E', parentId: 'b' }, /* scrollTo = */ true)
+          calendar.addResource({ id: 'f', title: 'F', parentId: 'e' }, /* scrollTo = */ true)
+          await waitTimeout()
+
+          expect(dataGridWrapper.getResourceIds()).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
+        })
+      })
     })
   })
 

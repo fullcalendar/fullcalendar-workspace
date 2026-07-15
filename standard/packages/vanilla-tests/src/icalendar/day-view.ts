@@ -30,19 +30,19 @@ describe('addICalEventSource with day view', () => {
   })
 
   it('adds a one-hour long meeting', (done) => {
-    loadICalendarWith(oneHourMeeting, () => {
+    loadICalendarWith(oneHourMeeting, (calendar) => {
       setTimeout(() => {
-        assertEventCount(1)
+        assertEventCount(calendar, 1)
         done()
       }, 100)
     })
   })
 
   it('adds a repeating weekly meeting', (done) => {
-    loadICalendarWith(recurringWeekly, () => {
+    loadICalendarWith(recurringWeekly, (calendar) => {
       setTimeout(() => {
-        assertEventCount(1)
-        const event = currentCalendar.getEvents()[0]
+        assertEventCount(calendar, 1)
+        const event = calendar.getEvents()[0]
         // test non-date props
         expect(event.title).toBe('Weekly Monday meeting')
         expect(event.url).toBe('https://fullcalendar.io/')
@@ -54,10 +54,10 @@ describe('addICalEventSource with day view', () => {
   })
 
   it('adds an all day event', (done) => {
-    loadICalendarWith(alldayEvent, () => {
+    loadICalendarWith(alldayEvent, (calendar) => {
       setTimeout(() => {
-        assertEventCount(1)
-        const events = currentCalendar.getEvents()
+        assertEventCount(calendar, 1)
+        const events = calendar.getEvents()
         events.forEach((event) => expect(event.allDay).toBeTruthy())
         // test non-date props
         expect(events[0].title).toBe('First conference')
@@ -70,18 +70,18 @@ describe('addICalEventSource with day view', () => {
   })
 
   it('ignores a munged event', (done) => {
-    loadICalendarWith(mungedOneHourMeeting, () => {
+    loadICalendarWith(mungedOneHourMeeting, (calendar) => {
       setTimeout(() => {
-        assertEventCount(0)
+        assertEventCount(calendar, 0)
         done()
       }, 100)
     })
   })
 
   it('ignores a meeting with a munged start', (done) => {
-    loadICalendarWith(meetingWithMungedStart, () => {
+    loadICalendarWith(meetingWithMungedStart, (calendar) => {
       setTimeout(() => {
-        assertEventCount(0)
+        assertEventCount(calendar, 0)
         done()
       }, 100)
     })
@@ -90,19 +90,21 @@ describe('addICalEventSource with day view', () => {
   it('sets default duration when forceEventDuration is enabled and no end or duration included in the VEVENT', (done) => {
     loadICalendarWith(
       timedMeetingWithoutEnd,
-      () => {
+      (calendar) => {
         setTimeout(() => {
-          assertEventCount(1)
-          const event = currentCalendar.getEvents()[0]
+          assertEventCount(calendar, 1)
+          const event = calendar.getEvents()[0]
           expect(event.end.getHours()).toEqual(event.start.getHours() + 3)
           done()
         }, 100)
       },
       (source) => {
-        initCalendar({
+        const calendar = initCalendar({
           forceEventDuration: true,
           defaultTimedEventDuration: '03:00',
-        }).addEventSource(source)
+        })
+        calendar.addEventSource(source)
+        return calendar
       },
     )
   })
@@ -110,19 +112,21 @@ describe('addICalEventSource with day view', () => {
   it('sets end to null when forceEventDuration is disabled and no end or duration included in the VEVENT', (done) => {
     loadICalendarWith(
       timedMeetingWithoutEnd,
-      () => {
+      (calendar) => {
         setTimeout(() => {
-          assertEventCount(1)
-          const event = currentCalendar.getEvents()[0]
+          assertEventCount(calendar, 1)
+          const event = calendar.getEvents()[0]
           expect(event.end).toBe(null)
           done()
         }, 100)
       },
       (source) => {
-        initCalendar({
+        const calendar = initCalendar({
           defaultTimedEventDuration: '03:00',
           forceEventDuration: false,
-        }).addEventSource(source)
+        })
+        calendar.addEventSource(source)
+        return calendar
       },
     )
   })
@@ -130,19 +134,21 @@ describe('addICalEventSource with day view', () => {
   it('does not override iCal DURATION in VEVENT', (done) => {
     loadICalendarWith(
       timedMeetingWithDuration,
-      () => {
+      (calendar) => {
         setTimeout(() => {
-          assertEventCount(1)
-          const event = currentCalendar.getEvents()[0]
+          assertEventCount(calendar, 1)
+          const event = calendar.getEvents()[0]
           expect(event.end.getHours()).toEqual(event.start.getHours() + 4)
           done()
         }, 100)
       },
       (source) => {
-        initCalendar({
+        const calendar = initCalendar({
           forceEventDuration: true,
           defaultTimedEventDuration: '03:00',
-        }).addEventSource(source)
+        })
+        calendar.addEventSource(source)
+        return calendar
       },
     )
   })
@@ -151,18 +157,20 @@ describe('addICalEventSource with day view', () => {
   it('respects RECURRENCE-ID and does not render double events', (done) => {
     loadICalendarWith(
       dataWithRecurrenceId,
-      () => {
+      (calendar) => {
         setTimeout(() => {
-          let timeGridWrapper = new TimeGridViewWrapper(currentCalendar).timeGrid
+          let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
           let eventEls = timeGridWrapper.getEventEls()
           expect(eventEls.length).toBe(1)
           done()
         }, 100)
       },
       (source) => {
-        initCalendar({
+        const calendar = initCalendar({
           initialDate: '2021-07-08',
-        }).addEventSource(source)
+        })
+        calendar.addEventSource(source)
+        return calendar
       },
     )
   })
@@ -179,11 +187,12 @@ describe('addICalEventSource with day view', () => {
       }
     })
 
-    initCalendar().addEventSource({ url: givenUrl, format: 'ics' } as EventSourceInput)
+    const calendar = initCalendar()
+    calendar.addEventSource({ url: givenUrl, format: 'ics' } as EventSourceInput)
 
     setTimeout(() => {
-      assertEventCount(1)
-      currentCalendar.next()
+      assertEventCount(calendar, 1)
+      calendar.next()
       expect(requestCnt).toBe(1)
       done()
     }, 100)
@@ -191,8 +200,8 @@ describe('addICalEventSource with day view', () => {
 
   function loadICalendarWith(
     rawICal: string,
-    assertions: () => void,
-    calendarSetup?: (source: EventSourceInput) => void,
+    assertions: (calendar) => void,
+    calendarSetup?: (source: EventSourceInput) => any,
   ) {
     const givenUrl = window.location.href + '/my-feed.php'
     fetchMock.get(/my-feed\.php/, {
@@ -202,25 +211,28 @@ describe('addICalEventSource with day view', () => {
 
     const source = { url: givenUrl, format: 'ics' } as EventSourceInput
 
+    let calendar
+
     if (calendarSetup) {
-      calendarSetup(source)
+      calendar = calendarSetup(source)
     } else {
-      initCalendar().addEventSource(source)
+      calendar = initCalendar()
+      calendar.addEventSource(source)
     }
 
     const [requestUrl] = fetchMock.lastCall()
     const requestParamStr = new URL(requestUrl).searchParams.toString()
     expect(requestParamStr).toBe('')
 
-    assertions()
+    assertions(calendar)
   }
 
   // Checks to make sure all events have been rendered and that the calendar
   // has internal info on all the events.
-  function assertEventCount(expectedCount: number) {
-    expect(currentCalendar.getEvents().length).toEqual(expectedCount)
+  function assertEventCount(calendar, expectedCount: number) {
+    expect(calendar.getEvents().length).toEqual(expectedCount)
 
-    let calendarWrapper = new CalendarWrapper(currentCalendar)
+    let calendarWrapper = new CalendarWrapper(calendar)
     expect(calendarWrapper.getEventEls().length).toEqual(expectedCount)
   }
 })
