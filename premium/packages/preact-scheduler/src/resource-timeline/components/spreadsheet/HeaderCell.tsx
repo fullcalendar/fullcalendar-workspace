@@ -4,9 +4,9 @@ import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight
 import classNames from '@fullcalendar/preact/protected-styles'
 import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface HeaderCellProps {
-  id?: string
+export interface HeaderCellProps extends AriaCellInput {
   colSpec: ColSpec
   resizer: boolean
   indent?: boolean
@@ -40,7 +40,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          id: props.id,
+          ...buildAriaCellAttrs(props),
           role: 'columnheader',
         }}
         className={joinClassNames(

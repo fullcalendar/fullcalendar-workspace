@@ -4,7 +4,6 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
 import { HeaderCell } from './HeaderCell'
-import { buildAriaCellId } from '../../aria'
 
 export interface HeaderRowProps {
   role?: 'row' | 'presentation'
@@ -75,9 +74,9 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
           return (
             <HeaderCell
               key={colIndex}
-              id={props.cellIdPrefix && props.rowIndex != null
-                ? buildAriaCellId(props.cellIdPrefix, 1 + props.rowIndex, colIndex)
-                : undefined}
+              cellIdPrefix={props.cellIdPrefix}
+              cellRowIndex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
+              cellColIndex={props.cellIdPrefix ? colIndex : undefined}
               width={colWidths[colIndex]}
               grow={colGrows[colIndex]}
               colSpec={colSpec}

@@ -15,9 +15,9 @@ import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
 import { ResourceCellInfo, ColSpec } from '../../structs'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceCellProps {
-  id?: string
+export interface ResourceCellProps extends AriaCellInput {
   colSpec: ColSpec
   resource: Resource
   field: string
@@ -53,7 +53,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          id: props.id,
+          ...buildAriaCellAttrs(props),
           role: colSpec.isMain ? 'rowheader' : 'gridcell',
           'aria-expanded': (colSpec.isMain && props.hasChildren) ? props.isExpanded : undefined,
           'data-resource-id': props.resource.id,

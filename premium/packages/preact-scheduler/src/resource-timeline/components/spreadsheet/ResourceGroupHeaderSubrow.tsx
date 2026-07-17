@@ -6,9 +6,9 @@ import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/re
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
 import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceGroupHeaderSubrowProps {
-  cellId?: string
+export interface ResourceGroupHeaderSubrowProps extends AriaCellInput {
   group: Group
   isExpanded: boolean // for aria
   colSpan: number // for aria
@@ -46,7 +46,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
       <ContentContainer
         tag="div"
         attrs={{
-          id: props.cellId,
+          ...buildAriaCellAttrs(props),
           role: 'rowheader',
           'aria-colspan': props.colSpan,
           'aria-expanded': props.isExpanded,

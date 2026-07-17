@@ -8,7 +8,6 @@ import { GroupCellLayout, GroupRowLayout, ResourceRowLayout } from "../../resour
 import { ColSpec } from '../../structs'
 import { ItemPosition } from '../../virtual/virtualizer'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { buildAriaCellId } from '../../aria'
 
 export interface BodySectionProps {
   cellIdPrefix: string
@@ -74,11 +73,9 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
                   role='presentation'
-                  cellId={buildAriaCellId(
-                    props.cellIdPrefix,
-                    1 + headerRowSpan + groupCellLayout.rowIndex,
-                    colIndex,
-                  )}
+                  cellIdPrefix={props.cellIdPrefix}
+                  cellRowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
+                  cellColIndex={colIndex}
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   top={groupCellPosition.start}
                   height={
@@ -121,11 +118,9 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 }}
               >
                 <ResourceGroupHeaderSubrow
-                  cellId={buildAriaCellId(
-                    props.cellIdPrefix,
-                    1 + headerRowSpan + groupRowLayout.rowIndex,
-                    0,
-                  )}
+                  cellIdPrefix={props.cellIdPrefix}
+                  cellRowIndex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                  cellColIndex={0}
                   group={group}
                   isExpanded={groupRowLayout.isExpanded}
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}

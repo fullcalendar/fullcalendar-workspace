@@ -5,7 +5,6 @@ import type { Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'
 import { ResourceCell } from './ResourceCell'
 import { ColSpec } from '../../structs'
-import { buildAriaCellId } from '../../aria'
 
 export interface ResourceSubrowProps {
   resource: Resource
@@ -90,9 +89,9 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
           return (
             <ResourceCell
               key={i} // eslint-disable-line react/no-array-index-key
-              id={props.cellIdPrefix && props.cellRowIndex != null
-                ? buildAriaCellId(props.cellIdPrefix, props.cellRowIndex, i)
-                : undefined}
+              cellIdPrefix={props.cellIdPrefix}
+              cellRowIndex={props.cellRowIndex}
+              cellColIndex={props.cellIdPrefix ? i : undefined}
               colSpec={colSpec}
               resource={resource}
               field={colSpec.field || 'title'}

@@ -19,10 +19,32 @@ export function buildAriaCellId(prefix: string, rowIndex: number, colIndex: numb
   return `${prefix}-${rowIndex}-${colIndex}`
 }
 
+// For components that render a cell participating in the proxy-row aria-owns scheme
+export interface AriaCellInput {
+  cellIdPrefix?: string
+  cellRowIndex?: number // 1-based, the final aria row index
+  cellColIndex?: number // 0-based
+}
+
+// Derives the cell's DOM id (referenced by proxy-row aria-owns) and aria-colindex from the same
+// (prefix, rowIndex, colIndex) source, so the id and column attributes can never disagree.
+export function buildAriaCellAttrs(props: AriaCellInput): {
+  id: string | undefined
+  'aria-colindex': number | undefined
+} {
+  return {
+    id: (props.cellIdPrefix && props.cellRowIndex != null && props.cellColIndex != null)
+      ? buildAriaCellId(props.cellIdPrefix, props.cellRowIndex, props.cellColIndex)
+      : undefined,
+    'aria-colindex': props.cellColIndex != null ? 1 + props.cellColIndex : undefined,
+  }
+}
+
 // Renders visually hidden proxy rows that own cells split across the spreadsheet and timeline panes.
-// All semantic columns are currently rendered, so browsers infer aria-colcount and aria-colindex.
-// If semantic columns are ever omitted or virtualized, add aria-colcount to the grid and
-// aria-colindex to the owned cells.
+// The grid declares aria-colcount and every owned cell declares aria-colindex. Inference from the
+// owned-cell order alone would misnumber rows covered by a vertically spanning group-column cell:
+// only the first covered row owns the spanning cell, so later covered rows' first owned cell would
+// be inferred as column 1 unless the AT applies aria-rowspan across proxy rows (unreliable).
 export function AriaProxyRows(props: AriaProxyRowsProps) {
   const {
     cellIdPrefix,
@@ -106,8 +128,14 @@ export function buildAriaBodyRows(
     ariaRow.colIndices.add(colIndex)
   }
 
-  // A vertically spanning group-column cell belongs to the first logical row it covers.
-  // Its owner row might be outside rowPositions while the spanning cell itself intersects the viewport.
+  // A vertically spanning group-column cell belongs to the first logical row it covers,
+  // mirroring HTML rowspan, where the spanned cell is a child of the first covered <tr>.
+  // Because the cell and the rows are virtualized independently, the owner row might be outside
+  // rowPositions while the spanning cell itself intersects the viewport (the cell covers later,
+  // mounted rows). We still emit a proxy row for that unmounted owner — it will own only the
+  // group cell, lacking the resource's naming rowheader and lane — because the alternative is
+  // worse: a mounted cell owned by no row surfaces as a stray direct child of the grid,
+  // breaking the table structure for assistive technology.
   for (let colIndex = 0; colIndex < groupColPositions.length; colIndex += 1) {
     for (const groupCellPosition of groupColPositions[colIndex]) {
       addCell(flatRowLayouts[groupCellPosition.item.visibleIndex], colIndex)

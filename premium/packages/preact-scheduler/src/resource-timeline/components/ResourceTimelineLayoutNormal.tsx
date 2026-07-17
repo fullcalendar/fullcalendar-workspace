@@ -58,7 +58,7 @@ import { BodySection } from './spreadsheet/BodySection'
 import { HeaderRow } from './spreadsheet/HeaderRow'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
-import { AriaProxyRows, buildAriaBodyRows, buildAriaCellId } from '../aria'
+import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs } from '../aria'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -359,7 +359,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       groupColCnt,
       colSpecs.length,
     )
-    const timelineHeaderCellId = buildAriaCellId(cellIdPrefix, 1, colSpecs.length)
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
@@ -433,6 +432,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         attrs={{
           role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
           'aria-rowcount': totalHeaderRowSpan + totalCnt,
+          'aria-colcount': colSpecs.length + 1,
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
@@ -505,7 +505,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       )}
                     >
                       <SuperHeaderCell
-                        id={buildAriaCellId(cellIdPrefix, 1, 0)}
+                        cellIdPrefix={cellIdPrefix}
+                        cellRowIndex={1}
+                        cellColIndex={0}
                         renderHooks={superHeaderRendering}
                         indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                         innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
@@ -652,7 +654,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {/* for screen reader users. zero-height */}
                   <div role='presentation'>
                     <div
-                      id={timelineHeaderCellId}
+                      {...buildAriaCellAttrs({
+                        cellIdPrefix,
+                        cellRowIndex: 1,
+                        cellColIndex: colSpecs.length,
+                      })}
                       role='columnheader'
                       aria-rowspan={totalHeaderRowSpan}
                       aria-label={options.eventsHint}
@@ -866,11 +872,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           }}
                         >
                           <GroupLane
-                            cellId={buildAriaCellId(
-                              cellIdPrefix,
-                              1 + totalHeaderRowSpan + rowLayout.rowIndex,
-                              colSpecs.length,
-                            )}
+                            cellIdPrefix={cellIdPrefix}
+                            cellRowIndex={1 + totalHeaderRowSpan + rowLayout.rowIndex}
+                            cellColIndex={colSpecs.length}
                             group={group}
                             expanded={rowLayout.isExpanded}
                             borderBottom={rowLayout.visibleIndex < displayedRowCnt - 1}
@@ -890,11 +894,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           {...splitProps[resource.id]}
                           key={resource.id /* TODO: use rowPosition.key? */}
                           role='presentation'
-                          cellId={buildAriaCellId(
-                            cellIdPrefix,
-                            1 + totalHeaderRowSpan + resourceLayout.rowIndex,
-                            colSpecs.length,
-                          )}
+                          cellIdPrefix={cellIdPrefix}
+                          cellRowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
+                          cellColIndex={colSpecs.length}
                           className={classNames.fillX}
                           resource={resource}
                           dateProfile={dateProfile}
