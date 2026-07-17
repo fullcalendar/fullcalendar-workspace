@@ -62,6 +62,7 @@ export const OPTION_REFINERS = {
   // Resource Timeline
   // -----------------
 
+  printMaxRows: Number,
   resourceColumnsWidth: identity as Identity<CssDimValue>,
   resourceColumns: identity as Identity<ColSpec[]>,
 
@@ -124,6 +125,11 @@ export type PremiumOptions = RawOptionsFromRefiners<typeof OPTION_REFINERS>
 export type PremiumOptionsRefined = RefinedOptionsFromRefiners<typeof OPTION_REFINERS>
 
 export const OPTION_DEFAULTS = {
+  // Resource Timeline
+  // -----------------
+
+  printMaxRows: 1000,
+
   // Resource DayGrid
   // ----------------
 
