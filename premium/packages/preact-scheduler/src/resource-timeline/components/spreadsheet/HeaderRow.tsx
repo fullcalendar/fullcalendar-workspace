@@ -4,14 +4,17 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
 import { HeaderCell } from './HeaderCell'
+import { buildAriaCellId } from '../../aria'
 
 export interface HeaderRowProps {
+  role?: 'row' | 'presentation'
   colSpecs: ColSpec[]
   colWidths: number[] | undefined
   colGrows?: number[]
   indent?: boolean // only for the 'main' cell
   indentWidth: number | undefined
   rowIndex?: number // 0-based
+  cellIdPrefix?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -59,8 +62,8 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
 
     return (
       <div
-        role="row"
-        aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
+        role={props.role || 'row'}
+        aria-rowindex={props.role !== 'presentation' && props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinClassNames(
           options.resourceHeaderRowClass,
           classNames.flexRow,
@@ -72,6 +75,9 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
           return (
             <HeaderCell
               key={colIndex}
+              id={props.cellIdPrefix && props.rowIndex != null
+                ? buildAriaCellId(props.cellIdPrefix, 1 + props.rowIndex, colIndex)
+                : undefined}
               width={colWidths[colIndex]}
               grow={colGrows[colIndex]}
               colSpec={colSpec}

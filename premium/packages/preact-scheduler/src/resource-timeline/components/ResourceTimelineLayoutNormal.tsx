@@ -42,7 +42,14 @@ import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
 import { timeToCoord } from '../../timeline/timeline-positioning'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
-import { buildResourceLayouts, GenericLayout, GroupCellLayout, GroupRowLayout, ResourceLayout } from '../resource-layout'
+import {
+  buildResourceLayouts,
+  GenericLayout,
+  GroupCellLayout,
+  GroupRowLayout,
+  ResourceRowLayout,
+  RowLayout,
+} from '../resource-layout'
 import { ColSpec } from '../structs'
 import { GroupLane } from './lane/GroupLane'
 import { ResourceLane } from './lane/ResourceLane'
@@ -50,7 +57,8 @@ import { ResizableTwoCol } from './ResizableTwoCol'
 import { BodySection } from './spreadsheet/BodySection'
 import { HeaderRow } from './spreadsheet/HeaderRow'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
-import { computeShift, Virtualizer } from '../virtual/virtualizer'
+import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
+import { AriaProxyRows, buildAriaBodyRows, buildAriaCellId } from '../aria'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -182,14 +190,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // virtualizers
   private getEntityTop = (key) => this.bodyTops.get(key)
   private getEntityHeight = (key) => this.bodyHeights.get(key)
-  private rowVirtualizer = new Virtualizer<ResourceLayout>(
-    (resourceLayout) => resourceLayout.entity.id,
-    this.getEntityTop,
-    this.getEntityHeight,
-    this.boundForceUpdate,
-  )
-  private groupRowVirtualizer = new Virtualizer<GroupRowLayout>(
-    (groupRowLayout) => createGroupId(groupRowLayout.entity),
+  private rowVirtualizer = new Virtualizer<RowLayout>(
+    (rowLayout) => createEntityId(rowLayout.entity),
     this.getEntityTop,
     this.getEntityHeight,
     this.boundForceUpdate,
@@ -235,8 +237,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     let {
       layouts: bodyLayouts,
-      flatResourceLayouts,
-      flatGroupRowLayouts,
+      flatRowLayouts,
       flatGroupColLayouts,
       totalCnt,
     } = this.buildResourceLayouts(
@@ -284,10 +285,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
     this.timeHeaderVirtualizers = timeHeaderVirtualizers
 
-    // TODO: less-weird way to get this! more DRY with BodySection
-    const groupRowCnt = flatGroupRowLayouts.length
-    const resourceCnt = flatResourceLayouts.length
-    const visibleRowCnt = groupRowCnt + resourceCnt
+    // Expansion-filtered rows, including those outside the virtualized viewport.
+    // `totalCnt` also includes collapsed descendants; `rowPositions` below is the mounted subset.
+    const displayedRowCnt = flatRowLayouts.length
 
     /* table positions */
 
@@ -332,33 +332,41 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
     const forcedEntityScroll = this.computeEntityScroll()
 
-    const rowPositions = this.rowVirtualizer.computePositions(flatResourceLayouts, virtualizationDisabled, forcedEntityScroll)
-    const groupRowPositions = this.groupRowVirtualizer.computePositions(flatGroupRowLayouts, virtualizationDisabled, forcedEntityScroll)
+    const rowPositions = this.rowVirtualizer.computePositions(flatRowLayouts, virtualizationDisabled, forcedEntityScroll)
+
+    // Keep render loops component-type-specific for future row recycling.
+    const groupRowPositions: ItemPosition<GroupRowLayout>[] = []
+    const resourceRowPositions: ItemPosition<ResourceRowLayout>[] = []
+
+    for (const rowPosition of rowPositions) {
+      if ('resourceFields' in rowPosition.item) {
+        resourceRowPositions.push(rowPosition as ItemPosition<ResourceRowLayout>)
+      } else {
+        groupRowPositions.push(rowPosition as ItemPosition<GroupRowLayout>)
+      }
+    }
+
     const groupColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
       return groupColVirtualizer.computePositions(flatGroupColLayouts[i], virtualizationDisabled, forcedEntityScroll)
     })
+
+    // Scope deterministic row/column cell IDs to this calendar instance.
+    const cellIdPrefix = `${context.baseId}rt`
+    const ariaBodyRows = buildAriaBodyRows(
+      flatRowLayouts,
+      groupColPositions,
+      rowPositions,
+      groupColCnt,
+      colSpecs.length,
+    )
+    const timelineHeaderCellId = buildAriaCellId(cellIdPrefix, 1, colSpecs.length)
 
     // Only paint vertical fills/lines that are in view
     // Big performance impact for very tall virtualized lists
     // NOTE: could be zero rows and groups!
     const rowPositionShift = computeShift(rowPositions)
-    const groupRowPositionShift = computeShift(groupRowPositions)
-
-    const yFillTop = rowPositionShift
-      ? groupRowPositionShift
-        ? Math.min(rowPositionShift[0], groupRowPositionShift[0])
-        : rowPositionShift[0]
-      : groupRowPositionShift
-        ? groupRowPositionShift[0]
-        : 0
-
-    const yFillBottom = rowPositionShift
-      ? groupRowPositionShift
-        ? Math.max(rowPositionShift[1], groupRowPositionShift[1])
-        : rowPositionShift[1]
-      : groupRowPositionShift
-        ? groupRowPositionShift[1]
-        : 0
+    const yFillTop = rowPositionShift?.[0] ?? 0
+    const yFillBottom = rowPositionShift?.[1] ?? 0
 
     let yFillHeight: number
 
@@ -439,6 +447,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           classNames.flexCol,
         )}
       >
+        <AriaProxyRows
+          cellIdPrefix={cellIdPrefix}
+          bodyRows={ariaBodyRows}
+          resourceColCnt={colSpecs.length}
+          superHeaderRowSpan={superHeaderRowSpan}
+          hasNesting={hasNesting}
+        />
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
           resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
@@ -454,7 +469,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* spreadsheet HEADER
               ---------------------------------------------------------------------------- */}
               <div
-                role='rowgroup'
+                role='presentation'
                 className={joinClassNames(
                   generateClassName(options.tableHeaderClass, {
                     isSticky: tableHeaderSticky,
@@ -481,8 +496,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 >
                   {Boolean(superHeaderRendering) && (
                     <div
-                      role="row"
-                      aria-rowindex={1}
+                      role='presentation'
                       className={joinClassNames(
                         options.resourceHeaderRowClass,
                         classNames.flexRow,
@@ -491,6 +505,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       )}
                     >
                       <SuperHeaderCell
+                        id={buildAriaCellId(cellIdPrefix, 1, 0)}
                         renderHooks={superHeaderRendering}
                         indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                         innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
@@ -510,11 +525,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       style={{ minWidth: spreadsheetCanvasWidth }}
                     >
                       <HeaderRow
+                        role='presentation'
                         colSpecs={colSpecs}
                         colWidths={spreadsheetColWidths}
                         indent={hasNesting}
                         indentWidth={props.indentWidth}
                         rowIndex={superHeaderRowSpan}
+                        cellIdPrefix={cellIdPrefix}
 
                         // refs
                         innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
@@ -555,17 +572,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 clientWidthRef={this.handleSpreadsheetClientWidth}
               >
                 <BodySection
-                  rowPositions={rowPositions}
+                  cellIdPrefix={cellIdPrefix}
                   groupRowPositions={groupRowPositions}
+                  resourceRowPositions={resourceRowPositions}
                   groupColPositions={groupColPositions}
-                  resourceCnt={flatResourceLayouts.length}
-                  groupRowCnt={flatGroupRowLayouts.length}
+                  displayedRowCnt={displayedRowCnt}
                   groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
                   colWidths={spreadsheetColWidths}
                   colSpecs={colSpecs}
                   rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                   headerRowSpan={totalHeaderRowSpan}
-                  hasNesting={hasNesting}
                   indentWidth={props.indentWidth}
                   canvasWidth={spreadsheetCanvasWidth}
                   canvasHeight={totalBodyHeight}
@@ -634,8 +650,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   }}
                 >
                   {/* for screen reader users. zero-height */}
-                  <div role='row' aria-rowindex={1}>
+                  <div role='presentation'>
                     <div
+                      id={timelineHeaderCellId}
                       role='columnheader'
                       aria-rowspan={totalHeaderRowSpan}
                       aria-label={options.eventsHint}
@@ -823,7 +840,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     // roving-origin for all types of resource(-group)-rows
                     // is ZERO-height, always fixed to top, but has definet x-coordinate and width
-                    role='rowgroup'
+                    role='presentation'
                     className={classNames.abs}
                     style={{
                       top: 0,
@@ -831,40 +848,40 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       width: slotDateShift ? (slotDateShift[1] - slotDateShift[0]) : undefined,
                     }}
                   >
-                    {/* group rows */}
-                    {groupRowPositions.map((groupRowPosition) => {
-                      const groupRowLayout = groupRowPosition.item
-                      const group = groupRowLayout.entity
-                      const groupKey = groupRowPosition.key
+                    {groupRowPositions.map((rowPosition) => {
+                      const rowLayout = rowPosition.item
+                      const group = rowLayout.entity
+                      const groupKey = rowPosition.key
 
                       return (
                         <div
                           key={groupKey}
-                          role='row'
-                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
-                          aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                          aria-expanded={groupRowLayout.isExpanded}
+                          role='presentation'
                           className={joinClassNames(
                             classNames.fillX,
                             classNames.flexRow,
                           )}
                           style={{
-                            top: groupRowPosition.start,
+                            top: rowPosition.start,
                           }}
                         >
                           <GroupLane
+                            cellId={buildAriaCellId(
+                              cellIdPrefix,
+                              1 + totalHeaderRowSpan + rowLayout.rowIndex,
+                              colSpecs.length,
+                            )}
                             group={group}
-                            expanded={groupRowLayout.isExpanded}
-                            borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
+                            expanded={rowLayout.isExpanded}
+                            borderBottom={rowLayout.visibleIndex < displayedRowCnt - 1}
                             innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                            height={groupRowPosition.size}
+                            height={rowPosition.size}
                           />
                         </div>
                       )
                     })}
 
-                    {/* resource-specific cells */}
-                    {rowPositions.map((rowPosition) => {
+                    {resourceRowPositions.map((rowPosition) => {
                       const resourceLayout = rowPosition.item
                       const resource = resourceLayout.entity
 
@@ -872,7 +889,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <ResourceLane
                           {...splitProps[resource.id]}
                           key={resource.id /* TODO: use rowPosition.key? */}
-                          role='row'
+                          role='presentation'
+                          cellId={buildAriaCellId(
+                            cellIdPrefix,
+                            1 + totalHeaderRowSpan + resourceLayout.rowIndex,
+                            colSpecs.length,
+                          )}
                           className={classNames.fillX}
                           resource={resource}
                           dateProfile={dateProfile}
@@ -880,9 +902,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           nowDate={props.nowDate}
                           todayRange={props.todayRange}
                           businessHours={resource.businessHours || fallbackBusinessHours}
-                          borderBottom={resourceLayout.visibleIndex < visibleRowCnt - 1}
-                          rowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
-                          level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
+                          borderBottom={resourceLayout.visibleIndex < displayedRowCnt - 1}
                           expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
 
                           // ref
@@ -1083,7 +1103,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   private setVirtualizerViewportSize(height: number) {
     this.rowVirtualizer.handleViewportSize(height)
-    this.groupRowVirtualizer.handleViewportSize(height)
 
     for (const groupColVirtualizer of this.groupColVirtualizers) {
       groupColVirtualizer.handleViewportSize(height)
@@ -1101,7 +1120,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     const scroll = this.currentEntityScroll
 
     this.rowVirtualizer.handleScroll(scroll)
-    this.groupRowVirtualizer.handleScroll(scroll)
 
     for (const groupColVirtualizer of this.groupColVirtualizers) {
       groupColVirtualizer.handleScroll(scroll)

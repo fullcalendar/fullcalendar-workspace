@@ -6,6 +6,7 @@ import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
 
 export interface HeaderCellProps {
+  id?: string
   colSpec: ColSpec
   resizer: boolean
   indent?: boolean
@@ -39,6 +40,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
+          id: props.id,
           role: 'columnheader',
         }}
         className={joinClassNames(

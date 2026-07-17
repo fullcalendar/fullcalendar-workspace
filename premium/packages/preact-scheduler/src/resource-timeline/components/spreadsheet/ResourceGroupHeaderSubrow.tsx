@@ -8,6 +8,7 @@ import { ResourceExpander } from './ResourceExpander'
 import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
 
 export interface ResourceGroupHeaderSubrowProps {
+  cellId?: string
   group: Group
   isExpanded: boolean // for aria
   colSpan: number // for aria
@@ -45,6 +46,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
       <ContentContainer
         tag="div"
         attrs={{
+          id: props.cellId,
           role: 'rowheader',
           'aria-colspan': props.colSpan,
           'aria-expanded': props.isExpanded,

@@ -6,6 +6,7 @@ import { ResourceColumnHeaderInfo, ColHeaderRenderHooks } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
 
 export interface SuperHeaderCellProps {
+  id?: string
   renderHooks: ColHeaderRenderHooks
   indent?: boolean
   indentWidth: number | undefined
@@ -34,6 +35,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
+          id: this.props.id,
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
         }}

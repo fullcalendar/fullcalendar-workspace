@@ -6,6 +6,7 @@ import { Group } from '../../../resource/common/resource-hierarchy'
 import { GroupSpec, ResourceGroupLaneInfo } from '../../structs'
 
 export interface GroupLaneProps {
+  cellId?: string
   group: Group
 
   expanded?: boolean // aria -- TODO: rename to isExpanded?
@@ -42,6 +43,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         tag="div"
         attrs={{
+          id: props.cellId,
           role: 'gridcell',
           'aria-expanded': props.expanded,
         }}

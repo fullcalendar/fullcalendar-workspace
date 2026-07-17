@@ -11,14 +11,13 @@ import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../structs'
 import { ResourceApi } from '../../../resource/public-api'
 
 export interface ResourceLaneProps {
+  cellId?: string
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
   borderBottom: boolean
   role?: string // aria
-  rowIndex?: number // aria
-  level?: number // aria
   expanded?: boolean // aria -- TODO: rename to isExpanded?
   className?: string
 
@@ -88,9 +87,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <div
         role={props.role as any} // !!!
-        aria-rowindex={props.rowIndex}
-        aria-level={props.level}
-        aria-expanded={props.expanded}
+        aria-expanded={props.role !== 'presentation' ? props.expanded : undefined}
         className={joinClassNames(
           props.className, // probably contains fillX
           classNames.flexRow,
@@ -104,6 +101,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         <ContentContainer
           tag="div"
           attrs={{
+            id: props.cellId,
             role: 'gridcell',
             'aria-expanded': props.expanded,
             'data-resource-id': resource.id,
