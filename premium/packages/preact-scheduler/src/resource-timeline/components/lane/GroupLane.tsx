@@ -9,7 +9,6 @@ import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 export interface GroupLaneProps extends AriaCellInput {
   group: Group
 
-  expanded?: boolean // aria -- TODO: rename to isExpanded?
   borderBottom: boolean
 
   // refs
@@ -45,7 +44,6 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         attrs={{
           ...buildAriaCellAttrs(props),
           role: 'gridcell',
-          'aria-expanded': props.expanded,
         }}
         className={joinClassNames(
           classNames.liquid, // expand to whole row

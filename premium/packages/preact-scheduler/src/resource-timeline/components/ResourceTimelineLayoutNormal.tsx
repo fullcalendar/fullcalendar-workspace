@@ -876,7 +876,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                             cellRowIndex={1 + totalHeaderRowSpan + rowLayout.rowIndex}
                             cellColIndex={colSpecs.length}
                             group={group}
-                            expanded={rowLayout.isExpanded}
                             borderBottom={rowLayout.visibleIndex < displayedRowCnt - 1}
                             innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
                             height={rowPosition.size}
@@ -905,7 +904,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           todayRange={props.todayRange}
                           businessHours={resource.businessHours || fallbackBusinessHours}
                           borderBottom={resourceLayout.visibleIndex < displayedRowCnt - 1}
-                          expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
 
                           // ref
                           heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}

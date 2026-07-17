@@ -18,7 +18,6 @@ export interface ResourceLaneProps extends AriaCellInput {
   todayRange: DateRange
   borderBottom: boolean
   role?: string // aria
-  expanded?: boolean // aria -- TODO: rename to isExpanded?
   className?: string
 
   // content
@@ -87,7 +86,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <div
         role={props.role as any} // !!!
-        aria-expanded={props.role !== 'presentation' ? props.expanded : undefined}
         className={joinClassNames(
           props.className, // probably contains fillX
           classNames.flexRow,
@@ -103,7 +101,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           attrs={{
             ...buildAriaCellAttrs(props),
             role: 'gridcell',
-            'aria-expanded': props.expanded,
             'data-resource-id': resource.id,
           }}
           className={joinClassNames(

@@ -340,6 +340,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   role='row'
                   // sort-of a HACK to use .indent, but works out fine b/c 1-based
                   aria-level={hasNesting ? printLayout.indent : undefined}
+                  aria-expanded={(printLayout as ResourcePrintLayout).hasChildren
+                    ? (printLayout as ResourcePrintLayout).isExpanded
+                    : undefined}
                   className={joinClassNames(
                     classNames.flexRow,
                     classNames.breakInsideAvoid,
@@ -423,6 +426,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={groupKey}
                   role='row'
+                  aria-expanded={(printLayout as GroupRowPrintLayout).isExpanded}
                   className={joinClassNames(
                     classNames.flexRow,
                     classNames.breakInsideAvoid,
