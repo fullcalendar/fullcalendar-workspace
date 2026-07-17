@@ -26,6 +26,8 @@ export type AdditionalStaticResourceContext = {
 export type LwcBuildConfig = {
   packageDir: string
   sourceLwcDir?: string
+  componentName?: string
+  componentLabel?: string
   componentDescription?: string
   transformComponentJs?: (source: string) => string
   copyAdditionalStaticResources?: (context: AdditionalStaticResourceContext) => Promise<void>
@@ -34,8 +36,10 @@ export type LwcBuildConfig = {
 type BuildContext = {
   sourceLwcDir: string
   outputLwcDir: string
+  componentName: string
   outputStaticResourcesDir: string
   outputResourceDir: string
+  componentLabel: string
   componentDescription: string
   transformComponentJs?: (source: string) => string
 }
@@ -51,20 +55,24 @@ export async function buildLwcPackage(config: LwcBuildConfig) {
   const {
     packageDir,
     sourceLwcDir = join(packageDir, 'src'),
+    componentName = 'fullCalendar',
+    componentLabel = 'FullCalendar',
     componentDescription = 'FullCalendar component',
     transformComponentJs,
     copyAdditionalStaticResources,
   } = config
   const distDir = join(packageDir, 'dist')
   const defaultMetadataDir = join(distDir, 'src-sfdx', 'force-app', 'main', 'default')
-  const outputLwcDir = join(defaultMetadataDir, 'lwc', 'fullCalendar')
+  const outputLwcDir = join(defaultMetadataDir, 'lwc', componentName)
   const outputStaticResourcesDir = join(defaultMetadataDir, 'staticresources')
   const outputResourceDir = join(outputStaticResourcesDir, 'fullCalendarLib')
   const context: BuildContext = {
     sourceLwcDir,
     outputLwcDir,
+    componentName,
     outputStaticResourcesDir,
     outputResourceDir,
+    componentLabel,
     componentDescription,
     transformComponentJs,
   }
@@ -106,33 +114,47 @@ async function copyLwcSource(
   const {
     sourceLwcDir,
     outputLwcDir,
+    componentName,
+    componentLabel,
     componentDescription,
     transformComponentJs,
   } = context
 
   await mkdir(outputLwcDir, { recursive: true })
-  await copyFile(join(sourceLwcDir, 'fullCalendar.html'), join(outputLwcDir, 'fullCalendar.html'))
+  await copyFile(
+    join(sourceLwcDir, 'fullCalendar.html'),
+    join(outputLwcDir, `${componentName}.html`),
+  )
 
   const componentJs = await readFile(join(sourceLwcDir, 'fullCalendar.js'), 'utf8')
 
   await writeFile(
-    join(outputLwcDir, 'fullCalendar.js'),
+    join(outputLwcDir, `${componentName}.js`),
     transformComponentJs ? transformComponentJs(componentJs) : componentJs,
   )
 
   const themeAndPaletteDatasource = Array.from(themes.entries())
-    .flatMap(([themeName, themeSpec]) => themeSpec.palettes.map((paletteName) => `${themeName}/${paletteName}`))
+    .flatMap(([themeName, themeSpec]) => (
+      themeSpec.palettes.map((paletteName) => (
+        `${capitalize(themeName)} / ${capitalize(paletteName)}`
+      ))
+    ))
     .join(',')
-  const localeDatasource = locales.join(',')
+  const localeDatasource = ['en', ...locales.filter((locale) => locale !== 'en')].join(',')
   const metaTemplate = await readFile(join(sourceLwcDir, 'fullCalendar.js-meta.xml.template'), 'utf8')
 
   await writeFile(
-    join(outputLwcDir, 'fullCalendar.js-meta.xml'),
+    join(outputLwcDir, `${componentName}.js-meta.xml`),
     metaTemplate
+      .replace('{{COMPONENT_LABEL}}', componentLabel)
       .replace('{{COMPONENT_DESCRIPTION}}', componentDescription)
       .replace('{{THEME_AND_PALETTE_DATASOURCE}}', themeAndPaletteDatasource)
       .replace('{{LOCALE_DATASOURCE}}', localeDatasource),
   )
+}
+
+function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 async function copyStaticResources(

@@ -63,6 +63,8 @@ async function copySchedulerStaticResource({
 buildLwcPackage({
   packageDir,
   sourceLwcDir,
+  componentName: 'fullCalendarScheduler',
+  componentLabel: 'FullCalendar Scheduler',
   componentDescription: 'FullCalendar Scheduler component',
   transformComponentJs,
   copyAdditionalStaticResources: copySchedulerStaticResource,

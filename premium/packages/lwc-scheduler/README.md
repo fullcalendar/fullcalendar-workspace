@@ -1,28 +1,29 @@
 # FullCalendar LWC Scheduler
 
-FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, and the `fullCalendar` Lightning Web Component.
+FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, and the `fullCalendarScheduler` Lightning Web Component.
 
 ## Install
 
 1. Download `fullcalendar-lwc-scheduler-<version>.zip` from GitHub Releases.
-2. Unpack it and copy `force-app/main/default/lwc/fullCalendar` into your SFDX project's `force-app/main/default/lwc/`.
+2. Unpack it and copy `force-app/main/default/lwc/fullCalendarScheduler` into your SFDX project's `force-app/main/default/lwc/`.
 3. Copy both `fullCalendarLib*` and `fullCalendarSchedulerLib*` from `force-app/main/default/staticresources/` into your project's corresponding static-resources directory.
 4. Deploy with `sf project deploy start`.
 
 The Scheduler zip is self-sufficient; the standard LWC zip does not need to be installed separately.
+When upgrading from the standard package, replace `c-full-calendar` with `c-full-calendar-scheduler` in your LWC markup.
 
 ## Usage
 
-Use the same `c-full-calendar` component as the standard package. Scheduler views, resources, and `schedulerLicenseKey` are supplied through `options`:
+Use the `c-full-calendar-scheduler` component. Scheduler views, resources, and `schedulerLicenseKey` are supplied through `options`:
 
 ```html
-<c-full-calendar
+<c-full-calendar-scheduler
   options={calendarOptions}
   theme="monarch"
   theme-palette="purple"
   locale="en-gb"
   onresourceadd={handleResourceAdd}
-></c-full-calendar>
+></c-full-calendar-scheduler>
 ```
 
 ```js

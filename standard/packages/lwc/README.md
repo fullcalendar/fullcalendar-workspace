@@ -62,7 +62,7 @@ After initialization, the wrapper passes reassigned `options` through FullCalend
 
 The component exposes `themeAndPalette` and `locale` in Lightning App Builder.
 
-- `themeAndPalette` accepts generated `theme/palette` pairs such as `classic/default` or `forma/blue`.
+- `themeAndPalette` accepts generated theme/palette pairs such as `Classic / Default` or `Forma / Blue`. Capitalization and spaces around the slash are optional.
 - `locale` is exposed as a generated dropdown of bundled FullCalendar locale codes such as `fr` or `en-gb`.
 
 Programmatic consumers can also pass `theme`, `themePalette`, and `locale` directly as component props. In LWC markup, the `themePalette` prop is written as `theme-palette`.

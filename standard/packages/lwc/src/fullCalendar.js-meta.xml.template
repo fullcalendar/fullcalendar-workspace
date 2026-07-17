@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>FullCalendar</masterLabel>
+    <masterLabel>{{COMPONENT_LABEL}}</masterLabel>
     <description>{{COMPONENT_DESCRIPTION}}</description>
     <targets>
         <target>lightning__AppPage</target>
@@ -15,13 +15,14 @@
                 name="themeAndPalette"
                 type="String"
                 label="Theme / Palette"
-                default="classic/default"
+                default="Forma / Blue"
                 datasource="{{THEME_AND_PALETTE_DATASOURCE}}"
             />
             <property
                 name="locale"
                 type="String"
                 label="Locale"
+                default="en"
                 datasource="{{LOCALE_DATASOURCE}}"
             />
         </targetConfig>

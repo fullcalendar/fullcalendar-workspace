@@ -4,6 +4,7 @@ import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'
 
 const DEFAULT_THEME = 'classic'
 const DEFAULT_PALETTE = 'default'
+const DEFAULT_LOCALE = 'en'
 const ADDITIONAL_PLUGIN_GLOBAL_URL = null
 const ADDITIONAL_REDISPATCHED_CALLBACKS = []
 const REDISPATCHED_CALLBACKS = [
@@ -25,7 +26,7 @@ export default class FullCalendar extends LightningElement {
   _options = {}
   _theme = null
   _themePalette = null
-  _themeAndPalette = null // combined `${theme}/${themePalette}`, only for use with builder UI
+  _themeAndPalette = null // combined theme/palette value, only for use with builder UI
   _themePlugin = null
   _locale = null
   _additionalPlugins = []
@@ -130,7 +131,7 @@ export default class FullCalendar extends LightningElement {
     }
 
     this._locale = value
-    this.queueLocaleChange(value)
+    this.queueLocaleChange(normalizeLocale(value))
   }
 
   @api
@@ -140,7 +141,7 @@ export default class FullCalendar extends LightningElement {
 
   async initializeCalendar() {
     const { theme, palette } = this.resolveThemeSelection()
-    const locale = this._locale
+    const locale = normalizeLocale(this._locale)
 
     const { themePlugin, additionalPlugins } = await loadFullCalendarAssets(
       this,
@@ -217,7 +218,9 @@ export default class FullCalendar extends LightningElement {
 
   resolveThemeSelection() {
     if (this._themeAndPalette) {
-      const [theme, palette] = this._themeAndPalette.split('/')
+      const [theme, palette] = this._themeAndPalette
+        .split('/')
+        .map((value) => value.trim().toLowerCase())
 
       return {
         theme: theme || DEFAULT_THEME,
@@ -277,6 +280,10 @@ export default class FullCalendar extends LightningElement {
       `[fullCalendar] ${settingName} is only applied during initial render. Recreate the component to change it.`,
     )
   }
+}
+
+function normalizeLocale(locale) {
+  return locale === DEFAULT_LOCALE ? '' : locale
 }
 
 const LOCALE_PROMISES = new Map()

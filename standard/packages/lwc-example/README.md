@@ -9,12 +9,16 @@ The deploy commands use Salesforce CLI (`sf`), which this package expects via th
 ## Flow
 
 1. Run `pnpm install` at the repo root so `@salesforce/cli` is available to this package.
-2. `cd standard/packages/lwc`.
-3. Run `pnpm build` to refresh `dist`.
-4. `cd ../lwc-example`.
-5. If needed, run `pnpm run smoke:login` to log into a Salesforce org and save it as the `fullcalendar-dev` alias.
-6. Optionally run `pnpm run smoke:orgs` to confirm that `fullcalendar-dev` is available.
-7. Run `pnpm run smoke:deploy`.
-8. Add the `calendarDemo` component to a Lightning app page in the deployed org and verify that the calendar renders with the expected theme, palette, locale, and sample events.
+2. `cd standard/packages/lwc-example`.
+3. Run `pnpm run dep:build` to refresh `../lwc/dist`.
+4. If needed, run `pnpm run smoke:login` to log into a Salesforce org and save it as the `fullcalendar-dev` alias.
+5. Optionally run `pnpm run smoke:orgs` to confirm that `fullcalendar-dev` is available.
+6. Run `pnpm run smoke:deploy`.
+7. In the deployed org, open **Setup** from the gear menu.
+8. Use **Quick Find** to open **Lightning App Builder**, then click **New**.
+9. Select **App Page**, enter a label such as **FullCalendar Demo**, select the standard **One Region** template, and click **Done**.
+10. Under **Custom**, drag **Calendar Demo** onto the page, then click **Save** and **Activate**.
+11. During activation, create the Lightning tab if prompted and add the page to a Lightning app such as **Sales**.
+12. Open that app from the App Launcher, select the **FullCalendar Demo** navigation tab, and verify that the calendar renders with the expected theme, palette, locale, and sample events.
 
-If `../lwc/dist/` has been cleaned or is out of date, run `pnpm build` from `standard/packages/lwc`; the example symlinks will point at the refreshed output automatically.
+If `../lwc/dist/` has been cleaned or is out of date, run `pnpm run dep:build`; the example symlinks will point at the refreshed output automatically.
