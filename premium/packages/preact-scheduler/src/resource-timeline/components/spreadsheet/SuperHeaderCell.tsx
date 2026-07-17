@@ -4,8 +4,9 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { ResourceColumnHeaderInfo, ColHeaderRenderHooks } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface SuperHeaderCellProps {
+export interface SuperHeaderCellProps extends AriaCellInput {
   renderHooks: ColHeaderRenderHooks
   indent?: boolean
   indentWidth: number | undefined
@@ -34,6 +35,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
+          ...buildAriaCellAttrs(this.props),
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
         }}

@@ -12,11 +12,11 @@ export class ResourceDataGridWrapper {
   Must have positioning determined first
   */
   getRowInfo() {
-    let rowEls = findElements(this.el, '[role=row]')
+    let rowHeaderEls = findElements(this.el, '[role=rowheader]')
     let infos = []
 
-    for (let rowEl of rowEls) {
-      const rowHeaderEl = rowEl.querySelector('[role=rowheader]')
+    for (let rowHeaderEl of rowHeaderEls) {
+      const rowEl = rowHeaderEl.parentElement as HTMLElement
       let theInfo
 
       if (rowHeaderEl.classList.contains('fc-resource')) {
@@ -73,7 +73,12 @@ export class ResourceDataGridWrapper {
   }
 
   getAllRows() {
-    return findElements(this.el, '[role=row]')
+    return findElements(this.el, '[role=rowheader]')
+      .filter((rowHeaderEl) => (
+        rowHeaderEl.classList.contains('fc-resource') ||
+        rowHeaderEl.classList.contains('fc-resource-group')
+      ))
+      .map((rowHeaderEl) => rowHeaderEl.parentElement as HTMLElement)
   }
 
   clickFirstExpander() {

@@ -3,8 +3,9 @@ import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceGroupSubrowProps {
+export interface ResourceGroupSubrowProps extends AriaCellInput {
   colSpec: ColSpec
   fieldValue: any
   rowSpan?: number
@@ -16,8 +17,6 @@ export interface ResourceGroupSubrowProps {
 
   // aria
   role?: string
-  rowIndex?: number
-  level?: number
 
   // refs
   innerHeightRef?: Ref<number>
@@ -52,8 +51,6 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
     return (
       <div // the "row"
         role={props.role as any} // !!!
-        aria-rowindex={props.rowIndex}
-        aria-level={props.level}
         className={joinClassNames(
           options.resourceRowClass,
           props.className,
@@ -71,6 +68,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         <ContentContainer // the "cell"
           tag="div"
           attrs={{
+            ...buildAriaCellAttrs(props),
             role: 'rowheader',
             'aria-rowspan': props.rowSpan,
           }}

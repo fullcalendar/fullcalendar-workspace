@@ -20,9 +20,8 @@ export interface ResourceSubrowProps {
 
   // aria
   role?: string
-  rowIndex?: number
-  level?: number
-  expanded?: boolean
+  cellIdPrefix?: string
+  cellRowIndex?: number
 
   // refs
   innerHeightRef?: Ref<number>
@@ -69,9 +68,6 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
     return (
       <div
         role={props.role as any} // !!!
-        aria-rowindex={props.rowIndex}
-        aria-level={props.level}
-        aria-expanded={props.expanded}
         className={joinClassNames(
           options.resourceRowClass,
           props.className, // what for???
@@ -93,6 +89,9 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
           return (
             <ResourceCell
               key={i} // eslint-disable-line react/no-array-index-key
+              cellIdPrefix={props.cellIdPrefix}
+              cellRowIndex={props.cellRowIndex}
+              cellColIndex={props.cellIdPrefix ? i : undefined}
               colSpec={colSpec}
               resource={resource}
               field={colSpec.field || 'title'}

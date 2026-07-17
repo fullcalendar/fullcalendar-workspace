@@ -4,23 +4,22 @@ import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow"
 import { ResourceSubrow } from "./ResourceSubrow"
-import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout"
+import { GroupCellLayout, GroupRowLayout, ResourceRowLayout } from "../../resource-layout"
 import { ColSpec } from '../../structs'
 import { ItemPosition } from '../../virtual/virtualizer'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 
 export interface BodySectionProps {
-  rowPositions: ItemPosition<ResourceLayout>[]
+  cellIdPrefix: string
   groupRowPositions: ItemPosition<GroupRowLayout>[]
+  resourceRowPositions: ItemPosition<ResourceRowLayout>[]
   groupColPositions: ItemPosition<GroupCellLayout>[][]
-  resourceCnt: number
-  groupRowCnt: number
+  displayedRowCnt: number
   groupCellCnts: number[]
   colWidths: number[] | undefined
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
   headerRowSpan: number
-  hasNesting: boolean
   indentWidth: number | undefined
   canvasWidth: number | undefined
   canvasHeight: number | undefined
@@ -33,9 +32,8 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props } = this
-    const { rowInnerHeightRefMap, headerRowSpan, hasNesting } = props
+    const { rowInnerHeightRefMap, headerRowSpan } = props
 
-    const visibleRowCnt = props.groupRowCnt + props.resourceCnt
     const groupColCnt = props.groupCellCnts.length
     const colWidths = props.colWidths || []
 
@@ -47,11 +45,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           minHeight: props.canvasHeight,
         }}
       >
-        {/* group columns */}
         {props.groupColPositions.map((groupCellPositions, colIndex) => (
           <div
             key={colIndex}
-            role='rowgroup'
+            role='presentation'
             className={classNames.rel /* origin for abs-positioned rows */}
             style={{
               height: 0,
@@ -75,9 +72,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   className={classNames.fillX}
                   borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
-                  role='row'
-                  rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
-                  level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
+                  role='presentation'
+                  cellIdPrefix={props.cellIdPrefix}
+                  cellRowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
+                  cellColIndex={colIndex}
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   top={groupCellPosition.start}
                   height={
@@ -92,7 +90,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         ))}
 
         <div
-          role='rowgroup'
+          role='presentation'
           className={classNames.rel}
           style={{
             height: 0,
@@ -100,35 +98,35 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             width: sumArray(colWidths.slice(groupColCnt)),
           }}
         >
-          {/* group rows */}
-          {props.groupRowPositions.map((groupRowPosition) => {
-            const groupRowLayout = groupRowPosition.item
+          {props.groupRowPositions.map((rowPosition) => {
+            const groupRowLayout = rowPosition.item
             const group = groupRowLayout.entity
-            const groupKey = groupRowPosition.key
-            const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
+            const groupKey = rowPosition.key
+            // Compare against every expansion-filtered row, not only the virtualized subset.
+            const isNotLast = groupRowLayout.visibleIndex < props.displayedRowCnt - 1
 
             return (
               <div
                 key={groupKey}
-                role='row'
-                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                aria-expanded={groupRowLayout.isExpanded}
+                role='presentation'
                 className={joinClassNames(
                   classNames.fillX,
                   classNames.flexRow,
                 )}
                 style={{
-                  top: groupRowPosition.start,
+                  top: rowPosition.start,
                 }}
               >
                 <ResourceGroupHeaderSubrow
+                  cellIdPrefix={props.cellIdPrefix}
+                  cellRowIndex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                  cellColIndex={0}
                   group={group}
                   isExpanded={groupRowLayout.isExpanded}
                   innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   colSpan={props.colSpecs.length}
                   borderBottom={isNotLast}
-                  height={groupRowPosition.size}
+                  height={rowPosition.size}
                   indentWidth={props.indentWidth}
                   className={classNames.fillX}
                 />
@@ -136,12 +134,12 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             )
           })}
 
-          {/* resource-specific cells */}
-          {props.rowPositions.map((rowPosition) => {
+          {props.resourceRowPositions.map((rowPosition) => {
             const resourceLayout = rowPosition.item
             const resource = resourceLayout.entity
-            const isNotLast = resourceLayout.visibleIndex < visibleRowCnt - 1
             const rowHeight = rowPosition.size
+            // Compare against every expansion-filtered row, not only the virtualized subset.
+            const isNotLast = resourceLayout.visibleIndex < props.displayedRowCnt - 1
 
             return (
               <ResourceSubrow
@@ -158,10 +156,9 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 className={classNames.fillX}
                 borderStart={Boolean(groupColCnt)}
                 borderBottom={isNotLast}
-                role='row'
-                rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
-                level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
-                expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
+                role='presentation'
+                cellIdPrefix={props.cellIdPrefix}
+                cellRowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 top={rowPosition.start}
                 height={
                   (rowHeight != null && isNotLast)
