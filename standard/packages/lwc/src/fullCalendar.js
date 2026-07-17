@@ -5,8 +5,12 @@ import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'
 const DEFAULT_THEME = 'classic'
 const DEFAULT_PALETTE = 'default'
 const DEFAULT_LOCALE = 'en'
+
+// These values may be replaced by the build system.
+const ADDITIONAL_DEFAULT_OPTIONS = {}
 const ADDITIONAL_PLUGIN_GLOBAL_URL = null
 const ADDITIONAL_REDISPATCHED_CALLBACKS = []
+
 const REDISPATCHED_CALLBACKS = [
   'eventClick',
   'dateClick',
@@ -174,6 +178,7 @@ export default class FullCalendar extends LightningElement {
 
   buildCalendarOptions(options, locale) {
     const mergedOptions = {
+      ...ADDITIONAL_DEFAULT_OPTIONS,
       ...(options || {}),
       ...this.buildCallbackOptions(),
       plugins: [

@@ -2,9 +2,8 @@
   <lightning-card title="FullCalendar LWC Scheduler Demo">
     <c-full-calendar-scheduler
       options={calendarOptions}
-      theme="monarch"
-      theme-palette="purple"
-      locale="en-gb"
+      theme-and-palette={themeAndPalette}
+      locale={locale}
       oneventclick={handleEventClick}
       onresourceadd={handleResourceAdd}
     ></c-full-calendar-scheduler>

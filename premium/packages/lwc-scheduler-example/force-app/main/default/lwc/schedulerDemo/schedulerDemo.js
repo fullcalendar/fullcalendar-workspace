@@ -1,6 +1,9 @@
-import { LightningElement } from 'lwc'
+import { LightningElement, api } from 'lwc'
 
 export default class SchedulerDemo extends LightningElement {
+  @api themeAndPalette = 'Forma / Blue'
+  @api locale = 'en'
+
   calendarOptions = {
     timeZone: 'UTC',
     initialDate: '2026-07-17',

@@ -17,7 +17,7 @@ The deploy commands use Salesforce CLI (`sf`), which this package expects via th
 7. In the deployed org, open **Setup** from the gear menu.
 8. Use **Quick Find** to open **Lightning App Builder**, then click **New**.
 9. Select **App Page**, enter a label such as **FullCalendar Demo**, select the standard **One Region** template, and click **Done**.
-10. Under **Custom**, drag **Calendar Demo** onto the page, then click **Save** and **Activate**.
+10. Under **Custom**, drag **Calendar Demo** onto the page, choose its **Theme / Palette** and **Locale**, then click **Save** and **Activate**.
 11. During activation, create the Lightning tab if prompted and add the page to a Lightning app such as **Sales**.
 12. Open that app from the App Launcher, select the **FullCalendar Demo** navigation tab, and verify that the calendar renders with the expected theme, palette, locale, and sample events.
 

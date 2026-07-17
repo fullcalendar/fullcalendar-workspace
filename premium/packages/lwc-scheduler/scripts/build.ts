@@ -16,17 +16,27 @@ const sourceLwcDir = join(packageDir, '../../../standard/packages/lwc/src')
 const require = createRequire(join(packageDir, 'package.json'))
 
 function transformComponentJs(source: string) {
-  return replaceOnce(
-    replaceOnce(
-      replaceOnce(
-        source,
-        "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n",
-        "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n" +
-          "import fullCalendarSchedulerLib from '@salesforce/resourceUrl/fullCalendarSchedulerLib'\n",
-      ),
-      'const ADDITIONAL_PLUGIN_GLOBAL_URL = null',
-      'const ADDITIONAL_PLUGIN_GLOBAL_URL = `${fullCalendarSchedulerLib}/all/global.js`',
-    ),
+  let transformedSource = replaceOnce(
+    source,
+    "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n",
+    "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n" +
+      "import fullCalendarSchedulerLib from '@salesforce/resourceUrl/fullCalendarSchedulerLib'\n",
+  )
+
+  transformedSource = replaceOnce(
+    transformedSource,
+    'const ADDITIONAL_DEFAULT_OPTIONS = {}',
+    `const ADDITIONAL_DEFAULT_OPTIONS = {
+  initialView: 'resourceTimelineDay',
+}`,
+  )
+  transformedSource = replaceOnce(
+    transformedSource,
+    'const ADDITIONAL_PLUGIN_GLOBAL_URL = null',
+    'const ADDITIONAL_PLUGIN_GLOBAL_URL = `${fullCalendarSchedulerLib}/all/global.js`',
+  )
+  transformedSource = replaceOnce(
+    transformedSource,
     'const ADDITIONAL_REDISPATCHED_CALLBACKS = []',
     `const ADDITIONAL_REDISPATCHED_CALLBACKS = [
   'resourceAdd',
@@ -34,6 +44,8 @@ function transformComponentJs(source: string) {
   'resourceRemove',
 ]`,
   )
+
+  return transformedSource
 }
 
 function replaceOnce(source: string, search: string, replacement: string) {

@@ -33,6 +33,14 @@ export type LwcBuildConfig = {
   copyAdditionalStaticResources?: (context: AdditionalStaticResourceContext) => Promise<void>
 }
 
+export type DerivedLwcMetadataConfig = {
+  sourcePath: string
+  outputPath: string
+  componentLabel: string
+  componentDescription: string
+  targets: string[]
+}
+
 type BuildContext = {
   sourceLwcDir: string
   outputLwcDir: string
@@ -96,6 +104,70 @@ export async function buildLwcPackage(config: LwcBuildConfig) {
   if (copyAdditionalStaticResources) {
     await copyAdditionalStaticResources({ outputStaticResourcesDir })
   }
+}
+
+export async function writeDerivedLwcMetadata(config: DerivedLwcMetadataConfig) {
+  const {
+    sourcePath,
+    outputPath,
+    componentLabel,
+    componentDescription,
+    targets,
+  } = config
+
+  if (!targets.length) {
+    throw new Error('Derived LWC metadata requires at least one target')
+  }
+
+  const targetNames = targets.join(',')
+  const targetElements = targets
+    .map((target) => `        <target>${escapeXml(target)}</target>`)
+    .join('\n')
+  let metadata = await readFile(sourcePath, 'utf8')
+
+  metadata = replaceRequired(
+    metadata,
+    /<masterLabel>[^<]*<\/masterLabel>/,
+    `<masterLabel>${escapeXml(componentLabel)}</masterLabel>`,
+    'masterLabel',
+  )
+  metadata = replaceRequired(
+    metadata,
+    /<description>[^<]*<\/description>/,
+    `<description>${escapeXml(componentDescription)}</description>`,
+    'description',
+  )
+  metadata = replaceRequired(
+    metadata,
+    /    <targets>[\s\S]*?    <\/targets>/,
+    `    <targets>\n${targetElements}\n    </targets>`,
+    'targets',
+  )
+  metadata = replaceRequired(
+    metadata,
+    /<targetConfig targets="[^"]+">/,
+    `<targetConfig targets="${escapeXml(targetNames)}">`,
+    'targetConfig targets',
+  )
+
+  await writeFile(outputPath, metadata)
+}
+
+function replaceRequired(source: string, pattern: RegExp, replacement: string, name: string) {
+  if (!pattern.test(source)) {
+    throw new Error(`Could not find ${name} in generated LWC metadata`)
+  }
+
+  return source.replace(pattern, replacement)
+}
+
+function escapeXml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
 }
 
 export function resolveDistDirFromPackageJson(packageJsonPath: string) {

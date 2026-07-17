@@ -15,6 +15,7 @@ When upgrading from the standard package, replace `c-full-calendar` with `c-full
 ## Usage
 
 Use the `c-full-calendar-scheduler` component. Scheduler views, resources, and `schedulerLicenseKey` are supplied through `options`:
+When `options.initialView` is omitted, the Scheduler wrapper defaults to `resourceTimelineDay`; an explicit value overrides that default.
 
 ```html
 <c-full-calendar-scheduler
