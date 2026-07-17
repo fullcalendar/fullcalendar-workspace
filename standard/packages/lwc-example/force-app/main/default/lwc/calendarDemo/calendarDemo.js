@@ -2,26 +2,58 @@ import { LightningElement } from 'lwc'
 
 export default class CalendarDemo extends LightningElement {
   calendarOptions = {
+    timeZone: 'UTC',
+    initialDate: '2026-07-17',
     initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek',
+    },
     selectable: true,
     editable: true,
     events: [
       {
-        id: 'demo-1',
-        title: 'Design Review',
-        start: '2026-04-14T10:00:00',
+        title: 'All Day Event',
+        start: '2026-07-01',
       },
       {
-        id: 'demo-2',
-        title: 'Release Cutoff',
-        start: '2026-04-18',
-        allDay: true,
+        title: 'Long Event',
+        start: '2026-07-07',
+        end: '2026-07-10',
       },
       {
-        id: 'demo-3',
-        title: 'Customer Workshop',
-        start: '2026-04-21T13:00:00',
-        end: '2026-04-21T15:00:00',
+        groupId: '999',
+        title: 'Repeating Event',
+        start: '2026-07-09T16:00:00+00:00',
+      },
+      {
+        groupId: '999',
+        title: 'Repeating Event',
+        start: '2026-07-16T16:00:00+00:00',
+      },
+      {
+        title: 'Conference',
+        start: '2026-07-16',
+        end: '2026-07-18',
+      },
+      {
+        title: 'Meeting',
+        start: '2026-07-17T10:30:00+00:00',
+        end: '2026-07-17T12:30:00+00:00',
+      },
+      {
+        title: 'Lunch',
+        start: '2026-07-17T12:00:00+00:00',
+      },
+      {
+        title: 'Birthday Party',
+        start: '2026-07-18T07:00:00+00:00',
+      },
+      {
+        url: 'http://google.com/',
+        title: 'Click for Google',
+        start: '2026-07-28',
       },
     ],
   }
