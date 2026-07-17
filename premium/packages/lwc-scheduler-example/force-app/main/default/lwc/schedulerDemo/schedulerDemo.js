@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc'
 
-export default class CalendarDemo extends LightningElement {
+export default class SchedulerDemo extends LightningElement {
   calendarOptions = {
     timeZone: 'UTC',
     initialDate: '2026-07-17',

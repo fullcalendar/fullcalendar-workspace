@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Calendar Scheduler Demo</masterLabel>
+    <masterLabel>Scheduler Demo</masterLabel>
     <description>Smoke test for the FullCalendar LWC Scheduler wrapper</description>
     <targets>
         <target>lightning__AppPage</target>
