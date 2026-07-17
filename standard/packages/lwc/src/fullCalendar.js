@@ -4,6 +4,8 @@ import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'
 
 const DEFAULT_THEME = 'classic'
 const DEFAULT_PALETTE = 'default'
+const ADDITIONAL_PLUGIN_GLOBAL_URL = null
+const ADDITIONAL_REDISPATCHED_CALLBACKS = []
 const REDISPATCHED_CALLBACKS = [
   'eventClick',
   'dateClick',
@@ -13,6 +15,7 @@ const REDISPATCHED_CALLBACKS = [
   'eventChange',
   'eventAdd',
   'eventRemove',
+  ...ADDITIONAL_REDISPATCHED_CALLBACKS,
 ]
 
 export default class FullCalendar extends LightningElement {
@@ -20,30 +23,57 @@ export default class FullCalendar extends LightningElement {
   _initialized = false
   _initializationPromise = null
   _options = {}
-  _themePalette = null
   _theme = null
-  _palette = null
+  _themePalette = null
+  _themeAndPalette = null // combined `${theme}/${themePalette}`, only for use with builder UI
+  _themePlugin = null
   _locale = null
+  _additionalPlugins = []
+  _localeChangePromise = null
 
   renderedCallback() {
     if (this._initialized || this._initializationPromise) {
       return
     }
 
-    this._initializationPromise = this.initializeCalendar().catch((error) => {
-      this._initializationPromise = null
-      throw error
+    this._localeChangePromise = null
+
+    const initializationPromise = this._initializationPromise = this.initializeCalendar()
+    initializationPromise.catch((error) => {
+      if (this._initializationPromise === initializationPromise) {
+        this._initializationPromise = null
+      }
+
+      console.error(error)
     })
   }
 
   disconnectedCallback() {
+    const initializationPromise = this._initializationPromise
+
+    if (initializationPromise) {
+      const finishDisconnection = () => {
+        if (!this.isConnected && this._initializationPromise === initializationPromise) {
+          this.destroyCalendar()
+          this._initializationPromise = null
+        }
+      }
+
+      initializationPromise.then(finishDisconnection, finishDisconnection)
+    } else {
+      this.destroyCalendar()
+    }
+  }
+
+  destroyCalendar() {
+    this._localeChangePromise = null
+
     if (this._calendar) {
       this._calendar.destroy()
       this._calendar = null
     }
 
     this._initialized = false
-    this._initializationPromise = null
   }
 
   @api
@@ -53,22 +83,13 @@ export default class FullCalendar extends LightningElement {
 
   set options(value) {
     const nextOptions = value && typeof value === 'object' ? value : {}
-    const previousOptions = this._options
 
     this._options = nextOptions
 
     if (this._calendar) {
-      this.applyOptionDiff(previousOptions, nextOptions)
+      const appliedLocale = this._calendar.getOption('locale')
+      this._calendar.resetOptions(this.buildCalendarOptions(nextOptions, appliedLocale))
     }
-  }
-
-  @api
-  get themePalette() {
-    return this._themePalette
-  }
-
-  set themePalette(value) {
-    this.setStaticConfigProp('_themePalette', value, 'themePalette')
   }
 
   @api
@@ -81,12 +102,21 @@ export default class FullCalendar extends LightningElement {
   }
 
   @api
-  get palette() {
-    return this._palette
+  get themePalette() {
+    return this._themePalette
   }
 
-  set palette(value) {
-    this.setStaticConfigProp('_palette', value, 'palette')
+  set themePalette(value) {
+    this.setStaticConfigProp('_themePalette', value, 'themePalette')
+  }
+
+  @api
+  get themeAndPalette() {
+    return this._themeAndPalette
+  }
+
+  set themeAndPalette(value) {
+    this.setStaticConfigProp('_themeAndPalette', value, 'themeAndPalette')
   }
 
   @api
@@ -95,7 +125,12 @@ export default class FullCalendar extends LightningElement {
   }
 
   set locale(value) {
-    this.setStaticConfigProp('_locale', value, 'locale')
+    if (this._locale === value) {
+      return
+    }
+
+    this._locale = value
+    this.queueLocaleChange(value)
   }
 
   @api
@@ -105,16 +140,23 @@ export default class FullCalendar extends LightningElement {
 
   async initializeCalendar() {
     const { theme, palette } = this.resolveThemeSelection()
-    const locale = this.resolveLocale()
+    const locale = this._locale
 
-    await this.loadAssets(theme, palette, locale)
+    const { themePlugin, additionalPlugins } = await loadFullCalendarAssets(
+      this,
+      theme,
+      palette,
+      locale,
+    )
+
+    this._themePlugin = themePlugin
+    this._additionalPlugins = additionalPlugins
 
     if (!this.isConnected) {
       return
     }
 
     const FullCalendarGlobal = window.FullCalendar
-
     if (!FullCalendarGlobal || !FullCalendarGlobal.Calendar) {
       throw new Error('FullCalendar global bundle did not expose window.FullCalendar.Calendar')
     }
@@ -123,34 +165,24 @@ export default class FullCalendar extends LightningElement {
       this.refs.container,
       this.buildCalendarOptions(this._options, locale),
     )
-
     calendar.render()
 
     this._calendar = calendar
     this._initialized = true
   }
 
-  async loadAssets(theme, palette, locale) {
-    const assetPromises = [
-      loadScript(this, `${fullCalendarLib}/all.global.js`),
-      loadStyle(this, `${fullCalendarLib}/skeleton.css`),
-      loadScript(this, `${fullCalendarLib}/themes/${theme}/global.js`),
-      loadStyle(this, `${fullCalendarLib}/themes/${theme}/theme.css`),
-      loadStyle(this, `${fullCalendarLib}/themes/${theme}/palettes/${palette}.css`),
-    ]
-
-    if (locale) {
-      assetPromises.push(loadScript(this, `${fullCalendarLib}/locales/${locale}.global.js`))
-    }
-
-    await Promise.all(assetPromises)
-  }
-
   buildCalendarOptions(options, locale) {
     const mergedOptions = {
       ...(options || {}),
       ...this.buildCallbackOptions(),
+      plugins: [
+        ...(options?.plugins || []),
+        ...this._additionalPlugins,
+        this._themePlugin,
+      ],
     }
+
+    delete mergedOptions.locale
 
     if (locale) {
       mergedOptions.locale = locale
@@ -183,111 +215,61 @@ export default class FullCalendar extends LightningElement {
     return callbackOptions
   }
 
-  applyOptionDiff(previousOptions, nextOptions) {
-    if (this.resolveLocaleFromOptions(previousOptions) !== this.resolveLocaleFromOptions(nextOptions)) {
-      this.warnStaticSettingChange('locale')
-    }
-
-    const previousView = previousOptions?.initialView
-    const nextView = nextOptions?.initialView
-
-    if (!Object.is(previousView, nextView) && nextView) {
-      this._calendar.changeView(nextView)
-    }
-
-    const previousDate = previousOptions?.initialDate
-    const nextDate = nextOptions?.initialDate
-
-    if (!Object.is(previousDate, nextDate) && nextDate) {
-      this._calendar.gotoDate(nextDate)
-    }
-
-    const eventsChanged = !Object.is(previousOptions?.events, nextOptions?.events)
-    const eventSourcesChanged = !Object.is(previousOptions?.eventSources, nextOptions?.eventSources)
-
-    if (eventsChanged || eventSourcesChanged) {
-      this.resetEventSources(nextOptions)
-    }
-
-    const optionNames = new Set([
-      ...Object.keys(previousOptions || {}),
-      ...Object.keys(nextOptions || {}),
-    ])
-
-    for (const optionName of optionNames) {
-      if (
-        optionName === 'initialDate' ||
-        optionName === 'initialView' ||
-        optionName === 'events' ||
-        optionName === 'eventSources' ||
-        optionName === 'locale' ||
-        REDISPATCHED_CALLBACKS.includes(optionName)
-      ) {
-        continue
-      }
-
-      const previousValue = previousOptions?.[optionName]
-      const nextValue = nextOptions?.[optionName]
-
-      if (!Object.is(previousValue, nextValue)) {
-        this._calendar.setOption(optionName, nextValue)
-      }
-    }
-  }
-
-  resetEventSources(options) {
-    this._calendar.removeAllEventSources()
-
-    const eventSources = options?.eventSources
-
-    if (Array.isArray(eventSources)) {
-      for (const eventSource of eventSources) {
-        this._calendar.addEventSource(eventSource)
-      }
-    } else if (eventSources) {
-      this._calendar.addEventSource(eventSources)
-    }
-
-    if (options?.events !== undefined) {
-      this._calendar.addEventSource(options.events)
-    }
-  }
-
   resolveThemeSelection() {
-    const themePalette = this.normalizeString(this._themePalette)
-
-    if (themePalette) {
-      const [themePart, palettePart] = themePalette.split('/')
+    if (this._themeAndPalette) {
+      const [theme, palette] = this._themeAndPalette.split('/')
 
       return {
-        theme: this.normalizeString(themePart) || DEFAULT_THEME,
-        palette: this.normalizeString(palettePart) || DEFAULT_PALETTE,
+        theme: theme || DEFAULT_THEME,
+        palette: palette || DEFAULT_PALETTE,
       }
     }
 
     return {
-      theme: this.normalizeString(this._theme) || DEFAULT_THEME,
-      palette: this.normalizeString(this._palette) || DEFAULT_PALETTE,
+      theme: this._theme || DEFAULT_THEME,
+      palette: this._themePalette || DEFAULT_PALETTE,
     }
   }
 
-  resolveLocale() {
-    return this.normalizeString(this._locale) || this.resolveLocaleFromOptions(this._options) || ''
-  }
+  queueLocaleChange(locale) {
+    const initializationPromise = this._initializationPromise
 
-  resolveLocaleFromOptions(options) {
-    return this.normalizeString(options?.locale)
+    if (!this._calendar && !initializationPromise) {
+      return
+    }
+
+    const previousPromise = this._localeChangePromise || initializationPromise || Promise.resolve()
+    const localeChangePromise = previousPromise
+      .catch(() => undefined)
+      .then(async () => {
+        const calendar = this._calendar
+
+        if (!calendar) {
+          return
+        }
+
+        if (locale) {
+          await loadLocaleGlobal(this, locale)
+        }
+
+        if (this._calendar === calendar) {
+          calendar.setOption('locale', locale || '')
+        }
+      })
+
+    this._localeChangePromise = localeChangePromise
+    localeChangePromise.catch((error) => {
+      console.error(error)
+    })
   }
 
   setStaticConfigProp(fieldName, value, publicName) {
-    const normalizedValue = this.normalizeString(value)
-
-    if ((this._initialized || this._initializationPromise) && this[fieldName] !== normalizedValue) {
+    if ((this._initialized || this._initializationPromise) && this[fieldName] !== value) {
       this.warnStaticSettingChange(publicName)
       return
     }
 
-    this[fieldName] = normalizedValue
+    this[fieldName] = value
   }
 
   warnStaticSettingChange(settingName) {
@@ -295,14 +277,110 @@ export default class FullCalendar extends LightningElement {
       `[fullCalendar] ${settingName} is only applied during initial render. Recreate the component to change it.`,
     )
   }
+}
 
-  normalizeString(value) {
-    if (typeof value !== 'string') {
-      return null
-    }
+const LOCALE_PROMISES = new Map()
+const PLUGIN_GLOBAL_PROMISES = new Map()
+let fullCalendarGlobalPromise = null
+let pluginGlobalLoadQueue = Promise.resolve()
 
-    const trimmedValue = value.trim()
+async function loadFullCalendarAssets(component, theme, palette, locale) {
+  await Promise.all([
+    loadFullCalendarGlobal(component),
+    loadStyle(component, `${fullCalendarLib}/skeleton.css`),
+  ])
 
-    return trimmedValue || null
+  const additionalPlugins = ADDITIONAL_PLUGIN_GLOBAL_URL
+    ? await loadPluginGlobal(component, ADDITIONAL_PLUGIN_GLOBAL_URL)
+    : []
+
+  if (locale) {
+    await loadLocaleGlobal(component, locale)
   }
+
+  const themePlugin = await loadThemePlugin(component, theme)
+
+  await loadStyle(component, `${fullCalendarLib}/themes/${theme}/theme.css`)
+  await loadStyle(
+    component,
+    theme === 'classic'
+      ? `${fullCalendarLib}/themes/classic/palette.css`
+      : `${fullCalendarLib}/themes/${theme}/palettes/${palette}.css`,
+  )
+
+  return { themePlugin, additionalPlugins }
+}
+
+function loadFullCalendarGlobal(component) {
+  if (!fullCalendarGlobalPromise) {
+    const loadPromise = loadScript(component, `${fullCalendarLib}/all/global.js`)
+
+    fullCalendarGlobalPromise = loadPromise
+    loadPromise.catch(() => {
+      if (fullCalendarGlobalPromise === loadPromise) {
+        fullCalendarGlobalPromise = null
+      }
+    })
+  }
+
+  return fullCalendarGlobalPromise
+}
+
+function loadLocaleGlobal(component, locale) {
+  let localePromise = LOCALE_PROMISES.get(locale)
+
+  if (!localePromise) {
+    localePromise = loadScript(component, `${fullCalendarLib}/locales/${locale}/global.js`)
+    LOCALE_PROMISES.set(locale, localePromise)
+    localePromise.catch(() => {
+      if (LOCALE_PROMISES.get(locale) === localePromise) {
+        LOCALE_PROMISES.delete(locale)
+      }
+    })
+  }
+
+  return localePromise
+}
+
+async function loadThemePlugin(component, theme) {
+  const themePlugins = await loadPluginGlobal(
+    component,
+    `${fullCalendarLib}/themes/${theme}/global.js`,
+  )
+
+  if (themePlugins.length !== 1 || themePlugins[0]?.name !== `theme-${theme}`) {
+    throw new Error(`FullCalendar theme ${theme} did not register its expected plugin`)
+  }
+
+  return themePlugins[0]
+}
+
+function loadPluginGlobal(component, url) {
+  let pluginPromise = PLUGIN_GLOBAL_PROMISES.get(url)
+
+  if (!pluginPromise) {
+    pluginPromise = pluginGlobalLoadQueue.then(async () => {
+      const globalPlugins = window.FullCalendar?.globalPlugins
+
+      if (!Array.isArray(globalPlugins)) {
+        throw new Error('FullCalendar global bundle did not expose its global plugins array')
+      }
+
+      const startIndex = globalPlugins.length
+
+      await loadScript(component, url)
+
+      return globalPlugins.splice(startIndex)
+    })
+
+    PLUGIN_GLOBAL_PROMISES.set(url, pluginPromise)
+    pluginGlobalLoadQueue = pluginPromise.then(() => undefined, () => undefined)
+    pluginPromise.catch(() => {
+      if (PLUGIN_GLOBAL_PROMISES.get(url) === pluginPromise) {
+        PLUGIN_GLOBAL_PROMISES.delete(url)
+      }
+    })
+  }
+
+  return pluginPromise
 }

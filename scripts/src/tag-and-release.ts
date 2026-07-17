@@ -52,7 +52,10 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
     tagName,
     version,
     monorepoDir,
-    `premium/packages/vanilla-scheduler/archives/fullcalendar-scheduler-${version}.zip`,
+    [
+      `premium/packages/vanilla-scheduler/archives/fullcalendar-scheduler-${version}.zip`,
+      `premium/packages/lwc-scheduler/archives/fullcalendar-lwc-scheduler-${version}.zip`,
+    ],
     true, // linkToStandard
   )
 }
@@ -92,7 +95,12 @@ async function tagAndReleaseSubrepo(
     tagName, // the tag the remote uses
     version,
     monorepoDir,
-    subrepoSubdir === 'standard' && `standard/packages/vanilla/archives/fullcalendar-${version}.zip`,
+    subrepoSubdir === 'standard'
+      ? [
+        `standard/packages/vanilla/archives/fullcalendar-${version}.zip`,
+        `standard/packages/lwc/archives/fullcalendar-lwc-${version}.zip`,
+      ]
+      : [],
     subrepoSubdir !== 'standard', // linkToStandard
   )
 }
@@ -102,7 +110,7 @@ async function createGithubRelease(
   tagName: string,
   version: string,
   monorepoDir: string,
-  filePath?: string | false,
+  filePaths: string[],
   linkToStandard?: boolean,
 ): Promise<void> {
   const execOpts = { cwd: monorepoDir }
@@ -118,7 +126,7 @@ async function createGithubRelease(
     ...(tagName.includes('-') ? ['--prerelease'] : []),
     '--notes', releaseNotes,
     tagName,
-    ...(filePath ? [joinPaths(monorepoDir, filePath)] : []),
+    ...filePaths.map((filePath) => joinPaths(monorepoDir, filePath)),
   ], execOpts)
 }
 

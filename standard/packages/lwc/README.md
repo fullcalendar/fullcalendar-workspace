@@ -25,7 +25,7 @@ With an explicit theme, palette, and locale:
 <c-full-calendar
   options={calendarOptions}
   theme="forma"
-  palette="blue"
+  theme-palette="blue"
   locale="en-gb"
 ></c-full-calendar>
 ```
@@ -56,16 +56,16 @@ this.calendarOptions = {
 }
 ```
 
-After initialization, the wrapper applies top-level `options` changes with `gotoDate`, `changeView`, `removeAllEventSources` / `addEventSource`, or `setOption`, depending on the key.
+After initialization, the wrapper passes reassigned `options` through FullCalendar's `resetOptions` connector API. Changes to the component's top-level `locale` prop load the matching locale global asynchronously before updating the calendar. The special-handling `locale` setting must be supplied through this prop, not through `options`.
 
 ## App Builder
 
-The component exposes `themePalette` and `locale` in Lightning App Builder.
+The component exposes `themeAndPalette` and `locale` in Lightning App Builder.
 
-- `themePalette` accepts generated `theme/palette` pairs such as `classic/default` or `forma/blue`.
+- `themeAndPalette` accepts generated `theme/palette` pairs such as `classic/default` or `forma/blue`.
 - `locale` is exposed as a generated dropdown of bundled FullCalendar locale codes such as `fr` or `en-gb`.
 
-Programmatic consumers can also pass `theme`, `palette`, and `locale` directly as component props.
+Programmatic consumers can also pass `theme`, `themePalette`, and `locale` directly as component props. In LWC markup, the `themePalette` prop is written as `theme-palette`.
 
 ## Imperative API
 
@@ -78,22 +78,33 @@ calendar.next()
 
 ## Known Limitations
 
-- `themePalette`, `theme`, `palette`, and `locale` are set once during initial render. Recreate the component to change them.
+- `themeAndPalette`, `themePalette`, and `theme` are set once during initial render. Recreate the component to change them.
 - The wrapper relies on Salesforce static-resource loading and Lightning Web Security allowing the FullCalendar IIFE bundle to attach to `window.FullCalendar`.
 - LWC event handlers receive re-dispatched custom events whose payload is available on `event.detail`.
 
 ## Build Output
 
-Run the package build to generate both the deployable source tree and the release zip:
+Build the deployable source tree:
 
 ```sh
 pnpm build
 ```
 
-This writes:
+This writes `dist/src-sfdx/force-app/main/default/...`.
 
-- `dist/src-sfdx/force-app/main/default/...`
-- `dist/fullcalendar-lwc-<version>.zip`
+Create the release zip from the built source tree:
+
+```sh
+pnpm archive
+```
+
+This writes `archives/fullcalendar-lwc-<version>.zip`.
+
+Remove all build and archive output with:
+
+```sh
+pnpm clean
+```
 
 The generated `dist/src-sfdx` output is also what the sibling `standard/packages/lwc-example` smoke app symlinks into its own Salesforce project.
 

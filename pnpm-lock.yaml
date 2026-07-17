@@ -1667,6 +1667,46 @@ importers:
         version: 4.9.5
     publishDirectory: ./dist
 
+  premium/packages/lwc-scheduler:
+    dependencies:
+      '@fullcalendar/lwc':
+        specifier: workspace:7.0.0
+        version: link:../../../standard/packages/lwc
+      fullcalendar:
+        specifier: workspace:7.0.0
+        version: link:../../../standard/packages/vanilla/dist
+      fullcalendar-scheduler:
+        specifier: workspace:7.0.0
+        version: link:../vanilla-scheduler/dist
+    devDependencies:
+      '@types/archiver':
+        specifier: ^6.0.3
+        version: 6.0.4
+      '@types/node':
+        specifier: ^24.5.2
+        version: 24.10.9
+      archiver:
+        specifier: ^7.0.1
+        version: 7.0.1
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  premium/packages/lwc-scheduler-example:
+    devDependencies:
+      '@fullcalendar/lwc-scheduler':
+        specifier: workspace:7.0.0
+        version: link:../lwc-scheduler
+      '@salesforce/cli':
+        specifier: ^2.112.6
+        version: 2.130.9(@types/node@24.10.9)(@types/react@18.3.27)(encoding@0.1.13)
+      '@types/node':
+        specifier: ^24.5.2
+        version: 24.10.9
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   premium/packages/pnpm-make-dedicated-lockfile:
     dependencies:
       '@pnpm/find-workspace-dir':
@@ -2154,7 +2194,7 @@ importers:
   standard/packages/lwc:
     dependencies:
       fullcalendar:
-        specifier: workspace:7.0.0-rc.1
+        specifier: workspace:7.0.0
         version: link:../vanilla/dist
     devDependencies:
       '@lwc/eslint-plugin-lwc':
@@ -2175,9 +2215,12 @@ importers:
 
   standard/packages/lwc-example:
     devDependencies:
+      '@fullcalendar/lwc':
+        specifier: workspace:7.0.0
+        version: link:../lwc
       '@salesforce/cli':
         specifier: ^2.112.6
-        version: 2.130.9(@types/node@24.10.9)(@types/react@18.3.27)(encoding@0.1.13)
+        version: 2.130.9(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)
       '@types/node':
         specifier: ^24.5.2
         version: 24.10.9
@@ -13060,9 +13103,6 @@ packages:
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
-  ajv@8.18.0:
-    resolution: {integrity: sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==}
-
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
 
@@ -13098,10 +13138,6 @@ packages:
   ansi-escapes@5.0.0:
     resolution: {integrity: sha512-5GFMVX8HqE/TB+FuBJGuO5XG0WrsA6ptUqoODaT/n9mmUaZFkqnBueB4leqGBCmrUHnCnC4PCZTCd0E7QQ83bA==}
     engines: {node: '>=12'}
-
-  ansi-escapes@7.2.0:
-    resolution: {integrity: sha512-g6LhBsl+GBPRWGWsBtutpzBYuIIdBkLEvad5C/va/74Db018+5TZiyA26cZJAr3Rft5lprVqOIPxf5Vid6tqAw==}
-    engines: {node: '>=18'}
 
   ansi-escapes@7.3.0:
     resolution: {integrity: sha512-BvU8nYgGQBxcmMuEeUEmNTvrMVjJNSH7RgW24vXexN4Ven6qCvy4TntnvlnwnMLTVlcRQQdbRY8NKnaIoeWDNg==}
@@ -15949,6 +15985,7 @@ packages:
   glob@11.1.0:
     resolution: {integrity: sha512-vuNwKSaKiqm7g0THUBu2x7ckSs3XJLXE+2ssL7/MfTGPLLcrJQ/4Uq1CjPTtO5cCIiRxqvN6Twy1qOwhL0Xjcw==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@13.0.0:
@@ -15957,11 +15994,11 @@ packages:
 
   glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
@@ -20183,6 +20220,7 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qjobs@1.2.0:
@@ -21507,10 +21545,6 @@ packages:
     resolution: {integrity: sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ==}
     engines: {node: '>=18'}
 
-  string-width@8.1.1:
-    resolution: {integrity: sha512-KpqHIdDL9KwYk22wEOg/VIqYbrnLeSApsKT/bSj6Ez7pn3CftUiLAv2Lccpq1ALcpLV9UX1Ppn92npZWu2w/aw==}
-    engines: {node: '>=20'}
-
   string-width@8.2.1:
     resolution: {integrity: sha512-IIaP0g3iy9Cyy18w3M9YcaDudujEAVHKt3a3QJg1+sr/oX96TbaGUubG0hJyCjCBThFH+tFpcIyoUHUn1ogaLA==}
     engines: {node: '>=20'}
@@ -21724,7 +21758,7 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
-    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   tar@7.5.13:
     resolution: {integrity: sha512-tOG/7GyXpFevhXVh8jOPJrmtRpOTsYqUIkVdVooZYJS/z8WhfQUX8RJILmeuJNinGAMSu1veBr4asSHFt5/hng==}
@@ -23544,9 +23578,6 @@ packages:
 
   zod@4.3.5:
     resolution: {integrity: sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==}
-
-  zod@4.3.6:
-    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
   zod@4.4.2:
     resolution: {integrity: sha512-IynmDyxsEsb9RKzO3J9+4SxXnl2FTFSzNBaKKaMV6tsSk0rw9gYw9gs+JFCq/qk2LCZ78KDwyj+Z289TijSkUw==}
@@ -30353,7 +30384,7 @@ snapshots:
       proc-log: 4.2.0
       promise-inflight: 1.0.1
       promise-retry: 2.0.1
-      semver: 7.7.3
+      semver: 7.7.4
       which: 4.0.0
     transitivePeerDependencies:
       - bluebird
@@ -30426,7 +30457,7 @@ snapshots:
       json-parse-even-better-errors: 3.0.2
       normalize-package-data: 6.0.2
       proc-log: 4.2.0
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - bluebird
 
@@ -30671,7 +30702,7 @@ snapshots:
       rc9: 2.1.2
       scule: 1.3.0
       semver: 7.7.4
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.16
       ufo: 1.6.3
       unctx: 2.5.0
       untyped: 2.0.0
@@ -30847,7 +30878,7 @@ snapshots:
       semver: 7.7.4
       string-width: 4.2.3
       supports-color: 8.1.1
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.16
       widest-line: 3.1.0
       wordwrap: 1.0.0
       wrap-ansi: 7.0.0
@@ -33122,12 +33153,58 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  '@salesforce/cli@2.130.9(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)':
+    dependencies:
+      '@inquirer/select': 2.5.0
+      '@oclif/core': 4.10.3
+      '@oclif/plugin-autocomplete': 3.2.43
+      '@oclif/plugin-commands': 4.1.43
+      '@oclif/plugin-help': 6.2.41
+      '@oclif/plugin-not-found': 3.2.78(@types/node@24.10.9)
+      '@oclif/plugin-plugins': 5.4.59
+      '@oclif/plugin-search': 1.2.42
+      '@oclif/plugin-update': 4.7.27
+      '@oclif/plugin-version': 2.2.40
+      '@oclif/plugin-warn-if-update-available': 3.1.58
+      '@oclif/plugin-which': 3.2.47
+      '@salesforce/core': 8.28.3(encoding@0.1.13)
+      '@salesforce/kit': 3.2.6
+      '@salesforce/plugin-agent': 1.32.16(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)
+      '@salesforce/plugin-apex': 3.9.17(encoding@0.1.13)
+      '@salesforce/plugin-api': 1.3.14(encoding@0.1.13)
+      '@salesforce/plugin-auth': 4.3.3(encoding@0.1.13)
+      '@salesforce/plugin-data': 4.0.85(encoding@0.1.13)
+      '@salesforce/plugin-deploy-retrieve': 3.24.23(@types/node@24.10.9)(encoding@0.1.13)
+      '@salesforce/plugin-info': 3.4.115(encoding@0.1.13)
+      '@salesforce/plugin-limits': 3.3.83(encoding@0.1.13)
+      '@salesforce/plugin-marketplace': 1.3.14(encoding@0.1.13)
+      '@salesforce/plugin-org': 5.9.79(encoding@0.1.13)
+      '@salesforce/plugin-packaging': 2.26.0(encoding@0.1.13)
+      '@salesforce/plugin-schema': 3.3.102(encoding@0.1.13)
+      '@salesforce/plugin-settings': 2.4.63(encoding@0.1.13)
+      '@salesforce/plugin-sobject': 1.4.93(encoding@0.1.13)
+      '@salesforce/plugin-telemetry': 3.8.7(encoding@0.1.13)
+      '@salesforce/plugin-templates': 56.15.5(encoding@0.1.13)
+      '@salesforce/plugin-trust': 3.7.119(encoding@0.1.13)
+      '@salesforce/plugin-user': 3.8.2(encoding@0.1.13)
+      '@salesforce/sf-plugins-core': 12.2.6(encoding@0.1.13)
+      ansis: 3.17.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@types/react'
+      - applicationinsights-native-metrics
+      - bufferutil
+      - encoding
+      - react-devtools-core
+      - supports-color
+      - utf-8-validate
+
   '@salesforce/core@8.28.3(encoding@0.1.13)':
     dependencies:
       '@jsforce/jsforce-node': 3.10.14(encoding@0.1.13)
       '@salesforce/kit': 3.2.6
       '@salesforce/ts-types': 2.0.12
-      ajv: 8.18.0
+      ajv: 8.20.0
       change-case: 4.1.2
       fast-levenshtein: 3.0.0
       faye: 1.4.1
@@ -33142,7 +33219,7 @@ snapshots:
       proper-lockfile: 4.1.2
       semver: 7.7.4
       ts-retry-promise: 0.8.1
-      zod: 4.3.6
+      zod: 4.4.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -33193,6 +33270,35 @@ snapshots:
       glob: 11.1.0
       ink: 5.0.1(@types/react@18.3.27)(react@18.3.1)
       ink-text-input: 6.0.0(ink@5.0.1(@types/react@18.3.27)(react@18.3.1))(react@18.3.1)
+      inquirer-autocomplete-standalone: 0.8.1
+      react: 18.3.1
+      yaml: 2.8.3
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@types/react'
+      - bufferutil
+      - encoding
+      - react-devtools-core
+      - supports-color
+      - utf-8-validate
+
+  '@salesforce/plugin-agent@1.32.16(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)':
+    dependencies:
+      '@inquirer/core': 10.3.2(@types/node@24.10.9)
+      '@inquirer/prompts': 7.10.1(@types/node@24.10.9)
+      '@oclif/core': 4.10.3
+      '@oclif/multi-stage-output': 0.8.36
+      '@salesforce/agents': 0.24.16(encoding@0.1.13)
+      '@salesforce/core': 8.28.3(encoding@0.1.13)
+      '@salesforce/kit': 3.2.6
+      '@salesforce/sf-plugins-core': 12.2.6(encoding@0.1.13)
+      '@salesforce/source-deploy-retrieve': 12.32.8(encoding@0.1.13)
+      '@salesforce/types': 1.7.1
+      ansis: 3.17.0
+      fast-xml-parser: 5.7.0
+      glob: 11.1.0
+      ink: 5.0.1(@types/react@19.2.14)(react@18.3.1)
+      ink-text-input: 6.0.0(ink@5.0.1(@types/react@19.2.14)(react@18.3.1))(react@18.3.1)
       inquirer-autocomplete-standalone: 0.8.1
       react: 18.3.1
       yaml: 2.8.3
@@ -33270,7 +33376,7 @@ snapshots:
       form-data: 4.0.5
       terminal-link: 3.0.0
       undici: 7.25.0
-      zod: 4.3.6
+      zod: 4.4.2
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -35379,13 +35485,6 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  ajv@8.18.0:
-    dependencies:
-      fast-deep-equal: 3.1.3
-      fast-uri: 3.1.0
-      json-schema-traverse: 1.0.0
-      require-from-string: 2.0.2
-
   ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
@@ -35461,10 +35560,6 @@ snapshots:
   ansi-escapes@5.0.0:
     dependencies:
       type-fest: 1.4.0
-
-  ansi-escapes@7.2.0:
-    dependencies:
-      environment: 1.1.0
 
   ansi-escapes@7.3.0:
     dependencies:
@@ -36497,7 +36592,7 @@ snapshots:
   cli-truncate@5.1.1:
     dependencies:
       slice-ansi: 7.1.2
-      string-width: 8.1.1
+      string-width: 8.2.1
 
   cli-truncate@5.2.0:
     dependencies:
@@ -39976,6 +40071,13 @@ snapshots:
       react: 18.3.1
       type-fest: 4.41.0
 
+  ink-text-input@6.0.0(ink@5.0.1(@types/react@19.2.14)(react@18.3.1))(react@18.3.1):
+    dependencies:
+      chalk: 5.6.2
+      ink: 5.0.1(@types/react@19.2.14)(react@18.3.1)
+      react: 18.3.1
+      type-fest: 4.41.0
+
   ink@5.0.1(@types/react@18.3.27)(react@18.3.1):
     dependencies:
       '@alcalzone/ansi-tokenize': 0.1.3
@@ -40005,6 +40107,39 @@ snapshots:
       yoga-wasm-web: 0.3.3
     optionalDependencies:
       '@types/react': 18.3.27
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  ink@5.0.1(@types/react@19.2.14)(react@18.3.1):
+    dependencies:
+      '@alcalzone/ansi-tokenize': 0.1.3
+      ansi-escapes: 7.3.0
+      ansi-styles: 6.2.3
+      auto-bind: 5.0.1
+      chalk: 5.6.2
+      cli-boxes: 3.0.0
+      cli-cursor: 4.0.0
+      cli-truncate: 4.0.0
+      code-excerpt: 4.0.0
+      indent-string: 5.0.0
+      is-in-ci: 0.1.0
+      lodash: 4.17.23
+      patch-console: 2.0.0
+      react: 18.3.1
+      react-reconciler: 0.29.2(react@18.3.1)
+      scheduler: 0.23.2
+      signal-exit: 3.0.7
+      slice-ansi: 7.1.2
+      stack-utils: 2.0.6
+      string-width: 7.2.0
+      type-fest: 4.41.0
+      widest-line: 5.0.0
+      wrap-ansi: 9.0.2
+      ws: 8.19.0
+      yoga-wasm-web: 0.3.3
+    optionalDependencies:
+      '@types/react': 19.2.14
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -41265,7 +41400,7 @@ snapshots:
 
   log-update@6.1.0:
     dependencies:
-      ansi-escapes: 7.2.0
+      ansi-escapes: 7.3.0
       cli-cursor: 5.0.0
       slice-ansi: 7.1.2
       strip-ansi: 7.1.2
@@ -42592,7 +42727,7 @@ snapshots:
       proc-log: 5.0.0
       semver: 7.7.4
       tar: 7.5.7
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.16
       which: 5.0.0
     transitivePeerDependencies:
       - supports-color
@@ -42607,7 +42742,7 @@ snapshots:
       proc-log: 6.1.0
       semver: 7.7.4
       tar: 7.5.7
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.16
       which: 6.0.0
     transitivePeerDependencies:
       - supports-color
@@ -43226,7 +43361,7 @@ snapshots:
       is-unicode-supported: 2.1.0
       log-symbols: 7.0.1
       stdin-discarder: 0.2.2
-      string-width: 8.1.1
+      string-width: 8.2.1
       strip-ansi: 7.1.2
 
   ora@9.4.0:
@@ -43238,7 +43373,7 @@ snapshots:
       is-unicode-supported: 2.1.0
       log-symbols: 7.0.1
       stdin-discarder: 0.3.2
-      string-width: 8.1.1
+      string-width: 8.2.1
 
   ordered-binary@1.6.1: {}
 
@@ -46467,11 +46602,6 @@ snapshots:
       get-east-asian-width: 1.4.0
       strip-ansi: 7.1.2
 
-  string-width@8.1.1:
-    dependencies:
-      get-east-asian-width: 1.4.0
-      strip-ansi: 7.1.2
-
   string-width@8.2.1:
     dependencies:
       get-east-asian-width: 1.6.0
@@ -47725,7 +47855,7 @@ snapshots:
       picocolors: 1.1.1
       picomatch: 4.0.3
       tiny-invariant: 1.3.3
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.16
       vite: 7.3.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
       vscode-uri: 3.1.0
     optionalDependencies:
@@ -48997,8 +49127,6 @@ snapshots:
   zod@4.1.13: {}
 
   zod@4.3.5: {}
-
-  zod@4.3.6: {}
 
   zod@4.4.2: {}
 

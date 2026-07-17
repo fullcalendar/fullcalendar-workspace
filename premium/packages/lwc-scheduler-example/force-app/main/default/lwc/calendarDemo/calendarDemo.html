@@ -1,11 +1,12 @@
 <template>
-  <lightning-card title="FullCalendar LWC Demo">
+  <lightning-card title="FullCalendar LWC Scheduler Demo">
     <c-full-calendar
       options={calendarOptions}
-      theme="forma"
-      theme-palette="blue"
+      theme="monarch"
+      theme-palette="purple"
       locale="en-gb"
       oneventclick={handleEventClick}
+      onresourceadd={handleResourceAdd}
     ></c-full-calendar>
   </lightning-card>
 </template>

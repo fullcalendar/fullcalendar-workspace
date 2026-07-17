@@ -1,0 +1,19 @@
+{
+  "name": "@fullcalendar/lwc-scheduler-example",
+  "private": true,
+  "version": "7.0.0",
+  "description": "Salesforce smoke test app for FullCalendar LWC Scheduler",
+  "type": "module",
+  "scripts": {
+    "smoke:login": "sf org login web --set-default --alias fullcalendar-scheduler-dev",
+    "smoke:orgs": "sf org list",
+    "smoke:deploy": "sf project deploy start --source-dir force-app --target-org fullcalendar-scheduler-dev",
+    "smoke:open": "sf org open --path /lightning/app/CalendarDemo --target-org fullcalendar-scheduler-dev"
+  },
+  "devDependencies": {
+    "@fullcalendar/lwc-scheduler": "workspace:7.0.0",
+    "@salesforce/cli": "^2.112.6",
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.3"
+  }
+}

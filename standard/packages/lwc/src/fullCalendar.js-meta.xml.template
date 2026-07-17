@@ -3,7 +3,7 @@
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>FullCalendar</masterLabel>
-    <description>FullCalendar scheduler component</description>
+    <description>{{COMPONENT_DESCRIPTION}}</description>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
@@ -12,11 +12,11 @@
     <targetConfigs>
         <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
             <property
-                name="themePalette"
+                name="themeAndPalette"
                 type="String"
                 label="Theme / Palette"
                 default="classic/default"
-                datasource="{{THEME_PALETTE_DATASOURCE}}"
+                datasource="{{THEME_AND_PALETTE_DATASOURCE}}"
             />
             <property
                 name="locale"

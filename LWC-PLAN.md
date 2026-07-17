@@ -53,15 +53,15 @@ Files live in `src/`:
 
 ### `fullCalendar.js-meta.xml.template`
 
-Template file that the build script will process, injecting the `themePalette` datasource value. The template has a placeholder like `{{THEME_PALETTE_DATASOURCE}}` that the build replaces with the comma-separated list of valid `theme/palette` combinations.
+Template file that the build script will process, injecting the `themeAndPalette` datasource value. The template has a placeholder like `{{THEME_AND_PALETTE_DATASOURCE}}` that the build replaces with the comma-separated list of valid `theme/palette` combinations.
 
 Key requirements:
 - `<isExposed>true</isExposed>`
 - Targets: `lightning__AppPage`, `lightning__RecordPage`, `lightning__HomePage`
 - Design attributes:
-  - `themePalette` (String, with generated datasource of valid `theme/palette` combinations, defaulted to `classic/default`)
+  - `themeAndPalette` (String, with generated datasource of valid `theme/palette` combinations, defaulted to `classic/default`)
   - `locale` (String, free text — admin types the locale code)
-- Do NOT expose `theme`, `palette`, `options`, or `getCalendar()` as design attributes — those are for programmatic use only
+- Do NOT expose `theme`, `options`, or `getCalendar()` as design attributes — those are for programmatic use only
 
 ### `fullCalendar.js`
 
@@ -69,11 +69,12 @@ Requirements:
 
 1. **Props:**
    - `@api options` — FullCalendar options object (the primary API)
-   - `@api themePalette` — compound, e.g. `"forma/blue"` (for App Builder)
-   - `@api theme`, `@api palette` — individual (for programmatic use)
+   - `@api themeAndPalette` — compound value such as `"forma/blue"` from App Builder
+   - `@api themePalette` — individual palette name for programmatic use
+   - `@api theme` — individual theme name for programmatic use
    - `@api locale` — e.g. `"fr"`, `"en-gb"`
 
-2. **Resolution logic:** If `themePalette` is set, parse it into theme and palette. Otherwise use `theme` + `palette`. Default to `classic/default` if nothing provided.
+2. **Resolution logic:** If `themeAndPalette` is set, parse it into theme and palette. Otherwise use `theme` + `themePalette`. Default to `classic/default` if nothing is provided.
 
 3. **Lifecycle:** Initialize once in `renderedCallback` (guarded with an `_initialized` flag). Load in parallel:
    - `all.global.js` (core FullCalendar)
@@ -125,7 +126,7 @@ Document assumptions inline as code comments where FullCalendar/LWC behavior is 
 
 3. **Enumerate locales** by scanning `fcDist/locales/*.global.js`.
 
-4. **Generate the `themePalette` datasource string** as a comma-separated list of `<theme>/<palette>` values. Read `fullCalendar.js-meta.xml.template`, replace the placeholder, write the result to the output directory.
+4. **Generate the `themeAndPalette` datasource string** as a comma-separated list of `<theme>/<palette>` values. Read `fullCalendar.js-meta.xml.template`, replace the placeholder, write the result to the output directory.
 
 5. **Assemble the SFDX directory layout** into `dist/src-sfdx/force-app/main/default/`:
    ```
@@ -135,16 +136,17 @@ Document assumptions inline as code comments where FullCalendar/LWC behavior is 
      fullCalendar.js-meta.xml   ← processed from template
    staticresources/
      fullCalendarLib/
-       all.global.js            ← from fullcalendar/dist/
+       all/global.js            ← from fullcalendar/dist/
        skeleton.css
        themes/
          <theme>/
            global.js
            theme.css
+           palette.css          ← classic only; always loaded with the theme
            palettes/
-             <palette>.css      ← for classic, synthesize palettes/default.css from palette.css
+             <palette>.css      ← selectable palettes for non-classic themes
        locales/
-         <locale>.global.js
+         <locale>/global.js
      fullCalendarLib.resource-meta.xml
    ```
 
@@ -157,9 +159,9 @@ Document assumptions inline as code comments where FullCalendar/LWC behavior is 
    </StaticResource>
    ```
 
-7. **Create the release zip** at `dist/fullcalendar-lwc-<version>.zip` containing only the `force-app/main/default/...` tree. Version comes from the package's `package.json`.
+7. **Create the release zip with the separate archive command** at `archives/fullcalendar-lwc-<version>.zip`, containing only the `force-app/main/default/...` tree. Version comes from the package's `package.json`.
 
-The build script should be idempotent — safe to re-run, always rebuilds from scratch.
+The build script should be idempotent — safe to re-run, always rebuilding `dist` from scratch. The archive command consumes that built output.
 
 ## Phase 4: README
 
@@ -171,12 +173,12 @@ The README should cover:
   3. Deploy with `sf project deploy start`
 - Usage examples:
   - Minimal: `<c-full-calendar options={calendarOptions}></c-full-calendar>`
-  - With themes: `<c-full-calendar options={calendarOptions} theme="forma" palette="blue" locale="en-gb"></c-full-calendar>`
+  - With themes: `<c-full-calendar options={calendarOptions} theme="forma" theme-palette="blue" locale="en-gb"></c-full-calendar>`
   - Handling events: show `handleEventClick(e) { console.log(e.detail); }`
   - Reactivity gotcha: must reassign `options` (not mutate) to trigger updates
-- App Builder usage: brief note on how the `themePalette` + `locale` design attributes work
+- App Builder usage: brief note on how the `themeAndPalette` + `locale` design attributes work
 - Imperative API: document `getCalendar()` for power users
-- Known limitations: theme/palette/locale are set-once after init, LWS constraints, etc.
+- Known limitations: theme/theme-palette are set-once after init, LWS constraints, etc.
 - Link to FullCalendar's main docs for the options reference
 
 ## Phase 5: Example package for manual smoke-testing

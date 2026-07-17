@@ -2,11 +2,11 @@
 
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { buildLwcPackage } from './lib/build.ts'
+import { archiveLwcPackage } from './lib/archive.ts'
 
 const packageDir = join(dirname(fileURLToPath(import.meta.url)), '..')
 
-buildLwcPackage({ packageDir }).catch((error) => {
+archiveLwcPackage({ packageDir }).catch((error) => {
   console.error(error)
   process.exitCode = 1
 })
