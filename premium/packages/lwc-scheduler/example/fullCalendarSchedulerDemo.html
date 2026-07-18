@@ -1,0 +1,12 @@
+<template>
+  <lightning-card title="FullCalendar LWC Scheduler Demo">
+    <c-full-calendar-scheduler
+      options={calendarOptions}
+      theme={theme}
+      theme-palette={themePalette}
+      locale={locale}
+      oneventclick={handleEventClick}
+      onresourceadd={handleResourceAdd}
+    ></c-full-calendar-scheduler>
+  </lightning-card>
+</template>

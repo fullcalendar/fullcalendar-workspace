@@ -2,15 +2,16 @@
 
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { archiveLwcPackage } from '../../../../standard/packages/lwc-calendar/scripts/lib/archive.ts'
+import { buildLwcPackage } from './lib/build.ts'
 
 const packageDir = join(dirname(fileURLToPath(import.meta.url)), '..')
-const licensePath = join(packageDir, '../..', 'LICENSE.md')
 
-archiveLwcPackage({
+buildLwcPackage({
   packageDir,
-  archiveBaseName: 'fullcalendar-lwc-scheduler',
-  licensePath,
+  appBuilderComponent: {
+    sourceDir: join(packageDir, 'example'),
+    componentName: 'fullCalendarDemo',
+  },
 }).catch((error) => {
   console.error(error)
   process.exitCode = 1

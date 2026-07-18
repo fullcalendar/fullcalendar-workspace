@@ -98,7 +98,7 @@ async function tagAndReleaseSubrepo(
     subrepoSubdir === 'standard'
       ? [
         `standard/packages/vanilla/archives/fullcalendar-${version}.zip`,
-        `standard/packages/lwc/archives/fullcalendar-lwc-${version}.zip`,
+        `standard/packages/lwc-calendar/archives/fullcalendar-lwc-${version}.zip`,
       ]
       : [],
     subrepoSubdir !== 'standard', // linkToStandard

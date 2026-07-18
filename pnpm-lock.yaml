@@ -1671,7 +1671,7 @@ importers:
     dependencies:
       '@fullcalendar/lwc':
         specifier: workspace:7.0.0
-        version: link:../../../standard/packages/lwc
+        version: link:../../../standard/packages/lwc-calendar
       fullcalendar:
         specifier: workspace:7.0.0
         version: link:../../../standard/packages/vanilla/dist
@@ -1679,6 +1679,9 @@ importers:
         specifier: workspace:7.0.0
         version: link:../vanilla-scheduler/dist
     devDependencies:
+      '@salesforce/cli':
+        specifier: ^2.112.6
+        version: 2.130.9(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)
       '@types/archiver':
         specifier: ^6.0.3
         version: 6.0.4
@@ -1688,21 +1691,6 @@ importers:
       archiver:
         specifier: ^7.0.1
         version: 7.0.1
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  premium/packages/lwc-scheduler-example:
-    devDependencies:
-      '@fullcalendar/lwc-scheduler':
-        specifier: workspace:7.0.0
-        version: link:../lwc-scheduler
-      '@salesforce/cli':
-        specifier: ^2.112.6
-        version: 2.130.9(@types/node@24.10.9)(@types/react@18.3.27)(encoding@0.1.13)
-      '@types/node':
-        specifier: ^24.5.2
-        version: 24.10.9
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -2191,7 +2179,7 @@ importers:
         version: 1.0.1
     publishDirectory: ./dist
 
-  standard/packages/lwc:
+  standard/packages/lwc-calendar:
     dependencies:
       fullcalendar:
         specifier: workspace:7.0.0
@@ -2200,6 +2188,9 @@ importers:
       '@lwc/eslint-plugin-lwc':
         specifier: ^3.3.0
         version: 3.5.0(@babel/eslint-parser@7.28.6(@babel/core@7.29.0)(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
+      '@salesforce/cli':
+        specifier: ^2.112.6
+        version: 2.130.9(@types/node@24.10.9)(@types/react@18.3.27)(encoding@0.1.13)
       '@types/archiver':
         specifier: ^6.0.3
         version: 6.0.4
@@ -2209,21 +2200,6 @@ importers:
       archiver:
         specifier: ^7.0.1
         version: 7.0.1
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  standard/packages/lwc-example:
-    devDependencies:
-      '@fullcalendar/lwc':
-        specifier: workspace:7.0.0
-        version: link:../lwc
-      '@salesforce/cli':
-        specifier: ^2.112.6
-        version: 2.130.9(@types/node@24.10.9)(@types/react@19.2.14)(encoding@0.1.13)
-      '@types/node':
-        specifier: ^24.5.2
-        version: 24.10.9
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -16610,10 +16586,6 @@ packages:
     resolution: {integrity: sha512-tAAg/72/VxOUW7RQSX1pIxJVucYKcjFjfvj60L57jrZpYCHC3XN0WCQ3sNYL4Gmvv+7GPvTAjc+KSdeNuE8oWQ==}
     engines: {node: '>=12.22.0'}
 
-  ip-address@10.1.0:
-    resolution: {integrity: sha512-XXADHxXmvT9+CRxhXg56LJovE+bmWnEWB78LB83VZTprKTmaC5QfruXocxzTZ2Kl0DNwKuBdlIhjL8LeY8Sf8Q==}
-    engines: {node: '>= 12'}
-
   ip-address@10.2.0:
     resolution: {integrity: sha512-/+S6j4E9AHvW9SWMSEY9Xfy66O5PWvVEJ08O0y5JGyEKQpojb0K0GKpz/v5HJ/G0vi3D2sjGK78119oXZeE0qA==}
     engines: {node: '>= 12'}
@@ -20220,6 +20192,7 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qjobs@1.2.0:
@@ -23934,7 +23907,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
@@ -23995,7 +23968,7 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.32.0)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
@@ -24024,7 +23997,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
+      '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
@@ -24085,7 +24058,7 @@ snapshots:
       vite: 4.5.5(@types/node@24.10.9)(less@4.1.3)(lightningcss@1.32.0)(sass@1.64.1)(stylus@0.62.0)(terser@5.19.2)
       webpack: 5.94.0(esbuild@0.18.17)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(esbuild@0.18.17))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
       webpack-merge: 5.9.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.6(webpack@5.104.1))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
@@ -24369,12 +24342,12 @@ snapshots:
       - webpack-cli
       - yaml
 
-  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))':
+  '@angular-devkit/build-webpack@0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))':
     dependencies:
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.18.17)
-      webpack-dev-server: 4.15.1(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-server: 4.15.1(webpack@5.94.0)
     transitivePeerDependencies:
       - chokidar
 
@@ -29440,49 +29413,25 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
-
   '@jsonjoy.com/base64@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
-
-  '@jsonjoy.com/base64@17.65.0(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
 
   '@jsonjoy.com/buffers@1.2.1(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
-  '@jsonjoy.com/buffers@1.2.1(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
-
   '@jsonjoy.com/buffers@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
-
-  '@jsonjoy.com/buffers@17.65.0(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
 
   '@jsonjoy.com/codegen@1.0.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
-  '@jsonjoy.com/codegen@1.0.0(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
-
   '@jsonjoy.com/codegen@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
-
-  '@jsonjoy.com/codegen@17.65.0(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
 
   '@jsonjoy.com/fs-core@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29490,13 +29439,6 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/fs-core@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      thingies: 2.5.0(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29506,21 +29448,9 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
-  '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      thingies: 2.5.0(tslib@2.8.1)
-      tslib: 2.8.1
-
   '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
-
-  '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.8.1)':
-    dependencies:
-      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29529,22 +29459,10 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
 
-  '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      tslib: 2.8.1
-
   '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29557,28 +29475,11 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
-  '@jsonjoy.com/fs-node@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
-      glob-to-regex.js: 1.2.0(tslib@2.8.1)
-      thingies: 2.5.0(tslib@2.8.1)
-      tslib: 2.8.1
-
   '@jsonjoy.com/fs-print@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/fs-print@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29587,14 +29488,6 @@ snapshots:
       '@jsonjoy.com/json-pack': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/json-pack': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jsonjoy.com/json-pack@1.21.0(tslib@2.6.3)':
     dependencies:
@@ -29610,14 +29503,14 @@ snapshots:
 
   '@jsonjoy.com/json-pack@1.21.0(tslib@2.8.1)':
     dependencies:
-      '@jsonjoy.com/base64': 1.1.2(tslib@2.8.1)
-      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
-      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
-      '@jsonjoy.com/json-pointer': 1.0.2(tslib@2.8.1)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      '@jsonjoy.com/base64': 1.1.2(tslib@2.6.3)
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.6.3)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
+      '@jsonjoy.com/json-pointer': 1.0.2(tslib@2.6.3)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
       hyperdyperid: 1.2.0
-      thingies: 2.5.0(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.6.3)
+      tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.8.1
 
   '@jsonjoy.com/json-pack@17.65.0(tslib@2.6.3)':
@@ -29632,39 +29525,16 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
 
-  '@jsonjoy.com/json-pack@17.65.0(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/base64': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/json-pointer': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
-      hyperdyperid: 1.2.0
-      thingies: 2.5.0(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
-      tslib: 2.8.1
-
   '@jsonjoy.com/json-pointer@1.0.2(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
       '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
       tslib: 2.6.3
 
-  '@jsonjoy.com/json-pointer@1.0.2(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
-      tslib: 2.8.1
-
   '@jsonjoy.com/json-pointer@17.65.0(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/json-pointer@17.65.0(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jsonjoy.com/util@1.9.0(tslib@2.6.3)':
     dependencies:
@@ -29674,8 +29544,8 @@ snapshots:
 
   '@jsonjoy.com/util@1.9.0(tslib@2.8.1)':
     dependencies:
-      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
-      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.6.3)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
       tslib: 2.8.1
 
   '@jsonjoy.com/util@17.65.0(tslib@2.6.3)':
@@ -29683,12 +29553,6 @@ snapshots:
       '@jsonjoy.com/buffers': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/codegen': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
-
-  '@jsonjoy.com/util@17.65.0(tslib@2.8.1)':
-    dependencies:
-      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
-      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
-      tslib: 2.8.1
 
   '@jspm/core@2.1.0': {}
 
@@ -29855,7 +29719,7 @@ snapshots:
       eslint: 9.39.2(jiti@2.6.1)
       fast-xml-parser: 5.7.0
       globals: 15.14.0
-      minimatch: 9.0.5
+      minimatch: 9.0.9
 
   '@manypkg/find-root@1.1.0':
     dependencies:
@@ -30478,7 +30342,7 @@ snapshots:
       proc-log: 3.0.0
       promise-inflight: 1.0.1
       promise-retry: 2.0.1
-      semver: 7.7.3
+      semver: 7.7.4
       which: 3.0.1
     transitivePeerDependencies:
       - bluebird
@@ -34708,7 +34572,7 @@ snapshots:
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/visitor-keys': 8.54.0
       debug: 4.4.3(supports-color@8.1.1)
-      minimatch: 9.0.5
+      minimatch: 9.0.9
       semver: 7.7.3
       tinyglobby: 0.2.15
       ts-api-utils: 2.4.0(typescript@5.8.3)
@@ -34723,7 +34587,7 @@ snapshots:
       '@typescript-eslint/types': 8.54.0
       '@typescript-eslint/visitor-keys': 8.54.0
       debug: 4.4.3(supports-color@8.1.1)
-      minimatch: 9.0.5
+      minimatch: 9.0.9
       semver: 7.7.3
       tinyglobby: 0.2.15
       ts-api-utils: 2.4.0(typescript@5.9.3)
@@ -35277,7 +35141,7 @@ snapshots:
       '@vue/compiler-dom': 3.5.27
       '@vue/shared': 3.5.27
       computeds: 0.0.1
-      minimatch: 9.0.5
+      minimatch: 9.0.9
       muggle-string: 0.3.1
       path-browserify: 1.0.1
       vue-template-compiler: 2.7.16
@@ -35543,9 +35407,9 @@ snapshots:
     optionalDependencies:
       ajv: 8.12.0
 
-  ajv-formats@2.1.1(ajv@8.17.1):
+  ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:
-      ajv: 8.17.1
+      ajv: 8.20.0
 
   ajv-formats@3.0.1(ajv@8.17.1):
     optionalDependencies:
@@ -35559,9 +35423,9 @@ snapshots:
     dependencies:
       ajv: 6.12.6
 
-  ajv-keywords@5.1.0(ajv@8.17.1):
+  ajv-keywords@5.1.0(ajv@8.20.0):
     dependencies:
-      ajv: 8.17.1
+      ajv: 8.20.0
       fast-deep-equal: 3.1.3
 
   ajv@6.12.6:
@@ -40311,8 +40175,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ip-address@10.1.0: {}
-
   ip-address@10.2.0: {}
 
   ipaddr.js@1.9.1: {}
@@ -40454,7 +40316,7 @@ snapshots:
 
   is-fullwidth-code-point@5.1.0:
     dependencies:
-      get-east-asian-width: 1.4.0
+      get-east-asian-width: 1.6.0
 
   is-generator-function@1.1.2:
     dependencies:
@@ -41616,7 +41478,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   make-fetch-happen@10.2.1:
     dependencies:
@@ -41886,19 +41748,19 @@ snapshots:
 
   memfs@4.56.10(tslib@2.8.1):
     dependencies:
-      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
-      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.8.1)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
-      glob-to-regex.js: 1.2.0(tslib@2.8.1)
-      thingies: 2.5.0(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.6.3)
+      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.6.3)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
+      glob-to-regex.js: 1.2.0(tslib@2.6.3)
+      thingies: 2.5.0(tslib@2.6.3)
+      tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.8.1
 
   merge-descriptors@1.0.3: {}
@@ -42826,7 +42688,7 @@ snapshots:
       nopt: 8.1.0
       proc-log: 5.0.0
       semver: 7.7.4
-      tar: 7.5.7
+      tar: 7.5.13
       tinyglobby: 0.2.16
       which: 5.0.0
     transitivePeerDependencies:
@@ -42841,7 +42703,7 @@ snapshots:
       nopt: 9.0.0
       proc-log: 6.1.0
       semver: 7.7.4
-      tar: 7.5.7
+      tar: 7.5.13
       tinyglobby: 0.2.16
       which: 6.0.0
     transitivePeerDependencies:
@@ -42930,7 +42792,7 @@ snapshots:
 
   npm-install-checks@6.3.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   npm-install-checks@7.1.2:
     dependencies:
@@ -46023,9 +45885,9 @@ snapshots:
   schema-utils@4.3.3:
     dependencies:
       '@types/json-schema': 7.0.15
-      ajv: 8.17.1
-      ajv-formats: 2.1.1(ajv@8.17.1)
-      ajv-keywords: 5.1.0(ajv@8.17.1)
+      ajv: 8.20.0
+      ajv-formats: 2.1.1(ajv@8.20.0)
+      ajv-keywords: 5.1.0(ajv@8.20.0)
 
   scule@1.3.0: {}
 
@@ -46481,7 +46343,7 @@ snapshots:
 
   socks@2.8.7:
     dependencies:
-      ip-address: 10.1.0
+      ip-address: 10.2.0
       smart-buffer: 4.2.0
 
   sonic-boom@4.2.1:
@@ -48454,15 +48316,6 @@ snapshots:
 
   webidl-conversions@8.0.1: {}
 
-  webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.18.17)):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 3.5.3
-      mime-types: 2.1.35
-      range-parser: 1.2.1
-      schema-utils: 4.3.3
-      webpack: 5.94.0(esbuild@0.18.17)
-
   webpack-dev-middleware@5.3.4(webpack@5.94.0(esbuild@0.20.1)):
     dependencies:
       colorette: 2.0.20
@@ -48471,6 +48324,15 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
       webpack: 5.94.0(esbuild@0.20.1)
+
+  webpack-dev-middleware@5.3.4(webpack@5.94.0):
+    dependencies:
+      colorette: 2.0.20
+      memfs: 3.5.3
+      mime-types: 2.1.35
+      range-parser: 1.2.1
+      schema-utils: 4.3.3
+      webpack: 5.94.0(esbuild@0.18.17)
 
   webpack-dev-middleware@6.1.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -48558,7 +48420,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)):
+  webpack-dev-server@4.15.1(webpack@5.94.0):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -48588,7 +48450,7 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 5.3.4(webpack@5.94.0(esbuild@0.18.17))
+      webpack-dev-middleware: 5.3.4(webpack@5.94.0)
       ws: 8.19.0
     optionalDependencies:
       webpack: 5.94.0(esbuild@0.18.17)

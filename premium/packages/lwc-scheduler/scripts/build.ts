@@ -9,10 +9,11 @@ import {
   buildLwcPackage,
   resolveDistDirFromPackageJson,
   resourceMetaXmlText,
-} from '../../../../standard/packages/lwc/scripts/lib/build.ts'
+} from '../../../../standard/packages/lwc-calendar/scripts/lib/build.ts'
 
 const packageDir = join(dirname(fileURLToPath(import.meta.url)), '..')
-const sourceLwcDir = join(packageDir, '../../../standard/packages/lwc/src')
+const standardLwcDir = join(packageDir, '../../../standard/packages/lwc-calendar')
+const sourceLwcDir = join(standardLwcDir, 'src')
 const require = createRequire(join(packageDir, 'package.json'))
 
 function transformComponentJs(source: string) {
@@ -78,6 +79,10 @@ buildLwcPackage({
   componentName: 'fullCalendarScheduler',
   componentLabel: 'FullCalendar Scheduler',
   componentDescription: 'FullCalendar Scheduler component',
+  appBuilderComponent: {
+    sourceDir: join(packageDir, 'example'),
+    componentName: 'fullCalendarSchedulerDemo',
+  },
   transformComponentJs,
   copyAdditionalStaticResources: copySchedulerStaticResource,
 }).catch((error) => {
