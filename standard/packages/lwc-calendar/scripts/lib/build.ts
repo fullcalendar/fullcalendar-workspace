@@ -35,7 +35,6 @@ export type LwcBuildConfig = {
   componentLabel?: string
   componentDescription?: string
   appBuilderComponent?: AppBuilderComponentConfig
-  transformComponentJs?: (source: string) => string
   copyAdditionalStaticResources?: (context: AdditionalStaticResourceContext) => Promise<void>
 }
 
@@ -48,7 +47,6 @@ type BuildContext = {
   outputResourceDir: string
   componentLabel: string
   componentDescription: string
-  transformComponentJs?: (source: string) => string
 }
 
 export const resourceMetaXmlText = `<?xml version="1.0" encoding="UTF-8"?>
@@ -77,7 +75,6 @@ export async function buildLwcPackage(config: LwcBuildConfig) {
     componentLabel = 'FullCalendar',
     componentDescription = 'FullCalendar component',
     appBuilderComponent,
-    transformComponentJs,
     copyAdditionalStaticResources,
   } = config
   const distDir = join(packageDir, 'dist')
@@ -95,7 +92,6 @@ export async function buildLwcPackage(config: LwcBuildConfig) {
     outputResourceDir,
     componentLabel,
     componentDescription,
-    transformComponentJs,
   }
   const packageJsonPath = join(packageDir, 'package.json')
   const require = createRequire(packageJsonPath)
@@ -150,7 +146,6 @@ async function copyLwcSource(context: BuildContext) {
     componentName,
     componentLabel,
     componentDescription,
-    transformComponentJs,
   } = context
 
   await mkdir(outputLwcDir, { recursive: true })
@@ -159,11 +154,9 @@ async function copyLwcSource(context: BuildContext) {
     join(outputLwcDir, `${componentName}.html`),
   )
 
-  const componentJs = await readFile(join(sourceLwcDir, 'fullCalendar.js'), 'utf8')
-
-  await writeFile(
+  await copyFile(
+    join(sourceLwcDir, 'fullCalendar.js'),
     join(outputLwcDir, `${componentName}.js`),
-    transformComponentJs ? transformComponentJs(componentJs) : componentJs,
   )
 
   const metaTemplate = await readFile(join(sourceLwcDir, 'fullCalendar.js-meta.xml.template'), 'utf8')
@@ -198,13 +191,7 @@ async function copyAppBuilderComponent(
     join(outputDir, `${componentName}.js`),
   )
 
-  const themeAndPaletteDatasource = Array.from(themes.entries())
-    .flatMap(([themeName, themeSpec]) => (
-      themeSpec.palettes.map((paletteName) => (
-        `${capitalize(themeName)} / ${capitalize(paletteName)}`
-      ))
-    ))
-    .join(',')
+  const themeDatasource = Array.from(themes.keys()).join(',')
   const localeDatasource = ['en', ...locales.filter((locale) => locale !== 'en')].join(',')
   const metadata = await readFile(
     join(sourceDir, `${componentName}.js-meta.xml`),
@@ -214,13 +201,9 @@ async function copyAppBuilderComponent(
   await writeFile(
     join(outputDir, `${componentName}.js-meta.xml`),
     metadata
-      .replace('{{THEME_AND_PALETTE_DATASOURCE}}', themeAndPaletteDatasource)
+      .replace('{{THEME_DATASOURCE}}', themeDatasource)
       .replace('{{LOCALE_DATASOURCE}}', localeDatasource),
   )
-}
-
-function capitalize(value: string) {
-  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 async function copyStaticResources(

@@ -1,16 +1,8 @@
 import { LightningElement, api } from 'lwc'
 
 export default class FullCalendarDemo extends LightningElement {
-  @api themeAndPalette = 'Forma / Blue'
+  @api theme = 'forma'
   @api locale = 'en'
-
-  get theme() {
-    return parseThemeAndPalette(this.themeAndPalette).theme
-  }
-
-  get themePalette() {
-    return parseThemeAndPalette(this.themeAndPalette).palette
-  }
 
   calendarOptions = {
     timeZone: 'UTC',
@@ -72,12 +64,4 @@ export default class FullCalendarDemo extends LightningElement {
   handleEventClick(event) {
     window.console.log('FullCalendar eventClick', event.detail)
   }
-}
-
-function parseThemeAndPalette(value) {
-  const [theme, palette] = value
-    .split('/')
-    .map((part) => part.trim().toLowerCase())
-
-  return { theme, palette }
 }

@@ -9,53 +9,12 @@ import {
   buildLwcPackage,
   resolveDistDirFromPackageJson,
   resourceMetaXmlText,
-} from '../../../../standard/packages/lwc-calendar/scripts/lib/build.ts'
+} from '@fullcalendar/lwc/scripts/lib/build.ts'
 
 const packageDir = join(dirname(fileURLToPath(import.meta.url)), '..')
-const standardLwcDir = join(packageDir, '../../../standard/packages/lwc-calendar')
-const sourceLwcDir = join(standardLwcDir, 'src')
 const require = createRequire(join(packageDir, 'package.json'))
-
-function transformComponentJs(source: string) {
-  let transformedSource = replaceOnce(
-    source,
-    "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n",
-    "import fullCalendarLib from '@salesforce/resourceUrl/fullCalendarLib'\n" +
-      "import fullCalendarSchedulerLib from '@salesforce/resourceUrl/fullCalendarSchedulerLib'\n",
-  )
-
-  transformedSource = replaceOnce(
-    transformedSource,
-    'const ADDITIONAL_DEFAULT_OPTIONS = {}',
-    `const ADDITIONAL_DEFAULT_OPTIONS = {
-  initialView: 'resourceTimelineDay',
-}`,
-  )
-  transformedSource = replaceOnce(
-    transformedSource,
-    'const ADDITIONAL_PLUGIN_GLOBAL_URL = null',
-    'const ADDITIONAL_PLUGIN_GLOBAL_URL = `${fullCalendarSchedulerLib}/all/global.js`',
-  )
-  transformedSource = replaceOnce(
-    transformedSource,
-    'const ADDITIONAL_REDISPATCHED_CALLBACKS = []',
-    `const ADDITIONAL_REDISPATCHED_CALLBACKS = [
-  'resourceAdd',
-  'resourceChange',
-  'resourceRemove',
-]`,
-  )
-
-  return transformedSource
-}
-
-function replaceOnce(source: string, search: string, replacement: string) {
-  if (!source.includes(search)) {
-    throw new Error(`Could not find expected LWC source text: ${search}`)
-  }
-
-  return source.replace(search, replacement)
-}
+const standardLwcDir = dirname(require.resolve('@fullcalendar/lwc/package.json'))
+const sourceLwcDir = join(standardLwcDir, 'src')
 
 async function copySchedulerStaticResource({
   outputStaticResourcesDir,
@@ -76,14 +35,10 @@ async function copySchedulerStaticResource({
 buildLwcPackage({
   packageDir,
   sourceLwcDir,
-  componentName: 'fullCalendarScheduler',
-  componentLabel: 'FullCalendar Scheduler',
-  componentDescription: 'FullCalendar Scheduler component',
   appBuilderComponent: {
     sourceDir: join(packageDir, 'example'),
     componentName: 'fullCalendarSchedulerDemo',
   },
-  transformComponentJs,
   copyAdditionalStaticResources: copySchedulerStaticResource,
 }).catch((error) => {
   console.error(error)

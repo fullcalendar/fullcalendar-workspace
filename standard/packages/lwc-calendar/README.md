@@ -16,7 +16,7 @@ Minimal usage:
 <c-full-calendar options={calendarOptions}></c-full-calendar>
 ```
 
-With an explicit theme, palette, and locale:
+With an explicit theme, palette, and locale (`theme-palette` is optional; each theme has a default palette):
 
 ```html
 <c-full-calendar
@@ -26,6 +26,16 @@ With an explicit theme, palette, and locale:
   locale="en-gb"
 ></c-full-calendar>
 ```
+
+Available themes and their palettes (default palette in bold):
+
+- `classic` — single built-in palette (`theme-palette` is ignored)
+- `breezy` — amber, emerald, **indigo**, rose
+- `forma` — **blue**, green, purple, red
+- `monarch` — blue, green, **purple**, red, yellow
+- `pulse` — blue, green, purple, **red**
+
+Additional FullCalendar global-plugin scripts (such as the premium Scheduler runtime shipped by the `lwc-scheduler` package) can be supplied as static-resource URLs through `plugin-urls`; the component loads them and applies their plugins during initialization.
 
 With event handling:
 
@@ -64,7 +74,7 @@ To try it after deployment:
 1. In the deployed org, open **Setup** from the gear menu.
 2. Use **Quick Find** to open **Lightning App Builder**, then click **New**.
 3. Select **App Page**, enter a label such as **FullCalendar Demo**, select the standard **One Region** template, and click **Done**.
-4. Under **Custom**, drag **FullCalendar Demo** onto the page and choose its **Theme / Palette** and **Locale**.
+4. Under **Custom**, drag **FullCalendar Demo** onto the page and choose its **Theme** and **Locale**.
 5. Click **Save** and **Activate**, create the Lightning tab if prompted, and add the page to a Lightning app such as **Sales**.
 6. Open that app from the App Launcher and verify the calendar and sample events.
 
@@ -81,7 +91,8 @@ calendar.next()
 
 ## Known Limitations
 
-- `themePalette` and `theme` are set once during initial render. Recreate the component to change them.
+- `themePalette` and `pluginUrls` are set once during initial render. Recreate the component to change them. `theme` may be changed at any time; the new theme's assets load asynchronously before it is applied.
+- Two components on the same page must not use the same theme with different palettes; palette CSS variables are page-global per theme.
 - The wrapper relies on Salesforce static-resource loading and Lightning Web Security allowing the FullCalendar IIFE bundle to attach to `window.FullCalendar`.
 - LWC event handlers receive re-dispatched custom events whose payload is available on `event.detail`.
 

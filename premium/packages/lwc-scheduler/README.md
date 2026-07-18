@@ -1,6 +1,6 @@
 # FullCalendar LWC Scheduler
 
-FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, the programmatic `fullCalendarScheduler` component, and a `fullCalendarSchedulerDemo` component for Lightning App Builder.
+FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, the programmatic `fullCalendar` component, and a `fullCalendarSchedulerDemo` component for Lightning App Builder.
 
 ## Install
 
@@ -9,23 +9,27 @@ FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lw
 3. Deploy with `sf project deploy start`.
 
 The Scheduler zip is self-sufficient; the standard LWC zip does not need to be installed separately.
-When upgrading from the standard package, replace `c-full-calendar` with `c-full-calendar-scheduler` in your LWC markup.
+If you are upgrading from the standard package, this zip fully replaces it: it deploys an identical `c-full-calendar` component and additionally ships the Scheduler runtime as the `fullCalendarSchedulerLib` static resource, so no markup changes are needed. Leaving both packages installed does work, but it exists to support demoing them side by side, not as a recommended setup — standardize on this one.
 
 ## Usage
 
-Use the `c-full-calendar-scheduler` component. Scheduler views, resources, and `schedulerLicenseKey` are supplied through `options`. When `options.initialView` is omitted, the Scheduler wrapper defaults to `resourceTimelineDay`; an explicit value overrides that default.
+Use the `c-full-calendar` component and pass the Scheduler runtime's URL through `plugin-urls`. Scheduler views, resources, and `schedulerLicenseKey` are supplied through `options`. Set `options.initialView` to a resource view yourself (as the demo does) — without it, the calendar renders the standard `dayGridMonth` default. Themes and palettes are the same as the standard package.
 
 ```html
-<c-full-calendar-scheduler
+<c-full-calendar
   options={calendarOptions}
   theme="monarch"
-  theme-palette="purple"
+  plugin-urls={pluginUrls}
   locale="en-gb"
   onresourceadd={handleResourceAdd}
-></c-full-calendar-scheduler>
+></c-full-calendar>
 ```
 
 ```js
+import fullCalendarSchedulerLib from '@salesforce/resourceUrl/fullCalendarSchedulerLib'
+
+pluginUrls = [`${fullCalendarSchedulerLib}/all/global.js`]
+
 calendarOptions = {
   initialView: 'resourceTimelineWeek',
   schedulerLicenseKey: 'YOUR-LICENSE-KEY',
@@ -39,7 +43,7 @@ calendarOptions = {
 }
 ```
 
-The wrapper redispatches `resourceAdd`, `resourceChange`, and `resourceRemove` as lowercase LWC custom events in addition to the standard callback events. The original callback functions in `options` are still invoked.
+When the Scheduler runtime is loaded through `plugin-urls`, the wrapper additionally redispatches its listeners (`resourcesSet`, `resourceAdd`, `resourceChange`, `resourceRemove`) as lowercase LWC custom events. The original callback functions in `options` are still invoked.
 
 ## Reactivity
 
@@ -56,14 +60,14 @@ After initialization, the wrapper passes reassigned `options` through FullCalend
 
 ## Lightning App Builder Demo
 
-The low-level `fullCalendarScheduler` component is intended for programmatic composition and does not appear in Lightning App Builder. The included **FullCalendar Scheduler Demo** component provides representative resource, event, toolbar, interaction, theme, palette, and locale configuration.
+The low-level `fullCalendar` component is intended for programmatic composition and does not appear in Lightning App Builder. The included **FullCalendar Scheduler Demo** component provides representative resource, event, toolbar, interaction, theme, and locale configuration.
 
 To try it after deployment:
 
 1. In the deployed org, open **Setup** from the gear menu.
 2. Use **Quick Find** to open **Lightning App Builder**, then click **New**.
 3. Select **App Page**, enter a label such as **FullCalendar Scheduler Demo**, select the standard **One Region** template, and click **Done**.
-4. Under **Custom**, drag **FullCalendar Scheduler Demo** onto the page and choose its **Theme / Palette** and **Locale**.
+4. Under **Custom**, drag **FullCalendar Scheduler Demo** onto the page and choose its **Theme** and **Locale**.
 5. Click **Save** and **Activate**, create the Lightning tab if prompted, and add the page to a Lightning app such as **Sales**.
 6. Open that app from the App Launcher and verify the resource timeline and sample data.
 
@@ -74,13 +78,14 @@ Use `fullCalendarSchedulerDemo` as reference code for an application-specific wr
 Call `getCalendar()` on the component instance to access the underlying FullCalendar `Calendar` instance:
 
 ```js
-const calendar = this.template.querySelector('c-full-calendar-scheduler').getCalendar()
+const calendar = this.template.querySelector('c-full-calendar').getCalendar()
 calendar.next()
 ```
 
 ## Known Limitations
 
-- `themePalette` and `theme` are set once during initial render. Recreate the component to change them.
+- `themePalette` and `pluginUrls` are set once during initial render. Recreate the component to change them. `theme` may be changed at any time; the new theme's assets load asynchronously before it is applied.
+- Two components on the same page must not use the same theme with different palettes; palette CSS variables are page-global per theme.
 - The wrapper relies on Salesforce static-resource loading and Lightning Web Security allowing the FullCalendar IIFE bundles to attach to their window globals.
 - LWC event handlers receive re-dispatched custom events whose payload is available on `event.detail`.
 

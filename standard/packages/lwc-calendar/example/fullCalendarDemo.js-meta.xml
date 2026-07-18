@@ -11,11 +11,11 @@
     <targetConfigs>
         <targetConfig targets="lightning__AppPage,lightning__HomePage">
             <property
-                name="themeAndPalette"
+                name="theme"
                 type="String"
-                label="Theme / Palette"
-                default="Forma / Blue"
-                datasource="{{THEME_AND_PALETTE_DATASOURCE}}"
+                label="Theme"
+                default="forma"
+                datasource="{{THEME_DATASOURCE}}"
             />
             <property
                 name="locale"

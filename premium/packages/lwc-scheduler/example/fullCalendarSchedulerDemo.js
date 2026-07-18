@@ -1,16 +1,11 @@
 import { LightningElement, api } from 'lwc'
+import fullCalendarSchedulerLib from '@salesforce/resourceUrl/fullCalendarSchedulerLib'
 
 export default class FullCalendarSchedulerDemo extends LightningElement {
-  @api themeAndPalette = 'Forma / Blue'
+  @api theme = 'forma'
   @api locale = 'en'
 
-  get theme() {
-    return parseThemeAndPalette(this.themeAndPalette).theme
-  }
-
-  get themePalette() {
-    return parseThemeAndPalette(this.themeAndPalette).palette
-  }
+  pluginUrls = [`${fullCalendarSchedulerLib}/all/global.js`]
 
   calendarOptions = {
     timeZone: 'UTC',
@@ -100,12 +95,4 @@ export default class FullCalendarSchedulerDemo extends LightningElement {
   handleResourceAdd(event) {
     window.console.log('FullCalendar Scheduler resourceAdd', event.detail)
   }
-}
-
-function parseThemeAndPalette(value) {
-  const [theme, palette] = value
-    .split('/')
-    .map((part) => part.trim().toLowerCase())
-
-  return { theme, palette }
 }
