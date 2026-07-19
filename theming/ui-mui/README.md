@@ -35,27 +35,21 @@ import '@fullcalendar/mui/monarch/theme.css'
 
 ### Premium Usage
 
-You must install additional packages:
+You must install an additional package:
 
 ```sh
-npm install \
-  @fullcalendar/adaptive \
-  @fullcalendar/scrollgrid \
-  @fullcalendar/timeline \
-  @fullcalendar/resource-timeline \
-  @fullcalendar/resource-timegrid \
-  @fullcalendar/resource-daygrid
+npm install @fullcalendar/react-scheduler
 ```
 
 Then write your component code:
 
 ```jsx
-import Scheduler from '@fullcalendar/mui/monarch/Scheduler'
+import ResourceTimeline from '@fullcalendar/mui/monarch/ResourceTimeline'
 
 import '@fullcalendar/react/skeleton.css'
 import '@fullcalendar/mui/monarch/theme.css'
 
-<EventCalendar
+<ResourceTimeline
   addButton={{
     text: 'Add Resource',
     click() {
@@ -64,6 +58,8 @@ import '@fullcalendar/mui/monarch/theme.css'
   }}
 />
 ```
+
+A `ResourceTimeGrid` component is also available for resource-based time-grid views.
 
 ### Custom Usage
 
