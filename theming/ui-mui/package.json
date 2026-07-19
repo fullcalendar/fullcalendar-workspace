@@ -1,6 +1,7 @@
 {
   "name": "@fullcalendar/mui",
   "version": "7.0.0",
+  "license": "MIT",
   "peerDependencies": {
     "@fullcalendar/react": "workspace:7.0.0",
     "@fullcalendar/react-scheduler": "workspace:7.0.0",
