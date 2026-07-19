@@ -54,7 +54,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
     monorepoDir,
     [
       `premium/packages/vanilla-scheduler/archives/fullcalendar-scheduler-${version}.zip`,
-      `premium/packages/lwc-scheduler/archives/fullcalendar-lwc-scheduler-${version}.zip`,
+      `premium/packages/lwc-scheduler/archives/fullcalendar-scheduler-lwc-${version}.zip`,
     ],
     true, // linkToStandard
   )

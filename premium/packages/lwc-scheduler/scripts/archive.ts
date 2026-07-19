@@ -9,7 +9,7 @@ const licensePath = join(packageDir, '../..', 'LICENSE.md')
 
 archiveLwcPackage({
   packageDir,
-  archiveBaseName: 'fullcalendar-lwc-scheduler',
+  archiveBaseName: 'fullcalendar-scheduler-lwc',
   licensePath,
 }).catch((error) => {
   console.error(error)

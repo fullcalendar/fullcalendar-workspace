@@ -1,10 +1,10 @@
-# FullCalendar LWC Scheduler
+# FullCalendar Scheduler LWC
 
-FullCalendar LWC Scheduler is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, the programmatic `fullCalendar` component, and a `fullCalendarSchedulerDemo` component for Lightning App Builder.
+FullCalendar Scheduler LWC is the premium Scheduler variant of `@fullcalendar/lwc`. It produces a self-contained Salesforce source tree and release zip with the standard FullCalendar runtime, the Scheduler runtime, themes, palettes, locales, the programmatic `fullCalendar` component, and a `fullCalendarSchedulerDemo` component for Lightning App Builder.
 
 ## Install
 
-1. Download `fullcalendar-lwc-scheduler-<version>.zip` from GitHub Releases.
+1. Download `fullcalendar-scheduler-lwc-<version>.zip` from GitHub Releases.
 2. Unpack it and copy `force-app/main/default/` into your SFDX project's corresponding package directory.
 3. Deploy with `sf project deploy start`.
 
@@ -105,7 +105,7 @@ Create the release zip from the built source tree:
 pnpm archive
 ```
 
-This writes `archives/fullcalendar-lwc-scheduler-<version>.zip`.
+This writes `archives/fullcalendar-scheduler-lwc-<version>.zip`.
 
 Remove all build and archive output with:
 

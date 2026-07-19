@@ -2,7 +2,7 @@
   "name": "@fullcalendar/lwc-scheduler",
   "version": "7.0.0",
   "private": true,
-  "title": "FullCalendar LWC Scheduler",
+  "title": "FullCalendar Scheduler LWC",
   "description": "Salesforce Lightning Web Component wrapper for FullCalendar Scheduler",
   "type": "module",
   "scripts": {
