@@ -30,8 +30,8 @@
     "@angular/forms": "^22.0.2",
     "@angular/platform-browser": "^22.0.2",
     "@angular/router": "^22.0.2",
-    "@fullcalendar/angular": "^7.0.0",
-    "fullcalendar": "^7.0.0",
+    "@fullcalendar/angular": "^7.0.1",
+    "fullcalendar": "^7.0.1",
     "rxjs": "~7.8.0",
     "temporal-polyfill": "^1.0.1",
     "tslib": "^2.3.0"

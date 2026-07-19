@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@fullcalendar/preact": "^7.0.0",
+    "@fullcalendar/preact": "^7.0.1",
     "preact": "^10.29.0",
     "temporal-polyfill": "^1.0.1"
   },

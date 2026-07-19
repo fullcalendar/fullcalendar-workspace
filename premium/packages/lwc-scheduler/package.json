@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/lwc-scheduler",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "private": true,
   "title": "FullCalendar Scheduler LWC",
   "description": "Salesforce Lightning Web Component wrapper for FullCalendar Scheduler",
@@ -14,9 +14,9 @@
     "smoke:deploy": "cd dist && sf project deploy start --source-dir force-app --target-org fullcalendar-dev"
   },
   "dependencies": {
-    "@fullcalendar/lwc": "workspace:7.0.0",
-    "fullcalendar": "workspace:7.0.0",
-    "fullcalendar-scheduler": "workspace:7.0.0"
+    "@fullcalendar/lwc": "workspace:7.0.1",
+    "fullcalendar": "workspace:7.0.1",
+    "fullcalendar-scheduler": "workspace:7.0.1"
   },
   "devDependencies": {
     "@salesforce/cli": "^2.112.6",

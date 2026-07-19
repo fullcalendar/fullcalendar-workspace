@@ -1,20 +1,20 @@
 {
   "name": "@fullcalendar/preact-scheduler",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "title": "FullCalendar Preact Scheduler",
   "description": "FullCalendar Preact Scheduler package",
   "dependencies": {
-    "@full-ui/headless-calendar": "workspace:7.0.0",
-    "@full-ui/headless-grid": "workspace:7.0.0",
-    "@fullcalendar/core": "workspace:7.0.0"
+    "@full-ui/headless-calendar": "workspace:7.0.1",
+    "@full-ui/headless-grid": "workspace:7.0.1",
+    "@fullcalendar/core": "workspace:7.0.1"
   },
   "peerDependencies": {
-    "@fullcalendar/preact": "workspace:7.0.0",
+    "@fullcalendar/preact": "workspace:7.0.1",
     "preact": "^10.29.0",
     "temporal-polyfill": "^1.0.1"
   },
   "devDependencies": {
-    "@fullcalendar/preact": "workspace:7.0.0",
+    "@fullcalendar/preact": "workspace:7.0.1",
     "@fullcalendar-scripts/standard": "workspace:*",
     "preact": "^10.29.0",
     "temporal-polyfill": "^1.0.1"
