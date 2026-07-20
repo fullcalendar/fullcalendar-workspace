@@ -38,10 +38,12 @@ b { /* used for event dates/times */
 
 .demo-app-main {
   flex-grow: 1;
+  min-width: 0;
   padding: 3em;
 }
 
-.fc { /* the calendar root */
+.calendar-container {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
 }
