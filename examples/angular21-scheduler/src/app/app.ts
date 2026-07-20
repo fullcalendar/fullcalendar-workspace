@@ -32,9 +32,9 @@ export class App {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'resourceTimelineWeek,resourceTimeGridDay,dayGridMonth'
+      right: 'resourceTimelineDay,resourceTimeGridDay,dayGridMonth'
     },
-    initialView: 'resourceTimelineWeek',
+    initialView: 'resourceTimelineDay',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     resources: RESOURCES,
     weekends: true,
