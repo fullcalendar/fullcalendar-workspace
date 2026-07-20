@@ -70,6 +70,9 @@ importers:
       zone.js:
         specifier: ~0.13.0
         version: 0.13.3
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
@@ -104,9 +107,6 @@ importers:
       typescript:
         specifier: ~5.0.2
         version: 5.0.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular17:
     dependencies:
@@ -152,6 +152,9 @@ importers:
       zone.js:
         specifier: ~0.14.2
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.0.3
@@ -186,9 +189,6 @@ importers:
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular18:
     dependencies:
@@ -234,6 +234,9 @@ importers:
       zone.js:
         specifier: ~0.14.3
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
@@ -268,9 +271,6 @@ importers:
       typescript:
         specifier: ~5.4.2
         version: 5.4.5
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular19:
     dependencies:
@@ -316,6 +316,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^19.0.2
@@ -350,9 +353,6 @@ importers:
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular20:
     dependencies:
@@ -392,6 +392,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^20.0.4
@@ -426,9 +429,6 @@ importers:
       typescript:
         specifier: ~5.8.2
         version: 5.8.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular21:
     dependencies:
@@ -465,6 +465,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -484,9 +487,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular21-scheduler:
     dependencies:
@@ -529,6 +529,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -548,9 +551,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular22:
     dependencies:
@@ -587,6 +587,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^22.0.2
@@ -606,9 +609,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/mui-event-calendar:
     dependencies:
@@ -636,6 +636,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -643,9 +646,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/mui-scheduler:
     dependencies:
@@ -676,6 +676,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -683,9 +686,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/next13:
     dependencies:
@@ -794,6 +794,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/preact':
+        injected: true
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
@@ -804,9 +807,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/preact':
-        injected: true
 
   examples/preact-scheduler:
     dependencies:
@@ -822,6 +822,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/preact':
+        injected: true
+      '@fullcalendar/preact-scheduler':
+        injected: true
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
@@ -832,11 +837,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/preact':
-        injected: true
-      '@fullcalendar/preact-scheduler':
-        injected: true
 
   examples/react17:
     dependencies:
@@ -852,6 +852,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -859,9 +862,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18:
     dependencies:
@@ -877,6 +877,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^18.3.3
@@ -893,9 +896,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-debug:
     dependencies:
@@ -911,6 +911,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -918,9 +921,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-issue-7619:
     dependencies:
@@ -945,6 +945,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -952,11 +957,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/react18-lazy:
     dependencies:
@@ -972,6 +972,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -979,9 +982,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-mobx-typescript:
     dependencies:
@@ -1003,6 +1003,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^18.3.3
@@ -1019,9 +1022,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-redux:
     dependencies:
@@ -1049,6 +1049,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -1056,9 +1059,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react19:
     dependencies:
@@ -1074,6 +1074,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -1090,9 +1093,6 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.4.21(@types/node@24.10.9)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react19-scheduler:
     dependencies:
@@ -1111,6 +1111,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -1127,11 +1132,6 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.4.21(@types/node@24.10.9)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/remix:
     dependencies:
@@ -1159,6 +1159,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@remix-run/dev':
         specifier: ^2.17.4
@@ -1175,9 +1178,6 @@ importers:
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/rollup:
     dependencies:
@@ -1395,6 +1395,11 @@ importers:
       zod:
         specifier: ^3.21.4
         version: 3.25.76
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@fullcalendar/react':
         specifier: ^7.0.1
@@ -1429,11 +1434,6 @@ importers:
       typescript:
         specifier: ^5.0.2
         version: 5.9.3
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/typescript:
     dependencies:
@@ -1443,6 +1443,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      fullcalendar:
+        injected: true
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -1450,9 +1453,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      fullcalendar:
-        injected: true
 
   examples/typescript-scheduler:
     dependencies:
@@ -1465,6 +1465,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+    dependenciesMeta:
+      fullcalendar:
+        injected: true
+      fullcalendar-scheduler:
+        injected: true
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -1472,11 +1477,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      fullcalendar:
-        injected: true
-      fullcalendar-scheduler:
-        injected: true
 
   examples/vue3:
     dependencies:
@@ -1492,6 +1492,11 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.5.27(typescript@4.9.5)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
+      '@fullcalendar/vue3-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
@@ -1505,11 +1510,6 @@ importers:
       vue-tsc:
         specifier: ^1.0.11
         version: 1.8.27(typescript@4.9.5)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
-      '@fullcalendar/vue3-scheduler':
-        injected: true
 
   examples/vue3-primevue:
     dependencies:
@@ -1531,6 +1531,9 @@ importers:
       vue:
         specifier: ^3.5.24
         version: 3.5.27(typescript@5.9.3)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
     devDependencies:
       '@types/node':
         specifier: ^24.10.1
@@ -1550,9 +1553,6 @@ importers:
       vue-tsc:
         specifier: ^3.1.4
         version: 3.2.4(typescript@5.9.3)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
 
   examples/vue3-scheduler:
     dependencies:
@@ -1568,6 +1568,11 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.5.27(typescript@4.9.5)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
+      '@fullcalendar/vue3-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
@@ -1581,11 +1586,6 @@ importers:
       vue-tsc:
         specifier: ^1.0.11
         version: 1.8.27(typescript@4.9.5)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
-      '@fullcalendar/vue3-scheduler':
-        injected: true
 
   premium/packages/angular-scheduler:
     devDependencies:
@@ -2032,9 +2032,6 @@ importers:
       fullcalendar:
         specifier: workspace:7.0.1
         version: link:../vanilla/dist
-      fullcalendar-scheduler:
-        specifier: workspace:7.0.1
-        version: link:../../../premium/packages/vanilla-scheduler/dist
       jasmine-core:
         specifier: ~4.6.0
         version: 4.6.1

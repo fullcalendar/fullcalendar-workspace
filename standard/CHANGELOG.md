@@ -1,4 +1,9 @@
 
+## next
+
+- Fix Vue 3 types for template ref for `getApi` (#8086)
+
+
 ## v7.0.1
 
 - Better screen reader experience for users of Resource Timeline view
