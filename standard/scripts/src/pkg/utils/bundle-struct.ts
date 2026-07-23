@@ -18,6 +18,7 @@ export interface PkgBundleStruct {
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
   importRemaps?: Record<string, string>
+  themeName?: string
 }
 
 export interface CopyOperation {
@@ -63,6 +64,7 @@ export interface PkgJsonBuildConfig {
   moduleConfig?: PkgModuleConfig
   globalConfig?: PkgGlobalConfig
   importRemaps?: Record<string, string>
+  themeName?: string
   disableWatch?: boolean
 }
 
@@ -164,6 +166,7 @@ export async function buildPkgBundleStruct(
     moduleConfig: buildConfig.moduleConfig,
     globalConfig: buildConfig.globalConfig,
     importRemaps: buildConfig.importRemaps,
+    themeName: buildConfig.themeName,
   }
 }
 

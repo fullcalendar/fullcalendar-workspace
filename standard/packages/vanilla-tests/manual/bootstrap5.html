@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+
+<link rel='stylesheet' href='../../vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css' />
+<link rel='stylesheet' href='../../bootstrap5/dist/theme.css' />
+<link rel='stylesheet' href='../../bootstrap5/dist/palette.css' />
+
+<script src='../../vanilla/dist/all/global.js'></script>
+<script src='../../bootstrap5/dist/global.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialDate: '2024-05-15',
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prevYear,prev,next,nextYear today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listWeek,multiMonthYear'
+      },
+      navLinks: true,
+      editable: true,
+      selectable: true,
+      dayMaxEvents: 3,
+      events: [
+        { title: 'Popover event 1', start: '2024-05-15' },
+        { title: 'Popover event 2', start: '2024-05-15' },
+        { title: 'Popover event 3', start: '2024-05-15' },
+        { title: 'Popover event 4', start: '2024-05-15' },
+        { title: 'Popover event 5', start: '2024-05-15' },
+        { title: 'Popover event 6', start: '2024-05-15' },
+        { title: 'Popover event 7', start: '2024-05-15' },
+        { title: 'Multi-day event', start: '2024-05-06', end: '2024-05-10' },
+        { title: 'Timed meeting', start: '2024-05-16T09:30:00', end: '2024-05-16T11:00:00' },
+        { title: 'Late lunch', start: '2024-05-16T13:00:00' },
+        { title: 'Linked event', url: 'https://fullcalendar.io/', start: '2024-05-20' },
+        { title: 'Background event', display: 'background', start: '2024-05-22', end: '2024-05-25' }
+      ]
+    });
+
+    calendar.render();
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 40px 10px;
+  }
+
+  #calendar {
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+
+</body>
+</html>

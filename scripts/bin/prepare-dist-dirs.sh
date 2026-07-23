@@ -15,6 +15,7 @@ mkdir -p premium/packages/vue3-scheduler/dist
 mkdir -p premium/packages/web-component-scheduler/dist
 
 mkdir -p standard/packages/angular/dist/lib
+mkdir -p standard/packages/bootstrap5/dist
 mkdir -p standard/packages/google-calendar/dist
 mkdir -p standard/packages/headless-calendar/dist
 mkdir -p standard/packages/icalendar/dist

@@ -5,14 +5,23 @@ import selectorParser from 'postcss-selector-parser'
 import { type TransformPluginContext, type OutputBundle, type OutputAsset } from 'rollup'
 import { HashGenerator } from './hash-generator.ts'
 
-export default function transformClassNamesPlugin(minify: boolean, isPublicMui: boolean) {
+interface StandaloneTheme {
+  name: string
+  pkgDir: string
+}
+
+export default function transformClassNamesPlugin(
+  minify: boolean,
+  isPublicMui: boolean,
+  standaloneTheme?: StandaloneTheme,
+) {
   return {
     name: 'transform-classnames',
 
     // for JS
     // must be aware of source file
     transform(this: TransformPluginContext, code: string, id: string) {
-      const themeName = getThemeName(id, isPublicMui)
+      const themeName = getThemeName(id, isPublicMui, standaloneTheme)
       if (themeName) {
         // console.log('MATCH', { themeName, id })
         if (id.endsWith('.js')) {
@@ -32,7 +41,7 @@ export default function transformClassNamesPlugin(minify: boolean, isPublicMui: 
       for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
         if (fileName.endsWith('.css') && chunkOrAsset.type === 'asset') {
           const asset = chunkOrAsset as OutputAsset
-          const themeName = getThemeName(fileName, isPublicMui)
+          const themeName = getThemeName(fileName, isPublicMui, standaloneTheme)
           if (themeName) {
             // console.log('MATCH', { themeName, fileName })
             const cssText =
@@ -50,7 +59,11 @@ export default function transformClassNamesPlugin(minify: boolean, isPublicMui: 
   }
 }
 
-function getThemeName(pathId: string, isPublicMui: boolean): string | undefined {
+function getThemeName(
+  pathId: string,
+  isPublicMui: boolean,
+  standaloneTheme?: StandaloneTheme,
+): string | undefined {
   if (isPublicMui) {
     // JS (in tsout)
     let match = pathId.match(/\/ui\-mui\/dist\/\.tsout\/([A-Za-z]+)\//) // brittle
@@ -68,6 +81,19 @@ function getThemeName(pathId: string, isPublicMui: boolean): string | undefined 
     const match = pathId.match(/themes\/([A-Za-z]+)\//) // brittle
     if (match) {
       return match[1]
+    }
+  }
+
+  if (standaloneTheme) {
+    if (
+      pathId.endsWith('.js') &&
+      pathId.startsWith(`${standaloneTheme.pkgDir}/dist/.tsout/`)
+    ) {
+      return standaloneTheme.name
+    }
+
+    if (pathId === 'theme.css') {
+      return standaloneTheme.name
     }
   }
 }
@@ -134,6 +160,8 @@ const exactClassNames: { [key: string]: 1 } = {
   'root-reset': 1,
   'button-reset': 1,
   'link-reset': 1,
+  'sticky': 1,
+  'nav-icon': 1,
 }
 
 const tailwindClassNamePrefixes: { [key: string]: 1 } = {
