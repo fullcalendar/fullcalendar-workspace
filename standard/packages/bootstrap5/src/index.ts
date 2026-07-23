@@ -317,8 +317,8 @@ export default {
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "popover bg-(--fc-classic-background) text-(--fc-classic-foreground) min-w-55 root-reset",
-    popoverCloseClass: `group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset bi bi-x-lg`,
+    popoverClass: "popover m-1 bg-(--fc-classic-background) text-(--fc-classic-foreground) min-w-55 root-reset",
+    popoverCloseClass: `group absolute top-3 end-2 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset bi bi-x-lg`,
 
     /* Lane
     --------------------------------------------------------------------------------------------- */
@@ -398,8 +398,8 @@ export default {
     resourceCellInnerClass: "m-2 text-sm",
     resourceIndentClass: "ms-2 -me-1 justify-center",
     resourceExpanderClass: (info) => joinClassNames(
-      `group ${outlineWidthFocusClass} ${primaryOutlineColorClass} bi`,
-      info.isExpanded ? 'bi-dash-square' : 'bi-plus-square',
+      `group ${outlineWidthFocusClass} ${primaryOutlineColorClass} bi bi-chevron-down`,
+      !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
     ),
     resourceHeaderRowClass: "border border-(--fc-classic-border)",
     resourceRowClass: "border border-(--fc-classic-border)",

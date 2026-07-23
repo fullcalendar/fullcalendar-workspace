@@ -44,6 +44,10 @@
   position: sticky
 }
 
+.-rotate-90 {
+  rotate: -90deg
+}
+
 .inset-x-0 {
   inset-inline: 0
 }
@@ -64,8 +68,8 @@
   inset-inline-end: -4px
 }
 
-.end-0\.5 {
-  inset-inline-end: 2px
+.end-2 {
+  inset-inline-end: 8px
 }
 
 .end-\[-3px\] {
@@ -80,8 +84,8 @@
   top: 0
 }
 
-.top-0\.5 {
-  top: 2px
+.top-3 {
+  top: 12px
 }
 
 .top-1\/2 {
@@ -789,6 +793,10 @@
 
 .active\:bg-\(--fc-classic-strong\):active {
   background-color: var(--fc-classic-strong)
+}
+
+[dir=rtl] .\[\[dir\=rtl\]_\&\]\:rotate-90 {
+  rotate: 90deg
 }
 
 @media print {
