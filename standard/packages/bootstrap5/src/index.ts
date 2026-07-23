@@ -57,7 +57,7 @@ const dayRowCommonClasses: CalendarOptions = {
 
   listItemEventClass: (info) => joinClassNames(
     'mb-px p-px rounded-sm',
-    info.isNarrow ? 'mx-px' : 'mx-0.5',
+    info.isNarrow ? 'mx-0.5' : 'mx-1',
     info.isSelected
       ? joinClassNames('bg-(--fc-classic-muted)', info.isDragging && 'shadow-sm')
       : (info.isInteractive ? mutedHoverPressableClass : mutedHoverClass),
@@ -69,24 +69,34 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
 
   listItemEventInnerClass: (info) => joinClassNames(
-    'flex flex-row items-center py-px gap-0.5',
+    'flex flex-row items-center gap-0.5',
+    info.isNarrow ? 'py-px' : 'py-0.5',
     info.isNarrow ? xxsTextClass : 'text-xs',
   ),
 
-  listItemEventTimeClass: 'px-px whitespace-nowrap overflow-hidden shrink-1',
-  listItemEventTitleClass: 'px-px font-bold whitespace-nowrap overflow-hidden shrink-100',
+  listItemEventTimeClass: (info) => joinClassNames(
+    info.isNarrow ? 'px-px' : 'px-0.5',
+    'whitespace-nowrap overflow-hidden shrink-1',
+  ),
+  listItemEventTitleClass: (info) => joinClassNames(
+    info.isNarrow ? 'px-px' : 'px-0.5',
+    'font-bold whitespace-nowrap overflow-hidden shrink-100',
+  ),
 
   /* Day Row > Row Event
   ----------------------------------------------------------------------------------------------- */
 
   rowEventClass: (info) => joinClassNames(
-    info.isStart && joinClassNames('rounded-s-sm', info.isNarrow ? 'ms-px' : 'ms-0.5'),
-    info.isEnd && joinClassNames('rounded-e-sm', info.isNarrow ? 'me-px' : 'me-0.5'),
+    info.isStart && joinClassNames('rounded-s-sm', info.isNarrow ? 'ms-0.5' : 'ms-1'),
+    info.isEnd && joinClassNames('rounded-e-sm', info.isNarrow ? 'me-0.5' : 'me-1'),
   ),
 
-  rowEventInnerClass: 'py-px gap-0.5',
-  rowEventTimeClass: 'px-px',
-  rowEventTitleClass: 'px-px',
+  rowEventInnerClass: (info) => joinClassNames(
+    info.isNarrow ? 'py-px' : 'py-0.5',
+    'gap-0.5',
+  ),
+  rowEventTimeClass: (info) => info.isNarrow ? 'ps-0.5' : 'ps-1',
+  rowEventTitleClass: (info) => info.isNarrow ? 'px-0.5' : 'px-1',
 
   /* Day Row > More-Link
   ----------------------------------------------------------------------------------------------- */
@@ -94,8 +104,8 @@ const dayRowCommonClasses: CalendarOptions = {
   rowMoreLinkClass: (info) => joinClassNames(
     'mb-px border rounded-sm',
     info.isNarrow
-      ? 'mx-px border-(--fc-classic-primary)'
-      : 'self-start mx-0.5 border-transparent',
+      ? 'mx-0.5 border-(--fc-classic-primary)'
+      : 'self-start mx-1 border-transparent',
     mutedHoverPressableClass,
   ),
 
@@ -205,8 +215,8 @@ export default {
 
     rowEventClass: (info) => joinClassNames(
       'mb-px border-y',
-      info.isStart && 'border-s',
-      info.isEnd && 'border-e',
+      info.isStart && 'rounded-s-sm border-s',
+      info.isEnd && 'rounded-e-sm border-e',
     ),
     rowEventBeforeClass: (info) => joinClassNames(
       info.isStartResizable && joinClassNames(
@@ -249,15 +259,18 @@ export default {
     columnEventInnerClass: (info) => joinClassNames(
       'flex',
       info.isShort
-        ? 'p-0.5 flex-row items-center gap-1'
-        : 'px-0.5 flex-col',
+        ? 'p-1 flex-row items-center gap-1'
+        : joinClassNames(
+            'flex-col',
+            info.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
+          ),
     ),
     columnEventTimeClass: (info) => joinClassNames(
-      !info.isShort && 'pt-0.5',
+      !info.isShort && (info.isNarrow ? 'pt-0.5' : 'pt-1'),
       xxsTextClass,
     ),
     columnEventTitleClass: (info) => joinClassNames(
-      !info.isShort &&  'py-0.5',
+      !info.isShort && (info.isNarrow ? 'py-0.5' : 'py-1'),
       (info.isShort || info.isNarrow) ? xxsTextClass : 'text-xs',
     ),
 
@@ -301,7 +314,7 @@ export default {
 
     dayCellClass: getDayClass,
     dayCellTopClass: (info) => joinClassNames(
-      info.isNarrow ? 'min-h-px' : 'min-h-0.5',
+      info.isNarrow ? 'min-h-0.5' : 'min-h-1',
       'flex flex-row justify-end',
     ),
     dayCellTopInnerClass: (info) => joinClassNames(
@@ -410,8 +423,8 @@ export default {
 
     resourceGroupLaneClass: "border border-(--fc-classic-border) bg-(--fc-classic-muted)",
     resourceLaneClass: "border border-(--fc-classic-border)",
-    resourceLaneBottomClass: (info) => info.options.eventOverlap && 'h-3',
-    timelineBottomClass: "h-3",
+    resourceLaneBottomClass: (info) => info.options.eventOverlap && 'h-2',
+    timelineBottomClass: "h-2",
   },
   views: {
     dayGrid: {
@@ -509,8 +522,8 @@ export default {
       ),
       rowEventInnerClass: (info) => (
         info.options.eventOverlap
-          ? 'py-0.5'
-          : 'py-1.5'
+          ? 'py-1'
+          : 'py-2'
       ),
       rowEventTimeClass: 'px-0.5',
       rowEventTitleClass: 'px-0.5',

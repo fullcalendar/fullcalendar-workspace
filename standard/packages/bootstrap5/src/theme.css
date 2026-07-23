@@ -156,12 +156,12 @@
   margin-inline-start: 2px
 }
 
-.ms-2 {
-  margin-inline-start: 8px
+.ms-1 {
+  margin-inline-start: 4px
 }
 
-.ms-px {
-  margin-inline-start: 1px
+.ms-2 {
+  margin-inline-start: 8px
 }
 
 .-me-1 {
@@ -170,6 +170,10 @@
 
 .me-0\.5 {
   margin-inline-end: 2px
+}
+
+.me-1 {
+  margin-inline-end: 4px
 }
 
 .me-\[2\.5\%\] {
@@ -229,12 +233,12 @@
   height: 8px
 }
 
-.h-3 {
-  height: 12px
-}
-
 .min-h-0\.5 {
   min-height: 2px
+}
+
+.min-h-1 {
+  min-height: 4px
 }
 
 .min-h-3 {
@@ -553,6 +557,10 @@
   padding: 2px
 }
 
+.p-1 {
+  padding: 4px
+}
+
 .p-1\.5 {
   padding: 6px
 }
@@ -563,6 +571,14 @@
 
 .px-0\.5 {
   padding-inline: 2px
+}
+
+.px-1 {
+  padding-inline: 4px
+}
+
+.px-2 {
+  padding-inline: 8px
 }
 
 .px-3 {
@@ -581,10 +597,6 @@
   padding-block: 4px
 }
 
-.py-1\.5 {
-  padding-block: 6px
-}
-
 .py-2 {
   padding-block: 8px
 }
@@ -601,8 +613,16 @@
   padding-inline-start: 2px
 }
 
+.ps-1 {
+  padding-inline-start: 4px
+}
+
 .pt-0\.5 {
   padding-top: 2px
+}
+
+.pt-1 {
+  padding-top: 4px
 }
 
 .pb-0\.5 {
