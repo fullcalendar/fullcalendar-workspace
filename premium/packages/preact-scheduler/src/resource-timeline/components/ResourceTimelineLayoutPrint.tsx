@@ -67,7 +67,6 @@ export interface ResourceTimelineLayoutPrintProps {
 
 }
 
-const MAX_ROWS_FOR_PRINT = 1000
 const BG_HEIGHT = 100000
 
 /*
@@ -106,9 +105,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       options.resourcesInitiallyExpanded,
     )
 
-    if (printLayouts.length > MAX_ROWS_FOR_PRINT) {
-      printLayouts = printLayouts.slice(0, MAX_ROWS_FOR_PRINT)
-      warn(`Rows truncated for print. Only included the first ${MAX_ROWS_FOR_PRINT} rows.`)
+    if (printLayouts.length > options.printMaxRows) {
+      printLayouts = printLayouts.slice(0, options.printMaxRows)
+      warn(`Rows truncated for print. Only included the first ${options.printMaxRows} rows.`)
     }
 
     return (
@@ -340,6 +339,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   role='row'
                   // sort-of a HACK to use .indent, but works out fine b/c 1-based
                   aria-level={hasNesting ? printLayout.indent : undefined}
+                  aria-expanded={(printLayout as ResourcePrintLayout).hasChildren
+                    ? (printLayout as ResourcePrintLayout).isExpanded
+                    : undefined}
                   className={joinClassNames(
                     classNames.flexRow,
                     classNames.breakInsideAvoid,
@@ -423,6 +425,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={groupKey}
                   role='row'
+                  aria-expanded={(printLayout as GroupRowPrintLayout).isExpanded}
                   className={joinClassNames(
                     classNames.flexRow,
                     classNames.breakInsideAvoid,

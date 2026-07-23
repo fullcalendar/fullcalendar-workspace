@@ -9,17 +9,15 @@ import { TimelineBg } from '../../../timeline/components/TimelineBg'
 import { TimelineLaneSlicer } from '../../../timeline/TimelineLaneSlicer'
 import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../structs'
 import { ResourceApi } from '../../../resource/public-api'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceLaneProps {
+export interface ResourceLaneProps extends AriaCellInput {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
   borderBottom: boolean
   role?: string // aria
-  rowIndex?: number // aria
-  level?: number // aria
-  expanded?: boolean // aria -- TODO: rename to isExpanded?
   className?: string
 
   // content
@@ -88,9 +86,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <div
         role={props.role as any} // !!!
-        aria-rowindex={props.rowIndex}
-        aria-level={props.level}
-        aria-expanded={props.expanded}
         className={joinClassNames(
           props.className, // probably contains fillX
           classNames.flexRow,
@@ -104,8 +99,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         <ContentContainer
           tag="div"
           attrs={{
+            ...buildAriaCellAttrs(props),
             role: 'gridcell',
-            'aria-expanded': props.expanded,
             'data-resource-id': resource.id,
           }}
           className={joinClassNames(

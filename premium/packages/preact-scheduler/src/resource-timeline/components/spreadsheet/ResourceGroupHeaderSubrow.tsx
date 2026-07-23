@@ -6,10 +6,11 @@ import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/re
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
 import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
+import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceGroupHeaderSubrowProps {
+export interface ResourceGroupHeaderSubrowProps extends AriaCellInput {
   group: Group
-  isExpanded: boolean // for aria
+  isExpanded: boolean // for expander icon (aria-expanded lives on the row)
   colSpan: number // for aria
   borderBottom: boolean
   className?: string // not ultimately user-supplied. internally-supplied
@@ -45,9 +46,9 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
       <ContentContainer
         tag="div"
         attrs={{
+          ...buildAriaCellAttrs(props),
           role: 'rowheader',
           'aria-colspan': props.colSpan,
-          'aria-expanded': props.isExpanded,
         }}
         className={joinClassNames(
           classNames.liquid, // expand to whole row

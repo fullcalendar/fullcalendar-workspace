@@ -14,7 +14,7 @@ export interface GenericLayout<Entity> {
   children: GenericLayout<Entity>[]
 }
 
-export interface ResourceLayout { // specific GenericLayout
+export interface ResourceRowLayout { // specific GenericLayout
   rowIndex: number // is 0-based
   visibleIndex: number // just for rows
   entity: Resource
@@ -25,7 +25,7 @@ export interface ResourceLayout { // specific GenericLayout
   indent: number
   depth: number // TODO: converge with indent
   rowDepth: number
-  children: ResourceLayout[] // only *visible* children
+  children: ResourceRowLayout[] // only *visible* children
 }
 
 export interface GroupRowLayout { // specific GenericLayout
@@ -38,7 +38,7 @@ export interface GroupRowLayout { // specific GenericLayout
   indent: number
   depth: number // TODO: converge with indent
   rowDepth: number
-  children: (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+  children: (ResourceRowLayout | GroupRowLayout | GroupCellLayout)[]
 }
 
 export interface GroupCellLayout { // specific GenericLayout
@@ -47,12 +47,14 @@ export interface GroupCellLayout { // specific GenericLayout
   rowSpan: number
   entity: Group
   pooledHeight: true
-  children: (ResourceLayout | GroupCellLayout)[]
+  children: (ResourceRowLayout | GroupCellLayout)[]
 }
+
+export type RowLayout = ResourceRowLayout | GroupRowLayout
 
 /*
 A "layout" wraps the resource/group entity with presentation information (indent, isExpanded, etc)
-Creates a layout hierarchy (`layouts`) as well as flattened hierarchy.
+Creates a layout hierarchy (`layouts`) and flattened projections for each row type and all rows.
 Filters away not-expanded nodes.
 
 TODO: even when a row is collapsed, consistent global rowIndex
@@ -64,14 +66,16 @@ export function buildResourceLayouts(
   expansionDefault: boolean,
 ): {
   layouts: GenericLayout<Resource | Group>[], // use for height computations. web of height relationships
-  flatResourceLayouts: ResourceLayout[], // visible only
-  flatGroupRowLayouts: GroupRowLayout[], // visible only
-  flatGroupColLayouts: GroupCellLayout[][], // visible only
-  totalCnt: number,
+  flatRowLayouts: RowLayout[], // displayed after expansion filtering, in visual order
+  flatResourceRowLayouts: ResourceRowLayout[], // displayed after expansion filtering
+  flatGroupRowLayouts: GroupRowLayout[], // displayed after expansion filtering
+  flatGroupColLayouts: GroupCellLayout[][], // displayed after expansion filtering
+  totalCnt: number, // entire hierarchy, including collapsed descendants
 } {
-  const flatResourceLayouts: ResourceLayout[] = []
+  const flatResourceRowLayouts: ResourceRowLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
   const flatGroupColLayouts: GroupCellLayout[][] = []
+  const flatRowLayouts: RowLayout[] = []
 
   function processNodes(
     nodes: GenericNode[],
@@ -98,7 +102,7 @@ export function buildResourceLayouts(
         const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
         const rowIndex = startingIndex + totalCnt++
         const visibleIndex = startingVisibleIndex + visibleCnt++
-        const resourceLayout: ResourceLayout = {
+        const resourceLayout: ResourceRowLayout = {
           rowIndex,
           visibleIndex,
           entity: (node as ResourceNode).entity,
@@ -111,7 +115,8 @@ export function buildResourceLayouts(
           children: [],
         }
         if (isVisible) {
-          flatResourceLayouts.push(resourceLayout)
+          flatRowLayouts.push(resourceLayout)
+          flatResourceRowLayouts.push(resourceLayout)
           layouts.push(resourceLayout)
         }
         const [localChildren, subtreeTotalCnt, subtreeVisibleCnt] = processNodes(
@@ -124,7 +129,7 @@ export function buildResourceLayouts(
           isVisible && isExpanded,
         )
         if (isVisible && isExpanded) {
-          resourceLayout.children = localChildren as ResourceLayout[]
+          resourceLayout.children = localChildren as ResourceRowLayout[]
           visibleCnt += subtreeVisibleCnt
         }
         totalCnt += subtreeTotalCnt
@@ -156,7 +161,7 @@ export function buildResourceLayouts(
           isVisible,
         )
         if (isVisible) {
-          groupCellLayout.children = localChildren as (ResourceLayout | GroupCellLayout)[]
+          groupCellLayout.children = localChildren as (ResourceRowLayout | GroupCellLayout)[]
           groupCellLayout.rowSpan = subtreeTotalCnt
           visibleCnt += subtreeVisibleCnt
         }
@@ -180,6 +185,7 @@ export function buildResourceLayouts(
           children: [], // populates very soon...
         }
         if (isVisible) {
+          flatRowLayouts.push(groupRowLayout)
           flatGroupRowLayouts.push(groupRowLayout)
           layouts.push(groupRowLayout)
         }
@@ -193,7 +199,7 @@ export function buildResourceLayouts(
           isVisible && isExpanded,
         )
         if (isVisible && isExpanded) {
-          groupRowLayout.children = localChildren as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          groupRowLayout.children = localChildren as (ResourceRowLayout | GroupRowLayout | GroupCellLayout)[]
           visibleCnt += subtreeVisibleCnt
         }
         totalCnt += subtreeTotalCnt
@@ -207,7 +213,8 @@ export function buildResourceLayouts(
 
   return {
     layouts,
-    flatResourceLayouts,
+    flatRowLayouts,
+    flatResourceRowLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,
     totalCnt,

@@ -48,7 +48,7 @@ export interface EntryConfig {
   import?: string
   generator?: string
   sideEffects?: boolean
-  primary?: boolean // for iifeSplit
+  primary?: boolean // primary entry for its format; global entries also drive iifeSplit
   secondaryProp?: string // for iifeSplit
 }
 
