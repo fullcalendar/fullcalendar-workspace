@@ -1,7 +1,6 @@
 .root-reset {
   font-size: 16px;
   line-height: 1.5;
-  --fc-classic-border-style: solid;
 }
 
 .button-reset {
@@ -24,12 +23,12 @@
   text-decoration: inherit;
 }
 
-.nav-icon {
-  display: inline-block;
+.inline-block {
+  display: inline-block
 }
 
-[dir=rtl] .nav-icon {
-  transform: scaleX(-1);
+[dir=rtl] .\[\[dir\=rtl\]_\&\]\:-scale-x-100 {
+  scale: -100% 100%
 }
 
 .absolute {
@@ -370,109 +369,94 @@
 }
 
 .border {
-  border-style: var(--fc-classic-border-style);
+  border-style: solid;
   border-width: 1px
 }
 
 .border-4 {
-  border-style: var(--fc-classic-border-style);
+  border-style: solid;
   border-width: 4px
 }
 
 .border-5 {
-  border-style: var(--fc-classic-border-style);
+  border-style: solid;
   border-width: 5px
 }
 
-.border-\[calc\(var\(--fc-classic-small-dot-width\)\/2\)\] {
-  border-style: var(--fc-classic-border-style);
-  border-width: calc(var(--fc-classic-small-dot-width) / 2)
-}
-
-.border-\[calc\(var\(--fc-classic-large-dot-width\)\/2\)\] {
-  border-style: var(--fc-classic-border-style);
-  border-width: calc(var(--fc-classic-large-dot-width) / 2)
-}
-
 .border-x {
-  border-inline-style: var(--fc-classic-border-style);
+  border-inline-style: solid;
   border-inline-width: 1px
 }
 
 .border-x-\[5px\] {
-  border-inline-style: var(--fc-classic-border-style);
+  border-inline-style: solid;
   border-inline-width: 5px
 }
 
 .border-y {
-  border-block-style: var(--fc-classic-border-style);
+  border-block-style: solid;
   border-block-width: 1px
 }
 
 .border-y-\[5px\] {
-  border-block-style: var(--fc-classic-border-style);
+  border-block-style: solid;
   border-block-width: 5px
 }
 
 .border-s {
-  border-inline-start-style: var(--fc-classic-border-style);
+  border-inline-start-style: solid;
   border-inline-start-width: 1px
 }
 
 .border-s-\[5px\] {
-  border-inline-start-style: var(--fc-classic-border-style);
+  border-inline-start-style: solid;
   border-inline-start-width: 5px
 }
 
 .border-s-\[6px\] {
-  border-inline-start-style: var(--fc-classic-border-style);
+  border-inline-start-style: solid;
   border-inline-start-width: 6px
 }
 
 .border-e {
-  border-inline-end-style: var(--fc-classic-border-style);
+  border-inline-end-style: solid;
   border-inline-end-width: 1px
 }
 
 .border-e-\[5px\] {
-  border-inline-end-style: var(--fc-classic-border-style);
+  border-inline-end-style: solid;
   border-inline-end-width: 5px
 }
 
 .border-t {
-  border-top-style: var(--fc-classic-border-style);
+  border-top-style: solid;
   border-top-width: 1px
 }
 
 .border-t-\[6px\] {
-  border-top-style: var(--fc-classic-border-style);
+  border-top-style: solid;
   border-top-width: 6px
 }
 
 .border-b {
-  border-bottom-style: var(--fc-classic-border-style);
+  border-bottom-style: solid;
   border-bottom-width: 1px
 }
 
 .border-dotted {
-  --fc-classic-border-style: dotted;
   border-style: dotted
 }
 
-.border-\(--fc-classic-border\) {
-  border-color: var(--fc-classic-border)
+.border-\(--bs-border-color\) {
+  border-color: var(--bs-border-color)
 }
 
-.border-\(--fc-classic-now\) {
-  border-color: var(--fc-classic-now)
+.border-\(--bs-danger\) {
+  border-color: var(--bs-danger)
 }
 
-.border-\(--fc-classic-primary\) {
-  border-color: var(--fc-classic-primary)
-}
-
-.border-\(--fc-classic-strong-border\) {
-  border-color: var(--fc-classic-strong-border)
+.border-\(--bs-tertiary-color\) {
+  border-color: var(--bs-tertiary-color)
 }
 
 .border-\(--fc-event-color\) {
@@ -491,8 +475,8 @@
   border-block-color: #0000
 }
 
-.border-s-\(--fc-classic-now\) {
-  border-inline-start-color: var(--fc-classic-now)
+.border-s-\(--bs-danger\) {
+  border-inline-start-color: var(--bs-danger)
 }
 
 .border-s-black {
@@ -503,24 +487,12 @@
   border-inline-end-color: #000
 }
 
-.border-t-\(--fc-classic-now\) {
-  border-top-color: var(--fc-classic-now)
+.border-t-\(--bs-danger\) {
+  border-top-color: var(--bs-danger)
 }
 
-.bg-\(--fc-classic-background\) {
-  background-color: var(--fc-classic-background)
-}
-
-.bg-\(--fc-classic-faint\) {
-  background-color: var(--fc-classic-faint)
-}
-
-.bg-\(--fc-classic-highlight\) {
-  background-color: var(--fc-classic-highlight)
-}
-
-.bg-\(--fc-classic-muted\) {
-  background-color: var(--fc-classic-muted)
+.bg-\(--bs-border-color\) {
+  background-color: var(--bs-border-color)
 }
 
 .bg-\(--fc-event-color\) {
@@ -529,21 +501,21 @@
 
 @media not print {
   @supports (color:color-mix(in lab, red, red)) {
-    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
-      background-color: color-mix(in oklab, var(--fc-event-color) var(--fc-classic-background-event-opacity), transparent)
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,transparent\)\] {
+      background-color: color-mix(in oklab, var(--fc-event-color) 20%, transparent)
     }
   }
   @supports not (color:color-mix(in lab, red, red)) {
-    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\] {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,transparent\)\] {
       position: relative;
       isolation: isolate
     }
-    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_var\(--fc-classic-background-event-opacity\)\,transparent\)\]:before {
+    .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_20\%\,transparent\)\]:before {
       content: '';
       position: absolute;
       inset: 0;
       background-color: var(--fc-event-color);
-      opacity: var(--fc-classic-background-event-opacity);
+      opacity: .2;
       z-index: -1
     }
   }
@@ -678,18 +650,6 @@
   white-space: pre
 }
 
-.text-\(--fc-classic-faint-foreground\) {
-  color: var(--fc-classic-faint-foreground)
-}
-
-.text-\(--fc-classic-muted-foreground\) {
-  color: var(--fc-classic-muted-foreground)
-}
-
-.text-\(--fc-classic-foreground\) {
-  color: var(--fc-classic-foreground)
-}
-
 .text-\(--fc-event-contrast-color\) {
   color: var(--fc-event-contrast-color)
 }
@@ -706,10 +666,6 @@
   opacity: .75
 }
 
-.opacity-\(--fc-classic-background-event-foreground-opacity\) {
-  opacity: var(--fc-classic-background-event-foreground-opacity)
-}
-
 .shadow-lg {
   box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a
 }
@@ -723,11 +679,11 @@
 }
 
 .ring {
-  box-shadow: 0 0 0 1px var(--fc-classic-ring-color, currentcolor)
+  box-shadow: 0 0 0 1px currentcolor
 }
 
-.ring-\(--fc-classic-background\) {
-  --fc-classic-ring-color: var(--fc-classic-background)
+.ring-\(--bs-body-bg\) {
+  box-shadow: 0 0 0 1px var(--bs-body-bg)
 }
 
 .outline {
@@ -748,22 +704,12 @@
   outline-offset: 2px
 }
 
-.outline-\(--fc-classic-primary\) {
-  outline-color: var(--fc-classic-primary)
+.outline-\(--bs-primary\) {
+  outline-color: var(--bs-primary)
 }
 
-.\[background\:linear-gradient\(var\(--fc-classic-muted\)\,var\(--fc-classic-muted\)\)_var\(--fc-classic-background\)\] {
-  background: linear-gradient(var(--fc-classic-muted), var(--fc-classic-muted))var(--fc-classic-background)
-}
-
-.\[background\:linear-gradient\(var\(--fc-classic-strong\)\,var\(--fc-classic-strong\)\)_var\(--fc-classic-background\)\] {
-  background: linear-gradient(var(--fc-classic-strong), var(--fc-classic-strong))var(--fc-classic-background)
-}
-
-@media not print {
-  .not-print\:bg-\(--fc-classic-today\) {
-    background-color: var(--fc-classic-today)
-  }
+.bg-opacity-20 {
+  --bs-bg-opacity: .2 !important
 }
 
 @media (hover:hover) {
@@ -777,12 +723,12 @@
 }
 
 @media (hover:hover) {
-  .hover\:bg-\(--fc-classic-faint\):hover {
-    background-color: var(--fc-classic-faint)
+  .hover\:bg-\(--bs-tertiary-bg\):hover {
+    background-color: var(--bs-tertiary-bg)
   }
 
-  .hover\:bg-\(--fc-classic-muted\):hover {
-    background-color: var(--fc-classic-muted)
+  .hover\:bg-\(--bs-secondary-bg\):hover {
+    background-color: var(--bs-secondary-bg)
   }
 
   .hover\:underline:hover {
@@ -790,12 +736,12 @@
   }
 }
 
-.focus-visible\:bg-\(--fc-classic-faint\):focus-visible {
-  background-color: var(--fc-classic-faint)
+.focus-visible\:bg-\(--bs-tertiary-bg\):focus-visible {
+  background-color: var(--bs-tertiary-bg)
 }
 
-.focus-visible\:bg-\(--fc-classic-muted\):focus-visible {
-  background-color: var(--fc-classic-muted)
+.focus-visible\:bg-\(--bs-secondary-bg\):focus-visible {
+  background-color: var(--bs-secondary-bg)
 }
 
 .focus-visible\:outline-2:focus-visible {
@@ -803,12 +749,12 @@
   outline-width: 2px
 }
 
-.active\:bg-\(--fc-classic-muted\):active {
-  background-color: var(--fc-classic-muted)
+.active\:bg-\(--bs-secondary-bg\):active {
+  background-color: var(--bs-secondary-bg)
 }
 
-.active\:bg-\(--fc-classic-strong\):active {
-  background-color: var(--fc-classic-strong)
+.active\:bg-\(--bs-border-color\):active {
+  background-color: var(--bs-border-color)
 }
 
 [dir=rtl] .\[\[dir\=rtl\]_\&\]\:rotate-90 {
@@ -830,6 +776,10 @@
 
   .print\:bg-white {
     background-color: #fff
+  }
+
+  .print\:bg-transparent {
+    background-color: transparent !important
   }
 
   .print\:text-black {

@@ -20,7 +20,6 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '@fullcalendar/bootstrap5/theme.css'
-import '@fullcalendar/bootstrap5/palette.css'
 
 const calendarOptions = {
   plugins: [bootstrap5Plugin],

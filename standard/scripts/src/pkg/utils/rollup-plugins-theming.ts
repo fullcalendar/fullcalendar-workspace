@@ -150,10 +150,25 @@ function transformJsString(themeName: string, isPublicMui: boolean, minify: bool
 }
 
 function transformPotentialClassName(themeName: string, isPublicMui: boolean, minify: boolean, potentialClassName: string): string {
+  if (themeName === 'bootstrap5' && bootstrap5ClassNames[potentialClassName]) {
+    return potentialClassName
+  }
   if (isClassName(potentialClassName)) {
     return transformClassName(themeName, isPublicMui, minify, potentialClassName)
   }
   return potentialClassName
+}
+
+const bootstrap5ClassNames: { [key: string]: 1 } = {
+  'bg-body': 1,
+  'bg-body-secondary': 1,
+  'bg-body-tertiary': 1,
+  'bg-info': 1,
+  'bg-warning': 1,
+  'border-primary': 1,
+  'text-body': 1,
+  'text-body-secondary': 1,
+  'text-body-tertiary': 1,
 }
 
 const exactClassNames: { [key: string]: 1 } = {
@@ -161,7 +176,6 @@ const exactClassNames: { [key: string]: 1 } = {
   'button-reset': 1,
   'link-reset': 1,
   'sticky': 1,
-  'nav-icon': 1,
 }
 
 const tailwindClassNamePrefixes: { [key: string]: 1 } = {
@@ -212,6 +226,8 @@ const tailwindClassNamePrefixes: { [key: string]: 1 } = {
   left: 1,
   right: 1,
   pointer: 1, // for pointer-events
+  inline: 1,
+  scale: 1,
 }
 
 function isClassName(s: string): boolean {

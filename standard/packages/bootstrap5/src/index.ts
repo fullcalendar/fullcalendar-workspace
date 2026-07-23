@@ -19,14 +19,15 @@ const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
-const primaryOutlineColorClass = 'outline-(--fc-classic-primary)'
+const primaryOutlineColorClass = 'outline-(--bs-primary)'
+const navIconClass = 'inline-block [[dir=rtl]_&]:-scale-x-100'
 
 // neutral buttons
-const strongSolidPressableClass = '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]'
-const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
-const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
-const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
+const strongSolidPressableClass = 'bg-(--bs-border-color)'
+const mutedHoverClass = 'hover:bg-(--bs-secondary-bg)'
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--bs-secondary-bg) active:bg-(--bs-border-color)`
+const faintHoverClass = 'hover:bg-(--bs-tertiary-bg)'
+const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--bs-tertiary-bg) active:bg-(--bs-secondary-bg)`
 
 // transparent resizer for mouse
 const blockPointerResizerClass = 'absolute hidden group-hover:block'
@@ -34,19 +35,19 @@ const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
 const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
 // circle resizer for touch
-const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color) bg-(--fc-classic-background) rounded-full'
+const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color) bg-body rounded-full'
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
 const getDayClass = (info: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => joinClassNames(
   'border',
-  info.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
-  info.isDisabled ? 'bg-(--fc-classic-faint)' :
-    info.isToday && 'not-print:bg-(--fc-classic-today)',
+  info.isMajor ? 'border-(--bs-tertiary-color)' : 'border-(--bs-border-color)',
+  info.isDisabled ? 'bg-body-tertiary' :
+    info.isToday && 'bg-warning bg-opacity-20 print:bg-transparent',
 )
 
 const getSlotClass = (info: { isMinor: boolean }) => joinClassNames(
-  'border border-(--fc-classic-border)',
+  'border border-(--bs-border-color)',
   info.isMinor && 'border-dotted',
 )
 
@@ -59,12 +60,12 @@ const dayRowCommonClasses: CalendarOptions = {
     'mb-px p-px rounded-sm',
     info.isNarrow ? 'mx-0.5' : 'mx-1',
     info.isSelected
-      ? joinClassNames('bg-(--fc-classic-muted)', info.isDragging && 'shadow-sm')
+      ? joinClassNames('bg-body-secondary', info.isDragging && 'shadow-sm')
       : (info.isInteractive ? mutedHoverPressableClass : mutedHoverClass),
   ),
 
   listItemEventBeforeClass: (info) => joinClassNames(
-    'border-[calc(var(--fc-classic-small-dot-width)/2)]',
+    'border-4',
     info.isNarrow ? 'mx-px' : 'mx-1',
   ),
 
@@ -101,7 +102,7 @@ const dayRowCommonClasses: CalendarOptions = {
   rowMoreLinkClass: (info) => joinClassNames(
     'mb-px border rounded-sm',
     info.isNarrow
-      ? 'mx-0.5 border-(--fc-classic-primary)'
+      ? 'mx-0.5 border-primary'
       : 'self-start mx-1 border-transparent',
     mutedHoverPressableClass,
   ),
@@ -123,7 +124,7 @@ export default {
       const hasBorderBottom = info.options.footerToolbar || !info.borderlessBottom
       const hasBorderX = !info.borderlessX
       return joinClassNames(
-        'bg-(--fc-classic-background) text-(--fc-classic-foreground) border-(--fc-classic-border)',
+        'bg-body text-body border-(--bs-border-color)',
         hasBorderTop && 'border-t',
         hasBorderBottom && 'border-b',
         hasBorderX && 'border-x',
@@ -146,24 +147,24 @@ export default {
     ),
     buttons: {
       prev: {
-        iconClass: 'bi bi-chevron-left nav-icon',
+        iconClass: `bi bi-chevron-left ${navIconClass}`,
       },
       next: {
-        iconClass: 'bi bi-chevron-right nav-icon',
+        iconClass: `bi bi-chevron-right ${navIconClass}`,
       },
       prevYear: {
-        iconClass: 'bi bi-chevron-double-left nav-icon',
+        iconClass: `bi bi-chevron-double-left ${navIconClass}`,
       },
       nextYear: {
-        iconClass: 'bi bi-chevron-double-right nav-icon',
+        iconClass: `bi bi-chevron-double-right ${navIconClass}`,
       },
     },
 
     /* Abstract Event
     --------------------------------------------------------------------------------------------- */
 
-    eventColor: "var(--fc-classic-event)",
-    eventContrastColor: "var(--fc-classic-event-contrast)",
+    eventColor: "var(--bs-primary)",
+    eventContrastColor: "var(--bs-white)",
     eventClass: (info) => joinClassNames(
       info.isDragging && 'root-reset',
       info.event.url && 'link-reset',
@@ -179,10 +180,10 @@ export default {
     /* Background Event
     --------------------------------------------------------------------------------------------- */
 
-    backgroundEventColor: "var(--fc-classic-background-event)",
-    backgroundEventClass: "not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_var(--fc-classic-background-event-opacity),transparent)] print:border-1 print:border-(--fc-event-color)",
+    backgroundEventColor: "var(--bs-success)",
+    backgroundEventClass: "not-print:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,transparent)] print:border-1 print:border-(--fc-event-color)",
     backgroundEventTitleClass: (info) => joinClassNames(
-      'opacity-(--fc-classic-background-event-foreground-opacity) italic',
+      'opacity-50 italic',
       info.isNarrow
         ? `p-0.5 ${xxsTextClass}`
         : 'p-1.5 text-xs',
@@ -193,7 +194,7 @@ export default {
 
     listItemEventClass: "items-center",
     listItemEventBeforeClass: "border-(--fc-event-color) rounded-full",
-    listItemEventInnerClass: "text-(--fc-classic-foreground)",
+    listItemEventInnerClass: "text-body",
 
     /* Block Event
     --------------------------------------------------------------------------------------------- */
@@ -237,7 +238,7 @@ export default {
     --------------------------------------------------------------------------------------------- */
 
     columnEventClass: (info) => joinClassNames(
-      'border-x ring ring-(--fc-classic-background)',
+      'border-x ring ring-(--bs-body-bg)',
       info.isStart && 'border-t rounded-t-sm',
       info.isEnd && 'mb-px border-b rounded-b-sm',
     ),
@@ -276,7 +277,7 @@ export default {
 
     moreLinkClass: `${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
     moreLinkInnerClass: "whitespace-nowrap overflow-hidden",
-    columnMoreLinkClass: `mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white ring ring-(--fc-classic-background) ${outlineOffsetClass}`,
+    columnMoreLinkClass: `mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white ring ring-(--bs-body-bg) ${outlineOffsetClass}`,
     columnMoreLinkInnerClass: (info) => joinClassNames(
       'p-0.5',
       info.isNarrow ? xxsTextClass : 'text-xs',
@@ -291,9 +292,9 @@ export default {
         ? 'popover-header'
         : joinClassNames(
             'justify-center',
-            info.isDisabled && 'bg-(--fc-classic-faint)',
+            info.isDisabled && 'bg-body-tertiary',
             'border',
-            info.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
+            info.isMajor ? 'border-(--bs-tertiary-color)' : 'border-(--bs-border-color)',
           )
     ),
     dayHeaderInnerClass: (info) => (
@@ -304,7 +305,7 @@ export default {
             info.isNarrow ? xxsTextClass : 'text-sm',
           )
     ),
-    dayHeaderDividerClass: "border-b border-(--fc-classic-border)",
+    dayHeaderDividerClass: "border-b border-(--bs-border-color)",
 
     /* Day Cell
     --------------------------------------------------------------------------------------------- */
@@ -319,7 +320,7 @@ export default {
       info.isNarrow
         ? `my-0.5 ${xxsTextClass}`
         : 'my-1 text-sm',
-      info.isOther && 'text-(--fc-classic-faint-foreground)',
+      info.isOther && 'text-body-tertiary',
       info.monthText && 'font-bold',
     ),
     dayCellInnerClass: (info) => info.inPopover ? 'popover-body' : '',
@@ -327,7 +328,7 @@ export default {
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "popover m-1 bg-(--fc-classic-background) text-(--fc-classic-foreground) min-w-55 root-reset",
+    popoverClass: "popover m-1 bg-body text-body min-w-55 root-reset",
     popoverCloseClass: `group absolute top-3 end-2 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset bi bi-x-lg`,
 
     /* Lane
@@ -344,7 +345,7 @@ export default {
     /* List Day
     --------------------------------------------------------------------------------------------- */
 
-    listDayHeaderClass: "border-b border-(--fc-classic-border) [background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)] -mb-px flex flex-row items-center justify-between",
+    listDayHeaderClass: "border-b border-(--bs-border-color) bg-body-secondary -mb-px flex flex-row items-center justify-between",
     listDayHeaderInnerClass: "px-3 py-2 text-sm font-bold",
 
     /* Single Month (in Multi-Month)
@@ -352,12 +353,12 @@ export default {
 
     singleMonthClass: (info) => joinClassNames(
       info.multiMonthColumns > 1 && 'm-4',
-      (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--fc-classic-border)',
+      (info.multiMonthColumns === 1 && !info.isLast) && 'border-b border-(--bs-border-color)',
     ),
     singleMonthHeaderClass: (info) => joinClassNames(
       info.multiMonthColumns > 1
         ? 'pb-4'
-        : 'py-2 border-b border-(--fc-classic-border) bg-(--fc-classic-background)',
+        : 'py-2 border-b border-(--bs-border-color) bg-body',
       'items-center',
     ),
     singleMonthHeaderInnerClass: "text-base font-bold",
@@ -365,11 +366,11 @@ export default {
     /* Misc Table
     --------------------------------------------------------------------------------------------- */
 
-    tableHeaderClass: 'bg-(--fc-classic-background)',
-    fillerClass: "border border-(--fc-classic-border) opacity-50",
-    dayHeaderRowClass: "border border-(--fc-classic-border)",
-    dayRowClass: "border border-(--fc-classic-border)",
-    slotHeaderRowClass: "border border-(--fc-classic-border)",
+    tableHeaderClass: 'bg-body',
+    fillerClass: "border border-(--bs-border-color) opacity-50",
+    dayHeaderRowClass: "border border-(--bs-border-color)",
+    dayRowClass: "border border-(--bs-border-color)",
+    slotHeaderRowClass: "border border-(--bs-border-color)",
     slotHeaderClass: getSlotClass,
 
     /* Misc Content
@@ -377,11 +378,11 @@ export default {
 
     navLinkClass: `hover:underline ${outlineWidthFocusClass} ${outlineInsetClass} ${primaryOutlineColorClass}`,
     inlineWeekNumberClass: (info) => joinClassNames(
-      'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-(--fc-classic-muted-foreground) bg-(--fc-classic-muted)',
+      'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-body-secondary bg-body-secondary',
       info.isNarrow ? xxsTextClass : 'text-sm',
     ),
-    nonBusinessHoursClass: "bg-(--fc-classic-faint)",
-    highlightClass: "bg-(--fc-classic-highlight)",
+    nonBusinessHoursClass: "bg-body-tertiary",
+    highlightClass: "bg-info bg-opacity-20",
 
     /* Resource Day Header
     --------------------------------------------------------------------------------------------- */
@@ -389,7 +390,7 @@ export default {
     resourceDayHeaderAlign: "center",
     resourceDayHeaderClass: (info) => joinClassNames(
       'border',
-      info.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
+      info.isMajor ? 'border-(--bs-tertiary-color)' : 'border-(--bs-border-color)',
     ),
     resourceDayHeaderInnerClass: (info) => joinClassNames(
       'mx-1 my-0.5 flex flex-col',
@@ -399,27 +400,27 @@ export default {
     /* Resource Data Grid
     --------------------------------------------------------------------------------------------- */
 
-    resourceColumnHeaderClass: "border border-(--fc-classic-border) justify-center",
+    resourceColumnHeaderClass: "border border-(--bs-border-color) justify-center",
     resourceColumnHeaderInnerClass: "m-2 text-sm",
     resourceColumnResizerClass: "absolute inset-y-0 w-[5px] end-[-3px]",
-    resourceGroupHeaderClass: "border border-(--fc-classic-border) bg-(--fc-classic-muted)",
+    resourceGroupHeaderClass: "border border-(--bs-border-color) bg-body-secondary",
     resourceGroupHeaderInnerClass: "m-2 text-sm",
-    resourceCellClass: "border border-(--fc-classic-border)",
+    resourceCellClass: "border border-(--bs-border-color)",
     resourceCellInnerClass: "m-2 text-sm",
     resourceIndentClass: "ms-2 -me-1 justify-center",
     resourceExpanderClass: (info) => joinClassNames(
       `group ${outlineWidthFocusClass} ${primaryOutlineColorClass} bi bi-chevron-down`,
       !info.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
     ),
-    resourceHeaderRowClass: "border border-(--fc-classic-border)",
-    resourceRowClass: "border border-(--fc-classic-border)",
-    resourceColumnDividerClass: "border-x border-(--fc-classic-border) ps-0.5 bg-(--fc-classic-muted)",
+    resourceHeaderRowClass: "border border-(--bs-border-color)",
+    resourceRowClass: "border border-(--bs-border-color)",
+    resourceColumnDividerClass: "border-x border-(--bs-border-color) ps-0.5 bg-body-secondary",
 
     /* Timeline Lane
     --------------------------------------------------------------------------------------------- */
 
-    resourceGroupLaneClass: "border border-(--fc-classic-border) bg-(--fc-classic-muted)",
-    resourceLaneClass: "border border-(--fc-classic-border)",
+    resourceGroupLaneClass: "border border-(--bs-border-color) bg-body-secondary",
+    resourceLaneClass: "border border-(--bs-border-color)",
     resourceLaneBottomClass: (info) => info.options.eventOverlap && 'h-2',
     timelineBottomClass: "h-2",
   },
@@ -432,7 +433,7 @@ export default {
       ...dayRowCommonClasses,
       dayCellBottomClass: 'min-h-px',
       tableClass: (info) => joinClassNames(
-        info.multiMonthColumns > 1 && 'border-(--fc-classic-border) border',
+        info.multiMonthColumns > 1 && 'border-(--bs-border-color) border',
       ),
     },
     timeGrid: {
@@ -456,7 +457,7 @@ export default {
         'mx-1 my-2 text-end',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
-      allDayDividerClass: 'border-y border-(--fc-classic-border) pb-0.5 bg-(--fc-classic-muted)',
+      allDayDividerClass: 'border-y border-(--bs-border-color) pb-0.5 bg-body-secondary',
 
       /* TimeGrid > Slot Header
       ------------------------------------------------------------------------------------------- */
@@ -466,13 +467,13 @@ export default {
         'mx-1 my-0.5',
         info.isNarrow ? xxsTextClass : 'text-sm',
       ),
-      slotHeaderDividerClass: 'border-e border-(--fc-classic-border)',
+      slotHeaderDividerClass: 'border-e border-(--bs-border-color)',
 
       /* TimeGrid > Now-Indicator
       ------------------------------------------------------------------------------------------- */
 
-      nowIndicatorHeaderClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-(--fc-classic-now)',
-      nowIndicatorLineClass: 'border-t border-(--fc-classic-now)',
+      nowIndicatorHeaderClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-(--bs-danger)',
+      nowIndicatorLineClass: 'border-t border-(--bs-danger)',
     },
     list: {
 
@@ -480,15 +481,15 @@ export default {
       ------------------------------------------------------------------------------------------- */
 
       listDayClass: (info) => joinClassNames(
-        !info.isLast && 'border-b border-(--fc-classic-border)',
+        !info.isLast && 'border-b border-(--bs-border-color)',
       ),
       listItemEventClass: (info) => joinClassNames(
-        'group px-3 py-2 gap-3 border-t border-(--fc-classic-border)',
+        'group px-3 py-2 gap-3 border-t border-(--bs-border-color)',
         info.isInteractive
           ? joinClassNames(faintHoverPressableClass, outlineInsetClass)
           : faintHoverClass,
       ),
-      listItemEventBeforeClass: 'border-[calc(var(--fc-classic-large-dot-width)/2)]',
+      listItemEventBeforeClass: 'border-5',
       listItemEventInnerClass: '[display:contents]',
       listItemEventTimeClass: '-order-1 shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm',
       listItemEventTitleClass: (info) => joinClassNames(
@@ -499,7 +500,7 @@ export default {
       /* No-Events Screen
       ------------------------------------------------------------------------------------------- */
 
-      noEventsClass: 'bg-(--fc-classic-muted) flex flex-col items-center justify-center',
+      noEventsClass: 'bg-body-secondary flex flex-col items-center justify-center',
       noEventsInnerClass: 'sticky bottom-0 py-15',
     },
     timeline: {
@@ -543,13 +544,13 @@ export default {
         'mx-2 my-1 text-sm',
         info.hasNavLink && 'hover:underline',
       ),
-      slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',
+      slotHeaderDividerClass: 'border-b border-(--bs-border-color)',
 
       /* Timeline > Now-Indicator
       ------------------------------------------------------------------------------------------- */
 
-      nowIndicatorHeaderClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-(--fc-classic-now)',
-      nowIndicatorLineClass: 'border-s border-(--fc-classic-now)',
+      nowIndicatorHeaderClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-(--bs-danger)',
+      nowIndicatorLineClass: 'border-s border-(--bs-danger)',
     },
   }
 } as PluginInput
