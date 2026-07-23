@@ -38,7 +38,8 @@
         "primary": true
       },
       "./theme.css": {
-        "format": "css"
+        "format": "css",
+        "primary": true
       }
     }
   },
