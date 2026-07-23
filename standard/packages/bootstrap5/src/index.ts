@@ -69,7 +69,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
 
   listItemEventInnerClass: (info) => joinClassNames(
-    'flex flex-row items-center gap-0.5',
+    'flex flex-row items-center',
     info.isNarrow ? 'py-px' : 'py-0.5',
     info.isNarrow ? xxsTextClass : 'text-xs',
   ),
@@ -91,10 +91,7 @@ const dayRowCommonClasses: CalendarOptions = {
     info.isEnd && joinClassNames('rounded-e-sm', info.isNarrow ? 'me-0.5' : 'me-1'),
   ),
 
-  rowEventInnerClass: (info) => joinClassNames(
-    info.isNarrow ? 'py-px' : 'py-0.5',
-    'gap-0.5',
-  ),
+  rowEventInnerClass: (info) => info.isNarrow ? 'py-px' : 'py-0.5',
   rowEventTimeClass: (info) => info.isNarrow ? 'ps-0.5' : 'ps-1',
   rowEventTitleClass: (info) => info.isNarrow ? 'px-0.5' : 'px-1',
 
@@ -531,7 +528,7 @@ export default {
       /* Timeline > More-Link
       ------------------------------------------------------------------------------------------- */
 
-      rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
+      rowMoreLinkClass: `me-px mb-px border border-transparent rounded-sm print:border-black ${strongSolidPressableClass} print:bg-white`,
       rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
       /* Timeline > Slot Header
