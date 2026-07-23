@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme='light'>
 <head>
 <meta charset='utf-8' />
 
@@ -15,7 +15,12 @@
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
+    var darkModeToggle = document.querySelector('#dark-mode-toggle input');
     var calendarEl = document.getElementById('calendar');
+
+    darkModeToggle.addEventListener('change', function() {
+      document.documentElement.setAttribute('data-bs-theme', this.checked ? 'dark' : 'light');
+    });
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialDate: '2024-05-12',
@@ -79,6 +84,15 @@
     margin: 40px 10px;
   }
 
+  #dark-mode-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   #calendar {
     margin: 0 auto;
     max-width: 1200px;
@@ -87,6 +101,11 @@
 </style>
 </head>
 <body>
+
+  <label id='dark-mode-toggle'>
+    Dark mode
+    <input type='checkbox' />
+  </label>
 
   <div id='calendar'></div>
 
