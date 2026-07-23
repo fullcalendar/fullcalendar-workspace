@@ -5,6 +5,12 @@ add to demos
 more padding around events!?
 
 needs bs >=5.3
+
+TODO: apply var(--bs-body-bg) to body tag in demos? or already done?
+
+eventually instead of vars, where able, use css classes like bs-color (exist?)
+
+for bg transparency, use --bs-bg-opacity !!!
 */
 
 :root {
@@ -26,32 +32,17 @@ needs bs >=5.3
   --fc-classic-large-dot-width: 10px;
 
   /* neutral backgrounds */
-  --fc-classic-background: #ffffff;
-  --fc-classic-faint: #0000000A;
-  --fc-classic-muted: #00000014;
-  --fc-classic-strong: #00000024;
+  --fc-classic-background: var(--bs-body-bg);
+  --fc-classic-faint: var(--bs-tertiary-bg);
+  --fc-classic-muted: var(--bs-secondary-bg);
+  --fc-classic-strong: var(--bs-border-color);
 
   /* neutral foregrounds */
-  --fc-classic-foreground: #030712;
-  --fc-classic-faint-foreground: #9ca3af;
-  --fc-classic-muted-foreground: #6b7280;
+  --fc-classic-foreground: var(--bs-body-color);
+  --fc-classic-faint-foreground: var(--bs-tertiary-color);
+  --fc-classic-muted-foreground: var(--bs-secondary-color);
 
   /* neutral borders */
   --fc-classic-border: var(--bs-border-color);
   --fc-classic-strong-border: var(--bs-tertiary-color); /* test with resourceTimeGridWeek */
 }
-@media not print {
-  [data-color-scheme=dark] {
-    /* neutral backgrounds */
-    --fc-classic-background: #030712;
-    --fc-classic-faint: #ffffff0A;
-    --fc-classic-muted: #ffffff14;
-    --fc-classic-strong: #ffffff24;
-
-    /* neutral foregrounds */
-    --fc-classic-foreground: #fff;
-    --fc-classic-faint-foreground: #4b5563;
-    --fc-classic-muted-foreground: #9ca3af;
-  }
-}
-
