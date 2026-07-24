@@ -545,10 +545,6 @@
   padding-inline: 4px
 }
 
-.px-2 {
-  padding-inline: 8px
-}
-
 .px-3 {
   padding-inline: 12px
 }
@@ -559,10 +555,6 @@
 
 .py-0\.5 {
   padding-block: 2px
-}
-
-.py-1 {
-  padding-block: 4px
 }
 
 .py-2 {
@@ -587,10 +579,6 @@
 
 .pt-0\.5 {
   padding-top: 2px
-}
-
-.pt-1 {
-  padding-top: 4px
 }
 
 .pb-0\.5 {

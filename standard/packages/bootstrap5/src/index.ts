@@ -258,17 +258,14 @@ export default {
       'flex',
       info.isShort
         ? 'p-1 flex-row items-center gap-1'
-        : joinClassNames(
-            'flex-col',
-            info.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
-          ),
+        : 'px-1 py-0.5 flex-col',
     ),
     columnEventTimeClass: (info) => joinClassNames(
-      !info.isShort && (info.isNarrow ? 'pt-0.5' : 'pt-1'),
+      !info.isShort && 'pt-0.5',
       xxsTextClass,
     ),
     columnEventTitleClass: (info) => joinClassNames(
-      !info.isShort && (info.isNarrow ? 'py-0.5' : 'py-1'),
+      !info.isShort && 'py-0.5',
       (info.isShort || info.isNarrow) ? xxsTextClass : 'text-xs',
     ),
 
@@ -518,11 +515,7 @@ export default {
       rowEventAfterClass: (info) => (
         !info.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
       ),
-      rowEventInnerClass: (info) => (
-        info.options.eventOverlap
-          ? 'py-1'
-          : 'py-2'
-      ),
+      rowEventInnerClass: 'py-0.5',
       rowEventTimeClass: 'px-0.5',
       rowEventTitleClass: 'px-0.5',
 

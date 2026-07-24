@@ -30,31 +30,18 @@
       nowIndicator: true,
       dayMaxEvents: 2,
       eventMaxStack: 2,
-      resourceColumnsWidth: '24%',
       resourceColumnHeaderContent: 'Resources',
-      resourcesInitiallyExpanded: true,
+      resourceGroupField: 'group',
       headerToolbar: {
         left: 'prevYear,prev,next,nextYear today',
         center: 'title',
         right: 'resourceTimelineWeek,resourceTimeGridDay'
       },
       resources: [
-        {
-          id: 'rooms',
-          title: 'Rooms',
-          children: [
-            { id: 'room-a', title: 'Room A' },
-            { id: 'room-b', title: 'Room B' }
-          ]
-        },
-        {
-          id: 'people',
-          title: 'People',
-          children: [
-            { id: 'person-a', title: 'Ada' },
-            { id: 'person-b', title: 'Grace' }
-          ]
-        }
+        { id: 'room-a', group: 'Rooms', title: 'Room A' },
+        { id: 'room-b', group: 'Rooms', title: 'Room B' },
+        { id: 'person-a', group: 'People', title: 'Ada' },
+        { id: 'person-b', group: 'People', title: 'Grace', eventColor: 'red' }
       ],
       events: [
         { resourceId: 'room-a', title: 'Overlap 1', start: '2024-05-12T09:00:00', end: '2024-05-12T12:00:00' },
