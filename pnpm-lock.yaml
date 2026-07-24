@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+packageExtensionsChecksum: sha256-FUc8+tX/Lfu7Ar3MMkWvEZey9DZETYLkgNoByE1WvQY=
+
 patchedDependencies:
   '@angular/build@18.2.21':
     hash: 9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293
@@ -76,7 +78,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
-        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)
       '@angular/cli':
         specifier: ~16.0.2
         version: 16.0.6(chokidar@3.5.3)
@@ -1591,7 +1593,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.2.16
-        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)
       '@angular/cli':
         specifier: ^16.2.16
         version: 16.2.16(chokidar@3.6.0)
@@ -1995,7 +1997,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.2.16
-        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)
       '@angular/animations':
         specifier: ^16.2.0
         version: 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))
@@ -3401,6 +3403,7 @@ packages:
     resolution: {integrity: sha512-gEni21kza41xaRnVWP1sMuiWHS/rdoym5FEEGDo9PG60LwRC4lekIgT09GpTlmMu007UEfo0ccQnGroD6+MqWg==}
     engines: {node: ^16.14.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
+      '@angular/compiler': ^16.0.0
       '@angular/compiler-cli': ^16.0.0
       '@angular/localize': ^16.0.0
       '@angular/platform-server': ^16.0.0
@@ -23900,12 +23903,13 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)':
+  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4))(tslib@2.8.1)(typescript@5.0.4))(stylus@0.62.0)(typescript@5.0.4)':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
+      '@angular/compiler': 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.0.4)
       '@babel/core': 7.22.9
       '@babel/generator': 7.22.9
@@ -23990,12 +23994,13 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)':
+  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(@types/node@24.10.9)(html-webpack-plugin@5.6.6(webpack@5.104.1))(karma@6.4.4)(lightningcss@1.32.0)(ng-packagr@16.2.3(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6))(tslib@2.8.1)(typescript@5.1.6))(stylus@0.62.0)(typescript@5.1.6)':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
       '@angular-devkit/build-webpack': 0.1602.16(chokidar@3.5.3)(webpack-dev-server@4.15.1(webpack@5.94.0(esbuild@0.18.17)))(webpack@5.94.0(esbuild@0.18.17))
       '@angular-devkit/core': 16.2.16(chokidar@3.5.3)
+      '@angular/compiler': 16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3))
       '@angular/compiler-cli': 16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.2)(zone.js@0.13.3)))(typescript@5.1.6)
       '@babel/core': 7.22.9
       '@babel/generator': 7.22.9

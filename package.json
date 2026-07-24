@@ -50,6 +50,13 @@
     "pnpm": ">=10.15.0"
   },
   "pnpm": {
+    "packageExtensions": {
+      "@angular-devkit/build-angular@16": {
+        "peerDependencies": {
+          "@angular/compiler": "^16.0.0"
+        }
+      }
+    },
     "peerDependencyRules": {
       "allowedVersions": {
         "ng-packagr@13>typescript": "^4.4.0"
