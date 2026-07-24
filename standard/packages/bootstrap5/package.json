@@ -2,7 +2,7 @@
   "name": "@fullcalendar/bootstrap5",
   "version": "7.0.2",
   "title": "FullCalendar Bootstrap 5 Plugin",
-  "description": "Bootstrap 5 compatibility theme for FullCalendar",
+  "description": "A Bootstrap 5 theme for FullCalendar",
   "keywords": [
     "bootstrap",
     "bootstrap5"
