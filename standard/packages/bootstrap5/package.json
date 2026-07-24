@@ -10,7 +10,7 @@
   "homepage": "https://fullcalendar.io/docs/bootstrap5",
   "peerDependencies": {
     "@fullcalendar/core": "workspace:7.0.2",
-    "bootstrap": ">=5.3.0 <6.0.0",
+    "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.8.0"
   },
   "devDependencies": {
