@@ -306,7 +306,7 @@ describe('HostComponentWithTemplate', () => {
 })
 class DayGridWeekCrossRangeEventHostComponent {
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin],
+    plugins: [classicThemePlugin, dayGridPlugin],
     initialView: 'dayGridWeek',
     initialDate: '2024-06-10',
     firstDay: 1,
@@ -471,7 +471,7 @@ class CrapComponent {
   @ViewChild('calendar') calendarComponent?: FullCalendarComponent;
 
   calendarOptions: CalendarOptions = {
-    plugins: [listPlugin],
+    plugins: [classicThemePlugin, listPlugin],
     headerToolbar: this.defaultHeaderToolbar,
     initialView: 'listWeek',
     events: [buildEvent()] as any,
@@ -513,7 +513,7 @@ describe('with list-view, customContent, and state mutation in datesSet', () => 
 })
 class MonthComponent {
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin],
+    plugins: [classicThemePlugin, dayGridPlugin],
     initialView: 'dayGridMonth',
     dayCellTopClass: 'my-day-cell-top',
     dayCellTopContent(info) {
@@ -560,7 +560,7 @@ describe('dayGridMonth view dot-event elements, custom content, and eventDidMoun
   })
   class MonthComponent2 {
     calendarOptions: CalendarOptions = {
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
       initialDate: '2023-03-20',
       events: [
         { start: '2023-03-20T00:12:00', allDay: false }
@@ -617,7 +617,7 @@ describe(`during foreground custom event rendering`, async () => {
   })
   class MonthComponent3 {
     calendarOptions: CalendarOptions = {
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
       initialDate: '2023-03-20',
       events: [
         {
@@ -669,7 +669,7 @@ describe(`during background custom event rendering`, async () => {
   })
   class MonthComponent3 {
     calendarOptions: CalendarOptions = {
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
       initialDate: '2023-03-20',
       events: [
         {

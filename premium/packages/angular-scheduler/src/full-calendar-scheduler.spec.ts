@@ -5,6 +5,7 @@ import {
   FullCalendarComponent,
   FullCalendarModule,
 } from '@fullcalendar/angular';
+import classicThemePlugin from '@fullcalendar/angular/themes/classic';
 import resourceTimeGridPlugin from '@fullcalendar/angular-scheduler/resource-timegrid';
 import resourceTimelinePlugin from '@fullcalendar/angular-scheduler/resource-timeline';
 
@@ -27,7 +28,7 @@ const DEFAULT_OPTIONS = {
 class ResourceTimelineHostComponent {
   calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
-    plugins: [resourceTimelinePlugin],
+    plugins: [classicThemePlugin, resourceTimelinePlugin],
     initialView: 'resourceTimelineWeek',
     resources: [{ id: 'a', title: 'a' }],
   };
@@ -77,7 +78,7 @@ describe('with resource-timeline view', () => {
 class ResourceTimelineCrossRangeEventHostComponent {
   calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
-    plugins: [resourceTimelinePlugin],
+    plugins: [classicThemePlugin, resourceTimelinePlugin],
     initialView: 'resourceTimelineDay',
     initialDate: '2024-06-10',
     resources: [
@@ -145,7 +146,7 @@ describe('with resource-timeline event spanning adjacent view ranges', () => {
 class ResourceTimeGridHostComponent {
   calendarOptions: CalendarOptions = {
     ...DEFAULT_OPTIONS,
-    plugins: [resourceTimeGridPlugin],
+    plugins: [classicThemePlugin, resourceTimeGridPlugin],
     initialView: 'resourceTimeGridDay',
     resources: [{ id: 'a', title: 'a' }],
   };
