@@ -1,7 +1,9 @@
 
-## next
+## v7.0.2
 
-- Fix Vue 3 types for template ref for `getApi` (#8086)
+- FEATURE: Restored Bootstrap 5 support (originally omitted from v7) (#8040)
+- FIX: Vue 3 types for template ref for `getApi` (#8086)
+- FIX: Angular DOM-insertion JS error with `#eventContent` (#8085)
 
 
 ## v7.0.1
