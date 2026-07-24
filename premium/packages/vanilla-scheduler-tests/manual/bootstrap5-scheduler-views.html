@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html data-bs-theme='light'>
+<head>
+<meta charset='utf-8' />
+
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css' />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css' />
+<link rel='stylesheet' href='../../../../standard/packages/bootstrap5/dist/theme.css' />
+
+<script src='../../../../standard/packages/vanilla/dist/all/global.js'></script>
+<script src='../../vanilla-scheduler/dist/all/global.js'></script>
+<script src='../../../../standard/packages/bootstrap5/dist/global.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var darkModeToggle = document.querySelector('#dark-mode-toggle input');
+    var calendarEl = document.getElementById('calendar');
+
+    darkModeToggle.addEventListener('change', function() {
+      document.documentElement.setAttribute('data-bs-theme', this.checked ? 'dark' : 'light');
+    });
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialDate: '2024-05-12',
+      initialView: 'resourceTimelineWeek',
+      aspectRatio: 1.7,
+      editable: true,
+      selectable: true,
+      nowIndicator: true,
+      dayMaxEvents: 2,
+      eventMaxStack: 2,
+      resourceColumnsWidth: '24%',
+      resourceColumnHeaderContent: 'Resources',
+      resourcesInitiallyExpanded: true,
+      headerToolbar: {
+        left: 'prevYear,prev,next,nextYear today',
+        center: 'title',
+        right: 'resourceTimelineWeek,resourceTimeGridDay'
+      },
+      resources: [
+        {
+          id: 'rooms',
+          title: 'Rooms',
+          children: [
+            { id: 'room-a', title: 'Room A' },
+            { id: 'room-b', title: 'Room B' }
+          ]
+        },
+        {
+          id: 'people',
+          title: 'People',
+          children: [
+            { id: 'person-a', title: 'Ada' },
+            { id: 'person-b', title: 'Grace' }
+          ]
+        }
+      ],
+      events: [
+        { resourceId: 'room-a', title: 'Overlap 1', start: '2024-05-12T09:00:00', end: '2024-05-12T12:00:00' },
+        { resourceId: 'room-a', title: 'Overlap 2', start: '2024-05-12T09:15:00', end: '2024-05-12T12:15:00' },
+        { resourceId: 'room-a', title: 'Overlap 3', start: '2024-05-12T09:30:00', end: '2024-05-12T12:30:00' },
+        { resourceId: 'room-a', title: 'Overlap 4', start: '2024-05-12T09:45:00', end: '2024-05-12T12:45:00' },
+        { resourceId: 'room-a', title: 'Overlap 5', start: '2024-05-12T10:00:00', end: '2024-05-12T13:00:00' },
+        { resourceId: 'room-a', title: 'All-day 1', start: '2024-05-12' },
+        { resourceId: 'room-a', title: 'All-day 2', start: '2024-05-12' },
+        { resourceId: 'room-a', title: 'All-day 3', start: '2024-05-12' },
+        { resourceId: 'room-a', title: 'All-day 4', start: '2024-05-12' },
+        { resourceId: 'room-a', title: 'All-day 5', start: '2024-05-12' },
+        { resourceId: 'room-b', title: 'Room B meeting', start: '2024-05-12T13:00:00', end: '2024-05-12T15:30:00' },
+        { resourceId: 'person-a', title: 'Ada planning', start: '2024-05-12T11:00:00', end: '2024-05-12T14:00:00' },
+        { resourceId: 'person-b', title: 'Grace review', start: '2024-05-12T09:00:00', end: '2024-05-12T11:00:00' }
+      ]
+    });
+
+    calendar.render();
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 40px 10px;
+  }
+
+  #dark-mode-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #calendar {
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
+</style>
+</head>
+<body>
+
+  <label id='dark-mode-toggle'>
+    Dark mode
+    <input type='checkbox' />
+  </label>
+
+  <div id='calendar'></div>
+
+</body>
+</html>

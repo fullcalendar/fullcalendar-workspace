@@ -41,6 +41,9 @@
       "path": "premium/packages/web-component-scheduler"
     },
     {
+      "path": "standard/packages/bootstrap5"
+    },
+    {
       "path": "standard/packages/google-calendar"
     },
     {
