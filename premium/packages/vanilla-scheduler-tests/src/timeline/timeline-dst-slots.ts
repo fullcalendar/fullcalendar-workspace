@@ -82,7 +82,9 @@ describe('timeline DST slot generation', () => {
     it('gives repeated slot lanes their exact instants and state', async () => {
       const laneMetaByDate = new Map<string, { isPast: boolean, isFuture: boolean }>()
       initCalendar({
-        now: '2024-11-03T06:00:00Z', // start of the second 01:00 occurrence
+        // Keep now safely between the repeated 01:00 occurrences. This verifies that their
+        // states use exact instants without relying on equality with an advancing now clock.
+        now: '2024-11-03T05:45:00Z',
         slotLaneClass(info) {
           laneMetaByDate.set(info.date.toISOString(), {
             isPast: info.isPast,
@@ -99,7 +101,7 @@ describe('timeline DST slot generation', () => {
       })
       expect(laneMetaByDate.get('2024-11-03T06:00:00.000Z')).toEqual({
         isPast: false,
-        isFuture: false,
+        isFuture: true,
       })
     })
   })
