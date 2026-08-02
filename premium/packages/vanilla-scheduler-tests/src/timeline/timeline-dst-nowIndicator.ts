@@ -1,7 +1,8 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
+  FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0130_SLAT,
   getSlatInfo, expectCloseTo,
 } from '../lib/dst-timeline-utils'
 
@@ -12,11 +13,7 @@ fall-back day monotonically.
 */
 describe('timeline DST now-indicator', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    initialDate: FALL_BACK_DAY,
-    scrollTime: '00:00',
-    slotDuration: '00:30',
+    ...DST_TIMELINE_BASE_OPTIONS,
     nowIndicator: true,
   })
 
@@ -34,7 +31,7 @@ describe('timeline DST now-indicator', () => {
     await waitTimeout()
 
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[1].left, 3)
+    expectCloseTo(getIndicatorLeft(calendar), slats[1].left)
   })
 
   it('positions in the FIRST pass of the fold', async () => {
@@ -44,7 +41,7 @@ describe('timeline DST now-indicator', () => {
     await waitTimeout()
 
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[3].left, 3)
+    expectCloseTo(getIndicatorLeft(calendar), slats[FALL_BACK_FIRST_0130_SLAT].left)
   })
 
   it('positions in the SECOND pass of the fold', async () => {
@@ -54,7 +51,7 @@ describe('timeline DST now-indicator', () => {
     await waitTimeout()
 
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[5].left, 3)
+    expectCloseTo(getIndicatorLeft(calendar), slats[FALL_BACK_SECOND_0130_SLAT].left)
   })
 
   it('positions after the fold with real-time offset', async () => {
@@ -64,7 +61,7 @@ describe('timeline DST now-indicator', () => {
     await waitTimeout()
 
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[7].left, 3)
+    expectCloseTo(getIndicatorLeft(calendar), slats[7].left)
   })
 
   it('positions after the gap on spring-forward day', async () => {
@@ -75,18 +72,18 @@ describe('timeline DST now-indicator', () => {
     await waitTimeout()
 
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[5].left, 3)
+    expectCloseTo(getIndicatorLeft(calendar), slats[5].left)
   })
 
   it('snaps to the correct slot with hour slots', async () => {
     let calendar = initCalendar({
       slotDuration: '01:00', // unit value 1 -> nowIndicatorSnap auto-enables
-      now: '2024-11-03T00:40:00', // civil, unambiguous
+      now: '2024-11-03T06:40:00Z', // second 01:40, after the fold
     })
     await waitTimeout()
 
     // hour slats: 0=00:00, 1=01:00 EDT, 2=01:00 EST, 3=02:00 ...
     let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
-    expectCloseTo(getIndicatorLeft(calendar), slats[0].left, 3) // snapped to 00:00
+    expectCloseTo(getIndicatorLeft(calendar), slats[2].left)
   })
 })

@@ -23,6 +23,7 @@ export interface TimelineFgProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
 
   // content
@@ -178,7 +179,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isResizing={isResizing}
                 isMirror={isMirror}
                 isSelected={isSelected}
-                {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
+                {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
               />
             </TimelineEventHarness>
           )
@@ -198,6 +199,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               hiddenSegs={hiddenGroup.segs}
               dateProfile={props.dateProfile}
               nowDate={props.nowDate}
+              nowMs={props.nowMs}
               todayRange={props.todayRange}
               isTimeScale={props.tDateProfile.isTimeScale}
               eventDrag={props.eventDrag}

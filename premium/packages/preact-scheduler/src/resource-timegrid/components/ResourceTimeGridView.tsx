@@ -139,7 +139,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
     return (
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
-        {(nowDate: DateMarker, todayRange: DateRange) => {
+        {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
           // timed-only column splitting
           let colCount = resourceDayTableModel.colCount
           let fgEventSegsByCol = this.splitFgEventSegs(timedResourceJoinedProps.fgEventSegs, colCount)
@@ -182,6 +182,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
               dateProfile={dateProfile}
               nowDate={nowDate}
+              nowMs={nowMs}
               todayRange={todayRange}
               cells={resourceDayTableModel.cells[0]}
               forPrint={props.forPrint}

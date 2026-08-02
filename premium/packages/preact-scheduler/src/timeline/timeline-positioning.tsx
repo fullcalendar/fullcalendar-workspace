@@ -1,4 +1,4 @@
-import { DateEnv, DateMarker, DateProfile, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
+import { DateEnv, DateMarker, DateProfile, DateSpan, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact/public-api'
 import { computeDateSnapCoverage, computeMsSlotCoverage } from './TimelineCoords'
@@ -52,7 +52,7 @@ export function timeToCoord( // pixels
   dateEnv: DateEnv,
   dateProfile: DateProfile,
   tDateProfile: TimelineDateProfile,
-  slowWidth: number,
+  slotWidth: number,
 ): number {
   let date = dateEnv.add(dateProfile.activeRange.start, time)
 
@@ -60,7 +60,7 @@ export function timeToCoord( // pixels
     date = startOfDay(date)
   }
 
-  return dateToCoord(date, dateEnv, tDateProfile, slowWidth)
+  return dateToCoord(date, dateEnv, tDateProfile, slotWidth)
 }
 
 export function dateToCoord( // pixels
@@ -94,6 +94,57 @@ export interface TimelineSnapRange {
   endMs: number | null // populated for timed axes
 }
 
+export interface TimelineHitData {
+  slatIndex: number
+  dateSpan: DateSpan
+  rect: {
+    left: number
+    right: number
+  }
+}
+
+/*
+Builds the horizontal geometry and exact date span shared by both timeline hit systems.
+*/
+export function computeTimelineHitData(
+  positionLeft: number,
+  canvasWidth: number,
+  slotWidth: number,
+  isRtl: boolean,
+  tDateProfile: TimelineDateProfile,
+  dateEnv: DateEnv,
+): TimelineHitData | null {
+  const x = isRtl ? canvasWidth - positionLeft : positionLeft
+  const slatIndex = Math.floor(x / slotWidth)
+  const slatLeft = slatIndex * slotWidth
+  const partial = (x - slatLeft) / slotWidth
+  const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
+  const snap = computeSnapRange(slatIndex, localSnapIndex, tDateProfile, dateEnv)
+
+  if (!snap) {
+    return null
+  }
+
+  const snapWidth = slotWidth / tDateProfile.snapsPerSlot
+  const startCoord = slatIndex * slotWidth + (snapWidth * localSnapIndex)
+  const endCoord = startCoord + snapWidth
+  const left = isRtl ? canvasWidth - endCoord : startCoord
+  const right = isRtl ? canvasWidth - startCoord : endCoord
+
+  return {
+    slatIndex,
+    dateSpan: {
+      range: { start: snap.start, end: snap.end },
+      allDay: !tDateProfile.isTimeScale,
+      ...(snap.startMs != null ? {
+        instantStartMs: snap.startMs,
+        instantEndMs: snap.endMs,
+      } : {}),
+    },
+    rect: { left, right },
+  }
+}
+
 /*
 The date range of a single snap-cell, for hit-detection.
 Timed axes read the canonical instant-based axis; whole-day axes use civil-marker arithmetic.
@@ -109,12 +160,13 @@ export function computeSnapRange(
   const { timeAxis } = tDateProfile
 
   if (timeAxis) {
-    if (slatIndex >= timeAxis.slotStartMs.length) {
+    if (slatIndex >= timeAxis.slots.length) {
       return null
     }
 
-    const startMs = timeAxis.slotStartMs[slatIndex] + (localSnapIndex * timeAxis.snapStepMs)
-    const endMs = Math.min(startMs + timeAxis.snapStepMs, timeAxis.slotEndMs[slatIndex])
+    const slot = timeAxis.slots[slatIndex]
+    const startMs = slot.startMs + (localSnapIndex * timeAxis.snapStepMs)
+    const endMs = Math.min(startMs + timeAxis.snapStepMs, slot.endMs)
 
     if (startMs >= endMs) {
       return null
@@ -126,6 +178,10 @@ export function computeSnapRange(
       startMs,
       endMs,
     }
+  }
+
+  if (slatIndex >= tDateProfile.slotDates.length) {
+    return null
   }
 
   const start = dateEnv.add(

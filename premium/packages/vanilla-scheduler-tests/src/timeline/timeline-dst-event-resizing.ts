@@ -1,7 +1,8 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
+  FALL_BACK_FIRST_0100_SLAT, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT,
   getSlatInfo, getSlatCenter, resizeEventToPoint, expectCloseTo,
 } from '../lib/dst-timeline-utils'
 
@@ -12,11 +13,7 @@ DST transition.
 */
 describe('timeline DST event resizing', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    initialDate: FALL_BACK_DAY,
-    scrollTime: '00:00',
-    slotDuration: '00:30',
+    ...DST_TIMELINE_BASE_OPTIONS,
     editable: true,
   })
 
@@ -38,14 +35,14 @@ describe('timeline DST event resizing', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    // drop the end-resizer INSIDE the second 01:30 slat (index 5)
-    await resizeEventToPoint($('.event0')[0], getSlatCenter(slats[5]))
+    // drop the end-resizer INSIDE the second 01:30 slat
+    await resizeEventToPoint($('.event0')[0], getSlatCenter(slats[FALL_BACK_SECOND_0130_SLAT]))
     await waitTimeout()
     expect(resizeSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[0].left, 3)
-    expectCloseTo(eventRect.right, slats[6].left, 3) // through end of slat 5
+    expectCloseTo(eventRect.left, slats[0].left)
+    expectCloseTo(eventRect.right, slats[FALL_BACK_0200_SLAT].left)
   })
 
   it('resizes a start backward across the fall-back transition', async () => {
@@ -66,12 +63,12 @@ describe('timeline DST event resizing', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await resizeEventToPoint($('.event0')[0], getSlatCenter(slats[2]), true) // first 01:00
+    await resizeEventToPoint($('.event0')[0], getSlatCenter(slats[FALL_BACK_FIRST_0100_SLAT]), true)
     await waitTimeout()
     expect(resizeSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[2].left, 3)
+    expectCloseTo(eventRect.left, slats[FALL_BACK_FIRST_0100_SLAT].left)
   })
 
   it('resizes an end across the spring-forward gap by exact instants', async () => {
@@ -97,6 +94,6 @@ describe('timeline DST event resizing', () => {
     expect(resizeSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.right, slats[5].left, 3) // through end of the 03:00 slat
+    expectCloseTo(eventRect.right, slats[5].left)
   })
 })

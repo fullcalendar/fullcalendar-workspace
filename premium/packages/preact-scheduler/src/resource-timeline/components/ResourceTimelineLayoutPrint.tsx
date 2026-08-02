@@ -219,6 +219,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       dateProfile={props.dateProfile}
                       tDateProfile={tDateProfile}
                       nowDate={nowDate}
+                      nowMs={props.nowMs}
                       todayRange={todayRange}
                       rowLevel={rowLevel}
                       cells={cells}
@@ -298,6 +299,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   nowDate={nowDate}
+                  nowMs={props.nowMs}
                   todayRange={todayRange}
                   height={BG_HEIGHT} // HACK
 
@@ -307,6 +309,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <TimelineBg
                   tDateProfile={tDateProfile}
                   nowDate={nowDate}
+                  nowMs={props.nowMs}
                   todayRange={todayRange}
 
                   // content
@@ -405,6 +408,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
                       nowDate={nowDate}
+                      nowMs={props.nowMs}
                       todayRange={todayRange}
                       businessHours={null}
                       dateSelection={null}

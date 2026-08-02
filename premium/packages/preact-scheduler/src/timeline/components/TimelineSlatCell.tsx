@@ -10,12 +10,15 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
+import { applyExactSlotMeta } from '../timeline-time-axis'
 
 export interface TimelineSlatCellProps {
   date: DateMarker
+  startMs: number | null
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
   isMajor: boolean
   borderStart: boolean
@@ -32,7 +35,11 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { props, context } = this
     let { dateEnv, options } = context
     let { date, tDateProfile, isMajor } = props
-    let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate)
+    let dateMeta = applyExactSlotMeta(
+      this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate),
+      props.startMs,
+      props.nowMs,
+    )
 
     let isMinor =
       tDateProfile.isTimeScale &&

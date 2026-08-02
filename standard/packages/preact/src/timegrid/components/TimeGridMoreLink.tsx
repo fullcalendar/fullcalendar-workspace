@@ -19,6 +19,7 @@ export interface TimeGridMoreLinkProps {
   dateProfile: DateProfile
   todayRange: DateRange
   nowDate: DateMarker
+  nowMs?: number
   eventSelection: string
   eventDrag: EventSegUiInteractionState<TimeGridRange>
   eventResize: EventSegUiInteractionState<TimeGridRange>

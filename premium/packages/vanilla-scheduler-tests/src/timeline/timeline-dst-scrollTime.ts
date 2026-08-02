@@ -1,7 +1,7 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, FALL_BACK_DAY, SPRING_FORWARD_DAY,
   getSlatInfo,
 } from '../lib/dst-timeline-utils'
 
@@ -13,9 +13,7 @@ See timeline-dst-slots for the slat-index layout of these days.
 */
 describe('timeline DST scrollTime', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    slotDuration: '00:30',
+    ...DST_TIMELINE_BASE_OPTIONS,
     scrollTime: '06:00',
   })
 

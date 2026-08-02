@@ -1,15 +1,15 @@
 import { EventDef } from '../structs/event-def'
 import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse'
 import {
-  EventInstance, getRangeInstantStartMs, getRangeInstantEndMs,
-  canonicalRangeStartMarker, canonicalRangeEndMarker,
+  buildRangeEdgeOutput, canonicalRangeEndMarker, EventInstance,
+  getRangeInstantStartMs, getRangeInstantEndMs, rangeEdgeOutputsRequireSeparateFormatting,
 } from '../structs/event-instance'
 import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui'
 import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
-import { formatInstantIso } from '../structs/date-span'
 import { diffDates, computeAlignedDayRange } from '../util/date'
-import { createDuration, durationsEqual, DateMarkerMeta } from '@full-ui/headless-calendar'
-import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
+import {
+  createDuration, durationsEqual, DateMarkerMeta, joinDateTimeFormatParts, RANGE_FORMAT_SEPARATOR,
+} from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
 import { CalendarContext } from '../CalendarContext'
 import { getRelevantEvents, EventStore } from '../structs/event-store'
@@ -170,7 +170,7 @@ export class EventImpl implements EventApi {
       }
 
       // canonical bases: match what civil deltas will be applied to
-      let startDelta = diffDates(canonicalRangeStartMarker(instanceRange, dateEnv), startMeta.marker, dateEnv, options.granularity)
+      let startDelta = diffDates(instanceRange.start, startMeta.marker, dateEnv, options.granularity)
 
       if (endMeta) {
         let endDelta = diffDates(canonicalRangeEndMarker(instanceRange, dateEnv), endMeta.marker, dateEnv, options.granularity)
@@ -230,16 +230,28 @@ export class EventImpl implements EventApi {
     let { dateEnv } = this._context
     let instance = this._instance
     let formatter = createFormatter(formatInput)
-    // canonical civil forms — a fold-compressed end's stored marker is representational
-    let startMarker = canonicalRangeStartMarker(instance.range, dateEnv)
-    let endMarker = canonicalRangeEndMarker(instance.range, dateEnv)
+    let start = buildRangeEdgeOutput(instance.range.start, instance.range.instantStartMs, dateEnv)
+    let end = buildRangeEdgeOutput(instance.range.end, instance.range.instantEndMs, dateEnv)
 
     if (this._def.hasEnd) {
+      if (rangeEdgeOutputsRequireSeparateFormatting(start, end)) {
+        return joinDateTimeFormatParts(dateEnv.formatToParts(start.marker, formatter, {
+          timeZoneOffset: start.timeZoneOffset,
+        })) + RANGE_FORMAT_SEPARATOR + joinDateTimeFormatParts(dateEnv.formatToParts(end.marker, formatter, {
+          timeZoneOffset: end.timeZoneOffset,
+        }))
+      }
+
       return joinDateTimeFormatParts(
-        dateEnv.formatRangeToParts(startMarker, endMarker, formatter),
+        dateEnv.formatRangeToParts(start.marker, end.marker, formatter, {
+          startTimeZoneOffset: start.timeZoneOffset,
+          endTimeZoneOffset: end.timeZoneOffset,
+        }),
       )
     }
-    return joinDateTimeFormatParts(dateEnv.formatToParts(startMarker, formatter))
+    return joinDateTimeFormatParts(dateEnv.formatToParts(start.marker, formatter, {
+      timeZoneOffset: start.timeZoneOffset,
+    }))
   }
 
   mutate(mutation: EventMutation): void { // meant to be private. but plugins need access
@@ -325,9 +337,12 @@ export class EventImpl implements EventApi {
   get start(): Date | null {
     let instance = this._instance
     if (instance) {
-      return instance.range.instantStartMs != null ?
-        new Date(instance.range.instantStartMs) :
-        this._context.dateEnv.toDate(instance.range.start)
+      return buildRangeEdgeOutput(
+        instance.range.start,
+        instance.range.instantStartMs,
+        this._context.dateEnv,
+        this._def.allDay,
+      ).date
     }
     return null
   }
@@ -335,9 +350,12 @@ export class EventImpl implements EventApi {
   get end(): Date | null {
     let instance = this._instance
     if (instance && this._def.hasEnd) {
-      return instance.range.instantEndMs != null ?
-        new Date(instance.range.instantEndMs) :
-        this._context.dateEnv.toDate(instance.range.end)
+      return buildRangeEdgeOutput(
+        instance.range.end,
+        instance.range.instantEndMs,
+        this._context.dateEnv,
+        this._def.allDay,
+      ).date
     }
     return null
   }
@@ -345,13 +363,12 @@ export class EventImpl implements EventApi {
   get startStr(): string {
     let instance = this._instance
     if (instance) {
-      // allDay ranges never carry instants, so instant formatting never omits time
-      if (instance.range.instantStartMs != null) {
-        return formatInstantIso(instance.range.instantStartMs, this._context.dateEnv)
-      }
-      return this._context.dateEnv.formatIso(instance.range.start, {
-        omitTime: this._def.allDay,
-      })
+      return buildRangeEdgeOutput(
+        instance.range.start,
+        instance.range.instantStartMs,
+        this._context.dateEnv,
+        this._def.allDay,
+      ).dateStr
     }
     return ''
   }
@@ -359,12 +376,12 @@ export class EventImpl implements EventApi {
   get endStr(): string {
     let instance = this._instance
     if (instance && this._def.hasEnd) {
-      if (instance.range.instantEndMs != null) {
-        return formatInstantIso(instance.range.instantEndMs, this._context.dateEnv)
-      }
-      return this._context.dateEnv.formatIso(instance.range.end, {
-        omitTime: this._def.allDay,
-      })
+      return buildRangeEdgeOutput(
+        instance.range.end,
+        instance.range.instantEndMs,
+        this._context.dateEnv,
+        this._def.allDay,
+      ).dateStr
     }
     return ''
   }

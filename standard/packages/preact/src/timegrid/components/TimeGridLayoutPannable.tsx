@@ -39,6 +39,7 @@ import { isBrowserPrintQuirky } from "./TimeGridCol"
 export interface TimeGridLayoutPannableProps {
   dateProfile: DateProfile
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   cells: DayTableCell[]
   slatMetas: TimeSlatMeta[]
@@ -534,6 +535,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <TimeGridCols
                     dateProfile={props.dateProfile}
                     nowDate={props.nowDate}
+                    nowMs={props.nowMs}
                     todayRange={props.todayRange}
                     cells={props.cells}
                     slatCnt={slatCnt}

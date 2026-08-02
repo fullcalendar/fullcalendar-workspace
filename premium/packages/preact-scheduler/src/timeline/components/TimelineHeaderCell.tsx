@@ -14,6 +14,7 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import { createRef, type Ref } from 'react'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
+import { applyExactSlotMeta } from '../timeline-time-axis'
 import classNames from '@fullcalendar/preact/protected-styles'
 
 export interface TimelineHeaderCellProps {
@@ -23,6 +24,7 @@ export interface TimelineHeaderCellProps {
   cell: TimelineHeaderCellData
   todayRange: DateRange
   nowDate: DateMarker
+  nowMs: number
   isFirst: boolean
 
   // dimensions
@@ -61,7 +63,11 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     // giving 'month' for a 3-day view
     // workaround: to infer day, do NOT time
 
-    let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
+    let dateMeta = applyExactSlotMeta(
+      this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate),
+      cell.startMs,
+      props.nowMs,
+    )
     let hasNavLink = options.navLinks && !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
     let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
 

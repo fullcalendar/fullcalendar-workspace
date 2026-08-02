@@ -28,7 +28,7 @@ import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineHeaderRow } from './TimelineHeaderRow'
-import { computeSlotWidth, computeSnapRange, timeToCoord } from '../timeline-positioning'
+import { computeSlotWidth, computeTimelineHitData, timeToCoord } from '../timeline-positioning'
 import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow'
 import { getTimelineSlotEl } from './util'
@@ -183,6 +183,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                           dateProfile={props.dateProfile}
                           tDateProfile={tDateProfile}
                           nowDate={nowDate}
+                          nowMs={nowMs}
                           todayRange={todayRange}
                           rowLevel={rowLevel}
                           cells={cells}
@@ -255,6 +256,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
+                    nowMs={nowMs}
                     todayRange={todayRange}
 
                     // dimensions
@@ -263,6 +265,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   <TimelineBg
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
+                    nowMs={nowMs}
                     todayRange={todayRange}
 
                     // content
@@ -283,6 +286,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
+                    nowMs={nowMs}
                     todayRange={todayRange}
 
                     // content
@@ -486,49 +490,21 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     const slotWidth = this.getSlotWidth()
 
     if (slotWidth) {
-      const x = isRtl ? elWidth - positionLeft : positionLeft
-      const slatIndex = Math.floor(x / slotWidth)
-      const slatX = slatIndex * slotWidth
-      const partial = (x - slatX) / slotWidth // floating point number between 0 and 1
-      const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
-      const snap = computeSnapRange(slatIndex, localSnapIndex, tDateProfile, dateEnv)
+      const hitData = computeTimelineHitData(positionLeft, elWidth, slotWidth, isRtl, tDateProfile, dateEnv)
 
-      if (!snap) { // in the dead tail of a DST-truncated slot
+      if (!hitData) { // in the dead tail of a DST-truncated slot
         return null
-      }
-
-      // TODO: generalize this coord stuff to TimeGrid?
-
-      let snapWidth = slotWidth / tDateProfile.snapsPerSlot
-      let startCoord = slatIndex * slotWidth + (snapWidth * localSnapIndex)
-      let endCoord = startCoord + snapWidth
-      let left: number, right: number
-
-      if (isRtl) {
-        left = elWidth - endCoord
-        right = elWidth - startCoord
-      } else {
-        left = startCoord
-        right = endCoord
       }
 
       return {
         dateProfile: props.dateProfile,
-        dateSpan: {
-          range: { start: snap.start, end: snap.end },
-          allDay: !tDateProfile.isTimeScale,
-          ...(snap.startMs != null ? {
-            instantStartMs: snap.startMs,
-            instantEndMs: snap.endMs,
-          } : {}),
-        },
+        dateSpan: hitData.dateSpan,
         rect: {
-          left,
-          right,
+          ...hitData.rect,
           top: 0,
           bottom: elHeight,
         },
-        getDayEl: () => getTimelineSlotEl(this.bodyEl, slatIndex),
+        getDayEl: () => getTimelineSlotEl(this.bodyEl, hitData.slatIndex),
         layer: 0,
       }
     }

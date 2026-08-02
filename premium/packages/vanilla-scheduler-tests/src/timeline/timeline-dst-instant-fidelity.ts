@@ -1,8 +1,10 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY,
-  getSlatInfo, getSlatStartPoint, dragEventToPoint, expectCloseTo,
+  DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
+  FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT,
+  FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT,
+  getSlatInfo, getSlatStartPoint, dragEventToPoint, expectCloseTo, expectEventSpansSlats,
 } from '../lib/dst-timeline-utils'
 
 /*
@@ -12,18 +14,9 @@ Durable instant fidelity: an event whose start/end input expresses an exact inst
 the doubled fall-back slots, its API getters report the true instant/offset, and the
 fidelity survives an eventChange -> app-state -> re-parse round trip. Civil inputs
 (and recurring expansions) still resolve to the FIRST occurrence.
-
-Fall-back day slat indexes (30-min slots): 2-3 = 01:00/01:30 EDT (first copy),
-4-5 = 01:00/01:30 EST (second copy), 6 = 02:00 EST.
 */
 describe('timeline DST instant fidelity', () => {
-  pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    initialDate: FALL_BACK_DAY,
-    scrollTime: '00:00',
-    slotDuration: '00:30',
-  })
+  pushOptions(DST_TIMELINE_BASE_OPTIONS)
 
   it('reports supplied instants through event.start/startStr for both fold copies', async () => {
     let calendar = initCalendar({
@@ -63,11 +56,7 @@ describe('timeline DST instant fidelity', () => {
     expect(event.startStr).toBe('2024-11-03T01:30:00-04:00')
     expect(event.endStr).toBe('2024-11-03T01:00:00-05:00') // canonical New York reading of 06:00Z
 
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[3].left, 3) // first 01:30
-    expectCloseTo(eventRect.right, slats[4].left, 3) // 30 real minutes
+    expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
   })
 
   it('round-trips a fold-compressed range through its emitted strings', async () => {
@@ -83,11 +72,24 @@ describe('timeline DST instant fidelity', () => {
     expect(event.start.toISOString()).toBe('2024-11-03T05:30:00.000Z')
     expect(event.end.toISOString()).toBe('2024-11-03T06:00:00.000Z')
 
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[3].left, 3)
-    expectCloseTo(eventRect.right, slats[4].left, 3)
+    expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
+  })
+
+  it('round-trips exact instants across the spring-forward gap', async () => {
+    let calendar = initCalendar({
+      initialDate: SPRING_FORWARD_DAY,
+      events: [
+        { start: '2024-03-10T01:30:00-05:00', end: '2024-03-10T04:00:00-04:00' },
+      ],
+    })
+    await waitTimeout()
+
+    let event = calendar.getEvents()[0]
+    expect(event.start.toISOString()).toBe('2024-03-10T06:30:00.000Z')
+    expect(event.end.toISOString()).toBe('2024-03-10T08:00:00.000Z')
+    expect(event.startStr).toBe('2024-03-10T01:30:00-05:00')
+    expect(event.endStr).toBe('2024-03-10T04:00:00-04:00')
+    expectEventSpansSlats(calendar, 3, 6)
   })
 
   it('derives a real-duration default end from an exact fold start', async () => {
@@ -100,11 +102,7 @@ describe('timeline DST instant fidelity', () => {
 
     // the default 1-hour duration is applied in real time from the exact start, so the
     // derived end can't re-resolve to the wrong side of the fold
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[4].left, 3) // second 01:00
-    expectCloseTo(eventRect.right, slats[6].left, 3) // 02:00 EST (07:00Z)
+    expectEventSpansSlats(calendar, FALL_BACK_SECOND_0100_SLAT, FALL_BACK_0200_SLAT)
   })
 
   it('setDates with exact instants moves an event onto the second copy', async () => {
@@ -123,11 +121,7 @@ describe('timeline DST instant fidelity', () => {
     expect(event.startStr).toBe('2024-11-03T01:30:00-05:00')
     expect(event.end.toISOString()).toBe('2024-11-03T07:00:00.000Z')
 
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[5].left, 3) // second 01:30
-    expectCloseTo(eventRect.right, slats[6].left, 3)
+    expectEventSpansSlats(calendar, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT)
   })
 
   it('setEnd with an exact instant extends to the true second-occurrence time', async () => {
@@ -145,11 +139,7 @@ describe('timeline DST instant fidelity', () => {
     expect(event.end.toISOString()).toBe('2024-11-03T06:30:00.000Z')
     expect(event.endStr).toBe('2024-11-03T01:30:00-05:00')
 
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[1].left, 3) // 00:30
-    expectCloseTo(eventRect.right, slats[5].left, 3) // through the fold: 2 real hours
+    expectEventSpansSlats(calendar, 1, FALL_BACK_SECOND_0130_SLAT)
   })
 
   it('renders Date-object and epoch-ms inputs at the second copy', async () => {
@@ -169,16 +159,10 @@ describe('timeline DST instant fidelity', () => {
     })
     await waitTimeout()
 
-    let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-    let slats = getSlatInfo(timelineGrid)
-    let eventEls = timelineGrid.getEventEls()
-
+    let eventEls = new TimelineViewWrapper(calendar).timelineGrid.getEventEls()
     expect(eventEls.length).toBe(2)
-    for (let eventEl of eventEls) {
-      let rect = eventEl.getBoundingClientRect()
-      expectCloseTo(rect.left, slats[5].left, 3) // second 01:30
-      expectCloseTo(rect.right, slats[6].left, 3)
-    }
+    expectEventSpansSlats(calendar, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT, 0)
+    expectEventSpansSlats(calendar, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT, 1)
   })
 
   it('round-trips an emitted startStr back to the same rendering position', async () => {
@@ -199,7 +183,7 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[5])) // second 01:30
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
     await waitTimeout()
     expect(emittedStart).toBe('2024-11-03T01:30:00-05:00')
 
@@ -208,9 +192,7 @@ describe('timeline DST instant fidelity', () => {
     calendar.addEvent({ start: emittedStart, end: emittedEnd })
     await waitTimeout()
 
-    let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[5].left, 3) // still the second copy
-    expectCloseTo(eventRect.right, slats[6].left, 3)
+    expectEventSpansSlats(calendar, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT)
   })
 
   it('does not falsely detect overlap between the two fold copies', async () => {
@@ -222,7 +204,7 @@ describe('timeline DST instant fidelity', () => {
       editable: true,
       eventOverlap: false,
       events: [
-        { start: '2024-11-03T00:00:00', end: '2024-11-03T00:30:00', className: 'event0' },
+        { id: 'moving', start: '2024-11-03T00:00:00', end: '2024-11-03T00:30:00', className: 'event0' },
         { start: '2024-11-03T01:30:00-05:00', end: '2024-11-03T02:00:00-05:00', title: 'est' },
       ],
       eventDrop: (dropSpy = spyCall(() => {})),
@@ -232,12 +214,18 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[3])) // first 01:30
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_FIRST_0130_SLAT]))
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
+    expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
 
-    let eventRect = $('.event0')[0].getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[3].left, 3)
+    // The converse must be rejected: the second 01:30 copy is occupied.
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
+    await waitTimeout()
+
+    expect(dropSpy.calls.count()).toBe(1)
+    expect(calendar.getEventById('moving').start.toISOString()).toBe('2024-11-03T05:30:00.000Z')
+    expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
   })
 
   it('reports exact instants to eventAllow when dropping onto the second copy', async () => {
@@ -259,7 +247,7 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[5])) // second 01:30
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
 
@@ -304,7 +292,7 @@ describe('timeline DST instant fidelity', () => {
     let slats = getSlatInfo(timelineGrid)
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-    expectCloseTo(eventRect.left, slats[3].left, 3) // first 01:30
+    expectCloseTo(eventRect.left, slats[FALL_BACK_FIRST_0130_SLAT].left)
     expect(calendar.getEvents()[0].startStr).toBe('2024-11-03T01:30:00-04:00')
   })
 
@@ -320,7 +308,7 @@ describe('timeline DST instant fidelity', () => {
     let slats = getSlatInfo(timelineGrid)
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-    expectCloseTo(eventRect.left, slats[3].left, 3) // first 01:30
+    expectCloseTo(eventRect.left, slats[FALL_BACK_FIRST_0130_SLAT].left)
   })
 
   it('strips instants when converting a timed event to all-day', async () => {
@@ -355,7 +343,7 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[11].left, 3) // 05:30 slat (24h day, no fold)
+    expectCloseTo(eventRect.left, slats[11].left)
   })
 
   it('recomputes markers from instants when the timeZone option changes', async () => {
@@ -369,7 +357,7 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[5].left, 3) // second 01:30 in NY
+    expectCloseTo(eventRect.left, slats[FALL_BACK_SECOND_0130_SLAT].left)
 
     calendar.setOption('timeZone', 'UTC')
     await waitTimeout()
@@ -380,6 +368,6 @@ describe('timeline DST instant fidelity', () => {
 
     slats = getSlatInfo(timelineGrid)
     eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[13].left, 3) // 06:30 slat in the UTC day
+    expectCloseTo(eventRect.left, slats[13].left)
   })
 })

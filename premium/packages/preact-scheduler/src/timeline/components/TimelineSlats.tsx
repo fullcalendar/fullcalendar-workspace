@@ -12,6 +12,7 @@ export interface TimelineSlatsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
 
   // virtualization (optional)
@@ -27,11 +28,16 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   render() {
     let { props } = this
     let { tDateProfile, slotWidth, slatStartIndex, slatCount } = props
-    let { slotDates, slotDatesMajor } = tDateProfile
+    const { timeAxis, slotDatesMajor } = tDateProfile
+    let slots = timeAxis?.slots ?? tDateProfile.slotDates.map((date, i) => ({
+      date,
+      key: tDateProfile.slotKeys[i],
+      startMs: null,
+    }))
 
     slatStartIndex = props.slatStartIndex || 0
     if (slatStartIndex || slatCount !== undefined) {
-      slotDates = slotDates.slice(slatStartIndex, slatStartIndex + slatCount)
+      slots = slots.slice(slatStartIndex, slatStartIndex + slatCount)
     }
 
     return (
@@ -43,21 +49,22 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         )}
         style={{
           height: props.height,
-          width: (props.slotWidth ?? 0) * slotDates.length,
+          width: (props.slotWidth ?? 0) * slots.length,
           insetInlineStart: 0,
         }}
       >
-        {slotDates.map((slotDate, i) => {
+        {slots.map((slot, i) => {
           const slatIndex = slatStartIndex + i
-          let key = tDateProfile.slotKeys[slatIndex]
 
           return (
             <TimelineSlatCell
-              key={key}
-              date={slotDate}
+              key={slot.key}
+              date={slot.date}
+              startMs={slot.startMs}
               dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
               nowDate={props.nowDate}
+              nowMs={props.nowMs}
               todayRange={props.todayRange}
               isMajor={slotDatesMajor[slatIndex]}
               borderStart={Boolean(slatIndex)}

@@ -62,7 +62,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
     return (
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
-        {(nowDate: DateMarker, todayRange: DateRange) => {
+        {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
           const colCount = dayTableModel.cellRows[0].length
           const nowIndicatorSeg = !props.forPrint && options.nowIndicator &&
             this.dayTimeColsSlicer.sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges)
@@ -91,6 +91,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
               dateProfile={dateProfile}
               nowDate={nowDate}
+              nowMs={nowMs}
               todayRange={todayRange}
               cells={dayTableModel.cellRows[0]}
               forPrint={props.forPrint}

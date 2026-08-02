@@ -10,6 +10,7 @@ export interface TimelineHeaderRowProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
   rowLevel: number // 0 is closest to divider (like "ground floor")
   cells: TimelineHeaderCellData[]
@@ -94,6 +95,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
               tDateProfile={props.tDateProfile}
               todayRange={props.todayRange}
               nowDate={props.nowDate}
+              nowMs={props.nowMs}
               isFirst={cellStartIndex + cellI === 0}
 
               // refs

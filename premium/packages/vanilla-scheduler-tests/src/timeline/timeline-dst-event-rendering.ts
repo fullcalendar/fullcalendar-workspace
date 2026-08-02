@@ -1,8 +1,10 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
-  getSlatInfo, expectCloseTo,
+  DST_TIMELINE_BASE_OPTIONS, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT,
+  FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT,
+  getSlatInfo, expectCloseTo, expectEventSpansSlats,
 } from '../lib/dst-timeline-utils'
 
 /*
@@ -11,12 +13,7 @@ arithmetic, so events spanning a DST transition occupy the correct real-time
 slats. See timeline-dst-slots for the slat-index layout of these days.
 */
 describe('timeline DST event rendering', () => {
-  pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    scrollTime: '00:00',
-    slotDuration: '00:30',
-  })
+  pushOptions(DST_TIMELINE_BASE_OPTIONS)
 
   describe('fall-back day', () => {
     pushOptions({
@@ -32,12 +29,7 @@ describe('timeline DST event rendering', () => {
       })
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
-      let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-
-      expectCloseTo(eventRect.left, slats[1].left, 3)
-      expectCloseTo(eventRect.right, slats[9].left, 3) // 03:30 slat is index 9
+      expectEventSpansSlats(calendar, 1, 9)
     })
 
     it('renders explicit-offset events in the fold at the correct copy', async () => {
@@ -52,17 +44,39 @@ describe('timeline DST event rendering', () => {
       })
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
-      let eventEls = timelineGrid.getEventEls()
-
+      let eventEls = new TimelineViewWrapper(calendar).timelineGrid.getEventEls()
       expect(eventEls.length).toBe(2)
-      let edtRect = eventEls[0].getBoundingClientRect()
-      let estRect = eventEls[1].getBoundingClientRect()
-      expectCloseTo(edtRect.left, slats[3].left, 3) // first copy (05:30Z -> 06:00Z)
-      expectCloseTo(edtRect.right, slats[4].left, 3)
-      expectCloseTo(estRect.left, slats[5].left, 3) // second copy (06:30Z -> 07:00Z)
-      expectCloseTo(estRect.right, slats[6].left, 3)
+      expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT, 0)
+      expectEventSpansSlats(calendar, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT, 1)
+    })
+
+    it('reports a first-pass event as past during the second pass', async () => {
+      let eventMeta: { isPast: boolean, isFuture: boolean } | undefined
+      initCalendar({
+        now: '2024-11-03T06:15:00Z', // 01:15 EST (second occurrence)
+        events: [
+          {
+            title: 'first-pass',
+            start: '2024-11-03T01:00:00-04:00',
+            end: '2024-11-03T01:30:00-04:00',
+          },
+        ],
+        eventClass(info) {
+          if (info.event.title === 'first-pass') {
+            eventMeta = {
+              isPast: info.isPast,
+              isFuture: info.isFuture,
+            }
+          }
+          return ''
+        },
+      })
+      await waitTimeout()
+
+      expect(eventMeta).toEqual({
+        isPast: true,
+        isFuture: false,
+      })
     })
 
     it('renders a background event spanning the fold with real-time width', async () => {
@@ -122,12 +136,7 @@ describe('timeline DST event rendering', () => {
       })
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
-      let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-
-      expectCloseTo(eventRect.left, slats[3].left, 3) // 01:30
-      expectCloseTo(eventRect.right, slats[5].left, 3) // up to 03:30 (index 5)
+      expectEventSpansSlats(calendar, 3, 5)
     })
 
     it('normalizes an event starting at a nonexistent time', async () => {
@@ -139,12 +148,7 @@ describe('timeline DST event rendering', () => {
       })
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
-      let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-
-      expectCloseTo(eventRect.left, slats[5].left, 3) // 03:30 slat
-      expectCloseTo(eventRect.right, slats[6].left, 3) // ends AT 04:00 (slat index 6)
+      expectEventSpansSlats(calendar, 5, 6)
     })
   })
 })

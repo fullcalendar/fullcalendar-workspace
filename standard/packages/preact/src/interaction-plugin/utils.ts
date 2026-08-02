@@ -2,7 +2,7 @@ import { ViewApi } from '../api/ViewApi'
 import { EventApi } from '../api/EventApi'
 import type { DatePointApi } from '../structs/date-span'
 import type { DateSpan } from '../structs/date-span'
-import { formatInstantIso } from '../structs/date-span'
+import { buildRangeEdgeOutput } from '../structs/event-instance'
 import type { CalendarContext } from '../CalendarContext'
 import type { DateEnv } from '@full-ui/headless-calendar'
 
@@ -35,17 +35,16 @@ export function buildDatePointApiWithContext(dateSpan: DateSpan, context: Calend
 }
 
 export function buildDatePointApi(span: DateSpan, dateEnv: DateEnv): DatePointApi {
-  if (!span.allDay && span.instantStartMs != null) {
-    return {
-      date: new Date(span.instantStartMs),
-      dateStr: formatInstantIso(span.instantStartMs, dateEnv),
-      allDay: false,
-    }
-  }
+  const start = buildRangeEdgeOutput(
+    span.range.start,
+    span.instantStartMs,
+    dateEnv,
+    span.allDay,
+  )
 
   return {
-    date: dateEnv.toDate(span.range.start),
-    dateStr: dateEnv.formatIso(span.range.start, { omitTime: span.allDay }),
+    date: start.date,
+    dateStr: start.dateStr,
     allDay: span.allDay,
   }
 }

@@ -54,7 +54,7 @@ export class NowTimerRunner {
       this.todayRange = timing.todayRange
 
       // init listeners
-      this.setTimeout()
+      this.setTimeout(timing.waitMs)
       this.nowManager.addResetListener(this.handleRefresh)
 
       // fired tab becomes visible after being hidden
@@ -129,7 +129,7 @@ export class NowTimerRunner {
       nowDate = dateEnv.startOf(unroundedNow, unit) // aka currentUnitStart
       nowMs = resolveSnappedInstant(nowDate, unroundedNowMs, dateEnv)
       let nextUnitStart = dateEnv.add(nowDate, createDuration(1, unit))
-      waitMs = nextUnitStart.valueOf() - unroundedNow.valueOf()
+      waitMs = resolveNextSnappedInstant(nextUnitStart, unroundedNowMs, dateEnv) - unroundedNowMs
     } else {
       nowDate = unroundedNow
       nowMs = unroundedNowMs
@@ -208,6 +208,62 @@ function resolveSnappedInstant(snappedMarker: DateMarker, rawMs: number, dateEnv
   }
 
   return dateEnv.toDate(snappedMarker).valueOf()
+}
+
+/*
+The instant of the next change to the snapped display: the next civil unit boundary, or any
+DST transition before it — at a fall-back transition the clock jumps backward onto an earlier
+unit start (no civil boundary is crossed), and waking there recomputes with fresh offsets, so
+boundaries beyond a transition never need resolving here. Scenarios (NY fall-back, hour unit):
+first fold pass (05:30Z): guess for 02:00 fails round-trip → falls back to 07:00Z; transition
+06:00Z wins. Second pass (06:30Z): guess 07:00Z round-trips; no transition ahead. Spring
+forward: the nonexistent next unit normalizes past the gap; the transition candidate fires at
+the jump itself.
+*/
+function resolveNextSnappedInstant(
+  nextUnitStart: DateMarker,
+  rawMs: number,
+  dateEnv: DateEnv,
+): number {
+  const nextSnappedMs = resolveSnappedInstant(nextUnitStart, rawMs, dateEnv)
+  const transitionMs = findNextOffsetTransitionMs(
+    rawMs,
+    dateEnv,
+    Math.min(nextSnappedMs - rawMs, 48 * 60 * 60 * 1000),
+  )
+
+  return transitionMs != null ? Math.min(nextSnappedMs, transitionMs) : nextSnappedMs
+}
+
+// Finds the first instant whose UTC offset differs from rawMs within a short search horizon.
+function findNextOffsetTransitionMs(rawMs: number, dateEnv: DateEnv, horizonMs: number): number | undefined {
+  if (horizonMs <= 0) {
+    return undefined
+  }
+
+  const startOffsetMs = offsetAt(rawMs, dateEnv)
+  let lowerMs = rawMs
+  let upperMs = rawMs + horizonMs
+
+  if (offsetAt(upperMs, dateEnv) === startOffsetMs) {
+    return undefined
+  }
+
+  while (upperMs - lowerMs > 1) {
+    const middleMs = Math.floor((lowerMs + upperMs) / 2)
+
+    if (offsetAt(middleMs, dateEnv) === startOffsetMs) {
+      lowerMs = middleMs
+    } else {
+      upperMs = middleMs
+    }
+  }
+
+  return upperMs > rawMs ? upperMs : undefined
+}
+
+function offsetAt(instantMs: number, dateEnv: DateEnv): number {
+  return dateEnv.timestampToMarker(instantMs).valueOf() - instantMs
 }
 
 function buildDayRange(date: DateMarker): DateRange { // TODO: make this a general util

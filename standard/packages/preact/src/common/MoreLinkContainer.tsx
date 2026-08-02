@@ -15,6 +15,7 @@ import { ElAttrsProps } from '../content-inject/ContentInjector'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { EventRangeProps } from '../component-util/event-rendering'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range'
+import { buildRangeEdgeOutput } from '../structs/event-instance'
 import classNames from '../styles.module.css'
 
 /*
@@ -186,10 +187,13 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
     function buildPublicSeg(seg: SlicedCoordRange & EventRangeProps) {
       let { def, instance, range } = seg.eventRange
+      const start = buildRangeEdgeOutput(range.start, range.instantStartMs, dateEnv)
+      const end = buildRangeEdgeOutput(range.end, range.instantEndMs, dateEnv)
+
       return {
         event: new EventImpl(context, def, instance),
-        start: dateEnv.toDate(range.start),
-        end: dateEnv.toDate(range.end),
+        start: start.date,
+        end: end.date,
         isStart: seg.isStart,
         isEnd: seg.isEnd,
       }

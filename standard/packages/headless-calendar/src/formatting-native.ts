@@ -6,7 +6,7 @@ import {
   DateTimeRangeFormatPartWithWeek,
   DateFormattingContext,
 } from './formatting-interface'
-import { formatTimeZoneOffset } from './formatting-utils'
+import { formatTimeZoneOffset, RANGE_FORMAT_SEPARATOR } from './formatting-utils'
 
 export interface NativeDateFormatterOptions extends Intl.DateTimeFormatOptions {
   /*
@@ -160,6 +160,26 @@ export class NativeDateFormatter implements DateFormatter {
     context: DateFormattingContext,
   ): DateTimeRangeFormatPartWithWeek[] {
     const { standardOptions, extendedOptions } = this
+
+    // Intl formats the wall-clock-as-UTC markers and cannot see that their real offsets
+    // differ. It can consequently collapse the timezone name into one shared range part.
+    // Preserve both exact offsets by formatting offset-changing ranges edge-by-edge.
+    if (
+      standardOptions.timeZoneName != null &&
+      start.timeZoneOffset !== end.timeZoneOffset
+    ) {
+      return [
+        ...this.formatToParts(start, context).map((part) => ({
+          ...part,
+          source: 'startRange' as const,
+        })),
+        { type: 'literal', value: RANGE_FORMAT_SEPARATOR, source: 'shared' },
+        ...this.formatToParts(end, context).map((part) => ({
+          ...part,
+          source: 'endRange' as const,
+        })),
+      ]
+    }
 
     if (this.timeZoneOnly || this.weekOnly) {
       return this.formatToParts(start, context).map((part) => {

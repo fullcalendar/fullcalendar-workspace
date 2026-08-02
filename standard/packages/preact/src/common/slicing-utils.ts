@@ -42,7 +42,16 @@ export abstract class Slicer<R, ExtraArgs extends any[] = []> {
     const activeDateSpanRange = intersectRanges(dateSpan.range, activeRange)
 
     if (activeDateSpanRange) {
-      return { ...dateSpan, range: activeDateSpanRange }
+      const slicedDateSpan = { ...dateSpan, range: activeDateSpanRange }
+
+      if (activeDateSpanRange.start.valueOf() !== dateSpan.range.start.valueOf()) {
+        delete slicedDateSpan.instantStartMs
+      }
+      if (activeDateSpanRange.end.valueOf() !== dateSpan.range.end.valueOf()) {
+        delete slicedDateSpan.instantEndMs
+      }
+
+      return slicedDateSpan
     }
 
     return null

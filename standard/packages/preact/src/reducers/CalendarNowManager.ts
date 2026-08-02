@@ -8,7 +8,7 @@ export class CalendarNowManager {
   private resetListeners = new Set<() => void>()
   // technique 1
   private nowAnchorDate?: Date
-  private nowAnchorQueried?: number // epoch-nanoseconds when nowAnchor created
+  private nowAnchorQueried?: number // epoch-milliseconds when nowAnchor created
   // technique 2
   private nowFn?: () => DateInput
 
@@ -43,9 +43,7 @@ export class CalendarNowManager {
   }
 
   getDateMarker(): DateMarker {
-    return this.nowAnchorDate
-      ? this.dateEnv.timestampToMarker(this.getEpochMs())
-      : this.dateEnv.createMarker(this.nowFn!())
+    return this.dateEnv.timestampToMarker(this.getEpochMs())
   }
 
   /*

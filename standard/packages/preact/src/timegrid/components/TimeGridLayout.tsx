@@ -29,6 +29,7 @@ export interface TimeGridLayoutProps {
 
   dateProfile: DateProfile
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   cells: DayTableCell[]
   forPrint: boolean
@@ -115,6 +116,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
     const commonLayoutProps = {
       dateProfile: dateProfile,
       nowDate: props.nowDate,
+      nowMs: props.nowMs,
       todayRange: props.todayRange,
       cells: props.cells,
       slatMetas,

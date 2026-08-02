@@ -8,6 +8,7 @@ export interface TimelineLaneMoreLinkProps {
   dateProfile: DateProfile
   isTimeScale: boolean
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
 
   // content
@@ -58,7 +59,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
                     isResizing={isResizing}
                     isMirror={false}
                     isSelected={instanceId === props.eventSelection}
-                    {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
+                    {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
                   />
                 </div>
               )

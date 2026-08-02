@@ -15,6 +15,7 @@ import { TimeGridCol } from './TimeGridCol'
 export interface TimeGridColsProps {
   dateProfile: DateProfile
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   cells: DayTableCell[]
   slatCnt: number
@@ -61,6 +62,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
             key={cell.key}
             dateProfile={props.dateProfile}
             nowDate={props.nowDate}
+            nowMs={props.nowMs}
             todayRange={props.todayRange}
             date={cell.date}
             isMajor={cell.isMajor}

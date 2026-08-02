@@ -4,7 +4,7 @@ import type { EventChangeInfo } from '../../event-crud'
 import type { EventRenderRange } from '../../component-util/event-rendering'
 import type { Duration } from '@full-ui/headless-calendar'
 import type { Hit } from '../../interactions/hit'
-import { computeHitInstantDeltaMs } from '../../interactions/hit'
+import { computeHitDelta } from '../../interactions/hit'
 import type { EventMutation } from '../../structs/event-mutation'
 import { addDeltaToRangeEdge, applyMutationToEventStore } from '../../structs/event-mutation'
 import type { EventInstanceRange } from '../../structs/event-instance'
@@ -12,7 +12,6 @@ import { getRangeInstantStartMs, getRangeInstantEndMs } from '../../structs/even
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { EventStore } from '../../structs/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
-import { diffDates } from '../../util/date'
 import { enableCursor, disableCursor } from '../../util/misc'
 import { getElEventRange } from '../../component-util/event-rendering'
 import { createDuration } from '@full-ui/headless-calendar'
@@ -256,14 +255,11 @@ function computeMutation(
   const { context } = hit0
   let date0 = hit0.dateSpan.range.start
   let date1 = hit1.dateSpan.range.start
-  const instantDeltaMs = computeHitInstantDeltaMs(hit0, hit1)
-  let delta = instantDeltaMs != null
-    ? createDuration(instantDeltaMs)
-    : diffDates(
-      date0, date1,
-      context.dateEnv,
-      hit0.largeUnit,
-    )
+  const { delta, instantDeltaMs } = computeHitDelta(hit0, hit1, {
+    date0,
+    date1,
+    largeUnit: hit0.largeUnit,
+  })
 
   // validate with the SAME baseline the mutation will apply with (addDeltaToRangeEdge
   // bases instant deltas off the edge's stored instant). on the exact path, real-time

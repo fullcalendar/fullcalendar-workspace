@@ -2,6 +2,7 @@ import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
   DateProfileGenerator, DateEnv, DateMarker, DateSpan,
   CoordRange, EventInstanceRange,
+  buildValidInstanceRange,
   getDateSpanInstantStartMs, getDateSpanInstantEndMs,
   getRangeInstantStartMs, getRangeInstantEndMs,
 } from '@fullcalendar/preact/protected-api'
@@ -54,12 +55,19 @@ export class TimelineLaneSlicer extends Slicer<
     )
 
     if (startMs < endMs) {
+      const range = buildValidInstanceRange(
+        { marker: dateEnv.timestampToMarker(startMs), instantMs: startMs },
+        { marker: dateEnv.timestampToMarker(endMs), instantMs: endMs },
+        dateEnv,
+      )
+
+      if (!range) {
+        return null
+      }
+
       return {
         ...dateSpan,
-        range: {
-          start: dateEnv.timestampToMarker(startMs),
-          end: dateEnv.timestampToMarker(endMs),
-        },
+        range: { start: range.start, end: range.end },
         instantStartMs: startMs,
         instantEndMs: endMs,
       }

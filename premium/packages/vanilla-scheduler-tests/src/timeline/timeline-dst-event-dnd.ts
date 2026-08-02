@@ -2,7 +2,8 @@ import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
+  FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT,
   getSlatInfo, getSlatStartPoint, dragEventToPoint, expectCloseTo,
 } from '../lib/dst-timeline-utils'
 
@@ -13,11 +14,7 @@ so dragging across a DST transition lands exactly under the cursor.
 */
 describe('timeline DST event drag-n-drop', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    initialDate: FALL_BACK_DAY,
-    scrollTime: '00:00',
-    slotDuration: '00:30',
+    ...DST_TIMELINE_BASE_OPTIONS,
     editable: true,
   })
 
@@ -38,12 +35,12 @@ describe('timeline DST event drag-n-drop', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[6])) // 02:00 EST
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_0200_SLAT]))
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[6].left, 3)
+    expectCloseTo(eventRect.left, slats[FALL_BACK_0200_SLAT].left)
   })
 
   it('drops onto the second copy of a repeated wallclock: stays there', async () => {
@@ -65,12 +62,12 @@ describe('timeline DST event drag-n-drop', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[5])) // second 01:30
+    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
     await waitTimeout()
     expect(dropSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[5].left, 3) // second copy
+    expectCloseTo(eventRect.left, slats[FALL_BACK_SECOND_0130_SLAT].left)
   })
 
   it('drags across the spring-forward gap by exact instants', async () => {
@@ -95,7 +92,7 @@ describe('timeline DST event drag-n-drop', () => {
     expect(dropSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[4].left, 3)
+    expectCloseTo(eventRect.left, slats[4].left)
   })
 
   it('drags across the fall-back transition in resource-timeline', async () => {
@@ -120,7 +117,7 @@ describe('timeline DST event drag-n-drop', () => {
     let laneRect = timelineGrid.getResourceLaneEl('a').getBoundingClientRect()
 
     await dragEventToPoint($('.event0')[0], {
-      left: slats[6].left + 1, // 02:00 EST
+      left: slats[FALL_BACK_0200_SLAT].left + 1,
       top: (laneRect.top + laneRect.bottom) / 2,
     })
     await waitTimeout()

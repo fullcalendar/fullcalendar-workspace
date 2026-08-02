@@ -57,6 +57,7 @@ export {
   formatIsoTimeString,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
+  RANGE_FORMAT_SEPARATOR,
 } from './formatting-utils'
 
 export type { LocaleCodeArg, Locale } from './locale'

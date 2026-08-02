@@ -15,6 +15,7 @@ export interface ResourceLaneProps extends AriaCellInput {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
   borderBottom: boolean
   role?: string // aria
@@ -126,6 +127,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               <TimelineBg
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
+                nowMs={props.nowMs}
                 todayRange={props.todayRange}
 
                 // content
@@ -157,6 +159,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 dateProfile={props.dateProfile}
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
+                nowMs={props.nowMs}
                 todayRange={props.todayRange}
 
                 // content

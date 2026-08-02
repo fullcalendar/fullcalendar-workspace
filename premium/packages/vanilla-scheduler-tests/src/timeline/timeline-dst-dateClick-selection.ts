@@ -1,7 +1,9 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
+  FALL_BACK_FIRST_0100_SLAT, FALL_BACK_FIRST_0130_SLAT,
+  FALL_BACK_SECOND_0100_SLAT, FALL_BACK_SECOND_0130_SLAT, FALL_BACK_0200_SLAT,
   getSlatInfo, getSlatCenter, clickPoint, dragFromPointToPoint, expectCloseTo,
 } from '../lib/dst-timeline-utils'
 
@@ -12,11 +14,7 @@ second-occurrence instant with the post-transition offset.
 */
 describe('timeline DST dateClick and selection', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    initialDate: FALL_BACK_DAY,
-    scrollTime: '00:00',
-    slotDuration: '00:30',
+    ...DST_TIMELINE_BASE_OPTIONS,
     selectable: true,
   })
 
@@ -34,7 +32,7 @@ describe('timeline DST dateClick and selection', () => {
       let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
       let slats = getSlatInfo(timelineGrid)
 
-      await clickPoint(getSlatCenter(slats[3])) // first 01:30
+      await clickPoint(getSlatCenter(slats[FALL_BACK_FIRST_0130_SLAT]))
       expect(clickSpy).toHaveBeenCalled()
     })
 
@@ -51,7 +49,7 @@ describe('timeline DST dateClick and selection', () => {
       let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
       let slats = getSlatInfo(timelineGrid)
 
-      await clickPoint(getSlatCenter(slats[5])) // second 01:30
+      await clickPoint(getSlatCenter(slats[FALL_BACK_SECOND_0130_SLAT]))
       expect(clickSpy).toHaveBeenCalled()
     })
 
@@ -91,7 +89,10 @@ describe('timeline DST dateClick and selection', () => {
       let slats = getSlatInfo(timelineGrid)
 
       // drag first 01:00 slat through second 01:30 slat
-      await dragFromPointToPoint(getSlatCenter(slats[2]), getSlatCenter(slats[5]))
+      await dragFromPointToPoint(
+        getSlatCenter(slats[FALL_BACK_FIRST_0100_SLAT]),
+        getSlatCenter(slats[FALL_BACK_SECOND_0130_SLAT]),
+      )
       expect(selectSpy).toHaveBeenCalled()
     })
 
@@ -103,14 +104,17 @@ describe('timeline DST dateClick and selection', () => {
       let slats = getSlatInfo(timelineGrid)
 
       // select ONLY the second copy of the repeated hour
-      await dragFromPointToPoint(getSlatCenter(slats[4]), getSlatCenter(slats[5]))
+      await dragFromPointToPoint(
+        getSlatCenter(slats[FALL_BACK_SECOND_0100_SLAT]),
+        getSlatCenter(slats[FALL_BACK_SECOND_0130_SLAT]),
+      )
 
       let highlightEls = timelineGrid.getHighlightEls()
       expect(highlightEls.length).toBeGreaterThanOrEqual(1)
 
       let rect = highlightEls[0].getBoundingClientRect()
-      expectCloseTo(rect.left, slats[4].left) // second copy, NOT slats[2]
-      expectCloseTo(rect.right, slats[5].right)
+      expectCloseTo(rect.left, slats[FALL_BACK_SECOND_0100_SLAT].left)
+      expectCloseTo(rect.right, slats[FALL_BACK_SECOND_0130_SLAT].right)
     })
 
     it('resolves a programmatic select of an ambiguous civil time to the first copy', async () => {
@@ -129,8 +133,8 @@ describe('timeline DST dateClick and selection', () => {
       let rect = highlightEls[0].getBoundingClientRect()
       // start resolves to first 01:00 (05:00Z), end to 02:00 (07:00Z):
       // 2 REAL hours, covering both copies of the repeated hour
-      expectCloseTo(rect.left, slats[2].left)
-      expectCloseTo(rect.right, slats[6].left)
+      expectCloseTo(rect.left, slats[FALL_BACK_FIRST_0100_SLAT].left)
+      expectCloseTo(rect.right, slats[FALL_BACK_0200_SLAT].left)
     })
 
     it('spans the gap with real instants on spring-forward day', async () => {

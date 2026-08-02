@@ -36,6 +36,7 @@ import { computeViewBorderless } from '../../util/misc'
 export interface TimeGridLayoutNormalProps {
   dateProfile: DateProfile
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   cells: DayTableCell[]
   slatMetas: TimeSlatMeta[],
@@ -375,6 +376,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}
+                  nowMs={props.nowMs}
                   todayRange={props.todayRange}
                   cells={props.cells}
                   slatCnt={slatCnt}

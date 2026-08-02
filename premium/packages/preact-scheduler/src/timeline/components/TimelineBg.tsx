@@ -11,6 +11,7 @@ import { TimelineDateProfile } from '../timeline-date-profile'
 export interface TimelineBgProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
+  nowMs: number
   todayRange: DateRange
 
   // content
@@ -73,7 +74,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
                       isStart={seg.isStart}
                       isEnd={seg.isEnd}
                       isVertical={false}
-                      {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+                      {...getEventRangeMeta(seg.eventRange, todayRange, nowDate, props.nowMs)}
                     />
                   ) : (
                     renderFill(fillType, options)

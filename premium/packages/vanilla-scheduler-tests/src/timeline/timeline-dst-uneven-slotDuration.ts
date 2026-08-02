@@ -1,47 +1,43 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, FALL_BACK_DAY, SPRING_FORWARD_DAY,
   getSlatInfo, getSlatDateStrs, clickPoint, expectCloseTo,
 } from '../lib/dst-timeline-utils'
 
 /*
-A DST-transition day is not evenly divisible by every slotDuration. With 2-hour
-slots, New York's 25-hour fall-back day yields 12 full slots plus a TRUNCATED
-final slot representing only 1 real hour (rendered at full width, so time is
-stretched inside it, the same way hidden days make the scale non-uniform).
-Slot starts are epoch-stepped, so after the transition they land on ODD civil
-hours. These tests pin the geometry: canvas width, event edge alignment, and
-hit-detection must all agree on the visible slot count.
+A 90-minute civil grid does not divide New York's one-hour DST shift. Grid
+starts remain wall-clock-aligned, while the slot containing the transition has
+an irregular real span: 1 hour on fall-back and 30 minutes on spring-forward.
+The irregular slot still renders at full width, so positioning interpolates
+within its real span and snap zones beyond that span are dead.
 */
-describe('timeline DST with slotDuration not dividing the transition day', () => {
+describe('timeline DST with slotDuration not dividing the DST shift', () => {
   pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    scrollTime: '00:00',
-    slotDuration: '02:00',
+    ...DST_TIMELINE_BASE_OPTIONS,
+    slotDuration: '01:30',
   })
 
-  describe('fall-back day (25 real hours)', () => {
+  describe('fall-back day', () => {
     pushOptions({
       initialDate: FALL_BACK_DAY,
     })
 
-    it('renders 13 slats, epoch-stepped past the fold', async () => {
+    it('keeps the civil grid and doubles its ambiguous 01:30 boundary', async () => {
       let calendar = initCalendar()
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
+      let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
 
-      expect(slats.length).toBe(13) // ceil(25 real hours / 2)
-      expect(getSlatDateStrs(slats, 0, 4)).toEqual([
-        '2024-11-03T00:00:00', // EDT
-        '2024-11-03T01:00:00', // the SECOND occurrence (EST). 2 real hours after midnight
+      expect(slats.length).toBe(17)
+      expect(getSlatDateStrs(slats, 0, 5)).toEqual([
+        '2024-11-03T00:00:00',
+        '2024-11-03T01:30:00', // first copy (EDT)
+        '2024-11-03T01:30:00', // second copy (EST)
         '2024-11-03T03:00:00',
-        '2024-11-03T05:00:00',
+        '2024-11-03T04:30:00',
       ])
-      expect(slats[12].dateStr).toBe('2024-11-03T23:00:00') // truncated: only 1 real hour
+      expect(slats[16].dateStr).toBe('2024-11-03T22:30:00')
     })
 
     it('renders a full-day event spanning all slats edge-to-edge', async () => {
@@ -56,17 +52,15 @@ describe('timeline DST with slotDuration not dividing the transition day', () =>
       let slats = getSlatInfo(timelineGrid)
       let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-      expectCloseTo(eventRect.left, slats[0].left, 3)
-      // the truncated final slot renders at full width, so the axis end is the slat's right edge
-      expectCloseTo(eventRect.right, slats[12].right, 3)
+      expectCloseTo(eventRect.left, slats[0].left)
+      expectCloseTo(eventRect.right, slats[16].right)
     })
 
-    it('stretches time within the truncated final slot', async () => {
+    it('stretches time within the one-hour transition slot', async () => {
       let calendar = initCalendar({
         events: [
-          // ends halfway through the truncated slot's 1 REAL hour (23:00-00:00 EST),
-          // which renders as half the slat's full width
-          { start: '2024-11-03T22:00:00', end: '2024-11-03T23:30:00' },
+          // 06:00Z is halfway from first 01:30 (05:30Z) to second 01:30 (06:30Z).
+          { start: '2024-11-03T00:00:00', end: '2024-11-03T01:00:00-05:00' },
         ],
       })
       await waitTimeout()
@@ -75,54 +69,57 @@ describe('timeline DST with slotDuration not dividing the transition day', () =>
       let slats = getSlatInfo(timelineGrid)
       let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-      expectCloseTo(eventRect.right, (slats[12].left + slats[12].right) / 2, 3)
+      expectCloseTo(eventRect.right, (slats[1].left + slats[1].right) / 2)
     })
 
-    it('hit-detects the truncated slot, with a dead zone past its real span', async () => {
+    it('hit-detects the transition slot, with a dead zone past its real span', async () => {
       let clickSpy
       let calendar = initCalendar({
-        snapDuration: '01:00', // 2 snap zones per slat, but the truncated slat has 1 real hour
+        snapDuration: '00:30', // 3 nominal snap zones, but the transition slot has only 2 real ones
         dateClick: (clickSpy = spyCall((info) => {
-          expect(info.date).toEqualDate('2024-11-04T04:00:00Z') // 23:00 EST
-          expect(info.dateStr).toBe('2024-11-03T23:00:00-05:00')
+          expect(info.date).toEqualDate('2024-11-03T05:30:00Z')
+          expect(info.dateStr).toBe('2024-11-03T01:30:00-04:00')
         })),
       })
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
-      let last = slats[12]
-      let midTop = (last.top + last.bottom) / 2
+      let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
+      let transitionSlat = slats[1]
+      let midTop = (transitionSlat.top + transitionSlat.bottom) / 2
 
-      // first snap zone: the slot's real hour
-      await clickPoint({ left: last.left + (last.right - last.left) * 0.25, top: midTop })
+      await clickPoint({
+        left: transitionSlat.left + (transitionSlat.right - transitionSlat.left) * 0.15,
+        top: midTop,
+      })
       expect(clickSpy).toHaveBeenCalled()
 
-      // second snap zone: no real time behind it. no dateClick
-      await clickPoint({ left: last.left + (last.right - last.left) * 0.75, top: midTop })
+      await clickPoint({
+        left: transitionSlat.left + (transitionSlat.right - transitionSlat.left) * 0.85,
+        top: midTop,
+      })
       expect(clickSpy.calls.count()).toBe(1)
     })
   })
 
-  describe('spring-forward day (23 real hours)', () => {
+  describe('spring-forward day', () => {
     pushOptions({
       initialDate: SPRING_FORWARD_DAY,
     })
 
-    it('renders 12 slats, epoch-stepped past the gap', async () => {
+    it('keeps the civil grid around the gap', async () => {
       let calendar = initCalendar()
       await waitTimeout()
 
-      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
-      let slats = getSlatInfo(timelineGrid)
+      let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
 
-      expect(slats.length).toBe(12) // ceil(23 real hours / 2)
-      expect(getSlatDateStrs(slats, 0, 3)).toEqual([
-        '2024-03-10T00:00:00', // EST
-        '2024-03-10T03:00:00', // 2 real hours later. 01:00 is skipped by stepping, 02:00 doesn't exist
-        '2024-03-10T05:00:00',
+      expect(slats.length).toBe(16)
+      expect(getSlatDateStrs(slats, 0, 4)).toEqual([
+        '2024-03-10T00:00:00',
+        '2024-03-10T01:30:00',
+        '2024-03-10T03:00:00',
+        '2024-03-10T04:30:00',
       ])
-      expect(slats[11].dateStr).toBe('2024-03-10T23:00:00') // truncated: only 1 real hour
+      expect(slats[15].dateStr).toBe('2024-03-10T22:30:00')
     })
 
     it('renders a full-day event spanning all slats edge-to-edge', async () => {
@@ -137,18 +134,62 @@ describe('timeline DST with slotDuration not dividing the transition day', () =>
       let slats = getSlatInfo(timelineGrid)
       let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-      expectCloseTo(eventRect.left, slats[0].left, 3)
-      expectCloseTo(eventRect.right, slats[11].right, 3)
+      expectCloseTo(eventRect.left, slats[0].left)
+      expectCloseTo(eventRect.right, slats[15].right)
+    })
+
+    it('stretches time within the 30-minute transition slot', async () => {
+      let calendar = initCalendar({
+        events: [
+          // 06:45Z is halfway from 01:30 EST (06:30Z) to 03:00 EDT (07:00Z).
+          { start: '2024-03-10T00:00:00', end: '2024-03-10T06:45:00Z' },
+        ],
+      })
+      await waitTimeout()
+
+      let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
+      let slats = getSlatInfo(timelineGrid)
+      let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
+
+      expectCloseTo(eventRect.right, (slats[1].left + slats[1].right) / 2)
+    })
+
+    it('hit-detects the transition slot, with dead zones past its real span', async () => {
+      let clickSpy
+      let calendar = initCalendar({
+        snapDuration: '00:30', // 3 nominal snap zones, but only the first has real time
+        dateClick: (clickSpy = spyCall((info) => {
+          expect(info.date).toEqualDate('2024-03-10T06:30:00Z')
+          expect(info.dateStr).toBe('2024-03-10T01:30:00-05:00')
+        })),
+      })
+      await waitTimeout()
+
+      let slats = getSlatInfo(new TimelineViewWrapper(calendar).timelineGrid)
+      let transitionSlat = slats[1]
+      let midTop = (transitionSlat.top + transitionSlat.bottom) / 2
+
+      await clickPoint({
+        left: transitionSlat.left + (transitionSlat.right - transitionSlat.left) * 0.15,
+        top: midTop,
+      })
+      expect(clickSpy).toHaveBeenCalled()
+
+      await clickPoint({
+        left: transitionSlat.left + (transitionSlat.right - transitionSlat.left) * 0.5,
+        top: midTop,
+      })
+      expect(clickSpy.calls.count()).toBe(1)
     })
   })
 
-  describe('in UTC', () => { // regression guard: no DST, no truncation
+  describe('in UTC', () => {
     pushOptions({
       timeZone: 'UTC',
       initialDate: FALL_BACK_DAY,
     })
 
-    it('renders a uniform 12-slat day', async () => {
+    it('renders a uniform 16-slat day', async () => {
       let calendar = initCalendar({
         events: [
           { start: '2024-11-03T00:00:00', end: '2024-11-04T00:00:00' },
@@ -160,9 +201,9 @@ describe('timeline DST with slotDuration not dividing the transition day', () =>
       let slats = getSlatInfo(timelineGrid)
       let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
 
-      expect(slats.length).toBe(12)
-      expectCloseTo(eventRect.left, slats[0].left, 3)
-      expectCloseTo(eventRect.right, slats[11].right, 3)
+      expect(slats.length).toBe(16)
+      expectCloseTo(eventRect.left, slats[0].left)
+      expectCloseTo(eventRect.right, slats[15].right)
     })
   })
 })

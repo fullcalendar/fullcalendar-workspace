@@ -1,24 +1,19 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
-  NY_TIME_ZONE, FALL_BACK_DAY, SPRING_FORWARD_DAY,
+  DST_TIMELINE_BASE_OPTIONS, FALL_BACK_DAY, SPRING_FORWARD_DAY,
   getSlatInfo, getSlatDateStrs,
 } from '../lib/dst-timeline-utils'
 
 /*
-The timed timeline axis is generated in instant (epoch-ms) space, so DST
-transitions materialize in the slot structure itself: fall-back renders the
-repeated hour TWICE, spring-forward skips the nonexistent hour.
+The timed timeline axis enumerates a day-anchored civil grid, then resolves
+each grid marker to its exact occurrence(s): fall-back renders the repeated
+hour TWICE, spring-forward skips the nonexistent hour.
 NOTE: uses timelineDay (not resourceTimelineDay) because it renders all slats
 without virtualization, making whole-axis count assertions reliable.
 */
 describe('timeline DST slot generation', () => {
-  pushOptions({
-    timeZone: NY_TIME_ZONE,
-    initialView: 'timelineDay',
-    scrollTime: '00:00',
-    slotDuration: '00:30',
-  })
+  pushOptions(DST_TIMELINE_BASE_OPTIONS)
 
   describe('fall-back day', () => {
     pushOptions({
@@ -82,6 +77,30 @@ describe('timeline DST slot generation', () => {
         '2024-11-03T03:00:00',
         '2024-11-03T03:30:00',
       ])
+    })
+
+    it('gives repeated slot lanes their exact instants and state', async () => {
+      const laneMetaByDate = new Map<string, { isPast: boolean, isFuture: boolean }>()
+      initCalendar({
+        now: '2024-11-03T06:00:00Z', // start of the second 01:00 occurrence
+        slotLaneClass(info) {
+          laneMetaByDate.set(info.date.toISOString(), {
+            isPast: info.isPast,
+            isFuture: info.isFuture,
+          })
+          return ''
+        },
+      })
+      await waitTimeout()
+
+      expect(laneMetaByDate.get('2024-11-03T05:00:00.000Z')).toEqual({
+        isPast: true,
+        isFuture: false,
+      })
+      expect(laneMetaByDate.get('2024-11-03T06:00:00.000Z')).toEqual({
+        isPast: false,
+        isFuture: false,
+      })
     })
   })
 

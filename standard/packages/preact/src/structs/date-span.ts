@@ -1,5 +1,8 @@
-import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration, buildIsoString } from '@full-ui/headless-calendar'
-import { createEventInstance, EventInstanceRange } from './event-instance'
+import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration } from '@full-ui/headless-calendar'
+import {
+  addDurationToEdge, buildRangeEdgeOutput, buildValidInstanceRange, createEventInstance,
+  EventInstanceRange, resolveEdgeInstantMs,
+} from './event-instance'
 import { parseEventDef, refineEventDef } from './event-parse'
 import { EventRenderRange, compileEventUi } from '../component-util/event-rendering'
 import { EventUiHash } from '../component-util/event-ui'
@@ -72,6 +75,11 @@ const STANDARD_PROPS = {
 
 export function parseDateSpan(raw: DateSpanInput, dateEnv: DateEnv, defaultDuration?: Duration): DateSpan | null {
   let span = parseOpenDateSpan(raw, dateEnv)
+
+  if (!span) {
+    return null
+  }
+
   let { range } = span
 
   if (!range.start) {
@@ -82,7 +90,18 @@ export function parseDateSpan(raw: DateSpanInput, dateEnv: DateEnv, defaultDurat
     if (defaultDuration == null) {
       return null
     }
-    range.end = dateEnv.add(range.start, defaultDuration)
+
+    const endEdge = addDurationToEdge(
+      { marker: range.start, instantMs: span.instantStartMs },
+      defaultDuration,
+      dateEnv,
+    )
+
+    range.end = endEdge.marker
+
+    if (endEdge.instantMs != null) {
+      span.instantEndMs = endEdge.instantMs
+    }
   }
 
   return span as DateSpan
@@ -103,14 +122,46 @@ export function parseOpenDateSpan(raw: OpenDateSpanInput, dateEnv: DateEnv): Ope
       (!endMeta || endMeta.isTimeUnspecified)
   }
 
-  return {
-    range: {
-      start: startMeta ? startMeta.marker : null,
-      end: endMeta ? endMeta.marker : null,
-    },
+  let range: OpenDateRange = {
+    start: startMeta ? startMeta.marker : null,
+    end: endMeta ? endMeta.marker : null,
+  }
+
+  if (!allDay && startMeta && endMeta && (startMeta.instantMs != null || endMeta.instantMs != null)) {
+    const validRange = buildValidInstanceRange(
+      { marker: startMeta.marker, instantMs: startMeta.instantMs },
+      { marker: endMeta.marker, instantMs: endMeta.instantMs },
+      dateEnv,
+    )
+
+    if (!validRange && startMeta.instantMs != null && endMeta.instantMs != null) {
+      return null
+    }
+
+    if (validRange) {
+      range = { start: validRange.start, end: validRange.end }
+    }
+  }
+
+  const span: OpenDateSpan = {
+    range,
     allDay,
     ...extra,
   }
+
+  if (allDay) {
+    delete span.instantStartMs
+    delete span.instantEndMs
+  } else {
+    if (startMeta?.instantMs != null) {
+      span.instantStartMs = startMeta.instantMs
+    }
+    if (endMeta?.instantMs != null) {
+      span.instantEndMs = endMeta.instantMs
+    }
+  }
+
+  return span
 }
 
 export function isDateSpansEqual(span0: DateSpan, span1: DateSpan): boolean {
@@ -156,41 +207,25 @@ export function buildRangeApiWithTimeZone(range: DateRange, dateEnv: DateEnv, om
 
 export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean, rangeMeta?: { instantStartMs?: number, instantEndMs?: number }): RangeApi {
   // exact instants may ride on a span (rangeMeta) or on the range itself
-  // (EventInstanceRange). resolved per-edge, like EventImpl's getters
   const instantStartMs = rangeMeta?.instantStartMs ?? (range as EventInstanceRange).instantStartMs
   const instantEndMs = rangeMeta?.instantEndMs ?? (range as EventInstanceRange).instantEndMs
+  const start = buildRangeEdgeOutput(range.start, instantStartMs, dateEnv, omitTime)
+  const end = buildRangeEdgeOutput(range.end, instantEndMs, dateEnv, omitTime)
 
   return {
-    start: (!omitTime && instantStartMs != null)
-      ? new Date(instantStartMs)
-      : dateEnv.toDate(range.start),
-    end: (!omitTime && instantEndMs != null)
-      ? new Date(instantEndMs)
-      : dateEnv.toDate(range.end),
-    startStr: (!omitTime && instantStartMs != null)
-      ? formatInstantIso(instantStartMs, dateEnv)
-      : dateEnv.formatIso(range.start, { omitTime }),
-    endStr: (!omitTime && instantEndMs != null)
-      ? formatInstantIso(instantEndMs, dateEnv)
-      : dateEnv.formatIso(range.end, { omitTime }),
+    start: start.date,
+    end: end.date,
+    startStr: start.dateStr,
+    endStr: end.dateStr,
   }
 }
 
-// like dateEnv.formatIso, but for an exact instant, so the offset stays correct even for
-// civil times that are ambiguous in the current timeZone
-export function formatInstantIso(ms: number, dateEnv: DateEnv): string {
-  const marker = dateEnv.timestampToMarker(ms)
-  const offsetMinutes = Math.round((marker.valueOf() - ms) / 60000)
-
-  return buildIsoString(marker, offsetMinutes)
-}
-
 export function getDateSpanInstantStartMs(dateSpan: DateSpan, dateEnv: DateEnv): number {
-  return dateSpan.instantStartMs ?? dateEnv.toDate(dateSpan.range.start).valueOf()
+  return resolveEdgeInstantMs(dateSpan.range.start, dateSpan.instantStartMs, dateEnv)
 }
 
 export function getDateSpanInstantEndMs(dateSpan: DateSpan, dateEnv: DateEnv): number {
-  return dateSpan.instantEndMs ?? dateEnv.toDate(dateSpan.range.end).valueOf()
+  return resolveEdgeInstantMs(dateSpan.range.end, dateSpan.instantEndMs, dateEnv)
 }
 
 export function fabricateEventRange(dateSpan: DateSpan, eventUiBases: EventUiHash, context: CalendarContext): EventRenderRange {

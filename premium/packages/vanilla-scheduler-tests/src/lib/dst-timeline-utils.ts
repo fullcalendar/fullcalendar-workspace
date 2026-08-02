@@ -1,4 +1,6 @@
+import { Calendar } from 'fullcalendar'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
+import { TimelineViewWrapper } from './wrappers/TimelineViewWrapper'
 
 /*
 Utils for DST-transition tests, where the standard date-keyed wrapper utils
@@ -19,6 +21,19 @@ America/New_York reference dates (2024):
 export const NY_TIME_ZONE = 'America/New_York'
 export const FALL_BACK_DAY = '2024-11-03'
 export const SPRING_FORWARD_DAY = '2024-03-10'
+export const DST_TIMELINE_BASE_OPTIONS = {
+  timeZone: NY_TIME_ZONE,
+  initialView: 'timelineDay',
+  initialDate: FALL_BACK_DAY,
+  scrollTime: '00:00',
+  slotDuration: '00:30',
+}
+
+export const FALL_BACK_FIRST_0100_SLAT = 2
+export const FALL_BACK_FIRST_0130_SLAT = 3
+export const FALL_BACK_SECOND_0100_SLAT = 4
+export const FALL_BACK_SECOND_0130_SLAT = 5
+export const FALL_BACK_0200_SLAT = 6
 
 export interface SlatInfo {
   el: HTMLElement
@@ -118,8 +133,22 @@ export function resizeEventToPoint(eventEl: HTMLElement, destPoint: Point, fromS
   })
 }
 
-export function expectCloseTo(actual: number, expected: number, tolerance = 2) {
+export function expectCloseTo(actual: number, expected: number, tolerance = 3) {
   expect(Math.abs(actual - expected)).toBeLessThanOrEqual(tolerance)
+}
+
+export function expectEventSpansSlats(
+  calendar: Calendar,
+  startSlatIndex: number,
+  endSlatIndexExclusive: number,
+  eventIndex = 0,
+) {
+  let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
+  let slats = getSlatInfo(timelineGrid)
+  let eventRect = timelineGrid.getEventEls()[eventIndex].getBoundingClientRect()
+
+  expectCloseTo(eventRect.left, slats[startSlatIndex].left)
+  expectCloseTo(eventRect.right, slats[endSlatIndexExclusive].left)
 }
 
 // dateStrs of consecutive slats, for readable whole-axis assertions

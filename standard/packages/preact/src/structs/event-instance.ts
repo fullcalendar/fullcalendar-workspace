@@ -1,6 +1,6 @@
 import {
-  DateRange, OpenDateRange, DateEnv, Duration,
-  asRoughMs, addMs, rangesIntersect, rangeContainsRange,
+  DateRange, OpenDateRange, DateEnv, DateMarker, Duration,
+  asRoughMs, addMs, buildIsoString, rangesIntersect, rangeContainsRange,
 } from '@full-ui/headless-calendar'
 import { guid } from '../util/misc'
 
@@ -10,13 +10,13 @@ A DateMarker alone cannot distinguish repeated civil times during a DST fall-bac
 transition, so inputs that expressed an exact instant (ISO with offset, Date, epoch ms)
 stamp it here. When absent, resolve via dateEnv.toDate() (deterministic first occurrence).
 
-Invariants: `start < end` civilly, ALWAYS. When present, an instant agrees with its marker
-(dateEnv.timestampToMarker(instantMs) === marker) — with ONE sanctioned exception: a real
-range that a fall-back fold civilly compresses stores its exact end instant with the end
-marker re-expressed in the start's UTC-offset reading (start marker + real duration), so
-the civil range stays ordered (see buildValidInstanceRange). The stored instant therefore
-always takes precedence over the marker for exact time — resolve via getRangeInstantEndMs,
-never by re-deriving from the marker.
+Invariants: `start < end` civilly, ALWAYS. A start marker always agrees with its stored
+instant. An end marker does too, with ONE sanctioned exception: a real range that a
+fall-back fold civilly compresses stores its exact end instant with the end marker
+re-expressed in the start's UTC-offset reading (start marker + real duration), so the civil
+range stays ordered (see buildValidInstanceRange). The stored end instant therefore always
+takes precedence over the marker for exact time — resolve via getRangeInstantEndMs, never
+by re-deriving from the marker.
 */
 export interface EventInstanceRange extends DateRange {
   instantStartMs?: number
@@ -52,25 +52,81 @@ export interface EventRangeEdge {
   instantMs?: number
 }
 
-// the exact epoch instant of a range's start: the stored instant when present, otherwise
-// deterministic first-occurrence resolution of the civil marker
-export function getRangeInstantStartMs(range: EventInstanceRange, dateEnv: DateEnv): number {
-  return range.instantStartMs ?? dateEnv.toDate(range.start).valueOf()
+export interface RangeEdgeOutput {
+  marker: DateMarker
+  date: Date
+  dateStr: string
+  timeZoneOffset: number
 }
 
-export function getRangeInstantEndMs(range: EventInstanceRange, dateEnv: DateEnv): number {
-  return range.instantEndMs ?? dateEnv.toDate(range.end).valueOf()
+// Intl range formatting is unsafe when civil markers run backward, or when equal markers
+// represent distinct occurrences on opposite sides of a UTC-offset transition.
+export function rangeEdgeOutputsRequireSeparateFormatting(
+  start: Pick<RangeEdgeOutput, 'marker'> & { timeZoneOffset?: number },
+  end: Pick<RangeEdgeOutput, 'marker'> & { timeZoneOffset?: number },
+): boolean {
+  const markerDiff = start.marker.valueOf() - end.marker.valueOf()
+
+  return markerDiff > 0 || (
+    markerDiff === 0 &&
+    start.timeZoneOffset != null &&
+    end.timeZoneOffset != null &&
+    start.timeZoneOffset !== end.timeZoneOffset
+  )
+}
+
+// Resolves an edge to its real instant, choosing the deterministic first occurrence when
+// the marker is ambiguous and the edge does not carry an exact instant.
+export function resolveEdgeInstantMs(marker: DateMarker, instantMs: number | undefined, dateEnv: DateEnv): number {
+  return instantMs ?? dateEnv.toDate(marker).valueOf()
 }
 
 /*
-The canonical civil marker of a range edge: recomputed from the exact instant when present.
-Identical to the stored marker except for fold-compressed ends, whose stored marker is
-representational (the start's offset reading). Use for formatting and civil arithmetic.
+Builds every outward-facing representation of a range edge from one policy. Exact timed
+edges use their true instant and its canonical wall-clock marker; civil/all-day edges keep
+the supplied marker and DateEnv conversion.
 */
-export function canonicalRangeStartMarker(range: EventInstanceRange, dateEnv: DateEnv): Date {
-  return range.instantStartMs != null ? dateEnv.timestampToMarker(range.instantStartMs) : range.start
+export function buildRangeEdgeOutput(
+  marker: DateMarker,
+  instantMs: number | undefined,
+  dateEnv: DateEnv,
+  omitTime?: boolean,
+): RangeEdgeOutput {
+  const canonicalMarker = instantMs != null ? dateEnv.timestampToMarker(instantMs) : marker
+  const timeZoneOffset = instantMs != null
+    ? Math.round((canonicalMarker.valueOf() - instantMs) / 60000)
+    : dateEnv.offsetForMarker(marker)
+
+  if (!omitTime && instantMs != null) {
+    return {
+      marker: canonicalMarker,
+      date: new Date(instantMs),
+      dateStr: buildIsoString(canonicalMarker, timeZoneOffset),
+      timeZoneOffset,
+    }
+  }
+
+  return {
+    marker: canonicalMarker,
+    date: dateEnv.toDate(marker),
+    dateStr: omitTime
+      ? dateEnv.formatIso(marker, { omitTime })
+      : buildIsoString(marker, timeZoneOffset),
+    timeZoneOffset,
+  }
 }
 
+// the exact epoch instant of a range's start: the stored instant when present, otherwise
+// deterministic first-occurrence resolution of the civil marker
+export function getRangeInstantStartMs(range: EventInstanceRange, dateEnv: DateEnv): number {
+  return resolveEdgeInstantMs(range.start, range.instantStartMs, dateEnv)
+}
+
+export function getRangeInstantEndMs(range: EventInstanceRange, dateEnv: DateEnv): number {
+  return resolveEdgeInstantMs(range.end, range.instantEndMs, dateEnv)
+}
+
+// The canonical civil end: recomputed from the exact instant for fold-compressed ranges.
 export function canonicalRangeEndMarker(range: EventInstanceRange, dateEnv: DateEnv): Date {
   return range.instantEndMs != null ? dateEnv.timestampToMarker(range.instantEndMs) : range.end
 }
@@ -108,10 +164,10 @@ export function instanceRangeContainsRange(
 ): boolean {
   if (rangeHasInstants(outerRange as EventInstanceRange) || rangeHasInstants(innerRange)) {
     const outerStartMs = outerRange.start != null ?
-      (outerRange.instantStartMs ?? dateEnv.toDate(outerRange.start).valueOf()) :
+      resolveEdgeInstantMs(outerRange.start, outerRange.instantStartMs, dateEnv) :
       -Infinity
     const outerEndMs = outerRange.end != null ?
-      (outerRange.instantEndMs ?? dateEnv.toDate(outerRange.end).valueOf()) :
+      resolveEdgeInstantMs(outerRange.end, outerRange.instantEndMs, dateEnv) :
       Infinity
 
     return outerStartMs <= getRangeInstantStartMs(innerRange, dateEnv) &&
@@ -163,8 +219,8 @@ export function buildValidInstanceRange(
       : null
   }
 
-  const startMs = start.instantMs ?? dateEnv.toDate(start.marker).valueOf()
-  const endMs = end.instantMs ?? dateEnv.toDate(end.marker).valueOf()
+  const startMs = resolveEdgeInstantMs(start.marker, start.instantMs, dateEnv)
+  const endMs = resolveEdgeInstantMs(end.marker, end.instantMs, dateEnv)
 
   if (endMs <= startMs) {
     return null

@@ -246,7 +246,7 @@ function computeEventForDateSpan(dateSpan: DateSpan, dragMeta: DragMeta, context
   // (keeps identity during DST fall-back doubled slots)
   let startEdge: EventRangeEdge = {
     marker: start,
-    instantMs: (!dateSpan.allDay && start === dateSpan.range.start) ? dateSpan.instantStartMs : undefined,
+    instantMs: !dateSpan.allDay ? dateSpan.instantStartMs : undefined,
   }
 
   // an exact start yields an exact derived end (real elapsed duration)

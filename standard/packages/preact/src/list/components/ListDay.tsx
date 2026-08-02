@@ -26,6 +26,7 @@ export interface ListSeg {
 export interface ListDayProps {
   dayDate: DateMarker
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   segs: (ListSeg & EventRangeProps)[]
   isFirst: boolean
@@ -95,7 +96,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
                 isResizing={false}
                 isMirror={false}
                 isSelected={false}
-                {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+                {...getEventRangeMeta(seg.eventRange, todayRange, nowDate, props.nowMs)}
               />
             )
           })}

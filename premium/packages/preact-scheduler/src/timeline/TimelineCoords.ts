@@ -50,34 +50,35 @@ when a DST transition makes their real spans unequal. Instants between visible s
 (hidden times) collapse to the boundary coordinate.
 */
 export function computeMsSlotCoverage(dateMs: number, tDateProfile: TimelineDateProfile): number {
-  const { slotStartMs, slotEndMs } = tDateProfile.timeAxis
+  const { slots } = tDateProfile.timeAxis
 
-  if (!slotStartMs.length || dateMs <= slotStartMs[0]) {
+  if (!slots.length || dateMs <= slots[0].startMs) {
     return 0
   }
 
-  if (dateMs >= slotEndMs[slotEndMs.length - 1]) {
-    return slotStartMs.length
+  if (dateMs >= slots[slots.length - 1].endMs) {
+    return slots.length
   }
 
-  const slotIndex = findLastSlotIndex(slotStartMs, dateMs)
-  const clampedMs = Math.min(dateMs, slotEndMs[slotIndex])
+  const slotIndex = findLastSlotIndex(slots, dateMs)
+  const slot = slots[slotIndex]
+  const clampedMs = Math.min(dateMs, slot.endMs)
 
-  return slotIndex + (clampedMs - slotStartMs[slotIndex]) / (slotEndMs[slotIndex] - slotStartMs[slotIndex])
+  return slotIndex + (clampedMs - slot.startMs) / (slot.endMs - slot.startMs)
 }
 
 /*
 Binary search for the largest index whose slot starts at-or-before dateMs.
-Caller must ensure dateMs is within (slotStartMs[0], axis end).
+Caller must ensure dateMs is within (slots[0].startMs, axis end).
 */
-function findLastSlotIndex(slotStartMs: number[], dateMs: number): number {
+function findLastSlotIndex(slots: { startMs: number }[], dateMs: number): number {
   let lo = 0
-  let hi = slotStartMs.length - 1
+  let hi = slots.length - 1
 
   while (lo < hi) {
     const mid = (lo + hi + 1) >> 1
 
-    if (slotStartMs[mid] <= dateMs) {
+    if (slots[mid].startMs <= dateMs) {
       lo = mid
     } else {
       hi = mid - 1

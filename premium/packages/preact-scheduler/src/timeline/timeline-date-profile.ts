@@ -42,6 +42,7 @@ export interface TimelineHeaderCellData {
   key: string // rowUnit + the slot's slotKey. stable identity for virtualizers and React keys
 
   date: DateMarker
+  startMs: number | null // exact instant for timed-axis cells
   isMajor: boolean
   text: string
   rowUnit: string
@@ -175,6 +176,7 @@ export function buildTimelineDateProfile(
       normalizedRange: tDateProfile.normalizedRange,
       slotDuration: tDateProfile.slotDuration,
       snapDuration: tDateProfile.snapDuration,
+      timeWindowMs,
       dateEnv,
       isDateVisible: (date) => isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator),
     })
@@ -185,8 +187,8 @@ export function buildTimelineDateProfile(
   let majorUnit = computeMajorUnit(dateProfile, dateEnv)
 
   if (tDateProfile.timeAxis) {
-    slotDates = tDateProfile.timeAxis.slotDates
-    slotKeys = tDateProfile.timeAxis.slotKeys
+    slotDates = tDateProfile.timeAxis.slots.map((slot) => slot.date)
+    slotKeys = tDateProfile.timeAxis.slots.map((slot) => slot.key)
   } else {
     let date = normalizedStart
 
@@ -208,8 +210,8 @@ export function buildTimelineDateProfile(
     // visible slots are the authority for timed-axis geometry. a DST-transition day is not
     // necessarily divisible by slotDuration, so slotCnt must NOT be derived from snap counts
     tDateProfile.snapDiffToIndex = [] // only consulted by the civil day-axis coverage path
-    tDateProfile.snapCnt = slotDates.length * tDateProfile.snapsPerSlot
-    tDateProfile.slotCnt = slotDates.length
+    tDateProfile.snapCnt = tDateProfile.timeAxis.slots.length * tDateProfile.snapsPerSlot
+    tDateProfile.slotCnt = tDateProfile.timeAxis.slots.length
   } else {
     let snapIndex = -1
     const snapDiffToIndex = []
@@ -605,6 +607,7 @@ function buildCellRows(
   majorUnit: string,
 ) {
   let slotDates = tDateProfile.slotDates
+  const timeSlots = tDateProfile.timeAxis?.slots
   let formats = tDateProfile.headerFormats
   let cellRows = formats.map(() => []) // indexed by row,col
   let slotAsDays = asCleanDays(tDateProfile.slotDuration)
@@ -617,8 +620,10 @@ function buildCellRows(
   let rowUnitsFromFormats = tDateProfile.headerFormatUnits
 
   // builds cellRows and slotCells
-  for (let i = 0; i < slotDates.length; i += 1) {
-    let date = slotDates[i]
+  for (let i = 0; i < (timeSlots?.length ?? slotDates.length); i += 1) {
+    const timeSlot = timeSlots?.[i]
+    let date = timeSlot?.date ?? slotDates[i]
+    const startMs = timeSlot?.startMs ?? null
 
     for (let row = 0; row < formats.length; row += 1) {
       let format = formats[row]
@@ -629,12 +634,12 @@ function buildCellRows(
       let isMajor = isMajorUnit(date, majorUnit, dateEnv)
       let newCell = null
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
-      const key = rowUnit + ':' + tDateProfile.slotKeys[i]
+      const key = rowUnit + ':' + (timeSlot?.key ?? tDateProfile.slotKeys[i])
 
       if (isSuperRow) {
-        let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
+        let text = formatCell(date, startMs, format, dateEnv)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(key, date, isMajor, text, rowUnit)
+          newCell = buildCellObject(key, date, startMs, isMajor, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -646,8 +651,8 @@ function buildCellRows(
           tDateProfile.labelInterval,
         ))
       ) {
-        let text = joinDateTimeFormatParts(dateEnv.formatToParts(date, format))
-        newCell = buildCellObject(key, date, isMajor, text, rowUnit)
+        let text = formatCell(date, startMs, format, dateEnv)
+        newCell = buildCellObject(key, date, startMs, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
@@ -661,6 +666,21 @@ function buildCellRows(
   return cellRows
 }
 
-function buildCellObject(key: string, date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
-  return { key, date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
+function formatCell(date: DateMarker, startMs: number | null, format: any, dateEnv: DateEnv): string {
+  const timeZoneOffset = startMs == null
+    ? dateEnv.offsetForMarker(date)
+    : Math.round((date.valueOf() - startMs) / 60000)
+
+  return joinDateTimeFormatParts(format.formatToParts({ marker: date, timeZoneOffset }, dateEnv))
+}
+
+function buildCellObject(
+  key: string,
+  date: DateMarker,
+  startMs: number | null,
+  isMajor: boolean,
+  text: string,
+  rowUnit: string,
+): TimelineHeaderCellData {
+  return { key, date, startMs, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
 }

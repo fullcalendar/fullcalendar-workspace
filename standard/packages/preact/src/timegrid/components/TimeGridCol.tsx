@@ -29,6 +29,7 @@ export const isBrowserPrintQuirky = /* true || */ (
 export interface TimeGridColProps {
   dateProfile: DateProfile
   nowDate: DateMarker
+  nowMs?: number
   todayRange: DateRange
   date: DateMarker
   isMajor: boolean
@@ -246,7 +247,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isNarrow={props.isNarrow}
                 isShort={segVertical.isShort || false}
                 isLiquid
-                {...getEventRangeMeta(eventRange, todayRange, nowDate)}
+                {...getEventRangeMeta(eventRange, todayRange, nowDate, props.nowMs)}
               />
             </div>
           )
@@ -260,7 +261,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
   renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
-    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props
+    let { dateSpanProps, dateProfile, todayRange, nowDate, nowMs, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props
 
     return (
       <>
@@ -277,6 +278,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               dateProfile={dateProfile}
               todayRange={todayRange}
               nowDate={nowDate}
+              nowMs={nowMs}
               eventSelection={eventSelection}
               eventDrag={eventDrag}
               eventResize={eventResize}
@@ -328,7 +330,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                   isNarrow={props.isNarrow}
                   isShort={segVertical.isShort || false}
                   isVertical={true}
-                  {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
+                  {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
                 /> :
                 renderFill(fillType, context.options)}
             </div>
@@ -397,9 +399,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
 export function renderPlainFgSegs(
   sortedFgSegs: (TimeGridRange & EventRangeProps)[],
-  { todayRange, nowDate, eventSelection, eventDrag, eventResize }: {
+  { todayRange, nowDate, nowMs, eventSelection, eventDrag, eventResize }: {
     todayRange: DateRange
     nowDate: DateMarker
+    nowMs?: number
     eventSelection: string
     eventDrag: EventSegUiInteractionState<TimeGridRange> | null
     eventResize: EventSegUiInteractionState<TimeGridRange> | null
@@ -435,7 +438,7 @@ export function renderPlainFgSegs(
               isShort={false}
               isNarrow={false}
               disableResizing
-              {...getEventRangeMeta(eventRange, todayRange, nowDate)}
+              {...getEventRangeMeta(eventRange, todayRange, nowDate, nowMs)}
             />
           </div>
         )

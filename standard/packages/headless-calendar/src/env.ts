@@ -352,11 +352,12 @@ export class DateEnv {
   formatToParts(
     marker: DateMarker,
     formatter: DateFormatter,
+    dateOptions: { timeZoneOffset?: number } = {},
   ): DateTimeFormatPartWithWeek[] {
     return formatter.formatToParts(
       {
         marker,
-        timeZoneOffset: this.offsetForMarker(marker),
+        timeZoneOffset: dateOptions.timeZoneOffset ?? this.offsetForMarker(marker),
       },
       this,
     )
@@ -366,7 +367,11 @@ export class DateEnv {
     start: DateMarker,
     end: DateMarker,
     formatter: DateFormatter,
-    dateOptions: { isEndExclusive?: boolean } = {},
+    dateOptions: {
+      isEndExclusive?: boolean
+      startTimeZoneOffset?: number
+      endTimeZoneOffset?: number
+    } = {},
   ): DateTimeRangeFormatPartWithWeek[] {
     if (dateOptions.isEndExclusive) {
       end = addMs(end, -1)
@@ -375,11 +380,11 @@ export class DateEnv {
     return formatter.formatRangeToParts(
       {
         marker: start,
-        timeZoneOffset: this.offsetForMarker(start),
+        timeZoneOffset: dateOptions.startTimeZoneOffset ?? this.offsetForMarker(start),
       },
       {
         marker: end,
-        timeZoneOffset: this.offsetForMarker(end),
+        timeZoneOffset: dateOptions.endTimeZoneOffset ?? this.offsetForMarker(end),
       },
       this,
     )

@@ -3,6 +3,7 @@ import { DateComponent } from '../../component/DateComponent'
 import type { Hit } from '../../interactions/hit'
 import type { DateSpan } from '../../structs/date-span'
 import { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from '../../structs/date-span'
+import { buildValidInstanceRange } from '../../structs/event-instance'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { dateSelectionJoinTransformer } from '../../interactions/date-selecting'
 import { Interaction } from '../../interactions/interaction'
@@ -127,7 +128,7 @@ function getComponentTouchDelay(component: DateComponent<any>): number {
   return delay
 }
 
-function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan {
+function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan | null {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan
 
@@ -161,7 +162,21 @@ function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: 
     }
   }
 
-  props.range = { start: entries[0].date, end: entries[3].date }
+  if (hasInstants) {
+    const validRange = buildValidInstanceRange(
+      { marker: entries[0].date, instantMs: entries[0].ms },
+      { marker: entries[3].date, instantMs: entries[3].ms },
+      hit0.context.dateEnv,
+    )
+
+    if (!validRange) {
+      return null
+    }
+
+    props.range = { start: validRange.start, end: validRange.end }
+  } else {
+    props.range = { start: entries[0].date, end: entries[3].date }
+  }
   props.allDay = dateSpan0.allDay
 
   if (hasInstants) {

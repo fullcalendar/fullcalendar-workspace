@@ -3,7 +3,7 @@ import { EventStore, createEmptyEventStore } from './event-store'
 import { EventDef } from './event-def'
 import {
   buildEventInstanceRange, buildValidInstanceRange,
-  EventInstance, EventInstanceRange, EventRangeEdge,
+  EventInstance, EventInstanceRange, EventRangeEdge, resolveEdgeInstantMs,
 } from './event-instance'
 import { computeAlignedDayRange } from '../util/date'
 import { EventUiHash, EventUi } from '../component-util/event-ui'
@@ -176,7 +176,7 @@ export function addDeltaToRangeEdge(
   context: CalendarContext,
 ): EventRangeEdge {
   if (instantDeltaMs != null) {
-    const newInstantMs = (instantMs ?? context.dateEnv.toDate(marker).valueOf()) + instantDeltaMs
+    const newInstantMs = resolveEdgeInstantMs(marker, instantMs, context.dateEnv) + instantDeltaMs
     return {
       marker: context.dateEnv.timestampToMarker(newInstantMs),
       instantMs: newInstantMs,

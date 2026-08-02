@@ -1,5 +1,8 @@
 import { EventDef, EventDefHash } from '../structs/event-def'
-import { buildEventInstanceRange, EventInstanceRange } from '../structs/event-instance'
+import {
+  buildEventInstanceRange, buildRangeEdgeOutput, EventInstanceRange,
+  rangeEdgeOutputsRequireSeparateFormatting,
+} from '../structs/event-instance'
 import { EventTuple } from '../structs/event-parse'
 import { EventStore } from '../structs/event-store'
 import {
@@ -14,6 +17,7 @@ import {
   startOfDay,
   joinDateTimeFormatParts,
   DateTimeRangeFormatPartWithWeek,
+  RANGE_FORMAT_SEPARATOR,
 } from '@full-ui/headless-calendar'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc'
 import { computeVisibleDayRange } from '../util/date'
@@ -314,6 +318,9 @@ export function buildEventRangeTimeText(
 ): string {
   const { dateEnv, options } = context
   const { def } = eventRange
+  const { range } = eventRange.instance
+  const canonicalStart = buildRangeEdgeOutput(range.start, range.instantStartMs, dateEnv)
+  const canonicalEnd = buildRangeEdgeOutput(range.end, range.instantEndMs, dateEnv)
   let { displayEventTime, displayEventEnd } = options
 
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
@@ -324,39 +331,61 @@ export function buildEventRangeTimeText(
     slicedStart &&
     // if seg is the first seg, but start-date cut-off by slotMinTime, (technically isStart=false)
     // we still want to display the original start-time
-    startOfDay(slicedStart).valueOf() !== startOfDay(eventRange.instance.range.start).valueOf()
+    startOfDay(slicedStart).valueOf() !== startOfDay(canonicalStart.marker).valueOf()
   )
     ? slicedStart
-    : eventRange.instance.range.start
+    : canonicalStart.marker
 
   const endDate = (
     !isEnd &&
     slicedEnd &&
     // See above HACK, but for end-time
-    startOfDay(addMs(slicedEnd, -1)).valueOf() !== startOfDay(addMs(eventRange.instance.range.end, -1)).valueOf()
+    startOfDay(addMs(slicedEnd, -1)).valueOf() !== startOfDay(addMs(canonicalEnd.marker, -1)).valueOf()
   )
     ? slicedEnd
-    : eventRange.instance.range.end
+    : canonicalEnd.marker
+  const startTimeZoneOffset = startDate === canonicalStart.marker ? canonicalStart.timeZoneOffset : undefined
+  const endTimeZoneOffset = endDate === canonicalEnd.marker ? canonicalEnd.timeZoneOffset : undefined
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
       // TODO: put this functionality in @full-ui/headless-calendar ?
       // NOTE: produces strings like '12:00pm - 1:00pm', without condensing dayPeriod,
       // but that's okay since it's technically a different dayPeriod on a different day
-      const rangeParts = dateEnv.formatRangeToParts(startDate, endDate, timeFormat)
+      if (rangeEdgeOutputsRequireSeparateFormatting(
+        { marker: startDate, timeZoneOffset: startTimeZoneOffset },
+        { marker: endDate, timeZoneOffset: endTimeZoneOffset },
+      )) {
+        return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
+          timeZoneOffset: startTimeZoneOffset,
+        })) + RANGE_FORMAT_SEPARATOR + joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat, {
+          timeZoneOffset: endTimeZoneOffset,
+        }))
+      }
+
+      const rangeParts = dateEnv.formatRangeToParts(startDate, endDate, timeFormat, {
+        startTimeZoneOffset,
+        endTimeZoneOffset,
+      })
       const multiDaySeparator = detectMultiDayTimes(rangeParts)
       //
       if (multiDaySeparator != null) {
-        return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat)) +
+        return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
+          timeZoneOffset: startTimeZoneOffset,
+        })) +
           multiDaySeparator +
-          joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat))
+          joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat, {
+            timeZoneOffset: endTimeZoneOffset,
+          }))
       }
 
       return joinDateTimeFormatParts(rangeParts)
     }
 
     if (isStart) {
-      return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat))
+      return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
+        timeZoneOffset: startTimeZoneOffset,
+      }))
     }
   }
 
@@ -384,12 +413,17 @@ export function getEventRangeMeta(
   eventRange: EventRenderRange,
   todayRange: DateRange,
   nowDate?: DateMarker,
+  nowMs?: number,
 ) {
   let segRange = eventRange.range
 
   return {
-    isPast: segRange.end <= (nowDate || todayRange.start),
-    isFuture: segRange.start >= (nowDate || todayRange.end),
+    isPast: segRange.instantEndMs != null && nowMs != null
+      ? segRange.instantEndMs <= nowMs
+      : segRange.end <= (nowDate || todayRange.start),
+    isFuture: segRange.instantStartMs != null && nowMs != null
+      ? segRange.instantStartMs >= nowMs
+      : segRange.start >= (nowDate || todayRange.end),
     isToday: todayRange && rangeContainsMarker(todayRange, segRange.start),
   }
 }
