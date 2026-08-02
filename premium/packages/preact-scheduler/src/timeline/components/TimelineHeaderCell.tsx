@@ -44,6 +44,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
 
   // memo
   private getDateMeta = memoize(getDateMeta)
+  private applyExactSlotMeta = memoize(applyExactSlotMeta)
 
   // ref
   private innerWrapperElRef = createRef<HTMLDivElement>()
@@ -63,7 +64,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     // giving 'month' for a 3-day view
     // workaround: to infer day, do NOT time
 
-    let dateMeta = applyExactSlotMeta(
+    let dateMeta = this.applyExactSlotMeta(
       this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate),
       cell.startMs,
       props.nowMs,

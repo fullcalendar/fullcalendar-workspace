@@ -30,12 +30,13 @@ export interface TimelineSlatCellProps {
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   // memo
   private getDateMeta = memoize(getDateMeta)
+  private applyExactSlotMeta = memoize(applyExactSlotMeta)
 
   render() {
     let { props, context } = this
     let { dateEnv, options } = context
     let { date, tDateProfile, isMajor } = props
-    let dateMeta = applyExactSlotMeta(
+    let dateMeta = this.applyExactSlotMeta(
       this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate),
       props.startMs,
       props.nowMs,
