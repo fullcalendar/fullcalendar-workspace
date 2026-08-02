@@ -1,4 +1,5 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { waitEventDrag } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import {
   DST_TIMELINE_BASE_OPTIONS, SPRING_FORWARD_DAY,
@@ -183,8 +184,10 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
-    await waitTimeout()
+    await waitEventDrag(
+      calendar,
+      () => dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT])),
+    )
     expect(emittedStart).toBe('2024-11-03T01:30:00-05:00')
 
     // feed the emitted strings back in as a brand-new event (app-state round trip)
@@ -214,15 +217,23 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_FIRST_0130_SLAT]))
+    let dropInfo = await waitEventDrag(
+      calendar,
+      () => dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_FIRST_0130_SLAT])),
+    )
     await waitTimeout()
+    expect(dropInfo).not.toBe(false)
     expect(dropSpy).toHaveBeenCalled()
     expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
 
     // The converse must be rejected: the second 01:30 copy is occupied.
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
+    dropInfo = await waitEventDrag(
+      calendar,
+      () => dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT])),
+    )
     await waitTimeout()
 
+    expect(dropInfo).toBe(false)
     expect(dropSpy.calls.count()).toBe(1)
     expect(calendar.getEventById('moving').start.toISOString()).toBe('2024-11-03T05:30:00.000Z')
     expectEventSpansSlats(calendar, FALL_BACK_FIRST_0130_SLAT, FALL_BACK_SECOND_0100_SLAT)
@@ -247,8 +258,11 @@ describe('timeline DST instant fidelity', () => {
     let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
     let slats = getSlatInfo(timelineGrid)
 
-    await dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT]))
-    await waitTimeout()
+    let dropInfo = await waitEventDrag(
+      calendar,
+      () => dragEventToPoint($('.event0')[0], getSlatStartPoint(slats[FALL_BACK_SECOND_0130_SLAT])),
+    )
+    expect(dropInfo).not.toBe(false)
     expect(dropSpy).toHaveBeenCalled()
 
     // the final validation before the drop saw the true second-occurrence instant
