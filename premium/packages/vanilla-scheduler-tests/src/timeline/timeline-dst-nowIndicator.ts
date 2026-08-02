@@ -47,14 +47,7 @@ describe('timeline DST now-indicator', () => {
     expectCloseTo(getIndicatorLeft(calendar), slats[3].left, 3)
   })
 
-  /*
-  BLOCKED on parse-time instant capture (TODO-instant-fidelity.md, step 1):
-  the `now` OPTION round-trips through a civil marker in
-  CalendarNowManager.handleInput, collapsing a second-occurrence instant to the
-  first. The runtime path for REAL current time is already instant-exact.
-  Un-skip when parse capture lands.
-  */
-  xit('positions in the SECOND pass of the fold', async () => {
+  it('positions in the SECOND pass of the fold', async () => {
     let calendar = initCalendar({
       now: '2024-11-03T06:30:00Z', // 01:30 EST (second occurrence)
     })

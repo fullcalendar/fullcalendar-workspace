@@ -1,8 +1,9 @@
 import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
   DateProfileGenerator, DateEnv, DateMarker, DateSpan,
-  CoordRange,
+  CoordRange, EventInstanceRange,
   getDateSpanInstantStartMs, getDateSpanInstantEndMs,
+  getRangeInstantStartMs, getRangeInstantEndMs,
 } from '@fullcalendar/preact/protected-api'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import { getTimelineAxisStartMs, getTimelineAxisEndMs } from './timeline-time-axis'
@@ -89,7 +90,7 @@ export class TimelineLaneSlicer extends Slicer<
   }
 
   sliceRange(
-    origRange: DateRange,
+    origRange: EventInstanceRange,
     dateProfile: DateProfile,
     dateProfileGenerator: DateProfileGenerator,
     tDateProfile: TimelineDateProfile,
@@ -97,8 +98,8 @@ export class TimelineLaneSlicer extends Slicer<
   ): TimelineRange[] {
     if (tDateProfile.timeAxis) {
       return sliceInstantSpan(
-        dateEnv.toDate(origRange.start).valueOf(),
-        dateEnv.toDate(origRange.end).valueOf(),
+        getRangeInstantStartMs(origRange, dateEnv),
+        getRangeInstantEndMs(origRange, dateEnv),
         dateProfile,
         dateProfileGenerator,
         tDateProfile,

@@ -46,21 +46,18 @@ describe('timeline DST event drag-n-drop', () => {
     expectCloseTo(eventRect.left, slats[6].left, 3)
   })
 
-  it('drops onto the second copy of a repeated wallclock: lands at first copy', async () => {
-    // ACCEPTED LIMITATION (see TODO-instant-fidelity.md): the drop's instant
-    // delta is exact, but the persisted range is a civil marker, which
-    // re-resolves to the FIRST occurrence. The event therefore renders at the
-    // first copy, and its reported instant is the first occurrence.
-    // When durable instant fidelity lands, the event should stay at slat 5
-    // (start 2024-11-03T06:30:00Z) and this test must be updated.
+  it('drops onto the second copy of a repeated wallclock: stays there', async () => {
+    // the drop's exact instant is persisted on the event range
+    // (instantStartMs/instantEndMs), so the event renders over the second copy
+    // and its reported instant/offset is the true second occurrence
     let dropSpy
     let calendar = initCalendar({
       events: [
         { start: '2024-11-03T00:00:00', end: '2024-11-03T00:30:00', className: 'event0' },
       ],
       eventDrop: (dropSpy = spyCall((info) => {
-        expect(info.event.start).toEqualDate('2024-11-03T05:30:00Z') // first 01:30 (EDT)
-        expect(info.event.startStr).toBe('2024-11-03T01:30:00-04:00')
+        expect(info.event.start).toEqualDate('2024-11-03T06:30:00Z') // second 01:30 (EST)
+        expect(info.event.startStr).toBe('2024-11-03T01:30:00-05:00')
       })),
     })
     await waitTimeout()
@@ -73,7 +70,7 @@ describe('timeline DST event drag-n-drop', () => {
     expect(dropSpy).toHaveBeenCalled()
 
     let eventRect = timelineGrid.getFirstEventEl().getBoundingClientRect()
-    expectCloseTo(eventRect.left, slats[3].left, 3) // first copy
+    expectCloseTo(eventRect.left, slats[5].left, 3) // second copy
   })
 
   it('drags across the spring-forward gap by exact instants', async () => {

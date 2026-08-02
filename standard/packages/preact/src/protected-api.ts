@@ -10,7 +10,8 @@ export {
 } from './options'
 
 export type { EventDef, EventDefHash } from './structs/event-def'
-export type { EventInstanceHash } from './structs/event-instance'
+export type { EventInstanceHash, EventInstanceRange, EventRangeEdge } from './structs/event-instance'
+export { getRangeInstantStartMs, getRangeInstantEndMs } from './structs/event-instance'
 export type { EventRefined } from './structs/event-parse'
 export { parseBusinessHours } from './structs/business-hours'
 

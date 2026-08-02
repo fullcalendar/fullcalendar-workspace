@@ -1,5 +1,5 @@
 import { DateRange, rangesEqual, OpenDateRange, DateInput, DateEnv, Duration, buildIsoString } from '@full-ui/headless-calendar'
-import { createEventInstance } from './event-instance'
+import { createEventInstance, EventInstanceRange } from './event-instance'
 import { parseEventDef, refineEventDef } from './event-parse'
 import { EventRenderRange, compileEventUi } from '../component-util/event-rendering'
 import { EventUiHash } from '../component-util/event-ui'
@@ -29,10 +29,11 @@ export interface OpenDateSpan {
   range: OpenDateRange
   allDay: boolean
   // Exact epoch instants, stamped by instant-aware views (e.g. timed timeline axes) when
-  // producing hits/selections. Transient interaction data only — never persisted on event data.
-  // Needed because a DateMarker alone cannot distinguish repeated civil times during a
-  // fall-back DST transition. When absent, derive via dateEnv.toDate() (resolves ambiguity
-  // deterministically). See getDateSpanInstantStartMs/getDateSpanInstantEndMs.
+  // producing hits/selections. Transient interaction data (event data persists its own
+  // instants on EventInstanceRange, fed from parse/mutation; external drops copy the span's
+  // start instant over). Needed because a DateMarker alone cannot distinguish repeated civil
+  // times during a fall-back DST transition. When absent, derive via dateEnv.toDate()
+  // (resolves ambiguity deterministically). See getDateSpanInstantStartMs/getDateSpanInstantEndMs.
   instantStartMs?: number
   instantEndMs?: number
   [otherProp: string]: any
@@ -154,20 +155,24 @@ export function buildRangeApiWithTimeZone(range: DateRange, dateEnv: DateEnv, om
 }
 
 export function buildRangeApi(range: DateRange, dateEnv: DateEnv, omitTime?: boolean, rangeMeta?: { instantStartMs?: number, instantEndMs?: number }): RangeApi {
-  if (!omitTime && rangeMeta?.instantStartMs != null && rangeMeta?.instantEndMs != null) {
-    return {
-      start: new Date(rangeMeta.instantStartMs),
-      end: new Date(rangeMeta.instantEndMs),
-      startStr: formatInstantIso(rangeMeta.instantStartMs, dateEnv),
-      endStr: formatInstantIso(rangeMeta.instantEndMs, dateEnv),
-    }
-  }
+  // exact instants may ride on a span (rangeMeta) or on the range itself
+  // (EventInstanceRange). resolved per-edge, like EventImpl's getters
+  const instantStartMs = rangeMeta?.instantStartMs ?? (range as EventInstanceRange).instantStartMs
+  const instantEndMs = rangeMeta?.instantEndMs ?? (range as EventInstanceRange).instantEndMs
 
   return {
-    start: dateEnv.toDate(range.start),
-    end: dateEnv.toDate(range.end),
-    startStr: dateEnv.formatIso(range.start, { omitTime }),
-    endStr: dateEnv.formatIso(range.end, { omitTime }),
+    start: (!omitTime && instantStartMs != null)
+      ? new Date(instantStartMs)
+      : dateEnv.toDate(range.start),
+    end: (!omitTime && instantEndMs != null)
+      ? new Date(instantEndMs)
+      : dateEnv.toDate(range.end),
+    startStr: (!omitTime && instantStartMs != null)
+      ? formatInstantIso(instantStartMs, dateEnv)
+      : dateEnv.formatIso(range.start, { omitTime }),
+    endStr: (!omitTime && instantEndMs != null)
+      ? formatInstantIso(instantEndMs, dateEnv)
+      : dateEnv.formatIso(range.end, { omitTime }),
   }
 }
 

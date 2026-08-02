@@ -1,12 +1,15 @@
 import { Duration, startOfDay } from '@full-ui/headless-calendar'
 import { EventStore, createEmptyEventStore } from './event-store'
 import { EventDef } from './event-def'
-import { EventInstance } from './event-instance'
+import {
+  buildEventInstanceRange, buildValidInstanceRange,
+  EventInstance, EventInstanceRange, EventRangeEdge,
+} from './event-instance'
 import { computeAlignedDayRange } from '../util/date'
 import { EventUiHash, EventUi } from '../component-util/event-ui'
 import { compileEventUis } from '../component-util/event-rendering'
 import { CalendarContext } from '../CalendarContext'
-import { getDefaultEventEnd } from '../calendar-utils'
+import { getDefaultEventEndEdge } from '../calendar-utils'
 
 /*
 A data structure for how to modify an EventDef/EventInstance within an EventStore
@@ -101,35 +104,33 @@ function applyMutationToEventInstance(
   let copy = { ...eventInstance } as EventInstance
 
   if (forceAllDay) {
-    copy.range = computeAlignedDayRange(copy.range)
+    copy.range = computeAlignedDayRange(copy.range) // fresh plain range: instants stripped
   }
 
   if (mutation.datesDelta && eventConfig.startEditable) {
-    copy.range = {
-      start: addDeltaToMarker(copy.range.start, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
-      end: addDeltaToMarker(copy.range.end, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
-    }
+    copy.range = buildInstanceRange(
+      addDeltaToRangeEdge(copy.range.start, copy.range.instantStartMs, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
+      addDeltaToRangeEdge(copy.range.end, copy.range.instantEndMs, mutation.datesDelta, mutation.instantDatesDeltaMs, context),
+    )
   }
 
   if (mutation.startDelta && eventConfig.durationEditable) {
-    copy.range = {
-      start: addDeltaToMarker(copy.range.start, mutation.startDelta, mutation.instantStartDeltaMs, context),
-      end: copy.range.end,
-    }
+    copy.range = buildInstanceRange(
+      addDeltaToRangeEdge(copy.range.start, copy.range.instantStartMs, mutation.startDelta, mutation.instantStartDeltaMs, context),
+      { marker: copy.range.end, instantMs: copy.range.instantEndMs },
+    )
   }
 
   if (mutation.endDelta && eventConfig.durationEditable) {
-    copy.range = {
-      start: copy.range.start,
-      end: addDeltaToMarker(copy.range.end, mutation.endDelta, mutation.instantEndDeltaMs, context),
-    }
+    copy.range = buildInstanceRange(
+      { marker: copy.range.start, instantMs: copy.range.instantStartMs },
+      addDeltaToRangeEdge(copy.range.end, copy.range.instantEndMs, mutation.endDelta, mutation.instantEndDeltaMs, context),
+    )
   }
 
   if (clearEnd) {
-    copy.range = {
-      start: copy.range.start,
-      end: getDefaultEventEnd(eventDef.allDay, copy.range.start, context),
-    }
+    const startEdge: EventRangeEdge = { marker: copy.range.start, instantMs: copy.range.instantStartMs }
+    copy.range = buildInstanceRange(startEdge, getDefaultEventEndEdge(eventDef.allDay, startEdge, context))
   }
 
   // in case event was all-day but the supplied deltas were not
@@ -141,29 +142,57 @@ function applyMutationToEventInstance(
     }
   }
 
-  // handle invalid durations
-  if (copy.range.end < copy.range.start) {
-    copy.range.end = getDefaultEventEnd(eventDef.allDay, copy.range.start, context)
+  // handle invalid durations. a timed range can be invalid civilly or in real time.
+  // a real range that a DST fall-back fold civilly compresses is re-expressed (end in the
+  // start's offset reading) rather than repaired away
+  if (eventDef.allDay) {
+    if (copy.range.end <= copy.range.start) {
+      const startEdge: EventRangeEdge = { marker: copy.range.start }
+      copy.range = buildInstanceRange(startEdge, getDefaultEventEndEdge(true, startEdge, context))
+    }
+  } else {
+    const startEdge: EventRangeEdge = { marker: copy.range.start, instantMs: copy.range.instantStartMs }
+    copy.range = buildValidInstanceRange(
+      startEdge,
+      { marker: copy.range.end, instantMs: copy.range.instantEndMs },
+      context.dateEnv,
+    ) ?? buildInstanceRange(startEdge, getDefaultEventEndEdge(false, startEdge, context))
   }
 
   return copy
 }
 
 /*
-When instantDeltaMs is given, moves the marker by an exact instant amount. The result is always
-a real local time in the current timeZone; ambiguous civil times resolve deterministically.
+When instantDeltaMs is given, moves the edge by an exact instant amount, basing off the
+edge's stored instant when present (preserves identity through DST fall-back doubled times).
+The resulting marker is always a real local time in the current timeZone; ambiguous civil
+times resolve deterministically. Civil (Duration-only) deltas invalidate any stored instant.
 */
-export function addDeltaToMarker(
+export function addDeltaToRangeEdge(
   marker: Date,
+  instantMs: number | undefined,
   delta: Duration,
   instantDeltaMs: number | undefined,
   context: CalendarContext,
-): Date {
+): EventRangeEdge {
   if (instantDeltaMs != null) {
-    return context.dateEnv.timestampToMarker(
-      context.dateEnv.toDate(marker).valueOf() + instantDeltaMs,
-    )
+    const newInstantMs = (instantMs ?? context.dateEnv.toDate(marker).valueOf()) + instantDeltaMs
+    return {
+      marker: context.dateEnv.timestampToMarker(newInstantMs),
+      instantMs: newInstantMs,
+    }
   }
 
-  return context.dateEnv.add(marker, delta)
+  // civil deltas apply to the edge's canonical civil form — a fold-compressed end's
+  // stored marker is representational and must not enter civil arithmetic
+  return {
+    marker: context.dateEnv.add(
+      instantMs != null ? context.dateEnv.timestampToMarker(instantMs) : marker,
+      delta,
+    ),
+  }
+}
+
+function buildInstanceRange(start: EventRangeEdge, end: EventRangeEdge): EventInstanceRange {
+  return buildEventInstanceRange(start.marker, end.marker, start.instantMs, end.instantMs)
 }

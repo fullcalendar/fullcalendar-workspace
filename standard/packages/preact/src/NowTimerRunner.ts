@@ -76,8 +76,16 @@ export class NowTimerRunner {
       this.nowManager = input.nowManager
       this.dateEnv = input.dateEnv
 
+      // recompute outputs — a dateEnv (timezone) change re-projects the same exact "now"
+      // to a different civil time. (the nowManager reset listener can't do this: it fires
+      // before this runner receives the new dateEnv, so it recomputes with the old one)
+      const timing = this.computeTiming()
+      this.nowDate = timing.nowDate
+      this.nowMs = timing.nowMs
+      this.todayRange = timing.todayRange
+
       this.clearTimeout()
-      this.setTimeout()
+      this.setTimeout(timing.waitMs)
     }
 
     return {

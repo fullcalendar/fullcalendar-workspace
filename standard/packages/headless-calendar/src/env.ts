@@ -38,6 +38,10 @@ export type DateInput = Date | string | number | number[]
 export interface DateMarkerMeta {
   marker: DateMarker
   isTimeUnspecified: boolean
+  // the exact epoch instant, present only when the input unambiguously expressed one
+  // (ISO string with offset, Date object, epoch ms). Civil strings/arrays leave it undefined.
+  // when present, always agrees with marker: timestampToMarker(instantMs) === marker
+  instantMs?: number
 }
 
 export class DateEnv {
@@ -97,14 +101,17 @@ export class DateEnv {
     }
 
     let marker = null
+    let instantMs: number | undefined
 
     if (typeof input === 'number') {
       marker = this.timestampToMarker(input)
+      instantMs = input
     } else if (input instanceof Date) {
       input = input.valueOf()
 
       if (!isNaN(input)) {
         marker = this.timestampToMarker(input)
+        instantMs = input
       }
     } else if (Array.isArray(input)) {
       marker = arrayToUtcDate(input)
@@ -114,22 +121,24 @@ export class DateEnv {
       return null
     }
 
-    return { marker, isTimeUnspecified: false }
+    return { marker, isTimeUnspecified: false, instantMs }
   }
 
-  parse(s: string) {
+  parse(s: string): DateMarkerMeta | null {
     let parts = parse(s)
     if (parts === null) {
       return null
     }
 
     let { marker } = parts
+    let instantMs: number | undefined
 
     if (parts.timeZoneOffset !== null) {
-      marker = this.timestampToMarker(marker.valueOf() - parts.timeZoneOffset * 60 * 1000)
+      instantMs = marker.valueOf() - parts.timeZoneOffset * 60 * 1000
+      marker = this.timestampToMarker(instantMs)
     }
 
-    return { marker, isTimeUnspecified: parts.isTimeUnspecified }
+    return { marker, isTimeUnspecified: parts.isTimeUnspecified, instantMs }
   }
 
   // Accessors

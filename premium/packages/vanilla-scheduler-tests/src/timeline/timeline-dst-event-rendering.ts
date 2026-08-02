@@ -40,12 +40,10 @@ describe('timeline DST event rendering', () => {
       expectCloseTo(eventRect.right, slats[9].left, 3) // 03:30 slat is index 9
     })
 
-    it('renders explicit-offset events in the fold at the first copy', async () => {
-      // ACCEPTED LIMITATION (see TODO-instant-fidelity.md): event data stores
-      // civil markers, so ambiguous wallclocks resolve to the FIRST occurrence.
-      // Both of these render at slat index 3, despite different real instants.
-      // When durable instant fidelity lands, the second event should move to
-      // slat index 5 and this test must be updated.
+    it('renders explicit-offset events in the fold at the correct copy', async () => {
+      // event data stores exact instants alongside civil markers
+      // (EventInstanceRange.instantStartMs/instantEndMs), so each event renders
+      // over the copy of the doubled slots matching its real instant
       let calendar = initCalendar({
         events: [
           { start: '2024-11-03T01:30:00-04:00', end: '2024-11-03T02:00:00-04:00', title: 'edt' },
@@ -59,9 +57,12 @@ describe('timeline DST event rendering', () => {
       let eventEls = timelineGrid.getEventEls()
 
       expect(eventEls.length).toBe(2)
-      for (let eventEl of eventEls) {
-        expectCloseTo(eventEl.getBoundingClientRect().left, slats[3].left, 3)
-      }
+      let edtRect = eventEls[0].getBoundingClientRect()
+      let estRect = eventEls[1].getBoundingClientRect()
+      expectCloseTo(edtRect.left, slats[3].left, 3) // first copy (05:30Z -> 06:00Z)
+      expectCloseTo(edtRect.right, slats[4].left, 3)
+      expectCloseTo(estRect.left, slats[5].left, 3) // second copy (06:30Z -> 07:00Z)
+      expectCloseTo(estRect.right, slats[6].left, 3)
     })
 
     it('renders a background event spanning the fold with real-time width', async () => {
