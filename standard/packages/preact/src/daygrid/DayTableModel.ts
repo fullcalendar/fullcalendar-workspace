@@ -1,5 +1,5 @@
-import { DaySeriesModel } from './DaySeriesModel'
-import { DateRange, DateMarker, DateEnv } from '@full-ui/headless-calendar'
+import { DaySeriesModel } from '../common/DaySeriesModel'
+import { DateMarker, DateEnv } from '@full-ui/headless-calendar'
 import { Dictionary } from '../options'
 import { SlicedCoordRange } from '../coord-range'
 import { isMajorUnit } from '../DateProfileGenerator'
@@ -11,7 +11,6 @@ export interface DayGridRange extends SlicedCoordRange {
 }
 
 /*
-TODO: move this to daygrid
 TODO: DRY-up these types and utils with header-tier
 */
 export interface DayTableCell {
@@ -30,10 +29,8 @@ export class DayTableModel {
   cellRows: DayTableCell[][]
   headerDates: DateMarker[]
 
-  private daySeries: DaySeriesModel
-
   constructor(
-    daySeries: DaySeriesModel,
+    public daySeries: DaySeriesModel,
     breakOnWeeks: boolean,
     private dateEnv: DateEnv,
     private majorUnit = '',
@@ -59,7 +56,6 @@ export class DayTableModel {
 
     this.rowCount = rowCount
     this.colCount = daysPerRow
-    this.daySeries = daySeries
     this.cellRows = this.buildCells()
     this.headerDates = this.buildHeaderDates()
   }
@@ -105,32 +101,33 @@ export class DayTableModel {
 
     return dates
   }
+}
 
-  sliceRange(range: DateRange): DayGridRange[] {
-    let { colCount } = this
-    let seriesSeg = this.daySeries.sliceRange(range)
-    let segs: DayGridRange[] = []
+export function buildDayGridRanges(
+  seriesRange: SlicedCoordRange | null,
+  daysPerRow: number,
+): DayGridRange[] {
+  let ranges: DayGridRange[] = []
 
-    if (seriesSeg) {
-      const { start, end } = seriesSeg
-      let index = start
+  if (seriesRange) {
+    const { start, end } = seriesRange
+    let index = start
 
-      while (index < end) {
-        let row = Math.floor(index / colCount)
-        let nextIndex = Math.min((row + 1) * colCount, end)
+    while (index < end) {
+      let row = Math.floor(index / daysPerRow)
+      let nextIndex = Math.min((row + 1) * daysPerRow, end)
 
-        segs.push({
-          row,
-          start: index % colCount,
-          end: (nextIndex - 1) % colCount + 1,
-          isStart: seriesSeg.isStart && index === start,
-          isEnd: seriesSeg.isEnd && nextIndex === end,
-        })
+      ranges.push({
+        row,
+        start: index % daysPerRow,
+        end: (nextIndex - 1) % daysPerRow + 1,
+        isStart: seriesRange.isStart && index === start,
+        isEnd: seriesRange.isEnd && nextIndex === end,
+      })
 
-        index = nextIndex
-      }
+      index = nextIndex
     }
-
-    return segs
   }
+
+  return ranges
 }

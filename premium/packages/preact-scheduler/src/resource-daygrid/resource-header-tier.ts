@@ -32,7 +32,7 @@ export function buildResourceRowConfigs(
     ]
   }
 
-  if (resourceDayTableModel.dayTableModel.colCount === 1) {
+  if (resourceDayTableModel.dayCols.length === 1) {
     return [
       buildResourceRowConfig(
         cols.map((col) => col.resource as Resource),
@@ -99,7 +99,7 @@ export function buildResourceRowConfigs(
           /* extraAttrs = */ undefined,
           /* className = */ undefined,
           /* isMajorMod = */ group.cols.length,
-          /* totalDateCnt = */ resourceDayTableModel.dayTableModel.colCount,
+          /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
         )
       }
 
@@ -123,7 +123,7 @@ export function buildResourceRowConfigs(
         },
         /* className = */ undefined, // TODO: remove
         /* isMajorMod = */ group.cols.length,
-        /* totalDateCnt = */ resourceDayTableModel.dayTableModel.colCount,
+        /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
       )
     })
     const resourceDataConfigs = groups.map((group) => {

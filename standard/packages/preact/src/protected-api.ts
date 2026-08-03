@@ -118,8 +118,9 @@ export {
   MinimalEventProps,
 } from './component-util/event-rendering'
 
-export type { DayTableCell, DayGridRange } from './common/DayTableModel'
-export { DayTableModel } from './common/DayTableModel'
+export type { DayTableCell, DayGridRange } from './daygrid/DayTableModel'
+export { DayTableModel } from './daygrid/DayTableModel'
+export { DaySeriesModel } from './common/DaySeriesModel'
 export type { DayCol, DayColSlotRange } from './common/day-cols'
 export { buildDayCols } from './common/day-cols'
 
@@ -202,9 +203,8 @@ export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './timeg
 export { DayTimeColsSlicer } from './timegrid/DayTimeColsSlicer'
 export { AllDaySplitter } from './timegrid/AllDaySplitter'
 export { TimeGridLayout } from './timegrid/components/TimeGridLayout'
-export { buildTimeColsModel } from './timegrid/components/util'
 
-export { DayTableSlicer } from './daygrid/DayTableSlicer'
+export { DayTableSlicer, DaySeriesSlicer } from './daygrid/DayTableSlicer'
 export {
   CellRenderConfig,
   CellDataConfig,

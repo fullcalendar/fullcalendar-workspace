@@ -2,7 +2,7 @@ import { Duration, DateMarker, DateRange, addDurations, multiplyDuration, wholeD
 import { joinClassNames } from '../../util/html'
 import { DateComponent, EventSegUiInteractionState } from '../../component/DateComponent'
 import { DateProfile } from '../../DateProfileGenerator'
-import { DayTableCell } from '../../common/DayTableModel'
+import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Hit } from '../../interactions/hit'
 import { isPropsEqualShallow } from '../../util/object'

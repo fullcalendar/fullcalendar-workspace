@@ -35,6 +35,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
 
+  private dayTableModel: DayTableModel
   private resourceDayTableModel: AbstractResourceDayTableModel
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTableSlicer } = {}
@@ -46,7 +47,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
-    let dayTable = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator, context.dateEnv)
+    let dayTable = this.dayTableModel = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator, context.dateEnv)
     let dayCols = this.buildDayCols(dayTable)
     let filterResourcesByDate = options.filterResourcesWithEvents === true && dayTable.colCount > 1 && dayTable.rowCount === 1
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceDayTableModel(
@@ -75,11 +76,11 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
       props.dateProfile,
       options.nextDayThreshold,
       context,
-      resourceDayTableModel.dayTableModel,
+      dayTable,
     ))
     let joinedSlicedProps = this.joiner.joinProps(slicedProps, resourceDayTableModel)
 
-    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCount === 1
+    let datesRepDistinctDays = dayTable.rowCount === 1
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
@@ -129,7 +130,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   }
 
   isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
-    let allowAcrossResources = this.resourceDayTableModel.dayTableModel.colCount === 1
+    let allowAcrossResources = this.dayTableModel.colCount === 1
     return this.resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
   }
 }

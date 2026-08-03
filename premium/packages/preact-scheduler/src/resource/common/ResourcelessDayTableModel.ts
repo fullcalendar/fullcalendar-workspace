@@ -5,7 +5,7 @@ import { AbstractResourceDayTableModel, ResourceDayCol, buildResourceDayCol } fr
 TODO: move this so @fullcalendar/resource-daygrid
 */
 export function buildResourcelessDayTableModel(
-  dayTableModel: DayTableModel,
+  dayTableModel: DayTableModel | null,
   dayCols: DayCol[],
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
@@ -13,5 +13,5 @@ export function buildResourcelessDayTableModel(
     buildResourceDayCol(dayCol, dateI, null, -1, dayCol.isMajor, context)
   ))
 
-  return new AbstractResourceDayTableModel(dayTableModel, [], [{ cols }], false, context)
+  return new AbstractResourceDayTableModel(dayCols, dayTableModel, [], [{ cols }], false, context)
 }

@@ -1,13 +1,5 @@
-import { Duration, asRoughMs, createDuration, DateEnv, DateMarker, startOfDay } from '@full-ui/headless-calendar'
-import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
-import { DaySeriesModel } from '../../common/DaySeriesModel'
-import { DayTableModel } from '../../common/DayTableModel'
-
-export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, dateEnv: DateEnv) {
-  let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
-
-  return new DayTableModel(daySeries, false, dateEnv)
-}
+import { Duration, asRoughMs, createDuration, DateMarker, startOfDay } from '@full-ui/headless-calendar'
+import { DateProfile } from '../../DateProfileGenerator'
 
 export function computeSlatHeight(
   expandRows: boolean,

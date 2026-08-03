@@ -1,5 +1,5 @@
 import { EventRenderRange } from '../component-util/event-rendering'
-import { DayTableCell } from '../common/DayTableModel'
+import { DayTableCell } from './DayTableModel'
 import { SegHierarchy } from '../seg-hierarchy'
 import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceSegForCol } from './TableSeg'
 

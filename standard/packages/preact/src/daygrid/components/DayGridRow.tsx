@@ -6,7 +6,7 @@ import { getEventRangeMeta, sortEventSegs, EventRangeProps } from '../../compone
 import { SlicedCoordRange } from '../../coord-range'
 import { DateProfile } from '../../DateProfileGenerator'
 import { BgEvent, renderFill } from '../../common/bg-fill'
-import { DayTableCell } from '../../common/DayTableModel'
+import { DayTableCell } from '../DayTableModel'
 import { RefMap } from '../../util/RefMap'
 import { createFormatter } from '../../datelib/formatting'
 import { watchHeight, afterSize } from '../../component-util/resize-observer'

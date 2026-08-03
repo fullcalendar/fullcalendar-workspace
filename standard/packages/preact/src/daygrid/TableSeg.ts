@@ -1,4 +1,4 @@
-import { DayGridRange } from '../common/DayTableModel'
+import { DayGridRange } from './DayTableModel'
 import { EventRangeProps, getEventKey } from '../component-util/event-rendering'
 import { SlicedCoordRange } from '../coord-range'
 import { EventSegUiInteractionState } from '../component/DateComponent'

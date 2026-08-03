@@ -7,13 +7,13 @@ import { HasEventsByDate } from './per-date-filtering'
 dates over resources
 */
 export function buildDayResourceTableModel(
-  dayTableModel: DayTableModel,
+  dayTableModel: DayTableModel | null,
   dayCols: DayCol[],
   resources: Resource[],
   context: CalendarContext,
   hasEventsByDate: HasEventsByDate | null = null,
 ): AbstractResourceDayTableModel {
-  let hasMajor = resources.length > 1 && dayTableModel.colCount > 1
+  let hasMajor = resources.length > 1 && dayCols.length > 1
   let groups: ResourceDayGroup[] = dayCols.map((dayCol, dateI) => {
     let cols: ResourceDayCol[] = []
 
@@ -39,5 +39,5 @@ export function buildDayResourceTableModel(
     return { date: dayCol.date, cols }
   })
 
-  return new AbstractResourceDayTableModel(dayTableModel, resources, groups, true, context)
+  return new AbstractResourceDayTableModel(dayCols, dayTableModel, resources, groups, true, context)
 }

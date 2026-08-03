@@ -24,7 +24,7 @@ export function buildDayCols(
   dateProfileGenerator: DateProfileGenerator,
   dateEnv: DateEnv,
   slotRange?: DayColSlotRange,
-  majorUnit = '', // timegrid passes none, matching buildTimeColsModel's DayTableModel construction
+  majorUnit = '', // timegrid passes none, keeping all columns non-major
 ): DayCol[] {
   const daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
 

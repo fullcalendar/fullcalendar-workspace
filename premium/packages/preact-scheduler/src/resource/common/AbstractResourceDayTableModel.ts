@@ -34,7 +34,8 @@ export class AbstractResourceDayTableModel {
   private colGroupIndices: number[]
 
   constructor(
-    public dayTableModel: DayTableModel,
+    public dayCols: DayCol[],
+    public dayTableModel: DayTableModel | null,
     public resources: Resource[],
     public groups: ResourceDayGroup[],
     public datesAboveResources: boolean,
@@ -66,7 +67,7 @@ export class AbstractResourceDayTableModel {
     this.dateFirstCols = dateFirstCols
     this.hasPlaceholderCols = resources.length > 0 && cols.some((col) => !col.resource)
     this.colGroupIndices = colGroupIndices
-    this.cells = dayTableModel.rowCount === 1
+    this.cells = !dayTableModel || dayTableModel.rowCount === 1
       ? [cols]
       : buildResourceCells(dayTableModel, cols, context)
   }
@@ -151,7 +152,7 @@ export class AbstractResourceDayTableModel {
   private computeDateI(date: DateMarker): DateColIndex {
     let dayStart = startOfDay(date).valueOf()
 
-    return this.dayTableModel.headerDates.findIndex((headerDate) => headerDate.valueOf() === dayStart)
+    return this.dayCols.findIndex((dayCol) => dayCol.date.valueOf() === dayStart)
   }
 }
 

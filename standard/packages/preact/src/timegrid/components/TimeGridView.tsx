@@ -1,16 +1,15 @@
 import { DateComponent } from '../../component/DateComponent'
-import { DateEnv, DateMarker, DateRange } from '@full-ui/headless-calendar'
+import { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { memoize } from '../../util/memoize'
 import { NowTimer } from '../../NowTimer'
 import { ViewProps } from '../../component-util/View'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
 import { DaySeriesModel } from '../../common/DaySeriesModel'
-import { DayTableModel } from '../../common/DayTableModel'
 import { DayCol, buildDayCols } from '../../common/day-cols'
 import { buildDateRowConfigs } from '../../daygrid/header-tier'
 import { createDayHeaderFormatter } from '../../daygrid/components/util'
-import { DayTableSlicer } from '../../daygrid/DayTableSlicer'
+import { DaySeriesSlicer } from '../../daygrid/DayTableSlicer'
 import { AllDaySplitter } from '../AllDaySplitter'
 import { DayTimeColsSlicer } from '../DayTimeColsSlicer'
 import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from '../TimeColsSeg'
@@ -20,14 +19,8 @@ export class TimeGridView extends DateComponent<ViewProps> {
   // memo
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildDayCols = memoize(buildDayCols)
-  private buildAllDayTableModel = memoize((
-    dateProfile: DateProfile,
-    dateProfileGenerator: DateProfileGenerator,
-    dateEnv: DateEnv,
-  ) => new DayTableModel(
-    new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator),
-    false,
-    dateEnv,
+  private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
+    new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
   ))
   private extractColDates = memoize((cols: DayCol[]) => cols.map((col) => col.date))
   private extractColRanges = memoize((cols: DayCol[]) => cols.map((col) => col.range))
@@ -42,7 +35,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
   // internal
   private allDaySplitter = new AllDaySplitter()
-  private dayTableSlicer = new DayTableSlicer()
+  private daySeriesSlicer = new DaySeriesSlicer()
   private dayTimeColsSlicer = new DayTimeColsSlicer()
 
   render() {
@@ -53,14 +46,14 @@ export class TimeGridView extends DateComponent<ViewProps> {
     const cols = this.buildDayCols(dateProfile, dateProfileGenerator, context.dateEnv, dateProfile)
     const colDates = this.extractColDates(cols)
     const dayRanges = this.extractColRanges(cols)
-    const allDayTableModel = this.buildAllDayTableModel(dateProfile, dateProfileGenerator, context.dateEnv)
+    const daySeries = this.buildDaySeries(dateProfile, dateProfileGenerator)
     const splitProps = this.allDaySplitter.splitProps(props)
-    const allDayProps = this.dayTableSlicer.sliceProps(
+    const allDayProps = this.daySeriesSlicer.sliceProps(
       splitProps.allDay,
       dateProfile,
       options.nextDayThreshold,
       context,
-      allDayTableModel,
+      daySeries,
     )
     const timedProps = this.dayTimeColsSlicer.sliceProps(
       splitProps.timed,

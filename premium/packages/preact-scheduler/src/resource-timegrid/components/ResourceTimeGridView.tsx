@@ -1,10 +1,12 @@
 import {
   CalendarContext,
   DateComponent,
+  DateProfile,
+  DateProfileGenerator,
   DayCol,
   DateMarker,
   DateRange,
-  DayTableModel,
+  DaySeriesModel,
   EventStore,
   Hit,
   NowTimer,
@@ -12,7 +14,7 @@ import {
   memoize,
   buildDayCols,
 } from '@fullcalendar/preact/protected-api'
-import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
+import { DaySeriesSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
 import { buildResourceRowConfigs } from '../../resource-daygrid/resource-header-tier'
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
@@ -25,7 +27,7 @@ import { buildResourcelessDayTableModel } from '../../resource/common/Resourcele
 import { computeHasEventsByDate } from '../../resource/common/per-date-filtering'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner'
 
 interface ResourceTimeGridViewState {
@@ -39,7 +41,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   // memo
   private flattenResources = memoize(flattenResources)
   private buildDayCols = memoize(buildDayCols)
-  private buildAllDayTableModel = memoize(buildTimeColsModel)
+  private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
+    new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
+  ))
   private extractDayRanges = memoize((dayCols: DayCol[]) => dayCols.map((dayCol) => dayCol.range))
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
@@ -50,7 +54,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
   // for all-day-resource props
   private allDayResourceSplitter = new VResourceSplitter()
-  private allDayResourceSlicers: { [resourceId: string]: DayTableSlicer } = {}
+  private allDayResourceSlicers: { [resourceId: string]: DaySeriesSlicer } = {}
   private allDayResourceJoiner = new ResourceDayTableJoiner()
 
   // for timed resource props
@@ -78,10 +82,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let dayCols = this.buildDayCols(dateProfile, context.dateProfileGenerator, dateEnv, dateProfile)
     let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
-    let dayTable = this.buildAllDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
+    let daySeries = this.buildDaySeries(dateProfile, context.dateProfileGenerator)
     let filterResourcesByDate = options.filterResourcesWithEvents === true && dayCols.length > 1
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTimeColsModel(
-      dayTable,
       dayCols,
       resources,
       options.datesAboveResources,
@@ -104,13 +107,13 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       eventResize: splitProps.allDay.eventResize,
       resourceDayTableModel,
     })
-    this.allDayResourceSlicers = mapHash(allDayResourceSplitProps, (split, resourceId) => this.allDayResourceSlicers[resourceId] || new DayTableSlicer())
+    this.allDayResourceSlicers = mapHash(allDayResourceSplitProps, (split, resourceId) => this.allDayResourceSlicers[resourceId] || new DaySeriesSlicer())
     let allDayResourceSlicedProps = mapHash(this.allDayResourceSlicers, (slicer, resourceId) => slicer.sliceProps(
       allDayResourceSplitProps[resourceId],
       dateProfile,
       options.nextDayThreshold,
       context,
-      resourceDayTableModel.dayTableModel,
+      daySeries,
     ))
     let allDayResourceJoinedProps = this.allDayResourceJoiner.joinProps(
       allDayResourceSlicedProps,
@@ -236,7 +239,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 TODO: kill this and DayResourceTableModel/ResourceDayTableModel
 */
 function buildResourceTimeColsModel(
-  dayTable: DayTableModel,
   dayCols: DayCol[],
   resources: Resource[],
   datesAboveResources: boolean,
@@ -245,7 +247,7 @@ function buildResourceTimeColsModel(
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
   if (!resources.length) {
-    return buildResourcelessDayTableModel(dayTable, dayCols, context)
+    return buildResourcelessDayTableModel(null, dayCols, context)
   }
 
   let hasEventsByDate = eventStore && resourceStore
@@ -253,6 +255,6 @@ function buildResourceTimeColsModel(
     : null
 
   return datesAboveResources ?
-    buildDayResourceTableModel(dayTable, dayCols, resources, context, hasEventsByDate) :
-    buildResourceDayTableModel(dayTable, dayCols, resources, context, hasEventsByDate)
+    buildDayResourceTableModel(null, dayCols, resources, context, hasEventsByDate) :
+    buildResourceDayTableModel(null, dayCols, resources, context, hasEventsByDate)
 }
