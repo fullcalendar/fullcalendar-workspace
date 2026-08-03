@@ -30,6 +30,7 @@ export class AbstractResourceDayTableModel {
   colLookup: { [key: string]: ViewColIndex }
   dateFirstCols: ViewColIndex[]
   hasPlaceholderCols: boolean
+  isRagged: boolean // does per-date filtering give some dates fewer resource cols than others?
 
   private colGroupIndices: number[]
 
@@ -66,6 +67,7 @@ export class AbstractResourceDayTableModel {
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
     this.hasPlaceholderCols = resources.length > 0 && cols.some((col) => !col.resource)
+    this.isRagged = resources.length > 0 && cols.length !== dayCols.length * resources.length
     this.colGroupIndices = colGroupIndices
     this.cells = !dayTableModel || dayTableModel.rowCount === 1
       ? [cols]
@@ -126,12 +128,20 @@ export class AbstractResourceDayTableModel {
       return true
     }
 
-    let resourceId = hit0.dateSpan.resourceId
+    let resourceId0 = hit0.dateSpan.resourceId
+    let resourceId1 = hit1.dateSpan.resourceId
 
-    if (resourceId !== hit1.dateSpan.resourceId) {
+    if (!this.isRagged) {
+      return resourceId0 === resourceId1
+    }
+
+    // a resourced hit may pair with a placeholder hit (the empty date stands in for the
+    // missing pair), but two differently-resourced hits never combine
+    if (resourceId0 != null && resourceId1 != null && resourceId0 !== resourceId1) {
       return false
     }
 
+    let resourceId = resourceId0 != null ? resourceId0 : resourceId1
     let resourceI = resourceId == null ? -1 : this.resourceIndex.indicesById[resourceId]
     let dateI0 = this.computeDateI(hit0.dateSpan.range.start)
     let dateI1 = this.computeDateI(hit1.dateSpan.range.start)
@@ -140,8 +150,16 @@ export class AbstractResourceDayTableModel {
       return false
     }
 
-    for (let dateI = Math.min(dateI0, dateI1); dateI <= Math.max(dateI0, dateI1); dateI += 1) {
-      if (this.computeCol(dateI, resourceI) === -1) {
+    let minDateI = Math.min(dateI0, dateI1)
+    let maxDateI = Math.max(dateI0, dateI1)
+
+    // interior dates need the resource's real column. endpoints may fall back to a
+    // placeholder column (resizing/selecting into an empty date)
+    for (let dateI = minDateI; dateI <= maxDateI; dateI += 1) {
+      if (
+        this.computeCol(dateI, resourceI) === -1 &&
+        !((dateI === minDateI || dateI === maxDateI) && this.computeCol(dateI, -1) !== -1)
+      ) {
         return false
       }
     }
@@ -149,10 +167,25 @@ export class AbstractResourceDayTableModel {
     return true
   }
 
+  /*
+  only valid for single-row (ragged) models, where dayCols covers every displayed date.
+  dates in a column's slotMinTime/slotMaxTime extension clamp to the boundary column.
+  */
   private computeDateI(date: DateMarker): DateColIndex {
+    let { dayCols } = this
     let dayStart = startOfDay(date).valueOf()
 
-    return this.dayCols.findIndex((dayCol) => dayCol.date.valueOf() === dayStart)
+    if (!dayCols.length) {
+      return -1
+    }
+    if (dayStart < dayCols[0].date.valueOf()) {
+      return 0
+    }
+    if (dayStart > dayCols[dayCols.length - 1].date.valueOf()) {
+      return dayCols.length - 1
+    }
+
+    return dayCols.findIndex((dayCol) => dayCol.date.valueOf() === dayStart)
   }
 }
 

@@ -123,7 +123,7 @@ export class ResourceTimeGridWrapper {
     return this.base.getNonBusinessDayEls()
   }
 
-  resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate) {
+  resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate, destResourceId = resourceId) {
     return new Promise<void>((resolve) => {
       let resizerEl = $(eventEl).find('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
         .css('display', 'block')[0] // usually only displays on hover. force display
@@ -131,7 +131,7 @@ export class ResourceTimeGridWrapper {
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let origPoint = this.getPoint(resourceId, origEndDate)
       let yCorrect = resizerPoint.top - origPoint.top
-      let destPoint = this.getPoint(resourceId, newEndDate)
+      let destPoint = this.getPoint(destResourceId, newEndDate)
       destPoint = addPoints(destPoint, { left: 0, top: yCorrect })
 
       $(resizerEl).simulate('drag', {

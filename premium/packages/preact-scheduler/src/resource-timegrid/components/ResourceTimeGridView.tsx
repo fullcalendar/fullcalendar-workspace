@@ -12,7 +12,7 @@ import {
   NowTimer,
   mapHash,
   memoize,
-  buildDayCols,
+  buildDayColsFromSeries,
 } from '@fullcalendar/preact/protected-api'
 import { DaySeriesSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
@@ -40,10 +40,10 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
   // memo
   private flattenResources = memoize(flattenResources)
-  private buildDayCols = memoize(buildDayCols)
   private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
     new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
   ))
+  private buildDayCols = memoize(buildDayColsFromSeries)
   private extractDayRanges = memoize((dayCols: DayCol[]) => dayCols.map((dayCol) => dayCol.range))
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
@@ -80,9 +80,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
-    let dayCols = this.buildDayCols(dateProfile, context.dateProfileGenerator, dateEnv, dateProfile)
-    let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
     let daySeries = this.buildDaySeries(dateProfile, context.dateProfileGenerator)
+    let dayCols = this.buildDayCols(daySeries, dateEnv, dateProfile)
+    let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
     let filterResourcesByDate = options.filterResourcesWithEvents === true && dayCols.length > 1
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTimeColsModel(
       dayCols,

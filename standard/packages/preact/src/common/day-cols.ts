@@ -26,8 +26,20 @@ export function buildDayCols(
   slotRange?: DayColSlotRange,
   majorUnit = '', // timegrid passes none, keeping all columns non-major
 ): DayCol[] {
-  const daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
+  return buildDayColsFromSeries(
+    new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator),
+    dateEnv,
+    slotRange,
+    majorUnit,
+  )
+}
 
+export function buildDayColsFromSeries(
+  daySeries: DaySeriesModel,
+  dateEnv: DateEnv,
+  slotRange?: DayColSlotRange,
+  majorUnit = '',
+): DayCol[] {
   return daySeries.dates.map((date) => ({
     key: date.toISOString(),
     date,

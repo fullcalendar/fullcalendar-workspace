@@ -547,6 +547,41 @@ describe('filterResourcesWithEvents per date', () => {
     })
   })
 
+  it('resizes an event into an empty date placeholder', async () => {
+    let resizedEvent = null
+    let calendar = initCalendar({
+      datesAboveResources: false,
+      editable: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [{
+        title: 'Day 1 only',
+        start: DAY_1 + 'T09:00:00',
+        end: DAY_1 + 'T10:00:00',
+        resourceId: 'a',
+      }],
+      eventResize(info) {
+        resizedEvent = info.event
+      },
+    })
+
+    await ignoreResizeObserverLoops(async () => {
+      await waitTimeout()
+      let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+      await timeGrid.resizeEvent(
+        timeGrid.getFirstEventEl(),
+        'a',
+        DAY_1 + 'T10:00:00',
+        DAY_2 + 'T02:00:00',
+        /* destResourceId = */ null, // the day-2 placeholder column
+      )
+      await waitTimeout()
+    })
+
+    expect(resizedEvent).toBeTruthy()
+    expect(resizedEvent.end).toEqualDate(DAY_2 + 'T02:00:00Z')
+  })
+
   describe('in resource dayGrid', () => {
     pushOptions({
       initialView: 'resourceDayGridTwoDay',
@@ -618,5 +653,54 @@ describe('filterResourcesWithEvents per date', () => {
       }
       expect(new CalendarWrapper(calendar).getEventEls().length).toBe(2)
     })
+
+    it('allows selections in later weeks of a multi-row month view', async () => {
+      let selectInfo = null
+      let calendar = initCalendar({
+        initialView: 'resourceDayGridMonth',
+        selectable: true,
+        resources: [
+          { id: 'a', title: 'Resource A' },
+          { id: 'b', title: 'Resource B' },
+        ],
+        events: [
+          { title: 'A first week', start: DAY_1, resourceId: 'a' },
+          { title: 'B second week', start: '2016-12-12', resourceId: 'b' },
+        ],
+        select(info) {
+          selectInfo = info
+        },
+      })
+
+      await ignoreResizeObserverLoops(async () => {
+        await waitTimeout()
+        let dayGrid = new ResourceDayGridViewWrapper(calendar).dayGrid
+        let startEl = dayGrid.getDayEl('a', '2016-12-12')
+        let endEl = dayGrid.getDayEl('a', '2016-12-13')
+
+        await new Promise<void>((resolve) => {
+          $(startEl).simulate('drag', {
+            point: getElCenter(startEl),
+            end: getElCenter(endEl),
+            onRelease: () => resolve(),
+          })
+        })
+        await waitTimeout()
+      })
+
+      expect(selectInfo).toBeTruthy()
+      expect(selectInfo.resource.id).toBe('a')
+      expect(selectInfo.start).toEqualDate('2016-12-12')
+      expect(selectInfo.end).toEqualDate('2016-12-14')
+    })
   })
 })
+
+function getElCenter(el: Element) {
+  let rect = el.getBoundingClientRect()
+
+  return {
+    left: (rect.left + rect.right) / 2,
+    top: (rect.top + rect.bottom) / 2,
+  }
+}

@@ -6,7 +6,7 @@ import { NowTimer } from '../../NowTimer'
 import { ViewProps } from '../../component-util/View'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
 import { DaySeriesModel } from '../../common/DaySeriesModel'
-import { DayCol, buildDayCols } from '../../common/day-cols'
+import { DayCol, buildDayColsFromSeries } from '../../common/day-cols'
 import { buildDateRowConfigs } from '../../daygrid/header-tier'
 import { createDayHeaderFormatter } from '../../daygrid/components/util'
 import { DaySeriesSlicer } from '../../daygrid/DayTableSlicer'
@@ -18,10 +18,10 @@ import { TimeGridLayout } from './TimeGridLayout'
 export class TimeGridView extends DateComponent<ViewProps> {
   // memo
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
-  private buildDayCols = memoize(buildDayCols)
   private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
     new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
   ))
+  private buildDayCols = memoize(buildDayColsFromSeries)
   private extractColDates = memoize((cols: DayCol[]) => cols.map((col) => col.date))
   private extractColRanges = memoize((cols: DayCol[]) => cols.map((col) => col.range))
   private buildDateRowConfigs = memoize(buildDateRowConfigs)
@@ -43,10 +43,10 @@ export class TimeGridView extends DateComponent<ViewProps> {
     const { dateProfile } = props
     const { options, dateProfileGenerator } = context
 
-    const cols = this.buildDayCols(dateProfile, dateProfileGenerator, context.dateEnv, dateProfile)
+    const daySeries = this.buildDaySeries(dateProfile, dateProfileGenerator)
+    const cols = this.buildDayCols(daySeries, context.dateEnv, dateProfile)
     const colDates = this.extractColDates(cols)
     const dayRanges = this.extractColRanges(cols)
-    const daySeries = this.buildDaySeries(dateProfile, dateProfileGenerator)
     const splitProps = this.allDaySplitter.splitProps(props)
     const allDayProps = this.daySeriesSlicer.sliceProps(
       splitProps.allDay,
