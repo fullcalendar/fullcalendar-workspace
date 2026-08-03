@@ -1,6 +1,7 @@
 import {
   CalendarContext,
   DateComponent,
+  DayCol,
   DateMarker,
   DateRange,
   DayTableModel,
@@ -29,7 +30,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   // memo
   private flattenResources = memoize(flattenResources)
   private buildDayTableModel = memoize(buildDayTableModel)
-  private buildDayRanges = memoize(buildDayGridRanges)
+  private buildDayCols = memoize(buildDayGridCols)
   private buildResourceDayTableModel = memoize(buildResourceDayGridTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
@@ -46,15 +47,15 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let dayTable = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator, context.dateEnv)
+    let dayCols = this.buildDayCols(dayTable)
     let filterResourcesByDate = options.filterResourcesWithEvents === true && dayTable.colCount > 1 && dayTable.rowCount === 1
-    let dayRanges = filterResourcesByDate ? this.buildDayRanges(dayTable) : null
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceDayTableModel(
       dayTable,
+      dayCols,
       resources,
       options.datesAboveResources,
       filterResourcesByDate ? props.eventStore : null,
       filterResourcesByDate ? props.resourceStore : null,
-      dayRanges,
       context,
     )
 
@@ -135,29 +136,33 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
 function buildResourceDayGridTableModel(
   dayTable: DayTableModel,
+  dayCols: DayCol[],
   resources: Resource[],
   datesAboveResources: boolean,
   eventStore: EventStore | null,
   resourceStore: ResourceHash | null,
-  dayRanges: DateRange[] | null,
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
   if (!resources.length) {
-    return buildResourcelessDayTableModel(dayTable, context)
+    return buildResourcelessDayTableModel(dayTable, dayCols, context)
   }
 
-  let hasEventsByDate = eventStore && resourceStore && dayRanges
-    ? computeHasEventsByDate(eventStore, resourceStore, dayRanges)
+  let hasEventsByDate = eventStore && resourceStore
+    ? computeHasEventsByDate(eventStore, resourceStore, dayCols.map((dayCol) => dayCol.range))
     : null
 
   return datesAboveResources ?
-    buildDayResourceTableModel(dayTable, resources, context, hasEventsByDate) :
-    buildResourceDayTableModel(dayTable, resources, context, hasEventsByDate)
+    buildDayResourceTableModel(dayTable, dayCols, resources, context, hasEventsByDate) :
+    buildResourceDayTableModel(dayTable, dayCols, resources, context, hasEventsByDate)
 }
 
-function buildDayGridRanges(dayTable: DayTableModel): DateRange[] {
-  return dayTable.headerDates.map((date) => ({
-    start: date,
-    end: addDays(date, 1),
+// Resource daygrid columns repeat across rows, so their date-level descriptors use the first row.
+function buildDayGridCols(dayTable: DayTableModel): DayCol[] {
+  return dayTable.cellRows[0].map((cell) => ({
+    ...cell,
+    range: {
+      start: cell.date,
+      end: addDays(cell.date, 1),
+    },
   }))
 }

@@ -3,6 +3,8 @@ import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 
 const NO_SEGS = [] // for memoizing
 type AllResourceExpansion = 'all' | 'placeholder' | 'none'
+export type DateIndexedSeg<R> = R & EventRangeProps // coordinates index date-level columns
+export type ViewIndexedSeg<R> = R & EventRangeProps // coordinates index final view columns
 
 export abstract class VResourceJoiner<R> {
   private joinDateSelection = memoize(this.joinSegs)
@@ -54,8 +56,8 @@ export abstract class VResourceJoiner<R> {
   joinSegs(
     resourceDayTable: AbstractResourceDayTableModel,
     allResourceExpansion: AllResourceExpansion,
-    ...segGroups: (R & EventRangeProps)[][]
-  ): (R & EventRangeProps)[] {
+    ...segGroups: DateIndexedSeg<R>[][]
+  ): ViewIndexedSeg<R>[] {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
@@ -94,7 +96,7 @@ export abstract class VResourceJoiner<R> {
   expandSegs(
     resourceDayTable: AbstractResourceDayTableModel,
     segs: R[], // HACK
-  ): (R & EventRangeProps)[] {
+  ): ViewIndexedSeg<R>[] {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
@@ -119,8 +121,8 @@ export abstract class VResourceJoiner<R> {
 
   joinInteractions(
     resourceDayTable: AbstractResourceDayTableModel,
-    ...interactions: EventSegUiInteractionState<R>[]
-  ): EventSegUiInteractionState<R> | null {
+    ...interactions: EventSegUiInteractionState<DateIndexedSeg<R>>[]
+  ): EventSegUiInteractionState<ViewIndexedSeg<R>> | null {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []
@@ -181,9 +183,9 @@ export abstract class VResourceJoiner<R> {
   Must always forward unknown seg properties!!!
   */
   abstract transformSeg(
-    seg: R & EventRangeProps,
+    seg: DateIndexedSeg<R>,
     resourceDayTable: AbstractResourceDayTableModel,
     resourceI: number,
     fallbackToPlaceholder: boolean,
-  ): (R & EventRangeProps)[]
+  ): ViewIndexedSeg<R>[]
 }

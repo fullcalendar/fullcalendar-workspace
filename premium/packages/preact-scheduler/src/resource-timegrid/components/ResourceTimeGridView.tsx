@@ -1,6 +1,7 @@
 import {
   CalendarContext,
   DateComponent,
+  DayCol,
   DateMarker,
   DateRange,
   DayTableModel,
@@ -8,7 +9,8 @@ import {
   Hit,
   NowTimer,
   mapHash,
-  memoize
+  memoize,
+  buildDayCols,
 } from '@fullcalendar/preact/protected-api'
 import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
@@ -23,7 +25,7 @@ import { buildResourcelessDayTableModel } from '../../resource/common/Resourcele
 import { computeHasEventsByDate } from '../../resource/common/per-date-filtering'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildDayRanges, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner'
 
 interface ResourceTimeGridViewState {
@@ -36,7 +38,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
   // memo
   private flattenResources = memoize(flattenResources)
-  private buildTimeColsModel = memoize(buildTimeColsModel)
+  private buildDayCols = memoize(buildDayCols)
+  private buildAllDayTableModel = memoize(buildTimeColsModel)
+  private extractDayRanges = memoize((dayCols: DayCol[]) => dayCols.map((dayCol) => dayCol.range))
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
@@ -50,7 +54,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   private allDayResourceJoiner = new ResourceDayTableJoiner()
 
   // for timed resource props
-  private buildDayRanges = memoize(buildDayRanges)
   private dayRanges: DateRange[] // for now indicator
   private resourceDayTableModel: AbstractResourceDayTableModel
   private timedResourceSplitter = new VResourceSplitter()
@@ -73,16 +76,17 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
-    let dayTable = this.buildTimeColsModel(dateProfile, context.dateProfileGenerator, dateEnv)
-    let dayRanges = this.dayRanges = this.buildDayRanges(dayTable, dateProfile, dateEnv)
-    let filterResourcesByDate = options.filterResourcesWithEvents === true && dayTable.colCount > 1 && dayTable.rowCount === 1
+    let dayCols = this.buildDayCols(dateProfile, context.dateProfileGenerator, dateEnv, dateProfile)
+    let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
+    let dayTable = this.buildAllDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
+    let filterResourcesByDate = options.filterResourcesWithEvents === true && dayCols.length > 1
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTimeColsModel(
       dayTable,
+      dayCols,
       resources,
       options.datesAboveResources,
       filterResourcesByDate ? props.eventStore : null,
       filterResourcesByDate ? props.resourceStore : null,
-      filterResourcesByDate ? dayRanges : null,
       context,
     )
 
@@ -137,7 +141,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       resourceDayTableModel,
     )
 
-    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCount === 1
+    let datesRepDistinctDays = true
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
@@ -158,7 +162,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               ? this.timedResourceSlicers[''].sliceNowDate(nowDate, this.props.dateProfile, this.context.options.nextDayThreshold, this.context, this.dayRanges)
               : [] // TODO: breaks memoization?
             const expandedSegs = this.timedResourceJoiner.expandSegs(resourceDayTableModel, nonResourceSegs)
-            const dayCnt = resourceDayTableModel.dayTableModel.colCount
+            const dayCnt = dayCols.length
             return expandedSegs.map((seg) => ({
               ...seg,
               showDot: !options.datesAboveResources && dayCnt > 1
@@ -188,7 +192,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               nowDate={nowDate}
               nowMs={nowMs}
               todayRange={todayRange}
-              cells={resourceDayTableModel.cells[0]}
+              cells={resourceDayTableModel.cols}
               forPrint={props.forPrint}
               isHitComboAllowed={this.isHitComboAllowed}
               className={props.className}
@@ -233,22 +237,22 @@ TODO: kill this and DayResourceTableModel/ResourceDayTableModel
 */
 function buildResourceTimeColsModel(
   dayTable: DayTableModel,
+  dayCols: DayCol[],
   resources: Resource[],
   datesAboveResources: boolean,
   eventStore: EventStore | null,
   resourceStore: ResourceHash | null,
-  dayRanges: DateRange[] | null,
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
   if (!resources.length) {
-    return buildResourcelessDayTableModel(dayTable, context)
+    return buildResourcelessDayTableModel(dayTable, dayCols, context)
   }
 
-  let hasEventsByDate = eventStore && resourceStore && dayRanges
-    ? computeHasEventsByDate(eventStore, resourceStore, dayRanges)
+  let hasEventsByDate = eventStore && resourceStore
+    ? computeHasEventsByDate(eventStore, resourceStore, dayCols.map((dayCol) => dayCol.range))
     : null
 
   return datesAboveResources ?
-    buildDayResourceTableModel(dayTable, resources, context, hasEventsByDate) :
-    buildResourceDayTableModel(dayTable, resources, context, hasEventsByDate)
+    buildDayResourceTableModel(dayTable, dayCols, resources, context, hasEventsByDate) :
+    buildResourceDayTableModel(dayTable, dayCols, resources, context, hasEventsByDate)
 }

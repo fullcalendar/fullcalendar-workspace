@@ -1,20 +1,17 @@
-import { CalendarContext, DayTableModel } from '@fullcalendar/preact/protected-api'
-import { AbstractResourceDayTableModel, ResourceDayCol } from './AbstractResourceDayTableModel'
+import { CalendarContext, DayCol, DayTableModel } from '@fullcalendar/preact/protected-api'
+import { AbstractResourceDayTableModel, ResourceDayCol, buildResourceDayCol } from './AbstractResourceDayTableModel'
 
 /*
 TODO: move this so @fullcalendar/resource-daygrid
 */
 export function buildResourcelessDayTableModel(
   dayTableModel: DayTableModel,
+  dayCols: DayCol[],
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
-  let cols: ResourceDayCol[] = dayTableModel.headerDates.map((date, dateI) => ({
-    date,
-    dateI,
-    resource: null,
-    resourceI: -1,
-    isMajor: dayTableModel.cellRows[0][dateI].isMajor,
-  }))
+  let cols: ResourceDayCol[] = dayCols.map((dayCol, dateI) => (
+    buildResourceDayCol(dayCol, dateI, null, -1, dayCol.isMajor, context)
+  ))
 
   return new AbstractResourceDayTableModel(dayTableModel, [], [{ cols }], false, context)
 }

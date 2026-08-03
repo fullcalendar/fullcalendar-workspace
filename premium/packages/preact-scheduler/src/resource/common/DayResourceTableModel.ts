@@ -1,6 +1,6 @@
-import { CalendarContext, DayTableModel } from '@fullcalendar/preact/protected-api'
+import { CalendarContext, DayCol, DayTableModel } from '@fullcalendar/preact/protected-api'
 import { Resource } from '../structs/resource'
-import { AbstractResourceDayTableModel, ResourceDayCol, ResourceDayGroup } from './AbstractResourceDayTableModel'
+import { AbstractResourceDayTableModel, ResourceDayCol, ResourceDayGroup, buildResourceDayCol } from './AbstractResourceDayTableModel'
 import { HasEventsByDate } from './per-date-filtering'
 
 /*
@@ -8,39 +8,35 @@ dates over resources
 */
 export function buildDayResourceTableModel(
   dayTableModel: DayTableModel,
+  dayCols: DayCol[],
   resources: Resource[],
   context: CalendarContext,
   hasEventsByDate: HasEventsByDate | null = null,
 ): AbstractResourceDayTableModel {
   let hasMajor = resources.length > 1 && dayTableModel.colCount > 1
-  let groups: ResourceDayGroup[] = dayTableModel.headerDates.map((date, dateI) => {
+  let groups: ResourceDayGroup[] = dayCols.map((dayCol, dateI) => {
     let cols: ResourceDayCol[] = []
 
     for (let resourceI = 0; resourceI < resources.length; resourceI += 1) {
       let resource = resources[resourceI]
 
       if (!hasEventsByDate || hasEventsByDate[dateI][resource.id]) {
-        cols.push({
-          date,
+        cols.push(buildResourceDayCol(
+          dayCol,
           dateI,
           resource,
           resourceI,
-          isMajor: hasMajor && cols.length === 0,
-        })
+          hasMajor && cols.length === 0,
+          context,
+        ))
       }
     }
 
     if (!cols.length) {
-      cols.push({
-        date,
-        dateI,
-        resource: null,
-        resourceI: -1,
-        isMajor: hasMajor,
-      })
+      cols.push(buildResourceDayCol(dayCol, dateI, null, -1, hasMajor, context))
     }
 
-    return { date, cols }
+    return { date: dayCol.date, cols }
   })
 
   return new AbstractResourceDayTableModel(dayTableModel, resources, groups, true, context)

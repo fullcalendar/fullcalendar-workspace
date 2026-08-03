@@ -1,15 +1,17 @@
-import { DayGridRange, EventRangeProps } from '@fullcalendar/preact/protected-api'
-import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
-import { VResourceJoiner } from '../resource/common/VResourceJoiner'
+import { DayGridRange } from '@fullcalendar/preact/protected-api'
+import { AbstractResourceDayTableModel, DateColIndex } from '../resource/common/AbstractResourceDayTableModel'
+import { DateIndexedSeg, ViewIndexedSeg, VResourceJoiner } from '../resource/common/VResourceJoiner'
 
 export class ResourceDayTableJoiner extends VResourceJoiner<DayGridRange> {
   transformSeg(
-    seg: DayGridRange & EventRangeProps,
+    seg: DateIndexedSeg<DayGridRange>,
     resourceDayTableModel: AbstractResourceDayTableModel,
     resourceI: number,
     fallbackToPlaceholder: boolean,
-  ): (DayGridRange & EventRangeProps)[] {
-    let colRanges = resourceDayTableModel.computeColRanges(seg.start, seg.end, resourceI, fallbackToPlaceholder)
+  ): ViewIndexedSeg<DayGridRange>[] {
+    let dateStartI: DateColIndex = seg.start
+    let dateEndI: DateColIndex = seg.end
+    let colRanges = resourceDayTableModel.computeColRanges(dateStartI, dateEndI, resourceI, fallbackToPlaceholder)
 
     return colRanges.map((colRange) => ({
       ...seg,

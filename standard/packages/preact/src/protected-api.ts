@@ -202,7 +202,7 @@ export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './timeg
 export { DayTimeColsSlicer } from './timegrid/DayTimeColsSlicer'
 export { AllDaySplitter } from './timegrid/AllDaySplitter'
 export { TimeGridLayout } from './timegrid/components/TimeGridLayout'
-export { buildTimeColsModel, buildDayRanges } from './timegrid/components/util'
+export { buildTimeColsModel } from './timegrid/components/util'
 
 export { DayTableSlicer } from './daygrid/DayTableSlicer'
 export {

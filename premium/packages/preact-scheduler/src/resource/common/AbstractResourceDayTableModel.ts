@@ -1,14 +1,16 @@
-import { CalendarContext, DateMarker, DayTableCell, DayTableModel, Hit, SlicedCoordRange, startOfDay } from '@fullcalendar/preact/protected-api'
+import { CalendarContext, DateMarker, DayCol, DayTableCell, DayTableModel, Hit, SlicedCoordRange, startOfDay } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../api/ResourceApi'
 import { Resource } from '../structs/resource'
 import { ResourceIndex } from './ResourceIndex'
 
-export interface ResourceDayCol {
-  date: DateMarker
-  dateI: number
+export type DateColIndex = number // index in the date-level DayCol list
+export type ViewColIndex = number // index in the final resource-expanded column list
+export type ViewColRange = SlicedCoordRange // range in the final resource-expanded column list
+
+export interface ResourceDayCol extends DayCol {
+  dateI: DateColIndex
   resource: Resource | null
   resourceI: number
-  isMajor: boolean
 }
 
 export interface ResourceDayGroup {
@@ -23,11 +25,10 @@ TODO: move this so @fullcalendar/resource-daygrid
 export class AbstractResourceDayTableModel {
   cells: DayTableCell[][]
   resourceIndex: ResourceIndex
-  rowCount: number
   colCount: number
   cols: ResourceDayCol[]
-  colLookup: { [key: string]: number }
-  dateFirstCols: number[]
+  colLookup: { [key: string]: ViewColIndex }
+  dateFirstCols: ViewColIndex[]
   hasPlaceholderCols: boolean
 
   private colGroupIndices: number[]
@@ -59,19 +60,18 @@ export class AbstractResourceDayTableModel {
     }
 
     this.resourceIndex = new ResourceIndex(resources)
-    this.rowCount = dayTableModel.rowCount
     this.colCount = cols.length
     this.cols = cols
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
     this.hasPlaceholderCols = resources.length > 0 && cols.some((col) => !col.resource)
     this.colGroupIndices = colGroupIndices
-    this.cells = resources.length
-      ? buildResourceCells(dayTableModel, cols, context)
-      : dayTableModel.buildCells()
+    this.cells = dayTableModel.rowCount === 1
+      ? [cols]
+      : buildResourceCells(dayTableModel, cols, context)
   }
 
-  computeCol(dateI: number, resourceI: number): number {
+  computeCol(dateI: DateColIndex, resourceI: number): ViewColIndex {
     let key = buildColKey(dateI, this.resources.length ? resourceI : -1)
     let col = this.colLookup[key]
 
@@ -79,13 +79,13 @@ export class AbstractResourceDayTableModel {
   }
 
   computeColRanges(
-    dateStartI: number,
-    dateEndI: number,
+    dateStartI: DateColIndex,
+    dateEndI: DateColIndex,
     resourceI: number,
     fallbackToPlaceholder = false,
-  ): SlicedCoordRange[] {
-    let ranges: SlicedCoordRange[] = []
-    let currentRange: SlicedCoordRange | null = null
+  ): ViewColRange[] {
+    let ranges: ViewColRange[] = []
+    let currentRange: ViewColRange | null = null
     let currentGroupI = -1
 
     for (let dateI = dateStartI; dateI < dateEndI; dateI += 1) {
@@ -148,7 +148,7 @@ export class AbstractResourceDayTableModel {
     return true
   }
 
-  private computeDateI(date: DateMarker): number {
+  private computeDateI(date: DateMarker): DateColIndex {
     let dayStart = startOfDay(date).valueOf()
 
     return this.dayTableModel.headerDates.findIndex((headerDate) => headerDate.valueOf() === dayStart)
@@ -165,16 +165,15 @@ function buildResourceCells(
   for (let row = 0; row < dayTableModel.rowCount; row += 1) {
     rows.push(cols.map((col) => {
       let date = dayTableModel.cellRows[row][col.dateI].date
+      let { resource } = col
 
-      if (!col.resource) {
+      if (!resource) {
         return {
           key: date.toISOString(),
           date,
           isMajor: col.isMajor,
         }
       }
-
-      let resource = col.resource
 
       return {
         key: resource.id + ':' + date.toISOString(),
@@ -191,6 +190,38 @@ function buildResourceCells(
   return rows
 }
 
-function buildColKey(dateI: number, resourceI: number): string {
+export function buildResourceDayCol(
+  dayCol: DayCol,
+  dateI: DateColIndex,
+  resource: Resource | null,
+  resourceI: number,
+  isMajor: boolean,
+  context: CalendarContext,
+): ResourceDayCol {
+  if (!resource) {
+    return {
+      ...dayCol,
+      dateI,
+      resource: null,
+      resourceI,
+      isMajor,
+    }
+  }
+
+  return {
+    ...dayCol,
+    key: resource.id + ':' + dayCol.date.toISOString(),
+    dateI,
+    resource,
+    resourceI,
+    isMajor,
+    renderProps: { resource: new ResourceApi(context, resource) },
+    attrs: { 'data-resource-id': resource.id },
+    className: '',
+    dateSpanProps: { resourceId: resource.id },
+  }
+}
+
+function buildColKey(dateI: DateColIndex, resourceI: number): string {
   return dateI + ':' + resourceI
 }

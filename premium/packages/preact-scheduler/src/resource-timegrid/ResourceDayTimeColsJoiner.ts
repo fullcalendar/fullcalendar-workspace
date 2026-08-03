@@ -1,19 +1,19 @@
 import { TimeGridRange } from '@fullcalendar/preact/protected-api'
-import { EventRangeProps } from '@fullcalendar/preact/protected-api'
-import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
-import { VResourceJoiner } from '../resource/common/VResourceJoiner'
+import { AbstractResourceDayTableModel, DateColIndex, ViewColIndex } from '../resource/common/AbstractResourceDayTableModel'
+import { DateIndexedSeg, ViewIndexedSeg, VResourceJoiner } from '../resource/common/VResourceJoiner'
 
 export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeGridRange> {
   transformSeg(
-    seg: TimeGridRange & EventRangeProps,
+    seg: DateIndexedSeg<TimeGridRange>,
     resourceDayTable: AbstractResourceDayTableModel,
     resourceI: number,
     fallbackToPlaceholder: boolean,
-  ): (TimeGridRange & EventRangeProps)[] {
-    let col = resourceDayTable.computeCol(seg.col, resourceI)
+  ): ViewIndexedSeg<TimeGridRange>[] {
+    let dateI: DateColIndex = seg.col
+    let col: ViewColIndex = resourceDayTable.computeCol(dateI, resourceI)
 
     if (col === -1 && fallbackToPlaceholder) {
-      col = resourceDayTable.computeCol(seg.col, -1)
+      col = resourceDayTable.computeCol(dateI, -1)
     }
 
     if (col === -1) {
