@@ -273,6 +273,42 @@ describe('filterResourcesWithEvents per date', () => {
       expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(2)
     })
 
+    it('does not count an all-day event within the previous date\'s extended slotMaxTime', () => {
+      let calendar = initCalendar({
+        slotMaxTime: '30:00',
+        resources: [{ id: 'a', title: 'Resource A' }],
+        events: [{ title: 'All day 2', start: DAY_2, resourceId: 'a' }],
+      })
+      let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+
+      expectTimeGridStructure(calendar, {
+        [DAY_1]: [],
+        [DAY_2]: ['a'],
+      }, ['a'], datesAboveResources)
+      expect(viewWrapper.timeGrid.getEventEls().length).toBe(0)
+      expect(new CalendarWrapper(calendar).getEventEls().length).toBe(1)
+    })
+
+    it('omits a date disabled by validRange even when it has events', () => {
+      let calendar = initCalendar({
+        validRange: { end: DAY_2 },
+        resources: [
+          { id: 'a', title: 'Resource A' },
+          { id: 'b', title: 'Resource B' },
+        ],
+        events: [
+          { title: 'A day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+          { title: 'B day 2', start: DAY_2 + 'T09:00:00', resourceId: 'b' },
+        ],
+      })
+
+      expectTimeGridStructure(calendar, {
+        [DAY_1]: ['a'],
+        [DAY_2]: [],
+      }, ['a', 'b'], datesAboveResources)
+      expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(1)
+    })
+
     it('counts every resource on a multi-resource event', () => {
       let calendar = initCalendar({
         resources: [
@@ -480,6 +516,21 @@ describe('filterResourcesWithEvents per date', () => {
     }
   })
 
+  it('keeps a nav link when only one date-major date survives', () => {
+    let calendar = initCalendar({
+      datesAboveResources: true,
+      navLinks: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [
+        { title: 'A day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+      ],
+    })
+    let dateRow = new ResourceTimeGridViewWrapper(calendar).header.getCellElsByRow()[0]
+
+    expect(dateRow.length).toBe(1)
+    expect(dateRow[0].querySelector('.fc-navlink')).toBeTruthy()
+  })
+
   it('allows a selection across a fully-omitted date', async () => {
     let selectInfo = null
     let calendar = initCalendar({
@@ -605,6 +656,27 @@ describe('filterResourcesWithEvents per date', () => {
           buildExpectedColumns(expectedResourceIdsByDate, ['a', 'b'], datesAboveResources),
         )
         expect(new CalendarWrapper(calendar).getEventEls().length).toBe(3)
+      })
+
+      it('falls back to plain day columns when the only event ends before nextDayThreshold', () => {
+        let calendar = initCalendar({
+          nextDayThreshold: '09:00:00',
+          resources: [{ id: 'a', title: 'Resource A' }],
+          events: [{
+            title: 'Overnight tail',
+            start: '2016-12-03T22:00:00', // day before the view
+            end: DAY_1 + 'T02:00:00', // within day 1, but before nextDayThreshold
+            resourceId: 'a',
+          }],
+        })
+        let viewWrapper = new ResourceDayGridViewWrapper(calendar)
+
+        expect(viewWrapper.header.getResourceIds()).toEqual([])
+        expect(viewWrapper.dayGrid.getCellInfo()).toEqual([
+          { date: DAY_1, resourceId: null },
+          { date: DAY_2, resourceId: null },
+        ])
+        expect(new CalendarWrapper(calendar).getEventEls().length).toBe(0)
       })
     })
 

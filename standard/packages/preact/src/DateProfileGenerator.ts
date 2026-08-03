@@ -36,11 +36,26 @@ export interface DateProfile {
   slotMaxTime: Duration
 }
 
+/*
+whether slotMinTime/slotMaxTime affect the view's rendered time window. views whose answer
+depends on config (like timeline, where a whole-day axis ignores those options) declare a
+predicate instead of a boolean
+*/
+export interface UsesMinMaxTimeInfo {
+  currentRange: DateRange
+  dateEnv: DateEnv
+  slotDuration?: Duration
+  slotHeaderInterval?: Duration
+}
+export type UsesMinMaxTimeInput = boolean | ((info: UsesMinMaxTimeInfo) => boolean)
+
 export interface DateProfileGeneratorProps extends DateProfileOptions {
   dateProfileGeneratorClass: DateProfileGeneratorClass // not used by DateProfileGenerator itself
   duration: Duration
   durationUnit: string
-  usesMinMaxTime: boolean
+  usesMinMaxTime: UsesMinMaxTimeInput
+  slotDuration?: Duration
+  slotHeaderInterval?: Duration
   dateEnv: DateEnv
   calendarApi: CalendarApiImpl
 }
@@ -130,7 +145,7 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
       activeRange = intersectRanges(activeRange, currentInfo.range)
     }
 
-    activeRange = this.adjustActiveRange(activeRange)
+    activeRange = this.adjustActiveRange(activeRange, currentInfo.range)
     activeRange = intersectRanges(activeRange, validRange) // might return null
 
     // it's invalid if the originally requested date is not contained,
@@ -226,13 +241,21 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
     return createDuration({ day: 1 })
   }
 
+  computeUsesMinMaxTime(currentRange: DateRange): boolean {
+    let { usesMinMaxTime, dateEnv, slotDuration, slotHeaderInterval } = this.props
+
+    return typeof usesMinMaxTime === 'function'
+      ? usesMinMaxTime({ currentRange, dateEnv, slotDuration, slotHeaderInterval })
+      : Boolean(usesMinMaxTime)
+  }
+
   // Returns a new activeRange to have time values (un-ambiguate)
   // slotMinTime or slotMaxTime causes the range to expand.
-  adjustActiveRange(range: DateRange) {
-    let { dateEnv, usesMinMaxTime, slotMinTime, slotMaxTime } = this.props
+  adjustActiveRange(range: DateRange, currentRange: DateRange) {
+    let { dateEnv, slotMinTime, slotMaxTime } = this.props
     let { start, end } = range
 
-    if (usesMinMaxTime) {
+    if (this.computeUsesMinMaxTime(currentRange)) {
       // expand active range if slotMinTime is negative (why not when positive?)
       if (asRoughDays(slotMinTime) < 0) {
         start = startOfDay(start) // necessary?

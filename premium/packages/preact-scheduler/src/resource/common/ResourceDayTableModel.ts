@@ -1,7 +1,7 @@
 import { CalendarContext, DayCol, DayTableModel } from '@fullcalendar/preact/protected-api'
 import { Resource } from '../structs/resource'
 import { AbstractResourceDayTableModel, ResourceDayCol, ResourceDayGroup, buildResourceDayCol } from './AbstractResourceDayTableModel'
-import { HasEventsByDate } from './per-date-filtering'
+import { HasEventsByDate } from './resource-filtering'
 
 /*
 resources over dates

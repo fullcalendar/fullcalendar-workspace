@@ -1,6 +1,6 @@
 import {
-  rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
-  EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext, DaySeriesModel,
+  ViewProps, ViewPropsTransformer, CalendarContentProps,
+  EventStore, EventUi, EventDef, CalendarContext,
 } from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
@@ -10,116 +10,26 @@ import { computeResourceEditable } from './EventDragging'
 
 export interface ResourceViewProps extends ViewProps {
   resourceStore: ResourceHash
+  rawEventStore: EventStore // unlike ViewProps.eventStore, has no interaction-mirror substitutions
   resourceEntityExpansions: ResourceEntityExpansions
 }
 
+/*
+passes the raw resource data through. each view applies its own filterResourcesWithEvents
+filtering via resource/common/resource-filtering.ts, using the raw event store so
+resource visibility stays stable during drag mirrors
+*/
 export class ResourceDataAdder implements ViewPropsTransformer {
-  buildFilterRanges = memoize(buildFilterRanges)
-  filterResources = memoize(filterResources)
-
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
     if (calendarProps.viewSpec.optionDefaults.needsResourceData) {
-      let filterRanges = this.buildFilterRanges(
-        calendarProps.dateProfile,
-        calendarProps.options,
-        calendarProps.dateEnv,
-        calendarProps.dateProfileGenerator,
-        calendarProps.viewSpec.optionDefaults.usesMinMaxTime === true,
-      )
-
       return {
-        resourceStore: this.filterResources(
-          calendarProps.resourceStore,
-          calendarProps.options.filterResourcesWithEvents,
-          calendarProps.eventStore,
-          filterRanges,
-        ),
+        resourceStore: calendarProps.resourceStore,
+        rawEventStore: calendarProps.eventStore,
         resourceEntityExpansions: calendarProps.resourceEntityExpansions,
       }
     }
     return null
   }
-}
-
-function filterResources(
-  resourceStore: ResourceHash,
-  doFilterResourcesWithEvents: boolean,
-  eventStore: EventStore,
-  filterRanges: DateRange[],
-): ResourceHash {
-  if (doFilterResourcesWithEvents) {
-    let instancesInRange = filterEventInstancesInRanges(eventStore.instances, filterRanges)
-    let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)
-
-    Object.assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
-
-    return filterHash(resourceStore, (resource, resourceId) => hasEvents[resourceId])
-  }
-
-  return resourceStore
-}
-
-function buildFilterRanges(
-  dateProfile: CalendarContentProps['dateProfile'],
-  options: CalendarContentProps['options'],
-  dateEnv: CalendarContentProps['dateEnv'],
-  dateProfileGenerator: CalendarContentProps['dateProfileGenerator'],
-  usesMinMaxTime: boolean,
-): DateRange[] {
-  if (usesMinMaxTime) {
-    let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
-
-    return daySeries.dates.map((date) => ({
-      start: dateEnv.add(date, options.slotMinTime),
-      end: dateEnv.add(date, options.slotMaxTime),
-    }))
-  }
-
-  return [dateProfile.activeRange]
-}
-
-function filterEventInstancesInRanges(eventInstances: EventInstanceHash, filterRanges: DateRange[]) {
-  return filterHash(eventInstances, (eventInstance) => (
-    filterRanges.some((filterRange) => rangesIntersect(eventInstance.range, filterRange))
-  ))
-}
-
-function computeHasEvents(eventInstances: EventInstanceHash, eventDefs: EventDefHash) {
-  let hasEvents = {}
-
-  for (let instanceId in eventInstances) {
-    let instance = eventInstances[instanceId]
-
-    for (let resourceId of eventDefs[instance.defId].resourceIds) {
-      hasEvents[resourceId] = true
-    }
-  }
-
-  return hasEvents
-}
-
-/*
-mark resources as having events if any of their ancestors have them
-NOTE: resourceStore might not have all the resources that hasEvents{} has keyed
-*/
-function computeAncestorHasEvents(hasEvents: { [resourceId: string]: boolean }, resourceStore: ResourceHash) {
-  let res = {}
-
-  for (let resourceId in hasEvents) {
-    let resource
-
-    while ((resource = resourceStore[resourceId])) {
-      resourceId = resource.parentId // now functioning as the parentId
-
-      if (resourceId) {
-        res[resourceId] = true
-      } else {
-        break
-      }
-    }
-  }
-
-  return res
 }
 
 /*

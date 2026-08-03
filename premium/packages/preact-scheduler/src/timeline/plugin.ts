@@ -1,6 +1,7 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import { TimelineView } from './components/TimelineView'
+import { computeIsTimeScale } from './timeline-date-profile'
 
 export default {
   name: 'timeline',
@@ -10,7 +11,7 @@ export default {
   views: {
     timeline: {
       component: TimelineView,
-      usesMinMaxTime: true,
+      usesMinMaxTime: computeIsTimeScale, // whole-day axes ignore slotMinTime/slotMaxTime
       eventResizableFromStart: true, // how is this consumed for TimelineView tho?
     },
     timelineDay: {

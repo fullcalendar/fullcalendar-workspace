@@ -105,6 +105,7 @@ export function buildDateRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
+  totalDateCnt?: number,
 ): RowConfig<BaseDayHeaderData, DayHeaderInfo> {
   return {
     isDateRow: true,
@@ -122,6 +123,7 @@ export function buildDateRowConfig(
       undefined,
       undefined,
       isMajorMod,
+      totalDateCnt,
     )
   }
 }

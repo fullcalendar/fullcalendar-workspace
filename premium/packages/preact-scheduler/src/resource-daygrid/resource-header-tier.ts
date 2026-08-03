@@ -65,6 +65,8 @@ export function buildResourceRowConfigs(
       context,
       /* colSpan = */ 1,
       /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
+      // per-date filtering can omit dates, but surviving ones should keep nav links
+      /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
     )
 
     for (let i = 0; i < groups.length; i += 1) {

@@ -86,7 +86,7 @@ export type { CalendarData } from './reducers/data-types'
 export { CalendarDataManager } from './reducers/CalendarDataManager'
 export type { ViewProps } from './component-util/View'
 
-export type { DateProfile } from './DateProfileGenerator'
+export type { DateProfile, UsesMinMaxTimeInfo, UsesMinMaxTimeInput } from './DateProfileGenerator'
 export { DateProfileGenerator, computeMajorUnit, isMajorUnit } from './DateProfileGenerator'
 export type { DateSpan } from './structs/date-span'
 export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/date-span'

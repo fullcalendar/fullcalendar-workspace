@@ -8,6 +8,7 @@ import {
   computeMajorUnit,
   isMajorUnit,
   warn,
+  UsesMinMaxTimeInfo,
 } from '@fullcalendar/preact/protected-api'
 import { buildTimelineTimeAxis, TimelineTimeAxis } from './timeline-time-axis'
 
@@ -87,9 +88,9 @@ export function buildTimelineDateProfile(
     slotDuration: allOptions.slotDuration,
   } as TimelineDateProfile
 
-  validateLabelAndSlot(tDateProfile, dateProfile, dateEnv) // validate after computed grid duration
-  ensureLabelInterval(tDateProfile, dateProfile, dateEnv)
-  ensureSlotDuration(tDateProfile, dateProfile, dateEnv)
+  validateLabelAndSlot(tDateProfile, dateProfile.currentRange, dateEnv) // validate after computed grid duration
+  ensureLabelInterval(tDateProfile, dateProfile.currentRange, dateEnv)
+  ensureSlotDuration(tDateProfile, dateProfile.currentRange, dateEnv)
 
   let input = allOptions.slotHeaderFormat
   let rawFormats: any[]
@@ -308,9 +309,7 @@ export function isValidDate(
   return true
 }
 
-function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
-  const { currentRange } = dateProfile
-
+function validateLabelAndSlot(tDateProfile: TimelineDateProfile, currentRange: DateRange, dateEnv: DateEnv) {
   // make sure labelInterval doesn't exceed the max number of cells
   if (tDateProfile.labelInterval) {
     const labelCnt = dateEnv.countDurationsBetween(
@@ -347,8 +346,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   }
 }
 
-function ensureLabelInterval(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
-  const { currentRange } = dateProfile
+function ensureLabelInterval(tDateProfile: TimelineDateProfile, currentRange: DateRange, dateEnv: DateEnv) {
   let { labelInterval } = tDateProfile
 
   if (!labelInterval) {
@@ -392,12 +390,11 @@ function ensureLabelInterval(tDateProfile: TimelineDateProfile, dateProfile: Dat
   return labelInterval
 }
 
-function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
-  const { currentRange } = dateProfile
+function ensureSlotDuration(tDateProfile: TimelineDateProfile, currentRange: DateRange, dateEnv: DateEnv) {
   let { slotDuration } = tDateProfile
 
   if (!slotDuration) {
-    const labelInterval = ensureLabelInterval(tDateProfile, dateProfile, dateEnv) // will compute if necessary
+    const labelInterval = ensureLabelInterval(tDateProfile, currentRange, dateEnv) // will compute if necessary
 
     // compute based off the label interval
     // find the largest slot duration that is different from labelInterval, but still acceptable
@@ -431,6 +428,21 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
   }
 
   return slotDuration
+}
+
+/*
+The timeline's `usesMinMaxTime` predicate: whether the axis will be a time-scale (and thus
+honor slotMinTime/slotMaxTime), without building the full TimelineDateProfile. Mirrors the
+slotDuration resolution above, minus validateLabelAndSlot's invalid-config nulling (such
+configs already warn at render).
+*/
+export function computeIsTimeScale(info: UsesMinMaxTimeInfo): boolean {
+  let tDateProfile = {
+    labelInterval: info.slotHeaderInterval,
+    slotDuration: info.slotDuration,
+  } as TimelineDateProfile
+
+  return Boolean(ensureSlotDuration(tDateProfile, info.currentRange, info.dateEnv).milliseconds)
 }
 
 function computeHeaderFormats(

@@ -10,6 +10,8 @@ import {
   EventStore,
   Hit,
   NowTimer,
+  addDays,
+  intersectRanges,
   mapHash,
   memoize,
   buildDayColsFromSeries,
@@ -24,7 +26,7 @@ import { Resource, ResourceHash } from '../../resource/structs/resource'
 import { buildResourceDayTableModel } from '../../resource/common/ResourceDayTableModel'
 import { ResourceViewProps } from '../../resource/View'
 import { buildResourcelessDayTableModel } from '../../resource/common/ResourcelessDayTableModel'
-import { computeHasEventsByDate } from '../../resource/common/per-date-filtering'
+import { buildFilterRanges, computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
 import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/preact/protected-api'
@@ -39,6 +41,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   state = {} as ResourceTimeGridViewState
 
   // memo
+  private buildFilterRanges = memoize(buildFilterRanges)
+  private filterResourceStore = memoize(filterResourceStore)
   private flattenResources = memoize(flattenResources)
   private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
     new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
@@ -78,8 +82,15 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let { options, dateEnv } = context
     let { dateProfile } = props
 
+    let resourceStore = options.filterResourcesWithEvents
+      ? this.filterResourceStore(
+          props.resourceStore,
+          props.rawEventStore,
+          this.buildFilterRanges(dateProfile, options, dateEnv, context.dateProfileGenerator),
+        )
+      : props.resourceStore
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
-    let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
+    let resources = this.flattenResources(resourceStore, resourceOrderSpecs)
     let daySeries = this.buildDaySeries(dateProfile, context.dateProfileGenerator)
     let dayCols = this.buildDayCols(daySeries, dateEnv, dateProfile)
     let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
@@ -88,8 +99,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       dayCols,
       resources,
       options.datesAboveResources,
-      filterResourcesByDate ? props.eventStore : null,
-      filterResourcesByDate ? props.resourceStore : null,
+      filterResourcesByDate ? props.rawEventStore : null,
+      filterResourcesByDate ? resourceStore : null,
+      dateProfile,
       context,
     )
 
@@ -244,14 +256,26 @@ function buildResourceTimeColsModel(
   datesAboveResources: boolean,
   eventStore: EventStore | null,
   resourceStore: ResourceHash | null,
+  dateProfile: DateProfile,
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
   if (!resources.length) {
     return buildResourcelessDayTableModel(null, dayCols, context)
   }
 
+  // clip to activeRange so events on validRange-disabled dates don't create columns.
+  // all-day events slice on civil days (not the slot window), so they get civil ranges
+  let { activeRange } = dateProfile
   let hasEventsByDate = eventStore && resourceStore
-    ? computeHasEventsByDate(eventStore, resourceStore, dayCols.map((dayCol) => dayCol.range))
+    ? computeHasEventsByDate(
+        eventStore,
+        resourceStore,
+        dayCols.map((dayCol) => intersectRanges(dayCol.range, activeRange) as DateRange | null),
+        dayCols.map((dayCol) => intersectRanges(
+          { start: dayCol.date, end: addDays(dayCol.date, 1) },
+          activeRange,
+        ) as DateRange | null),
+      )
     : null
 
   return datesAboveResources ?
