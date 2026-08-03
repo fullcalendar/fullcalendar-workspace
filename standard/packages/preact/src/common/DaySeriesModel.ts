@@ -83,19 +83,9 @@ export class DaySeriesModel {
 }
 
 function getFirstVisibleIndex(result: DayIndexResult): number {
-  switch (result.kind) {
-    case 'visible': return result.index
-    case 'hidden': return result.nextIndex
-    case 'before': return result.index
-    case 'after': return result.index
-  }
+  return result.kind === 'hidden' ? result.nextIndex : result.index
 }
 
 function getLastVisibleIndex(result: DayIndexResult): number {
-  switch (result.kind) {
-    case 'visible': return result.index
-    case 'hidden': return result.previousIndex
-    case 'before': return result.index
-    case 'after': return result.index
-  }
+  return result.kind === 'hidden' ? result.previousIndex : result.index
 }

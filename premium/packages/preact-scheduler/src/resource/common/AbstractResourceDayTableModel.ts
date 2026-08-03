@@ -1,4 +1,4 @@
-import { CalendarContext, DateMarker, DayCol, DayTableCell, DayTableModel, Hit, SlicedCoordRange, startOfDay } from '@fullcalendar/preact/protected-api'
+import { CalendarContext, DateMarker, DayCol, DayTableCell, DayTableModel, Hit, SlicedCoordRange } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../api/ResourceApi'
 import { Resource } from '../structs/resource'
 import { ResourceIndex } from './ResourceIndex'
@@ -29,7 +29,6 @@ export class AbstractResourceDayTableModel {
   cols: ResourceDayCol[]
   colLookup: { [key: string]: ViewColIndex }
   dateFirstCols: ViewColIndex[]
-  isRagged: boolean // does per-date filtering give some dates fewer resource cols than others?
 
   private colGroupIndices: number[]
 
@@ -65,7 +64,6 @@ export class AbstractResourceDayTableModel {
     this.cols = cols
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
-    this.isRagged = resources.length > 0 && cols.length !== dayCols.length * resources.length
     this.colGroupIndices = colGroupIndices
     this.cells = !dayTableModel || dayTableModel.rowCount === 1
       ? [cols]
@@ -116,60 +114,12 @@ export class AbstractResourceDayTableModel {
     return ranges
   }
 
-  isHitComboAllowed(hit0: Hit, hit1: Hit, allowAcrossResources: boolean): boolean {
-    if (allowAcrossResources) {
-      return true
-    }
-
-    let resourceId0 = hit0.dateSpan.resourceId
-    let resourceId1 = hit1.dateSpan.resourceId
-
-    if (!this.isRagged) {
-      return resourceId0 === resourceId1
-    }
-
-    if (resourceId0 !== resourceId1) {
-      return false
-    }
-
-    let resourceI = resourceId0 == null ? -1 : this.resourceIndex.indicesById[resourceId0]
-    let dateI0 = this.computeDateI(hit0.dateSpan.range.start)
-    let dateI1 = this.computeDateI(hit1.dateSpan.range.start)
-
-    if (resourceI == null || dateI0 === -1 || dateI1 === -1) {
-      return false
-    }
-
-    for (let dateI = Math.min(dateI0, dateI1); dateI <= Math.max(dateI0, dateI1); dateI += 1) {
-      // a date rendered without this resource breaks the span. a fully-omitted date
-      // (no columns at all) does not, like a hidden day
-      if (this.computeCol(dateI, resourceI) === -1 && this.dateFirstCols[dateI] != null) {
-        return false
-      }
-    }
-
-    return true
-  }
-
   /*
-  only valid for single-row (ragged) models, where dayCols covers every displayed date.
-  dates in a column's slotMinTime/slotMaxTime extension clamp to the boundary column.
+  dates missing this resource's column (filtered-out or fully-omitted) don't break the span.
+  the highlight simply skips them while the reported range stays continuous, like a hidden day
   */
-  private computeDateI(date: DateMarker): DateColIndex {
-    let { dayCols } = this
-    let dayStart = startOfDay(date).valueOf()
-
-    if (!dayCols.length) {
-      return -1
-    }
-    if (dayStart < dayCols[0].date.valueOf()) {
-      return 0
-    }
-    if (dayStart > dayCols[dayCols.length - 1].date.valueOf()) {
-      return dayCols.length - 1
-    }
-
-    return dayCols.findIndex((dayCol) => dayCol.date.valueOf() === dayStart)
+  isHitComboAllowed(hit0: Hit, hit1: Hit, allowAcrossResources: boolean): boolean {
+    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
   }
 }
 

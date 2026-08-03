@@ -521,8 +521,8 @@ describe('filterResourcesWithEvents per date', () => {
     expect(selectInfo.end.toISOString().slice(0, 10)).toBe(DAY_3) // spans the omitted day 2
   })
 
-  it('blocks a selection across a date rendered without the resource', async () => {
-    let selectCalled = false
+  it('allows a selection across a date rendered without the resource', async () => {
+    let selectInfo = null
     let calendar = initCalendar({
       initialView: 'resourceTimeGridThreeDay',
       datesAboveResources: false,
@@ -542,8 +542,8 @@ describe('filterResourcesWithEvents per date', () => {
         { title: 'B day 2', start: DAY_2 + 'T09:00:00', resourceId: 'b' },
         { title: 'A day 3', start: DAY_3 + 'T09:00:00', resourceId: 'a' },
       ],
-      select() {
-        selectCalled = true
+      select(info) {
+        selectInfo = info
       },
     })
 
@@ -560,7 +560,10 @@ describe('filterResourcesWithEvents per date', () => {
       })
     })
 
-    expect(selectCalled).toBe(false)
+    expect(selectInfo).toBeTruthy()
+    expect(selectInfo.resource.id).toBe('a')
+    expect(selectInfo.start).toEqualDate(DAY_1 + 'T09:00:00Z')
+    expect(selectInfo.end.toISOString().slice(0, 10)).toBe(DAY_3) // spans day 2, where A has no column
   })
   describe('in resource dayGrid', () => {
     pushOptions({
