@@ -12,7 +12,7 @@ import {
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef } from 'react'
 import { buildResourceHierarchy, GenericNode, GroupNode, ResourceNode } from '../../resource/common/resource-hierarchy'
-import { buildFilterRanges, filterResourceStore } from '../../resource/common/resource-filtering'
+import { ResourceFilter } from '../../resource/common/resource-filtering'
 import { ResourceSplitter } from '../../resource/common/ResourceSplitter'
 import { ResourceViewProps } from '../../resource/View'
 import { buildTimelineDateProfile } from '../../timeline/timeline-date-profile'
@@ -37,8 +37,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private buildFilterRanges = memoize(buildFilterRanges)
-  private filterResourceStore = memoize(filterResourceStore)
+  private resourceFilter = new ResourceFilter()
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private computeSlotWidth = memoize(computeSlotWidth)
@@ -96,13 +95,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table hierarchy */
 
-    let resourceStore = options.filterResourcesWithEvents
-      ? this.filterResourceStore(
-          props.resourceStore,
-          props.rawEventStore,
-          this.buildFilterRanges(dateProfile, options, context.dateEnv, context.dateProfileGenerator),
-        )
-      : props.resourceStore
+    let { resourceStore } = this.resourceFilter.filter(
+      props.resourceStore,
+      props.rawEventStore,
+      dateProfile,
+      options,
+      context.dateEnv,
+      context.dateProfileGenerator,
+    )
     let resourceHierarchy = this.buildResourceHierarchy(
       resourceStore,
       orderSpecs,

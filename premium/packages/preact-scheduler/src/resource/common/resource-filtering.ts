@@ -2,15 +2,15 @@ import { Duration } from '@fullcalendar/preact/public-api'
 import {
   DateEnv, DateProfile, DateProfileGenerator, DateRange, DaySeriesModel,
   EventDefHash, EventInstanceHash, EventStore,
-  addDays, computeVisibleDayRange, filterHash, intersectRanges, rangesIntersect,
+  addDays, computeVisibleDayRange, filterHash, intersectRanges, memoize, rangesIntersect,
 } from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from '../structs/resource'
 
 /*
-Utilities for filterResourcesWithEvents. Each view applies its own filtering:
-buildFilterRanges + filterResourceStore for the view-wide pass (which resources appear at
-all), and computeHasEventsByDate for the per-date pass (which (date, resource) columns
-exist in single-row multi-day vertical views).
+Utilities for filterResourcesWithEvents. Each view owns a ResourceFilter, which builds one
+FilterRanges and runs the view-wide pass (which resources appear at all). Single-row
+multi-day vertical views then feed that same FilterRanges to computeHasEventsByDate for the
+per-date pass (which (date, resource) columns exist), so both passes see identical windows.
 */
 
 /*
@@ -18,15 +18,52 @@ these options all have base defaults, so they're always present at runtime despi
 optional typing (which lets refined view-options objects be passed directly)
 */
 export interface EventFilterOptions {
+  filterResourcesWithEvents?: boolean
   slotMinTime?: Duration
   slotMaxTime?: Duration
   nextDayThreshold?: Duration
 }
 
+/*
+The rendered window of each visible day, in the same order as the view's day columns. A
+null entry is a date that renders nothing (clipped away by activeRange) and can never own
+events; entries stay in place rather than being dropped so per-date consumers can index by
+date-column.
+*/
 export interface FilterRanges {
-  timed: DateRange[] // for timed event instances
-  allDay: DateRange[] // for all-day event instances, which render on civil days
+  timed: (DateRange | null)[] // for timed event instances
+  allDay: (DateRange | null)[] // for all-day event instances, which render on civil days
   nextDayThreshold: Duration | null // when set, normalize timed instances like the renderers do
+}
+
+/*
+Owns a view's filterResourcesWithEvents memoization. Returns the filtered store plus the
+ranges it filtered against — null when the option is off, which also serves as the
+per-date pass's "no filtering" signal.
+*/
+export class ResourceFilter {
+  private buildFilterRanges = memoize(buildFilterRanges)
+  private filterResourceStore = memoize(filterResourceStore)
+
+  filter(
+    resourceStore: ResourceHash,
+    eventStore: EventStore,
+    dateProfile: DateProfile,
+    options: EventFilterOptions,
+    dateEnv: DateEnv,
+    dateProfileGenerator: DateProfileGenerator,
+  ): { resourceStore: ResourceHash, filterRanges: FilterRanges | null } {
+    if (!options.filterResourcesWithEvents) {
+      return { resourceStore, filterRanges: null }
+    }
+
+    let filterRanges = this.buildFilterRanges(dateProfile, options, dateEnv, dateProfileGenerator)
+
+    return {
+      resourceStore: this.filterResourceStore(resourceStore, eventStore, filterRanges),
+      filterRanges,
+    }
+  }
 }
 
 /*
@@ -37,7 +74,7 @@ axes ignore slotMinTime/slotMaxTime, so filtering must too); when true, timed in
 test against slot windows. Otherwise civil-day views (daygrid, whole-day timeline axes)
 render timed events on nextDayThreshold-normalized days, so filtering tests the same.
 */
-export function buildFilterRanges(
+function buildFilterRanges(
   dateProfile: DateProfile,
   options: EventFilterOptions,
   dateEnv: DateEnv,
@@ -46,8 +83,8 @@ export function buildFilterRanges(
   let { activeRange } = dateProfile
   let usesSlotWindow = dateProfileGenerator.computeUsesMinMaxTime(dateProfile.currentRange)
   let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
-  let timed: DateRange[] = []
-  let allDay: DateRange[] = []
+  let timed: (DateRange | null)[] = []
+  let allDay: (DateRange | null)[] = []
 
   for (let date of daySeries.dates) {
     let allDayRange = intersectRanges({ start: date, end: addDays(date, 1) }, activeRange)
@@ -58,18 +95,14 @@ export function buildFilterRanges(
         )
       : allDayRange
 
-    if (timedRange) {
-      timed.push(timedRange as DateRange)
-    }
-    if (allDayRange) {
-      allDay.push(allDayRange as DateRange)
-    }
+    allDay.push(allDayRange)
+    timed.push(timedRange)
   }
 
   return { timed, allDay, nextDayThreshold: usesSlotWindow ? null : options.nextDayThreshold || null }
 }
 
-export function filterResourceStore(
+function filterResourceStore(
   resourceStore: ResourceHash,
   eventStore: EventStore,
   filterRanges: FilterRanges,
@@ -88,14 +121,22 @@ function filterEventInstancesInRanges(
   filterRanges: FilterRanges,
 ) {
   return filterHash(eventInstances, (eventInstance) => {
-    let def = eventDefs[eventInstance.defId]
-    let range = (!def.allDay && filterRanges.nextDayThreshold)
-      ? computeVisibleDayRange(eventInstance.range, filterRanges.nextDayThreshold) as DateRange
-      : eventInstance.range
-    let ranges = def.allDay ? filterRanges.allDay : filterRanges.timed
+    let { allDay } = eventDefs[eventInstance.defId]
+    let range = normalizeInstanceRange(eventInstance.range, allDay, filterRanges)
+    let ranges = allDay ? filterRanges.allDay : filterRanges.timed
 
-    return ranges.some((filterRange) => rangesIntersect(range, filterRange))
+    return ranges.some((filterRange) => filterRange && rangesIntersect(range, filterRange))
   })
+}
+
+/*
+timed instances render on nextDayThreshold-normalized days in civil-day views, so they must
+be tested that way too
+*/
+function normalizeInstanceRange(range: DateRange, allDay: boolean, filterRanges: FilterRanges): DateRange {
+  return (!allDay && filterRanges.nextDayThreshold)
+    ? computeVisibleDayRange(range, filterRanges.nextDayThreshold) as DateRange
+    : range
 }
 
 function computeHasEvents(eventInstances: EventInstanceHash, eventDefs: EventDefHash) {
@@ -141,28 +182,22 @@ function computeAncestorHasEvents(hasEvents: { [resourceId: string]: boolean }, 
 export type HasEventsByDate = { [resourceId: string]: true }[]
 
 /*
-Range lists are indexed by date-col. A null entry means the date is disabled (outside
-activeRange) and can never own events. Timed event instances test against timedDayRanges
-and all-day instances against allDayDayRanges, mirroring how the renderers slice each
-type. nextDayThreshold, when given, normalizes timed instances the way daygrid
-rendering does.
+The per-date refinement of filterResourceStore: same ranges, same store, but recorded per
+date-column instead of collapsed. Requires the caller's day columns to line up with
+filterRanges, which holds for the single-row multi-day views that use this.
 */
 export function computeHasEventsByDate(
   eventStore: EventStore,
   resourceStore: ResourceHash,
-  timedDayRanges: (DateRange | null)[],
-  allDayDayRanges: (DateRange | null)[],
-  nextDayThreshold: Duration | null = null,
+  filterRanges: FilterRanges,
 ): HasEventsByDate {
-  let hasEventsByDate: HasEventsByDate = timedDayRanges.map(() => ({}))
+  let hasEventsByDate: HasEventsByDate = filterRanges.timed.map(() => ({}))
 
   for (let instanceId in eventStore.instances) {
     let instance = eventStore.instances[instanceId]
     let def = eventStore.defs[instance.defId]
-    let dayRanges = def.allDay ? allDayDayRanges : timedDayRanges
-    let range = (!def.allDay && nextDayThreshold)
-      ? computeVisibleDayRange(instance.range, nextDayThreshold) as DateRange
-      : instance.range
+    let dayRanges = def.allDay ? filterRanges.allDay : filterRanges.timed
+    let range = normalizeInstanceRange(instance.range, def.allDay, filterRanges)
 
     for (let dateI = 0; dateI < dayRanges.length; dateI += 1) {
       if (dayRanges[dateI] && rangesIntersect(range, dayRanges[dateI])) {

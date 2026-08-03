@@ -144,13 +144,9 @@ function buildResourceCells(
       }
 
       return {
-        key: resource.id + ':' + date.toISOString(),
+        ...buildResourceCellFields(resource, date, context),
         date,
         isMajor: col.isMajor,
-        renderProps: { resource: new ResourceApi(context, resource) },
-        attrs: { 'data-resource-id': resource.id },
-        className: '',
-        dateSpanProps: { resourceId: resource.id },
       }
     }))
   }
@@ -178,11 +174,21 @@ export function buildResourceDayCol(
 
   return {
     ...dayCol,
-    key: resource.id + ':' + dayCol.date.toISOString(),
+    ...buildResourceCellFields(resource, dayCol.date, context),
     dateI,
     resource,
     resourceI,
     isMajor,
+  }
+}
+
+/*
+What makes a day cell resource-specific. A fresh ResourceApi per cell is deliberate: in
+multi-row daygrid the same column is rebuilt for each week row.
+*/
+function buildResourceCellFields(resource: Resource, date: DateMarker, context: CalendarContext) {
+  return {
+    key: resource.id + ':' + date.toISOString(),
     renderProps: { resource: new ResourceApi(context, resource) },
     attrs: { 'data-resource-id': resource.id },
     className: '',
