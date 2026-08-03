@@ -34,8 +34,6 @@ function buildExpectedColumns(
         for (let resourceId of resourceIds) {
           columns.push({ date, resourceId })
         }
-      } else {
-        columns.push({ date, resourceId: null })
       }
     }
   } else {
@@ -44,12 +42,6 @@ function buildExpectedColumns(
         if (resourceIdsByDate[date].includes(resourceId)) {
           columns.push({ date, resourceId })
         }
-      }
-    }
-
-    for (let date of DATES) {
-      if (!resourceIdsByDate[date].length) {
-        columns.push({ date, resourceId: null })
       }
     }
   }
@@ -67,11 +59,13 @@ function buildExpectedHeaderRows(
 
   if (datesAboveResources) {
     for (let date of DATES) {
-      topRow.push({
-        date,
-        resourceId: null,
-        colSpan: Math.max(resourceIdsByDate[date].length, 1),
-      })
+      if (resourceIdsByDate[date].length) {
+        topRow.push({
+          date,
+          resourceId: null,
+          colSpan: resourceIdsByDate[date].length,
+        })
+      }
     }
 
     bottomRow = buildExpectedColumns(resourceIdsByDate, resourceOrder, true).map((column) => ({
@@ -88,13 +82,6 @@ function buildExpectedHeaderRows(
         for (let date of dates) {
           bottomRow.push({ date, resourceId, colSpan: 1 })
         }
-      }
-    }
-
-    for (let date of DATES) {
-      if (!resourceIdsByDate[date].length) {
-        topRow.push({ date, resourceId: null, colSpan: 1 })
-        bottomRow.push({ date, resourceId: null, colSpan: 1 })
       }
     }
   }
@@ -166,6 +153,35 @@ describe('filterResourcesWithEvents per date', () => {
         [DAY_2]: ['b'],
       }, ['a', 'b'], datesAboveResources)
       expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(3)
+    })
+
+    it('uses the rendered slotMinTime window for view-wide and per-date filtering', () => {
+      let calendar = initCalendar({
+        slotMinTime: '06:00',
+        resources: [
+          { id: 'a', title: 'Resource A' },
+          { id: 'b', title: 'Resource B' },
+        ],
+        events: [
+          { id: 'a-event', title: 'A before slots', start: DAY_1 + 'T02:00:00', resourceId: 'a' },
+          { title: 'B in slots', start: DAY_1 + 'T07:00:00', resourceId: 'b' },
+        ],
+      })
+      let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+      expectTimeGridStructure(calendar, {
+        [DAY_1]: ['b'],
+        [DAY_2]: [],
+      }, ['a', 'b'], datesAboveResources)
+      expect(timeGrid.getEventEls().length).toBe(1)
+
+      calendar.getEventById('a-event').setStart(DAY_1 + 'T06:30:00')
+
+      expectTimeGridStructure(calendar, {
+        [DAY_1]: ['a', 'b'],
+        [DAY_2]: [],
+      }, ['a', 'b'], datesAboveResources)
+      expect(timeGrid.getEventEls().length).toBe(2)
     })
 
     it('keeps the full Cartesian layout when filtering is false', () => {
@@ -333,7 +349,7 @@ describe('filterResourcesWithEvents per date', () => {
       expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(1)
     })
 
-    it('keeps an empty date as a resource-less placeholder column', () => {
+    it('omits a date when no resource has events', () => {
       let calendar = initCalendar({
         resources: [{ id: 'a', title: 'Resource A' }],
         events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
@@ -344,28 +360,50 @@ describe('filterResourcesWithEvents per date', () => {
         [DAY_1]: ['a'],
         [DAY_2]: [],
       }, ['a'], datesAboveResources)
-      expect(viewWrapper.timeGrid.getColumnInfo()[1]).toEqual({
-        date: DAY_2,
-        resourceId: null,
-      })
+      expect(viewWrapper.header.getCellInfoByRow().some((row) => (
+        row.some((cell) => cell.date === DAY_2)
+      ))).toBe(false)
+      expect(viewWrapper.timeGrid.getColumnInfo().some((column) => column.date === DAY_2)).toBe(false)
     })
 
-    it('provides an empty resource API to custom placeholder header content', () => {
+    it('invokes resource header rendering only for real resources', () => {
+      let resourceDayHeaderContent = jasmine.createSpy('resourceDayHeaderContent').and.callFake((arg) => arg.resource.title)
       let calendar = initCalendar({
         resources: [{ id: 'a', title: 'Resource A' }],
         events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
-        resourceDayHeaderContent(arg) {
-          return arg.resource.title
-        },
+        resourceDayHeaderContent,
       })
-      let rows = new ResourceTimeGridViewWrapper(calendar).header.getCellElsByRow()
-      let resourceRow = rows[datesAboveResources ? 1 : 0]
-      let placeholderEl = resourceRow.find((cellEl) => (
-        cellEl.getAttribute('data-date') === DAY_2 && !cellEl.hasAttribute('data-resource-id')
-      ))
+      let header = new ResourceTimeGridViewWrapper(calendar).header
+      let resourceHeaderArgs = resourceDayHeaderContent.calls.allArgs().map((args) => args[0])
 
-      expect(placeholderEl).toBeTruthy()
-      expect($(placeholderEl).text()).toBe('')
+      expect(resourceDayHeaderContent.calls.count()).toBe(1)
+      expect(resourceHeaderArgs[0].resource.id).toBe('a')
+      expect(header.getCellInfoByRow().some((row) => (
+        row.some((cell) => cell.date === DAY_2)
+      ))).toBe(false)
+    })
+
+    it('renders all dates as plain day columns when no resource has events', () => {
+      let resourceDayHeaderContent = jasmine.createSpy('resourceDayHeaderContent')
+      let dayHeaderContent = jasmine.createSpy('dayHeaderContent').and.callFake((arg) => arg.text)
+      let calendar = initCalendar({
+        resources: [{ id: 'a', title: 'Resource A' }],
+        events: [],
+        resourceDayHeaderContent,
+        dayHeaderContent,
+      })
+      let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+      let plainColumns = DATES.map((date) => ({ date, resourceId: null }))
+      let dayHeaderArgs = dayHeaderContent.calls.allArgs().map((args) => args[0])
+
+      expect(viewWrapper.header.getCellInfoByRow()).toEqual([
+        plainColumns.map((column) => ({ ...column, colSpan: 1 })),
+      ])
+      expect(viewWrapper.timeGrid.getColumnInfo()).toEqual(plainColumns)
+      expect(viewWrapper.header.getResourceIds()).toEqual([])
+      expect(resourceDayHeaderContent.calls.count()).toBe(0)
+      expect(dayHeaderContent.calls.count()).toBe(2)
+      expect(dayHeaderArgs.every((arg) => arg.resource === undefined)).toBe(true)
     })
 
     it('reports dateClick from a present date and resource column', async () => {
@@ -404,12 +442,35 @@ describe('filterResourcesWithEvents per date', () => {
     })
   })
 
+  it('hides a single-day resource whose only event is before slotMinTime', () => {
+    let calendar = initCalendar({
+      initialView: 'resourceTimeGridDay',
+      slotMinTime: '06:00',
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [{ title: 'Before slots', start: DAY_1 + 'T02:00:00', resourceId: 'a' }],
+    })
+    let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+
+    expect(viewWrapper.header.getResourceIds()).toEqual([])
+    expect(viewWrapper.timeGrid.getColumnInfo()).toEqual([{
+      date: DAY_1,
+      resourceId: null,
+    }])
+    expect(viewWrapper.timeGrid.getEventEls().length).toBe(0)
+  })
+
   it('keeps nav links on every filtered resource-major date header', () => {
     let calendar = initCalendar({
       datesAboveResources: false,
       navLinks: true,
-      resources: [{ id: 'a', title: 'Resource A' }],
-      events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
+      resources: [
+        { id: 'a', title: 'Resource A' },
+        { id: 'b', title: 'Resource B' },
+      ],
+      events: [
+        { title: 'A day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+        { title: 'B day 2', start: DAY_2 + 'T09:00:00', resourceId: 'b' },
+      ],
     })
     let dateRow = new ResourceTimeGridViewWrapper(calendar).header.getCellElsByRow()[1]
 
@@ -419,58 +480,8 @@ describe('filterResourcesWithEvents per date', () => {
     }
   })
 
-  it('renders a resource-less background event in an empty date placeholder', () => {
-    let calendar = initCalendar({
-      datesAboveResources: false,
-      resources: [{ id: 'a', title: 'Resource A' }],
-      events: [
-        { title: 'Keeps A', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
-        {
-          start: DAY_2 + 'T09:00:00',
-          end: DAY_2 + 'T10:00:00',
-          display: 'background',
-        },
-      ],
-    })
-    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
-
-    expect(timeGrid.getDayEls(null, DAY_2).length).toBe(1)
-    expect(timeGrid.getBgEventEls(null, DAY_2).length).toBe(1)
-  })
-
-  it('selects and highlights an empty date placeholder', async () => {
+  it('allows a selection across a fully-omitted date', async () => {
     let selectInfo = null
-    let calendar = initCalendar({
-      datesAboveResources: false,
-      selectable: true,
-      resources: [{ id: 'a', title: 'Resource A' }],
-      events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
-      select(info) {
-        selectInfo = info
-      },
-    })
-
-    await waitTimeout()
-    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
-
-    await new Promise<void>((resolve) => {
-      $.simulateByPoint('drag', {
-        point: timeGrid.getPoint(null, DAY_2 + 'T09:00:00'),
-        end: timeGrid.getPoint(null, DAY_2 + 'T11:00:00'),
-        callback() {
-          resolve()
-        },
-      })
-    })
-
-    expect(selectInfo).toBeTruthy()
-    expect(selectInfo.resource).toBeFalsy()
-    expect(selectInfo.start).toEqualDate(DAY_2 + 'T09:00:00Z')
-    expect(timeGrid.getHighlightEls(null, DAY_2).length).toBe(1)
-  })
-
-  it('blocks a selection across a missing resource date', async () => {
-    let selectCalled = false
     let calendar = initCalendar({
       initialView: 'resourceTimeGridThreeDay',
       datesAboveResources: false,
@@ -485,6 +496,51 @@ describe('filterResourcesWithEvents per date', () => {
       events: [
         { title: 'Day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
         { title: 'Day 3', start: DAY_3 + 'T09:00:00', resourceId: 'a' },
+      ],
+      select(info) {
+        selectInfo = info
+      },
+    })
+
+    await waitTimeout()
+    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+    await new Promise<void>((resolve) => {
+      $.simulateByPoint('drag', {
+        point: timeGrid.getPoint('a', DAY_1 + 'T09:00:00'),
+        end: timeGrid.getPoint('a', DAY_3 + 'T11:00:00'),
+        callback() {
+          resolve()
+        },
+      })
+    })
+
+    expect(selectInfo).toBeTruthy()
+    expect(selectInfo.resource.id).toBe('a')
+    expect(selectInfo.start).toEqualDate(DAY_1 + 'T09:00:00Z')
+    expect(selectInfo.end.toISOString().slice(0, 10)).toBe(DAY_3) // spans the omitted day 2
+  })
+
+  it('blocks a selection across a date rendered without the resource', async () => {
+    let selectCalled = false
+    let calendar = initCalendar({
+      initialView: 'resourceTimeGridThreeDay',
+      datesAboveResources: false,
+      selectable: true,
+      views: {
+        resourceTimeGridThreeDay: {
+          type: 'resourceTimeGrid',
+          duration: { days: 3 },
+        },
+      },
+      resources: [
+        { id: 'a', title: 'Resource A' },
+        { id: 'b', title: 'Resource B' },
+      ],
+      events: [
+        { title: 'A day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+        { title: 'B day 2', start: DAY_2 + 'T09:00:00', resourceId: 'b' },
+        { title: 'A day 3', start: DAY_3 + 'T09:00:00', resourceId: 'a' },
       ],
       select() {
         selectCalled = true
@@ -506,82 +562,6 @@ describe('filterResourcesWithEvents per date', () => {
 
     expect(selectCalled).toBe(false)
   })
-
-  it('drops an assigned event onto an empty date placeholder', async () => {
-    let dropResolve: () => void
-    let dropPromise = new Promise<void>((resolve) => {
-      dropResolve = resolve
-    })
-    let calendar = initCalendar({
-      datesAboveResources: false,
-      editable: true,
-      resources: [{ id: 'a', title: 'Resource A' }],
-      events: [{
-        title: 'Day 1 only',
-        className: 'event0',
-        start: DAY_1 + 'T09:00:00',
-        end: DAY_1 + 'T10:00:00',
-        resourceId: 'a',
-      }],
-      eventDrop(info) {
-        expect(info.event.start).toEqualDate(DAY_2 + 'T09:00:00Z')
-        expect(info.event.getResources().map((resource) => resource.id)).toEqual(['a'])
-        dropResolve()
-      },
-    })
-
-    await ignoreResizeObserverLoops(async () => {
-      await waitTimeout()
-      let destination = new ResourceTimeGridViewWrapper(calendar).timeGrid.getPoint(null, DAY_2 + 'T09:00:00')
-
-      await new Promise<void>((resolve) => {
-        $('.event0').simulate('drag', {
-          localPoint: { top: 1, left: '50%' },
-          end: destination,
-          callback() {
-            resolve()
-          },
-        })
-      })
-      await dropPromise
-    })
-  })
-
-  it('resizes an event into an empty date placeholder', async () => {
-    let resizedEvent = null
-    let calendar = initCalendar({
-      datesAboveResources: false,
-      editable: true,
-      resources: [{ id: 'a', title: 'Resource A' }],
-      events: [{
-        title: 'Day 1 only',
-        start: DAY_1 + 'T09:00:00',
-        end: DAY_1 + 'T10:00:00',
-        resourceId: 'a',
-      }],
-      eventResize(info) {
-        resizedEvent = info.event
-      },
-    })
-
-    await ignoreResizeObserverLoops(async () => {
-      await waitTimeout()
-      let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
-
-      await timeGrid.resizeEvent(
-        timeGrid.getFirstEventEl(),
-        'a',
-        DAY_1 + 'T10:00:00',
-        DAY_2 + 'T02:00:00',
-        /* destResourceId = */ null, // the day-2 placeholder column
-      )
-      await waitTimeout()
-    })
-
-    expect(resizedEvent).toBeTruthy()
-    expect(resizedEvent.end).toEqualDate(DAY_2 + 'T02:00:00Z')
-  })
-
   describe('in resource dayGrid', () => {
     pushOptions({
       initialView: 'resourceDayGridTwoDay',

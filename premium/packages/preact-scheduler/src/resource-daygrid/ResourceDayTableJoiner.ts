@@ -7,11 +7,10 @@ export class ResourceDayTableJoiner extends VResourceJoiner<DayGridRange> {
     seg: DateIndexedSeg<DayGridRange>,
     resourceDayTableModel: AbstractResourceDayTableModel,
     resourceI: number,
-    fallbackToPlaceholder: boolean,
   ): ViewIndexedSeg<DayGridRange>[] {
     let dateStartI: DateColIndex = seg.start
     let dateEndI: DateColIndex = seg.end
-    let colRanges = resourceDayTableModel.computeColRanges(dateStartI, dateEndI, resourceI, fallbackToPlaceholder)
+    let colRanges = resourceDayTableModel.computeColRanges(dateStartI, dateEndI, resourceI)
 
     return colRanges.map((colRange) => ({
       ...seg,

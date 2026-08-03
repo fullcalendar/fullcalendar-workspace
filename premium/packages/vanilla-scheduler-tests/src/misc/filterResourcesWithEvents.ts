@@ -95,6 +95,37 @@ describe('filterResourcesWithEvents', () => {
       expect(timelineGridWrapper.getResourceIds()).toEqual(['b', 'd'])
     })
 
+    it('uses the rendered slotMinTime window', () => {
+      let calendar = initCalendar({
+        slotMinTime: '06:00',
+        resources: [{ id: 'a', title: 'resource a' }],
+        events: [{ id: 'a-event', title: 'before slots', start: '2016-12-04T02:00:00', resourceId: 'a' }],
+      })
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+      expect(viewWrapper.dataGrid.getResourceIds()).toEqual([])
+      expect(new CalendarWrapper(calendar).getEventEls().length).toBe(0)
+
+      calendar.getEventById('a-event').setStart('2016-12-04T07:00:00')
+
+      expect(viewWrapper.dataGrid.getResourceIds()).toEqual(['a'])
+      expect(new CalendarWrapper(calendar).getEventEls().length).toBe(1)
+    })
+
+    it('excludes events on hidden days from the rendered filter window', () => {
+      let calendar = initCalendar({
+        initialView: 'resourceTimelineWeek',
+        initialDate: '2016-12-04',
+        hiddenDays: [1],
+        resources: [{ id: 'a', title: 'resource a' }],
+        events: [{ title: 'hidden Monday', start: '2016-12-05T09:00:00', resourceId: 'a' }],
+      })
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+      expect(viewWrapper.dataGrid.getResourceIds()).toEqual([])
+      expect(new CalendarWrapper(calendar).getEventEls().length).toBe(0)
+    })
+
     it('filters addResource calls', () => {
       let calendar = initCalendar({
         resources: getResourceArray(),

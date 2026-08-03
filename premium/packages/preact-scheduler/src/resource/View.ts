@@ -1,6 +1,6 @@
 import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
-  EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
+  EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext, DaySeriesModel,
 } from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
@@ -14,16 +14,25 @@ export interface ResourceViewProps extends ViewProps {
 }
 
 export class ResourceDataAdder implements ViewPropsTransformer {
+  buildFilterRanges = memoize(buildFilterRanges)
   filterResources = memoize(filterResources)
 
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
     if (calendarProps.viewSpec.optionDefaults.needsResourceData) {
+      let filterRanges = this.buildFilterRanges(
+        calendarProps.dateProfile,
+        calendarProps.options,
+        calendarProps.dateEnv,
+        calendarProps.dateProfileGenerator,
+        calendarProps.viewSpec.optionDefaults.usesMinMaxTime === true,
+      )
+
       return {
         resourceStore: this.filterResources(
           calendarProps.resourceStore,
           calendarProps.options.filterResourcesWithEvents,
           calendarProps.eventStore,
-          calendarProps.dateProfile.activeRange,
+          filterRanges,
         ),
         resourceEntityExpansions: calendarProps.resourceEntityExpansions,
       }
@@ -36,10 +45,10 @@ function filterResources(
   resourceStore: ResourceHash,
   doFilterResourcesWithEvents: boolean,
   eventStore: EventStore,
-  activeRange: DateRange,
+  filterRanges: DateRange[],
 ): ResourceHash {
   if (doFilterResourcesWithEvents) {
-    let instancesInRange = filterEventInstancesInRange(eventStore.instances, activeRange)
+    let instancesInRange = filterEventInstancesInRanges(eventStore.instances, filterRanges)
     let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)
 
     Object.assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
@@ -50,8 +59,29 @@ function filterResources(
   return resourceStore
 }
 
-function filterEventInstancesInRange(eventInstances: EventInstanceHash, activeRange: DateRange) {
-  return filterHash(eventInstances, (eventInstance) => rangesIntersect(eventInstance.range, activeRange))
+function buildFilterRanges(
+  dateProfile: CalendarContentProps['dateProfile'],
+  options: CalendarContentProps['options'],
+  dateEnv: CalendarContentProps['dateEnv'],
+  dateProfileGenerator: CalendarContentProps['dateProfileGenerator'],
+  usesMinMaxTime: boolean,
+): DateRange[] {
+  if (usesMinMaxTime) {
+    let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
+
+    return daySeries.dates.map((date) => ({
+      start: dateEnv.add(date, options.slotMinTime),
+      end: dateEnv.add(date, options.slotMaxTime),
+    }))
+  }
+
+  return [dateProfile.activeRange]
+}
+
+function filterEventInstancesInRanges(eventInstances: EventInstanceHash, filterRanges: DateRange[]) {
+  return filterHash(eventInstances, (eventInstance) => (
+    filterRanges.some((filterRange) => rangesIntersect(eventInstance.range, filterRange))
+  ))
 }
 
 function computeHasEvents(eventInstances: EventInstanceHash, eventDefs: EventDefHash) {

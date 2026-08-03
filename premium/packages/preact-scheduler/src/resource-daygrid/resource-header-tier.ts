@@ -2,7 +2,7 @@ import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, get
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
-import { parseResource, Resource } from '../resource/structs/resource'
+import { Resource } from '../resource/structs/resource'
 import { ResourceDayHeaderInfo } from './structs'
 
 // TODO: figure out plugin-types
@@ -47,7 +47,7 @@ export function buildResourceRowConfigs(
   if (resourceDayTableModel.datesAboveResources) {
     const resourceDataConfigsPerDate = groups.map((group) => {
       return buildResourceDataConfigs(
-        group.cols.map((col) => col.resource),
+        group.cols.map((col) => col.resource as Resource),
         group.date,
         dateProfile,
         todayRange,
@@ -83,25 +83,7 @@ export function buildResourceRowConfigs(
     ]
   } else { // resources above dates
     const dateDataConfigsPerResource = groups.map((group) => {
-      const resource = group.resource
-
-      if (!resource) {
-        return buildDateDataConfigs(
-          group.cols.map((col) => col.date),
-          datesRepDistinctDays,
-          dateProfile,
-          todayRange,
-          dayHeaderFormat,
-          context,
-          /* colSpan = */ 1,
-          /* keyPrefix = */ undefined,
-          /* extraRenderProps = */ undefined,
-          /* extraAttrs = */ undefined,
-          /* className = */ undefined,
-          /* isMajorMod = */ group.cols.length,
-          /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
-        )
-      }
+      const resource = group.resource as Resource
 
       const resourceApi = new ResourceApi(context, resource)
       const resourceApiId = resourceApi.id
@@ -128,7 +110,7 @@ export function buildResourceRowConfigs(
     })
     const resourceDataConfigs = groups.map((group) => {
       return buildResourceDataConfigs(
-        [group.resource || null],
+        [group.resource as Resource],
         group.date,
         dateProfile,
         todayRange,
@@ -198,7 +180,7 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
 }
 
 function buildResourceDataConfigs(
-  resources: (Resource | null)[],
+  resources: Resource[],
   dateMarker: DateMarker | undefined,
   dateProfile: DateProfile | undefined,
   todayRange: DateRange | undefined,
@@ -209,36 +191,8 @@ function buildResourceDataConfigs(
   const dateMeta = dateMarker
     ? getDateMeta(dateMarker, context.dateEnv, dateProfile, todayRange)
     : {}
-  const placeholderResource: Resource | null = resources.includes(null)
-    ? {
-        ...parseResource({ id: '_fc:placeholder' }, '', {}, context),
-        id: '',
-      }
-    : null
 
   return resources.map((resource, i) => {
-    if (!resource) {
-      return {
-        key: dateMarker ? dateMarker.toISOString() : '',
-        dateMarker,
-        renderProps: {
-          isDisabled: false,
-          ...dateMeta,
-          resource: new ResourceApi(context, placeholderResource!),
-          isMajor: isMajorMod != null && !(i % isMajorMod),
-          isNarrow: false,
-          level: 0,
-          text: '',
-          view: context.viewApi,
-        },
-        attrs: {
-          'data-date': dateMarker ? formatDayString(dateMarker) : undefined,
-        },
-        colSpan,
-        className: '',
-      }
-    }
-
     const resourceApi = new ResourceApi(context, resource)
     const resourceApiId = resourceApi.id
 

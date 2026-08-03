@@ -14,7 +14,10 @@ export function buildDayResourceTableModel(
   hasEventsByDate: HasEventsByDate | null = null,
 ): AbstractResourceDayTableModel {
   let hasMajor = resources.length > 1 && dayCols.length > 1
-  let groups: ResourceDayGroup[] = dayCols.map((dayCol, dateI) => {
+  let groups: ResourceDayGroup[] = []
+
+  for (let dateI = 0; dateI < dayCols.length; dateI += 1) {
+    let dayCol = dayCols[dateI]
     let cols: ResourceDayCol[] = []
 
     for (let resourceI = 0; resourceI < resources.length; resourceI += 1) {
@@ -32,12 +35,10 @@ export function buildDayResourceTableModel(
       }
     }
 
-    if (!cols.length) {
-      cols.push(buildResourceDayCol(dayCol, dateI, null, -1, hasMajor, context))
+    if (cols.length) {
+      groups.push({ date: dayCol.date, cols })
     }
-
-    return { date: dayCol.date, cols }
-  })
+  }
 
   return new AbstractResourceDayTableModel(dayCols, dayTableModel, resources, groups, true, context)
 }

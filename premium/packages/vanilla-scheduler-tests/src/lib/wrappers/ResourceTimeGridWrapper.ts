@@ -71,14 +71,11 @@ export class ResourceTimeGridWrapper {
 
   getDayEls(resourceId, date) { // TODO: rename
     date = ensureDate(date)
-    let resourceSelector = resourceId == null
-      ? ':not([data-resource-id])'
-      : '[data-resource-id="' + resourceId + '"]'
 
     return findElements(
       this.el,
       '.fc-timegrid-body .fc-timegrid-day[data-date="' + formatIsoDay(date) + '"]' +
-      resourceSelector,
+      '[data-resource-id="' + resourceId + '"]',
     )
   }
 
@@ -105,16 +102,6 @@ export class ResourceTimeGridWrapper {
     return findElements(this.el, '.fc-timegrid-event')
   }
 
-  getBgEventEls(resourceId, date) {
-    let dayEl = this.getDayEls(resourceId, date)[0]
-    return dayEl ? findElements(dayEl, '.fc-bg-event') : []
-  }
-
-  getHighlightEls(resourceId, date) {
-    let dayEl = this.getDayEls(resourceId, date)[0]
-    return dayEl ? findElements(dayEl, '.fc-highlight') : []
-  }
-
   getFirstEventEl() {
     return this.el.querySelector('.fc-timegrid-event') as HTMLElement
   }
@@ -123,7 +110,7 @@ export class ResourceTimeGridWrapper {
     return this.base.getNonBusinessDayEls()
   }
 
-  resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate, destResourceId = resourceId) {
+  resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate) {
     return new Promise<void>((resolve) => {
       let resizerEl = $(eventEl).find('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
         .css('display', 'block')[0] // usually only displays on hover. force display
@@ -131,7 +118,7 @@ export class ResourceTimeGridWrapper {
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let origPoint = this.getPoint(resourceId, origEndDate)
       let yCorrect = resizerPoint.top - origPoint.top
-      let destPoint = this.getPoint(destResourceId, newEndDate)
+      let destPoint = this.getPoint(resourceId, newEndDate)
       destPoint = addPoints(destPoint, { left: 0, top: yCorrect })
 
       $(resizerEl).simulate('drag', {

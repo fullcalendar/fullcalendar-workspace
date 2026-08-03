@@ -29,7 +29,6 @@ export class AbstractResourceDayTableModel {
   cols: ResourceDayCol[]
   colLookup: { [key: string]: ViewColIndex }
   dateFirstCols: ViewColIndex[]
-  hasPlaceholderCols: boolean
   isRagged: boolean // does per-date filtering give some dates fewer resource cols than others?
 
   private colGroupIndices: number[]
@@ -66,7 +65,6 @@ export class AbstractResourceDayTableModel {
     this.cols = cols
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
-    this.hasPlaceholderCols = resources.length > 0 && cols.some((col) => !col.resource)
     this.isRagged = resources.length > 0 && cols.length !== dayCols.length * resources.length
     this.colGroupIndices = colGroupIndices
     this.cells = !dayTableModel || dayTableModel.rowCount === 1
@@ -85,7 +83,6 @@ export class AbstractResourceDayTableModel {
     dateStartI: DateColIndex,
     dateEndI: DateColIndex,
     resourceI: number,
-    fallbackToPlaceholder = false,
   ): ViewColRange[] {
     let ranges: ViewColRange[] = []
     let currentRange: ViewColRange | null = null
@@ -93,10 +90,6 @@ export class AbstractResourceDayTableModel {
 
     for (let dateI = dateStartI; dateI < dateEndI; dateI += 1) {
       let col = this.computeCol(dateI, resourceI)
-
-      if (col === -1 && fallbackToPlaceholder) {
-        col = this.computeCol(dateI, -1)
-      }
 
       if (col !== -1) {
         let groupI = this.colGroupIndices[col]
@@ -135,14 +128,11 @@ export class AbstractResourceDayTableModel {
       return resourceId0 === resourceId1
     }
 
-    // a resourced hit may pair with a placeholder hit (the empty date stands in for the
-    // missing pair), but two differently-resourced hits never combine
-    if (resourceId0 != null && resourceId1 != null && resourceId0 !== resourceId1) {
+    if (resourceId0 !== resourceId1) {
       return false
     }
 
-    let resourceId = resourceId0 != null ? resourceId0 : resourceId1
-    let resourceI = resourceId == null ? -1 : this.resourceIndex.indicesById[resourceId]
+    let resourceI = resourceId0 == null ? -1 : this.resourceIndex.indicesById[resourceId0]
     let dateI0 = this.computeDateI(hit0.dateSpan.range.start)
     let dateI1 = this.computeDateI(hit1.dateSpan.range.start)
 
@@ -150,16 +140,10 @@ export class AbstractResourceDayTableModel {
       return false
     }
 
-    let minDateI = Math.min(dateI0, dateI1)
-    let maxDateI = Math.max(dateI0, dateI1)
-
-    // interior dates need the resource's real column. endpoints may fall back to a
-    // placeholder column (resizing/selecting into an empty date)
-    for (let dateI = minDateI; dateI <= maxDateI; dateI += 1) {
-      if (
-        this.computeCol(dateI, resourceI) === -1 &&
-        !((dateI === minDateI || dateI === maxDateI) && this.computeCol(dateI, -1) !== -1)
-      ) {
+    for (let dateI = Math.min(dateI0, dateI1); dateI <= Math.max(dateI0, dateI1); dateI += 1) {
+      // a date rendered without this resource breaks the span. a fully-omitted date
+      // (no columns at all) does not, like a hidden day
+      if (this.computeCol(dateI, resourceI) === -1 && this.dateFirstCols[dateI] != null) {
         return false
       }
     }
