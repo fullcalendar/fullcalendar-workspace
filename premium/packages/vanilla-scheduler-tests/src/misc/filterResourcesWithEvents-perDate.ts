@@ -558,8 +558,9 @@ describe('filterResourcesWithEvents per date', () => {
 
     await new Promise<void>((resolve) => {
       $.simulateByPoint('drag', {
-        point: timeGrid.getPoint('a', DAY_1 + 'T09:00:00'),
-        end: timeGrid.getPoint('a', DAY_3 + 'T11:00:00'),
+        // early-morning times keep the points within the scrollTime:'00:00' viewport
+        point: timeGrid.getPoint('a', DAY_1 + 'T02:00:00'),
+        end: timeGrid.getPoint('a', DAY_3 + 'T04:00:00'),
         callback() {
           resolve()
         },
@@ -568,7 +569,7 @@ describe('filterResourcesWithEvents per date', () => {
 
     expect(selectInfo).toBeTruthy()
     expect(selectInfo.resource.id).toBe('a')
-    expect(selectInfo.start).toEqualDate(DAY_1 + 'T09:00:00Z')
+    expect(selectInfo.start).toEqualDate(DAY_1 + 'T02:00:00Z')
     expect(selectInfo.end.toISOString().slice(0, 10)).toBe(DAY_3) // spans the omitted day 2
   })
 
@@ -603,8 +604,9 @@ describe('filterResourcesWithEvents per date', () => {
 
     await new Promise<void>((resolve) => {
       $.simulateByPoint('drag', {
-        point: timeGrid.getPoint('a', DAY_1 + 'T09:00:00'),
-        end: timeGrid.getPoint('a', DAY_3 + 'T11:00:00'),
+        // early-morning times keep the points within the scrollTime:'00:00' viewport
+        point: timeGrid.getPoint('a', DAY_1 + 'T02:00:00'),
+        end: timeGrid.getPoint('a', DAY_3 + 'T04:00:00'),
         callback() {
           resolve()
         },
@@ -613,7 +615,7 @@ describe('filterResourcesWithEvents per date', () => {
 
     expect(selectInfo).toBeTruthy()
     expect(selectInfo.resource.id).toBe('a')
-    expect(selectInfo.start).toEqualDate(DAY_1 + 'T09:00:00Z')
+    expect(selectInfo.start).toEqualDate(DAY_1 + 'T02:00:00Z')
     expect(selectInfo.end.toISOString().slice(0, 10)).toBe(DAY_3) // spans day 2, where A has no column
   })
   describe('in resource dayGrid', () => {
