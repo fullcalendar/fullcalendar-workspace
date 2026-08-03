@@ -1,4 +1,9 @@
 
+## v7.0.3
+
+- FIX: Timeline axis now renders and respects the calendar's timezone's DST gaps
+
+
 ## v7.0.2
 
 - FEATURE: Restored Bootstrap 5 support (originally omitted from v7) (#8040)
