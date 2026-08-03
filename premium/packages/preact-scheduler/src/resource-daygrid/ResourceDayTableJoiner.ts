@@ -7,8 +7,9 @@ export class ResourceDayTableJoiner extends VResourceJoiner<DayGridRange> {
     seg: DayGridRange & EventRangeProps,
     resourceDayTableModel: AbstractResourceDayTableModel,
     resourceI: number,
+    fallbackToPlaceholder: boolean,
   ): (DayGridRange & EventRangeProps)[] {
-    let colRanges = resourceDayTableModel.computeColRanges(seg.start, seg.end, resourceI)
+    let colRanges = resourceDayTableModel.computeColRanges(seg.start, seg.end, resourceI, fallbackToPlaceholder)
 
     return colRanges.map((colRange) => ({
       ...seg,

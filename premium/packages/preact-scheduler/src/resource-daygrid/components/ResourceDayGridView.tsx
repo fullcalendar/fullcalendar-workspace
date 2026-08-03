@@ -129,7 +129,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
   isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
     let allowAcrossResources = this.resourceDayTableModel.dayTableModel.colCount === 1
-    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
+    return this.resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
   }
 }
 

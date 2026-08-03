@@ -1,12 +1,13 @@
 import { Calendar } from 'fullcalendar'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceDayHeaderWrapper } from '../lib/wrappers/ResourceDayHeaderWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 const DAY_1 = '2016-12-04'
 const DAY_2 = '2016-12-05'
+const DAY_3 = '2016-12-06'
 const DATES = [DAY_1, DAY_2]
 
 interface ColumnInfo {
@@ -349,6 +350,24 @@ describe('filterResourcesWithEvents per date', () => {
       })
     })
 
+    it('provides an empty resource API to custom placeholder header content', () => {
+      let calendar = initCalendar({
+        resources: [{ id: 'a', title: 'Resource A' }],
+        events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
+        resourceDayHeaderContent(arg) {
+          return arg.resource.title
+        },
+      })
+      let rows = new ResourceTimeGridViewWrapper(calendar).header.getCellElsByRow()
+      let resourceRow = rows[datesAboveResources ? 1 : 0]
+      let placeholderEl = resourceRow.find((cellEl) => (
+        cellEl.getAttribute('data-date') === DAY_2 && !cellEl.hasAttribute('data-resource-id')
+      ))
+
+      expect(placeholderEl).toBeTruthy()
+      expect($(placeholderEl).text()).toBe('')
+    })
+
     it('reports dateClick from a present date and resource column', async () => {
       let clickResolve: () => void
       let clickPromise = new Promise<void>((resolve) => {
@@ -382,6 +401,149 @@ describe('filterResourcesWithEvents per date', () => {
         })
       })
       await clickPromise
+    })
+  })
+
+  it('keeps nav links on every filtered resource-major date header', () => {
+    let calendar = initCalendar({
+      datesAboveResources: false,
+      navLinks: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
+    })
+    let dateRow = new ResourceTimeGridViewWrapper(calendar).header.getCellElsByRow()[1]
+
+    expect(dateRow.length).toBe(2)
+    for (let cellEl of dateRow) {
+      expect(cellEl.querySelector('.fc-navlink')).toBeTruthy()
+    }
+  })
+
+  it('renders a resource-less background event in an empty date placeholder', () => {
+    let calendar = initCalendar({
+      datesAboveResources: false,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [
+        { title: 'Keeps A', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+        {
+          start: DAY_2 + 'T09:00:00',
+          end: DAY_2 + 'T10:00:00',
+          display: 'background',
+        },
+      ],
+    })
+    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+    expect(timeGrid.getDayEls(null, DAY_2).length).toBe(1)
+    expect(timeGrid.getBgEventEls(null, DAY_2).length).toBe(1)
+  })
+
+  it('selects and highlights an empty date placeholder', async () => {
+    let selectInfo = null
+    let calendar = initCalendar({
+      datesAboveResources: false,
+      selectable: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [{ title: 'Day 1 only', start: DAY_1 + 'T09:00:00', resourceId: 'a' }],
+      select(info) {
+        selectInfo = info
+      },
+    })
+
+    await waitTimeout()
+    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+    await new Promise<void>((resolve) => {
+      $.simulateByPoint('drag', {
+        point: timeGrid.getPoint(null, DAY_2 + 'T09:00:00'),
+        end: timeGrid.getPoint(null, DAY_2 + 'T11:00:00'),
+        callback() {
+          resolve()
+        },
+      })
+    })
+
+    expect(selectInfo).toBeTruthy()
+    expect(selectInfo.resource).toBeFalsy()
+    expect(selectInfo.start).toEqualDate(DAY_2 + 'T09:00:00Z')
+    expect(timeGrid.getHighlightEls(null, DAY_2).length).toBe(1)
+  })
+
+  it('blocks a selection across a missing resource date', async () => {
+    let selectCalled = false
+    let calendar = initCalendar({
+      initialView: 'resourceTimeGridThreeDay',
+      datesAboveResources: false,
+      selectable: true,
+      views: {
+        resourceTimeGridThreeDay: {
+          type: 'resourceTimeGrid',
+          duration: { days: 3 },
+        },
+      },
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [
+        { title: 'Day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+        { title: 'Day 3', start: DAY_3 + 'T09:00:00', resourceId: 'a' },
+      ],
+      select() {
+        selectCalled = true
+      },
+    })
+
+    await waitTimeout()
+    let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+    await new Promise<void>((resolve) => {
+      $.simulateByPoint('drag', {
+        point: timeGrid.getPoint('a', DAY_1 + 'T09:00:00'),
+        end: timeGrid.getPoint('a', DAY_3 + 'T11:00:00'),
+        callback() {
+          resolve()
+        },
+      })
+    })
+
+    expect(selectCalled).toBe(false)
+  })
+
+  it('drops an assigned event onto an empty date placeholder', async () => {
+    let dropResolve: () => void
+    let dropPromise = new Promise<void>((resolve) => {
+      dropResolve = resolve
+    })
+    let calendar = initCalendar({
+      datesAboveResources: false,
+      editable: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [{
+        title: 'Day 1 only',
+        className: 'event0',
+        start: DAY_1 + 'T09:00:00',
+        end: DAY_1 + 'T10:00:00',
+        resourceId: 'a',
+      }],
+      eventDrop(info) {
+        expect(info.event.start).toEqualDate(DAY_2 + 'T09:00:00Z')
+        expect(info.event.getResources().map((resource) => resource.id)).toEqual(['a'])
+        dropResolve()
+      },
+    })
+
+    await ignoreResizeObserverLoops(async () => {
+      await waitTimeout()
+      let destination = new ResourceTimeGridViewWrapper(calendar).timeGrid.getPoint(null, DAY_2 + 'T09:00:00')
+
+      await new Promise<void>((resolve) => {
+        $('.event0').simulate('drag', {
+          localPoint: { top: 1, left: '50%' },
+          end: destination,
+          callback() {
+            resolve()
+          },
+        })
+      })
+      await dropPromise
     })
   })
 

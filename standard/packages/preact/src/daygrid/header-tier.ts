@@ -173,6 +173,7 @@ export function buildDateDataConfigs(
   extraAttrs: Dictionary = {}, // TODO
   className = '',
   isMajorMod?: number,
+  totalDateCnt = dateMarkers.length,
 ): CellDataConfig<BaseDayHeaderData>[] {
   const { dateEnv, viewApi, options } = context
 
@@ -181,7 +182,7 @@ export function buildDateDataConfigs(
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const hasNavLink = options.navLinks && !dateMeta.isDisabled &&
-          dateMarkers.length > 1 // don't show navlink to day if only one day
+          totalDateCnt > 1 // don't show navlink to day if only one day
         const renderProps: BaseDayHeaderData = {
           ...dateMeta,
           ...extraRenderProps,

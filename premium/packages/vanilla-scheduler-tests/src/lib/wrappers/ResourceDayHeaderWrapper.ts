@@ -36,13 +36,21 @@ export class ResourceDayHeaderWrapper {
   }
 
   getCellInfoByRow() {
-    return findElements(this.el, '[role=row]').map((rowEl) => {
-      return findElements(rowEl, '[role=columnheader]').map((cellEl) => ({
+    return this.getCellElsByRow().map((cellEls) => {
+      return cellEls.map((cellEl) => ({
         date: cellEl.getAttribute('data-date'),
         resourceId: cellEl.getAttribute('data-resource-id'),
         colSpan: Number(cellEl.getAttribute('aria-colspan') || 1),
       })).filter((cell) => cell.date || cell.resourceId)
     }).filter((row) => row.length)
+  }
+
+  getCellElsByRow() {
+    return findElements(this.el, '[role=row]').map((rowEl) => (
+      findElements(rowEl, '[role=columnheader]').filter((cellEl) => (
+        cellEl.hasAttribute('data-date') || cellEl.hasAttribute('data-resource-id')
+      ))
+    )).filter((row) => row.length)
   }
 
   // TODO: make new func to query a specific resource

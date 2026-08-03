@@ -8,8 +8,13 @@ export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeGridRange> {
     seg: TimeGridRange & EventRangeProps,
     resourceDayTable: AbstractResourceDayTableModel,
     resourceI: number,
+    fallbackToPlaceholder: boolean,
   ): (TimeGridRange & EventRangeProps)[] {
     let col = resourceDayTable.computeCol(seg.col, resourceI)
+
+    if (col === -1 && fallbackToPlaceholder) {
+      col = resourceDayTable.computeCol(seg.col, -1)
+    }
 
     if (col === -1) {
       return []

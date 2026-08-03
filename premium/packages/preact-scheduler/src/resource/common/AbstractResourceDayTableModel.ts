@@ -1,4 +1,4 @@
-import { CalendarContext, DateMarker, DayTableCell, DayTableModel, SlicedCoordRange } from '@fullcalendar/preact/protected-api'
+import { CalendarContext, DateMarker, DayTableCell, DayTableModel, Hit, SlicedCoordRange, startOfDay } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../api/ResourceApi'
 import { Resource } from '../structs/resource'
 import { ResourceIndex } from './ResourceIndex'
@@ -28,6 +28,7 @@ export class AbstractResourceDayTableModel {
   cols: ResourceDayCol[]
   colLookup: { [key: string]: number }
   dateFirstCols: number[]
+  hasPlaceholderCols: boolean
 
   private colGroupIndices: number[]
 
@@ -63,6 +64,7 @@ export class AbstractResourceDayTableModel {
     this.cols = cols
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
+    this.hasPlaceholderCols = resources.length > 0 && cols.some((col) => !col.resource)
     this.colGroupIndices = colGroupIndices
     this.cells = resources.length
       ? buildResourceCells(dayTableModel, cols, context)
@@ -76,13 +78,22 @@ export class AbstractResourceDayTableModel {
     return col == null ? -1 : col
   }
 
-  computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): SlicedCoordRange[] {
+  computeColRanges(
+    dateStartI: number,
+    dateEndI: number,
+    resourceI: number,
+    fallbackToPlaceholder = false,
+  ): SlicedCoordRange[] {
     let ranges: SlicedCoordRange[] = []
     let currentRange: SlicedCoordRange | null = null
     let currentGroupI = -1
 
     for (let dateI = dateStartI; dateI < dateEndI; dateI += 1) {
       let col = this.computeCol(dateI, resourceI)
+
+      if (col === -1 && fallbackToPlaceholder) {
+        col = this.computeCol(dateI, -1)
+      }
 
       if (col !== -1) {
         let groupI = this.colGroupIndices[col]
@@ -107,6 +118,40 @@ export class AbstractResourceDayTableModel {
     }
 
     return ranges
+  }
+
+  isHitComboAllowed(hit0: Hit, hit1: Hit, allowAcrossResources: boolean): boolean {
+    if (allowAcrossResources) {
+      return true
+    }
+
+    let resourceId = hit0.dateSpan.resourceId
+
+    if (resourceId !== hit1.dateSpan.resourceId) {
+      return false
+    }
+
+    let resourceI = resourceId == null ? -1 : this.resourceIndex.indicesById[resourceId]
+    let dateI0 = this.computeDateI(hit0.dateSpan.range.start)
+    let dateI1 = this.computeDateI(hit1.dateSpan.range.start)
+
+    if (resourceI == null || dateI0 === -1 || dateI1 === -1) {
+      return false
+    }
+
+    for (let dateI = Math.min(dateI0, dateI1); dateI <= Math.max(dateI0, dateI1); dateI += 1) {
+      if (this.computeCol(dateI, resourceI) === -1) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  private computeDateI(date: DateMarker): number {
+    let dayStart = startOfDay(date).valueOf()
+
+    return this.dayTableModel.headerDates.findIndex((headerDate) => headerDate.valueOf() === dayStart)
   }
 }
 

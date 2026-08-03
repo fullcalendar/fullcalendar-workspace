@@ -71,11 +71,14 @@ export class ResourceTimeGridWrapper {
 
   getDayEls(resourceId, date) { // TODO: rename
     date = ensureDate(date)
+    let resourceSelector = resourceId == null
+      ? ':not([data-resource-id])'
+      : '[data-resource-id="' + resourceId + '"]'
 
     return findElements(
       this.el,
       '.fc-timegrid-body .fc-timegrid-day[data-date="' + formatIsoDay(date) + '"]' +
-      '[data-resource-id="' + resourceId + '"]',
+      resourceSelector,
     )
   }
 
@@ -100,6 +103,16 @@ export class ResourceTimeGridWrapper {
 
   getEventEls() { // FG events
     return findElements(this.el, '.fc-timegrid-event')
+  }
+
+  getBgEventEls(resourceId, date) {
+    let dayEl = this.getDayEls(resourceId, date)[0]
+    return dayEl ? findElements(dayEl, '.fc-bg-event') : []
+  }
+
+  getHighlightEls(resourceId, date) {
+    let dayEl = this.getDayEls(resourceId, date)[0]
+    return dayEl ? findElements(dayEl, '.fc-highlight') : []
   }
 
   getFirstEventEl() {

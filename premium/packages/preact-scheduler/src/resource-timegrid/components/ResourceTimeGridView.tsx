@@ -52,6 +52,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   // for timed resource props
   private buildDayRanges = memoize(buildDayRanges)
   private dayRanges: DateRange[] // for now indicator
+  private resourceDayTableModel: AbstractResourceDayTableModel
   private timedResourceSplitter = new VResourceSplitter()
   private timedResourceSlicers: { [resourceId: string]: DayTimeColsSlicer } = {}
   private timedResourceJoiner = new ResourceDayTimeColsJoiner()
@@ -75,7 +76,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let dayTable = this.buildTimeColsModel(dateProfile, context.dateProfileGenerator, dateEnv)
     let dayRanges = this.dayRanges = this.buildDayRanges(dayTable, dateProfile, dateEnv)
     let filterResourcesByDate = options.filterResourcesWithEvents === true && dayTable.colCount > 1 && dayTable.rowCount === 1
-    let resourceDayTableModel = this.buildResourceTimeColsModel(
+    let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTimeColsModel(
       dayTable,
       resources,
       options.datesAboveResources,
@@ -223,7 +224,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
   isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
     let allowAcrossResources = this.dayRanges.length === 1
-    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
+    return this.resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
   }
 }
 
