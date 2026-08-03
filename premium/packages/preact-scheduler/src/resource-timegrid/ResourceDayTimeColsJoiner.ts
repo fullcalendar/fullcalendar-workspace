@@ -9,10 +9,16 @@ export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeGridRange> {
     resourceDayTable: AbstractResourceDayTableModel,
     resourceI: number,
   ): (TimeGridRange & EventRangeProps)[] {
+    let col = resourceDayTable.computeCol(seg.col, resourceI)
+
+    if (col === -1) {
+      return []
+    }
+
     return [
       {
         ...seg,
-        col: resourceDayTable.computeCol(seg.col, resourceI),
+        col,
       },
     ]
   }

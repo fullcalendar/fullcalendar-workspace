@@ -2,22 +2,24 @@ import {
   CalendarContext,
   DateComponent,
   DateMarker,
-  DateProfile,
-  DateProfileGenerator,
   DateRange,
+  DayTableModel,
+  EventStore,
   Hit,
   NowTimer,
+  addDays,
   mapHash,
   memoize,
 } from '@fullcalendar/preact/protected-api'
 import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
-import { DayResourceTableModel } from '../../resource/common/DayResourceTableModel'
-import { Resource } from '../../resource/structs/resource'
-import { ResourceDayTableModel } from '../../resource/common/ResourceDayTableModel'
+import { buildDayResourceTableModel } from '../../resource/common/DayResourceTableModel'
+import { Resource, ResourceHash } from '../../resource/structs/resource'
+import { buildResourceDayTableModel } from '../../resource/common/ResourceDayTableModel'
 import { ResourceViewProps } from '../../resource/View'
-import { ResourcelessDayTableModel } from '../../resource/common/ResourcelessDayTableModel'
+import { buildResourcelessDayTableModel } from '../../resource/common/ResourcelessDayTableModel'
+import { computeHasEventsByDate } from '../../resource/common/per-date-filtering'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
 import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner'
@@ -26,7 +28,9 @@ import { buildResourceRowConfigs } from '../resource-header-tier'
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   // memo
   private flattenResources = memoize(flattenResources)
-  private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
+  private buildDayTableModel = memoize(buildDayTableModel)
+  private buildDayRanges = memoize(buildDayGridRanges)
+  private buildResourceDayTableModel = memoize(buildResourceDayGridTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
 
@@ -41,11 +45,16 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
+    let dayTable = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator, context.dateEnv)
+    let filterResourcesByDate = options.filterResourcesWithEvents === true && dayTable.colCount > 1 && dayTable.rowCount === 1
+    let dayRanges = filterResourcesByDate ? this.buildDayRanges(dayTable) : null
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceDayTableModel(
-      props.dateProfile,
-      context.dateProfileGenerator,
+      dayTable,
       resources,
       options.datesAboveResources,
+      filterResourcesByDate ? props.eventStore : null,
+      filterResourcesByDate ? props.resourceStore : null,
+      dayRanges,
       context,
     )
 
@@ -80,9 +89,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => {
           const headerTiers = this.buildResourceRowConfigs(
-            resources,
-            options.datesAboveResources,
-            resourceDayTableModel.dayTableModel.headerDates,
+            resourceDayTableModel,
             datesRepDistinctDays,
             props.dateProfile,
             todayRange,
@@ -126,20 +133,31 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   }
 }
 
-function buildResourceDayTableModel(
-  dateProfile: DateProfile,
-  dateProfileGenerator: DateProfileGenerator,
+function buildResourceDayGridTableModel(
+  dayTable: DayTableModel,
   resources: Resource[],
   datesAboveResources: boolean,
+  eventStore: EventStore | null,
+  resourceStore: ResourceHash | null,
+  dayRanges: DateRange[] | null,
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
-  let dayTable = buildDayTableModel(dateProfile, dateProfileGenerator, context.dateEnv)
-
   if (!resources.length) {
-    return new ResourcelessDayTableModel(dayTable)
+    return buildResourcelessDayTableModel(dayTable, context)
   }
 
+  let hasEventsByDate = eventStore && resourceStore && dayRanges
+    ? computeHasEventsByDate(eventStore, resourceStore, dayRanges)
+    : null
+
   return datesAboveResources ?
-    new DayResourceTableModel(dayTable, resources, context) :
-    new ResourceDayTableModel(dayTable, resources, context)
+    buildDayResourceTableModel(dayTable, resources, context, hasEventsByDate) :
+    buildResourceDayTableModel(dayTable, resources, context, hasEventsByDate)
+}
+
+function buildDayGridRanges(dayTable: DayTableModel): DateRange[] {
+  return dayTable.headerDates.map((date) => ({
+    start: date,
+    end: addDays(date, 1),
+  }))
 }

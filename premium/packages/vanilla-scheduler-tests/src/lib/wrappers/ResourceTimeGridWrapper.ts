@@ -83,6 +83,13 @@ export class ResourceTimeGridWrapper {
     return findElements(this.el, '.fc-timegrid-body .fc-timegrid-day[data-resource-id]')
   }
 
+  getColumnInfo() {
+    return findElements(this.el, '.fc-timegrid-body .fc-timegrid-day[data-date]').map((dayEl) => ({
+      date: dayEl.getAttribute('data-date'),
+      resourceId: dayEl.getAttribute('data-resource-id'),
+    }))
+  }
+
   getResourceIds() {
     return this.getAllDayEls().map((th) => th.getAttribute('data-resource-id'))
   }

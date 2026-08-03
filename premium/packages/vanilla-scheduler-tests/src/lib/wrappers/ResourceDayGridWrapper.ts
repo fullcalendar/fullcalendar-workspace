@@ -1,6 +1,7 @@
 import { ensureDate, formatIsoDay } from '@fullcalendar-tests/standard/lib/datelib-utils'
 import { DayGridWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridWrapper'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
+import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { getRectCenter } from 'fullcalendar/protected-api'
 import { subtractPoints, addPoints } from '@fullcalendar-tests/standard/lib/geom'
 
@@ -21,6 +22,13 @@ export class ResourceDayGridWrapper {
       '.fc-day[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]',
     )
+  }
+
+  getCellInfo() {
+    return findElements(this.el, '.fc-day[role=gridcell][data-date]').map((dayEl) => ({
+      date: dayEl.getAttribute('data-date'),
+      resourceId: dayEl.getAttribute('data-resource-id'),
+    }))
   }
 
   getDowEls(dayAbbrev) {

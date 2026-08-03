@@ -1,35 +1,47 @@
-import { ResourcefulDayTableModel } from './ResourcefulDayTableModel'
+import { CalendarContext, DayTableModel } from '@fullcalendar/preact/protected-api'
+import { Resource } from '../structs/resource'
+import { AbstractResourceDayTableModel, ResourceDayCol, ResourceDayGroup } from './AbstractResourceDayTableModel'
+import { HasEventsByDate } from './per-date-filtering'
 
 /*
 dates over resources
 */
-export class DayResourceTableModel extends ResourcefulDayTableModel {
-  computeCol(dateI, resourceI) {
-    return dateI * this.resources.length + resourceI
-  }
+export function buildDayResourceTableModel(
+  dayTableModel: DayTableModel,
+  resources: Resource[],
+  context: CalendarContext,
+  hasEventsByDate: HasEventsByDate | null = null,
+): AbstractResourceDayTableModel {
+  let hasMajor = resources.length > 1 && dayTableModel.colCount > 1
+  let groups: ResourceDayGroup[] = dayTableModel.headerDates.map((date, dateI) => {
+    let cols: ResourceDayCol[] = []
 
-  colIsMajor(col: number): boolean {
-    const resourceCnt = this.resources.length
-    return resourceCnt > 1 && !(col % resourceCnt)
-  }
+    for (let resourceI = 0; resourceI < resources.length; resourceI += 1) {
+      let resource = resources[resourceI]
 
-  /*
-  every single day is broken up
-  */
-  computeColRanges(dateStartI: number, dateEndI: number, resourceI: number) {
-    let segs = []
+      if (!hasEventsByDate || hasEventsByDate[dateI][resource.id]) {
+        cols.push({
+          date,
+          dateI,
+          resource,
+          resourceI,
+          isMajor: hasMajor && cols.length === 0,
+        })
+      }
+    }
 
-    for (let i = dateStartI; i < dateEndI; i += 1) {
-      let col = this.computeCol(i, resourceI)
-
-      segs.push({
-        start: col,
-        end: col + 1,
-        isStart: i === dateStartI,
-        isEnd: i === dateEndI - 1,
+    if (!cols.length) {
+      cols.push({
+        date,
+        dateI,
+        resource: null,
+        resourceI: -1,
+        isMajor: hasMajor,
       })
     }
 
-    return segs
-  }
+    return { date, cols }
+  })
+
+  return new AbstractResourceDayTableModel(dayTableModel, resources, groups, true, context)
 }
