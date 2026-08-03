@@ -15,9 +15,10 @@ export interface ResourceViewProps extends ViewProps {
 }
 
 /*
-passes the raw resource data through. each view applies its own filterResourcesWithEvents
-filtering via resource/common/resource-filtering.ts, using the raw event store so
-resource visibility stays stable during drag mirrors
+Passes resource data through untouched. filterResourcesWithEvents is applied by each view
+via resource/common/resource-filtering, so a view's whole visibility policy — view-wide and,
+for the vertical views, per-date — lives in one place instead of straddling this transformer.
+Views filter against rawEventStore so resources don't vanish while an event is being dragged.
 */
 export class ResourceDataAdder implements ViewPropsTransformer {
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {

@@ -525,8 +525,6 @@ export class CalendarDataManager {
       duration: viewSpec.duration,
       durationUnit: viewSpec.durationUnit,
       usesMinMaxTime: viewSpec.optionDefaults.usesMinMaxTime as any,
-      slotDuration: refinedOptions.slotDuration,
-      slotHeaderInterval: refinedOptions.slotHeaderInterval,
       dateEnv: optionsData.dateEnv,
       calendarApi: this.config.calendarApi,
       slotMinTime: refinedOptions.slotMinTime,

@@ -1,5 +1,5 @@
 import { BaseOptions, BaseOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/protected-api'
-import { DateProfileGeneratorClass, UsesMinMaxTimeInput } from './DateProfileGenerator'
+import { DateProfileGeneratorClass } from './DateProfileGenerator'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarController } from './CalendarController'
 import { EventApi } from './api/EventApi'
@@ -625,7 +625,7 @@ export const VIEW_ONLY_OPTION_REFINERS = {
   // internal only
   buttonTextKey: String,
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
-  usesMinMaxTime: identity as Identity<UsesMinMaxTimeInput>,
+  usesMinMaxTime: Boolean,
   disallowAmbigTitle: Boolean,
 }
 

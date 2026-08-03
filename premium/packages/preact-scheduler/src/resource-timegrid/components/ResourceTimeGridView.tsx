@@ -18,7 +18,7 @@ import { buildResourceRowConfigs } from '../../resource-daygrid/resource-header-
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
 import { ResourceViewProps } from '../../resource/View'
-import { ResourceFilter, computeHasEventsByDate } from '../../resource/common/resource-filtering'
+import { computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
 import { buildResourceTableModel } from '../../resource/common/resource-table-model'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
@@ -34,7 +34,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   state = {} as ResourceTimeGridViewState
 
   // memo
-  private resourceFilter = new ResourceFilter()
+  private filterResourceStore = memoize(filterResourceStore)
   private flattenResources = memoize(flattenResources)
   private buildDaySeries = memoize((dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) => (
     new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
@@ -75,13 +75,11 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let { options, dateEnv } = context
     let { dateProfile } = props
 
-    let { resourceStore, filterRanges } = this.resourceFilter.filter(
+    let resourceStore = this.filterResourceStore(
       props.resourceStore,
+      options.filterResourcesWithEvents,
       props.rawEventStore,
-      dateProfile,
-      options,
-      dateEnv,
-      context.dateProfileGenerator,
+      dateProfile.activeRange,
     )
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(resourceStore, resourceOrderSpecs)
@@ -89,9 +87,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let dayCols = this.buildDayCols(daySeries, dateEnv, dateProfile)
     let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
 
-    // filterRanges is indexed by the same day series dayCols were built from
-    let hasEventsByDate = filterRanges && dayCols.length > 1
-      ? this.computeHasEventsByDate(props.rawEventStore, resourceStore, filterRanges)
+    // an event must intersect a column's rendered range to earn a column there
+    let hasEventsByDate = options.filterResourcesWithEvents && dayCols.length > 1
+      ? this.computeHasEventsByDate(props.rawEventStore, resourceStore, dayCols)
       : null
 
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTableModel(

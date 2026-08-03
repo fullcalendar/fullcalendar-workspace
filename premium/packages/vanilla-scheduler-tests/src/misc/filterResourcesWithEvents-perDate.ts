@@ -155,7 +155,9 @@ describe('filterResourcesWithEvents per date', () => {
       expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(3)
     })
 
-    it('uses the rendered slotMinTime window for view-wide and per-date filtering', () => {
+    // resource A stays in the view-wide set (its event is inside the overall range) but earns
+    // no column, because no column's rendered range contains it
+    it('gives no column to an event outside every column\'s slotMinTime window', () => {
       let calendar = initCalendar({
         slotMinTime: '06:00',
         resources: [
@@ -478,7 +480,10 @@ describe('filterResourcesWithEvents per date', () => {
     })
   })
 
-  it('hides a single-day resource whose only event is before slotMinTime', () => {
+  // view-wide filtering asks only whether an event falls within the view's overall range. it
+  // deliberately ignores invisible periods inside that range, so a resource whose only event
+  // sits outside the slot window is still shown — with an empty column
+  it('keeps a single-day resource whose only event is before slotMinTime', () => {
     let calendar = initCalendar({
       initialView: 'resourceTimeGridDay',
       slotMinTime: '06:00',
@@ -487,10 +492,10 @@ describe('filterResourcesWithEvents per date', () => {
     })
     let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
 
-    expect(viewWrapper.header.getResourceIds()).toEqual([])
+    expect(viewWrapper.header.getResourceIds()).toEqual(['a'])
     expect(viewWrapper.timeGrid.getColumnInfo()).toEqual([{
       date: DAY_1,
-      resourceId: null,
+      resourceId: 'a',
     }])
     expect(viewWrapper.timeGrid.getEventEls().length).toBe(0)
   })

@@ -14,7 +14,7 @@ import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderForma
 import { AbstractResourceDayTableModel } from '../../resource/common/AbstractResourceDayTableModel'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
 import { ResourceViewProps } from '../../resource/View'
-import { ResourceFilter, computeHasEventsByDate } from '../../resource/common/resource-filtering'
+import { computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
 import { buildResourceTableModel } from '../../resource/common/resource-table-model'
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
@@ -23,7 +23,7 @@ import { buildResourceRowConfigs } from '../resource-header-tier'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   // memo
-  private resourceFilter = new ResourceFilter()
+  private filterResourceStore = memoize(filterResourceStore)
   private flattenResources = memoize(flattenResources)
   private buildDayTableModel = memoize(buildDayTableModel)
   private buildDayCols = memoize(buildDayGridCols)
@@ -42,13 +42,11 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
     let { props, context } = this
     let { options } = context
 
-    let { resourceStore, filterRanges } = this.resourceFilter.filter(
+    let resourceStore = this.filterResourceStore(
       props.resourceStore,
+      options.filterResourcesWithEvents,
       props.rawEventStore,
-      props.dateProfile,
-      options,
-      context.dateEnv,
-      context.dateProfileGenerator,
+      props.dateProfile.activeRange,
     )
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(resourceStore, resourceOrderSpecs)
@@ -56,9 +54,10 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
     let dayCols = this.buildDayCols(dayTable)
 
     // a multi-row column represents one weekday across many dates, so it has no single date
-    // to filter by. single-row is also what makes dayCols align with filterRanges' indexing
-    let hasEventsByDate = filterRanges && dayTable.colCount > 1 && dayTable.rowCount === 1
-      ? this.computeHasEventsByDate(props.rawEventStore, resourceStore, filterRanges)
+    // to filter by — those views keep view-wide filtering only. nextDayThreshold matches how
+    // the renderer decides which day a timed event's tail belongs to
+    let hasEventsByDate = options.filterResourcesWithEvents && dayTable.colCount > 1 && dayTable.rowCount === 1
+      ? this.computeHasEventsByDate(props.rawEventStore, resourceStore, dayCols, options.nextDayThreshold)
       : null
 
     let resourceDayTableModel = this.resourceDayTableModel = this.buildResourceTableModel(
