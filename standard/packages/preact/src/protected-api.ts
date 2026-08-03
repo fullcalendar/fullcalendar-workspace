@@ -120,6 +120,8 @@ export {
 
 export type { DayTableCell, DayGridRange } from './common/DayTableModel'
 export { DayTableModel } from './common/DayTableModel'
+export type { DayCol, DayColSlotRange } from './common/day-cols'
+export { buildDayCols } from './common/day-cols'
 
 export { Scroller } from './scrollgrid/Scroller'
 
