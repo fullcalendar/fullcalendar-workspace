@@ -2,13 +2,13 @@ import { EventDef } from '../structs/event-def'
 import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse'
 import {
   buildRangeEdgeOutput, canonicalRangeEndMarker, EventInstance,
-  getRangeInstantStartMs, getRangeInstantEndMs, rangeEdgeOutputsRequireSeparateFormatting,
+  getRangeInstantStartMs, getRangeInstantEndMs,
 } from '../structs/event-instance'
 import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui'
 import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
 import { diffDates, computeAlignedDayRange } from '../util/date'
 import {
-  createDuration, durationsEqual, DateMarkerMeta, joinDateTimeFormatParts, RANGE_FORMAT_SEPARATOR,
+  createDuration, durationsEqual, DateMarkerMeta, joinDateTimeFormatParts,
 } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
 import { CalendarContext } from '../CalendarContext'
@@ -231,26 +231,19 @@ export class EventImpl implements EventApi {
     let instance = this._instance
     let formatter = createFormatter(formatInput)
     let start = buildRangeEdgeOutput(instance.range.start, instance.range.instantStartMs, dateEnv)
-    let end = buildRangeEdgeOutput(instance.range.end, instance.range.instantEndMs, dateEnv)
 
     if (this._def.hasEnd) {
-      if (rangeEdgeOutputsRequireSeparateFormatting(start, end)) {
-        return joinDateTimeFormatParts(dateEnv.formatToParts(start.marker, formatter, {
-          timeZoneOffset: start.timeZoneOffset,
-        })) + RANGE_FORMAT_SEPARATOR + joinDateTimeFormatParts(dateEnv.formatToParts(end.marker, formatter, {
-          timeZoneOffset: end.timeZoneOffset,
-        }))
-      }
+      let end = buildRangeEdgeOutput(instance.range.end, instance.range.instantEndMs, dateEnv)
 
       return joinDateTimeFormatParts(
         dateEnv.formatRangeToParts(start.marker, end.marker, formatter, {
-          startTimeZoneOffset: start.timeZoneOffset,
-          endTimeZoneOffset: end.timeZoneOffset,
+          startInstantMs: start.date.valueOf(),
+          endInstantMs: end.date.valueOf(),
         }),
       )
     }
     return joinDateTimeFormatParts(dateEnv.formatToParts(start.marker, formatter, {
-      timeZoneOffset: start.timeZoneOffset,
+      instantMs: start.date.valueOf(),
     }))
   }
 

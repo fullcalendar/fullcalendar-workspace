@@ -15,6 +15,7 @@ import {
   CmdDateFormatterFunc,
   DateTimeFormatPartWithWeek,
   DateTimeRangeFormatPartWithWeek,
+  ZonedInstant,
 } from './formatting-interface'
 import { buildIsoString } from './formatting-utils'
 import { parse } from './parsing'
@@ -352,13 +353,10 @@ export class DateEnv {
   formatToParts(
     marker: DateMarker,
     formatter: DateFormatter,
-    dateOptions: { timeZoneOffset?: number } = {},
+    dateOptions: { instantMs?: number } = {},
   ): DateTimeFormatPartWithWeek[] {
     return formatter.formatToParts(
-      {
-        marker,
-        timeZoneOffset: dateOptions.timeZoneOffset ?? this.offsetForMarker(marker),
-      },
+      this.toZonedInstant(marker, dateOptions.instantMs),
       this,
     )
   }
@@ -369,25 +367,35 @@ export class DateEnv {
     formatter: DateFormatter,
     dateOptions: {
       isEndExclusive?: boolean
-      startTimeZoneOffset?: number
-      endTimeZoneOffset?: number
+      startInstantMs?: number
+      endInstantMs?: number
     } = {},
   ): DateTimeRangeFormatPartWithWeek[] {
+    let { endInstantMs } = dateOptions
+
     if (dateOptions.isEndExclusive) {
       end = addMs(end, -1)
+      if (endInstantMs != null) {
+        endInstantMs -= 1
+      }
     }
 
     return formatter.formatRangeToParts(
-      {
-        marker: start,
-        timeZoneOffset: dateOptions.startTimeZoneOffset ?? this.offsetForMarker(start),
-      },
-      {
-        marker: end,
-        timeZoneOffset: dateOptions.endTimeZoneOffset ?? this.offsetForMarker(end),
-      },
+      this.toZonedInstant(start, dateOptions.startInstantMs),
+      this.toZonedInstant(end, endInstantMs),
       this,
     )
+  }
+
+  // pairs a wall-clock marker with its real epoch instant (first occurrence when the
+  // wall-clock is ambiguous), unless an exact instant is supplied. the marker is
+  // re-derived from the instant so the pair always agrees, even when the given marker
+  // was nonexistent (DST gap) or expressed in a different offset's reading
+  private toZonedInstant(marker: DateMarker, instantMs?: number): ZonedInstant {
+    if (instantMs == null) {
+      instantMs = this.toDate(marker).valueOf()
+    }
+    return { marker: this.timestampToMarker(instantMs), instantMs }
   }
 
   /*

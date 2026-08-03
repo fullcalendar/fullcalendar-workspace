@@ -1,7 +1,6 @@
 import { EventDef, EventDefHash } from '../structs/event-def'
 import {
   buildEventInstanceRange, buildRangeEdgeOutput, EventInstanceRange,
-  rangeEdgeOutputsRequireSeparateFormatting,
 } from '../structs/event-instance'
 import { EventTuple } from '../structs/event-parse'
 import { EventStore } from '../structs/event-store'
@@ -17,7 +16,6 @@ import {
   startOfDay,
   joinDateTimeFormatParts,
   DateTimeRangeFormatPartWithWeek,
-  RANGE_FORMAT_SEPARATOR,
 } from '@full-ui/headless-calendar'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc'
 import { computeVisibleDayRange } from '../util/date'
@@ -344,38 +342,26 @@ export function buildEventRangeTimeText(
   )
     ? slicedEnd
     : canonicalEnd.marker
-  const startTimeZoneOffset = startDate === canonicalStart.marker ? canonicalStart.timeZoneOffset : undefined
-  const endTimeZoneOffset = endDate === canonicalEnd.marker ? canonicalEnd.timeZoneOffset : undefined
+  const startInstantMs = startDate === canonicalStart.marker ? canonicalStart.date.valueOf() : undefined
+  const endInstantMs = endDate === canonicalEnd.marker ? canonicalEnd.date.valueOf() : undefined
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
       // TODO: put this functionality in @full-ui/headless-calendar ?
-      // NOTE: produces strings like '12:00pm - 1:00pm', without condensing dayPeriod,
-      // but that's okay since it's technically a different dayPeriod on a different day
-      if (rangeEdgeOutputsRequireSeparateFormatting(
-        { marker: startDate, timeZoneOffset: startTimeZoneOffset },
-        { marker: endDate, timeZoneOffset: endTimeZoneOffset },
-      )) {
-        return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
-          timeZoneOffset: startTimeZoneOffset,
-        })) + RANGE_FORMAT_SEPARATOR + joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat, {
-          timeZoneOffset: endTimeZoneOffset,
-        }))
-      }
-
       const rangeParts = dateEnv.formatRangeToParts(startDate, endDate, timeFormat, {
-        startTimeZoneOffset,
-        endTimeZoneOffset,
+        startInstantMs,
+        endInstantMs,
       })
       const multiDaySeparator = detectMultiDayTimes(rangeParts)
-      //
+      // NOTE: produces strings like '12:00pm - 1:00pm', without condensing dayPeriod,
+      // but that's okay since it's technically a different dayPeriod on a different day
       if (multiDaySeparator != null) {
         return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
-          timeZoneOffset: startTimeZoneOffset,
+          instantMs: startInstantMs,
         })) +
           multiDaySeparator +
           joinDateTimeFormatParts(dateEnv.formatToParts(endDate, timeFormat, {
-            timeZoneOffset: endTimeZoneOffset,
+            instantMs: endInstantMs,
           }))
       }
 
@@ -384,7 +370,7 @@ export function buildEventRangeTimeText(
 
     if (isStart) {
       return joinDateTimeFormatParts(dateEnv.formatToParts(startDate, timeFormat, {
-        timeZoneOffset: startTimeZoneOffset,
+        instantMs: startInstantMs,
       }))
     }
   }

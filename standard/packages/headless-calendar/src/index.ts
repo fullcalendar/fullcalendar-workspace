@@ -20,8 +20,10 @@ export type {
   DateTimeFormatPartWithWeek,
   DateTimeRangeFormatPartWithWeek,
   DateFormatter,
+  ZonedInstant,
+  ExpandedZonedInstant,
 } from './formatting-interface'
-export { createVerboseFormattingArg } from './formatting-interface'
+export { createVerboseFormattingArg, expandZonedInstant } from './formatting-interface'
 
 export type { DurationInput, DurationObjectInput, Duration } from './duration'
 export {
@@ -57,7 +59,6 @@ export {
   formatIsoTimeString,
   formatTimeZoneOffset,
   joinDateTimeFormatParts,
-  RANGE_FORMAT_SEPARATOR,
 } from './formatting-utils'
 
 export type { LocaleCodeArg, Locale } from './locale'
@@ -91,6 +92,3 @@ export {
 export { parse as parseMarker } from './parsing'
 
 export { isInt, trimEnd, padStart } from './utils'
-
-export type { ZonedMarker, ExpandedZonedMarker } from './zoned-marker'
-export { expandZonedMarker } from './zoned-marker'

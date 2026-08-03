@@ -666,12 +666,16 @@ function buildCellRows(
   return cellRows
 }
 
+/*
+startMs is null for every cell of a non-timed timeline (slot unit of day or coarser),
+where cells are civil dates without an exact instant. Timed-axis cells always carry one,
+keeping their labels fold-correct during DST. Passing undefined lets DateEnv resolve the
+marker first-occurrence — the occurrence choice can't affect a date-only label.
+*/
 function formatCell(date: DateMarker, startMs: number | null, format: any, dateEnv: DateEnv): string {
-  const timeZoneOffset = startMs == null
-    ? dateEnv.offsetForMarker(date)
-    : Math.round((date.valueOf() - startMs) / 60000)
-
-  return joinDateTimeFormatParts(format.formatToParts({ marker: date, timeZoneOffset }, dateEnv))
+  return joinDateTimeFormatParts(dateEnv.formatToParts(date, format, {
+    instantMs: startMs ?? undefined,
+  }))
 }
 
 function buildCellObject(

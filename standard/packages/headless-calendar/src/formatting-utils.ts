@@ -1,10 +1,6 @@
 import { DateMarker } from './marker'
 import { padStart } from './utils'
 
-// Edge-by-edge formatting cannot reliably obtain locale range punctuation: equal markers
-// collapse, and function/cmd formatters expose no independent separator. Keep one fallback.
-export const RANGE_FORMAT_SEPARATOR = ' - '
-
 // timeZoneOffset is in minutes
 export function buildIsoString(marker: DateMarker, timeZoneOffset?: number, stripZeroTime: boolean = false) {
   let s = marker.toISOString()

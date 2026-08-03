@@ -54,25 +54,8 @@ export interface EventRangeEdge {
 
 export interface RangeEdgeOutput {
   marker: DateMarker
-  date: Date
+  date: Date // the exact epoch instant
   dateStr: string
-  timeZoneOffset: number
-}
-
-// Intl range formatting is unsafe when civil markers run backward, or when equal markers
-// represent distinct occurrences on opposite sides of a UTC-offset transition.
-export function rangeEdgeOutputsRequireSeparateFormatting(
-  start: Pick<RangeEdgeOutput, 'marker'> & { timeZoneOffset?: number },
-  end: Pick<RangeEdgeOutput, 'marker'> & { timeZoneOffset?: number },
-): boolean {
-  const markerDiff = start.marker.valueOf() - end.marker.valueOf()
-
-  return markerDiff > 0 || (
-    markerDiff === 0 &&
-    start.timeZoneOffset != null &&
-    end.timeZoneOffset != null &&
-    start.timeZoneOffset !== end.timeZoneOffset
-  )
 }
 
 // Resolves an edge to its real instant, choosing the deterministic first occurrence when
@@ -102,7 +85,6 @@ export function buildRangeEdgeOutput(
       marker: canonicalMarker,
       date: new Date(instantMs),
       dateStr: buildIsoString(canonicalMarker, timeZoneOffset),
-      timeZoneOffset,
     }
   }
 
@@ -112,7 +94,6 @@ export function buildRangeEdgeOutput(
     dateStr: omitTime
       ? dateEnv.formatIso(marker, { omitTime })
       : buildIsoString(marker, timeZoneOffset),
-    timeZoneOffset,
   }
 }
 
