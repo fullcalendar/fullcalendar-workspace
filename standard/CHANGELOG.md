@@ -1,7 +1,7 @@
 
 ## v7.0.3
 
-- FIX: Timeline axis now renders and respects the calendar's timezone's DST gaps (#6149)
+- FIX: Timeline axis now renders and respects the calendar's timezone's DST gaps (#7620)
 - FIX: `filterResourcesWithEvents` on a daily basis in vertical resource view (#6149)
 
 
