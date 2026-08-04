@@ -100,6 +100,34 @@ function expectHeaderStructure(
   )
 }
 
+/*
+The bottom header row always has one colSpan-1 cell per column, so it's a stand-in for the
+body columns. Cells in the rows above must line up with the cells they span, which is only
+true if their width tracks colSpan -- with ragged groups, equal-share sizing does not.
+*/
+function expectHeaderRowsAlign(header: ResourceDayHeaderWrapper) {
+  let cellElsByRow = header.getCellElsByRow()
+  let colEls = cellElsByRow[cellElsByRow.length - 1]
+
+  for (let cellEls of cellElsByRow.slice(0, -1)) {
+    let colI = 0
+
+    for (let cellEl of cellEls) {
+      let colSpan = Number(cellEl.getAttribute('aria-colspan') || 1)
+      let coveredWidth = colEls.slice(colI, colI + colSpan).reduce(
+        (total, colEl) => total + colEl.getBoundingClientRect().width,
+        0,
+      )
+
+      // tolerance for sub-pixel layout rounding
+      expect(Math.abs(cellEl.getBoundingClientRect().width - coveredWidth)).toBeLessThan(1)
+      colI += colSpan
+    }
+
+    expect(colI).toBe(colEls.length)
+  }
+}
+
 function expectTimeGridStructure(
   calendar: Calendar,
   resourceIdsByDate: { [date: string]: string[] },
@@ -153,6 +181,26 @@ describe('filterResourcesWithEvents per date', () => {
         [DAY_2]: ['b'],
       }, ['a', 'b'], datesAboveResources)
       expect(new ResourceTimeGridViewWrapper(calendar).timeGrid.getEventEls().length).toBe(3)
+    })
+
+    it('sizes ragged header cells to the columns they span', async () => {
+      let calendar = initCalendar({
+        resources: [
+          { id: 'a', title: 'Resource A' },
+          { id: 'b', title: 'Resource B' },
+        ],
+        events: [
+          // day 1 has both resources, day 2 has only B, so one header cell spans two
+          // columns while the other spans one
+          { title: 'A day 1', start: DAY_1 + 'T09:00:00', resourceId: 'a' },
+          { title: 'B day 1', start: DAY_1 + 'T10:00:00', resourceId: 'b' },
+          { title: 'B day 2', start: DAY_2 + 'T10:00:00', resourceId: 'b' },
+        ],
+      })
+
+      await waitTimeout() // let column widths settle
+
+      expectHeaderRowsAlign(new ResourceTimeGridViewWrapper(calendar).header)
     })
 
     // resource A stays in the view-wide set (its event is inside the overall range) but earns

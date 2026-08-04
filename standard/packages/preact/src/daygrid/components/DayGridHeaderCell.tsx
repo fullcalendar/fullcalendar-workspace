@@ -40,9 +40,26 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
   render() {
     const { props, state, context } = this
     const { renderConfig, dataConfig } = props
+    const colSpan = dataConfig.colSpan || 1
     const totalColWidth = props.colWidth != null
-      ? props.colWidth * (dataConfig.colSpan || 1)
+      ? props.colWidth * colSpan
       : undefined
+    const isLiquid = totalColWidth == null
+
+    /*
+    A liquid cell that spans multiple columns can't use the .liquid class, which gives every
+    cell an equal share regardless of colSpan. Instead, grow proportionally to the columns
+    covered, with a flex-basis for the start-borders swallowed by the span (assumed 1px, like
+    .fakeBorderS), which are part of each covered column's base size. Keeps edges aligned.
+    */
+    const isSpanning = isLiquid && colSpan > 1
+    const style = isSpanning ? {
+      flexGrow: colSpan,
+      flexBasis: (colSpan - 1) + 'px',
+      minWidth: 0,
+    } : {
+      width: totalColWidth,
+    }
 
     // HACK
     const isDisabled = dataConfig.renderProps.isDisabled
@@ -115,12 +132,10 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
           align === 'center' ? classNames.alignCenter :
             align === 'end' ? classNames.alignEnd :
               classNames.alignStart,
-          props.colWidth == null && classNames.liquid,
+          isLiquid && !isSpanning && classNames.liquid,
           !isSticky && classNames.crop,
         )}
-        style={{
-          width: totalColWidth,
-        }}
+        style={style}
         renderProps={finalRenderProps}
         generatorName={renderConfig.generatorName}
         customGenerator={renderConfig.customGenerator}

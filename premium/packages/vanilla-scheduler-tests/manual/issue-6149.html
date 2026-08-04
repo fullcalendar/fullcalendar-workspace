@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+
+<script src='../../../../standard/packages/vanilla/dist/all/global.js'></script>
+<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../vanilla-scheduler/dist/all/global.js'></script>
+<script>
+
+  // https://github.com/fullcalendar/fullcalendar/issues/6149
+  //
+  // filterResourcesWithEvents used to be all-or-nothing: a resource either appeared under
+  // EVERY date of a multi-day vertical view or none of them. Now each (date, resource) pair
+  // gets its own column, so a resource only appears under the dates it has events on.
+  //
+  // The data below is arranged so every rule is visible at once:
+  //
+  //   Sep 7  - Room A, Room C
+  //   Sep 8  - Room B
+  //   Sep 9  - Room C
+  //   Sep 10 - nobody, so the date is omitted ENTIRELY (no header cell, no column)
+  //   Room D - no events at all, so it never appears
+  //
+  // Toggle "filter" off and you should get the full 4 resources x 4 dates grid back.
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'resourceTimeGridFourDay',
+      initialDate: '2020-09-07',
+      scrollTime: '08:00',
+      editable: true,
+      selectable: true,
+      filterResourcesWithEvents: true,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'resourceTimeGridFourDay,resourceDayGridFourDay,resourceDayGridMonth'
+      },
+      buttons: {
+        resourceTimeGridFourDay: { text: 'timegrid 4-day' },
+        resourceDayGridFourDay: { text: 'daygrid 4-day' },
+        resourceDayGridMonth: { text: 'daygrid month' }
+      },
+      views: {
+        resourceTimeGridFourDay: {
+          type: 'resourceTimeGrid',
+          duration: { days: 4 },
+        },
+        resourceDayGridFourDay: {
+          type: 'resourceDayGrid',
+          duration: { days: 4 },
+        }
+      },
+
+      //// uncomment to see the deliberate view-wide compromise: Room A's only event now falls
+      //// outside every column's rendered window, so it renders nowhere — but the resource is
+      //// still listed, with an empty column. view-wide filtering asks only whether an event
+      //// is inside the view's overall range, not whether it lands on something visible.
+      //slotMinTime: '12:00',
+
+      resources: [
+        { id: 'a', title: 'Room A' },
+        { id: 'b', title: 'Room B', eventColor: 'green' },
+        { id: 'c', title: 'Room C', eventColor: 'orange' },
+        { id: 'd', title: 'Room D (never has events)', eventColor: 'red' }
+      ],
+      events: [
+        { id: '1', resourceId: 'a', start: '2020-09-07T09:00:00', end: '2020-09-07T11:00:00', title: 'A / day 1' },
+        { id: '2', resourceId: 'c', start: '2020-09-07T13:00:00', end: '2020-09-07T15:00:00', title: 'C / day 1' },
+        { id: '3', resourceId: 'b', start: '2020-09-08T10:00:00', end: '2020-09-08T12:00:00', title: 'B / day 2' },
+        { id: '4', resourceId: 'c', start: '2020-09-09T09:00:00', end: '2020-09-09T11:00:00', title: 'C / day 3' }
+      ],
+
+      // a selection is allowed to span a date where the resource has no column — the
+      // highlight skips the gap but the reported range stays continuous, like a hidden day
+      select: function(info) {
+        console.log(
+          'select',
+          info.startStr,
+          info.endStr,
+          info.resource ? info.resource.id : '(no resource)'
+        );
+      },
+      dateClick: function(info) {
+        console.log(
+          'dateClick',
+          info.dateStr,
+          info.resource ? info.resource.id : '(no resource)'
+        );
+      }
+    });
+
+    calendar.render();
+
+    document.getElementById('filter-toggle').addEventListener('change', function(ev) {
+      calendar.setOption('filterResourcesWithEvents', ev.target.checked);
+    });
+
+    document.getElementById('dates-above-toggle').addEventListener('change', function(ev) {
+      calendar.setOption('datesAboveResources', ev.target.checked);
+    });
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #controls {
+    max-width: 1100px;
+    margin: 50px auto 0 auto;
+  }
+
+  #controls label {
+    margin-right: 20px;
+  }
+
+  #controls ul {
+    color: #666;
+    line-height: 1.6;
+  }
+
+  #calendar {
+    max-width: 1100px;
+    margin: 20px auto 50px auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='controls'>
+    <label><input type='checkbox' id='filter-toggle' checked /> filterResourcesWithEvents</label>
+    <label><input type='checkbox' id='dates-above-toggle' /> datesAboveResources</label>
+    <ul>
+      <li>With the filter ON, the 4-day views show only: Sep 7 &rarr; A, C &nbsp;|&nbsp; Sep 8 &rarr; B &nbsp;|&nbsp; Sep 9 &rarr; C</li>
+      <li>Sep 10 disappears completely &mdash; no header cell, no column &mdash; because no resource has events that day</li>
+      <li>Room D never appears at all, in any view</li>
+      <li>Turn the filter OFF for the full 4 &times; 4 grid; toggle datesAboveResources to check both orderings</li>
+      <li><strong>daygrid month</strong> keeps the old whole-view behavior on purpose: a column there is a weekday shared by every week row, so there's no single date to filter by</li>
+    </ul>
+  </div>
+
+  <div id='calendar'></div>
+
+</body>
+</html>
