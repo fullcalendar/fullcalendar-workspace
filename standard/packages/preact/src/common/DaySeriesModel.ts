@@ -2,6 +2,12 @@ import { DateProfileGenerator } from '../DateProfileGenerator'
 import { DateMarker, addDays, diffDays, DateRange } from '@full-ui/headless-calendar'
 import { SlicedCoordRange } from '../coord-range'
 
+/*
+A hidden day occupies a slot in `entries` (so a date can still be located by its offset from
+range.start) but owns no index in `dates`. It records the visible indices on either side of
+it, which is how sliceRange clamps a span whose endpoint lands on a hidden day inward to the
+nearest rendered column.
+*/
 type DaySeriesEntry =
   { kind: 'visible', index: number } |
   { kind: 'hidden', previousIndex: number, nextIndex: number }

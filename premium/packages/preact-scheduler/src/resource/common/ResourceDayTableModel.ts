@@ -33,6 +33,8 @@ export function buildResourceDayTableModel(
       }
     }
 
+    // a resource with no surviving date drops out of the header AND the body entirely.
+    // intentional: a filtered view never shows a resource heading spanning zero columns
     if (cols.length) {
       groups.push({ resource, cols })
     }

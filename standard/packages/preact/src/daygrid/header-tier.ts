@@ -175,6 +175,9 @@ export function buildDateDataConfigs(
   extraAttrs: Dictionary = {}, // TODO
   className = '',
   isMajorMod?: number,
+  // how many dates the VIEW has, which is only different when a caller renders a subset:
+  // resource views build one date row per resource, and per-date filtering can drop dates
+  // that have no resources. nav links key off the view's count, not the subset's
   totalDateCnt = dateMarkers.length,
 ): CellDataConfig<BaseDayHeaderData>[] {
   const { dateEnv, viewApi, options } = context

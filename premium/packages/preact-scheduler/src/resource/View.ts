@@ -19,6 +19,10 @@ Passes resource data through untouched. filterResourcesWithEvents is applied by 
 via resource/common/resource-filtering, so a view's whole visibility policy — view-wide and,
 for the vertical views, per-date — lives in one place instead of straddling this transformer.
 Views filter against rawEventStore so resources don't vanish while an event is being dragged.
+
+CONSEQUENCE: declaring `needsResourceData` no longer buys a view filtering for free. A new
+resource view must call filterResourceStore itself or filterResourcesWithEvents silently
+does nothing for it.
 */
 export class ResourceDataAdder implements ViewPropsTransformer {
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {

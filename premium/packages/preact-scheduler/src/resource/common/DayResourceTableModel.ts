@@ -35,6 +35,10 @@ export function buildDayResourceTableModel(
       }
     }
 
+    // a date on which no resource has events is omitted WHOLESALE — no header cell, no
+    // column, the neighbouring dates simply sit adjacent. intentional (a filtered view never
+    // mixes resource columns with bare day columns); day-only rendering happens only via the
+    // resourceless model, and then covers every date
     if (cols.length) {
       groups.push({ date: dayCol.date, cols })
     }

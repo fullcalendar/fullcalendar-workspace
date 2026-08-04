@@ -34,6 +34,9 @@ export class AbstractResourceDayTableModel {
 
   constructor(
     public dayCols: DayCol[],
+    // null for timegrid, which is a flat row of columns. daygrid passes one because its
+    // columns can repeat across week rows, and only it needs the 2D `cells` projection.
+    // residual seam: `cells` and `cols` describe the same columns at different dimensions
     public dayTableModel: DayTableModel | null,
     public resources: Resource[],
     public groups: ResourceDayGroup[],
@@ -70,7 +73,14 @@ export class AbstractResourceDayTableModel {
       : buildResourceCells(dayTableModel, cols, context)
   }
 
+  /*
+  -1 means the pair has no column: either per-date filtering dropped it, or the whole date
+  was omitted. Callers must handle that — a seg aimed at a missing pair is discarded, which
+  is how filtered layouts avoid rendering events into columns that don't exist.
+  */
   computeCol(dateI: DateColIndex, resourceI: number): ViewColIndex {
+    // the resourceless model keys every column under -1, so lookups succeed no matter which
+    // resource index a splitter happens to pass in
     let key = buildColKey(dateI, this.resources.length ? resourceI : -1)
     let col = this.colLookup[key]
 
@@ -92,6 +102,9 @@ export class AbstractResourceDayTableModel {
       if (col !== -1) {
         let groupI = this.colGroupIndices[col]
 
+        // adjacency alone isn't enough to merge: with dates above resources, one resource's
+        // columns for consecutive dates ARE adjacent but belong to different date groups, and
+        // a seg spanning them must break so each date renders its own segment
         if (currentRange && currentRange.end === col && currentGroupI === groupI) {
           currentRange.end = col + 1
           currentRange.isEnd = dateI === dateEndI - 1

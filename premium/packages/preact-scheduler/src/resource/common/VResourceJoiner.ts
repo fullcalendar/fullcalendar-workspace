@@ -134,6 +134,9 @@ export abstract class VResourceJoiner<R> {
       }
     }
 
+    // note `anyInteractions` tracks REAL-resource interactions only. an interaction with no
+    // resource at all produces segs above but doesn't activate rendering — matches
+    // pre-existing behavior, so don't "fix" it by folding the all-resource branch in
     if (anyInteractions) {
       return {
         affectedInstances,
