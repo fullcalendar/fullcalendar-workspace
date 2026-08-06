@@ -110,6 +110,18 @@ describe('timeline now-indicator', () => {
     })
   })
 
+  it('positions correctly within a month-interval cell', async () => {
+    let calendar = initCalendar({
+      initialView: 'timelineYear',
+      slotDuration: { months: 1 },
+      initialDate: '2020-08-06',
+      now: '2020-08-06',
+    })
+
+    await waitTimeout()
+    nowIndicatorRendersAt(calendar, '2020-08-06')
+  })
+
   function nowIndicatorRendersAt(calendar, date, thresh = PIXEL_THRESHOLD) {
     // wish threshold could do a smaller default threshold, but RTL messing up
 
