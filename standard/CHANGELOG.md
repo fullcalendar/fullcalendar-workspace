@@ -3,6 +3,7 @@
 
 - FIX: Timeline axis now renders and respects the calendar's timezone's DST gaps (#7620)
 - FIX: `filterResourcesWithEvents` on a daily basis in vertical resource view (#6149)
+- FIX: Jumpiness while scrolling backwards in virtualized Resource Timeline view
 
 
 ## v7.0.2
