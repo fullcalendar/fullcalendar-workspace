@@ -19,7 +19,10 @@ export class Virtualizer<Item> {
     private getItemKey: (item: Item) => string,
     private getItemStart: undefined | ((key: string, index: number, item: Item) => number),
     private getItemSize: (key: string, index: number, item: Item) => number,
+
+    // called when viewport changes and Virtualizer wants caller (aka renderer) to rerender items
     private requestRerender: () => void,
+
     private overscan = 1,
   ) {}
 
@@ -59,6 +62,10 @@ export class Virtualizer<Item> {
   private _handleViewportChange() {
     if (this.itemPositions) {
       const testItemPositions = this.computePositionsInRange(this.items)
+
+      // Cheap test for whether rows in the visible scroll-window changed and repositioning needed.
+      // Only handles changes because of *scroll-window*, NOT because of underlying row data change,
+      // which caller is responsible for rerendering themselves
       if (
         testItemPositions.length !== this.itemPositions.length || (
           testItemPositions.length &&

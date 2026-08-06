@@ -66,6 +66,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   // internal
   private _isUnmounting: boolean
   private totalHeight?: number
+  private totalHeightSettled?: boolean
   private firedTotalHeight?: number
 
   /*
@@ -84,7 +85,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     let fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     let fgSegHorizontals = computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth, props.clipStart, props.clipEnd)
-    let [fgSegTops, hiddenGroups, hiddenGroupTops, totalHeight] = computeFgSegPlacements(
+    let [fgSegTops, hiddenGroups, hiddenGroupTops, totalHeight, totalHeightSettled] = computeFgSegPlacements(
       fgSegs,
       fgSegHorizontals,
       segHeightRefMap.current,
@@ -93,6 +94,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       options.eventMaxStack,
     )
     this.totalHeight = totalHeight
+    this.totalHeightSettled = totalHeightSettled
 
     return (
       <div
@@ -239,7 +241,10 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   }
 
   fireHeight() {
-    if (this.totalHeight !== this.firedTotalHeight) {
+    if (
+      this.totalHeightSettled &&
+      this.totalHeight !== this.firedTotalHeight
+    ) {
       this.firedTotalHeight = this.totalHeight
       setRef(this.props.heightRef, this.totalHeight)
     }

@@ -137,15 +137,38 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
 
-  // TODO: make this nice
-  // This is a means to recompute row positioning when *HeightMaps change
-  private queuedHeightChange = false
+  // amount of extra space that should be temporarily added to vertical rows
+  // after setting, must call forceUpdate
+  // only supported for bodyScroller (aka getIsHeightAuto()===false)
+  private scrollSlack = 0
+
   private _isUnmounting: boolean
-  handleHeightChange = () => {
+
+  // This is a means to recompute row positioning when *HeightMaps change
+  handleBodyRowHeightChange = (val: any, key: any, oldVal: any) => {
     if (this._isUnmounting) return
-    this.queuedHeightChange = true
+
+    if (this.isScrolling && val != null) {
+      const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
+      if (scrollSlackDelta) {
+        const topCoord = this.bodyTops.get(key)
+        if (topCoord != null && topCoord < this.currentEntityScroll) {
+          if (!getIsHeightAuto(this.context.options)) {
+            // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
+            this.scrollSlack += scrollSlackDelta
+          }
+        }
+      }
+    }
+
     afterSize(this.boundForceUpdate)
   }
+
+  handleHeaderRowHeightChange = () => {
+    if (this._isUnmounting) return
+    afterSize(this.boundForceUpdate)
+  }
+
   boundForceUpdate = () => {
     if (this._isUnmounting) return
     this.forceUpdate()
@@ -162,14 +185,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
     afterSize(this.handleSlotInnerWidths)
   })
-  private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeightChange)
-  private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeightChange)
+
+  // TODO: give simpler handlers to this???
+  private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeaderRowHeightChange)
+  private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeaderRowHeightChange)
 
   // keyed by createEntityId
   // NOTE: ignoring deletes can cause memory issues if resources constantly change and have new keys
   // refactor in future. FWIW, TanStack Virtual doesn't garbage collect unnused dimensions either
-  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange, /* ignoreDeletes = */ true)
-  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange, /* ignoreDeletes = */ true)
+  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleBodyRowHeightChange, /* ignoreDeletes = */ true)
+  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleBodyRowHeightChange, /* ignoreDeletes = */ true)
 
   private bodyLayouts: GenericLayout<Resource | Group>[]
   private bodyTops?: Map<string, number> // keyed by createEntityId
@@ -322,7 +347,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     )
     this.bodyHeights = bodyHeights
 
-    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights)
+    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights, this.scrollSlack)
     this.bodyTops = bodyTops
 
     /* virtualize */
@@ -1013,15 +1038,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         this.applyTimeScroll()
       }
     }
-
-    /*
-    Unfortunately this will execute after auto-scroll finished but before scrollEnd can record
-    the updated scroll positioning, causing a scroll-jump to the last recorded entityScroll.
-    */
-    if (this.queuedHeightChange) {
-      this.queuedHeightChange = false
-      this.applyEntityScroll()
-    }
   }
 
   componentWillUnmount() {
@@ -1113,9 +1129,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
+  // # of pixels
   private currentEntityScroll: number
 
-  private setVirtualizerScroll(scroll: number) {
+  private handleAnyEntityScroll(scroll: number) {
     this.currentEntityScroll = scroll
     this.updateVirtualizerScroll()
   }
@@ -1173,7 +1190,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       this.bodyOffset = this.bodyEl.getBoundingClientRect().top + scrollY
     }
 
-    this.setVirtualizerScroll(scrollY - this.bodyOffset)
+    this.handleAnyEntityScroll(scrollY - this.bodyOffset)
   }
 
   // Scrolling
@@ -1266,27 +1283,47 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // ENTITY (RESOURCE) Scrolling
   // -----------------------------------------------------------------------------------------------
 
+  private isScrolling = false
+
+  // REQUESTED scroll by external systems
+  // (for bodyScroller only, NOT window)
   private handleResourceScrollRequest = (resourceId: string) => {
     this.scroll.entityId = resourceId
     this.scroll.fromBottom = undefined
     this.applyEntityScroll()
   }
 
-  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
-    if (!getIsHeightAuto(this.context.options)) {
-      this.setVirtualizerScroll(scroll)
-    }
-  }
-
+  // START vertical scroll
+  // (for bodyScroller only, NOT window)
   private handleEntityScrollStart = () => {
+    this.isScrolling = true
     this.scroll.entityId = undefined
     this.scroll.fromBottom = undefined
   }
 
-  /*
-  Captures current values
-  */
+  // DURING verical scroll
+  // (for bodyScroller only, NOT window)
+  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
+    if (!getIsHeightAuto(this.context.options)) {
+      this.handleAnyEntityScroll(scroll)
+
+      // natural handler for vertical scroll, for either div or window scroll
+      // if scrolls into slack area, move scroll to zero ASAP
+      if (scroll < this.scrollSlack) {
+        // console.log('ABORT', this.scrollSlack)
+        this.scrollSlack = 0
+        this.forceUpdate(() => {
+          this.bodyScroller.scrollTo({ y: 0 })
+        })
+      }
+    }
+  }
+
+  // END vertical scroll
+  // (for bodyScroller only, NOT window)
   private handleEntityScrollEnd = () => {
+    this.isScrolling = false
+
     if (!this.isTrackingWindowScroll) {
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
@@ -1306,6 +1343,17 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         scroll.fromBottom = y
           ? elTop + elHeight - y
           : undefined // if already at top, keep at top
+      }
+
+      // At scrolling end, convert scrollSlack into real scroll and zero out
+      // TODO: have below be in closure as well?
+      const { scrollSlack } = this
+      if (scrollSlack) {
+        // console.log('CONSUMING', scrollSlack)
+        this.scrollSlack = 0
+        this.forceUpdate(() => {
+          this.bodyScroller.scrollTo({ y: y - scrollSlack })
+        })
       }
     }
   }

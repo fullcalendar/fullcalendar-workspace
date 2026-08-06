@@ -117,9 +117,10 @@ export function computeTopsFromHeights<Entity, Key>(
   siblingNodes: GenericLayout<Entity>[],
   getEntityKey: (entity: Entity) => Key,
   heightMap: Map<Key, number>,
+  initialTop = 0
 ): Map<Key, number> {
   const topMap = new Map<Key, number>()
-  computeTopsStartingAt(siblingNodes, getEntityKey, heightMap, topMap, 0)
+  computeTopsStartingAt(siblingNodes, getEntityKey, heightMap, topMap, initialTop)
   return topMap
 }
 
