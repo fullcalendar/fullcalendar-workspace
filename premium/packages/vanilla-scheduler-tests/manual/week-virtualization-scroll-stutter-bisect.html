@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FullCalendar — virtualization scroll stutter BISECTION (isolate the trigger)</title>
+
+    <link href="../../../../standard/packages/vanilla/dist/skeleton.css" rel="stylesheet" />
+    <link href="../../../../standard/packages/vanilla/dist/themes/classic/theme.css" rel="stylesheet" />
+    <link href="../../../../standard/packages/vanilla/dist/themes/classic/palette.css" rel="stylesheet" />
+
+    <script src="../../../../standard/packages/vanilla/dist/all/global.js"></script>
+    <script src="../../../../standard/packages/vanilla/dist/themes/classic/global.js"></script>
+    <script src="../../vanilla-scheduler/dist/all/global.js"></script>
+
+    <style>
+      body { font-family: sans-serif; margin: 16px; color: #222; }
+      h2 { margin: 0 0 8px; }
+      #note { color: #333; max-width: 960px; line-height: 1.5; }
+      #note b { color: #b00; }
+      #controls { margin: 12px 0; padding: 10px 12px; background: #f2f2f2; border-radius: 6px;
+                  display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+      label { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; font-size: 14px; }
+      #calendar-wrap { height: 620px; }
+
+      /* ---- baseline (cheap) event styling: flat solid tint, no shadow/gradient/::before ---- */
+      .calendar-event {
+        border-radius: 4px;
+        margin: 4px;
+        position: relative;
+        border: none !important;
+        color: #000 !important;
+        background-color: var(--cvc-status-bg, #cfe0d8) !important;
+      }
+      .calendar-event .fc-event-main { background-color: transparent !important; color: #000 !important; }
+      .booking-block { line-height: 1.2; padding: 1px 6px; }
+      .booking-block .event-name { font-weight: 600; }
+
+      /* ---- FACTOR: paint-heavy styling (gated by .paint-heavy on the wrapper) ---- */
+      .paint-heavy .calendar-event {
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.32);
+        padding-left: 6px;
+      }
+      .paint-heavy .calendar-event::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 10px;
+        background-color: var(--cvc-status-color, transparent);
+        border-radius: 4px 0 0 4px;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .paint-heavy .shadow-booking {
+        background-image: repeating-linear-gradient(
+          135deg, transparent, transparent 4px,
+          rgba(255, 255, 255, 0.35) 4px, rgba(255, 255, 255, 0.35) 8px) !important;
+      }
+
+      /* ---- FACTOR: variable labels (multi-line resource cells, zero events) ---- */
+      .multiline-label { white-space: pre-wrap; line-height: 1.3; padding: 2px 0; }
+      .multiline-label .label-extra { color: #777; font-size: 11px; }
+      label.disabled { opacity: 0.45; cursor: default; }
+    </style>
+  </head>
+  <body>
+    <h2>FullCalendar Scheduler &mdash; scroll stutter in <code>resourceTimelineWeek</code> with <code>virtualization: true</code></h2>
+    <p id="note">
+      <b>Summary:</b> In a <code>resourceTimelineWeek</code> view with many resource rows, scrolling the
+      timeline body from the <b>bottom back up to the top</b> stutters/janks noticeably while
+      <code>virtualization: true</code> (the default). Setting <code>virtualization: false</code> makes the
+      same upward scroll smooth (at the cost of a heavier one-time initial render). This is plain
+      FullCalendar with no framework and no application code &mdash; only this repo's built bundles loaded above.
+      <br /><br />
+      <b>Steps to reproduce:</b>
+      1) Keep <b>Virtualization</b> checked (default) and enable all three factors below.
+      2) Scroll the resource rows all the way to the <b>bottom</b>.
+      3) Scroll back <b>up</b> quickly with the mouse wheel / trackpad &rarr; the timeline body stutters.
+      4) Uncheck <b>Virtualization</b> and repeat the same bottom&rarr;top scroll &rarr; smooth.
+      <br /><br />
+      <b>Isolating the cause:</b> The checkboxes toggle contributing factors independently (each rebuilds
+      the calendar). Starting from all factors OFF (uniform-height rows, flat event styling) the scroll is
+      smooth even with virtualization on; enabling factors one at a time shows their impact. In our testing
+      <b>Variable row heights</b> is the dominant trigger, with the two rendering-cost factors adding on top.
+      <br /><br />
+      <b>Variable labels (no events):</b> a control for the above &mdash; it renders <b>zero events</b> and
+      instead gives each resource cell a different number of text lines, so row heights vary purely from the
+      spreadsheet side. If the stutter still happens here, variable row height alone (not event rendering) is
+      the trigger. This mode takes over the calendar, so the other three factors are disabled while it's on.
+    </p>
+
+    <div id="controls">
+      <label><input type="checkbox" id="fVirt" checked /> Virtualization</label>
+      <label id="lVar"><input type="checkbox" id="fVar" /> Variable row heights</label>
+      <label id="lLabels"><input type="checkbox" id="fLabels" /> Variable labels (no events)</label>
+      <label id="lPaint"><input type="checkbox" id="fPaint" /> Paint-heavy CSS</label>
+      <label id="lMount"><input type="checkbox" id="fMount" /> Heavy eventDidMount (querySelector thrash)</label>
+      <button type="button" id="bScroll">Scroll to &ldquo;Space 80&rdquo;</button>
+    </div>
+
+    <div id="calendar-wrap">
+      <div id="calendar"></div>
+    </div>
+
+    <script>
+      const RESOURCE_COUNT = 150;
+      const WEEK_START = '2026-06-22';
+      const DAYS = ['06-22','06-23','06-24','06-25','06-26','06-27','06-28','06-29'];
+      const COLORS = ['#26c9ac','#eb86eb','#457b9d','#e76f51','#8d99ae','#2a9d8f','#c98a26'];
+
+      const RES = [];
+      for (let i = 1; i <= RESOURCE_COUNT; i++) RES.push({ id: 's' + i, title: 'Space ' + i });
+
+      function buildEvents(variableHeights) {
+        const events = [];
+        for (let i = 1; i <= RESOURCE_COUNT; i++) {
+          let count, busy = false;
+          if (variableHeights) {
+            busy = (i % 4 === 0);
+            count = busy ? (8 + (i % 5)) : (i % 3);   // busy 8-12, quiet 0-2  -> high variance
+          } else {
+            count = 2;                                 // every row identical -> uniform heights
+          }
+          for (let e = 0; e < count; e++) {
+            const startDay = busy ? (e % 3) : ((i + e) % 6);
+            const isShadow = (e % 2 === 0);
+            events.push({
+              id: 'e' + i + '_' + e,
+              resourceId: 's' + i,
+              title: 'Booking ' + i + '-' + (e + 1),
+              start: '2026-' + DAYS[startDay],
+              end: '2026-' + DAYS[startDay + 1],
+              allDay: true,
+              extendedProps: { statusColor: COLORS[(i + e) % COLORS.length], isShadow: isShadow },
+            });
+          }
+        }
+        return events;
+      }
+
+      // Number of text lines for resource i when "Variable labels" is on.
+      // Same busy/quiet distribution as buildEvents() -> comparable height variance,
+      // but produced purely by resource-cell text instead of by events.
+      function labelLineCount(i) {
+        const busy = (i % 4 === 0);
+        return busy ? (8 + (i % 5)) : (1 + (i % 3));   // busy 8-12 lines, quiet 1-3 lines
+      }
+
+      function buildLabelHtml(resource) {
+        const i = parseInt(resource.id.slice(1), 10);
+        const lines = labelLineCount(i);
+        let html = '<div class="multiline-label">' + resource.title;
+        for (let n = 1; n < lines; n++) {
+          html += '<br /><span class="label-extra">detail line ' + (n + 1) + '</span>';
+        }
+        return html + '</div>';
+      }
+
+      function hexToRgba(hex, a) {
+        const h = hex.replace('#', '');
+        return 'rgba(' + parseInt(h.slice(0,2),16) + ',' + parseInt(h.slice(2,4),16) + ',' + parseInt(h.slice(4,6),16) + ',' + a + ')';
+      }
+
+      let calendar;
+
+      function build() {
+        const virt   = document.getElementById('fVirt').checked;
+        const labels = document.getElementById('fLabels').checked;
+        const vari   = document.getElementById('fVar').checked;
+        const paint  = document.getElementById('fPaint').checked;
+        const mount  = document.getElementById('fMount').checked;
+
+        // "Variable labels" is an event-free variant: row heights come from the resource
+        // cells only, so the event-related factors don't apply.
+        ['fVar','fPaint','fMount'].forEach((id) => { document.getElementById(id).disabled = labels; });
+        ['lVar','lPaint','lMount'].forEach((id) => document.getElementById(id).classList.toggle('disabled', labels));
+
+        document.getElementById('calendar-wrap').classList.toggle('paint-heavy', paint && !labels);
+
+        const el = document.getElementById('calendar');
+        if (calendar) calendar.destroy();
+        el.innerHTML = '';
+
+        calendar = new FullCalendar.Calendar(el, {
+          schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+          initialView: 'resourceTimelineWeek',
+          initialDate: WEEK_START,
+          firstDay: 1,
+          height: '100%',
+          expandRows: false,
+          virtualization: virt,
+          slotDuration: '24:00:00',
+          resourceColumnsWidth: '160px',
+          resourceColumnHeaderContent: 'Spaces',
+          eventDisplay: 'block',
+          eventClass: (arg) => 'calendar-event' + (arg.event.extendedProps.isShadow ? ' shadow-booking' : ''),
+          resources: RES,
+          events: labels ? [] : buildEvents(vari),
+          resourceCellContent: labels
+            ? (arg) => ({ html: buildLabelHtml(arg.resource) })
+            : undefined,
+          eventContent: (arg) => ({
+            html: '<div class="booking-block"><div class="event-name">' + arg.event.title + '</div></div>',
+          }),
+          eventDidMount: (info) => {
+            const c = info.event.extendedProps.statusColor;
+            const rgba = hexToRgba(c, 0.5);
+            // Always set the write-only vars so CSS can paint (cheap, no DOM read).
+            info.el.style.setProperty('--cvc-status-color', c);
+            info.el.style.setProperty('--cvc-status-bg', rgba);
+            if (mount) {
+              // The app's ORIGINAL heavy path: extra !important writes + a querySelector
+              // DOM read interleaved between writes (forces synchronous layout per event).
+              info.el.style.setProperty('background-color', rgba, 'important');
+              info.el.style.setProperty('border', 'none', 'important');
+              info.el.style.setProperty('color', '#000', 'important');
+              const inner = info.el.querySelector('.fc-event-main');
+              if (inner) {
+                inner.style.setProperty('background-color', 'transparent', 'important');
+                inner.style.setProperty('color', '#000', 'important');
+              }
+            }
+          },
+        });
+        calendar.render();
+      }
+
+      // Scroll a given resource to the top of the timeline body.
+      function scrollToResourceTitle(title) {
+        const resource = calendar.getResources().find((r) => r.title === title);
+        if (!resource) {
+          console.warn('no resource titled ' + title);
+          return;
+        }
+        // FullCalendar's internal resource-scroll request (same one addResource uses)
+        calendar.trigger('_resourceScrollRequest', resource.id);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        build();
+        document.getElementById('bScroll').addEventListener('click', () => scrollToResourceTitle('Space 80'));
+        ['fVirt','fVar','fLabels','fPaint','fMount'].forEach((id) =>
+          document.getElementById(id).addEventListener('change', build));
+      });
+    </script>
+  </body>
+</html>
