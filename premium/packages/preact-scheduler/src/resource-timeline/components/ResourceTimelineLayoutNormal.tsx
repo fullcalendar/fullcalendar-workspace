@@ -142,23 +142,29 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // only supported for bodyScroller (aka getIsHeightAuto()===false)
   private scrollSlack = 0
 
+  private queuedEntityScroll = false
+
   private _isUnmounting: boolean
 
   // This is a means to recompute row positioning when *HeightMaps change
   handleBodyRowHeightChange = (val: any, key: any, oldVal: any) => {
     if (this._isUnmounting) return
 
-    if (this.isScrolling && val != null) {
-      const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
-      if (scrollSlackDelta) {
-        const topCoord = this.bodyTops.get(key)
-        if (topCoord != null && topCoord < this.currentEntityScroll) {
-          if (!getIsHeightAuto(this.context.options)) {
-            // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
-            this.scrollSlack += scrollSlackDelta
+    if (this.isScrolling) {
+      if (val != null) {
+        const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
+        if (scrollSlackDelta) {
+          const topCoord = this.bodyTops.get(key)
+          if (topCoord != null && topCoord < this.currentEntityScroll) {
+            if (!getIsHeightAuto(this.context.options)) {
+              // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
+              this.scrollSlack += scrollSlackDelta
+            }
           }
         }
       }
+    } else {
+      this.queuedEntityScroll = true
     }
 
     afterSize(this.boundForceUpdate)
@@ -1037,6 +1043,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       } else {
         this.applyTimeScroll()
       }
+    }
+
+    /*
+    Unfortunately this will execute after auto-scroll finished but before scrollEnd can record
+    the updated scroll positioning, causing a scroll-jump to the last recorded entityScroll.
+    */
+    if (this.queuedEntityScroll) {
+      // console.log('queuedEntityScroll!')
+      this.queuedEntityScroll = false
+      this.applyEntityScroll()
     }
   }
 
