@@ -1,42 +1,57 @@
 import { strictModeFactor } from 'fullcalendar/protected-api'
+import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline view rerendering', () => {
   describe('events, when rerendering', () => {
-    it('maintains scroll', (done) => {
-      testScrollForEvents((calendar) => {
+    it('maintains scroll', async () => {
+      await testScrollForEvents((calendar) => {
         calendar.render()
-      }, done)
+      })
     })
   })
 
   describe('events, when using refetchEvents', () => {
-    it('maintains scroll', (done) => {
-      testScrollForEvents((calendar) => {
+    it('maintains scroll', async () => {
+      await testScrollForEvents((calendar) => {
         calendar.refetchEvents()
-      }, done)
+      })
     })
   })
 
   describe('resources, when rerendering', () => {
-    it('maintains scroll', (done) => {
-      testScrollForResources((calendar) => {
+    it('maintains scroll', async () => {
+      await testScrollForResources((calendar) => {
         calendar.render()
-      }, done)
+      })
     })
   })
 
   describe('resource, when using refetchResources', () => {
-    it('rerenders the DOM', (done) => {
-      testResourceRefetch((calendar) => {
+    it('rerenders the DOM', async () => {
+      await testResourceRefetch((calendar) => {
         calendar.refetchResources()
-      }, done)
+      })
     })
 
-    it('maintains scroll', (done) => {
-      testResourceRefetch((calendar) => {
+    it('maintains scroll', async () => {
+      await testScrollForResources((calendar) => {
         calendar.refetchResources()
-      }, done)
+      })
+    })
+
+    describe('with virtualization', () => {
+      pushOptions({
+        virtualization: true,
+      })
+
+      it('maintains scroll', async () => {
+        await ignoreResizeObserverLoops(async () => {
+          await testScrollForResources((calendar) => {
+            calendar.refetchResources()
+          })
+        })
+      })
     })
   })
 
@@ -98,7 +113,7 @@ describe('timeline view rerendering', () => {
     })
   })
 
-  function testScrollForEvents(actionFunc, doneFunc) {
+  async function testScrollForEvents(actionFunc) {
     let calendar = initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
@@ -118,20 +133,17 @@ describe('timeline view rerendering', () => {
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let scrollEl = viewWrapper.getTimeBodyEl()
 
-    setTimeout(() => {
-      scrollEl.scrollTop = 100
-      scrollEl.scrollLeft = 50
+    await waitTimeout(200) // after fetching
+    scrollEl.scrollTop = 100
+    scrollEl.scrollLeft = 50
 
-      actionFunc(calendar)
-      setTimeout(() => {
-        expect(Math.abs(scrollEl.scrollTop - 100)).toBeLessThanOrEqual(1) // IE :(
-        expect(scrollEl.scrollLeft).toBe(50)
-        doneFunc()
-      }, 200) // after fetching
-    }, 200) // after fetching
+    actionFunc(calendar)
+    await waitTimeout(200) // after fetching
+    expect(Math.abs(scrollEl.scrollTop - 100)).toBeLessThanOrEqual(1) // IE :(
+    expect(scrollEl.scrollLeft).toBe(50)
   }
 
-  function testScrollForResources(actionFunc, doneFunc) {
+  async function testScrollForResources(actionFunc) {
     let calendar = initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
@@ -151,20 +163,17 @@ describe('timeline view rerendering', () => {
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let scrollEl = viewWrapper.getTimeBodyEl()
 
-    setTimeout(() => {
-      scrollEl.scrollTop = 100
-      scrollEl.scrollLeft = 50
+    await waitTimeout(200) // after fetching
+    scrollEl.scrollTop = 100
+    scrollEl.scrollLeft = 50
 
-      actionFunc(calendar)
-      setTimeout(() => {
-        expect(scrollEl.scrollTop).toBe(100)
-        expect(scrollEl.scrollLeft).toBe(50)
-        doneFunc()
-      }, 200) // after fetching
-    }, 200) // after fetching
+    actionFunc(calendar)
+    await waitTimeout(200) // after fetching
+    expect(scrollEl.scrollTop).toBe(100)
+    expect(scrollEl.scrollLeft).toBe(50)
   }
 
-  function testResourceRefetch(actionFunc, doneFunc) {
+  async function testResourceRefetch(actionFunc) {
     let resourceFetchCnt = 0
     let calendar = initCalendar({
       now: '2015-08-07',
@@ -186,17 +195,14 @@ describe('timeline view rerendering', () => {
 
     let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-    setTimeout(() => {
-      let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
-      expect(cellText).toBe('Auditorium E0')
-      actionFunc(calendar)
+    await waitTimeout(200) // after fetch
+    let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
+    expect(cellText).toBe('Auditorium E0')
+    actionFunc(calendar)
 
-      setTimeout(() => {
-        cellText = dataGridWrapper.getSpecificResourceInfo('e').text
-        expect(cellText).toBe('Auditorium E1')
-        doneFunc()
-      }, 200) // after fetch
-    }, 200) // after fetch
+    await waitTimeout(200) // after fetch
+    cellText = dataGridWrapper.getSpecificResourceInfo('e').text
+    expect(cellText).toBe('Auditorium E1')
   }
 
   function getResources(cnt: string | number = '') {
