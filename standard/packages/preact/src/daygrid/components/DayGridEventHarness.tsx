@@ -20,6 +20,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
   // internal
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
+  private height?: number
 
   render() {
     const { props } = this
@@ -41,8 +42,28 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
     this.disconnectHeight = watchHeight(rootEl, (height) => {
       if (this._isUnmounting) return
+      this.height = height
       setRef(this.props.heightRef, height)
     })
+  }
+
+  /*
+  A wrapper can gain or lose measurement responsibility without remounting,
+  because a row switches placement routes (screen<->print, for example) while
+  reusing the same keyed nodes. The size observer only fires on an actual size
+  change, so hand the newly attached ref what was already observed, and release
+  the detached one.
+  */
+  componentDidUpdate(prevProps: DayGridEventHarnessProps): void {
+    const { heightRef } = this.props
+
+    if (prevProps.heightRef !== heightRef) {
+      setRef(prevProps.heightRef, null)
+
+      if (this.height != null) {
+        setRef(heightRef, this.height)
+      }
+    }
   }
 
   componentWillUnmount(): void {

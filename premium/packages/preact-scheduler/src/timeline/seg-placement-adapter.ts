@@ -5,6 +5,7 @@ import {
   type Placement,
   type Slice,
   type SourceSeg,
+  areSegThicknessesSettled,
   calculateTimelineContentHeight,
   getEventKey,
   greatestDurationDenominator,
@@ -184,8 +185,7 @@ export function buildTimelineSegPlacements(
   segHeights: ReadonlyMap<string, number>,
   moreLinkHeights: ReadonlyMap<string, number>,
 ): TimelineSegPlacementResult {
-  const allHeightsSettled = plan.mountedSegs.every((sourceSeg) =>
-    segHeights.get(sourceSeg.key) != null)
+  const allHeightsSettled = areSegThicknessesSettled(plan.mountedSegs, segHeights)
 
   if (!allHeightsSettled) {
     return {

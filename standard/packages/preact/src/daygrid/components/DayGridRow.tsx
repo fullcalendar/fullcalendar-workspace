@@ -17,16 +17,22 @@ import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
 import { type ReactElement, type Ref } from 'react'
-import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
+import { DayRowEventRange, DayRowEventRangePart, getEventPartKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { computeFgSegVerticals } from '../event-placement'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { computeHorizontalsFromSeg } from './util'
 import { DayGridEventHarness } from './DayGridEventHarness'
 import {
+  type DayGridPlacementMode,
+  type DayGridSegDomItem,
+  type DayGridSegPlacementColumn,
   type DayGridSegPlacementPlan,
   buildDayGridSegPlacementPlan,
+  buildDayGridSegPlacements,
   computeDayGridDomCandidateMaxLevels,
+  computeDayGridMoreLinkLevelTax,
+  resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
 
@@ -68,6 +74,13 @@ export interface DayGridRowProps {
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 const RENDER_STANDINS = false
+
+/** What both placement routes hand the render tree. */
+interface DayGridRowColumns {
+  columns: DayGridSegPlacementColumn[]
+  /** Positioned node tops by node key, for aligning drag/resize mirrors. */
+  segTops: ReadonlyMap<string, number>
+}
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
@@ -113,42 +126,37 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     const fgEventSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
-    const maxLevels = props.forPrint
-      ? Infinity
-      : computeDayGridDomCandidateMaxLevels(
-          props.dayMaxEvents,
-          props.dayMaxEventRows,
-          props.maxDomLevels ?? Infinity,
-        )
+    const placementMode = resolveDayGridPlacementMode(props.dayMaxEvents, props.dayMaxEventRows)
     this.placementPlan = this.buildPlacementPlan(
       fgEventSegs,
-      maxLevels,
+      props.forPrint
+        ? Infinity
+        : computeDayGridDomCandidateMaxLevels(
+            props.dayMaxEvents,
+            props.dayMaxEventRows,
+            props.maxDomLevels ?? Infinity,
+          ),
       options.eventOrderStrict,
       options.eventSlicing,
     )
 
-    // Placement remains on the legacy path. The new plan supplies only the
-    // same complete sorted source list at this boundary.
     // TODO: memoize?
     const [maxMainTop, minMainHeight] = this.computeFgDims() // uses headerHeightRefMap/mainHeightRefMap
-    const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, simpleHeightsByCol] = computeFgSegVerticals(
-      fgEventSegs,
-      this.segHeightRefMap.current,
-      cells,
-      fgLiquidHeight ? minMainHeight : undefined, // if not defined in first run, will unlimited!?
-      options.eventOrderStrict,
-      options.eventSlicing,
-      props.dayMaxEvents,
-      props.dayMaxEventRows,
-    )
+    // Print keeps the legacy route until the DayGrid print phase, and
+    // boolean-auto until measured more-link feedback lands. This is the one
+    // boundary the two routes are chosen at.
+    const { columns, segTops } = (props.forPrint || placementMode === 'auto')
+      ? this.buildLegacyColumns(fgEventSegs, fgLiquidHeight ? minMainHeight : undefined)
+      : this.buildEngineColumns(placementMode)
+
     const heightsByCol: number[] = []
     if (maxMainTop != null) {
       let col = 0
-      for (const cell of cells) { // uses headerHeightRefMap/maxMainTop/simpleHeightsByCol
+      for (const cell of cells) { // uses headerHeightRefMap/maxMainTop/columns
         const cellHeaderHeight = headerHeightRefMap.current.get(cell.key)
         if (cellHeaderHeight != null) {
           const extraFgHeight = maxMainTop - cellHeaderHeight
-          heightsByCol.push(simpleHeightsByCol[col] + extraFgHeight)
+          heightsByCol.push(columns[col].contentHeight + extraFgHeight)
         } else {
           heightsByCol.push(undefined)
         }
@@ -157,7 +165,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
 
     const highlightSegs = this.getHighlightSegs()
-    const mirrorSegs = this.getMirrorSegs()
+    const mirrorItems = this.buildMirrorItems(segTops)
 
     const hasNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDateMarker, 'week')
@@ -220,9 +228,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
             maxMainTop,
-            renderableSegsByCol[col],
-            segTops,
-            props.todayRange,
+            columns[col].domItems,
             /* isMirror = */ false,
           )
 
@@ -239,8 +245,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               borderStart={Boolean(col)}
 
               // content
-              segs={segsByCol[col]}
-              hiddenSegs={hiddenSegsByCol[col]}
+              segs={columns[col].segs}
+              hiddenSegs={columns[col].hiddenSegs}
               fgLiquidHeight={fgLiquidHeight}
               fg={(
                 <>
@@ -269,9 +275,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         })}
         {this.renderFgSegs(
           maxMainTop,
-          mirrorSegs,
-          segTops,
-          props.todayRange,
+          mirrorItems,
           /* isMirror = */ true,
         )}
       </div>
@@ -280,20 +284,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   renderFgSegs(
     headerHeight: number | undefined,
-    segs: DayRowEventRangePart[],
-    segTops: Map<string, number>,
-    todayRange: DateRange,
+    items: DayGridSegDomItem[],
     isMirror: boolean,
   ): ReactElement[] {
     const { props, segHeightRefMap } = this
-    const { colWidth, eventSelection, cellIsMicro } = props
+    const { colWidth, eventSelection, cellIsMicro, todayRange } = props
 
     const colCount = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
     const nodes: ReactElement[] = []
 
-    for (const seg of segs) {
-      const key = getEventPartKey(seg)
+    for (const item of items) {
+      const { key, seg } = item
       const { standinFor, eventRange } = seg
       const { instanceId } = eventRange.instance
 
@@ -302,9 +304,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       }
 
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
-      const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
-      const top = headerHeight != null && localTop != null
-        ? headerHeight + localTop
+      const top = headerHeight != null && item.top != null
+        ? headerHeight + item.top
         : undefined
 
       const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
@@ -325,7 +326,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             zIndex: isSelected ? 1000 : 0, // container inner z-indexes; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
           }}
           heightRef={
-            (!standinFor && !isMirror)
+            (item.isMeasurable && !standinFor && !isMirror)
               ? segHeightRefMap.createRef(key)
               : null
           }
@@ -400,6 +401,95 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   handleRootEl = (rootEl: HTMLElement) => {
     this.rootEl = rootEl
     setRef(this.props.rootElRef, rootEl)
+  }
+
+  // Placement routes
+  // -----------------------------------------------------------------------------------------------
+
+  /** Unlimited and numeric limits, positioned by the shared engine. */
+  private buildEngineColumns(mode: DayGridPlacementMode): DayGridRowColumns {
+    const { placementPlan, props } = this
+
+    // TODO: memoize?
+    const { columns } = buildDayGridSegPlacements(
+      placementPlan,
+      this.segHeightRefMap.current,
+      {
+        // The measured cap is the cap candidates were admitted under. An
+        // unlimited row carries Infinity here, which the limiter reads as
+        // no cap at all.
+        maxLevels: placementPlan.maxLevels,
+        columnCount: props.cells.length,
+        levelTax: computeDayGridMoreLinkLevelTax(mode),
+      },
+    )
+
+    const segTops = new Map<string, number>()
+    for (const column of columns) {
+      for (const item of column.domItems) {
+        if (item.top != null) {
+          segTops.set(item.key, item.top)
+        }
+      }
+    }
+
+    return { columns, segTops }
+  }
+
+  /**
+   * Legacy measured placement, reshaped into the same per-column projection.
+   * Boolean-auto and print receive exactly the old inputs and measurements.
+   */
+  private buildLegacyColumns(
+    fgEventSegs: DayRowEventRange[],
+    maxHeight: number | undefined,
+  ): DayGridRowColumns {
+    const { props, context } = this
+    const { options } = context
+
+    // TODO: memoize?
+    const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, heightsByCol] =
+      computeFgSegVerticals(
+        fgEventSegs,
+        this.segHeightRefMap.current,
+        props.cells,
+        maxHeight, // if not defined in first run, will unlimited!?
+        options.eventOrderStrict,
+        options.eventSlicing,
+        props.dayMaxEvents,
+        props.dayMaxEventRows,
+      )
+
+    return {
+      columns: props.cells.map((_cell, col) => ({
+        column: col,
+        domItems: renderableSegsByCol[col].map((seg) => {
+          const key = getEventPartKey(seg)
+          return { key, seg, top: segTops.get(key), isMeasurable: true }
+        }),
+        contentHeight: heightsByCol[col],
+        segs: segsByCol[col],
+        hiddenSegs: hiddenSegsByCol[col],
+      })),
+      segTops,
+    }
+  }
+
+  /**
+   * Mirrors bypass admission entirely, so they are never hidden and never
+   * measured. Each aligns with its underlying event's wrapper when that
+   * wrapper is positioned, and with the top of the event area otherwise.
+   */
+  private buildMirrorItems(segTops: ReadonlyMap<string, number>): DayGridSegDomItem[] {
+    return this.getMirrorSegs().map((seg) => {
+      const key = getEventPartKey(seg)
+      return {
+        key,
+        seg,
+        top: segTops.get(key) ?? 0,
+        isMeasurable: false,
+      }
+    })
   }
 
   // Sizing

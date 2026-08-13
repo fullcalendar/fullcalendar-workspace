@@ -239,6 +239,22 @@ export const GEOMETRY_TOLERANCE = 0.000_001
  * ===================================================================== */
 
 /**
+ * Whether every source has reported a thickness, and measured placement may
+ * therefore run.
+ *
+ * This is `positionSegs`'s precondition, stated where that function states its
+ * measurement contract. A measured view's wrappers report asynchronously, so
+ * every such view renders at least once with an incomplete map and needs to
+ * ask this before positioning anything.
+ */
+export function areSegThicknessesSettled<EventMeta>(
+  sourceSegs: readonly SourceSeg<EventMeta>[],
+  thicknesses: SegThicknessMap,
+): boolean {
+  return sourceSegs.every((source) => thicknesses.get(source.key) != null)
+}
+
+/**
  * Builds the unrestricted cornerstone structure.
  *
  * The caller owns `eventOrder`: the array is already sorted exactly as the
@@ -256,6 +272,8 @@ export function positionSegs<EventMeta>(
   const placements: Placement<EventMeta>[] = []
 
   for (const source of eventOrderedSegs) {
+    // Guaranteed by `areSegThicknessesSettled`, which every measured caller
+    // asks before reaching this point.
     const thickness = thicknesses.get(source.key)!
 
     const slice = createWholeSlice(source)

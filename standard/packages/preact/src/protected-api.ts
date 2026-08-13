@@ -110,6 +110,7 @@ export type {
   DomCandidatePlan,
 } from './seg-placement/layout'
 export {
+  areSegThicknessesSettled,
   positionSegs,
   positionSegsWithUnitThickness,
   stampEventOrder,
