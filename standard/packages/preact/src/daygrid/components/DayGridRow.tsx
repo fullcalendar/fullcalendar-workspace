@@ -23,6 +23,11 @@ import { computeFgSegVerticals } from '../event-placement'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { computeHorizontalsFromSeg } from './util'
 import { DayGridEventHarness } from './DayGridEventHarness'
+import {
+  type DayGridSegPlacementPlan,
+  buildDayGridSegPlacementPlan,
+  computeDayGridDomCandidateMaxLevels,
+} from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
 
 export interface DayGridRowProps {
@@ -51,10 +56,13 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
+  maxDomLevels?: number // shared cross-row candidate frontier
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
+  onEventHeight?: (height: number) => void // occupied height of one event wrapper
+  onEventAreaHeight?: (height: number) => void // row-wide height shared by all foreground events
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
@@ -73,14 +81,26 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       afterSize(this.handleSegPositioning)
     }
   })
-  private segHeightRefMap = new RefMap<string, number>(() => {
+  private segHeightRefMap = new RefMap<string, number>((height, key) => {
+    const placementPlan = this.placementPlan
+    if (
+      height > 0 &&
+      placementPlan &&
+      this.buildPlacementSourceKeys(placementPlan).has(key)
+    ) {
+      this.props.onEventHeight?.(height)
+    }
     afterSize(this.handleSegPositioning)
   })
 
   // memo
   private buildWeekNumberRenderProps = memoize(buildWeekNumberRenderProps)
+  private buildPlacementPlan = memoize(buildDayGridSegPlacementPlan)
+  private buildPlacementSourceKeys = memoize(buildPlacementSourceKeys)
+  private sortEventSegs = memoize(sortEventSegs)
 
   // internal
+  private placementPlan: DayGridSegPlacementPlan
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
 
@@ -92,9 +112,23 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const weekDateMarker = props.cells[0].date
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
-    // TODO: memoize? sort all types of segs?
-    const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder)
+    const fgEventSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
+    const maxLevels = props.forPrint
+      ? Infinity
+      : computeDayGridDomCandidateMaxLevels(
+          props.dayMaxEvents,
+          props.dayMaxEventRows,
+          props.maxDomLevels ?? Infinity,
+        )
+    this.placementPlan = this.buildPlacementPlan(
+      fgEventSegs,
+      maxLevels,
+      options.eventOrderStrict,
+      options.eventSlicing,
+    )
 
+    // Placement remains on the legacy path. The new plan supplies only the
+    // same complete sorted source list at this boundary.
     // TODO: memoize?
     const [maxMainTop, minMainHeight] = this.computeFgDims() // uses headerHeightRefMap/mainHeightRefMap
     const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, simpleHeightsByCol] = computeFgSegVerticals(
@@ -422,7 +456,29 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   private handleSegPositioning = () => {
     if (this._isUnmounting) return
+    this.reportEventAreaHeight()
     this.forceUpdate()
+  }
+
+  /**
+   * Reports the height foreground events actually compete for, which is what
+   * the cross-row owner ratchets. Reporting waits for a complete row snapshot
+   * so partially populated measurement maps cannot inflate the monotone owner.
+   */
+  private reportEventAreaHeight(): void {
+    const { cells, onEventAreaHeight } = this.props
+    if (
+      onEventAreaHeight &&
+      cells.every((cell) =>
+        this.headerHeightRefMap.current.has(cell.key) &&
+        this.mainHeightRefMap.current.has(cell.key)
+      )
+    ) {
+      const [, minMainHeight] = this.computeFgDims()
+      if (minMainHeight != null) {
+        onEventAreaHeight(minMainHeight)
+      }
+    }
   }
 
   // Internal Utils
@@ -455,6 +511,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
 // Utils
 // -------------------------------------------------------------------------------------------------
+
+function buildPlacementSourceKeys(plan: DayGridSegPlacementPlan): Set<string> {
+  return new Set(plan.sourceSegs.map((source) => source.key))
+}
 
 function buildWeekNumberRenderProps(
   weekDateMarker: DateMarker,

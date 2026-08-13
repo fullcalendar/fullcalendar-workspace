@@ -1,6 +1,7 @@
 import { joinClassNames } from '../../util/html'
 import { EventSegUiInteractionState, DateComponent } from '../../component/DateComponent'
 import { memoize } from '../../util/memoize'
+import { afterSize } from '../../component-util/resize-observer'
 import { addDays, DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { Hit } from '../../interactions/hit'
@@ -12,6 +13,12 @@ import { ViewOptionsRefined } from '../../options'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg'
 import { DayGridRow } from './DayGridRow'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util'
+import {
+  type DayGridPlacementOwnerState,
+  createDayGridPlacementOwnerState,
+  observeDayGridEventAreaHeight,
+  observeDayGridEventHeight,
+} from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
 
 export interface DayGridRowsProps {
@@ -59,6 +66,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private splitEventResize = memoize(splitInteractionByRow)
 
   // internal
+  private placementOwnerState = createDayGridPlacementOwnerState()
+  private _isUnmounting: boolean
   private rowHeightRefMap = new RefMap<string, number>((height, key) => {
     // HACKy way of syncing RefMap results with prop
     const { rowHeightRefMap } = this.props
@@ -139,9 +148,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // dimensions
             colWidth={props.colWidth}
             basis={rowBasis}
+            maxDomLevels={this.placementOwnerState.maxDomLevels}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
+            onEventHeight={this.handleEventHeight}
+            onEventAreaHeight={this.handleEventAreaHeight}
           />
         ))}
       </div>
@@ -158,6 +170,43 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       })
     } else {
       this.context.unregisterInteractiveComponent(this)
+    }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
+  }
+
+  private handleEventHeight = (height: number) => {
+    if (!this.props.forPrint) {
+      this.updatePlacementOwnerState(
+        observeDayGridEventHeight(this.placementOwnerState, height),
+      )
+    }
+  }
+
+  private handleEventAreaHeight = (height: number) => {
+    if (!this.props.forPrint) {
+      this.updatePlacementOwnerState(
+        observeDayGridEventAreaHeight(this.placementOwnerState, height),
+      )
+    }
+  }
+
+  private updatePlacementOwnerState(nextState: DayGridPlacementOwnerState): void {
+    if (nextState !== this.placementOwnerState) {
+      this.placementOwnerState = nextState
+      afterSize(this.handlePlacementOwnerChange)
+    }
+  }
+
+  private handlePlacementOwnerChange = () => {
+    if (!this._isUnmounting) {
+      this.forceUpdate()
     }
   }
 
