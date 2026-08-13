@@ -400,6 +400,7 @@ which can't rely on dynamic height detection after print-flag activated.
 
 .calendarPrintRoot .breakInsideAvoid {
   break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
 .calendarPrintRoot .printRoot {

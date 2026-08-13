@@ -66,7 +66,14 @@ export { combineEventUis, createEventUi } from './component-util/event-ui'
 export type { SplittableProps } from './component-util/event-splitting'
 export { Splitter } from './component-util/event-splitting'
 export { getDateMeta, DateMeta } from './component-util/date-rendering'
-export { watchSize, watchWidth, watchHeight, afterSize } from './component-util/resize-observer'
+export {
+  watchSize,
+  watchSizeImmediate,
+  watchWidth,
+  watchHeight,
+  watchHeightImmediate,
+  afterSize,
+} from './component-util/resize-observer'
 export { debounce } from './util/debounce'
 
 export { buildNavLinkAttrs } from './common/nav-link'
@@ -110,6 +117,8 @@ export type {
   DomCandidatePlan,
 } from './seg-placement/layout'
 export {
+  DEFAULT_UNMEASURED_EVENT_THICKNESS,
+  DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
   areSegThicknessesSettled,
   positionSegs,
   positionSegsWithUnitThickness,
@@ -120,6 +129,16 @@ export {
   doesSliceCoverWholeSource,
   groupHiddenSlices,
 } from './seg-placement/layout'
+export type {
+  PrintEventBand,
+  PrintMoreLinkBand,
+} from './seg-placement/print'
+export {
+  DEFAULT_PRINT_MAX_LEVELS,
+  buildPrintEventBands,
+  planPrintDomCandidates,
+  buildPrintMoreLinkBand,
+} from './seg-placement/print'
 export type {
   TimelineMoreLinkPlacement,
   TimelineLimitResult,

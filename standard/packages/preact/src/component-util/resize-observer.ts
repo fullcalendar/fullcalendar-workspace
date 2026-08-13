@@ -99,7 +99,60 @@ export function watchSize(
   watchWidth = true,
   watchHeight = true,
 ): DisconnectSize {
-  configMap.set(el, { callback, watchWidth, watchHeight })
+  return watchSizeInternal(el, callback, watchWidth, watchHeight, false)
+}
+
+/**
+ * Watches an element after synchronously acquiring its current dimensions.
+ *
+ * The callback runs before registration returns; later size changes still
+ * arrive through the shared border-box ResizeObserver.
+ *
+ * `getBoundingClientRect()` includes transforms while ResizeObserver's
+ * border-box does not. That distinction is acceptable for print-only DOM.
+ *
+ * Calling this directly from a class component's mount/ref lifecycle is a
+ * workaround for the lack of hooks. Once components go functional, direct
+ * call sites give way to a `useElementSize`-style hook whose `useLayoutEffect`
+ * performs this same imperative acquire-then-observe internally.
+ */
+export function watchSizeImmediate(
+  el: HTMLElement,
+  callback: SizeCallback,
+  watchWidth = true,
+  watchHeight = true,
+): DisconnectSize {
+  return watchSizeInternal(el, callback, watchWidth, watchHeight, true)
+}
+
+function watchSizeInternal(
+  el: HTMLElement,
+  callback: SizeCallback,
+  watchWidth: boolean,
+  watchHeight: boolean,
+  immediate: boolean,
+): DisconnectSize {
+  const config: SizeConfig = { callback, watchWidth, watchHeight }
+  configMap.set(el, config)
+
+  if (immediate) {
+    const { width, height } = el.getBoundingClientRect()
+    config.width = width
+    config.height = height
+
+    // Drain afterSize work synchronously before registration returns unless
+    // an outer ResizeObserver batch already owns that drain.
+    const wasHandling = isHandling
+    isHandling = true
+    try {
+      callback(width, height)
+    } finally {
+      isHandling = wasHandling
+    }
+    if (!wasHandling) {
+      flushAfterSize()
+    }
+  }
 
   // if statement is for jsdom and other shim environments that execute component effects, but
   // haven't implemented ResizeObserver. Reference: https://github.com/jsdom/jsdom/issues/3368
@@ -137,6 +190,18 @@ export function watchHeight(
   callback: (height: number) => void,
 ): DisconnectSize {
   return watchSize(
+    el,
+    (_width, height) => callback(height),
+    /* watchWidth = */ false,
+    /* watchHeight = */ true,
+  )
+}
+
+export function watchHeightImmediate(
+  el: HTMLElement,
+  callback: (height: number) => void,
+): DisconnectSize {
+  return watchSizeImmediate(
     el,
     (_width, height) => callback(height),
     /* watchWidth = */ false,

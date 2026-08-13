@@ -47,6 +47,9 @@ export class CalendarMediaRoot extends Component<CalendarMediaRootProps, Calenda
   }
 
   private handleBeforePrint = () => {
+    // The synchronous commit mounts print-only DOM during this beforeprint
+    // task. Its mount/layout effects can measure immediately and settle their
+    // resulting state updates before the native event returns.
     flushSync(() => {
       this.setState({ forPrint: true })
     })
