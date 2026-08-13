@@ -34,7 +34,7 @@ import { computeSlatHeight } from './util'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
 import { computeViewBorderless } from '../../util/misc'
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"
-import { isBrowserPrintQuirky } from "./TimeGridCol"
+import { computeTimeGridPrintMode } from '../print-mode'
 
 export interface TimeGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -155,12 +155,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const tableHeaderSticky = !forPrint && getTableHeaderSticky(options)
     const footerScrollbarSticky = !forPrint && getFooterScrollbarSticky(options)
 
-    // TODO: DRY with getIsStack
-    const { eventPrintLayout } = options
-    const printStackEnabled = (
-      eventPrintLayout === 'stack' ||
-      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
-    )
+    const printStackEnabled = computeTimeGridPrintMode(forPrint, options.eventPrintLayout) === 'stack'
 
     const absPrint = forPrint && !printStackEnabled
     const simplePrint = forPrint && printStackEnabled

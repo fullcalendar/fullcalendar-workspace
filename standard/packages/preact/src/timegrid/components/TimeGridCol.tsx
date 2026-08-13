@@ -11,20 +11,18 @@ import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { fracToCssDim } from '../../util/html'
 import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
-import { SegGroup } from '../../seg-hierarchy'
 import classNames from '../../styles.module.css'
-import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg'
+import { TimeGridRange } from '../TimeColsSeg'
 import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement'
-import { buildWebPositioning, SegWebRect } from '../seg-web'
+import {
+  buildTimeGridSegPlacements,
+  type TimeGridSegHiddenGroup,
+  type TimeGridSegPlacement,
+} from '../seg-placement-adapter'
+import { computeTimeGridPrintMode } from '../print-mode'
 import { TimeGridEvent } from './TimeGridEvent'
 import { TimeGridMoreLink } from './TimeGridMoreLink'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine'
-
-// Firefox is terrible at rendering absolute elements that span across multiple print pages
-export const isBrowserPrintQuirky = /* true || */ (
-  typeof navigator !== 'undefined' &&
-  navigator.userAgent.toLowerCase().includes('firefox')
-)
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
@@ -176,91 +174,125 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       return renderPlainFgSegs(sortedFgSegs, props, isMirror)
     }
 
-    return this.renderPositionedFgSegs(sortedFgSegs, isMirror)
+    if (isMirror) {
+      return this.renderPositionedMirrorSegs(sortedFgSegs)
+    }
+
+    return this.renderPositionedFgSegs(sortedFgSegs)
   }
 
   renderPositionedFgSegs(
-    segs: (TimeGridRange & EventRangeProps)[], // if not mirror, needs to be sorted
-    isMirror: boolean,
+    segs: (TimeGridRange & EventRangeProps)[], // needs to be sorted
   ) {
-    let { props, context } = this
-    let { date, dateProfile, eventSelection, todayRange, nowDate } = props
-    let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
+    let { eventMaxStack, eventOrderStrict } = this.context.options
 
-    // TODO: memoize this?
-    let segVerticals = computeFgSegVerticals(
+    let segVerticals = this.computeSegVerticals(segs)
+    let { placements, hiddenGroups } = buildTimeGridSegPlacements(
       segs,
-      dateProfile,
-      date,
-      props.slatCnt,
-      props.slatHeight,
-      eventMinHeight,
-      eventShortHeight,
+      segVerticals,
+      eventOrderStrict,
+      eventMaxStack,
     )
-    let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
 
     return (
       <>
-        {segs.map((seg, index) => {
-          let { eventRange } = seg
-          let { instanceId } = eventRange.instance // guaranteed because it's an fg event
-          let segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
-          let segRect = segRects.get(instanceId) // for horizontals. could be undefined!? HACK
-
-          let hStyle = (!isMirror && segRect)
-            ? this.computeSegHStyle(segRect)
-            : { left: 0, right: 0, zIndex: 0 }
-
-          let isSelected = instanceId === eventSelection
-          if (isSelected) {
-            hStyle.zIndex += 1000 // HACK: relies on hardcoded z-index offset; fragile if stacking context changes
-          }
-
-          let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
-          let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-          let isInvisible = !isMirror && (isDragging || isResizing || !segRect)
-
-          return (
-            <div
-              // we would have used classNames.fill, but multi-page spanning breaks in Firefox
-              // we would have used height:100%, but multi-page spanning breaks in Safari
-              className={joinClassNames(classNames.abs, classNames.flexCol)}
-              key={instanceId}
-              style={{
-                visibility: isInvisible ? 'hidden' : undefined,
-                top: segVertical.start,
-                height: segVertical.size,
-                ...hStyle,
-              }}
-            >
-              <TimeGridEvent
-                eventRange={eventRange}
-                slicedStart={seg.startDate}
-                slicedEnd={seg.endDate}
-                isStart={seg.isStart}
-                isEnd={seg.isEnd}
-                isDragging={isDragging}
-                isResizing={isResizing}
-                isMirror={isMirror}
-                isSelected={isSelected}
-                level={segRect ? segRect.stackDepth : 0}
-                isNarrow={props.isNarrow}
-                isShort={segVertical.isShort || false}
-                isLiquid
-                {...getEventRangeMeta(eventRange, todayRange, nowDate, props.nowMs)}
-              />
-            </div>
-          )
-        })}
+        {placements.map((placement) => this.renderPositionedSeg(
+          placement.seg,
+          placement.segVertical,
+          this.computeSegHStyle(placement),
+          placement.stackDepth,
+          /* isMirror = */ false,
+        ))}
         {this.renderHiddenGroups(hiddenGroups)}
       </>
+    )
+  }
+
+  // Mirrors bypass normal-event admission so limits cannot hide them or create more links.
+  renderPositionedMirrorSegs(segs: (TimeGridRange & EventRangeProps)[]) {
+    let segVerticals = this.computeSegVerticals(segs)
+
+    return segs.map((seg, index) => this.renderPositionedSeg(
+      seg,
+      segVerticals[index] || {},
+      { left: 0, right: 0, zIndex: 0 }, // full column width
+      /* level = */ 0,
+      /* isMirror = */ true,
+    ))
+  }
+
+  renderPositionedSeg(
+    seg: TimeGridRange & EventRangeProps,
+    segVertical: Partial<TimeGridSegVertical>,
+    hStyle: { zIndex: number, [prop: string]: any },
+    level: number,
+    isMirror: boolean,
+  ) {
+    let { props } = this
+    let { eventRange } = seg
+    let { instanceId } = eventRange.instance // guaranteed because it's an fg event
+
+    let isSelected = instanceId === props.eventSelection
+    if (isSelected) {
+      hStyle.zIndex += 1000 // HACK: relies on hardcoded z-index offset; fragile if stacking context changes
+    }
+
+    let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+    let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+    let isInvisible = !isMirror && (isDragging || isResizing)
+
+    return (
+      <div
+        // we would have used classNames.fill, but multi-page spanning breaks in Firefox
+        // we would have used height:100%, but multi-page spanning breaks in Safari
+        className={joinClassNames(classNames.abs, classNames.flexCol)}
+        key={instanceId}
+        style={{
+          visibility: isInvisible ? 'hidden' : undefined,
+          top: segVertical.start,
+          height: segVertical.size,
+          ...hStyle,
+        }}
+      >
+        <TimeGridEvent
+          eventRange={eventRange}
+          slicedStart={seg.startDate}
+          slicedEnd={seg.endDate}
+          isStart={seg.isStart}
+          isEnd={seg.isEnd}
+          isDragging={isDragging}
+          isResizing={isResizing}
+          isMirror={isMirror}
+          isSelected={isSelected}
+          level={level}
+          isNarrow={props.isNarrow}
+          isShort={segVertical.isShort || false}
+          isLiquid
+          {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
+        />
+      </div>
+    )
+  }
+
+  // TODO: memoize this?
+  computeSegVerticals(segs: (TimeGridRange & EventRangeProps)[]) {
+    let { props, context } = this
+
+    return computeFgSegVerticals(
+      segs,
+      props.dateProfile,
+      props.date,
+      props.slatCnt,
+      props.slatHeight,
+      context.options.eventMinHeight,
+      context.options.eventShortHeight,
     )
   }
 
   /*
   NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
-  renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
+  renderHiddenGroups(hiddenGroups: TimeGridSegHiddenGroup[]) {
     let { dateSpanProps, dateProfile, todayRange, nowDate, nowMs, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props
 
     return (
@@ -291,15 +323,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderFillSegs(segs: (TimeGridRange & EventRangeProps)[], fillType: string) {
     let { props, context } = this
-    let segVerticals = computeFgSegVerticals(
-      segs,
-      props.dateProfile,
-      props.date,
-      props.slatCnt,
-      props.slatHeight,
-      context.options.eventMinHeight,
-      context.options.eventShortHeight,
-    )
+    let segVerticals = this.computeSegVerticals(segs)
 
     return (
       <>
@@ -362,7 +386,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   /*
   TODO: eventually move to width, not left+right
   */
-  computeSegHStyle(segRect: SegWebRect) {
+  computeSegHStyle(segRect: TimeGridSegPlacement) {
     let { options } = this.context
     let shouldOverlap = options.slotEventOverlap
     let nearCoord = segRect.levelCoord // the left side if LTR. the right side if RTL. floating-point
@@ -390,10 +414,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   getIsStack() {
     const { eventPrintLayout } = this.context.options
-    return this.props.forPrint && (
-      eventPrintLayout === 'stack' ||
-      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
-    )
+    return computeTimeGridPrintMode(this.props.forPrint, eventPrintLayout) === 'stack'
   }
 }
 

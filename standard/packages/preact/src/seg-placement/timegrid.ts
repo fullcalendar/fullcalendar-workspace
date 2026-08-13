@@ -22,11 +22,11 @@
  * hidden whole, although the common limiter may still compact that whole
  * source into a shallower opening before hiding it.
  *
- * Legacy production counterparts
- * ------------------------------
+ * Production integration
+ * ----------------------
  *
- * `seg-hierarchy.ts` builds and limits the current level structure,
- * `timegrid/seg-web.ts` builds and stretches its pressure web, and
+ * `timegrid/seg-placement-adapter.ts` converts production segs to and from
+ * this module's inputs and outputs, and
  * `timegrid/components/TimeGridCol.tsx` projects overlap and more links.
  */
 

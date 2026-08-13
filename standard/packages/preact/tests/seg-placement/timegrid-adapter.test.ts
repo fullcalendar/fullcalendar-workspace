@@ -114,21 +114,28 @@ describe('TimeGrid production placement adapter', () => {
       false,
       1,
     )
-    const second = buildTimeGridSegPlacements(
+    const resizedVerticals = fixture.verticals.map((vertical) => ({
+      ...vertical,
+      start: vertical.start * 2,
+      end: vertical.end * 2,
+      size: vertical.size * 2,
+    }))
+    const resized = buildTimeGridSegPlacements(
       fixture.segs,
-      fixture.verticals,
+      resizedVerticals,
       false,
       1,
     )
 
     expect(first.hiddenGroups).toHaveLength(1)
-    expect(first.hiddenGroups[0]).toEqual({
-      key: '20:90',
+    expect(first.hiddenGroups[0]).toMatchObject({
       start: 20,
       end: 90,
       segs: [fixture.segs[1], fixture.segs[2]],
     })
-    expect(second.hiddenGroups[0].key).toBe(first.hiddenGroups[0].key)
+    // The key derives from hidden event data, not pixel geometry, so a slat
+    // resize (all verticals scaled) must not remount the popover.
+    expect(resized.hiddenGroups[0].key).toBe(first.hiddenGroups[0].key)
   })
 
   it('excludes segs without vertical geometry without throwing', () => {
@@ -193,15 +200,16 @@ interface AdapterFixture {
   verticals: TimeGridSegVertical[]
 }
 
-function makeSeg(instanceId: string): TimeGridEventSeg {
+function makeSeg(instanceId: string, startMs = 0): TimeGridEventSeg {
   return {
     col: 0,
-    startDate: new Date(0),
-    endDate: new Date(1),
+    startDate: new Date(startMs),
+    endDate: new Date(startMs + 1),
     isStart: true,
     isEnd: true,
     eventRange: {
       instance: { instanceId },
+      range: { start: new Date(startMs), end: new Date(startMs + 1) },
     },
   } as unknown as TimeGridEventSeg
 }

@@ -1,3 +1,5 @@
+import { buildIsoString } from '@full-ui/headless-calendar'
+import { computeEarliestStart } from '../coord-range'
 import { type EventRangeProps, getEventKey } from '../component-util/event-rendering'
 import { type SourceSeg } from '../seg-placement/layout'
 import { layoutTimeGridColumnByMaxLevel } from '../seg-placement/timegrid'
@@ -86,11 +88,17 @@ export function buildTimeGridSegPlacements(
         stackForward: placement.forwardDepth,
       }
     }),
-    hiddenGroups: layout.moreLinkGroups.map((group) => ({
-      key: group.key,
-      start: group.start,
-      end: group.end,
-      segs: group.hiddenSlices.map((slice) => slice.sourceSeg.meta),
-    })),
+    hiddenGroups: layout.moreLinkGroups.map((group) => {
+      const groupSegs = group.hiddenSlices.map((slice) => slice.sourceSeg.meta)
+      return {
+        // The engine's group key is pixel-derived and would change on slat
+        // resize, remounting an open more-link popover. Key by the earliest
+        // hidden event's start instead, as the legacy implementation did.
+        key: buildIsoString(computeEarliestStart(groupSegs)),
+        start: group.start,
+        end: group.end,
+        segs: groupSegs,
+      }
+    }),
   }
 }

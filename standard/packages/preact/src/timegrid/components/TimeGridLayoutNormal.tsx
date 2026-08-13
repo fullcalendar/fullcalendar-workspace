@@ -30,7 +30,7 @@ import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
 import { TimeGridSlatLane } from "./TimeGridSlatLane"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
 import { computeSlatHeight } from './util'
-import { isBrowserPrintQuirky } from './TimeGridCol'
+import { computeTimeGridPrintMode } from '../print-mode'
 import { computeViewBorderless } from '../../util/misc'
 
 export interface TimeGridLayoutNormalProps {
@@ -139,12 +139,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const rowsNotExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
 
-    // TODO: DRY with getIsStack
-    const { eventPrintLayout } = options
-    const printStackEnabled = (
-      eventPrintLayout === 'stack' ||
-      (eventPrintLayout !== 'grid' /* aka 'auto' */ && isBrowserPrintQuirky)
-    )
+    const printStackEnabled = computeTimeGridPrintMode(forPrint, options.eventPrintLayout) === 'stack'
 
     const absPrint = forPrint && !printStackEnabled
     const simplePrint = forPrint && printStackEnabled
