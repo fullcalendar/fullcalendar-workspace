@@ -4,7 +4,7 @@ import {
   EventRangeProps,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { computeSegHorizontals } from '../event-placement'
+import { computeSegHorizontals } from '../timeline-positioning'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineDateProfile } from '../timeline-date-profile'
 

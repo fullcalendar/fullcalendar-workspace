@@ -9,27 +9,20 @@ import {
   getEventKey,
   greatestDurationDenominator,
   limitTimelineLayoutByMaxLevel,
-  orderTimeAxisItems,
   planDomCandidatesByMaxLevel,
   positionSegs,
   positionTimelineMoreLinks,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
 import { type TimelineDateProfile } from './timeline-date-profile'
-import { computeSegHorizontals } from './event-placement'
+import { computeSegHorizontals } from './timeline-positioning'
 
 export type TimelineEventSeg = TimelineRange & EventRangeProps
 
-export interface TimelineSegPlacementOptions {
-  eventMinWidth?: number
-  eventOrderStrict?: boolean
-  eventMaxStack?: number
-  clipStart?: number
-  clipEnd?: number
-}
-
 /** Source-level decision made before event wrappers have measured. */
 export interface TimelineSegPlacementPlan {
+  /** Whether every input seg survived *horizontal* projection and clipping. */
+  allSegsProjected: boolean
   /** Admitted sources in resolved event order for measured placement. */
   mountedSegs: SourceSeg<TimelineEventSeg>[]
   /** The same sources in temporal-start then resolved-order DOM order. */
@@ -85,18 +78,22 @@ export function buildTimelineSegPlacementPlan(
   dateEnv: DateEnv,
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
-  options: TimelineSegPlacementOptions = {},
+  eventMinWidth?: number,
+  eventOrderStrict?: boolean,
+  eventMaxStack?: number,
+  clipStart?: number,
+  clipEnd?: number,
 ): TimelineSegPlacementPlan {
-  const orderStrict = options.eventOrderStrict ?? false
-  const maxLevels = options.eventMaxStack ?? Infinity
+  const orderStrict = eventOrderStrict ?? false
+  const maxLevels = eventMaxStack ?? Infinity
   const sourceSegs = buildTimelineSegSources(
     segs,
-    options.eventMinWidth,
+    eventMinWidth,
     dateEnv,
     tDateProfile,
     slotWidth,
-    options.clipStart,
-    options.clipEnd,
+    clipStart,
+    clipEnd,
   )
   const candidatePlan = planDomCandidatesByMaxLevel(
     sourceSegs,
@@ -109,13 +106,20 @@ export function buildTimelineSegPlacementPlan(
   )
 
   return {
+    allSegsProjected: sourceSegs.length === segs.length,
     mountedSegs: candidatePlan.mountedSegs,
-    domOrderedSegs: orderTimeAxisItems(candidatePlan.visiblePlacements)
-      .map((placement) => placement.sourceSeg),
+    domOrderedSegs: [...candidatePlan.mountedSegs].sort((a, b) =>
+      computeTimelineSegStart(a.meta) - computeTimelineSegStart(b.meta) ||
+      a.orderIndex - b.orderIndex,
+    ),
     unmountedSlices: candidatePlan.hiddenSlices,
     maxLevels,
     orderStrict,
   }
+}
+
+function computeTimelineSegStart(seg: TimelineEventSeg): number {
+  return seg.startMs ?? seg.startDate.valueOf()
 }
 
 /**

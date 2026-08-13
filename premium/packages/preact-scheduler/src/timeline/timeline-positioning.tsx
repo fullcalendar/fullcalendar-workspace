@@ -1,7 +1,8 @@
-import { DateEnv, DateMarker, DateProfile, DateSpan, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
+import { CoordSpan, DateEnv, DateMarker, DateProfile, DateSpan, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact/public-api'
 import { computeDateSnapCoverage, computeMsSlotCoverage } from './TimelineCoords'
+import { TimelineRange } from './TimelineLaneSlicer'
 
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------
@@ -85,6 +86,36 @@ export function msToCoord( // pixels
   slotWidth: number,
 ): number {
   return computeMsSlotCoverage(dateMs, tDateProfile) * slotWidth
+}
+
+export function computeSegHorizontals(
+  seg: TimelineRange,
+  segMinWidth: number | undefined,
+  dateEnv: DateEnv,
+  tDateProfile: TimelineDateProfile,
+  slotWidth: number,
+  clipStart = 0, // uses it as a new origin!
+  clipEnd = Infinity,
+): CoordSpan | undefined {
+  // segs on timed axes always carry exact instants; whole-day axes position by civil marker
+  let startCoord = seg.startMs != null
+    ? msToCoord(seg.startMs, tDateProfile, slotWidth)
+    : dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
+  let endCoord = seg.endMs != null
+    ? msToCoord(seg.endMs, tDateProfile, slotWidth)
+    : dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
+
+  startCoord = Math.max(startCoord, clipStart)
+  endCoord = Math.min(endCoord, clipEnd)
+
+  if (startCoord < endCoord) {
+    let size = endCoord - startCoord
+    if (segMinWidth) {
+      size = Math.max(size, segMinWidth)
+    }
+
+    return { start: startCoord - clipStart, size }
+  }
 }
 
 export interface TimelineSnapRange {

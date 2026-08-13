@@ -631,7 +631,7 @@ export interface LayoutLimitResult<EventMeta = unknown> {
 
 /** One maximal intersecting region formed from hidden source geometry. */
 export interface HiddenSliceGroup<EventMeta = unknown> extends LateralSpan {
-  /** Stable while this exact union span remains unchanged. */
+  /** Stable identity anchored to one of the group's source segs. */
   key: string
   /** Distinct original sources represented by the hidden geometry. */
   count: number
@@ -815,13 +815,18 @@ export function groupHiddenSlices<EventMeta>(
     }
   }
 
-  return groups.map((group) => ({
-    key: `${group.start}:${group.end}`,
-    start: group.start,
-    end: group.end,
-    count: group.sourceKeys.size,
-    hiddenSlices: orderResolvedEventItems(group.hiddenSlices),
-  }))
+  return groups.map((group) => {
+    return {
+      // Timeline and TimeGrid disable event slicing, so one source cannot
+      // belong to multiple sibling groups. The lowest source key is therefore
+      // a compact, coordinate-independent identity even for very large groups.
+      key: [...group.sourceKeys].sort()[0],
+      start: group.start,
+      end: group.end,
+      count: group.sourceKeys.size,
+      hiddenSlices: orderResolvedEventItems(group.hiddenSlices),
+    }
+  })
 }
 
 /**

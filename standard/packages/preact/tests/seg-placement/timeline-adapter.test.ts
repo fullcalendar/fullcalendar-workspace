@@ -104,6 +104,30 @@ describe('Timeline production placement adapter', () => {
     })
   })
 
+  it('tracks whether every input seg produced horizontal geometry', () => {
+    const profile = uniformTimedProfile(2)
+    const visible = makeTimedSeg('visible', MS_PER_HOUR, 2 * MS_PER_HOUR)
+    const excluded = makeTimedSeg('excluded', 0, MS_PER_HOUR)
+
+    expect(buildTimelineSegPlacementPlan(
+      [visible, excluded],
+      EMPTY_DATE_ENV,
+      profile,
+      60,
+    ).allSegsProjected).toBe(true)
+    expect(buildTimelineSegPlacementPlan(
+      [visible, excluded],
+      EMPTY_DATE_ENV,
+      profile,
+      60,
+      undefined,
+      undefined,
+      undefined,
+      60,
+      120,
+    ).allSegsProjected).toBe(false)
+  })
+
   it('normalizes sub-resolution overlap only after production projection', () => {
     const profile = uniformTimedProfile(2)
     const before = makeTimedSeg('before', 0, MS_PER_HOUR)
@@ -170,6 +194,47 @@ describe('Timeline production placement adapter', () => {
       .toMatchObject({ top: 0, height: 10 })
   })
 
+  it('keeps temporal DOM order stable when clipping clamps distinct starts', () => {
+    const profile = uniformTimedProfile(4)
+    const later = makeTimedSeg(
+      'later-resolved-first',
+      MS_PER_HOUR,
+      4 * MS_PER_HOUR,
+    )
+    const earlier = makeTimedSeg(
+      'earlier-resolved-second',
+      0,
+      4 * MS_PER_HOUR,
+    )
+    const segs = [later, earlier]
+    const fullPlan = buildTimelineSegPlacementPlan(
+      segs,
+      EMPTY_DATE_ENV,
+      profile,
+      60,
+    )
+    const clippedPlan = buildTimelineSegPlacementPlan(
+      segs,
+      EMPTY_DATE_ENV,
+      profile,
+      60,
+      undefined,
+      undefined,
+      undefined,
+      120,
+      240,
+    )
+
+    expect(clippedPlan.mountedSegs.map((source) => source.start))
+      .toEqual([0, 0])
+    expect(fullPlan.domOrderedSegs.map((source) => source.key)).toEqual([
+      'earlier-resolved-second',
+      'later-resolved-first',
+    ])
+    expect(clippedPlan.domOrderedSegs.map((source) => source.key))
+      .toEqual(fullPlan.domOrderedSegs.map((source) => source.key))
+  })
+
   it('preserves resolved order geometrically when eventOrderStrict is true', () => {
     const profile = uniformTimedProfile(2)
     const segs = [
@@ -182,7 +247,8 @@ describe('Timeline production placement adapter', () => {
       EMPTY_DATE_ENV,
       profile,
       60,
-      { eventOrderStrict: true },
+      undefined,
+      true,
     )
     const result = buildTimelineSegPlacements(
       plan,
@@ -211,7 +277,9 @@ describe('Timeline production placement adapter', () => {
       EMPTY_DATE_ENV,
       profile,
       60,
-      { eventMaxStack: 2 },
+      undefined,
+      undefined,
+      2,
     )
     const result = buildTimelineSegPlacements(
       plan,
@@ -250,7 +318,9 @@ describe('Timeline production placement adapter', () => {
       EMPTY_DATE_ENV,
       profile,
       60,
-      { eventMaxStack: 1 },
+      undefined,
+      undefined,
+      1,
     )
     const segHeights = new Map([
       ['visible-left', 10],
@@ -302,6 +372,45 @@ describe('Timeline production placement adapter', () => {
       .toEqual(shrunk.moreLinks.map((link) => link.top))
   })
 
+  it('keeps more-link keys stable across slot-width changes', () => {
+    const profile = uniformTimedProfile(3)
+    const visible = makeTimedSeg('visible', MS_PER_HOUR, 2 * MS_PER_HOUR)
+    const hidden = makeTimedSeg('hidden', MS_PER_HOUR, 2 * MS_PER_HOUR)
+    const segs = [visible, hidden]
+    const narrow = buildTimelineSegPlacements(
+      buildTimelineSegPlacementPlan(
+        segs,
+        EMPTY_DATE_ENV,
+        profile,
+        60,
+        undefined,
+        undefined,
+        1,
+      ),
+      new Map([['visible', 10]]),
+      new Map(),
+    )
+    const wide = buildTimelineSegPlacements(
+      buildTimelineSegPlacementPlan(
+        segs,
+        EMPTY_DATE_ENV,
+        profile,
+        100,
+        undefined,
+        undefined,
+        1,
+      ),
+      new Map([['visible', 10]]),
+      new Map(),
+    )
+
+    expect(narrow.moreLinks).toHaveLength(1)
+    expect(wide.moreLinks).toHaveLength(1)
+    expect(narrow.moreLinks[0].key).toBe('hidden')
+    expect(wide.moreLinks[0].key).toBe(narrow.moreLinks[0].key)
+    expect(wide.moreLinks[0].end).not.toBe(narrow.moreLinks[0].end)
+  })
+
   it('mounts only candidates and keeps them as null donors until measured', () => {
     const profile = uniformTimedProfile(1)
     const plan = buildTimelineSegPlacementPlan(
@@ -312,7 +421,9 @@ describe('Timeline production placement adapter', () => {
       EMPTY_DATE_ENV,
       profile,
       60,
-      { eventMaxStack: 1 },
+      undefined,
+      undefined,
+      1,
     )
     const result = buildTimelineSegPlacements(plan, new Map(), new Map())
 
@@ -418,6 +529,7 @@ function makeSeg(
     isEnd: true,
     eventRange: {
       instance: { instanceId: key },
+      range: { start: startDate, end: endDate },
     },
   } as TimelineEventSeg
 }
