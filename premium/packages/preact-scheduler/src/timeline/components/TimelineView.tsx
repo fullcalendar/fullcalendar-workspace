@@ -34,6 +34,7 @@ import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow'
 import { getTimelineSlotEl } from './util'
 import { TimelineLaneSlicer } from '../TimelineLaneSlicer'
 import { TimelineFg } from './TimelineFg'
+import { TimelinePrintFg } from './TimelinePrintFg'
 import { TimelineBg } from './TimelineBg'
 
 interface TimelineViewState {
@@ -282,22 +283,39 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                       options.timelineTopClass,
                     )}
                   />
-                  <TimelineFg
-                    dateProfile={props.dateProfile}
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    nowMs={nowMs}
-                    todayRange={todayRange}
+                  {props.forPrint ? (
+                    <TimelinePrintFg
+                      dateProfile={props.dateProfile}
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      nowMs={nowMs}
+                      todayRange={todayRange}
 
-                    // content
-                    fgEventSegs={slicedProps.fgEventSegs}
-                    eventDrag={props.forPrint ? null : slicedProps.eventDrag}
-                    eventResize={props.forPrint ? null : slicedProps.eventResize}
-                    eventSelection={slicedProps.eventSelection}
+                      // content
+                      fgEventSegs={slicedProps.fgEventSegs}
+                      eventSelection={slicedProps.eventSelection}
 
-                    // dimensions
-                    slotWidth={slotWidth}
-                  />
+                      // dimensions
+                      slotWidth={slotWidth}
+                    />
+                  ) : (
+                    <TimelineFg
+                      dateProfile={props.dateProfile}
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      nowMs={nowMs}
+                      todayRange={todayRange}
+
+                      // content
+                      fgEventSegs={slicedProps.fgEventSegs}
+                      eventDrag={slicedProps.eventDrag}
+                      eventResize={slicedProps.eventResize}
+                      eventSelection={slicedProps.eventSelection}
+
+                      // dimensions
+                      slotWidth={slotWidth}
+                    />
+                  )}
                   <div
                     className={joinClassNames(
                       options.timelineBottomClass,
