@@ -39,7 +39,6 @@ export interface DayGridCellProps {
   hiddenSegs: DayRowEventRange[] // "
   fgLiquidHeight: boolean
   fg: ReactNode
-  forPrint?: boolean
   eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
   eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   eventSelection: string
@@ -121,15 +120,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           style={{
             width: props.width
           }}
-        >
-          {props.forPrint && (
-            <div className={joinClassNames(classNames.flexCol, classNames.grow)}>
-              <div className={generateClassName(options.dayCellInnerClass, renderProps)}>
-                {props.fg}
-              </div>
-            </div>
-          )}
-        </div>
+        />
       )
     }
 

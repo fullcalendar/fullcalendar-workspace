@@ -294,7 +294,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               hiddenSegs={printPopover ? printPopover.hiddenSegs : screenColumns![col].hiddenSegs}
               fgLiquidHeight={printPlan ? false : screenFgLiquidHeight}
               fg={fg}
-              forPrint={printPlan ? true : undefined}
               eventDrag={printPlan ? null : props.eventDrag}
               eventResize={printPlan ? null : props.eventResize}
               eventSelection={props.eventSelection}
