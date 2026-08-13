@@ -97,6 +97,40 @@ export {
   groupIntersectingSegs,
 } from './seg-hierarchy'
 
+export type {
+  SourceSeg,
+  UnorderedSeg,
+  Slice,
+  Placement,
+  PlacementLevel,
+  PlacementLayout,
+  LayoutLimitResult,
+  HiddenSliceGroup,
+  SliceOptions,
+  DomCandidatePlan,
+} from './seg-placement/layout'
+export {
+  positionSegs,
+  positionSegsWithUnitThickness,
+  stampEventOrder,
+  planDomCandidatesByMaxLevel,
+  orderTimeAxisItems,
+  orderResolvedEventItems,
+  doesSliceCoverWholeSource,
+  groupHiddenSlices,
+} from './seg-placement/layout'
+export type {
+  TimelineMoreLinkPlacement,
+  TimelineLimitResult,
+  TimelineMoreLinkHeightMap,
+  TimelineLayoutOptions,
+} from './seg-placement/timeline'
+export {
+  limitTimelineLayoutByMaxLevel,
+  positionTimelineMoreLinks,
+  calculateTimelineContentHeight,
+} from './seg-placement/timeline'
+
 export type { PointerDragEvent } from './interactions/pointer'
 export type { Hit } from './interactions/hit'
 export { ElementDragging } from './interactions/ElementDragging'
