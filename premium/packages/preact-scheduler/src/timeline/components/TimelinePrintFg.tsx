@@ -8,6 +8,8 @@ import {
   EventRangeProps,
   getEventRangeMeta,
   memoize,
+  PrintEventBand,
+  PrintMoreLinkBand,
   RefMap,
   sortEventSegs,
 } from '@fullcalendar/preact/protected-api'
@@ -18,6 +20,7 @@ import {
   buildTimelinePrintLayout,
   buildTimelinePrintPlan,
 } from '../print-adapter'
+import { type TimelineEventSeg } from '../seg-placement-adapter'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineEventHarness } from './TimelineEventHarness'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
@@ -76,77 +79,31 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
     return (
       <div className={classNames.noShrink}>
         {eventBands.map((band) => (
-          <div
+          <TimelinePrintEventBand
             key={band.levelIndex}
-            className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
-            style={{ height: band.thickness }}
-          >
-            {band.slices.map((slice) => {
-              const { sourceSeg } = slice
-              const seg = sourceSeg.meta
-              const { eventRange } = seg
-              const { instanceId } = eventRange.instance
-              const isSelected = instanceId === props.eventSelection
-
-              return (
-                <TimelineEventHarness
-                  key={sourceSeg.key}
-                  style={{
-                    zIndex: isSelected ? 1000 : 1,
-                    top: 0,
-                    insetInlineStart: slice.start,
-                    width: slice.end - slice.start,
-                  }}
-                  heightRef={this.printSegHeightRefMap.createRef(sourceSeg.key)}
-                  measureImmediate
-                >
-                  <TimelineEvent
-                    isTimeScale={props.tDateProfile.isTimeScale}
-                    eventRange={eventRange}
-                    isStart={slice.isStart}
-                    isEnd={slice.isEnd}
-                    isDragging={false}
-                    isResizing={false}
-                    isMirror={false}
-                    isSelected={isSelected}
-                    {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
-                  />
-                </TimelineEventHarness>
-              )
-            })}
-          </div>
+            band={band}
+            heightRefMap={this.printSegHeightRefMap}
+            dateProfile={props.dateProfile}
+            tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            todayRange={props.todayRange}
+            eventSelection={props.eventSelection}
+            resourceId={props.resourceId}
+          />
         ))}
         {moreLinkBand && (
-          <div
-            className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
-            style={{ height: moreLinkBand.thickness }}
-          >
-            {moreLinkBand.moreLinkGroups.map((group) => (
-              <TimelineEventHarness
-                key={group.key}
-                style={{
-                  top: 0,
-                  insetInlineStart: group.start,
-                  width: group.end - group.start,
-                }}
-                heightRef={this.printLinkHeightRefMap.createRef(group.key)}
-                measureImmediate
-              >
-                <TimelineLaneMoreLink
-                  hiddenSegs={group.hiddenSlices.map((slice) => slice.sourceSeg.meta)}
-                  dateProfile={props.dateProfile}
-                  nowDate={props.nowDate}
-                  nowMs={props.nowMs}
-                  todayRange={props.todayRange}
-                  isTimeScale={props.tDateProfile.isTimeScale}
-                  eventDrag={null}
-                  eventResize={null}
-                  eventSelection={props.eventSelection}
-                  resourceId={props.resourceId}
-                />
-              </TimelineEventHarness>
-            ))}
-          </div>
+          <TimelinePrintMoreLinkBand
+            band={moreLinkBand}
+            heightRefMap={this.printLinkHeightRefMap}
+            dateProfile={props.dateProfile}
+            tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            todayRange={props.todayRange}
+            eventSelection={props.eventSelection}
+            resourceId={props.resourceId}
+          />
         )}
       </div>
     )
@@ -164,4 +121,108 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
     if (this._isUnmounting) return
     this.forceUpdate()
   }
+}
+
+interface TimelinePrintBandBaseProps {
+  dateProfile: DateProfile
+  tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  nowMs: number
+  todayRange: DateRange
+  eventSelection: string
+  resourceId?: string
+}
+
+export interface TimelinePrintEventBandProps extends TimelinePrintBandBaseProps {
+  band: PrintEventBand<TimelineEventSeg>
+  heightRefMap: RefMap<string, number>
+}
+
+/** Renders one independently page-breakable Timeline print event band. */
+export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
+  const { band } = props
+
+  return (
+    <div
+      className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
+      style={{ height: band.thickness }}
+    >
+      {band.slices.map((slice) => {
+        const { sourceSeg } = slice
+        const seg = sourceSeg.meta
+        const { eventRange } = seg
+        const { instanceId } = eventRange.instance
+        const isSelected = instanceId === props.eventSelection
+
+        return (
+          <TimelineEventHarness
+            key={sourceSeg.key}
+            style={{
+              zIndex: isSelected ? 1000 : 1,
+              top: 0,
+              insetInlineStart: slice.start,
+              width: slice.end - slice.start,
+            }}
+            heightRef={props.heightRefMap.createRef(sourceSeg.key)}
+            measureImmediate
+          >
+            <TimelineEvent
+              isTimeScale={props.tDateProfile.isTimeScale}
+              eventRange={eventRange}
+              isStart={slice.isStart}
+              isEnd={slice.isEnd}
+              isDragging={false}
+              isResizing={false}
+              isMirror={false}
+              isSelected={isSelected}
+              {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
+            />
+          </TimelineEventHarness>
+        )
+      })}
+    </div>
+  )
+}
+
+export interface TimelinePrintMoreLinkBandProps extends TimelinePrintBandBaseProps {
+  band: PrintMoreLinkBand<TimelineEventSeg>
+  heightRefMap: RefMap<string, number>
+}
+
+/** Renders Timeline's final independently page-breakable print more-link band. */
+export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps) {
+  const { band } = props
+
+  return (
+    <div
+      className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
+      style={{ height: band.thickness }}
+    >
+      {band.moreLinkGroups.map((group) => (
+        <TimelineEventHarness
+          key={group.key}
+          style={{
+            top: 0,
+            insetInlineStart: group.start,
+            width: group.end - group.start,
+          }}
+          heightRef={props.heightRefMap.createRef(group.key)}
+          measureImmediate
+        >
+          <TimelineLaneMoreLink
+            hiddenSegs={group.hiddenSlices.map((slice) => slice.sourceSeg.meta)}
+            dateProfile={props.dateProfile}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            todayRange={props.todayRange}
+            isTimeScale={props.tDateProfile.isTimeScale}
+            eventDrag={null}
+            eventResize={null}
+            eventSelection={props.eventSelection}
+            resourceId={props.resourceId}
+          />
+        </TimelineEventHarness>
+      ))}
+    </div>
+  )
 }

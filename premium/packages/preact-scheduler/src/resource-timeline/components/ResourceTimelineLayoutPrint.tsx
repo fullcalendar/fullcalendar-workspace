@@ -24,12 +24,10 @@ import { TimelineSlats } from '../../timeline/components/TimelineSlats'
 import { flexifyDimConfigs, SiblingDimConfig } from '@full-ui/headless-grid'
 import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print'
 import { GroupLane } from './lane/GroupLane'
-import { ResourceLane } from './lane/ResourceLane'
+import { ResourcePrintRow } from './ResourcePrintRow'
 import { ResourceGroupHeaderSubrow } from './spreadsheet/ResourceGroupHeaderSubrow'
 import { HeaderRow } from './spreadsheet/HeaderRow'
-import { ResourceSubrow } from './spreadsheet/ResourceSubrow'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
-import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows'
 import { CssDimValue } from '@fullcalendar/preact/public-api'
 import { ColSpec } from '../structs'
 
@@ -338,89 +336,33 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               )
 
               return (
-                <div
+                <ResourcePrintRow
+                  {...splitProps[resource.id]}
                   key={resource.id}
-                  role='row'
-                  // sort-of a HACK to use .indent, but works out fine b/c 1-based
-                  aria-level={hasNesting ? printLayout.indent : undefined}
-                  aria-expanded={(printLayout as ResourcePrintLayout).hasChildren
-                    ? (printLayout as ResourcePrintLayout).isExpanded
-                    : undefined}
-                  className={joinClassNames(
-                    classNames.flexRow,
-                    classNames.breakInsideAvoid,
-                  )}
-                >
-                  <div // serves as datagrid viewport
-                    className={joinClassNames(
-                      classNames.flexCol, // mimics what non-print scrollpane does
-                      classNames.crop,
-                    )}
-                    style={{ width: props.spreadsheetWidth }}
-                  >
-                    <div // serves as datagrid row
-                      className={joinClassNames(
-                        classNames.grow, // height-grow, for matching tall timeline heights
-                        classNames.flexRow,
-                      )}
-                      style={{ minWidth: spreadsheetCanvasWidth }}
-                    >
-                      <ResourceGroupSubrows // usually does NOT have bottom-line
-                        colGroups={(printLayout as ResourcePrintLayout).colGroups}
-                        colGroupStats={colGroupStats}
-                        colWidths={colWidths}
-                        colGrows={colGrows}
-                      />
-                      <ResourceSubrow // almost always has bottom-line
-                        resource={resource}
-                        resourceFields={(printLayout as ResourcePrintLayout).resourceFields}
-                        indent={(printLayout as ResourcePrintLayout).indent}
-                        hasChildren={(printLayout as ResourcePrintLayout).hasChildren}
-                        isExpanded={(printLayout as ResourcePrintLayout).isExpanded}
-                        colStartIndex={groupColCnt}
-                        colSpecs={colSpecs}
-                        colWidths={colWidths}
-                        colGrows={colGrows}
-                        borderStart={Boolean(groupColCnt)}
-                        borderBottom={isNotLast}
-                        indentWidth={props.indentWidth}
-                        totalX // set width and flexgrow on this subrow
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={joinClassNames(options.resourceColumnDividerClass)}
-                  />
-                  <div // serves as timeline viewport
-                    className={joinClassNames(
-                      classNames.flexCol,
-                      classNames.crop,
-                      classNames.liquid,
-                    )}
-                  >
-                    <ResourceLane
-                      {...splitProps[resource.id]}
-                      className={joinClassNames(
-                        classNames.rel,
-                        classNames.grow, // height-grow
-                      )}
-                      resource={resource}
-                      dateProfile={dateProfile}
-                      tDateProfile={tDateProfile}
-                      nowDate={nowDate}
-                      nowMs={props.nowMs}
-                      todayRange={todayRange}
-                      businessHours={null}
-                      dateSelection={null}
-                      eventDrag={null}
-                      eventResize={null}
-                      width={timeCanvasWidth}
-                      slotWidth={slotWidth}
-                      insetInlineStart={-timeAreaOffset}
-                      borderBottom={isNotLast}
-                    />
-                  </div>
-                </div>
+                  layout={printLayout as ResourcePrintLayout}
+                  colGroupStats={colGroupStats}
+                  hasNesting={hasNesting}
+                  isNotLast={isNotLast}
+                  dateProfile={dateProfile}
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  nowMs={props.nowMs}
+                  todayRange={todayRange}
+                  colSpecs={colSpecs}
+                  groupColCnt={groupColCnt}
+                  colWidths={colWidths}
+                  colGrows={colGrows}
+                  spreadsheetCanvasWidth={spreadsheetCanvasWidth}
+                  spreadsheetWidth={props.spreadsheetWidth}
+                  timeCanvasWidth={timeCanvasWidth}
+                  timeAreaOffset={timeAreaOffset}
+                  slotWidth={slotWidth}
+                  indentWidth={props.indentWidth}
+                  businessHours={null}
+                  dateSelection={null}
+                  eventDrag={null}
+                  eventResize={null}
+                />
               )
             } else {
               const group = (printLayout as GroupRowPrintLayout).entity

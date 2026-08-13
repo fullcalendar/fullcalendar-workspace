@@ -50,7 +50,7 @@ export interface ResourceLaneProps extends AriaCellInput {
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   // memo
-  private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private refineRenderProps = memoizeObjArg(refineResourceLaneRenderProps)
 
   // internal
   private _isUnmounting: boolean
@@ -250,7 +250,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   }
 }
 
-function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
+export function refineResourceLaneRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
   return {
     resource: new ResourceApi(input.context, input.resource),
     options: { eventOverlap: input.eventOverlap },
