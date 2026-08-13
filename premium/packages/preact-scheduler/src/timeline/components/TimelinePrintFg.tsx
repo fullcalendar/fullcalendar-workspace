@@ -164,7 +164,6 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
               width: slice.end - slice.start,
             }}
             heightRef={props.heightRefMap.createRef(sourceSeg.key)}
-            measureImmediate
           >
             <TimelineEvent
               isTimeScale={props.tDateProfile.isTimeScale}
@@ -207,7 +206,6 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
             width: group.end - group.start,
           }}
           heightRef={props.heightRefMap.createRef(group.key)}
-          measureImmediate
         >
           <TimelineLaneMoreLink
             hiddenSegs={group.hiddenSlices.map((slice) => slice.sourceSeg.meta)}

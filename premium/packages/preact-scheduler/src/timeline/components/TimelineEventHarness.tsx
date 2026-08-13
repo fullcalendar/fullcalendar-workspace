@@ -1,5 +1,5 @@
 import { Component, createRef, type Ref, type ReactNode } from 'react'
-import { watchHeight, watchHeightImmediate, setRef } from '@fullcalendar/preact/protected-api'
+import { watchHeight, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 
 export interface TimelineEventHarnessProps {
@@ -8,7 +8,6 @@ export interface TimelineEventHarnessProps {
 
   // ref
   heightRef?: Ref<number>
-  measureImmediate?: boolean
 }
 
 /*
@@ -21,7 +20,6 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
   // internal
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
-  private height?: number
 
   render() {
     const { props } = this
@@ -39,49 +37,17 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
 
   componentDidMount(): void {
     this._isUnmounting = false
-    this.startWatchingHeight()
-  }
+    const rootEl = this.rootElRef.current // TODO: make dynamic with useEffect
 
-  /*
-  for when moved to another harness, with a new ref
-  the old ref needs to be explicitly cleared. because if the VDOM reuses this instance,
-  the old ref will never be passed a null value. new ref needs to be populated with
-  the same value of this component's height. same problem with other non-height refs too!
-  Solving: https://github.com/facebook/react/issues/13604
-  */
-  componentDidUpdate(prevProps: TimelineEventHarnessProps): void {
-    const { heightRef, measureImmediate } = this.props
-
-    if (prevProps.heightRef !== heightRef) {
-      setRef(prevProps.heightRef, null)
-    }
-
-    if (prevProps.measureImmediate !== measureImmediate) {
-      this.disconnectHeight()
-      this.startWatchingHeight()
-      if (!measureImmediate && prevProps.heightRef !== heightRef && this.height != null) {
-        setRef(heightRef, this.height)
-      }
-    } else if (prevProps.heightRef !== heightRef) {
-      if (this.height != null) {
-        setRef(heightRef, this.height)
-      }
-    }
+    this.disconnectHeight = watchHeight(rootEl, (height) => {
+      if (this._isUnmounting) return
+      setRef(this.props.heightRef, height)
+    })
   }
 
   componentWillUnmount(): void {
     this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.heightRef, null)
-  }
-
-  private startWatchingHeight(): void {
-    const watch = this.props.measureImmediate ? watchHeightImmediate : watchHeight
-
-    this.disconnectHeight = watch(this.rootElRef.current, (height) => {
-      if (this._isUnmounting) return
-      this.height = height
-      setRef(this.props.heightRef, height)
-    })
   }
 }

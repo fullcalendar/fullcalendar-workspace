@@ -22,6 +22,7 @@ const afterSizeCallbacks = new Set<() => void>()
 
 let isHandling = false
 let isStalling = false
+let isAcquiringImmediately = false
 
 export function afterSize(callback: () => void) {
   afterSizeCallbacks.add(callback)
@@ -41,6 +42,47 @@ function flushAfterSize() {
   for (const flushedCallback of afterSizeCallbacks.values()) {
     flushedCallback()
     afterSizeCallbacks.delete(flushedCallback)
+  }
+}
+
+/*
+Commits synchronously while switching every watcher registered during the
+commit to immediate acquisition: registration reads getBoundingClientRect()
+on the spot and fires the callback before returning, instead of waiting for
+the shared ResizeObserver's later delivery. This is the "measure now" path
+required when print-only DOM mounts during the native beforeprint task —
+observer delivery would arrive after the browser has already snapshotted.
+(gBCR reflects transforms while the observer's border-box does not; for
+print DOM that distinction is acceptable. Once components go functional, a
+`useElementSize`-style hook performs this same acquire-then-observe.)
+
+The afterSize work those callbacks (and any watcher deaths) queue
+accumulates and drains ONCE after the commit, not once per registration —
+so a commit mounting N measured wrappers costs one layout recomputation,
+not N. The drain runs in its own flushSync so handler state updates still
+settle within the calling task; additions made while draining are picked up
+by the same loop. Preact flushes mount lifecycles after the root diff, so
+the reads don't interleave with the commit's DOM writes.
+
+Adopt this bracket a la carte, only for commits whose entire mounted-watcher
+population tolerates a synchronous first report (currently: entering print
+mode). Ordinary watchSize callers everywhere else keep their async-first
+ResizeObserver semantics.
+*/
+export function flushSyncWithSizeBatching(callback: () => void): void {
+  const wasHandling = isHandling
+  isHandling = true
+  isAcquiringImmediately = true
+  try {
+    flushSync(callback)
+    if (!wasHandling) {
+      flushSync(() => {
+        flushAfterSize()
+      })
+    }
+  } finally {
+    isHandling = wasHandling
+    isAcquiringImmediately = false
   }
 }
 
@@ -99,59 +141,16 @@ export function watchSize(
   watchWidth = true,
   watchHeight = true,
 ): DisconnectSize {
-  return watchSizeInternal(el, callback, watchWidth, watchHeight, false)
-}
-
-/**
- * Watches an element after synchronously acquiring its current dimensions.
- *
- * The callback runs before registration returns; later size changes still
- * arrive through the shared border-box ResizeObserver.
- *
- * `getBoundingClientRect()` includes transforms while ResizeObserver's
- * border-box does not. That distinction is acceptable for print-only DOM.
- *
- * Calling this directly from a class component's mount/ref lifecycle is a
- * workaround for the lack of hooks. Once components go functional, direct
- * call sites give way to a `useElementSize`-style hook whose `useLayoutEffect`
- * performs this same imperative acquire-then-observe internally.
- */
-export function watchSizeImmediate(
-  el: HTMLElement,
-  callback: SizeCallback,
-  watchWidth = true,
-  watchHeight = true,
-): DisconnectSize {
-  return watchSizeInternal(el, callback, watchWidth, watchHeight, true)
-}
-
-function watchSizeInternal(
-  el: HTMLElement,
-  callback: SizeCallback,
-  watchWidth: boolean,
-  watchHeight: boolean,
-  immediate: boolean,
-): DisconnectSize {
   const config: SizeConfig = { callback, watchWidth, watchHeight }
   configMap.set(el, config)
 
-  if (immediate) {
+  // within a flushSyncWithSizeBatching commit; see its comment.
+  // the stored dims dedupe the observer's later initial delivery.
+  if (isAcquiringImmediately) {
     const { width, height } = el.getBoundingClientRect()
     config.width = width
     config.height = height
-
-    // Drain afterSize work synchronously before registration returns unless
-    // an outer ResizeObserver batch already owns that drain.
-    const wasHandling = isHandling
-    isHandling = true
-    try {
-      callback(width, height)
-    } finally {
-      isHandling = wasHandling
-    }
-    if (!wasHandling) {
-      flushAfterSize()
-    }
+    callback(width, height)
   }
 
   // if statement is for jsdom and other shim environments that execute component effects, but
@@ -190,18 +189,6 @@ export function watchHeight(
   callback: (height: number) => void,
 ): DisconnectSize {
   return watchSize(
-    el,
-    (_width, height) => callback(height),
-    /* watchWidth = */ false,
-    /* watchHeight = */ true,
-  )
-}
-
-export function watchHeightImmediate(
-  el: HTMLElement,
-  callback: (height: number) => void,
-): DisconnectSize {
-  return watchSizeImmediate(
     el,
     (_width, height) => callback(height),
     /* watchWidth = */ false,

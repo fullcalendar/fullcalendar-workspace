@@ -2,8 +2,8 @@ import { Emitter } from './common/Emitter'
 import classNames from './styles.module.css'
 import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
-import { flushSync } from 'react-dom'
 import { joinClassNames } from './util/html'
+import { flushSyncWithSizeBatching } from './component-util/resize-observer'
 import { generateClassName } from './content-inject/ContentContainer'
 
 export interface CalendarDisplayInfo {
@@ -48,17 +48,19 @@ export class CalendarMediaRoot extends Component<CalendarMediaRootProps, Calenda
 
   private handleBeforePrint = () => {
     // The synchronous commit mounts print-only DOM during this beforeprint
-    // task. Its mount/layout effects can measure immediately and settle their
-    // resulting state updates before the native event returns.
-    flushSync(() => {
+    // task. Watchers registering during the bracket measure immediately, and
+    // their layout recomputations settle in one batched drain before the
+    // native event returns.
+    flushSyncWithSizeBatching(() => {
       this.setState({ forPrint: true })
     })
   }
 
   private handleAfterPrint = () => {
-    flushSync(() => {
-      this.setState({ forPrint: false })
-    })
+    // No synchronous commit needed: nothing else listens to _afterprint, and
+    // the ordinary microtask-batched re-render restores the screen DOM before
+    // the next paint. Screen watchers keep their async-first measurement.
+    this.setState({ forPrint: false })
   }
 }
 

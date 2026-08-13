@@ -68,10 +68,8 @@ export { Splitter } from './component-util/event-splitting'
 export { getDateMeta, DateMeta } from './component-util/date-rendering'
 export {
   watchSize,
-  watchSizeImmediate,
   watchWidth,
   watchHeight,
-  watchHeightImmediate,
   afterSize,
 } from './component-util/resize-observer'
 export { debounce } from './util/debounce'

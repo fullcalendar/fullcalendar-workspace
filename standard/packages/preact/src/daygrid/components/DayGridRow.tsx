@@ -426,7 +426,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                 : fracToCssDim(slice.end - slice.start),
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
-            measureImmediate
           >
             <StandardEvent
               display={isListItem ? 'list-item' : 'row'}
