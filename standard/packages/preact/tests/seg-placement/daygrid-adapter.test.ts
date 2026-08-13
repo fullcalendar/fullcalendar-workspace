@@ -8,6 +8,7 @@ import {
   buildDayGridSegPlacements,
   buildDayGridSegSources,
   computeDayGridDomCandidateMaxLevels,
+  computeDayGridMeasuredLimits,
   computeDayGridMoreLinkLevelTax,
   createDayGridPlacementOwnerState,
   observeDayGridEventAreaHeight,
@@ -223,6 +224,42 @@ describe('DayGrid screen mode routing', () => {
     expect(computeDayGridMoreLinkLevelTax('maxEventRows')).toBe(1)
     expect(computeDayGridMoreLinkLevelTax('auto')).toBe(0)
   })
+
+  it('gives auto a pixel ceiling and numeric modes a level cap', () => {
+    const inputs = {
+      candidateMaxLevels: 4,
+      columnCount: 7,
+      eventAreaHeight: 100,
+      moreLinkHeight: 12,
+    }
+
+    // Auto's candidate cap is the observed DOM frontier, so it must not reach
+    // the measured pass as a display rule.
+    expect(computeDayGridMeasuredLimits({ ...inputs, mode: 'auto' })).toEqual({
+      maxLevels: undefined,
+      levelCoordLimit: 100,
+      columnCount: 7,
+      levelTax: 0,
+      coordTax: 12,
+    })
+    expect(computeDayGridMeasuredLimits({ ...inputs, mode: 'maxEventRows' })).toEqual({
+      maxLevels: 4,
+      levelCoordLimit: undefined,
+      columnCount: 7,
+      levelTax: 1,
+      coordTax: 12,
+    })
+    expect(computeDayGridMeasuredLimits({ ...inputs, mode: 'maxEvents' }))
+      .toMatchObject({ maxLevels: 4, levelCoordLimit: undefined, levelTax: 0 })
+    expect(computeDayGridMeasuredLimits({ ...inputs, mode: 'unlimited' }))
+      .toMatchObject({ maxLevels: 4, levelCoordLimit: undefined, levelTax: 0 })
+    // An auto row that has not measured yet carries no ceiling at all.
+    expect(computeDayGridMeasuredLimits({
+      ...inputs,
+      mode: 'auto',
+      eventAreaHeight: undefined,
+    })).toMatchObject({ maxLevels: undefined, levelCoordLimit: undefined })
+  })
 })
 
 describe('DayGrid measured screen placement', () => {
@@ -333,6 +370,73 @@ describe('DayGrid measured screen placement', () => {
   })
 })
 
+describe('DayGrid measured auto placement', () => {
+  /** Two independent stacks of three, so one column can owe a link alone. */
+  const twoStacks = [
+    makeSeg('a', 0, 1),
+    makeSeg('b', 0, 1),
+    makeSeg('c', 0, 1),
+    makeSeg('d', 1, 2),
+    makeSeg('e', 1, 2),
+  ]
+
+  it('shows every mounted candidate before the event area has measured', () => {
+    const result = layoutRow(twoStacks, 2, true)
+
+    expect(itemTops(result, 0)).toEqual({
+      'a:0': 0,
+      'b:0': EVENT_HEIGHT,
+      'c:0': EVENT_HEIGHT * 2,
+    })
+    expect(result.columns.every((column) => !column.hiddenSegs.length)).toBe(true)
+  })
+
+  it('admits an auto row down to its measured pixel ceiling', () => {
+    const result = layoutRow(twoStacks, 2, true, undefined, {
+      eventAreaHeight: EVENT_HEIGHT * 2.5,
+    })
+
+    // Nothing has measured a link yet, so the ceiling is spent entirely on
+    // events and only the source that could not reach it is hidden.
+    expect(itemTops(result, 0)).toEqual({
+      'a:0': 0,
+      'b:0': EVENT_HEIGHT,
+      'c:0': undefined,
+    })
+    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['c'])
+  })
+
+  it('charges the measured link height to owing columns only', () => {
+    const result = layoutRow(twoStacks, 2, true, undefined, {
+      eventAreaHeight: EVENT_HEIGHT * 2.5,
+      moreLinkHeight: EVENT_HEIGHT * 1.2,
+    })
+
+    // Hiding `c` activates the left column, whose lowered ceiling then evicts
+    // `b`. The right column never owed a link, so it keeps its full stack.
+    expect(itemTops(result, 0)).toEqual({
+      'a:0': 0,
+      'b:0': undefined,
+      'c:0': undefined,
+    })
+    expect(itemTops(result, 1)).toEqual({ 'd:1': 0, 'e:1': EVENT_HEIGHT })
+    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['b', 'c'])
+    expect(result.columns[1].hiddenSegs).toEqual([])
+    expect(result.columns.map((column) => column.contentHeight))
+      .toEqual([EVENT_HEIGHT, EVENT_HEIGHT * 2])
+  })
+
+  it('stops mounting candidates beyond the cross-row DOM frontier', () => {
+    const result = layoutRow(twoStacks, 2, true, undefined, { maxDomLevels: 2 })
+
+    // The third level never mounts, yet both columns still list their rejected
+    // source, because the popover unions unmounted sources with measured hides.
+    expect(itemTops(result, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
+    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['c'])
+    expect(segIds(result.columns[0].segs)).toEqual(['a', 'b', 'c'])
+  })
+})
+
 const EVENT_HEIGHT = 10
 
 /** Mirrors how `DayGridRow` drives the adapter for one fully measured row. */
@@ -346,11 +450,21 @@ function layoutRow(
     eventSlicing?: boolean,
     /** Occupied wrapper heights by source key. Defaults to a uniform height. */
     heights?: Record<string, number>,
+    /** Measured pixels events compete for. Only an auto row has one. */
+    eventAreaHeight?: number,
+    /** Owner-wide monotone more-link reservation. */
+    moreLinkHeight?: number,
+    /** Cross-row DOM frontier. Only an auto row's candidates consume it. */
+    maxDomLevels?: number,
   } = {},
 ): DayGridSegPlacementResult {
   const plan = buildDayGridSegPlacementPlan(
     eventOrderedSegs,
-    computeDayGridDomCandidateMaxLevels(dayMaxEvents, dayMaxEventRows, Infinity),
+    computeDayGridDomCandidateMaxLevels(
+      dayMaxEvents,
+      dayMaxEventRows,
+      config.maxDomLevels ?? Infinity,
+    ),
     config.orderStrict ?? false,
     config.eventSlicing ?? true,
   )
@@ -361,13 +475,13 @@ function layoutRow(
       source.key,
       config.heights?.[source.key] ?? EVENT_HEIGHT,
     ])),
-    {
-      maxLevels: plan.maxLevels,
+    computeDayGridMeasuredLimits({
+      mode: resolveDayGridPlacementMode(dayMaxEvents, dayMaxEventRows),
+      candidateMaxLevels: plan.maxLevels,
       columnCount,
-      levelTax: computeDayGridMoreLinkLevelTax(
-        resolveDayGridPlacementMode(dayMaxEvents, dayMaxEventRows),
-      ),
-    },
+      eventAreaHeight: config.eventAreaHeight,
+      moreLinkHeight: config.moreLinkHeight,
+    }),
   )
 }
 

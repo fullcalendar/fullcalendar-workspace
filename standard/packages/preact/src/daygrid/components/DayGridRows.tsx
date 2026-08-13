@@ -18,6 +18,7 @@ import {
   createDayGridPlacementOwnerState,
   observeDayGridEventAreaHeight,
   observeDayGridEventHeight,
+  observeDayGridMoreLinkHeight,
 } from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
 
@@ -149,11 +150,13 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             colWidth={props.colWidth}
             basis={rowBasis}
             maxDomLevels={this.placementOwnerState.maxDomLevels}
+            moreLinkHeight={this.placementOwnerState.largestMoreLinkHeight}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
             onEventHeight={this.handleEventHeight}
             onEventAreaHeight={this.handleEventAreaHeight}
+            onMoreLinkHeight={this.handleMoreLinkHeight}
           />
         ))}
       </div>
@@ -193,6 +196,20 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     if (!this.props.forPrint) {
       this.updatePlacementOwnerState(
         observeDayGridEventAreaHeight(this.placementOwnerState, height),
+      )
+    }
+  }
+
+  /*
+  The tallest link any row has shown becomes every owing column's reservation,
+  so a link is never squeezed by a shorter sibling's measurement. Rerendering
+  is left to `updatePlacementOwnerState`, which sees a new state object only
+  when this height actually raises the maximum.
+  */
+  private handleMoreLinkHeight = (height: number) => {
+    if (!this.props.forPrint) {
+      this.updatePlacementOwnerState(
+        observeDayGridMoreLinkHeight(this.placementOwnerState, height),
       )
     }
   }

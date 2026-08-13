@@ -97,6 +97,15 @@ export type DayGridPlacementMode =
   | 'maxEventRows'
   | 'auto'
 
+/*
+TODO: geometry epochs.
+Every extremum below is monotone for one owner's lifetime, so a style change
+that shrinks events or links leaves an obsolete value in force until the owner
+is recreated. Narrowing that window means giving the owner a geometry epoch
+derived from the compiled styling inputs, and letting a new epoch clear these.
+Deliberately deferred: no reset trigger is invented during the port. Tracked by
+its final cleanup phase, prod-planning/13-cleanup-and-deferred-epochs.md.
+*/
 export interface DayGridPlacementOwnerState {
   smallestEventHeight: number | null
   /**
@@ -349,6 +358,45 @@ export function computeDayGridDomCandidateMaxLevels(
  */
 export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): number {
   return mode === 'maxEventRows' ? 1 : 0
+}
+
+/** What a row knows about its own measured bounds when it re-limits. */
+export interface DayGridMeasuredLimitInputs {
+  mode: DayGridPlacementMode
+  /** The dimensionless cap this row's candidates were admitted under. */
+  candidateMaxLevels: number
+  columnCount: number
+  /** Measured pixels foreground events compete for. Undefined until measured. */
+  eventAreaHeight?: number
+  /** Owner-wide monotone more-link wrapper height. */
+  moreLinkHeight?: number
+}
+
+/**
+ * Resolves one row's untaxed bounds and per-link taxes from its mode.
+ *
+ * The two limiting currencies belong to different modes. Auto limits by
+ * measured pixels alone: its candidate cap is the cross-row DOM frontier, an
+ * estimate of how many events might fit rather than a display rule, so
+ * charging it as one would hide events that do fit. Numeric modes are the
+ * reverse, owning an explicit level cap and no pixel ceiling, which leaves
+ * their pixel tax inert rather than absent.
+ *
+ * An unmeasured auto row carries no ceiling and therefore shows everything it
+ * mounted, exactly as the legacy path did before its first measurement.
+ */
+export function computeDayGridMeasuredLimits(
+  input: DayGridMeasuredLimitInputs,
+): Omit<DayGridLimits, 'initialHiddenSpans'> {
+  const isAuto = input.mode === 'auto'
+
+  return {
+    maxLevels: isAuto ? undefined : input.candidateMaxLevels,
+    levelCoordLimit: isAuto ? input.eventAreaHeight : undefined,
+    columnCount: input.columnCount,
+    levelTax: computeDayGridMoreLinkLevelTax(input.mode),
+    coordTax: input.moreLinkHeight,
+  }
 }
 
 function buildPlacementColumns(

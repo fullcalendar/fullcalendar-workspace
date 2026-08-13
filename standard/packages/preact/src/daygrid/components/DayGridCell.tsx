@@ -55,7 +55,8 @@ export interface DayGridCellProps {
 
   // refs
   headerHeightRef?: Ref<number>
-  mainHeightRef?: Ref<number> // will only fire if fgLiquidHeight
+  mainHeightRef?: Ref<number> // height of the area events and the +more link share
+  moreLinkHeightRef?: Ref<number> // occupied height of the +more link, zero when absent
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
@@ -202,6 +203,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 todayRange={props.todayRange}
                 isNarrow={props.isNarrow}
                 isMicro={props.isMicro}
+                heightRef={props.moreLinkHeightRef}
               />
             </div>
             <div
@@ -238,9 +240,15 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           setRef(props.headerHeightRef, headerHeight)
         }
 
-        if (props.fgLiquidHeight) {
-          setRef(props.mainHeightRef, bodyHeight)
-        }
+        /*
+        Reported in every mode, even though only a liquid cell's placement
+        consumes it. The body keeps the same element and the same observer when
+        `fgLiquidHeight` flips, and switching it between `grow` and `liquid`
+        need not change its height at all, so a mode-conditional report would
+        leave a newly liquid cell waiting for an unrelated resize before it
+        ever learned its own ceiling.
+        */
+        setRef(props.mainHeightRef, bodyHeight)
       })
     }
   }

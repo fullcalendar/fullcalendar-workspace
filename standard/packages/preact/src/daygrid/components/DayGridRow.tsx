@@ -31,7 +31,7 @@ import {
   buildDayGridSegPlacementPlan,
   buildDayGridSegPlacements,
   computeDayGridDomCandidateMaxLevels,
-  computeDayGridMoreLinkLevelTax,
+  computeDayGridMeasuredLimits,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
@@ -63,12 +63,14 @@ export interface DayGridRowProps {
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
   maxDomLevels?: number // shared cross-row candidate frontier
+  moreLinkHeight?: number // shared cross-row +more link reservation
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
   onEventHeight?: (height: number) => void // occupied height of one event wrapper
   onEventAreaHeight?: (height: number) => void // row-wide height shared by all foreground events
+  onMoreLinkHeight?: (height: number) => void // occupied height of one +more link
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
@@ -89,9 +91,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     afterSize(this.handleSegPositioning)
   })
   private mainHeightRefMap = new RefMap<string, number>(() => {
+    // Recorded in every mode so a row that becomes liquid already knows its
+    // ceiling, but only a liquid row's placement depends on it.
     const fgLiquidHeight = this.props.dayMaxEvents === true || this.props.dayMaxEventRows === true
     if (fgLiquidHeight) {
       afterSize(this.handleSegPositioning)
+    }
+  })
+  private moreLinkHeightRefMap = new RefMap<string, number>((height) => {
+    // A cell with no link reports zero. Only a real link can raise the
+    // owner-wide reservation, and nothing ever lowers it.
+    if (height > 0) {
+      this.props.onMoreLinkHeight?.(height)
     }
   })
   private segHeightRefMap = new RefMap<string, number>((height, key) => {
@@ -118,7 +129,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
 
   render() {
-    const { props, context, headerHeightRefMap, mainHeightRefMap } = this
+    const { props, context, headerHeightRefMap, mainHeightRefMap, moreLinkHeightRefMap } = this
     const { cells } = props
     const { options } = context
 
@@ -142,12 +153,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     // TODO: memoize?
     const [maxMainTop, minMainHeight] = this.computeFgDims() // uses headerHeightRefMap/mainHeightRefMap
-    // Print keeps the legacy route until the DayGrid print phase, and
-    // boolean-auto until measured more-link feedback lands. This is the one
-    // boundary the two routes are chosen at.
-    const { columns, segTops } = (props.forPrint || placementMode === 'auto')
+    // Every screen mode is now the engine's. Print keeps the legacy route until
+    // the DayGrid print phase. This is the one boundary the routes are chosen at.
+    const { columns, segTops } = props.forPrint
       ? this.buildLegacyColumns(fgEventSegs, fgLiquidHeight ? minMainHeight : undefined)
-      : this.buildEngineColumns(placementMode)
+      : this.buildEngineColumns(placementMode, minMainHeight)
 
     const heightsByCol: number[] = []
     if (maxMainTop != null) {
@@ -270,6 +280,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               // refs
               headerHeightRef={headerHeightRefMap.createRef(cell.key)}
               mainHeightRef={mainHeightRefMap.createRef(cell.key)}
+              moreLinkHeightRef={moreLinkHeightRefMap.createRef(cell.key)}
             />
           )
         })}
@@ -406,22 +417,24 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // Placement routes
   // -----------------------------------------------------------------------------------------------
 
-  /** Unlimited and numeric limits, positioned by the shared engine. */
-  private buildEngineColumns(mode: DayGridPlacementMode): DayGridRowColumns {
+  /** Every screen mode, positioned and limited by the shared engine. */
+  private buildEngineColumns(
+    mode: DayGridPlacementMode,
+    eventAreaHeight: number | undefined,
+  ): DayGridRowColumns {
     const { placementPlan, props } = this
 
     // TODO: memoize?
     const { columns } = buildDayGridSegPlacements(
       placementPlan,
       this.segHeightRefMap.current,
-      {
-        // The measured cap is the cap candidates were admitted under. An
-        // unlimited row carries Infinity here, which the limiter reads as
-        // no cap at all.
-        maxLevels: placementPlan.maxLevels,
+      computeDayGridMeasuredLimits({
+        mode,
+        candidateMaxLevels: placementPlan.maxLevels,
         columnCount: props.cells.length,
-        levelTax: computeDayGridMoreLinkLevelTax(mode),
-      },
+        eventAreaHeight,
+        moreLinkHeight: props.moreLinkHeight,
+      }),
     )
 
     const segTops = new Map<string, number>()
@@ -438,7 +451,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   /**
    * Legacy measured placement, reshaped into the same per-column projection.
-   * Boolean-auto and print receive exactly the old inputs and measurements.
+   * Print is its last consumer and receives exactly the old inputs.
    */
   private buildLegacyColumns(
     fgEventSegs: DayRowEventRange[],
