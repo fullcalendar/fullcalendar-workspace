@@ -25,7 +25,7 @@ import {
 
 export type DayGridEventSeg = DayRowEventRange
 
-const DAYGRID_SLICE_OPTIONS = {
+export const DAYGRID_SLICE_OPTIONS = {
   maxSlices: 3,
   minSliceLength: 1,
 } as const
@@ -42,6 +42,11 @@ export interface DayGridSegPlacementPlan {
   maxLevels: number
   orderStrict: boolean
   eventSlicing: boolean
+}
+
+export interface DayGridPopoverPlan {
+  sourceSegs: SourceSeg<DayGridEventSeg>[]
+  unmountedSlices: Slice<DayGridEventSeg>[]
 }
 
 /**
@@ -219,7 +224,7 @@ export function buildDayGridSegPlacements(
  * real event boundaries.
  */
 export function buildDayGridPopoverSegs(
-  plan: DayGridSegPlacementPlan,
+  plan: DayGridPopoverPlan,
   measuredHiddenSlices: readonly Slice<DayGridEventSeg>[],
   column: number,
   columnCount: number,

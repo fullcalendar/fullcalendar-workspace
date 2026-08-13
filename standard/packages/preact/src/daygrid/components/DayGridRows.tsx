@@ -131,7 +131,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // if not auto-height, distribute height of container somewhat evently to rows
             className={joinClassNames(
               rowHeightsRedistribute && classNames.grow,
-              rowCount > 1 && classNames.breakInsideAvoid, // don't avoid breaks for single tall row
               row < rowCount - 1 ? classNames.borderOnlyB : classNames.borderNone,
             )}
 

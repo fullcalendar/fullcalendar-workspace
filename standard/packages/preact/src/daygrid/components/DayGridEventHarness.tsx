@@ -1,6 +1,6 @@
 import { Component, createRef, type Ref, type ReactNode } from 'react'
 import { joinClassNames } from '../../util/html'
-import { watchHeight } from '../../component-util/resize-observer'
+import { watchHeight, watchHeightImmediate } from '../../component-util/resize-observer'
 import { setRef } from '../../vdom-util'
 import classNames from '../../styles.module.css'
 
@@ -11,6 +11,7 @@ export interface DayGridEventHarnessProps {
 
   // ref
   heightRef?: Ref<number>
+  measureImmediate?: boolean
 }
 
 export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
@@ -38,13 +39,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
   componentDidMount(): void {
     this._isUnmounting = false
-    const rootEl = this.rootElRef.current // TODO: make dynamic with useEffect
-
-    this.disconnectHeight = watchHeight(rootEl, (height) => {
-      if (this._isUnmounting) return
-      this.height = height
-      setRef(this.props.heightRef, height)
-    })
+    this.startWatchingHeight()
   }
 
   /*
@@ -55,11 +50,19 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
   the detached one.
   */
   componentDidUpdate(prevProps: DayGridEventHarnessProps): void {
-    const { heightRef } = this.props
+    const { heightRef, measureImmediate } = this.props
 
     if (prevProps.heightRef !== heightRef) {
       setRef(prevProps.heightRef, null)
+    }
 
+    if (prevProps.measureImmediate !== measureImmediate) {
+      this.disconnectHeight()
+      this.startWatchingHeight()
+      if (!measureImmediate && prevProps.heightRef !== heightRef && this.height != null) {
+        setRef(heightRef, this.height)
+      }
+    } else if (prevProps.heightRef !== heightRef) {
       if (this.height != null) {
         setRef(heightRef, this.height)
       }
@@ -70,5 +73,15 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
     this._isUnmounting = true
     this.disconnectHeight()
     setRef(this.props.heightRef, null)
+  }
+
+  private startWatchingHeight(): void {
+    const watch = this.props.measureImmediate ? watchHeightImmediate : watchHeight
+
+    this.disconnectHeight = watch(this.rootElRef.current, (height) => {
+      if (this._isUnmounting) return
+      this.height = height
+      setRef(this.props.heightRef, height)
+    })
   }
 }
