@@ -11,7 +11,7 @@ import { RefMap } from '../../util/RefMap'
 import { createFormatter } from '../../datelib/formatting'
 import { watchHeight, afterSize } from '../../component-util/resize-observer'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
-import { fracToCssDim, joinClassNames } from '../../util/html'
+import { joinClassNames } from '../../util/html'
 import { renderText, ContentContainer } from '../../content-inject/ContentContainer'
 import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
@@ -127,6 +127,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
     afterSize(this.handleSegPositioning)
   })
+
+  // print-only (band thickness is row-wide while slots render per-cell, so
+  // this state must live here; see also buildPrintPlan, renderPrintBandSlots,
+  // handlePrintSegHeights, and the reset in componentDidUpdate)
   private handlePrintSegHeightChange = () => {
     afterSize(this.handlePrintSegHeights)
   }
@@ -413,16 +417,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         const sliceKey = getDayGridPrintSliceKey(slice)
         const isListItem = hasListItemDisplay(seg)
 
+        // Insets resolve against the row (the nearest positioned ancestor,
+        // same as the screen wrappers), not the slot, whose width is inset by
+        // cell borders/padding. The unspecified `top` keeps the wrapper at its
+        // static position: the top of its slot.
+        const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(slice, colWidth, colCount)
+
         eventNode = (
           <DayGridEventHarness
             key={sliceKey}
             className={seg.start ? classNames.fakeBorderS : ''}
             style={{
-              top: 0,
-              insetInlineStart: 0,
-              width: colWidth != null
-                ? (slice.end - slice.start) * colWidth
-                : fracToCssDim(slice.end - slice.start),
+              insetInlineStart,
+              insetInlineEnd,
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
@@ -449,7 +456,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       return (
         <div
           key={slot.levelIndex}
-          className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
+          // no `rel` — the slot must not become the offset parent (see above)
+          className={classNames.breakInsideAvoid}
           style={{ height: slot.thickness }}
         >
           {eventNode}

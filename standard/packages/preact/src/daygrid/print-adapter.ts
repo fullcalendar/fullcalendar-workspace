@@ -4,7 +4,6 @@ import {
   type Slice,
   type SourceSeg,
   createWholeSlice,
-  getLateralCellRange,
 } from '../seg-placement/layout'
 import {
   buildPrintEventBands,
@@ -22,7 +21,6 @@ export interface DayGridPrintPlan extends DomCandidatePlan<DayGridEventSeg> {
   eventOrderedSegs: DayGridEventSeg[]
   sourceSegs: SourceSeg<DayGridEventSeg>[]
   columnCount: number
-  moreLinkCounts: number[]
 }
 
 export interface DayGridPrintBandSlot {
@@ -102,7 +100,6 @@ export function buildDayGridPrintPlan(
     sourceSegs,
     hiddenSlices,
     columnCount,
-    moreLinkCounts: countDistinctHiddenSourcesByColumn(hiddenSlices, columnCount),
   }
 }
 
@@ -135,7 +132,13 @@ export function buildDayGridPrintColumns(
   return columns
 }
 
-/** Builds the ordinary per-cell more-link inputs from print's final hidden set. */
+/*
+Builds the ordinary per-cell more-link inputs from print's final hidden set.
+What print actually consumes is `hiddenSegs`, whose per-column count renders
+the "+N more" link text on the page. `segs` only feeds the popover/click
+paths, unreachable in printed output, but is kept so the shared more-link
+component receives an honest contract.
+*/
 export function buildDayGridPrintPopoverSegs(
   plan: DayGridPrintPlan,
   column: number,
@@ -152,20 +155,4 @@ export function buildDayGridPrintPopoverSegs(
     column,
     plan.columnCount,
   )
-}
-
-function countDistinctHiddenSourcesByColumn(
-  hiddenSlices: readonly Slice<DayGridEventSeg>[],
-  columnCount: number,
-): number[] {
-  const keysByColumn = Array.from({ length: columnCount }, () => new Set<string>())
-
-  for (const slice of hiddenSlices) {
-    const range = getLateralCellRange(slice, columnCount)
-    for (let column = range.start; column < range.end; column++) {
-      keysByColumn[column].add(slice.sourceSeg.key)
-    }
-  }
-
-  return keysByColumn.map((keys) => keys.size)
 }

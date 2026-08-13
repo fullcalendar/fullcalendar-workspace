@@ -28,7 +28,7 @@ describe('DayGrid print planning', () => {
       { start: 0, end: 1 },
       { start: 0, end: 1 },
     ])
-    expect(plan.moreLinkCounts).toEqual([2, 0])
+    expect(hiddenCountsByColumn(plan)).toEqual([2, 0])
   })
 
   it('counts distinct hidden sources in intersected columns but not adjacent columns', () => {
@@ -42,7 +42,7 @@ describe('DayGrid print planning', () => {
       makeSeg('right-hidden', 1, 3),
     ], false, true, 3)
 
-    expect(plan.moreLinkCounts).toEqual([1, 2, 1])
+    expect(hiddenCountsByColumn(plan)).toEqual([1, 2, 1])
     expect(buildDayGridPrintPopoverSegs(plan, 0).hiddenSegs.map(segId))
       .toEqual(['left-hidden'])
     expect(buildDayGridPrintPopoverSegs(plan, 1).hiddenSegs.map(segId))
@@ -67,7 +67,7 @@ describe('DayGrid print planning', () => {
     expect(sliced.hiddenSlices.filter((slice) =>
       slice.sourceSeg.key === 'wide:0'
     ).map(({ start, end }) => [start, end])).toEqual([[1, 2]])
-    expect(sliced.moreLinkCounts).toEqual([0, 1, 0])
+    expect(hiddenCountsByColumn(sliced)).toEqual([0, 1, 0])
 
     expect(unsliced.mountedSegs.some((source) => source.key === 'wide:0')).toBe(false)
     expect(unsliced.hiddenSlices[unsliced.hiddenSlices.length - 1]).toMatchObject({
@@ -75,7 +75,7 @@ describe('DayGrid print planning', () => {
       end: 3,
       sourceSeg: { key: 'wide:0' },
     })
-    expect(unsliced.moreLinkCounts).toEqual([1, 1, 1])
+    expect(hiddenCountsByColumn(unsliced)).toEqual([1, 1, 1])
   })
 })
 
@@ -179,4 +179,12 @@ function makeSeg(
 
 function segId(seg: DayGridEventSeg): string {
   return seg.eventRange.instance.instanceId
+}
+
+/** The per-column "+N more" counts as production derives them. */
+function hiddenCountsByColumn(plan: ReturnType<typeof buildDayGridPrintPlan>): number[] {
+  return Array.from(
+    { length: plan.columnCount },
+    (_, column) => buildDayGridPrintPopoverSegs(plan, column).hiddenSegs.length,
+  )
 }
