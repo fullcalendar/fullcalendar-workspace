@@ -1,6 +1,5 @@
 import { type ClassNameInput, CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  afterSize,
   BaseComponent,
   ContentContainer,
   DateMarker,
@@ -9,7 +8,6 @@ import {
   generateClassName,
   memoize,
   memoizeObjArg,
-  RefMap,
   sortEventSegs,
   SplittableProps,
 } from '@fullcalendar/preact/protected-api'
@@ -21,7 +19,7 @@ import {
   TimelinePrintMoreLinkBand,
 } from '../../timeline/components/TimelinePrintFg'
 import {
-  buildTimelinePrintLayout,
+  TimelinePrintHeights,
   buildTimelinePrintPlan,
 } from '../../timeline/print-adapter'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
@@ -70,13 +68,7 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
   private buildPrintPlan = memoize(buildTimelinePrintPlan)
 
   // refs
-  private handlePrintHeightChange = () => {
-    afterSize(this.handlePrintHeights)
-  }
-  // A source can change bands when slotWidth changes; a departing wrapper's
-  // deletion must not clobber the arriving wrapper's live entry.
-  private printSegHeightRefMap = new RefMap<string, number>(this.handlePrintHeightChange, true)
-  private printLinkHeightRefMap = new RefMap<string, number>(this.handlePrintHeightChange)
+  private printHeights = new TimelinePrintHeights(() => this.handlePrintHeights())
 
   // internal
   private _isUnmounting: boolean
@@ -115,11 +107,7 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
       options.eventMinWidth,
       options.eventOrderStrict,
     )
-    const { eventBands, moreLinkBand } = buildTimelinePrintLayout(
-      plan,
-      this.printSegHeightRefMap.current,
-      this.printLinkHeightRefMap.current,
-    )
+    const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)
     const leadingColGroupStats = props.colGroupStats.map((stats) => ({
       ...stats,
       borderBottom: false,
@@ -289,7 +277,7 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
                 <TimelinePrintEventBand
                   {...timelineBandProps}
                   band={band}
-                  heightRefMap={this.printSegHeightRefMap}
+                  heightRefMap={this.printHeights.segHeightRefMap}
                 />
               </div>
             )}
@@ -312,7 +300,7 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
                 <TimelinePrintMoreLinkBand
                   {...timelineBandProps}
                   band={moreLinkBand}
-                  heightRefMap={this.printLinkHeightRefMap}
+                  heightRefMap={this.printHeights.linkHeightRefMap}
                 />
               </div>
             )}

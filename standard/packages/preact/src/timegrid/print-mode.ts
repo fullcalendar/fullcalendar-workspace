@@ -1,7 +1,7 @@
 export type TimeGridPrintMode = 'positioned' | 'stack'
 
 // Firefox is terrible at rendering absolute elements that span across multiple print pages
-export const isBrowserPrintQuirky = /* true || */ (
+const isBrowserPrintQuirky = /* true || */ (
   typeof navigator !== 'undefined' &&
   navigator.userAgent.toLowerCase().includes('firefox')
 )

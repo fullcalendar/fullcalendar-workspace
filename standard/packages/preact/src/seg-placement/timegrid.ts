@@ -80,8 +80,8 @@ export interface TimeGridPlacement<EventMeta = unknown>
 export interface TimeGridColumnLayout<EventMeta = unknown> {
   /**
    * The unit-thickness limiter output these placements were projected from.
-   * Retained for tests and as a reference for the production port; the
-   * TimeGrid component itself is not meant to consume this intermediate data.
+   * Intermediate data: the adapter and its component read the two fields
+   * below, never this one.
    */
   limited: LayoutLimitResult<EventMeta>
   /** Final visible placements in temporal-start/event-order. */

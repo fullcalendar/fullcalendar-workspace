@@ -891,7 +891,7 @@ interface OrderableSlice {
  * fragments that share their source's single `orderIndex`, and their distinct
  * starts are what order those fragments against each other.
  */
-export function orderResolvedEventItems<Item extends OrderableSlice>(
+function orderResolvedEventItems<Item extends OrderableSlice>(
   items: Iterable<Item>,
 ): Item[] {
   return [...items].sort((a, b) =>
@@ -914,7 +914,7 @@ export function orderResolvedEventItems<Item extends OrderableSlice>(
  * Only source identity is read, so both parameters accept plain slices. A
  * caller normally holds placements, which satisfy that narrower requirement.
  */
-export function selectVisibleSourceSegs<EventMeta>(
+function selectVisibleSourceSegs<EventMeta>(
   unrestrictedWholeSlices: readonly Slice<EventMeta>[],
   limitedSlices: readonly Slice<EventMeta>[],
 ): SourceSeg<EventMeta>[] {

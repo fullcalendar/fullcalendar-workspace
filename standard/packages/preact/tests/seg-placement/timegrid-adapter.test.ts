@@ -3,8 +3,8 @@ import {
   buildTimeGridSegPlacements,
   type TimeGridEventSeg,
   type TimeGridSegPlacementResult,
+  type TimeGridSegVertical,
 } from '../../src/timegrid/seg-placement-adapter'
-import { type TimeGridSegVertical } from '../../src/timegrid/event-placement'
 
 describe('TimeGrid production placement adapter', () => {
   it('projects ordinary overlap into sensible normalized rectangles', () => {

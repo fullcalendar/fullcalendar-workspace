@@ -20,7 +20,6 @@ import {
   type DayRowEventRange,
   type DayRowEventRangePart,
   getEventPartKey,
-  sliceSegForCol,
 } from './TableSeg'
 
 export type DayGridEventSeg = DayRowEventRange
@@ -31,8 +30,6 @@ export const DAYGRID_SLICE_OPTIONS = {
 } as const
 
 export interface DayGridSegPlacementPlan {
-  /** The sorted production input retained for the eventual component cutover. */
-  eventOrderedSegs: DayGridEventSeg[]
   /** Every source in resolved event order, including sources that will not mount. */
   sourceSegs: SourceSeg<DayGridEventSeg>[]
   /** Complete source wrappers admitted for measurement. */
@@ -84,12 +81,6 @@ export interface DayGridSegPlacementColumn {
   hiddenSegs: DayRowEventRangePart[]
 }
 
-export interface DayGridSegPlacementResult {
-  columns: DayGridSegPlacementColumn[]
-  /** False while any admitted event wrapper still lacks a measurement. */
-  allHeightsSettled: boolean
-}
-
 /**
  * Which measured route a row takes, resolved from the two max options.
  *
@@ -104,12 +95,20 @@ export type DayGridPlacementMode =
 
 /*
 TODO: geometry epochs.
-Every extremum below is monotone for one owner's lifetime, so a style change
-that shrinks events or links leaves an obsolete value in force until the owner
-is recreated. Narrowing that window means giving the owner a geometry epoch
-derived from the compiled styling inputs, and letting a new epoch clear these.
-Deliberately deferred: no reset trigger is invented during the port. Tracked by
-its final cleanup phase, prod-planning/13-cleanup-and-deferred-epochs.md.
+Every extremum below is monotone for one owner's lifetime: it only ever moves
+in the direction that admits more DOM or reserves more room, and nothing
+lowers it again. A geometry-affecting change — a stylesheet, theme, or plugin
+that shrinks events or more links — therefore leaves a stale extremum in force
+until the owner itself is recreated.
+
+Ordinary navigation, event changes, and row mount/unmount are NOT reset
+reasons: the extrema deliberately span every row under one `DayGridRows`, and
+resetting on those would re-run the unmeasured estimate constantly.
+
+Fixing this means giving the owner a geometry epoch derived from its compiled
+styling inputs, and letting a new epoch clear these values. Both the reset
+trigger and the epoch's signature are intentionally deferred; do not invent one
+here without designing it.
 */
 export interface DayGridPlacementOwnerState {
   smallestEventHeight: number | null
@@ -162,7 +161,6 @@ export function buildDayGridSegPlacementPlan(
   const mountedKeys = new Set(candidatePlan.mountedSegs.map((source) => source.key))
 
   return {
-    eventOrderedSegs,
     sourceSegs,
     mountedSegs: candidatePlan.mountedSegs,
     // The candidate plan's hidden geometry can contain only one provisional
@@ -189,11 +187,10 @@ export function buildDayGridSegPlacements(
   plan: DayGridSegPlacementPlan,
   segHeights: ReadonlyMap<string, number>,
   limits: Omit<DayGridLimits, 'initialHiddenSpans'>,
-): DayGridSegPlacementResult {
-  const allHeightsSettled = areSegThicknessesSettled(plan.mountedSegs, segHeights)
+): DayGridSegPlacementColumn[] {
   let limited: DayGridLimitResult<DayGridEventSeg> | null = null
 
-  if (allHeightsSettled) {
+  if (areSegThicknessesSettled(plan.mountedSegs, segHeights)) {
     const unrestricted = positionSegs(
       plan.mountedSegs,
       segHeights,
@@ -209,10 +206,7 @@ export function buildDayGridSegPlacements(
     )
   }
 
-  return {
-    allHeightsSettled,
-    columns: buildPlacementColumns(plan, limited, limits.columnCount),
-  }
+  return buildPlacementColumns(plan, limited, limits.columnCount)
 }
 
 /**
@@ -247,10 +241,29 @@ export function buildDayGridPopoverSegs(
     intersectsColumn(source, column, columnCount))
 
   return {
-    segs: columnSources.map((source) => sliceSegForCol(source.meta, column)),
+    segs: columnSources.map((source) => cutSegToColumn(source.meta, column)),
     hiddenSegs: columnSources
       .filter((source) => hiddenKeys.has(source.key))
-      .map((source) => sliceSegForCol(source.meta, column)),
+      .map((source) => cutSegToColumn(source.meta, column)),
+  }
+}
+
+/**
+ * Projects one complete source onto a single column for the more-link APIs.
+ *
+ * Only real event boundaries survive the cut, so a popover entry reports
+ * "continues" exactly when the event truly extends past this column.
+ */
+function cutSegToColumn(
+  seg: DayRowEventRange,
+  column: number,
+): DayRowEventRangePart {
+  return {
+    ...seg,
+    start: column,
+    end: column + 1,
+    isStart: seg.isStart && seg.start === column,
+    isEnd: seg.isEnd && seg.end - 1 === column,
   }
 }
 
@@ -267,7 +280,23 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
   }
 }
 
-/** Records a positive event-wrapper height, returning the same object for a non-extremum. */
+/**
+ * Records a positive event-wrapper height, returning the same object for a
+ * non-extremum.
+ *
+ * Any positive report is admitted, including an implausibly small one from a
+ * wrapper measured mid font or stylesheet load. No floor is applied, for two
+ * reasons. Compact custom event content can legitimately be shorter than the
+ * unmeasured fallback, so a fixed floor would silently discard valid heights.
+ * And this extremum only sizes the *candidate* frontier: under-estimating it
+ * mounts more event wrappers than a row needs, while the measured pass still
+ * decides visibility from real pixels. The failure mode is therefore wasted
+ * DOM, never a hidden event that fits — which is why a stale small value is
+ * tolerable until geometry epochs (see above) are designed.
+ *
+ * Non-positive and non-finite reports, including the `null` a wrapper sends
+ * when it unmounts, leave the state untouched.
+ */
 export function observeDayGridEventHeight(
   state: DayGridPlacementOwnerState,
   height: number,

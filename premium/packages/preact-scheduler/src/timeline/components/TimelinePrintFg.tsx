@@ -1,6 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  afterSize,
   BaseComponent,
   DateMarker,
   DateProfile,
@@ -17,7 +16,7 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { type TimelineDateProfile } from '../timeline-date-profile'
 import { type TimelineRange } from '../TimelineLaneSlicer'
 import {
-  buildTimelinePrintLayout,
+  TimelinePrintHeights,
   buildTimelinePrintPlan,
 } from '../print-adapter'
 import { type TimelineEventSeg } from '../seg-placement-adapter'
@@ -47,13 +46,7 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
   private buildPrintPlan = memoize(buildTimelinePrintPlan)
 
   // refs
-  private handlePrintHeightChange = () => {
-    afterSize(this.handlePrintHeights)
-  }
-  // A source can change bands when slotWidth changes; a departing wrapper's
-  // deletion must not clobber the arriving wrapper's live entry.
-  private printSegHeightRefMap = new RefMap<string, number>(this.handlePrintHeightChange, true)
-  private printLinkHeightRefMap = new RefMap<string, number>(this.handlePrintHeightChange)
+  private printHeights = new TimelinePrintHeights(() => this.handlePrintHeights())
 
   // internal
   private _isUnmounting: boolean
@@ -70,11 +63,7 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
       options.eventMinWidth,
       options.eventOrderStrict,
     )
-    const { eventBands, moreLinkBand } = buildTimelinePrintLayout(
-      plan,
-      this.printSegHeightRefMap.current,
-      this.printLinkHeightRefMap.current,
-    )
+    const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)
 
     return (
       <div className={classNames.noShrink}>
@@ -82,7 +71,7 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
           <TimelinePrintEventBand
             key={band.levelIndex}
             band={band}
-            heightRefMap={this.printSegHeightRefMap}
+            heightRefMap={this.printHeights.segHeightRefMap}
             dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={props.nowDate}
@@ -95,7 +84,7 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
         {moreLinkBand && (
           <TimelinePrintMoreLinkBand
             band={moreLinkBand}
-            heightRefMap={this.printLinkHeightRefMap}
+            heightRefMap={this.printHeights.linkHeightRefMap}
             dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={props.nowDate}

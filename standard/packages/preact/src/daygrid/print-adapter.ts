@@ -18,7 +18,6 @@ import {
 import { type DayRowEventRangePart } from './TableSeg'
 
 export interface DayGridPrintPlan extends DomCandidatePlan<DayGridEventSeg> {
-  eventOrderedSegs: DayGridEventSeg[]
   sourceSegs: SourceSeg<DayGridEventSeg>[]
   columnCount: number
 }
@@ -96,7 +95,6 @@ export function buildDayGridPrintPlan(
 
   return {
     ...candidatePlan,
-    eventOrderedSegs,
     sourceSegs,
     hiddenSlices,
     columnCount,

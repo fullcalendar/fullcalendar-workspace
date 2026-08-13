@@ -192,8 +192,8 @@ describe('Timeline print adapter', () => {
       150,
     )
 
-    expect(printPlan.sourceSegs[0]).toMatchObject({
-      key: 'spanning',
+    expect(printPlan.levels[0][0]).toMatchObject({
+      sourceSeg: { key: 'spanning' },
       start: 0,
       end: 200,
     })

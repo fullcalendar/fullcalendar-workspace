@@ -4,7 +4,8 @@ import {
   type HiddenSliceGroup,
   type PrintEventBand,
   type PrintMoreLinkBand,
-  type SourceSeg,
+  RefMap,
+  afterSize,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
   groupHiddenSlices,
@@ -17,7 +18,6 @@ import {
 } from './seg-placement-adapter'
 
 export interface TimelinePrintPlan extends DomCandidatePlan<TimelineEventSeg> {
-  sourceSegs: SourceSeg<TimelineEventSeg>[]
   moreLinkGroups: HiddenSliceGroup<TimelineEventSeg>[]
 }
 
@@ -50,7 +50,6 @@ export function buildTimelinePrintPlan(
 
   return {
     ...candidatePlan,
-    sourceSegs,
     moreLinkGroups: groupHiddenSlices(candidatePlan.hiddenSlices),
   }
 }
@@ -67,5 +66,36 @@ export function buildTimelinePrintLayout(
       plan.moreLinkGroups,
       printLinkHeights,
     ),
+  }
+}
+
+/**
+ * The measurement half of Timeline print, shared by the standalone lane and
+ * the resource row.
+ *
+ * Both renderers mount the same wrappers against the same two maps, so the
+ * ownership rules live here once. Event wrappers ignore deletes because a
+ * source can change bands when `slotWidth` changes, and a departing wrapper's
+ * removal must not clobber the arriving wrapper's live entry.
+ */
+export class TimelinePrintHeights {
+  readonly segHeightRefMap: RefMap<string, number>
+  readonly linkHeightRefMap: RefMap<string, number>
+
+  /** `onSettled` must be a stable reference, since `afterSize` dedupes by it. */
+  constructor(onSettled: () => void) {
+    const handleChange = () => {
+      afterSize(onSettled)
+    }
+    this.segHeightRefMap = new RefMap<string, number>(handleChange, true)
+    this.linkHeightRefMap = new RefMap<string, number>(handleChange)
+  }
+
+  buildLayout(plan: TimelinePrintPlan): TimelinePrintLayout {
+    return buildTimelinePrintLayout(
+      plan,
+      this.segHeightRefMap.current,
+      this.linkHeightRefMap.current,
+    )
   }
 }

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createWholeSlice } from '../../src/seg-placement/layout'
 import {
   type DayGridEventSeg,
-  type DayGridSegPlacementResult,
+  type DayGridSegPlacementColumn,
   buildDayGridPopoverSegs,
   buildDayGridSegPlacementPlan,
   buildDayGridSegPlacements,
@@ -75,7 +75,7 @@ describe('DayGrid production placement adapter', () => {
       makeSeg('left', 0, 1),
       makeSeg('wide', 0, 2),
     ], Infinity, false, true)
-    const result = buildDayGridSegPlacements(
+    const columns = buildDayGridSegPlacements(
       plan,
       new Map([
         ['left:0', 10],
@@ -87,25 +87,24 @@ describe('DayGrid production placement adapter', () => {
       },
     )
 
-    expect(result.allHeightsSettled).toBe(true)
     // The wide source is sliced, so its permanent wrapper becomes an inert
     // donor in its own start column and its visible piece renders separately.
-    expect(itemTops(result, 0)).toEqual({ 'left:0': 0, 'wide:0': undefined })
-    expect(result.columns[0].domItems).toMatchObject([
+    expect(itemTops(columns, 0)).toEqual({ 'left:0': 0, 'wide:0': undefined })
+    expect(columns[0].domItems).toMatchObject([
       { key: 'left:0', isMeasurable: true, seg: { start: 0, end: 1 } },
       { key: 'wide:0', isMeasurable: true, seg: { start: 0, end: 2 } },
     ])
-    expect(result.columns[1].domItems).toMatchObject([{
+    expect(columns[1].domItems).toMatchObject([{
       key: 'wide:1:slice',
       top: 0,
       isMeasurable: false,
       seg: { start: 1, end: 2, isSlice: true },
     }])
-    expect(result.columns.map((column) => column.contentHeight)).toEqual([10, 10])
-    expect(segIds(result.columns[0].segs)).toEqual(['left', 'wide'])
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['wide'])
-    expect(segIds(result.columns[1].segs)).toEqual(['wide'])
-    expect(result.columns[1].hiddenSegs).toEqual([])
+    expect(columns.map((column) => column.contentHeight)).toEqual([10, 10])
+    expect(segIds(columns[0].segs)).toEqual(['left', 'wide'])
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['wide'])
+    expect(segIds(columns[1].segs)).toEqual(['wide'])
+    expect(columns[1].hiddenSegs).toEqual([])
   })
 
   it('mounts inert donors for every admitted source before measurement settles', () => {
@@ -113,17 +112,17 @@ describe('DayGrid production placement adapter', () => {
       makeSeg('a', 0, 1),
       makeSeg('b', 0, 1),
     ], 2, false, false)
-    const result = buildDayGridSegPlacements(
+    const columns = buildDayGridSegPlacements(
       plan,
       new Map([['a:0', 10]]),
       { maxLevels: 2, columnCount: 1 },
     )
 
-    expect(result.allHeightsSettled).toBe(false)
-    expect(itemTops(result, 0)).toEqual({ 'a:0': undefined, 'b:0': undefined })
-    expect(result.columns[0].domItems.every((item) => item.isMeasurable)).toBe(true)
-    expect(result.columns[0].contentHeight).toBe(0)
-    expect(result.columns[0].hiddenSegs).toEqual([])
+    // One admitted source is still unmeasured, so every node remains inert
+    expect(itemTops(columns, 0)).toEqual({ 'a:0': undefined, 'b:0': undefined })
+    expect(columns[0].domItems.every((item) => item.isMeasurable)).toBe(true)
+    expect(columns[0].contentHeight).toBe(0)
+    expect(columns[0].hiddenSegs).toEqual([])
   })
 
   it('unions candidate and measured hides, deduplicates, and restores event order', () => {
@@ -188,6 +187,22 @@ describe('DayGridRows placement owner state', () => {
     })
     expect(observeDayGridEventHeight(afterShortEvent, 40)).toBe(afterShortEvent)
     expect(observeDayGridEventAreaHeight(afterShortEvent, 100)).toBe(afterShortEvent)
+  })
+
+  it('admits an implausibly small height but ignores unusable reports', () => {
+    const measured = observeDayGridEventAreaHeight(createDayGridPlacementOwnerState(), 100)
+
+    // A transient sub-pixel measurement during font/stylesheet loading is
+    // deliberately not clamped: it can only widen the candidate frontier, and
+    // the measured pass still decides visibility from real pixels.
+    expect(observeDayGridEventHeight(measured, 0.5)).toMatchObject({
+      smallestEventHeight: 0.5,
+      maxDomLevels: 200,
+    })
+
+    for (const unusable of [0, -5, NaN, Infinity, null as any]) {
+      expect(observeDayGridEventHeight(measured, unusable)).toBe(measured)
+    }
   })
 
   it('keeps one parent-wide monotone more-link maximum', () => {
@@ -270,90 +285,90 @@ describe('DayGrid measured screen placement', () => {
   ]
 
   it('shows every source and creates no link when unlimited', () => {
-    const result = layoutRow(stack, 1)
+    const columns = layoutRow(stack, 1)
 
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'first:0': 0,
       'second:0': EVENT_HEIGHT,
       'third:0': EVENT_HEIGHT * 2,
     })
-    expect(result.columns[0].hiddenSegs).toEqual([])
-    expect(result.columns[0].contentHeight).toBe(EVENT_HEIGHT * 3)
+    expect(columns[0].hiddenSegs).toEqual([])
+    expect(columns[0].contentHeight).toBe(EVENT_HEIGHT * 3)
   })
 
   it('spends every numeric dayMaxEvents level on events', () => {
-    const result = layoutRow(stack, 1, 2)
+    const columns = layoutRow(stack, 1, 2)
 
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'first:0': 0,
       'second:0': EVENT_HEIGHT,
       // rejected before mounting, so it has no wrapper at all
     })
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['third'])
-    expect(result.columns[0].contentHeight).toBe(EVENT_HEIGHT * 2)
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['third'])
+    expect(columns[0].contentHeight).toBe(EVENT_HEIGHT * 2)
   })
 
   it('charges one numeric dayMaxEventRows level to the link', () => {
-    const result = layoutRow(stack, 1, undefined, 2)
+    const columns = layoutRow(stack, 1, undefined, 2)
 
     // The candidate pass still admitted two wrappers, so the second stays
     // mounted as an inert donor after the taxed limiter hides it.
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'first:0': 0,
       'second:0': undefined,
     })
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['second', 'third'])
-    expect(result.columns[0].contentHeight).toBe(EVENT_HEIGHT)
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['second', 'third'])
+    expect(columns[0].contentHeight).toBe(EVENT_HEIGHT)
   })
 
   it('hides a whole multi-column source when eventSlicing is off', () => {
-    const result = layoutRow([
+    const columns = layoutRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
     ], 3, 1, undefined, { eventSlicing: false })
 
-    expect(itemTops(result, 0)).toEqual({})
-    expect(itemTops(result, 1)).toEqual({ 'blocker:1': 0 })
-    expect(itemTops(result, 2)).toEqual({})
-    expect(result.columns.map((column) => segIds(column.hiddenSegs)))
+    expect(itemTops(columns, 0)).toEqual({})
+    expect(itemTops(columns, 1)).toEqual({ 'blocker:1': 0 })
+    expect(itemTops(columns, 2)).toEqual({})
+    expect(columns.map((column) => segIds(column.hiddenSegs)))
       .toEqual([['wide'], ['wide'], ['wide']])
   })
 
   it('emits column-aligned visible pieces when eventSlicing is on', () => {
-    const result = layoutRow([
+    const columns = layoutRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
     ], 3, 1)
 
     // The whole wrapper stays mounted as a donor and sorts ahead of the
     // supplemental piece sharing its start column.
-    expect(result.columns[0].domItems.map((item) => item.key))
+    expect(columns[0].domItems.map((item) => item.key))
       .toEqual(['wide:0', 'wide:0:slice'])
-    expect(itemTops(result, 0)).toEqual({ 'wide:0': undefined, 'wide:0:slice': 0 })
-    expect(itemTops(result, 1)).toEqual({ 'blocker:1': 0 })
-    expect(itemTops(result, 2)).toEqual({ 'wide:2:slice': 0 })
+    expect(itemTops(columns, 0)).toEqual({ 'wide:0': undefined, 'wide:0:slice': 0 })
+    expect(itemTops(columns, 1)).toEqual({ 'blocker:1': 0 })
+    expect(itemTops(columns, 2)).toEqual({ 'wide:2:slice': 0 })
 
     // Only the covered day owes a link, and it lists the event as that one day.
-    expect(result.columns.map((column) => segIds(column.hiddenSegs)))
+    expect(columns.map((column) => segIds(column.hiddenSegs)))
       .toEqual([[], ['wide'], []])
-    expect(result.columns[1].hiddenSegs[0]).toMatchObject({
+    expect(columns[1].hiddenSegs[0]).toMatchObject({
       start: 1,
       end: 2,
       isStart: false,
       isEnd: false,
     })
-    expect(segIds(result.columns[1].segs)).toEqual(['blocker', 'wide'])
+    expect(segIds(columns[1].segs)).toEqual(['blocker', 'wide'])
   })
 
   it('reserves a spanning event its height in every column it crosses', () => {
     // The deepest bottom per column is what reserves room for the normal-flow
     // more link, so a wide event has to raise the columns it merely crosses.
-    const result = layoutRow([
+    const columns = layoutRow([
       makeSeg('wide', 0, 2),
       makeSeg('narrow', 2, 3),
     ], 3, undefined, undefined, { heights: { 'wide:0': 30, 'narrow:2': 10 } })
 
-    expect(result.columns.map((column) => column.contentHeight)).toEqual([30, 30, 10])
+    expect(columns.map((column) => column.contentHeight)).toEqual([30, 30, 10])
   })
 
   it('keeps a later source below an earlier collider under eventOrderStrict', () => {
@@ -381,59 +396,59 @@ describe('DayGrid measured auto placement', () => {
   ]
 
   it('shows every mounted candidate before the event area has measured', () => {
-    const result = layoutRow(twoStacks, 2, true)
+    const columns = layoutRow(twoStacks, 2, true)
 
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'a:0': 0,
       'b:0': EVENT_HEIGHT,
       'c:0': EVENT_HEIGHT * 2,
     })
-    expect(result.columns.every((column) => !column.hiddenSegs.length)).toBe(true)
+    expect(columns.every((column) => !column.hiddenSegs.length)).toBe(true)
   })
 
   it('admits an auto row down to its measured pixel ceiling', () => {
-    const result = layoutRow(twoStacks, 2, true, undefined, {
+    const columns = layoutRow(twoStacks, 2, true, undefined, {
       eventAreaHeight: EVENT_HEIGHT * 2.5,
     })
 
     // Nothing has measured a link yet, so the ceiling is spent entirely on
     // events and only the source that could not reach it is hidden.
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'a:0': 0,
       'b:0': EVENT_HEIGHT,
       'c:0': undefined,
     })
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['c'])
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
   })
 
   it('charges the measured link height to owing columns only', () => {
-    const result = layoutRow(twoStacks, 2, true, undefined, {
+    const columns = layoutRow(twoStacks, 2, true, undefined, {
       eventAreaHeight: EVENT_HEIGHT * 2.5,
       moreLinkHeight: EVENT_HEIGHT * 1.2,
     })
 
     // Hiding `c` activates the left column, whose lowered ceiling then evicts
     // `b`. The right column never owed a link, so it keeps its full stack.
-    expect(itemTops(result, 0)).toEqual({
+    expect(itemTops(columns, 0)).toEqual({
       'a:0': 0,
       'b:0': undefined,
       'c:0': undefined,
     })
-    expect(itemTops(result, 1)).toEqual({ 'd:1': 0, 'e:1': EVENT_HEIGHT })
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['b', 'c'])
-    expect(result.columns[1].hiddenSegs).toEqual([])
-    expect(result.columns.map((column) => column.contentHeight))
+    expect(itemTops(columns, 1)).toEqual({ 'd:1': 0, 'e:1': EVENT_HEIGHT })
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['b', 'c'])
+    expect(columns[1].hiddenSegs).toEqual([])
+    expect(columns.map((column) => column.contentHeight))
       .toEqual([EVENT_HEIGHT, EVENT_HEIGHT * 2])
   })
 
   it('stops mounting candidates beyond the cross-row DOM frontier', () => {
-    const result = layoutRow(twoStacks, 2, true, undefined, { maxDomLevels: 2 })
+    const columns = layoutRow(twoStacks, 2, true, undefined, { maxDomLevels: 2 })
 
     // The third level never mounts, yet both columns still list their rejected
     // source, because the popover unions unmounted sources with measured hides.
-    expect(itemTops(result, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
-    expect(segIds(result.columns[0].hiddenSegs)).toEqual(['c'])
-    expect(segIds(result.columns[0].segs)).toEqual(['a', 'b', 'c'])
+    expect(itemTops(columns, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
+    expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
+    expect(segIds(columns[0].segs)).toEqual(['a', 'b', 'c'])
   })
 })
 
@@ -457,7 +472,7 @@ function layoutRow(
     /** Cross-row DOM frontier. Only an auto row's candidates consume it. */
     maxDomLevels?: number,
   } = {},
-): DayGridSegPlacementResult {
+): DayGridSegPlacementColumn[] {
   const plan = buildDayGridSegPlacementPlan(
     eventOrderedSegs,
     computeDayGridDomCandidateMaxLevels(
@@ -487,11 +502,11 @@ function layoutRow(
 
 /** One column's event nodes as key-to-top, where undefined means inert. */
 function itemTops(
-  result: DayGridSegPlacementResult,
+  columns: DayGridSegPlacementColumn[],
   column: number,
 ): Record<string, number | undefined> {
   return Object.fromEntries(
-    result.columns[column].domItems.map((item) => [item.key, item.top]),
+    columns[column].domItems.map((item) => [item.key, item.top]),
   )
 }
 

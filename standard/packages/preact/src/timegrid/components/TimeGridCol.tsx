@@ -13,11 +13,12 @@ import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
 import classNames from '../../styles.module.css'
 import { TimeGridRange } from '../TimeColsSeg'
-import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement'
 import {
   buildTimeGridSegPlacements,
+  computeFgSegVerticals,
   type TimeGridSegHiddenGroup,
   type TimeGridSegPlacement,
+  type TimeGridSegVertical,
 } from '../seg-placement-adapter'
 import { computeTimeGridPrintMode } from '../print-mode'
 import { TimeGridEvent } from './TimeGridEvent'
@@ -290,7 +291,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   /*
-  NOTE: will already have eventMinHeight applied because segEntries(?) already had it
+  NOTE: a group's coordinates come from computeFgSegVerticals, so eventMinHeight
+  has already been applied to the segs it was formed from
   */
   renderHiddenGroups(hiddenGroups: TimeGridSegHiddenGroup[]) {
     let { dateSpanProps, dateProfile, todayRange, nowDate, nowMs, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props

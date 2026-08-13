@@ -96,35 +96,18 @@ export { DateProfileGenerator, computeMajorUnit, isMajorUnit } from './DateProfi
 export type { DateSpan } from './structs/date-span'
 export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/date-span'
 
-export {
-  SegHierarchy,
-  SegGroup,
-  groupIntersectingSegs,
-} from './seg-hierarchy'
-
+// Shared seg-placement engine. Only what premium Timeline consumes is exposed.
 export type {
   SourceSeg,
-  UnorderedSeg,
   Slice,
   Placement,
-  PlacementLevel,
-  PlacementLayout,
-  LayoutLimitResult,
   HiddenSliceGroup,
-  SliceOptions,
   DomCandidatePlan,
 } from './seg-placement/layout'
 export {
-  DEFAULT_UNMEASURED_EVENT_THICKNESS,
-  DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
   areSegThicknessesSettled,
   positionSegs,
-  positionSegsWithUnitThickness,
-  stampEventOrder,
   planDomCandidatesByMaxLevel,
-  orderTimeAxisItems,
-  orderResolvedEventItems,
-  doesSliceCoverWholeSource,
   groupHiddenSlices,
 } from './seg-placement/layout'
 export type {
@@ -132,17 +115,10 @@ export type {
   PrintMoreLinkBand,
 } from './seg-placement/print'
 export {
-  DEFAULT_PRINT_MAX_LEVELS,
   buildPrintEventBands,
   planPrintDomCandidates,
   buildPrintMoreLinkBand,
 } from './seg-placement/print'
-export type {
-  TimelineMoreLinkPlacement,
-  TimelineLimitResult,
-  TimelineMoreLinkHeightMap,
-  TimelineLayoutOptions,
-} from './seg-placement/timeline'
 export {
   limitTimelineLayoutByMaxLevel,
   positionTimelineMoreLinks,
