@@ -21,6 +21,7 @@ import {
   buildTimelinePrintPlan,
 } from '../print-adapter'
 import { type TimelineEventSeg } from '../seg-placement-adapter'
+import { resolveTimelineEventProjectionSizing } from '../slot-estimate'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 
@@ -55,12 +56,16 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
     const { props, context } = this
     const { options } = context
     const fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
+    const projectionSizing = resolveTimelineEventProjectionSizing(
+      props.slotWidth,
+      options.eventMinWidth,
+    )
     const plan = this.buildPrintPlan(
       fgSegs,
       context.dateEnv,
       props.tDateProfile,
-      props.slotWidth ?? 0,
-      options.eventMinWidth,
+      projectionSizing.slotWidth,
+      projectionSizing.eventMinWidth,
       options.eventOrderStrict,
     )
     const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)

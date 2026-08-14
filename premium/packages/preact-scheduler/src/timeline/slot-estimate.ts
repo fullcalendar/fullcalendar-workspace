@@ -36,3 +36,14 @@
  * needs to wait for a measured width instead.
  */
 export const ESTIMATED_SLOT_WIDTH = 50
+
+/** Resolves event projection dimensions before and after slot measurement. */
+export function resolveTimelineEventProjectionSizing(
+  slotWidth: number | undefined,
+  eventMinWidth: number | undefined,
+) {
+  return {
+    slotWidth: slotWidth ?? ESTIMATED_SLOT_WIDTH,
+    eventMinWidth: slotWidth != null ? eventMinWidth : undefined,
+  }
+}

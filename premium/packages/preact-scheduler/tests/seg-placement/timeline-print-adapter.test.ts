@@ -11,12 +11,27 @@ import {
 import {
   type TimelineDateProfile,
 } from '../../src/timeline/timeline-date-profile'
+import {
+  ESTIMATED_SLOT_WIDTH,
+  resolveTimelineEventProjectionSizing,
+} from '../../src/timeline/slot-estimate'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 const MS_PER_DAY = 24 * MS_PER_HOUR
 const EMPTY_DATE_ENV = {} as DateEnv
 
 describe('Timeline print adapter', () => {
+  it('uses scale-safe projection sizing before slot width is measured', () => {
+    expect(resolveTimelineEventProjectionSizing(undefined, 30)).toEqual({
+      slotWidth: ESTIMATED_SLOT_WIDTH,
+      eventMinWidth: undefined,
+    })
+    expect(resolveTimelineEventProjectionSizing(60, 30)).toEqual({
+      slotWidth: 60,
+      eventMinWidth: 30,
+    })
+  })
+
   it('preserves logical levels and lateral geometry in print bands', () => {
     const plan = buildTimelinePrintPlan(
       [

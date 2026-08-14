@@ -24,6 +24,7 @@ import {
 } from '../../timeline/print-adapter'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
+import { resolveTimelineEventProjectionSizing } from '../../timeline/slot-estimate'
 import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 import { ResourcePrintLayout } from '../resource-layout-print'
 import { ColSpec } from '../structs'
@@ -99,12 +100,16 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
       context.dateEnv,
     )
     const fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder)
+    const projectionSizing = resolveTimelineEventProjectionSizing(
+      props.slotWidth,
+      options.eventMinWidth,
+    )
     const plan = this.buildPrintPlan(
       fgSegs,
       context.dateEnv,
       props.tDateProfile,
-      props.slotWidth ?? 0,
-      options.eventMinWidth,
+      projectionSizing.slotWidth,
+      projectionSizing.eventMinWidth,
       options.eventOrderStrict,
     )
     const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)
