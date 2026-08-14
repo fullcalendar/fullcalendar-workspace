@@ -40,8 +40,8 @@ export function afterSize(callback: () => void) {
 
 function flushAfterSize() {
   for (const flushedCallback of afterSizeCallbacks.values()) {
-    flushedCallback()
     afterSizeCallbacks.delete(flushedCallback)
+    flushedCallback()
   }
 }
 
@@ -78,6 +78,7 @@ export function flushSyncWithSizeBatching(callback: () => void): void {
     if (!wasHandling) {
       flushSync(() => {
         flushAfterSize()
+        isHandling = false // before drain's own commit, so late afterSize calls schedule a flush
       })
     }
   } finally {

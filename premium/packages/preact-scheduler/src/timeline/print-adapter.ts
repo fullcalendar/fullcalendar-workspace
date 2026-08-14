@@ -1,4 +1,5 @@
 import {
+  BaseComponent,
   type DateEnv,
   type DomCandidatePlan,
   type HiddenSliceGroup,
@@ -9,13 +10,16 @@ import {
   buildPrintEventBands,
   buildPrintMoreLinkBand,
   groupHiddenSlices,
+  memoize,
   planPrintDomCandidates,
+  sortEventSegs,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineDateProfile } from './timeline-date-profile'
 import {
   type TimelineEventSeg,
   buildTimelineSegSources,
 } from './seg-placement-adapter'
+import { resolveTimelineEventProjectionSizing } from './slot-estimate'
 
 export interface TimelinePrintPlan extends DomCandidatePlan<TimelineEventSeg> {
   moreLinkGroups: HiddenSliceGroup<TimelineEventSeg>[]
@@ -97,5 +101,57 @@ export class TimelinePrintHeights {
       this.segHeightRefMap.current,
       this.linkHeightRefMap.current,
     )
+  }
+}
+
+/**
+ * Base for the two Timeline print renderers (standalone lane and resource
+ * row). Owns the whole shared pipeline — sort → projection sizing → plan →
+ * measured band layout — plus the measurement/settle lifecycle, so the two
+ * renderers cannot silently diverge.
+ */
+export abstract class TimelinePrintRenderer<Props> extends BaseComponent<Props> {
+  // memo
+  private sortSegs = memoize(sortEventSegs)
+  private buildPlan = memoize(buildTimelinePrintPlan)
+
+  // refs
+  protected printHeights = new TimelinePrintHeights(() => {
+    if (!this._isUnmounting) {
+      this.forceUpdate()
+    }
+  })
+
+  // internal
+  private _isUnmounting: boolean
+
+  protected buildPrintBands(
+    fgEventSegs: TimelineEventSeg[],
+    tDateProfile: TimelineDateProfile,
+    slotWidth: number | undefined,
+  ): TimelinePrintLayout {
+    const { options, dateEnv } = this.context
+    const fgSegs = this.sortSegs(fgEventSegs, options.eventOrder)
+    const projectionSizing = resolveTimelineEventProjectionSizing(
+      slotWidth,
+      options.eventMinWidth,
+    )
+    const plan = this.buildPlan(
+      fgSegs,
+      dateEnv,
+      tDateProfile,
+      projectionSizing.slotWidth,
+      projectionSizing.eventMinWidth,
+      options.eventOrderStrict,
+    )
+    return this.printHeights.buildLayout(plan)
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
   }
 }

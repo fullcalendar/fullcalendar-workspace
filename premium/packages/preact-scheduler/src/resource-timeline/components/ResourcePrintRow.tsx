@@ -1,14 +1,11 @@
 import { type ClassNameInput, CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  BaseComponent,
   ContentContainer,
   DateMarker,
   DateProfile,
   DateRange,
   generateClassName,
-  memoize,
   memoizeObjArg,
-  sortEventSegs,
   SplittableProps,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -18,13 +15,9 @@ import {
   TimelinePrintEventBand,
   TimelinePrintMoreLinkBand,
 } from '../../timeline/components/TimelinePrintFg'
-import {
-  TimelinePrintHeights,
-  buildTimelinePrintPlan,
-} from '../../timeline/print-adapter'
+import { TimelinePrintRenderer } from '../../timeline/print-adapter'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
-import { resolveTimelineEventProjectionSizing } from '../../timeline/slot-estimate'
 import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 import { ResourcePrintLayout } from '../resource-layout-print'
 import { ColSpec } from '../structs'
@@ -62,17 +55,11 @@ export interface ResourcePrintRowProps extends SplittableProps, AriaCellInput {
 }
 
 /** Renders one logical resource row as independently breakable synchronized sections. */
-export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
+export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProps> {
   // memo
   private refineRenderProps = memoizeObjArg(refineResourceLaneRenderProps)
-  private sortEventSegs = memoize(sortEventSegs)
-  private buildPrintPlan = memoize(buildTimelinePrintPlan)
-
-  // refs
-  private printHeights = new TimelinePrintHeights(() => this.handlePrintHeights())
 
   // internal
-  private _isUnmounting: boolean
   private slicer = new TimelineLaneSlicer()
 
   render() {
@@ -99,20 +86,11 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
       props.tDateProfile,
       context.dateEnv,
     )
-    const fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder)
-    const projectionSizing = resolveTimelineEventProjectionSizing(
-      props.slotWidth,
-      options.eventMinWidth,
-    )
-    const plan = this.buildPrintPlan(
-      fgSegs,
-      context.dateEnv,
+    const { eventBands, moreLinkBand } = this.buildPrintBands(
+      slicedProps.fgEventSegs,
       props.tDateProfile,
-      projectionSizing.slotWidth,
-      projectionSizing.eventMinWidth,
-      options.eventOrderStrict,
+      props.slotWidth,
     )
-    const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)
     const leadingColGroupStats = props.colGroupStats.map((stats) => ({
       ...stats,
       borderBottom: false,
@@ -350,19 +328,6 @@ export class ResourcePrintRow extends BaseComponent<ResourcePrintRowProps> {
         />
       </div>
     )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
-
-  private handlePrintHeights = () => {
-    if (this._isUnmounting) return
-    this.forceUpdate()
   }
 }
 

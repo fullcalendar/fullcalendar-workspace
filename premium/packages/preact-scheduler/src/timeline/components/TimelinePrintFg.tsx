@@ -1,27 +1,20 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  BaseComponent,
   DateMarker,
   DateProfile,
   DateRange,
   EventRangeProps,
   getEventRangeMeta,
-  memoize,
   PrintEventBand,
   PrintMoreLinkBand,
   RefMap,
-  sortEventSegs,
   MeasuredAbsoluteHarness,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type TimelineDateProfile } from '../timeline-date-profile'
 import { type TimelineRange } from '../TimelineLaneSlicer'
-import {
-  TimelinePrintHeights,
-  buildTimelinePrintPlan,
-} from '../print-adapter'
+import { TimelinePrintRenderer } from '../print-adapter'
 import { type TimelineEventSeg } from '../seg-placement-adapter'
-import { resolveTimelineEventProjectionSizing } from '../slot-estimate'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 
@@ -41,34 +34,14 @@ export interface TimelinePrintFgProps {
   slotWidth: number | undefined
 }
 
-export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
-  // memo
-  private sortEventSegs = memoize(sortEventSegs)
-  private buildPrintPlan = memoize(buildTimelinePrintPlan)
-
-  // refs
-  private printHeights = new TimelinePrintHeights(() => this.handlePrintHeights())
-
-  // internal
-  private _isUnmounting: boolean
-
+export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps> {
   render() {
-    const { props, context } = this
-    const { options } = context
-    const fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
-    const projectionSizing = resolveTimelineEventProjectionSizing(
-      props.slotWidth,
-      options.eventMinWidth,
-    )
-    const plan = this.buildPrintPlan(
-      fgSegs,
-      context.dateEnv,
+    const { props } = this
+    const { eventBands, moreLinkBand } = this.buildPrintBands(
+      props.fgEventSegs,
       props.tDateProfile,
-      projectionSizing.slotWidth,
-      projectionSizing.eventMinWidth,
-      options.eventOrderStrict,
+      props.slotWidth,
     )
-    const { eventBands, moreLinkBand } = this.printHeights.buildLayout(plan)
 
     return (
       <div className={classNames.noShrink}>
@@ -101,19 +74,6 @@ export class TimelinePrintFg extends BaseComponent<TimelinePrintFgProps> {
         )}
       </div>
     )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
-
-  private handlePrintHeights = () => {
-    if (this._isUnmounting) return
-    this.forceUpdate()
   }
 }
 
