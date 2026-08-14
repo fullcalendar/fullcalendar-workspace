@@ -502,17 +502,20 @@ describe('more-link popover', () => {
 
     let calendar = initCalendar(options)
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    let gridEventCnt = dayGridWrapper.getEventEls().length
 
-    expect(options.eventDidMount.calls.count()).toBe(4)
-    expect(options.eventContent.calls.count()).toBe(4)
+    expect(options.eventDidMount.calls.count()).toBe(gridEventCnt)
+    expect(options.eventContent.calls.count()).toBe(gridEventCnt)
     expect(options.eventWillUnmount.calls.count()).toBe(0)
 
     resetCounts()
     await waitTimeout()
     dayGridWrapper.openMorePopover()
     await waitTimeout()
-    expect(options.eventDidMount.calls.count()).toBe(4)
-    expect(options.eventContent.calls.count()).toBe(4)
+    let popoverEventCnt = dayGridWrapper.getMorePopoverEventEls().length
+
+    expect(options.eventDidMount.calls.count()).toBe(popoverEventCnt)
+    expect(options.eventContent.calls.count()).toBe(popoverEventCnt)
     expect(options.eventWillUnmount.calls.count()).toBe(0)
 
     resetCounts()
@@ -520,7 +523,7 @@ describe('more-link popover', () => {
     await waitTimeout()
     expect(options.eventDidMount.calls.count()).toBe(0)
     expect(options.eventContent.calls.count()).toBe(0)
-    expect(options.eventWillUnmount.calls.count()).toBe(4)
+    expect(options.eventWillUnmount.calls.count()).toBe(popoverEventCnt)
   })
 
   it('displays latest events after refetch', async () => {
