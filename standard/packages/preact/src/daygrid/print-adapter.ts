@@ -28,11 +28,6 @@ export interface DayGridPrintBandSlot {
   slice: Slice<DayGridEventSeg> | null
 }
 
-export interface DayGridPrintColumn {
-  column: number
-  bandSlots: DayGridPrintBandSlot[]
-}
-
 /** Stable identity for one print wrapper when a source is split laterally. */
 export function getDayGridPrintSliceKey(slice: Slice<DayGridEventSeg>): string {
   return `${slice.sourceSeg.key}:${slice.start}:${slice.end}`
@@ -105,11 +100,11 @@ export function buildDayGridPrintPlan(
 export function buildDayGridPrintColumns(
   plan: DayGridPrintPlan,
   printSegHeights: SegThicknessMap,
-): DayGridPrintColumn[] {
-  const columns = Array.from({ length: plan.columnCount }, (_, column) => ({
-    column,
-    bandSlots: [] as DayGridPrintBandSlot[],
-  }))
+): DayGridPrintBandSlot[][] {
+  const columns = Array.from(
+    { length: plan.columnCount },
+    () => [] as DayGridPrintBandSlot[],
+  )
 
   for (const band of buildPrintEventBands(plan.levels, printSegHeights)) {
     const slicesByColumn = Array<Slice<DayGridEventSeg> | null>(plan.columnCount).fill(null)
@@ -119,7 +114,7 @@ export function buildDayGridPrintColumns(
     }
 
     for (let column = 0; column < plan.columnCount; column++) {
-      columns[column].bandSlots.push({
+      columns[column].push({
         levelIndex: band.levelIndex,
         thickness: band.thickness,
         slice: slicesByColumn[column],

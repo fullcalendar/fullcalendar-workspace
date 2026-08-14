@@ -21,7 +21,7 @@ import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { computeHorizontalsFromSeg } from './util'
-import { DayGridEventHarness } from './DayGridEventHarness'
+import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import { type Slice } from '../../seg-placement/layout'
 import {
   type DayGridEventSeg,
@@ -36,7 +36,6 @@ import {
 } from '../seg-placement-adapter'
 import {
   type DayGridPrintBandSlot,
-  type DayGridPrintColumn,
   type DayGridPrintPlan,
   buildDayGridPrintColumns,
   buildDayGridPrintPlan,
@@ -149,7 +148,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const fgEventSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
     const screenFgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
     let printPlan: DayGridPrintPlan | null = null
-    let printColumns: DayGridPrintColumn[] | null = null
+    let printColumns: DayGridPrintBandSlot[][] | null = null
     let screenColumns: DayGridSegPlacementColumn[] | null = null
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
@@ -264,7 +263,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             ? buildDayGridPrintPopoverSegs(printPlan, col)
             : null
           const fg = printPlan
-            ? this.renderPrintBandSlots(printColumns![col].bandSlots)
+            ? this.renderPrintBandSlots(printColumns![col])
             : this.renderFgSegs(
                 screenMaxMainTop,
                 screenColumns![col].domItems,
@@ -345,7 +344,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const isSelected = instanceId === eventSelection
 
       nodes.push(
-        <DayGridEventHarness
+        <MeasuredAbsoluteHarness
           key={key}
           className={seg.start ? classNames.fakeBorderS : ''}
           style={{
@@ -363,7 +362,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isMirror,
             isSelected,
           })}
-        </DayGridEventHarness>,
+        </MeasuredAbsoluteHarness>,
       )
     }
 
@@ -429,7 +428,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(slice, colWidth, colCount)
 
         eventNode = (
-          <DayGridEventHarness
+          <MeasuredAbsoluteHarness
             key={sliceKey}
             className={seg.start ? classNames.fakeBorderS : ''}
             style={{
@@ -440,7 +439,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           >
             {/* print has no interaction state at all */}
             {this.renderEventContent(seg, {})}
-          </DayGridEventHarness>
+          </MeasuredAbsoluteHarness>
         )
       }
 

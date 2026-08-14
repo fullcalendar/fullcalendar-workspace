@@ -17,7 +17,6 @@
  * - Optional strict event ordering.
  * - A level-only limiting/slicing pass used to decide which original seg
  *   elements are plausible DOM candidates before their real thicknesses exist.
- * - A measured-thickness limiting pass with per-lateral-cell coordinate limits.
  * - Up to three slices at one shared `(levelIndex, levelCoord)` position,
  *   scored with the agreed 0% / 15% / 30% slice penalty.
  * - Explicit hidden-span output.
@@ -93,14 +92,14 @@ export interface LateralSpan {
 }
 
 /**
- * One whole seg supplied by a view, before its event rank is stamped.
+ * One whole seg supplied by a view, carrying its resolved event rank.
  *
  * Day Grid will normally use integer lateral coordinates. Timeline may use a
  * continuous lateral coordinate system. Placement does not distinguish them,
  * so a continuous-axis view must satisfy the lateral precision convention in
  * this module's header before building these coordinates.
  */
-export interface UnorderedSeg<EventMeta = unknown> extends LateralSpan {
+export interface SourceSeg<EventMeta = unknown> extends LateralSpan {
   /** Stable identity used by the thickness map and DOM-candidate output. */
   key: string
   /** Opaque view/application data that placement never examines. */
@@ -109,11 +108,6 @@ export interface UnorderedSeg<EventMeta = unknown> extends LateralSpan {
   isStart: boolean
   /** Whether `end` is the event's real end rather than a view cut. */
   isEnd: boolean
-}
-
-/** One whole seg carrying the event rank every later pass is ordered by. */
-export interface SourceSeg<EventMeta = unknown>
-  extends UnorderedSeg<EventMeta> {
   /**
    * Rank in the caller's resolved event order, minted once by whichever
    * producer resolved that order — normally as the loop index that emits the
@@ -290,29 +284,6 @@ export function positionSegsWithUnitThickness<EventMeta>(
     new Map(eventOrderedSegs.map((seg) => [seg.key, 1])),
     orderStrict,
   )
-}
-
-/**
- * Stamps each seg's position in one already-ordered array as its
- * `orderIndex`.
- *
- * A producer that builds its segs inside a single ordered loop should
- * stamp there instead, as `sliceEventSegs` and `sliceTemporalSegs` do.
- * This exists for a caller that assembles the ordered array first and would
- * otherwise count positions by hand.
- *
- * Call it exactly once, on the array that *defines* the order. Calling it on a
- * subset — the segs that mounted, say — mints a second, compressed set of
- * ranks, which is the disagreement carrying the rank on the source exists to
- * prevent.
- */
-export function stampEventOrder<EventMeta>(
-  orderedSegs: readonly UnorderedSeg<EventMeta>[],
-): SourceSeg<EventMeta>[] {
-  return orderedSegs.map((seg, orderIndex) => ({
-    ...seg,
-    orderIndex,
-  }))
 }
 
 /** The bare level-axis position a placement occupies, without the slice. */
@@ -726,42 +697,6 @@ export function limitLayoutByMaxLevel<EventMeta>(
       levels,
       maxLevels,
       {},
-      candidateOptions,
-    ),
-  )
-}
-
-/**
- * Restricts an already-positioned measured layout by per-lateral-cell level
- * coordinate limits. A placement is whole only when its `levelEndCoord` fits
- * every lateral cell it spans. Out-of-bounds placements are considered in
- * event order and first try to compact whole. Only a source that still cannot
- * fit may be sliced at one shared `(levelIndex, levelCoord)` position.
- *
- * The limit vector is supplied by the caller and remains fixed within this
- * common function.
- */
-export function limitLayoutByLevelCoordLimits<EventMeta>(
-  unrestricted: PlacementLayout<EventMeta>,
-  coordLimits: readonly number[],
-  options: SliceOptions,
-): LayoutLimitResult<EventMeta> {
-  const candidateOptions = resolveSliceCandidateOptions(options)
-  const levelIndexSearchLimit = unrestricted.levels.length
-  return limitOverflowedPlacements(
-    unrestricted,
-    options,
-    (span, _levelIndex, levelEndCoord) => fitsCoordLimits(
-      span,
-      levelEndCoord,
-      coordLimits,
-    ),
-    (wholeSlice, thickness, levels) => createBoundedSlicePlan(
-      wholeSlice,
-      thickness,
-      levels,
-      levelIndexSearchLimit,
-      { coordLimits },
       candidateOptions,
     ),
   )

@@ -70,7 +70,6 @@ export interface DayGridSegDomItem {
 }
 
 export interface DayGridSegPlacementColumn {
-  column: number
   /** Nodes whose whole or sliced span starts here, in resolved event order. */
   domItems: DayGridSegDomItem[]
   /** Deepest visible event bottom across every placement crossing this column. */
@@ -440,7 +439,6 @@ function buildPlacementColumns(
 ): DayGridSegPlacementColumn[] {
   const visiblePlacements = limited?.visiblePlacements ?? []
   const columns = Array.from({ length: columnCount }, (_, column) => ({
-    column,
     domItems: [] as DayGridSegDomItem[],
     contentHeight: 0,
     ...buildDayGridPopoverSegs(

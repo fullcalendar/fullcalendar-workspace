@@ -91,7 +91,7 @@ describe('DayGrid print band transposition', () => {
       ['wide:0', 12],
       ['left-later:0', 7],
     ]))
-    const signatures = columns.map((column) => column.bandSlots.map((slot) => ({
+    const signatures = columns.map((column) => column.map((slot) => ({
       levelIndex: slot.levelIndex,
       thickness: slot.thickness,
     })))
@@ -102,22 +102,22 @@ describe('DayGrid print band transposition', () => {
       { levelIndex: 0, thickness: 20 },
       { levelIndex: 1, thickness: 7 },
     ])
-    expect(columns[1].bandSlots.every((slot) => slot.slice === null)).toBe(true)
-    expect(columns[2].bandSlots[1].slice).toBeNull()
+    expect(columns[1].every((slot) => slot.slice === null)).toBe(true)
+    expect(columns[2][1].slice).toBeNull()
   })
 
   it('renders a multi-column slice once in its start column while preserving its span', () => {
     const columns = buildDayGridPrintColumns(plan, new Map())
     const wideSlices = columns.flatMap((column) =>
-      column.bandSlots.flatMap((slot) =>
+      column.flatMap((slot) =>
         slot.slice?.sourceSeg.key === 'wide:0' ? [slot.slice] : []
       )
     )
 
     expect(wideSlices).toHaveLength(1)
     expect(wideSlices[0]).toMatchObject({ start: 0, end: 2 })
-    expect(columns[0].bandSlots[0].slice?.sourceSeg.key).toBe('wide:0')
-    expect(columns[1].bandSlots[0].slice).toBeNull()
+    expect(columns[0][0].slice?.sourceSeg.key).toBe('wide:0')
+    expect(columns[1][0].slice).toBeNull()
   })
 
   it('uses current measurements directly so bands can grow and shrink', () => {
@@ -126,7 +126,7 @@ describe('DayGrid print band transposition', () => {
         ['wide:0', heights[0]],
         ['right:2', heights[1]],
         ['left-later:0', heights[2]],
-      ]))[0].bandSlots.map((slot) => slot.thickness)
+      ]))[0].map((slot) => slot.thickness)
 
     expect(sizes([8, 9, 6])).toEqual([9, 6])
     expect(sizes([30, 18, 22])).toEqual([30, 22])
@@ -151,7 +151,7 @@ describe('DayGrid print band transposition', () => {
     const thickness = () => buildDayGridPrintColumns(
       slicedPlan,
       buildDayGridPrintSegHeights(slicedPlan.visiblePlacements, sliceHeights),
-    ).flatMap((column) => column.bandSlots).find((slot) =>
+    ).flat().find((slot) =>
       slot.slice?.sourceSeg.key === 'sliced:0'
     )!.thickness
 

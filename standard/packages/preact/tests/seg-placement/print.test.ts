@@ -2,9 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   type PlacementLevel,
   type SliceOptions,
-  type UnorderedSeg,
   groupHiddenSlices,
-  stampEventOrder,
 } from '../../src/seg-placement/layout'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
@@ -12,6 +10,7 @@ import {
   buildPrintMoreLinkBand,
   planPrintDomCandidates,
 } from '../../src/seg-placement/print'
+import { type UnorderedSeg, stampEventOrder } from './test-utils'
 
 interface TestEvent {
   id: string

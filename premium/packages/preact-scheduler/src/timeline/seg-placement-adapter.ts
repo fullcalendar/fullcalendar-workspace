@@ -33,18 +33,12 @@ export interface TimelineSegPlacementPlan {
   orderStrict: boolean
 }
 
-/** Final geometry for one admitted permanent event wrapper. */
-export interface TimelineSegPlacement {
-  top: number
-  height: number
-}
-
 /** One permanent event node, including a measured-hidden donor. */
 export interface TimelineSegDomItem {
   key: string
   seg: TimelineEventSeg
   horizontal: CoordSpan
-  placement: TimelineSegPlacement | null
+  top: number | null
 }
 
 /** Production-facing data for one final Timeline more-link wrapper. */
@@ -53,7 +47,6 @@ export interface TimelineSegMoreLink {
   start: number
   end: number
   top: number
-  count: number
   segs: TimelineEventSeg[]
 }
 
@@ -229,7 +222,6 @@ export function buildTimelineSegPlacements(
       start: moreLink.start,
       end: moreLink.end,
       top: moreLink.levelCoord,
-      count: moreLink.count,
       segs: moreLink.hiddenSlices.map((slice) => slice.sourceSeg.meta),
     })),
     contentHeight: calculateTimelineContentHeight(
@@ -254,12 +246,7 @@ function buildEventDomItems(
         start: sourceSeg.start,
         size: sourceSeg.end - sourceSeg.start,
       },
-      placement: placement
-        ? {
-          top: placement.levelCoord,
-          height: placement.thickness,
-        }
-        : null,
+      top: placement?.levelCoord ?? null,
     }
   })
 }

@@ -3,9 +3,7 @@ import {
   type SourceSeg,
   type Placement,
   type Slice,
-  type UnorderedSeg,
   positionSegs,
-  stampEventOrder,
 } from '../../src/seg-placement/layout'
 import {
   calculateTimelineContentHeight,
@@ -13,6 +11,7 @@ import {
   positionTimelineMoreLinks,
 } from '../../src/seg-placement/timeline'
 import { layoutTimeGridColumnByMaxLevel } from '../../src/seg-placement/timegrid'
+import { type UnorderedSeg, stampEventOrder } from './test-utils'
 
 interface TestEvent {
   id: string

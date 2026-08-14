@@ -172,14 +172,14 @@ describe('Timeline production placement adapter', () => {
     const [adjacentPlan, adjacent] = placeAfterStartingAt(MS_PER_HOUR)
     expect(adjacentPlan.mountedSegs[0].end).toBe(120)
     expect(adjacentPlan.mountedSegs[1].start).toBe(120)
-    expect(adjacent.eventDomItems.map((item) => item.placement?.top))
+    expect(adjacent.eventDomItems.map((item) => item.top))
       .toEqual([0, 0])
 
     // a genuine 1ms overlap stays an overlap. coordinates are never rounded, so
     // these take separate levels — long-standing behavior, deliberately kept
     const [overlapPlan, overlapping] = placeAfterStartingAt(MS_PER_HOUR - 1)
     expect(overlapPlan.mountedSegs[1].start).toBeLessThan(120)
-    expect(overlapping.eventDomItems.map((item) => item.placement?.top))
+    expect(overlapping.eventDomItems.map((item) => item.top))
       .toEqual([0, 10])
   })
 
@@ -215,8 +215,7 @@ describe('Timeline production placement adapter', () => {
       'tie-second',
       'late',
     ])
-    expect(result.eventDomItems.find((item) => item.key === 'late')?.placement)
-      .toMatchObject({ top: 0, height: 10 })
+    expect(result.eventDomItems.find((item) => item.key === 'late')?.top).toBe(0)
   })
 
   it('keeps temporal DOM order stable when clipping clamps distinct starts', () => {
@@ -284,9 +283,9 @@ describe('Timeline production placement adapter', () => {
       ]),
       new Map(),
     )
-    const placements = placementByKey(result.eventDomItems)
+    const tops = topByKey(result.eventDomItems)
 
-    expect(placements.get('first')?.top).toBe(0)
+    expect(tops.get('first')).toBe(0)
     expect(placements.get('second')?.top).toBe(10)
     expect(placements.get('third')?.top).toBe(30)
   })
@@ -322,7 +321,7 @@ describe('Timeline production placement adapter', () => {
       'right-tall',
     ])
     expect(result.eventDomItems.find((item) => item.key === 'right-tall'))
-      .toMatchObject({ placement: null })
+      .toMatchObject({ top: null })
     expect(result.moreLinks).toHaveLength(1)
     expect(result.moreLinks[0]).toMatchObject({
       top: 20,
@@ -460,7 +459,7 @@ describe('Timeline production placement adapter', () => {
     expect(result.eventDomItems).toHaveLength(1)
     expect(result.eventDomItems[0]).toMatchObject({
       key: 'candidate',
-      placement: null,
+      top: null,
     })
   })
 })
@@ -563,17 +562,14 @@ function segKey(seg: TimelineEventSeg): string {
   return seg.eventRange.instance.instanceId
 }
 
-function placementByKey(
+function topByKey(
   items: ReturnType<typeof buildTimelineSegPlacements>['eventDomItems'],
-): Map<string, NonNullable<(typeof items)[number]['placement']>> {
-  const placements = new Map<
-    string,
-    NonNullable<(typeof items)[number]['placement']>
-  >()
+): Map<string, number> {
+  const tops = new Map<string, number>()
   for (const item of items) {
-    if (item.placement) {
-      placements.set(item.key, item.placement)
+    if (item.top != null) {
+      tops.set(item.key, item.top)
     }
   }
-  return placements
+  return tops
 }

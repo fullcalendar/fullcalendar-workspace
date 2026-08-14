@@ -11,6 +11,7 @@ import {
   PrintMoreLinkBand,
   RefMap,
   sortEventSegs,
+  MeasuredAbsoluteHarness,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type TimelineDateProfile } from '../timeline-date-profile'
@@ -21,7 +22,6 @@ import {
 } from '../print-adapter'
 import { type TimelineEventSeg } from '../seg-placement-adapter'
 import { TimelineEvent } from './TimelineEvent'
-import { TimelineEventHarness } from './TimelineEventHarness'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 
 export interface TimelinePrintFgProps {
@@ -144,7 +144,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
         const isSelected = instanceId === props.eventSelection
 
         return (
-          <TimelineEventHarness
+          <MeasuredAbsoluteHarness
             key={sourceSeg.key}
             style={{
               zIndex: isSelected ? 1000 : 1,
@@ -165,7 +165,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
               isSelected={isSelected}
               {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
             />
-          </TimelineEventHarness>
+          </MeasuredAbsoluteHarness>
         )
       })}
     </div>
@@ -187,7 +187,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
       style={{ height: band.thickness }}
     >
       {band.moreLinkGroups.map((group) => (
-        <TimelineEventHarness
+        <MeasuredAbsoluteHarness
           key={group.key}
           style={{
             top: 0,
@@ -208,7 +208,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
           />
-        </TimelineEventHarness>
+        </MeasuredAbsoluteHarness>
       ))}
     </div>
   )

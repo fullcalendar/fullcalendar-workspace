@@ -6,7 +6,7 @@
  * integer geometry. This suite widens the vetting surface along the axes that
  * file does not reach:
  *
- * - Continuous (fractional) lateral coordinates through the generic limiters,
+ * - Continuous (fractional) lateral coordinates through shared placement,
  *   which is the geometry Timeline actually supplies. Coordinates are dyadic
  *   rationals (multiples of 1/64) so every comparison in the engine is exact
  *   and no seed can flake on sub-epsilon float noise.
@@ -41,13 +41,10 @@ import {
   type SegThicknessMap,
   type Slice,
   type SliceOptions,
-  type UnorderedSeg,
   createWholeSlice,
-  limitLayoutByLevelCoordLimits,
   limitLayoutByMaxLevel,
   planDomCandidatesByMaxLevel,
   positionSegs,
-  stampEventOrder,
 } from '../../src/seg-placement/layout'
 import { buildPrintEventBands } from '../../src/seg-placement/print'
 import {
@@ -59,6 +56,7 @@ import {
   limitTimelineLayoutByMaxLevel,
   positionTimelineMoreLinks,
 } from '../../src/seg-placement/timeline'
+import { type UnorderedSeg, stampEventOrder } from './test-utils'
 
 interface TestEvent {
   id: string
@@ -114,40 +112,6 @@ describe('continuous-coordinate engine fuzzing', () => {
     }
   })
 
-  it('audits pixel limiting on fractional geometry', () => {
-    for (let seed = 1; seed <= 300; seed++) {
-      const scenario = buildContinuousScenario(seed)
-      const coordLimits = Array.from(
-        { length: CONTINUOUS_LATERAL_CELLS },
-        (_, cell) => 12 + (seed + cell) % 5 * 6,
-      )
-
-      for (const options of OPTION_MATRIX) {
-        const label = context(seed, scenario, { kind: 'cont-pixel', coordLimits, options })
-        const unrestricted = positionSegs(
-          scenario.segs,
-          scenario.thicknesses,
-          options.orderStrict,
-        )
-        const limited = limitLayoutByLevelCoordLimits(
-          unrestricted,
-          coordLimits,
-          options,
-        )
-        auditLimitResult(scenario, limited, options, label)
-        for (const placement of limited.visiblePlacements) {
-          for (const cell of intersectingCells(placement, coordLimits.length)) {
-            invariant(
-              placement.levelEndCoord <= coordLimits[cell] + GEOMETRY_TOLERANCE,
-              `${placement.sourceSeg.key} exceeds the pixel bound in cell ${cell}`,
-              label,
-            )
-          }
-        }
-        auditOrdinarySlicePolicy(limited, options, label)
-      }
-    }
-  })
 })
 
 describe('Day Grid tax fuzzing beyond the seeded integer matrix', () => {

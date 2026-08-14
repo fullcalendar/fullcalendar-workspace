@@ -7,6 +7,7 @@ import {
   EventRangeProps,
   setRef,
   EventSegUiInteractionState,
+  MeasuredAbsoluteHarness,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
@@ -14,7 +15,6 @@ import { TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
-import { TimelineEventHarness } from './TimelineEventHarness'
 import {
   buildTimelineSegPlacementPlan,
   buildTimelineSegPlacements,
@@ -115,8 +115,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
     let fgSegTops = new Map<string, number>()
     for (const item of placementResult.eventDomItems) {
-      if (item.placement) {
-        fgSegTops.set(item.key, item.placement.top)
+      if (item.top != null) {
+        fgSegTops.set(item.key, item.top)
       }
     }
 
@@ -160,23 +160,23 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     return (
       <>
         {eventDomItems.map((item) => {
-          const { key, seg, horizontal, placement } = item
+          const { key, seg, horizontal, top } = item
           const { eventRange } = seg
           const { instanceId } = eventRange.instance
 
           const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-          const isInvisible = isDragging || isResizing || placement == null
+          const isInvisible = isDragging || isResizing || top == null
           const isSelected = instanceId === props.eventSelection
 
           return (
-            <TimelineEventHarness
+            <MeasuredAbsoluteHarness
               key={key}
               style={{
                 visibility: isInvisible ? 'hidden' : undefined,
-                pointerEvents: placement == null ? 'none' : undefined,
+                pointerEvents: top == null ? 'none' : undefined,
                 zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
-                top: placement?.top ?? 0,
+                top: top ?? 0,
                 insetInlineStart: horizontal.start,
                 width: horizontal.size,
               }}
@@ -193,7 +193,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isSelected={isSelected}
                 {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
               />
-            </TimelineEventHarness>
+            </MeasuredAbsoluteHarness>
           )
         })}
       </>
@@ -224,7 +224,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       const isSelected = instanceId === props.eventSelection
 
       return (
-        <TimelineEventHarness
+        <MeasuredAbsoluteHarness
           key={instanceId}
           style={{
             zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
@@ -244,7 +244,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             isSelected={isSelected}
             {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
           />
-        </TimelineEventHarness>
+        </MeasuredAbsoluteHarness>
       )
     })
   }
@@ -255,7 +255,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     return (
       <>
         {moreLinks.map((link) => (
-          <TimelineEventHarness
+          <MeasuredAbsoluteHarness
             key={link.key}
             style={{
               top: link.top,
@@ -276,7 +276,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               eventSelection={props.eventSelection}
               resourceId={props.resourceId}
             />
-          </TimelineEventHarness>
+          </MeasuredAbsoluteHarness>
         ))}
       </>
     )

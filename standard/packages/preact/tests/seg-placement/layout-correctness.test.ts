@@ -12,13 +12,11 @@ import {
   type SegThicknessMap,
   type Slice,
   type SliceOptions,
-  type UnorderedSeg,
-  limitLayoutByLevelCoordLimits,
   limitLayoutByMaxLevel,
   planDomCandidatesByMaxLevel,
   positionSegs,
-  stampEventOrder,
 } from '../../src/seg-placement/layout'
+import { type UnorderedSeg, stampEventOrder } from './test-utils'
 
 interface TestEvent {
   id: string
@@ -79,15 +77,10 @@ describe('independent layout correctness audits', () => {
     }
   })
 
-  it('audits generic level and pixel limiting across a seeded matrix', () => {
+  it('audits generic level limiting across a seeded matrix', () => {
     for (let seed = 1; seed <= 250; seed++) {
       const scenario = buildScenario(seed)
       const maxLevels = 1 + seed % 3
-      const coordLimits = Array.from(
-        { length: COLUMN_COUNT },
-        (_, column) => 15 + (seed + column) % 4 * 8,
-      )
-
       for (const options of OPTION_MATRIX) {
         const unrestricted = positionSegs(
           scenario.segs,
@@ -113,24 +106,6 @@ describe('independent layout correctness audits', () => {
         auditLevelBounds(levelResult.visiblePlacements, maxLevels, levelLabel)
         auditOrdinarySlicePolicy(levelResult, options, levelLabel)
 
-        const coordResult = limitLayoutByLevelCoordLimits(
-          unrestricted,
-          coordLimits,
-          options,
-        )
-        const coordLabel = context(seed, scenario, {
-          kind: 'pixel',
-          coordLimits,
-          options,
-        })
-        auditLimitedLayout(
-          scenario,
-          coordResult,
-          options,
-          coordLabel,
-        )
-        auditCoordBounds(coordResult.visiblePlacements, coordLimits, coordLabel)
-        auditOrdinarySlicePolicy(coordResult, options, coordLabel)
       }
     }
   })
@@ -785,22 +760,6 @@ function auditLevelBounds(
       `${placement.sourceSeg.key} exceeds maxLevels=${maxLevels}`,
       label,
     )
-  }
-}
-
-function auditCoordBounds(
-  visiblePlacements: readonly Placement<TestEvent>[],
-  coordLimits: readonly number[],
-  label: string,
-): void {
-  for (const placement of visiblePlacements) {
-    for (const column of intersectingColumns(placement, coordLimits.length)) {
-      invariant(
-        placement.levelEndCoord <= coordLimits[column] + GEOMETRY_TOLERANCE,
-        `${placement.sourceSeg.key} exceeds pixel bound in column ${column}`,
-        label,
-      )
-    }
   }
 }
 
