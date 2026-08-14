@@ -3,6 +3,7 @@ import {
   type Slice,
   type SliceOptions,
   type SourceSeg,
+  type SegThicknessMap,
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   areSegThicknessesSettled,
   createWholeSlice,
@@ -93,21 +94,9 @@ export type DayGridPlacementMode =
   | 'auto'
 
 /*
-TODO: geometry epochs.
-Every extremum below is monotone for one owner's lifetime: it only ever moves
-in the direction that admits more DOM or reserves more room, and nothing
-lowers it again. A geometry-affecting change — a stylesheet, theme, or plugin
-that shrinks events or more links — therefore leaves a stale extremum in force
-until the owner itself is recreated.
-
-Ordinary navigation, event changes, and row mount/unmount are NOT reset
-reasons: the extrema deliberately span every row under one `DayGridRows`, and
-resetting on those would re-run the unmeasured estimate constantly.
-
-Fixing this means giving the owner a geometry epoch derived from its compiled
-styling inputs, and letting a new epoch clear these values. Both the reset
-trigger and the epoch's signature are intentionally deferred; do not invent one
-here without designing it.
+These extrema only widen the cross-row DOM candidate frontier. Keeping them
+monotone avoids remount churn; stale values after a style change can mount
+extra donors, but each row's current measurements still decide visibility.
 */
 export interface DayGridPlacementOwnerState {
   smallestEventHeight: number | null
@@ -118,7 +107,6 @@ export interface DayGridPlacementOwnerState {
    */
   largestEventAreaHeight: number | null
   maxDomLevels: number
-  largestMoreLinkHeight: number
 }
 
 const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
@@ -275,7 +263,6 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
       DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
       DEFAULT_UNMEASURED_EVENT_THICKNESS,
     ),
-    largestMoreLinkHeight: 0,
   }
 }
 
@@ -290,8 +277,7 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
  * And this extremum only sizes the *candidate* frontier: under-estimating it
  * mounts more event wrappers than a row needs, while the measured pass still
  * decides visibility from real pixels. The failure mode is therefore wasted
- * DOM, never a hidden event that fits — which is why a stale small value is
- * tolerable until geometry epochs (see above) are designed.
+ * DOM, never a hidden event that fits.
  *
  * Non-positive and non-finite reports, including the `null` a wrapper sends
  * when it unmounts, leave the state untouched.
@@ -327,21 +313,6 @@ export function observeDayGridEventAreaHeight(
   return updateDayGridPlacementOwnerState(state, {
     largestEventAreaHeight: height,
   })
-}
-
-/** Records the parent-wide monotone more-link wrapper maximum. */
-export function observeDayGridMoreLinkHeight(
-  state: DayGridPlacementOwnerState,
-  height: number,
-): DayGridPlacementOwnerState {
-  if (!isPositiveFinite(height) || height <= state.largestMoreLinkHeight) {
-    return state
-  }
-
-  return {
-    ...state,
-    largestMoreLinkHeight: height,
-  }
 }
 
 /**
@@ -393,6 +364,23 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
   return mode === 'maxEventRows' ? 1 : 0
 }
 
+/**
+ * Uses the row's largest current event as a makeshift more-link reservation.
+ * It approximates the legacy zombie-event slot, but follows live event
+ * measurements so style changes need no reset trigger or parent ratchet.
+ */
+export function computeDayGridMoreLinkHeight(
+  segHeights: SegThicknessMap,
+): number {
+  let largestHeight = 0
+
+  for (const height of segHeights.values()) {
+    largestHeight = Math.max(largestHeight, height)
+  }
+
+  return largestHeight
+}
+
 /** What a row knows about its own measured bounds when it re-limits. */
 export interface DayGridMeasuredLimitInputs {
   mode: DayGridPlacementMode
@@ -401,7 +389,7 @@ export interface DayGridMeasuredLimitInputs {
   columnCount: number
   /** Measured pixels foreground events compete for. Undefined until measured. */
   eventAreaHeight?: number
-  /** Owner-wide monotone more-link wrapper height. */
+  /** Row-local event-height proxy reserved for an active more link. */
   moreLinkHeight?: number
 }
 

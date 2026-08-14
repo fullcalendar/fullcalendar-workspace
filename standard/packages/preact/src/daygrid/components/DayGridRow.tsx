@@ -32,6 +32,7 @@ import {
   buildDayGridSegPlacements,
   computeDayGridDomCandidateMaxLevels,
   computeDayGridMeasuredLimits,
+  computeDayGridMoreLinkHeight,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import {
@@ -72,14 +73,12 @@ export interface DayGridRowProps {
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
   maxDomLevels?: number // shared cross-row candidate frontier
-  moreLinkHeight?: number // shared cross-row +more link reservation
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
   onEventHeight?: (height: number) => void // occupied height of one event wrapper
   onEventAreaHeight?: (height: number) => void // row-wide height shared by all foreground events
-  onMoreLinkHeight?: (height: number) => void // occupied height of one +more link
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
@@ -103,13 +102,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const fgLiquidHeight = this.props.dayMaxEvents === true || this.props.dayMaxEventRows === true
     if (fgLiquidHeight) {
       afterSize(this.handleSegPositioning)
-    }
-  })
-  private moreLinkHeightRefMap = new RefMap<string, number>((height) => {
-    // A cell with no link reports zero. Only a real link can raise the
-    // owner-wide reservation, and nothing ever lowers it.
-    if (height > 0) {
-      this.props.onMoreLinkHeight?.(height)
     }
   })
   // Only a source's permanent wrapper is given one of these refs, so every
@@ -140,7 +132,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
 
   render() {
-    const { props, context, headerHeightRefMap, mainHeightRefMap, moreLinkHeightRefMap } = this
+    const { props, context, headerHeightRefMap, mainHeightRefMap } = this
     const { cells } = props
     const { options } = context
 
@@ -304,7 +296,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               // refs
               headerHeightRef={printPlan ? undefined : headerHeightRefMap.createRef(cell.key)}
               mainHeightRef={printPlan ? undefined : mainHeightRefMap.createRef(cell.key)}
-              moreLinkHeightRef={printPlan ? undefined : moreLinkHeightRefMap.createRef(cell.key)}
             />
           )
         })}
@@ -522,7 +513,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         candidateMaxLevels: placementPlan.maxLevels,
         columnCount: props.cells.length,
         eventAreaHeight,
-        moreLinkHeight: props.moreLinkHeight,
+        moreLinkHeight: computeDayGridMoreLinkHeight(this.segHeightRefMap.current),
       }),
     )
 

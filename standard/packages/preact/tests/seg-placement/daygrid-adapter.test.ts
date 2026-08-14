@@ -9,11 +9,11 @@ import {
   buildDayGridSegSources,
   computeDayGridDomCandidateMaxLevels,
   computeDayGridMeasuredLimits,
+  computeDayGridMoreLinkHeight,
   computeDayGridMoreLinkLevelTax,
   createDayGridPlacementOwnerState,
   observeDayGridEventAreaHeight,
   observeDayGridEventHeight,
-  observeDayGridMoreLinkHeight,
   resolveDayGridPlacementMode,
 } from '../../src/daygrid/seg-placement-adapter'
 
@@ -170,7 +170,6 @@ describe('DayGridRows placement owner state', () => {
       smallestEventHeight: null,
       largestEventAreaHeight: null,
       maxDomLevels: 8,
-      largestMoreLinkHeight: 0,
     })
     expect(afterTallEvent).toMatchObject({
       smallestEventHeight: 30,
@@ -205,13 +204,17 @@ describe('DayGridRows placement owner state', () => {
     }
   })
 
-  it('keeps one parent-wide monotone more-link maximum', () => {
-    const initial = createDayGridPlacementOwnerState()
-    const first = observeDayGridMoreLinkHeight(initial, 12)
+  it('derives the more-link reservation from current row event heights', () => {
+    const heights = new Map([
+      ['short', 10],
+      ['tall', 24],
+    ])
 
-    expect(first.largestMoreLinkHeight).toBe(12)
-    expect(observeDayGridMoreLinkHeight(first, 5)).toBe(first)
-    expect(observeDayGridMoreLinkHeight(first, 18).largestMoreLinkHeight).toBe(18)
+    expect(computeDayGridMoreLinkHeight(heights)).toBe(24)
+    heights.set('tall', 6)
+    expect(computeDayGridMoreLinkHeight(heights)).toBe(10)
+    heights.clear()
+    expect(computeDayGridMoreLinkHeight(heights)).toBe(0)
   })
 
   it('uses explicit numeric caps, the auto frontier, and no cap for unlimited rows', () => {
@@ -406,29 +409,13 @@ describe('DayGrid measured auto placement', () => {
     expect(columns.every((column) => !column.hiddenSegs.length)).toBe(true)
   })
 
-  it('admits an auto row down to its measured pixel ceiling', () => {
+  it('reserves one event height when an auto row needs a more link', () => {
     const columns = layoutRow(twoStacks, 2, true, undefined, {
       eventAreaHeight: EVENT_HEIGHT * 2.5,
     })
 
-    // Nothing has measured a link yet, so the ceiling is spent entirely on
-    // events and only the source that could not reach it is hidden.
-    expect(itemTops(columns, 0)).toEqual({
-      'a:0': 0,
-      'b:0': EVENT_HEIGHT,
-      'c:0': undefined,
-    })
-    expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
-  })
-
-  it('charges the measured link height to owing columns only', () => {
-    const columns = layoutRow(twoStacks, 2, true, undefined, {
-      eventAreaHeight: EVENT_HEIGHT * 2.5,
-      moreLinkHeight: EVENT_HEIGHT * 1.2,
-    })
-
-    // Hiding `c` activates the left column, whose lowered ceiling then evicts
-    // `b`. The right column never owed a link, so it keeps its full stack.
+    // Hiding `c` activates the left column. Its event-height proxy then evicts
+    // `b`, while the right column keeps its full untaxed stack.
     expect(itemTops(columns, 0)).toEqual({
       'a:0': 0,
       'b:0': undefined,
@@ -467,8 +454,6 @@ function layoutRow(
     heights?: Record<string, number>,
     /** Measured pixels events compete for. Only an auto row has one. */
     eventAreaHeight?: number,
-    /** Owner-wide monotone more-link reservation. */
-    moreLinkHeight?: number,
     /** Cross-row DOM frontier. Only an auto row's candidates consume it. */
     maxDomLevels?: number,
   } = {},
@@ -484,18 +469,20 @@ function layoutRow(
     config.eventSlicing ?? true,
   )
 
+  const segHeights = new Map(plan.mountedSegs.map((source) => [
+    source.key,
+    config.heights?.[source.key] ?? EVENT_HEIGHT,
+  ]))
+
   return buildDayGridSegPlacements(
     plan,
-    new Map(plan.mountedSegs.map((source) => [
-      source.key,
-      config.heights?.[source.key] ?? EVENT_HEIGHT,
-    ])),
+    segHeights,
     computeDayGridMeasuredLimits({
       mode: resolveDayGridPlacementMode(dayMaxEvents, dayMaxEventRows),
       candidateMaxLevels: plan.maxLevels,
       columnCount,
       eventAreaHeight: config.eventAreaHeight,
-      moreLinkHeight: config.moreLinkHeight,
+      moreLinkHeight: computeDayGridMoreLinkHeight(segHeights),
     }),
   )
 }

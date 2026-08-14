@@ -56,7 +56,6 @@ export interface DayGridCellProps {
   // refs
   headerHeightRef?: Ref<number>
   mainHeightRef?: Ref<number> // height of the area events and the +more link share
-  moreLinkHeightRef?: Ref<number> // occupied height of the +more link, zero when absent
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
@@ -203,7 +202,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 todayRange={props.todayRange}
                 isNarrow={props.isNarrow}
                 isMicro={props.isMicro}
-                heightRef={props.moreLinkHeightRef}
               />
             </div>
             <div
