@@ -91,7 +91,7 @@ describe('continuous-coordinate engine fuzzing', () => {
         const unrestricted = positionSegs(
           scenario.segs,
           scenario.thicknesses,
-          { orderStrict: options.orderStrict },
+          options.orderStrict,
         )
         auditLayoutStructure(
           { levels: unrestricted.levels, placements: unrestricted.placements },
@@ -127,7 +127,7 @@ describe('continuous-coordinate engine fuzzing', () => {
         const unrestricted = positionSegs(
           scenario.segs,
           scenario.thicknesses,
-          { orderStrict: options.orderStrict },
+          options.orderStrict,
         )
         const limited = limitLayoutByLevelCoordLimits(
           unrestricted,
@@ -172,7 +172,7 @@ describe('Day Grid tax fuzzing beyond the seeded integer matrix', () => {
       const unrestricted = positionSegs(
         scenario.segs,
         scenario.thicknesses,
-        { orderStrict: integerOptions.orderStrict },
+        integerOptions.orderStrict,
       )
 
       const levelResult = limitDayGridLayout(
@@ -271,9 +271,7 @@ describe('Day Grid tax fuzzing beyond the seeded integer matrix', () => {
       maxSlices: 3,
       minSliceLength: 1,
     }
-    const unrestricted = positionSegs(segs, thicknesses, {
-      orderStrict: true,
-    })
+    const unrestricted = positionSegs(segs, thicknesses, true)
     const result = limitDayGridLayout(
       unrestricted,
       {
@@ -316,9 +314,7 @@ describe('Day Grid tax fuzzing beyond the seeded integer matrix', () => {
         segs.map((seg) => [seg.key, 3 + Math.floor(random() * 25)]),
       )
       const scenario = { segs, thicknesses }
-      const unrestricted = positionSegs(segs, thicknesses, {
-        orderStrict: true,
-      })
+      const unrestricted = positionSegs(segs, thicknesses, true)
       const maxHeight = 10 + Math.floor(random() * 45)
       const coordTax = 2 + Math.floor(random() * 20)
       const initialHiddenSpans = seed % 2 === 0
@@ -496,7 +492,7 @@ describe('Timeline projection fuzzing', () => {
       const unrestricted = positionSegs(
         scenario.segs,
         scenario.thicknesses,
-        { orderStrict },
+        orderStrict,
       )
       const limited = limitTimelineLayoutByMaxLevel(
         unrestricted,
@@ -617,7 +613,7 @@ describe('degenerate and hostile inputs', () => {
   }
 
   it('handles empty input everywhere', () => {
-    const empty = positionSegs<TestEvent>([], new Map(), { orderStrict: true })
+    const empty = positionSegs<TestEvent>([], new Map(), true)
     expect(empty.placements).toHaveLength(0)
     expect(limitLayoutByMaxLevel(empty, 0, RELAXED).visiblePlacements).toHaveLength(0)
     const taxed = limitDayGridLayout(
@@ -650,7 +646,7 @@ describe('degenerate and hostile inputs', () => {
       ['normal', 12],
     ])
     const sourceKeys = new Set(segs.map((seg) => seg.key))
-    const layout = positionSegs(segs, thicknesses, { orderStrict: false })
+    const layout = positionSegs(segs, thicknesses, false)
     expect(layout.placements).toHaveLength(segs.length)
 
     for (const maxLevels of [0, 1, 2]) {
@@ -685,7 +681,7 @@ describe('degenerate and hostile inputs', () => {
     const unrestricted = positionSegs(
       scenario.segs,
       scenario.thicknesses,
-      { orderStrict: false },
+      false,
     )
     const result = limitDayGridLayout(
       unrestricted,

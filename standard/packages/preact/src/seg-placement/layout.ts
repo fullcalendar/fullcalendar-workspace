@@ -240,7 +240,7 @@ export function areSegThicknessesSettled<EventMeta>(
 export function positionSegs<EventMeta>(
   eventOrderedSegs: readonly SourceSeg<EventMeta>[],
   thicknesses: SegThicknessMap,
-  options: { orderStrict: boolean },
+  orderStrict: boolean,
 ): PlacementLayout<EventMeta> {
   const levels: PlacementLevel<EventMeta>[] = []
   const placements: Placement<EventMeta>[] = []
@@ -257,7 +257,7 @@ export function positionSegs<EventMeta>(
       levels,
       slice,
       thickness,
-      options.orderStrict,
+      orderStrict,
     )!
     placements.push(commitToLevel(
       levels,
@@ -288,7 +288,7 @@ export function positionSegsWithUnitThickness<EventMeta>(
   return positionSegs(
     eventOrderedSegs,
     new Map(eventOrderedSegs.map((seg) => [seg.key, 1])),
-    { orderStrict },
+    orderStrict,
   )
 }
 

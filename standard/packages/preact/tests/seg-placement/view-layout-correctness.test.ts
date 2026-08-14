@@ -26,9 +26,7 @@ describe('view projection correctness audits', () => {
         seg.key,
         4 + (seed * 7 + index * 11) % 23,
       ]))
-      const unrestricted = positionSegs(segs, thicknesses, {
-        orderStrict: seed % 2 === 0,
-      })
+      const unrestricted = positionSegs(segs, thicknesses, seed % 2 === 0)
       const limited = limitTimelineLayoutByMaxLevel(
         unrestricted,
         seed % 5,

@@ -205,7 +205,7 @@ export function buildTimelineSegPlacements(
   const unrestricted = positionSegs(
     plan.mountedSegs,
     segHeights,
-    { orderStrict: plan.orderStrict },
+    plan.orderStrict,
   )
   const limited = limitTimelineLayoutByMaxLevel(
     unrestricted,

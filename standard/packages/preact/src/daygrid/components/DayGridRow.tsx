@@ -86,7 +86,7 @@ export interface DayGridRowProps {
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 /** What the screen placement route hands the render tree. */
-interface DayGridRowColumns {
+interface DayGridScreenLayout {
   columns: DayGridSegPlacementColumn[]
   /** Positioned node tops by node key, for aligning drag/resize mirrors. */
   segTops: ReadonlyMap<string, number>
@@ -183,7 +183,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
       // TODO: memoize?
       const [maxMainTop, minMainHeight] = this.computeFgDims()
-      const screenLayout = this.buildEngineColumns(placementPlan, minMainHeight)
+      const screenLayout = this.buildScreenLayout(placementPlan, minMainHeight)
       screenColumns = screenLayout.columns
       screenMaxMainTop = maxMainTop
       screenMirrorItems = this.buildMirrorItems(screenLayout.segTops)
@@ -507,11 +507,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // Placement routes
   // -----------------------------------------------------------------------------------------------
 
-  /** Every screen mode, positioned and limited by the shared engine. */
-  private buildEngineColumns(
+  /** Builds the positioned and limited layout for every screen mode. */
+  private buildScreenLayout(
     placementPlan: DayGridSegPlacementPlan,
     eventAreaHeight: number | undefined,
-  ): DayGridRowColumns {
+  ): DayGridScreenLayout {
     const { props } = this
 
     // TODO: memoize?

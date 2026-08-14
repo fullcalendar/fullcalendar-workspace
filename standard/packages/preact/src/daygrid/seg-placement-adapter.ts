@@ -194,7 +194,7 @@ export function buildDayGridSegPlacements(
     const unrestricted = positionSegs(
       plan.mountedSegs,
       segHeights,
-      { orderStrict: plan.orderStrict },
+      plan.orderStrict,
     )
     limited = limitDayGridLayout(
       unrestricted,

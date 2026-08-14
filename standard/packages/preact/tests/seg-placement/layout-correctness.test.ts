@@ -67,7 +67,7 @@ describe('independent layout correctness audits', () => {
         const layout = positionSegs(
           scenario.segs,
           scenario.thicknesses,
-          { orderStrict },
+          orderStrict,
         )
         auditPlacementLayout(
           layout,
@@ -92,7 +92,7 @@ describe('independent layout correctness audits', () => {
         const unrestricted = positionSegs(
           scenario.segs,
           scenario.thicknesses,
-          { orderStrict: options.orderStrict },
+          options.orderStrict,
         )
         const levelResult = limitLayoutByMaxLevel(
           unrestricted,
@@ -146,7 +146,7 @@ describe('independent layout correctness audits', () => {
         const unrestricted = positionSegs(
           scenario.segs,
           scenario.thicknesses,
-          { orderStrict: options.orderStrict },
+          options.orderStrict,
         )
 
         const levelResult = limitDayGridLayout(
@@ -244,7 +244,7 @@ describe('independent layout correctness audits', () => {
       const unrestricted = positionSegs(
         scenario.segs,
         scenario.thicknesses,
-        { orderStrict: seed % 2 === 0 },
+        seed % 2 === 0,
       )
       const options: SliceOptions = {
         orderStrict: seed % 2 === 0,
@@ -299,9 +299,7 @@ describe('independent layout correctness audits', () => {
     ])
     const scenario = { segs, thicknesses }
     const options = OPTION_MATRIX[0]
-    const unrestricted = positionSegs(segs, thicknesses, {
-      orderStrict: false,
-    })
+    const unrestricted = positionSegs(segs, thicknesses, false)
     const result = limitDayGridLayout(
       unrestricted,
       {
@@ -341,9 +339,7 @@ describe('independent layout correctness audits', () => {
       maxSlices: 1,
       minSliceLength: 2,
     }
-    const unrestricted = positionSegs(segs, thicknesses, {
-      orderStrict: false,
-    })
+    const unrestricted = positionSegs(segs, thicknesses, false)
     const result = limitDayGridLayout(
       unrestricted,
       {
@@ -386,7 +382,7 @@ describe('independent layout correctness audits', () => {
       const unrestricted = positionSegs(
         scenario.segs,
         scenario.thicknesses,
-        { orderStrict: options.orderStrict },
+        options.orderStrict,
       )
       return limitDayGridLayout(
         unrestricted,
@@ -431,9 +427,7 @@ describe('independent layout correctness audits', () => {
       eventSlicing: false,
       maxSlices: 3,
     }
-    const unrestricted = positionSegs(segs, thicknesses, {
-      orderStrict: true,
-    })
+    const unrestricted = positionSegs(segs, thicknesses, true)
     const result = limitDayGridLayout(
       unrestricted,
       {

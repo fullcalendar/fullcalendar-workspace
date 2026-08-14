@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { type DateEnv } from '../../src/protected-api'
+import { type DateEnv } from '@fullcalendar/preact/protected-api'
 import {
   buildTimelinePrintLayout,
   buildTimelinePrintPlan,
-} from '../../../../../premium/packages/preact-scheduler/src/timeline/print-adapter'
+} from '../../src/timeline/print-adapter'
 import {
   buildTimelineSegSources,
   type TimelineEventSeg,
-} from '../../../../../premium/packages/preact-scheduler/src/timeline/seg-placement-adapter'
+} from '../../src/timeline/seg-placement-adapter'
 import {
   type TimelineDateProfile,
-} from '../../../../../premium/packages/preact-scheduler/src/timeline/timeline-date-profile'
+} from '../../src/timeline/timeline-date-profile'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 const MS_PER_DAY = 24 * MS_PER_HOUR
