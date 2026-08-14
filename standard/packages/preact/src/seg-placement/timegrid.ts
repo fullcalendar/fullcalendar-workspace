@@ -11,10 +11,8 @@
  * TimeGrid event wrappers do not contribute measured thicknesses to this
  * calculation. Every seg receives unit thickness while the common layer
  * builds and limits the level federation. This module then treats those
- * levels as a collision DAG and pressure-expands the visible events across a
- * normalized level-axis range from 0 through 1. Each event's level coordinate
- * is constrained by every shallower collider, rather than whichever recursive
- * path happened to reach a shared child first.
+ * levels as a collision web and pressure-expands the visible events across a
+ * normalized level-axis range from 0 through 1.
  *
  * The more links are a final overlay projection. They group intersecting
  * hidden time spans, but consume no level-axis thickness and impose no tax on
@@ -128,106 +126,115 @@ export function layoutTimeGridColumnByMaxLevel<EventMeta>(
 /**
  * Turns a retained level federation into normalized placement rectangles.
  *
- * Placements are processed from shallower to deeper levels. Every placement
- * begins beyond the natural level end of every shallower collider. Its
- * remaining space is divided by the longest forward collision pressure, so a
- * later collider can never force it past the normalized canvas edge.
+ * Each connected collision component shares equal-width base columns. An
+ * event then expands through consecutive deeper columns until the first one
+ * containing a collider. This keeps dense sibling chains visually even while
+ * still allowing unconstrained events to use the available width.
  *
- * The keyed map this builds is only the by-key lookup those earlier colliders
- * are read through, so the placements come back as a plain level-ordered array
- * for the caller to reorder for the DOM.
+ * A single intersection sweep records each placement's deeper colliders.
+ * Every derived quantity reads that one adjacency: components come from
+ * unioning across it, expansion stops at its shallowest entry, and both chain
+ * depths are longest paths over it. Collision is symmetric, so the deeper
+ * direction alone carries the whole graph.
  */
 function positionTimeGridPlacements<EventMeta>(
   levels: readonly PlacementLevel<EventMeta>[],
 ): TimeGridPlacement<EventMeta>[] {
-  const forwardPressures = calculateTimeGridForwardPressures(levels)
-  const placementByKey = new Map<string, TimeGridPlacement<EventMeta>>()
+  // Level order matters below: every placement precedes its deeper colliders.
+  const placements = levels.flatMap((level) => level)
+  const collidersByKey = new Map<string, Placement<EventMeta>[]>()
+  const parentByKey = new Map(placements.map((placement) => [
+    placement.sourceSeg.key,
+    placement.sourceSeg.key,
+  ]))
 
-  // Process levels from shallowest to deepest so every earlier collider has
-  // already received its final level-axis position.
-  for (const [levelIndex, level] of levels.entries()) {
-    for (const placement of level) {
-      let levelCoord = 0
-      let backwardDepth = 0
-
-      // A placement can collide with events in several earlier levels. Begin
-      // after the furthest-reaching one, and retain the longest backward chain.
-      for (
-        let earlierLevelIndex = 0;
-        earlierLevelIndex < levelIndex;
-        earlierLevelIndex++
-      ) {
-        const earlierLevel = levels[earlierLevelIndex]!
-        for (const earlier of findLevelIntersections(earlierLevel, placement)) {
-          const earlierPosition = placementByKey.get(earlier.sourceSeg.key)!
-          levelCoord = Math.max(
-            levelCoord,
-            earlierPosition.levelEndCoord,
-          )
-          backwardDepth = Math.max(
-            backwardDepth,
-            earlierPosition.backwardDepth + 1,
-          )
-        }
-      }
-
-      // Reserve equal shares of the remaining space for this placement and
-      // the longest chain of colliders that can follow it.
-      const pressure = forwardPressures.get(placement.sourceSeg.key)!
-      const thickness = (1 - levelCoord) / pressure
-      const levelEndCoord = levelCoord + thickness
-
-      placementByKey.set(placement.sourceSeg.key, {
-        ...placement,
-        levelCoord,
-        thickness,
-        levelEndCoord,
-        backwardDepth,
-        forwardDepth: pressure - 1,
-      })
+  for (const placement of placements) {
+    const colliders: Placement<EventMeta>[] = []
+    for (let levelIndex = placement.levelIndex + 1; levelIndex < levels.length; levelIndex++) {
+      colliders.push(...findLevelIntersections(levels[levelIndex], placement))
+    }
+    collidersByKey.set(placement.sourceSeg.key, colliders)
+    for (const collider of colliders) {
+      unionPlacementKeys(parentByKey, placement.sourceSeg.key, collider.sourceSeg.key)
     }
   }
 
-  return [...placementByKey.values()]
+  const maxLevelByRoot = new Map<string, number>()
+  for (const placement of placements) {
+    const root = findPlacementRoot(parentByKey, placement.sourceSeg.key)
+    maxLevelByRoot.set(root, Math.max(
+      maxLevelByRoot.get(root) ?? 0,
+      placement.levelIndex,
+    ))
+  }
+
+  // Longest chains through the collision graph, as dynamic programming over
+  // the adjacency. The backward pass runs shallow-to-deep so a placement's
+  // depth is final before it feeds its deeper colliders; the forward pass runs
+  // deep-to-shallow for the mirrored reason.
+  const backwardDepthByKey = new Map(placements.map((placement) => [placement.sourceSeg.key, 0]))
+  const forwardDepthByKey = new Map(placements.map((placement) => [placement.sourceSeg.key, 0]))
+
+  for (const placement of placements) {
+    const depth = backwardDepthByKey.get(placement.sourceSeg.key)! + 1
+    for (const collider of collidersByKey.get(placement.sourceSeg.key)!) {
+      backwardDepthByKey.set(collider.sourceSeg.key, Math.max(
+        backwardDepthByKey.get(collider.sourceSeg.key)!,
+        depth,
+      ))
+    }
+  }
+
+  for (let index = placements.length - 1; index >= 0; index--) {
+    const placement = placements[index]
+    let depth = 0
+    for (const collider of collidersByKey.get(placement.sourceSeg.key)!) {
+      depth = Math.max(depth, forwardDepthByKey.get(collider.sourceSeg.key)! + 1)
+    }
+    forwardDepthByKey.set(placement.sourceSeg.key, depth)
+  }
+
+  return placements.map((placement) => {
+    const key = placement.sourceSeg.key
+    const levelCount = maxLevelByRoot.get(findPlacementRoot(parentByKey, key))! + 1
+
+    // Expand until the shallowest deeper collider. Colliders always share the
+    // component, so their levels stay within its column count.
+    let farLevel = levelCount
+    for (const collider of collidersByKey.get(key)!) {
+      farLevel = Math.min(farLevel, collider.levelIndex)
+    }
+
+    const levelCoord = placement.levelIndex / levelCount
+    const thickness = (farLevel - placement.levelIndex) / levelCount
+    return {
+      ...placement,
+      levelCoord,
+      thickness,
+      levelEndCoord: levelCoord + thickness,
+      backwardDepth: backwardDepthByKey.get(key)!,
+      forwardDepth: forwardDepthByKey.get(key)!,
+    }
+  })
 }
 
-/** Finds the longest strictly deeper collision chain from every placement. */
-function calculateTimeGridForwardPressures<EventMeta>(
-  levels: readonly PlacementLevel<EventMeta>[],
-): ReadonlyMap<string, number> {
-  const forwardPressures = new Map<string, number>()
+function findPlacementRoot(
+  parentByKey: Map<string, string>,
+  key: string,
+): string {
+  const parent = parentByKey.get(key)!
+  if (parent === key) return key
+  const root = findPlacementRoot(parentByKey, parent)
+  parentByKey.set(key, root)
+  return root
+}
 
-  // Work from deepest to shallowest so every possible forward collider has
-  // already had its own forward pressure calculated.
-  for (let levelIndex = levels.length - 1; levelIndex >= 0; levelIndex--) {
-    const level = levels[levelIndex]!
-
-    for (const placement of level) {
-      let maximumForwardPressure = 0
-
-      // A collision in any deeper level can continue the chain. The longest
-      // such continuation determines how much space this placement must save.
-      for (
-        let laterLevelIndex = levelIndex + 1;
-        laterLevelIndex < levels.length;
-        laterLevelIndex++
-      ) {
-        const laterLevel = levels[laterLevelIndex]!
-        for (const later of findLevelIntersections(laterLevel, placement)) {
-          maximumForwardPressure = Math.max(
-            maximumForwardPressure,
-            forwardPressures.get(later.sourceSeg.key)!,
-          )
-        }
-      }
-
-      // Include the placement itself in the pressure count.
-      forwardPressures.set(
-        placement.sourceSeg.key,
-        1 + maximumForwardPressure,
-      )
-    }
-  }
-
-  return forwardPressures
+function unionPlacementKeys(
+  parentByKey: Map<string, string>,
+  first: string,
+  second: string,
+): void {
+  const firstRoot = findPlacementRoot(parentByKey, first)
+  const secondRoot = findPlacementRoot(parentByKey, second)
+  if (firstRoot !== secondRoot) parentByKey.set(secondRoot, firstRoot)
 }
