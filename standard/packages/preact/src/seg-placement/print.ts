@@ -24,11 +24,10 @@ export const DEFAULT_PRINT_MAX_LEVELS = 200
 export function planPrintDomCandidates<EventMeta>(
   eventOrderedSegs: readonly SourceSeg<EventMeta>[],
   sliceOptions: SliceOptions,
-  printMaxLevels = DEFAULT_PRINT_MAX_LEVELS,
 ): DomCandidatePlan<EventMeta> {
   return planDomCandidatesByMaxLevel(
     eventOrderedSegs,
-    printMaxLevels,
+    DEFAULT_PRINT_MAX_LEVELS,
     sliceOptions,
   )
 }
@@ -111,14 +110,14 @@ export function buildPrintEventBands<EventMeta>(
 export function buildPrintMoreLinkBand<EventMeta>(
   moreLinkGroups: readonly HiddenSliceGroup<EventMeta>[],
   printMoreLinkHeights: ReadonlyMap<string, number>,
-  defaultPrintMoreLinkHeight = DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
 ): PrintMoreLinkBand<EventMeta> | null {
   if (!moreLinkGroups.length) return null
 
   return {
     moreLinkGroups: [...moreLinkGroups],
     thickness: Math.max(...moreLinkGroups.map((group) =>
-      printMoreLinkHeights.get(group.key) ?? defaultPrintMoreLinkHeight,
+      printMoreLinkHeights.get(group.key) ??
+        DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
     )),
   }
 }

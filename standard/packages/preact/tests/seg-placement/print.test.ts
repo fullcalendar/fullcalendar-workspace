@@ -3,6 +3,7 @@ import {
   type PlacementLevel,
   type SliceOptions,
   groupHiddenSlices,
+  planDomCandidatesByMaxLevel,
 } from '../../src/seg-placement/layout'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
@@ -98,19 +99,6 @@ describe('print DOM planning', () => {
       segs.slice(DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key),
     )
   })
-
-  it('accepts a smaller internal cap for direct planning', () => {
-    const segs = stampEventOrder(Array.from(
-      { length: 5 },
-      (_, index) => seg(String(index), 0, 1),
-    ))
-    const plan = planPrintDomCandidates(segs, NO_SLICING, 2)
-
-    expect(plan.levels).toHaveLength(2)
-    expect(plan.visiblePlacements).toHaveLength(2)
-    expect(plan.hiddenSlices).toHaveLength(3)
-    expect(plan.mountedSegs.map((item) => item.key)).toEqual(['0', '1'])
-  })
 })
 
 describe('Timeline print more-link band', () => {
@@ -119,10 +107,10 @@ describe('Timeline print more-link band', () => {
   })
 
   it('uses fallback and measured maxima and allows the band to shrink', () => {
-    const hiddenPlan = planPrintDomCandidates(stampEventOrder([
+    const hiddenPlan = planDomCandidatesByMaxLevel(stampEventOrder([
       seg('left-hidden', 0, 1),
       seg('right-hidden', 2, 3),
-    ]), NO_SLICING, 0)
+    ]), 0, NO_SLICING)
     const groups = groupHiddenSlices(hiddenPlan.hiddenSlices)
 
     expect(buildPrintMoreLinkBand(
@@ -146,11 +134,11 @@ describe('Timeline print more-link band', () => {
   })
 
   it('adds a final link band without consuming a capped event level', () => {
-    const plan = planPrintDomCandidates(stampEventOrder([
+    const plan = planDomCandidatesByMaxLevel(stampEventOrder([
       seg('visible-a', 0, 1),
       seg('visible-b', 0, 1),
       seg('hidden', 0, 1),
-    ]), NO_SLICING, 2)
+    ]), 2, NO_SLICING)
     const eventBands = buildPrintEventBands(plan.levels, new Map())
     const groups = groupHiddenSlices(plan.hiddenSlices)
     const linkBand = buildPrintMoreLinkBand(groups, new Map())

@@ -202,6 +202,9 @@ export const DEFAULT_UNMEASURED_MORE_LINK_THICKNESS = 20
 
 export const GEOMETRY_TOLERANCE = 0.000_001
 
+/** Fixed score cost per additional visible slice. */
+const SLICE_PENALTY = 0.15
+
 /* ========================================================================
  * Unrestricted placement
  * ===================================================================== */
@@ -617,8 +620,6 @@ export interface SliceOptions {
   orderStrict: boolean
   eventSlicing: boolean
   maxSlices: 1 | 2 | 3
-  /** Agreed cost per additional visible slice. Default: 15%. */
-  slicePenalty?: number
   /** Lateral slivers below this length are not plausible visible slices. */
   minSliceLength?: number
 }
@@ -842,7 +843,6 @@ export function resolveSliceCandidateOptions(
   return {
     orderStrict: options.orderStrict,
     maxSlices: options.maxSlices,
-    slicePenalty: options.slicePenalty ?? 0.15,
     minSliceLength: options.minSliceLength ?? 0,
   }
 }
@@ -1176,7 +1176,7 @@ function findFreeRunsAtPosition<EventMeta>(
 function selectBestSlicePlan<EventMeta>(
   source: Slice<EventMeta>,
   positions: readonly SlicePosition<EventMeta>[],
-  options: Pick<SliceCandidateOptions, 'maxSlices' | 'slicePenalty'>,
+  options: Pick<SliceCandidateOptions, 'maxSlices'>,
 ): SlicePlan<EventMeta> | null {
   const sourceLength = getSpanLength(source)
   let selected: SlicePlan<EventMeta> | null = null
@@ -1196,7 +1196,7 @@ function selectBestSlicePlan<EventMeta>(
         slices: runs.slice(0, count).sort((a, b) => a.start - b.start),
         visibleLength,
         score: visibleLength / sourceLength -
-          options.slicePenalty * (count - 1),
+          SLICE_PENALTY * (count - 1),
       }
       if (isBetterScoredPlan(plan, selected)) selected = plan
     }
