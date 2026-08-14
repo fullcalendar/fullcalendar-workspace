@@ -1,4 +1,4 @@
-import { CoordSpan, DateEnv, DateMarker, DateProfile, DateSpan, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
+import { CoordRange, DateEnv, DateMarker, DateProfile, DateSpan, multiplyDuration, startOfDay } from '@fullcalendar/preact/protected-api';
 import { TimelineDateProfile } from './timeline-date-profile'
 import { Duration } from '@fullcalendar/preact/public-api'
 import { computeDateSnapCoverage, computeMsSlotCoverage } from './TimelineCoords'
@@ -88,6 +88,26 @@ export function msToCoord( // pixels
   return computeMsSlotCoverage(dateMs, tDateProfile) * slotWidth
 }
 
+/**
+ * Projects one seg onto the slot axis, as a range rather than a span.
+ *
+ * Both endpoints come from the projection. That matters because placement
+ * compares one seg's `end` against the next seg's `start` with no tolerance,
+ * and deriving an end as `start + size` does not agree bit-for-bit with a
+ * projected one: `(s - c) + (e - s)` can land an ulp above `e - c` even though
+ * they are algebraically equal. That is enough to read two abutting events as
+ * overlapping and spend a whole extra level on them — measurably, for roughly
+ * one adjacency in 250 at ordinary liquid slot widths.
+ *
+ * A projected end is trustworthy because projection is deterministic: the same
+ * instant through `msToCoord` twice is bit-identical, so an end taken from it
+ * equals the neighbor's start exactly. Returning no `size` is deliberate — it
+ * leaves nothing to rebuild an end from. Callers wanting a CSS width take
+ * `end - start`, where an ulp cannot render anyway.
+ *
+ * The one derived endpoint is a seg stretched to `segMinWidth`, which has no
+ * projected end to keep.
+ */
 export function computeSegHorizontals(
   seg: TimelineRange,
   segMinWidth: number | undefined,
@@ -96,7 +116,7 @@ export function computeSegHorizontals(
   slotWidth: number,
   clipStart = 0, // uses it as a new origin!
   clipEnd = Infinity,
-): CoordSpan | undefined {
+): CoordRange | undefined {
   // segs on timed axes always carry exact instants; whole-day axes position by civil marker
   let startCoord = seg.startMs != null
     ? msToCoord(seg.startMs, tDateProfile, slotWidth)
@@ -109,12 +129,14 @@ export function computeSegHorizontals(
   endCoord = Math.min(endCoord, clipEnd)
 
   if (startCoord < endCoord) {
-    let size = endCoord - startCoord
-    if (segMinWidth) {
-      size = Math.max(size, segMinWidth)
+    const start = startCoord - clipStart
+    let end = endCoord - clipStart
+
+    if (segMinWidth && end - start < segMinWidth) {
+      end = start + segMinWidth
     }
 
-    return { start: startCoord - clipStart, size }
+    return { start, end }
   }
 }
 

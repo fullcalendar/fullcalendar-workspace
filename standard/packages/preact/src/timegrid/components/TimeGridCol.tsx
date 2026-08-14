@@ -20,6 +20,7 @@ import {
   type TimeGridSegPlacement,
   type TimeGridSegVertical,
 } from '../seg-placement-adapter'
+import { ESTIMATED_SLAT_HEIGHT } from '../slat-estimate'
 import { computeTimeGridPrintMode } from '../print-mode'
 import { TimeGridEvent } from './TimeGridEvent'
 import { TimeGridMoreLink } from './TimeGridMoreLink'
@@ -275,17 +276,23 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     )
   }
 
+  /*
+  A pixel floor is only meaningful against a real slat height, so it stays off
+  while the height is assumed. See ESTIMATED_SLAT_HEIGHT for why, and for what
+  the assumed pass does and does not guarantee.
+  */
   // TODO: memoize this?
   computeSegVerticals(segs: (TimeGridRange & EventRangeProps)[]) {
     let { props, context } = this
+    let isMeasured = props.slatHeight != null
 
     return computeFgSegVerticals(
       segs,
       props.dateProfile,
       props.date,
       props.slatCnt,
-      props.slatHeight,
-      context.options.eventMinHeight,
+      props.slatHeight ?? ESTIMATED_SLAT_HEIGHT,
+      isMeasured ? context.options.eventMinHeight : undefined,
       context.options.eventShortHeight,
     )
   }

@@ -21,6 +21,7 @@ import {
   type TimelineSegDomItem,
   type TimelineSegMoreLink,
 } from '../seg-placement-adapter'
+import { ESTIMATED_SLOT_WIDTH } from '../slot-estimate'
 import { computeSegHorizontals } from '../timeline-positioning'
 
 export interface TimelineFgProps {
@@ -74,6 +75,17 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private totalHeightSettled?: boolean
   private firedTotalHeight?: number
 
+  /*
+  A pixel floor is only meaningful against a real width, so it stays off while
+  the width is assumed. See ESTIMATED_SLOT_WIDTH for why, and for what the
+  assumed pass does and does not guarantee.
+  */
+  private getEffectiveEventMinWidth(): number | undefined {
+    return this.props.slotWidth != null
+      ? this.context.options.eventMinWidth
+      : undefined
+  }
+
   render() {
     let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
     let { options } = context
@@ -89,8 +101,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       fgSegs,
       context.dateEnv,
       tDateProfile,
-      props.slotWidth ?? 0,
-      options.eventMinWidth,
+      props.slotWidth ?? ESTIMATED_SLOT_WIDTH,
+      this.getEffectiveEventMinWidth(),
       options.eventOrderStrict,
       options.eventMaxStack,
       props.clipStart,
@@ -109,7 +121,21 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     }
 
     this.totalHeight = placementResult.contentHeight
-    this.totalHeightSettled = plan.allSegsProjected && placementResult.allHeightsSettled
+    /*
+    An assumed slot width may paint, but it may not report a height upward.
+    Height is latched by the consumer, and `allSegsProjected` can go false later
+    — a virtualized clip that excludes any seg blocks every subsequent fire — so
+    a provisional height reported now could be the last one a resource lane ever
+    receives.
+
+    Once the width is measured the remaining gates are unchanged, so no lane
+    loses a height it used to get. The one deliberate difference: an empty lane
+    used to report 0 immediately, and now waits for the width. That strictness
+    is wanted — it stops an empty lane from latching 0 before its events arrive.
+    */
+    this.totalHeightSettled = props.slotWidth != null &&
+      plan.allSegsProjected &&
+      placementResult.allHeightsSettled
 
     return (
       <div
@@ -180,17 +206,16 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     fgSegTops: ReadonlyMap<string, number>,
   ) {
     const { props, context } = this
-    const { options } = context
 
     return segs.map((seg) => {
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
       const horizontal = computeSegHorizontals(
         seg,
-        options.eventMinWidth,
+        this.getEffectiveEventMinWidth(),
         context.dateEnv,
         props.tDateProfile,
-        props.slotWidth ?? 0,
+        props.slotWidth ?? ESTIMATED_SLOT_WIDTH,
         props.clipStart,
         props.clipEnd,
       )
@@ -205,7 +230,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
             top: fgSegTops.get(instanceId) ?? 0,
             insetInlineStart: horizontal?.start,
-            width: horizontal?.size,
+            width: horizontal && horizontal.end - horizontal.start,
           }}
         >
           <TimelineEvent

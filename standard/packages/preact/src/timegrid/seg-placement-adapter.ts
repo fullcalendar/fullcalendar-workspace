@@ -17,11 +17,16 @@ export interface TimeGridSegVertical {
 }
 
 /**
- * Projects production's date range onto the measured slat canvas.
+ * Projects production's date range onto the slat canvas.
  *
  * This is TimeGrid's production-specific coordinate conversion: it owns hidden
  * days, DST, and `eventMinHeight`. The shared engine consumes only the numbers
- * it produces. An unmeasured canvas yields no verticals at all.
+ * it produces.
+ *
+ * The canvas height may be assumed rather than measured — callers substitute
+ * `ESTIMATED_SLAT_HEIGHT` so the first paint contains events — in which case
+ * they also pass no `eventMinHeight`. A null height still yields no verticals,
+ * but no production caller passes one.
  */
 export function computeFgSegVerticals(
   segs: TimeGridRange[],
@@ -91,10 +96,11 @@ export interface TimeGridSegPlacementResult {
  * Adapts production TimeGrid segs to and from the shared placement engine.
  *
  * The caller owns vertical geometry: `segVerticals` already incorporates
- * clipping and `eventMinHeight`, and missing entries are excluded while slat
- * dimensions are unavailable. The engine owns only admission and normalized
- * horizontal placement. `slotEventOverlap` remains a final CSS concern, and
- * mirrors deliberately stay outside this normal-event admission path.
+ * clipping, and `eventMinHeight` too once the slat height is measured — the
+ * caller withholds that floor while the height is only assumed. Any missing
+ * entry is excluded. The engine owns only admission and normalized horizontal
+ * placement. `slotEventOverlap` remains a final CSS concern, and mirrors
+ * deliberately stay outside this normal-event admission path.
  */
 export function buildTimeGridSegPlacements(
   segs: TimeGridEventSeg[],

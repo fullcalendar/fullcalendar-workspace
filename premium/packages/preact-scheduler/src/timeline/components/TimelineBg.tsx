@@ -5,6 +5,7 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { computeSegHorizontals } from '../timeline-positioning'
+import { ESTIMATED_SLOT_WIDTH } from '../slot-estimate'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineDateProfile } from '../timeline-date-profile'
 
@@ -45,16 +46,20 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
   renderSegs(segs: (TimelineRange & EventRangeProps)[], fillType: string) {
     const { props, context } = this
     const { dateEnv, options } = context
-    const { tDateProfile, todayRange, nowDate, slotWidth } = props
+    const { tDateProfile, todayRange, nowDate } = props
     const clipStart = props.clipStart ?? 0
     const clipEnd = props.clipEnd ?? Infinity
+    // fills follow the same assumed-then-measured path as events, so the first
+    // paint isn't missing its background while the foreground is present
+    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
 
     return (
       <>
         {segs.map((seg) => {
-          if (slotWidth != null) {
-            let { start, size } = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)!
-            let end = start + size
+          const horizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
+
+          if (horizontal) {
+            let { start, end } = horizontal
             start = Math.max(start, clipStart)
             end = Math.min(end, clipEnd)
 

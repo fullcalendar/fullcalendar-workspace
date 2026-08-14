@@ -8,7 +8,6 @@ import {
   areSegThicknessesSettled,
   calculateTimelineContentHeight,
   getEventKey,
-  greatestDurationDenominator,
   limitTimelineLayoutByMaxLevel,
   planDomCandidatesByMaxLevel,
   positionSegs,
@@ -127,8 +126,19 @@ function computeTimelineSegStart(seg: TimelineEventSeg): number {
  * Builds shared-engine sources from production's already-projected spans.
  *
  * `orderIndex` is the index in the caller's resolved event-order array, even
- * when clipping removes an earlier seg. Endpoint normalization happens only
- * after projection, clipping, and `eventMinWidth` have been applied.
+ * when clipping removes an earlier seg.
+ *
+ * Coordinates go in exactly as projected, with no rounding or tolerance, which
+ * is how this worked before the shared engine existed. Placement therefore
+ * reacts to whatever the projection produces, down to the last bit: an overlap
+ * of any width costs a whole level.
+ *
+ * That precision is only safe because the endpoints come from the projection
+ * rather than being rebuilt from each other — see `TimelineSegHorizontals.end`,
+ * which also covers the one case that is derived, a seg stretched to
+ * `eventMinWidth`. Deriving the end as `start + size` would reintroduce
+ * ulp-level disagreements between abutting events, which is exactly what a
+ * quantizer would then have to hide.
  */
 export function buildTimelineSegSources(
   segs: TimelineEventSeg[],
@@ -139,7 +149,6 @@ export function buildTimelineSegSources(
   clipStart = 0,
   clipEnd = Infinity,
 ): SourceSeg<TimelineEventSeg>[] {
-  const coordQuantum = computeTimelineCoordQuantum(tDateProfile, slotWidth)
   const sourceSegs: SourceSeg<TimelineEventSeg>[] = []
 
   for (let orderIndex = 0; orderIndex < segs.length; orderIndex += 1) {
@@ -157,11 +166,8 @@ export function buildTimelineSegSources(
     if (horizontal) {
       sourceSegs.push({
         key: getEventKey(seg),
-        start: normalizeTimelineCoord(horizontal.start, coordQuantum),
-        end: normalizeTimelineCoord(
-          horizontal.start + horizontal.size,
-          coordQuantum,
-        ),
+        start: horizontal.start,
+        end: horizontal.end,
         isStart: seg.isStart,
         isEnd: seg.isEnd,
         meta: seg,
@@ -233,44 +239,6 @@ export function buildTimelineSegPlacements(
     ),
     allHeightsSettled: true,
   }
-}
-
-/**
- * Chooses a projected-pixel quantum one named unit finer than one slot.
- *
- * The duration denominator supplies both the slot's named unit and its count.
- * Months and years use the same rough day/month ratios as production duration
- * conversion; actual date projection has already happened before this value is
- * used. A non-positive slot width disables normalization during initial sizing.
- */
-export function computeTimelineCoordQuantum(
-  tDateProfile: TimelineDateProfile,
-  slotWidth: number,
-): number {
-  if (!(slotWidth > 0)) return 0
-
-  const denominator = greatestDurationDenominator(tDateProfile.slotDuration)
-  const finerUnitsPerUnit: Record<string, number> = {
-    year: 12,
-    month: 30,
-    week: 7,
-    day: 24,
-    hour: 60,
-    minute: 60,
-    second: 1000,
-    millisecond: 1,
-  }
-  const subdivisionCount = Math.abs(denominator.value) *
-    (finerUnitsPerUnit[denominator.unit] ?? 1)
-
-  return subdivisionCount > 0 ? slotWidth / subdivisionCount : 0
-}
-
-function normalizeTimelineCoord(coord: number, quantum: number): number {
-  if (!(quantum > 0) || !Number.isFinite(coord)) return coord
-
-  const normalized = Math.round(coord / quantum) * quantum
-  return Object.is(normalized, -0) ? 0 : normalized
 }
 
 function buildEventDomItems(

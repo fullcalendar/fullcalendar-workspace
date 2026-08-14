@@ -40,6 +40,7 @@ import { TimelineNowIndicatorLine } from '../../timeline/components/TimelineNowI
 import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
 import { computeTimelineHitData, timeToCoord } from '../../timeline/timeline-positioning'
+import { ESTIMATED_SLOT_WIDTH } from '../../timeline/slot-estimate'
 import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
 import {
   buildResourceLayouts,
@@ -129,7 +130,6 @@ interface ResourceTimelineViewState {
 }
 
 const defaultOwnCellHeight = 40
-const defaultSlotWidth = 50
 
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   state = {} as ResourceTimelineViewState
@@ -230,8 +230,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
   private slotVirtualizer = new Virtualizer<string>(
     (slotKey) => slotKey,
-    (_key, index) => index * (this.props.slotWidth ?? defaultSlotWidth),
-    () => this.props.slotWidth ?? defaultSlotWidth,
+    (_key, index) => index * (this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH),
+    () => this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH,
     this.boundForceUpdate,
     /* overscan = */ 3,
   )
@@ -306,7 +306,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         timeHeaderVirtualizers[i] = new Virtualizer<TimelineHeaderCellData>(
           (cell) => cell.key,
           undefined, // getItemStart (let Virtualizer compute it)
-          (key, index, cell) => cell.colspan * (this.props.slotWidth ?? defaultSlotWidth),
+          (key, index, cell) => cell.colspan * (this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH),
           this.boundForceUpdate,
         )
         // HACK to prepopulate
@@ -415,7 +415,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     /* */
 
     const { timeCanvasWidth } = props
-    const slotWidth = props.slotWidth ?? defaultSlotWidth
+    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
 
     const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
 
@@ -862,7 +862,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
 
                       // dimensions
-                      slotWidth={slotWidth}
+                      slotWidth={props.slotWidth}
 
                       // virtualization
                       clipStart={slotDateShift?.[0]}
@@ -944,7 +944,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
 
                           // dimensions
-                          slotWidth={slotWidth}
+                          slotWidth={props.slotWidth}
 
                           // position
                           top={rowPosition.start}
@@ -1282,7 +1282,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private computeTimeScroll(): number | undefined {
     const { props, context, scroll } = this
     const { tDateProfile } = props
-    const slotWidth = props.slotWidth ?? defaultSlotWidth
+    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
     let { x, time } = scroll
 
     if (time) {
@@ -1427,7 +1427,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   queryHit(isRtl: boolean, positionLeft: number, positionTop: number): Hit {
     let { props, context, bodyLayouts, bodyTops, bodyHeights } = this
     const { dateProfile, tDateProfile, timeCanvasWidth } = props
-    const slotWidth = props.slotWidth ?? defaultSlotWidth
+    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
     const { dateEnv } = context
 
     let coordRes = findEntityByCoord(

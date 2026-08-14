@@ -70,45 +70,19 @@
  * Lateral precision convention
  * ----------------------------
  *
- * Overlap is decided by a strict `<` comparison with no tolerance on the
- * lateral axis. A view whose axis is continuous must therefore normalize
- * endpoint precision before building `SourceSeg` coordinates. Endpoints
- * differing by an imperceptible amount — a one-nanosecond overlap caused by
- * source datetime precision, for example — otherwise collide mathematically
- * and are forced onto separate levels even though they paint as adjacent.
- * Passing every endpoint through one shared quantizer collapses that
- * sub-resolution noise onto a shared coordinate, letting those segs share
- * a level.
+ * Overlap is decided by a strict `<` comparison with no tolerance, and callers
+ * pass their projected coordinates in untouched. No rounding or quantization
+ * happens on either side of this boundary, matching how production behaved
+ * before this engine existed.
  *
- * The quantizer belongs to the caller, since only the view knows its axis
- * unit. Production view adapters own instant-to-slot-unit conversion on top
- * of this contract. Day Grid needs none of it: its coordinates are already
- * whole columns.
+ * Placement therefore reacts to exactly what a caller projects, down to the
+ * last bit: an overlap of any width costs a whole level. Callers wanting
+ * adjacent events to share a level must produce coordinates that are actually
+ * equal — this engine will not round them together.
  *
  * This is unrelated to `getLateralCellRange`, which snaps a span outward to
  * every whole lateral cell it touches so per-cell limits and counts can be
- * attributed to cells. That rounding serves accounting after placement; this
- * convention keeps placement itself from reacting to noise.
- *
- * The rule: round every endpoint to the nearest named time unit one step finer
- * than the slot duration. An hour slot quantizes to the minute, a thirty- or
- * ninety-minute slot to the second, a day slot to the hour.
- *
- * Rounding magnitude is not the quantity to minimize. Overlap is a strict
- * comparison, so a spurious overlap costs a whole level whether it is one
- * millisecond or one minute wide. What matters is how often rounding changes
- * an overlap relationship at all, and that falls as the quantum grows: two
- * endpoints separated by a hair are pushed apart only when a rounding boundary
- * happens to land between them. Tying the quantum to the slot duration also
- * bounds displacement at half a quantum, or 1/120 of a slot, which stays below
- * a pixel at any usable slot width.
- *
- * Round-to-nearest, applied identically to both endpoints, is what makes a
- * coarse quantum safe: two events sharing a real boundary land on one
- * coordinate however coarse the rounding, so adjacent events can never be
- * merged into overlapping ones. An event shorter than the quantum does
- * collapse to zero length, which is deliberate — the view's own lateral
- * minimum restores its width once the axis has been measured.
+ * attributed to cells. That rounding serves accounting after placement.
  */
 
 export interface LateralSpan {

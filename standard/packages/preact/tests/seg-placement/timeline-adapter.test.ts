@@ -4,7 +4,6 @@ import {
   buildTimelineSegPlacementPlan,
   buildTimelineSegPlacements,
   buildTimelineSegSources,
-  computeTimelineCoordQuantum,
   type TimelineEventSeg,
 } from '../../../../../premium/packages/preact-scheduler/src/timeline/seg-placement-adapter'
 import {
@@ -75,7 +74,7 @@ describe('Timeline production placement adapter', () => {
     expect(source.meta).toBe(seg)
   })
 
-  it('applies clipping and eventMinWidth before endpoint normalization', () => {
+  it('applies clipping and eventMinWidth when building sources', () => {
     const profile = uniformTimedProfile(1)
     const offscreen = makeTimedSeg('offscreen', 0, MS_PER_HOUR / 10)
     const clipped = makeTimedSeg(
@@ -104,6 +103,30 @@ describe('Timeline production placement adapter', () => {
     })
   })
 
+  it('gives abutting segs a bit-identical boundary at awkward slot widths', () => {
+    // A liquid slot width of viewportWidth/slatCnt is rarely a round number, and
+    // deriving an end as `start + size` lands an ulp above the neighbor's
+    // directly-projected start often enough to matter. 20.01px with a boundary
+    // at slot 2 + 36/60 is one such case: the derived end would be
+    // 52.02600000000001 against a start of 52.026, which reads as an overlap
+    // and costs a whole level.
+    const profile = uniformTimedProfile(3)
+    const boundaryMs = 2 * MS_PER_HOUR + 36 * 60 * 1000
+    const sources = buildTimelineSegSources(
+      [
+        makeTimedSeg('before', MS_PER_HOUR, boundaryMs),
+        makeTimedSeg('after', boundaryMs, 3 * MS_PER_HOUR),
+      ],
+      undefined,
+      EMPTY_DATE_ENV,
+      profile,
+      20.01,
+    )
+
+    expect(sources[0].end).toBe(sources[1].start)
+    expect(sources[0].end).not.toBeGreaterThan(sources[1].start)
+  })
+
   it('tracks whether every input seg produced horizontal geometry', () => {
     const profile = uniformTimedProfile(2)
     const visible = makeTimedSeg('visible', MS_PER_HOUR, 2 * MS_PER_HOUR)
@@ -128,34 +151,36 @@ describe('Timeline production placement adapter', () => {
     ).allSegsProjected).toBe(false)
   })
 
-  it('normalizes sub-resolution overlap only after production projection', () => {
+  it('shares a level for exact adjacency and splits for any real overlap', () => {
     const profile = uniformTimedProfile(2)
-    const before = makeTimedSeg('before', 0, MS_PER_HOUR)
-    const after = makeTimedSeg(
-      'after',
-      MS_PER_HOUR - 1,
-      2 * MS_PER_HOUR,
-    )
-    const plan = buildTimelineSegPlacementPlan(
-      [before, after],
-      EMPTY_DATE_ENV,
-      profile,
-      120,
-    )
-    const result = buildTimelineSegPlacements(
-      plan,
-      new Map([
-        ['before', 10],
-        ['after', 10],
-      ]),
-      new Map(),
-    )
+    const heights = new Map([['before', 10], ['after', 10]])
+    const placeAfterStartingAt = (afterStartMs: number) => {
+      const plan = buildTimelineSegPlacementPlan(
+        [
+          makeTimedSeg('before', 0, MS_PER_HOUR),
+          makeTimedSeg('after', afterStartMs, 2 * MS_PER_HOUR),
+        ],
+        EMPTY_DATE_ENV,
+        profile,
+        120,
+      )
+      return [plan, buildTimelineSegPlacements(plan, heights, new Map())] as const
+    }
 
-    expect(computeTimelineCoordQuantum(profile, 120)).toBe(2)
-    expect(plan.mountedSegs[0].end).toBe(120)
-    expect(plan.mountedSegs[1].start).toBe(120)
-    expect(result.eventDomItems.map((item) => item.placement?.top))
+    // exact adjacency: both endpoints derive the same coordinate from the same
+    // instant, so no rounding is needed to keep them off each other's level
+    const [adjacentPlan, adjacent] = placeAfterStartingAt(MS_PER_HOUR)
+    expect(adjacentPlan.mountedSegs[0].end).toBe(120)
+    expect(adjacentPlan.mountedSegs[1].start).toBe(120)
+    expect(adjacent.eventDomItems.map((item) => item.placement?.top))
       .toEqual([0, 0])
+
+    // a genuine 1ms overlap stays an overlap. coordinates are never rounded, so
+    // these take separate levels — long-standing behavior, deliberately kept
+    const [overlapPlan, overlapping] = placeAfterStartingAt(MS_PER_HOUR - 1)
+    expect(overlapPlan.mountedSegs[1].start).toBeLessThan(120)
+    expect(overlapping.eventDomItems.map((item) => item.placement?.top))
+      .toEqual([0, 10])
   })
 
   it('keeps permanent event nodes in temporal-start then resolved order', () => {
