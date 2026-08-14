@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>DayGrid Event Placement and Print</title>
+
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/skeleton.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/theme.css' />
+<link rel='stylesheet' href='../../../../standard/packages/vanilla/dist/themes/classic/palette.css' />
+
+<script src='../../../../standard/packages/vanilla/dist/all/global.js'></script>
+<script src='../../../../standard/packages/vanilla/dist/themes/classic/global.js'></script>
+<script src='../../vanilla-scheduler/dist/all/global.js'></script>
+<script>
+
+  var aspectRatio = 1.8;
+  var varyingEventHeights = false;
+
+  function formatDate(date) {
+    return date.getFullYear() + '-' +
+      String(date.getMonth() + 1).padStart(2, '0') + '-' +
+      String(date.getDate()).padStart(2, '0');
+  }
+
+  function buildEvents() {
+    var events = [];
+    var firstDate = new Date(2026, 6, 26);
+
+    for (var dayIndex = 0; dayIndex < 42; dayIndex++) {
+      for (var eventIndex = 0; eventIndex < 20; eventIndex++) {
+        var start = new Date(firstDate);
+        var end = new Date(firstDate);
+        var duration = eventIndex % 9 === 0 ? 3 : eventIndex % 4 === 0 ? 2 : 1;
+
+        start.setDate(start.getDate() + dayIndex);
+        end.setDate(end.getDate() + dayIndex + duration);
+        events.push({
+          id: dayIndex + ':' + eventIndex,
+          title: 'Event ' + (dayIndex + 1) + '.' + (eventIndex + 1),
+          start: formatDate(start),
+          end: formatDate(end),
+          extraLineCount: eventIndex % 3
+        });
+      }
+    }
+
+    return events;
+  }
+
+  function renderEventContent(arg) {
+    var contentEl = document.createElement('div');
+    var extraLineCount = varyingEventHeights ? arg.event.extendedProps.extraLineCount : 0;
+
+    contentEl.textContent = arg.event.title;
+    for (var lineIndex = 0; lineIndex < extraLineCount; lineIndex++) {
+      var detailEl = document.createElement('div');
+
+      detailEl.className = 'event-detail';
+      detailEl.textContent = 'Extra detail ' + (lineIndex + 1);
+      contentEl.appendChild(detailEl);
+    }
+
+    return { domNodes: [contentEl] };
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var aspectRatioOutputEl = document.getElementById('aspect-ratio-value');
+    var varyingHeightsEl = document.getElementById('varying-heights');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialDate: '2026-08-15',
+      initialView: 'dayGridMonth',
+      aspectRatio: aspectRatio,
+      dayMaxEvents: true,
+      eventContent: renderEventContent,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: ''
+      },
+      events: buildEvents()
+    });
+
+    function updateAspectRatio(nextAspectRatio) {
+      aspectRatio = Math.min(3, Math.max(0.6, nextAspectRatio));
+      aspectRatioOutputEl.textContent = aspectRatio.toFixed(1);
+      calendar.setOption('aspectRatio', aspectRatio);
+    }
+
+    document.getElementById('aspect-ratio-down').addEventListener('click', function() {
+      updateAspectRatio(aspectRatio - 0.2);
+    });
+    document.getElementById('aspect-ratio-up').addEventListener('click', function() {
+      updateAspectRatio(aspectRatio + 0.2);
+    });
+    varyingHeightsEl.addEventListener('change', function() {
+      varyingEventHeights = varyingHeightsEl.checked;
+      calendar.rerenderEvents();
+    });
+
+    calendar.render();
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  .controls,
+  #calendar {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .controls output {
+    min-width: 3ch;
+    text-align: center;
+  }
+
+  .controls label {
+    margin-left: 12px;
+  }
+
+  .event-detail {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  @media print {
+    body {
+      margin: 0;
+    }
+
+    .controls {
+      display: none;
+    }
+
+    #calendar {
+      max-width: none;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+  <div class='controls'>
+    <span>Aspect ratio</span>
+    <button type='button' id='aspect-ratio-down' aria-label='Decrease aspect ratio'>−</button>
+    <output id='aspect-ratio-value'>1.8</output>
+    <button type='button' id='aspect-ratio-up' aria-label='Increase aspect ratio'>+</button>
+    <label><input type='checkbox' id='varying-heights' /> Varying event heights</label>
+  </div>
+  <div id='calendar'></div>
+
+</body>
+</html>
