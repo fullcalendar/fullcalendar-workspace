@@ -62,11 +62,11 @@ describe('dayGrid advanced event rendering', () => {
       initialDate: '2020-09-01',
       dayMaxEventRows: 4,
       events: [
-        { start: '2020-08-30', end: '2020-09-04' },
-        { start: '2020-08-31', end: '2020-09-03' },
-        { start: '2020-09-01', end: '2020-09-04' },
-        { start: '2020-09-02', end: '2020-09-04' },
-        { start: '2020-09-02', end: '2020-09-04' },
+        { title: 'a', start: '2020-08-30', end: '2020-09-04' },
+        { title: 'b', start: '2020-08-31', end: '2020-09-03' },
+        { title: 'c', start: '2020-09-01', end: '2020-09-04' },
+        { title: 'd', start: '2020-09-02', end: '2020-09-04' },
+        { title: 'e', start: '2020-09-02', end: '2020-09-04' },
       ],
     })
     await waitTimeout()
@@ -76,14 +76,10 @@ describe('dayGrid advanced event rendering', () => {
     let visibleEventEls = filterVisibleEls(eventEls)
     let moreLinkEls = dayGridWrapper.getMoreEls()
 
-    expect(visibleEventEls.length).toBe(3)
-    expect(moreLinkEls.length).toBe(2)
+    expect(new Set(visibleEventEls.map((el) => $(el).text()))).toEqual(new Set(['a', 'b', 'c', 'd', 'e']))
+    expect(moreLinkEls.length).toBe(1)
+    expect(moreLinkEls[0].closest('[data-date]').getAttribute('data-date')).toBe('2020-09-02')
     expect(anyElsIntersect(visibleEventEls.concat(moreLinkEls))).toBe(false)
-
-    expect(Math.abs(
-      moreLinkEls[0].getBoundingClientRect().top -
-      moreLinkEls[1].getBoundingClientRect().top,
-    )).toBeLessThan(1)
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5883
@@ -122,8 +118,9 @@ describe('dayGrid advanced event rendering', () => {
     let visibleEventEls = filterVisibleEls(eventEls)
     let moreLinkEls = dayGridWrapper.getMoreEls()
 
-    expect(visibleEventEls.length).toBe(2)
-    expect(moreLinkEls.length).toBe(3)
+    expect(new Set(visibleEventEls.map((el) => $(el).text()))).toEqual(new Set(['b1', 'b2', 'b3', 'b4']))
+    expect(moreLinkEls.length).toBe(1)
+    expect(moreLinkEls[0].closest('[data-date]').getAttribute('data-date')).toBe('2020-10-21')
     expect(anyElsIntersect(visibleEventEls.concat(moreLinkEls))).toBe(false)
   })
 
@@ -518,7 +515,8 @@ describe('dayGrid advanced event rendering', () => {
     })
     await waitTimeout()
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    dayGridWrapper.openMorePopover(4) // on July 9th
+    let july9El = dayGridWrapper.getDayEl('2021-07-09')
+    $(july9El.querySelector('.fc-daygrid-more-link')).simulate('click')
     await waitTimeout()
     let eventEls = dayGridWrapper.getMorePopoverEventEls()
     expect(eventEls.length).toBe(9)
