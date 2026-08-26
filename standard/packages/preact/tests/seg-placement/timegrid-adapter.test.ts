@@ -79,6 +79,30 @@ describe('TimeGrid production placement adapter', () => {
     auditVisibleRectangles(result, 'max stack')
   })
 
+  it('maps eventMaxStack overflow through transitive hidden globbing', () => {
+    const fixture = buildFixture([
+      ['visible', 0, 100],
+      ['hidden-late', 40, 70],
+      ['hidden-early', 10, 50],
+      ['hidden-separate', 80, 90],
+    ])
+    const result = buildTimeGridSegPlacements(
+      fixture.segs,
+      fixture.verticals,
+      false,
+      1,
+    )
+
+    expect(result.placements.map(placementId)).toEqual(['visible'])
+    expect(result.hiddenGroups.map((group) => ({
+      span: [group.start, group.end],
+      segs: group.segs.map((seg) => seg.eventRange.instance.instanceId),
+    }))).toEqual([
+      { span: [10, 70], segs: ['hidden-late', 'hidden-early'] },
+      { span: [80, 90], segs: ['hidden-separate'] },
+    ])
+  })
+
   it('treats exact adjacency as non-overlap in levels and hidden groups', () => {
     const fixture = buildFixture([
       ['before', 0, 50],

@@ -1,161 +1,160 @@
 /**
- * TimeGrid limiting and pressure-based expansion
- * =================================================
+ * TimeGrid dimensionless leveling and pressure-based expansion
+ * ============================================================
  *
- * TimeGrid rotates the visual meaning of the common level structure. A
- * seg's lateral `start`/`end` span runs down the visible time axis, while
- * logical levels proceed across the column's level-axis thickness. Siblings in
- * one level therefore have non-overlapping time spans even though that axis
- * happens to be vertical on screen.
+ * TimeGrid rotates the visual meaning of the shared kernel's level structure.
+ * A seg's lateral `start`/`end` span runs down the visible time axis, while
+ * logical levels proceed across the column's horizontal thickness. Siblings
+ * in one level therefore have non-overlapping time spans.
  *
- * TimeGrid event wrappers do not contribute measured thicknesses to this
- * calculation. Every seg receives unit thickness while the common layer
- * builds and limits the level federation. This module then treats those
- * levels as a collision web and pressure-expands the visible events across a
- * normalized level-axis range from 0 through 1.
- *
- * The more links are a final overlay projection. They group intersecting
- * hidden time spans, but consume no level-axis thickness and impose no tax on
- * the event layout. TimeGrid also disables event slicing: a rejected source is
- * hidden whole, although the common limiter may still compact that whole
- * source into a shallower opening before hiding it.
- *
- * Production integration
- * ----------------------
- *
- * `timegrid/seg-placement-adapter.ts` converts production segs to and from
- * this module's inputs and outputs, and
- * `timegrid/components/TimeGridCol.tsx` projects overlap and more links.
+ * The kernel admits whole segs directly into dimensionless levels and rejects
+ * anything beyond `maxLevels`. This module treats the retained levels as a
+ * collision web and pressure-expands them across a normalized 0...1 range.
+ * Hidden segs are grouped afterward for TimeGrid's tax-free more-link overlay.
  */
 
 import {
   type HiddenSliceGroup,
   type SourceSeg,
-  type LayoutLimitResult,
-  type Placement,
-  type PlacementLevel,
-  findLevelIntersections,
-  groupHiddenSlices,
-  limitLayoutByMaxLevel,
-  orderTimeAxisItems,
-  positionSegsWithUnitThickness,
-} from './layout'
+  buildTimeGridLevelInputs,
+  convertSegsToWholeSlices,
+  findIntersections,
+  groupLaterallyIntersecting,
+} from './kernel'
 
-/** TimeGrid policies that affect level construction. */
+/** TimeGrid policies that affect dimensionless level construction. */
 export interface TimeGridLayoutOptions {
   /** Preserves the caller's resolved event priority through all collisions. */
   orderStrict: boolean
 }
 
 /**
- * One visible placement after its logical level is pressure-expanded.
- *
- * The inherited `levelCoord`, `thickness`, and `levelEndCoord` contain final
- * normalized geometry here, replacing the unit values used during planning.
+ * Transitional input accepted from tests and old shared-layout callers.
+ * Production TimeGrid supplies `eventKey`; pressure projection never slices,
+ * so only whole-source identity is needed here.
  */
-export interface TimeGridPlacement<EventMeta = unknown>
-  extends Placement<EventMeta> {
+export type TimeGridSourceSeg<EventMeta = unknown> =
+  Omit<SourceSeg<EventMeta>, 'eventKey'> & { eventKey?: string }
+
+/** One visible source after its logical level is pressure-expanded. */
+export interface TimeGridPlacement<EventMeta = unknown> {
+  sourceSeg: SourceSeg<EventMeta>
+  start: number
+  end: number
+  isStart: boolean
+  isEnd: boolean
+  /** Dimensionless kernel level, also the placement's collision-web depth. */
+  levelIndex: number
+  /** Normalized final geometry, replacing the deleted unit-height currency. */
+  levelCoord: number
+  thickness: number
+  levelEndCoord: number
   /** Longest visible collision chain extending backward from this placement. */
   backwardDepth: number
   /** Longest visible collision chain extending forward from this placement. */
   forwardDepth: number
 }
 
-/**
- * Complete reusable output needed to render one measured TimeGrid column.
- *
- * TimeGrid never slices, so each source has at most one visible placement and
- * `sourceSeg.key` is already a sufficient stable React identity.
- *
- * The limiter's own output is nested rather than spread, matching the other
- * views' measured results. That nesting is load-bearing: `limited` still holds
- * the unit-thickness currency the limiter ran in, so its placements report
- * `thickness === 1` and `levelCoord === levelIndex`. Only
- * `domOrderedPlacements` carries the normalized 0...1 geometry a renderer
- * should use. Flattening the two together would put both currencies under one
- * set of field names.
- */
-export interface TimeGridColumnLayout<EventMeta = unknown> {
-  /**
-   * The unit-thickness limiter output these placements were projected from.
-   * Intermediate data: the adapter and its component read the two fields
-   * below, never this one.
-   */
-  limited: LayoutLimitResult<EventMeta>
-  /** Final visible placements in temporal-start/event-order. */
-  domOrderedPlacements: TimeGridPlacement<EventMeta>[]
-  /** Tax-free overlay links formed only after limiting has completed. */
-  moreLinkGroups: HiddenSliceGroup<EventMeta>[]
+/** TimeGrid's existing more-link group projection over kernel hidden groups. */
+export interface TimeGridMoreLinkGroup<EventMeta = unknown>
+  extends HiddenSliceGroup<EventMeta> {
+  count: number
 }
 
-/**
- * Builds, limits, and pressure-expands one TimeGrid day/resource column.
- *
- * This deliberately retains the shared multi-phase architecture. The first
- * pass constructs the complete unrestricted unit layout. The second pass
- * applies the generic max-level limiter with slicing disabled; overflowed
- * sources may compact whole through ordinary placement machinery. Only then
- * does the TimeGrid-specific pressure and more-link projection run.
- */
+/** Complete reusable output needed to render one TimeGrid column. */
+export interface TimeGridColumnLayout<EventMeta = unknown> {
+  /** Dimensionless kernel levels consumed by the collision-web projection. */
+  pressureWebSegLevels: SourceSeg<EventMeta>[][]
+  /** Whole segs rejected directly by the kernel's max-level admission pass. */
+  globbedMoreLinkSegs: SourceSeg<EventMeta>[]
+  /** Final visible placements in temporal-start/event-order. */
+  domOrderedPlacements: TimeGridPlacement<EventMeta>[]
+  /** Tax-free overlay links formed only after level admission has completed. */
+  moreLinkGroups: TimeGridMoreLinkGroup<EventMeta>[]
+}
+
+/** Builds, limits, and pressure-expands one TimeGrid day/resource column. */
 export function layoutTimeGridColumnByMaxLevel<EventMeta>(
-  eventOrderedSegs: readonly SourceSeg<EventMeta>[],
+  eventOrderedSegs: readonly TimeGridSourceSeg<EventMeta>[],
   maxLevels: number,
   options: TimeGridLayoutOptions,
 ): TimeGridColumnLayout<EventMeta> {
-  const unrestricted = positionSegsWithUnitThickness(
-    eventOrderedSegs,
-    options.orderStrict,
+  // Safe because TimeGrid never slices: the kernel's eventKey field is not
+  // consulted while building levels or converting rejected wholes to slices.
+  const sourceSegs = eventOrderedSegs as readonly SourceSeg<EventMeta>[]
+  const { pressureWebSegLevels, globbedMoreLinkSegs } =
+    buildTimeGridLevelInputs(
+      { segs: sourceSegs },
+      { eventOrderStrict: options.orderStrict, maxLevels },
+    )
+  const placements = positionTimeGridPlacements(pressureWebSegLevels)
+  const moreLinkGroups = groupLaterallyIntersecting(
+    convertSegsToWholeSlices(globbedMoreLinkSegs),
   )
-  const limited = limitLayoutByMaxLevel(
-    unrestricted,
-    maxLevels,
-    {
-      orderStrict: options.orderStrict,
-      eventSlicing: false,
-      maxSlices: 1,
-    },
-  )
-  const placements = positionTimeGridPlacements(limited.levels)
+    .map((group) => ({
+      ...group,
+      count: new Set(
+        group.hiddenSlices.map((slice) => slice.sourceSeg.key),
+      ).size,
+    }))
+    .sort((a, b) => a.start - b.start || a.end - b.end)
+
   return {
-    limited,
-    domOrderedPlacements: orderTimeAxisItems(placements),
-    moreLinkGroups: groupHiddenSlices(limited.hiddenSlices),
+    pressureWebSegLevels,
+    globbedMoreLinkSegs,
+    domOrderedPlacements: orderTimeGridPlacements(placements),
+    moreLinkGroups,
   }
 }
 
 /**
- * Turns a retained level federation into normalized placement rectangles.
+ * Turns retained dimensionless levels into normalized placement rectangles.
  *
  * Each connected collision component shares equal-width base columns. An
  * event then expands through consecutive deeper columns until the first one
- * containing a collider. This keeps dense sibling chains visually even while
- * still allowing unconstrained events to use the available width.
- *
- * A single intersection sweep records each placement's deeper colliders.
- * Every derived quantity reads that one adjacency: components come from
- * unioning across it, expansion stops at its shallowest entry, and both chain
- * depths are longest paths over it. Collision is symmetric, so the deeper
- * direction alone carries the whole graph.
+ * containing a collider. A single intersection sweep supplies component
+ * membership, expansion stops, and backward/forward longest-chain depths.
  */
 function positionTimeGridPlacements<EventMeta>(
-  levels: readonly PlacementLevel<EventMeta>[],
+  levels: readonly (readonly SourceSeg<EventMeta>[])[],
 ): TimeGridPlacement<EventMeta>[] {
+  const placementLevels = levels.map((level, levelIndex) =>
+    level.map((sourceSeg) => ({
+      sourceSeg,
+      start: sourceSeg.start,
+      end: sourceSeg.end,
+      isStart: sourceSeg.isStart,
+      isEnd: sourceSeg.isEnd,
+      levelIndex,
+    })),
+  )
   // Level order matters below: every placement precedes its deeper colliders.
-  const placements = levels.flatMap((level) => level)
-  const collidersByKey = new Map<string, Placement<EventMeta>[]>()
+  const placements = placementLevels.flat()
+  const collidersByKey = new Map<string, typeof placements>()
   const parentByKey = new Map(placements.map((placement) => [
     placement.sourceSeg.key,
     placement.sourceSeg.key,
   ]))
 
   for (const placement of placements) {
-    const colliders: Placement<EventMeta>[] = []
-    for (let levelIndex = placement.levelIndex + 1; levelIndex < levels.length; levelIndex++) {
-      colliders.push(...findLevelIntersections(levels[levelIndex], placement))
+    const colliders: typeof placements = []
+    for (
+      let levelIndex = placement.levelIndex + 1;
+      levelIndex < levels.length;
+      levelIndex += 1
+    ) {
+      colliders.push(...findIntersections(
+        placementLevels[levelIndex],
+        placement,
+      ))
     }
     collidersByKey.set(placement.sourceSeg.key, colliders)
     for (const collider of colliders) {
-      unionPlacementKeys(parentByKey, placement.sourceSeg.key, collider.sourceSeg.key)
+      unionPlacementKeys(
+        parentByKey,
+        placement.sourceSeg.key,
+        collider.sourceSeg.key,
+      )
     }
   }
 
@@ -169,11 +168,16 @@ function positionTimeGridPlacements<EventMeta>(
   }
 
   // Longest chains through the collision graph, as dynamic programming over
-  // the adjacency. The backward pass runs shallow-to-deep so a placement's
-  // depth is final before it feeds its deeper colliders; the forward pass runs
-  // deep-to-shallow for the mirrored reason.
-  const backwardDepthByKey = new Map(placements.map((placement) => [placement.sourceSeg.key, 0]))
-  const forwardDepthByKey = new Map(placements.map((placement) => [placement.sourceSeg.key, 0]))
+  // the adjacency. The passes run in opposite level orders so each dependency
+  // is final before it contributes to the next placement.
+  const backwardDepthByKey = new Map(placements.map((placement) => [
+    placement.sourceSeg.key,
+    0,
+  ]))
+  const forwardDepthByKey = new Map(placements.map((placement) => [
+    placement.sourceSeg.key,
+    0,
+  ]))
 
   for (const placement of placements) {
     const depth = backwardDepthByKey.get(placement.sourceSeg.key)! + 1
@@ -185,11 +189,14 @@ function positionTimeGridPlacements<EventMeta>(
     }
   }
 
-  for (let index = placements.length - 1; index >= 0; index--) {
+  for (let index = placements.length - 1; index >= 0; index -= 1) {
     const placement = placements[index]
     let depth = 0
     for (const collider of collidersByKey.get(placement.sourceSeg.key)!) {
-      depth = Math.max(depth, forwardDepthByKey.get(collider.sourceSeg.key)! + 1)
+      depth = Math.max(
+        depth,
+        forwardDepthByKey.get(collider.sourceSeg.key)! + 1,
+      )
     }
     forwardDepthByKey.set(placement.sourceSeg.key, depth)
   }
@@ -216,6 +223,15 @@ function positionTimeGridPlacements<EventMeta>(
       forwardDepth: forwardDepthByKey.get(key)!,
     }
   })
+}
+
+function orderTimeGridPlacements<EventMeta>(
+  placements: readonly TimeGridPlacement<EventMeta>[],
+): TimeGridPlacement<EventMeta>[] {
+  return [...placements].sort((a, b) =>
+    a.start - b.start ||
+    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
+  )
 }
 
 function findPlacementRoot(

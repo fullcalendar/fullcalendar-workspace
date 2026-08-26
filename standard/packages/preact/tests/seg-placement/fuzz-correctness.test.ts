@@ -47,6 +47,7 @@ import {
   positionSegs,
 } from '../../src/seg-placement/layout'
 import { buildPrintEventBands } from '../../src/seg-placement/print'
+import { convertSegsToWholeSlices } from '../../src/seg-placement/kernel'
 import {
   type TimeGridColumnLayout,
   layoutTimeGridColumnByMaxLevel,
@@ -1045,7 +1046,8 @@ function auditHiddenSliceGroups(
     )
     invariant(
       group.hiddenSlices.length === match.slices.length &&
-        group.hiddenSlices.every((slice) => match.slices.includes(slice)),
+        group.hiddenSlices.map(hiddenSliceSignature).sort().join('|') ===
+          match.slices.map(hiddenSliceSignature).sort().join('|'),
       `group ${index} does not contain exactly its member slices`,
       label,
     )
@@ -1059,6 +1061,9 @@ function auditHiddenSliceGroups(
   })
 }
 
+function hiddenSliceSignature(slice: Slice<TestEvent>): string {
+  return `${slice.sourceSeg.key}:${slice.start}:${slice.end}`
+}
 
 function auditTimeGridColumn(
   column: TimeGridColumnLayout<TestEvent>,
@@ -1067,27 +1072,33 @@ function auditTimeGridColumn(
   options: { orderStrict: boolean },
   label: string,
 ): void {
+  const events = column.domOrderedPlacements
+  const eventByKey = new Map(events.map((event) => [event.sourceSeg.key, event]))
+  const placementLevels = column.pressureWebSegLevels.map((level) =>
+    level.map((sourceSeg) => eventByKey.get(sourceSeg.key)!),
+  )
   auditLayoutStructure(
-    { levels: column.limited.levels, placements: column.limited.visiblePlacements },
+    { levels: placementLevels, placements: events },
     options.orderStrict,
     label,
   )
-  auditSourcePartition(
-    segs,
-    column.limited.visiblePlacements,
-    column.limited.hiddenSlices,
-    new Map(segs.map((seg) => [seg.key, 1])),
+  const visibleKeys = new Set(events.map((event) => event.sourceSeg.key))
+  const hiddenKeys = new Set(column.globbedMoreLinkSegs.map((seg) => seg.key))
+  invariant(
+    visibleKeys.size + hiddenKeys.size === segs.length &&
+      segs.every((seg) => visibleKeys.has(seg.key) !== hiddenKeys.has(seg.key)),
+    'visible and hidden TimeGrid segs do not partition the sources',
     label,
   )
-  auditHiddenSliceGroups(column.limited.hiddenSlices, column.moreLinkGroups, label)
+  auditHiddenSliceGroups(
+    convertSegsToWholeSlices(column.globbedMoreLinkSegs),
+    column.moreLinkGroups,
+    label,
+  )
 
-  const events = column.domOrderedPlacements
   invariant(
-    events.length === column.limited.visiblePlacements.length &&
-      column.limited.visiblePlacements.every((placement) => events.some((event) =>
-        event.sourceSeg.key === placement.sourceSeg.key,
-      )),
-    'DOM events do not correspond to visible placements',
+    events.length === column.pressureWebSegLevels.flat().length,
+    'DOM events do not correspond one-to-one with pressure-web levels',
     label,
   )
   const sourceByKey = new Map(segs.map((seg) => [seg.key, seg]))

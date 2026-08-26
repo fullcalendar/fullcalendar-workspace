@@ -932,7 +932,7 @@ function removeSlice<EventMeta>(
   sliceCoords.delete(getSliceKey(slice))
 }
 
-function findIntersections<Item extends LateralSpan>(
+export function findIntersections<Item extends LateralSpan>(
   entries: readonly Item[],
   span: LateralSpan,
 ): Item[] {

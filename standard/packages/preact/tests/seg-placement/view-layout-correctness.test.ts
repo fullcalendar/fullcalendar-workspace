@@ -5,6 +5,7 @@ import {
   type Slice,
   positionSegs,
 } from '../../src/seg-placement/layout'
+import { convertSegsToWholeSlices } from '../../src/seg-placement/kernel'
 import {
   calculateTimelineContentHeight,
   limitTimelineLayoutByMaxLevel,
@@ -86,8 +87,12 @@ describe('view projection correctness audits', () => {
         const placements = result.domOrderedPlacements
 
         expect(placements.map((item) => item.sourceSeg.key).sort(), label)
-          .toEqual(result.limited.visiblePlacements.map((item) => item.sourceSeg.key).sort())
-        auditHiddenGroups(result.limited.hiddenSlices, result.moreLinkGroups, label)
+          .toEqual(result.pressureWebSegLevels.flat().map((item) => item.key).sort())
+        auditHiddenGroups(
+          convertSegsToWholeSlices(result.globbedMoreLinkSegs),
+          result.moreLinkGroups,
+          label,
+        )
 
         for (const placement of placements) {
           invariant(
@@ -185,7 +190,8 @@ function auditHiddenGroups(
   const groupedSlices = groups.flatMap((group) => group.hiddenSlices)
   invariant(
     groupedSlices.length === hiddenSlices.length &&
-      hiddenSlices.every((slice) => groupedSlices.includes(slice)),
+      groupedSlices.map(hiddenSliceSignature).sort().join('|') ===
+        hiddenSlices.map(hiddenSliceSignature).sort().join('|'),
     'hidden groups do not contain each hidden slice exactly once',
     label,
   )
@@ -221,6 +227,10 @@ function auditHiddenGroups(
       )
     }
   }
+}
+
+function hiddenSliceSignature(slice: Slice<TestEvent>): string {
+  return `${slice.sourceSeg.key}:${slice.start}:${slice.end}`
 }
 
 function auditTimeGridCollisionSeparation(

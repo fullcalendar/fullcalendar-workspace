@@ -1,7 +1,7 @@
 import { DateMarker } from '@full-ui/headless-calendar'
 import { type EventRangeProps, getEventKey } from '../component-util/event-rendering'
 import { DateProfile } from '../DateProfileGenerator'
-import { type SourceSeg } from '../seg-placement/layout'
+import { type SourceSeg } from '../seg-placement/kernel'
 import { layoutTimeGridColumnByMaxLevel } from '../seg-placement/timegrid'
 import { computeDateTopFrac } from './components/util'
 import { type TimeGridRange } from './TimeColsSeg'
@@ -118,6 +118,7 @@ export function buildTimeGridSegPlacements(
     if (segVertical) {
       sourceSegs.push({
         key: getEventKey(seg),
+        eventKey: getEventKey(seg),
         start: segVertical.start,
         end: segVertical.end,
         isStart: seg.isStart,
