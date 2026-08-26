@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getEventPartKey } from '../../src/daygrid/TableSeg'
-import { SliceHeightMapStore } from '../../src/seg-placement/kernel'
+import { RefMap } from '../../src/util/RefMap'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
@@ -83,13 +83,14 @@ describe('DayGridRows placement owner state', () => {
     expect(observeDayGridCanvasHeight(afterShortEvent, 100)).toBe(afterShortEvent)
   })
 
-  it('uses one producer for valid insertion, owner ratchets, and deletion', () => {
+  it('ratchets the owner from RefMap height reports and forgets deletions', () => {
     let owner = observeDayGridCanvasHeight(createDayGridPlacementOwnerState(), 100)
-    let changes = 0
-    const heights = new SliceHeightMapStore(
-      (height) => { owner = observeDayGridSliceHeight(owner, height) },
-      () => { changes += 1 },
-    )
+    // The production wiring: a RefMap whose callback ratchets non-null reports.
+    const heights = new RefMap<string, number>((height) => {
+      if (height != null) {
+        owner = observeDayGridSliceHeight(owner, height)
+      }
+    })
     const ref = heights.createRef('slice')
 
     ref(0.5)
@@ -107,24 +108,6 @@ describe('DayGridRows placement owner state', () => {
     )
     ref(null)
     expect(heights.current.has('slice')).toBe(false)
-    expect(changes).toBe(3)
-  })
-
-  it('rejects non-positive and non-finite producer reports', () => {
-    let owner = createDayGridPlacementOwnerState()
-    let changes = 0
-    const heights = new SliceHeightMapStore(
-      (height) => { owner = observeDayGridSliceHeight(owner, height) },
-      () => { changes += 1 },
-    )
-
-    for (const unusable of [0, -5, NaN, Infinity]) {
-      heights.handleValue(unusable, 'slice')
-    }
-
-    expect(heights.current.size).toBe(0)
-    expect(owner).toEqual(createDayGridPlacementOwnerState())
-    expect(changes).toBe(0)
   })
 
   it('uses explicit numeric caps, the auto frontier, and no cap for unlimited rows', () => {
@@ -370,7 +353,7 @@ function layoutLevelRow(
       columnCount,
     },
     {
-      get: (key) => config.heights?.[key],
+      current: new Map(Object.entries(config.heights ?? {})),
       createRef: (key) => `ref:${key}`,
     },
     config.largestSliceHeight ?? EVENT_HEIGHT,
@@ -404,7 +387,7 @@ function layoutPixelRow(
       canvasHeight: config.canvasHeight,
     },
     {
-      get: (key) => heights[key],
+      current: new Map(Object.entries(heights)),
       createRef: (key) => `ref:${key}`,
     },
     () => ({

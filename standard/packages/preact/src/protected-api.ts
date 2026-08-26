@@ -101,12 +101,10 @@ export type {
   HiddenSliceGroup,
   Slice,
   SliceHeightMap,
-  SliceHeightRef,
   SourceSeg,
 } from './seg-placement/kernel'
 export {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
-  SliceHeightMapStore,
   buildLevelLimitedLayout,
   getSliceKey,
   groupLaterallyIntersecting,

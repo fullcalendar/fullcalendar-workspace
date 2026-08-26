@@ -2,8 +2,6 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
-  type SliceHeightRef,
-  SliceHeightMapStore,
   RefMap,
   afterSize,
   EventRangeProps,
@@ -52,7 +50,7 @@ export interface TimelineFgProps {
 }
 
 interface TimelineFgState {
-  segHeightRev?: number
+  segHeightRev?: string
   moreLinkHeightRev?: string
 }
 
@@ -64,11 +62,12 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private buildSegPlacementPlan = memoize(buildTimelineSegPlacementPlan)
 
   // refs
-  private sliceHeightMap = new SliceHeightMapStore((height) => {
-    this.largestSliceHeight = this.largestSliceHeight == null
-      ? height
-      : Math.max(this.largestSliceHeight, height)
-  }, () => {
+  private sliceHeightMap = new RefMap<string, number>((height) => { // keyed by slice part key
+    if (height != null) {
+      this.largestSliceHeight = this.largestSliceHeight == null
+        ? height
+        : Math.max(this.largestSliceHeight, height)
+    }
     afterSize(this.handleSegHeights)
   })
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by stable more-link key
@@ -77,7 +76,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   // internal
   private _isUnmounting: boolean
-  private sliceHeightRev = 0
   private largestSliceHeight?: number
   private totalHeight?: number
   private totalHeightSettled?: boolean
@@ -109,7 +107,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       props.clipStart,
       props.clipEnd,
     )
-    let placementResult = buildTimelineSegPlacements(
+    let placementResult = buildTimelineSegPlacements<Ref<number>>(
       plan,
       sliceHeightMap,
       moreLinkHeightRefMap.current,
@@ -156,7 +154,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
   }
 
-  renderEventDomItems(eventDomItems: TimelineSegDomItem<SliceHeightRef>[]) {
+  renderEventDomItems(eventDomItems: TimelineSegDomItem<Ref<number>>[]) {
     const { props } = this
 
     return (
@@ -294,7 +292,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   private handleSegHeights = () => {
     if (this._isUnmounting) return
-    this.setState({ segHeightRev: this.sliceHeightRev += 1 })
+    this.setState({ segHeightRev: this.sliceHeightMap.rev })
   }
 
   componentDidMount(): void {

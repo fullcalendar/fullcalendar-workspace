@@ -27,7 +27,6 @@ import {
   type PlacementRatchet,
   type Slice,
   type SliceRenderItem,
-  SliceHeightMapStore,
 } from '../../seg-placement/kernel'
 import {
   type DayGridEventSeg,
@@ -101,12 +100,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       afterSize(this.handleSegPositioning)
     }
   })
-  // Every screen slice reports through this producer. It rejects unusable
-  // values and ratchets the placement owner before scheduling another solve.
-  private sliceHeightMap = new SliceHeightMapStore(
-    (height) => this.handleSliceHeightInsertion(height),
-    () => afterSize(this.handleSegPositioning),
-  )
+  // Every screen slice (whole or partial) reports its occupied height here.
+  // A non-null report ratchets the placement owner in the same callback that
+  // recorded the value, before the rescheduled solve can read the map.
+  private sliceHeightMap = new RefMap<string, number>((height) => {
+    if (height != null) {
+      this.handleSliceHeightInsertion(height)
+    }
+    afterSize(this.handleSegPositioning)
+  })
 
   // print-only (band thickness is row-wide while slots render per-cell, so
   // this state must live here; see also buildPrintPlan, renderPrintBandSlots,

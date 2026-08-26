@@ -226,7 +226,7 @@ export function buildTimelineSegPlacements<HeightRef>(
       moreLinkHeights,
     ),
     allHeightsSettled: visibleSlices.every((slice) =>
-      sliceHeightMap.get(getSliceKey(slice)) !== undefined,
+      sliceHeightMap.current.get(getSliceKey(slice)) !== undefined,
     ),
   }
 }
@@ -247,7 +247,7 @@ function computeTimelineGroupTop<HeightRef>(
       top = Math.max(
         top,
         sliceCoords.get(key)! +
-          (sliceHeightMap.get(key) ?? provisionalSliceHeight),
+          (sliceHeightMap.current.get(key) ?? provisionalSliceHeight),
       )
     }
   }
@@ -271,7 +271,7 @@ function calculateTimelineContentHeight<HeightRef>(
     contentHeight = Math.max(
       contentHeight,
       sliceCoords.get(key)! +
-        (sliceHeightMap.get(key) ?? provisionalSliceHeight),
+        (sliceHeightMap.current.get(key) ?? provisionalSliceHeight),
     )
   }
   for (const moreLink of moreLinks) {

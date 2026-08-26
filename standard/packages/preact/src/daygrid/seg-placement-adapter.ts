@@ -196,7 +196,7 @@ function areDayGridRenderItemsSettled<HeightRef>(
   sliceHeightMap: SliceHeightMap<HeightRef>,
 ): boolean {
   return renderItems.every((items) => items.every((item) =>
-    item.style.visibility === 'hidden' || sliceHeightMap.get(item.key) !== undefined,
+    item.style.visibility === 'hidden' || sliceHeightMap.current.get(item.key) !== undefined,
   ))
 }
 
@@ -398,7 +398,7 @@ function buildDayGridPlacementLayout<HeightRef>(
     for (const slice of level) {
       const key = getSliceKey(slice)
       const sliceBottom = sliceCoords.get(key)! + (
-        sliceHeightMap.get(key) ?? provisionalSliceHeight
+        sliceHeightMap.current.get(key) ?? provisionalSliceHeight
       )
       const range = getLateralCellRange(slice, columnCount)
 

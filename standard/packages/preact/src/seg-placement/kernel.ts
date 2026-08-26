@@ -51,59 +51,17 @@ export interface HiddenSliceGroup<EventMeta = unknown> extends LateralSpan {
   occupant: MoreLinkOccupant
 }
 
-export interface SliceHeightMap<HeightRef = unknown> {
-  get(key: string): number | undefined
-  createRef(key: string): HeightRef
-}
-
-export type SliceHeightRef = (height: number | null) => void
-
 /**
- * Owner-local exact slice measurements and their only production write path.
- *
- * Positive finite insertions notify the owner's ratchet before scheduling a
- * layout change. Unmounts delete both the value and cached ref, so a remounted
- * slice must measure again. Screen consumers must never retain deleted values.
+ * Owner-local exact slice measurements, keyed by slice part key. Production
+ * uses a plain RefMap of measured wrapper heights: reports are trusted as
+ * valid occupied dimensions, and RefMap's delete-on-null keeps entries in
+ * step with unmounts, so a present value always means a live measurement.
+ * The owner's ratchet updates in the same RefMap callback that recorded the
+ * value, before any re-solve can read the map.
  */
-export class SliceHeightMapStore implements SliceHeightMap<SliceHeightRef> {
-  readonly current = new Map<string, number>()
-  private callbacks = new Map<string, SliceHeightRef>()
-
-  constructor(
-    private observeInsertion: (height: number) => void,
-    private handleChange: () => void,
-  ) {}
-
-  get(key: string): number | undefined {
-    return this.current.get(key)
-  }
-
-  createRef(key: string): SliceHeightRef {
-    let callback = this.callbacks.get(key)
-
-    if (!callback) {
-      callback = (height) => this.handleValue(height, key)
-      this.callbacks.set(key, callback)
-    }
-
-    return callback
-  }
-
-  handleValue(height: number | null, key: string): void {
-    if (height === null) {
-      const deleted = this.current.delete(key)
-      this.callbacks.delete(key)
-      if (deleted) this.handleChange()
-      return
-    }
-
-    if (!(height > 0 && Number.isFinite(height))) return
-
-    const changed = this.current.get(key) !== height
-    this.current.set(key, height)
-    this.observeInsertion(height)
-    if (changed) this.handleChange()
-  }
+export interface SliceHeightMap<HeightRef = unknown> {
+  current: ReadonlyMap<string, number>
+  createRef(key: string): HeightRef
 }
 
 export interface PlacementRatchet {
@@ -463,7 +421,7 @@ export function buildLevelLimitedLayout<EventMeta, HeightRef>(
   const { sliceCoords } = resolveLevelCoords(
     sliceLevels,
     (slice) =>
-      sliceHeightMap.get(getSliceKey(slice)) ?? provisionalSliceHeight,
+      sliceHeightMap.current.get(getSliceKey(slice)) ?? provisionalSliceHeight,
   )
   const renderSlices = sliceLevels.flat()
   const slicesByStart = props.cells
@@ -505,7 +463,7 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
   const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
   const domExcludedSlices = convertSegsToWholeSlices(excludedSegs)
   const getPlanningSliceHeight = (slice: Slice<EventMeta>) =>
-    sliceHeightMap.get(getSliceKey(slice)) ?? provisionalSliceHeight
+    sliceHeightMap.current.get(getSliceKey(slice)) ?? provisionalSliceHeight
   const wholeResolution = resolveLevelCoords(
     domWholeSliceLevels,
     getPlanningSliceHeight,

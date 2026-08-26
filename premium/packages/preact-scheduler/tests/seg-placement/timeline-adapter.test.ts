@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   type DateEnv,
-  SliceHeightMapStore,
+  RefMap,
 } from '@fullcalendar/preact/protected-api'
 import {
   buildTimelineSegPlacementPlan,
@@ -415,11 +415,13 @@ describe('Timeline production placement adapter', () => {
 
 class TimelineTestHeights {
   largestSliceHeight?: number
-  readonly map = new SliceHeightMapStore((height) => {
-    this.largestSliceHeight = this.largestSliceHeight == null
-      ? height
-      : Math.max(this.largestSliceHeight, height)
-  }, () => {})
+  readonly map = new RefMap<string, number>((height) => {
+    if (height != null) {
+      this.largestSliceHeight = this.largestSliceHeight == null
+        ? height
+        : Math.max(this.largestSliceHeight, height)
+    }
+  })
 
   constructor(entries: [string, number][] = []) {
     for (const [key, height] of entries) this.set(key, height)
