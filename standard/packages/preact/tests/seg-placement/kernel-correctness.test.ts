@@ -15,9 +15,7 @@ import {
   resolveLevelCoords,
 } from '../../src/seg-placement/kernel'
 
-interface TestMeta {
-  id: string
-}
+type TestSeg = SourceSeg & { id: string }
 
 describe('pure positioning kernel', () => {
   it('preserves rejection order and makes strict order part of topology', () => {
@@ -122,7 +120,7 @@ describe('pure positioning kernel', () => {
       levelCoord: 0,
       thickness: 1,
     })
-    expect(rowGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.meta.id))
+    expect(rowGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['extra', 'base'])
     auditCoverage([base, extra], rowLevels, rowGroups)
   })
@@ -190,7 +188,7 @@ describe('pure positioning kernel', () => {
     expect(resolved.placementSliceLevels[0]).toEqual([whole])
 
     const partial = { ...whole, end: 1, isEnd: false }
-    const mergeLevels: Slice<TestMeta>[][] = []
+    const mergeLevels: Slice<TestSeg>[][] = []
     mergeExtraIntoLevelCoords(
       mergeLevels,
       new Map(),
@@ -204,7 +202,7 @@ describe('pure positioning kernel', () => {
     expect(mergeLevels[0]).toEqual([partial])
 
     const barrier = convertSegsToWholeSlices([barrierSource])[0]
-    const ceilingLevels: Slice<TestMeta>[][] = [[], [barrier]]
+    const ceilingLevels: Slice<TestSeg>[][] = [[], [barrier]]
     const ceilingCoords = new Map([[barrierSource.key, 10]])
     mergeExtraIntoLevelCoords(
       ceilingLevels,
@@ -279,7 +277,7 @@ describe('pure positioning kernel', () => {
     )
 
     expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
-    expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.meta.id))
+    expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['extra', 'c', 'b'])
     expect(groups[0].occupant).toMatchObject({ levelCoord: 10, thickness: 15 })
     auditCoverage([a, b, c, extra], levels, groups)
@@ -322,7 +320,7 @@ describe('pure positioning kernel', () => {
     const groups = groupLaterallyIntersecting([first, second, bridge])
     expect(groups).toHaveLength(1)
     expect(groups[0]).toMatchObject({ start: 0, end: 3 })
-    expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.meta.id))
+    expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['first', 'second', 'bridge'])
 
     const [base, extra] = segs([
@@ -357,10 +355,10 @@ describe('pure positioning kernel', () => {
 
 function segs(
   specs: readonly (readonly [string, number, number])[],
-): SourceSeg<TestMeta>[] {
+): TestSeg[] {
   return specs.map(([id, start, end], orderIndex) => ({
     key: `${id}:${start}`,
-    meta: { id },
+    id,
     start,
     end,
     isStart: true,
@@ -369,22 +367,22 @@ function segs(
   }))
 }
 
-function projectSegLevels(levels: readonly (readonly SourceSeg<TestMeta>[])[]) {
-  return levels.map((level) => level.map((seg) => seg.meta.id))
+function projectSegLevels(levels: readonly (readonly TestSeg[])[]) {
+  return levels.map((level) => level.map((seg) => seg.id))
 }
 
-function projectSlices(slices: readonly Slice<TestMeta>[]) {
+function projectSlices(slices: readonly Slice<TestSeg>[]) {
   return slices.map((slice) => [
-    slice.sourceSeg.meta.id,
+    slice.sourceSeg.id,
     slice.start,
     slice.end,
   ])
 }
 
 function auditCoverage(
-  sources: readonly SourceSeg<TestMeta>[],
-  levels: readonly (readonly Slice<TestMeta>[])[],
-  groups: readonly HiddenSliceGroup<TestMeta>[],
+  sources: readonly TestSeg[],
+  levels: readonly (readonly Slice<TestSeg>[])[],
+  groups: readonly HiddenSliceGroup<TestSeg>[],
 ): void {
   const pieces = levels.flat().concat(
     groups.flatMap((group) => group.hiddenSlices),

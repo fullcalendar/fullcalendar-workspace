@@ -13,16 +13,13 @@ import {
   planPrintDomCandidates,
 } from '../../src/seg-placement/print'
 
-type UnorderedSeg<EventMeta = unknown> = Omit<SourceSeg<EventMeta>, 'orderIndex'>
+type TestSeg = SourceSeg & { id: string }
+type UnorderedSeg = Omit<TestSeg, 'orderIndex'>
 
-function stampEventOrder<EventMeta>(
-  orderedSegs: readonly UnorderedSeg<EventMeta>[],
-): SourceSeg<EventMeta>[] {
+function stampEventOrder(
+  orderedSegs: readonly UnorderedSeg[],
+): TestSeg[] {
   return orderedSegs.map((seg, orderIndex) => ({ ...seg, orderIndex }))
-}
-
-interface TestEvent {
-  id: string
 }
 
 const NO_SLICING: PrintPlanningOptions = {
@@ -75,7 +72,7 @@ describe('print event bands', () => {
       stampEventOrder([seg('only', 0, 1)]),
       NO_SLICING,
     ).sliceLevels[0]
-    const levels: Slice<TestEvent>[][] = []
+    const levels: Slice<TestSeg>[][] = []
     levels[0] = []
     levels[2] = sourceLevel
 
@@ -162,10 +159,10 @@ function seg(
   id: string,
   start: number,
   end: number,
-): UnorderedSeg<TestEvent> {
+): UnorderedSeg {
   return {
     key: id,
-    meta: { id },
+    id,
     start,
     end,
     isStart: true,

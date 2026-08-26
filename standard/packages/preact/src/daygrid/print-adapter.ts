@@ -1,7 +1,6 @@
 import {
   type HiddenSliceGroup,
   type Slice,
-  type SourceSeg,
   groupLaterallyIntersecting,
 } from '../seg-placement/kernel'
 import {
@@ -10,34 +9,35 @@ import {
 } from '../seg-placement/print'
 import {
   type DayGridEventSeg,
+  type DayGridSourceSeg,
   buildDayGridPopoverSegs,
   buildDayGridSegSources,
 } from './seg-placement-adapter'
 import { type DayRowEventRangePart } from './TableSeg'
 
 export interface DayGridPrintPlan {
-  sourceSegs: SourceSeg<DayGridEventSeg>[]
-  sliceLevels: Slice<DayGridEventSeg>[][]
-  visibleSlices: Slice<DayGridEventSeg>[]
-  hiddenSlices: Slice<DayGridEventSeg>[]
-  hiddenGroups: HiddenSliceGroup<DayGridEventSeg>[]
+  sourceSegs: DayGridSourceSeg[]
+  sliceLevels: Slice<DayGridSourceSeg>[][]
+  visibleSlices: Slice<DayGridSourceSeg>[]
+  hiddenSlices: Slice<DayGridSourceSeg>[]
+  hiddenGroups: HiddenSliceGroup<DayGridSourceSeg>[]
   columnCount: number
 }
 
 export interface DayGridPrintBandSlot {
   levelIndex: number
   thickness: number
-  slice: Slice<DayGridEventSeg> | null
+  slice: Slice<DayGridSourceSeg> | null
 }
 
 /** Stable identity for one print wrapper when a source is split laterally. */
-export function getDayGridPrintSliceKey(slice: Slice<DayGridEventSeg>): string {
+export function getDayGridPrintSliceKey(slice: Slice<DayGridSourceSeg>): string {
   return `${slice.sourceSeg.key}:${slice.start}:${slice.end}`
 }
 
 /** Reduces live slice-wrapper measurements to each source's current maximum. */
 export function buildDayGridPrintSegHeights(
-  slices: readonly Slice<DayGridEventSeg>[],
+  slices: readonly Slice<DayGridSourceSeg>[],
   printSliceHeights: ReadonlyMap<string, number>,
 ): Map<string, number> {
   const sourceHeights = new Map<string, number>()
@@ -87,7 +87,7 @@ export function buildDayGridPrintColumns(
   )
 
   for (const band of buildPrintEventBands(plan.sliceLevels, printSegHeights)) {
-    const slicesByColumn = Array<Slice<DayGridEventSeg> | null>(plan.columnCount).fill(null)
+    const slicesByColumn = Array<Slice<DayGridSourceSeg> | null>(plan.columnCount).fill(null)
 
     for (const slice of band.slices) {
       slicesByColumn[slice.start] = slice

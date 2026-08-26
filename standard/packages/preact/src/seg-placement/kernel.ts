@@ -21,17 +21,21 @@ export const DEFAULT_UNMEASURED_EVENT_THICKNESS = 20
 /** Shared estimate for a more-link wrapper that has not reported a thickness. */
 export const DEFAULT_UNMEASURED_MORE_LINK_THICKNESS = 20
 
-export interface SourceSeg<EventMeta = unknown> extends LateralSpan {
+/**
+ * What the kernel requires of a seg. Adapters satisfy it with the production
+ * seg itself (DayGrid) or a projected copy of it carrying pixel geometry
+ * (Timeline, TimeGrid) — never a wrapper around one.
+ */
+export interface SourceSeg extends LateralSpan {
   /** Stable whole-source key. Partial-slice keys derive from it (getSliceKey). */
   key: string
-  meta: EventMeta
   isStart: boolean
   isEnd: boolean
   orderIndex: number
 }
 
-export interface Slice<EventMeta = unknown> extends LateralSpan {
-  sourceSeg: SourceSeg<EventMeta>
+export interface Slice<S extends SourceSeg = SourceSeg> extends LateralSpan {
+  sourceSeg: S
   isStart: boolean
   isEnd: boolean
 }
@@ -43,9 +47,9 @@ interface MoreLinkOccupant extends LateralSpan {
   thickness: number
 }
 
-export interface HiddenSliceGroup<EventMeta = unknown> extends LateralSpan {
+export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends LateralSpan {
   key: string
-  hiddenSlices: Slice<EventMeta>[]
+  hiddenSlices: Slice<S>[]
   occupant: MoreLinkOccupant
 }
 
@@ -62,8 +66,8 @@ export interface SliceHeightMap<HeightRef = unknown> {
   createRef(key: string): HeightRef
 }
 
-interface LayoutProps<EventMeta = unknown> {
-  segs: readonly SourceSeg<EventMeta>[]
+interface LayoutProps<S extends SourceSeg = SourceSeg> {
+  segs: readonly S[]
   /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
   cells?: readonly unknown[]
 }
@@ -85,9 +89,9 @@ interface TimeGridLevelOptions {
   maxLevels: number
 }
 
-export interface SliceRenderItem<EventMeta = unknown, HeightRef = unknown> {
+export interface SliceRenderItem<S extends SourceSeg = SourceSeg, HeightRef = unknown> {
   key: string
-  slice: Slice<EventMeta>
+  slice: Slice<S>
   style: {
     visibility: '' | 'hidden'
     top: number | undefined
@@ -95,22 +99,22 @@ export interface SliceRenderItem<EventMeta = unknown, HeightRef = unknown> {
   heightRef: HeightRef
 }
 
-export function getSliceKey<EventMeta>(slice: Slice<EventMeta>): string {
+export function getSliceKey<S extends SourceSeg>(slice: Slice<S>): string {
   if (!isPartialSlice(slice)) return slice.sourceSeg.key
   return `${slice.sourceSeg.key}:${slice.start}:slice`
 }
 
 /** Builds whole-source logical levels without consulting any dimensions. */
-export function buildSegLevels<EventMeta>(
-  segs: readonly SourceSeg<EventMeta>[],
+export function buildSegLevels<S extends SourceSeg>(
+  segs: readonly S[],
   eventOrderStrict: boolean,
   maxLevels: number = Infinity,
 ): {
-  segLevels: SourceSeg<EventMeta>[][]
-  excludedSegs: SourceSeg<EventMeta>[]
+  segLevels: S[][]
+  excludedSegs: S[]
 } {
-  const segLevels: SourceSeg<EventMeta>[][] = []
-  const excludedSegs: SourceSeg<EventMeta>[] = []
+  const segLevels: S[][] = []
+  const excludedSegs: S[] = []
 
   for (const seg of segs) {
     let levelIndex = 0
@@ -139,15 +143,15 @@ export function buildSegLevels<EventMeta>(
   return { segLevels, excludedSegs }
 }
 
-export function convertSegLevelsToWholeSlices<EventMeta>(
-  segLevels: readonly (readonly SourceSeg<EventMeta>[])[],
-): Slice<EventMeta>[][] {
+export function convertSegLevelsToWholeSlices<S extends SourceSeg>(
+  segLevels: readonly (readonly S[])[],
+): Slice<S>[][] {
   return segLevels.map((level) => convertSegsToWholeSlices(level))
 }
 
-export function convertSegsToWholeSlices<EventMeta>(
-  segs: readonly SourceSeg<EventMeta>[],
-): Slice<EventMeta>[] {
+export function convertSegsToWholeSlices<S extends SourceSeg>(
+  segs: readonly S[],
+): Slice<S>[] {
   return segs.map(createWholeSlice)
 }
 
@@ -155,18 +159,18 @@ export function convertSegsToWholeSlices<EventMeta>(
  * Resolves fixed logical levels without changing level membership or slices.
  * A bounded rejection is final and does not block later traversal entries.
  */
-export function resolveLevelCoords<EventMeta>(
-  sliceLevels: readonly (readonly Slice<EventMeta>[])[],
-  getPlanningSliceHeight: (slice: Slice<EventMeta>) => number,
+export function resolveLevelCoords<S extends SourceSeg>(
+  sliceLevels: readonly (readonly Slice<S>[])[],
+  getPlanningSliceHeight: (slice: Slice<S>) => number,
   maxPixels: number = Infinity,
 ): {
-  placementSliceLevels: Slice<EventMeta>[][]
+  placementSliceLevels: Slice<S>[][]
   sliceCoords: Map<string, number>
-  excludedSlices: Slice<EventMeta>[]
+  excludedSlices: Slice<S>[]
 } {
-  const placementSliceLevels = sliceLevels.map(() => [] as Slice<EventMeta>[])
+  const placementSliceLevels = sliceLevels.map(() => [] as Slice<S>[])
   const sliceCoords = new Map<string, number>()
-  const excludedSlices: Slice<EventMeta>[] = []
+  const excludedSlices: Slice<S>[] = []
 
   for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
     for (const slice of sliceLevels[levelIndex]) {
@@ -200,14 +204,14 @@ export function resolveLevelCoords<EventMeta>(
   return { placementSliceLevels, sliceCoords, excludedSlices }
 }
 
-export function mergeExtraIntoLevels<EventMeta>(
-  sliceLevels: Slice<EventMeta>[][],
-  extraSegSlices: readonly Slice<EventMeta>[],
+export function mergeExtraIntoLevels<S extends SourceSeg>(
+  sliceLevels: Slice<S>[][],
+  extraSegSlices: readonly Slice<S>[],
   eventOrderStrict: boolean,
   eventSlicing: boolean,
   maxLevels: number,
   moreLinkLevelTax: number,
-): HiddenSliceGroup<EventMeta>[] {
+): HiddenSliceGroup<S>[] {
   if (!eventSlicing && !moreLinkLevelTax) {
     return groupLaterallyIntersecting(extraSegSlices)
   }
@@ -233,16 +237,16 @@ export function mergeExtraIntoLevels<EventMeta>(
   )
 }
 
-export function mergeExtraIntoLevelCoords<EventMeta>(
-  sliceLevels: Slice<EventMeta>[][],
+export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
+  sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  extraSegSlices: readonly Slice<EventMeta>[],
+  extraSegSlices: readonly Slice<S>[],
   eventOrderStrict: boolean,
   eventSlicing: boolean,
   maxPixels: number,
   moreLinkPixelHeight: number,
   provisionalSliceHeight: number,
-): HiddenSliceGroup<EventMeta>[] {
+): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
     sliceLevels,
     sliceCoords,
@@ -262,9 +266,9 @@ export function mergeExtraIntoLevelCoords<EventMeta>(
   )
 }
 
-export function sortByEventOrder<EventMeta>(
-  slices: readonly Slice<EventMeta>[],
-): Slice<EventMeta>[] {
+export function sortByEventOrder<S extends SourceSeg>(
+  slices: readonly Slice<S>[],
+): Slice<S>[] {
   return [...slices].sort((a, b) =>
     a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
     a.start - b.start ||
@@ -272,10 +276,10 @@ export function sortByEventOrder<EventMeta>(
   )
 }
 
-export function compilePixelLimitedRenderSlices<EventMeta>(
-  domWholeSliceLevels: readonly (readonly Slice<EventMeta>[])[],
-  placementSliceLevels: readonly (readonly Slice<EventMeta>[])[],
-): Slice<EventMeta>[] {
+export function compilePixelLimitedRenderSlices<S extends SourceSeg>(
+  domWholeSliceLevels: readonly (readonly Slice<S>[])[],
+  placementSliceLevels: readonly (readonly Slice<S>[])[],
+): Slice<S>[] {
   const renderSlices = domWholeSliceLevels.flat()
 
   for (const placementLevel of placementSliceLevels) {
@@ -287,13 +291,13 @@ export function compilePixelLimitedRenderSlices<EventMeta>(
   return renderSlices
 }
 
-function federateSlicesByStart<EventMeta>(
-  renderSlices: readonly Slice<EventMeta>[],
+function federateSlicesByStart<S extends SourceSeg>(
+  renderSlices: readonly Slice<S>[],
   colCount: number,
-): Slice<EventMeta>[][] {
+): Slice<S>[][] {
   const slicesByStart = Array.from(
     { length: colCount },
-    () => [] as Slice<EventMeta>[],
+    () => [] as Slice<S>[],
   )
 
   for (const slice of renderSlices) slicesByStart[slice.start].push(slice)
@@ -301,25 +305,25 @@ function federateSlicesByStart<EventMeta>(
   return slicesByStart
 }
 
-function compareSlicesByEventOrder<EventMeta>(
-  a: Slice<EventMeta>,
-  b: Slice<EventMeta>,
+function compareSlicesByEventOrder<S extends SourceSeg>(
+  a: Slice<S>,
+  b: Slice<S>,
 ): number {
   return a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
     Number(isPartialSlice(a)) - Number(isPartialSlice(b))
 }
 
-function isPartialSlice<EventMeta>(slice: Slice<EventMeta>): boolean {
+function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
   return slice.start !== slice.sourceSeg.start ||
     slice.end !== slice.sourceSeg.end
 }
 
 /** Merges strict lateral intersections and retains witness encounter order. */
-export function groupLaterallyIntersecting<EventMeta>(
-  hiddenSlices: readonly Slice<EventMeta>[],
-): HiddenSliceGroup<EventMeta>[] {
+export function groupLaterallyIntersecting<S extends SourceSeg>(
+  hiddenSlices: readonly Slice<S>[],
+): HiddenSliceGroup<S>[] {
   interface WorkingGroup extends LateralSpan {
-    entries: { slice: Slice<EventMeta>; order: number }[]
+    entries: { slice: Slice<S>; order: number }[]
   }
 
   let groups: WorkingGroup[] = []
@@ -364,11 +368,11 @@ export function groupLaterallyIntersecting<EventMeta>(
   ))
 }
 
-function buildSliceRenderItems<EventMeta, HeightRef>(
-  slicesByStart: readonly (readonly Slice<EventMeta>[])[],
+function buildSliceRenderItems<S extends SourceSeg, HeightRef>(
+  slicesByStart: readonly (readonly Slice<S>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-): SliceRenderItem<EventMeta, HeightRef>[][] {
+): SliceRenderItem<S, HeightRef>[][] {
   return slicesByStart.map((slices) => slices.map((slice) => {
     const key = getSliceKey(slice)
     const levelCoord = sliceCoords.get(key)
@@ -385,8 +389,8 @@ function buildSliceRenderItems<EventMeta, HeightRef>(
   }))
 }
 
-export function buildLevelLimitedLayout<EventMeta, HeightRef>(
-  props: LayoutProps<EventMeta>,
+export function buildLevelLimitedLayout<S extends SourceSeg, HeightRef>(
+  props: LayoutProps<S>,
   options: LevelLimitedOptions,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   largestSliceHeight: number | undefined,
@@ -430,8 +434,8 @@ export function buildLevelLimitedLayout<EventMeta, HeightRef>(
   }
 }
 
-export function buildPixelLimitedLayout<EventMeta, HeightRef>(
-  props: LayoutProps<EventMeta>,
+export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
+  props: LayoutProps<S>,
   options: PixelLimitedOptions,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   canvasHeight: number | undefined,
@@ -448,7 +452,7 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
   )
   const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
   const domExcludedSlices = convertSegsToWholeSlices(excludedSegs)
-  const getPlanningSliceHeight = (slice: Slice<EventMeta>) =>
+  const getPlanningSliceHeight = (slice: Slice<S>) =>
     sliceHeightMap.current.get(getSliceKey(slice)) ?? provisionalSliceHeight
   const wholeResolution = resolveLevelCoords(
     domWholeSliceLevels,
@@ -502,8 +506,8 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
   }
 }
 
-export function buildTimeGridLevelInputs<EventMeta>(
-  props: Pick<LayoutProps<EventMeta>, 'segs'>,
+export function buildTimeGridLevelInputs<S extends SourceSeg>(
+  props: Pick<LayoutProps<S>, 'segs'>,
   options: TimeGridLevelOptions,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
@@ -526,32 +530,32 @@ interface MergeOptions {
   isValid: (levelCoord: number, thickness: number) => boolean
 }
 
-interface Insertion<EventMeta> {
+interface Insertion<S extends SourceSeg> {
   levelIndex: number
   levelCoord: number
   isGeometricallyValid: boolean
-  touchingSlice?: Slice<EventMeta>
+  touchingSlice?: Slice<S>
   touchingOccupant?: MoreLinkOccupant
 }
 
 /** Shared fire/collide/peel/consume implementation for both currencies. */
-function mergeExtraIntoStructure<EventMeta>(
-  sliceLevels: Slice<EventMeta>[][],
+function mergeExtraIntoStructure<S extends SourceSeg>(
+  sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  extraSegSlices: readonly Slice<EventMeta>[],
+  extraSegSlices: readonly Slice<S>[],
   options: MergeOptions,
-): HiddenSliceGroup<EventMeta>[] {
-  let hiddenGroups: HiddenSliceGroup<EventMeta>[] = []
+): HiddenSliceGroup<S>[] {
+  let hiddenGroups: HiddenSliceGroup<S>[] = []
   let hiddenOrder = 0
-  const hiddenOrders = new Map<Slice<EventMeta>, number>()
+  const hiddenOrders = new Map<Slice<S>, number>()
 
-  const getSliceCoord = (slice: Slice<EventMeta>, levelIndex: number) =>
+  const getSliceCoord = (slice: Slice<S>, levelIndex: number) =>
     sliceCoords.get(getSliceKey(slice)) ?? levelIndex
 
-  const getSliceBottom = (slice: Slice<EventMeta>, levelIndex: number) =>
+  const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
     getSliceCoord(slice, levelIndex) + options.sliceThickness
 
-  function addHiddenRaw(slice: Slice<EventMeta>): HiddenSliceGroup<EventMeta> {
+  function addHiddenRaw(slice: Slice<S>): HiddenSliceGroup<S> {
     hiddenOrders.set(slice, hiddenOrder++)
     const intersecting = hiddenGroups.filter((group) =>
       doSpansIntersect(group, slice),
@@ -570,7 +574,7 @@ function mergeExtraIntoStructure<EventMeta>(
     return group
   }
 
-  function positionOccupants(): HiddenSliceGroup<EventMeta> | undefined {
+  function positionOccupants(): HiddenSliceGroup<S> | undefined {
     for (const group of hiddenGroups) {
       const colliders = collectIntersectingSlices(sliceLevels, group)
       group.occupant.levelIndex = colliders.length
@@ -590,8 +594,8 @@ function mergeExtraIntoStructure<EventMeta>(
   }
 
   function consumeInvalidOccupants(): void {
-    const refires: Slice<EventMeta>[] = []
-    let invalidGroup: HiddenSliceGroup<EventMeta> | undefined
+    const refires: Slice<S>[] = []
+    let invalidGroup: HiddenSliceGroup<S> | undefined
 
     while ((invalidGroup = positionOccupants())) {
       const anchor = invalidGroup.hiddenSlices[0]
@@ -636,7 +640,7 @@ function mergeExtraIntoStructure<EventMeta>(
   }
 
   function fireSlice(
-    slice: Slice<EventMeta>,
+    slice: Slice<S>,
     mayPlaceWhole: boolean = true,
   ): void {
     const insertion = findInsertion(
@@ -685,19 +689,19 @@ function mergeExtraIntoStructure<EventMeta>(
   return hiddenGroups
 }
 
-function findInsertion<EventMeta>(
-  sliceLevels: readonly (readonly Slice<EventMeta>[])[],
+function findInsertion<S extends SourceSeg>(
+  sliceLevels: readonly (readonly Slice<S>[])[],
   sliceCoords: ReadonlyMap<string, number>,
-  hiddenGroups: readonly HiddenSliceGroup<EventMeta>[],
-  slice: Slice<EventMeta>,
+  hiddenGroups: readonly HiddenSliceGroup<S>[],
+  slice: Slice<S>,
   options: MergeOptions,
-): Insertion<EventMeta> | null {
+): Insertion<S> | null {
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),
   )
-  const getCoord = (other: Slice<EventMeta>, levelIndex: number) =>
+  const getCoord = (other: Slice<S>, levelIndex: number) =>
     sliceCoords.get(getSliceKey(other)) ?? levelIndex
-  const getBottom = (other: Slice<EventMeta>, levelIndex: number) =>
+  const getBottom = (other: Slice<S>, levelIndex: number) =>
     getCoord(other, levelIndex) + options.sliceThickness
   let strictMinLevelIndex = 0
   let strictMaxLevelIndexExclusive = Infinity
@@ -741,7 +745,7 @@ function findInsertion<EventMeta>(
   }
 
   let minLevelCoord = 0
-  let touchingSlice: Slice<EventMeta> | undefined
+  let touchingSlice: Slice<S> | undefined
   for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
     if (
       !collidersByLevel[levelIndex].length &&
@@ -802,9 +806,9 @@ function findInsertion<EventMeta>(
   }
 }
 
-function createWholeSlice<EventMeta>(
-  sourceSeg: SourceSeg<EventMeta>,
-): Slice<EventMeta> {
+function createWholeSlice<S extends SourceSeg>(
+  sourceSeg: S,
+): Slice<S> {
   return {
     sourceSeg,
     start: sourceSeg.start,
@@ -814,20 +818,20 @@ function createWholeSlice<EventMeta>(
   }
 }
 
-function intersectSlice<EventMeta>(
-  slice: Slice<EventMeta>,
+function intersectSlice<S extends SourceSeg>(
+  slice: Slice<S>,
   barrier: LateralSpan,
-): Slice<EventMeta> | null {
+): Slice<S> | null {
   const start = Math.max(slice.start, barrier.start)
   const end = Math.min(slice.end, barrier.end)
   return start < end ? createNarrowerSlice(slice, start, end) : null
 }
 
-function createNarrowerSlice<EventMeta>(
-  parent: Slice<EventMeta>,
+function createNarrowerSlice<S extends SourceSeg>(
+  parent: Slice<S>,
   start: number,
   end: number,
-): Slice<EventMeta> {
+): Slice<S> {
   return {
     sourceSeg: parent.sourceSeg,
     start,
@@ -837,11 +841,11 @@ function createNarrowerSlice<EventMeta>(
   }
 }
 
-function peelSlice<EventMeta>(
-  slice: Slice<EventMeta>,
+function peelSlice<S extends SourceSeg>(
+  slice: Slice<S>,
   barrier: LateralSpan,
-): Slice<EventMeta>[] {
-  const remainders: Slice<EventMeta>[] = []
+): Slice<S>[] {
+  const remainders: Slice<S>[] = []
   if (slice.start < barrier.start) {
     remainders.push(createNarrowerSlice(slice, slice.start, barrier.start))
   }
@@ -851,19 +855,19 @@ function peelSlice<EventMeta>(
   return remainders
 }
 
-function collectIntersectingSlices<EventMeta>(
-  sliceLevels: readonly (readonly Slice<EventMeta>[])[],
+function collectIntersectingSlices<S extends SourceSeg>(
+  sliceLevels: readonly (readonly Slice<S>[])[],
   span: LateralSpan,
-): { slice: Slice<EventMeta>; levelIndex: number }[] {
+): { slice: Slice<S>; levelIndex: number }[] {
   return sliceLevels.flatMap((level, levelIndex) =>
     findIntersections(level, span).map((slice) => ({ slice, levelIndex })),
   )
 }
 
-function insertSlice<EventMeta>(
-  sliceLevels: Slice<EventMeta>[][],
+function insertSlice<S extends SourceSeg>(
+  sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  slice: Slice<EventMeta>,
+  slice: Slice<S>,
   levelIndex: number,
   levelCoord: number,
 ): void {
@@ -872,10 +876,10 @@ function insertSlice<EventMeta>(
   sliceCoords.set(getSliceKey(slice), levelCoord)
 }
 
-function removeSlice<EventMeta>(
-  sliceLevels: Slice<EventMeta>[][],
+function removeSlice<S extends SourceSeg>(
+  sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  slice: Slice<EventMeta>,
+  slice: Slice<S>,
   levelIndex: number,
 ): void {
   const index = sliceLevels[levelIndex].indexOf(slice)
@@ -935,11 +939,11 @@ function doSpansIntersect(a: LateralSpan, b: LateralSpan): boolean {
   return a.start < b.end && b.start < a.end
 }
 
-function createPublicGroup<EventMeta>(
-  hiddenSlices: Slice<EventMeta>[],
+function createPublicGroup<S extends SourceSeg>(
+  hiddenSlices: Slice<S>[],
   start: number,
   end: number,
-): HiddenSliceGroup<EventMeta> {
+): HiddenSliceGroup<S> {
   const key = getSliceKey(hiddenSlices[0])
   return {
     key,

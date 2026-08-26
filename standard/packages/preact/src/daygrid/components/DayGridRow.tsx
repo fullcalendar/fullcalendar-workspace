@@ -27,8 +27,8 @@ import {
   type SliceRenderItem,
 } from '../../seg-placement/kernel'
 import {
-  type DayGridEventSeg,
   type DayGridPlacementColumn,
+  type DayGridSourceSeg,
   DEFAULT_NEEDED_LEVEL_COUNT,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
@@ -384,7 +384,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   /** Renders every kernel slice with its own measurement ref. */
   renderLevelFgSegs(
     headerHeight: number | undefined,
-    items: SliceRenderItem<DayGridEventSeg, Ref<number>>[],
+    items: SliceRenderItem<DayGridSourceSeg, Ref<number>>[],
   ): ReactElement[] {
     const { props } = this
     const { colWidth, eventSelection } = props
@@ -716,9 +716,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function buildPrintEventSeg(slice: Slice<DayGridEventSeg>): DayRowEventRangePart {
+function buildPrintEventSeg(slice: Slice<DayGridSourceSeg>): DayRowEventRangePart {
   return {
-    ...slice.sourceSeg.meta,
+    ...slice.sourceSeg,
     start: slice.start,
     end: slice.end,
     isStart: slice.isStart,
@@ -727,16 +727,16 @@ function buildPrintEventSeg(slice: Slice<DayGridEventSeg>): DayRowEventRangePart
 }
 
 function buildLevelEventSeg(
-  slice: Slice<DayGridEventSeg>,
+  slice: Slice<DayGridSourceSeg>,
 ): DayRowEventRangePart {
   const { sourceSeg } = slice
 
   if (slice.start === sourceSeg.start && slice.end === sourceSeg.end) {
-    return sourceSeg.meta
+    return sourceSeg
   }
 
   return {
-    ...sourceSeg.meta,
+    ...sourceSeg,
     start: slice.start,
     end: slice.end,
     isStart: slice.isStart,

@@ -29,8 +29,8 @@ interface TimeGridLayoutOptions {
 }
 
 /** One visible source after its logical level is pressure-expanded. */
-interface TimeGridPlacement<EventMeta = unknown> {
-  sourceSeg: SourceSeg<EventMeta>
+interface TimeGridPlacement<S extends SourceSeg = SourceSeg> {
+  sourceSeg: S
   start: number
   end: number
   isStart: boolean
@@ -48,29 +48,29 @@ interface TimeGridPlacement<EventMeta = unknown> {
 }
 
 /** TimeGrid's existing more-link group projection over kernel hidden groups. */
-interface TimeGridMoreLinkGroup<EventMeta = unknown>
-  extends HiddenSliceGroup<EventMeta> {
+interface TimeGridMoreLinkGroup<S extends SourceSeg = SourceSeg>
+  extends HiddenSliceGroup<S> {
   count: number
 }
 
 /** Complete reusable output needed to render one TimeGrid column. */
-interface TimeGridColumnLayout<EventMeta = unknown> {
+interface TimeGridColumnLayout<S extends SourceSeg = SourceSeg> {
   /** Dimensionless kernel levels consumed by the collision-web projection. */
-  pressureWebSegLevels: SourceSeg<EventMeta>[][]
+  pressureWebSegLevels: S[][]
   /** Whole segs rejected directly by the kernel's max-level admission pass. */
-  globbedMoreLinkSegs: SourceSeg<EventMeta>[]
+  globbedMoreLinkSegs: S[]
   /** Final visible placements in temporal-start/event-order. */
-  domOrderedPlacements: TimeGridPlacement<EventMeta>[]
+  domOrderedPlacements: TimeGridPlacement<S>[]
   /** Tax-free overlay links formed only after level admission has completed. */
-  moreLinkGroups: TimeGridMoreLinkGroup<EventMeta>[]
+  moreLinkGroups: TimeGridMoreLinkGroup<S>[]
 }
 
 /** Builds, limits, and pressure-expands one TimeGrid day/resource column. */
-export function layoutTimeGridColumnByMaxLevel<EventMeta>(
-  eventOrderedSegs: readonly SourceSeg<EventMeta>[],
+export function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
+  eventOrderedSegs: readonly S[],
   maxLevels: number,
   options: TimeGridLayoutOptions,
-): TimeGridColumnLayout<EventMeta> {
+): TimeGridColumnLayout<S> {
   const { pressureWebSegLevels, globbedMoreLinkSegs } =
     buildTimeGridLevelInputs(
       { segs: eventOrderedSegs },
@@ -104,9 +104,9 @@ export function layoutTimeGridColumnByMaxLevel<EventMeta>(
  * containing a collider. A single intersection sweep supplies component
  * membership, expansion stops, and backward/forward longest-chain depths.
  */
-function positionTimeGridPlacements<EventMeta>(
-  levels: readonly (readonly SourceSeg<EventMeta>[])[],
-): TimeGridPlacement<EventMeta>[] {
+function positionTimeGridPlacements<S extends SourceSeg>(
+  levels: readonly (readonly S[])[],
+): TimeGridPlacement<S>[] {
   const placementLevels = levels.map((level, levelIndex) =>
     level.map((sourceSeg) => ({
       sourceSeg,
@@ -214,9 +214,9 @@ function positionTimeGridPlacements<EventMeta>(
   })
 }
 
-function orderTimeGridPlacements<EventMeta>(
-  placements: readonly TimeGridPlacement<EventMeta>[],
-): TimeGridPlacement<EventMeta>[] {
+function orderTimeGridPlacements<S extends SourceSeg>(
+  placements: readonly TimeGridPlacement<S>[],
+): TimeGridPlacement<S>[] {
   return [...placements].sort((a, b) =>
     a.start - b.start ||
     a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,

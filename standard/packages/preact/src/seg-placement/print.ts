@@ -21,10 +21,10 @@ export const DEFAULT_PRINT_MAX_LEVELS = 200
  * from every event-ordered source with unit thickness. The default 200-level
  * cap is an internal safety constant, not a public option.
  */
-export interface PrintCandidatePlan<EventMeta = unknown> {
-  sliceLevels: Slice<EventMeta>[][]
-  visibleSlices: Slice<EventMeta>[]
-  hiddenSlices: Slice<EventMeta>[]
+export interface PrintCandidatePlan<S extends SourceSeg = SourceSeg> {
+  sliceLevels: Slice<S>[][]
+  visibleSlices: Slice<S>[]
+  hiddenSlices: Slice<S>[]
 }
 
 export interface PrintPlanningOptions {
@@ -32,10 +32,10 @@ export interface PrintPlanningOptions {
   eventSlicing: boolean
 }
 
-export function planPrintDomCandidates<EventMeta>(
-  eventOrderedSegs: readonly SourceSeg<EventMeta>[],
+export function planPrintDomCandidates<S extends SourceSeg>(
+  eventOrderedSegs: readonly S[],
   options: PrintPlanningOptions,
-): PrintCandidatePlan<EventMeta> {
+): PrintCandidatePlan<S> {
   const { segLevels, excludedSegs } = buildSegLevels(
     eventOrderedSegs,
     options.eventOrderStrict,
@@ -67,9 +67,9 @@ export function planPrintDomCandidates<EventMeta>(
  * coordinate zero because they never overlap laterally, while its explicit
  * thickness gives the renderer a page-breakable normal-flow box.
  */
-export interface PrintEventBand<EventMeta = unknown> {
+export interface PrintEventBand<S extends SourceSeg = SourceSeg> {
   levelIndex: number
-  slices: Slice<EventMeta>[]
+  slices: Slice<S>[]
   /** Tallest current or fallback occupied source thickness in this band. */
   thickness: number
 }
@@ -82,8 +82,8 @@ export interface PrintEventBand<EventMeta = unknown> {
  * up screen skyline compaction so links paginate together. DayGrid does not
  * use this structure because it prints links outside the event bands.
  */
-export interface PrintMoreLinkBand<EventMeta = unknown> {
-  moreLinkGroups: HiddenSliceGroup<EventMeta>[]
+export interface PrintMoreLinkBand<S extends SourceSeg = SourceSeg> {
+  moreLinkGroups: HiddenSliceGroup<S>[]
   /** Tallest current or fallback occupied link thickness in this band. */
   thickness: number
 }
@@ -97,12 +97,12 @@ export interface PrintMoreLinkBand<EventMeta = unknown> {
  * source-wrapper measurement. Missing measurements use the supplied fallback.
  * Empty or sparse levels do not create empty DOM bands.
  */
-export function buildPrintEventBands<EventMeta>(
-  levels: readonly (readonly Slice<EventMeta>[])[],
+export function buildPrintEventBands<S extends SourceSeg>(
+  levels: readonly (readonly Slice<S>[])[],
   printEventThicknesses: ReadonlyMap<string, number>,
   defaultPrintEventThickness = DEFAULT_UNMEASURED_EVENT_THICKNESS,
-): PrintEventBand<EventMeta>[] {
-  const bands: PrintEventBand<EventMeta>[] = []
+): PrintEventBand<S>[] {
+  const bands: PrintEventBand<S>[] = []
 
   for (let levelIndex = 0; levelIndex < levels.length; levelIndex++) {
     const entries = levels[levelIndex]
@@ -129,10 +129,10 @@ export function buildPrintEventBands<EventMeta>(
 }
 
 /** Builds Timeline's one final print more-link band when hidden groups exist. */
-export function buildPrintMoreLinkBand<EventMeta>(
-  moreLinkGroups: readonly HiddenSliceGroup<EventMeta>[],
+export function buildPrintMoreLinkBand<S extends SourceSeg>(
+  moreLinkGroups: readonly HiddenSliceGroup<S>[],
   printMoreLinkHeights: ReadonlyMap<string, number>,
-): PrintMoreLinkBand<EventMeta> | null {
+): PrintMoreLinkBand<S> | null {
   if (!moreLinkGroups.length) return null
 
   return {

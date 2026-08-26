@@ -14,7 +14,7 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { type TimelineDateProfile } from '../timeline-date-profile'
 import { type TimelineRange } from '../TimelineLaneSlicer'
 import { TimelinePrintRenderer } from '../print-adapter'
-import { type TimelineEventSeg } from '../seg-placement-adapter'
+import { type TimelineSourceSeg } from '../seg-placement-adapter'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 
@@ -88,7 +88,7 @@ interface TimelinePrintBandBaseProps {
 }
 
 export interface TimelinePrintEventBandProps extends TimelinePrintBandBaseProps {
-  band: PrintEventBand<TimelineEventSeg>
+  band: PrintEventBand<TimelineSourceSeg>
   heightRefMap: RefMap<string, number>
 }
 
@@ -103,7 +103,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
     >
       {band.slices.map((slice) => {
         const { sourceSeg } = slice
-        const seg = sourceSeg.meta
+        const seg = sourceSeg
         const { eventRange } = seg
         const { instanceId } = eventRange.instance
         const isSelected = instanceId === props.eventSelection
@@ -138,7 +138,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
 }
 
 export interface TimelinePrintMoreLinkBandProps extends TimelinePrintBandBaseProps {
-  band: PrintMoreLinkBand<TimelineEventSeg>
+  band: PrintMoreLinkBand<TimelineSourceSeg>
   heightRefMap: RefMap<string, number>
 }
 
@@ -162,7 +162,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
           heightRef={props.heightRefMap.createRef(group.key)}
         >
           <TimelineLaneMoreLink
-            hiddenSegs={group.hiddenSlices.map((slice) => slice.sourceSeg.meta)}
+            hiddenSegs={group.hiddenSlices.map((slice) => slice.sourceSeg)}
             dateProfile={props.dateProfile}
             nowDate={props.nowDate}
             nowMs={props.nowMs}

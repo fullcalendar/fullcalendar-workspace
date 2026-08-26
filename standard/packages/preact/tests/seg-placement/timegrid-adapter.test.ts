@@ -22,7 +22,8 @@ describe('TimeGrid production placement adapter', () => {
       ['b', 0.5, 0.5],
       ['c', 0, 1],
     ])
-    expect(result.placements[0].seg).toBe(fixture.segs[0])
+    expect(result.placements[0].seg).toMatchObject(fixture.segs[0])
+    expect(result.placements[0].seg.eventRange).toBe(fixture.segs[0].eventRange)
     expect(result.placements[0].segVertical).toBe(fixture.verticals[0])
     auditVisibleRectangles(result, 'ordinary overlap')
   })

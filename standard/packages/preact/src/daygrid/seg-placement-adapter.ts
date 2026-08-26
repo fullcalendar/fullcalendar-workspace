@@ -4,7 +4,6 @@ import {
   type Slice,
   type SliceHeightMap,
   type SliceRenderItem,
-  type SourceSeg,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
   getLateralCellRange,
@@ -18,9 +17,18 @@ import {
 
 export type DayGridEventSeg = DayRowEventRange
 
+/**
+ * A production seg satisfying the kernel's seg requirements directly: its
+ * column-unit lateral geometry already matches, so only identity is added.
+ */
+export type DayGridSourceSeg = DayGridEventSeg & {
+  key: string
+  orderIndex: number
+}
+
 export interface DayGridPlacementColumn<HeightRef> {
   /** Exact kernel slices whose DOM wrappers start in this column. */
-  renderItems: SliceRenderItem<DayGridEventSeg, HeightRef>[]
+  renderItems: SliceRenderItem<DayGridSourceSeg, HeightRef>[]
   /** Deepest visible slice bottom crossing this column. */
   contentHeight: number
   /** Every source crossing this column, cut for more-link APIs. */
@@ -78,14 +86,10 @@ export const DEFAULT_NEEDED_LEVEL_COUNT = estimateLevelCapacity(
 /** Converts sorted production ranges into the shared source vocabulary. */
 export function buildDayGridSegSources(
   eventOrderedSegs: readonly DayGridEventSeg[],
-): SourceSeg<DayGridEventSeg>[] {
+): DayGridSourceSeg[] {
   return eventOrderedSegs.map((seg, orderIndex) => ({
+    ...seg,
     key: getEventSliceKey(seg),
-    start: seg.start,
-    end: seg.end,
-    isStart: seg.isStart,
-    isEnd: seg.isEnd,
-    meta: seg,
     orderIndex,
   }))
 }
@@ -198,7 +202,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
 
 /** Hidden donors are exempt; every coordinate-bearing render item must settle. */
 function areDayGridRenderItemsSettled<HeightRef>(
-  renderItems: readonly (readonly SliceRenderItem<DayGridEventSeg, HeightRef>[])[],
+  renderItems: readonly (readonly SliceRenderItem<DayGridSourceSeg, HeightRef>[])[],
   sliceHeightMap: SliceHeightMap<HeightRef>,
 ): boolean {
   return renderItems.every((items) => items.every((item) =>
@@ -208,8 +212,8 @@ function areDayGridRenderItemsSettled<HeightRef>(
 
 /** Projects kernel glob groups into one cell's ordered more-link inputs. */
 export function buildDayGridPopoverSegs(
-  sourceSegs: readonly SourceSeg<DayGridEventSeg>[],
-  hiddenGroups: readonly HiddenSliceGroup<DayGridEventSeg>[],
+  sourceSegs: readonly DayGridSourceSeg[],
+  hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
   column: number,
   columnCount: number,
 ): {
@@ -231,10 +235,10 @@ export function buildDayGridPopoverSegs(
   )
 
   return {
-    segs: columnSources.map((source) => cutSegToColumn(source.meta, column)),
+    segs: columnSources.map((source) => cutSegToColumn(source, column)),
     hiddenSegs: columnSources
       .filter((source) => hiddenKeys.has(source.key))
-      .map((source) => cutSegToColumn(source.meta, column)),
+      .map((source) => cutSegToColumn(source, column)),
   }
 }
 
@@ -245,15 +249,16 @@ export function buildDayGridPopoverSegs(
  * "continues" exactly when the event truly extends past this column.
  */
 function cutSegToColumn(
-  seg: DayRowEventRange,
+  source: DayGridSourceSeg,
   column: number,
 ): DayRowEventRangePart {
+  const { key, orderIndex, ...seg } = source
   return {
     ...seg,
     start: column,
     end: column + 1,
-    isStart: seg.isStart && seg.start === column,
-    isEnd: seg.isEnd && seg.end - 1 === column,
+    isStart: seg.isStart && source.start === column,
+    isEnd: seg.isEnd && source.end - 1 === column,
   }
 }
 
@@ -374,10 +379,10 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
 }
 
 function buildDayGridPlacementLayout<HeightRef>(
-  sourceSegs: readonly SourceSeg<DayGridEventSeg>[],
-  hiddenGroups: readonly HiddenSliceGroup<DayGridEventSeg>[],
-  renderItems: readonly (readonly SliceRenderItem<DayGridEventSeg, HeightRef>[])[],
-  placementSliceLevels: readonly (readonly Slice<DayGridEventSeg>[])[],
+  sourceSegs: readonly DayGridSourceSeg[],
+  hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
+  renderItems: readonly (readonly SliceRenderItem<DayGridSourceSeg, HeightRef>[])[],
+  placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   provisionalSliceHeight: number,

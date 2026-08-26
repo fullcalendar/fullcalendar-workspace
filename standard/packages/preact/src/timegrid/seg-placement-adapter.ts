@@ -1,12 +1,23 @@
 import { DateMarker } from '@full-ui/headless-calendar'
 import { type EventRangeProps, getEventSegKey } from '../component-util/event-rendering'
 import { DateProfile } from '../DateProfileGenerator'
-import { type SourceSeg } from '../seg-placement/kernel'
 import { layoutTimeGridColumnByMaxLevel } from '../seg-placement/timegrid'
 import { computeDateTopFrac } from './components/util'
 import { type TimeGridRange } from './TimeColsSeg'
 
 export type TimeGridEventSeg = TimeGridRange & EventRangeProps
+
+/**
+ * A projected copy of a production seg satisfying the kernel's seg
+ * requirements: the seg's own fields plus identity and its vertical pixel span
+ * (the production seg carries only dates).
+ */
+type TimeGridSourceSeg = TimeGridEventSeg & {
+  key: string
+  start: number
+  end: number
+  orderIndex: number
+}
 
 /** One seg's final pixel geometry down the time axis. */
 export interface TimeGridSegVertical {
@@ -108,7 +119,7 @@ export function buildTimeGridSegPlacements(
   eventOrderStrict?: boolean,
   eventMaxStack?: number,
 ): TimeGridSegPlacementResult {
-  const sourceSegs: SourceSeg<TimeGridEventSeg>[] = []
+  const sourceSegs: TimeGridSourceSeg[] = []
   const segVerticalBySeg = new Map<TimeGridEventSeg, TimeGridSegVertical>()
 
   for (let orderIndex = 0; orderIndex < segs.length; orderIndex += 1) {
@@ -116,16 +127,15 @@ export function buildTimeGridSegPlacements(
     const segVertical = segVerticals[orderIndex]
 
     if (segVertical) {
-      sourceSegs.push({
+      const sourceSeg: TimeGridSourceSeg = {
+        ...seg,
         key: getEventSegKey(seg),
         start: segVertical.start,
         end: segVertical.end,
-        isStart: seg.isStart,
-        isEnd: seg.isEnd,
-        meta: seg,
         orderIndex,
-      })
-      segVerticalBySeg.set(seg, segVertical)
+      }
+      sourceSegs.push(sourceSeg)
+      segVerticalBySeg.set(sourceSeg, segVertical)
     }
   }
 
@@ -137,7 +147,7 @@ export function buildTimeGridSegPlacements(
 
   return {
     placements: layout.domOrderedPlacements.map((placement) => {
-      const seg = placement.sourceSeg.meta
+      const seg = placement.sourceSeg
       return {
         seg,
         segVertical: segVerticalBySeg.get(seg)!,
@@ -148,7 +158,7 @@ export function buildTimeGridSegPlacements(
       }
     }),
     hiddenGroups: layout.moreLinkGroups.map((group) => {
-      const groupSegs = group.hiddenSlices.map((slice) => slice.sourceSeg.meta)
+      const groupSegs = group.hiddenSlices.map((slice) => slice.sourceSeg)
       return {
         key: group.key,
         start: group.start,

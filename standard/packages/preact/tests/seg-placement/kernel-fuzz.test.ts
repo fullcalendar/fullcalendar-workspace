@@ -13,9 +13,7 @@ import {
   resolveLevelCoords,
 } from '../../src/seg-placement/kernel'
 
-interface TestMeta {
-  id: string
-}
+type TestSeg = SourceSeg & { id: string }
 
 describe('pure positioning kernel fuzzing', () => {
   it('preserves level, occupant, order, and coverage invariants', () => {
@@ -79,7 +77,7 @@ describe('pure positioning kernel fuzzing', () => {
         provisional,
       )
       const exactHeights = new Map<string, number>()
-      const getExactHeight = (slice: Slice<TestMeta>) => {
+      const getExactHeight = (slice: Slice<TestSeg>) => {
         const key = getSliceKey(slice)
         let height = exactHeights.get(key)
         if (height == null) {
@@ -125,7 +123,7 @@ describe('pure positioning kernel fuzzing', () => {
   })
 })
 
-function buildScenario(seed: number): SourceSeg<TestMeta>[] {
+function buildScenario(seed: number): TestSeg[] {
   const random = createRandom(seed)
   const count = 6 + Math.floor(random() * 18)
   return Array.from({ length: count }, (_, orderIndex) => {
@@ -134,7 +132,7 @@ function buildScenario(seed: number): SourceSeg<TestMeta>[] {
     const id = `${seed}:${orderIndex}`
     return {
       key: `${id}:${start}`,
-      meta: { id },
+      id,
       start,
       end,
       isStart: true,
@@ -145,7 +143,7 @@ function buildScenario(seed: number): SourceSeg<TestMeta>[] {
 }
 
 function auditLevels(
-  levels: readonly (readonly Slice<TestMeta>[])[],
+  levels: readonly (readonly Slice<TestSeg>[])[],
   strict: boolean,
   label: string,
 ): void {
@@ -182,8 +180,8 @@ function auditLevels(
 }
 
 function auditGroups(
-  levels: readonly (readonly Slice<TestMeta>[])[],
-  groups: readonly HiddenSliceGroup<TestMeta>[],
+  levels: readonly (readonly Slice<TestSeg>[])[],
+  groups: readonly HiddenSliceGroup<TestSeg>[],
   limit: number,
   tax: number,
   label: string,
@@ -202,7 +200,7 @@ function auditGroups(
 
   for (const group of groups) {
     invariant(
-      !levels.flat().includes(group.occupant as unknown as Slice<TestMeta>),
+      !levels.flat().includes(group.occupant as unknown as Slice<TestSeg>),
       'occupant leaked into slice levels',
       label,
     )
@@ -228,9 +226,9 @@ function auditGroups(
 }
 
 function auditCoverage(
-  sources: readonly SourceSeg<TestMeta>[],
-  levels: readonly (readonly Slice<TestMeta>[])[],
-  groups: readonly HiddenSliceGroup<TestMeta>[],
+  sources: readonly TestSeg[],
+  levels: readonly (readonly Slice<TestSeg>[])[],
+  groups: readonly HiddenSliceGroup<TestSeg>[],
   label: string,
 ): void {
   const pieces = levels.flat().concat(

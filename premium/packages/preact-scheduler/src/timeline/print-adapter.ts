@@ -17,17 +17,18 @@ import {
 import { type TimelineDateProfile } from './timeline-date-profile'
 import {
   type TimelineEventSeg,
+  type TimelineSourceSeg,
   buildTimelineSegSources,
 } from './seg-placement-adapter'
 import { resolveTimelineEventProjectionSizing } from './slot-estimate'
 
-interface TimelinePrintPlan extends PrintCandidatePlan<TimelineEventSeg> {
-  moreLinkGroups: HiddenSliceGroup<TimelineEventSeg>[]
+interface TimelinePrintPlan extends PrintCandidatePlan<TimelineSourceSeg> {
+  moreLinkGroups: HiddenSliceGroup<TimelineSourceSeg>[]
 }
 
 interface TimelinePrintLayout {
-  eventBands: PrintEventBand<TimelineEventSeg>[]
-  moreLinkBand: PrintMoreLinkBand<TimelineEventSeg> | null
+  eventBands: PrintEventBand<TimelineSourceSeg>[]
+  moreLinkBand: PrintMoreLinkBand<TimelineSourceSeg> | null
 }
 
 /** Projects complete Timeline geometry and plans print-only DOM candidates. */

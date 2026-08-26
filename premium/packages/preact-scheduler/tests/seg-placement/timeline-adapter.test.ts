@@ -51,8 +51,8 @@ describe('Timeline production placement adapter', () => {
       start: 0,
       end: 200,
       orderIndex: 0,
-      meta: spanning,
     })
+    expect(sources[0].eventRange).toBe(spanning.eventRange)
   })
 
   it('uses exact timed instants across unequal DST slot spans', () => {
@@ -71,7 +71,7 @@ describe('Timeline production placement adapter', () => {
 
     expect(source.start).toBeCloseTo(50)
     expect(source.end).toBeCloseTo(150)
-    expect(source.meta).toBe(seg)
+    expect(source.eventRange).toBe(seg.eventRange)
   })
 
   it('applies clipping and eventMinWidth when building sources', () => {

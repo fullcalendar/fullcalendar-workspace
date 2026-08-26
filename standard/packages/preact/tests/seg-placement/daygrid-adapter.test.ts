@@ -39,8 +39,8 @@ describe('DayGrid production placement adapter', () => {
         orderIndex: 1,
       },
     ])
-    expect(sources[0].meta).toBe(first)
-    expect(sources[1].meta).toBe(second)
+    expect(sources[0].eventRange).toBe(first.eventRange)
+    expect(sources[1].eventRange).toBe(second.eventRange)
   })
 
 })
