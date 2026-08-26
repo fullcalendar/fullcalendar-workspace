@@ -71,12 +71,9 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
-  // cross-row placement-owner extrema. A standalone row (the all-day lane) is
-  // always level-limited, so it self-ratchets largestSliceHeight and the
-  // pixel-only extrema only ever arrive from a parent owner.
+  // Cross-row placement-owner inputs used only by the pixel-limited route.
   neededLevelCount?: number
   smallestSliceHeight?: number
-  largestSliceHeight?: number
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -102,11 +99,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
   })
   // Every screen slice (whole or partial) reports its occupied height here.
-  // A non-null report ratchets the placement owner in the same callback that
-  // recorded the value, before the rescheduled solve can read the map.
+  // A non-null report reaches the cross-row owner in the same callback that
+  // recorded it, before the rescheduled solve can read the map.
   private sliceHeightMap = new RefMap<string, number>((height) => {
     if (height != null) {
-      this.handleSliceHeightInsertion(height)
+      this.props.onSliceHeight?.(height)
     }
     afterSize(this.handleSegPositioning)
   })
@@ -129,7 +126,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
   private isScreenLayoutSettled = false
   private needsEventAreaHeightReport = false
-  private largestSliceHeight?: number // standalone (all-day lane) self-ratchet
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -167,8 +163,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
-      const largestSliceHeight = props.largestSliceHeight ?? this.largestSliceHeight
-
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements<Ref<number>>(
           fgEventSegs,
@@ -181,7 +175,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           this.sliceHeightMap,
           props.neededLevelCount ?? DEFAULT_NEEDED_LEVEL_COUNT,
           props.smallestSliceHeight,
-          largestSliceHeight,
         )
         : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
@@ -193,7 +186,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             columnCount: cells.length,
           },
           this.sliceHeightMap,
-          largestSliceHeight,
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
@@ -575,16 +567,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleSliceHeightInsertion = (height: number) => {
-    if (this.props.onSliceHeight) {
-      this.props.onSliceHeight(height)
-    } else {
-      this.largestSliceHeight = this.largestSliceHeight == null
-        ? height
-        : Math.max(this.largestSliceHeight, height)
-    }
-  }
-
   componentDidMount() {
     this._isUnmounting = false
     const { rootEl } = this // TODO: make dynamic with useEffect
@@ -601,7 +583,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     // Queue only after the requested render commits. flushAfterSize drains
     // additions in the same loop, so scheduling from the size handler itself
-    // could report the previous render's provisional layout.
+    // could report the previous render's layout snapshot.
     if (this.props.forPrint) {
       this.needsEventAreaHeightReport = false
     } else if (this.needsEventAreaHeightReport) {

@@ -137,7 +137,7 @@ describe('pure positioning kernel', () => {
     ])
     const result = resolveLevelCoords(
       levels,
-      (slice) => heights.get(getSliceKey(slice))!,
+      heights,
       10,
     )
 
@@ -167,7 +167,7 @@ describe('pure positioning kernel', () => {
       false,
       10,
       6,
-      () => 5,
+      constantHeights([trigger, frontier, excludedWhole], 5),
     )
     expect(mergeLevels.flat()).toEqual([])
     expect(groups[0].hiddenSlices.some((slice) =>
@@ -177,6 +177,31 @@ describe('pure positioning kernel', () => {
     )).toBe(true)
   })
 
+  it('keeps unmeasured slices pending and non-blocking', () => {
+    const [pending, measured] = segs([
+      ['pending', 0, 1],
+      ['measured', 0, 1],
+    ])
+    const levels = convertSegLevelsToWholeSlices([[pending], [measured]])
+    const result = resolveLevelCoords(
+      levels,
+      new Map([[measured.key, 5]]),
+      10,
+    )
+
+    expect(result.pendingSlices).toEqual([levels[0][0]])
+    expect(result.excludedSlices).toEqual([])
+    expect(result.placementSliceLevels.map(projectSlices)).toEqual([
+      [],
+      [['measured', 0, 1]],
+    ])
+    expect(result.sliceCoords.get(measured.key)).toBe(0)
+    expect(compilePixelLimitedRenderSlices(
+      levels,
+      result.placementSliceLevels,
+    ).map(getSliceKey)).toEqual([pending.key, measured.key])
+  })
+
   it('uses coordinate tolerance without relaxing lateral intersections', () => {
     const [source, barrierSource] = segs([
       ['source', 0, 2],
@@ -184,7 +209,11 @@ describe('pure positioning kernel', () => {
     ])
     const whole = convertSegsToWholeSlices([source])[0]
     const slightlyOver = 10 + GEOMETRY_TOLERANCE / 2
-    const resolved = resolveLevelCoords([[whole]], () => slightlyOver, 10)
+    const resolved = resolveLevelCoords(
+      [[whole]],
+      new Map([[getSliceKey(whole), slightlyOver]]),
+      10,
+    )
     expect(resolved.placementSliceLevels[0]).toEqual([whole])
 
     const partial = { ...whole, end: 1, isEnd: false }
@@ -197,7 +226,7 @@ describe('pure positioning kernel', () => {
       true,
       10,
       1,
-      () => slightlyOver,
+      constantHeights([source], slightlyOver),
     )
     expect(mergeLevels[0]).toEqual([partial])
 
@@ -212,7 +241,7 @@ describe('pure positioning kernel', () => {
       true,
       21,
       1,
-      () => slightlyOver,
+      constantHeights([source, barrierSource], slightlyOver),
     )
     expect(ceilingLevels[0]).toEqual([partial])
 
@@ -222,7 +251,7 @@ describe('pure positioning kernel', () => {
     ])).toHaveLength(2)
   })
 
-  it('salvages pixel partials using provisional thickness', () => {
+  it('salvages pixel partials using measured thickness', () => {
     const [base, extra] = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
@@ -237,7 +266,7 @@ describe('pure positioning kernel', () => {
       true,
       15,
       5,
-      () => 10,
+      constantHeights([base, extra], 10),
     )
 
     expect(projectSlices(levels.flat())).toEqual([
@@ -273,7 +302,7 @@ describe('pure positioning kernel', () => {
       false,
       30,
       15,
-      () => 10,
+      constantHeights([a, b, c, extra], 10),
     )
 
     expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
@@ -283,29 +312,32 @@ describe('pure positioning kernel', () => {
     auditCoverage([a, b, c, extra], levels, groups)
   })
 
-  it('only compacts when exact heights replace provisional heights', () => {
+  it('compacts when measured heights shrink', () => {
     const [base, extra] = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
     ])
     const levels = convertSegLevelsToWholeSlices([[base]])
-    const provisionalCoords = new Map([[base.key, 0]])
+    const initialCoords = new Map([[base.key, 0]])
     mergeExtraIntoLevelCoords(
       levels,
-      provisionalCoords,
+      initialCoords,
       convertSegsToWholeSlices([extra]),
       false,
       true,
       15,
       5,
-      () => 10,
+      constantHeights([base, extra], 10),
     )
-    const exact = resolveLevelCoords(levels, () => 6)
+    const exact = resolveLevelCoords(
+      levels,
+      new Map(levels.flat().map((slice) => [getSliceKey(slice), 6])),
+    )
 
     for (const slice of levels.flat()) {
       const key = getSliceKey(slice)
       expect(exact.sliceCoords.get(key)).toBeLessThanOrEqual(
-        provisionalCoords.get(key)!,
+        initialCoords.get(key)!,
       )
       expect(exact.sliceCoords.get(key)! + 6).toBeLessThanOrEqual(15)
     }
@@ -377,6 +409,27 @@ function projectSlices(slices: readonly Slice<TestSeg>[]) {
     slice.start,
     slice.end,
   ])
+}
+
+function constantHeights(
+  sources: readonly TestSeg[],
+  height: number,
+): Map<string, number> {
+  const breakpoints = new Set(sources.flatMap((source) => [
+    source.start,
+    source.end,
+  ]))
+  const heights = new Map<string, number>()
+
+  for (const source of sources) {
+    heights.set(source.key, height)
+    for (const start of breakpoints) {
+      if (start >= source.start && start < source.end) {
+        heights.set(`${source.key}:${start}:slice`, height)
+      }
+    }
+  }
+  return heights
 }
 
 function auditCoverage(

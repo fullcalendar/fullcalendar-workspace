@@ -58,14 +58,12 @@ type DayGridPlacementMode =
   | 'auto'
 
 /*
-These owner-lifetime extrema only widen planning assumptions. Keeping them
-monotone avoids remount churn; stale values after a style change can mount
-extra donors or conservatively spread provisional coordinates.
+These owner-lifetime extrema only widen the auto-mode DOM frontier. Keeping
+them monotone avoids remount churn; stale values after a style change can only
+mount extra measurement donors.
 */
 export interface DayGridPlacementOwnerState {
   smallestSliceHeight: number | null
-  /** Largest whole-or-partial slice height observed during this owner lifetime. */
-  largestSliceHeight: number | null
   /**
    * Largest observed height of the space foreground events actually compete
    * for, which excludes the day-number header above it. A row's complete
@@ -118,7 +116,6 @@ export function buildDayGridLevelPlacements<HeightRef>(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridLevelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const mode = resolveDayGridPlacementMode(
     input.dayMaxEvents,
@@ -146,19 +143,16 @@ export function buildDayGridLevelPlacements<HeightRef>(
       moreLinkLevelTax: computeDayGridMoreLinkLevelTax(mode),
     },
     sliceHeightMap,
-    largestSliceHeight,
   )
-  const provisionalSliceHeight = largestSliceHeight ??
-    DEFAULT_UNMEASURED_EVENT_THICKNESS
   return buildDayGridPlacementLayout(
     sourceSegs,
     layout.hiddenGroups,
     layout.renderItems,
-    layout.sliceLevels,
+    layout.placementSliceLevels,
     layout.sliceCoords,
     sliceHeightMap,
-    provisionalSliceHeight,
     input.columnCount,
+    layout.pendingSlices,
   )
 }
 
@@ -169,7 +163,6 @@ export function buildDayGridPixelPlacements<HeightRef>(
   sliceHeightMap: SliceHeightMap<HeightRef>,
   neededLevelCount: number,
   smallestSliceHeight: number | undefined,
-  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const layout = buildPixelLimitedLayout(
@@ -185,7 +178,6 @@ export function buildDayGridPixelPlacements<HeightRef>(
     input.canvasHeight,
     neededLevelCount,
     smallestSliceHeight,
-    largestSliceHeight,
   )
 
   return buildDayGridPlacementLayout(
@@ -195,19 +187,9 @@ export function buildDayGridPixelPlacements<HeightRef>(
     layout.placementSliceLevels,
     layout.sliceCoords,
     sliceHeightMap,
-    largestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
     input.columnCount,
+    layout.pendingSlices,
   )
-}
-
-/** Hidden donors are exempt; every coordinate-bearing render item must settle. */
-function areDayGridRenderItemsSettled<HeightRef>(
-  renderItems: readonly (readonly SliceRenderItem<DayGridSourceSeg, HeightRef>[])[],
-  sliceHeightMap: SliceHeightMap<HeightRef>,
-): boolean {
-  return renderItems.every((items) => items.every((item) =>
-    item.style.visibility === 'hidden' || sliceHeightMap.current.get(item.key) !== undefined,
-  ))
 }
 
 /** Projects kernel glob groups into one cell's ordered more-link inputs. */
@@ -266,7 +248,6 @@ function cutSegToColumn(
 export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
   return {
     smallestSliceHeight: null,
-    largestSliceHeight: null,
     largestCanvasHeight: null,
     neededLevelCount: DEFAULT_NEEDED_LEVEL_COUNT,
   }
@@ -274,7 +255,7 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
 
 /**
  * Records a positive whole-or-partial slice height, returning the same object
- * when neither owner extremum changes.
+ * when the owner minimum does not change.
  *
  * Any positive report is admitted, including an implausibly small one from a
  * wrapper measured mid font or stylesheet load. No floor is applied, for two
@@ -299,16 +280,11 @@ export function observeDayGridSliceHeight(
   const smallestSliceHeight = state.smallestSliceHeight == null
     ? height
     : Math.min(state.smallestSliceHeight, height)
-  const largestSliceHeight = state.largestSliceHeight == null
-    ? height
-    : Math.max(state.largestSliceHeight, height)
 
-  return smallestSliceHeight === state.smallestSliceHeight &&
-    largestSliceHeight === state.largestSliceHeight
+  return smallestSliceHeight === state.smallestSliceHeight
     ? state
     : updateDayGridPlacementOwnerState(state, {
       smallestSliceHeight,
-      largestSliceHeight,
     })
 }
 
@@ -385,8 +361,8 @@ function buildDayGridPlacementLayout<HeightRef>(
   placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  provisionalSliceHeight: number,
   columnCount: number,
+  pendingSlices: readonly Slice<DayGridSourceSeg>[],
 ): DayGridPlacementLayout<HeightRef> {
   const columns = Array.from(
     { length: columnCount },
@@ -405,9 +381,8 @@ function buildDayGridPlacementLayout<HeightRef>(
   for (const level of placementSliceLevels) {
     for (const slice of level) {
       const key = getSliceKey(slice)
-      const sliceBottom = sliceCoords.get(key)! + (
-        sliceHeightMap.current.get(key) ?? provisionalSliceHeight
-      )
+      const sliceHeight = sliceHeightMap.current.get(key)!
+      const sliceBottom = sliceCoords.get(key)! + sliceHeight
       const range = getLateralCellRange(slice, columnCount)
 
       for (let column = range.start; column < range.end; column += 1) {
@@ -422,7 +397,7 @@ function buildDayGridPlacementLayout<HeightRef>(
   return {
     columns,
     sliceCoords,
-    isSettled: areDayGridRenderItemsSettled(renderItems, sliceHeightMap),
+    isSettled: pendingSlices.length === 0,
   }
 }
 
@@ -439,7 +414,7 @@ function updateDayGridPlacementOwnerState(
   state: DayGridPlacementOwnerState,
   extrema: Partial<Pick<
     DayGridPlacementOwnerState,
-    'smallestSliceHeight' | 'largestSliceHeight' | 'largestCanvasHeight'
+    'smallestSliceHeight' | 'largestCanvasHeight'
   >>,
 ): DayGridPlacementOwnerState {
   const next = { ...state, ...extrema }

@@ -46,50 +46,46 @@ describe('pure positioning kernel fuzzing', () => {
     }
   })
 
-  it('keeps provisional pixel plans in-budget and exact re-resolves compact', () => {
+  it('keeps measured pixel plans in-budget and re-resolves compact', () => {
     for (let seed = 1; seed <= 250; seed++) {
       const sources = buildScenario(seed)
       const random = createRandom(seed * 65_537)
-      const provisional = 8 + random() * 9
-      const maxPixels = provisional * (1 + seed % 3) + random()
+      const initialHeight = 8 + random() * 9
+      const maxPixels = initialHeight * (1 + seed % 3) + random()
       const frontier = 1 + seed % 4
       const built = buildSegLevels(sources, seed % 2 === 0, frontier)
       const domLevels = convertSegLevelsToWholeSlices(built.segLevels)
+      const initialHeights = constantHeights(sources, initialHeight)
       const wholeResolution = resolveLevelCoords(
         domLevels,
-        () => provisional,
+        initialHeights,
         maxPixels,
       )
       const levels = wholeResolution.placementSliceLevels
-      const provisionalCoords = wholeResolution.sliceCoords
+      const initialCoords = wholeResolution.sliceCoords
       const extras = wholeResolution.excludedSlices.concat(
         convertSegsToWholeSlices(built.excludedSegs),
       ).sort((a, b) => a.sourceSeg.orderIndex - b.sourceSeg.orderIndex)
-      const moreLinkHeight = Math.max(1, provisional - 2 - random())
+      const moreLinkHeight = Math.max(1, initialHeight - 2 - random())
       const groups = mergeExtraIntoLevelCoords(
         levels,
-        provisionalCoords,
+        initialCoords,
         extras,
         seed % 2 === 0,
         seed % 3 !== 0,
         maxPixels,
         moreLinkHeight,
-        () => provisional,
+        initialHeights,
       )
       const exactHeights = new Map<string, number>()
-      const getExactHeight = (slice: Slice<TestSeg>) => {
+      for (const slice of levels.flat()) {
         const key = getSliceKey(slice)
-        let height = exactHeights.get(key)
-        if (height == null) {
-          height = Math.max(1, provisional - random() * 3)
-          exactHeights.set(key, height)
-        }
-        return height
+        exactHeights.set(key, Math.max(1, initialHeight - random() * 3))
       }
-      const exact = resolveLevelCoords(levels, getExactHeight)
+      const exact = resolveLevelCoords(levels, exactHeights)
       const label = JSON.stringify({
         seed,
-        provisional,
+        initialHeight,
         maxPixels,
         frontier,
       })
@@ -101,19 +97,19 @@ describe('pure positioning kernel fuzzing', () => {
         maxPixels,
         moreLinkHeight,
         label,
-        provisionalCoords,
-        provisional,
+        initialCoords,
+        initialHeight,
       )
       auditCoverage(sources, levels, groups, label)
       for (const slice of levels.flat()) {
         const key = getSliceKey(slice)
         invariant(
-          exact.sliceCoords.get(key)! <= provisionalCoords.get(key)!,
+          exact.sliceCoords.get(key)! <= initialCoords.get(key)!,
           `${key} grew during exact re-resolve`,
           label,
         )
         invariant(
-          exact.sliceCoords.get(key)! + getExactHeight(slice) <=
+          exact.sliceCoords.get(key)! + exactHeights.get(key)! <=
             maxPixels + GEOMETRY_TOLERANCE,
           `${key} broke the pixel budget after compaction`,
           label,
@@ -140,6 +136,20 @@ function buildScenario(seed: number): TestSeg[] {
       orderIndex,
     }
   })
+}
+
+function constantHeights(
+  sources: readonly TestSeg[],
+  height: number,
+): Map<string, number> {
+  const heights = new Map<string, number>()
+  for (const source of sources) {
+    heights.set(source.key, height)
+    for (let start = source.start; start < source.end; start += 1) {
+      heights.set(`${source.key}:${start}:slice`, height)
+    }
+  }
+  return heights
 }
 
 function auditLevels(

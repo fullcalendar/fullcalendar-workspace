@@ -1,5 +1,4 @@
 import {
-  DEFAULT_UNMEASURED_EVENT_THICKNESS,
   type CoordSpan,
   type DateEnv,
   type EventRangeProps,
@@ -44,7 +43,7 @@ export interface TimelineSegDomItem<HeightRef> {
   key: string
   seg: TimelineEventSeg
   horizontal: CoordSpan
-  top: number
+  top: number | undefined
   heightRef: HeightRef
 }
 
@@ -166,17 +165,15 @@ export function buildTimelineSegSources(
 }
 
 /**
- * Builds Timeline's immediate shared-kernel layout from exact and provisional
- * event heights. Link heights affect only content height, never placement.
+ * Mounts every admitted event for measurement, but positions only events whose
+ * wrappers have reported an exact height. Link heights affect only content
+ * height, never placement.
  */
 export function buildTimelineSegPlacements<HeightRef>(
   plan: TimelineSegPlacementPlan,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   moreLinkHeights: ReadonlyMap<string, number>,
-  largestSliceHeight: number | undefined,
 ): TimelineSegPlacementResult<HeightRef> {
-  const provisionalSliceHeight = largestSliceHeight ??
-    DEFAULT_UNMEASURED_EVENT_THICKNESS
   const layout = buildLevelLimitedLayout(
     { segs: plan.sourceSegs },
     {
@@ -186,7 +183,6 @@ export function buildTimelineSegPlacements<HeightRef>(
       moreLinkLevelTax: 0,
     },
     sliceHeightMap,
-    largestSliceHeight,
   )
   const visibleSlices = layout.sliceLevels.flat()
   const visibleByKey = new Map(
@@ -203,7 +199,7 @@ export function buildTimelineSegPlacements<HeightRef>(
         start: sourceSeg.start,
         size: sourceSeg.end - sourceSeg.start,
       },
-      top: layout.sliceCoords.get(getSliceKey(slice))!,
+      top: layout.sliceCoords.get(getSliceKey(slice)),
       heightRef: sliceHeightMap.createRef(sourceSeg.key),
     }]
   })
@@ -216,7 +212,6 @@ export function buildTimelineSegPlacements<HeightRef>(
       layout.sliceLevels,
       layout.sliceCoords,
       sliceHeightMap,
-      provisionalSliceHeight,
     ),
     segs: group.hiddenSlices.map((slice) => slice.sourceSeg),
   }))
@@ -228,7 +223,6 @@ export function buildTimelineSegPlacements<HeightRef>(
       visibleSlices,
       layout.sliceCoords,
       sliceHeightMap,
-      provisionalSliceHeight,
       moreLinks,
       moreLinkHeights,
     ),
@@ -244,18 +238,17 @@ function computeTimelineGroupTop<HeightRef>(
   sliceLevels: readonly (readonly Slice<TimelineSourceSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  provisionalSliceHeight: number,
 ): number {
   let top = 0
 
   for (const slice of sliceLevels.flat()) {
     if (slice.start < group.end && group.start < slice.end) {
       const key = getSliceKey(slice)
-      top = Math.max(
-        top,
-        sliceCoords.get(key)! +
-          (sliceHeightMap.current.get(key) ?? provisionalSliceHeight),
-      )
+      const sliceTop = sliceCoords.get(key)
+      const sliceHeight = sliceHeightMap.current.get(key)
+      if (sliceTop != null && sliceHeight != null) {
+        top = Math.max(top, sliceTop + sliceHeight)
+      }
     }
   }
 
@@ -267,7 +260,6 @@ function calculateTimelineContentHeight<HeightRef>(
   visibleSlices: readonly Slice<TimelineSourceSeg>[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  provisionalSliceHeight: number,
   moreLinks: readonly TimelineSegMoreLink[],
   moreLinkHeights: ReadonlyMap<string, number>,
 ): number {
@@ -275,11 +267,11 @@ function calculateTimelineContentHeight<HeightRef>(
 
   for (const slice of visibleSlices) {
     const key = getSliceKey(slice)
-    contentHeight = Math.max(
-      contentHeight,
-      sliceCoords.get(key)! +
-        (sliceHeightMap.current.get(key) ?? provisionalSliceHeight),
-    )
+    const sliceTop = sliceCoords.get(key)
+    const sliceHeight = sliceHeightMap.current.get(key)
+    if (sliceTop != null && sliceHeight != null) {
+      contentHeight = Math.max(contentHeight, sliceTop + sliceHeight)
+    }
   }
   for (const moreLink of moreLinks) {
     contentHeight = Math.max(

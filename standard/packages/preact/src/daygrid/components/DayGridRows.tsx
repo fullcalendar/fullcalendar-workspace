@@ -149,7 +149,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             basis={rowBasis}
             neededLevelCount={placementOwnerState.neededLevelCount}
             smallestSliceHeight={placementOwnerState.smallestSliceHeight ?? undefined}
-            largestSliceHeight={placementOwnerState.largestSliceHeight ?? undefined}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}

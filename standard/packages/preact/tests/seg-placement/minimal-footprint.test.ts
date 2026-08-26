@@ -120,12 +120,12 @@ describe('minimal-footprint hiding, pixel currency', () => {
         current: new Map<string, number>([
           ['e1:1', EVENT_HEIGHT],
           ['e2:1', EVENT_HEIGHT],
+          ['e2:1:2:slice', EVENT_HEIGHT],
           ['e3:1', EVENT_HEIGHT],
         ]),
         createRef: (key) => `ref:${key}`,
       },
       8,
-      EVENT_HEIGHT,
       EVENT_HEIGHT,
     )
 
@@ -136,10 +136,9 @@ describe('minimal-footprint hiding, pixel currency', () => {
     expect(visibleKeys(layout.columns[2])).toEqual(['e2:1:2:slice'])
   })
 
-  // The measured browser geometry of the 7573 failure: slices settle shorter
-  // than the monotone largest-height ratchet, so merge planning must use each
-  // slice's measured height, not one uniform provisional thickness.
-  it('rescues with measured heights when the provisional ratchet is stale', () => {
+  // The measured browser geometry of the 7573 failure: merge planning must use
+  // each slice's measured height.
+  it('rescues with measured slice heights', () => {
     const segs = [
       makeSeg('e1', 1, 6),
       makeSeg('e2', 1, 6),
@@ -152,13 +151,13 @@ describe('minimal-footprint hiding, pixel currency', () => {
         current: new Map<string, number>([
           ['e1:1', 17],
           ['e2:1', 17],
+          ['e2:1:2:slice', 17],
           ['e3:1', 17],
         ]),
         createRef: (key) => `ref:${key}`,
       },
       9,
       17,
-      21, // stale monotone maximum from a pre-settle measurement
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
@@ -175,6 +174,14 @@ function layoutLevelRow(
   dayMaxEvents?: number,
   dayMaxEventRows?: number,
 ): DayGridPlacementColumn<string>[] {
+  const heights = new Map<string, number>()
+  for (const seg of eventOrderedSegs) {
+    const key = `${seg.eventRange.instance.instanceId}:${seg.start}`
+    heights.set(key, EVENT_HEIGHT)
+    for (let start = seg.start; start < seg.end; start += 1) {
+      heights.set(`${key}:${start}:slice`, EVENT_HEIGHT)
+    }
+  }
   return buildDayGridLevelPlacements(
     eventOrderedSegs,
     {
@@ -185,10 +192,9 @@ function layoutLevelRow(
       columnCount,
     },
     {
-      current: new Map<string, number>(),
+      current: heights,
       createRef: (key) => `ref:${key}`,
     },
-    EVENT_HEIGHT,
   ).columns
 }
 

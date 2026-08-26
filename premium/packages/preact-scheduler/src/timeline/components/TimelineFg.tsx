@@ -62,12 +62,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private buildSegPlacementPlan = memoize(buildTimelineSegPlacementPlan)
 
   // refs
-  private sliceHeightMap = new RefMap<string, number>((height) => { // keyed by slice part key
-    if (height != null) {
-      this.largestSliceHeight = this.largestSliceHeight == null
-        ? height
-        : Math.max(this.largestSliceHeight, height)
-    }
+  private sliceHeightMap = new RefMap<string, number>(() => { // keyed by slice part key
     afterSize(this.handleSegHeights)
   })
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by stable more-link key
@@ -76,7 +71,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   // internal
   private _isUnmounting: boolean
-  private largestSliceHeight?: number
   private totalHeight?: number
   private totalHeightSettled?: boolean
   private firedTotalHeight?: number
@@ -111,7 +105,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       plan,
       sliceHeightMap,
       moreLinkHeightRefMap.current,
-      this.largestSliceHeight,
     )
     let fgSegTops = new Map<string, number>()
     for (const item of placementResult.eventDomItems) {
@@ -166,7 +159,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
           const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-          const isInvisible = isDragging || isResizing
+          const isInvisible = isDragging || isResizing || top == null
           const isSelected = instanceId === props.eventSelection
 
           return (

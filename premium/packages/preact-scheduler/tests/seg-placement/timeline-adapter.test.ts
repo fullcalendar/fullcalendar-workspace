@@ -275,7 +275,7 @@ describe('Timeline production placement adapter', () => {
     expect(tops.get('third')).toBe(30)
   })
 
-  it('renders provisionally, reflows from exact heights, and deletes on unmount', () => {
+  it('withholds positioning until exact heights exist and deletes on unmount', () => {
     const plan = buildTimelineSegPlacementPlan(
       [
         makeTimedSeg('first', 0, MS_PER_HOUR),
@@ -287,12 +287,23 @@ describe('Timeline production placement adapter', () => {
     )
     const heights = new TimelineTestHeights()
 
-    const provisional = place(plan, heights)
-    expect(provisional.eventDomItems.map((item) => item.top)).toEqual([0, 20])
-    expect(provisional.contentHeight).toBe(40)
-    expect(provisional.allHeightsSettled).toBe(false)
+    const unmeasured = place(plan, heights)
+    expect(unmeasured.eventDomItems.map((item) => item.top)).toEqual([
+      undefined,
+      undefined,
+    ])
+    expect(unmeasured.contentHeight).toBe(0)
+    expect(unmeasured.allHeightsSettled).toBe(false)
 
     heights.set('first', 30)
+    const partiallyMeasured = place(plan, heights)
+    expect(partiallyMeasured.eventDomItems.map((item) => item.top)).toEqual([
+      0,
+      undefined,
+    ])
+    expect(partiallyMeasured.contentHeight).toBe(30)
+    expect(partiallyMeasured.allHeightsSettled).toBe(false)
+
     heights.set('second', 12)
     const exact = place(plan, heights)
     expect(exact.eventDomItems.map((item) => item.top)).toEqual([0, 30])
@@ -301,7 +312,11 @@ describe('Timeline production placement adapter', () => {
 
     heights.map.createRef('first')(null)
     const remounted = place(plan, heights)
-    expect(remounted.eventDomItems.map((item) => item.top)).toEqual([0, 30])
+    expect(remounted.eventDomItems.map((item) => item.top)).toEqual([
+      undefined,
+      0,
+    ])
+    expect(remounted.contentHeight).toBe(12)
     expect(remounted.allHeightsSettled).toBe(false)
   })
 
@@ -413,14 +428,7 @@ describe('Timeline production placement adapter', () => {
 })
 
 class TimelineTestHeights {
-  largestSliceHeight?: number
-  readonly map = new RefMap<string, number>((height) => {
-    if (height != null) {
-      this.largestSliceHeight = this.largestSliceHeight == null
-        ? height
-        : Math.max(this.largestSliceHeight, height)
-    }
-  })
+  readonly map = new RefMap<string, number>(() => {})
 
   constructor(entries: [string, number][] = []) {
     for (const [key, height] of entries) this.set(key, height)
@@ -440,7 +448,6 @@ function place(
     plan,
     heights.map,
     moreLinkHeights,
-    heights.largestSliceHeight,
   )
 }
 
@@ -544,6 +551,6 @@ function segKey(seg: TimelineEventSeg): string {
 
 function topByKey(
   items: ReturnType<typeof place>['eventDomItems'],
-): Map<string, number> {
+): Map<string, number | undefined> {
   return new Map(items.map((item) => [item.key, item.top]))
 }
