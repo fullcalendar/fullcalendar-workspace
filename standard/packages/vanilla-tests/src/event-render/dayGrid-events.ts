@@ -247,16 +247,16 @@ describe('dayGrid advanced event rendering', () => {
     }, $container.find('div')[0])
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    await waitTimeout()
+    await waitTimeout(200)
     let origEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
 
     $container.css('height', SMALL_HEIGHT)
-    await waitTimeout()
+    await waitTimeout(200)
     let smallEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(smallEventCnt).not.toBe(origEventCnt)
 
     $container.css('height', LARGE_HEIGHT)
-    await waitTimeout()
+    await waitTimeout(200)
     let largeEventCnt = filterVisibleEls(dayGridWrapper.getEventEls()).length
     expect(largeEventCnt).toBe(origEventCnt)
 
@@ -523,77 +523,79 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7447
-  it('Doesn\'t error or overlap event positions when white-space:normal', async () => {
-    let calendar = initCalendar({
-      initialView: 'dayGridWeek',
-      initialDate: '2023-04-09',
-      dayMaxEvents: 4,
-      eventContent() {
-        return {
-          html: '<div style="white-space: normal">' +
-            '<strong>AAAAAAAAAA</strong> <strong>BBBBBBBBB</strong></div>',
-        }
-      },
-      events: [
-        {
-          id: 'a',
-          start: '2023-04-14',
-          end: '2023-04-21',
+  for (const dayMaxEvents of [4, true] as const) {
+    it(`Doesn't overlap white-space:normal events with dayMaxEvents:${dayMaxEvents}`, async () => {
+      let calendar = initCalendar({
+        initialView: 'dayGridWeek',
+        initialDate: '2023-04-09',
+        dayMaxEvents,
+        eventContent() {
+          return {
+            html: '<div style="white-space: normal">' +
+              '<strong>AAAAAAAAAA</strong> <strong>BBBBBBBBB</strong></div>',
+          }
         },
-        {
-          id: 'b',
-          start: '2023-04-13',
-          end: '2023-04-22',
-        },
-        {
-          id: 'c',
-          start: '2023-04-06',
-          end: '2023-04-15',
-        },
-        {
-          id: 'd',
-          start: '2023-04-11',
-          end: '2023-04-14',
-        },
-        {
-          id: 'e',
-          start: '2023-04-14',
-          end: '2023-04-19',
-        },
-        {
-          id: 'f',
-          start: '2023-04-13',
-          end: '2023-04-19',
-        },
-        {
-          id: 'g',
-          start: '2023-04-05',
-          end: '2023-04-14',
-        },
-        {
-          id: 'h',
-          start: '2023-04-06',
-          end: '2023-04-15',
-        },
-        {
-          id: 'i',
-          start: '2023-04-13',
-          end: '2023-04-15',
-        },
-        {
-          id: 'j',
-          start: '2023-04-12',
-          end: '2023-04-15',
-        },
-      ],
-    })
-    await waitTimeout()
+        events: [
+          {
+            id: 'a',
+            start: '2023-04-14',
+            end: '2023-04-21',
+          },
+          {
+            id: 'b',
+            start: '2023-04-13',
+            end: '2023-04-22',
+          },
+          {
+            id: 'c',
+            start: '2023-04-06',
+            end: '2023-04-15',
+          },
+          {
+            id: 'd',
+            start: '2023-04-11',
+            end: '2023-04-14',
+          },
+          {
+            id: 'e',
+            start: '2023-04-14',
+            end: '2023-04-19',
+          },
+          {
+            id: 'f',
+            start: '2023-04-13',
+            end: '2023-04-19',
+          },
+          {
+            id: 'g',
+            start: '2023-04-05',
+            end: '2023-04-14',
+          },
+          {
+            id: 'h',
+            start: '2023-04-06',
+            end: '2023-04-15',
+          },
+          {
+            id: 'i',
+            start: '2023-04-13',
+            end: '2023-04-15',
+          },
+          {
+            id: 'j',
+            start: '2023-04-12',
+            end: '2023-04-15',
+          },
+        ],
+      })
+      await waitTimeout(dayMaxEvents === true ? 200 : 100)
 
-    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-    let eventEls = dayGridWrapper.getEventEls()
-    let visibleEventEls = filterVisibleEls(eventEls)
-    expect(anyElsIntersect(visibleEventEls)).toBe(false)
-  })
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let eventEls = dayGridWrapper.getEventEls()
+      let visibleEventEls = filterVisibleEls(eventEls)
+      expect(anyElsIntersect(visibleEventEls)).toBe(false)
+    })
+  }
 
   // https://github.com/fullcalendar/fullcalendar/issues/6486
   it('renders events starting yesterday, ending at midnight, as "past"', () => {
@@ -719,10 +721,10 @@ describe('dayGrid advanced event rendering', () => {
     it('renders asynchronous events without accidentally hiding on prev/next', async () => {
       const EVENTS = [
         { // on a day that in next month becomes disabled
-          "url": "http:\/\/google.com\/",
-          "title": "Click for Google",
-          "start": "2026-06-28"
-        }
+          'url': 'http://google.com/',
+          'title': 'Click for Google',
+          'start': '2026-06-28',
+        },
       ]
       const calendar = initCalendar({
         initialDate: '2026-06-17',
@@ -730,7 +732,7 @@ describe('dayGrid advanced event rendering', () => {
           setTimeout(() => {
             success(EVENTS)
           }, 100)
-        }
+        },
       })
       await waitTimeout(200)
 

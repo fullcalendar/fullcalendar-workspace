@@ -24,21 +24,20 @@ import { computeHorizontalsFromSeg } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import { type Slice as LegacySlice } from '../../seg-placement/layout'
 import {
+  type GetRatchet,
+  type PlacementRatchet,
   type Slice as KernelSlice,
   type SliceRenderItem,
 } from '../../seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridLevelPlacementColumn,
-  type DayGridSegDomItem,
-  type DayGridSegPlacementColumn,
-  type DayGridSegPlacementPlan,
+  DayGridSliceHeightMap,
   buildDayGridLevelPlacements,
-  buildDayGridSegPlacementPlan,
-  buildDayGridSegPlacements,
-  computeDayGridDomCandidateMaxLevels,
-  computeDayGridMeasuredLimits,
-  computeDayGridMoreLinkHeight,
+  buildDayGridPixelPlacements,
+  createDayGridPlacementOwnerState,
+  observeDayGridCanvasHeight,
+  observeDayGridSliceHeight,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import {
@@ -78,24 +77,16 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
-  maxDomLevels?: number // shared cross-row candidate frontier
-  largestSliceHeight?: number // shared owner-lifetime provisional-height ratchet
+  getPlacementRatchet?: GetRatchet
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
-  onEventHeight?: (height: number) => void // occupied height of one event wrapper
+  onSliceHeight?: (height: number) => void // occupied height of one exact slice
   onEventAreaHeight?: (height: number) => void // row-wide height shared by all foreground events
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
-
-/** What the screen placement route hands the render tree. */
-interface DayGridLegacyScreenLayout {
-  columns: DayGridSegPlacementColumn[]
-  /** Positioned node tops by node key, for aligning drag/resize mirrors. */
-  segTops: ReadonlyMap<string, number>
-}
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
@@ -111,16 +102,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       afterSize(this.handleSegPositioning)
     }
   })
-  // On the boolean-auto route only a source's permanent wrapper is given one
-  // of these refs, so each value is one complete event's occupied height. On
-  // the kernel level route every rendered slice (whole or partial) measures
-  // itself here under its own part key.
-  private segHeightRefMap = new RefMap<string, number>((height) => {
-    if (height > 0) {
-      this.props.onEventHeight?.(height)
-    }
-    afterSize(this.handleSegPositioning)
-  })
+  // Every screen slice reports through this producer. It rejects unusable
+  // values and ratchets the placement owner before scheduling another solve.
+  private sliceHeightMap = new DayGridSliceHeightMap(
+    (height) => this.handleSliceHeightInsertion(height),
+    () => afterSize(this.handleSegPositioning),
+  )
 
   // print-only (band thickness is row-wide while slots render per-cell, so
   // this state must live here; see also buildPrintPlan, renderPrintBandSlots,
@@ -132,13 +119,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   // memo
   private buildWeekNumberRenderProps = memoize(buildWeekNumberRenderProps)
-  private buildPlacementPlan = memoize(buildDayGridSegPlacementPlan)
   private buildPrintPlan = memoize(buildDayGridPrintPlan)
   private sortEventSegs = memoize(sortEventSegs)
 
   // internal
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
+  private isScreenLayoutSettled = false
+  private needsEventAreaHeightReport = false
+  private fallbackPlacementOwnerState = createDayGridPlacementOwnerState()
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -150,14 +139,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const screenFgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
     let printPlan: DayGridPrintPlan | null = null
     let printColumns: DayGridPrintBandSlot[][] | null = null
-    let screenColumns: (
-      DayGridSegPlacementColumn | DayGridLevelPlacementColumn<Ref<number>>
-    )[] | null = null
-    let screenLevelColumns: DayGridLevelPlacementColumn<Ref<number>>[] | null = null
-    let screenLegacyColumns: DayGridSegPlacementColumn[] | null = null
+    let screenColumns: DayGridLevelPlacementColumn<Ref<number>>[] | null = null
+    let screenSliceCoords: ReadonlyMap<string, number> = new Map()
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
-    let screenMirrorItems: DayGridSegDomItem[] = []
 
     if (props.forPrint) {
       printPlan = this.buildPrintPlan(
@@ -181,26 +166,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
 
-      if (placementMode === 'auto') {
-        const placementPlan = this.buildPlacementPlan(
+      const screenLayout = placementMode === 'auto'
+        ? buildDayGridPixelPlacements<Ref<number>>(
           fgEventSegs,
-          computeDayGridDomCandidateMaxLevels(
-            props.dayMaxEvents,
-            props.dayMaxEventRows,
-            props.maxDomLevels ?? Infinity,
-          ),
-          options.eventOrderStrict,
-          options.eventSlicing,
+          {
+            orderStrict: options.eventOrderStrict,
+            eventSlicing: options.eventSlicing,
+            columnCount: cells.length,
+            canvasHeight: minMainHeight,
+          },
+          this.sliceHeightMap,
+          this.getPlacementRatchet,
         )
-        const screenLayout = this.buildLegacyScreenLayout(
-          placementPlan,
-          minMainHeight,
-        )
-        screenLegacyColumns = screenLayout.columns
-        screenColumns = screenLegacyColumns
-        screenMirrorItems = this.buildMirrorItems(screenLayout.segTops)
-      } else {
-        const screenLayout = buildDayGridLevelPlacements<Ref<number>>(
+        : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
           {
             dayMaxEvents: props.dayMaxEvents,
@@ -209,19 +187,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             eventSlicing: options.eventSlicing,
             columnCount: cells.length,
           },
-          {
-            get: (key) => this.segHeightRefMap.current.get(key),
-            createRef: (key) => this.segHeightRefMap.createRef(key),
-          },
-          () => ({
-            neededLevelCount: props.maxDomLevels ?? Infinity,
-            largestSliceHeight: props.largestSliceHeight,
-          }),
+          this.sliceHeightMap,
+          this.getPlacementRatchet,
         )
-        screenLevelColumns = screenLayout.columns
-        screenColumns = screenLevelColumns
-        screenMirrorItems = this.buildMirrorItems(screenLayout.sliceCoords)
-      }
+      screenColumns = screenLayout.columns
+      screenSliceCoords = screenLayout.sliceCoords
+      this.isScreenLayoutSettled = screenLayout.isSettled
 
       if (maxMainTop != null) {
         for (let col = 0; col < cells.length; col++) {
@@ -302,16 +273,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
           if (printPlan) {
             fg = this.renderPrintBandSlots(printColumns![col])
-          } else if (screenLevelColumns) {
+          } else {
             fg = this.renderLevelFgSegs(
               screenMaxMainTop,
-              screenLevelColumns[col].renderItems,
-            )
-          } else {
-            fg = this.renderLegacyFgSegs(
-              screenMaxMainTop,
-              screenLegacyColumns![col].domItems,
-              /* isMirror = */ false,
+              screenColumns![col].renderItems,
             )
           }
 
@@ -352,39 +317,38 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             />
           )
         })}
-        {!printPlan && this.renderLegacyFgSegs(
+        {!printPlan && this.renderMirrorFgSegs(
           screenMaxMainTop,
-          screenMirrorItems,
-          /* isMirror = */ true,
+          screenSliceCoords,
         )}
       </div>
     )
   }
 
-  renderLegacyFgSegs(
+  /** Mirrors align with kernel coordinates but bypass admission and measurement. */
+  renderMirrorFgSegs(
     headerHeight: number | undefined,
-    items: DayGridSegDomItem[],
-    isMirror: boolean,
+    sliceCoords: ReadonlyMap<string, number>,
   ): ReactElement[] {
-    const { props, segHeightRefMap } = this
+    const { props } = this
     const { colWidth, eventSelection } = props
-
     const colCount = props.cells.length
     const nodes: ReactElement[] = []
 
-    for (const item of items) {
-      const { key, seg } = item
+    for (const seg of this.getMirrorSegs()) {
+      const key = getEventPartKey(seg)
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
-
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
-      const top = headerHeight != null && item.top != null
-        ? headerHeight + item.top
+      const top = headerHeight != null
+        ? headerHeight + (sliceCoords.get(key) ?? 0)
         : undefined
-
-      const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
-      const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-      const isInvisible = !isMirror && (isDragging || isResizing || top == null)
+      const isDragging = Boolean(
+        props.eventDrag && props.eventDrag.affectedInstances[instanceId],
+      )
+      const isResizing = Boolean(
+        props.eventResize && props.eventResize.affectedInstances[instanceId],
+      )
       const isSelected = instanceId === eventSelection
 
       nodes.push(
@@ -392,18 +356,17 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={key}
           className={seg.start ? classNames.fakeBorderS : ''}
           style={{
-            visibility: isInvisible ? 'hidden' : undefined,
             top,
             insetInlineStart,
             insetInlineEnd,
             zIndex: isSelected ? 1000 : 0, // container inner z-indexes; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
           }}
-          heightRef={item.isMeasurable ? segHeightRefMap.createRef(key) : null}
+          heightRef={null}
         >
           {this.renderEventContent(seg, {
             isDragging,
             isResizing,
-            isMirror,
+            isMirror: true,
             isSelected,
           })}
         </MeasuredAbsoluteHarness>,
@@ -604,60 +567,33 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     setRef(this.props.rootElRef, rootEl)
   }
 
-  // Placement routes
-  // -----------------------------------------------------------------------------------------------
-
-  /** Builds the positioned and limited layout for the boolean-auto route. */
-  private buildLegacyScreenLayout(
-    placementPlan: DayGridSegPlacementPlan,
-    eventAreaHeight: number | undefined,
-  ): DayGridLegacyScreenLayout {
-    const { props } = this
-
-    // TODO: memoize?
-    const columns = buildDayGridSegPlacements(
-      placementPlan,
-      this.segHeightRefMap.current,
-      computeDayGridMeasuredLimits({
-        mode: resolveDayGridPlacementMode(props.dayMaxEvents, props.dayMaxEventRows),
-        candidateMaxLevels: placementPlan.maxLevels,
-        columnCount: props.cells.length,
-        eventAreaHeight,
-        moreLinkHeight: computeDayGridMoreLinkHeight(this.segHeightRefMap.current),
-      }),
-    )
-
-    const segTops = new Map<string, number>()
-    for (const column of columns) {
-      for (const item of column.domItems) {
-        if (item.top != null) {
-          segTops.set(item.key, item.top)
-        }
-      }
-    }
-
-    return { columns, segTops }
-  }
-
-  /**
-   * Mirrors bypass admission entirely, so they are never hidden and never
-   * measured. Each aligns with its underlying event's wrapper when that
-   * wrapper is positioned, and with the top of the event area otherwise.
-   */
-  private buildMirrorItems(segTops: ReadonlyMap<string, number>): DayGridSegDomItem[] {
-    return this.getMirrorSegs().map((seg) => {
-      const key = getEventPartKey(seg)
-      return {
-        key,
-        seg,
-        top: segTops.get(key) ?? 0,
-        isMeasurable: false,
-      }
-    })
-  }
-
   // Sizing
   // -----------------------------------------------------------------------------------------------
+
+  private handleSliceHeightInsertion = (height: number) => {
+    if (this.props.onSliceHeight) {
+      this.props.onSliceHeight(height)
+    } else {
+      this.fallbackPlacementOwnerState = observeDayGridSliceHeight(
+        this.fallbackPlacementOwnerState,
+        height,
+      )
+    }
+  }
+
+  private getPlacementRatchet = (canvasHeight?: number): PlacementRatchet => {
+    if (this.props.getPlacementRatchet) {
+      return this.props.getPlacementRatchet(canvasHeight)
+    }
+
+    const state = this.fallbackPlacementOwnerState
+    return {
+      neededLevelCount: state.neededLevelCount,
+      smallestSliceHeight: state.smallestSliceHeight ?? undefined,
+      largestSliceHeight: state.largestSliceHeight ?? undefined,
+      largestCanvasHeight: state.largestCanvasHeight ?? undefined,
+    }
+  }
 
   componentDidMount() {
     this._isUnmounting = false
@@ -671,6 +607,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   componentDidUpdate(prevProps: DayGridRowProps): void {
     if (prevProps.forPrint && !this.props.forPrint) {
       this.printSegHeightRefMap = new RefMap<string, number>(this.handlePrintSegHeightChange)
+    }
+
+    // Queue only after the requested render commits. flushAfterSize drains
+    // additions in the same loop, so scheduling from the size handler itself
+    // could report the previous render's provisional layout.
+    if (this.props.forPrint) {
+      this.needsEventAreaHeightReport = false
+    } else if (this.needsEventAreaHeightReport) {
+      this.needsEventAreaHeightReport = false
+      afterSize(this.reportEventAreaHeight)
     }
   }
 
@@ -716,7 +662,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   private handleSegPositioning = () => {
     if (this._isUnmounting || this.props.forPrint) return
-    this.reportEventAreaHeight()
+    this.needsEventAreaHeightReport = true
     this.forceUpdate()
   }
 
@@ -730,10 +676,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
    * the cross-row owner ratchets. Reporting waits for a complete row snapshot
    * so partially populated measurement maps cannot inflate the monotone owner.
    */
-  private reportEventAreaHeight(): void {
+  private reportEventAreaHeight = () => {
+    if (this._isUnmounting || this.props.forPrint) return
+
     const { cells, onEventAreaHeight } = this.props
     if (
-      onEventAreaHeight &&
+      this.isScreenLayoutSettled &&
       cells.every((cell) =>
         this.headerHeightRefMap.current.has(cell.key) &&
         this.mainHeightRefMap.current.has(cell.key),
@@ -741,7 +689,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     ) {
       const [, minMainHeight] = this.computeFgDims()
       if (minMainHeight != null) {
-        onEventAreaHeight(minMainHeight)
+        if (onEventAreaHeight) {
+          onEventAreaHeight(minMainHeight)
+        } else {
+          const nextState = observeDayGridCanvasHeight(
+            this.fallbackPlacementOwnerState,
+            minMainHeight,
+          )
+          if (nextState !== this.fallbackPlacementOwnerState) {
+            this.fallbackPlacementOwnerState = nextState
+            this.forceUpdate()
+          }
+        }
       }
     }
   }

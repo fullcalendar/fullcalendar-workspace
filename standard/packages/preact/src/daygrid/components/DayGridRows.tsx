@@ -16,8 +16,8 @@ import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } f
 import {
   type DayGridPlacementOwnerState,
   createDayGridPlacementOwnerState,
-  observeDayGridEventAreaHeight,
-  observeDayGridEventHeight,
+  observeDayGridCanvasHeight,
+  observeDayGridSliceHeight,
 } from '../seg-placement-adapter'
 import classNames from '../../styles.module.css'
 
@@ -147,14 +147,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // dimensions
             colWidth={props.colWidth}
             basis={rowBasis}
-            maxDomLevels={this.placementOwnerState.maxDomLevels}
-            largestSliceHeight={
-              this.placementOwnerState.largestSliceHeight ?? undefined
-            }
+            getPlacementRatchet={this.getPlacementRatchet}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
-            onEventHeight={this.handleEventHeight}
+            onSliceHeight={this.handleSliceHeight}
             onEventAreaHeight={this.handleEventAreaHeight}
           />
         ))}
@@ -183,10 +180,20 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     this._isUnmounting = true
   }
 
-  private handleEventHeight = (height: number) => {
+  private getPlacementRatchet = () => ({
+    neededLevelCount: this.placementOwnerState.neededLevelCount,
+    smallestSliceHeight:
+      this.placementOwnerState.smallestSliceHeight ?? undefined,
+    largestSliceHeight:
+      this.placementOwnerState.largestSliceHeight ?? undefined,
+    largestCanvasHeight:
+      this.placementOwnerState.largestCanvasHeight ?? undefined,
+  })
+
+  private handleSliceHeight = (height: number) => {
     if (!this.props.forPrint) {
       this.updatePlacementOwnerState(
-        observeDayGridEventHeight(this.placementOwnerState, height),
+        observeDayGridSliceHeight(this.placementOwnerState, height),
       )
     }
   }
@@ -194,7 +201,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private handleEventAreaHeight = (height: number) => {
     if (!this.props.forPrint) {
       this.updatePlacementOwnerState(
-        observeDayGridEventAreaHeight(this.placementOwnerState, height),
+        observeDayGridCanvasHeight(this.placementOwnerState, height),
       )
     }
   }

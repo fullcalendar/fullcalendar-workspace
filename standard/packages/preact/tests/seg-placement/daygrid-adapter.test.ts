@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { createWholeSlice } from '../../src/seg-placement/layout'
+import { getEventPartKey } from '../../src/daygrid/TableSeg'
 import {
   type DayGridEventSeg,
   type DayGridLevelPlacementColumn,
   type DayGridSegPlacementColumn,
+  DayGridSliceHeightMap,
   buildDayGridKernelSources,
   buildDayGridLevelPlacements,
+  buildDayGridPixelPlacements,
   buildDayGridPopoverSegs,
   buildDayGridSegPlacementPlan,
   buildDayGridSegPlacements,
@@ -15,8 +18,8 @@ import {
   computeDayGridMoreLinkHeight,
   computeDayGridMoreLinkLevelTax,
   createDayGridPlacementOwnerState,
-  observeDayGridEventAreaHeight,
-  observeDayGridEventHeight,
+  observeDayGridCanvasHeight,
+  observeDayGridSliceHeight,
   resolveDayGridPlacementMode,
 } from '../../src/daygrid/seg-placement-adapter'
 
@@ -180,54 +183,81 @@ describe('DayGrid production placement adapter', () => {
 describe('DayGridRows placement owner state', () => {
   it('aggregates extrema across rows and grows the candidate frontier monotonically', () => {
     const initial = createDayGridPlacementOwnerState()
-    const afterTallEvent = observeDayGridEventHeight(initial, 30)
-    const afterTallArea = observeDayGridEventAreaHeight(afterTallEvent, 220)
-    const afterShortEvent = observeDayGridEventHeight(afterTallArea, 10)
+    const afterTallEvent = observeDayGridSliceHeight(initial, 30)
+    const afterTallArea = observeDayGridCanvasHeight(afterTallEvent, 220)
+    const afterShortEvent = observeDayGridSliceHeight(afterTallArea, 10)
 
     expect(initial).toEqual({
-      smallestEventHeight: null,
+      smallestSliceHeight: null,
       largestSliceHeight: null,
-      largestEventAreaHeight: null,
-      maxDomLevels: 8,
+      largestCanvasHeight: null,
+      neededLevelCount: 8,
     })
     expect(afterTallEvent).toMatchObject({
-      smallestEventHeight: 30,
+      smallestSliceHeight: 30,
       largestSliceHeight: 30,
-      maxDomLevels: 8,
+      neededLevelCount: 8,
     })
     expect(afterTallArea).toMatchObject({
-      largestEventAreaHeight: 220,
-      maxDomLevels: 8,
+      largestCanvasHeight: 220,
+      neededLevelCount: 8,
     })
     expect(afterShortEvent).toMatchObject({
-      smallestEventHeight: 10,
+      smallestSliceHeight: 10,
       largestSliceHeight: 30,
-      largestEventAreaHeight: 220,
-      maxDomLevels: 22,
+      largestCanvasHeight: 220,
+      neededLevelCount: 22,
     })
-    expect(observeDayGridEventHeight(afterShortEvent, 40)).toMatchObject({
-      smallestEventHeight: 10,
+    expect(observeDayGridSliceHeight(afterShortEvent, 40)).toMatchObject({
+      smallestSliceHeight: 10,
       largestSliceHeight: 40,
-      maxDomLevels: 22,
+      neededLevelCount: 22,
     })
-    expect(observeDayGridEventAreaHeight(afterShortEvent, 100)).toBe(afterShortEvent)
+    expect(observeDayGridCanvasHeight(afterShortEvent, 100)).toBe(afterShortEvent)
   })
 
-  it('admits an implausibly small height but ignores unusable reports', () => {
-    const measured = observeDayGridEventAreaHeight(createDayGridPlacementOwnerState(), 100)
+  it('uses one producer for valid insertion, owner ratchets, and deletion', () => {
+    let owner = observeDayGridCanvasHeight(createDayGridPlacementOwnerState(), 100)
+    let changes = 0
+    const heights = new DayGridSliceHeightMap(
+      (height) => { owner = observeDayGridSliceHeight(owner, height) },
+      () => { changes += 1 },
+    )
+    const ref = heights.createRef('slice')
 
-    // A transient sub-pixel measurement during font/stylesheet loading is
-    // deliberately not clamped: it can only widen the candidate frontier, and
-    // the measured pass still decides visibility from real pixels.
-    expect(observeDayGridEventHeight(measured, 0.5)).toMatchObject({
-      smallestEventHeight: 0.5,
+    ref(0.5)
+    expect(heights.current.get('slice')).toBe(0.5)
+    expect(owner).toMatchObject({
+      smallestSliceHeight: 0.5,
       largestSliceHeight: 0.5,
-      maxDomLevels: 200,
+      neededLevelCount: 200,
     })
 
-    for (const unusable of [0, -5, NaN, Infinity, null as any]) {
-      expect(observeDayGridEventHeight(measured, unusable)).toBe(measured)
+    ref(30)
+    expect(owner.largestSliceHeight).toBe(30)
+    expect(heights.current.get('slice')).toBeLessThanOrEqual(
+      owner.largestSliceHeight!,
+    )
+    ref(null)
+    expect(heights.current.has('slice')).toBe(false)
+    expect(changes).toBe(3)
+  })
+
+  it('rejects non-positive and non-finite producer reports', () => {
+    let owner = createDayGridPlacementOwnerState()
+    let changes = 0
+    const heights = new DayGridSliceHeightMap(
+      (height) => { owner = observeDayGridSliceHeight(owner, height) },
+      () => { changes += 1 },
+    )
+
+    for (const unusable of [0, -5, NaN, Infinity]) {
+      heights.handleValue(unusable, 'slice')
     }
+
+    expect(heights.current.size).toBe(0)
+    expect(owner).toEqual(createDayGridPlacementOwnerState())
+    expect(changes).toBe(0)
   })
 
   it('derives the more-link reservation from current row event heights', () => {
@@ -388,7 +418,7 @@ describe('DayGrid kernel level placement', () => {
   })
 })
 
-describe('DayGrid measured screen placement', () => {
+describe('Legacy DayGrid measured adapter (retained without a screen caller)', () => {
   const stack = [
     makeSeg('first', 0, 1),
     makeSeg('second', 0, 1),
@@ -496,7 +526,7 @@ describe('DayGrid measured screen placement', () => {
   })
 })
 
-describe('DayGrid measured auto placement', () => {
+describe('DayGrid kernel pixel placement', () => {
   /** Two independent stacks of three, so one column can owe a link alone. */
   const twoStacks = [
     makeSeg('a', 0, 1),
@@ -507,41 +537,99 @@ describe('DayGrid measured auto placement', () => {
   ]
 
   it('shows every mounted candidate before the event area has measured', () => {
-    const columns = layoutRow(twoStacks, 2, true)
+    const layout = layoutPixelRow(twoStacks, 2)
+    const { columns } = layout
 
-    expect(itemTops(columns, 0)).toEqual({
+    expect(levelItemTops(columns, 0)).toEqual({
       'a:0': 0,
       'b:0': EVENT_HEIGHT,
       'c:0': EVENT_HEIGHT * 2,
     })
     expect(columns.every((column) => !column.hiddenSegs.length)).toBe(true)
+    expect(layout.isSettled).toBe(true)
   })
 
-  it('reserves one event height when an auto row needs a more link', () => {
-    const columns = layoutRow(twoStacks, 2, true, undefined, {
-      eventAreaHeight: EVENT_HEIGHT * 2.5,
+  it('emits a hidden whole donor and self-measuring partials after bounded exclusion', () => {
+    const provisional = layoutPixelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, {
+      canvasHeight: 15,
+      heights: {
+        'blocker:1': 5,
+        'wide:0': 12,
+      },
+      smallestSliceHeight: 1,
     })
 
-    // Hiding `c` activates the left column. Its event-height proxy then evicts
-    // `b`, while the right column keeps its full untaxed stack.
-    expect(itemTops(columns, 0)).toEqual({
-      'a:0': 0,
-      'b:0': undefined,
-      'c:0': undefined,
+    expect(levelItemTops(provisional.columns, 0)).toEqual({
+      'wide:0': undefined,
+      'wide:0:slice': 0,
     })
-    expect(itemTops(columns, 1)).toEqual({ 'd:1': 0, 'e:1': EVENT_HEIGHT })
-    expect(segIds(columns[0].hiddenSegs)).toEqual(['b', 'c'])
-    expect(columns[1].hiddenSegs).toEqual([])
-    expect(columns.map((column) => column.contentHeight))
-      .toEqual([EVENT_HEIGHT, EVENT_HEIGHT * 2])
+    expect(levelItemTops(provisional.columns, 1)).toEqual({ 'blocker:1': 0 })
+    expect(levelItemTops(provisional.columns, 2)).toEqual({ 'wide:2:slice': 0 })
+    expect(provisional.columns[0].renderItems.map((item) => item.heightRef))
+      .toEqual(['ref:wide:0', 'ref:wide:0:slice'])
+    expect(provisional.isSettled).toBe(false)
+
+    const settled = layoutPixelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, {
+      canvasHeight: 15,
+      heights: {
+        'blocker:1': 5,
+        'wide:0:slice': 6,
+        'wide:2:slice': 6,
+      },
+      smallestSliceHeight: 1,
+      largestSliceHeight: 12,
+    })
+    expect(settled.isSettled).toBe(true)
+    expect(settled.columns.map((column) => column.contentHeight)).toEqual([6, 5, 6])
+  })
+
+  it('keeps bounded exclusions as donors while later wholes can place', () => {
+    const layout = layoutPixelRow([
+      makeSeg('too-tall', 0, 1),
+      makeSeg('later', 1, 2),
+    ], 2, {
+      canvasHeight: 10,
+      heights: { 'too-tall:0': 12, 'later:1': 5 },
+    })
+
+    expect(levelItemTops(layout.columns, 0)).toEqual({
+      'too-tall:0': undefined,
+    })
+    expect(levelItemTops(layout.columns, 1)).toEqual({ 'later:1': 0 })
+    expect(segIds(layout.columns[0].hiddenSegs)).toEqual(['too-tall'])
+    expect(layout.columns.map((column) => column.contentHeight)).toEqual([0, 5])
+  })
+
+  it('projects occupant consumption into donors, hidden segs, and content height', () => {
+    const layout = layoutPixelRow([
+      makeSeg('a', 0, 1),
+      makeSeg('b', 0, 1),
+      makeSeg('c', 0, 1),
+      makeSeg('d', 0, 1),
+    ], 1, { canvasHeight: 30 })
+
+    expect(levelItemTops(layout.columns, 0)).toEqual({
+      'a:0': 0,
+      'b:0': 10,
+      'c:0': undefined,
+      'd:0': undefined,
+    })
+    expect(segIds(layout.columns[0].hiddenSegs)).toEqual(['c', 'd'])
+    expect(layout.columns[0].contentHeight).toBe(20)
   })
 
   it('stops mounting candidates beyond the cross-row DOM frontier', () => {
-    const columns = layoutRow(twoStacks, 2, true, undefined, { maxDomLevels: 2 })
+    const { columns } = layoutPixelRow(twoStacks, 2, { neededLevelCount: 2 })
 
     // The third level never mounts, yet both columns still list their rejected
     // source, because the popover unions unmounted sources with measured hides.
-    expect(itemTops(columns, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
+    expect(levelItemTops(columns, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
     expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
     expect(segIds(columns[0].segs)).toEqual(['a', 'b', 'c'])
   })
@@ -625,6 +713,47 @@ function layoutLevelRow(
       largestSliceHeight: config.largestSliceHeight ?? EVENT_HEIGHT,
     }),
   ).columns
+}
+
+function layoutPixelRow(
+  eventOrderedSegs: DayGridEventSeg[],
+  columnCount: number,
+  config: {
+    orderStrict?: boolean,
+    eventSlicing?: boolean,
+    heights?: Record<string, number>,
+    canvasHeight?: number,
+    neededLevelCount?: number,
+    smallestSliceHeight?: number,
+    largestSliceHeight?: number,
+  } = {},
+) {
+  const heights = config.heights ?? Object.fromEntries(
+    eventOrderedSegs.map((seg) => [getEventPartKey(seg), EVENT_HEIGHT]),
+  )
+  const measuredHeights = Object.values(heights)
+
+  return buildDayGridPixelPlacements(
+    eventOrderedSegs,
+    {
+      orderStrict: config.orderStrict ?? false,
+      eventSlicing: config.eventSlicing ?? true,
+      columnCount,
+      canvasHeight: config.canvasHeight,
+    },
+    {
+      get: (key) => heights[key],
+      createRef: (key) => `ref:${key}`,
+    },
+    () => ({
+      neededLevelCount: config.neededLevelCount ?? 8,
+      smallestSliceHeight:
+        config.smallestSliceHeight ?? Math.min(...measuredHeights),
+      largestSliceHeight:
+        config.largestSliceHeight ?? Math.max(...measuredHeights),
+      largestCanvasHeight: config.canvasHeight,
+    }),
+  )
 }
 
 /** One column's event nodes as key-to-top, where undefined means inert. */
