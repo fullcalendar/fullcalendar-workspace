@@ -113,7 +113,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       plan,
       sliceHeightMap,
       moreLinkHeightRefMap.current,
-      this.getPlacementRatchet,
+      this.largestSliceHeight,
     )
     let fgSegTops = new Map<string, number>()
     for (const item of placementResult.eventDomItems) {
@@ -296,11 +296,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     if (this._isUnmounting) return
     this.setState({ segHeightRev: this.sliceHeightRev += 1 })
   }
-
-  private getPlacementRatchet = () => ({
-    neededLevelCount: 0,
-    largestSliceHeight: this.largestSliceHeight,
-  })
 
   componentDidMount(): void {
     this._isUnmounting = false

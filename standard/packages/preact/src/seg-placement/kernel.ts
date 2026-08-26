@@ -442,7 +442,7 @@ export function buildLevelLimitedLayout<EventMeta, HeightRef>(
   props: LayoutProps<EventMeta>,
   options: LevelLimitedOptions,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  getRatchet: GetRatchet,
+  largestSliceHeight: number | undefined,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
     props.segs,
@@ -458,8 +458,8 @@ export function buildLevelLimitedLayout<EventMeta, HeightRef>(
     options.maxLevels,
     options.moreLinkLevelTax,
   )
-  const { largestSliceHeight } = getRatchet()
-  const provisionalSliceHeight = largestSliceHeight ?? 20
+  const provisionalSliceHeight = largestSliceHeight ??
+    DEFAULT_UNMEASURED_EVENT_THICKNESS
   const { sliceCoords } = resolveLevelCoords(
     sliceLevels,
     (slice) =>
@@ -495,7 +495,8 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
     smallestSliceHeight,
     largestSliceHeight,
   } = getRatchet(canvasHeight)
-  const provisionalSliceHeight = largestSliceHeight ?? 20
+  const provisionalSliceHeight = largestSliceHeight ??
+    DEFAULT_UNMEASURED_EVENT_THICKNESS
   const { segLevels, excludedSegs } = buildSegLevels(
     props.segs,
     options.eventOrderStrict,
@@ -525,7 +526,7 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
       options.eventOrderStrict,
       options.eventSlicing,
       canvasHeight,
-      smallestSliceHeight ?? 20,
+      smallestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
       provisionalSliceHeight,
     )
     ;({ sliceCoords } = resolveLevelCoords(

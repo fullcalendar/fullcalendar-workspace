@@ -187,7 +187,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             columnCount: cells.length,
           },
           this.sliceHeightMap,
-          this.getPlacementRatchet,
+          this.getPlacementRatchet().largestSliceHeight,
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords

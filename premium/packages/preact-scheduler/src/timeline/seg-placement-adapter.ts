@@ -1,8 +1,8 @@
 import {
+  DEFAULT_UNMEASURED_EVENT_THICKNESS,
   type CoordSpan,
   type DateEnv,
   type EventRangeProps,
-  type GetRatchet,
   type Slice,
   type SliceHeightMap,
   type SourceSeg,
@@ -166,10 +166,10 @@ export function buildTimelineSegPlacements<HeightRef>(
   plan: TimelineSegPlacementPlan,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   moreLinkHeights: ReadonlyMap<string, number>,
-  getRatchet: GetRatchet,
+  largestSliceHeight: number | undefined,
 ): TimelineSegPlacementResult<HeightRef> {
-  const ratchet = getRatchet()
-  const provisionalSliceHeight = ratchet.largestSliceHeight ?? 20
+  const provisionalSliceHeight = largestSliceHeight ??
+    DEFAULT_UNMEASURED_EVENT_THICKNESS
   const layout = buildLevelLimitedLayout(
     { segs: plan.sourceSegs },
     {
@@ -179,7 +179,7 @@ export function buildTimelineSegPlacements<HeightRef>(
       moreLinkLevelTax: 0,
     },
     sliceHeightMap,
-    () => ratchet,
+    largestSliceHeight,
   )
   const visibleSlices = layout.sliceLevels.flat()
   const visibleByKey = new Map(

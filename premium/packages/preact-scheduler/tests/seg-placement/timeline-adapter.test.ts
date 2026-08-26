@@ -428,11 +428,6 @@ class TimelineTestHeights {
   set(key: string, height: number): void {
     this.map.handleValue(height, key)
   }
-
-  getRatchet = () => ({
-    neededLevelCount: 0,
-    largestSliceHeight: this.largestSliceHeight,
-  })
 }
 
 function place(
@@ -444,7 +439,7 @@ function place(
     plan,
     heights.map,
     moreLinkHeights,
-    heights.getRatchet,
+    heights.largestSliceHeight,
   )
 }
 

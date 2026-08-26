@@ -373,10 +373,7 @@ function layoutLevelRow(
       get: (key) => config.heights?.[key],
       createRef: (key) => `ref:${key}`,
     },
-    () => ({
-      neededLevelCount: Infinity,
-      largestSliceHeight: config.largestSliceHeight ?? EVENT_HEIGHT,
-    }),
+    config.largestSliceHeight ?? EVENT_HEIGHT,
   ).columns
 }
 

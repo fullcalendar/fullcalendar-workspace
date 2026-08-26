@@ -111,7 +111,7 @@ export function buildDayGridLevelPlacements<HeightRef>(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridLevelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  getRatchet: GetRatchet,
+  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const mode = resolveDayGridPlacementMode(
     input.dayMaxEvents,
@@ -123,7 +123,6 @@ export function buildDayGridLevelPlacements<HeightRef>(
   }
 
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
-  const ratchet = getRatchet()
   const layout = buildLevelLimitedLayout(
     {
       segs: sourceSegs,
@@ -140,9 +139,9 @@ export function buildDayGridLevelPlacements<HeightRef>(
       moreLinkLevelTax: computeDayGridMoreLinkLevelTax(mode),
     },
     sliceHeightMap,
-    () => ratchet,
+    largestSliceHeight,
   )
-  const provisionalSliceHeight = ratchet.largestSliceHeight ??
+  const provisionalSliceHeight = largestSliceHeight ??
     DEFAULT_UNMEASURED_EVENT_THICKNESS
   return buildDayGridPlacementLayout(
     sourceSegs,
