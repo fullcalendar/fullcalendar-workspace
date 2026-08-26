@@ -1,8 +1,17 @@
 # Barrier Masking — Refactor B Peel/Consume Defect
 
-Status: diagnosis only. No fix implemented. Written after the first
-post-Refactor-B browser verification pass surfaced three failing tests and
-one visible quality gap, all reducible to one defect in the merge engine.
+Status: fix implemented in `kernel.ts` (minimal-footprint feasibility sweep
+in `mergeExtraIntoStructure`; barrier-derived footprints removed), with the
+failure catalog encoded headlessly in
+`standard/packages/preact/tests/seg-placement/minimal-footprint.test.ts`.
+Browser re-verification pending. Note: the kernel-level 7573 fixture already
+behaved correctly before the fix, so the multiMonth browser failure likely
+involves runtime geometry or settle timing — re-test it in the browser and
+diagnose separately if it still fails.
+
+Originally written after the first post-Refactor-B browser verification pass
+surfaced three failing tests and one visible quality gap, all reducible to
+one defect in the merge engine.
 
 ## Refactor vocabulary
 

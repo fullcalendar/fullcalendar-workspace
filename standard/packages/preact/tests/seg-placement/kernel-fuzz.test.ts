@@ -74,7 +74,7 @@ describe('pure positioning kernel fuzzing', () => {
         seed % 3 !== 0,
         maxPixels,
         moreLinkHeight,
-        provisional,
+        () => provisional,
       )
       const exactHeights = new Map<string, number>()
       const getExactHeight = (slice: Slice<TestSeg>) => {

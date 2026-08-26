@@ -224,7 +224,7 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
       eventOrderStrict,
       eventSlicing,
       allowExtraWholePlacement: true,
-      sliceThickness: 1,
+      getSliceThickness: () => 1,
       occupantThickness: moreLinkLevelTax,
       isValid: (levelCoord, thickness) =>
         thickness === 0 || levelCoord + thickness <= maxLevels,
@@ -240,7 +240,8 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   eventSlicing: boolean,
   maxPixels: number,
   moreLinkPixelHeight: number,
-  provisionalSliceHeight: number,
+  /** Must agree with coordinate resolution: measured height, else provisional. */
+  getPlanningSliceHeight: (slice: Slice<S>) => number,
 ): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
     sliceLevels,
@@ -253,7 +254,7 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
       // partials may enter topology; otherwise a coordinate-excluded whole
       // could reappear and a DOM-excluded whole would have no render owner.
       allowExtraWholePlacement: false,
-      sliceThickness: provisionalSliceHeight,
+      getSliceThickness: getPlanningSliceHeight,
       occupantThickness: moreLinkPixelHeight,
       isValid: (levelCoord, thickness) =>
         levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
@@ -470,7 +471,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
       options.eventSlicing,
       canvasHeight,
       smallestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
-      provisionalSliceHeight,
+      getPlanningSliceHeight,
     )
     ;({ sliceCoords } = resolveLevelCoords(
       placementSliceLevels,
@@ -501,29 +502,39 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   }
 }
 
-interface MergeOptions {
+interface MergeOptions<S extends SourceSeg> {
   eventOrderStrict: boolean
   eventSlicing: boolean
   allowExtraWholePlacement: boolean
-  sliceThickness: number
+  /**
+   * Per-slice planning thickness. Must agree with what coordinate resolution
+   * used, or the merge judges feasibility with a different ruler than the
+   * structure it merges into.
+   */
+  getSliceThickness: (slice: Slice<S>) => number
   occupantThickness: number
   isValid: (levelCoord: number, thickness: number) => boolean
 }
 
-interface Insertion<S extends SourceSeg> {
+interface Insertion {
   levelIndex: number
   levelCoord: number
-  isGeometricallyValid: boolean
-  touchingSlice?: Slice<S>
-  touchingOccupant?: MoreLinkOccupant
 }
 
-/** Shared fire/collide/peel/consume implementation for both currencies. */
+/**
+ * Shared fire/collide/peel/consume implementation for both currencies.
+ *
+ * Hiding is minimal-footprint: a slice that cannot place whole loses exactly
+ * the lateral spans where no admissible position exists, decided by probing
+ * the elementary intervals between collider edges, and the feasible remainder
+ * re-fires. Consumption applies the same rule to an unplaceable occupant's
+ * over-budget spans. A colliding barrier's own span never widens a footprint.
+ */
 function mergeExtraIntoStructure<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
   extraSegSlices: readonly Slice<S>[],
-  options: MergeOptions,
+  options: MergeOptions<S>,
 ): HiddenSliceGroup<S>[] {
   let hiddenGroups: HiddenSliceGroup<S>[] = []
   let hiddenOrder = 0
@@ -533,7 +544,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     sliceCoords.get(getSliceKey(slice)) ?? levelIndex
 
   const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
-    getSliceCoord(slice, levelIndex) + options.sliceThickness
+    getSliceCoord(slice, levelIndex) + options.getSliceThickness(slice)
 
   function addHiddenRaw(slice: Slice<S>): HiddenSliceGroup<S> {
     hiddenOrders.set(slice, hiddenOrder++)
@@ -573,13 +584,146 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     return undefined
   }
 
+  /** The insertion search under the caller's budget, or null when none fits. */
+  function findValidInsertion(slice: Slice<S>): Insertion | null {
+    const insertion = findInsertion(
+      sliceLevels,
+      sliceCoords,
+      hiddenGroups,
+      slice,
+      options,
+    )
+    return insertion &&
+      options.isValid(insertion.levelCoord, options.getSliceThickness(slice))
+      ? insertion
+      : null
+  }
+
+  /**
+   * Lateral coordinates where a span's collision environment can change.
+   * Between consecutive breakpoints, feasibility is constant.
+   */
+  function collectBreakpoints(span: LateralSpan): number[] {
+    const coords = new Set([span.start, span.end])
+    const admit = (coord: number) => {
+      if (coord > span.start && coord < span.end) coords.add(coord)
+    }
+
+    for (const item of collectIntersectingSlices(sliceLevels, span)) {
+      admit(item.slice.start)
+      admit(item.slice.end)
+    }
+    if (options.occupantThickness) {
+      for (const group of hiddenGroups) {
+        if (group.occupant.levelIndex != null && doSpansIntersect(group, span)) {
+          admit(group.start)
+          admit(group.end)
+        }
+      }
+    }
+    return [...coords].sort((a, b) => a - b)
+  }
+
+  /** Splits a slice into its placeable runs and its minimal hidden footprint. */
+  function partitionByFeasibility(slice: Slice<S>): {
+    feasibleRuns: Slice<S>[]
+    infeasibleSpans: Slice<S>[]
+  } {
+    const breakpoints = collectBreakpoints(slice)
+    const feasible: LateralSpan[] = []
+    const infeasible: LateralSpan[] = []
+
+    for (let i = 0; i < breakpoints.length - 1; i++) {
+      const start = breakpoints[i]
+      const end = breakpoints[i + 1]
+      const spans = findValidInsertion(createNarrowerSlice(slice, start, end))
+        ? feasible
+        : infeasible
+      const previous = spans[spans.length - 1]
+      if (previous && previous.end === start) previous.end = end
+      else spans.push({ start, end })
+    }
+
+    const narrow = (span: LateralSpan) =>
+      createNarrowerSlice(slice, span.start, span.end)
+    return {
+      feasibleRuns: feasible.map(narrow),
+      infeasibleSpans: infeasible.map(narrow),
+    }
+  }
+
+  /**
+   * Handles a fully feasible slice that still fits no single position:
+   * adjacent runs can be individually admissible only at disjoint levels.
+   * Places the longest placeable proper prefix and re-fires the rest.
+   */
+  function placeLongestPrefix(slice: Slice<S>): boolean {
+    const breakpoints = collectBreakpoints(slice)
+
+    for (let i = breakpoints.length - 2; i >= 1; i--) {
+      const prefix = createNarrowerSlice(slice, slice.start, breakpoints[i])
+      const insertion = findValidInsertion(prefix)
+      if (insertion) {
+        insertSlice(
+          sliceLevels,
+          sliceCoords,
+          prefix,
+          insertion.levelIndex,
+          insertion.levelCoord,
+        )
+        for (const rest of peelSlice(slice, prefix)) fireSlice(rest)
+        return true
+      }
+    }
+    return false
+  }
+
+  /** The sub-spans of a group where its occupant's budget is exceeded. */
+  function findOccupantViolations(group: HiddenSliceGroup<S>): LateralSpan[] {
+    const colliders = collectIntersectingSlices(sliceLevels, group)
+    const coords = new Set([group.start, group.end])
+    for (const item of colliders) {
+      if (item.slice.start > group.start && item.slice.start < group.end) {
+        coords.add(item.slice.start)
+      }
+      if (item.slice.end > group.start && item.slice.end < group.end) {
+        coords.add(item.slice.end)
+      }
+    }
+    const breakpoints = [...coords].sort((a, b) => a - b)
+    const violations: LateralSpan[] = []
+
+    for (let i = 0; i < breakpoints.length - 1; i++) {
+      const span = { start: breakpoints[i], end: breakpoints[i + 1] }
+      let bottom = 0
+      for (const item of colliders) {
+        if (doSpansIntersect(item.slice, span)) {
+          bottom = Math.max(bottom, getSliceBottom(item.slice, item.levelIndex))
+        }
+      }
+      if (!options.isValid(bottom, group.occupant.thickness)) {
+        const previous = violations[violations.length - 1]
+        if (previous && previous.end === span.start) previous.end = span.end
+        else violations.push(span)
+      }
+    }
+    return violations
+  }
+
   function consumeInvalidOccupants(): void {
     const refires: Slice<S>[] = []
     let invalidGroup: HiddenSliceGroup<S> | undefined
 
     while ((invalidGroup = positionOccupants())) {
-      const anchor = invalidGroup.hiddenSlices[0]
-      const colliders = collectIntersectingSlices(sliceLevels, invalidGroup)
+      const violations = findOccupantViolations(invalidGroup)
+      const colliders: { slice: Slice<S>; levelIndex: number }[] = []
+      for (const violation of violations) {
+        for (const item of collectIntersectingSlices(sliceLevels, violation)) {
+          if (!colliders.some((other) => other.slice === item.slice)) {
+            colliders.push(item)
+          }
+        }
+      }
       if (!colliders.length) break
       const frontierBottom = Math.max(...colliders.map((item) =>
         getSliceBottom(item.slice, item.levelIndex),
@@ -591,24 +735,15 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       for (const item of frontier) {
         if (!sliceLevels[item.levelIndex].includes(item.slice)) continue
         removeSlice(sliceLevels, sliceCoords, item.slice, item.levelIndex)
-        const activeGroup = hiddenGroups.find((group) =>
-          group.hiddenSlices.includes(anchor),
-        )!
 
         if (options.eventSlicing) {
-          const footprint = intersectSlice(item.slice, activeGroup)
-          if (footprint) {
-            addHiddenRaw(footprint)
-            refires.push(...peelSlice(item.slice, footprint))
-          } else {
-            insertSlice(
-              sliceLevels,
-              sliceCoords,
-              item.slice,
-              item.levelIndex,
-              getSliceCoord(item.slice, item.levelIndex),
-            )
-          }
+          // Frontier members intersect a violation by construction, so
+          // consumption always leaves a non-empty footprint.
+          const footprints = violations
+            .map((violation) => intersectSlice(item.slice, violation))
+            .filter((footprint): footprint is Slice<S> => footprint != null)
+          for (const footprint of footprints) addHiddenRaw(footprint)
+          refires.push(...subtractSpans(item.slice, footprints))
         } else {
           addHiddenRaw(item.slice)
         }
@@ -623,20 +758,9 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     slice: Slice<S>,
     mayPlaceWhole: boolean = true,
   ): void {
-    const insertion = findInsertion(
-      sliceLevels,
-      sliceCoords,
-      hiddenGroups,
-      slice,
-      options,
-    )
+    const insertion = findValidInsertion(slice)
 
-    if (
-      insertion &&
-      insertion.isGeometricallyValid &&
-      (mayPlaceWhole || isPartialSlice(slice)) &&
-      options.isValid(insertion.levelCoord, options.sliceThickness)
-    ) {
+    if (insertion && (mayPlaceWhole || isPartialSlice(slice))) {
       insertSlice(
         sliceLevels,
         sliceCoords,
@@ -647,15 +771,18 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       return
     }
 
-    const barrier = insertion?.touchingSlice ?? insertion?.touchingOccupant
-    if (options.eventSlicing && barrier) {
-      const footprint = intersectSlice(slice, barrier)
-      if (footprint) {
-        addHiddenRaw(footprint)
+    // A placeable-but-disallowed whole falls through to hide: only a genuine
+    // geometric failure earns a slicing pass.
+    if (options.eventSlicing && !insertion) {
+      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
+
+      if (feasibleRuns.length && infeasibleSpans.length) {
+        for (const span of infeasibleSpans) addHiddenRaw(span)
         consumeInvalidOccupants()
-        for (const remainder of peelSlice(slice, footprint)) fireSlice(remainder)
+        for (const run of feasibleRuns) fireSlice(run)
         return
       }
+      if (!infeasibleSpans.length && placeLongestPrefix(slice)) return
     }
 
     addHiddenRaw(slice)
@@ -669,20 +796,25 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   return hiddenGroups
 }
 
+/**
+ * Finds the smallest geometrically admissible position, ignoring the
+ * caller's budget. Null means no position exists at all: strict-order or
+ * occupant fencing has closed every level, including a newly appended one.
+ */
 function findInsertion<S extends SourceSeg>(
   sliceLevels: readonly (readonly Slice<S>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   hiddenGroups: readonly HiddenSliceGroup<S>[],
   slice: Slice<S>,
-  options: MergeOptions,
-): Insertion<S> | null {
+  options: MergeOptions<S>,
+): Insertion | null {
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),
   )
   const getCoord = (other: Slice<S>, levelIndex: number) =>
     sliceCoords.get(getSliceKey(other)) ?? levelIndex
   const getBottom = (other: Slice<S>, levelIndex: number) =>
-    getCoord(other, levelIndex) + options.sliceThickness
+    getCoord(other, levelIndex) + options.getSliceThickness(other)
   let strictMinLevelIndex = 0
   let strictMaxLevelIndexExclusive = Infinity
 
@@ -725,65 +857,25 @@ function findInsertion<S extends SourceSeg>(
   }
 
   let minLevelCoord = 0
-  let touchingSlice: Slice<S> | undefined
   for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
     if (
       !collidersByLevel[levelIndex].length &&
       levelIndex >= strictMinLevelIndex &&
       levelIndex < strictMaxLevelIndexExclusive &&
-      minLevelCoord + options.sliceThickness <=
+      minLevelCoord + options.getSliceThickness(slice) <=
         ceilings[levelIndex] + GEOMETRY_TOLERANCE
     ) {
-      return {
-        levelIndex,
-        levelCoord: minLevelCoord,
-        isGeometricallyValid: true,
-        touchingSlice,
-      }
+      return { levelIndex, levelCoord: minLevelCoord }
     }
 
     for (const other of collidersByLevel[levelIndex]) {
-      const bottom = getBottom(other, levelIndex)
-      if (bottom > minLevelCoord) {
-        minLevelCoord = bottom
-        touchingSlice = other
-      }
+      minLevelCoord = Math.max(minLevelCoord, getBottom(other, levelIndex))
     }
   }
 
-  if (sliceLevels.length >= strictMaxLevelIndexExclusive) {
-    const touchingOccupant = occupantGroups
-      .map((group) => group.occupant)
-      .sort((a, b) => a.levelCoord! - b.levelCoord!)[0]
-    if (touchingOccupant) {
-      return {
-        levelIndex: touchingOccupant.levelIndex!,
-        levelCoord: touchingOccupant.levelCoord!,
-        isGeometricallyValid: false,
-        touchingOccupant,
-      }
-    }
-    const strictBarrier = collidersByLevel
-      .flat()
-      .find((other) =>
-        other.sourceSeg.orderIndex > slice.sourceSeg.orderIndex,
-      )
-    return strictBarrier
-      ? {
-        levelIndex: 0,
-        levelCoord: minLevelCoord,
-        isGeometricallyValid: false,
-        touchingSlice: strictBarrier,
-      }
-      : null
-  }
+  if (sliceLevels.length >= strictMaxLevelIndexExclusive) return null
 
-  return {
-    levelIndex: sliceLevels.length,
-    levelCoord: minLevelCoord,
-    isGeometricallyValid: true,
-    touchingSlice,
-  }
+  return { levelIndex: sliceLevels.length, levelCoord: minLevelCoord }
 }
 
 function createWholeSlice<S extends SourceSeg>(
@@ -831,6 +923,30 @@ function peelSlice<S extends SourceSeg>(
   }
   if (slice.end > barrier.end) {
     remainders.push(createNarrowerSlice(slice, barrier.end, slice.end))
+  }
+  return remainders
+}
+
+/** Generalizes peelSlice to any set of removed spans, including interior ones. */
+function subtractSpans<S extends SourceSeg>(
+  slice: Slice<S>,
+  spans: readonly LateralSpan[],
+): Slice<S>[] {
+  const sorted = [...spans].sort((a, b) => a.start - b.start)
+  const remainders: Slice<S>[] = []
+  let cursor = slice.start
+
+  for (const span of sorted) {
+    if (span.start > cursor) {
+      remainders.push(
+        createNarrowerSlice(slice, cursor, Math.min(span.start, slice.end)),
+      )
+    }
+    cursor = Math.max(cursor, span.end)
+    if (cursor >= slice.end) return remainders
+  }
+  if (cursor < slice.end) {
+    remainders.push(createNarrowerSlice(slice, cursor, slice.end))
   }
   return remainders
 }
