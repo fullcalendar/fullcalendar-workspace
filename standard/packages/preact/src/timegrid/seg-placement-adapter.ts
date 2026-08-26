@@ -1,7 +1,7 @@
 import { DateMarker } from '@full-ui/headless-calendar'
 import { type EventRangeProps, getEventSegKey } from '../component-util/event-rendering'
 import { DateProfile } from '../DateProfileGenerator'
-import { layoutTimeGridColumnByMaxLevel } from '../seg-placement/timegrid'
+import { layoutTimeGridColumnByMaxLevel } from './seg-placement'
 import { computeDateTopFrac } from './components/util'
 import { type TimeGridRange } from './TimeColsSeg'
 

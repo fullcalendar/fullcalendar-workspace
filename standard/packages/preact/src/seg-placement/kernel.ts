@@ -84,11 +84,6 @@ interface PixelLimitedOptions {
   eventSlicing: boolean
 }
 
-interface TimeGridLevelOptions {
-  eventOrderStrict: boolean
-  maxLevels: number
-}
-
 export interface SliceRenderItem<S extends SourceSeg = SourceSeg, HeightRef = unknown> {
   key: string
   slice: Slice<S>
@@ -503,21 +498,6 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
       sliceCoords,
       sliceHeightMap,
     ),
-  }
-}
-
-export function buildTimeGridLevelInputs<S extends SourceSeg>(
-  props: Pick<LayoutProps<S>, 'segs'>,
-  options: TimeGridLevelOptions,
-) {
-  const { segLevels, excludedSegs } = buildSegLevels(
-    props.segs,
-    options.eventOrderStrict,
-    options.maxLevels,
-  )
-  return {
-    pressureWebSegLevels: segLevels,
-    globbedMoreLinkSegs: excludedSegs,
   }
 }
 

@@ -16,11 +16,11 @@
 import {
   type HiddenSliceGroup,
   type SourceSeg,
-  buildTimeGridLevelInputs,
+  buildSegLevels,
   convertSegsToWholeSlices,
   findIntersections,
   groupLaterallyIntersecting,
-} from './kernel'
+} from '../seg-placement/kernel'
 
 /** TimeGrid policies that affect dimensionless level construction. */
 interface TimeGridLayoutOptions {
@@ -55,10 +55,6 @@ interface TimeGridMoreLinkGroup<S extends SourceSeg = SourceSeg>
 
 /** Complete reusable output needed to render one TimeGrid column. */
 interface TimeGridColumnLayout<S extends SourceSeg = SourceSeg> {
-  /** Dimensionless kernel levels consumed by the collision-web projection. */
-  pressureWebSegLevels: S[][]
-  /** Whole segs rejected directly by the kernel's max-level admission pass. */
-  globbedMoreLinkSegs: S[]
   /** Final visible placements in temporal-start/event-order. */
   domOrderedPlacements: TimeGridPlacement<S>[]
   /** Tax-free overlay links formed only after level admission has completed. */
@@ -71,14 +67,14 @@ export function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
   maxLevels: number,
   options: TimeGridLayoutOptions,
 ): TimeGridColumnLayout<S> {
-  const { pressureWebSegLevels, globbedMoreLinkSegs } =
-    buildTimeGridLevelInputs(
-      { segs: eventOrderedSegs },
-      { eventOrderStrict: options.orderStrict, maxLevels },
-    )
-  const placements = positionTimeGridPlacements(pressureWebSegLevels)
+  const { segLevels, excludedSegs } = buildSegLevels(
+    eventOrderedSegs,
+    options.orderStrict,
+    maxLevels,
+  )
+  const placements = positionTimeGridPlacements(segLevels)
   const moreLinkGroups = groupLaterallyIntersecting(
-    convertSegsToWholeSlices(globbedMoreLinkSegs),
+    convertSegsToWholeSlices(excludedSegs),
   )
     .map((group) => ({
       ...group,
@@ -89,8 +85,6 @@ export function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
     .sort((a, b) => a.start - b.start || a.end - b.end)
 
   return {
-    pressureWebSegLevels,
-    globbedMoreLinkSegs,
     domOrderedPlacements: orderTimeGridPlacements(placements),
     moreLinkGroups,
   }
