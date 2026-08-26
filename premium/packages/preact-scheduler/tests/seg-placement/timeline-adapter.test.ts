@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { type DateEnv } from '@fullcalendar/preact/protected-api'
+import {
+  type DateEnv,
+  SliceHeightMapStore,
+} from '@fullcalendar/preact/protected-api'
 import {
   buildTimelineSegPlacementPlan,
   buildTimelineSegPlacements,
   buildTimelineSegSources,
   type TimelineEventSeg,
+  type TimelineSegPlacementPlan,
 } from '../../src/timeline/seg-placement-adapter'
 import {
   type TimelineDateProfile,
@@ -44,6 +48,7 @@ describe('Timeline production placement adapter', () => {
     expect(sources).toHaveLength(1)
     expect(sources[0]).toMatchObject({
       key: 'spanning',
+      eventKey: 'spanning',
       start: 0,
       end: 200,
       orderIndex: 0,
@@ -56,11 +61,7 @@ describe('Timeline production placement adapter', () => {
       [0, MS_PER_HOUR],
       [MS_PER_HOUR, 3 * MS_PER_HOUR],
     ])
-    const seg = makeTimedSeg(
-      'dst',
-      MS_PER_HOUR / 2,
-      2 * MS_PER_HOUR,
-    )
+    const seg = makeTimedSeg('dst', MS_PER_HOUR / 2, 2 * MS_PER_HOUR)
     const [source] = buildTimelineSegSources(
       [seg],
       undefined,
@@ -104,12 +105,6 @@ describe('Timeline production placement adapter', () => {
   })
 
   it('gives abutting segs a bit-identical boundary at awkward slot widths', () => {
-    // A liquid slot width of viewportWidth/slatCnt is rarely a round number, and
-    // deriving an end as `start + size` lands an ulp above the neighbor's
-    // directly-projected start often enough to matter. 20.01px with a boundary
-    // at slot 2 + 36/60 is one such case: the derived end would be
-    // 52.02600000000001 against a start of 52.026, which reads as an overlap
-    // and costs a whole level.
     const profile = uniformTimedProfile(3)
     const boundaryMs = 2 * MS_PER_HOUR + 36 * 60 * 1000
     const sources = buildTimelineSegSources(
@@ -153,7 +148,6 @@ describe('Timeline production placement adapter', () => {
 
   it('shares a level for exact adjacency and splits for any real overlap', () => {
     const profile = uniformTimedProfile(2)
-    const heights = new Map([['before', 10], ['after', 10]])
     const placeAfterStartingAt = (afterStartMs: number) => {
       const plan = buildTimelineSegPlacementPlan(
         [
@@ -164,26 +158,24 @@ describe('Timeline production placement adapter', () => {
         profile,
         120,
       )
-      return [plan, buildTimelineSegPlacements(plan, heights, new Map())] as const
+      const heights = new TimelineTestHeights([
+        ['before', 10],
+        ['after', 10],
+      ])
+      return [plan, place(plan, heights)] as const
     }
 
-    // exact adjacency: both endpoints derive the same coordinate from the same
-    // instant, so no rounding is needed to keep them off each other's level
     const [adjacentPlan, adjacent] = placeAfterStartingAt(MS_PER_HOUR)
-    expect(adjacentPlan.mountedSegs[0].end).toBe(120)
-    expect(adjacentPlan.mountedSegs[1].start).toBe(120)
-    expect(adjacent.eventDomItems.map((item) => item.top))
-      .toEqual([0, 0])
+    expect(adjacentPlan.sourceSegs[0].end).toBe(120)
+    expect(adjacentPlan.sourceSegs[1].start).toBe(120)
+    expect(adjacent.eventDomItems.map((item) => item.top)).toEqual([0, 0])
 
-    // a genuine 1ms overlap stays an overlap. coordinates are never rounded, so
-    // these take separate levels — long-standing behavior, deliberately kept
     const [overlapPlan, overlapping] = placeAfterStartingAt(MS_PER_HOUR - 1)
-    expect(overlapPlan.mountedSegs[1].start).toBeLessThan(120)
-    expect(overlapping.eventDomItems.map((item) => item.top))
-      .toEqual([0, 10])
+    expect(overlapPlan.sourceSegs[1].start).toBeLessThan(120)
+    expect(overlapping.eventDomItems.map((item) => item.top)).toEqual([0, 10])
   })
 
-  it('keeps permanent event nodes in temporal-start then resolved order', () => {
+  it('keeps visible nodes in temporal-start then resolved order', () => {
     const profile = uniformTimedProfile(5)
     const segs = [
       makeTimedSeg('late', 3 * MS_PER_HOUR, 5 * MS_PER_HOUR),
@@ -197,13 +189,12 @@ describe('Timeline production placement adapter', () => {
       profile,
       60,
     )
-    const result = buildTimelineSegPlacements(
+    const result = place(
       plan,
-      new Map(segs.map((seg) => [segKey(seg), 10])),
-      new Map(),
+      new TimelineTestHeights(segs.map((seg) => [segKey(seg), 10])),
     )
 
-    expect(plan.mountedSegs.map((source) => source.key)).toEqual([
+    expect(plan.sourceSegs.map((source) => source.key)).toEqual([
       'late',
       'tie-first',
       'early',
@@ -249,8 +240,7 @@ describe('Timeline production placement adapter', () => {
       240,
     )
 
-    expect(clippedPlan.mountedSegs.map((source) => source.start))
-      .toEqual([0, 0])
+    expect(clippedPlan.sourceSegs.map((source) => source.start)).toEqual([0, 0])
     expect(fullPlan.domOrderedSegs.map((source) => source.key)).toEqual([
       'earlier-resolved-second',
       'later-resolved-first',
@@ -274,70 +264,129 @@ describe('Timeline production placement adapter', () => {
       undefined,
       true,
     )
-    const result = buildTimelineSegPlacements(
-      plan,
-      new Map([
-        ['first', 10],
-        ['second', 20],
-        ['third', 15],
-      ]),
-      new Map(),
-    )
+    const result = place(plan, new TimelineTestHeights([
+      ['first', 10],
+      ['second', 20],
+      ['third', 15],
+    ]))
     const tops = topByKey(result.eventDomItems)
 
     expect(tops.get('first')).toBe(0)
-    expect(placements.get('second')?.top).toBe(10)
-    expect(placements.get('third')?.top).toBe(30)
+    expect(tops.get('second')).toBe(10)
+    expect(tops.get('third')).toBe(30)
   })
 
-  it('keeps a measured-hidden candidate mounted as a null donor', () => {
-    const profile = uniformTimedProfile(4)
+  it('renders provisionally, reflows from exact heights, and deletes on unmount', () => {
     const plan = buildTimelineSegPlacementPlan(
       [
-        makeTimedSeg('left', 0, 2 * MS_PER_HOUR),
-        makeTimedSeg('wide', 0, 4 * MS_PER_HOUR),
-        makeTimedSeg('right-tall', 2 * MS_PER_HOUR, 4 * MS_PER_HOUR),
+        makeTimedSeg('first', 0, MS_PER_HOUR),
+        makeTimedSeg('second', 0, MS_PER_HOUR),
       ],
       EMPTY_DATE_ENV,
-      profile,
+      uniformTimedProfile(1),
+      60,
+    )
+    const heights = new TimelineTestHeights()
+
+    const provisional = place(plan, heights)
+    expect(provisional.eventDomItems.map((item) => item.top)).toEqual([0, 20])
+    expect(provisional.contentHeight).toBe(40)
+    expect(provisional.allHeightsSettled).toBe(false)
+
+    heights.set('first', 30)
+    heights.set('second', 12)
+    const exact = place(plan, heights)
+    expect(exact.eventDomItems.map((item) => item.top)).toEqual([0, 30])
+    expect(exact.contentHeight).toBe(42)
+    expect(exact.allHeightsSettled).toBe(true)
+
+    heights.map.createRef('first')(null)
+    const remounted = place(plan, heights)
+    expect(remounted.eventDomItems.map((item) => item.top)).toEqual([0, 30])
+    expect(remounted.allHeightsSettled).toBe(false)
+  })
+
+  it('uses kernel hidden groups and positions tax-free links from the skyline', () => {
+    const plan = buildTimelineSegPlacementPlan(
+      [
+        makeTimedSeg('visible-left', 0, MS_PER_HOUR),
+        makeTimedSeg('visible-right', MS_PER_HOUR, 3 * MS_PER_HOUR),
+        makeTimedSeg('hidden-a', 0, 2 * MS_PER_HOUR),
+        makeTimedSeg('hidden-b', MS_PER_HOUR, 3 * MS_PER_HOUR),
+      ],
+      EMPTY_DATE_ENV,
+      uniformTimedProfile(3),
       60,
       undefined,
       undefined,
-      2,
+      1,
     )
-    const result = buildTimelineSegPlacements(
-      plan,
-      new Map([
-        ['left', 10],
-        ['wide', 10],
-        ['right-tall', 20],
-      ]),
-      new Map(),
-    )
-
-    expect(plan.mountedSegs.map((source) => source.key)).toEqual([
-      'left',
-      'wide',
-      'right-tall',
+    const heights = new TimelineTestHeights([
+      ['visible-left', 10],
+      ['visible-right', 20],
     ])
-    expect(result.eventDomItems.find((item) => item.key === 'right-tall'))
-      .toMatchObject({ top: null })
-    expect(result.moreLinks).toHaveLength(1)
-    expect(result.moreLinks[0]).toMatchObject({
+    const beforeLinkMeasurement = place(plan, heights)
+
+    expect(beforeLinkMeasurement.eventDomItems.map((item) => item.key)).toEqual([
+      'visible-left',
+      'visible-right',
+    ])
+    expect(beforeLinkMeasurement.moreLinks).toHaveLength(1)
+    expect(beforeLinkMeasurement.moreLinks[0]).toMatchObject({
+      start: 0,
+      end: 180,
       top: 20,
-      segs: [plan.mountedSegs[2].meta],
     })
+    expect(beforeLinkMeasurement.moreLinks[0].segs.map(segKey)).toEqual([
+      'hidden-a',
+      'hidden-b',
+    ])
+    expect(beforeLinkMeasurement.contentHeight).toBe(20)
+
+    const linkKey = beforeLinkMeasurement.moreLinks[0].key
+    expect(place(plan, heights, new Map([[linkKey, 12]])).contentHeight).toBe(32)
+    expect(place(plan, heights, new Map([[linkKey, 2]])).contentHeight).toBe(22)
   })
 
-  it('groups max-stack hides, separates adjacency, and tracks live link heights', () => {
-    const profile = uniformTimedProfile(4)
-    const segs = [
-      makeTimedSeg('visible-left', 0, 2 * MS_PER_HOUR),
-      makeTimedSeg('hidden-left', 0, 2 * MS_PER_HOUR),
-      makeTimedSeg('visible-right', 2 * MS_PER_HOUR, 4 * MS_PER_HOUR),
-      makeTimedSeg('hidden-right', 2 * MS_PER_HOUR, 4 * MS_PER_HOUR),
-    ]
+  it('keeps adjacent hidden groups and their more-link keys separate', () => {
     const plan = buildTimelineSegPlacementPlan(
+      [
+        makeTimedSeg('visible-left', 0, 2 * MS_PER_HOUR),
+        makeTimedSeg('hidden-left', 0, 2 * MS_PER_HOUR),
+        makeTimedSeg('visible-right', 2 * MS_PER_HOUR, 4 * MS_PER_HOUR),
+        makeTimedSeg('hidden-right', 2 * MS_PER_HOUR, 4 * MS_PER_HOUR),
+      ],
+      EMPTY_DATE_ENV,
+      uniformTimedProfile(4),
+      60,
+      undefined,
+      undefined,
+      1,
+    )
+    const result = place(plan, new TimelineTestHeights([
+      ['visible-left', 10],
+      ['visible-right', 20],
+    ]))
+
+    expect(result.moreLinks.map((link) => ({
+      key: link.key,
+      start: link.start,
+      end: link.end,
+      top: link.top,
+    }))).toEqual([
+      { key: 'hidden-left', start: 0, end: 120, top: 10 },
+      { key: 'hidden-right', start: 120, end: 240, top: 20 },
+    ])
+  })
+
+  it('keeps more-link keys stable across slot-width changes', () => {
+    const profile = uniformTimedProfile(3)
+    const segs = [
+      makeTimedSeg('visible', MS_PER_HOUR, 2 * MS_PER_HOUR),
+      makeTimedSeg('hidden', MS_PER_HOUR, 2 * MS_PER_HOUR),
+    ]
+    const heights = new TimelineTestHeights([['visible', 10]])
+    const narrow = place(buildTimelineSegPlacementPlan(
       segs,
       EMPTY_DATE_ENV,
       profile,
@@ -345,88 +394,16 @@ describe('Timeline production placement adapter', () => {
       undefined,
       undefined,
       1,
-    )
-    const segHeights = new Map([
-      ['visible-left', 10],
-      ['visible-right', 20],
-    ])
-    const beforeLinkMeasurement = buildTimelineSegPlacements(
-      plan,
-      segHeights,
-      new Map(),
-    )
-
-    expect(plan.mountedSegs.map((source) => source.key)).toEqual([
-      'visible-left',
-      'visible-right',
-    ])
-    expect(beforeLinkMeasurement.moreLinks.map((link) => ({
-      start: link.start,
-      end: link.end,
-      top: link.top,
-      segs: link.segs.map(segKey),
-    }))).toEqual([
-      { start: 0, end: 120, top: 10, segs: ['hidden-left'] },
-      { start: 120, end: 240, top: 20, segs: ['hidden-right'] },
-    ])
-    expect(beforeLinkMeasurement.contentHeight).toBe(20)
-
-    const [leftLink, rightLink] = beforeLinkMeasurement.moreLinks
-    const grown = buildTimelineSegPlacements(
-      plan,
-      segHeights,
-      new Map([
-        [leftLink.key, 12],
-        [rightLink.key, 7],
-      ]),
-    )
-    const shrunk = buildTimelineSegPlacements(
-      plan,
-      segHeights,
-      new Map([
-        [leftLink.key, 1],
-        [rightLink.key, 2],
-      ]),
-    )
-
-    expect(grown.contentHeight).toBe(27)
-    expect(shrunk.contentHeight).toBe(22)
-    expect(grown.eventDomItems).toEqual(shrunk.eventDomItems)
-    expect(grown.moreLinks.map((link) => link.top))
-      .toEqual(shrunk.moreLinks.map((link) => link.top))
-  })
-
-  it('keeps more-link keys stable across slot-width changes', () => {
-    const profile = uniformTimedProfile(3)
-    const visible = makeTimedSeg('visible', MS_PER_HOUR, 2 * MS_PER_HOUR)
-    const hidden = makeTimedSeg('hidden', MS_PER_HOUR, 2 * MS_PER_HOUR)
-    const segs = [visible, hidden]
-    const narrow = buildTimelineSegPlacements(
-      buildTimelineSegPlacementPlan(
-        segs,
-        EMPTY_DATE_ENV,
-        profile,
-        60,
-        undefined,
-        undefined,
-        1,
-      ),
-      new Map([['visible', 10]]),
-      new Map(),
-    )
-    const wide = buildTimelineSegPlacements(
-      buildTimelineSegPlacementPlan(
-        segs,
-        EMPTY_DATE_ENV,
-        profile,
-        100,
-        undefined,
-        undefined,
-        1,
-      ),
-      new Map([['visible', 10]]),
-      new Map(),
-    )
+    ), heights)
+    const wide = place(buildTimelineSegPlacementPlan(
+      segs,
+      EMPTY_DATE_ENV,
+      profile,
+      100,
+      undefined,
+      undefined,
+      1,
+    ), heights)
 
     expect(narrow.moreLinks).toHaveLength(1)
     expect(wide.moreLinks).toHaveLength(1)
@@ -434,35 +411,42 @@ describe('Timeline production placement adapter', () => {
     expect(wide.moreLinks[0].key).toBe(narrow.moreLinks[0].key)
     expect(wide.moreLinks[0].end).not.toBe(narrow.moreLinks[0].end)
   })
-
-  it('mounts only candidates and keeps them as null donors until measured', () => {
-    const profile = uniformTimedProfile(1)
-    const plan = buildTimelineSegPlacementPlan(
-      [
-        makeTimedSeg('candidate', 0, MS_PER_HOUR),
-        makeTimedSeg('rejected', 0, MS_PER_HOUR),
-      ],
-      EMPTY_DATE_ENV,
-      profile,
-      60,
-      undefined,
-      undefined,
-      1,
-    )
-    const result = buildTimelineSegPlacements(plan, new Map(), new Map())
-
-    expect(result).toMatchObject({
-      allHeightsSettled: false,
-      contentHeight: 0,
-      moreLinks: [],
-    })
-    expect(result.eventDomItems).toHaveLength(1)
-    expect(result.eventDomItems[0]).toMatchObject({
-      key: 'candidate',
-      top: null,
-    })
-  })
 })
+
+class TimelineTestHeights {
+  largestSliceHeight?: number
+  readonly map = new SliceHeightMapStore((height) => {
+    this.largestSliceHeight = this.largestSliceHeight == null
+      ? height
+      : Math.max(this.largestSliceHeight, height)
+  }, () => {})
+
+  constructor(entries: [string, number][] = []) {
+    for (const [key, height] of entries) this.set(key, height)
+  }
+
+  set(key: string, height: number): void {
+    this.map.handleValue(height, key)
+  }
+
+  getRatchet = () => ({
+    neededLevelCount: 0,
+    largestSliceHeight: this.largestSliceHeight,
+  })
+}
+
+function place(
+  plan: TimelineSegPlacementPlan,
+  heights: TimelineTestHeights,
+  moreLinkHeights: ReadonlyMap<string, number> = new Map(),
+) {
+  return buildTimelineSegPlacements(
+    plan,
+    heights.map,
+    moreLinkHeights,
+    heights.getRatchet,
+  )
+}
 
 function wholeDayProfile(start: Date): TimelineDateProfile {
   return {
@@ -563,13 +547,7 @@ function segKey(seg: TimelineEventSeg): string {
 }
 
 function topByKey(
-  items: ReturnType<typeof buildTimelineSegPlacements>['eventDomItems'],
+  items: ReturnType<typeof place>['eventDomItems'],
 ): Map<string, number> {
-  const tops = new Map<string, number>()
-  for (const item of items) {
-    if (item.top != null) {
-      tops.set(item.key, item.top)
-    }
-  }
-  return tops
+  return new Map(items.map((item) => [item.key, item.top]))
 }

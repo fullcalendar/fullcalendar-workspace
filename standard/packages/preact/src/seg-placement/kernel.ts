@@ -50,6 +50,56 @@ export interface SliceHeightMap<HeightRef = unknown> {
   createRef(key: string): HeightRef
 }
 
+export type SliceHeightRef = (height: number | null) => void
+
+/**
+ * Owner-local exact slice measurements and their only production write path.
+ *
+ * Positive finite insertions notify the owner's ratchet before scheduling a
+ * layout change. Unmounts delete both the value and cached ref, so a remounted
+ * slice must measure again. Screen consumers must never retain deleted values.
+ */
+export class SliceHeightMapStore implements SliceHeightMap<SliceHeightRef> {
+  readonly current = new Map<string, number>()
+  private callbacks = new Map<string, SliceHeightRef>()
+
+  constructor(
+    private observeInsertion: (height: number) => void,
+    private handleChange: () => void,
+  ) {}
+
+  get(key: string): number | undefined {
+    return this.current.get(key)
+  }
+
+  createRef(key: string): SliceHeightRef {
+    let callback = this.callbacks.get(key)
+
+    if (!callback) {
+      callback = (height) => this.handleValue(height, key)
+      this.callbacks.set(key, callback)
+    }
+
+    return callback
+  }
+
+  handleValue(height: number | null, key: string): void {
+    if (height === null) {
+      const deleted = this.current.delete(key)
+      this.callbacks.delete(key)
+      if (deleted) this.handleChange()
+      return
+    }
+
+    if (!(height > 0 && Number.isFinite(height))) return
+
+    const changed = this.current.get(key) !== height
+    this.current.set(key, height)
+    this.observeInsertion(height)
+    if (changed) this.handleChange()
+  }
+}
+
 export interface PlacementRatchet {
   neededLevelCount: number
   smallestSliceHeight?: number
@@ -61,7 +111,8 @@ export type GetRatchet = (canvasHeight?: number) => PlacementRatchet
 
 export interface LayoutProps<EventMeta = unknown> {
   segs: readonly SourceSeg<EventMeta>[]
-  cells: readonly unknown[]
+  /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
+  cells?: readonly unknown[]
 }
 
 export interface LevelLimitedOptions {
@@ -409,10 +460,9 @@ export function buildLevelLimitedLayout<EventMeta, HeightRef>(
       sliceHeightMap.get(getSliceKey(slice)) ?? provisionalSliceHeight,
   )
   const renderSlices = sliceLevels.flat()
-  const slicesByStart = federateSlicesByStart(
-    renderSlices,
-    props.cells.length,
-  )
+  const slicesByStart = props.cells
+    ? federateSlicesByStart(renderSlices, props.cells.length)
+    : []
 
   return {
     sliceLevels,

@@ -22,8 +22,10 @@ import {
   type HiddenSliceGroup,
   type Slice as KernelSlice,
   type SliceHeightMap,
+  type SliceHeightRef,
   type SliceRenderItem,
   type SourceSeg as KernelSourceSeg,
+  SliceHeightMapStore,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
   getSliceKey,
@@ -191,55 +193,8 @@ export interface DayGridPixelPlacementInputs {
   canvasHeight?: number
 }
 
-export type DayGridSliceHeightRef = (height: number | null) => void
-
-/**
- * Row-local exact slice measurements and their only production write path.
- *
- * Positive finite insertions update the owner extrema synchronously before a
- * layout change is scheduled. Null removes both the value and cached ref, so
- * remounted slices receive a fresh callback and must measure again.
- */
-export class DayGridSliceHeightMap implements SliceHeightMap<DayGridSliceHeightRef> {
-  readonly current = new Map<string, number>()
-  private callbacks = new Map<string, DayGridSliceHeightRef>()
-
-  constructor(
-    private observeInsertion: (height: number) => void,
-    private handleChange: () => void,
-  ) {}
-
-  get(key: string): number | undefined {
-    return this.current.get(key)
-  }
-
-  createRef(key: string): DayGridSliceHeightRef {
-    let callback = this.callbacks.get(key)
-
-    if (!callback) {
-      callback = (height) => this.handleValue(height, key)
-      this.callbacks.set(key, callback)
-    }
-
-    return callback
-  }
-
-  handleValue(height: number | null, key: string): void {
-    if (height === null) {
-      const deleted = this.current.delete(key)
-      this.callbacks.delete(key)
-      if (deleted) this.handleChange()
-      return
-    }
-
-    if (!isPositiveFinite(height)) return
-
-    const changed = this.current.get(key) !== height
-    this.current.set(key, height)
-    this.observeInsertion(height)
-    if (changed) this.handleChange()
-  }
-}
+export type DayGridSliceHeightRef = SliceHeightRef
+export { SliceHeightMapStore as DayGridSliceHeightMap }
 
 /**
  * Builds an immediately renderable kernel layout for unlimited and numeric

@@ -2,6 +2,8 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
+  type SliceHeightRef,
+  SliceHeightMapStore,
   RefMap,
   afterSize,
   EventRangeProps,
@@ -50,7 +52,7 @@ export interface TimelineFgProps {
 }
 
 interface TimelineFgState {
-  segHeightRev?: string
+  segHeightRev?: number
   moreLinkHeightRev?: string
 }
 
@@ -62,7 +64,11 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private buildSegPlacementPlan = memoize(buildTimelineSegPlacementPlan)
 
   // refs
-  private segHeightRefMap = new RefMap<string, number>(() => { // keyed by instanceId
+  private sliceHeightMap = new SliceHeightMapStore((height) => {
+    this.largestSliceHeight = this.largestSliceHeight == null
+      ? height
+      : Math.max(this.largestSliceHeight, height)
+  }, () => {
     afterSize(this.handleSegHeights)
   })
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by stable more-link key
@@ -71,12 +77,14 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   // internal
   private _isUnmounting: boolean
+  private sliceHeightRev = 0
+  private largestSliceHeight?: number
   private totalHeight?: number
   private totalHeightSettled?: boolean
   private firedTotalHeight?: number
 
   render() {
-    let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
+    let { props, context, sliceHeightMap, moreLinkHeightRefMap } = this
     let { options } = context
     let { tDateProfile } = props
 
@@ -103,8 +111,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
     let placementResult = buildTimelineSegPlacements(
       plan,
-      segHeightRefMap.current,
+      sliceHeightMap,
       moreLinkHeightRefMap.current,
+      this.getPlacementRatchet,
     )
     let fgSegTops = new Map<string, number>()
     for (const item of placementResult.eventDomItems) {
@@ -147,8 +156,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
   }
 
-  renderEventDomItems(eventDomItems: TimelineSegDomItem[]) {
-    const { props, segHeightRefMap } = this
+  renderEventDomItems(eventDomItems: TimelineSegDomItem<SliceHeightRef>[]) {
+    const { props } = this
 
     return (
       <>
@@ -159,7 +168,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
           const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-          const isInvisible = isDragging || isResizing || top == null
+          const isInvisible = isDragging || isResizing
           const isSelected = instanceId === props.eventSelection
 
           return (
@@ -167,13 +176,12 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               key={key}
               style={{
                 visibility: isInvisible ? 'hidden' : undefined,
-                pointerEvents: top == null ? 'none' : undefined,
                 zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
-                top: top ?? 0,
+                top,
                 insetInlineStart: horizontal.start,
                 width: horizontal.size,
               }}
-              heightRef={segHeightRefMap.createRef(key)}
+              heightRef={item.heightRef}
             >
               <TimelineEvent
                 isTimeScale={props.tDateProfile.isTimeScale}
@@ -286,8 +294,13 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   private handleSegHeights = () => {
     if (this._isUnmounting) return
-    this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger rerender
+    this.setState({ segHeightRev: this.sliceHeightRev += 1 })
   }
+
+  private getPlacementRatchet = () => ({
+    neededLevelCount: 0,
+    largestSliceHeight: this.largestSliceHeight,
+  })
 
   componentDidMount(): void {
     this._isUnmounting = false

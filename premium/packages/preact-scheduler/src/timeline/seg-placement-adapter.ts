@@ -2,16 +2,13 @@ import {
   type CoordSpan,
   type DateEnv,
   type EventRangeProps,
-  type Placement,
+  type GetRatchet,
   type Slice,
+  type SliceHeightMap,
   type SourceSeg,
-  areSegThicknessesSettled,
-  calculateTimelineContentHeight,
+  buildLevelLimitedLayout,
   getEventKey,
-  limitTimelineLayoutByMaxLevel,
-  planDomCandidatesByMaxLevel,
-  positionSegs,
-  positionTimelineMoreLinks,
+  getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
 import { type TimelineDateProfile } from './timeline-date-profile'
@@ -19,29 +16,28 @@ import { computeSegHorizontals } from './timeline-positioning'
 
 export type TimelineEventSeg = TimelineRange & EventRangeProps
 
-/** Source-level decision made before event wrappers have measured. */
+/** Source-level projection data kept stable while measurements reflow. */
 export interface TimelineSegPlacementPlan {
-  /** Whether every input seg survived *horizontal* projection and clipping. */
+  /** Whether every input seg survived horizontal projection and clipping. */
   allSegsProjected: boolean
-  /** Admitted sources in resolved event order for measured placement. */
-  mountedSegs: SourceSeg<TimelineEventSeg>[]
+  /** Projected sources in resolved event order. */
+  sourceSegs: SourceSeg<TimelineEventSeg>[]
   /** The same sources in temporal-start then resolved-order DOM order. */
   domOrderedSegs: SourceSeg<TimelineEventSeg>[]
-  /** Whole sources rejected before mounting and retained for final links. */
-  unmountedSlices: Slice<TimelineEventSeg>[]
   maxLevels: number
   orderStrict: boolean
 }
 
-/** One permanent event node, including a measured-hidden donor. */
-export interface TimelineSegDomItem {
+/** One visible event node in Timeline's time-axis DOM order. */
+export interface TimelineSegDomItem<HeightRef> {
   key: string
   seg: TimelineEventSeg
   horizontal: CoordSpan
-  top: number | null
+  top: number
+  heightRef: HeightRef
 }
 
-/** Production-facing data for one final Timeline more-link wrapper. */
+/** Production-facing data for one kernel hidden-group more-link wrapper. */
 export interface TimelineSegMoreLink {
   key: string
   start: number
@@ -50,17 +46,17 @@ export interface TimelineSegMoreLink {
   segs: TimelineEventSeg[]
 }
 
-/** Measured drawing data for one expanding Timeline lane. */
-export interface TimelineSegPlacementResult {
-  eventDomItems: TimelineSegDomItem[]
+/** Immediately renderable drawing data for one expanding Timeline lane. */
+export interface TimelineSegPlacementResult<HeightRef> {
+  eventDomItems: TimelineSegDomItem<HeightRef>[]
   moreLinks: TimelineSegMoreLink[]
   contentHeight: number
-  /** False while any admitted event wrapper still lacks a measurement. */
+  /** False while any visible event wrapper still lacks an exact measurement. */
   allHeightsSettled: boolean
 }
 
 /**
- * Projects sorted production Timeline segs and decides which wrappers mount.
+ * Projects sorted production Timeline segs without changing their coordinates.
  *
  * Production's coordinate functions remain authoritative for civil dates,
  * hidden dates, exact timed instants, DST, unequal slots, minimum width, and
@@ -77,8 +73,6 @@ export function buildTimelineSegPlacementPlan(
   clipStart?: number,
   clipEnd?: number,
 ): TimelineSegPlacementPlan {
-  const orderStrict = eventOrderStrict ?? false
-  const maxLevels = eventMaxStack ?? Infinity
   const sourceSegs = buildTimelineSegSources(
     segs,
     eventMinWidth,
@@ -88,26 +82,16 @@ export function buildTimelineSegPlacementPlan(
     clipStart,
     clipEnd,
   )
-  const candidatePlan = planDomCandidatesByMaxLevel(
-    sourceSegs,
-    maxLevels,
-    {
-      orderStrict,
-      eventSlicing: false,
-      maxSlices: 1,
-    },
-  )
 
   return {
     allSegsProjected: sourceSegs.length === segs.length,
-    mountedSegs: candidatePlan.mountedSegs,
-    domOrderedSegs: [...candidatePlan.mountedSegs].sort((a, b) =>
+    sourceSegs,
+    domOrderedSegs: [...sourceSegs].sort((a, b) =>
       computeTimelineSegStart(a.meta) - computeTimelineSegStart(b.meta) ||
       a.orderIndex - b.orderIndex,
     ),
-    unmountedSlices: candidatePlan.hiddenSlices,
-    maxLevels,
-    orderStrict,
+    maxLevels: eventMaxStack ?? Infinity,
+    orderStrict: eventOrderStrict ?? false,
   }
 }
 
@@ -157,8 +141,10 @@ export function buildTimelineSegSources(
     )
 
     if (horizontal) {
+      const key = getEventKey(seg)
       sourceSegs.push({
-        key: getEventKey(seg),
+        key,
+        eventKey: key,
         start: horizontal.start,
         end: horizontal.end,
         isStart: seg.isStart,
@@ -173,80 +159,127 @@ export function buildTimelineSegSources(
 }
 
 /**
- * Repositions every admitted source from current wrapper heights.
- *
- * Candidate-plan rejects are merged into measured hides before final hidden
- * grouping. More-link heights affect only `contentHeight`; changing one never
- * feeds back into event placement or link skyline coordinates.
+ * Builds Timeline's immediate shared-kernel layout from exact and provisional
+ * event heights. Link heights affect only content height, never placement.
  */
-export function buildTimelineSegPlacements(
+export function buildTimelineSegPlacements<HeightRef>(
   plan: TimelineSegPlacementPlan,
-  segHeights: ReadonlyMap<string, number>,
+  sliceHeightMap: SliceHeightMap<HeightRef>,
   moreLinkHeights: ReadonlyMap<string, number>,
-): TimelineSegPlacementResult {
-  const allHeightsSettled = areSegThicknessesSettled(plan.mountedSegs, segHeights)
-
-  if (!allHeightsSettled) {
-    return {
-      eventDomItems: buildEventDomItems(plan.domOrderedSegs, new Map()),
-      moreLinks: [],
-      contentHeight: 0,
-      allHeightsSettled: false,
-    }
-  }
-
-  const unrestricted = positionSegs(
-    plan.mountedSegs,
-    segHeights,
-    plan.orderStrict,
+  getRatchet: GetRatchet,
+): TimelineSegPlacementResult<HeightRef> {
+  const ratchet = getRatchet()
+  const provisionalSliceHeight = ratchet.largestSliceHeight ?? 20
+  const layout = buildLevelLimitedLayout(
+    { segs: plan.sourceSegs },
+    {
+      eventOrderStrict: plan.orderStrict,
+      eventSlicing: false,
+      maxLevels: plan.maxLevels,
+      moreLinkLevelTax: 0,
+    },
+    sliceHeightMap,
+    () => ratchet,
   )
-  const limited = limitTimelineLayoutByMaxLevel(
-    unrestricted,
-    plan.maxLevels,
-    plan.unmountedSlices,
-    { orderStrict: plan.orderStrict },
+  const visibleSlices = layout.sliceLevels.flat()
+  const visibleByKey = new Map(
+    visibleSlices.map((slice) => [slice.sourceSeg.key, slice]),
   )
-  const moreLinkPlacements = positionTimelineMoreLinks(
-    limited.moreLinkGroups,
-    limited.levels,
-  )
-  const visibleByKey = new Map<string, Placement<TimelineEventSeg>>()
-  for (const placement of limited.visiblePlacements) {
-    visibleByKey.set(placement.sourceSeg.key, placement)
-  }
+  const eventDomItems = plan.domOrderedSegs.flatMap((sourceSeg) => {
+    const slice = visibleByKey.get(sourceSeg.key)
+    if (!slice) return []
 
-  return {
-    eventDomItems: buildEventDomItems(plan.domOrderedSegs, visibleByKey),
-    moreLinks: moreLinkPlacements.map((moreLink) => ({
-      key: moreLink.key,
-      start: moreLink.start,
-      end: moreLink.end,
-      top: moreLink.levelCoord,
-      segs: moreLink.hiddenSlices.map((slice) => slice.sourceSeg.meta),
-    })),
-    contentHeight: calculateTimelineContentHeight(
-      limited.visiblePlacements,
-      moreLinkPlacements,
-      moreLinkHeights,
-    ),
-    allHeightsSettled: true,
-  }
-}
-
-function buildEventDomItems(
-  domOrderedSegs: readonly SourceSeg<TimelineEventSeg>[],
-  visibleByKey: ReadonlyMap<string, Placement<TimelineEventSeg>>,
-): TimelineSegDomItem[] {
-  return domOrderedSegs.map((sourceSeg) => {
-    const placement = visibleByKey.get(sourceSeg.key)
-    return {
+    return [{
       key: sourceSeg.key,
       seg: sourceSeg.meta,
       horizontal: {
         start: sourceSeg.start,
         size: sourceSeg.end - sourceSeg.start,
       },
-      top: placement?.levelCoord ?? null,
-    }
+      top: layout.sliceCoords.get(getSliceKey(slice))!,
+      heightRef: sliceHeightMap.createRef(sourceSeg.key),
+    }]
   })
+  const moreLinks = layout.hiddenGroups.map((group) => ({
+    key: group.key,
+    start: group.start,
+    end: group.end,
+    top: computeTimelineGroupTop(
+      group,
+      layout.sliceLevels,
+      layout.sliceCoords,
+      sliceHeightMap,
+      provisionalSliceHeight,
+    ),
+    segs: group.hiddenSlices.map((slice) => slice.sourceSeg.meta),
+  }))
+
+  return {
+    eventDomItems,
+    moreLinks,
+    contentHeight: calculateTimelineContentHeight(
+      visibleSlices,
+      layout.sliceCoords,
+      sliceHeightMap,
+      provisionalSliceHeight,
+      moreLinks,
+      moreLinkHeights,
+    ),
+    allHeightsSettled: visibleSlices.every((slice) =>
+      sliceHeightMap.get(getSliceKey(slice)) !== undefined,
+    ),
+  }
+}
+
+/** Positions one tax-free link below the visible skyline across its group. */
+function computeTimelineGroupTop<HeightRef>(
+  group: { start: number; end: number },
+  sliceLevels: readonly (readonly Slice<TimelineEventSeg>[])[],
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeightMap: SliceHeightMap<HeightRef>,
+  provisionalSliceHeight: number,
+): number {
+  let top = 0
+
+  for (const slice of sliceLevels.flat()) {
+    if (slice.start < group.end && group.start < slice.end) {
+      const key = getSliceKey(slice)
+      top = Math.max(
+        top,
+        sliceCoords.get(key)! +
+          (sliceHeightMap.get(key) ?? provisionalSliceHeight),
+      )
+    }
+  }
+
+  return top
+}
+
+/** Visible bottoms plus each link's independently measured occupied space. */
+function calculateTimelineContentHeight<HeightRef>(
+  visibleSlices: readonly Slice<TimelineEventSeg>[],
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeightMap: SliceHeightMap<HeightRef>,
+  provisionalSliceHeight: number,
+  moreLinks: readonly TimelineSegMoreLink[],
+  moreLinkHeights: ReadonlyMap<string, number>,
+): number {
+  let contentHeight = 0
+
+  for (const slice of visibleSlices) {
+    const key = getSliceKey(slice)
+    contentHeight = Math.max(
+      contentHeight,
+      sliceCoords.get(key)! +
+        (sliceHeightMap.get(key) ?? provisionalSliceHeight),
+    )
+  }
+  for (const moreLink of moreLinks) {
+    contentHeight = Math.max(
+      contentHeight,
+      moreLink.top + (moreLinkHeights.get(moreLink.key) ?? 0),
+    )
+  }
+
+  return contentHeight
 }

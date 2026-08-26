@@ -98,18 +98,24 @@ export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/da
 
 // Shared seg-placement engine. Only what premium Timeline consumes is exposed.
 export type {
-  SourceSeg,
-  Slice,
-  Placement,
   HiddenSliceGroup,
   DomCandidatePlan,
 } from './seg-placement/layout'
 export {
-  areSegThicknessesSettled,
-  positionSegs,
-  planDomCandidatesByMaxLevel,
   groupHiddenSlices,
 } from './seg-placement/layout'
+export type {
+  GetRatchet,
+  Slice,
+  SliceHeightMap,
+  SliceHeightRef,
+  SourceSeg,
+} from './seg-placement/kernel'
+export {
+  SliceHeightMapStore,
+  buildLevelLimitedLayout,
+  getSliceKey,
+} from './seg-placement/kernel'
 export type {
   PrintEventBand,
   PrintMoreLinkBand,
@@ -119,12 +125,6 @@ export {
   planPrintDomCandidates,
   buildPrintMoreLinkBand,
 } from './seg-placement/print'
-export {
-  limitTimelineLayoutByMaxLevel,
-  positionTimelineMoreLinks,
-  calculateTimelineContentHeight,
-} from './seg-placement/timeline'
-
 export type { PointerDragEvent } from './interactions/pointer'
 export type { Hit } from './interactions/hit'
 export { ElementDragging } from './interactions/ElementDragging'
