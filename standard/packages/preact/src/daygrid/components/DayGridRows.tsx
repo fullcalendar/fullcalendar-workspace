@@ -104,7 +104,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
     return (
       <div
-        role='rowgroup'
+        role="rowgroup"
         className={joinClassNames(
           props.className,
           // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
@@ -117,7 +117,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
         {cellRows.map((cells, row) => (
           <DayGridRow
             key={firstCellKey + ':' + cells[0].key}
-            role='row'
+            role="row"
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}
@@ -148,6 +148,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             colWidth={props.colWidth}
             basis={rowBasis}
             maxDomLevels={this.placementOwnerState.maxDomLevels}
+            largestSliceHeight={
+              this.placementOwnerState.largestSliceHeight ?? undefined
+            }
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -221,7 +224,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       elWidth,
       props.colWidth,
       colCount,
-      isRtl
+      isRtl,
     )
     const { row, top, bottom } = computeRowFromPosition(
       positionTop,

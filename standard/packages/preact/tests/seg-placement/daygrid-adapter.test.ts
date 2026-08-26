@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { createWholeSlice } from '../../src/seg-placement/layout'
 import {
   type DayGridEventSeg,
+  type DayGridLevelPlacementColumn,
   type DayGridSegPlacementColumn,
+  buildDayGridKernelSources,
+  buildDayGridLevelPlacements,
   buildDayGridPopoverSegs,
   buildDayGridSegPlacementPlan,
   buildDayGridSegPlacements,
@@ -43,6 +46,21 @@ describe('DayGrid production placement adapter', () => {
     ])
     expect(sources[0].meta).toBe(first)
     expect(sources[1].meta).toBe(second)
+  })
+
+  it('builds kernel sources with separate whole-part and event keys', () => {
+    const sources = buildDayGridKernelSources([
+      makeSeg('event', 2, 4, { isStart: false }),
+    ])
+
+    expect(sources[0]).toMatchObject({
+      key: 'event:2',
+      eventKey: 'event',
+      start: 2,
+      end: 4,
+      isStart: false,
+      orderIndex: 0,
+    })
   })
 
   it('collapses provisional slices back to complete mounted sources', () => {
@@ -168,11 +186,13 @@ describe('DayGridRows placement owner state', () => {
 
     expect(initial).toEqual({
       smallestEventHeight: null,
+      largestSliceHeight: null,
       largestEventAreaHeight: null,
       maxDomLevels: 8,
     })
     expect(afterTallEvent).toMatchObject({
       smallestEventHeight: 30,
+      largestSliceHeight: 30,
       maxDomLevels: 8,
     })
     expect(afterTallArea).toMatchObject({
@@ -181,10 +201,15 @@ describe('DayGridRows placement owner state', () => {
     })
     expect(afterShortEvent).toMatchObject({
       smallestEventHeight: 10,
+      largestSliceHeight: 30,
       largestEventAreaHeight: 220,
       maxDomLevels: 22,
     })
-    expect(observeDayGridEventHeight(afterShortEvent, 40)).toBe(afterShortEvent)
+    expect(observeDayGridEventHeight(afterShortEvent, 40)).toMatchObject({
+      smallestEventHeight: 10,
+      largestSliceHeight: 40,
+      maxDomLevels: 22,
+    })
     expect(observeDayGridEventAreaHeight(afterShortEvent, 100)).toBe(afterShortEvent)
   })
 
@@ -196,6 +221,7 @@ describe('DayGridRows placement owner state', () => {
     // the measured pass still decides visibility from real pixels.
     expect(observeDayGridEventHeight(measured, 0.5)).toMatchObject({
       smallestEventHeight: 0.5,
+      largestSliceHeight: 0.5,
       maxDomLevels: 200,
     })
 
@@ -277,6 +303,88 @@ describe('DayGrid screen mode routing', () => {
       mode: 'auto',
       eventAreaHeight: undefined,
     })).toMatchObject({ maxLevels: undefined, levelCoordLimit: undefined })
+  })
+})
+
+describe('DayGrid kernel level placement', () => {
+  it('renders unlimited stacks immediately with exact and provisional coordinates', () => {
+    const columns = layoutLevelRow([
+      makeSeg('first', 0, 1),
+      makeSeg('second', 0, 1),
+    ], 1, undefined, undefined, {
+      heights: { 'first:0': 12 },
+      largestSliceHeight: 25,
+    })
+
+    expect(levelItemTops(columns, 0)).toEqual({
+      'first:0': 0,
+      'second:0': 12,
+    })
+    expect(columns[0].renderItems.map((item) => item.heightRef)).toEqual([
+      'ref:first:0',
+      'ref:second:0',
+    ])
+    expect(columns[0].contentHeight).toBe(37)
+    expect(columns[0].hiddenSegs).toEqual([])
+  })
+
+  it('mounts partial slices with their own keys, refs, and planning heights', () => {
+    const columns = layoutLevelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, 1, undefined, {
+      heights: {
+        'wide:0:slice': 12,
+        'blocker:1': 18,
+      },
+      largestSliceHeight: 25,
+    })
+
+    expect(levelItemTops(columns, 0)).toEqual({ 'wide:0:slice': 0 })
+    expect(levelItemTops(columns, 1)).toEqual({ 'blocker:1': 0 })
+    expect(levelItemTops(columns, 2)).toEqual({ 'wide:2:slice': 0 })
+    expect(columns[0].renderItems[0].heightRef).toBe('ref:wide:0:slice')
+    expect(columns[2].renderItems[0].heightRef).toBe('ref:wide:2:slice')
+    expect(columns.map((column) => column.contentHeight)).toEqual([12, 18, 25])
+  })
+
+  it('projects hidden glob slices to ordered, real-boundary cell segs', () => {
+    const columns = layoutLevelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+      makeSeg('later', 1, 2),
+    ], 3, 1)
+
+    expect(columns.map((column) => segIds(column.hiddenSegs))).toEqual([
+      [],
+      ['wide', 'later'],
+      [],
+    ])
+    expect(segIds(columns[1].segs)).toEqual(['blocker', 'wide', 'later'])
+    expect(columns[1].hiddenSegs[0]).toMatchObject({
+      start: 1,
+      end: 2,
+      isStart: false,
+      isEnd: false,
+    })
+  })
+
+  it('charges the more-link occupant only in numeric rows mode', () => {
+    const stack = [
+      makeSeg('first', 0, 1),
+      makeSeg('second', 0, 1),
+      makeSeg('third', 0, 1),
+    ]
+    const eventsColumns = layoutLevelRow(stack, 1, 2)
+    const rowsColumns = layoutLevelRow(stack, 1, undefined, 2)
+
+    expect(Object.keys(levelItemTops(eventsColumns, 0))).toEqual([
+      'first:0',
+      'second:0',
+    ])
+    expect(Object.keys(levelItemTops(rowsColumns, 0))).toEqual(['first:0'])
+    expect(segIds(rowsColumns[0].hiddenSegs)).toEqual(['second', 'third'])
+    expect(rowsColumns[0].contentHeight).toBe(EVENT_HEIGHT)
   })
 })
 
@@ -487,6 +595,38 @@ function layoutRow(
   )
 }
 
+function layoutLevelRow(
+  eventOrderedSegs: DayGridEventSeg[],
+  columnCount: number,
+  dayMaxEvents?: number,
+  dayMaxEventRows?: number,
+  config: {
+    orderStrict?: boolean,
+    eventSlicing?: boolean,
+    heights?: Record<string, number>,
+    largestSliceHeight?: number,
+  } = {},
+): DayGridLevelPlacementColumn<string>[] {
+  return buildDayGridLevelPlacements(
+    eventOrderedSegs,
+    {
+      dayMaxEvents,
+      dayMaxEventRows,
+      orderStrict: config.orderStrict ?? false,
+      eventSlicing: config.eventSlicing ?? true,
+      columnCount,
+    },
+    {
+      get: (key) => config.heights?.[key],
+      createRef: (key) => `ref:${key}`,
+    },
+    () => ({
+      neededLevelCount: Infinity,
+      largestSliceHeight: config.largestSliceHeight ?? EVENT_HEIGHT,
+    }),
+  ).columns
+}
+
 /** One column's event nodes as key-to-top, where undefined means inert. */
 function itemTops(
   columns: DayGridSegPlacementColumn[],
@@ -494,6 +634,15 @@ function itemTops(
 ): Record<string, number | undefined> {
   return Object.fromEntries(
     columns[column].domItems.map((item) => [item.key, item.top]),
+  )
+}
+
+function levelItemTops(
+  columns: DayGridLevelPlacementColumn<string>[],
+  column: number,
+): Record<string, number | undefined> {
+  return Object.fromEntries(
+    columns[column].renderItems.map((item) => [item.key, item.style.top]),
   )
 }
 

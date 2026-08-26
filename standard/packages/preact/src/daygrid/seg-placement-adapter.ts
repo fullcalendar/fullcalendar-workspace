@@ -1,8 +1,8 @@
 import {
   type Placement,
-  type Slice,
+  type Slice as LegacySlice,
   type SliceOptions,
-  type SourceSeg,
+  type SourceSeg as LegacySourceSeg,
   type SegThicknessMap,
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   areSegThicknessesSettled,
@@ -18,6 +18,16 @@ import {
   limitDayGridLayout,
 } from '../seg-placement/daygrid'
 import {
+  type GetRatchet,
+  type HiddenSliceGroup,
+  type SliceHeightMap,
+  type SliceRenderItem,
+  type SourceSeg as KernelSourceSeg,
+  buildLevelLimitedLayout,
+  getSliceKey,
+} from '../seg-placement/kernel'
+import { getEventKey } from '../component-util/event-rendering'
+import {
   type DayRowEventRange,
   type DayRowEventRangePart,
   getEventPartKey,
@@ -32,19 +42,36 @@ export const DAYGRID_SLICE_OPTIONS = {
 
 export interface DayGridSegPlacementPlan {
   /** Every source in resolved event order, including sources that will not mount. */
-  sourceSegs: SourceSeg<DayGridEventSeg>[]
+  sourceSegs: LegacySourceSeg<DayGridEventSeg>[]
   /** Complete source wrappers admitted for measurement. */
-  mountedSegs: SourceSeg<DayGridEventSeg>[]
+  mountedSegs: LegacySourceSeg<DayGridEventSeg>[]
   /** One whole slice for every source rejected before measurement. */
-  unmountedSlices: Slice<DayGridEventSeg>[]
+  unmountedSlices: LegacySlice<DayGridEventSeg>[]
   maxLevels: number
   orderStrict: boolean
   eventSlicing: boolean
 }
 
 export interface DayGridPopoverPlan {
-  sourceSegs: SourceSeg<DayGridEventSeg>[]
-  unmountedSlices: Slice<DayGridEventSeg>[]
+  sourceSegs: LegacySourceSeg<DayGridEventSeg>[]
+  unmountedSlices: LegacySlice<DayGridEventSeg>[]
+}
+
+export interface DayGridLevelPlacementColumn<HeightRef> {
+  /** Exact kernel slices whose DOM wrappers start in this column. */
+  renderItems: SliceRenderItem<DayGridEventSeg, HeightRef>[]
+  /** Deepest visible slice bottom crossing this column. */
+  contentHeight: number
+  /** Every source crossing this column, cut for more-link APIs. */
+  segs: DayRowEventRangePart[]
+  /** Hidden source membership projected from kernel glob groups. */
+  hiddenSegs: DayRowEventRangePart[]
+}
+
+export interface DayGridLevelPlacementLayout<HeightRef> {
+  columns: DayGridLevelPlacementColumn<HeightRef>[]
+  /** Positioned slice tops keyed by DayGrid's event-part convention. */
+  sliceCoords: ReadonlyMap<string, number>
 }
 
 /**
@@ -94,12 +121,14 @@ export type DayGridPlacementMode =
   | 'auto'
 
 /*
-These extrema only widen the cross-row DOM candidate frontier. Keeping them
+These owner-lifetime extrema only widen planning assumptions. Keeping them
 monotone avoids remount churn; stale values after a style change can mount
-extra donors, but each row's current measurements still decide visibility.
+extra donors or conservatively spread provisional coordinates.
 */
 export interface DayGridPlacementOwnerState {
   smallestEventHeight: number | null
+  /** Largest whole-or-partial slice height observed during this owner lifetime. */
+  largestSliceHeight: number | null
   /**
    * Largest observed height of the space foreground events actually compete
    * for, which excludes the day-number header above it. A row's complete
@@ -114,7 +143,7 @@ const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
 /** Converts sorted production ranges into the shared source vocabulary. */
 export function buildDayGridSegSources(
   eventOrderedSegs: readonly DayGridEventSeg[],
-): SourceSeg<DayGridEventSeg>[] {
+): LegacySourceSeg<DayGridEventSeg>[] {
   return eventOrderedSegs.map((seg, orderIndex) => ({
     key: getEventPartKey(seg),
     start: seg.start,
@@ -124,6 +153,140 @@ export function buildDayGridSegSources(
     meta: seg,
     orderIndex,
   }))
+}
+
+/** Converts sorted production ranges into the kernel's source vocabulary. */
+export function buildDayGridKernelSources(
+  eventOrderedSegs: readonly DayGridEventSeg[],
+): KernelSourceSeg<DayGridEventSeg>[] {
+  return eventOrderedSegs.map((seg, orderIndex) => ({
+    key: getEventPartKey(seg),
+    eventKey: getEventKey(seg),
+    start: seg.start,
+    end: seg.end,
+    isStart: seg.isStart,
+    isEnd: seg.isEnd,
+    meta: seg,
+    orderIndex,
+  }))
+}
+
+export interface DayGridLevelPlacementInputs {
+  dayMaxEvents: boolean | number | undefined
+  dayMaxEventRows: boolean | number | undefined
+  orderStrict: boolean
+  eventSlicing: boolean
+  columnCount: number
+}
+
+/**
+ * Builds an immediately renderable kernel layout for unlimited and numeric
+ * DayGrid modes. Boolean-auto deliberately remains on the measured adapter.
+ */
+export function buildDayGridLevelPlacements<HeightRef>(
+  eventOrderedSegs: readonly DayGridEventSeg[],
+  input: DayGridLevelPlacementInputs,
+  sliceHeightMap: SliceHeightMap<HeightRef>,
+  getRatchet: GetRatchet,
+): DayGridLevelPlacementLayout<HeightRef> {
+  const mode = resolveDayGridPlacementMode(
+    input.dayMaxEvents,
+    input.dayMaxEventRows,
+  )
+
+  if (mode === 'auto') {
+    throw new Error('Boolean-auto DayGrid placement is not a level-limited route')
+  }
+
+  const sourceSegs = buildDayGridKernelSources(eventOrderedSegs)
+  const ratchet = getRatchet()
+  const layout = buildLevelLimitedLayout(
+    {
+      segs: sourceSegs,
+      cells: Array.from({ length: input.columnCount }),
+    },
+    {
+      eventOrderStrict: input.orderStrict,
+      eventSlicing: input.eventSlicing,
+      maxLevels: computeDayGridDomCandidateMaxLevels(
+        input.dayMaxEvents,
+        input.dayMaxEventRows,
+        Infinity,
+      ),
+      moreLinkLevelTax: computeDayGridMoreLinkLevelTax(mode),
+    },
+    sliceHeightMap,
+    () => ratchet,
+  )
+  const provisionalSliceHeight = ratchet.largestSliceHeight ??
+    DEFAULT_UNMEASURED_EVENT_THICKNESS
+  const columns = Array.from(
+    { length: input.columnCount },
+    (_, column): DayGridLevelPlacementColumn<HeightRef> => ({
+      renderItems: layout.renderItems[column],
+      contentHeight: 0,
+      ...buildDayGridLevelPopoverSegs(
+        sourceSegs,
+        layout.hiddenGroups,
+        column,
+        input.columnCount,
+      ),
+    }),
+  )
+
+  for (const level of layout.sliceLevels) {
+    for (const slice of level) {
+      const levelCoord = layout.sliceCoords.get(getSliceKey(slice))!
+      const sliceBottom = levelCoord + (
+        sliceHeightMap.get(getSliceKey(slice)) ?? provisionalSliceHeight
+      )
+      const range = getLateralCellRange(slice, input.columnCount)
+
+      for (let column = range.start; column < range.end; column += 1) {
+        columns[column].contentHeight = Math.max(
+          columns[column].contentHeight,
+          sliceBottom,
+        )
+      }
+    }
+  }
+
+  return {
+    columns,
+    sliceCoords: layout.sliceCoords,
+  }
+}
+
+/** Projects kernel glob groups into one cell's ordered more-link inputs. */
+export function buildDayGridLevelPopoverSegs(
+  sourceSegs: readonly KernelSourceSeg<DayGridEventSeg>[],
+  hiddenGroups: readonly HiddenSliceGroup<DayGridEventSeg>[],
+  column: number,
+  columnCount: number,
+): {
+  segs: DayRowEventRangePart[]
+  hiddenSegs: DayRowEventRangePart[]
+} {
+  const hiddenKeys = new Set<string>()
+
+  for (const group of hiddenGroups) {
+    for (const slice of group.hiddenSlices) {
+      if (intersectsColumn(slice, column, columnCount)) {
+        hiddenKeys.add(slice.sourceSeg.key)
+      }
+    }
+  }
+
+  const columnSources = sourceSegs.filter((source) =>
+    intersectsColumn(source, column, columnCount),
+  )
+
+  return {
+    segs: columnSources.map((source) => cutSegToColumn(source.meta, column)),
+    hiddenSegs: columnSources
+      .filter((source) => hiddenKeys.has(source.key))
+      .map((source) => cutSegToColumn(source.meta, column)),
+  }
 }
 
 /**
@@ -206,7 +369,7 @@ export function buildDayGridSegPlacements(
  */
 export function buildDayGridPopoverSegs(
   plan: DayGridPopoverPlan,
-  measuredHiddenSlices: readonly Slice<DayGridEventSeg>[],
+  measuredHiddenSlices: readonly LegacySlice<DayGridEventSeg>[],
   column: number,
   columnCount: number,
 ): {
@@ -258,6 +421,7 @@ function cutSegToColumn(
 export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
   return {
     smallestEventHeight: null,
+    largestSliceHeight: null,
     largestEventAreaHeight: null,
     maxDomLevels: estimateLevelCapacity(
       DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
@@ -267,8 +431,8 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
 }
 
 /**
- * Records a positive event-wrapper height, returning the same object for a
- * non-extremum.
+ * Records a positive whole-or-partial slice height, returning the same object
+ * when neither owner extremum changes.
  *
  * Any positive report is admitted, including an implausibly small one from a
  * wrapper measured mid font or stylesheet load. No floor is applied, for two
@@ -286,16 +450,24 @@ export function observeDayGridEventHeight(
   state: DayGridPlacementOwnerState,
   height: number,
 ): DayGridPlacementOwnerState {
-  if (!isPositiveFinite(height) || (
-    state.smallestEventHeight != null &&
-    height >= state.smallestEventHeight
-  )) {
+  if (!isPositiveFinite(height)) {
     return state
   }
 
-  return updateDayGridPlacementOwnerState(state, {
-    smallestEventHeight: height,
-  })
+  const smallestEventHeight = state.smallestEventHeight == null
+    ? height
+    : Math.min(state.smallestEventHeight, height)
+  const largestSliceHeight = state.largestSliceHeight == null
+    ? height
+    : Math.max(state.largestSliceHeight, height)
+
+  return smallestEventHeight === state.smallestEventHeight &&
+    largestSliceHeight === state.largestSliceHeight
+    ? state
+    : updateDayGridPlacementOwnerState(state, {
+      smallestEventHeight,
+      largestSliceHeight,
+    })
 }
 
 /** Records a positive event-area height, returning the same object for a non-extremum. */
@@ -529,7 +701,7 @@ function updateDayGridPlacementOwnerState(
   state: DayGridPlacementOwnerState,
   extrema: Partial<Pick<
     DayGridPlacementOwnerState,
-    'smallestEventHeight' | 'largestEventAreaHeight'
+    'smallestEventHeight' | 'largestSliceHeight' | 'largestEventAreaHeight'
   >>,
 ): DayGridPlacementOwnerState {
   const next = { ...state, ...extrema }
