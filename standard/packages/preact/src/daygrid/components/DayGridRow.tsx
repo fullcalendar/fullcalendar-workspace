@@ -29,12 +29,9 @@ import {
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
-  type DayGridPlacementOwnerState,
+  DEFAULT_NEEDED_LEVEL_COUNT,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
-  createDayGridPlacementOwnerState,
-  observeDayGridCanvasHeight,
-  observeDayGridSliceHeight,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import {
@@ -74,7 +71,12 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
-  getPlacementOwnerState?: () => DayGridPlacementOwnerState
+  // cross-row placement-owner extrema. A standalone row (the all-day lane) is
+  // always level-limited, so it self-ratchets largestSliceHeight and the
+  // pixel-only extrema only ever arrive from a parent owner.
+  neededLevelCount?: number
+  smallestSliceHeight?: number
+  largestSliceHeight?: number
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -127,7 +129,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
   private isScreenLayoutSettled = false
   private needsEventAreaHeightReport = false
-  private fallbackPlacementOwnerState = createDayGridPlacementOwnerState()
+  private largestSliceHeight?: number // standalone (all-day lane) self-ratchet
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -165,7 +167,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
-      const ownerState = this.getPlacementOwnerState()
+      const largestSliceHeight = props.largestSliceHeight ?? this.largestSliceHeight
 
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements<Ref<number>>(
@@ -177,9 +179,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             canvasHeight: minMainHeight,
           },
           this.sliceHeightMap,
-          ownerState.neededLevelCount,
-          ownerState.smallestSliceHeight ?? undefined,
-          ownerState.largestSliceHeight ?? undefined,
+          props.neededLevelCount ?? DEFAULT_NEEDED_LEVEL_COUNT,
+          props.smallestSliceHeight,
+          largestSliceHeight,
         )
         : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
@@ -191,7 +193,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             columnCount: cells.length,
           },
           this.sliceHeightMap,
-          ownerState.largestSliceHeight ?? undefined,
+          largestSliceHeight,
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
@@ -577,17 +579,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     if (this.props.onSliceHeight) {
       this.props.onSliceHeight(height)
     } else {
-      this.fallbackPlacementOwnerState = observeDayGridSliceHeight(
-        this.fallbackPlacementOwnerState,
-        height,
-      )
+      this.largestSliceHeight = this.largestSliceHeight == null
+        ? height
+        : Math.max(this.largestSliceHeight, height)
     }
-  }
-
-  private getPlacementOwnerState(): DayGridPlacementOwnerState {
-    return this.props.getPlacementOwnerState
-      ? this.props.getPlacementOwnerState()
-      : this.fallbackPlacementOwnerState
   }
 
   componentDidMount() {
@@ -670,11 +665,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
    * Reports the height foreground events actually compete for, which is what
    * the cross-row owner ratchets. Reporting waits for a complete row snapshot
    * so partially populated measurement maps cannot inflate the monotone owner.
+   * Only the pixel route consumes this, so a standalone row has no listener.
    */
   private reportEventAreaHeight = () => {
-    if (this._isUnmounting || this.props.forPrint) return
-
     const { cells, onEventAreaHeight } = this.props
+    if (this._isUnmounting || this.props.forPrint || !onEventAreaHeight) return
+
     if (
       this.isScreenLayoutSettled &&
       cells.every((cell) =>
@@ -684,18 +680,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     ) {
       const [, minMainHeight] = this.computeFgDims()
       if (minMainHeight != null) {
-        if (onEventAreaHeight) {
-          onEventAreaHeight(minMainHeight)
-        } else {
-          const nextState = observeDayGridCanvasHeight(
-            this.fallbackPlacementOwnerState,
-            minMainHeight,
-          )
-          if (nextState !== this.fallbackPlacementOwnerState) {
-            this.fallbackPlacementOwnerState = nextState
-            this.forceUpdate()
-          }
-        }
+        onEventAreaHeight(minMainHeight)
       }
     }
   }

@@ -77,7 +77,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   })
 
   render() {
-    let { props, context, rowHeightRefMap } = this
+    let { props, context, rowHeightRefMap, placementOwnerState } = this
     let { options } = context
     let { cellRows } = props
     let rowCount = cellRows.length
@@ -147,7 +147,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // dimensions
             colWidth={props.colWidth}
             basis={rowBasis}
-            getPlacementOwnerState={this.getPlacementOwnerState}
+            neededLevelCount={placementOwnerState.neededLevelCount}
+            smallestSliceHeight={placementOwnerState.smallestSliceHeight ?? undefined}
+            largestSliceHeight={placementOwnerState.largestSliceHeight ?? undefined}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -179,8 +181,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   componentWillUnmount(): void {
     this._isUnmounting = true
   }
-
-  private getPlacementOwnerState = () => this.placementOwnerState
 
   private handleSliceHeight = (height: number) => {
     if (!this.props.forPrint) {

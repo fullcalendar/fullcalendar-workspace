@@ -70,6 +70,12 @@ export interface DayGridPlacementOwnerState {
 
 const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
 
+/** Initial DOM candidate frontier, before any measurement can widen it. */
+export const DEFAULT_NEEDED_LEVEL_COUNT = estimateLevelCapacity(
+  DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
+  DEFAULT_UNMEASURED_EVENT_THICKNESS,
+)
+
 /** Converts sorted production ranges into the shared source vocabulary. */
 export function buildDayGridSegSources(
   eventOrderedSegs: readonly DayGridEventSeg[],
@@ -259,10 +265,7 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
     smallestSliceHeight: null,
     largestSliceHeight: null,
     largestCanvasHeight: null,
-    neededLevelCount: estimateLevelCapacity(
-      DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
-      DEFAULT_UNMEASURED_EVENT_THICKNESS,
-    ),
+    neededLevelCount: DEFAULT_NEEDED_LEVEL_COUNT,
   }
 }
 
