@@ -22,10 +22,8 @@ export const DEFAULT_UNMEASURED_EVENT_THICKNESS = 20
 export const DEFAULT_UNMEASURED_MORE_LINK_THICKNESS = 20
 
 export interface SourceSeg<EventMeta = unknown> extends LateralSpan {
-  /** Stable whole-source key, equal to DayGrid's unsliced event-part key. */
+  /** Stable whole-source key. Partial-slice keys derive from it (getSliceKey). */
   key: string
-  /** Event-level key used to reproduce DayGrid's partial event-part keys. */
-  eventKey: string
   meta: EventMeta
   isStart: boolean
   isEnd: boolean
@@ -99,7 +97,7 @@ export interface SliceRenderItem<EventMeta = unknown, HeightRef = unknown> {
 
 export function getSliceKey<EventMeta>(slice: Slice<EventMeta>): string {
   if (!isPartialSlice(slice)) return slice.sourceSeg.key
-  return `${slice.sourceSeg.eventKey}:${slice.start}:slice`
+  return `${slice.sourceSeg.key}:${slice.start}:slice`
 }
 
 /** Builds whole-source logical levels without consulting any dimensions. */

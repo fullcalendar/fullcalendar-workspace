@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getEventPartKey } from '../../src/daygrid/TableSeg'
+import { getEventSliceKey } from '../../src/daygrid/TableSeg'
 import { RefMap } from '../../src/util/RefMap'
 import {
   type DayGridEventSeg,
@@ -24,7 +24,6 @@ describe('DayGrid production placement adapter', () => {
     expect(sources).toMatchObject([
       {
         key: 'first:1',
-        eventKey: 'first',
         start: 1,
         end: 3,
         isStart: true,
@@ -33,7 +32,6 @@ describe('DayGrid production placement adapter', () => {
       },
       {
         key: 'second:0',
-        eventKey: 'second',
         start: 0,
         end: 1,
         isStart: false,
@@ -166,17 +164,17 @@ describe('DayGrid kernel level placement', () => {
       makeSeg('wide', 0, 3),
     ], 3, 1, undefined, {
       heights: {
-        'wide:0:slice': 12,
+        'wide:0:0:slice': 12,
         'blocker:1': 18,
       },
       largestSliceHeight: 25,
     })
 
-    expect(levelItemTops(columns, 0)).toEqual({ 'wide:0:slice': 0 })
+    expect(levelItemTops(columns, 0)).toEqual({ 'wide:0:0:slice': 0 })
     expect(levelItemTops(columns, 1)).toEqual({ 'blocker:1': 0 })
-    expect(levelItemTops(columns, 2)).toEqual({ 'wide:2:slice': 0 })
-    expect(columns[0].renderItems[0].heightRef).toBe('ref:wide:0:slice')
-    expect(columns[2].renderItems[0].heightRef).toBe('ref:wide:2:slice')
+    expect(levelItemTops(columns, 2)).toEqual({ 'wide:0:2:slice': 0 })
+    expect(columns[0].renderItems[0].heightRef).toBe('ref:wide:0:0:slice')
+    expect(columns[2].renderItems[0].heightRef).toBe('ref:wide:0:2:slice')
     expect(columns.map((column) => column.contentHeight)).toEqual([12, 18, 25])
   })
 
@@ -258,12 +256,12 @@ describe('DayGrid kernel pixel placement', () => {
 
     expect(levelItemTops(provisional.columns, 0)).toEqual({
       'wide:0': undefined,
-      'wide:0:slice': 0,
+      'wide:0:0:slice': 0,
     })
     expect(levelItemTops(provisional.columns, 1)).toEqual({ 'blocker:1': 0 })
-    expect(levelItemTops(provisional.columns, 2)).toEqual({ 'wide:2:slice': 0 })
+    expect(levelItemTops(provisional.columns, 2)).toEqual({ 'wide:0:2:slice': 0 })
     expect(provisional.columns[0].renderItems.map((item) => item.heightRef))
-      .toEqual(['ref:wide:0', 'ref:wide:0:slice'])
+      .toEqual(['ref:wide:0', 'ref:wide:0:0:slice'])
     expect(provisional.isSettled).toBe(false)
 
     const settled = layoutPixelRow([
@@ -273,8 +271,8 @@ describe('DayGrid kernel pixel placement', () => {
       canvasHeight: 15,
       heights: {
         'blocker:1': 5,
-        'wide:0:slice': 6,
-        'wide:2:slice': 6,
+        'wide:0:0:slice': 6,
+        'wide:0:2:slice': 6,
       },
       smallestSliceHeight: 1,
       largestSliceHeight: 12,
@@ -374,7 +372,7 @@ function layoutPixelRow(
   } = {},
 ) {
   const heights = config.heights ?? Object.fromEntries(
-    eventOrderedSegs.map((seg) => [getEventPartKey(seg), EVENT_HEIGHT]),
+    eventOrderedSegs.map((seg) => [getEventSliceKey(seg), EVENT_HEIGHT]),
   )
   const measuredHeights = Object.values(heights)
 

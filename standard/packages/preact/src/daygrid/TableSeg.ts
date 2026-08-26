@@ -1,5 +1,5 @@
 import { DayGridRange } from './DayTableModel'
-import { EventRangeProps, getEventKey } from '../component-util/event-rendering'
+import { EventRangeProps, getEventSegKey } from '../component-util/event-rendering'
 import { SlicedCoordRange } from '../coord-range'
 import { EventSegUiInteractionState } from '../component/DateComponent'
 
@@ -9,21 +9,20 @@ export type DayRowRange = SlicedCoordRange
 
 export type DayRowEventRange = DayRowRange & EventRangeProps
 
-export type DayRowEventRangePart = DayRowEventRange & {
-  isSlice?: boolean
-}
+export type DayRowEventRangePart = DayRowEventRange
 
 /*
 The unconditional start index is essential source-seg identity: one event
 instance can produce multiple whole view-coordinate segs with different starts,
-especially in Resource DayGrid. A partial gets its own suffix because a
-permanent source wrapper and its supplemental slice cannot share RefMap refs.
-The end is deliberately excluded so narrowing or widening a slice preserves its
-DOM node and ResizeObserver; the existing pre-paint size flush corrects the
-temporarily stale height during that intermediate commit.
+especially in Resource DayGrid. The end is deliberately excluded so narrowing
+or widening a slice preserves its DOM node and ResizeObserver; the existing
+pre-paint size flush corrects the temporarily stale height during that
+intermediate commit. Partial-slice keys are kernel-internal: getSliceKey
+suffixes this whole-source key, so a permanent source wrapper and its
+supplemental slice never share RefMap refs.
 */
-export function getEventPartKey(seg: DayRowEventRangePart): string {
-  return getEventKey(seg) + ':' + seg.start + (seg.isSlice ? ':slice' : '')
+export function getEventSliceKey(seg: DayRowEventRangePart): string {
+  return getEventSegKey(seg) + ':' + seg.start
 }
 
 // DayGridRange utils (TODO: move)

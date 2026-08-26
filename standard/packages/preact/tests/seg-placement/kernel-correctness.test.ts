@@ -343,15 +343,15 @@ describe('pure positioning kernel', () => {
     auditCoverage([base, extra], levels, widened)
   })
 
-  it('derives exact DayGrid-compatible whole and partial keys', () => {
+  it('derives whole keys from the source and partial keys from the slice start', () => {
     const [source] = segs([['event', 2, 5]])
     const whole = convertSegsToWholeSlices([source])[0]
     const shifted = { ...whole, start: 3, isStart: false }
     const narrowed = { ...whole, end: 4, isEnd: false }
 
     expect(getSliceKey(whole)).toBe('event:2')
-    expect(getSliceKey(shifted)).toBe('event:3:slice')
-    expect(getSliceKey(narrowed)).toBe('event:2:slice')
+    expect(getSliceKey(shifted)).toBe('event:2:3:slice')
+    expect(getSliceKey(narrowed)).toBe('event:2:2:slice')
   })
 })
 
@@ -360,7 +360,6 @@ function segs(
 ): SourceSeg<TestMeta>[] {
   return specs.map(([id, start, end], orderIndex) => ({
     key: `${id}:${start}`,
-    eventKey: id,
     meta: { id },
     start,
     end,

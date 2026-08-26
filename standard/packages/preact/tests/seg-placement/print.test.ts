@@ -165,7 +165,6 @@ function seg(
 ): UnorderedSeg<TestEvent> {
   return {
     key: id,
-    eventKey: id,
     meta: { id },
     start,
     end,

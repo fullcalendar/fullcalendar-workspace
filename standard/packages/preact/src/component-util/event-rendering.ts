@@ -41,7 +41,7 @@ export interface EventRangeProps {
   eventRange: EventRenderRange
 }
 
-export function getEventKey(seg: EventRangeProps): string {
+export function getEventSegKey(seg: EventRangeProps): string {
   return seg.eventRange.instance.instanceId
 }
 

@@ -10,11 +10,10 @@ import {
   getLateralCellRange,
   getSliceKey,
 } from '../seg-placement/kernel'
-import { getEventKey } from '../component-util/event-rendering'
 import {
   type DayRowEventRange,
   type DayRowEventRangePart,
-  getEventPartKey,
+  getEventSliceKey,
 } from './TableSeg'
 
 export type DayGridEventSeg = DayRowEventRange
@@ -81,8 +80,7 @@ export function buildDayGridSegSources(
   eventOrderedSegs: readonly DayGridEventSeg[],
 ): SourceSeg<DayGridEventSeg>[] {
   return eventOrderedSegs.map((seg, orderIndex) => ({
-    key: getEventPartKey(seg),
-    eventKey: getEventKey(seg),
+    key: getEventSliceKey(seg),
     start: seg.start,
     end: seg.end,
     isStart: seg.isStart,

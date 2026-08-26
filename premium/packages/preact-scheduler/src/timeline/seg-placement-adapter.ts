@@ -7,7 +7,7 @@ import {
   type SliceHeightMap,
   type SourceSeg,
   buildLevelLimitedLayout,
-  getEventKey,
+  getEventSegKey,
   getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
@@ -141,10 +141,8 @@ export function buildTimelineSegSources(
     )
 
     if (horizontal) {
-      const key = getEventKey(seg)
       sourceSegs.push({
-        key,
-        eventKey: key,
+        key: getEventSegKey(seg),
         start: horizontal.start,
         end: horizontal.end,
         isStart: seg.isStart,

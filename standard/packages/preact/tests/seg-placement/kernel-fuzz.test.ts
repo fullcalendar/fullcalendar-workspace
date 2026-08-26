@@ -134,7 +134,6 @@ function buildScenario(seed: number): SourceSeg<TestMeta>[] {
     const id = `${seed}:${orderIndex}`
     return {
       key: `${id}:${start}`,
-      eventKey: id,
       meta: { id },
       start,
       end,

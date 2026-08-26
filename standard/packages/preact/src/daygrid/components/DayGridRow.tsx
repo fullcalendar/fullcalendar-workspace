@@ -17,7 +17,7 @@ import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
 import { type ReactElement, type Ref } from 'react'
-import { DayRowEventRangePart, getEventPartKey } from '../TableSeg'
+import { DayRowEventRangePart, getEventSliceKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { computeHorizontalsFromSeg } from './util'
@@ -341,7 +341,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const nodes: ReactElement[] = []
 
     for (const seg of this.getMirrorSegs()) {
-      const key = getEventPartKey(seg)
+      const key = getEventSliceKey(seg)
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
@@ -741,7 +741,6 @@ function buildLevelEventSeg(
     end: slice.end,
     isStart: slice.isStart,
     isEnd: slice.isEnd,
-    isSlice: true,
   }
 }
 

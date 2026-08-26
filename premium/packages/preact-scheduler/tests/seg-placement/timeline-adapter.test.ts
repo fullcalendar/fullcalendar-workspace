@@ -48,7 +48,6 @@ describe('Timeline production placement adapter', () => {
     expect(sources).toHaveLength(1)
     expect(sources[0]).toMatchObject({
       key: 'spanning',
-      eventKey: 'spanning',
       start: 0,
       end: 200,
       orderIndex: 0,
