@@ -1,6 +1,6 @@
 /**
- * TimeGrid dimensionless leveling and pressure-based expansion
- * ============================================================
+ * TimeGrid dimensionless leveling and collision-web expansion
+ * ===========================================================
  *
  * TimeGrid rotates the visual meaning of the shared kernel's level structure.
  * A seg's lateral `start`/`end` span runs down the visible time axis, while
@@ -8,9 +8,11 @@
  * in one level therefore have non-overlapping time spans.
  *
  * The kernel admits whole segs directly into dimensionless levels and rejects
- * anything beyond `maxLevels`. This module treats the retained levels as a
- * collision web and pressure-expands them across a normalized 0...1 range.
- * Hidden segs are grouped afterward for TimeGrid's tax-free more-link overlay.
+ * anything beyond `maxLevels`. This module projects the retained levels onto
+ * a normalized 0...1 range: each connected collision component gets equal
+ * base columns, and every placement widens through empty deeper columns until
+ * its first collider. Hidden segs are grouped afterward for TimeGrid's
+ * tax-free more-link overlay.
  */
 
 import {
@@ -28,7 +30,7 @@ interface TimeGridLayoutOptions {
   orderStrict: boolean
 }
 
-/** One visible source after its logical level is pressure-expanded. */
+/** One visible source with its normalized collision-web geometry. */
 interface TimeGridPlacement<S extends SourceSeg = SourceSeg> {
   sourceSeg: S
   start: number
@@ -47,21 +49,15 @@ interface TimeGridPlacement<S extends SourceSeg = SourceSeg> {
   forwardDepth: number
 }
 
-/** TimeGrid's existing more-link group projection over kernel hidden groups. */
-interface TimeGridMoreLinkGroup<S extends SourceSeg = SourceSeg>
-  extends HiddenSliceGroup<S> {
-  count: number
-}
-
 /** Complete reusable output needed to render one TimeGrid column. */
 interface TimeGridColumnLayout<S extends SourceSeg = SourceSeg> {
   /** Final visible placements in temporal-start/event-order. */
   domOrderedPlacements: TimeGridPlacement<S>[]
   /** Tax-free overlay links formed only after level admission has completed. */
-  moreLinkGroups: TimeGridMoreLinkGroup<S>[]
+  moreLinkGroups: HiddenSliceGroup<S>[]
 }
 
-/** Builds, limits, and pressure-expands one TimeGrid day/resource column. */
+/** Builds, limits, and expands one TimeGrid day/resource column. */
 export function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
   eventOrderedSegs: readonly S[],
   maxLevels: number,
@@ -76,12 +72,6 @@ export function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
   const moreLinkGroups = groupLaterallyIntersecting(
     convertSegsToWholeSlices(excludedSegs),
   )
-    .map((group) => ({
-      ...group,
-      count: new Set(
-        group.hiddenSlices.map((slice) => slice.sourceSeg.key),
-      ).size,
-    }))
     .sort((a, b) => a.start - b.start || a.end - b.end)
 
   return {
