@@ -54,11 +54,13 @@ describe('DayGridRows placement owner state', () => {
 
     expect(initial).toEqual({
       smallestSliceHeight: null,
+      largestSliceHeight: null,
       largestCanvasHeight: null,
       neededLevelCount: 8,
     })
     expect(afterTallEvent).toMatchObject({
       smallestSliceHeight: 30,
+      largestSliceHeight: 30,
       neededLevelCount: 8,
     })
     expect(afterTallArea).toMatchObject({
@@ -67,11 +69,13 @@ describe('DayGridRows placement owner state', () => {
     })
     expect(afterShortEvent).toMatchObject({
       smallestSliceHeight: 10,
+      largestSliceHeight: 30,
       largestCanvasHeight: 220,
       neededLevelCount: 22,
     })
     expect(observeDayGridSliceHeight(afterShortEvent, 40)).toMatchObject({
       smallestSliceHeight: 10,
+      largestSliceHeight: 40,
       neededLevelCount: 22,
     })
     expect(observeDayGridCanvasHeight(afterShortEvent, 100)).toBe(afterShortEvent)
@@ -91,15 +95,16 @@ describe('DayGridRows placement owner state', () => {
     expect(heights.current.get('slice')).toBe(0.5)
     expect(owner).toMatchObject({
       smallestSliceHeight: 0.5,
+      largestSliceHeight: 0.5,
       neededLevelCount: 200,
     })
 
-    const beforeTallReport = owner
     ref(30)
-    expect(owner).toBe(beforeTallReport)
+    expect(owner.largestSliceHeight).toBe(30)
     expect(heights.current.get('slice')).toBe(30)
     ref(null)
     expect(heights.current.has('slice')).toBe(false)
+    expect(owner.largestSliceHeight).toBe(30)
   })
 
   it('uses explicit numeric caps, the auto frontier, and no cap for unlimited rows', () => {
@@ -244,6 +249,25 @@ describe('DayGrid kernel pixel placement', () => {
     expect(layout.isSettled).toBe(false)
   })
 
+  it('defers partial donor planning until slice extrema have been observed', () => {
+    const layout = layoutPixelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, {
+      canvasHeight: 15,
+      heights: {
+        'blocker:1': 5,
+        'wide:0': 12,
+      },
+      hasObservedSliceHeightExtrema: false,
+    })
+
+    expect(layout.columns.flatMap((column) =>
+      column.renderItems.map((item) => item.key),
+    )).toEqual(['wide:0', 'blocker:1'])
+    expect(layout.isSettled).toBe(true)
+  })
+
   it('shows every mounted candidate before the event area has measured', () => {
     const layout = layoutPixelRow(twoStacks, 2)
     const { columns } = layout
@@ -297,6 +321,42 @@ describe('DayGrid kernel pixel placement', () => {
     })
     expect(settled.isSettled).toBe(true)
     expect(settled.columns.map((column) => column.contentHeight)).toEqual([6, 5, 6])
+  })
+
+  it('keeps partial donor selection stable after its measurements disappear', () => {
+    const segs = [
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ]
+    const withPartialsMeasured = layoutPixelRow(segs, 3, {
+      canvasHeight: 10,
+      heights: {
+        'blocker:1': 5,
+        'wide:0': 6,
+        'wide:0:0:slice': 12,
+        'wide:0:2:slice': 12,
+      },
+      smallestSliceHeight: 1,
+      largestSliceHeight: 12,
+    })
+    const afterPartialsUnmount = layoutPixelRow(segs, 3, {
+      canvasHeight: 10,
+      heights: {
+        'blocker:1': 5,
+        'wide:0': 6,
+      },
+      smallestSliceHeight: 1,
+      largestSliceHeight: 12,
+    })
+
+    const renderKeys = (layout: ReturnType<typeof layoutPixelRow>) =>
+      layout.columns.flatMap((column) =>
+        column.renderItems.map((item) => item.key),
+      )
+
+    expect(renderKeys(afterPartialsUnmount)).toEqual(renderKeys(withPartialsMeasured))
+    expect(renderKeys(afterPartialsUnmount)).not.toContain('wide:0:0:slice')
+    expect(renderKeys(afterPartialsUnmount)).not.toContain('wide:0:2:slice')
   })
 
   it('keeps bounded exclusions as donors while later wholes can place', () => {
@@ -399,6 +459,8 @@ function layoutPixelRow(
     canvasHeight?: number,
     neededLevelCount?: number,
     smallestSliceHeight?: number,
+    largestSliceHeight?: number,
+    hasObservedSliceHeightExtrema?: boolean,
   } = {},
 ) {
   const heights = config.heights ?? Object.fromEntries(
@@ -419,9 +481,16 @@ function layoutPixelRow(
       createRef: (key) => `ref:${key}`,
     },
     config.neededLevelCount ?? 8,
-    config.smallestSliceHeight ?? (
-      measuredHeights.length ? Math.min(...measuredHeights) : undefined
-    ),
+    config.hasObservedSliceHeightExtrema === false
+      ? undefined
+      : config.smallestSliceHeight ?? (
+        measuredHeights.length ? Math.min(...measuredHeights) : undefined
+      ),
+    config.hasObservedSliceHeightExtrema === false
+      ? undefined
+      : config.largestSliceHeight ?? (
+        measuredHeights.length ? Math.max(...measuredHeights) : undefined
+      ),
   )
 }
 

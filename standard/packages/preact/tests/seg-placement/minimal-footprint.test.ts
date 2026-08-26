@@ -127,6 +127,7 @@ describe('minimal-footprint hiding, pixel currency', () => {
       },
       8,
       EVENT_HEIGHT,
+      EVENT_HEIGHT,
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
@@ -136,9 +137,9 @@ describe('minimal-footprint hiding, pixel currency', () => {
     expect(visibleKeys(layout.columns[2])).toEqual(['e2:1:2:slice'])
   })
 
-  // The measured browser geometry of the 7573 failure: merge planning must use
-  // each slice's measured height.
-  it('rescues with measured slice heights', () => {
+  // The observed browser geometry of the 7573 failure, used as the stable
+  // merge-planning thickness.
+  it('rescues with the observed planning thickness', () => {
     const segs = [
       makeSeg('e1', 1, 6),
       makeSeg('e2', 1, 6),
@@ -157,6 +158,7 @@ describe('minimal-footprint hiding, pixel currency', () => {
         createRef: (key) => `ref:${key}`,
       },
       9,
+      17,
       17,
     )
 

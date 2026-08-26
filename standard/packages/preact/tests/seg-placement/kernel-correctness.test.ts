@@ -167,7 +167,7 @@ describe('pure positioning kernel', () => {
       false,
       10,
       6,
-      constantHeights([trigger, frontier, excludedWhole], 5),
+      5,
     )
     expect(mergeLevels.flat()).toEqual([])
     expect(groups[0].hiddenSlices.some((slice) =>
@@ -226,7 +226,7 @@ describe('pure positioning kernel', () => {
       true,
       10,
       1,
-      constantHeights([source], slightlyOver),
+      slightlyOver,
     )
     expect(mergeLevels[0]).toEqual([partial])
 
@@ -241,7 +241,7 @@ describe('pure positioning kernel', () => {
       true,
       21,
       1,
-      constantHeights([source, barrierSource], slightlyOver),
+      slightlyOver,
     )
     expect(ceilingLevels[0]).toEqual([partial])
 
@@ -251,7 +251,7 @@ describe('pure positioning kernel', () => {
     ])).toHaveLength(2)
   })
 
-  it('salvages pixel partials using measured thickness', () => {
+  it('salvages pixel partials using stable planning thickness', () => {
     const [base, extra] = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
@@ -266,7 +266,7 @@ describe('pure positioning kernel', () => {
       true,
       15,
       5,
-      constantHeights([base, extra], 10),
+      10,
     )
 
     expect(projectSlices(levels.flat())).toEqual([
@@ -302,7 +302,7 @@ describe('pure positioning kernel', () => {
       false,
       30,
       15,
-      constantHeights([a, b, c, extra], 10),
+      10,
     )
 
     expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
@@ -327,7 +327,7 @@ describe('pure positioning kernel', () => {
       true,
       15,
       5,
-      constantHeights([base, extra], 10),
+      10,
     )
     const exact = resolveLevelCoords(
       levels,

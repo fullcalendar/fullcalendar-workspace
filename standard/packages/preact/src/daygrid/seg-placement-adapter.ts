@@ -58,12 +58,15 @@ type DayGridPlacementMode =
   | 'auto'
 
 /*
-These owner-lifetime extrema only widen the auto-mode DOM frontier. Keeping
-them monotone avoids remount churn; stale values after a style change can only
-mount extra measurement donors.
+These owner-lifetime extrema only widen auto-mode planning assumptions.
+Keeping them monotone avoids remount churn: stale minima can mount extra
+measurement donors, while the stale maximum stabilizes which partial-slice
+measurement donors the pixel merge creates.
 */
 export interface DayGridPlacementOwnerState {
   smallestSliceHeight: number | null
+  /** Stable uniform thickness used to discover partial-slice donors. */
+  largestSliceHeight: number | null
   /**
    * Largest observed height of the space foreground events actually compete
    * for, which excludes the day-number header above it. A row's complete
@@ -163,6 +166,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
   sliceHeightMap: SliceHeightMap<HeightRef>,
   neededLevelCount: number,
   smallestSliceHeight: number | undefined,
+  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const layout = buildPixelLimitedLayout(
@@ -178,6 +182,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
     input.canvasHeight,
     neededLevelCount,
     smallestSliceHeight,
+    largestSliceHeight,
   )
 
   return buildDayGridPlacementLayout(
@@ -248,6 +253,7 @@ function cutSegToColumn(
 export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
   return {
     smallestSliceHeight: null,
+    largestSliceHeight: null,
     largestCanvasHeight: null,
     neededLevelCount: DEFAULT_NEEDED_LEVEL_COUNT,
   }
@@ -255,16 +261,13 @@ export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
 
 /**
  * Records a positive whole-or-partial slice height, returning the same object
- * when the owner minimum does not change.
+ * when neither owner extremum changes.
  *
- * Any positive report is admitted, including an implausibly small one from a
- * wrapper measured mid font or stylesheet load. No floor is applied, for two
- * reasons. Compact custom event content can legitimately be shorter than the
- * unmeasured fallback, so a fixed floor would silently discard valid heights.
- * And this extremum only sizes the *candidate* frontier: under-estimating it
- * mounts more event wrappers than a row needs, while the measured pass still
- * decides visibility from real pixels. The failure mode is therefore wasted
- * DOM, never a hidden event that fits.
+ * Any positive report is admitted. Compact custom event content can
+ * legitimately be shorter than the unmeasured fallback, so a fixed validity
+ * floor would silently discard real occupied dimensions. The minimum widens
+ * the whole-slice donor frontier; the maximum stabilizes partial-slice donor
+ * discovery across measurement deletion and remounting.
  *
  * Non-positive and non-finite reports, including the `null` a wrapper sends
  * when it unmounts, leave the state untouched.
@@ -280,11 +283,16 @@ export function observeDayGridSliceHeight(
   const smallestSliceHeight = state.smallestSliceHeight == null
     ? height
     : Math.min(state.smallestSliceHeight, height)
+  const largestSliceHeight = state.largestSliceHeight == null
+    ? height
+    : Math.max(state.largestSliceHeight, height)
 
-  return smallestSliceHeight === state.smallestSliceHeight
+  return smallestSliceHeight === state.smallestSliceHeight &&
+    largestSliceHeight === state.largestSliceHeight
     ? state
     : updateDayGridPlacementOwnerState(state, {
       smallestSliceHeight,
+      largestSliceHeight,
     })
 }
 
@@ -414,7 +422,7 @@ function updateDayGridPlacementOwnerState(
   state: DayGridPlacementOwnerState,
   extrema: Partial<Pick<
     DayGridPlacementOwnerState,
-    'smallestSliceHeight' | 'largestCanvasHeight'
+    'smallestSliceHeight' | 'largestSliceHeight' | 'largestCanvasHeight'
   >>,
 ): DayGridPlacementOwnerState {
   const next = { ...state, ...extrema }

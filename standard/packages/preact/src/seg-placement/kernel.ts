@@ -232,7 +232,7 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
       eventOrderStrict,
       eventSlicing,
       allowExtraWholePlacement: true,
-      getSliceThickness: () => 1,
+      sliceThickness: 1,
       occupantThickness: moreLinkLevelTax,
       isValid: (levelCoord, thickness) =>
         thickness === 0 || levelCoord + thickness <= maxLevels,
@@ -240,6 +240,11 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
   )
 }
 
+/**
+ * Builds pixel-limited planning topology. The planning thickness must be
+ * stable across donor unmounts; the caller resolves exact coordinates after
+ * this function has decided which partial-slice donors belong in the DOM.
+ */
 export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
@@ -248,8 +253,7 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   eventSlicing: boolean,
   maxPixels: number,
   moreLinkPixelHeight: number,
-  sliceHeights: ReadonlyMap<string, number>,
-  pendingSlices: Slice<S>[] = [],
+  planningSliceThickness: number,
   forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
@@ -263,12 +267,11 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
       // partials may enter topology; otherwise a coordinate-excluded whole
       // could reappear and a DOM-excluded whole would have no render owner.
       allowExtraWholePlacement: false,
-      getSliceThickness: (slice) => sliceHeights.get(getSliceKey(slice)),
+      sliceThickness: planningSliceThickness,
       occupantThickness: moreLinkPixelHeight,
       isValid: (levelCoord, thickness) =>
         levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
     },
-    pendingSlices,
     forceHiddenSlices,
   )
 }
@@ -285,13 +288,12 @@ export function sortByEventOrder<S extends SourceSeg>(
 
 export function compilePixelLimitedRenderSlices<S extends SourceSeg>(
   domWholeSliceLevels: readonly (readonly Slice<S>[])[],
-  placementSliceLevels: readonly (readonly Slice<S>[])[],
-  pendingSlices: readonly Slice<S>[] = [],
+  planningSliceLevels: readonly (readonly Slice<S>[])[],
 ): Slice<S>[] {
   const renderSlices = domWholeSliceLevels.flat()
   const renderKeys = new Set(renderSlices.map(getSliceKey))
 
-  for (const slices of [...placementSliceLevels, pendingSlices]) {
+  for (const slices of planningSliceLevels) {
     for (const slice of slices) {
       const key = getSliceKey(slice)
       if (isPartialSlice(slice) && !renderKeys.has(key)) {
@@ -452,6 +454,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   canvasHeight: number | undefined,
   neededLevelCount: number,
   smallestSliceHeight: number | undefined,
+  largestSliceHeight: number | undefined,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
     props.segs,
@@ -465,37 +468,47 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
     sliceHeightMap.current,
     canvasHeight,
   )
-  const placementSliceLevels = wholeResolution.placementSliceLevels
+  // The merge owns DOM topology and uses the monotone planning thickness
+  // uniformly. Exact resolution below owns coordinates.
+  const planningSliceLevels = wholeResolution.placementSliceLevels
+  let placementSliceLevels = planningSliceLevels
   let sliceCoords = wholeResolution.sliceCoords
   let hiddenGroups = groupLaterallyIntersecting(domExcludedSlices)
-  const pendingPartialSlices: Slice<S>[] = []
+  let pendingSlices = wholeResolution.pendingSlices
 
-  if (canvasHeight != null) {
+  // Until every planning dimension is observed, retain only the whole-slice
+  // DOM candidates. The next measurement pass can then plan stable partials.
+  if (
+    canvasHeight != null &&
+    smallestSliceHeight != null &&
+    largestSliceHeight != null
+  ) {
     const extraSlices = sortByEventOrder(
       wholeResolution.excludedSlices.concat(domExcludedSlices),
     )
     hiddenGroups = mergeExtraIntoLevelCoords(
-      placementSliceLevels,
+      planningSliceLevels,
       sliceCoords,
       extraSlices,
       options.eventOrderStrict,
       options.eventSlicing,
       canvasHeight,
-      smallestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
-      sliceHeightMap.current,
-      pendingPartialSlices,
+      smallestSliceHeight,
+      largestSliceHeight,
       new Set(domExcludedSlices),
     )
-    ;({ sliceCoords } = resolveLevelCoords(
-      placementSliceLevels,
+    const exactResolution = resolveLevelCoords(
+      planningSliceLevels,
       sliceHeightMap.current,
-    ))
+    )
+    placementSliceLevels = exactResolution.placementSliceLevels
+    sliceCoords = exactResolution.sliceCoords
+    pendingSlices = pendingSlices.concat(exactResolution.pendingSlices)
   }
 
   const renderSlices = compilePixelLimitedRenderSlices(
     domWholeSliceLevels,
-    placementSliceLevels,
-    pendingPartialSlices,
+    planningSliceLevels,
   )
   const slicesByStart = federateSlicesByStart(
     renderSlices,
@@ -505,7 +518,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   return {
     domWholeSliceLevels,
     placementSliceLevels,
-    pendingSlices: wholeResolution.pendingSlices.concat(pendingPartialSlices),
+    pendingSlices,
     hiddenGroups,
     sliceCoords,
     slicesByStart,
@@ -517,15 +530,12 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   }
 }
 
-interface MergeOptions<S extends SourceSeg> {
+interface MergeOptions {
   eventOrderStrict: boolean
   eventSlicing: boolean
   allowExtraWholePlacement: boolean
-  /**
-   * Exact per-slice thickness. Undefined slices become measurement donors
-   * instead of entering placement or hiding.
-   */
-  getSliceThickness: (slice: Slice<S>) => number | undefined
+  /** Stable thickness used uniformly while constructing DOM topology. */
+  sliceThickness: number
   occupantThickness: number
   isValid: (levelCoord: number, thickness: number) => boolean
 }
@@ -548,8 +558,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
   extraSegSlices: readonly Slice<S>[],
-  options: MergeOptions<S>,
-  pendingSlices: Slice<S>[] = [],
+  options: MergeOptions,
   forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   let hiddenGroups: HiddenSliceGroup<S>[] = []
@@ -560,7 +569,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     sliceCoords.get(getSliceKey(slice)) ?? levelIndex
 
   const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
-    getSliceCoord(slice, levelIndex) + options.getSliceThickness(slice)!
+    getSliceCoord(slice, levelIndex) + options.sliceThickness
 
   function addHiddenRaw(slice: Slice<S>): HiddenSliceGroup<S> {
     hiddenOrders.set(slice, hiddenOrder++)
@@ -601,20 +610,16 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   }
 
   /** The insertion search under the caller's budget, or null when none fits. */
-  function findValidInsertion(
-    slice: Slice<S>,
-    sliceThickness: number,
-  ): Insertion | null {
+  function findValidInsertion(slice: Slice<S>): Insertion | null {
     const insertion = findInsertion(
       sliceLevels,
       sliceCoords,
       hiddenGroups,
       slice,
-      sliceThickness,
       options,
     )
     return insertion &&
-      options.isValid(insertion.levelCoord, sliceThickness)
+      options.isValid(insertion.levelCoord, options.sliceThickness)
       ? insertion
       : null
   }
@@ -644,13 +649,9 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     return [...coords].sort((a, b) => a - b)
   }
 
-  /**
-   * Discovers candidate runs with the measured source thickness. A candidate's
-   * own measurement supersedes that probe once available.
-   */
+  /** Discovers candidate runs with the stable planning thickness. */
   function partitionByFeasibility(
     slice: Slice<S>,
-    sourceThickness: number,
   ): {
     feasibleRuns: Slice<S>[]
     infeasibleSpans: Slice<S>[]
@@ -663,9 +664,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       const start = breakpoints[i]
       const end = breakpoints[i + 1]
       const candidate = createNarrowerSlice(slice, start, end)
-      const candidateThickness = options.getSliceThickness(candidate) ??
-        sourceThickness
-      const spans = findValidInsertion(candidate, candidateThickness)
+      const spans = findValidInsertion(candidate)
         ? feasible
         : infeasible
       const previous = spans[spans.length - 1]
@@ -688,15 +687,12 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
    */
   function placeLongestPrefix(
     slice: Slice<S>,
-    sourceThickness: number,
   ): boolean {
     const breakpoints = collectBreakpoints(slice)
 
     for (let i = breakpoints.length - 2; i >= 1; i--) {
       const prefix = createNarrowerSlice(slice, slice.start, breakpoints[i])
-      const prefixThickness = options.getSliceThickness(prefix) ??
-        sourceThickness
-      const insertion = findValidInsertion(prefix, prefixThickness)
+      const insertion = findValidInsertion(prefix)
       if (insertion) {
         fireSlice(prefix)
         for (const rest of peelSlice(slice, prefix)) fireSlice(rest)
@@ -786,12 +782,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     slice: Slice<S>,
     mayPlaceWhole: boolean = true,
   ): void {
-    const sliceThickness = options.getSliceThickness(slice)
-    if (sliceThickness === undefined) {
-      pendingSlices.push(slice)
-      return
-    }
-    const insertion = findValidInsertion(slice, sliceThickness)
+    const insertion = findValidInsertion(slice)
 
     if (insertion && (mayPlaceWhole || isPartialSlice(slice))) {
       insertSlice(
@@ -807,10 +798,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     // A placeable-but-disallowed whole falls through to hide: only a genuine
     // geometric failure earns a slicing pass.
     if (options.eventSlicing && !insertion) {
-      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(
-        slice,
-        sliceThickness,
-      )
+      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
 
       if (feasibleRuns.length && infeasibleSpans.length) {
         for (const span of infeasibleSpans) addHiddenRaw(span)
@@ -820,7 +808,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       }
       if (
         !infeasibleSpans.length &&
-        placeLongestPrefix(slice, sliceThickness)
+        placeLongestPrefix(slice)
       ) return
     }
 
@@ -850,8 +838,7 @@ function findInsertion<S extends SourceSeg>(
   sliceCoords: ReadonlyMap<string, number>,
   hiddenGroups: readonly HiddenSliceGroup<S>[],
   slice: Slice<S>,
-  sliceThickness: number,
-  options: MergeOptions<S>,
+  options: MergeOptions,
 ): Insertion | null {
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),
@@ -859,7 +846,7 @@ function findInsertion<S extends SourceSeg>(
   const getCoord = (other: Slice<S>, levelIndex: number) =>
     sliceCoords.get(getSliceKey(other)) ?? levelIndex
   const getBottom = (other: Slice<S>, levelIndex: number) =>
-    getCoord(other, levelIndex) + options.getSliceThickness(other)!
+    getCoord(other, levelIndex) + options.sliceThickness
   let strictMinLevelIndex = 0
   let strictMaxLevelIndexExclusive = Infinity
 
@@ -907,7 +894,7 @@ function findInsertion<S extends SourceSeg>(
       !collidersByLevel[levelIndex].length &&
       levelIndex >= strictMinLevelIndex &&
       levelIndex < strictMaxLevelIndexExclusive &&
-      minLevelCoord + sliceThickness <=
+      minLevelCoord + options.sliceThickness <=
         ceilings[levelIndex] + GEOMETRY_TOLERANCE
     ) {
       return { levelIndex, levelCoord: minLevelCoord }

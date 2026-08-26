@@ -75,7 +75,7 @@ describe('pure positioning kernel fuzzing', () => {
         seed % 3 !== 0,
         maxPixels,
         moreLinkHeight,
-        initialHeights,
+        initialHeight,
       )
       const exactHeights = new Map<string, number>()
       for (const slice of levels.flat()) {

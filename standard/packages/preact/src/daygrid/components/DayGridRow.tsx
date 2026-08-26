@@ -74,6 +74,7 @@ export interface DayGridRowProps {
   // Cross-row placement-owner inputs used only by the pixel-limited route.
   neededLevelCount?: number
   smallestSliceHeight?: number
+  largestSliceHeight?: number
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -99,11 +100,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
   })
   // Every screen slice (whole or partial) reports its occupied height here.
-  // A non-null report reaches the cross-row owner in the same callback that
-  // recorded it, before the rescheduled solve can read the map.
+  // A non-null report ratchets either the cross-row owner or this standalone
+  // row before the rescheduled solve can read the map.
   private sliceHeightMap = new RefMap<string, number>((height) => {
     if (height != null) {
-      this.props.onSliceHeight?.(height)
+      this.handleSliceHeightInsertion(height)
     }
     afterSize(this.handleSegPositioning)
   })
@@ -126,6 +127,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
   private isScreenLayoutSettled = false
   private needsEventAreaHeightReport = false
+  // Standalone (all-day lane) placement extrema.
+  private smallestSliceHeight?: number
+  private largestSliceHeight?: number
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -163,6 +167,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
+      const smallestSliceHeight = props.smallestSliceHeight ??
+        this.smallestSliceHeight
+      const largestSliceHeight = props.largestSliceHeight ??
+        this.largestSliceHeight
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements<Ref<number>>(
           fgEventSegs,
@@ -174,7 +182,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           },
           this.sliceHeightMap,
           props.neededLevelCount ?? DEFAULT_NEEDED_LEVEL_COUNT,
-          props.smallestSliceHeight,
+          smallestSliceHeight,
+          largestSliceHeight,
         )
         : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
@@ -566,6 +575,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
+
+  private handleSliceHeightInsertion = (height: number) => {
+    if (this.props.onSliceHeight) {
+      this.props.onSliceHeight(height)
+    } else if (height > 0 && Number.isFinite(height)) {
+      this.smallestSliceHeight = this.smallestSliceHeight == null
+        ? height
+        : Math.min(this.smallestSliceHeight, height)
+      this.largestSliceHeight = this.largestSliceHeight == null
+        ? height
+        : Math.max(this.largestSliceHeight, height)
+    }
+  }
 
   componentDidMount() {
     this._isUnmounting = false
