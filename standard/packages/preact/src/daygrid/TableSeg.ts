@@ -14,9 +14,13 @@ export type DayRowEventRangePart = DayRowEventRange & {
 }
 
 /*
-We need really specific keys because RefMap::createRef() which is then given to heightRef
-is unable to change key! As a result, we cannot reuse elements between a source's permanent
-wrapper and its supplemental slices, but that's okay since they render quite differently
+The unconditional start index is essential source-seg identity: one event
+instance can produce multiple whole view-coordinate segs with different starts,
+especially in Resource DayGrid. A partial gets its own suffix because a
+permanent source wrapper and its supplemental slice cannot share RefMap refs.
+The end is deliberately excluded so narrowing or widening a slice preserves its
+DOM node and ResizeObserver; the existing pre-paint size flush corrects the
+temporarily stale height during that intermediate commit.
 */
 export function getEventPartKey(seg: DayRowEventRangePart): string {
   return getEventKey(seg) + ':' + seg.start + (seg.isSlice ? ':slice' : '')
