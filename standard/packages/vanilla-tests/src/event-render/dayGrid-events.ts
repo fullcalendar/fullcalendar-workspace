@@ -523,79 +523,159 @@ describe('dayGrid advanced event rendering', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7447
-  for (const dayMaxEvents of [4, true] as const) {
-    it(`Doesn't overlap white-space:normal events with dayMaxEvents:${dayMaxEvents}`, async () => {
-      let calendar = initCalendar({
-        initialView: 'dayGridWeek',
-        initialDate: '2023-04-09',
-        dayMaxEvents,
-        eventContent() {
-          return {
-            html: '<div style="white-space: normal">' +
-              '<strong>AAAAAAAAAA</strong> <strong>BBBBBBBBB</strong></div>',
-          }
+  it('Doesn\'t overlap white-space:normal events with dayMaxEvents:4', async () => {
+    let calendar = initCalendar({
+      initialView: 'dayGridWeek',
+      initialDate: '2023-04-09',
+      dayMaxEvents: 4,
+      eventContent() {
+        return {
+          html: '<div style="white-space: normal">' +
+            '<strong>AAAAAAAAAA</strong> <strong>BBBBBBBBB</strong></div>',
+        }
+      },
+      events: [
+        {
+          id: 'a',
+          start: '2023-04-14',
+          end: '2023-04-21',
         },
-        events: [
-          {
-            id: 'a',
-            start: '2023-04-14',
-            end: '2023-04-21',
-          },
-          {
-            id: 'b',
-            start: '2023-04-13',
-            end: '2023-04-22',
-          },
-          {
-            id: 'c',
-            start: '2023-04-06',
-            end: '2023-04-15',
-          },
-          {
-            id: 'd',
-            start: '2023-04-11',
-            end: '2023-04-14',
-          },
-          {
-            id: 'e',
-            start: '2023-04-14',
-            end: '2023-04-19',
-          },
-          {
-            id: 'f',
-            start: '2023-04-13',
-            end: '2023-04-19',
-          },
-          {
-            id: 'g',
-            start: '2023-04-05',
-            end: '2023-04-14',
-          },
-          {
-            id: 'h',
-            start: '2023-04-06',
-            end: '2023-04-15',
-          },
-          {
-            id: 'i',
-            start: '2023-04-13',
-            end: '2023-04-15',
-          },
-          {
-            id: 'j',
-            start: '2023-04-12',
-            end: '2023-04-15',
-          },
-        ],
-      })
-      await waitTimeout(dayMaxEvents === true ? 200 : 100)
-
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
-      let eventEls = dayGridWrapper.getEventEls()
-      let visibleEventEls = filterVisibleEls(eventEls)
-      expect(anyElsIntersect(visibleEventEls)).toBe(false)
+        {
+          id: 'b',
+          start: '2023-04-13',
+          end: '2023-04-22',
+        },
+        {
+          id: 'c',
+          start: '2023-04-06',
+          end: '2023-04-15',
+        },
+        {
+          id: 'd',
+          start: '2023-04-11',
+          end: '2023-04-14',
+        },
+        {
+          id: 'e',
+          start: '2023-04-14',
+          end: '2023-04-19',
+        },
+        {
+          id: 'f',
+          start: '2023-04-13',
+          end: '2023-04-19',
+        },
+        {
+          id: 'g',
+          start: '2023-04-05',
+          end: '2023-04-14',
+        },
+        {
+          id: 'h',
+          start: '2023-04-06',
+          end: '2023-04-15',
+        },
+        {
+          id: 'i',
+          start: '2023-04-13',
+          end: '2023-04-15',
+        },
+        {
+          id: 'j',
+          start: '2023-04-12',
+          end: '2023-04-15',
+        },
+      ],
     })
-  }
+    await waitTimeout(100)
+
+    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    let eventEls = dayGridWrapper.getEventEls()
+    let visibleEventEls = filterVisibleEls(eventEls)
+    expect(anyElsIntersect(visibleEventEls)).toBe(false)
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/7447
+  it('Limits white-space:normal events to a constrained height with dayMaxEvents:true', async () => {
+    let calendar = initCalendar({
+      initialView: 'dayGridWeek',
+      initialDate: '2023-04-09',
+      height: 250,
+      dayMaxEvents: true,
+      eventContent() {
+        return {
+          html: '<div style="white-space: normal">' +
+            '<strong>AAAAAAAAAA</strong> <strong>BBBBBBBBB</strong></div>',
+        }
+      },
+      events: [
+        {
+          id: 'a',
+          start: '2023-04-14',
+          end: '2023-04-21',
+        },
+        {
+          id: 'b',
+          start: '2023-04-13',
+          end: '2023-04-22',
+        },
+        {
+          id: 'c',
+          start: '2023-04-06',
+          end: '2023-04-15',
+        },
+        {
+          id: 'd',
+          start: '2023-04-11',
+          end: '2023-04-14',
+        },
+        {
+          id: 'e',
+          start: '2023-04-14',
+          end: '2023-04-19',
+        },
+        {
+          id: 'f',
+          start: '2023-04-13',
+          end: '2023-04-19',
+        },
+        {
+          id: 'g',
+          start: '2023-04-05',
+          end: '2023-04-14',
+        },
+        {
+          id: 'h',
+          start: '2023-04-06',
+          end: '2023-04-15',
+        },
+        {
+          id: 'i',
+          start: '2023-04-13',
+          end: '2023-04-15',
+        },
+        {
+          id: 'j',
+          start: '2023-04-12',
+          end: '2023-04-15',
+        },
+      ],
+    })
+    await waitTimeout(200)
+
+    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    let eventEls = dayGridWrapper.getEventEls()
+    let visibleEventEls = filterVisibleEls(eventEls)
+    let moreLinkEls = dayGridWrapper.getMoreEls()
+    let rowBottom = dayGridWrapper.getRowEl(0).getBoundingClientRect().bottom
+
+    // the row is too short for all events, so the limit must actually bind
+    expect(moreLinkEls.length).toBeGreaterThan(0)
+    expect(anyElsIntersect(visibleEventEls)).toBe(false)
+    for (const eventEl of visibleEventEls) {
+      expect(eventEl.getBoundingClientRect().bottom).toBeLessThanOrEqual(rowBottom + 1)
+    }
+  })
 
   // https://github.com/fullcalendar/fullcalendar/issues/6486
   it('renders events starting yesterday, ending at midnight, as "past"', () => {
