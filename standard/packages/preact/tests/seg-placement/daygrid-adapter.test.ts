@@ -390,14 +390,9 @@ function layoutPixelRow(
       current: new Map(Object.entries(heights)),
       createRef: (key) => `ref:${key}`,
     },
-    () => ({
-      neededLevelCount: config.neededLevelCount ?? 8,
-      smallestSliceHeight:
-        config.smallestSliceHeight ?? Math.min(...measuredHeights),
-      largestSliceHeight:
-        config.largestSliceHeight ?? Math.max(...measuredHeights),
-      largestCanvasHeight: config.canvasHeight,
-    }),
+    config.neededLevelCount ?? 8,
+    config.smallestSliceHeight ?? Math.min(...measuredHeights),
+    config.largestSliceHeight ?? Math.max(...measuredHeights),
   )
 }
 

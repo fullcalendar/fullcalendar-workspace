@@ -147,7 +147,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // dimensions
             colWidth={props.colWidth}
             basis={rowBasis}
-            getPlacementRatchet={this.getPlacementRatchet}
+            getPlacementOwnerState={this.getPlacementOwnerState}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -180,15 +180,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     this._isUnmounting = true
   }
 
-  private getPlacementRatchet = () => ({
-    neededLevelCount: this.placementOwnerState.neededLevelCount,
-    smallestSliceHeight:
-      this.placementOwnerState.smallestSliceHeight ?? undefined,
-    largestSliceHeight:
-      this.placementOwnerState.largestSliceHeight ?? undefined,
-    largestCanvasHeight:
-      this.placementOwnerState.largestCanvasHeight ?? undefined,
-  })
+  private getPlacementOwnerState = () => this.placementOwnerState
 
   private handleSliceHeight = (height: number) => {
     if (!this.props.forPrint) {

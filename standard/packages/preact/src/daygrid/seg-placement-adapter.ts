@@ -1,6 +1,5 @@
 import {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
-  type GetRatchet,
   type HiddenSliceGroup,
   type Slice,
   type SliceHeightMap,
@@ -160,10 +159,11 @@ export function buildDayGridPixelPlacements<HeightRef>(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridPixelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  getRatchet: GetRatchet,
+  neededLevelCount: number,
+  smallestSliceHeight: number | undefined,
+  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
-  const ratchet = getRatchet(input.canvasHeight)
   const layout = buildPixelLimitedLayout(
     {
       segs: sourceSegs,
@@ -175,7 +175,9 @@ export function buildDayGridPixelPlacements<HeightRef>(
     },
     sliceHeightMap,
     input.canvasHeight,
-    () => ratchet,
+    neededLevelCount,
+    smallestSliceHeight,
+    largestSliceHeight,
   )
 
   return buildDayGridPlacementLayout(
@@ -185,7 +187,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
     layout.placementSliceLevels,
     layout.sliceCoords,
     sliceHeightMap,
-    ratchet.largestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
+    largestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
     input.columnCount,
   )
 }

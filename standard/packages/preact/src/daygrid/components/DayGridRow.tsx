@@ -23,14 +23,13 @@ import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-re
 import { computeHorizontalsFromSeg } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import {
-  type GetRatchet,
-  type PlacementRatchet,
   type Slice,
   type SliceRenderItem,
 } from '../../seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
+  type DayGridPlacementOwnerState,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   createDayGridPlacementOwnerState,
@@ -75,7 +74,7 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
-  getPlacementRatchet?: GetRatchet
+  getPlacementOwnerState?: () => DayGridPlacementOwnerState
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -166,6 +165,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
+      const ownerState = this.getPlacementOwnerState()
 
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements<Ref<number>>(
@@ -177,7 +177,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             canvasHeight: minMainHeight,
           },
           this.sliceHeightMap,
-          this.getPlacementRatchet,
+          ownerState.neededLevelCount,
+          ownerState.smallestSliceHeight ?? undefined,
+          ownerState.largestSliceHeight ?? undefined,
         )
         : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
@@ -189,7 +191,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             columnCount: cells.length,
           },
           this.sliceHeightMap,
-          this.getPlacementRatchet().largestSliceHeight,
+          ownerState.largestSliceHeight ?? undefined,
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
@@ -582,18 +584,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
   }
 
-  private getPlacementRatchet = (canvasHeight?: number): PlacementRatchet => {
-    if (this.props.getPlacementRatchet) {
-      return this.props.getPlacementRatchet(canvasHeight)
-    }
-
-    const state = this.fallbackPlacementOwnerState
-    return {
-      neededLevelCount: state.neededLevelCount,
-      smallestSliceHeight: state.smallestSliceHeight ?? undefined,
-      largestSliceHeight: state.largestSliceHeight ?? undefined,
-      largestCanvasHeight: state.largestCanvasHeight ?? undefined,
-    }
+  private getPlacementOwnerState(): DayGridPlacementOwnerState {
+    return this.props.getPlacementOwnerState
+      ? this.props.getPlacementOwnerState()
+      : this.fallbackPlacementOwnerState
   }
 
   componentDidMount() {

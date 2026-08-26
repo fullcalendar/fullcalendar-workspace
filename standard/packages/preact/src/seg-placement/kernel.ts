@@ -64,15 +64,6 @@ export interface SliceHeightMap<HeightRef = unknown> {
   createRef(key: string): HeightRef
 }
 
-export interface PlacementRatchet {
-  neededLevelCount: number
-  smallestSliceHeight?: number
-  largestSliceHeight?: number
-  largestCanvasHeight?: number
-}
-
-export type GetRatchet = (canvasHeight?: number) => PlacementRatchet
-
 interface LayoutProps<EventMeta = unknown> {
   segs: readonly SourceSeg<EventMeta>[]
   /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
@@ -446,13 +437,10 @@ export function buildPixelLimitedLayout<EventMeta, HeightRef>(
   options: PixelLimitedOptions,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   canvasHeight: number | undefined,
-  getRatchet: GetRatchet,
+  neededLevelCount: number,
+  smallestSliceHeight: number | undefined,
+  largestSliceHeight: number | undefined,
 ) {
-  const {
-    neededLevelCount,
-    smallestSliceHeight,
-    largestSliceHeight,
-  } = getRatchet(canvasHeight)
   const provisionalSliceHeight = largestSliceHeight ??
     DEFAULT_UNMEASURED_EVENT_THICKNESS
   const { segLevels, excludedSegs } = buildSegLevels(
