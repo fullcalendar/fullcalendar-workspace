@@ -1,15 +1,15 @@
 import {
   BaseComponent,
   type DateEnv,
-  type DomCandidatePlan,
   type HiddenSliceGroup,
+  type PrintCandidatePlan,
   type PrintEventBand,
   type PrintMoreLinkBand,
   RefMap,
   afterSize,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
-  groupHiddenSlices,
+  groupLaterallyIntersecting,
   memoize,
   planPrintDomCandidates,
   sortEventSegs,
@@ -21,11 +21,11 @@ import {
 } from './seg-placement-adapter'
 import { resolveTimelineEventProjectionSizing } from './slot-estimate'
 
-export interface TimelinePrintPlan extends DomCandidatePlan<TimelineEventSeg> {
+interface TimelinePrintPlan extends PrintCandidatePlan<TimelineEventSeg> {
   moreLinkGroups: HiddenSliceGroup<TimelineEventSeg>[]
 }
 
-export interface TimelinePrintLayout {
+interface TimelinePrintLayout {
   eventBands: PrintEventBand<TimelineEventSeg>[]
   moreLinkBand: PrintMoreLinkBand<TimelineEventSeg> | null
 }
@@ -47,14 +47,13 @@ export function buildTimelinePrintPlan(
     slotWidth,
   )
   const candidatePlan = planPrintDomCandidates(sourceSegs, {
-    orderStrict: eventOrderStrict ?? false,
+    eventOrderStrict: eventOrderStrict ?? false,
     eventSlicing: false,
-    maxSlices: 1,
   })
 
   return {
     ...candidatePlan,
-    moreLinkGroups: groupHiddenSlices(candidatePlan.hiddenSlices),
+    moreLinkGroups: groupLaterallyIntersecting(candidatePlan.hiddenSlices),
   }
 }
 
@@ -65,7 +64,7 @@ export function buildTimelinePrintLayout(
   printLinkHeights: ReadonlyMap<string, number>,
 ): TimelinePrintLayout {
   return {
-    eventBands: buildPrintEventBands(plan.levels, printSegHeights),
+    eventBands: buildPrintEventBands(plan.sliceLevels, printSegHeights),
     moreLinkBand: buildPrintMoreLinkBand(
       plan.moreLinkGroups,
       printLinkHeights,
@@ -82,7 +81,7 @@ export function buildTimelinePrintLayout(
  * source can change bands when `slotWidth` changes, and a departing wrapper's
  * removal must not clobber the arriving wrapper's live entry.
  */
-export class TimelinePrintHeights {
+class TimelinePrintHeights {
   readonly segHeightRefMap: RefMap<string, number>
   readonly linkHeightRefMap: RefMap<string, number>
 

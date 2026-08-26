@@ -18,7 +18,8 @@ describe('DayGrid print planning', () => {
     const plan = buildDayGridPrintPlan(segs, false, true, 2)
 
     expect(plan.sourceSegs).toHaveLength(DEFAULT_PRINT_MAX_LEVELS + 2)
-    expect(plan.mountedSegs).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
+    expect(new Set(plan.visibleSlices.map((slice) => slice.sourceSeg.key)))
+      .toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
     expect(plan.hiddenSlices).toHaveLength(2)
     expect(plan.hiddenSlices.map((slice) => slice.sourceSeg.key)).toEqual([
       `event-${DEFAULT_PRINT_MAX_LEVELS}:0`,
@@ -60,16 +61,18 @@ describe('DayGrid print planning', () => {
     const sliced = buildDayGridPrintPlan([...blockers, wide], false, true, 3)
     const unsliced = buildDayGridPrintPlan([...blockers, wide], false, false, 3)
 
-    expect(sliced.mountedSegs[sliced.mountedSegs.length - 1]?.key).toBe('wide:0')
-    expect(sliced.visiblePlacements.filter((placement) =>
-      placement.sourceSeg.key === 'wide:0'
+    expect(sliced.visibleSlices.some((slice) => slice.sourceSeg.key === 'wide:0'))
+      .toBe(true)
+    expect(sliced.visibleSlices.filter((slice) =>
+      slice.sourceSeg.key === 'wide:0',
     ).map(({ start, end }) => [start, end])).toEqual([[0, 1], [2, 3]])
     expect(sliced.hiddenSlices.filter((slice) =>
-      slice.sourceSeg.key === 'wide:0'
+      slice.sourceSeg.key === 'wide:0',
     ).map(({ start, end }) => [start, end])).toEqual([[1, 2]])
     expect(hiddenCountsByColumn(sliced)).toEqual([0, 1, 0])
 
-    expect(unsliced.mountedSegs.some((source) => source.key === 'wide:0')).toBe(false)
+    expect(unsliced.visibleSlices.some((slice) => slice.sourceSeg.key === 'wide:0'))
+      .toBe(false)
     expect(unsliced.hiddenSlices[unsliced.hiddenSlices.length - 1]).toMatchObject({
       start: 0,
       end: 3,
@@ -110,8 +113,8 @@ describe('DayGrid print band transposition', () => {
     const columns = buildDayGridPrintColumns(plan, new Map())
     const wideSlices = columns.flatMap((column) =>
       column.flatMap((slot) =>
-        slot.slice?.sourceSeg.key === 'wide:0' ? [slot.slice] : []
-      )
+        slot.slice?.sourceSeg.key === 'wide:0' ? [slot.slice] : [],
+      ),
     )
 
     expect(wideSlices).toHaveLength(1)
@@ -141,8 +144,8 @@ describe('DayGrid print band transposition', () => {
       ),
       makeSeg('sliced', 0, 3),
     ], false, true, 3)
-    const slices = slicedPlan.visiblePlacements.filter((slice) =>
-      slice.sourceSeg.key === 'sliced:0'
+    const slices = slicedPlan.visibleSlices.filter((slice) =>
+      slice.sourceSeg.key === 'sliced:0',
     )
     const sliceHeights = new Map([
       [getDayGridPrintSliceKey(slices[0]), 22],
@@ -150,9 +153,9 @@ describe('DayGrid print band transposition', () => {
     ])
     const thickness = () => buildDayGridPrintColumns(
       slicedPlan,
-      buildDayGridPrintSegHeights(slicedPlan.visiblePlacements, sliceHeights),
+      buildDayGridPrintSegHeights(slicedPlan.visibleSlices, sliceHeights),
     ).flat().find((slot) =>
-      slot.slice?.sourceSeg.key === 'sliced:0'
+      slot.slice?.sourceSeg.key === 'sliced:0',
     )!.thickness
 
     expect(thickness()).toBe(28)

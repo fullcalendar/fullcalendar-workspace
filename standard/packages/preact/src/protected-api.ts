@@ -98,14 +98,8 @@ export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/da
 
 // Shared seg-placement engine. Only what premium Timeline consumes is exposed.
 export type {
-  HiddenSliceGroup,
-  DomCandidatePlan,
-} from './seg-placement/layout'
-export {
-  groupHiddenSlices,
-} from './seg-placement/layout'
-export type {
   GetRatchet,
+  HiddenSliceGroup,
   Slice,
   SliceHeightMap,
   SliceHeightRef,
@@ -115,8 +109,10 @@ export {
   SliceHeightMapStore,
   buildLevelLimitedLayout,
   getSliceKey,
+  groupLaterallyIntersecting,
 } from './seg-placement/kernel'
 export type {
+  PrintCandidatePlan,
   PrintEventBand,
   PrintMoreLinkBand,
 } from './seg-placement/print'

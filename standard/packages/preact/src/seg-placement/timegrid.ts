@@ -23,21 +23,13 @@ import {
 } from './kernel'
 
 /** TimeGrid policies that affect dimensionless level construction. */
-export interface TimeGridLayoutOptions {
+interface TimeGridLayoutOptions {
   /** Preserves the caller's resolved event priority through all collisions. */
   orderStrict: boolean
 }
 
-/**
- * Transitional input accepted from tests and old shared-layout callers.
- * Production TimeGrid supplies `eventKey`; pressure projection never slices,
- * so only whole-source identity is needed here.
- */
-export type TimeGridSourceSeg<EventMeta = unknown> =
-  Omit<SourceSeg<EventMeta>, 'eventKey'> & { eventKey?: string }
-
 /** One visible source after its logical level is pressure-expanded. */
-export interface TimeGridPlacement<EventMeta = unknown> {
+interface TimeGridPlacement<EventMeta = unknown> {
   sourceSeg: SourceSeg<EventMeta>
   start: number
   end: number
@@ -56,13 +48,13 @@ export interface TimeGridPlacement<EventMeta = unknown> {
 }
 
 /** TimeGrid's existing more-link group projection over kernel hidden groups. */
-export interface TimeGridMoreLinkGroup<EventMeta = unknown>
+interface TimeGridMoreLinkGroup<EventMeta = unknown>
   extends HiddenSliceGroup<EventMeta> {
   count: number
 }
 
 /** Complete reusable output needed to render one TimeGrid column. */
-export interface TimeGridColumnLayout<EventMeta = unknown> {
+interface TimeGridColumnLayout<EventMeta = unknown> {
   /** Dimensionless kernel levels consumed by the collision-web projection. */
   pressureWebSegLevels: SourceSeg<EventMeta>[][]
   /** Whole segs rejected directly by the kernel's max-level admission pass. */
@@ -75,16 +67,13 @@ export interface TimeGridColumnLayout<EventMeta = unknown> {
 
 /** Builds, limits, and pressure-expands one TimeGrid day/resource column. */
 export function layoutTimeGridColumnByMaxLevel<EventMeta>(
-  eventOrderedSegs: readonly TimeGridSourceSeg<EventMeta>[],
+  eventOrderedSegs: readonly SourceSeg<EventMeta>[],
   maxLevels: number,
   options: TimeGridLayoutOptions,
 ): TimeGridColumnLayout<EventMeta> {
-  // Safe because TimeGrid never slices: the kernel's eventKey field is not
-  // consulted while building levels or converting rejected wholes to slices.
-  const sourceSegs = eventOrderedSegs as readonly SourceSeg<EventMeta>[]
   const { pressureWebSegLevels, globbedMoreLinkSegs } =
     buildTimeGridLevelInputs(
-      { segs: sourceSegs },
+      { segs: eventOrderedSegs },
       { eventOrderStrict: options.orderStrict, maxLevels },
     )
   const placements = positionTimeGridPlacements(pressureWebSegLevels)

@@ -1,33 +1,14 @@
 import {
-  type Placement,
-  type Slice as LegacySlice,
-  type SliceOptions,
-  type SourceSeg as LegacySourceSeg,
-  type SegThicknessMap,
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
-  areSegThicknessesSettled,
-  createWholeSlice,
-  doesSliceCoverWholeSource,
-  getLateralCellRange,
-  planDomCandidatesByMaxLevel,
-  positionSegs,
-} from '../seg-placement/layout'
-import {
-  type DayGridLimitResult,
-  type DayGridLimits,
-  limitDayGridLayout,
-} from '../seg-placement/daygrid'
-import {
   type GetRatchet,
   type HiddenSliceGroup,
-  type Slice as KernelSlice,
+  type Slice,
   type SliceHeightMap,
-  type SliceHeightRef,
   type SliceRenderItem,
-  type SourceSeg as KernelSourceSeg,
-  SliceHeightMapStore,
+  type SourceSeg,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
+  getLateralCellRange,
   getSliceKey,
 } from '../seg-placement/kernel'
 import { getEventKey } from '../component-util/event-rendering'
@@ -39,29 +20,7 @@ import {
 
 export type DayGridEventSeg = DayRowEventRange
 
-export const DAYGRID_SLICE_OPTIONS = {
-  maxSlices: 3,
-  minSliceLength: 1,
-} as const
-
-export interface DayGridSegPlacementPlan {
-  /** Every source in resolved event order, including sources that will not mount. */
-  sourceSegs: LegacySourceSeg<DayGridEventSeg>[]
-  /** Complete source wrappers admitted for measurement. */
-  mountedSegs: LegacySourceSeg<DayGridEventSeg>[]
-  /** One whole slice for every source rejected before measurement. */
-  unmountedSlices: LegacySlice<DayGridEventSeg>[]
-  maxLevels: number
-  orderStrict: boolean
-  eventSlicing: boolean
-}
-
-export interface DayGridPopoverPlan {
-  sourceSegs: LegacySourceSeg<DayGridEventSeg>[]
-  unmountedSlices: LegacySlice<DayGridEventSeg>[]
-}
-
-export interface DayGridLevelPlacementColumn<HeightRef> {
+export interface DayGridPlacementColumn<HeightRef> {
   /** Exact kernel slices whose DOM wrappers start in this column. */
   renderItems: SliceRenderItem<DayGridEventSeg, HeightRef>[]
   /** Deepest visible slice bottom crossing this column. */
@@ -72,46 +31,12 @@ export interface DayGridLevelPlacementColumn<HeightRef> {
   hiddenSegs: DayRowEventRangePart[]
 }
 
-export interface DayGridLevelPlacementLayout<HeightRef> {
-  columns: DayGridLevelPlacementColumn<HeightRef>[]
+interface DayGridPlacementLayout<HeightRef> {
+  columns: DayGridPlacementColumn<HeightRef>[]
   /** Positioned slice tops keyed by DayGrid's event-part convention. */
   sliceCoords: ReadonlyMap<string, number>
   /** Whether every currently visible slice has an exact occupied height. */
   isSettled: boolean
-}
-
-/**
- * One event node owned by a start column.
- *
- * Every mounted source keeps exactly one permanent node for the whole span it
- * was measured at. That node is either the source's visible whole placement or
- * an inert donor that exists only to keep reporting a height. Visible slices
- * render through additional supplemental nodes that borrow the source's
- * measurement instead of taking one of their own.
- */
-export interface DayGridSegDomItem {
-  /** React key, and the measurement key when this is the permanent node. */
-  key: string
-  seg: DayRowEventRangePart
-  /** Offset within the row's event area. Undefined while the node is inert. */
-  top?: number
-  /**
-   * Whether this node is the one responsible for reporting its source's
-   * height. It says nothing about whether a height has arrived yet; a node
-   * mounts measurable and stays so while its measurement is outstanding.
-   */
-  isMeasurable: boolean
-}
-
-export interface DayGridSegPlacementColumn {
-  /** Nodes whose whole or sliced span starts here, in resolved event order. */
-  domItems: DayGridSegDomItem[]
-  /** Deepest visible event bottom across every placement crossing this column. */
-  contentHeight: number
-  /** Every source intersecting this column, cut to the column for more-link APIs. */
-  segs: DayRowEventRangePart[]
-  /** Candidate-unmounted and measured-hidden sources intersecting this column. */
-  hiddenSegs: DayRowEventRangePart[]
 }
 
 /**
@@ -120,7 +45,7 @@ export interface DayGridSegPlacementColumn {
  * `auto` reproduces production's precedence exactly: a boolean `true` on
  * either option wins over a number on the other one.
  */
-export type DayGridPlacementMode =
+type DayGridPlacementMode =
   | 'unlimited'
   | 'maxEvents'
   | 'maxEventRows'
@@ -149,22 +74,7 @@ const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
 /** Converts sorted production ranges into the shared source vocabulary. */
 export function buildDayGridSegSources(
   eventOrderedSegs: readonly DayGridEventSeg[],
-): LegacySourceSeg<DayGridEventSeg>[] {
-  return eventOrderedSegs.map((seg, orderIndex) => ({
-    key: getEventPartKey(seg),
-    start: seg.start,
-    end: seg.end,
-    isStart: seg.isStart,
-    isEnd: seg.isEnd,
-    meta: seg,
-    orderIndex,
-  }))
-}
-
-/** Converts sorted production ranges into the kernel's source vocabulary. */
-export function buildDayGridKernelSources(
-  eventOrderedSegs: readonly DayGridEventSeg[],
-): KernelSourceSeg<DayGridEventSeg>[] {
+): SourceSeg<DayGridEventSeg>[] {
   return eventOrderedSegs.map((seg, orderIndex) => ({
     key: getEventPartKey(seg),
     eventKey: getEventKey(seg),
@@ -177,7 +87,7 @@ export function buildDayGridKernelSources(
   }))
 }
 
-export interface DayGridLevelPlacementInputs {
+interface DayGridLevelPlacementInputs {
   dayMaxEvents: boolean | number | undefined
   dayMaxEventRows: boolean | number | undefined
   orderStrict: boolean
@@ -185,16 +95,13 @@ export interface DayGridLevelPlacementInputs {
   columnCount: number
 }
 
-export interface DayGridPixelPlacementInputs {
+interface DayGridPixelPlacementInputs {
   orderStrict: boolean
   eventSlicing: boolean
   columnCount: number
   /** Real pixels foreground events compete for. Undefined until measured. */
   canvasHeight?: number
 }
-
-export type DayGridSliceHeightRef = SliceHeightRef
-export { SliceHeightMapStore as DayGridSliceHeightMap }
 
 /**
  * Builds an immediately renderable kernel layout for unlimited and numeric
@@ -205,7 +112,7 @@ export function buildDayGridLevelPlacements<HeightRef>(
   input: DayGridLevelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   getRatchet: GetRatchet,
-): DayGridLevelPlacementLayout<HeightRef> {
+): DayGridPlacementLayout<HeightRef> {
   const mode = resolveDayGridPlacementMode(
     input.dayMaxEvents,
     input.dayMaxEventRows,
@@ -215,7 +122,7 @@ export function buildDayGridLevelPlacements<HeightRef>(
     throw new Error('Boolean-auto DayGrid placement is not a level-limited route')
   }
 
-  const sourceSegs = buildDayGridKernelSources(eventOrderedSegs)
+  const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const ratchet = getRatchet()
   const layout = buildLevelLimitedLayout(
     {
@@ -237,7 +144,7 @@ export function buildDayGridLevelPlacements<HeightRef>(
   )
   const provisionalSliceHeight = ratchet.largestSliceHeight ??
     DEFAULT_UNMEASURED_EVENT_THICKNESS
-  return buildDayGridKernelPlacementLayout(
+  return buildDayGridPlacementLayout(
     sourceSegs,
     layout.hiddenGroups,
     layout.renderItems,
@@ -255,8 +162,8 @@ export function buildDayGridPixelPlacements<HeightRef>(
   input: DayGridPixelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   getRatchet: GetRatchet,
-): DayGridLevelPlacementLayout<HeightRef> {
-  const sourceSegs = buildDayGridKernelSources(eventOrderedSegs)
+): DayGridPlacementLayout<HeightRef> {
+  const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const ratchet = getRatchet(input.canvasHeight)
   const layout = buildPixelLimitedLayout(
     {
@@ -272,7 +179,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
     () => ratchet,
   )
 
-  return buildDayGridKernelPlacementLayout(
+  return buildDayGridPlacementLayout(
     sourceSegs,
     layout.hiddenGroups,
     layout.renderItems,
@@ -285,7 +192,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
 }
 
 /** Hidden donors are exempt; every coordinate-bearing render item must settle. */
-export function areDayGridRenderItemsSettled<HeightRef>(
+function areDayGridRenderItemsSettled<HeightRef>(
   renderItems: readonly (readonly SliceRenderItem<DayGridEventSeg, HeightRef>[])[],
   sliceHeightMap: SliceHeightMap<HeightRef>,
 ): boolean {
@@ -295,8 +202,8 @@ export function areDayGridRenderItemsSettled<HeightRef>(
 }
 
 /** Projects kernel glob groups into one cell's ordered more-link inputs. */
-export function buildDayGridLevelPopoverSegs(
-  sourceSegs: readonly KernelSourceSeg<DayGridEventSeg>[],
+export function buildDayGridPopoverSegs(
+  sourceSegs: readonly SourceSeg<DayGridEventSeg>[],
   hiddenGroups: readonly HiddenSliceGroup<DayGridEventSeg>[],
   column: number,
   columnCount: number,
@@ -317,115 +224,6 @@ export function buildDayGridLevelPopoverSegs(
   const columnSources = sourceSegs.filter((source) =>
     intersectsColumn(source, column, columnCount),
   )
-
-  return {
-    segs: columnSources.map((source) => cutSegToColumn(source.meta, column)),
-    hiddenSegs: columnSources
-      .filter((source) => hiddenKeys.has(source.key))
-      .map((source) => cutSegToColumn(source.meta, column)),
-  }
-}
-
-/**
- * Chooses complete event wrappers for the DOM using dimensionless geometry.
- *
- * Provisional slices are deliberately discarded. If any piece of a source is
- * visible, its complete source wrapper mounts so the measured pass can
- * reconsider it with its real occupied height.
- */
-export function buildDayGridSegPlacementPlan(
-  eventOrderedSegs: DayGridEventSeg[],
-  maxLevels: number,
-  orderStrict: boolean,
-  eventSlicing: boolean,
-): DayGridSegPlacementPlan {
-  const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
-  const candidatePlan = planDomCandidatesByMaxLevel(
-    sourceSegs,
-    maxLevels,
-    buildSliceOptions(orderStrict, eventSlicing),
-  )
-  const mountedKeys = new Set(candidatePlan.mountedSegs.map((source) => source.key))
-
-  return {
-    sourceSegs,
-    mountedSegs: candidatePlan.mountedSegs,
-    // The candidate plan's hidden geometry can contain only one provisional
-    // piece of a source that did mount. Rebuild from complete sources so this
-    // collection means exactly "never mounted".
-    unmountedSlices: sourceSegs
-      .filter((source) => !mountedKeys.has(source.key))
-      .map((source) => createWholeSlice(source)),
-    maxLevels,
-    orderStrict,
-    eventSlicing,
-  }
-}
-
-/**
- * Repositions every mounted source from complete occupied wrapper heights.
- *
- * While any admitted wrapper still awaits measurement there is no geometry to
- * report, but the columns already carry every mounted source's permanent node
- * so those wrappers can measure at all. Such nodes receive no `top` and are
- * therefore inert rather than stacked at zero.
- */
-export function buildDayGridSegPlacements(
-  plan: DayGridSegPlacementPlan,
-  segHeights: ReadonlyMap<string, number>,
-  limits: Omit<DayGridLimits, 'initialHiddenSpans'>,
-): DayGridSegPlacementColumn[] {
-  let limited: DayGridLimitResult<DayGridEventSeg> | null = null
-
-  if (areSegThicknessesSettled(plan.mountedSegs, segHeights)) {
-    const unrestricted = positionSegs(
-      plan.mountedSegs,
-      segHeights,
-      plan.orderStrict,
-    )
-    limited = limitDayGridLayout(
-      unrestricted,
-      {
-        ...limits,
-        initialHiddenSpans: plan.unmountedSlices,
-      },
-      buildSliceOptions(plan.orderStrict, plan.eventSlicing),
-    )
-  }
-
-  return buildPlacementColumns(plan, limited, limits.columnCount)
-}
-
-/**
- * Projects one column's all/hidden more-link inputs from shared geometry.
- *
- * Hidden membership comes from the candidate and measured fragments. The
- * returned production seg always comes from the complete source and is cut to
- * the requested column, so limiter-created boundaries never masquerade as
- * real event boundaries.
- */
-export function buildDayGridPopoverSegs(
-  plan: DayGridPopoverPlan,
-  measuredHiddenSlices: readonly LegacySlice<DayGridEventSeg>[],
-  column: number,
-  columnCount: number,
-): {
-  segs: DayRowEventRangePart[]
-  hiddenSegs: DayRowEventRangePart[]
-} {
-  const hiddenKeys = new Set<string>()
-
-  // make a hiddenSegs whitelist, for later
-  // the later loop is driven by plan.sourceSegs, so correctly ordered for popover
-  for (const slice of [...plan.unmountedSlices, ...measuredHiddenSlices]) {
-    if (intersectsColumn(slice, column, columnCount)) {
-      hiddenKeys.add(slice.sourceSeg.key)
-    }
-  }
-
-  // for (all)segs. already ordered for popover
-  const columnSources = plan.sourceSegs.filter((source) =>
-    intersectsColumn(source, column, columnCount))
 
   return {
     segs: columnSources.map((source) => cutSegToColumn(source.meta, column)),
@@ -573,150 +371,22 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
   return mode === 'maxEventRows' ? 1 : 0
 }
 
-/**
- * Uses the row's largest current event as a makeshift more-link reservation.
- * It approximates the legacy zombie-event slot, but follows live event
- * measurements so style changes need no reset trigger or parent ratchet.
- */
-export function computeDayGridMoreLinkHeight(
-  segHeights: SegThicknessMap,
-): number {
-  let largestHeight = 0
-
-  for (const height of segHeights.values()) {
-    largestHeight = Math.max(largestHeight, height)
-  }
-
-  return largestHeight
-}
-
-/** What a row knows about its own measured bounds when it re-limits. */
-export interface DayGridMeasuredLimitInputs {
-  mode: DayGridPlacementMode
-  /** The dimensionless cap this row's candidates were admitted under. */
-  candidateMaxLevels: number
-  columnCount: number
-  /** Measured pixels foreground events compete for. Undefined until measured. */
-  eventAreaHeight?: number
-  /** Row-local event-height proxy reserved for an active more link. */
-  moreLinkHeight?: number
-}
-
-/**
- * Resolves one row's untaxed bounds and per-link taxes from its mode.
- *
- * The two limiting currencies belong to different modes. Auto limits by
- * measured pixels alone: its candidate cap is the cross-row DOM frontier, an
- * estimate of how many events might fit rather than a display rule, so
- * charging it as one would hide events that do fit. Numeric modes are the
- * reverse, owning an explicit level cap and no pixel ceiling, which leaves
- * their pixel tax inert rather than absent.
- *
- * An unmeasured auto row carries no ceiling and therefore shows everything it
- * mounted, exactly as the legacy path did before its first measurement.
- */
-export function computeDayGridMeasuredLimits(
-  input: DayGridMeasuredLimitInputs,
-): Omit<DayGridLimits, 'initialHiddenSpans'> {
-  const isAuto = input.mode === 'auto'
-
-  return {
-    maxLevels: isAuto ? undefined : input.candidateMaxLevels,
-    levelCoordLimit: isAuto ? input.eventAreaHeight : undefined,
-    columnCount: input.columnCount,
-    levelTax: computeDayGridMoreLinkLevelTax(input.mode),
-    coordTax: input.moreLinkHeight,
-  }
-}
-
-function buildPlacementColumns(
-  plan: DayGridSegPlacementPlan,
-  limited: DayGridLimitResult<DayGridEventSeg> | null,
-  columnCount: number,
-): DayGridSegPlacementColumn[] {
-  const visiblePlacements = limited?.visiblePlacements ?? []
-  const columns = Array.from({ length: columnCount }, (_, column) => ({
-    domItems: [] as DayGridSegDomItem[],
-    contentHeight: 0,
-    ...buildDayGridPopoverSegs(
-      plan,
-      limited?.hiddenSlices ?? [],
-      column,
-      columnCount,
-    ),
-  }))
-  const visibleBySourceKey = new Map<string, Placement<DayGridEventSeg>[]>()
-
-  for (const placement of visiblePlacements) {
-    const siblings = visibleBySourceKey.get(placement.sourceSeg.key)
-    if (siblings) {
-      siblings.push(placement)
-    } else {
-      visibleBySourceKey.set(placement.sourceSeg.key, [placement])
-    }
-
-    const range = getLateralCellRange(placement, columnCount)
-    for (let column = range.start; column < range.end; column++) {
-      columns[column].contentHeight = Math.max(
-        columns[column].contentHeight,
-        placement.levelEndCoord,
-      )
-    }
-  }
-
-  // The limiter's geometry array is not a DOM ordering: it appends each
-  // overflowed source's result after the ones that fit outright. Walking
-  // mounted sources instead gives every column resolved event order by
-  // construction, since only appends happen below and `mountedSegs` filters
-  // the array `positionSegs` emitted in that order.
-  for (const source of plan.mountedSegs) {
-    const placements = visibleBySourceKey.get(source.key) ?? []
-    const wholePlacement = placements.find(doesSliceCoverWholeSource)
-
-    // Every mounted source keeps one permanent wrapper for the whole span it
-    // was measured at. Without a visible whole placement it becomes an inert
-    // donor, so the source's occupied height keeps reaching the measured pass.
-    columns[source.start].domItems.push({
-      key: source.key,
-      seg: source.meta,
-      top: wholePlacement?.levelCoord,
-      isMeasurable: true,
-    })
-
-    // Supplemental slices follow their source's permanent wrapper, each into
-    // its own start column. They borrow that wrapper's measurement.
-    for (const placement of placements) {
-      if (placement === wholePlacement) continue
-
-      const seg = buildSlicedSeg(placement)
-      columns[placement.start].domItems.push({
-        key: getEventPartKey(seg),
-        seg,
-        top: placement.levelCoord,
-        isMeasurable: false,
-      })
-    }
-  }
-
-  return columns
-}
-
-function buildDayGridKernelPlacementLayout<HeightRef>(
-  sourceSegs: readonly KernelSourceSeg<DayGridEventSeg>[],
+function buildDayGridPlacementLayout<HeightRef>(
+  sourceSegs: readonly SourceSeg<DayGridEventSeg>[],
   hiddenGroups: readonly HiddenSliceGroup<DayGridEventSeg>[],
   renderItems: readonly (readonly SliceRenderItem<DayGridEventSeg, HeightRef>[])[],
-  placementSliceLevels: readonly (readonly KernelSlice<DayGridEventSeg>[])[],
+  placementSliceLevels: readonly (readonly Slice<DayGridEventSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
   provisionalSliceHeight: number,
   columnCount: number,
-): DayGridLevelPlacementLayout<HeightRef> {
+): DayGridPlacementLayout<HeightRef> {
   const columns = Array.from(
     { length: columnCount },
-    (_, column): DayGridLevelPlacementColumn<HeightRef> => ({
+    (_, column): DayGridPlacementColumn<HeightRef> => ({
       renderItems: [...renderItems[column]],
       contentHeight: 0,
-      ...buildDayGridLevelPopoverSegs(
+      ...buildDayGridPopoverSegs(
         sourceSegs,
         hiddenGroups,
         column,
@@ -746,30 +416,6 @@ function buildDayGridKernelPlacementLayout<HeightRef>(
     columns,
     sliceCoords,
     isSettled: areDayGridRenderItemsSettled(renderItems, sliceHeightMap),
-  }
-}
-
-function buildSlicedSeg(
-  placement: Placement<DayGridEventSeg>,
-): DayRowEventRangePart {
-  return {
-    ...placement.sourceSeg.meta,
-    start: placement.start,
-    end: placement.end,
-    isStart: placement.isStart,
-    isEnd: placement.isEnd,
-    isSlice: true,
-  }
-}
-
-function buildSliceOptions(
-  orderStrict: boolean,
-  eventSlicing: boolean,
-): SliceOptions {
-  return {
-    orderStrict,
-    eventSlicing,
-    ...DAYGRID_SLICE_OPTIONS,
   }
 }
 

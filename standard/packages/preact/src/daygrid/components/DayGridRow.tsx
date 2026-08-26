@@ -22,17 +22,16 @@ import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { computeHorizontalsFromSeg } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
-import { type Slice as LegacySlice } from '../../seg-placement/layout'
 import {
   type GetRatchet,
   type PlacementRatchet,
-  type Slice as KernelSlice,
+  type Slice,
   type SliceRenderItem,
+  SliceHeightMapStore,
 } from '../../seg-placement/kernel'
 import {
   type DayGridEventSeg,
-  type DayGridLevelPlacementColumn,
-  DayGridSliceHeightMap,
+  type DayGridPlacementColumn,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   createDayGridPlacementOwnerState,
@@ -104,7 +103,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   })
   // Every screen slice reports through this producer. It rejects unusable
   // values and ratchets the placement owner before scheduling another solve.
-  private sliceHeightMap = new DayGridSliceHeightMap(
+  private sliceHeightMap = new SliceHeightMapStore(
     (height) => this.handleSliceHeightInsertion(height),
     () => afterSize(this.handleSegPositioning),
   )
@@ -139,7 +138,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const screenFgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
     let printPlan: DayGridPrintPlan | null = null
     let printColumns: DayGridPrintBandSlot[][] | null = null
-    let screenColumns: DayGridLevelPlacementColumn<Ref<number>>[] | null = null
+    let screenColumns: DayGridPlacementColumn<Ref<number>>[] | null = null
     let screenSliceCoords: ReadonlyMap<string, number> = new Map()
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
@@ -154,7 +153,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       printColumns = buildDayGridPrintColumns(
         printPlan,
         buildDayGridPrintSegHeights(
-          printPlan.visiblePlacements,
+          printPlan.visibleSlices,
           this.printSegHeightRefMap.current,
         ),
       )
@@ -736,7 +735,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function buildPrintEventSeg(slice: LegacySlice<DayGridEventSeg>): DayRowEventRangePart {
+function buildPrintEventSeg(slice: Slice<DayGridEventSeg>): DayRowEventRangePart {
   return {
     ...slice.sourceSeg.meta,
     start: slice.start,
@@ -747,7 +746,7 @@ function buildPrintEventSeg(slice: LegacySlice<DayGridEventSeg>): DayRowEventRan
 }
 
 function buildLevelEventSeg(
-  slice: KernelSlice<DayGridEventSeg>,
+  slice: Slice<DayGridEventSeg>,
 ): DayRowEventRangePart {
   const { sourceSeg } = slice
 

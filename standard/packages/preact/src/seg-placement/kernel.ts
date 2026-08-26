@@ -7,13 +7,19 @@
  * levels, which keeps coordinate resolution link-blind.
  */
 
-export interface LateralSpan {
+interface LateralSpan {
   start: number
   end: number
 }
 
 /** Permissive epsilon for level-axis coordinate and budget comparisons. */
 export const GEOMETRY_TOLERANCE = 0.000_001
+
+/** Shared estimate for an event wrapper that has not reported a thickness. */
+export const DEFAULT_UNMEASURED_EVENT_THICKNESS = 20
+
+/** Shared estimate for a more-link wrapper that has not reported a thickness. */
+export const DEFAULT_UNMEASURED_MORE_LINK_THICKNESS = 20
 
 export interface SourceSeg<EventMeta = unknown> extends LateralSpan {
   /** Stable whole-source key, equal to DayGrid's unsliced event-part key. */
@@ -32,7 +38,7 @@ export interface Slice<EventMeta = unknown> extends LateralSpan {
   isEnd: boolean
 }
 
-export interface MoreLinkOccupant extends LateralSpan {
+interface MoreLinkOccupant extends LateralSpan {
   key: string
   levelIndex: number | null
   levelCoord: number | null
@@ -109,25 +115,25 @@ export interface PlacementRatchet {
 
 export type GetRatchet = (canvasHeight?: number) => PlacementRatchet
 
-export interface LayoutProps<EventMeta = unknown> {
+interface LayoutProps<EventMeta = unknown> {
   segs: readonly SourceSeg<EventMeta>[]
   /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
   cells?: readonly unknown[]
 }
 
-export interface LevelLimitedOptions {
+interface LevelLimitedOptions {
   eventOrderStrict: boolean
   eventSlicing: boolean
   maxLevels: number
   moreLinkLevelTax: number
 }
 
-export interface PixelLimitedOptions {
+interface PixelLimitedOptions {
   eventOrderStrict: boolean
   eventSlicing: boolean
 }
 
-export interface TimeGridLevelOptions {
+interface TimeGridLevelOptions {
   eventOrderStrict: boolean
   maxLevels: number
 }
@@ -334,7 +340,7 @@ export function compilePixelLimitedRenderSlices<EventMeta>(
   return renderSlices
 }
 
-export function federateSlicesByStart<EventMeta>(
+function federateSlicesByStart<EventMeta>(
   renderSlices: readonly Slice<EventMeta>[],
   colCount: number,
 ): Slice<EventMeta>[][] {
@@ -348,7 +354,7 @@ export function federateSlicesByStart<EventMeta>(
   return slicesByStart
 }
 
-export function compareSlicesByEventOrder<EventMeta>(
+function compareSlicesByEventOrder<EventMeta>(
   a: Slice<EventMeta>,
   b: Slice<EventMeta>,
 ): number {
@@ -356,7 +362,7 @@ export function compareSlicesByEventOrder<EventMeta>(
     Number(isPartialSlice(a)) - Number(isPartialSlice(b))
 }
 
-export function isPartialSlice<EventMeta>(slice: Slice<EventMeta>): boolean {
+function isPartialSlice<EventMeta>(slice: Slice<EventMeta>): boolean {
   return slice.start !== slice.sourceSeg.start ||
     slice.end !== slice.sourceSeg.end
 }
@@ -411,7 +417,7 @@ export function groupLaterallyIntersecting<EventMeta>(
   ))
 }
 
-export function buildSliceRenderItems<EventMeta, HeightRef>(
+function buildSliceRenderItems<EventMeta, HeightRef>(
   slicesByStart: readonly (readonly Slice<EventMeta>[])[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeightMap: SliceHeightMap<HeightRef>,
@@ -946,6 +952,17 @@ export function findIntersections<Item extends LateralSpan>(
     if (doSpansIntersect(entry, span)) matches.push(entry)
   }
   return matches
+}
+
+/** Returns the integer lateral cells intersected by one lateral span. */
+export function getLateralCellRange(
+  span: LateralSpan,
+  cellCount: number,
+): LateralSpan {
+  return {
+    start: Math.min(cellCount, Math.max(0, Math.floor(span.start))),
+    end: Math.min(cellCount, Math.max(0, Math.ceil(span.end))),
+  }
 }
 
 function insertLaterally<Item extends LateralSpan>(

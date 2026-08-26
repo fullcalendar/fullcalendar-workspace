@@ -1,24 +1,26 @@
 import {
-  type DomCandidatePlan,
-  type SegThicknessMap,
+  type HiddenSliceGroup,
   type Slice,
   type SourceSeg,
-  createWholeSlice,
-} from '../seg-placement/layout'
+  groupLaterallyIntersecting,
+} from '../seg-placement/kernel'
 import {
   buildPrintEventBands,
   planPrintDomCandidates,
 } from '../seg-placement/print'
 import {
   type DayGridEventSeg,
-  DAYGRID_SLICE_OPTIONS,
   buildDayGridPopoverSegs,
   buildDayGridSegSources,
 } from './seg-placement-adapter'
 import { type DayRowEventRangePart } from './TableSeg'
 
-export interface DayGridPrintPlan extends DomCandidatePlan<DayGridEventSeg> {
+export interface DayGridPrintPlan {
   sourceSegs: SourceSeg<DayGridEventSeg>[]
+  sliceLevels: Slice<DayGridEventSeg>[][]
+  visibleSlices: Slice<DayGridEventSeg>[]
+  hiddenSlices: Slice<DayGridEventSeg>[]
+  hiddenGroups: HiddenSliceGroup<DayGridEventSeg>[]
   columnCount: number
 }
 
@@ -36,7 +38,7 @@ export function getDayGridPrintSliceKey(slice: Slice<DayGridEventSeg>): string {
 /** Reduces live slice-wrapper measurements to each source's current maximum. */
 export function buildDayGridPrintSegHeights(
   slices: readonly Slice<DayGridEventSeg>[],
-  printSliceHeights: SegThicknessMap,
+  printSliceHeights: ReadonlyMap<string, number>,
 ): Map<string, number> {
   const sourceHeights = new Map<string, number>()
 
@@ -62,36 +64,14 @@ export function buildDayGridPrintPlan(
 ): DayGridPrintPlan {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const candidatePlan = planPrintDomCandidates(sourceSegs, {
-    orderStrict,
+    eventOrderStrict: orderStrict,
     eventSlicing,
-    ...DAYGRID_SLICE_OPTIONS,
   })
-  const mountedKeys = new Set(candidatePlan.mountedSegs.map((source) => source.key))
-  const candidateHiddenByKey = new Map<string, Slice<DayGridEventSeg>[]>()
-
-  for (const slice of candidatePlan.hiddenSlices) {
-    const key = slice.sourceSeg.key
-    const siblings = candidateHiddenByKey.get(key)
-    if (siblings) {
-      siblings.push(slice)
-    } else {
-      candidateHiddenByKey.set(key, [slice])
-    }
-  }
-
-  // A mounted source keeps the candidate planner's final hidden fragments.
-  // A never-mounted source is rebuilt as one complete hidden span so print's
-  // final hidden set never depends on provisional candidate slicing.
-  const hiddenSlices = sourceSegs.flatMap((source) =>
-    mountedKeys.has(source.key)
-      ? candidateHiddenByKey.get(source.key) ?? []
-      : [createWholeSlice(source)]
-  )
 
   return {
     ...candidatePlan,
     sourceSegs,
-    hiddenSlices,
+    hiddenGroups: groupLaterallyIntersecting(candidatePlan.hiddenSlices),
     columnCount,
   }
 }
@@ -99,14 +79,14 @@ export function buildDayGridPrintPlan(
 /** Transposes row-wide print bands into one aligned slot sequence per cell. */
 export function buildDayGridPrintColumns(
   plan: DayGridPrintPlan,
-  printSegHeights: SegThicknessMap,
+  printSegHeights: ReadonlyMap<string, number>,
 ): DayGridPrintBandSlot[][] {
   const columns = Array.from(
     { length: plan.columnCount },
     () => [] as DayGridPrintBandSlot[],
   )
 
-  for (const band of buildPrintEventBands(plan.levels, printSegHeights)) {
+  for (const band of buildPrintEventBands(plan.sliceLevels, printSegHeights)) {
     const slicesByColumn = Array<Slice<DayGridEventSeg> | null>(plan.columnCount).fill(null)
 
     for (const slice of band.slices) {
@@ -140,11 +120,8 @@ export function buildDayGridPrintPopoverSegs(
   hiddenSegs: DayRowEventRangePart[]
 } {
   return buildDayGridPopoverSegs(
-    {
-      sourceSegs: plan.sourceSegs,
-      unmountedSlices: plan.hiddenSlices,
-    },
-    [],
+    plan.sourceSegs,
+    plan.hiddenGroups,
     column,
     plan.columnCount,
   )

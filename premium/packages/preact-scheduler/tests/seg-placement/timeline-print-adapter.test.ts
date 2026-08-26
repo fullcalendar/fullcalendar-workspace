@@ -126,7 +126,7 @@ describe('Timeline print adapter', () => {
       60,
     )
 
-    expect(plan.levels).toHaveLength(200)
+    expect(plan.sliceLevels).toHaveLength(200)
     expect(plan.hiddenSlices).toHaveLength(3)
     expect(plan.moreLinkGroups.map((group) => ({
       start: group.start,
@@ -170,10 +170,13 @@ describe('Timeline print adapter', () => {
     )
     const layout = buildTimelinePrintLayout(plan, new Map(), new Map())
 
-    expect(plan.mountedSegs).toHaveLength(200)
+    expect(new Set(plan.visibleSlices.map((slice) => slice.sourceSeg.key)))
+      .toHaveLength(200)
     expect(plan.hiddenSlices).toHaveLength(5)
     expect(plan.moreLinkGroups).toHaveLength(1)
-    expect(plan.moreLinkGroups[0].count).toBe(5)
+    expect(new Set(plan.moreLinkGroups[0].hiddenSlices.map((slice) =>
+      slice.sourceSeg.key,
+    ))).toHaveLength(5)
     expect(layout.eventBands).toHaveLength(200)
     expect(layout.moreLinkBand).not.toBeNull()
   })
@@ -207,7 +210,7 @@ describe('Timeline print adapter', () => {
       150,
     )
 
-    expect(printPlan.levels[0][0]).toMatchObject({
+    expect(printPlan.sliceLevels[0][0]).toMatchObject({
       sourceSeg: { key: 'spanning' },
       start: 0,
       end: 200,

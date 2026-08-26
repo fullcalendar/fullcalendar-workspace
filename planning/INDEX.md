@@ -125,6 +125,20 @@ monotone ratchets in pixel mode.
 | 5 | `phase-5-timegrid.md` | TimeGrid input simplification |
 | 6 | `phase-6-cleanup.md` | Delete superseded machinery; API + test sweep |
 
+## Completion status
+
+Phases 1–6 are complete. Production and print placement now use the shared
+kernel, the superseded `layout.ts`, `daygrid.ts`, and `timeline.ts` engines have
+been removed, and the protected seg-placement API contains only the surface
+consumed by premium Timeline.
+
+Two follow-up upgrades are deliberately deferred:
+
+- Add a geometry/style epoch that resets owner-lifetime measurement ratchets
+  when their styling or geometry assumptions become stale.
+- Measure real more-link heights and use those measurements for occupancy in
+  place of the current smallest-slice-height proxy.
+
 Each phase ends with a manual verification matrix. Per repo policy
 (CLAUDE.md), the implementor does not run browser tests — ask Adam to
 verify. Vitest is fine:
@@ -148,15 +162,11 @@ durable.
 
 ## Coexistence strategy (decided)
 
-This is a **complete rewrite**, not an incremental evolution. By the end of
-phase 6, nothing of the current engine survives: the old implementation is
-fully removed, and a thorough cleanup pass eliminates unused functions and
-makes the surviving code DRY.
+This was completed as a **complete rewrite**, not an incremental evolution.
+As of phase 6, none of the old engine survives: the old implementation is
+fully removed, and the surviving code uses the shared kernel vocabulary.
 
-During interim phases, **dueling implementations are acceptable**: the new
-kernel lands in new files alongside `seg-placement/layout.ts` (phase 1),
-consumers migrate per phase, and the old code shrinks as its primitives
-lose callers. Do not contort interim code to avoid temporary duplication —
-correctness of each cutover matters more than transient redundancy. The
-debt is collected in phase 6, which is a hard gate: it does not close with
-superseded code still present.
+During phases 1–5, **dueling implementations were temporarily acceptable**:
+the new kernel landed alongside `seg-placement/layout.ts`, then consumers
+migrated phase by phase. Phase 6 collected that debt and removed the
+superseded implementation.

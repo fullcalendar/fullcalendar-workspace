@@ -1,26 +1,33 @@
 import { describe, expect, it } from 'vitest'
 import {
-  type PlacementLevel,
-  type SliceOptions,
-  groupHiddenSlices,
-  planDomCandidatesByMaxLevel,
-} from '../../src/seg-placement/layout'
+  type Slice,
+  type SourceSeg,
+  convertSegsToWholeSlices,
+  groupLaterallyIntersecting,
+} from '../../src/seg-placement/kernel'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
+  type PrintPlanningOptions,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
   planPrintDomCandidates,
 } from '../../src/seg-placement/print'
-import { type UnorderedSeg, stampEventOrder } from './test-utils'
+
+type UnorderedSeg<EventMeta = unknown> = Omit<SourceSeg<EventMeta>, 'orderIndex'>
+
+function stampEventOrder<EventMeta>(
+  orderedSegs: readonly UnorderedSeg<EventMeta>[],
+): SourceSeg<EventMeta>[] {
+  return orderedSegs.map((seg, orderIndex) => ({ ...seg, orderIndex }))
+}
 
 interface TestEvent {
   id: string
 }
 
-const NO_SLICING: SliceOptions = {
-  orderStrict: false,
+const NO_SLICING: PrintPlanningOptions = {
+  eventOrderStrict: false,
   eventSlicing: false,
-  maxSlices: 3,
 }
 
 describe('print event bands', () => {
@@ -30,7 +37,7 @@ describe('print event bands', () => {
       seg('fallback', 1, 2),
     ]), NO_SLICING)
     const bands = buildPrintEventBands(
-      plan.levels,
+      plan.sliceLevels,
       new Map([['measured', 12]]),
     )
 
@@ -50,15 +57,15 @@ describe('print event bands', () => {
     ]), NO_SLICING)
 
     expect(buildPrintEventBands(
-      plan.levels,
+      plan.sliceLevels,
       new Map([['a', 8], ['b', 9], ['c', 7]]),
     )[0].thickness).toBe(9)
     expect(buildPrintEventBands(
-      plan.levels,
+      plan.sliceLevels,
       new Map([['a', 12], ['b', 30], ['c', 18]]),
     )[0].thickness).toBe(30)
     expect(buildPrintEventBands(
-      plan.levels,
+      plan.sliceLevels,
       new Map([['a', 6], ['b', 8], ['c', 7]]),
     )[0].thickness).toBe(8)
   })
@@ -67,8 +74,8 @@ describe('print event bands', () => {
     const sourceLevel = planPrintDomCandidates(
       stampEventOrder([seg('only', 0, 1)]),
       NO_SLICING,
-    ).levels[0]
-    const levels: PlacementLevel<TestEvent>[] = []
+    ).sliceLevels[0]
+    const levels: Slice<TestEvent>[][] = []
     levels[0] = []
     levels[2] = sourceLevel
 
@@ -88,11 +95,13 @@ describe('print DOM planning', () => {
     ))
     const plan = planPrintDomCandidates(segs, NO_SLICING)
 
-    expect(plan.levels).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
-    expect(plan.visiblePlacements).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
+    expect(plan.sliceLevels).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
+    expect(plan.visibleSlices).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
     expect(plan.hiddenSlices).toHaveLength(5)
-    expect(plan.mountedSegs).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
-    expect(plan.mountedSegs.map((item) => item.key)).toEqual(
+    expect(new Set(plan.visibleSlices.map((item) => item.sourceSeg.key))).toEqual(
+      new Set(segs.slice(0, DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key)),
+    )
+    expect(plan.visibleSlices.map((item) => item.sourceSeg.key)).toEqual(
       segs.slice(0, DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key),
     )
     expect(plan.hiddenSlices.map((item) => item.sourceSeg.key)).toEqual(
@@ -107,11 +116,11 @@ describe('Timeline print more-link band', () => {
   })
 
   it('uses fallback and measured maxima and allows the band to shrink', () => {
-    const hiddenPlan = planDomCandidatesByMaxLevel(stampEventOrder([
+    const hiddenSlices = convertSegsToWholeSlices(stampEventOrder([
       seg('left-hidden', 0, 1),
       seg('right-hidden', 2, 3),
-    ]), 0, NO_SLICING)
-    const groups = groupHiddenSlices(hiddenPlan.hiddenSlices)
+    ]))
+    const groups = groupLaterallyIntersecting(hiddenSlices)
 
     expect(buildPrintMoreLinkBand(
       groups,
@@ -134,18 +143,16 @@ describe('Timeline print more-link band', () => {
   })
 
   it('adds a final link band without consuming a capped event level', () => {
-    const plan = planDomCandidatesByMaxLevel(stampEventOrder([
+    const slices = convertSegsToWholeSlices(stampEventOrder([
       seg('visible-a', 0, 1),
       seg('visible-b', 0, 1),
       seg('hidden', 0, 1),
-    ]), 2, NO_SLICING)
-    const eventBands = buildPrintEventBands(plan.levels, new Map())
-    const groups = groupHiddenSlices(plan.hiddenSlices)
+    ]))
+    const eventBands = buildPrintEventBands([[slices[0]], [slices[1]]], new Map())
+    const groups = groupLaterallyIntersecting([slices[2]])
     const linkBand = buildPrintMoreLinkBand(groups, new Map())
 
     expect(eventBands).toHaveLength(2)
-    expect(plan.visiblePlacements).toHaveLength(2)
-    expect(plan.mountedSegs).toHaveLength(2)
     expect(groups).toHaveLength(1)
     expect(linkBand).toMatchObject({ thickness: 20, moreLinkGroups: groups })
   })
@@ -158,6 +165,7 @@ function seg(
 ): UnorderedSeg<TestEvent> {
   return {
     key: id,
+    eventKey: id,
     meta: { id },
     start,
     end,

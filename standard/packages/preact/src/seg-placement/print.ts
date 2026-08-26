@@ -1,15 +1,15 @@
 import {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
-  planDomCandidatesByMaxLevel,
-  type DomCandidatePlan,
   type HiddenSliceGroup,
-  type PlacementLevel,
-  type SegThicknessMap,
   type Slice,
-  type SliceOptions,
   type SourceSeg,
-} from './layout'
+  buildSegLevels,
+  convertSegLevelsToWholeSlices,
+  convertSegsToWholeSlices,
+  mergeExtraIntoLevels,
+  sortByEventOrder,
+} from './kernel'
 
 /** High but finite safety cap for event levels in either print view. */
 export const DEFAULT_PRINT_MAX_LEVELS = 200
@@ -21,15 +21,43 @@ export const DEFAULT_PRINT_MAX_LEVELS = 200
  * from every event-ordered source with unit thickness. The default 200-level
  * cap is an internal safety constant, not a public option.
  */
+export interface PrintCandidatePlan<EventMeta = unknown> {
+  sliceLevels: Slice<EventMeta>[][]
+  visibleSlices: Slice<EventMeta>[]
+  hiddenSlices: Slice<EventMeta>[]
+}
+
+export interface PrintPlanningOptions {
+  eventOrderStrict: boolean
+  eventSlicing: boolean
+}
+
 export function planPrintDomCandidates<EventMeta>(
   eventOrderedSegs: readonly SourceSeg<EventMeta>[],
-  sliceOptions: SliceOptions,
-): DomCandidatePlan<EventMeta> {
-  return planDomCandidatesByMaxLevel(
+  options: PrintPlanningOptions,
+): PrintCandidatePlan<EventMeta> {
+  const { segLevels, excludedSegs } = buildSegLevels(
     eventOrderedSegs,
+    options.eventOrderStrict,
     DEFAULT_PRINT_MAX_LEVELS,
-    sliceOptions,
   )
+  const sliceLevels = convertSegLevelsToWholeSlices(segLevels)
+  const hiddenGroups = mergeExtraIntoLevels(
+    sliceLevels,
+    convertSegsToWholeSlices(excludedSegs),
+    options.eventOrderStrict,
+    options.eventSlicing,
+    DEFAULT_PRINT_MAX_LEVELS,
+    0,
+  )
+
+  return {
+    sliceLevels,
+    visibleSlices: sliceLevels.flat(),
+    hiddenSlices: sortByEventOrder(
+      hiddenGroups.flatMap((group) => group.hiddenSlices),
+    ),
+  }
 }
 
 /**
@@ -70,8 +98,8 @@ export interface PrintMoreLinkBand<EventMeta = unknown> {
  * Empty or sparse levels do not create empty DOM bands.
  */
 export function buildPrintEventBands<EventMeta>(
-  levels: readonly PlacementLevel<EventMeta>[],
-  printEventThicknesses: SegThicknessMap,
+  levels: readonly (readonly Slice<EventMeta>[])[],
+  printEventThicknesses: ReadonlyMap<string, number>,
   defaultPrintEventThickness = DEFAULT_UNMEASURED_EVENT_THICKNESS,
 ): PrintEventBand<EventMeta>[] {
   const bands: PrintEventBand<EventMeta>[] = []
@@ -81,19 +109,13 @@ export function buildPrintEventBands<EventMeta>(
     if (!entries?.length) continue
 
     let thickness = 0
-    const slices = entries.map((entry) => {
+    const slices = entries.map((slice) => {
       thickness = Math.max(
         thickness,
-        printEventThicknesses.get(entry.sourceSeg.key) ??
+        printEventThicknesses.get(slice.sourceSeg.key) ??
           defaultPrintEventThickness,
       )
-      return {
-        sourceSeg: entry.sourceSeg,
-        start: entry.start,
-        end: entry.end,
-        isStart: entry.isStart,
-        isEnd: entry.isEnd,
-      }
+      return slice
     })
 
     bands.push({
