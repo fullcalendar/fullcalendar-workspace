@@ -302,6 +302,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   eventSelection={props.eventSelection}
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
+
+                  // dimensions
+                  colWidth={colWidth}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div

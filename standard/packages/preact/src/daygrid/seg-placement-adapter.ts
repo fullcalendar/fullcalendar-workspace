@@ -57,26 +57,8 @@ type DayGridPlacementMode =
   | 'maxEventRows'
   | 'auto'
 
-/*
-These owner-lifetime extrema only widen auto-mode planning assumptions.
-Keeping them monotone avoids remount churn: stale minima can mount extra
-measurement donors, while the stale maximum stabilizes which partial-slice
-measurement donors the pixel merge creates.
-*/
-export interface DayGridPlacementOwnerState {
-  smallestSliceHeight: number | null
-  /** Stable uniform thickness used to discover partial-slice donors. */
-  largestSliceHeight: number | null
-  /**
-   * Largest observed height of the space foreground events actually compete
-   * for, which excludes the day-number header above it. A row's complete
-   * height would overstate capacity by that header.
-   */
-  largestCanvasHeight: number | null
-  neededLevelCount: number
-}
-
 const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
+const SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX = 2
 
 /** Initial DOM candidate frontier, before any measurement can widen it. */
 export const DEFAULT_NEEDED_LEVEL_COUNT = estimateLevelCapacity(
@@ -109,6 +91,10 @@ interface DayGridPixelPlacementInputs {
   columnCount: number
   /** Real pixels foreground events compete for. Undefined until measured. */
   canvasHeight?: number
+  /** Measured row-style more-link trigger height. */
+  moreLinkHeight?: number
+  neededLevelCount: number
+  sliceHeightGrowthRate: number
 }
 
 /**
@@ -164,11 +150,26 @@ export function buildDayGridPixelPlacements<HeightRef>(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridPixelPlacementInputs,
   sliceHeightMap: SliceHeightMap<HeightRef>,
-  neededLevelCount: number,
-  smallestSliceHeight: number | undefined,
-  largestSliceHeight: number | undefined,
 ): DayGridPlacementLayout<HeightRef> {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
+  const currentWholeHeights = getCurrentWholeHeights(
+    sourceSegs,
+    sliceHeightMap.current,
+  )
+  const largestCurrentWholeHeight = currentWholeHeights.size
+    ? Math.max(...currentWholeHeights.values())
+    : undefined
+  const getPlanningSliceThickness = largestCurrentWholeHeight == null
+    ? undefined
+    : (slice: Slice<DayGridSourceSeg>) => {
+      const sourceHeight = currentWholeHeights.get(slice.sourceSeg.key) ??
+        largestCurrentWholeHeight
+      return computeDayGridPlanningSliceThickness(
+        slice,
+        sourceHeight,
+        input.sliceHeightGrowthRate,
+      )
+    }
   const layout = buildPixelLimitedLayout(
     {
       segs: sourceSegs,
@@ -180,9 +181,9 @@ export function buildDayGridPixelPlacements<HeightRef>(
     },
     sliceHeightMap,
     input.canvasHeight,
-    neededLevelCount,
-    smallestSliceHeight,
-    largestSliceHeight,
+    input.neededLevelCount,
+    input.moreLinkHeight,
+    getPlanningSliceThickness,
   )
 
   return buildDayGridPlacementLayout(
@@ -249,70 +250,6 @@ function cutSegToColumn(
   }
 }
 
-/** Initial monotone owner state for one DayGridRows component lifetime. */
-export function createDayGridPlacementOwnerState(): DayGridPlacementOwnerState {
-  return {
-    smallestSliceHeight: null,
-    largestSliceHeight: null,
-    largestCanvasHeight: null,
-    neededLevelCount: DEFAULT_NEEDED_LEVEL_COUNT,
-  }
-}
-
-/**
- * Records a positive whole-or-partial slice height, returning the same object
- * when neither owner extremum changes.
- *
- * Any positive report is admitted. Compact custom event content can
- * legitimately be shorter than the unmeasured fallback, so a fixed validity
- * floor would silently discard real occupied dimensions. The minimum widens
- * the whole-slice donor frontier; the maximum stabilizes partial-slice donor
- * discovery across measurement deletion and remounting.
- *
- * Non-positive and non-finite reports, including the `null` a wrapper sends
- * when it unmounts, leave the state untouched.
- */
-export function observeDayGridSliceHeight(
-  state: DayGridPlacementOwnerState,
-  height: number,
-): DayGridPlacementOwnerState {
-  if (!isPositiveFinite(height)) {
-    return state
-  }
-
-  const smallestSliceHeight = state.smallestSliceHeight == null
-    ? height
-    : Math.min(state.smallestSliceHeight, height)
-  const largestSliceHeight = state.largestSliceHeight == null
-    ? height
-    : Math.max(state.largestSliceHeight, height)
-
-  return smallestSliceHeight === state.smallestSliceHeight &&
-    largestSliceHeight === state.largestSliceHeight
-    ? state
-    : updateDayGridPlacementOwnerState(state, {
-      smallestSliceHeight,
-      largestSliceHeight,
-    })
-}
-
-/** Records a positive event-area height, returning the same object for a non-extremum. */
-export function observeDayGridCanvasHeight(
-  state: DayGridPlacementOwnerState,
-  height: number,
-): DayGridPlacementOwnerState {
-  if (!isPositiveFinite(height) || (
-    state.largestCanvasHeight != null &&
-    height <= state.largestCanvasHeight
-  )) {
-    return state
-  }
-
-  return updateDayGridPlacementOwnerState(state, {
-    largestCanvasHeight: height,
-  })
-}
-
 /**
  * Resolves which measured route a row takes from the two max options.
  *
@@ -339,7 +276,7 @@ export function resolveDayGridPlacementMode(
 /**
  * Resolves the dimensionless DOM frontier without applying more-link tax.
  * Numeric limits own their explicit cap; unlimited rows mount all sources;
- * boolean-auto rows consume the cross-row observed frontier.
+ * boolean-auto rows consume their row-local observed frontier.
  */
 export function computeDayGridDomCandidateMaxLevels(
   dayMaxEvents: boolean | number | undefined,
@@ -418,28 +355,73 @@ function intersectsColumn(
   return column >= range.start && column < range.end
 }
 
-function updateDayGridPlacementOwnerState(
-  state: DayGridPlacementOwnerState,
-  extrema: Partial<Pick<
-    DayGridPlacementOwnerState,
-    'smallestSliceHeight' | 'largestSliceHeight' | 'largestCanvasHeight'
-  >>,
-): DayGridPlacementOwnerState {
-  const next = { ...state, ...extrema }
-  next.neededLevelCount = Math.max(
-    state.neededLevelCount,
-    estimateLevelCapacity(
-      next.largestCanvasHeight ?? DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
-      next.smallestSliceHeight ?? DEFAULT_UNMEASURED_EVENT_THICKNESS,
-    ),
-  )
-  return next
-}
-
-function estimateLevelCapacity(eventAreaHeight: number, eventHeight: number): number {
+export function estimateLevelCapacity(eventAreaHeight: number, eventHeight: number): number {
   return Math.max(1, Math.ceil(eventAreaHeight / eventHeight))
 }
 
-function isPositiveFinite(value: number): boolean {
-  return value > 0 && Number.isFinite(value)
+/** Ratchets the largest valid partial-to-source growth sample in one live snapshot. */
+export function ratchetDayGridSliceHeightGrowthRate(
+  currentRate: number,
+  slices: readonly Slice<DayGridSourceSeg>[],
+  sliceHeights: ReadonlyMap<string, number>,
+): number {
+  let nextRate = currentRate
+
+  for (const slice of slices) {
+    const { sourceSeg } = slice
+    if (slice.start === sourceSeg.start && slice.end === sourceSeg.end) continue
+
+    const sourceHeight = sliceHeights.get(sourceSeg.key)
+    const sliceHeight = sliceHeights.get(getSliceKey(slice))
+    if (
+      !isPositiveFinite(sourceHeight) ||
+      !isPositiveFinite(sliceHeight) ||
+      sliceHeight <= sourceHeight + SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX
+    ) continue
+
+    const sourceWidth = sourceSeg.end - sourceSeg.start
+    const sliceWidth = slice.end - slice.start
+    const compressionGrowth = sourceWidth / sliceWidth - 1
+    if (!(compressionGrowth > 0 && Number.isFinite(compressionGrowth))) continue
+
+    const observedRate = (sliceHeight / sourceHeight - 1) / compressionGrowth
+    if (observedRate > nextRate && Number.isFinite(observedRate)) {
+      nextRate = observedRate
+    }
+  }
+
+  return nextRate
+}
+
+/** Predicts one slice's topology thickness from its source height and row rate. */
+export function computeDayGridPlanningSliceThickness(
+  slice: Slice<DayGridSourceSeg>,
+  sourceHeight: number,
+  growthRate: number,
+): number {
+  const sourceWidth = slice.sourceSeg.end - slice.sourceSeg.start
+  const sliceWidth = slice.end - slice.start
+  if (!(sourceWidth > 0 && sliceWidth > 0)) return sourceHeight
+  const compressionGrowth = Math.max(0, sourceWidth / sliceWidth - 1)
+  return sourceHeight * (1 + growthRate * compressionGrowth)
+}
+
+function getCurrentWholeHeights(
+  sourceSegs: readonly DayGridSourceSeg[],
+  sliceHeights: ReadonlyMap<string, number>,
+): Map<string, number> {
+  const currentWholeHeights = new Map<string, number>()
+
+  for (const sourceSeg of sourceSegs) {
+    const height = sliceHeights.get(sourceSeg.key)
+    if (isPositiveFinite(height)) {
+      currentWholeHeights.set(sourceSeg.key, height)
+    }
+  }
+
+  return currentWholeHeights
+}
+
+function isPositiveFinite(value: number | undefined): value is number {
+  return value != null && value > 0 && Number.isFinite(value)
 }

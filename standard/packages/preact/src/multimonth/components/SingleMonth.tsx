@@ -269,6 +269,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 eventSelection={slicedProps.eventSelection}
 
                 // dimensions
+                colWidth={colWidth}
                 visibleWidth={state.gridWidth}
                 cellIsNarrow={cellIsNarrow}
                 cellIsMicro={cellIsMicro}

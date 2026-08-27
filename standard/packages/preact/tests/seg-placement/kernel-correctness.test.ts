@@ -167,7 +167,7 @@ describe('pure positioning kernel', () => {
       false,
       10,
       6,
-      5,
+      () => 5,
     )
     expect(mergeLevels.flat()).toEqual([])
     expect(groups[0].hiddenSlices.some((slice) =>
@@ -226,7 +226,7 @@ describe('pure positioning kernel', () => {
       true,
       10,
       1,
-      slightlyOver,
+      () => slightlyOver,
     )
     expect(mergeLevels[0]).toEqual([partial])
 
@@ -241,7 +241,7 @@ describe('pure positioning kernel', () => {
       true,
       21,
       1,
-      slightlyOver,
+      () => slightlyOver,
     )
     expect(ceilingLevels[0]).toEqual([partial])
 
@@ -266,7 +266,7 @@ describe('pure positioning kernel', () => {
       true,
       15,
       5,
-      10,
+      () => 10,
     )
 
     expect(projectSlices(levels.flat())).toEqual([
@@ -279,6 +279,39 @@ describe('pure positioning kernel', () => {
     ])
     expect(groups[0].occupant).toMatchObject({ levelCoord: 10, thickness: 5 })
     auditCoverage([base, extra], levels, groups)
+  })
+
+  it('uses thicker reservations for narrower candidate slices', () => {
+    const [base, extra] = segs([
+      ['base', 1, 2],
+      ['extra', 0, 3],
+    ])
+    const levels = convertSegLevelsToWholeSlices([[base]])
+    const coords = new Map([[base.key, 0]])
+    const getSliceThickness = (slice: Slice<TestSeg>) => {
+      if (slice.sourceSeg === base) return 5
+      return slice.end - slice.start === 3 ? 6 : 10
+    }
+    const groups = mergeExtraIntoLevelCoords(
+      levels,
+      coords,
+      convertSegsToWholeSlices([extra]),
+      false,
+      true,
+      10,
+      5,
+      getSliceThickness,
+    )
+
+    expect(projectSlices(levels.flat())).toEqual([
+      ['extra', 0, 1],
+      ['base', 1, 2],
+      ['extra', 2, 3],
+    ])
+    expect(projectSlices(groups[0].hiddenSlices)).toEqual([
+      ['extra', 1, 2],
+    ])
+    expect(groups[0].occupant).toMatchObject({ levelCoord: 5, thickness: 5 })
   })
 
   it('recursively consumes pixel frontiers until the occupant fits', () => {
@@ -302,7 +335,7 @@ describe('pure positioning kernel', () => {
       false,
       30,
       15,
-      10,
+      () => 10,
     )
 
     expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
@@ -327,7 +360,7 @@ describe('pure positioning kernel', () => {
       true,
       15,
       5,
-      10,
+      () => 10,
     )
     const exact = resolveLevelCoords(
       levels,

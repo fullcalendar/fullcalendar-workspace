@@ -67,6 +67,12 @@ describe('pure positioning kernel fuzzing', () => {
         convertSegsToWholeSlices(built.excludedSegs),
       ).sort((a, b) => a.sourceSeg.orderIndex - b.sourceSeg.orderIndex)
       const moreLinkHeight = Math.max(1, initialHeight - 2 - random())
+      const growthRate = random()
+      const getPlanningThickness = (slice: Slice<TestSeg>) => {
+        const sourceWidth = slice.sourceSeg.end - slice.sourceSeg.start
+        const sliceWidth = slice.end - slice.start
+        return initialHeight * (1 + growthRate * (sourceWidth / sliceWidth - 1))
+      }
       const groups = mergeExtraIntoLevelCoords(
         levels,
         initialCoords,
@@ -75,7 +81,7 @@ describe('pure positioning kernel fuzzing', () => {
         seed % 3 !== 0,
         maxPixels,
         moreLinkHeight,
-        initialHeight,
+        getPlanningThickness,
       )
       const exactHeights = new Map<string, number>()
       for (const slice of levels.flat()) {
@@ -88,6 +94,7 @@ describe('pure positioning kernel fuzzing', () => {
         initialHeight,
         maxPixels,
         frontier,
+        growthRate,
       })
 
       auditLevels(levels, seed % 2 === 0, label)
@@ -98,7 +105,7 @@ describe('pure positioning kernel fuzzing', () => {
         moreLinkHeight,
         label,
         initialCoords,
-        initialHeight,
+        getPlanningThickness,
       )
       auditCoverage(sources, levels, groups, label)
       for (const slice of levels.flat()) {
@@ -196,8 +203,11 @@ function auditGroups(
   tax: number,
   label: string,
   coords?: ReadonlyMap<string, number>,
-  thickness: number = 1,
+  thickness: number | ((slice: Slice<TestSeg>) => number) = 1,
 ): void {
+  const getThickness = typeof thickness === 'function'
+    ? thickness
+    : () => thickness
   for (let left = 0; left < groups.length; left++) {
     for (let right = left + 1; right < groups.length; right++) {
       invariant(
@@ -223,7 +233,7 @@ function auditGroups(
     levels.forEach((level, levelIndex) => {
       for (const slice of level) {
         if (intersects(slice, group)) {
-          const bottom = (coords?.get(getSliceKey(slice)) ?? levelIndex) + thickness
+          const bottom = (coords?.get(getSliceKey(slice)) ?? levelIndex) + getThickness(slice)
           invariant(
             group.occupant.levelCoord! >= bottom,
             'occupant is not a range footer',

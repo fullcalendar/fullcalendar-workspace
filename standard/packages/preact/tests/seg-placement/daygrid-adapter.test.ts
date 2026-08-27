@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import { getEventSliceKey } from '../../src/daygrid/TableSeg'
-import { RefMap } from '../../src/util/RefMap'
+import { type Slice, getSliceKey } from '../../src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
+  type DayGridSourceSeg,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   buildDayGridSegSources,
+  computeDayGridPlanningSliceThickness,
   computeDayGridDomCandidateMaxLevels,
   computeDayGridMoreLinkLevelTax,
-  createDayGridPlacementOwnerState,
-  observeDayGridCanvasHeight,
-  observeDayGridSliceHeight,
+  estimateLevelCapacity,
+  ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
 } from '../../src/daygrid/seg-placement-adapter'
 
@@ -42,77 +43,71 @@ describe('DayGrid production placement adapter', () => {
     expect(sources[0].eventRange).toBe(first.eventRange)
     expect(sources[1].eventRange).toBe(second.eventRange)
   })
-
 })
 
-describe('DayGridRows placement owner state', () => {
-  it('tracks the minimum across rows and grows the candidate frontier monotonically', () => {
-    const initial = createDayGridPlacementOwnerState()
-    const afterTallEvent = observeDayGridSliceHeight(initial, 30)
-    const afterTallArea = observeDayGridCanvasHeight(afterTallEvent, 220)
-    const afterShortEvent = observeDayGridSliceHeight(afterTallArea, 10)
-
-    expect(initial).toEqual({
-      smallestSliceHeight: null,
-      largestSliceHeight: null,
-      largestCanvasHeight: null,
-      neededLevelCount: 8,
-    })
-    expect(afterTallEvent).toMatchObject({
-      smallestSliceHeight: 30,
-      largestSliceHeight: 30,
-      neededLevelCount: 8,
-    })
-    expect(afterTallArea).toMatchObject({
-      largestCanvasHeight: 220,
-      neededLevelCount: 8,
-    })
-    expect(afterShortEvent).toMatchObject({
-      smallestSliceHeight: 10,
-      largestSliceHeight: 30,
-      largestCanvasHeight: 220,
-      neededLevelCount: 22,
-    })
-    expect(observeDayGridSliceHeight(afterShortEvent, 40)).toMatchObject({
-      smallestSliceHeight: 10,
-      largestSliceHeight: 40,
-      neededLevelCount: 22,
-    })
-    expect(observeDayGridCanvasHeight(afterShortEvent, 100)).toBe(afterShortEvent)
-  })
-
-  it('ratchets the owner while RefMap forgets deleted measurements', () => {
-    let owner = observeDayGridCanvasHeight(createDayGridPlacementOwnerState(), 100)
-    // The production wiring: a RefMap whose callback ratchets non-null reports.
-    const heights = new RefMap<string, number>((height) => {
-      if (height != null) {
-        owner = observeDayGridSliceHeight(owner, height)
-      }
-    })
-    const ref = heights.createRef('slice')
-
-    ref(0.5)
-    expect(heights.current.get('slice')).toBe(0.5)
-    expect(owner).toMatchObject({
-      smallestSliceHeight: 0.5,
-      largestSliceHeight: 0.5,
-      neededLevelCount: 200,
-    })
-
-    ref(30)
-    expect(owner.largestSliceHeight).toBe(30)
-    expect(heights.current.get('slice')).toBe(30)
-    ref(null)
-    expect(heights.current.has('slice')).toBe(false)
-    expect(owner.largestSliceHeight).toBe(30)
-  })
-
+describe('DayGrid row-local placement state', () => {
   it('uses explicit numeric caps, the auto frontier, and no cap for unlimited rows', () => {
     expect(computeDayGridDomCandidateMaxLevels(undefined, undefined, 9)).toBe(Infinity)
     expect(computeDayGridDomCandidateMaxLevels(3, 7, 9)).toBe(3)
     expect(computeDayGridDomCandidateMaxLevels(undefined, 4, 9)).toBe(4)
     expect(computeDayGridDomCandidateMaxLevels(true, 4, 9)).toBe(9)
     expect(computeDayGridDomCandidateMaxLevels(3, true, 9)).toBe(9)
+  })
+
+  it('estimates the candidate frontier from current canvas and slice heights', () => {
+    expect(estimateLevelCapacity(220, 30)).toBe(8)
+    expect(estimateLevelCapacity(220, 10)).toBe(22)
+  })
+
+  it('learns direct compression growth above the pixel noise floor', () => {
+    const source = buildDayGridSegSources([makeSeg('wide', 0, 4)])[0]
+    const half = makeSlice(source, 0, 2)
+    const quarter = makeSlice(source, 0, 1)
+
+    expect(ratchetDayGridSliceHeightGrowthRate(
+      0,
+      [half],
+      new Map([
+        [source.key, 20],
+        [getSliceKey(half), 22],
+      ]),
+    )).toBe(0)
+
+    const learnedRate = ratchetDayGridSliceHeightGrowthRate(
+      0,
+      [half],
+      new Map([
+        [source.key, 20],
+        [getSliceKey(half), 30],
+      ]),
+    )
+    expect(learnedRate).toBe(0.5)
+    expect(computeDayGridPlanningSliceThickness(half, 20, learnedRate)).toBe(30)
+    expect(computeDayGridPlanningSliceThickness(quarter, 20, learnedRate)).toBe(50)
+    expect(ratchetDayGridSliceHeightGrowthRate(
+      learnedRate,
+      [half],
+      new Map([
+        [source.key, 20],
+        [getSliceKey(half), 24],
+      ]),
+    )).toBe(learnedRate)
+  })
+
+  it('learns the same rate from inverse-width partials of different widths', () => {
+    const source = buildDayGridSegSources([makeSeg('wide', 0, 4)])[0]
+    const half = makeSlice(source, 0, 2)
+    const quarter = makeSlice(source, 3, 4)
+
+    expect(ratchetDayGridSliceHeightGrowthRate(
+      0,
+      [half, quarter],
+      new Map([
+        [source.key, 20],
+        [getSliceKey(half), 40],
+        [getSliceKey(quarter), 80],
+      ]),
+    )).toBe(1)
   })
 })
 
@@ -132,7 +127,6 @@ describe('DayGrid screen mode routing', () => {
     expect(computeDayGridMoreLinkLevelTax('maxEventRows')).toBe(1)
     expect(computeDayGridMoreLinkLevelTax('auto')).toBe(0)
   })
-
 })
 
 describe('DayGrid kernel level placement', () => {
@@ -249,7 +243,7 @@ describe('DayGrid kernel pixel placement', () => {
     expect(layout.isSettled).toBe(false)
   })
 
-  it('defers partial donor planning until slice extrema have been observed', () => {
+  it('defers partial donor planning until the more-link probe has measured', () => {
     const layout = layoutPixelRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
@@ -259,7 +253,7 @@ describe('DayGrid kernel pixel placement', () => {
         'blocker:1': 5,
         'wide:0': 12,
       },
-      hasObservedSliceHeightExtrema: false,
+      hasMeasuredMoreLink: false,
     })
 
     expect(layout.columns.flatMap((column) =>
@@ -291,7 +285,7 @@ describe('DayGrid kernel pixel placement', () => {
         'blocker:1': 5,
         'wide:0': 12,
       },
-      smallestSliceHeight: 1,
+      moreLinkHeight: 1,
     })
 
     expect(levelItemTops(awaitingPartials.columns, 0)).toEqual({
@@ -317,10 +311,44 @@ describe('DayGrid kernel pixel placement', () => {
         'wide:0:0:slice': 6,
         'wide:0:2:slice': 6,
       },
-      smallestSliceHeight: 1,
+      moreLinkHeight: 1,
     })
     expect(settled.isSettled).toBe(true)
     expect(settled.columns.map((column) => column.contentHeight)).toEqual([6, 5, 6])
+  })
+
+  it('keeps a displaced whole source mounted as the measurement donor for its partials', () => {
+    const layout = layoutPixelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, {
+      canvasHeight: 15,
+      heights: {
+        'blocker:1': 5,
+        'wide:0': 12,
+        'wide:0:0:slice': 6,
+        'wide:0:2:slice': 6,
+      },
+      moreLinkHeight: 1,
+    })
+
+    expect(layout.columns[0].renderItems).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        key: 'wide:0',
+        style: { visibility: 'hidden', top: undefined },
+        heightRef: 'ref:wide:0',
+      }),
+      expect.objectContaining({
+        key: 'wide:0:0:slice',
+        style: { visibility: '', top: 0 },
+      }),
+    ]))
+    expect(layout.columns[2].renderItems).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        key: 'wide:0:2:slice',
+        style: { visibility: '', top: 0 },
+      }),
+    ]))
   })
 
   it('keeps partial donor selection stable after its measurements disappear', () => {
@@ -336,8 +364,8 @@ describe('DayGrid kernel pixel placement', () => {
         'wide:0:0:slice': 12,
         'wide:0:2:slice': 12,
       },
-      smallestSliceHeight: 1,
-      largestSliceHeight: 12,
+      moreLinkHeight: 1,
+      sliceHeightGrowthRate: 0.5,
     })
     const afterPartialsUnmount = layoutPixelRow(segs, 3, {
       canvasHeight: 10,
@@ -345,8 +373,8 @@ describe('DayGrid kernel pixel placement', () => {
         'blocker:1': 5,
         'wide:0': 6,
       },
-      smallestSliceHeight: 1,
-      largestSliceHeight: 12,
+      moreLinkHeight: 1,
+      sliceHeightGrowthRate: 0.5,
     })
 
     const renderKeys = (layout: ReturnType<typeof layoutPixelRow>) =>
@@ -394,7 +422,7 @@ describe('DayGrid kernel pixel placement', () => {
     expect(layout.columns[0].contentHeight).toBe(20)
   })
 
-  it('stops mounting candidates beyond the cross-row DOM frontier', () => {
+  it('stops mounting candidates beyond the row-local DOM frontier', () => {
     const { columns } = layoutPixelRow(twoStacks, 2, { neededLevelCount: 2 })
 
     // The third level never mounts, yet both columns still list their rejected
@@ -458,15 +486,14 @@ function layoutPixelRow(
     heights?: Record<string, number>,
     canvasHeight?: number,
     neededLevelCount?: number,
-    smallestSliceHeight?: number,
-    largestSliceHeight?: number,
-    hasObservedSliceHeightExtrema?: boolean,
+    moreLinkHeight?: number,
+    sliceHeightGrowthRate?: number,
+    hasMeasuredMoreLink?: boolean,
   } = {},
 ) {
   const heights = config.heights ?? Object.fromEntries(
     eventOrderedSegs.map((seg) => [getEventSliceKey(seg), EVENT_HEIGHT]),
   )
-  const measuredHeights = Object.values(heights)
 
   return buildDayGridPixelPlacements(
     eventOrderedSegs,
@@ -475,22 +502,16 @@ function layoutPixelRow(
       eventSlicing: config.eventSlicing ?? true,
       columnCount,
       canvasHeight: config.canvasHeight,
+      moreLinkHeight: config.hasMeasuredMoreLink === false
+        ? undefined
+        : config.moreLinkHeight ?? EVENT_HEIGHT,
+      neededLevelCount: config.neededLevelCount ?? 8,
+      sliceHeightGrowthRate: config.sliceHeightGrowthRate ?? 0,
     },
     {
       current: new Map(Object.entries(heights)),
       createRef: (key) => `ref:${key}`,
     },
-    config.neededLevelCount ?? 8,
-    config.hasObservedSliceHeightExtrema === false
-      ? undefined
-      : config.smallestSliceHeight ?? (
-        measuredHeights.length ? Math.min(...measuredHeights) : undefined
-      ),
-    config.hasObservedSliceHeightExtrema === false
-      ? undefined
-      : config.largestSliceHeight ?? (
-        measuredHeights.length ? Math.max(...measuredHeights) : undefined
-      ),
   )
 }
 
@@ -518,6 +539,20 @@ function makeSeg(
       instance: { instanceId },
     },
   } as DayGridEventSeg
+}
+
+function makeSlice(
+  sourceSeg: DayGridSourceSeg,
+  start: number,
+  end: number,
+): Slice<DayGridSourceSeg> {
+  return {
+    sourceSeg,
+    start,
+    end,
+    isStart: sourceSeg.isStart && start === sourceSeg.start,
+    isEnd: sourceSeg.isEnd && end === sourceSeg.end,
+  }
 }
 
 function segIds(segs: DayGridEventSeg[]): string[] {

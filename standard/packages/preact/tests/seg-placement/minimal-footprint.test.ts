@@ -115,7 +115,15 @@ describe('minimal-footprint hiding, pixel currency', () => {
     ]
     const layout = buildDayGridPixelPlacements(
       segs,
-      { orderStrict: false, eventSlicing: true, columnCount: 7, canvasHeight: 25 },
+      {
+        orderStrict: false,
+        eventSlicing: true,
+        columnCount: 7,
+        canvasHeight: 25,
+        moreLinkHeight: EVENT_HEIGHT,
+        neededLevelCount: 8,
+        sliceHeightGrowthRate: 0,
+      },
       {
         current: new Map<string, number>([
           ['e1:1', EVENT_HEIGHT],
@@ -125,9 +133,6 @@ describe('minimal-footprint hiding, pixel currency', () => {
         ]),
         createRef: (key) => `ref:${key}`,
       },
-      8,
-      EVENT_HEIGHT,
-      EVENT_HEIGHT,
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
@@ -147,7 +152,15 @@ describe('minimal-footprint hiding, pixel currency', () => {
     ]
     const layout = buildDayGridPixelPlacements(
       segs,
-      { orderStrict: false, eventSlicing: true, columnCount: 7, canvasHeight: 38.640625 },
+      {
+        orderStrict: false,
+        eventSlicing: true,
+        columnCount: 7,
+        canvasHeight: 38.640625,
+        moreLinkHeight: 17,
+        neededLevelCount: 9,
+        sliceHeightGrowthRate: 0,
+      },
       {
         current: new Map<string, number>([
           ['e1:1', 17],
@@ -157,9 +170,6 @@ describe('minimal-footprint hiding, pixel currency', () => {
         ]),
         createRef: (key) => `ref:${key}`,
       },
-      9,
-      17,
-      17,
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([

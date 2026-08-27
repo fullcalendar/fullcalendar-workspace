@@ -153,6 +153,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventSelection={props.eventSelection}
 
             // dimensions
+            colWidth={cellWidth}
             visibleWidth={totalWidth}
             cellIsNarrow={cellIsNarrow}
             cellIsMicro={cellIsMicro}

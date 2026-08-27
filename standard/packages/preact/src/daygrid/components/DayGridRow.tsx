@@ -32,6 +32,8 @@ import {
   DEFAULT_NEEDED_LEVEL_COUNT,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
+  estimateLevelCapacity,
+  ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import {
@@ -71,16 +73,11 @@ export interface DayGridRowProps {
   // dimensions
   colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
-  // Cross-row placement-owner inputs used only by the pixel-limited route.
-  neededLevelCount?: number
-  smallestSliceHeight?: number
-  largestSliceHeight?: number
+  moreLinkHeight?: number
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
-  onSliceHeight?: (height: number) => void // occupied height of one exact slice
-  onEventAreaHeight?: (height: number) => void // row-wide height shared by all foreground events
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
@@ -100,12 +97,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
   })
   // Every screen slice (whole or partial) reports its occupied height here.
-  // A non-null report ratchets either the cross-row owner or this standalone
-  // row before the rescheduled solve can read the map.
-  private sliceHeightMap = new RefMap<string, number>((height) => {
-    if (height != null) {
-      this.handleSliceHeightInsertion(height)
-    }
+  private sliceHeightMap = new RefMap<string, number>(() => {
     afterSize(this.handleSegPositioning)
   })
 
@@ -125,11 +117,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // internal
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
-  private isScreenLayoutSettled = false
-  private needsEventAreaHeightReport = false
-  // Standalone (all-day lane) placement extrema.
-  private smallestSliceHeight?: number
-  private largestSliceHeight?: number
+  private neededLevelCount = DEFAULT_NEEDED_LEVEL_COUNT
+  private sliceHeightGrowthRate = 0
+  private latestScreenSlices: Slice<DayGridSourceSeg>[] = []
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -145,6 +135,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     let screenSliceCoords: ReadonlyMap<string, number> = new Map()
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
+    this.latestScreenSlices = []
 
     if (props.forPrint) {
       printPlan = this.buildPrintPlan(
@@ -167,10 +158,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
-      const smallestSliceHeight = props.smallestSliceHeight ??
-        this.smallestSliceHeight
-      const largestSliceHeight = props.largestSliceHeight ??
-        this.largestSliceHeight
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements<Ref<number>>(
           fgEventSegs,
@@ -179,11 +166,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             eventSlicing: options.eventSlicing,
             columnCount: cells.length,
             canvasHeight: minMainHeight,
+            moreLinkHeight: props.moreLinkHeight,
+            neededLevelCount: this.neededLevelCount,
+            sliceHeightGrowthRate: this.sliceHeightGrowthRate,
           },
           this.sliceHeightMap,
-          props.neededLevelCount ?? DEFAULT_NEEDED_LEVEL_COUNT,
-          smallestSliceHeight,
-          largestSliceHeight,
         )
         : buildDayGridLevelPlacements<Ref<number>>(
           fgEventSegs,
@@ -198,7 +185,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
-      this.isScreenLayoutSettled = screenLayout.isSettled
+      if (placementMode === 'auto') {
+        this.latestScreenSlices = screenColumns.flatMap((column) =>
+          column.renderItems.map((item) => item.slice),
+        )
+      }
 
       if (maxMainTop != null) {
         for (let col = 0; col < cells.length; col++) {
@@ -576,19 +567,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleSliceHeightInsertion = (height: number) => {
-    if (this.props.onSliceHeight) {
-      this.props.onSliceHeight(height)
-    } else if (height > 0 && Number.isFinite(height)) {
-      this.smallestSliceHeight = this.smallestSliceHeight == null
-        ? height
-        : Math.min(this.smallestSliceHeight, height)
-      this.largestSliceHeight = this.largestSliceHeight == null
-        ? height
-        : Math.max(this.largestSliceHeight, height)
-    }
-  }
-
   componentDidMount() {
     this._isUnmounting = false
     const { rootEl } = this // TODO: make dynamic with useEffect
@@ -601,16 +579,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   componentDidUpdate(prevProps: DayGridRowProps): void {
     if (prevProps.forPrint && !this.props.forPrint) {
       this.printSegHeightRefMap = new RefMap<string, number>(this.handlePrintSegHeightChange)
-    }
-
-    // Queue only after the requested render commits. flushAfterSize drains
-    // additions in the same loop, so scheduling from the size handler itself
-    // could report the previous render's layout snapshot.
-    if (this.props.forPrint) {
-      this.needsEventAreaHeightReport = false
-    } else if (this.needsEventAreaHeightReport) {
-      this.needsEventAreaHeightReport = false
-      afterSize(this.reportEventAreaHeight)
     }
   }
 
@@ -626,10 +594,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const mainHeightMap = this.mainHeightRefMap.current
     let maxMainTop: number | undefined
     let minMainBottom: number | undefined
+    let isComplete = true
 
     for (const cell of cells) {
       const mainTop = headerHeightMap.get(cell.key)
       const mainHeight = mainHeightMap.get(cell.key)
+
+      if (mainTop == null || mainHeight == null) {
+        isComplete = false
+      }
 
       if (mainTop != null) {
         if (maxMainTop === undefined || mainTop > maxMainTop) {
@@ -648,7 +621,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     return [
       maxMainTop,
-      minMainBottom != null && maxMainTop != null
+      isComplete && minMainBottom != null && maxMainTop != null
         ? minMainBottom - maxMainTop
         : undefined,
     ]
@@ -656,37 +629,39 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   private handleSegPositioning = () => {
     if (this._isUnmounting || this.props.forPrint) return
-    this.needsEventAreaHeightReport = true
+    this.updateAutoPlacementRatchets()
     this.forceUpdate()
+  }
+
+  /** Updates row-local monotone state from one complete post-size snapshot. */
+  private updateAutoPlacementRatchets(): void {
+    if (resolveDayGridPlacementMode(
+      this.props.dayMaxEvents,
+      this.props.dayMaxEventRows,
+    ) !== 'auto') return
+
+    const [, canvasHeight] = this.computeFgDims()
+    if (canvasHeight != null) {
+      for (const sliceHeight of this.sliceHeightMap.current.values()) {
+        if (sliceHeight > 0 && Number.isFinite(sliceHeight)) {
+          this.neededLevelCount = Math.max(
+            this.neededLevelCount,
+            estimateLevelCapacity(canvasHeight, sliceHeight),
+          )
+        }
+      }
+    }
+
+    this.sliceHeightGrowthRate = ratchetDayGridSliceHeightGrowthRate(
+      this.sliceHeightGrowthRate,
+      this.latestScreenSlices,
+      this.sliceHeightMap.current,
+    )
   }
 
   private handlePrintSegHeights = () => {
     if (this._isUnmounting || !this.props.forPrint) return
     this.forceUpdate()
-  }
-
-  /**
-   * Reports the height foreground events actually compete for, which is what
-   * the cross-row owner ratchets. Reporting waits for a complete row snapshot
-   * so partially populated measurement maps cannot inflate the monotone owner.
-   * Only the pixel route consumes this, so a standalone row has no listener.
-   */
-  private reportEventAreaHeight = () => {
-    const { cells, onEventAreaHeight } = this.props
-    if (this._isUnmounting || this.props.forPrint || !onEventAreaHeight) return
-
-    if (
-      this.isScreenLayoutSettled &&
-      cells.every((cell) =>
-        this.headerHeightRefMap.current.has(cell.key) &&
-        this.mainHeightRefMap.current.has(cell.key),
-      )
-    ) {
-      const [, minMainHeight] = this.computeFgDims()
-      if (minMainHeight != null) {
-        onEventAreaHeight(minMainHeight)
-      }
-    }
   }
 
   // Internal Utils

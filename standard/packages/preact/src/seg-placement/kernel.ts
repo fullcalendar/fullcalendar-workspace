@@ -58,8 +58,8 @@ export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends Later
  * uses a plain RefMap of measured wrapper heights: reports are trusted as
  * valid occupied dimensions, and RefMap's delete-on-null keeps entries in
  * step with unmounts, so a present value always means a live measurement.
- * The owner's ratchet updates in the same RefMap callback that recorded the
- * value, before any re-solve can read the map.
+ * Owners can scan the map from their post-size positioning callback before
+ * rebuilding layout.
  */
 export interface SliceHeightMap<HeightRef = unknown> {
   current: ReadonlyMap<string, number>
@@ -232,7 +232,7 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
       eventOrderStrict,
       eventSlicing,
       allowExtraWholePlacement: true,
-      sliceThickness: 1,
+      getSliceThickness: () => 1,
       occupantThickness: moreLinkLevelTax,
       isValid: (levelCoord, thickness) =>
         thickness === 0 || levelCoord + thickness <= maxLevels,
@@ -253,7 +253,7 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   eventSlicing: boolean,
   maxPixels: number,
   moreLinkPixelHeight: number,
-  planningSliceThickness: number,
+  getSliceThickness: (slice: Slice<S>) => number,
   forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
@@ -267,7 +267,7 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
       // partials may enter topology; otherwise a coordinate-excluded whole
       // could reappear and a DOM-excluded whole would have no render owner.
       allowExtraWholePlacement: false,
-      sliceThickness: planningSliceThickness,
+      getSliceThickness,
       occupantThickness: moreLinkPixelHeight,
       isValid: (levelCoord, thickness) =>
         levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
@@ -453,8 +453,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   sliceHeightMap: SliceHeightMap<HeightRef>,
   canvasHeight: number | undefined,
   neededLevelCount: number,
-  smallestSliceHeight: number | undefined,
-  largestSliceHeight: number | undefined,
+  moreLinkHeight: number | undefined,
+  getPlanningSliceThickness: ((slice: Slice<S>) => number) | undefined,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
     props.segs,
@@ -468,8 +468,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
     sliceHeightMap.current,
     canvasHeight,
   )
-  // The merge owns DOM topology and uses the monotone planning thickness
-  // uniformly. Exact resolution below owns coordinates.
+  // The merge owns DOM topology and uses stable per-slice planning thicknesses.
+  // Exact resolution below owns coordinates.
   const planningSliceLevels = wholeResolution.placementSliceLevels
   let placementSliceLevels = planningSliceLevels
   let sliceCoords = wholeResolution.sliceCoords
@@ -480,8 +480,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   // DOM candidates. The next measurement pass can then plan stable partials.
   if (
     canvasHeight != null &&
-    smallestSliceHeight != null &&
-    largestSliceHeight != null
+    moreLinkHeight != null &&
+    getPlanningSliceThickness
   ) {
     const extraSlices = sortByEventOrder(
       wholeResolution.excludedSlices.concat(domExcludedSlices),
@@ -493,8 +493,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
       options.eventOrderStrict,
       options.eventSlicing,
       canvasHeight,
-      smallestSliceHeight,
-      largestSliceHeight,
+      moreLinkHeight,
+      getPlanningSliceThickness,
       new Set(domExcludedSlices),
     )
     const exactResolution = resolveLevelCoords(
@@ -530,12 +530,12 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   }
 }
 
-interface MergeOptions {
+interface MergeOptions<S extends SourceSeg> {
   eventOrderStrict: boolean
   eventSlicing: boolean
   allowExtraWholePlacement: boolean
-  /** Stable thickness used uniformly while constructing DOM topology. */
-  sliceThickness: number
+  /** Stable planning thickness for each slice while constructing DOM topology. */
+  getSliceThickness: (slice: Slice<S>) => number
   occupantThickness: number
   isValid: (levelCoord: number, thickness: number) => boolean
 }
@@ -558,7 +558,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
   extraSegSlices: readonly Slice<S>[],
-  options: MergeOptions,
+  options: MergeOptions<S>,
   forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   let hiddenGroups: HiddenSliceGroup<S>[] = []
@@ -569,7 +569,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     sliceCoords.get(getSliceKey(slice)) ?? levelIndex
 
   const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
-    getSliceCoord(slice, levelIndex) + options.sliceThickness
+    getSliceCoord(slice, levelIndex) + options.getSliceThickness(slice)
 
   function addHiddenRaw(slice: Slice<S>): HiddenSliceGroup<S> {
     hiddenOrders.set(slice, hiddenOrder++)
@@ -619,7 +619,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       options,
     )
     return insertion &&
-      options.isValid(insertion.levelCoord, options.sliceThickness)
+      options.isValid(insertion.levelCoord, options.getSliceThickness(slice))
       ? insertion
       : null
   }
@@ -838,7 +838,7 @@ function findInsertion<S extends SourceSeg>(
   sliceCoords: ReadonlyMap<string, number>,
   hiddenGroups: readonly HiddenSliceGroup<S>[],
   slice: Slice<S>,
-  options: MergeOptions,
+  options: MergeOptions<S>,
 ): Insertion | null {
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),
@@ -846,7 +846,7 @@ function findInsertion<S extends SourceSeg>(
   const getCoord = (other: Slice<S>, levelIndex: number) =>
     sliceCoords.get(getSliceKey(other)) ?? levelIndex
   const getBottom = (other: Slice<S>, levelIndex: number) =>
-    getCoord(other, levelIndex) + options.sliceThickness
+    getCoord(other, levelIndex) + options.getSliceThickness(other)
   let strictMinLevelIndex = 0
   let strictMaxLevelIndexExclusive = Infinity
 
@@ -894,7 +894,7 @@ function findInsertion<S extends SourceSeg>(
       !collidersByLevel[levelIndex].length &&
       levelIndex >= strictMinLevelIndex &&
       levelIndex < strictMaxLevelIndexExclusive &&
-      minLevelCoord + options.sliceThickness <=
+      minLevelCoord + options.getSliceThickness(slice) <=
         ceilings[levelIndex] + GEOMETRY_TOLERANCE
     ) {
       return { levelIndex, levelCoord: minLevelCoord }

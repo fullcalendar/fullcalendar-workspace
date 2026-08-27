@@ -4,26 +4,90 @@ import { addDays } from '@full-ui/headless-calendar'
 import { DateComponent } from '../../component/DateComponent'
 import { Hit } from '../../interactions/hit'
 import { createRef } from 'react'
+import { MoreLinkTrigger } from '../../common/MoreLinkContainer'
+import { resolveDayGridPlacementMode } from '../../daygrid/seg-placement-adapter'
+import { watchHeight } from '../../component-util/resize-observer'
+import classNames from '../../styles.module.css'
 
 export interface TimeGridAllDayLaneProps extends DayGridRowProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 }
 
-export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
+interface TimeGridAllDayLaneState {
+  moreLinkHeight?: number
+}
+
+export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, TimeGridAllDayLaneState> {
+  state: TimeGridAllDayLaneState = {}
+
   // ref
   private rootEl: HTMLElement
   private heightRef = createRef<number>()
+  private moreLinkEl?: HTMLElement
+  private measuredMoreLinkEl?: HTMLElement
+  private disconnectMoreLinkHeight?: () => void
+  private _isUnmounting: boolean
 
   render() {
-    return (
-      <DayGridRow
-        {...this.props}
+    const { props, state } = this
+    const moreLinkHeight = this.moreLinkEl === this.measuredMoreLinkEl && props.colWidth != null
+      ? state.moreLinkHeight
+      : undefined
+    const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
+      props.dayMaxEvents,
+      props.dayMaxEventRows,
+    ) === 'auto'
 
-        /* BAD: these overwrite the props! caller might want to pass them */
-        rootElRef={this.handleRootEl}
-        heightRef={this.heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
-      />
+    return (
+      <>
+        <DayGridRow
+          {...props}
+          moreLinkHeight={moreLinkHeight}
+
+          /* BAD: these overwrite the props! caller might want to pass them */
+          rootElRef={this.handleRootEl}
+          heightRef={this.heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
+        />
+        {needsMoreLinkProbe && props.colWidth != null && (
+          <MoreLinkTrigger
+            num={1}
+            display='row'
+            isNarrow={props.cellIsNarrow}
+            isMicro={props.cellIsMicro}
+            elRef={this.handleMoreLinkEl}
+            className={classNames.offscreen}
+            style={{ width: props.colWidth }}
+            attrs={{
+              'aria-hidden': true,
+              inert: '',
+            }}
+          />
+        )}
+      </>
     )
+  }
+
+  private handleMoreLinkEl = (el: HTMLElement | null) => {
+    this.moreLinkEl = el ?? undefined
+    this.disconnectMoreLinkHeight?.()
+    this.disconnectMoreLinkHeight = undefined
+
+    if (el) {
+      this.disconnectMoreLinkHeight = watchHeight(el, (height) => {
+        if (this._isUnmounting) return
+        this.measuredMoreLinkEl = el
+        this.setState({ moreLinkHeight: height })
+      })
+    }
+  }
+
+  componentDidMount(): void {
+    this._isUnmounting = false
+  }
+
+  componentWillUnmount(): void {
+    this._isUnmounting = true
+    this.disconnectMoreLinkHeight?.()
   }
 
   handleRootEl = (rootEl: HTMLDivElement) => {
