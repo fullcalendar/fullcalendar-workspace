@@ -232,7 +232,6 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   maxPixels: number,
   moreLinkPixelHeight: number,
   getSliceThickness: (slice: Slice<S>) => number,
-  forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
     sliceLevels,
@@ -250,7 +249,6 @@ export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
       isValid: (levelCoord, thickness) =>
         levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
     },
-    forceHiddenSlices,
   )
 }
 
@@ -447,7 +445,6 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
       canvasHeight,
       moreLinkHeight,
       getPlanningSliceThickness,
-      new Set(domExcludedSlices),
     )
     const exactResolution = resolveLevelCoords(
       planningSliceLevels,
@@ -506,7 +503,6 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   sliceCoords: Map<string, number>,
   extraSegSlices: readonly Slice<S>[],
   options: MergeOptions<S>,
-  forceHiddenSlices: ReadonlySet<Slice<S>> = new Set(),
 ): HiddenSliceGroup<S>[] {
   let hiddenGroups: HiddenSliceGroup<S>[] = []
   let hiddenOrder = 0
@@ -764,12 +760,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   }
 
   for (const extra of extraSegSlices) {
-    if (forceHiddenSlices.has(extra)) {
-      addHiddenRaw(extra)
-      consumeInvalidOccupants()
-    } else {
-      fireSlice(extra, options.allowExtraWholePlacement)
-    }
+    fireSlice(extra, options.allowExtraWholePlacement)
   }
   positionOccupants()
   return hiddenGroups

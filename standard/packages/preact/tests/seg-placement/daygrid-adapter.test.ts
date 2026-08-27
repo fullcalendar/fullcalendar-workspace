@@ -423,6 +423,31 @@ describe('DayGrid kernel pixel placement', () => {
     expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
     expect(segIds(columns[0].segs)).toEqual(['a', 'b', 'c'])
   })
+
+  it('salvages partials beyond the DOM frontier using fallback thickness', () => {
+    const layout = layoutPixelRow([
+      makeSeg('blocker', 1, 2),
+      makeSeg('wide', 0, 3),
+    ], 3, {
+      canvasHeight: 6,
+      neededLevelCount: 1,
+      moreLinkHeight: 1,
+      heights: { 'blocker:1': 5 },
+    })
+
+    expect(layout.columns.flatMap((column) =>
+      column.renderSlices.map(getSliceKey),
+    )).not.toContain('wide:0')
+    expect(levelItemTops(layout, 0)).toEqual({
+      'wide:0:0:slice': undefined,
+    })
+    expect(levelItemTops(layout, 1)).toEqual({ 'blocker:1': 0 })
+    expect(levelItemTops(layout, 2)).toEqual({
+      'wide:0:2:slice': undefined,
+    })
+    expect(segIds(layout.columns[1].hiddenSegs)).toEqual(['wide'])
+    expect(layout.isSettled).toBe(false)
+  })
 })
 
 const EVENT_HEIGHT = 10
