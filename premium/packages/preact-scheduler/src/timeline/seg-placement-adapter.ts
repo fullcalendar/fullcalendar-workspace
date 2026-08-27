@@ -67,8 +67,8 @@ export function buildTimelineSegPlacementPlan(
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
   eventMinWidth?: number,
-  eventOrderStrict?: boolean,
-  eventMaxStack?: number,
+  eventOrderStrict = false,
+  eventMaxStack = Infinity,
   clipStart?: number,
   clipEnd?: number,
 ): TimelineSegPlacementPlan {
@@ -89,8 +89,8 @@ export function buildTimelineSegPlacementPlan(
       computeTimelineSegStart(a) - computeTimelineSegStart(b) ||
       a.orderIndex - b.orderIndex,
     ),
-    maxLevels: eventMaxStack ?? Infinity,
-    orderStrict: eventOrderStrict ?? false,
+    maxLevels: eventMaxStack,
+    orderStrict: eventOrderStrict,
   }
 }
 
@@ -164,13 +164,11 @@ export function buildTimelineSegPlacements(
   moreLinkHeights: ReadonlyMap<string, number>,
 ): TimelineSegPlacementResult {
   const layout = buildLevelLimitedLayout(
-    { segs: plan.sourceSegs },
-    {
-      eventOrderStrict: plan.orderStrict,
-      eventSlicing: false,
-      maxLevels: plan.maxLevels,
-      moreLinkLevelTax: 0,
-    },
+    plan.sourceSegs,
+    plan.orderStrict,
+    /* eventSlicing = */ false,
+    plan.maxLevels,
+    /* moreLinkLevelTax = */ 0,
     sliceHeights,
   )
   const visibleSlices = layout.renderSlices

@@ -4,8 +4,8 @@ import {
   type Slice,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
-  getLateralCellRange,
   getSliceKey,
+  isPartialSlice,
 } from '../seg-placement/kernel'
 import {
   type DayRowEventRange,
@@ -91,16 +91,11 @@ export function buildDayGridLevelPlacements(
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const layout = buildLevelLimitedLayout(
-    {
-      segs: sourceSegs,
-      cells: Array.from({ length: columnCount }),
-    },
-    {
-      eventOrderStrict: orderStrict,
-      eventSlicing,
-      maxLevels,
-      moreLinkLevelTax,
-    },
+    sourceSegs,
+    orderStrict,
+    eventSlicing,
+    maxLevels,
+    moreLinkLevelTax,
     sliceHeights,
   )
   return buildDayGridPlacementLayout(
@@ -138,14 +133,9 @@ export function buildDayGridPixelPlacements(
         sliceHeightGrowthRate,
       )
   const layout = buildPixelLimitedLayout(
-    {
-      segs: sourceSegs,
-      cells: Array.from({ length: columnCount }),
-    },
-    {
-      eventOrderStrict: orderStrict,
-      eventSlicing,
-    },
+    sourceSegs,
+    orderStrict,
+    eventSlicing,
     sliceHeights,
     canvasHeight,
     neededLevelCount,
@@ -269,7 +259,6 @@ function buildDayGridPlacementLayout(
   layout: {
     hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[]
     renderSlices: readonly Slice<DayGridSourceSeg>[]
-    slicesByStart: readonly (readonly Slice<DayGridSourceSeg>[])[]
     placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[]
     sliceCoords: ReadonlyMap<string, number>
     pendingSlices: readonly Slice<DayGridSourceSeg>[]
@@ -280,11 +269,11 @@ function buildDayGridPlacementLayout(
   const {
     hiddenGroups,
     renderSlices,
-    slicesByStart,
     placementSliceLevels,
     sliceCoords,
     pendingSlices,
   } = layout
+  const slicesByStart = federateSlicesByStart(renderSlices, columnCount)
   const columns = Array.from(
     { length: columnCount },
     (_, column): DayGridPlacementColumn => ({
@@ -320,6 +309,35 @@ function buildDayGridPlacementLayout(
     renderSlices,
     sliceCoords,
     isSettled: pendingSlices.length === 0,
+  }
+}
+
+function federateSlicesByStart(
+  renderSlices: readonly Slice<DayGridSourceSeg>[],
+  columnCount: number,
+): Slice<DayGridSourceSeg>[][] {
+  const slicesByStart = Array.from(
+    { length: columnCount },
+    () => [] as Slice<DayGridSourceSeg>[],
+  )
+
+  for (const slice of renderSlices) slicesByStart[slice.start].push(slice)
+  for (const slices of slicesByStart) {
+    slices.sort((a, b) =>
+      a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
+      Number(isPartialSlice(a)) - Number(isPartialSlice(b)),
+    )
+  }
+  return slicesByStart
+}
+
+function getLateralCellRange(
+  span: { start: number; end: number },
+  cellCount: number,
+): { start: number; end: number } {
+  return {
+    start: Math.min(cellCount, Math.max(0, Math.floor(span.start))),
+    end: Math.min(cellCount, Math.max(0, Math.ceil(span.end))),
   }
 }
 

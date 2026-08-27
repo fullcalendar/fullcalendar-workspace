@@ -53,24 +53,6 @@ export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends Later
   occupant: MoreLinkOccupant
 }
 
-interface LayoutProps<S extends SourceSeg = SourceSeg> {
-  segs: readonly S[]
-  /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
-  cells?: readonly unknown[]
-}
-
-interface LevelLimitedOptions {
-  eventOrderStrict: boolean
-  eventSlicing: boolean
-  maxLevels: number
-  moreLinkLevelTax: number
-}
-
-interface PixelLimitedOptions {
-  eventOrderStrict: boolean
-  eventSlicing: boolean
-}
-
 /** Identifies a whole or partial slice derived from a source seg. */
 export function getSliceKey<S extends SourceSeg>(slice: Slice<S>): string {
   if (!isPartialSlice(slice)) return slice.sourceSeg.key
@@ -282,29 +264,7 @@ export function compilePixelLimitedRenderSlices<S extends SourceSeg>(
   return renderSlices
 }
 
-function federateSlicesByStart<S extends SourceSeg>(
-  renderSlices: readonly Slice<S>[],
-  colCount: number,
-): Slice<S>[][] {
-  const slicesByStart = Array.from(
-    { length: colCount },
-    () => [] as Slice<S>[],
-  )
-
-  for (const slice of renderSlices) slicesByStart[slice.start].push(slice)
-  for (const slices of slicesByStart) slices.sort(compareSlicesByEventOrder)
-  return slicesByStart
-}
-
-function compareSlicesByEventOrder<S extends SourceSeg>(
-  a: Slice<S>,
-  b: Slice<S>,
-): number {
-  return a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
-    Number(isPartialSlice(a)) - Number(isPartialSlice(b))
-}
-
-function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
+export function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
   return slice.start !== slice.sourceSeg.start ||
     slice.end !== slice.sourceSeg.end
 }
@@ -360,32 +320,32 @@ export function groupLaterallyIntersecting<S extends SourceSeg>(
 }
 
 export function buildLevelLimitedLayout<S extends SourceSeg>(
-  props: LayoutProps<S>,
-  options: LevelLimitedOptions,
+  segs: readonly S[],
+  eventOrderStrict: boolean,
+  eventSlicing: boolean,
+  maxLevels: number,
+  moreLinkLevelTax: number,
   sliceHeights: ReadonlyMap<string, number>,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
-    props.segs,
-    options.eventOrderStrict,
-    options.maxLevels,
+    segs,
+    eventOrderStrict,
+    maxLevels,
   )
   const sliceLevels = convertSegLevelsToWholeSlices(segLevels)
   const hiddenGroups = mergeExtraIntoLevels(
     sliceLevels,
     convertSegsToWholeSlices(excludedSegs),
-    options.eventOrderStrict,
-    options.eventSlicing,
-    options.maxLevels,
-    options.moreLinkLevelTax,
+    eventOrderStrict,
+    eventSlicing,
+    maxLevels,
+    moreLinkLevelTax,
   )
   const resolution = resolveLevelCoords(
     sliceLevels,
     sliceHeights,
   )
   const renderSlices = sliceLevels.flat()
-  const slicesByStart = props.cells
-    ? federateSlicesByStart(renderSlices, props.cells.length)
-    : []
 
   return {
     sliceLevels,
@@ -394,13 +354,13 @@ export function buildLevelLimitedLayout<S extends SourceSeg>(
     pendingSlices: resolution.pendingSlices,
     hiddenGroups,
     sliceCoords: resolution.sliceCoords,
-    slicesByStart,
   }
 }
 
 export function buildPixelLimitedLayout<S extends SourceSeg>(
-  props: LayoutProps<S>,
-  options: PixelLimitedOptions,
+  segs: readonly S[],
+  eventOrderStrict: boolean,
+  eventSlicing: boolean,
   sliceHeights: ReadonlyMap<string, number>,
   canvasHeight: number | undefined,
   neededLevelCount: number,
@@ -408,8 +368,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
   getPlanningSliceThickness: ((slice: Slice<S>) => number) | undefined,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
-    props.segs,
-    options.eventOrderStrict,
+    segs,
+    eventOrderStrict,
     neededLevelCount,
   )
   const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
@@ -441,8 +401,8 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
       planningSliceLevels,
       sliceCoords,
       extraSlices,
-      options.eventOrderStrict,
-      options.eventSlicing,
+      eventOrderStrict,
+      eventSlicing,
       canvasHeight,
       moreLinkHeight,
       getPlanningSliceThickness,
@@ -460,10 +420,6 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
     domWholeSliceLevels,
     planningSliceLevels,
   )
-  const slicesByStart = federateSlicesByStart(
-    renderSlices,
-    props.cells.length,
-  )
 
   return {
     domWholeSliceLevels,
@@ -472,7 +428,6 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
     pendingSlices,
     hiddenGroups,
     sliceCoords,
-    slicesByStart,
   }
 }
 
@@ -969,17 +924,6 @@ export function findIntersections<Item extends LateralSpan>(
     if (doSpansIntersect(entry, span)) matches.push(entry)
   }
   return matches
-}
-
-/** Returns the integer lateral cells intersected by one lateral span. */
-export function getLateralCellRange(
-  span: LateralSpan,
-  cellCount: number,
-): LateralSpan {
-  return {
-    start: Math.min(cellCount, Math.max(0, Math.floor(span.start))),
-    end: Math.min(cellCount, Math.max(0, Math.ceil(span.end))),
-  }
 }
 
 function insertLaterally<Item extends LateralSpan>(
