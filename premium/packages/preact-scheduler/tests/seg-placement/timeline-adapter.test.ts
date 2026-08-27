@@ -446,7 +446,7 @@ function place(
 ) {
   return buildTimelineSegPlacements(
     plan,
-    heights.map,
+    heights.map.current,
     moreLinkHeights,
   )
 }

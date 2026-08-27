@@ -3,7 +3,6 @@ import {
   type DateEnv,
   type EventRangeProps,
   type Slice,
-  type SliceHeightMap,
   buildLevelLimitedLayout,
   getEventSegKey,
   getSliceKey,
@@ -39,12 +38,11 @@ export interface TimelineSegPlacementPlan {
 }
 
 /** One visible event node in Timeline's time-axis DOM order. */
-export interface TimelineSegDomItem<HeightRef> {
+export interface TimelineSegDomItem {
   key: string
   seg: TimelineEventSeg
   horizontal: CoordSpan
   top: number | undefined
-  heightRef: HeightRef
 }
 
 /** Production-facing data for one kernel hidden-group more-link wrapper. */
@@ -57,8 +55,8 @@ export interface TimelineSegMoreLink {
 }
 
 /** Immediately renderable drawing data for one expanding Timeline lane. */
-export interface TimelineSegPlacementResult<HeightRef> {
-  eventDomItems: TimelineSegDomItem<HeightRef>[]
+export interface TimelineSegPlacementResult {
+  eventDomItems: TimelineSegDomItem[]
   moreLinks: TimelineSegMoreLink[]
   contentHeight: number
   /** False while any visible event wrapper still lacks an exact measurement. */
@@ -169,11 +167,11 @@ export function buildTimelineSegSources(
  * wrappers have reported an exact height. Link heights affect only content
  * height, never placement.
  */
-export function buildTimelineSegPlacements<HeightRef>(
+export function buildTimelineSegPlacements(
   plan: TimelineSegPlacementPlan,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
   moreLinkHeights: ReadonlyMap<string, number>,
-): TimelineSegPlacementResult<HeightRef> {
+): TimelineSegPlacementResult {
   const layout = buildLevelLimitedLayout(
     { segs: plan.sourceSegs },
     {
@@ -182,7 +180,7 @@ export function buildTimelineSegPlacements<HeightRef>(
       maxLevels: plan.maxLevels,
       moreLinkLevelTax: 0,
     },
-    sliceHeightMap,
+    sliceHeights,
   )
   const visibleSlices = layout.sliceLevels.flat()
   const visibleByKey = new Map(
@@ -200,7 +198,6 @@ export function buildTimelineSegPlacements<HeightRef>(
         size: sourceSeg.end - sourceSeg.start,
       },
       top: layout.sliceCoords.get(getSliceKey(slice)),
-      heightRef: sliceHeightMap.createRef(sourceSeg.key),
     }]
   })
   const moreLinks = layout.hiddenGroups.map((group) => ({
@@ -211,7 +208,7 @@ export function buildTimelineSegPlacements<HeightRef>(
       group,
       layout.sliceLevels,
       layout.sliceCoords,
-      sliceHeightMap,
+      sliceHeights,
     ),
     segs: group.hiddenSlices.map((slice) => slice.sourceSeg),
   }))
@@ -222,22 +219,22 @@ export function buildTimelineSegPlacements<HeightRef>(
     contentHeight: calculateTimelineContentHeight(
       visibleSlices,
       layout.sliceCoords,
-      sliceHeightMap,
+      sliceHeights,
       moreLinks,
       moreLinkHeights,
     ),
     allHeightsSettled: visibleSlices.every((slice) =>
-      sliceHeightMap.current.get(getSliceKey(slice)) !== undefined,
+      sliceHeights.get(getSliceKey(slice)) !== undefined,
     ),
   }
 }
 
 /** Positions one tax-free link below the visible skyline across its group. */
-function computeTimelineGroupTop<HeightRef>(
+function computeTimelineGroupTop(
   group: { start: number; end: number },
   sliceLevels: readonly (readonly Slice<TimelineSourceSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
 ): number {
   let top = 0
 
@@ -245,7 +242,7 @@ function computeTimelineGroupTop<HeightRef>(
     if (slice.start < group.end && group.start < slice.end) {
       const key = getSliceKey(slice)
       const sliceTop = sliceCoords.get(key)
-      const sliceHeight = sliceHeightMap.current.get(key)
+      const sliceHeight = sliceHeights.get(key)
       if (sliceTop != null && sliceHeight != null) {
         top = Math.max(top, sliceTop + sliceHeight)
       }
@@ -256,10 +253,10 @@ function computeTimelineGroupTop<HeightRef>(
 }
 
 /** Visible bottoms plus each link's independently measured occupied space. */
-function calculateTimelineContentHeight<HeightRef>(
+function calculateTimelineContentHeight(
   visibleSlices: readonly Slice<TimelineSourceSeg>[],
   sliceCoords: ReadonlyMap<string, number>,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
   moreLinks: readonly TimelineSegMoreLink[],
   moreLinkHeights: ReadonlyMap<string, number>,
 ): number {
@@ -268,7 +265,7 @@ function calculateTimelineContentHeight<HeightRef>(
   for (const slice of visibleSlices) {
     const key = getSliceKey(slice)
     const sliceTop = sliceCoords.get(key)
-    const sliceHeight = sliceHeightMap.current.get(key)
+    const sliceHeight = sliceHeights.get(key)
     if (sliceTop != null && sliceHeight != null) {
       contentHeight = Math.max(contentHeight, sliceTop + sliceHeight)
     }

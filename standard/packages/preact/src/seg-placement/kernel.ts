@@ -53,19 +53,6 @@ export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends Later
   occupant: MoreLinkOccupant
 }
 
-/**
- * Owner-local exact slice measurements, keyed by slice part key. Production
- * uses a plain RefMap of measured wrapper heights: reports are trusted as
- * valid occupied dimensions, and RefMap's delete-on-null keeps entries in
- * step with unmounts, so a present value always means a live measurement.
- * Owners can scan the map from their post-size positioning callback before
- * rebuilding layout.
- */
-export interface SliceHeightMap<HeightRef = unknown> {
-  current: ReadonlyMap<string, number>
-  createRef(key: string): HeightRef
-}
-
 interface LayoutProps<S extends SourceSeg = SourceSeg> {
   segs: readonly S[]
   /** DayGrid-only lateral buckets. Timeline consumes the preceding outputs. */
@@ -82,16 +69,6 @@ interface LevelLimitedOptions {
 interface PixelLimitedOptions {
   eventOrderStrict: boolean
   eventSlicing: boolean
-}
-
-export interface SliceRenderItem<S extends SourceSeg = SourceSeg, HeightRef = unknown> {
-  key: string
-  slice: Slice<S>
-  style: {
-    visibility: '' | 'hidden'
-    top: number | undefined
-  }
-  heightRef: HeightRef
 }
 
 export function getSliceKey<S extends SourceSeg>(slice: Slice<S>): string {
@@ -383,31 +360,10 @@ export function groupLaterallyIntersecting<S extends SourceSeg>(
   ))
 }
 
-function buildSliceRenderItems<S extends SourceSeg, HeightRef>(
-  slicesByStart: readonly (readonly Slice<S>[])[],
-  sliceCoords: ReadonlyMap<string, number>,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
-): SliceRenderItem<S, HeightRef>[][] {
-  return slicesByStart.map((slices) => slices.map((slice) => {
-    const key = getSliceKey(slice)
-    const levelCoord = sliceCoords.get(key)
-
-    return {
-      key,
-      slice,
-      style: {
-        visibility: levelCoord == null ? 'hidden' : '',
-        top: levelCoord,
-      },
-      heightRef: sliceHeightMap.createRef(key),
-    }
-  }))
-}
-
-export function buildLevelLimitedLayout<S extends SourceSeg, HeightRef>(
+export function buildLevelLimitedLayout<S extends SourceSeg>(
   props: LayoutProps<S>,
   options: LevelLimitedOptions,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
 ) {
   const { segLevels, excludedSegs } = buildSegLevels(
     props.segs,
@@ -425,7 +381,7 @@ export function buildLevelLimitedLayout<S extends SourceSeg, HeightRef>(
   )
   const resolution = resolveLevelCoords(
     sliceLevels,
-    sliceHeightMap.current,
+    sliceHeights,
   )
   const renderSlices = sliceLevels.flat()
   const slicesByStart = props.cells
@@ -439,18 +395,13 @@ export function buildLevelLimitedLayout<S extends SourceSeg, HeightRef>(
     hiddenGroups,
     sliceCoords: resolution.sliceCoords,
     slicesByStart,
-    renderItems: buildSliceRenderItems(
-      slicesByStart,
-      resolution.sliceCoords,
-      sliceHeightMap,
-    ),
   }
 }
 
-export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
+export function buildPixelLimitedLayout<S extends SourceSeg>(
   props: LayoutProps<S>,
   options: PixelLimitedOptions,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
   canvasHeight: number | undefined,
   neededLevelCount: number,
   moreLinkHeight: number | undefined,
@@ -465,7 +416,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
   const domExcludedSlices = convertSegsToWholeSlices(excludedSegs)
   const wholeResolution = resolveLevelCoords(
     domWholeSliceLevels,
-    sliceHeightMap.current,
+    sliceHeights,
     canvasHeight,
   )
   // The merge owns DOM topology and uses stable per-slice planning thicknesses.
@@ -499,7 +450,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
     )
     const exactResolution = resolveLevelCoords(
       planningSliceLevels,
-      sliceHeightMap.current,
+      sliceHeights,
     )
     placementSliceLevels = exactResolution.placementSliceLevels
     sliceCoords = exactResolution.sliceCoords
@@ -522,11 +473,6 @@ export function buildPixelLimitedLayout<S extends SourceSeg, HeightRef>(
     hiddenGroups,
     sliceCoords,
     slicesByStart,
-    renderItems: buildSliceRenderItems(
-      slicesByStart,
-      sliceCoords,
-      sliceHeightMap,
-    ),
   }
 }
 

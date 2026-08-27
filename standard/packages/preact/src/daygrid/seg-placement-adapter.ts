@@ -2,8 +2,6 @@ import {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   type HiddenSliceGroup,
   type Slice,
-  type SliceHeightMap,
-  type SliceRenderItem,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
   getLateralCellRange,
@@ -26,9 +24,9 @@ export type DayGridSourceSeg = DayGridEventSeg & {
   orderIndex: number
 }
 
-export interface DayGridPlacementColumn<HeightRef> {
+export interface DayGridPlacementColumn {
   /** Exact kernel slices whose DOM wrappers start in this column. */
-  renderItems: SliceRenderItem<DayGridSourceSeg, HeightRef>[]
+  renderSlices: Slice<DayGridSourceSeg>[]
   /** Deepest visible slice bottom crossing this column. */
   contentHeight: number
   /** Every source crossing this column, cut for more-link APIs. */
@@ -37,8 +35,8 @@ export interface DayGridPlacementColumn<HeightRef> {
   hiddenSegs: DayRowEventRangePart[]
 }
 
-interface DayGridPlacementLayout<HeightRef> {
-  columns: DayGridPlacementColumn<HeightRef>[]
+interface DayGridPlacementLayout {
+  columns: DayGridPlacementColumn[]
   /** Positioned slice tops keyed by DayGrid's event-part convention. */
   sliceCoords: ReadonlyMap<string, number>
   /** Whether every currently visible slice has an exact occupied height. */
@@ -78,6 +76,7 @@ export function buildDayGridSegSources(
 }
 
 interface DayGridLevelPlacementInputs {
+  mode: Exclude<DayGridPlacementMode, 'auto'>
   dayMaxEvents: boolean | number | undefined
   dayMaxEventRows: boolean | number | undefined
   orderStrict: boolean
@@ -101,20 +100,11 @@ interface DayGridPixelPlacementInputs {
  * Builds an immediately renderable kernel layout for unlimited and numeric
  * DayGrid modes. Boolean-auto uses the pixel-limited adapter below.
  */
-export function buildDayGridLevelPlacements<HeightRef>(
+export function buildDayGridLevelPlacements(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridLevelPlacementInputs,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
-): DayGridPlacementLayout<HeightRef> {
-  const mode = resolveDayGridPlacementMode(
-    input.dayMaxEvents,
-    input.dayMaxEventRows,
-  )
-
-  if (mode === 'auto') {
-    throw new Error('Boolean-auto DayGrid placement is not a level-limited route')
-  }
-
+  sliceHeights: ReadonlyMap<string, number>,
+): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const layout = buildLevelLimitedLayout(
     {
@@ -125,36 +115,37 @@ export function buildDayGridLevelPlacements<HeightRef>(
       eventOrderStrict: input.orderStrict,
       eventSlicing: input.eventSlicing,
       maxLevels: computeDayGridDomCandidateMaxLevels(
+        input.mode,
         input.dayMaxEvents,
         input.dayMaxEventRows,
         Infinity,
       ),
-      moreLinkLevelTax: computeDayGridMoreLinkLevelTax(mode),
+      moreLinkLevelTax: computeDayGridMoreLinkLevelTax(input.mode),
     },
-    sliceHeightMap,
+    sliceHeights,
   )
   return buildDayGridPlacementLayout(
     sourceSegs,
     layout.hiddenGroups,
-    layout.renderItems,
+    layout.slicesByStart,
     layout.placementSliceLevels,
     layout.sliceCoords,
-    sliceHeightMap,
+    sliceHeights,
     input.columnCount,
     layout.pendingSlices,
   )
 }
 
 /** Builds the boolean-auto DayGrid route with a real pixel ceiling. */
-export function buildDayGridPixelPlacements<HeightRef>(
+export function buildDayGridPixelPlacements(
   eventOrderedSegs: readonly DayGridEventSeg[],
   input: DayGridPixelPlacementInputs,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
-): DayGridPlacementLayout<HeightRef> {
+  sliceHeights: ReadonlyMap<string, number>,
+): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const currentWholeHeights = getCurrentWholeHeights(
     sourceSegs,
-    sliceHeightMap.current,
+    sliceHeights,
   )
   const largestCurrentWholeHeight = currentWholeHeights.size
     ? Math.max(...currentWholeHeights.values())
@@ -179,7 +170,7 @@ export function buildDayGridPixelPlacements<HeightRef>(
       eventOrderStrict: input.orderStrict,
       eventSlicing: input.eventSlicing,
     },
-    sliceHeightMap,
+    sliceHeights,
     input.canvasHeight,
     input.neededLevelCount,
     input.moreLinkHeight,
@@ -189,10 +180,10 @@ export function buildDayGridPixelPlacements<HeightRef>(
   return buildDayGridPlacementLayout(
     sourceSegs,
     layout.hiddenGroups,
-    layout.renderItems,
+    layout.slicesByStart,
     layout.placementSliceLevels,
     layout.sliceCoords,
-    sliceHeightMap,
+    sliceHeights,
     input.columnCount,
     layout.pendingSlices,
   )
@@ -274,16 +265,18 @@ export function resolveDayGridPlacementMode(
 }
 
 /**
- * Resolves the dimensionless DOM frontier without applying more-link tax.
- * Numeric limits own their explicit cap; unlimited rows mount all sources;
- * boolean-auto rows consume their row-local observed frontier.
+ * Computes the dimensionless DOM frontier from an already-resolved mode,
+ * without applying more-link tax. Numeric limits own their explicit cap;
+ * unlimited rows mount all sources; boolean-auto rows consume their row-local
+ * observed frontier.
  */
 export function computeDayGridDomCandidateMaxLevels(
+  mode: DayGridPlacementMode,
   dayMaxEvents: boolean | number | undefined,
   dayMaxEventRows: boolean | number | undefined,
   maxDomLevels: number,
 ): number {
-  switch (resolveDayGridPlacementMode(dayMaxEvents, dayMaxEventRows)) {
+  switch (mode) {
     case 'auto': return maxDomLevels
     case 'maxEvents': return dayMaxEvents as number
     case 'maxEventRows': return dayMaxEventRows as number
@@ -299,20 +292,20 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
   return mode === 'maxEventRows' ? 1 : 0
 }
 
-function buildDayGridPlacementLayout<HeightRef>(
+function buildDayGridPlacementLayout(
   sourceSegs: readonly DayGridSourceSeg[],
   hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
-  renderItems: readonly (readonly SliceRenderItem<DayGridSourceSeg, HeightRef>[])[],
+  slicesByStart: readonly (readonly Slice<DayGridSourceSeg>[])[],
   placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[],
   sliceCoords: ReadonlyMap<string, number>,
-  sliceHeightMap: SliceHeightMap<HeightRef>,
+  sliceHeights: ReadonlyMap<string, number>,
   columnCount: number,
   pendingSlices: readonly Slice<DayGridSourceSeg>[],
-): DayGridPlacementLayout<HeightRef> {
+): DayGridPlacementLayout {
   const columns = Array.from(
     { length: columnCount },
-    (_, column): DayGridPlacementColumn<HeightRef> => ({
-      renderItems: [...renderItems[column]],
+    (_, column): DayGridPlacementColumn => ({
+      renderSlices: [...slicesByStart[column]],
       contentHeight: 0,
       ...buildDayGridPopoverSegs(
         sourceSegs,
@@ -326,7 +319,7 @@ function buildDayGridPlacementLayout<HeightRef>(
   for (const level of placementSliceLevels) {
     for (const slice of level) {
       const key = getSliceKey(slice)
-      const sliceHeight = sliceHeightMap.current.get(key)!
+      const sliceHeight = sliceHeights.get(key)!
       const sliceBottom = sliceCoords.get(key)! + sliceHeight
       const range = getLateralCellRange(slice, columnCount)
 
@@ -359,7 +352,7 @@ export function estimateLevelCapacity(eventAreaHeight: number, eventHeight: numb
   return Math.max(1, Math.ceil(eventAreaHeight / eventHeight))
 }
 
-/** Ratchets the largest valid partial-to-source growth sample in one live snapshot. */
+/** Ratchets the largest partial-to-source growth sample in one live snapshot. */
 export function ratchetDayGridSliceHeightGrowthRate(
   currentRate: number,
   slices: readonly Slice<DayGridSourceSeg>[],
@@ -374,18 +367,16 @@ export function ratchetDayGridSliceHeightGrowthRate(
     const sourceHeight = sliceHeights.get(sourceSeg.key)
     const sliceHeight = sliceHeights.get(getSliceKey(slice))
     if (
-      !isPositiveFinite(sourceHeight) ||
-      !isPositiveFinite(sliceHeight) ||
+      sourceHeight == null ||
+      sliceHeight == null ||
       sliceHeight <= sourceHeight + SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX
     ) continue
 
     const sourceWidth = sourceSeg.end - sourceSeg.start
     const sliceWidth = slice.end - slice.start
     const compressionGrowth = sourceWidth / sliceWidth - 1
-    if (!(compressionGrowth > 0 && Number.isFinite(compressionGrowth))) continue
-
     const observedRate = (sliceHeight / sourceHeight - 1) / compressionGrowth
-    if (observedRate > nextRate && Number.isFinite(observedRate)) {
+    if (observedRate > nextRate) {
       nextRate = observedRate
     }
   }
@@ -401,8 +392,7 @@ export function computeDayGridPlanningSliceThickness(
 ): number {
   const sourceWidth = slice.sourceSeg.end - slice.sourceSeg.start
   const sliceWidth = slice.end - slice.start
-  if (!(sourceWidth > 0 && sliceWidth > 0)) return sourceHeight
-  const compressionGrowth = Math.max(0, sourceWidth / sliceWidth - 1)
+  const compressionGrowth = sourceWidth / sliceWidth - 1
   return sourceHeight * (1 + growthRate * compressionGrowth)
 }
 
@@ -414,14 +404,10 @@ function getCurrentWholeHeights(
 
   for (const sourceSeg of sourceSegs) {
     const height = sliceHeights.get(sourceSeg.key)
-    if (isPositiveFinite(height)) {
+    if (height != null) {
       currentWholeHeights.set(sourceSeg.key, height)
     }
   }
 
   return currentWholeHeights
-}
-
-function isPositiveFinite(value: number | undefined): value is number {
-  return value != null && value > 0 && Number.isFinite(value)
 }

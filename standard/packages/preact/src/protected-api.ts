@@ -100,7 +100,6 @@ export { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from './structs/da
 export type {
   HiddenSliceGroup,
   Slice,
-  SliceHeightMap,
   SourceSeg,
 } from './seg-placement/kernel'
 export {

@@ -47,11 +47,11 @@ describe('DayGrid production placement adapter', () => {
 
 describe('DayGrid row-local placement state', () => {
   it('uses explicit numeric caps, the auto frontier, and no cap for unlimited rows', () => {
-    expect(computeDayGridDomCandidateMaxLevels(undefined, undefined, 9)).toBe(Infinity)
-    expect(computeDayGridDomCandidateMaxLevels(3, 7, 9)).toBe(3)
-    expect(computeDayGridDomCandidateMaxLevels(undefined, 4, 9)).toBe(4)
-    expect(computeDayGridDomCandidateMaxLevels(true, 4, 9)).toBe(9)
-    expect(computeDayGridDomCandidateMaxLevels(3, true, 9)).toBe(9)
+    expect(computeDayGridDomCandidateMaxLevels('unlimited', undefined, undefined, 9)).toBe(Infinity)
+    expect(computeDayGridDomCandidateMaxLevels('maxEvents', 3, 7, 9)).toBe(3)
+    expect(computeDayGridDomCandidateMaxLevels('maxEventRows', undefined, 4, 9)).toBe(4)
+    expect(computeDayGridDomCandidateMaxLevels('auto', true, 4, 9)).toBe(9)
+    expect(computeDayGridDomCandidateMaxLevels('auto', 3, true, 9)).toBe(9)
   })
 
   it('estimates the candidate frontier from current canvas and slice heights', () => {
@@ -131,27 +131,28 @@ describe('DayGrid screen mode routing', () => {
 
 describe('DayGrid kernel level placement', () => {
   it('keeps unmeasured unlimited slices mounted but unpositioned', () => {
-    const columns = layoutLevelRow([
+    const layout = layoutLevelRow([
       makeSeg('first', 0, 1),
       makeSeg('second', 0, 1),
     ], 1, undefined, undefined, {
       heights: { 'first:0': 12 },
     })
+    const { columns } = layout
 
-    expect(levelItemTops(columns, 0)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({
       'first:0': 0,
       'second:0': undefined,
     })
-    expect(columns[0].renderItems.map((item) => item.heightRef)).toEqual([
-      'ref:first:0',
-      'ref:second:0',
+    expect(columns[0].renderSlices.map(getSliceKey)).toEqual([
+      'first:0',
+      'second:0',
     ])
     expect(columns[0].contentHeight).toBe(12)
     expect(columns[0].hiddenSegs).toEqual([])
   })
 
   it('mounts unmeasured partial slices without positioning them', () => {
-    const columns = layoutLevelRow([
+    const layout = layoutLevelRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
     ], 3, 1, undefined, {
@@ -160,19 +161,20 @@ describe('DayGrid kernel level placement', () => {
         'blocker:1': 18,
       },
     })
+    const { columns } = layout
 
-    expect(levelItemTops(columns, 0)).toEqual({ 'wide:0:0:slice': 0 })
-    expect(levelItemTops(columns, 1)).toEqual({ 'blocker:1': 0 })
-    expect(levelItemTops(columns, 2)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({ 'wide:0:0:slice': 0 })
+    expect(levelItemTops(layout, 1)).toEqual({ 'blocker:1': 0 })
+    expect(levelItemTops(layout, 2)).toEqual({
       'wide:0:2:slice': undefined,
     })
-    expect(columns[0].renderItems[0].heightRef).toBe('ref:wide:0:0:slice')
-    expect(columns[2].renderItems[0].heightRef).toBe('ref:wide:0:2:slice')
+    expect(columns[0].renderSlices.map(getSliceKey)).toEqual(['wide:0:0:slice'])
+    expect(columns[2].renderSlices.map(getSliceKey)).toEqual(['wide:0:2:slice'])
     expect(columns.map((column) => column.contentHeight)).toEqual([12, 18, 0])
   })
 
   it('projects hidden glob slices to ordered, real-boundary cell segs', () => {
-    const columns = layoutLevelRow([
+    const { columns } = layoutLevelRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
       makeSeg('later', 1, 2),
@@ -198,14 +200,15 @@ describe('DayGrid kernel level placement', () => {
       makeSeg('second', 0, 1),
       makeSeg('third', 0, 1),
     ]
-    const eventsColumns = layoutLevelRow(stack, 1, 2)
-    const rowsColumns = layoutLevelRow(stack, 1, undefined, 2)
+    const eventsLayout = layoutLevelRow(stack, 1, 2)
+    const rowsLayout = layoutLevelRow(stack, 1, undefined, 2)
+    const rowsColumns = rowsLayout.columns
 
-    expect(Object.keys(levelItemTops(eventsColumns, 0))).toEqual([
+    expect(Object.keys(levelItemTops(eventsLayout, 0))).toEqual([
       'first:0',
       'second:0',
     ])
-    expect(Object.keys(levelItemTops(rowsColumns, 0))).toEqual(['first:0'])
+    expect(Object.keys(levelItemTops(rowsLayout, 0))).toEqual(['first:0'])
     expect(segIds(rowsColumns[0].hiddenSegs)).toEqual(['second', 'third'])
     expect(rowsColumns[0].contentHeight).toBe(EVENT_HEIGHT)
   })
@@ -230,13 +233,13 @@ describe('DayGrid kernel pixel placement', () => {
       heights: {},
     })
 
-    expect(levelItemTops(layout.columns, 0)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({
       'first:0': undefined,
       'second:0': undefined,
     })
-    expect(layout.columns[0].renderItems.map((item) => item.heightRef)).toEqual([
-      'ref:first:0',
-      'ref:second:0',
+    expect(layout.columns[0].renderSlices.map(getSliceKey)).toEqual([
+      'first:0',
+      'second:0',
     ])
     expect(layout.columns[0].hiddenSegs).toEqual([])
     expect(layout.columns[0].contentHeight).toBe(0)
@@ -257,7 +260,7 @@ describe('DayGrid kernel pixel placement', () => {
     })
 
     expect(layout.columns.flatMap((column) =>
-      column.renderItems.map((item) => item.key),
+      column.renderSlices.map(getSliceKey),
     )).toEqual(['wide:0', 'blocker:1'])
     expect(layout.isSettled).toBe(true)
   })
@@ -266,7 +269,7 @@ describe('DayGrid kernel pixel placement', () => {
     const layout = layoutPixelRow(twoStacks, 2)
     const { columns } = layout
 
-    expect(levelItemTops(columns, 0)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({
       'a:0': 0,
       'b:0': EVENT_HEIGHT,
       'c:0': EVENT_HEIGHT * 2,
@@ -288,16 +291,16 @@ describe('DayGrid kernel pixel placement', () => {
       moreLinkHeight: 1,
     })
 
-    expect(levelItemTops(awaitingPartials.columns, 0)).toEqual({
+    expect(levelItemTops(awaitingPartials, 0)).toEqual({
       'wide:0': undefined,
       'wide:0:0:slice': undefined,
     })
-    expect(levelItemTops(awaitingPartials.columns, 1)).toEqual({ 'blocker:1': 0 })
-    expect(levelItemTops(awaitingPartials.columns, 2)).toEqual({
+    expect(levelItemTops(awaitingPartials, 1)).toEqual({ 'blocker:1': 0 })
+    expect(levelItemTops(awaitingPartials, 2)).toEqual({
       'wide:0:2:slice': undefined,
     })
-    expect(awaitingPartials.columns[0].renderItems.map((item) => item.heightRef))
-      .toEqual(['ref:wide:0', 'ref:wide:0:0:slice'])
+    expect(awaitingPartials.columns[0].renderSlices.map(getSliceKey))
+      .toEqual(['wide:0', 'wide:0:0:slice'])
     expect(awaitingPartials.isSettled).toBe(false)
 
     const settled = layoutPixelRow([
@@ -332,23 +335,11 @@ describe('DayGrid kernel pixel placement', () => {
       moreLinkHeight: 1,
     })
 
-    expect(layout.columns[0].renderItems).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        key: 'wide:0',
-        style: { visibility: 'hidden', top: undefined },
-        heightRef: 'ref:wide:0',
-      }),
-      expect.objectContaining({
-        key: 'wide:0:0:slice',
-        style: { visibility: '', top: 0 },
-      }),
-    ]))
-    expect(layout.columns[2].renderItems).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        key: 'wide:0:2:slice',
-        style: { visibility: '', top: 0 },
-      }),
-    ]))
+    expect(levelItemTops(layout, 0)).toEqual({
+      'wide:0': undefined,
+      'wide:0:0:slice': 0,
+    })
+    expect(levelItemTops(layout, 2)).toEqual({ 'wide:0:2:slice': 0 })
   })
 
   it('keeps partial donor selection stable after its measurements disappear', () => {
@@ -379,7 +370,7 @@ describe('DayGrid kernel pixel placement', () => {
 
     const renderKeys = (layout: ReturnType<typeof layoutPixelRow>) =>
       layout.columns.flatMap((column) =>
-        column.renderItems.map((item) => item.key),
+        column.renderSlices.map(getSliceKey),
       )
 
     expect(renderKeys(afterPartialsUnmount)).toEqual(renderKeys(withPartialsMeasured))
@@ -396,10 +387,10 @@ describe('DayGrid kernel pixel placement', () => {
       heights: { 'too-tall:0': 12, 'later:1': 5 },
     })
 
-    expect(levelItemTops(layout.columns, 0)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({
       'too-tall:0': undefined,
     })
-    expect(levelItemTops(layout.columns, 1)).toEqual({ 'later:1': 0 })
+    expect(levelItemTops(layout, 1)).toEqual({ 'later:1': 0 })
     expect(segIds(layout.columns[0].hiddenSegs)).toEqual(['too-tall'])
     expect(layout.columns.map((column) => column.contentHeight)).toEqual([0, 5])
   })
@@ -412,7 +403,7 @@ describe('DayGrid kernel pixel placement', () => {
       makeSeg('d', 0, 1),
     ], 1, { canvasHeight: 30 })
 
-    expect(levelItemTops(layout.columns, 0)).toEqual({
+    expect(levelItemTops(layout, 0)).toEqual({
       'a:0': 0,
       'b:0': 10,
       'c:0': undefined,
@@ -423,11 +414,12 @@ describe('DayGrid kernel pixel placement', () => {
   })
 
   it('stops mounting candidates beyond the row-local DOM frontier', () => {
-    const { columns } = layoutPixelRow(twoStacks, 2, { neededLevelCount: 2 })
+    const layout = layoutPixelRow(twoStacks, 2, { neededLevelCount: 2 })
+    const { columns } = layout
 
     // The third level never mounts, yet both columns still list their rejected
     // source, because the popover unions unmounted sources with measured hides.
-    expect(levelItemTops(columns, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
+    expect(levelItemTops(layout, 0)).toEqual({ 'a:0': 0, 'b:0': EVENT_HEIGHT })
     expect(segIds(columns[0].hiddenSegs)).toEqual(['c'])
     expect(segIds(columns[0].segs)).toEqual(['a', 'b', 'c'])
   })
@@ -445,22 +437,22 @@ function layoutLevelRow(
     eventSlicing?: boolean,
     heights?: Record<string, number>,
   } = {},
-): DayGridPlacementColumn<string>[] {
+) {
   const heights = config.heights ?? buildAllSliceHeights(eventOrderedSegs)
   return buildDayGridLevelPlacements(
     eventOrderedSegs,
     {
+      mode: dayMaxEvents != null
+        ? 'maxEvents'
+        : dayMaxEventRows != null ? 'maxEventRows' : 'unlimited',
       dayMaxEvents,
       dayMaxEventRows,
       orderStrict: config.orderStrict ?? false,
       eventSlicing: config.eventSlicing ?? true,
       columnCount,
     },
-    {
-      current: new Map(Object.entries(heights)),
-      createRef: (key) => `ref:${key}`,
-    },
-  ).columns
+    new Map(Object.entries(heights)),
+  )
 }
 
 function buildAllSliceHeights(
@@ -508,19 +500,22 @@ function layoutPixelRow(
       neededLevelCount: config.neededLevelCount ?? 8,
       sliceHeightGrowthRate: config.sliceHeightGrowthRate ?? 0,
     },
-    {
-      current: new Map(Object.entries(heights)),
-      createRef: (key) => `ref:${key}`,
-    },
+    new Map(Object.entries(heights)),
   )
 }
 
 function levelItemTops(
-  columns: DayGridPlacementColumn<string>[],
+  layout: {
+    columns: DayGridPlacementColumn[]
+    sliceCoords: ReadonlyMap<string, number>
+  },
   column: number,
 ): Record<string, number | undefined> {
   return Object.fromEntries(
-    columns[column].renderItems.map((item) => [item.key, item.style.top]),
+    layout.columns[column].renderSlices.map((slice) => {
+      const key = getSliceKey(slice)
+      return [key, layout.sliceCoords.get(key)]
+    }),
   )
 }
 

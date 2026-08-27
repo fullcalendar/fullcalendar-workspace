@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { getSliceKey } from '../../src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
@@ -124,22 +125,19 @@ describe('minimal-footprint hiding, pixel currency', () => {
         neededLevelCount: 8,
         sliceHeightGrowthRate: 0,
       },
-      {
-        current: new Map<string, number>([
-          ['e1:1', EVENT_HEIGHT],
-          ['e2:1', EVENT_HEIGHT],
-          ['e2:1:2:slice', EVENT_HEIGHT],
-          ['e3:1', EVENT_HEIGHT],
-        ]),
-        createRef: (key) => `ref:${key}`,
-      },
+      new Map<string, number>([
+        ['e1:1', EVENT_HEIGHT],
+        ['e2:1', EVENT_HEIGHT],
+        ['e2:1:2:slice', EVENT_HEIGHT],
+        ['e3:1', EVENT_HEIGHT],
+      ]),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
       [], ['e2', 'e3'], [], [], [], [], [],
     ])
-    expect(visibleKeys(layout.columns[1])).toEqual(['e1:1'])
-    expect(visibleKeys(layout.columns[2])).toEqual(['e2:1:2:slice'])
+    expect(visibleKeys(layout.columns[1], layout.sliceCoords)).toEqual(['e1:1'])
+    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual(['e2:1:2:slice'])
   })
 
   // The observed browser geometry of the 7573 failure, used as the stable
@@ -161,22 +159,19 @@ describe('minimal-footprint hiding, pixel currency', () => {
         neededLevelCount: 9,
         sliceHeightGrowthRate: 0,
       },
-      {
-        current: new Map<string, number>([
-          ['e1:1', 17],
-          ['e2:1', 17],
-          ['e2:1:2:slice', 17],
-          ['e3:1', 17],
-        ]),
-        createRef: (key) => `ref:${key}`,
-      },
+      new Map<string, number>([
+        ['e1:1', 17],
+        ['e2:1', 17],
+        ['e2:1:2:slice', 17],
+        ['e3:1', 17],
+      ]),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
       [], ['e2', 'e3'], [], [], [], [], [],
     ])
-    expect(visibleKeys(layout.columns[1])).toEqual(['e1:1'])
-    expect(visibleKeys(layout.columns[2])).toEqual(['e2:1:2:slice'])
+    expect(visibleKeys(layout.columns[1], layout.sliceCoords)).toEqual(['e1:1'])
+    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual(['e2:1:2:slice'])
   })
 })
 
@@ -185,7 +180,7 @@ function layoutLevelRow(
   columnCount: number,
   dayMaxEvents?: number,
   dayMaxEventRows?: number,
-): DayGridPlacementColumn<string>[] {
+): DayGridPlacementColumn[] {
   const heights = new Map<string, number>()
   for (const seg of eventOrderedSegs) {
     const key = `${seg.eventRange.instance.instanceId}:${seg.start}`
@@ -197,26 +192,29 @@ function layoutLevelRow(
   return buildDayGridLevelPlacements(
     eventOrderedSegs,
     {
+      mode: dayMaxEvents != null
+        ? 'maxEvents'
+        : dayMaxEventRows != null ? 'maxEventRows' : 'unlimited',
       dayMaxEvents,
       dayMaxEventRows,
       orderStrict: false,
       eventSlicing: true,
       columnCount,
     },
-    {
-      current: heights,
-      createRef: (key) => `ref:${key}`,
-    },
+    heights,
   ).columns
 }
 
-function visibleKeys(column: DayGridPlacementColumn<string>): string[] {
-  return column.renderItems
-    .filter((item) => item.style.visibility !== 'hidden')
-    .map((item) => item.key)
+function visibleKeys(
+  column: DayGridPlacementColumn,
+  sliceCoords?: ReadonlyMap<string, number>,
+): string[] {
+  return column.renderSlices
+    .map(getSliceKey)
+    .filter((key) => !sliceCoords || sliceCoords.has(key))
 }
 
-function hiddenIds(column: DayGridPlacementColumn<string>): string[] {
+function hiddenIds(column: DayGridPlacementColumn): string[] {
   return column.hiddenSegs.map((seg) => seg.eventRange.instance.instanceId)
 }
 

@@ -24,7 +24,7 @@ import { computeHorizontalsFromSeg } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import {
   type Slice,
-  type SliceRenderItem,
+  getSliceKey,
 } from '../../seg-placement/kernel'
 import {
   type DayGridPlacementColumn,
@@ -97,7 +97,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
   })
   // Every screen slice (whole or partial) reports its occupied height here.
-  private sliceHeightMap = new RefMap<string, number>(() => {
+  private sliceHeightRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleSegPositioning)
   })
 
@@ -131,7 +131,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const screenFgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
     let printPlan: DayGridPrintPlan | null = null
     let printColumns: DayGridPrintBandSlot[][] | null = null
-    let screenColumns: DayGridPlacementColumn<Ref<number>>[] | null = null
+    let screenColumns: DayGridPlacementColumn[] | null = null
     let screenSliceCoords: ReadonlyMap<string, number> = new Map()
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
@@ -159,7 +159,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const [maxMainTop, minMainHeight] = this.computeFgDims()
       screenMaxMainTop = maxMainTop
       const screenLayout = placementMode === 'auto'
-        ? buildDayGridPixelPlacements<Ref<number>>(
+        ? buildDayGridPixelPlacements(
           fgEventSegs,
           {
             orderStrict: options.eventOrderStrict,
@@ -170,24 +170,25 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             neededLevelCount: this.neededLevelCount,
             sliceHeightGrowthRate: this.sliceHeightGrowthRate,
           },
-          this.sliceHeightMap,
+          this.sliceHeightRefMap.current,
         )
-        : buildDayGridLevelPlacements<Ref<number>>(
+        : buildDayGridLevelPlacements(
           fgEventSegs,
           {
+            mode: placementMode,
             dayMaxEvents: props.dayMaxEvents,
             dayMaxEventRows: props.dayMaxEventRows,
             orderStrict: options.eventOrderStrict,
             eventSlicing: options.eventSlicing,
             columnCount: cells.length,
           },
-          this.sliceHeightMap,
+          this.sliceHeightRefMap.current,
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
       if (placementMode === 'auto') {
         this.latestScreenSlices = screenColumns.flatMap((column) =>
-          column.renderItems.map((item) => item.slice),
+          column.renderSlices,
         )
       }
 
@@ -273,7 +274,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           } else {
             fg = this.renderLevelFgSegs(
               screenMaxMainTop,
-              screenColumns![col].renderItems,
+              screenColumns![col].renderSlices,
+              screenSliceCoords,
             )
           }
 
@@ -376,15 +378,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   /** Renders every kernel slice with its own measurement ref. */
   renderLevelFgSegs(
     headerHeight: number | undefined,
-    items: SliceRenderItem<DayGridSourceSeg, Ref<number>>[],
+    slices: Slice<DayGridSourceSeg>[],
+    sliceCoords: ReadonlyMap<string, number>,
   ): ReactElement[] {
     const { props } = this
     const { colWidth, eventSelection } = props
     const colCount = props.cells.length
     const nodes: ReactElement[] = []
 
-    for (const item of items) {
-      const seg = buildLevelEventSeg(item.slice)
+    for (const slice of slices) {
+      const key = getSliceKey(slice)
+      const sliceTop = sliceCoords.get(key)
+      const seg = buildLevelEventSeg(slice)
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(
@@ -392,8 +397,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         colWidth,
         colCount,
       )
-      const top = headerHeight != null && item.style.top != null
-        ? headerHeight + item.style.top
+      const top = headerHeight != null && sliceTop != null
+        ? headerHeight + sliceTop
         : undefined
       const isDragging = Boolean(
         props.eventDrag && props.eventDrag.affectedInstances[instanceId],
@@ -401,13 +406,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const isResizing = Boolean(
         props.eventResize && props.eventResize.affectedInstances[instanceId],
       )
-      const isInvisible = isDragging || isResizing ||
-        item.style.visibility === 'hidden' || top == null
+      const isInvisible = isDragging || isResizing || top == null
       const isSelected = instanceId === eventSelection
 
       nodes.push(
         <MeasuredAbsoluteHarness
-          key={item.key}
+          key={key}
           className={seg.start ? classNames.fakeBorderS : ''}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
@@ -416,7 +420,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             insetInlineEnd,
             zIndex: isSelected ? 1000 : 0,
           }}
-          heightRef={item.heightRef}
+          heightRef={this.sliceHeightRefMap.createRef(key)}
         >
           {this.renderEventContent(seg, {
             isDragging,
@@ -642,20 +646,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     const [, canvasHeight] = this.computeFgDims()
     if (canvasHeight != null) {
-      for (const sliceHeight of this.sliceHeightMap.current.values()) {
-        if (sliceHeight > 0 && Number.isFinite(sliceHeight)) {
-          this.neededLevelCount = Math.max(
-            this.neededLevelCount,
-            estimateLevelCapacity(canvasHeight, sliceHeight),
-          )
-        }
+      for (const sliceHeight of this.sliceHeightRefMap.current.values()) {
+        this.neededLevelCount = Math.max(
+          this.neededLevelCount,
+          estimateLevelCapacity(canvasHeight, sliceHeight),
+        )
       }
     }
 
     this.sliceHeightGrowthRate = ratchetDayGridSliceHeightGrowthRate(
       this.sliceHeightGrowthRate,
       this.latestScreenSlices,
-      this.sliceHeightMap.current,
+      this.sliceHeightRefMap.current,
     )
   }
 

@@ -62,7 +62,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private buildSegPlacementPlan = memoize(buildTimelineSegPlacementPlan)
 
   // refs
-  private sliceHeightMap = new RefMap<string, number>(() => { // keyed by slice part key
+  private sliceHeightRefMap = new RefMap<string, number>(() => { // keyed by slice part key
     afterSize(this.handleSegHeights)
   })
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by stable more-link key
@@ -76,7 +76,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
   private firedTotalHeight?: number
 
   render() {
-    let { props, context, sliceHeightMap, moreLinkHeightRefMap } = this
+    let { props, context, sliceHeightRefMap, moreLinkHeightRefMap } = this
     let { options } = context
     let { tDateProfile } = props
 
@@ -101,9 +101,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       props.clipStart,
       props.clipEnd,
     )
-    let placementResult = buildTimelineSegPlacements<Ref<number>>(
+    let placementResult = buildTimelineSegPlacements(
       plan,
-      sliceHeightMap,
+      sliceHeightRefMap.current,
       moreLinkHeightRefMap.current,
     )
     let fgSegTops = new Map<string, number>()
@@ -147,7 +147,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
   }
 
-  renderEventDomItems(eventDomItems: TimelineSegDomItem<Ref<number>>[]) {
+  renderEventDomItems(eventDomItems: TimelineSegDomItem[]) {
     const { props } = this
 
     return (
@@ -172,7 +172,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 insetInlineStart: horizontal.start,
                 width: horizontal.size,
               }}
-              heightRef={item.heightRef}
+              heightRef={this.sliceHeightRefMap.createRef(key)}
             >
               <TimelineEvent
                 isTimeScale={props.tDateProfile.isTimeScale}
@@ -285,7 +285,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   private handleSegHeights = () => {
     if (this._isUnmounting) return
-    this.setState({ segHeightRev: this.sliceHeightMap.rev })
+    this.setState({ segHeightRev: this.sliceHeightRefMap.rev })
   }
 
   componentDidMount(): void {
