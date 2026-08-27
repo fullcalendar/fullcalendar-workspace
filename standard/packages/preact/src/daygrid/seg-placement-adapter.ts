@@ -10,7 +10,7 @@ import {
 import {
   type DayRowEventRange,
   type DayRowEventRangePart,
-  getEventSliceKey,
+  getDayGridSegKey,
 } from './TableSeg'
 
 export type DayGridEventSeg = DayRowEventRange
@@ -70,7 +70,7 @@ export function buildDayGridSegSources(
 ): DayGridSourceSeg[] {
   return eventOrderedSegs.map((seg, orderIndex) => ({
     ...seg,
-    key: getEventSliceKey(seg),
+    key: getDayGridSegKey(seg),
     orderIndex,
   }))
 }

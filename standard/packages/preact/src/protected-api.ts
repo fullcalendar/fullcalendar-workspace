@@ -135,7 +135,6 @@ export {
   sortEventSegs,
   getEventRangeMeta, buildEventRangeKey,
   EventRangeProps,
-  getEventSegKey,
   MinimalEventProps,
 } from './component-util/event-rendering'
 

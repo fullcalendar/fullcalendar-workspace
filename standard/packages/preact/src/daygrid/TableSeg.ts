@@ -1,5 +1,5 @@
 import { DayGridRange } from './DayTableModel'
-import { EventRangeProps, getEventSegKey } from '../component-util/event-rendering'
+import { EventRangeProps } from '../component-util/event-rendering'
 import { SlicedCoordRange } from '../coord-range'
 import { EventSegUiInteractionState } from '../component/DateComponent'
 
@@ -11,18 +11,9 @@ export type DayRowEventRange = DayRowRange & EventRangeProps
 
 export type DayRowEventRangePart = DayRowEventRange
 
-/*
-The unconditional start index is essential source-seg identity: one event
-instance can produce multiple whole view-coordinate segs with different starts,
-especially in Resource DayGrid. The end is deliberately excluded so narrowing
-or widening a slice preserves its DOM node and ResizeObserver; the existing
-pre-paint size flush corrects the temporarily stale height during that
-intermediate commit. Partial-slice keys are kernel-internal: getSliceKey
-suffixes this whole-source key, so a permanent source wrapper and its
-supplemental slice never share RefMap refs.
-*/
-export function getEventSliceKey(seg: DayRowEventRangePart): string {
-  return getEventSegKey(seg) + ':' + seg.start
+/** Identifies a DayGrid seg by event instance and start, remaining stable if its end changes. */
+export function getDayGridSegKey(seg: DayRowEventRangePart): string {
+  return `${seg.eventRange.instance.instanceId}:${seg.start}`
 }
 
 // DayGridRange utils (TODO: move)

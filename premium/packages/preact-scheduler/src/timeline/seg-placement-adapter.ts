@@ -4,7 +4,6 @@ import {
   type EventRangeProps,
   type Slice,
   buildLevelLimitedLayout,
-  getEventSegKey,
   getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
@@ -151,7 +150,7 @@ export function buildTimelineSegSources(
     if (horizontal) {
       sourceSegs.push({
         ...seg,
-        key: getEventSegKey(seg),
+        key: seg.eventRange.instance.instanceId,
         start: horizontal.start,
         end: horizontal.end,
         orderIndex,

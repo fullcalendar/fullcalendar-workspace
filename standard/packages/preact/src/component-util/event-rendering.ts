@@ -41,10 +41,6 @@ export interface EventRangeProps {
   eventRange: EventRenderRange
 }
 
-export function getEventSegKey(seg: EventRangeProps): string {
-  return seg.eventRange.instance.instanceId
-}
-
 /*
 Specifying nextDayThreshold signals that all-day ranges should be sliced.
 */

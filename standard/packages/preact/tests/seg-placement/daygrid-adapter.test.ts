@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getEventSliceKey } from '../../src/daygrid/TableSeg'
+import { getDayGridSegKey } from '../../src/daygrid/TableSeg'
 import { type Slice, getSliceKey } from '../../src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
@@ -460,7 +460,7 @@ function buildAllSliceHeights(
 ): Record<string, number> {
   const heights: Record<string, number> = {}
   for (const seg of segs) {
-    const key = getEventSliceKey(seg)
+    const key = getDayGridSegKey(seg)
     heights[key] = EVENT_HEIGHT
     for (let start = seg.start; start < seg.end; start += 1) {
       heights[`${key}:${start}:slice`] = EVENT_HEIGHT
@@ -484,7 +484,7 @@ function layoutPixelRow(
   } = {},
 ) {
   const heights = config.heights ?? Object.fromEntries(
-    eventOrderedSegs.map((seg) => [getEventSliceKey(seg), EVENT_HEIGHT]),
+    eventOrderedSegs.map((seg) => [getDayGridSegKey(seg), EVENT_HEIGHT]),
   )
 
   return buildDayGridPixelPlacements(

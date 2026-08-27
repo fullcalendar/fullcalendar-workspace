@@ -71,6 +71,7 @@ interface PixelLimitedOptions {
   eventSlicing: boolean
 }
 
+/** Identifies a whole or partial slice derived from a source seg. */
 export function getSliceKey<S extends SourceSeg>(slice: Slice<S>): string {
   if (!isPartialSlice(slice)) return slice.sourceSeg.key
   return `${slice.sourceSeg.key}:${slice.start}:slice`
