@@ -1,5 +1,4 @@
 import {
-  type CoordSpan,
   type DateEnv,
   type EventRangeProps,
   type Slice,
@@ -36,14 +35,6 @@ export interface TimelineSegPlacementPlan {
   orderStrict: boolean
 }
 
-/** One visible event node in Timeline's time-axis DOM order. */
-export interface TimelineSegDomItem {
-  key: string
-  seg: TimelineEventSeg
-  horizontal: CoordSpan
-  top: number | undefined
-}
-
 /** Production-facing data for one kernel hidden-group more-link wrapper. */
 export interface TimelineSegMoreLink {
   key: string
@@ -55,7 +46,8 @@ export interface TimelineSegMoreLink {
 
 /** Immediately renderable drawing data for one expanding Timeline lane. */
 export interface TimelineSegPlacementResult {
-  eventDomItems: TimelineSegDomItem[]
+  renderSlices: Slice<TimelineSourceSeg>[]
+  sliceCoords: ReadonlyMap<string, number>
   moreLinks: TimelineSegMoreLink[]
   contentHeight: number
   /** False while any visible event wrapper still lacks an exact measurement. */
@@ -181,23 +173,13 @@ export function buildTimelineSegPlacements(
     },
     sliceHeights,
   )
-  const visibleSlices = layout.sliceLevels.flat()
+  const visibleSlices = layout.renderSlices
   const visibleByKey = new Map(
     visibleSlices.map((slice) => [slice.sourceSeg.key, slice]),
   )
-  const eventDomItems = plan.domOrderedSegs.flatMap((sourceSeg) => {
+  const renderSlices = plan.domOrderedSegs.flatMap((sourceSeg) => {
     const slice = visibleByKey.get(sourceSeg.key)
-    if (!slice) return []
-
-    return [{
-      key: sourceSeg.key,
-      seg: sourceSeg,
-      horizontal: {
-        start: sourceSeg.start,
-        size: sourceSeg.end - sourceSeg.start,
-      },
-      top: layout.sliceCoords.get(getSliceKey(slice)),
-    }]
+    return slice ? [slice] : []
   })
   const moreLinks = layout.hiddenGroups.map((group) => ({
     key: group.key,
@@ -213,7 +195,8 @@ export function buildTimelineSegPlacements(
   }))
 
   return {
-    eventDomItems,
+    renderSlices,
+    sliceCoords: layout.sliceCoords,
     moreLinks,
     contentHeight: calculateTimelineContentHeight(
       visibleSlices,

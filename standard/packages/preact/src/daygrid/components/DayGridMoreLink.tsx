@@ -63,7 +63,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                   }}
                 >
                   <StandardEvent
-                    display={hasListItemDisplay(seg) ? 'list-item' : 'row'}
+                    display={hasListItemDisplay(seg, eventRange) ? 'list-item' : 'row'}
                     eventRange={eventRange}
                     isStart={seg.isStart}
                     isEnd={seg.isEnd}

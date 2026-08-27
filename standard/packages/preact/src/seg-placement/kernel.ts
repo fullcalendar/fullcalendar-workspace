@@ -389,6 +389,7 @@ export function buildLevelLimitedLayout<S extends SourceSeg>(
 
   return {
     sliceLevels,
+    renderSlices,
     placementSliceLevels: resolution.placementSliceLevels,
     pendingSlices: resolution.pendingSlices,
     hiddenGroups,
@@ -466,6 +467,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
 
   return {
     domWholeSliceLevels,
+    renderSlices,
     placementSliceLevels,
     pendingSlices,
     hiddenGroups,

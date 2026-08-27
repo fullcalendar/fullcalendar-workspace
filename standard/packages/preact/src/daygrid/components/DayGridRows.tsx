@@ -58,8 +58,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
   // ref
   private rootEl: HTMLDivElement
-  private moreLinkEl?: HTMLElement
-  private measuredMoreLinkEl?: HTMLElement
   private disconnectMoreLinkHeight?: () => void
 
   // memo
@@ -106,9 +104,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
       options,
     )
 
-    const moreLinkHeight = this.moreLinkEl === this.measuredMoreLinkEl && props.colWidth != null
-      ? state.moreLinkHeight
-      : undefined
     const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
       props.dayMaxEvents,
       props.dayMaxEventRows,
@@ -160,7 +155,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
               // dimensions
               colWidth={props.colWidth}
               basis={rowBasis}
-              moreLinkHeight={moreLinkHeight}
+              moreLinkHeight={state.moreLinkHeight}
 
               // refs
               heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -187,14 +182,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
   }
 
   private handleMoreLinkEl = (el: HTMLElement | null) => {
-    this.moreLinkEl = el ?? undefined
     this.disconnectMoreLinkHeight?.()
     this.disconnectMoreLinkHeight = undefined
 
     if (el) {
       this.disconnectMoreLinkHeight = watchHeight(el, (height) => {
         if (this._isUnmounting) return
-        this.measuredMoreLinkEl = el
         this.setState({ moreLinkHeight: height })
       })
     }

@@ -23,16 +23,11 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
   // ref
   private rootEl: HTMLElement
   private heightRef = createRef<number>()
-  private moreLinkEl?: HTMLElement
-  private measuredMoreLinkEl?: HTMLElement
   private disconnectMoreLinkHeight?: () => void
   private _isUnmounting: boolean
 
   render() {
     const { props, state } = this
-    const moreLinkHeight = this.moreLinkEl === this.measuredMoreLinkEl && props.colWidth != null
-      ? state.moreLinkHeight
-      : undefined
     const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
       props.dayMaxEvents,
       props.dayMaxEventRows,
@@ -42,7 +37,7 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
       <>
         <DayGridRow
           {...props}
-          moreLinkHeight={moreLinkHeight}
+          moreLinkHeight={state.moreLinkHeight}
 
           /* BAD: these overwrite the props! caller might want to pass them */
           rootElRef={this.handleRootEl}
@@ -68,14 +63,12 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
   }
 
   private handleMoreLinkEl = (el: HTMLElement | null) => {
-    this.moreLinkEl = el ?? undefined
     this.disconnectMoreLinkHeight?.()
     this.disconnectMoreLinkHeight = undefined
 
     if (el) {
       this.disconnectMoreLinkHeight = watchHeight(el, (height) => {
         if (this._isUnmounting) return
-        this.measuredMoreLinkEl = el
         this.setState({ moreLinkHeight: height })
       })
     }

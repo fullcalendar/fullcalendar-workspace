@@ -37,6 +37,7 @@ export interface DayGridPlacementColumn {
 
 interface DayGridPlacementLayout {
   columns: DayGridPlacementColumn[]
+  renderSlices: readonly Slice<DayGridSourceSeg>[]
   /** Positioned slice tops keyed by DayGrid's event-part convention. */
   sliceCoords: ReadonlyMap<string, number>
   /** Whether every currently visible slice has an exact occupied height. */
@@ -267,6 +268,7 @@ function buildDayGridPlacementLayout(
   sourceSegs: readonly DayGridSourceSeg[],
   layout: {
     hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[]
+    renderSlices: readonly Slice<DayGridSourceSeg>[]
     slicesByStart: readonly (readonly Slice<DayGridSourceSeg>[])[]
     placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[]
     sliceCoords: ReadonlyMap<string, number>
@@ -277,6 +279,7 @@ function buildDayGridPlacementLayout(
 ): DayGridPlacementLayout {
   const {
     hiddenGroups,
+    renderSlices,
     slicesByStart,
     placementSliceLevels,
     sliceCoords,
@@ -314,6 +317,7 @@ function buildDayGridPlacementLayout(
 
   return {
     columns,
+    renderSlices,
     sliceCoords,
     isSettled: pendingSlices.length === 0,
   }

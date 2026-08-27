@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   type DateEnv,
   RefMap,
+  getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import {
   buildTimelineSegPlacementPlan,
@@ -167,11 +168,11 @@ describe('Timeline production placement adapter', () => {
     const [adjacentPlan, adjacent] = placeAfterStartingAt(MS_PER_HOUR)
     expect(adjacentPlan.sourceSegs[0].end).toBe(120)
     expect(adjacentPlan.sourceSegs[1].start).toBe(120)
-    expect(adjacent.eventDomItems.map((item) => item.top)).toEqual([0, 0])
+    expect(sliceTops(adjacent)).toEqual([0, 0])
 
     const [overlapPlan, overlapping] = placeAfterStartingAt(MS_PER_HOUR - 1)
     expect(overlapPlan.sourceSegs[1].start).toBeLessThan(120)
-    expect(overlapping.eventDomItems.map((item) => item.top)).toEqual([0, 10])
+    expect(sliceTops(overlapping)).toEqual([0, 10])
   })
 
   it('keeps visible nodes in temporal-start then resolved order', () => {
@@ -199,13 +200,13 @@ describe('Timeline production placement adapter', () => {
       'early',
       'tie-second',
     ])
-    expect(result.eventDomItems.map((item) => item.key)).toEqual([
+    expect(result.renderSlices.map((slice) => slice.sourceSeg.key)).toEqual([
       'early',
       'tie-first',
       'tie-second',
       'late',
     ])
-    expect(result.eventDomItems.find((item) => item.key === 'late')?.top).toBe(0)
+    expect(result.sliceCoords.get('late')).toBe(0)
   })
 
   it('keeps temporal DOM order stable when clipping clamps distinct starts', () => {
@@ -268,7 +269,7 @@ describe('Timeline production placement adapter', () => {
       ['second', 20],
       ['third', 15],
     ]))
-    const tops = topByKey(result.eventDomItems)
+    const tops = topByKey(result)
 
     expect(tops.get('first')).toBe(0)
     expect(tops.get('second')).toBe(10)
@@ -288,7 +289,7 @@ describe('Timeline production placement adapter', () => {
     const heights = new TimelineTestHeights()
 
     const unmeasured = place(plan, heights)
-    expect(unmeasured.eventDomItems.map((item) => item.top)).toEqual([
+    expect(sliceTops(unmeasured)).toEqual([
       undefined,
       undefined,
     ])
@@ -297,7 +298,7 @@ describe('Timeline production placement adapter', () => {
 
     heights.set('first', 30)
     const partiallyMeasured = place(plan, heights)
-    expect(partiallyMeasured.eventDomItems.map((item) => item.top)).toEqual([
+    expect(sliceTops(partiallyMeasured)).toEqual([
       0,
       undefined,
     ])
@@ -306,13 +307,13 @@ describe('Timeline production placement adapter', () => {
 
     heights.set('second', 12)
     const exact = place(plan, heights)
-    expect(exact.eventDomItems.map((item) => item.top)).toEqual([0, 30])
+    expect(sliceTops(exact)).toEqual([0, 30])
     expect(exact.contentHeight).toBe(42)
     expect(exact.allHeightsSettled).toBe(true)
 
     heights.map.createRef('first')(null)
     const remounted = place(plan, heights)
-    expect(remounted.eventDomItems.map((item) => item.top)).toEqual([
+    expect(sliceTops(remounted)).toEqual([
       undefined,
       0,
     ])
@@ -341,7 +342,7 @@ describe('Timeline production placement adapter', () => {
     ])
     const beforeLinkMeasurement = place(plan, heights)
 
-    expect(beforeLinkMeasurement.eventDomItems.map((item) => item.key)).toEqual([
+    expect(beforeLinkMeasurement.renderSlices.map((slice) => slice.sourceSeg.key)).toEqual([
       'visible-left',
       'visible-right',
     ])
@@ -549,8 +550,13 @@ function segKey(seg: TimelineEventSeg): string {
   return seg.eventRange.instance.instanceId
 }
 
-function topByKey(
-  items: ReturnType<typeof place>['eventDomItems'],
-): Map<string, number | undefined> {
-  return new Map(items.map((item) => [item.key, item.top]))
+function sliceTops(result: ReturnType<typeof place>): (number | undefined)[] {
+  return result.renderSlices.map((slice) => result.sliceCoords.get(getSliceKey(slice)))
+}
+
+function topByKey(result: ReturnType<typeof place>): Map<string, number | undefined> {
+  return new Map(result.renderSlices.map((slice) => [
+    slice.sourceSeg.key,
+    result.sliceCoords.get(getSliceKey(slice)),
+  ]))
 }

@@ -8,6 +8,8 @@ import {
   setRef,
   EventSegUiInteractionState,
   MeasuredAbsoluteHarness,
+  type Slice,
+  getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
@@ -18,8 +20,8 @@ import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 import {
   buildTimelineSegPlacementPlan,
   buildTimelineSegPlacements,
-  type TimelineSegDomItem,
   type TimelineSegMoreLink,
+  type TimelineSourceSeg,
 } from '../seg-placement-adapter'
 import { resolveTimelineEventProjectionSizing } from '../slot-estimate'
 import { computeSegHorizontals } from '../timeline-positioning'
@@ -106,12 +108,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       sliceHeightRefMap.current,
       moreLinkHeightRefMap.current,
     )
-    let fgSegTops = new Map<string, number>()
-    for (const item of placementResult.eventDomItems) {
-      if (item.top != null) {
-        fgSegTops.set(item.key, item.top)
-      }
-    }
 
     this.totalHeight = placementResult.contentHeight
     /*
@@ -140,20 +136,28 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           height: placementResult.contentHeight,
         }}
       >
-        {this.renderEventDomItems(placementResult.eventDomItems)}
-        {this.renderMirrorSegs(mirrorSegs, fgSegTops)}
+        {this.renderEventSlices(
+          placementResult.renderSlices,
+          placementResult.sliceCoords,
+        )}
+        {this.renderMirrorSegs(mirrorSegs, placementResult.sliceCoords)}
         {this.renderMoreLinks(placementResult.moreLinks)}
       </div>
     )
   }
 
-  renderEventDomItems(eventDomItems: TimelineSegDomItem[]) {
+  renderEventSlices(
+    renderSlices: Slice<TimelineSourceSeg>[],
+    sliceCoords: ReadonlyMap<string, number>,
+  ) {
     const { props } = this
 
     return (
       <>
-        {eventDomItems.map((item) => {
-          const { key, seg, horizontal, top } = item
+        {renderSlices.map((slice) => {
+          const key = getSliceKey(slice)
+          const seg = slice.sourceSeg
+          const top = sliceCoords.get(key)
           const { eventRange } = seg
           const { instanceId } = eventRange.instance
 
@@ -169,8 +173,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
                 top,
-                insetInlineStart: horizontal.start,
-                width: horizontal.size,
+                insetInlineStart: slice.start,
+                width: slice.end - slice.start,
               }}
               heightRef={this.sliceHeightRefMap.createRef(key)}
             >

@@ -122,7 +122,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private disconnectHeight?: () => void
   private neededLevelCount = DEFAULT_NEEDED_LEVEL_COUNT
   private sliceHeightGrowthRate = 0
-  private latestScreenSlices: Slice<DayGridSourceSeg>[] = []
+  private latestScreenSlices: readonly Slice<DayGridSourceSeg>[] = []
   private largestWholeHeight?: number
 
   render() {
@@ -192,9 +192,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
       if (placementMode === 'auto') {
-        this.latestScreenSlices = screenColumns.flatMap((column) =>
-          column.renderSlices,
-        )
+        this.latestScreenSlices = screenLayout.renderSlices
       }
 
       if (maxMainTop != null) {
@@ -367,7 +365,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           }}
           heightRef={null}
         >
-          {this.renderEventContent(seg, {
+          {this.renderEventContent(seg, eventRange, {
             isDragging,
             isResizing,
             isMirror: true,
@@ -394,11 +392,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     for (const slice of slices) {
       const key = getSliceKey(slice)
       const sliceTop = sliceCoords.get(key)
-      const seg = buildLevelEventSeg(slice)
-      const { eventRange } = seg
+      const { eventRange } = slice.sourceSeg
       const { instanceId } = eventRange.instance
       const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(
-        seg,
+        slice,
         colWidth,
         colCount,
       )
@@ -417,7 +414,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <MeasuredAbsoluteHarness
           key={key}
-          className={seg.start ? classNames.fakeBorderS : ''}
+          className={slice.start ? classNames.fakeBorderS : ''}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
@@ -427,7 +424,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
         >
-          {this.renderEventContent(seg, {
+          {this.renderEventContent(slice, eventRange, {
             isDragging,
             isResizing,
             isSelected,
@@ -443,9 +440,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
    * The inner event, identical on both placement routes. Only the wrapper
    * around it differs: the screen route positions it, print lets it sit at the
    * static top of its band slot.
-   */
+  */
   private renderEventContent(
-    seg: DayRowEventRangePart,
+    range: SlicedCoordRange,
+    eventRange: EventRangeProps['eventRange'],
     interaction: {
       isDragging?: boolean
       isResizing?: boolean
@@ -454,15 +452,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     },
   ): ReactElement {
     const { props } = this
-    const { eventRange } = seg
-    const isListItem = hasListItemDisplay(seg)
+    const isListItem = hasListItemDisplay(range, eventRange)
 
     return (
       <StandardEvent
         display={isListItem ? 'list-item' : 'row'}
         eventRange={eventRange}
-        isStart={seg.isStart}
-        isEnd={seg.isEnd}
+        isStart={range.isStart}
+        isEnd={range.isEnd}
         isDragging={Boolean(interaction.isDragging)}
         isResizing={Boolean(interaction.isResizing)}
         isMirror={Boolean(interaction.isMirror)}
@@ -488,7 +485,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       let eventNode: ReactElement | null = null
 
       if (slice) {
-        const seg = buildPrintEventSeg(slice)
         const sliceKey = getDayGridPrintSliceKey(slice)
 
         // Insets resolve against the row (the nearest positioned ancestor,
@@ -500,7 +496,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         eventNode = (
           <MeasuredAbsoluteHarness
             key={sliceKey}
-            className={seg.start ? classNames.fakeBorderS : ''}
+            className={slice.start ? classNames.fakeBorderS : ''}
             style={{
               insetInlineStart,
               insetInlineEnd,
@@ -508,7 +504,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
             {/* print has no interaction state at all */}
-            {this.renderEventContent(seg, {})}
+            {this.renderEventContent(slice, slice.sourceSeg.eventRange, {})}
           </MeasuredAbsoluteHarness>
         )
       }
@@ -651,20 +647,20 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     const [, canvasHeight] = this.computeFgDims()
     if (canvasHeight != null) {
-      for (const sliceHeight of this.sliceHeightRefMap.current.values()) {
-        this.neededLevelCount = Math.max(
-          this.neededLevelCount,
-          estimateLevelCapacity(canvasHeight, sliceHeight),
-        )
-      }
+      const smallestSliceHeight = Math.min(...this.sliceHeightRefMap.current.values())
+      this.neededLevelCount = Math.max(
+        this.neededLevelCount,
+        estimateLevelCapacity(canvasHeight, smallestSliceHeight),
+      )
     }
 
-    // One fallback base per measurement snapshot, shared by this sampling
-    // pass and the subsequent render's planner.
+    // Capture the fallback base shared by this snapshot and the next render.
     this.largestWholeHeight = computeDayGridLargestWholeHeight(
       this.latestScreenSlices.map((slice) => slice.sourceSeg),
       this.sliceHeightRefMap.current,
     )
+
+    // Retain the largest partial-slice growth rate observed so far.
     this.sliceHeightGrowthRate = ratchetDayGridSliceHeightGrowthRate(
       this.sliceHeightGrowthRate,
       this.latestScreenSlices,
@@ -703,37 +699,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
 
     return props.dateSelectionSegs
-  }
-}
-
-// Utils
-// -------------------------------------------------------------------------------------------------
-
-function buildPrintEventSeg(slice: Slice<DayGridSourceSeg>): DayRowEventRangePart {
-  return {
-    ...slice.sourceSeg,
-    start: slice.start,
-    end: slice.end,
-    isStart: slice.isStart,
-    isEnd: slice.isEnd,
-  }
-}
-
-function buildLevelEventSeg(
-  slice: Slice<DayGridSourceSeg>,
-): DayRowEventRangePart {
-  const { sourceSeg } = slice
-
-  if (slice.start === sourceSeg.start && slice.end === sourceSeg.end) {
-    return sourceSeg
-  }
-
-  return {
-    ...sourceSeg,
-    start: slice.start,
-    end: slice.end,
-    isStart: slice.isStart,
-    isEnd: slice.isEnd,
   }
 }
 
