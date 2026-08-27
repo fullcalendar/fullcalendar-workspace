@@ -10,11 +10,29 @@ import {
   buildDayGridSegSources,
   computeDayGridPlanningSliceThickness,
   computeDayGridDomCandidateMaxLevels,
+  computeDayGridLargestWholeHeight,
   computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
   ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
 } from '../../src/daygrid/seg-placement-adapter'
+
+/** Samples with the fallback base computed the way the owning row does. */
+function sampleGrowthRate(
+  currentRate: number,
+  slices: Slice<DayGridSourceSeg>[],
+  sliceHeights: Map<string, number>,
+): number {
+  return ratchetDayGridSliceHeightGrowthRate(
+    currentRate,
+    slices,
+    sliceHeights,
+    computeDayGridLargestWholeHeight(
+      slices.map((slice) => slice.sourceSeg),
+      sliceHeights,
+    ),
+  )
+}
 
 describe('DayGrid production placement adapter', () => {
   it('builds integer-column sources with stable production identity and order', () => {
@@ -64,7 +82,7 @@ describe('DayGrid row-local placement state', () => {
     const half = makeSlice(source, 0, 2)
     const quarter = makeSlice(source, 0, 1)
 
-    expect(ratchetDayGridSliceHeightGrowthRate(
+    expect(sampleGrowthRate(
       0,
       [half],
       new Map([
@@ -73,7 +91,7 @@ describe('DayGrid row-local placement state', () => {
       ]),
     )).toBe(0)
 
-    const learnedRate = ratchetDayGridSliceHeightGrowthRate(
+    const learnedRate = sampleGrowthRate(
       0,
       [half],
       new Map([
@@ -84,7 +102,7 @@ describe('DayGrid row-local placement state', () => {
     expect(learnedRate).toBe(0.5)
     expect(computeDayGridPlanningSliceThickness(half, 20, learnedRate)).toBe(30)
     expect(computeDayGridPlanningSliceThickness(quarter, 20, learnedRate)).toBe(50)
-    expect(ratchetDayGridSliceHeightGrowthRate(
+    expect(sampleGrowthRate(
       learnedRate,
       [half],
       new Map([
@@ -99,7 +117,7 @@ describe('DayGrid row-local placement state', () => {
     const half = makeSlice(source, 0, 2)
     const quarter = makeSlice(source, 3, 4)
 
-    expect(ratchetDayGridSliceHeightGrowthRate(
+    expect(sampleGrowthRate(
       0,
       [half, quarter],
       new Map([
@@ -108,6 +126,37 @@ describe('DayGrid row-local placement state', () => {
         [getSliceKey(quarter), 80],
       ]),
     )).toBe(1)
+  })
+
+  it('samples sourceless partials against the planning fallback base', () => {
+    const [anchor, deep] = buildDayGridSegSources([
+      makeSeg('anchor', 0, 1),
+      makeSeg('deep', 0, 2),
+    ])
+    const anchorWhole = makeSlice(anchor, 0, 1)
+    const deepPartial = makeSlice(deep, 0, 1)
+    const heights = new Map([
+      [anchor.key, 20],
+      [getSliceKey(deepPartial), 50],
+    ])
+
+    // The rate learned against the fallback base of 20 makes the next plan
+    // reserve the measured 50 exactly: the one-pass correction fixed point.
+    const learnedRate = sampleGrowthRate(
+      0,
+      [anchorWhole, deepPartial],
+      heights,
+    )
+    expect(learnedRate).toBe(1.5)
+    expect(computeDayGridPlanningSliceThickness(deepPartial, 20, learnedRate))
+      .toBe(50)
+
+    // With no measured whole anywhere, there is no base and no sample.
+    expect(sampleGrowthRate(
+      0,
+      [deepPartial],
+      new Map([[getSliceKey(deepPartial), 50]]),
+    )).toBe(0)
   })
 })
 
@@ -514,6 +563,7 @@ function layoutPixelRow(
   const heights = config.heights ?? Object.fromEntries(
     eventOrderedSegs.map((seg) => [getDayGridSegKey(seg), EVENT_HEIGHT]),
   )
+  const sliceHeights = new Map(Object.entries(heights))
 
   return buildDayGridPixelPlacements(
     eventOrderedSegs,
@@ -526,7 +576,11 @@ function layoutPixelRow(
       : config.moreLinkHeight ?? EVENT_HEIGHT,
     config.neededLevelCount ?? 8,
     config.sliceHeightGrowthRate ?? 0,
-    new Map(Object.entries(heights)),
+    sliceHeights,
+    computeDayGridLargestWholeHeight(
+      buildDayGridSegSources(eventOrderedSegs),
+      sliceHeights,
+    ),
   )
 }
 

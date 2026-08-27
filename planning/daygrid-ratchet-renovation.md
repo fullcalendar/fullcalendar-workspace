@@ -284,14 +284,44 @@ whole segments would require a mount-and-hope second orchestration pass. The
 point-in-time fallback is a strict improvement over the status quo, which uses
 the stale `largestSliceHeight` ratchet for the same purpose.
 
-The fallback must be the largest current whole measurement, not the smallest.
-If the fallback is too large, the cost is conservative and familiar: a deep
-event sits under the more-link when it might have fit. If it were too small,
-the merge could admit an event that does not fit — and if that event lands as
-a partial whose whole donor is still beyond the frontier, the correcting
-measurement never arrives, leaving a persistent overlap with no self-heal
-path. Errors from the large side are harmless; errors from the small side can
-be permanent.
+Beyond-frontier slices must stay merge-eligible for slicing to matter at all:
+the more accurately `neededLevelCount` estimates true capacity, the more of
+the slicing-eligible population sits beyond it, so force-hiding
+unmeasured-source slices would starve the very mechanism slicing exists for.
+That rejected direction (an eligibility rule requiring a measured source) is
+recorded here because it superficially looks safer.
+
+No static fallback base can guarantee over-reservation on the first pass —
+content height is unbounded. Reliability comes instead from a correction
+channel governed by one rule: **the growth-rate sampler must resolve a
+partial's source height with the identical expression the planner uses**,
+`wholeHeights.get(sourceKey) ?? largestCurrentWhole`. A partial admitted with
+an under-predicted fallback reservation mounts, measures at height `h`, and is
+then sampled against the same base `B` at compression growth `g`, storing rate
+`(h/B − 1)/g`. The next plan reserves `B × (1 + rate × g) = h` exactly — the
+one-pass correction fixed point. The slice then either genuinely fits or is
+hidden into the more-link count, permanently. The 2px noise floor closes the
+remaining edge: a pair it skips has `h ≤ B + 2`, where the plan was already
+adequate to within the floor.
+
+This is the sanctioned way to let a partial's own measurement influence
+topology. Using the measurement directly in planning oscillates: rejecting the
+slice unmounts it, delete-on-null erases the measurement that justified the
+rejection, and the next pass re-admits it. Routing the evidence through the
+monotone rate ratchet — which survives the unmount — breaks that cycle.
+
+The fallback base must be the largest current whole measurement, not the
+smallest. The fixed-point property holds for any base the sampler and planner
+share, so the choice is about side effects, and smallest loses twice. First,
+rate pollution: a fallback-based sample inflates the row rate for every
+partial, including ones with real measured sources; against the largest base
+the inflation is `(h/L − 1)/g` — exactly the realized under-prediction — while
+against the smallest base it can be enormous, over-reserving ordinary partials
+so hard they stop being displayed. Second, base drift: the smallest current
+whole can decrease as shorter events mount, dropping plans below the learned
+fixed point and forcing endless re-learning at ever-higher rates; the largest
+only grows under placement dynamics, so an established `plan ≥ h` stays
+established.
 
 The fallback is feedback-safe: it samples only whole-slice measurements, and
 the set of mounted whole donors is driven by the frontier, not by merge
@@ -798,6 +828,11 @@ construction. The probe is the only per-route concern.
 - A slice without a whole-source measurement plans with the largest
   point-in-time measured whole height as its fallback `sourceHeight`, keeping
   beyond-frontier events merge-eligible without stale ratchet values.
+- The growth-rate sampler resolves source heights with the same fallback
+  expression the planner uses, so a fallback-planned partial that measures
+  taller than its reservation is reserved at least its measured height on the
+  next pass (the one-pass correction fixed point), and no under-reservation
+  can persist beyond one measurement pass.
 - The merge accepts a pure per-slice thickness callback, and fuzz coverage
   includes generators where narrower slices plan thicker.
 - Each row owns and retires its own `neededLevelCount` frontier.

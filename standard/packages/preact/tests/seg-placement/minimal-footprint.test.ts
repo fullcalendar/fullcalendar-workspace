@@ -5,6 +5,8 @@ import {
   type DayGridPlacementColumn,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
+  buildDayGridSegSources,
+  computeDayGridLargestWholeHeight,
 } from '../../src/daygrid/seg-placement-adapter'
 
 /*
@@ -114,6 +116,12 @@ describe('minimal-footprint hiding, pixel currency', () => {
       makeSeg('e2', 1, 6),
       makeSeg('e3', 1, 2),
     ]
+    const heights = new Map<string, number>([
+      ['e1:1', EVENT_HEIGHT],
+      ['e2:1', EVENT_HEIGHT],
+      ['e2:1:2:slice', EVENT_HEIGHT],
+      ['e3:1', EVENT_HEIGHT],
+    ])
     const layout = buildDayGridPixelPlacements(
       segs,
       false,
@@ -123,12 +131,8 @@ describe('minimal-footprint hiding, pixel currency', () => {
       EVENT_HEIGHT,
       8,
       0,
-      new Map<string, number>([
-        ['e1:1', EVENT_HEIGHT],
-        ['e2:1', EVENT_HEIGHT],
-        ['e2:1:2:slice', EVENT_HEIGHT],
-        ['e3:1', EVENT_HEIGHT],
-      ]),
+      heights,
+      computeDayGridLargestWholeHeight(buildDayGridSegSources(segs), heights),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
@@ -146,6 +150,12 @@ describe('minimal-footprint hiding, pixel currency', () => {
       makeSeg('e2', 1, 6),
       makeSeg('e3', 1, 2),
     ]
+    const heights = new Map<string, number>([
+      ['e1:1', 17],
+      ['e2:1', 17],
+      ['e2:1:2:slice', 17],
+      ['e3:1', 17],
+    ])
     const layout = buildDayGridPixelPlacements(
       segs,
       false,
@@ -155,12 +165,8 @@ describe('minimal-footprint hiding, pixel currency', () => {
       17,
       9,
       0,
-      new Map<string, number>([
-        ['e1:1', 17],
-        ['e2:1', 17],
-        ['e2:1:2:slice', 17],
-        ['e3:1', 17],
-      ]),
+      heights,
+      computeDayGridLargestWholeHeight(buildDayGridSegSources(segs), heights),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([

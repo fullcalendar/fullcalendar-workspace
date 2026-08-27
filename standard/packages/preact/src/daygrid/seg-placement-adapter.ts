@@ -121,26 +121,21 @@ export function buildDayGridPixelPlacements(
   neededLevelCount: number,
   sliceHeightGrowthRate: number,
   sliceHeights: ReadonlyMap<string, number>,
+  largestWholeHeight: number | undefined,
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
-  const currentWholeHeights = getCurrentWholeHeights(
-    sourceSegs,
-    sliceHeights,
-  )
-  const largestCurrentWholeHeight = currentWholeHeights.size
-    ? Math.max(...currentWholeHeights.values())
-    : undefined
-  const getPlanningSliceThickness = largestCurrentWholeHeight == null
+  const getPlanningSliceThickness = largestWholeHeight == null
     ? undefined
-    : (slice: Slice<DayGridSourceSeg>) => {
-      const sourceHeight = currentWholeHeights.get(slice.sourceSeg.key) ??
-        largestCurrentWholeHeight
-      return computeDayGridPlanningSliceThickness(
+    : (slice: Slice<DayGridSourceSeg>) =>
+      computeDayGridPlanningSliceThickness(
         slice,
-        sourceHeight,
+        resolveDayGridSourceHeight(
+          sliceHeights,
+          slice.sourceSeg.key,
+          largestWholeHeight,
+        ),
         sliceHeightGrowthRate,
       )
-    }
   const layout = buildPixelLimitedLayout(
     {
       segs: sourceSegs,
@@ -337,22 +332,37 @@ export function estimateLevelCapacity(eventAreaHeight: number, eventHeight: numb
   return Math.max(1, Math.ceil(eventAreaHeight / eventHeight))
 }
 
-/** Ratchets the largest partial-to-source growth sample in one live snapshot. */
+/**
+ * Ratchets the largest partial-to-source growth sample in one live snapshot.
+ *
+ * A partial without a measured whole source samples against the same fallback
+ * base the planner reserves with. Sharing the base makes under-reservation
+ * self-correcting in one pass: a sample of measured height `h` against base
+ * `B` at compression growth `g` stores rate `(h/B - 1)/g`, so the next plan
+ * reserves `B * (1 + rate * g) = h` exactly. The correction lives in this
+ * monotone rate, not in the partial's deletable measurement, so hiding the
+ * slice cannot erase the evidence that hid it.
+ */
 export function ratchetDayGridSliceHeightGrowthRate(
   currentRate: number,
   slices: readonly Slice<DayGridSourceSeg>[],
   sliceHeights: ReadonlyMap<string, number>,
+  largestWholeHeight: number | undefined,
 ): number {
+  if (largestWholeHeight == null) return currentRate
   let nextRate = currentRate
 
   for (const slice of slices) {
     const { sourceSeg } = slice
     if (slice.start === sourceSeg.start && slice.end === sourceSeg.end) continue
 
-    const sourceHeight = sliceHeights.get(sourceSeg.key)
+    const sourceHeight = resolveDayGridSourceHeight(
+      sliceHeights,
+      sourceSeg.key,
+      largestWholeHeight,
+    )
     const sliceHeight = sliceHeights.get(getSliceKey(slice))
     if (
-      sourceHeight == null ||
       sliceHeight == null ||
       sliceHeight <= sourceHeight + SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX
     ) continue
@@ -381,18 +391,37 @@ export function computeDayGridPlanningSliceThickness(
   return sourceHeight * (1 + growthRate * compressionGrowth)
 }
 
-function getCurrentWholeHeights(
+/**
+ * The fallback base for slices whose whole source is unmeasured. Undefined
+ * until any whole is measured, which gates the pixel merge.
+ *
+ * The owning row computes this once per measurement snapshot and hands the
+ * same value to the planner and the growth-rate sampler — the one-pass
+ * correction fixed point depends on them sharing this base.
+ */
+export function computeDayGridLargestWholeHeight(
   sourceSegs: readonly DayGridSourceSeg[],
   sliceHeights: ReadonlyMap<string, number>,
-): Map<string, number> {
-  const currentWholeHeights = new Map<string, number>()
+): number | undefined {
+  let largestWholeHeight: number | undefined
 
   for (const sourceSeg of sourceSegs) {
     const height = sliceHeights.get(sourceSeg.key)
-    if (height != null) {
-      currentWholeHeights.set(sourceSeg.key, height)
+    if (height != null && (
+      largestWholeHeight == null || height > largestWholeHeight
+    )) {
+      largestWholeHeight = height
     }
   }
 
-  return currentWholeHeights
+  return largestWholeHeight
+}
+
+/** The one definition of planning's source-height expression. */
+function resolveDayGridSourceHeight(
+  sliceHeights: ReadonlyMap<string, number>,
+  sourceKey: string,
+  largestWholeHeight: number,
+): number {
+  return sliceHeights.get(sourceKey) ?? largestWholeHeight
 }

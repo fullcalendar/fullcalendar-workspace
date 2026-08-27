@@ -33,6 +33,7 @@ import {
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   computeDayGridDomCandidateMaxLevels,
+  computeDayGridLargestWholeHeight,
   computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
   ratchetDayGridSliceHeightGrowthRate,
@@ -122,6 +123,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private neededLevelCount = DEFAULT_NEEDED_LEVEL_COUNT
   private sliceHeightGrowthRate = 0
   private latestScreenSlices: Slice<DayGridSourceSeg>[] = []
+  private largestWholeHeight?: number
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -171,6 +173,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           this.neededLevelCount,
           this.sliceHeightGrowthRate,
           this.sliceHeightRefMap.current,
+          this.largestWholeHeight,
         )
         : buildDayGridLevelPlacements(
           fgEventSegs,
@@ -656,10 +659,17 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       }
     }
 
+    // One fallback base per measurement snapshot, shared by this sampling
+    // pass and the subsequent render's planner.
+    this.largestWholeHeight = computeDayGridLargestWholeHeight(
+      this.latestScreenSlices.map((slice) => slice.sourceSeg),
+      this.sliceHeightRefMap.current,
+    )
     this.sliceHeightGrowthRate = ratchetDayGridSliceHeightGrowthRate(
       this.sliceHeightGrowthRate,
       this.latestScreenSlices,
       this.sliceHeightRefMap.current,
+      this.largestWholeHeight,
     )
   }
 
