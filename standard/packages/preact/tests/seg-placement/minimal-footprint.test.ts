@@ -116,15 +116,13 @@ describe('minimal-footprint hiding, pixel currency', () => {
     ]
     const layout = buildDayGridPixelPlacements(
       segs,
-      {
-        orderStrict: false,
-        eventSlicing: true,
-        columnCount: 7,
-        canvasHeight: 25,
-        moreLinkHeight: EVENT_HEIGHT,
-        neededLevelCount: 8,
-        sliceHeightGrowthRate: 0,
-      },
+      false,
+      true,
+      7,
+      25,
+      EVENT_HEIGHT,
+      8,
+      0,
       new Map<string, number>([
         ['e1:1', EVENT_HEIGHT],
         ['e2:1', EVENT_HEIGHT],
@@ -150,15 +148,13 @@ describe('minimal-footprint hiding, pixel currency', () => {
     ]
     const layout = buildDayGridPixelPlacements(
       segs,
-      {
-        orderStrict: false,
-        eventSlicing: true,
-        columnCount: 7,
-        canvasHeight: 38.640625,
-        moreLinkHeight: 17,
-        neededLevelCount: 9,
-        sliceHeightGrowthRate: 0,
-      },
+      false,
+      true,
+      7,
+      38.640625,
+      17,
+      9,
+      0,
       new Map<string, number>([
         ['e1:1', 17],
         ['e2:1', 17],
@@ -191,16 +187,11 @@ function layoutLevelRow(
   }
   return buildDayGridLevelPlacements(
     eventOrderedSegs,
-    {
-      mode: dayMaxEvents != null
-        ? 'maxEvents'
-        : dayMaxEventRows != null ? 'maxEventRows' : 'unlimited',
-      dayMaxEvents,
-      dayMaxEventRows,
-      orderStrict: false,
-      eventSlicing: true,
-      columnCount,
-    },
+    dayMaxEvents ?? dayMaxEventRows ?? Infinity,
+    dayMaxEvents == null && dayMaxEventRows != null ? 1 : 0,
+    false,
+    true,
+    columnCount,
     heights,
   ).columns
 }

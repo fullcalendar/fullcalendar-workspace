@@ -75,71 +75,51 @@ export function buildDayGridSegSources(
   }))
 }
 
-interface DayGridLevelPlacementInputs {
-  mode: Exclude<DayGridPlacementMode, 'auto'>
-  dayMaxEvents: boolean | number | undefined
-  dayMaxEventRows: boolean | number | undefined
-  orderStrict: boolean
-  eventSlicing: boolean
-  columnCount: number
-}
-
-interface DayGridPixelPlacementInputs {
-  orderStrict: boolean
-  eventSlicing: boolean
-  columnCount: number
-  /** Real pixels foreground events compete for. Undefined until measured. */
-  canvasHeight?: number
-  /** Measured row-style more-link trigger height. */
-  moreLinkHeight?: number
-  neededLevelCount: number
-  sliceHeightGrowthRate: number
-}
-
 /**
  * Builds an immediately renderable kernel layout for unlimited and numeric
  * DayGrid modes. Boolean-auto uses the pixel-limited adapter below.
  */
 export function buildDayGridLevelPlacements(
   eventOrderedSegs: readonly DayGridEventSeg[],
-  input: DayGridLevelPlacementInputs,
+  maxLevels: number,
+  moreLinkLevelTax: number,
+  orderStrict: boolean,
+  eventSlicing: boolean,
+  columnCount: number,
   sliceHeights: ReadonlyMap<string, number>,
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
   const layout = buildLevelLimitedLayout(
     {
       segs: sourceSegs,
-      cells: Array.from({ length: input.columnCount }),
+      cells: Array.from({ length: columnCount }),
     },
     {
-      eventOrderStrict: input.orderStrict,
-      eventSlicing: input.eventSlicing,
-      maxLevels: computeDayGridDomCandidateMaxLevels(
-        input.mode,
-        input.dayMaxEvents,
-        input.dayMaxEventRows,
-        Infinity,
-      ),
-      moreLinkLevelTax: computeDayGridMoreLinkLevelTax(input.mode),
+      eventOrderStrict: orderStrict,
+      eventSlicing,
+      maxLevels,
+      moreLinkLevelTax,
     },
     sliceHeights,
   )
   return buildDayGridPlacementLayout(
     sourceSegs,
-    layout.hiddenGroups,
-    layout.slicesByStart,
-    layout.placementSliceLevels,
-    layout.sliceCoords,
+    layout,
     sliceHeights,
-    input.columnCount,
-    layout.pendingSlices,
+    columnCount,
   )
 }
 
 /** Builds the boolean-auto DayGrid route with a real pixel ceiling. */
 export function buildDayGridPixelPlacements(
   eventOrderedSegs: readonly DayGridEventSeg[],
-  input: DayGridPixelPlacementInputs,
+  orderStrict: boolean,
+  eventSlicing: boolean,
+  columnCount: number,
+  canvasHeight: number | undefined,
+  moreLinkHeight: number | undefined,
+  neededLevelCount: number,
+  sliceHeightGrowthRate: number,
   sliceHeights: ReadonlyMap<string, number>,
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
@@ -158,34 +138,30 @@ export function buildDayGridPixelPlacements(
       return computeDayGridPlanningSliceThickness(
         slice,
         sourceHeight,
-        input.sliceHeightGrowthRate,
+        sliceHeightGrowthRate,
       )
     }
   const layout = buildPixelLimitedLayout(
     {
       segs: sourceSegs,
-      cells: Array.from({ length: input.columnCount }),
+      cells: Array.from({ length: columnCount }),
     },
     {
-      eventOrderStrict: input.orderStrict,
-      eventSlicing: input.eventSlicing,
+      eventOrderStrict: orderStrict,
+      eventSlicing,
     },
     sliceHeights,
-    input.canvasHeight,
-    input.neededLevelCount,
-    input.moreLinkHeight,
+    canvasHeight,
+    neededLevelCount,
+    moreLinkHeight,
     getPlanningSliceThickness,
   )
 
   return buildDayGridPlacementLayout(
     sourceSegs,
-    layout.hiddenGroups,
-    layout.slicesByStart,
-    layout.placementSliceLevels,
-    layout.sliceCoords,
+    layout,
     sliceHeights,
-    input.columnCount,
-    layout.pendingSlices,
+    columnCount,
   )
 }
 
@@ -294,14 +270,23 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
 
 function buildDayGridPlacementLayout(
   sourceSegs: readonly DayGridSourceSeg[],
-  hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
-  slicesByStart: readonly (readonly Slice<DayGridSourceSeg>[])[],
-  placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[],
-  sliceCoords: ReadonlyMap<string, number>,
+  layout: {
+    hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[]
+    slicesByStart: readonly (readonly Slice<DayGridSourceSeg>[])[]
+    placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[]
+    sliceCoords: ReadonlyMap<string, number>
+    pendingSlices: readonly Slice<DayGridSourceSeg>[]
+  },
   sliceHeights: ReadonlyMap<string, number>,
   columnCount: number,
-  pendingSlices: readonly Slice<DayGridSourceSeg>[],
 ): DayGridPlacementLayout {
+  const {
+    hiddenGroups,
+    slicesByStart,
+    placementSliceLevels,
+    sliceCoords,
+    pendingSlices,
+  } = layout
   const columns = Array.from(
     { length: columnCount },
     (_, column): DayGridPlacementColumn => ({

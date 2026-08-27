@@ -439,18 +439,21 @@ function layoutLevelRow(
   } = {},
 ) {
   const heights = config.heights ?? buildAllSliceHeights(eventOrderedSegs)
+  const mode = dayMaxEvents != null
+    ? 'maxEvents'
+    : dayMaxEventRows != null ? 'maxEventRows' : 'unlimited'
   return buildDayGridLevelPlacements(
     eventOrderedSegs,
-    {
-      mode: dayMaxEvents != null
-        ? 'maxEvents'
-        : dayMaxEventRows != null ? 'maxEventRows' : 'unlimited',
+    computeDayGridDomCandidateMaxLevels(
+      mode,
       dayMaxEvents,
       dayMaxEventRows,
-      orderStrict: config.orderStrict ?? false,
-      eventSlicing: config.eventSlicing ?? true,
-      columnCount,
-    },
+      Infinity,
+    ),
+    computeDayGridMoreLinkLevelTax(mode),
+    config.orderStrict ?? false,
+    config.eventSlicing ?? true,
+    columnCount,
     new Map(Object.entries(heights)),
   )
 }
@@ -489,17 +492,15 @@ function layoutPixelRow(
 
   return buildDayGridPixelPlacements(
     eventOrderedSegs,
-    {
-      orderStrict: config.orderStrict ?? false,
-      eventSlicing: config.eventSlicing ?? true,
-      columnCount,
-      canvasHeight: config.canvasHeight,
-      moreLinkHeight: config.hasMeasuredMoreLink === false
-        ? undefined
-        : config.moreLinkHeight ?? EVENT_HEIGHT,
-      neededLevelCount: config.neededLevelCount ?? 8,
-      sliceHeightGrowthRate: config.sliceHeightGrowthRate ?? 0,
-    },
+    config.orderStrict ?? false,
+    config.eventSlicing ?? true,
+    columnCount,
+    config.canvasHeight,
+    config.hasMeasuredMoreLink === false
+      ? undefined
+      : config.moreLinkHeight ?? EVENT_HEIGHT,
+    config.neededLevelCount ?? 8,
+    config.sliceHeightGrowthRate ?? 0,
     new Map(Object.entries(heights)),
   )
 }

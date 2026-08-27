@@ -32,6 +32,8 @@ import {
   DEFAULT_NEEDED_LEVEL_COUNT,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
+  computeDayGridDomCandidateMaxLevels,
+  computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
   ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
@@ -161,27 +163,27 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements(
           fgEventSegs,
-          {
-            orderStrict: options.eventOrderStrict,
-            eventSlicing: options.eventSlicing,
-            columnCount: cells.length,
-            canvasHeight: minMainHeight,
-            moreLinkHeight: props.moreLinkHeight,
-            neededLevelCount: this.neededLevelCount,
-            sliceHeightGrowthRate: this.sliceHeightGrowthRate,
-          },
+          options.eventOrderStrict,
+          options.eventSlicing,
+          cells.length,
+          minMainHeight,
+          props.moreLinkHeight,
+          this.neededLevelCount,
+          this.sliceHeightGrowthRate,
           this.sliceHeightRefMap.current,
         )
         : buildDayGridLevelPlacements(
           fgEventSegs,
-          {
-            mode: placementMode,
-            dayMaxEvents: props.dayMaxEvents,
-            dayMaxEventRows: props.dayMaxEventRows,
-            orderStrict: options.eventOrderStrict,
-            eventSlicing: options.eventSlicing,
-            columnCount: cells.length,
-          },
+          computeDayGridDomCandidateMaxLevels(
+            placementMode,
+            props.dayMaxEvents,
+            props.dayMaxEventRows,
+            Infinity,
+          ),
+          computeDayGridMoreLinkLevelTax(placementMode),
+          options.eventOrderStrict,
+          options.eventSlicing,
+          cells.length,
           this.sliceHeightRefMap.current,
         )
       screenColumns = screenLayout.columns
