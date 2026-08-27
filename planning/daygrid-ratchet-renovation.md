@@ -16,8 +16,11 @@ The current ratchets are:
 
 This proposal removes the first and third, moves and narrows the lifetime of the
 fourth, and replaces the second with a row-local, dimensionless growth-rate
-ratchet. The exact growth-rate formula remains an open choice. Two candidate
-models are documented in detail below without selecting either one.
+ratchet. The growth-rate formula is decided: Candidate B, the direct
+compression-growth multiplier. Candidate A remains documented below as a
+rejected alternative, together with the selection rationale and the sampling
+protocol that protects the ratchet from measurement noise and from pairing
+measurements taken in different layout passes.
 
 This direction is related to, but more structural than, the measurement-epoch
 approach in `planning/multimonth-ratchet-reset.md`. Instead of finding every CSS
@@ -116,6 +119,23 @@ The probe should:
   generators as a real row more link;
 - be noninteractive, excluded from accessibility, and not invoke the public
   `moreLinkDidMount` or `moreLinkWillUnmount` hooks.
+
+Not every route currently supplies `colWidth`, but every route already
+computes it: the `DayGridRows` prop exists and `DayGridLayoutPannable` passes
+it; `SingleMonth` computes `colWidth = gridWidth / cellColCnt` for its
+narrow/micro decisions and simply does not pass it; `DayGridLayoutNormal`
+computes the same quantity as `cellWidth = clientWidth / colCount`. The fix is
+to drill each parent's already-computed value down as the existing `colWidth`
+prop — do not re-derive it as `visibleWidth / columnCount` inside
+`DayGridRows`. That division is subtly wrong in two routes: in
+`DayGridLayoutNormal`, `visibleWidth` is `totalWidth` (scrollbar included)
+while the cell width governing narrow/micro styling derives from `clientWidth`
+(scrollbar excluded); in `DayGridLayoutPannable`, `colWidth` comes from
+`computeColWidth` with `dayMinWidth` in play and need not equal
+`visibleWidth / colCount` at all. Drilling keeps a single source of truth per
+route. While `colWidth` is still `undefined` (pre-measurement render), the
+probe has no meaningful width and the merge simply remains gated, which also
+keeps pre-measurement renders from planning partials.
 
 The measured value should be passed as a prop such as `moreLinkHeight`. Until
 both `moreLinkHeight` and the row's canvas height are known, the pixel merge
@@ -252,23 +272,141 @@ getPlanningSliceThickness(slice)
 - A whole slice uses its current measured whole-source height.
 - A partial uses its current whole-source height plus an expansion predicted
   from its column compression and the row's retained growth rate.
-- A slice whose whole-source measurement is unavailable is not yet eligible
-  for topology placement.
+- A slice whose whole-source measurement is unavailable substitutes the
+  largest point-in-time measured whole height in the row as its
+  `sourceHeight`, then runs through the same growth model.
+
+The fallback keeps events beyond the `neededLevelCount` frontier
+merge-eligible, matching today's behavior for `domExcludedSlices`. Rejected
+alternatives: widening the frontier to mount their donors would flood-mount
+every level between the old frontier and one deep event; whitelisting specific
+whole segments would require a mount-and-hope second orchestration pass. The
+point-in-time fallback is a strict improvement over the status quo, which uses
+the stale `largestSliceHeight` ratchet for the same purpose.
+
+The fallback must be the largest current whole measurement, not the smallest.
+If the fallback is too large, the cost is conservative and familiar: a deep
+event sits under the more-link when it might have fit. If it were too small,
+the merge could admit an event that does not fit — and if that event lands as
+a partial whose whole donor is still beyond the frontier, the correcting
+measurement never arrives, leaving a persistent overlap with no self-heal
+path. Errors from the large side are harmless; errors from the small side can
+be permanent.
+
+The fallback is feedback-safe: it samples only whole-slice measurements, and
+the set of mounted whole donors is driven by the frontier, not by merge
+output, so partial mount/unmount churn cannot move it. It changes only when
+the frontier widens (new samples) or an existing donor remeasures (regime
+change) — the latter being exactly the responsiveness the retired ratchet
+lacked. The degenerate case of zero measured wholes needs no special handling:
+the merge stays gated until the probe and canvas are measured, and the first
+levels always sit within the default frontier.
 
 A callback is justified here rather than being a middleman around a map:
 partial slices are created dynamically inside the merge, so the value must be
 derived from newly created geometry, a source measurement, and the retained
 rate.
 
-The growth rate should be recomputed by scanning currently measured
-whole/partial pairs whenever the slice-height map changes, then ratcheted into
-the row-local value. No historical collection of individual measurements is
-required.
+The growth rate is recomputed by scanning currently measured whole/partial
+pairs, then ratcheting the maximum surviving sample into the row-local value.
+No historical collection of individual measurements is required. The scan is
+governed by the two sampling rules below.
+
+### Sampling rule 1: scan only complete `afterSize` snapshots
+
+A sample divides two live measurements that arrive from two different
+`ResizeObserver` wrappers. The division is only meaningful when both values
+describe the same layout pass. If sampling ran inside an individual report
+callback, it could observe a half-updated map: during a wide-to-compact
+transition, the whole source may already have re-reported its short compact
+height while the partial still holds its tall wide-mode value. The resulting
+ratio compares two different rendering worlds, can be enormous, and would be
+ratcheted for the row's lifetime — the original stale-pixel disease reborn in
+rate space.
+
+Rate samples must therefore only ever be taken from a whole map snapshot at
+`afterSize` time, never inside an individual measurement callback. The
+`afterSize` flush runs after the entire `ResizeObserver` delivery loop, which
+supplies the required consistency:
+
+- the scan never runs between two reports of the same delivery batch;
+- entries that did not report in a batch still equal their wrapper's current
+  size, so the post-flush map is a coherent snapshot; and
+- a snapshot that is uniformly stale relative to a just-committed re-render is
+  still internally consistent, and a consistent pair from the previous
+  rendering world is a legitimate sample of that world. Consistency, not
+  freshness, is the requirement.
+
+`afterSize` stores callbacks in a `Set`, so registering the same bound
+recompute method from every measurement path is idempotent, matching the
+existing `afterSize(this.handleSegPositioning)` idiom. A dirty flag that skips
+the scan when no relevant height changed is an optional implementer
+optimization; the scan is one pass over a small live map, so recomputing
+unconditionally is acceptable. The scan does not need to know which
+measurements changed: every currently measured pair is evaluated statelessly
+from its own two snapshot values.
+
+### Sampling rule 2: a pixel noise floor on height growth
+
+Inside the scan, a pair is skipped when:
+
+```ts
+sliceHeight <= sourceHeight + 2 // pixels; indistinguishable from no growth
+```
+
+Skipping is identical to snapping the sample's growth to zero: the stored rate
+is born at zero and changes only through `Math.max`, so a skipped pair and a
+zero-growth sample are the same operation, and no code ever writes a zero. The
+guard clamps samples, never the stored ratchet: a legitimately learned rate is
+never snapped back down.
+
+The floor exists because spans are integer column counts, so long events
+produce compressions barely above one, and the rate formula divides by a
+near-zero compression term there. A source spanning ten columns at 20px whose
+nine-column partial reports 21px from border or subpixel rounding yields:
+
+```text
+observedRate = (21/20 - 1) / (10/9 - 1) ~= 0.45
+```
+
+One pixel of noise becomes a permanently ratcheted rate that roughly triples
+reservations for future narrow partials of that row. Two alternative guard
+shapes were considered and rejected:
+
+- A near-zero epsilon in rate space does not work, because the amplification
+  means pixel noise does not appear near zero in rate space: the sample above
+  reads 0.45, and any epsilon large enough to catch it would also discard
+  substantial real growth observed at higher compressions. No single
+  rate-space number covers both.
+- A percentage-of-source-height threshold does not work, because the noise
+  being suppressed is additive pixel rounding that does not scale with element
+  height. Ten percent of a tall custom event could swallow a genuine wrapped
+  line and permanently block a real sample from ever being learned.
+
+The absolute floor is the upward completion of the existing
+`Math.max(1, expansion)` clamp, which already treats a partial measuring
+shorter than its source as no growth. Together they form one dead zone around
+"no growth."
+
+Aggressive discarding is safe because the two error directions are not
+symmetric. A bogus sample that is too high ratchets permanently. A discarded
+sample merely under-reserves its own pair by at most the floor itself, roughly
+two pixels of slack, and any genuine wrap adds at least a line height and
+passes the floor at every compression. The governing principle: every sampling
+guard must bound the worst-case under-reservation it can cause, because
+under-reservation is the only error direction with a bounded, self-correcting
+cost.
 
 ### Bootstrap behavior
 
 The growth rate should begin at zero, representing the common no-wrap case in
 which width compression does not increase height.
+
+Combined with the pixel noise floor, this zero is sticky in the strongest
+sense: in a row whose events are all constant-height, every pair falls inside
+the floor on every scan, no sample is ever admitted, and the rate provably
+never leaves its bootstrap value. Rounding quirks alone can never prevent
+slices from fitting into space they would visually fit into.
 
 The first genuinely expanding partial will initially be under-reserved. It
 serves as an unsettled measurement donor. Once it reports its height, the rate
@@ -281,14 +419,29 @@ No learned model can guarantee sufficient reservation before seeing its first
 expanding example unless it begins with an arbitrarily conservative positive
 default.
 
-## Open choice: how to model slice-height growth
+## Growth model: Candidate B selected
 
 Both candidates below are dimensionless, start at zero, use the current
 whole-source pixel height as their scale, and ratchet upward. Both guarantee
 that, while the source measurement remains comparable, a retained rate at
 least as large as an observed sample reserves at least that sample's height.
 
-Neither formula is selected by this document.
+Candidate B, the direct compression-growth multiplier, is selected. Candidate
+A remains documented as a rejected alternative. The deciding arguments:
+
+- Noise sensitivity does not differentiate them. Near compression one,
+  `log(1 + x)` approximates `x`, so both formulas degenerate to the same small
+  ratio divided by the same small ratio; on the ten-column rounding example in
+  the sampling rules, Candidate A learns 0.463 where B learns 0.45. Noise is
+  handled entirely by the pixel floor, upstream of either formula, and is
+  therefore orthogonal to this choice.
+- Extrapolation risk is one-sided. For learned rates above one, Candidate A
+  extrapolates as a power law and over-reserves without bound, and
+  over-reservation is the permanent, non-self-correcting direction. Candidate
+  B's worst case is a straight line. For learned rates below one the
+  comparison mildly favors A, but there both are bounded.
+- Candidate B's arithmetic is immediately legible, and its stored value has a
+  direct reading: rate one is exactly ordinary inverse-width wrapping.
 
 Use these common ratios:
 
@@ -468,10 +621,32 @@ It gives similarly useful landmarks:
 - growth rate above `1`: more growth than inverse width.
 
 Using `compression - 1`, rather than the bounded fraction
-`1 - sliceWidth / sourceWidth`, is important. The bounded fraction approaches
-one as a slice becomes extremely narrow and would make predicted growth
-saturate. `sourceWidth / sliceWidth - 1` continues growing and exactly models
-inverse-width wrapping when the rate is one.
+`1 - sliceWidth / sourceWidth`, is important for two reasons.
+
+First, the bounded fraction approaches one as a slice becomes extremely narrow
+and would make predicted growth saturate. `sourceWidth / sliceWidth - 1`
+continues growing and exactly models inverse-width wrapping when the rate is
+one.
+
+Second, and more decisive: with `compression - 1`, the learned rate is a
+property of the content rather than of the particular sample. Run true
+inverse-width content — a four-column, 20px source whose height doubles when
+width halves — through both forms. With `compression - 1`, the two-column
+sample (40px) and the one-column sample (80px) both teach rate one, and that
+one rate predicts every other width exactly. With the bounded fraction, the
+two-column sample teaches rate two while the one-column sample teaches rate
+four: the same content teaches a different number depending on which partial
+happened to exist. Under a monotone ratchet that is fatal, because the rate
+then climbs every time a narrower partial of perfectly ordinary wrapping
+content is observed, and each climb over-reserves all wider partials — a
+systematic drift in the permanent, non-self-correcting direction.
+
+The verbal reading of the denominator follows: it is a compression factor
+("the nine-column partial is 11.1% more compressed than its ten-column
+source"), not a removed-width fraction ("10% narrower"). The numerator remains
+anchored to the original height ("5% taller than the whole"); the two terms
+are deliberately asymmetric because height growth is predicted relative to the
+known source height while width compression compounds as slices narrow.
 
 #### Example
 
@@ -560,32 +735,56 @@ needs a real more-link-trigger probe. It can either own a probe or receive a
 measurement from its TimeGrid parent.
 
 The row-local `neededLevelCount` and growth-rate ratchet naturally work in this
-standalone route without a cross-row owner.
+standalone route without a cross-row owner. Because the growth ratchet, its
+sampling rules, and the frontier are all row-local, the sampling logic has a
+single implementation inside `DayGridRow`, and both mounting routes share it by
+construction. The probe is the only per-route concern.
 
 ## Suggested implementation sequence
 
 1. Extract `MoreLinkTrigger` from `MoreLinkContainer` without changing real
    more-link behavior.
-2. Add the `DayGridRows` offscreen count-one probe, sized to `colWidth`, and pass
-   its live height to each row. Add equivalent coverage for the standalone
-   TimeGrid all-day lane.
+2. Drill `colWidth` down from the parents that already compute it
+   (`SingleMonth` and `DayGridLayoutNormal`; `DayGridLayoutPannable` already
+   passes it). Add the `DayGridRows` offscreen count-one probe, sized to
+   `colWidth`, and pass its live height to each row. Add equivalent coverage
+   for the standalone TimeGrid all-day lane.
 3. Replace the merge's `smallestSliceHeight` occupant proxy with the measured
    more-link-trigger height, gating the merge until it is available.
 4. Move `neededLevelCount` into `DayGridRow` and recompute it from the current
    complete canvas height and live slice-height map whenever either changes.
 5. Remove shared `smallestSliceHeight`, `largestCanvasHeight`, and their now-dead
    owner/reporting machinery.
-6. Choose one of the two documented growth formulas based on focused examples
-   and desired extrapolation behavior.
+6. Implement the Candidate B growth ratchet with both sampling rules: samples
+   taken only from whole `afterSize` snapshots, and the two-pixel noise floor.
 7. Replace uniform `largestSliceHeight` planning with per-slice reservations
-   derived from the current whole-source measurement and the row-local growth
-   ratchet.
+   derived from the current whole-source measurement (or the largest-current-
+   whole fallback) and the row-local growth ratchet. The mechanical change is
+   small: `MergeOptions.sliceThickness` becomes a pure
+   `getSliceThickness(slice)` callback, threaded at four sites, each with an
+   unambiguous owner — the collider's bottom in `getSliceBottom` and
+   `findInsertion`'s `getBottom`, and the candidate's own thickness in
+   `findValidInsertion`'s budget check and `findInsertion`'s ceiling-fit
+   check. The level-currency merge keeps a constant function returning `1`.
+   Probe/place consistency is free: `partitionByFeasibility` probes each
+   candidate run through the same `findValidInsertion` that later places it,
+   so purity of the callback guarantees agreement. The genuinely new behavior
+   is that thickness varies during the merge: a run carved from a parent
+   spans fewer columns, is more compressed, and therefore plans thicker than
+   the parent — a narrower-is-thicker monotonicity the kernel has never
+   exercised. Termination should hold (breakpoints are finite, every refire
+   is strictly narrower, determinism prevents inconsistent re-evaluation),
+   but the verification burden is the real work: extend the fuzz generator to
+   per-slice thickness, including thickness-grows-as-width-shrinks
+   generators, and confirm the no-overlap and termination invariants.
 8. Preserve whole-source donors, pending-slice settlement, and the later exact
-   coordinate pass.
+   coordinate pass. Verify in code, and cover with a focused test, that a
+   whole donor remains mounted and measured after losing placement, since
+   every partial's reservation scale depends on that invariant.
 9. Verify the existing multi-month Karma regression and add focused coverage
    for probe updates, row-local frontier lifetime, first partial discovery,
-   donor removal, CSS-driven source-height changes, and narrower-slice
-   extrapolation under the selected model.
+   donor removal, CSS-driven source-height changes, snapshot-consistent
+   sampling, noise-floor rejection, and narrower-slice extrapolation.
 
 ## Acceptance criteria
 
@@ -594,6 +793,13 @@ standalone route without a cross-row owner.
 - The probe uses count one, `colWidth`, the Resource Timeline offscreen pattern,
   and does not expose a fake link through interaction, accessibility, or public
   mount callbacks.
+- Every route drills its own already-computed cell width down as the `colWidth`
+  prop; the probe never re-derives it from `visibleWidth`.
+- A slice without a whole-source measurement plans with the largest
+  point-in-time measured whole height as its fallback `sourceHeight`, keeping
+  beyond-frontier events merge-eligible without stale ratchet values.
+- The merge accepts a pure per-slice thickness callback, and fuzz coverage
+  includes generators where narrower slices plan thicker.
 - Each row owns and retires its own `neededLevelCount` frontier.
 - Either canvas-measurement changes or slice-measurement changes recompute that
   frontier from the latest complete row snapshot.
@@ -604,5 +810,13 @@ standalone route without a cross-row owner.
 - Current whole-source heights determine the pixel scale of reservations, so a
   proportional CSS size change does not require clearing a pixel-height
   ratchet.
+- Rate samples are taken only from whole `afterSize` map snapshots, never
+  inside individual measurement callbacks, so no sample can pair measurements
+  from two different layout passes.
+- A pair whose height delta is within the two-pixel noise floor contributes no
+  sample, and a row of constant-height, no-wrap events retains a zero growth
+  rate for its entire lifetime.
+- The learned rate is sample-invariant for inverse-width content: partials of
+  different widths cut from the same content teach the same rate.
 - The selected growth formula and its extrapolation behavior are covered by
   focused tests and documented next to its implementation.
