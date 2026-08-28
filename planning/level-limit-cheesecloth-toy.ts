@@ -26,6 +26,16 @@ export interface LimitedLayout {
   moreLinkSpans: Span[]
 }
 
+const MAX_SLICES_PER_PLAN = 3
+const EXTRA_SLICE_PENALTY = 0.15
+
+/** One hypothetical sliced insertion, confined to a single logical level. */
+interface SlicePlan {
+  levelIndex: number
+  slices: Slice[]
+  score: number
+}
+
 /** Builds unrestricted whole-slice levels in received event order. */
 export function buildUnlimitedSliceLevels(
   segs: readonly Seg[],
@@ -48,8 +58,10 @@ export function buildUnlimitedSliceLevels(
  * Retains `maxLevels` from an unrestricted structure and fires every later
  * slice back at those levels in source order.
  *
- * With slicing disabled, a failed slice hides whole. With slicing enabled, it
- * splits at collision and hidden-coverage edges and fires narrower pieces.
+ * With slicing disabled, a failed slice hides whole. With slicing enabled,
+ * every level independently offers its maximal free runs. The winning plan
+ * balances exposed length against fragmentation and commits all its slices to
+ * one level.
  *
  * Every hidden slice passes through accumulated hidden coverage (the
  * "cheesecloth"). Only newly covered runs reserve the bottom event level for
@@ -109,10 +121,7 @@ export function limitSliceLevels(
     moreLinkSpans: hiddenCoverage,
   }
 
-  /**
-   * Tries the complete received slice first. Only a whole-placement failure
-   * earns a split, and each resulting piece re-enters through the same path.
-   */
+  /** Tries a whole insertion before considering scored same-level slices. */
   function fire(slice: Slice): void {
     const levelIndex = findInsertionLevel(slice)
 
@@ -125,22 +134,18 @@ export function limitSliceLevels(
       return
     }
 
-    const points = collectBreakpoints(
-      slice,
-      sliceLevels,
-      moreLinkLevelTax ? hiddenCoverage : [],
-    )
-    if (points.length === 2) {
-      hide(slice) // No narrower collision environment exists.
+    const plan = findBestSlicePlan(slice)
+    if (!plan) {
+      hide(slice)
       return
     }
 
-    // Within each consecutive pair, collisions and the local cap are constant.
-    const pieces: Slice[] = []
-    for (let i = 0; i < points.length - 1; i++) {
-      pieces.push(cut(slice, points[i], points[i + 1]))
+    for (const visibleSlice of plan.slices) {
+      insertLaterally(sliceLevels[plan.levelIndex], visibleSlice)
     }
-    pushFire(pieces)
+    for (const hiddenSlice of subtractCoveredFromSlice(slice, plan.slices)) {
+      hide(hiddenSlice)
+    }
   }
 
   /** Returns the shallowest vacant level under the span's local event cap. */
@@ -153,6 +158,49 @@ export function limitSliceLevels(
       if (!intersectsAny(sliceLevels[levelIndex], slice)) return levelIndex
     }
     return null
+  }
+
+  /**
+   * Scores the best one-, two-, or three-run insertion offered by each level.
+   * Runs from different levels are deliberately never mixed into one plan.
+   */
+  function findBestSlicePlan(slice: Slice): SlicePlan | null {
+    let selected: SlicePlan | null = null
+    const sourceLength = getSpanLength(slice)
+
+    for (let levelIndex = 0; levelIndex < maxLevels; levelIndex++) {
+      // A level is already a sorted, collision-free set. Copy its geometry so
+      // bottom-link coverage can be folded into the blockers without mutating
+      // the actual level.
+      const blockers: Span[] = sliceLevels[levelIndex].map(({ start, end }) => ({
+        start,
+        end,
+      }))
+      if (moreLinkLevelTax && levelIndex === maxLevels - 1) {
+        for (const span of hiddenCoverage) addToUnion(blockers, span)
+      }
+
+      const runs = subtractCoveredFromSlice(slice, blockers)
+        .sort((a, b) => getSpanLength(b) - getSpanLength(a) || a.start - b.start)
+      let visibleLength = 0
+
+      for (
+        let sliceCount = 1;
+        sliceCount <= Math.min(MAX_SLICES_PER_PLAN, runs.length);
+        sliceCount++
+      ) {
+        visibleLength += getSpanLength(runs[sliceCount - 1])
+        const candidate: SlicePlan = {
+          levelIndex,
+          slices: runs.slice(0, sliceCount).sort(compareSlices),
+          score: visibleLength / sourceLength -
+            EXTRA_SLICE_PENALTY * (sliceCount - 1),
+        }
+        if (isBetterSlicePlan(candidate, selected)) selected = candidate
+      }
+    }
+
+    return selected
   }
 
   /** Adds hidden membership, but taxes only previously uncovered territory. */
@@ -192,7 +240,7 @@ export function limitSliceLevels(
         // The violating footprint joins the cloth; the outside pieces get
         // another opportunity to occupy unrelated lateral gaps.
         hide(intersection(victim, atom)!)
-        pushFire(subtract(victim, atom))
+        pushFire(subtractCoveredFromSlice(victim, [atom]))
       } else {
         hide(victim)
       }
@@ -260,6 +308,15 @@ function subtractCovered(span: Span, covered: readonly Span[]): Span[] {
   return result
 }
 
+/** Subtracts normalized coverage while preserving the source slice's identity. */
+function subtractCoveredFromSlice(
+  slice: Slice,
+  covered: readonly Span[],
+): Slice[] {
+  return subtractCovered(slice, covered)
+    .map((span) => cut(slice, span.start, span.end))
+}
+
 /** Maintains a sorted union. Adjacency is merged because only coverage matters. */
 function addToUnion(spans: Span[], addition: Span): void {
   const result: Span[] = []
@@ -287,18 +344,6 @@ function addToUnion(spans: Span[], addition: Span): void {
   spans.splice(0, spans.length, ...result)
 }
 
-/** Returns the zero, one, or two pieces outside a single subtraction span. */
-function subtract(slice: Slice, span: Span): Slice[] {
-  const result: Slice[] = []
-  if (slice.start < span.start) {
-    result.push(cut(slice, slice.start, span.start))
-  }
-  if (span.end < slice.end) {
-    result.push(cut(slice, span.end, slice.end))
-  }
-  return result
-}
-
 /** Cuts out the strict intersection while retaining source identity/order. */
 function intersection(slice: Slice, span: Span): Slice | null {
   const start = Math.max(slice.start, span.start)
@@ -311,6 +356,19 @@ function cut(slice: Slice, start: number, end: number): Slice {
   return { ...slice, start, end }
 }
 
+/** Comparison: score, then less fragmentation, then the shallower level. */
+function isBetterSlicePlan(
+  candidate: SlicePlan,
+  current: SlicePlan | null,
+): boolean {
+  if (!current || candidate.score > current.score) return true
+  if (candidate.score < current.score) return false
+  if (candidate.slices.length !== current.slices.length) {
+    return candidate.slices.length < current.slices.length
+  }
+  return candidate.levelIndex < current.levelIndex
+}
+
 function intersectsAny(items: readonly Span[], span: Span): boolean {
   return items.some((item) => intersects(item, span))
 }
@@ -318,6 +376,10 @@ function intersectsAny(items: readonly Span[], span: Span): boolean {
 /** Adjacency is not collision. */
 function intersects(a: Span, b: Span): boolean {
   return a.start < b.end && b.start < a.end
+}
+
+function getSpanLength(span: Span): number {
+  return span.end - span.start
 }
 
 /** Preserves increasing lateral-start order within a collision-free level. */
