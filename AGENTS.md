@@ -1,4 +1,8 @@
 
+## Code Style
+
+Always use curly braces for `if` statements and loops, with the body on a separate line.
+
 ## Relevant Files
 
 Unless otherwise noted, work in these directories:

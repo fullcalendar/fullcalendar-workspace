@@ -46,8 +46,12 @@ export function buildUnlimitedSliceLevels(
     const slice = { ...seg, orderIndex }
     let levelIndex = 0
 
-    while (intersectsAny(levels[levelIndex] ?? [], slice)) levelIndex++
-    if (!levels[levelIndex]) levels[levelIndex] = []
+    while (intersectsAny(levels[levelIndex] ?? [], slice)) {
+      levelIndex++
+    }
+    if (!levels[levelIndex]) {
+      levels[levelIndex] = []
+    }
     insertLaterally(levels[levelIndex], slice)
   })
 
@@ -111,8 +115,11 @@ export function limitSliceLevels(
   // before the next unrelated extra gets a chance to insert.
   while (work.length) {
     const item = work.pop()!
-    if (item.type === 'fire') fire(item.slice)
-    else fireMoreLink(item.span)
+    if (item.type === 'fire') {
+      fire(item.slice)
+    } else {
+      fireMoreLink(item.span)
+    }
   }
 
   return {
@@ -155,7 +162,9 @@ export function limitSliceLevels(
     )
 
     for (let levelIndex = 0; levelIndex < levelCount; levelIndex++) {
-      if (!intersectsAny(sliceLevels[levelIndex], slice)) return levelIndex
+      if (!intersectsAny(sliceLevels[levelIndex], slice)) {
+        return levelIndex
+      }
     }
     return null
   }
@@ -177,7 +186,9 @@ export function limitSliceLevels(
         end,
       }))
       if (moreLinkLevelTax && levelIndex === maxLevels - 1) {
-        for (const span of hiddenCoverage) addToUnion(blockers, span)
+        for (const span of hiddenCoverage) {
+          addToUnion(blockers, span)
+        }
       }
 
       const runs = subtractCoveredFromSlice(slice, blockers)
@@ -196,7 +207,9 @@ export function limitSliceLevels(
           score: visibleLength / sourceLength -
             EXTRA_SLICE_PENALTY * (sliceCount - 1),
         }
-        if (isBetterSlicePlan(candidate, selected)) selected = candidate
+        if (isBetterSlicePlan(candidate, selected)) {
+          selected = candidate
+        }
       }
     }
 
@@ -230,7 +243,9 @@ export function limitSliceLevels(
     for (let i = 0; i < points.length - 1; i++) {
       const atom = { start: points[i], end: points[i + 1] }
       const victim = taxedLevel.find((slice) => intersects(slice, atom))
-      if (!victim) continue
+      if (!victim) {
+        continue
+      }
 
       // The victim leaves the level whole. Slicing decides whether only this
       // atom hides or the whole victim contributes more hidden coverage.
@@ -268,7 +283,9 @@ function collectBreakpoints(
 ): number[] {
   const points = new Set([span.start, span.end])
   const admit = (point: number) => {
-    if (point > span.start && point < span.end) points.add(point)
+    if (point > span.start && point < span.end) {
+      points.add(point)
+    }
   }
 
   for (const level of levels) {
@@ -295,16 +312,24 @@ function subtractCovered(span: Span, covered: readonly Span[]): Span[] {
   let cursor = span.start
 
   for (const item of covered) {
-    if (item.end <= cursor) continue
-    if (item.start >= span.end) break
+    if (item.end <= cursor) {
+      continue
+    }
+    if (item.start >= span.end) {
+      break
+    }
     if (item.start > cursor) {
       result.push({ start: cursor, end: Math.min(item.start, span.end) })
     }
     cursor = Math.max(cursor, item.end)
-    if (cursor >= span.end) break
+    if (cursor >= span.end) {
+      break
+    }
   }
 
-  if (cursor < span.end) result.push({ start: cursor, end: span.end })
+  if (cursor < span.end) {
+    result.push({ start: cursor, end: span.end })
+  }
   return result
 }
 
@@ -340,7 +365,9 @@ function addToUnion(spans: Span[], addition: Span): void {
     }
   }
 
-  if (!inserted) result.push(pending)
+  if (!inserted) {
+    result.push(pending)
+  }
   spans.splice(0, spans.length, ...result)
 }
 
@@ -361,8 +388,12 @@ function isBetterSlicePlan(
   candidate: SlicePlan,
   current: SlicePlan | null,
 ): boolean {
-  if (!current || candidate.score > current.score) return true
-  if (candidate.score < current.score) return false
+  if (!current || candidate.score > current.score) {
+    return true
+  }
+  if (candidate.score < current.score) {
+    return false
+  }
   if (candidate.slices.length !== current.slices.length) {
     return candidate.slices.length < current.slices.length
   }
@@ -385,13 +416,17 @@ function getSpanLength(span: Span): number {
 /** Preserves increasing lateral-start order within a collision-free level. */
 function insertLaterally(level: Slice[], slice: Slice): void {
   let index = 0
-  while (index < level.length && level[index].start < slice.start) index++
+  while (index < level.length && level[index].start < slice.start) {
+    index++
+  }
   level.splice(index, 0, slice)
 }
 
 function remove(level: Slice[], slice: Slice): void {
   const index = level.indexOf(slice)
-  if (index !== -1) level.splice(index, 1)
+  if (index !== -1) {
+    level.splice(index, 1)
+  }
 }
 
 function compareSlices(a: Slice, b: Slice): number {
