@@ -142,7 +142,6 @@ export function buildDayGridPixelPlacements(
     moreLinkHeight,
     getPlanningSliceThickness,
   )
-
   return buildDayGridPlacementLayout(
     sourceSegs,
     layout,
@@ -151,48 +150,44 @@ export function buildDayGridPixelPlacements(
   )
 }
 
-/** Projects kernel glob groups into one cell's ordered more-link inputs. */
+/** Projects ordered sources and hidden slices into one cell's more-link inputs. */
 export function buildDayGridPopoverSegs(
-  sourceSegs: readonly DayGridSourceSeg[],
+  eventOrderedSegs: readonly DayGridSourceSeg[],
   hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
   column: number,
-  columnCount: number,
 ): {
   segs: DayRowEventRangePart[]
   hiddenSegs: DayRowEventRangePart[]
 } {
-  const hiddenKeys = new Set<string>()
-
-  for (const group of hiddenGroups) {
-    for (const slice of group.hiddenSlices) {
-      if (intersectsColumn(slice, column, columnCount)) {
-        hiddenKeys.add(slice.sourceSeg.key)
-      }
-    }
-  }
-
-  const columnSources = sourceSegs.filter((source) =>
-    intersectsColumn(source, column, columnCount),
-  )
-
   return {
-    segs: columnSources.map((source) => cutSegToColumn(source, column)),
-    hiddenSegs: columnSources
-      .filter((source) => hiddenKeys.has(source.key))
-      .map((source) => cutSegToColumn(source, column)),
+    segs: eventOrderedSegs.flatMap((source) =>
+      cutSegToColumn(source, column) ?? [],
+    ),
+    hiddenSegs: hiddenGroups
+      .flatMap((group) => group.hiddenSlices)
+      .sort((a, b) => a.sourceSeg.orderIndex - b.sourceSeg.orderIndex)
+      .flatMap((slice) =>
+        cutSegToColumn(slice.sourceSeg, column, slice) ?? [],
+      ),
   }
 }
 
 /**
- * Projects one complete source onto a single column for the more-link APIs.
+ * Projects one complete source onto a column when its relevant span intersects.
  *
- * Only real event boundaries survive the cut, so a popover entry reports
- * "continues" exactly when the event truly extends past this column.
+ * The optional span lets a hidden slice control membership while real event
+ * boundaries still control whether the projected entry reports "continues."
  */
 function cutSegToColumn(
   source: DayGridSourceSeg,
   column: number,
-): DayRowEventRangePart {
+  intersectionSpan: { start: number, end: number } = source,
+): DayRowEventRangePart | null {
+  if (
+    intersectionSpan.start >= column + 1 ||
+    column >= intersectionSpan.end
+  ) return null
+
   const { key, orderIndex, ...seg } = source
   return {
     ...seg,
@@ -283,7 +278,6 @@ function buildDayGridPlacementLayout(
         sourceSegs,
         hiddenGroups,
         column,
-        columnCount,
       ),
     }),
   )
@@ -293,9 +287,8 @@ function buildDayGridPlacementLayout(
       const key = getSliceKey(slice)
       const sliceHeight = sliceHeights.get(key)!
       const sliceBottom = sliceCoords.get(key)! + sliceHeight
-      const range = getLateralCellRange(slice, columnCount)
 
-      for (let column = range.start; column < range.end; column += 1) {
+      for (let column = slice.start; column < slice.end; column += 1) {
         columns[column].contentHeight = Math.max(
           columns[column].contentHeight,
           sliceBottom,
@@ -321,33 +314,18 @@ function federateSlicesByStart(
     () => [] as Slice<DayGridSourceSeg>[],
   )
 
-  for (const slice of renderSlices) slicesByStart[slice.start].push(slice)
+  for (const slice of renderSlices) {
+    slicesByStart[slice.start].push(slice)
+  }
+
   for (const slices of slicesByStart) {
     slices.sort((a, b) =>
       a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
       Number(isPartialSlice(a)) - Number(isPartialSlice(b)),
     )
   }
+
   return slicesByStart
-}
-
-function getLateralCellRange(
-  span: { start: number; end: number },
-  cellCount: number,
-): { start: number; end: number } {
-  return {
-    start: Math.min(cellCount, Math.max(0, Math.floor(span.start))),
-    end: Math.min(cellCount, Math.max(0, Math.ceil(span.end))),
-  }
-}
-
-function intersectsColumn(
-  span: { start: number, end: number },
-  column: number,
-  columnCount: number,
-): boolean {
-  const range = getLateralCellRange(span, columnCount)
-  return column >= range.start && column < range.end
 }
 
 export function estimateLevelCapacity(eventAreaHeight: number, eventHeight: number): number {
@@ -376,7 +354,8 @@ export function ratchetDayGridSliceHeightGrowthRate(
 
   for (const slice of slices) {
     const { sourceSeg } = slice
-    if (slice.start === sourceSeg.start && slice.end === sourceSeg.end) continue
+
+    if (!isPartialSlice(slice)) continue
 
     const sourceHeight = resolveDayGridSourceHeight(
       sliceHeights,
@@ -384,6 +363,7 @@ export function ratchetDayGridSliceHeightGrowthRate(
       largestWholeHeight,
     )
     const sliceHeight = sliceHeights.get(getSliceKey(slice))
+
     if (
       sliceHeight == null ||
       sliceHeight <= sourceHeight + SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX

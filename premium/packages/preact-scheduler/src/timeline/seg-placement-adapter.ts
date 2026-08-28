@@ -3,6 +3,7 @@ import {
   type EventRangeProps,
   type Slice,
   buildLevelLimitedLayout,
+  computeLateralSpanBottom,
   getSliceKey,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
@@ -23,18 +24,6 @@ export type TimelineSourceSeg = TimelineEventSeg & {
   orderIndex: number
 }
 
-/** Source-level projection data kept stable while measurements reflow. */
-export interface TimelineSegPlacementPlan {
-  /** Whether every input seg survived horizontal projection and clipping. */
-  allSegsProjected: boolean
-  /** Projected sources in resolved event order. */
-  sourceSegs: TimelineSourceSeg[]
-  /** The same sources in temporal-start then resolved-order DOM order. */
-  domOrderedSegs: TimelineSourceSeg[]
-  maxLevels: number
-  orderStrict: boolean
-}
-
 /** Production-facing data for one kernel hidden-group more-link wrapper. */
 export interface TimelineSegMoreLink {
   key: string
@@ -52,50 +41,6 @@ export interface TimelineSegPlacementResult {
   contentHeight: number
   /** False while any visible event wrapper still lacks an exact measurement. */
   allHeightsSettled: boolean
-}
-
-/**
- * Projects sorted production Timeline segs without changing their coordinates.
- *
- * Production's coordinate functions remain authoritative for civil dates,
- * hidden dates, exact timed instants, DST, unequal slots, minimum width, and
- * viewport clipping. Only their numeric output enters the shared engine.
- */
-export function buildTimelineSegPlacementPlan(
-  segs: TimelineEventSeg[],
-  dateEnv: DateEnv,
-  tDateProfile: TimelineDateProfile,
-  slotWidth: number,
-  eventMinWidth?: number,
-  eventOrderStrict = false,
-  eventMaxStack = Infinity,
-  clipStart?: number,
-  clipEnd?: number,
-): TimelineSegPlacementPlan {
-  const sourceSegs = buildTimelineSegSources(
-    segs,
-    eventMinWidth,
-    dateEnv,
-    tDateProfile,
-    slotWidth,
-    clipStart,
-    clipEnd,
-  )
-
-  return {
-    allSegsProjected: sourceSegs.length === segs.length,
-    sourceSegs,
-    domOrderedSegs: [...sourceSegs].sort((a, b) =>
-      computeTimelineSegStart(a) - computeTimelineSegStart(b) ||
-      a.orderIndex - b.orderIndex,
-    ),
-    maxLevels: eventMaxStack,
-    orderStrict: eventOrderStrict,
-  }
-}
-
-function computeTimelineSegStart(seg: TimelineEventSeg): number {
-  return seg.startMs ?? seg.startDate.valueOf()
 }
 
 /**
@@ -159,33 +104,34 @@ export function buildTimelineSegSources(
  * height, never placement.
  */
 export function buildTimelineSegPlacements(
-  plan: TimelineSegPlacementPlan,
+  sourceSegs: readonly TimelineSourceSeg[],
+  eventOrderStrict: boolean,
+  eventMaxStack: number,
   sliceHeights: ReadonlyMap<string, number>,
   moreLinkHeights: ReadonlyMap<string, number>,
 ): TimelineSegPlacementResult {
   const layout = buildLevelLimitedLayout(
-    plan.sourceSegs,
-    plan.orderStrict,
+    sourceSegs,
+    eventOrderStrict,
     /* eventSlicing = */ false,
-    plan.maxLevels,
+    eventMaxStack,
     /* moreLinkLevelTax = */ 0,
     sliceHeights,
   )
-  const visibleSlices = layout.renderSlices
-  const visibleByKey = new Map(
-    visibleSlices.map((slice) => [slice.sourceSeg.key, slice]),
+
+  const renderSlices = [...layout.renderSlices].sort((a, b) =>
+    computeTimelineSegStart(a.sourceSeg) -
+      computeTimelineSegStart(b.sourceSeg) ||
+    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
   )
-  const renderSlices = plan.domOrderedSegs.flatMap((sourceSeg) => {
-    const slice = visibleByKey.get(sourceSeg.key)
-    return slice ? [slice] : []
-  })
+
   const moreLinks = layout.hiddenGroups.map((group) => ({
     key: group.key,
     start: group.start,
     end: group.end,
-    top: computeTimelineGroupTop(
-      group,
+    top: computeLateralSpanBottom(
       layout.sliceLevels,
+      group,
       layout.sliceCoords,
       sliceHeights,
     ),
@@ -197,44 +143,21 @@ export function buildTimelineSegPlacements(
     sliceCoords: layout.sliceCoords,
     moreLinks,
     contentHeight: calculateTimelineContentHeight(
-      visibleSlices,
+      renderSlices,
       layout.sliceCoords,
       sliceHeights,
       moreLinks,
       moreLinkHeights,
     ),
-    allHeightsSettled: visibleSlices.every((slice) =>
+    allHeightsSettled: renderSlices.every((slice) =>
       sliceHeights.get(getSliceKey(slice)) !== undefined,
     ),
   }
 }
 
-/** Positions one tax-free link below the visible skyline across its group. */
-function computeTimelineGroupTop(
-  group: { start: number; end: number },
-  sliceLevels: readonly (readonly Slice<TimelineSourceSeg>[])[],
-  sliceCoords: ReadonlyMap<string, number>,
-  sliceHeights: ReadonlyMap<string, number>,
-): number {
-  let top = 0
-
-  for (const slice of sliceLevels.flat()) {
-    if (slice.start < group.end && group.start < slice.end) {
-      const key = getSliceKey(slice)
-      const sliceTop = sliceCoords.get(key)
-      const sliceHeight = sliceHeights.get(key)
-      if (sliceTop != null && sliceHeight != null) {
-        top = Math.max(top, sliceTop + sliceHeight)
-      }
-    }
-  }
-
-  return top
-}
-
 /** Visible bottoms plus each link's independently measured occupied space. */
 function calculateTimelineContentHeight(
-  visibleSlices: readonly Slice<TimelineSourceSeg>[],
+  renderSlices: readonly Slice<TimelineSourceSeg>[],
   sliceCoords: ReadonlyMap<string, number>,
   sliceHeights: ReadonlyMap<string, number>,
   moreLinks: readonly TimelineSegMoreLink[],
@@ -242,7 +165,7 @@ function calculateTimelineContentHeight(
 ): number {
   let contentHeight = 0
 
-  for (const slice of visibleSlices) {
+  for (const slice of renderSlices) {
     const key = getSliceKey(slice)
     const sliceTop = sliceCoords.get(key)
     const sliceHeight = sliceHeights.get(key)
@@ -250,6 +173,7 @@ function calculateTimelineContentHeight(
       contentHeight = Math.max(contentHeight, sliceTop + sliceHeight)
     }
   }
+
   for (const moreLink of moreLinks) {
     contentHeight = Math.max(
       contentHeight,
@@ -258,4 +182,8 @@ function calculateTimelineContentHeight(
   }
 
   return contentHeight
+}
+
+function computeTimelineSegStart(seg: TimelineEventSeg): number {
+  return seg.startMs ?? seg.startDate.valueOf()
 }

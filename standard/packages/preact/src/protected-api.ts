@@ -105,6 +105,7 @@ export type {
 export {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   buildLevelLimitedLayout,
+  computeLateralSpanBottom,
   getSliceKey,
   groupLaterallyIntersecting,
 } from './seg-placement/kernel'

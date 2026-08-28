@@ -137,20 +137,13 @@ export function resolveLevelCoords<S extends SourceSeg>(
         pendingSlices.push(slice)
         continue
       }
-      let levelCoord = 0
-
-      for (let priorIndex = 0; priorIndex < levelIndex; priorIndex++) {
-        for (const other of findIntersections(
-          placementSliceLevels[priorIndex],
-          slice,
-        )) {
-          levelCoord = Math.max(
-            levelCoord,
-            sliceCoords.get(getSliceKey(other))! +
-              sliceHeights.get(getSliceKey(other))!,
-          )
-        }
-      }
+      const levelCoord = computeLateralSpanBottom(
+        placementSliceLevels,
+        slice,
+        sliceCoords,
+        sliceHeights,
+        levelIndex,
+      )
 
       if (
         levelCoord + sliceHeight <=
@@ -924,6 +917,29 @@ export function findIntersections<Item extends LateralSpan>(
     if (doSpansIntersect(entry, span)) matches.push(entry)
   }
   return matches
+}
+
+export function computeLateralSpanBottom<S extends SourceSeg>(
+  sliceLevels: readonly (readonly Slice<S>[])[],
+  span: LateralSpan,
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeights: ReadonlyMap<string, number>,
+  levelCount: number = sliceLevels.length,
+): number {
+  let bottom = 0
+
+  for (let levelIndex = 0; levelIndex < levelCount; levelIndex++) {
+    for (const slice of findIntersections(sliceLevels[levelIndex], span)) {
+      const key = getSliceKey(slice)
+      const sliceTop = sliceCoords.get(key)
+      const sliceHeight = sliceHeights.get(key)
+      if (sliceTop !== undefined && sliceHeight !== undefined) {
+        bottom = Math.max(bottom, sliceTop + sliceHeight)
+      }
+    }
+  }
+
+  return bottom
 }
 
 function insertLaterally<Item extends LateralSpan>(

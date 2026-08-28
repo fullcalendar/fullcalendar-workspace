@@ -18,8 +18,8 @@ import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 import {
-  buildTimelineSegPlacementPlan,
   buildTimelineSegPlacements,
+  buildTimelineSegSources,
   type TimelineSegMoreLink,
   type TimelineSourceSeg,
 } from '../seg-placement-adapter'
@@ -61,7 +61,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
   // memo
   private sortEventSegs = memoize(sortEventSegs)
-  private buildSegPlacementPlan = memoize(buildTimelineSegPlacementPlan)
+  private buildSegSources = memoize(buildTimelineSegSources)
 
   // refs
   private sliceHeightRefMap = new RefMap<string, number>(() => { // keyed by slice part key
@@ -92,19 +92,20 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       props.slotWidth,
       options.eventMinWidth,
     )
-    let plan = this.buildSegPlacementPlan(
+    let sourceSegs = this.buildSegSources(
       fgSegs,
+      projectionSizing.eventMinWidth,
       context.dateEnv,
       tDateProfile,
       projectionSizing.slotWidth,
-      projectionSizing.eventMinWidth,
-      options.eventOrderStrict,
-      options.eventMaxStack,
       props.clipStart,
       props.clipEnd,
     )
+    const allSegsProjected = sourceSegs.length === fgSegs.length
     let placementResult = buildTimelineSegPlacements(
-      plan,
+      sourceSegs,
+      options.eventOrderStrict,
+      options.eventMaxStack,
       sliceHeightRefMap.current,
       moreLinkHeightRefMap.current,
     )
@@ -123,7 +124,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     is wanted — it stops an empty lane from latching 0 before its events arrive.
     */
     this.totalHeightSettled = props.slotWidth != null &&
-      plan.allSegsProjected &&
+      allSegsProjected &&
       placementResult.allHeightsSettled
 
     return (

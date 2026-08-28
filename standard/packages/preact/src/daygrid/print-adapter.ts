@@ -123,6 +123,5 @@ export function buildDayGridPrintPopoverSegs(
     plan.sourceSegs,
     plan.hiddenGroups,
     column,
-    plan.columnCount,
   )
 }
