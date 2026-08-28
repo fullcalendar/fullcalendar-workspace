@@ -62,7 +62,7 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
         {moreLinkBand && (
           <TimelinePrintMoreLinkBand
             band={moreLinkBand}
-            heightRefMap={this.printHeights.linkHeightRefMap}
+            heightRefMap={this.printHeights.moreLinkHeightRefMap}
             dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={props.nowDate}

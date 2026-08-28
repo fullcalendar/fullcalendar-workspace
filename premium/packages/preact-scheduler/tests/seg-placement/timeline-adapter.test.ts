@@ -363,18 +363,18 @@ describe('Timeline production placement adapter', () => {
     ])
     expect(beforeLinkMeasurement.contentHeight).toBe(20)
 
-    const linkKey = beforeLinkMeasurement.moreLinks[0].key
+    const moreLinkKey = beforeLinkMeasurement.moreLinks[0].key
     expect(place(
       sourceSegs,
       heights,
-      new Map([[linkKey, 12]]),
+      new Map([[moreLinkKey, 12]]),
       false,
       1,
     ).contentHeight).toBe(32)
     expect(place(
       sourceSegs,
       heights,
-      new Map([[linkKey, 2]]),
+      new Map([[moreLinkKey, 2]]),
       false,
       1,
     ).contentHeight).toBe(22)
@@ -398,11 +398,11 @@ describe('Timeline production placement adapter', () => {
       ['visible-right', 20],
     ]), new Map(), false, 1)
 
-    expect(result.moreLinks.map((link) => ({
-      key: link.key,
-      start: link.start,
-      end: link.end,
-      top: link.top,
+    expect(result.moreLinks.map((moreLink) => ({
+      key: moreLink.key,
+      start: moreLink.start,
+      end: moreLink.end,
+      top: moreLink.top,
     }))).toEqual([
       { key: 'hidden-left', start: 0, end: 120, top: 10 },
       { key: 'hidden-right', start: 120, end: 240, top: 20 },

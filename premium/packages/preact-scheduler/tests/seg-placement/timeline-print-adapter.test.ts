@@ -127,8 +127,10 @@ describe('Timeline print adapter', () => {
     )
 
     expect(plan.sliceLevels).toHaveLength(200)
-    expect(plan.hiddenSlices).toHaveLength(3)
-    expect(plan.moreLinkGroups.map((group) => ({
+    expect(plan.hiddenGroups.flatMap(
+      (group) => group.hiddenSlices,
+    )).toHaveLength(3)
+    expect(plan.hiddenGroups.map((group) => ({
       start: group.start,
       end: group.end,
       segs: group.hiddenSlices.map((slice) => slice.sourceSeg.key),
@@ -140,7 +142,7 @@ describe('Timeline print adapter', () => {
     const fallbackLayout = buildTimelinePrintLayout(
       plan,
       new Map(),
-      new Map([[plan.moreLinkGroups[0].key, 7]]),
+      new Map([[plan.hiddenGroups[0].key, 7]]),
     )
     expect(fallbackLayout.eventBands).toHaveLength(200)
     expect(fallbackLayout.moreLinkBand).toMatchObject({ thickness: 20 })
@@ -150,8 +152,8 @@ describe('Timeline print adapter', () => {
       plan,
       new Map(),
       new Map([
-        [plan.moreLinkGroups[0].key, 7],
-        [plan.moreLinkGroups[1].key, 32],
+        [plan.hiddenGroups[0].key, 7],
+        [plan.hiddenGroups[1].key, 32],
       ]),
     )
     expect(measuredLayout.eventBands).toHaveLength(200)
@@ -170,11 +172,13 @@ describe('Timeline print adapter', () => {
     )
     const layout = buildTimelinePrintLayout(plan, new Map(), new Map())
 
-    expect(new Set(plan.visibleSlices.map((slice) => slice.sourceSeg.key)))
+    expect(new Set(plan.sliceLevels.flat().map((slice) => slice.sourceSeg.key)))
       .toHaveLength(200)
-    expect(plan.hiddenSlices).toHaveLength(5)
-    expect(plan.moreLinkGroups).toHaveLength(1)
-    expect(new Set(plan.moreLinkGroups[0].hiddenSlices.map((slice) =>
+    expect(plan.hiddenGroups.flatMap(
+      (group) => group.hiddenSlices,
+    )).toHaveLength(5)
+    expect(plan.hiddenGroups).toHaveLength(1)
+    expect(new Set(plan.hiddenGroups[0].hiddenSlices.map((slice) =>
       slice.sourceSeg.key,
     ))).toHaveLength(5)
     expect(layout.eventBands).toHaveLength(200)

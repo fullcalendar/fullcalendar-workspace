@@ -30,6 +30,7 @@ import {
   type DayGridPlacementColumn,
   type DayGridSourceSeg,
   DEFAULT_NEEDED_LEVEL_COUNT,
+  buildDayGridPopoverSegs,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   computeDayGridDomCandidateMaxLevels,
@@ -44,8 +45,6 @@ import {
   type DayGridPrintPlan,
   buildDayGridPrintColumns,
   buildDayGridPrintPlan,
-  buildDayGridPrintPopoverSegs,
-  buildDayGridPrintSegHeights,
   getDayGridPrintSliceKey,
 } from '../print-adapter'
 import classNames from '../../styles.module.css'
@@ -150,10 +149,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
       printColumns = buildDayGridPrintColumns(
         printPlan,
-        buildDayGridPrintSegHeights(
-          printPlan.visibleSlices,
-          this.printSegHeightRefMap.current,
-        ),
+        this.printSegHeightRefMap.current,
       )
     } else {
       const placementMode = resolveDayGridPlacementMode(
@@ -268,7 +264,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {this.renderFillSegs(highlightSegs, 'highlight')}
         {props.cells.map((cell, col) => {
           const printPopover = printPlan
-            ? buildDayGridPrintPopoverSegs(printPlan, col)
+            ? buildDayGridPopoverSegs(
+              printPlan.sourceSegs,
+              printPlan.hiddenGroups,
+              col,
+            )
             : null
           let fg: ReactElement[]
 

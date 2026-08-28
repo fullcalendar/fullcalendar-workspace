@@ -102,7 +102,7 @@ describe('pure positioning kernel', () => {
       0,
     )
     expect(projectSlices(eventLevels.flat())).toEqual([['base', 0, 1]])
-    expect(eventGroups[0].occupant.thickness).toBe(0)
+    expect(eventGroups[0].thickness).toBe(0)
 
     const rowLevels = convertSegLevelsToWholeSlices([[base]])
     const rowGroups = mergeExtraIntoLevels(
@@ -114,9 +114,7 @@ describe('pure positioning kernel', () => {
       1,
     )
     expect(rowLevels.flat()).toEqual([])
-    expect(rowGroups[0].occupant).toMatchObject({
-      start: 0,
-      end: 1,
+    expect(rowGroups[0]).toMatchObject({
       levelCoord: 0,
       thickness: 1,
     })
@@ -277,7 +275,7 @@ describe('pure positioning kernel', () => {
     expect(projectSlices(groups[0].hiddenSlices)).toEqual([
       ['extra', 1, 2],
     ])
-    expect(groups[0].occupant).toMatchObject({ levelCoord: 10, thickness: 5 })
+    expect(groups[0]).toMatchObject({ levelCoord: 10, thickness: 5 })
     auditCoverage([base, extra], levels, groups)
   })
 
@@ -311,7 +309,7 @@ describe('pure positioning kernel', () => {
     expect(projectSlices(groups[0].hiddenSlices)).toEqual([
       ['extra', 1, 2],
     ])
-    expect(groups[0].occupant).toMatchObject({ levelCoord: 5, thickness: 5 })
+    expect(groups[0]).toMatchObject({ levelCoord: 5, thickness: 5 })
   })
 
   it('recursively consumes pixel frontiers until the occupant fits', () => {
@@ -341,7 +339,7 @@ describe('pure positioning kernel', () => {
     expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
     expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['extra', 'c', 'b'])
-    expect(groups[0].occupant).toMatchObject({ levelCoord: 10, thickness: 15 })
+    expect(groups[0]).toMatchObject({ levelCoord: 10, thickness: 15 })
     auditCoverage([a, b, c, extra], levels, groups)
   })
 
@@ -402,7 +400,6 @@ describe('pure positioning kernel', () => {
       1,
     )
     expect(widened[0]).toMatchObject({ start: 0, end: 3 })
-    expect(widened[0].occupant).toMatchObject({ start: 0, end: 3 })
     auditCoverage([base, extra], levels, widened)
   })
 

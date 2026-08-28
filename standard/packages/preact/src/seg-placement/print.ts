@@ -7,6 +7,7 @@ import {
   buildSegLevels,
   convertSegLevelsToWholeSlices,
   convertSegsToWholeSlices,
+  getSliceKey,
   mergeExtraIntoLevels,
   sortByEventOrder,
 } from './kernel'
@@ -23,40 +24,32 @@ export const DEFAULT_PRINT_MAX_LEVELS = 200
  */
 export interface PrintCandidatePlan<S extends SourceSeg = SourceSeg> {
   sliceLevels: Slice<S>[][]
-  visibleSlices: Slice<S>[]
-  hiddenSlices: Slice<S>[]
-}
-
-export interface PrintPlanningOptions {
-  eventOrderStrict: boolean
-  eventSlicing: boolean
+  hiddenGroups: HiddenSliceGroup<S>[]
 }
 
 export function planPrintDomCandidates<S extends SourceSeg>(
   eventOrderedSegs: readonly S[],
-  options: PrintPlanningOptions,
+  eventOrderStrict: boolean,
+  eventSlicing: boolean,
 ): PrintCandidatePlan<S> {
   const { segLevels, excludedSegs } = buildSegLevels(
     eventOrderedSegs,
-    options.eventOrderStrict,
+    eventOrderStrict,
     DEFAULT_PRINT_MAX_LEVELS,
   )
   const sliceLevels = convertSegLevelsToWholeSlices(segLevels)
   const hiddenGroups = mergeExtraIntoLevels(
     sliceLevels,
     convertSegsToWholeSlices(excludedSegs),
-    options.eventOrderStrict,
-    options.eventSlicing,
+    eventOrderStrict,
+    eventSlicing,
     DEFAULT_PRINT_MAX_LEVELS,
     0,
   )
 
   return {
     sliceLevels,
-    visibleSlices: sliceLevels.flat(),
-    hiddenSlices: sortByEventOrder(
-      hiddenGroups.flatMap((group) => group.hiddenSlices),
-    ),
+    hiddenGroups,
   }
 }
 
@@ -94,12 +87,14 @@ export interface PrintMoreLinkBand<S extends SourceSeg = SourceSeg> {
  * The level entries may carry unit-thickness planning coordinates, but those
  * coordinates have no print meaning. Every print slice begins at level
  * coordinate zero in its own band, whose thickness is the largest current
- * source-wrapper measurement. Missing measurements use the supplied fallback.
- * Empty or sparse levels do not create empty DOM bands.
+ * slice-wrapper measurement. Missing measurements use the supplied fallback.
+ * Empty or sparse levels do not create empty DOM bands. The key resolver lets
+ * adapters retain their wrapper-level measurement identity.
  */
 export function buildPrintEventBands<S extends SourceSeg>(
   levels: readonly (readonly Slice<S>[])[],
   printEventThicknesses: ReadonlyMap<string, number>,
+  getPrintEventKey: (slice: Slice<S>) => string = (slice) => slice.sourceSeg.key,
   defaultPrintEventThickness = DEFAULT_UNMEASURED_EVENT_THICKNESS,
 ): PrintEventBand<S>[] {
   const bands: PrintEventBand<S>[] = []
@@ -112,7 +107,7 @@ export function buildPrintEventBands<S extends SourceSeg>(
     const slices = entries.map((slice) => {
       thickness = Math.max(
         thickness,
-        printEventThicknesses.get(slice.sourceSeg.key) ??
+        printEventThicknesses.get(getPrintEventKey(slice)) ??
           defaultPrintEventThickness,
       )
       return slice
@@ -130,13 +125,25 @@ export function buildPrintEventBands<S extends SourceSeg>(
 
 /** Builds Timeline's one final print more-link band when hidden groups exist. */
 export function buildPrintMoreLinkBand<S extends SourceSeg>(
-  moreLinkGroups: readonly HiddenSliceGroup<S>[],
+  hiddenGroups: readonly HiddenSliceGroup<S>[],
   printMoreLinkHeights: ReadonlyMap<string, number>,
 ): PrintMoreLinkBand<S> | null {
-  if (!moreLinkGroups.length) return null
+  if (!hiddenGroups.length) return null
+
+  const moreLinkGroups = hiddenGroups.map((group) => {
+    const hiddenSlices = sortByEventOrder(group.hiddenSlices)
+    // Rekey against the first slice in print's normalized event order.
+    const key = getSliceKey(hiddenSlices[0])
+
+    return {
+      ...group,
+      key,
+      hiddenSlices,
+    }
+  })
 
   return {
-    moreLinkGroups: [...moreLinkGroups],
+    moreLinkGroups,
     thickness: Math.max(...moreLinkGroups.map((group) =>
       printMoreLinkHeights.get(group.key) ??
         DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,

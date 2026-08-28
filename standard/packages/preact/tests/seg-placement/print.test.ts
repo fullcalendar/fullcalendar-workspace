@@ -7,7 +7,6 @@ import {
 } from '../../src/seg-placement/kernel'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
-  type PrintPlanningOptions,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
   planPrintDomCandidates,
@@ -22,17 +21,12 @@ function stampEventOrder(
   return orderedSegs.map((seg, orderIndex) => ({ ...seg, orderIndex }))
 }
 
-const NO_SLICING: PrintPlanningOptions = {
-  eventOrderStrict: false,
-  eventSlicing: false,
-}
-
 describe('print event bands', () => {
   it('uses measured thicknesses and the 20px fallback within one level', () => {
     const plan = planPrintDomCandidates(stampEventOrder([
       seg('measured', 0, 1),
       seg('fallback', 1, 2),
-    ]), NO_SLICING)
+    ]), false, false)
     const bands = buildPrintEventBands(
       plan.sliceLevels,
       new Map([['measured', 12]]),
@@ -51,7 +45,7 @@ describe('print event bands', () => {
       seg('a', 0, 1),
       seg('b', 1, 2),
       seg('c', 2, 3),
-    ]), NO_SLICING)
+    ]), false, false)
 
     expect(buildPrintEventBands(
       plan.sliceLevels,
@@ -67,10 +61,26 @@ describe('print event bands', () => {
     )[0].thickness).toBe(8)
   })
 
+  it('resolves measurements with each adapter\'s slice key', () => {
+    const whole = convertSegsToWholeSlices(stampEventOrder([
+      seg('split', 0, 3),
+    ]))[0]
+    const left = { ...whole, end: 1 }
+    const right = { ...whole, start: 1 }
+    const bands = buildPrintEventBands(
+      [[left], [right]],
+      new Map([['0:1', 8], ['1:3', 30]]),
+      (slice) => `${slice.start}:${slice.end}`,
+    )
+
+    expect(bands.map((band) => band.thickness)).toEqual([8, 30])
+  })
+
   it('omits empty and sparse levels while preserving source level indices', () => {
     const sourceLevel = planPrintDomCandidates(
       stampEventOrder([seg('only', 0, 1)]),
-      NO_SLICING,
+      false,
+      false,
     ).sliceLevels[0]
     const levels: Slice<TestSeg>[][] = []
     levels[0] = []
@@ -90,18 +100,20 @@ describe('print DOM planning', () => {
       { length: DEFAULT_PRINT_MAX_LEVELS + 5 },
       (_, index) => seg(String(index), 0, 1),
     ))
-    const plan = planPrintDomCandidates(segs, NO_SLICING)
+    const plan = planPrintDomCandidates(segs, false, false)
+    const visibleSlices = plan.sliceLevels.flat()
+    const hiddenSlices = plan.hiddenGroups.flatMap((group) => group.hiddenSlices)
 
     expect(plan.sliceLevels).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
-    expect(plan.visibleSlices).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
-    expect(plan.hiddenSlices).toHaveLength(5)
-    expect(new Set(plan.visibleSlices.map((item) => item.sourceSeg.key))).toEqual(
+    expect(visibleSlices).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
+    expect(hiddenSlices).toHaveLength(5)
+    expect(new Set(visibleSlices.map((item) => item.sourceSeg.key))).toEqual(
       new Set(segs.slice(0, DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key)),
     )
-    expect(plan.visibleSlices.map((item) => item.sourceSeg.key)).toEqual(
+    expect(visibleSlices.map((item) => item.sourceSeg.key)).toEqual(
       segs.slice(0, DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key),
     )
-    expect(plan.hiddenSlices.map((item) => item.sourceSeg.key)).toEqual(
+    expect(hiddenSlices.map((item) => item.sourceSeg.key)).toEqual(
       segs.slice(DEFAULT_PRINT_MAX_LEVELS).map((item) => item.key),
     )
   })
@@ -147,11 +159,11 @@ describe('Timeline print more-link band', () => {
     ]))
     const eventBands = buildPrintEventBands([[slices[0]], [slices[1]]], new Map())
     const groups = groupLaterallyIntersecting([slices[2]])
-    const linkBand = buildPrintMoreLinkBand(groups, new Map())
+    const moreLinkBand = buildPrintMoreLinkBand(groups, new Map())
 
     expect(eventBands).toHaveLength(2)
     expect(groups).toHaveLength(1)
-    expect(linkBand).toMatchObject({ thickness: 20, moreLinkGroups: groups })
+    expect(moreLinkBand).toMatchObject({ thickness: 20, moreLinkGroups: groups })
   })
 })
 

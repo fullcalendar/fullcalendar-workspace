@@ -283,7 +283,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                 <TimelinePrintMoreLinkBand
                   {...timelineBandProps}
                   band={moreLinkBand}
-                  heightRefMap={this.printHeights.linkHeightRefMap}
+                  heightRefMap={this.printHeights.moreLinkHeightRefMap}
                 />
               </div>
             )}

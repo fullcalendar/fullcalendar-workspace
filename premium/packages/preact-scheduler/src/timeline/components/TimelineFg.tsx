@@ -255,18 +255,18 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     return (
       <>
-        {moreLinks.map((link) => (
+        {moreLinks.map((moreLink) => (
           <MeasuredAbsoluteHarness
-            key={link.key}
+            key={moreLink.key}
             style={{
-              top: link.top,
-              insetInlineStart: link.start,
-              width: link.end - link.start,
+              top: moreLink.top,
+              insetInlineStart: moreLink.start,
+              width: moreLink.end - moreLink.start,
             }}
-            heightRef={moreLinkHeightRefMap.createRef(link.key)}
+            heightRef={moreLinkHeightRefMap.createRef(moreLink.key)}
           >
             <TimelineLaneMoreLink
-              hiddenSegs={link.segs}
+              hiddenSegs={moreLink.segs}
               dateProfile={props.dateProfile}
               nowDate={props.nowDate}
               nowMs={props.nowMs}

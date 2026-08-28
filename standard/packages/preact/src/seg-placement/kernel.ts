@@ -40,17 +40,13 @@ export interface Slice<S extends SourceSeg = SourceSeg> extends LateralSpan {
   isEnd: boolean
 }
 
-interface MoreLinkOccupant extends LateralSpan {
+export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends LateralSpan {
+  /** `getSliceKey(hiddenSlices[0])`; changes if the group's first slice changes. */
   key: string
+  hiddenSlices: Slice<S>[]
   levelIndex: number | null
   levelCoord: number | null
   thickness: number
-}
-
-export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends LateralSpan {
-  key: string
-  hiddenSlices: Slice<S>[]
-  occupant: MoreLinkOccupant
 }
 
 /** Identifies a whole or partial slice derived from a source seg. */
@@ -90,7 +86,9 @@ export function buildSegLevels<S extends SourceSeg>(
     if (levelIndex >= maxLevels) {
       excludedSegs.push(seg)
     } else {
-      while (segLevels.length <= levelIndex) segLevels.push([])
+      while (segLevels.length <= levelIndex) {
+        segLevels.push([])
+      }
       insertLaterally(segLevels[levelIndex], seg)
     }
   }
@@ -478,7 +476,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     const start = Math.min(slice.start, ...intersecting.map((group) => group.start))
     const end = Math.max(slice.end, ...intersecting.map((group) => group.end))
     const group = createPublicGroup(hiddenSlices, start, end)
-    group.occupant.thickness = options.occupantThickness
+    group.thickness = options.occupantThickness
     hiddenGroups = untouched.concat(group)
     return group
   }
@@ -486,17 +484,17 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   function positionOccupants(): HiddenSliceGroup<S> | undefined {
     for (const group of hiddenGroups) {
       const colliders = collectIntersectingSlices(sliceLevels, group)
-      group.occupant.levelIndex = colliders.length
+      group.levelIndex = colliders.length
         ? Math.max(...colliders.map((item) => item.levelIndex)) + 1
         : 0
-      group.occupant.levelCoord = colliders.length
+      group.levelCoord = colliders.length
         ? Math.max(...colliders.map((item) =>
           getSliceBottom(item.slice, item.levelIndex),
         ))
         : 0
       if (!options.isValid(
-        group.occupant.levelCoord,
-        group.occupant.thickness,
+        group.levelCoord,
+        group.thickness,
       )) return group
     }
     return undefined
@@ -533,7 +531,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     }
     if (options.occupantThickness) {
       for (const group of hiddenGroups) {
-        if (group.occupant.levelIndex != null && doSpansIntersect(group, span)) {
+        if (group.levelIndex != null && doSpansIntersect(group, span)) {
           admit(group.start)
           admit(group.end)
         }
@@ -618,7 +616,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
           bottom = Math.max(bottom, getSliceBottom(item.slice, item.levelIndex))
         }
       }
-      if (!options.isValid(bottom, group.occupant.thickness)) {
+      if (!options.isValid(bottom, group.thickness)) {
         const previous = violations[violations.length - 1]
         if (previous && previous.end === span.start) previous.end = span.end
         else violations.push(span)
@@ -755,19 +753,19 @@ function findInsertion<S extends SourceSeg>(
 
   const occupantGroups = options.occupantThickness
     ? hiddenGroups.filter((group) =>
-      group.occupant.levelIndex != null && doSpansIntersect(group, slice),
+      group.levelIndex != null && doSpansIntersect(group, slice),
     )
     : []
   for (const group of occupantGroups) {
     strictMaxLevelIndexExclusive = Math.min(
       strictMaxLevelIndexExclusive,
-      group.occupant.levelIndex!,
+      group.levelIndex!,
     )
   }
 
   const ceilings: number[] = []
   let ceiling = occupantGroups.length
-    ? Math.min(...occupantGroups.map((group) => group.occupant.levelCoord!))
+    ? Math.min(...occupantGroups.map((group) => group.levelCoord!))
     : Infinity
   for (let levelIndex = sliceLevels.length - 1; levelIndex >= 0; levelIndex--) {
     ceilings[levelIndex] = ceiling
@@ -978,13 +976,8 @@ function createPublicGroup<S extends SourceSeg>(
     start,
     end,
     hiddenSlices,
-    occupant: {
-      key: `${key}:more`,
-      start,
-      end,
-      levelIndex: null,
-      levelCoord: null,
-      thickness: 0,
-    },
+    levelIndex: null,
+    levelCoord: null,
+    thickness: 0,
   }
 }

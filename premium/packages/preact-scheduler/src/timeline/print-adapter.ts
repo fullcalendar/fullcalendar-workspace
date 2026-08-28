@@ -1,7 +1,6 @@
 import {
   BaseComponent,
   type DateEnv,
-  type HiddenSliceGroup,
   type PrintCandidatePlan,
   type PrintEventBand,
   type PrintMoreLinkBand,
@@ -9,7 +8,6 @@ import {
   afterSize,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
-  groupLaterallyIntersecting,
   memoize,
   planPrintDomCandidates,
   sortEventSegs,
@@ -21,10 +19,6 @@ import {
   buildTimelineSegSources,
 } from './seg-placement-adapter'
 import { resolveTimelineEventProjectionSizing } from './slot-estimate'
-
-interface TimelinePrintPlan extends PrintCandidatePlan<TimelineSourceSeg> {
-  moreLinkGroups: HiddenSliceGroup<TimelineSourceSeg>[]
-}
 
 interface TimelinePrintLayout {
   eventBands: PrintEventBand<TimelineSourceSeg>[]
@@ -38,8 +32,8 @@ export function buildTimelinePrintPlan(
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
   eventMinWidth?: number,
-  eventOrderStrict?: boolean,
-): TimelinePrintPlan {
+  eventOrderStrict = false,
+): PrintCandidatePlan<TimelineSourceSeg> {
   const sourceSegs = buildTimelineSegSources(
     segs,
     eventMinWidth,
@@ -47,28 +41,20 @@ export function buildTimelinePrintPlan(
     tDateProfile,
     slotWidth,
   )
-  const candidatePlan = planPrintDomCandidates(sourceSegs, {
-    eventOrderStrict: eventOrderStrict ?? false,
-    eventSlicing: false,
-  })
-
-  return {
-    ...candidatePlan,
-    moreLinkGroups: groupLaterallyIntersecting(candidatePlan.hiddenSlices),
-  }
+  return planPrintDomCandidates(sourceSegs, eventOrderStrict, false)
 }
 
 /** Builds normal-flow event bands and Timeline's one final more-link band. */
 export function buildTimelinePrintLayout(
-  plan: TimelinePrintPlan,
+  plan: PrintCandidatePlan<TimelineSourceSeg>,
   printSegHeights: ReadonlyMap<string, number>,
-  printLinkHeights: ReadonlyMap<string, number>,
+  printMoreLinkHeights: ReadonlyMap<string, number>,
 ): TimelinePrintLayout {
   return {
     eventBands: buildPrintEventBands(plan.sliceLevels, printSegHeights),
     moreLinkBand: buildPrintMoreLinkBand(
-      plan.moreLinkGroups,
-      printLinkHeights,
+      plan.hiddenGroups,
+      printMoreLinkHeights,
     ),
   }
 }
@@ -84,7 +70,7 @@ export function buildTimelinePrintLayout(
  */
 class TimelinePrintHeights {
   readonly segHeightRefMap: RefMap<string, number>
-  readonly linkHeightRefMap: RefMap<string, number>
+  readonly moreLinkHeightRefMap: RefMap<string, number>
 
   /** `onSettled` must be a stable reference, since `afterSize` dedupes by it. */
   constructor(onSettled: () => void) {
@@ -92,14 +78,14 @@ class TimelinePrintHeights {
       afterSize(onSettled)
     }
     this.segHeightRefMap = new RefMap<string, number>(handleChange, true)
-    this.linkHeightRefMap = new RefMap<string, number>(handleChange)
+    this.moreLinkHeightRefMap = new RefMap<string, number>(handleChange)
   }
 
-  buildLayout(plan: TimelinePrintPlan): TimelinePrintLayout {
+  buildLayout(plan: PrintCandidatePlan<TimelineSourceSeg>): TimelinePrintLayout {
     return buildTimelinePrintLayout(
       plan,
       this.segHeightRefMap.current,
-      this.linkHeightRefMap.current,
+      this.moreLinkHeightRefMap.current,
     )
   }
 }

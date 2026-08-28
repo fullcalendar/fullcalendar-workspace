@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { type DayGridEventSeg } from '../../src/daygrid/seg-placement-adapter'
+import {
+  type DayGridEventSeg,
+  buildDayGridPopoverSegs,
+} from '../../src/daygrid/seg-placement-adapter'
 import {
   buildDayGridPrintColumns,
   buildDayGridPrintPlan,
-  buildDayGridPrintPopoverSegs,
-  buildDayGridPrintSegHeights,
   getDayGridPrintSliceKey,
 } from '../../src/daygrid/print-adapter'
 import { DEFAULT_PRINT_MAX_LEVELS } from '../../src/seg-placement/print'
@@ -16,16 +17,18 @@ describe('DayGrid print planning', () => {
       (_, index) => makeSeg(`event-${index}`, 0, 1),
     )
     const plan = buildDayGridPrintPlan(segs, false, true, 2)
+    const visibleSlices = plan.sliceLevels.flat()
+    const hiddenSlices = plan.hiddenGroups.flatMap((group) => group.hiddenSlices)
 
     expect(plan.sourceSegs).toHaveLength(DEFAULT_PRINT_MAX_LEVELS + 2)
-    expect(new Set(plan.visibleSlices.map((slice) => slice.sourceSeg.key)))
+    expect(new Set(visibleSlices.map((slice) => slice.sourceSeg.key)))
       .toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
-    expect(plan.hiddenSlices).toHaveLength(2)
-    expect(plan.hiddenSlices.map((slice) => slice.sourceSeg.key)).toEqual([
+    expect(hiddenSlices).toHaveLength(2)
+    expect(hiddenSlices.map((slice) => slice.sourceSeg.key)).toEqual([
       `event-${DEFAULT_PRINT_MAX_LEVELS}:0`,
       `event-${DEFAULT_PRINT_MAX_LEVELS + 1}:0`,
     ])
-    expect(plan.hiddenSlices).toMatchObject([
+    expect(hiddenSlices).toMatchObject([
       { start: 0, end: 1 },
       { start: 0, end: 1 },
     ])
@@ -44,11 +47,23 @@ describe('DayGrid print planning', () => {
     ], false, true, 3)
 
     expect(hiddenCountsByColumn(plan)).toEqual([1, 2, 1])
-    expect(buildDayGridPrintPopoverSegs(plan, 0).hiddenSegs.map(segId))
+    expect(buildDayGridPopoverSegs(
+      plan.sourceSegs,
+      plan.hiddenGroups,
+      0,
+    ).hiddenSegs.map(segId))
       .toEqual(['left-hidden'])
-    expect(buildDayGridPrintPopoverSegs(plan, 1).hiddenSegs.map(segId))
+    expect(buildDayGridPopoverSegs(
+      plan.sourceSegs,
+      plan.hiddenGroups,
+      1,
+    ).hiddenSegs.map(segId))
       .toEqual(['left-hidden', 'right-hidden'])
-    expect(buildDayGridPrintPopoverSegs(plan, 2).hiddenSegs.map(segId))
+    expect(buildDayGridPopoverSegs(
+      plan.sourceSegs,
+      plan.hiddenGroups,
+      2,
+    ).hiddenSegs.map(segId))
       .toEqual(['right-hidden'])
   })
 
@@ -60,20 +75,24 @@ describe('DayGrid print planning', () => {
     const wide = makeSeg('wide', 0, 3)
     const sliced = buildDayGridPrintPlan([...blockers, wide], false, true, 3)
     const unsliced = buildDayGridPrintPlan([...blockers, wide], false, false, 3)
+    const slicedVisible = sliced.sliceLevels.flat()
+    const unslicedVisible = unsliced.sliceLevels.flat()
+    const slicedHidden = sliced.hiddenGroups.flatMap((group) => group.hiddenSlices)
+    const unslicedHidden = unsliced.hiddenGroups.flatMap((group) => group.hiddenSlices)
 
-    expect(sliced.visibleSlices.some((slice) => slice.sourceSeg.key === 'wide:0'))
+    expect(slicedVisible.some((slice) => slice.sourceSeg.key === 'wide:0'))
       .toBe(true)
-    expect(sliced.visibleSlices.filter((slice) =>
+    expect(slicedVisible.filter((slice) =>
       slice.sourceSeg.key === 'wide:0',
     ).map(({ start, end }) => [start, end])).toEqual([[0, 1], [2, 3]])
-    expect(sliced.hiddenSlices.filter((slice) =>
+    expect(slicedHidden.filter((slice) =>
       slice.sourceSeg.key === 'wide:0',
     ).map(({ start, end }) => [start, end])).toEqual([[1, 2]])
     expect(hiddenCountsByColumn(sliced)).toEqual([0, 1, 0])
 
-    expect(unsliced.visibleSlices.some((slice) => slice.sourceSeg.key === 'wide:0'))
+    expect(unslicedVisible.some((slice) => slice.sourceSeg.key === 'wide:0'))
       .toBe(false)
-    expect(unsliced.hiddenSlices[unsliced.hiddenSlices.length - 1]).toMatchObject({
+    expect(unslicedHidden[unslicedHidden.length - 1]).toMatchObject({
       start: 0,
       end: 3,
       sourceSeg: { key: 'wide:0' },
@@ -136,7 +155,7 @@ describe('DayGrid print band transposition', () => {
     expect(sizes([6, 8, 7])).toEqual([8, 7])
   })
 
-  it('uses the tallest live slice measurement for a source and follows deletion', () => {
+  it('uses the tallest live slice measurement in a band and follows deletion', () => {
     const slicedPlan = buildDayGridPrintPlan([
       ...Array.from(
         { length: DEFAULT_PRINT_MAX_LEVELS },
@@ -144,7 +163,7 @@ describe('DayGrid print band transposition', () => {
       ),
       makeSeg('sliced', 0, 3),
     ], false, true, 3)
-    const slices = slicedPlan.visibleSlices.filter((slice) =>
+    const slices = slicedPlan.sliceLevels.flat().filter((slice) =>
       slice.sourceSeg.key === 'sliced:0',
     )
     const sliceHeights = new Map([
@@ -153,7 +172,7 @@ describe('DayGrid print band transposition', () => {
     ])
     const thickness = () => buildDayGridPrintColumns(
       slicedPlan,
-      buildDayGridPrintSegHeights(slicedPlan.visibleSlices, sliceHeights),
+      sliceHeights,
     ).flat().find((slot) =>
       slot.slice?.sourceSeg.key === 'sliced:0',
     )!.thickness
@@ -188,6 +207,10 @@ function segId(seg: DayGridEventSeg): string {
 function hiddenCountsByColumn(plan: ReturnType<typeof buildDayGridPrintPlan>): number[] {
   return Array.from(
     { length: plan.columnCount },
-    (_, column) => buildDayGridPrintPopoverSegs(plan, column).hiddenSegs.length,
+    (_, column) => buildDayGridPopoverSegs(
+      plan.sourceSegs,
+      plan.hiddenGroups,
+      column,
+    ).hiddenSegs.length,
   )
 }

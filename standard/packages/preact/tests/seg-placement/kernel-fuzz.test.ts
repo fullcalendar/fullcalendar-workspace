@@ -220,13 +220,13 @@ function auditGroups(
 
   for (const group of groups) {
     invariant(
-      !levels.flat().includes(group.occupant as unknown as Slice<TestSeg>),
+      !levels.flat().includes(group as unknown as Slice<TestSeg>),
       'occupant leaked into slice levels',
       label,
     )
-    if (!tax || group.occupant.levelCoord == null) continue
+    if (!tax || group.levelCoord == null) continue
     invariant(
-      group.occupant.levelCoord + tax <= limit + GEOMETRY_TOLERANCE,
+      group.levelCoord + tax <= limit + GEOMETRY_TOLERANCE,
       'occupant exceeds its bound',
       label,
     )
@@ -235,7 +235,7 @@ function auditGroups(
         if (intersects(slice, group)) {
           const bottom = (coords?.get(getSliceKey(slice)) ?? levelIndex) + getThickness(slice)
           invariant(
-            group.occupant.levelCoord! >= bottom,
+            group.levelCoord! >= bottom,
             'occupant is not a range footer',
             label,
           )
