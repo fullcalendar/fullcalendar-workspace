@@ -158,16 +158,22 @@ export function resolveLevelCoords<S extends SourceSeg>(
   return { placementSliceLevels, sliceCoords, pendingSlices, excludedSlices }
 }
 
+/**
+ * Merges level-capped extras into dimensionless topology.
+ * `mayReinstateWholeExtras` is the caller's render-model statement: pass true
+ * only when rendering follows the mutated planning topology.
+ */
 export function mergeExtraIntoLevels<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
-  extraSegSlices: readonly Slice<S>[],
+  extraSlices: readonly Slice<S>[],
   eventOrderStrict: boolean,
   eventSlicing: boolean,
   maxLevels: number,
   moreLinkLevelTax: number,
+  mayReinstateWholeExtras: boolean,
 ): HiddenSliceGroup<S>[] {
   if (!eventSlicing && !moreLinkLevelTax) {
-    return groupLaterallyIntersecting(extraSegSlices)
+    return groupLaterallyIntersecting(extraSlices)
   }
 
   return mergeExtraIntoStructure(
@@ -175,15 +181,15 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
     // Coordinate reads fall back to the residing level index (getStoredCoord),
     // which is exactly what a prebuilt whole-slice map would hold here.
     new Map(),
-    extraSegSlices,
+    extraSlices,
+    eventSlicing,
+    mayReinstateWholeExtras,
+    (levelCoord, thickness) =>
+      thickness === 0 || levelCoord + thickness <= maxLevels,
     {
       eventOrderStrict,
-      eventSlicing,
-      allowExtraWholePlacement: true,
       getSliceThickness: () => 1,
       occupantThickness: moreLinkLevelTax,
-      isValid: (levelCoord, thickness) =>
-        thickness === 0 || levelCoord + thickness <= maxLevels,
     },
   )
 }
@@ -192,32 +198,32 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
  * Builds pixel-limited planning topology. The planning thickness must be
  * stable across donor unmounts; the caller resolves exact coordinates after
  * this function has decided which partial-slice donors belong in the DOM.
+ * `mayReinstateWholeExtras` is the caller's render-model statement: pass true
+ * only when rendering follows the mutated planning topology.
  */
 export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  extraSegSlices: readonly Slice<S>[],
+  extraSlices: readonly Slice<S>[],
   eventOrderStrict: boolean,
   eventSlicing: boolean,
   maxPixels: number,
   moreLinkPixelHeight: number,
   getSliceThickness: (slice: Slice<S>) => number,
+  mayReinstateWholeExtras: boolean,
 ): HiddenSliceGroup<S>[] {
   return mergeExtraIntoStructure(
     sliceLevels,
     sliceCoords,
-    extraSegSlices,
+    extraSlices,
+    eventSlicing,
+    mayReinstateWholeExtras,
+    (levelCoord, thickness) =>
+      levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
     {
       eventOrderStrict,
-      eventSlicing,
-      // Pixel extras have already lost whole placement. Only collision-peeled
-      // partials may enter topology; otherwise a coordinate-excluded whole
-      // could reappear and a DOM-excluded whole would have no render owner.
-      allowExtraWholePlacement: false,
       getSliceThickness,
       occupantThickness: moreLinkPixelHeight,
-      isValid: (levelCoord, thickness) =>
-        levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
     },
   )
 }
@@ -232,6 +238,12 @@ export function sortByEventOrder<S extends SourceSeg>(
   )
 }
 
+/**
+ * The pixel render set: every initial DOM-frontier whole (visibly placed or
+ * retained as a measurement donor) plus every planning partial. Complete only
+ * while the pixel merge runs with `mayReinstateWholeExtras: false`, which
+ * guarantees planning topology never holds a whole outside the DOM frontier.
+ */
 export function compilePixelLimitedRenderSlices<S extends SourceSeg>(
   domWholeSliceLevels: readonly (readonly Slice<S>[])[],
   planningSliceLevels: readonly (readonly Slice<S>[])[],
@@ -292,6 +304,10 @@ export function buildLevelLimitedLayout<S extends SourceSeg>(
     eventSlicing,
     maxLevels,
     moreLinkLevelTax,
+    // Level-capped extras may re-enter whole: renderSlices below follows
+    // planning topology directly, and occupant consumption can free
+    // in-budget space.
+    true,
   )
   const resolution = resolveLevelCoords(
     sliceLevels,
@@ -358,6 +374,15 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
       canvasHeight,
       moreLinkHeight,
       getPlanningSliceThickness,
+      // Whole rejection is final here; see planning/pixel-whole-reinsertion.md.
+      // The extras stream just concatenated above mixes cohorts whose wholes
+      // must stay out: a reinstated DOM-excluded whole would mount on fallback
+      // thickness with no monotone correction once its measurement is deleted
+      // on unmount (the growth-rate ratchet samples only partials), risking an
+      // admit/evict oscillation. Finality also keeps the render compilation
+      // below complete: planning topology never gains a whole that lacks a
+      // render owner.
+      false,
     )
     const exactResolution = resolveLevelCoords(
       planningSliceLevels,
@@ -383,14 +408,16 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
   }
 }
 
-interface MergeOptions<S extends SourceSeg> {
+/**
+ * Configuration threaded through to `findInsertion`. Anything the insertion
+ * search does not read is a positional parameter of `mergeExtraIntoStructure`
+ * instead.
+ */
+interface InsertionOptions<S extends SourceSeg> {
   eventOrderStrict: boolean
-  eventSlicing: boolean
-  allowExtraWholePlacement: boolean
   /** Stable planning thickness for each slice while constructing DOM topology. */
   getSliceThickness: (slice: Slice<S>) => number
   occupantThickness: number
-  isValid: (levelCoord: number, thickness: number) => boolean
 }
 
 interface Insertion {
@@ -411,12 +438,19 @@ interface Insertion {
  * the elementary intervals between collider edges, and the feasible remainder
  * re-fires. Consumption applies the same rule to an unplaceable occupant's
  * over-budget spans. A colliding barrier's own span never widens a footprint.
+ *
+ * When `mayReinstateWholeExtras` is false, upstream whole rejection is final:
+ * a placeable whole extra hides instead, so topology can only ever gain
+ * collision-peeled partials.
  */
 function mergeExtraIntoStructure<S extends SourceSeg>(
   sliceLevels: Slice<S>[][],
   sliceCoords: Map<string, number>,
-  extraSegSlices: readonly Slice<S>[],
-  options: MergeOptions<S>,
+  extraSlices: readonly Slice<S>[],
+  eventSlicing: boolean,
+  mayReinstateWholeExtras: boolean,
+  isValid: (levelCoord: number, thickness: number) => boolean,
+  options: InsertionOptions<S>,
 ): HiddenSliceGroup<S>[] {
   let hiddenGroups: HiddenSliceGroup<S>[] = []
   let hiddenOrder = 0
@@ -445,7 +479,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
 
     // A placeable-but-disallowed whole falls through to hide: only a genuine
     // geometric failure earns a slicing pass.
-    if (options.eventSlicing && !insertion) {
+    if (eventSlicing && !insertion) {
       const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
 
       if (feasibleRuns.length && infeasibleSpans.length) {
@@ -474,7 +508,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       options,
     )
     return insertion &&
-      options.isValid(insertion.levelCoord, options.getSliceThickness(slice))
+      isValid(insertion.levelCoord, options.getSliceThickness(slice))
       ? insertion
       : null
   }
@@ -572,7 +606,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
           getSliceBottom(item.slice, item.levelIndex),
         ))
         : 0
-      if (!options.isValid(
+      if (!isValid(
         group.levelCoord,
         group.thickness,
       )) return group
@@ -594,7 +628,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
           bottom = Math.max(bottom, getSliceBottom(item.slice, item.levelIndex))
         }
       }
-      if (!options.isValid(bottom, group.thickness)) {
+      if (!isValid(bottom, group.thickness)) {
         pushRun(violations, span.start, span.end)
       }
     }
@@ -627,7 +661,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
         if (!sliceLevels[item.levelIndex].includes(item.slice)) continue
         removeSlice(sliceLevels, sliceCoords, item.slice, item.levelIndex)
 
-        if (options.eventSlicing) {
+        if (eventSlicing) {
           // Frontier members intersect a violation by construction, so
           // consumption always leaves a non-empty footprint.
           const footprints = violations
@@ -646,8 +680,8 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
     }
   }
 
-  for (const extra of extraSegSlices) {
-    fireSlice(extra, options.allowExtraWholePlacement)
+  for (const extra of extraSlices) {
+    fireSlice(extra, mayReinstateWholeExtras)
   }
 
   positionOccupants()
@@ -664,7 +698,7 @@ function findInsertion<S extends SourceSeg>(
   sliceCoords: ReadonlyMap<string, number>,
   hiddenGroups: readonly HiddenSliceGroup<S>[],
   slice: Slice<S>,
-  options: MergeOptions<S>,
+  options: InsertionOptions<S>,
 ): Insertion | null {
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),

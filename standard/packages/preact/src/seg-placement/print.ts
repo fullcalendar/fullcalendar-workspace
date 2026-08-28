@@ -45,6 +45,9 @@ export function planPrintDomCandidates<S extends SourceSeg>(
     eventSlicing,
     DEFAULT_PRINT_MAX_LEVELS,
     0,
+    // Capped extras may re-enter whole: the print bands render sliceLevels
+    // directly, so planning topology is the render set.
+    true,
   )
 
   return {
