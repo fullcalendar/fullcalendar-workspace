@@ -170,14 +170,11 @@ export function mergeExtraIntoLevels<S extends SourceSeg>(
     return groupLaterallyIntersecting(extraSegSlices)
   }
 
-  const sliceCoords = new Map<string, number>()
-  sliceLevels.forEach((level, levelIndex) => {
-    for (const slice of level) sliceCoords.set(getSliceKey(slice), levelIndex)
-  })
-
   return mergeExtraIntoStructure(
     sliceLevels,
-    sliceCoords,
+    // Coordinate reads fall back to the residing level index (getStoredCoord),
+    // which is exactly what a prebuilt whole-slice map would hold here.
+    new Map(),
     extraSegSlices,
     {
       eventOrderStrict,
@@ -264,50 +261,14 @@ export function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
 export function groupLaterallyIntersecting<S extends SourceSeg>(
   hiddenSlices: readonly Slice<S>[],
 ): HiddenSliceGroup<S>[] {
-  interface WorkingGroup extends LateralSpan {
-    entries: { slice: Slice<S>; order: number }[]
-  }
+  let groups: HiddenSliceGroup<S>[] = []
+  const orders = new Map<Slice<S>, number>()
 
-  let groups: WorkingGroup[] = []
   hiddenSlices.forEach((slice, order) => {
-    const intersecting: WorkingGroup[] = []
-    const untouched: WorkingGroup[] = []
-    let start = slice.start
-    let end = slice.end
-
-    // A newly widened union can reach a group that did not intersect the
-    // original witness, so repeat until the transitive union is exhausted.
-    let changed = true
-    while (changed) {
-      changed = false
-      for (const group of groups) {
-        if (
-          !intersecting.includes(group) &&
-          doSpansIntersect(group, { start, end })
-        ) {
-          intersecting.push(group)
-          start = Math.min(start, group.start)
-          end = Math.max(end, group.end)
-          changed = true
-        }
-      }
-    }
-
-    for (const group of groups) {
-      if (!intersecting.includes(group)) untouched.push(group)
-    }
-    const entries = intersecting.flatMap((group) => group.entries)
-    entries.push({ slice, order })
-    entries.sort((a, b) => a.order - b.order)
-    untouched.push({ start, end, entries })
-    groups = untouched
+    orders.set(slice, order)
+    groups = addToGroups(groups, slice, orders, 0)
   })
-
-  return groups.map((group) => createPublicGroup(
-    group.entries.map((entry) => entry.slice),
-    group.start,
-    group.end,
-  ))
+  return groups
 }
 
 export function buildLevelLimitedLayout<S extends SourceSeg>(
@@ -440,6 +401,11 @@ interface Insertion {
 /**
  * Shared fire/collide/peel/consume implementation for both currencies.
  *
+ * `fireSlice` drives placement; `consumeInvalidOccupants` evicts colliders
+ * that push a positioned occupant over budget. Their mutual recursion
+ * terminates because every refire is a strict sub-span drawn from the finite
+ * lattice of slice edges.
+ *
  * Hiding is minimal-footprint: a slice that cannot place whole loses exactly
  * the lateral spans where no admissible position exists, decided by probing
  * the elementary intervals between collider edges, and the feasible remainder
@@ -456,48 +422,46 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
   let hiddenOrder = 0
   const hiddenOrders = new Map<Slice<S>, number>()
 
-  const getSliceCoord = (slice: Slice<S>, levelIndex: number) =>
-    sliceCoords.get(getSliceKey(slice)) ?? levelIndex
-
   const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
-    getSliceCoord(slice, levelIndex) + options.getSliceThickness(slice)
+    getStoredCoord(sliceCoords, slice, levelIndex) +
+    options.getSliceThickness(slice)
 
-  function addHiddenRaw(slice: Slice<S>): HiddenSliceGroup<S> {
-    hiddenOrders.set(slice, hiddenOrder++)
-    const intersecting = hiddenGroups.filter((group) =>
-      doSpansIntersect(group, slice),
-    )
-    const untouched = hiddenGroups.filter((group) =>
-      !intersecting.includes(group),
-    )
-    const hiddenSlices = intersecting.flatMap((group) => group.hiddenSlices)
-    hiddenSlices.push(slice)
-    hiddenSlices.sort((a, b) => hiddenOrders.get(a)! - hiddenOrders.get(b)!)
-    const start = Math.min(slice.start, ...intersecting.map((group) => group.start))
-    const end = Math.max(slice.end, ...intersecting.map((group) => group.end))
-    const group = createPublicGroup(hiddenSlices, start, end)
-    group.thickness = options.occupantThickness
-    hiddenGroups = untouched.concat(group)
-    return group
-  }
+  function fireSlice(
+    slice: Slice<S>,
+    mayPlaceWhole: boolean = true,
+  ): void {
+    const insertion = findValidInsertion(slice)
 
-  function positionOccupants(): HiddenSliceGroup<S> | undefined {
-    for (const group of hiddenGroups) {
-      const colliders = collectIntersectingSlices(sliceLevels, group)
-      group.levelIndex = colliders.length
-        ? Math.max(...colliders.map((item) => item.levelIndex)) + 1
-        : 0
-      group.levelCoord = colliders.length
-        ? Math.max(...colliders.map((item) =>
-          getSliceBottom(item.slice, item.levelIndex),
-        ))
-        : 0
-      if (!options.isValid(
-        group.levelCoord,
-        group.thickness,
-      )) return group
+    if (insertion && (mayPlaceWhole || isPartialSlice(slice))) {
+      insertSlice(
+        sliceLevels,
+        sliceCoords,
+        slice,
+        insertion.levelIndex,
+        insertion.levelCoord,
+      )
+      return
     }
-    return undefined
+
+    // A placeable-but-disallowed whole falls through to hide: only a genuine
+    // geometric failure earns a slicing pass.
+    if (options.eventSlicing && !insertion) {
+      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
+
+      if (feasibleRuns.length && infeasibleSpans.length) {
+        for (const span of infeasibleSpans) addHiddenRaw(span)
+        consumeInvalidOccupants()
+        for (const run of feasibleRuns) fireSlice(run)
+        return
+      }
+      if (
+        !infeasibleSpans.length &&
+        placeLongestPrefix(slice)
+      ) return
+    }
+
+    addHiddenRaw(slice)
+    consumeInvalidOccupants()
   }
 
   /** The insertion search under the caller's budget, or null when none fits. */
@@ -555,12 +519,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       const start = breakpoints[i]
       const end = breakpoints[i + 1]
       const candidate = createNarrowerSlice(slice, start, end)
-      const spans = findValidInsertion(candidate)
-        ? feasible
-        : infeasible
-      const previous = spans[spans.length - 1]
-      if (previous && previous.end === start) previous.end = end
-      else spans.push({ start, end })
+      pushRun(findValidInsertion(candidate) ? feasible : infeasible, start, end)
     }
 
     const narrow = (span: LateralSpan) =>
@@ -583,29 +542,48 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
 
     for (let i = breakpoints.length - 2; i >= 1; i--) {
       const prefix = createNarrowerSlice(slice, slice.start, breakpoints[i])
-      const insertion = findValidInsertion(prefix)
-      if (insertion) {
+      if (findValidInsertion(prefix)) {
         fireSlice(prefix)
-        for (const rest of peelSlice(slice, prefix)) fireSlice(rest)
+        fireSlice(createNarrowerSlice(slice, breakpoints[i], slice.end))
         return true
       }
     }
     return false
   }
 
+  function addHiddenRaw(slice: Slice<S>): void {
+    hiddenOrders.set(slice, hiddenOrder++)
+    hiddenGroups = addToGroups(
+      hiddenGroups,
+      slice,
+      hiddenOrders,
+      options.occupantThickness,
+    )
+  }
+
+  function positionOccupants(): HiddenSliceGroup<S> | undefined {
+    for (const group of hiddenGroups) {
+      const colliders = collectIntersectingSlices(sliceLevels, group)
+      group.levelIndex = colliders.length
+        ? Math.max(...colliders.map((item) => item.levelIndex)) + 1
+        : 0
+      group.levelCoord = colliders.length
+        ? Math.max(...colliders.map((item) =>
+          getSliceBottom(item.slice, item.levelIndex),
+        ))
+        : 0
+      if (!options.isValid(
+        group.levelCoord,
+        group.thickness,
+      )) return group
+    }
+    return undefined
+  }
+
   /** The sub-spans of a group where its occupant's budget is exceeded. */
   function findOccupantViolations(group: HiddenSliceGroup<S>): LateralSpan[] {
     const colliders = collectIntersectingSlices(sliceLevels, group)
-    const coords = new Set([group.start, group.end])
-    for (const item of colliders) {
-      if (item.slice.start > group.start && item.slice.start < group.end) {
-        coords.add(item.slice.start)
-      }
-      if (item.slice.end > group.start && item.slice.end < group.end) {
-        coords.add(item.slice.end)
-      }
-    }
-    const breakpoints = [...coords].sort((a, b) => a - b)
+    const breakpoints = collectBreakpoints(group)
     const violations: LateralSpan[] = []
 
     for (let i = 0; i < breakpoints.length - 1; i++) {
@@ -617,9 +595,7 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
         }
       }
       if (!options.isValid(bottom, group.thickness)) {
-        const previous = violations[violations.length - 1]
-        if (previous && previous.end === span.start) previous.end = span.end
-        else violations.push(span)
+        pushRun(violations, span.start, span.end)
       }
     }
     return violations
@@ -665,51 +641,15 @@ function mergeExtraIntoStructure<S extends SourceSeg>(
       }
     }
 
-    positionOccupants()
-    for (const slice of refires) fireSlice(slice)
-  }
-
-  function fireSlice(
-    slice: Slice<S>,
-    mayPlaceWhole: boolean = true,
-  ): void {
-    const insertion = findValidInsertion(slice)
-
-    if (insertion && (mayPlaceWhole || isPartialSlice(slice))) {
-      insertSlice(
-        sliceLevels,
-        sliceCoords,
-        slice,
-        insertion.levelIndex,
-        insertion.levelCoord,
-      )
-      return
+    for (const slice of refires) {
+      fireSlice(slice)
     }
-
-    // A placeable-but-disallowed whole falls through to hide: only a genuine
-    // geometric failure earns a slicing pass.
-    if (options.eventSlicing && !insertion) {
-      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
-
-      if (feasibleRuns.length && infeasibleSpans.length) {
-        for (const span of infeasibleSpans) addHiddenRaw(span)
-        consumeInvalidOccupants()
-        for (const run of feasibleRuns) fireSlice(run)
-        return
-      }
-      if (
-        !infeasibleSpans.length &&
-        placeLongestPrefix(slice)
-      ) return
-    }
-
-    addHiddenRaw(slice)
-    consumeInvalidOccupants()
   }
 
   for (const extra of extraSegSlices) {
     fireSlice(extra, options.allowExtraWholePlacement)
   }
+
   positionOccupants()
   return hiddenGroups
 }
@@ -729,10 +669,9 @@ function findInsertion<S extends SourceSeg>(
   const collidersByLevel = sliceLevels.map((level) =>
     findIntersections(level, slice),
   )
-  const getCoord = (other: Slice<S>, levelIndex: number) =>
-    sliceCoords.get(getSliceKey(other)) ?? levelIndex
   const getBottom = (other: Slice<S>, levelIndex: number) =>
-    getCoord(other, levelIndex) + options.getSliceThickness(other)
+    getStoredCoord(sliceCoords, other, levelIndex) +
+    options.getSliceThickness(other)
   let strictMinLevelIndex = 0
   let strictMaxLevelIndexExclusive = Infinity
 
@@ -770,7 +709,7 @@ function findInsertion<S extends SourceSeg>(
   for (let levelIndex = sliceLevels.length - 1; levelIndex >= 0; levelIndex--) {
     ceilings[levelIndex] = ceiling
     for (const other of collidersByLevel[levelIndex]) {
-      ceiling = Math.min(ceiling, getCoord(other, levelIndex))
+      ceiling = Math.min(ceiling, getStoredCoord(sliceCoords, other, levelIndex))
     }
   }
 
@@ -794,6 +733,22 @@ function findInsertion<S extends SourceSeg>(
   if (sliceLevels.length >= strictMaxLevelIndexExclusive) return null
 
   return { levelIndex: sliceLevels.length, levelCoord: minLevelCoord }
+}
+
+/** A slice's tracked placement coordinate, defaulting to its residing level. */
+function getStoredCoord<S extends SourceSeg>(
+  sliceCoords: ReadonlyMap<string, number>,
+  slice: Slice<S>,
+  levelIndex: number,
+): number {
+  return sliceCoords.get(getSliceKey(slice)) ?? levelIndex
+}
+
+/** Appends a span to a run list, coalescing with an adjacent previous run. */
+function pushRun(spans: LateralSpan[], start: number, end: number): void {
+  const previous = spans[spans.length - 1]
+  if (previous && previous.end === start) previous.end = end
+  else spans.push({ start, end })
 }
 
 function createWholeSlice<S extends SourceSeg>(
@@ -831,21 +786,7 @@ function createNarrowerSlice<S extends SourceSeg>(
   }
 }
 
-function peelSlice<S extends SourceSeg>(
-  slice: Slice<S>,
-  barrier: LateralSpan,
-): Slice<S>[] {
-  const remainders: Slice<S>[] = []
-  if (slice.start < barrier.start) {
-    remainders.push(createNarrowerSlice(slice, slice.start, barrier.start))
-  }
-  if (slice.end > barrier.end) {
-    remainders.push(createNarrowerSlice(slice, barrier.end, slice.end))
-  }
-  return remainders
-}
-
-/** Generalizes peelSlice to any set of removed spans, including interior ones. */
+/** Removes a set of spans from a slice, returning remainders, interior gaps included. */
 function subtractSpans<S extends SourceSeg>(
   slice: Slice<S>,
   spans: readonly LateralSpan[],
@@ -963,6 +904,29 @@ function findLowerBoundByStart<Item extends LateralSpan>(
 
 function doSpansIntersect(a: LateralSpan, b: LateralSpan): boolean {
   return a.start < b.end && b.start < a.end
+}
+
+/**
+ * Merges a slice into pairwise-disjoint groups, ordering members by `orders`.
+ * Every merged group overlaps the slice's own span, so the union is connected
+ * and one pass captures the transitive union.
+ */
+function addToGroups<S extends SourceSeg>(
+  groups: readonly HiddenSliceGroup<S>[],
+  slice: Slice<S>,
+  orders: ReadonlyMap<Slice<S>, number>,
+  thickness: number,
+): HiddenSliceGroup<S>[] {
+  const intersecting = groups.filter((group) => doSpansIntersect(group, slice))
+  const untouched = groups.filter((group) => !intersecting.includes(group))
+  const hiddenSlices = intersecting.flatMap((group) => group.hiddenSlices)
+  hiddenSlices.push(slice)
+  hiddenSlices.sort((a, b) => orders.get(a)! - orders.get(b)!)
+  const start = Math.min(slice.start, ...intersecting.map((group) => group.start))
+  const end = Math.max(slice.end, ...intersecting.map((group) => group.end))
+  const merged = createPublicGroup(hiddenSlices, start, end)
+  merged.thickness = thickness
+  return untouched.concat(merged)
 }
 
 function createPublicGroup<S extends SourceSeg>(
