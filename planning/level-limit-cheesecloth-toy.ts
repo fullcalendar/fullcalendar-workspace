@@ -67,6 +67,7 @@ export function buildPixelLimitedLayout(
   // is the deepest coordinate an intersecting event may reach.
   const moreLinkEventMax = Math.max(0, maxPixels - moreLinkHeight)
 
+  // safe layout (naive)
   const safeLogicalLayout = buildWholePixelSafeLayout(
     wholeResolution.sliceLevels,
     initialHiddenSlices,
@@ -82,6 +83,8 @@ export function buildPixelLimitedLayout(
     safeLogicalLayout,
     safeResolution,
   )
+
+  // candidate layout
   const candidateLogicalLayout = placeExtraSlicesInLevels(
     safeLogicalLayout.sliceLevels,
     safeLogicalLayout.hiddenSlices,
@@ -134,6 +137,7 @@ export function buildPixelLimitedLayout(
   )) {
     return candidateLayout
   }
+
   return safeLayoutWithCandidateMeasurements
 }
 
