@@ -1,6 +1,6 @@
 /**
- * Standalone placement toy. Pixel measurements build a conservative
- * whole-slice plan and validate its candidate; slicing remains logical.
+ * Standalone safe-repack toy. Pixel measurements build a conservative
+ * whole-slice baseline and validate a logically repacked candidate.
  *
  * Component-facing entry points:
  * - `buildPixelLimitedLayout`
