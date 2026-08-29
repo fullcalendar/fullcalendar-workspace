@@ -22,6 +22,11 @@ export interface Slice extends Seg {
   orderIndex: number
 }
 
+/** One independently rendered more link and the hidden slices it represents. */
+export interface MoreLinkGroup extends Span {
+  hiddenSlices: Slice[]
+}
+
 /* ========================================================================
  * Pixel-limited layout
  * ===================================================================== */
@@ -29,9 +34,10 @@ export interface Slice extends Seg {
 /**
  * Builds and resolves a safe whole-only layout, then attempts and resolves its
  * extras with the logical slicing algorithm. While candidate measurements are
- * pending, the safe topology remains selected and those candidate slices are
- * returned separately for the component to mount in its measurement layer.
- * A fully measured candidate replaces the safe layout only when valid.
+ * pending, the safe topology remains selected. Candidate-only slices remain
+ * mounted in the measurement layer even after rejection, preventing repeated
+ * mount-measure-reject cycles. A fully measured candidate replaces the safe
+ * layout only when valid.
  * `neededLevelCount` bounds the initial DOM whole-slice candidates; later
  * slices begin hidden and unmeasured.
  */
@@ -57,22 +63,25 @@ export function buildPixelLimitedLayout(
     wholeResolution.pendingSlices,
     wholeResolution.excludedSlices,
   )
+  // More links always render. When one consumes the full budget or more, zero
+  // is the deepest coordinate an intersecting event may reach.
+  const moreLinkEventMax = Math.max(0, maxPixels - moreLinkHeight)
+
   const safeLogicalLayout = buildWholePixelSafeLayout(
     wholeResolution.sliceLevels,
     initialHiddenSlices,
     wholeResolution.sliceCoords,
     sliceHeights,
-    maxPixels,
-    moreLinkHeight,
+    moreLinkEventMax,
   )
   const safeResolution = resolveSliceLevelCoords(
     safeLogicalLayout.sliceLevels,
     sliceHeights,
   )
-  const safeLayout: ResolvedLimitedLayout = {
-    ...safeLogicalLayout,
-    ...safeResolution,
-  }
+  const safeLayout = compileResolvedLimitedLayout(
+    safeLogicalLayout,
+    safeResolution,
+  )
   const candidateLogicalLayout = placeExtraSlicesInLevels(
     safeLogicalLayout.sliceLevels,
     safeLogicalLayout.hiddenSlices,
@@ -85,29 +94,47 @@ export function buildPixelLimitedLayout(
     maxPixels,
   )
 
-  if (candidateResolution.pendingSlices.length) {
-    return {
-      ...safeLayout,
-      pendingSlices: candidateResolution.pendingSlices,
-    }
-  }
-  if (candidateResolution.excludedSlices.length) {
-    return safeLayout
+  // Candidate construction reuses every safe slice object and adds any whole
+  // or partial slices it managed to reinsert. Object identity therefore gives
+  // us the exact set of DOM nodes that exist only to evaluate the candidate.
+  const safeSlices = new Set(safeLogicalLayout.sliceLevels.flat())
+  const candidateMeasurementSlices = candidateLogicalLayout.sliceLevels
+    .flat()
+    .filter((slice) => !safeSlices.has(slice))
+
+  // The safe topology stays visibly selected until the candidate is accepted.
+  // Its render set must nevertheless retain every candidate-only slice, even
+  // after measurement, so rejection cannot start a mount-measure-reject loop.
+  // These donor slices receive no coordinates and are rendered invisible.
+  const safeLayoutWithCandidateMeasurements: ResolvedLimitedLayout = {
+    ...safeLayout,
+    renderSlices: safeLayout.renderSlices.concat(
+      candidateMeasurementSlices,
+    ),
   }
 
-  const candidateLayout: ResolvedLimitedLayout = {
-    ...candidateLogicalLayout,
-    ...candidateResolution,
+  if (
+    candidateResolution.pendingSlices.length ||
+    candidateResolution.excludedSlices.length
+  ) {
+    return safeLayoutWithCandidateMeasurements
   }
 
-  return isPixelCandidateValid(
-    candidateLayout,
-    sliceHeights,
-    maxPixels,
-    moreLinkHeight,
+  const candidateLayout = compileResolvedLimitedLayout(
+    candidateLogicalLayout,
+    candidateResolution,
   )
-    ? candidateLayout
-    : safeLayout
+
+  if (isPixelCandidateValid(
+    candidateResolution.sliceLevels,
+    candidateLogicalLayout.moreLinkGroups,
+    candidateResolution.sliceCoords,
+    sliceHeights,
+    moreLinkEventMax,
+  )) {
+    return candidateLayout
+  }
+  return safeLayoutWithCandidateMeasurements
 }
 
 /* ========================================================================
@@ -151,10 +178,7 @@ export function buildLevelLimitedLayout(
     sliceHeights,
   )
 
-  return {
-    ...logicalLayout,
-    ...resolution,
-  }
+  return compileResolvedLimitedLayout(logicalLayout, resolution)
 }
 
 /* ========================================================================
@@ -271,24 +295,25 @@ function buildWholePixelSafeLayout(
   initialHiddenSlices: readonly Slice[],
   sliceCoords: SliceCoordMap,
   sliceHeights: SliceHeightMap,
-  maxPixels: number,
-  moreLinkHeight: number,
+  moreLinkEventMax: number,
 ): LimitedLayout {
   const wholeSlices = initialSliceLevels.flat().sort(compareSlices)
   const hiddenSlices = [...initialHiddenSlices]
   const hiddenSet = new Set(initialHiddenSlices)
-  const moreLinkSpans: Span[] = []
-  const moreLinkEventMax = maxPixels - moreLinkHeight
+  const moreLinkGroups: MoreLinkGroup[] = []
 
   // Appending victims to this same array forms a monotonic worklist. Every
-  // iteration either grows normalized coverage or merely records membership.
+  // iteration either grows covered territory or merely records membership.
   for (
     let hiddenIndex = 0;
     hiddenIndex < hiddenSlices.length;
     hiddenIndex++
   ) {
     const hiddenSlice = hiddenSlices[hiddenIndex]
-    const newMoreLinkSpans = growCoverage(moreLinkSpans, hiddenSlice)
+    const newMoreLinkSpans = addHiddenSliceToMoreLinkGroups(
+      moreLinkGroups,
+      hiddenSlice,
+    )
 
     for (const newMoreLinkSpan of newMoreLinkSpans) {
       for (const slice of wholeSlices) {
@@ -309,27 +334,24 @@ function buildWholePixelSafeLayout(
   return {
     sliceLevels: excludeSlicesFromLevels(initialSliceLevels, hiddenSet),
     hiddenSlices,
-    moreLinkSpans,
+    moreLinkGroups,
   }
 }
 
 /** Tests exact candidate bottoms against the bottom-fixed more-link boundary. */
 function isPixelCandidateValid(
-  layout: ResolvedLimitedLayout,
+  sliceLevels: readonly (readonly Slice[])[],
+  moreLinkGroups: readonly MoreLinkGroup[],
+  sliceCoords: SliceCoordMap,
   sliceHeights: SliceHeightMap,
-  maxPixels: number,
-  moreLinkHeight: number,
+  moreLinkEventMax: number,
 ): boolean {
-  if (layout.moreLinkSpans.length && moreLinkHeight > maxPixels) {
-    return false
-  }
-
-  for (const level of layout.sliceLevels) {
+  for (const level of sliceLevels) {
     for (const slice of level) {
       if (
-        intersectsAny(layout.moreLinkSpans, slice) &&
-        getSliceBottom(slice, layout.sliceCoords, sliceHeights)! >
-          maxPixels - moreLinkHeight
+        intersectsAny(moreLinkGroups, slice) &&
+        getSliceBottom(slice, sliceCoords, sliceHeights)! >
+          moreLinkEventMax
       ) {
         return false
       }
@@ -343,12 +365,12 @@ function isPixelCandidateValid(
  * Logical slice placement
  * ===================================================================== */
 
-export interface LimitedLayout {
+interface LimitedLayout {
   sliceLevels: Slice[][]
-  /** Deliberately flat. Final product-specific grouping is a later concern. */
+  /** Deliberately flat for source-order and whole-layout operations. */
   hiddenSlices: Slice[]
-  /** Normalized lateral territory where a bottom-fixed more link exists. */
-  moreLinkSpans: Span[]
+  /** Strictly intersecting hidden slices grouped for individual more links. */
+  moreLinkGroups: MoreLinkGroup[]
 }
 
 /** Work alternates between attempting slices and reserving bottom link space. */
@@ -370,13 +392,14 @@ function placeExtraSlicesInLevels(
   const sliceLevels = initialSliceLevels.map((level) => [...level])
   const extras = [...extraSlices].sort(compareSlices)
 
-  // Hidden membership remains flat and may overlap. The coverage accumulator
-  // is its normalized union and records where a link has already been fired.
+  // Hidden membership remains flat for whole-layout operations. More-link
+  // groups duplicate that membership locally while also recording which
+  // lateral territory has already fired its link tax.
   const hiddenSlices: Slice[] = []
-  const coverageAccumulator: Span[] = []
+  const moreLinkGroups: MoreLinkGroup[] = []
   const placementState: SlicePlacementState = {
     levels: sliceLevels,
-    bottomReservedSpans: moreLinkLevelTax ? coverageAccumulator : [],
+    bottomReservedSpans: moreLinkLevelTax ? moreLinkGroups : [],
   }
 
   const work: Work[] = []
@@ -397,7 +420,7 @@ function placeExtraSlicesInLevels(
   return {
     sliceLevels,
     hiddenSlices,
-    moreLinkSpans: coverageAccumulator,
+    moreLinkGroups,
   }
 
   /** Tries a whole insertion before considering scored same-level slices. */
@@ -433,7 +456,10 @@ function placeExtraSlicesInLevels(
 
     // Only the set difference is fresh more-link territory; it can consist of
     // several disjoint runs.
-    const newMoreLinkSpans = growCoverage(coverageAccumulator, slice)
+    const newMoreLinkSpans = addHiddenSliceToMoreLinkGroups(
+      moreLinkGroups,
+      slice,
+    )
 
     if (moreLinkLevelTax) {
       for (let i = newMoreLinkSpans.length - 1; i >= 0; i--) {
@@ -447,6 +473,10 @@ function placeExtraSlicesInLevels(
    * the tax is exactly one, only slices in the final level can be displaced.
    */
   function fireMoreLink(span: Span): void {
+    if (!sliceLevels.length) {
+      return
+    }
+
     const taxedLevel = sliceLevels[sliceLevels.length - 1]
     const victims = findIntersectingSlicesInLevel(taxedLevel, span)
 
@@ -480,12 +510,17 @@ function placeExtraSlicesInLevels(
 export type SliceHeightMap = ReadonlyMap<string, number>
 export type SliceCoordMap = ReadonlyMap<string, number>
 
-export interface ResolvedLimitedLayout extends LimitedLayout {
+export interface ResolvedLimitedLayout {
+  /**
+   * Every slice the component must mount. A missing coordinate means the
+   * slice is an invisible measurement donor rather than a visible placement.
+   */
+  renderSlices: Slice[]
+  /** Logical event footprints represented by more links instead of events. */
+  hiddenSlices: Slice[]
+  /** Independently rendered more links and the slices each one represents. */
+  moreLinkGroups: MoreLinkGroup[]
   sliceCoords: SliceCoordMap
-  /** Slices the component must mount in its measurement layer. */
-  pendingSlices: Slice[]
-  /** Measured slices omitted because their bottoms exceeded the pixel limit. */
-  excludedSlices: Slice[]
 }
 
 export interface SliceLevelCoordResolution {
@@ -493,6 +528,21 @@ export interface SliceLevelCoordResolution {
   sliceCoords: SliceCoordMap
   pendingSlices: Slice[]
   excludedSlices: Slice[]
+}
+
+/** Flattens internal topology and its pending donors for component rendering. */
+function compileResolvedLimitedLayout(
+  logicalLayout: LimitedLayout,
+  resolution: SliceLevelCoordResolution,
+): ResolvedLimitedLayout {
+  return {
+    renderSlices: resolution.sliceLevels.flat().concat(
+      resolution.pendingSlices,
+    ),
+    hiddenSlices: logicalLayout.hiddenSlices,
+    moreLinkGroups: logicalLayout.moreLinkGroups,
+    sliceCoords: resolution.sliceCoords,
+  }
 }
 
 /** Stable measurement and coordinate key for one exact lateral slice. */
@@ -758,6 +808,43 @@ function compareSlices(a: Slice, b: Slice): number {
 }
 
 /* ========================================================================
+ * More-link groups
+ * ===================================================================== */
+
+/**
+ * Adds one hidden slice to its strict-intersection component and returns only
+ * the newly covered spans. Exactly adjacent groups deliberately stay separate
+ * because each group corresponds to one independently rendered more link.
+ */
+function addHiddenSliceToMoreLinkGroups(
+  groups: MoreLinkGroup[],
+  slice: Slice,
+): Span[] {
+  const newSpans = subtractCovered(slice, groups)
+  const untouchedGroups: MoreLinkGroup[] = []
+  const mergedSlices: Slice[] = [slice]
+  let start = slice.start
+  let end = slice.end
+
+  for (const group of groups) {
+    if (intersectSpans(group, slice)) {
+      mergedSlices.push(...group.hiddenSlices)
+      start = Math.min(start, group.start)
+      end = Math.max(end, group.end)
+    } else {
+      untouchedGroups.push(group)
+    }
+  }
+
+  mergedSlices.sort(compareSlices)
+  untouchedGroups.push({ start, end, hiddenSlices: mergedSlices })
+  untouchedGroups.sort((a, b) => a.start - b.start)
+  groups.splice(0, groups.length, ...untouchedGroups)
+
+  return newSpans
+}
+
+/* ========================================================================
  * Span geometry utilities
  * ===================================================================== */
 
@@ -788,24 +875,16 @@ function subtractCovered(span: Span, covered: readonly Span[]): Span[] {
   return result
 }
 
-/** Grows normalized coverage and returns only the newly covered spans. */
-function growCoverage(coverage: Span[], addition: Span): Span[] {
-  const newSpans = subtractCovered(addition, coverage)
-
-  addToUnion(coverage, addition)
-  return newSpans
-}
-
-/** Maintains a sorted union. Adjacency is merged because only coverage matters. */
+/** Maintains a sorted strict-overlap union; adjacent spans remain separate. */
 function addToUnion(spans: Span[], addition: Span): void {
   const result: Span[] = []
   let pending = { ...addition }
   let inserted = false
 
   for (const span of spans) {
-    if (span.end < pending.start) {
+    if (span.end <= pending.start) {
       result.push(span)
-    } else if (pending.end < span.start) {
+    } else if (pending.end <= span.start) {
       if (!inserted) {
         result.push(pending)
         inserted = true
