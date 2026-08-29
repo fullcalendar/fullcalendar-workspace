@@ -36,17 +36,18 @@ export function getSliceKey(slice: Seg): string {
 const PIXEL_TOLERANCE = 0.000_001
 
 export interface PixelLimitedLayout {
-  acceptedPlan: PixelPlan
-  safePlan: PixelPlan
-  candidatePlan: PixelPlan
-  candidateValidation: PixelPlanValidation
-  didAcceptCandidatePlan: boolean
+  /** Valid visible plan, pruned from either the liberal or whole topology. */
+  plan: PixelPlan
+  /** Liberal candidate slices that still need invisible measurement. */
+  pendingSlices: Slice[]
+  /** Whether `plan` was pruned directly from the liberal topology. */
+  isSettled: boolean
 }
 
 /**
- * Keeps the safe whole-only plan available while a liberal logical candidate
- * is measured. The candidate may contain partials when slicing is enabled and
- * is committed only when every event and bottom-fixed more link fits exactly.
+ * Builds a liberal logical topology, then monotonically removes sources until
+ * every event and bottom-fixed more link fits. While liberal partials await
+ * measurement, the same pruner supplies a valid whole-only topology.
  */
 export function buildPixelLimitedLayout(
   segs: readonly Seg[],
@@ -64,16 +65,9 @@ export function buildPixelLimitedLayout(
   const wholeExtras = wholeResolution.excludedSlices
     .concat(wholeResolution.pendingSlices)
     .sort(compareSlices)
-  const safePlan = buildSafePixelPlan(
-    wholeResolution,
-    wholeExtras,
-    maxPixels,
-    moreLinkHeight,
-    sliceHeights,
-  )
 
-  // The proposal's one-level tax is only a logical packing heuristic. Exact
-  // more-link height remains a hard constraint in validation below.
+  // The one-level tax is only a packing heuristic. Monotonic pruning enforces
+  // the real link height after the liberal topology has been measured.
   const placementHooks = createPixelPlacementHooks(
     segs,
     wholeResolution.sliceCoords,
@@ -88,24 +82,39 @@ export function buildPixelLimitedLayout(
     1,
     placementHooks,
   )
-  const candidateValidation = validatePixelPlan(
-    candidateTopology,
+  const plan = prunePixelPlan(
+    candidateTopology.sliceLevels,
+    candidateTopology.hiddenSlices,
+    sliceHeights,
     maxPixels,
     moreLinkHeight,
-    sliceHeights,
   )
-  const candidatePlan: PixelPlan = {
-    ...candidateTopology,
-    sliceCoords: candidateValidation.sliceCoords,
+
+  if (plan) {
+    return {
+      plan,
+      pendingSlices: [],
+      isSettled: true,
+    }
   }
-  const didAcceptCandidatePlan = candidateValidation.isValid
+
+  const pendingSlices = candidateTopology.sliceLevels
+    .flat()
+    .filter((slice) =>
+      sliceHeights.get(getSliceKey(slice)) === undefined,
+    )
+  const wholePlan = prunePixelPlan(
+    wholeResolution.placementSliceLevels,
+    wholeExtras,
+    sliceHeights,
+    maxPixels,
+    moreLinkHeight,
+  )!
 
   return {
-    acceptedPlan: didAcceptCandidatePlan ? candidatePlan : safePlan,
-    safePlan,
-    candidatePlan,
-    candidateValidation,
-    didAcceptCandidatePlan,
+    plan: wholePlan,
+    pendingSlices,
+    isSettled: false,
   }
 }
 
@@ -238,6 +247,37 @@ export function limitSliceLevels(
 }
 
 /* ========================================================================
+ * Mutable slice layouts
+ * ===================================================================== */
+
+/** Clones visible levels and accumulates any existing hidden coverage. */
+function createMutableSliceLayout(
+  initialSliceLevels: readonly (readonly Slice[])[],
+  initialHiddenSlices: readonly Slice[] = [],
+): LimitedLayout {
+  const layout: LimitedLayout = {
+    sliceLevels: initialSliceLevels.map((level) => [...level]),
+    hiddenSlices: [],
+    moreLinkSpans: [],
+  }
+
+  for (const slice of initialHiddenSlices) {
+    addHiddenSliceToLayout(layout, slice)
+  }
+
+  return layout
+}
+
+/** Adds flat hidden membership and grows normalized more-link coverage. */
+function addHiddenSliceToLayout(
+  layout: LimitedLayout,
+  slice: Slice,
+): void {
+  layout.hiddenSlices.push(slice)
+  addToUnion(layout.moreLinkSpans, slice)
+}
+
+/* ========================================================================
  * Logical slice placement
  * ===================================================================== */
 
@@ -278,15 +318,11 @@ function placeExtraSlicesInLevels(
   moreLinkLevelTax: 0 | 1,
   hooks?: SlicePlacementHooks,
 ): LimitedLayout {
-  const sliceLevels = initialSliceLevels.map((level) => [...level])
-
-  // Hidden membership remains flat and may overlap. The coverage accumulator
-  // is its normalized union and records where a link has already been fired.
-  const hiddenSlices: Slice[] = []
-  const coverageAccumulator: Span[] = []
+  const layout = createMutableSliceLayout(initialSliceLevels)
+  const { sliceLevels, moreLinkSpans } = layout
   const placementState: SlicePlacementState = {
     levels: sliceLevels,
-    bottomReservedSpans: moreLinkLevelTax ? coverageAccumulator : [],
+    bottomReservedSpans: moreLinkLevelTax ? moreLinkSpans : [],
     canPlaceSlice: hooks
       ? (slice, levelIndex) => hooks.canPlaceSlice(
         slice,
@@ -311,11 +347,7 @@ function placeExtraSlicesInLevels(
     }
   }
 
-  return {
-    sliceLevels,
-    hiddenSlices,
-    moreLinkSpans: coverageAccumulator,
-  }
+  return layout
 
   /** Tries a whole insertion before considering scored same-level slices. */
   function fire(slice: Slice): void {
@@ -348,12 +380,11 @@ function placeExtraSlicesInLevels(
 
   /** Adds hidden membership and fires links only over new accumulator coverage. */
   function hide(slice: Slice): void {
-    hiddenSlices.push(slice)
-
     // Only the set difference is fresh more-link territory; it can consist of
     // several disjoint runs.
-    const newMoreLinkSpans = subtractCovered(slice, coverageAccumulator)
-    addToUnion(coverageAccumulator, slice)
+    const newMoreLinkSpans = subtractCovered(slice, moreLinkSpans)
+
+    addHiddenSliceToLayout(layout, slice)
 
     if (moreLinkLevelTax) {
       for (let i = newMoreLinkSpans.length - 1; i >= 0; i--) {
@@ -670,74 +701,143 @@ function createPixelPlacementHooks(
 }
 
 /* ========================================================================
- * Safe pixel-limited planning
+ * Monotonic pixel pruning
  * ===================================================================== */
 
 export interface PixelPlan extends LimitedLayout {
   sliceCoords: Map<Slice, number>
 }
 
-interface PixelMoreLinkVictim extends IndexedSlice {
+interface IndexedLevelSlice {
+  slice: Slice
   levelIndex: number
+  sliceIndex: number
+}
+
+interface PixelMoreLinkVictim extends IndexedLevelSlice {
   bottom: number
 }
 
 /**
- * Produces the conservative fallback using whole slices only. Each hidden
- * whole grows the bottom-link coverage. A measured frontier slice intruding
- * into that bottom strip is evicted whole, after which only higher levels need
- * coordinate repair.
+ * Removes slices until all measured events and bottom-fixed more links fit.
+ * Null means a visible slice is still awaiting measurement. Nothing is
+ * inserted or moved between levels, so each iteration strictly reduces the
+ * topology and surviving coordinates can only move upward.
  */
-function buildSafePixelPlan(
-  wholeResolution: SliceLevelCoordResolution,
+export function prunePixelPlan(
+  topology: readonly (readonly Slice[])[],
   initialHiddenSlices: readonly Slice[],
+  sliceHeights: SliceHeightMap,
   maxPixels: number,
   moreLinkHeight: number,
-  sliceHeights: SliceHeightMap,
-): PixelPlan {
-  const sliceLevels = wholeResolution.placementSliceLevels
-    .map((level) => [...level])
-  const sliceCoords = new Map(wholeResolution.sliceCoords)
+): PixelPlan | null {
+  const layout = createMutableSliceLayout(topology, initialHiddenSlices)
+  const { sliceLevels, moreLinkSpans } = layout
   const getSliceHeight: SliceHeightLookup = (slice) =>
     sliceHeights.get(getSliceKey(slice))
-  const hiddenSlices: Slice[] = []
-  const coverageAccumulator: Span[] = []
+  const resolution = resolveSliceLevelCoords(sliceLevels, sliceHeights)
 
-  for (const slice of initialHiddenSlices) {
-    hiddenSlices.push(slice)
-    addToUnion(coverageAccumulator, slice)
+  if (resolution.pendingSlices.length) {
+    return null
   }
 
-  let victim: PixelMoreLinkVictim | null
+  const sliceCoords = resolution.sliceCoords
 
-  while ((victim = findPixelMoreLinkVictim(
-    sliceLevels,
-    sliceCoords,
-    getSliceHeight,
-    coverageAccumulator,
-    maxPixels - moreLinkHeight,
-  ))) {
-    removeSliceFromLevel(sliceLevels[victim.levelIndex], victim.index)
-    sliceCoords.delete(victim.slice)
-    hiddenSlices.push(victim.slice)
-    addToUnion(coverageAccumulator, victim.slice)
+  while (true) {
+    const removals = findOverflowingSlices(
+      sliceLevels,
+      sliceCoords,
+      getSliceHeight,
+      maxPixels,
+    )
 
-    // Peers in the victim's own level have independent lateral spans. Only
-    // slices in greater levels could have been resting on the removed slice.
+    if (!removals.length) {
+      const victim = findPixelMoreLinkVictim(
+        sliceLevels,
+        sliceCoords,
+        getSliceHeight,
+        moreLinkSpans,
+        maxPixels - moreLinkHeight,
+      )
+
+      if (!victim) {
+        break
+      }
+      removals.push(victim)
+    }
+
+    const firstChangedLevel = removeSlicesFromPixelPlan(
+      removals,
+      layout,
+      sliceCoords,
+    )
+
     resolveSliceCoordsFromLevel(
       sliceLevels,
       sliceCoords,
       getSliceHeight,
-      victim.levelIndex + 1,
+      firstChangedLevel + 1,
     )
   }
 
   return {
-    sliceLevels,
-    hiddenSlices,
-    moreLinkSpans: coverageAccumulator,
+    ...layout,
     sliceCoords,
   }
+}
+
+/** Identifies every visible slice beyond the pixel boundary. */
+function findOverflowingSlices(
+  sliceLevels: readonly (readonly Slice[])[],
+  sliceCoords: ReadonlyMap<Slice, number>,
+  getSliceHeight: SliceHeightLookup,
+  maxPixels: number,
+): IndexedLevelSlice[] {
+  const slices: IndexedLevelSlice[] = []
+
+  for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
+    const level = sliceLevels[levelIndex]
+
+    // Right-to-left order lets removal reuse these indexes without adjustment.
+    for (let sliceIndex = level.length - 1; sliceIndex >= 0; sliceIndex--) {
+      const slice = level[sliceIndex]
+
+      if (
+        sliceCoords.get(slice)! + getSliceHeight(slice)! >
+          maxPixels + PIXEL_TOLERANCE
+      ) {
+        slices.push({ slice, levelIndex, sliceIndex })
+      }
+    }
+  }
+
+  return slices
+}
+
+/**
+ * Removes already-indexed slices and adds their spans to hidden coverage.
+ * Multiple removals from one level must arrive right-to-left.
+ */
+function removeSlicesFromPixelPlan(
+  removals: readonly IndexedLevelSlice[],
+  layout: LimitedLayout,
+  sliceCoords: Map<Slice, number>,
+): number {
+  const { sliceLevels } = layout
+  let firstChangedLevel = sliceLevels.length
+
+  for (const { levelIndex, sliceIndex } of removals) {
+    const removedSlice = removeSliceFromLevel(
+      sliceLevels[levelIndex],
+      sliceIndex,
+    )
+
+    sliceCoords.delete(removedSlice)
+    addHiddenSliceToLayout(layout, removedSlice)
+    firstChangedLevel = Math.min(firstChangedLevel, levelIndex)
+  }
+
+  return firstChangedLevel
 }
 
 /** Finds the deepest measured event currently intruding into the link strip. */
@@ -753,8 +853,8 @@ function findPixelMoreLinkVictim(
   for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
     const level = sliceLevels[levelIndex]
 
-    for (let index = 0; index < level.length; index++) {
-      const slice = level[index]
+    for (let sliceIndex = 0; sliceIndex < level.length; sliceIndex++) {
+      const slice = level[sliceIndex]
       const bottom = sliceCoords.get(slice)! +
         getSliceHeight(slice)!
 
@@ -763,84 +863,12 @@ function findPixelMoreLinkVictim(
         bottom > moreLinkTop + PIXEL_TOLERANCE &&
         (!selected || bottom > selected.bottom)
       ) {
-        selected = { slice, index, levelIndex, bottom }
+        selected = { slice, levelIndex, sliceIndex, bottom }
       }
     }
   }
 
   return selected
-}
-
-/* ========================================================================
- * Pixel proposal validation
- * ===================================================================== */
-
-export interface PixelPlanValidation {
-  sliceCoords: Map<Slice, number>
-  pendingSlices: Slice[]
-  overflowingSlices: Slice[]
-  moreLinkViolationSpans: Span[]
-  isValid: boolean
-}
-
-/**
- * Resolves a completed logical proposal with actual measurements. Validation
- * never mutates the proposal: any failure rejects the proposal as a whole.
- */
-function validatePixelPlan(
-  proposal: LimitedLayout,
-  maxPixels: number,
-  moreLinkHeight: number,
-  sliceHeights: SliceHeightMap,
-): PixelPlanValidation {
-  const resolution = resolveSliceLevelCoords(
-    proposal.sliceLevels,
-    sliceHeights,
-  )
-  const overflowingSlices: Slice[] = []
-  const moreLinkViolationSpans: Span[] = []
-  const moreLinkTop = maxPixels - moreLinkHeight
-
-  for (const level of proposal.sliceLevels) {
-    for (const slice of level) {
-      const height = sliceHeights.get(getSliceKey(slice))
-      const coord = resolution.sliceCoords.get(slice)
-
-      if (height === undefined || coord === undefined) {
-        continue
-      }
-
-      const bottom = coord + height
-      if (bottom > maxPixels + PIXEL_TOLERANCE) {
-        overflowingSlices.push(slice)
-      }
-      if (bottom > moreLinkTop + PIXEL_TOLERANCE) {
-        for (const moreLinkSpan of proposal.moreLinkSpans) {
-          const intersection = intersectSpans(slice, moreLinkSpan)
-          if (intersection) {
-            addToUnion(moreLinkViolationSpans, intersection)
-          }
-        }
-      }
-    }
-  }
-
-  if (moreLinkHeight > maxPixels + PIXEL_TOLERANCE) {
-    for (const moreLinkSpan of proposal.moreLinkSpans) {
-      addToUnion(moreLinkViolationSpans, moreLinkSpan)
-    }
-  }
-
-  return {
-    sliceCoords: resolution.sliceCoords,
-    pendingSlices: resolution.pendingSlices,
-    overflowingSlices,
-    moreLinkViolationSpans,
-    isValid:
-      !resolution.pendingSlices.length &&
-      !overflowingSlices.length &&
-      !moreLinkViolationSpans.length,
-  }
 }
 
 /* ========================================================================
@@ -908,8 +936,8 @@ function insertLaterally(level: Slice[], slice: Slice): void {
   level.splice(low, 0, slice)
 }
 
-function removeSliceFromLevel(level: Slice[], sliceIndex: number): void {
-  level.splice(sliceIndex, 1)
+function removeSliceFromLevel(level: Slice[], sliceIndex: number): Slice {
+  return level.splice(sliceIndex, 1)[0]
 }
 
 function compareSlices(a: Slice, b: Slice): number {

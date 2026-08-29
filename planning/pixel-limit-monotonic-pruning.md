@@ -1,17 +1,14 @@
 # Pixel-Limited Monotonic Pruning
 
-This is a possible successor to the whole-plan fallback demonstrated in
-`level-limit-cheesecloth-toy.ts`. It deliberately builds on the same logical
-proposal and exact pixel validation rather than changing logical placement.
-
-It is not implemented yet. The purpose of this note is to preserve the design
-while the simpler fallback implementation is reviewed and refined.
+This is the sole pixel-limited planner in `level-limit-cheesecloth-toy.ts`. It
+builds on the logical candidate and coordinate machinery, then repairs that
+candidate by removal only.
 
 ## Motivation
 
-Whole-plan fallback discards a sliced proposal when any measured slice or more
-link does not fit. That gives the simplest safety proof, but one unusually tall
-partial can discard unrelated partials that fit perfectly.
+Rejecting a complete sliced proposal when one measured slice or more link does
+not fit gives a simple safety proof, but one unusually tall partial can discard
+unrelated partials that fit perfectly.
 
 Monotonic pruning keeps the valid parts of the proposal. Once logical planning
 is complete, the algorithm may only remove visible slices. It never inserts a
@@ -23,17 +20,18 @@ rule: every repair iteration strictly reduces the visible proposal.
 
 ## Shared Setup
 
-The setup is identical to whole-plan fallback:
+The planner has two invocations of the same pruning engine:
 
 1. Build unrestricted whole-slice levels.
 2. Resolve the whole slices with measured pixel heights.
-3. Construct the conservative, whole-only safe plan.
-4. Fire rejected whole slices through the logical placement engine.
-5. Measure any partial slices from the resulting logical proposal invisibly.
+3. Fire rejected whole slices through the logical placement engine.
+4. Try to prune the resulting liberal topology.
+5. If a liberal slice is unmeasured, invisibly measure it while showing a
+   whole-only topology pruned by the same engine.
 
-The safe plan stays visible until pruning reaches a valid fixed point. Pending
-measurements do not cause removal because the algorithm has no pixel fact on
-which to base that decision.
+The whole-only invocation is a temporary visible state, not a second planning
+algorithm. Pending measurements do not cause removal because the pruner has no
+pixel fact on which to base that decision.
 
 ## One Repair Loop
 
@@ -59,17 +57,13 @@ validate exact coordinates
                                                     +--> validate again
 ```
 
-The validator already reports the facts required by this loop:
-
-- `pendingSlices`
-- `overflowingSlices`
-- `moreLinkViolationSpans`
-- exact coordinates for all measured slices
+Each pass resolves exact coordinates and inspects two pixel facts: event
+bottoms beyond the row boundary and event bottoms intruding into covered
+more-link territory.
 
 An event overflow directly identifies a removal candidate. A more-link
 violation identifies lateral territory; the remover selects the intersecting
-visible slice with the greatest measured bottom, just as the safe-plan builder
-selects its whole-slice frontier victim.
+visible slice with the greatest measured bottom.
 
 Both cases therefore feed the same removal operation. Removing a slice adds it
 to flat hidden membership, expands the normalized more-link coverage, and can
@@ -77,21 +71,15 @@ create additional link-strip violations elsewhere. Those consequences are
 discovered by the next validation pass instead of being handled by a separate
 recursive more-link phase.
 
-## Initial Removal Granularity
+## Removal Granularity
 
-The simplest first policy should be source-atomic:
+Removal is slice-atomic. An overflowing slice or exact more-link victim is
+removed independently, while other visible slices from the same source remain.
+The removed span is added to hidden membership and is not refired or replaced
+with an alternate slice plan.
 
-- If any visible slice from one source event is selected for removal, remove
-  every visible slice from that source.
-- Add the source's removed visible spans to hidden membership.
-- Do not refire its surviving space or try an alternate slice plan.
-
-This avoids displaying a seemingly arbitrary remnant after the source's chosen
-plan failed. It also gives one stable unit for comparing fallback and pruning.
-
-A later experiment could remove only the offending partial. That may retain
-more exposed area, but it produces more fragmented event representations and
-more detailed hidden membership.
+This keeps all independently valid coverage and avoids introducing source-ID
+grouping into pixel pruning.
 
 ## Coordinate Repair
 
@@ -113,18 +101,15 @@ coverage creates a new more-link strip.
 
 ## Termination and Safety
 
-Each non-pending invalid iteration must remove at least one visible source.
-There are finitely many visible sources, and none can re-enter the proposal.
-The loop therefore ends in one of two states:
+Each non-pending invalid iteration removes at least one visible slice. There
+are finitely many visible slices, and none can re-enter the proposal. Assuming
+the more link itself fits within the row, the loop therefore reaches a
+pixel-valid fixed point. An invocation with an unmeasured visible slice returns
+`null` before pruning begins.
 
-- A pixel-valid pruned proposal, which can be committed.
-- No useful sliced proposal remains, in which case the existing safe plan is
-  committed.
-
-The candidate remains invisible throughout measurement and pruning. A plan is
-made visible only after exact validation reports no pending slices, event
-overflow, or more-link violations. Consequently, pruning does not weaken the
-whole-plan fallback's no-visible-overflow guarantee.
+The liberal candidate remains invisible while measurements are pending. A
+liberal plan is made visible only after it has no pending slices, event
+overflow, or more-link violations. Consequently, no visible plan overflows.
 
 ## Relationship to the Logical More-Link Tax
 
@@ -135,44 +120,33 @@ validation.
 
 If the level tax was too conservative, the proposal is underpacked but valid.
 If it was too optimistic, exact more-link violations simply generate removal
-work. No pixel-aware callback needs to enter the logical placement engine.
+work. Pixel-informed insertion hooks can improve the candidate before pruning,
+but pruning itself only removes from the topology it receives.
 
-## Expected Implementation Shape
+## Implementation Shape
 
-The fallback and pruning implementations should share these operations:
+Both invocations of the pruner share these operations:
 
+- Mutable level, hidden-membership, and coverage state
 - Whole-slice pixel-frontier resolution
 - Logical sliced-proposal construction
-- Exact proposal validation
 - Frontier-victim selection for more-link violations
 - Coordinate repair above removed levels
 - Flat hidden-slice and normalized-coverage maintenance
 
-Pruning would add one new orchestrator resembling:
+The reusable orchestrator is:
 
 ```ts
 function prunePixelPlan(
-  logicalProposal: LimitedLayout,
+  topology: readonly (readonly Slice[])[],
+  initialHiddenSlices: readonly Slice[],
+  sliceHeights: SliceHeightMap,
   maxPixels: number,
   moreLinkHeight: number,
-  sliceHeights: SliceHeightMap,
 ): PixelPlan | null
 ```
 
-It should consume validation results and invoke existing lower-level
-operations. It should not introduce another generalized merge algorithm.
-
-## Comparison Questions
-
-When both versions exist, useful comparisons include:
-
-- Additional code required by pruning
-- Number of exact coordinate repairs
-- Amount of visible lateral event coverage retained
-- Number of sources represented by fragmented slices
-- Frequency with which whole-plan fallback discards an otherwise useful plan
-- Whether source-atomic pruning is visually predictable enough
-
-The whole-plan fallback remains the reference implementation: if pruning makes
-the lifecycle or safety argument difficult to follow, its additional packing
-is not worth keeping.
+It is attempted first on the liberal topology. If a visible slice lacks a
+measurement, it is used on the whole-only topology to produce the temporary
+visible plan. It invokes existing lower-level operations instead of
+introducing another generalized merge algorithm.
