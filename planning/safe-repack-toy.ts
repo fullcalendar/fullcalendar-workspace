@@ -59,10 +59,16 @@ export function buildPixelLimitedLayout(
     sliceHeights,
     maxPixels,
   )
+
+  // Frontier wholes awaiting measurement are deliberately not hidden: their
+  // fate is undetermined, so they must not count toward any more link. They
+  // mount as invisible donors and join the layout once measured. Wholes
+  // beyond the frontier are different: they failed logical whole placement
+  // regardless of height, so they belong in the hidden stream unmeasured.
   const initialHiddenSlices = domExcludedSlices.concat(
-    wholeResolution.pendingSlices,
     wholeResolution.excludedSlices,
   )
+
   // More links always render. When one consumes the full budget or more, zero
   // is the deepest coordinate an intersecting event may reach.
   const moreLinkEventMax = Math.max(0, maxPixels - moreLinkHeight)
@@ -78,10 +84,6 @@ export function buildPixelLimitedLayout(
   const safeResolution = resolveSliceLevelCoords(
     safeLogicalLayout.sliceLevels,
     sliceHeights,
-  )
-  const safeLayout = compileResolvedLimitedLayout(
-    safeLogicalLayout,
-    safeResolution,
   )
 
   // candidate layout
@@ -101,24 +103,21 @@ export function buildPixelLimitedLayout(
   // Its render set must nevertheless retain every candidate-only slice, even
   // after measurement, so rejection cannot start a mount-measure-reject loop.
   // These donor slices receive no coordinates and are rendered invisible.
-  const safeLayoutWithCandidateMeasurements: ResolvedLimitedLayout = {
-    ...safeLayout,
-    renderSlices: safeLayout.renderSlices.concat(
-      candidateLogicalLayout.addedSlices,
-    ),
-  }
+  // Frontier wholes still awaiting measurement are donors too; without them
+  // nothing would ever be measured and the admitted structure could not grow.
+  // They never enter the hidden stream, so they cannot appear in addedSlices.
+  const safeLayout = compileResolvedLimitedLayout(
+    safeLogicalLayout,
+    safeResolution,
+    candidateLogicalLayout.addedSlices.concat(wholeResolution.pendingSlices),
+  )
 
   if (
     candidateResolution.pendingSlices.length ||
     candidateResolution.excludedSlices.length
   ) {
-    return safeLayoutWithCandidateMeasurements
+    return safeLayout
   }
-
-  const candidateLayout = compileResolvedLimitedLayout(
-    candidateLogicalLayout,
-    candidateResolution,
-  )
 
   if (isPixelCandidateValid(
     candidateResolution.sliceLevels,
@@ -127,10 +126,16 @@ export function buildPixelLimitedLayout(
     sliceHeights,
     moreLinkEventMax,
   )) {
-    return candidateLayout
+    // Unmeasured frontier wholes are never part of a candidate; they remain
+    // mounted as invisible donors alongside the accepted layout.
+    return compileResolvedLimitedLayout(
+      candidateLogicalLayout,
+      candidateResolution,
+      wholeResolution.pendingSlices,
+    )
   }
 
-  return safeLayoutWithCandidateMeasurements
+  return safeLayout
 }
 
 /* ========================================================================
@@ -276,11 +281,11 @@ function findInsertionLevel(
  * Builds a conservative safe plan from bounded, measured, pixel-admitted
  * whole slices and the slices omitted by earlier construction or resolution.
  *
- * Builder exclusions, pending slices, and ordinary pixel exclusions seed an
- * append-only hidden-slice worklist. Each hidden slice grows the more-link
- * reservation, and only its newly covered spans are inspected for admitted
- * slices that intrude into the reserved bottom band. Those victims are hidden
- * whole and later grow the reservation themselves.
+ * Builder exclusions and ordinary pixel exclusions seed an append-only
+ * hidden-slice worklist. Each hidden slice grows the more-link reservation,
+ * and only its newly covered spans are inspected for admitted slices that
+ * intrude into the reserved bottom band. Those victims are hidden whole and
+ * later grow the reservation themselves.
  *
  * Coordinates deliberately remain those of the initial admitted structure
  * during the closure. Rebuilding only the survivors can move them upward, so
@@ -541,13 +546,21 @@ export interface SliceLevelCoordResolution {
 function compileResolvedLimitedLayout(
   logicalLayout: LimitedLayout,
   resolution: SliceLevelCoordResolution,
+  extraRenderSlices: readonly Slice[] = [],
 ): ResolvedLimitedLayout {
   return {
     renderSlices: resolution.sliceLevels.flat().concat(
       resolution.pendingSlices,
+      extraRenderSlices,
     ),
     hiddenSlices: logicalLayout.hiddenSlices,
-    moreLinkGroups: logicalLayout.moreLinkGroups,
+    // A group can internally accumulate several fragments of one source
+    // event. Components want one entry per hidden event, with lateral
+    // coordinates they can derive start/end continuity from.
+    moreLinkGroups: logicalLayout.moreLinkGroups.map((group) => ({
+      ...group,
+      hiddenSlices: mergeAdjacentSlices(group.hiddenSlices),
+    })),
     sliceCoords: resolution.sliceCoords,
   }
 }
@@ -752,6 +765,28 @@ function subtractCoveredFromSlice(
 ): Slice[] {
   return subtractCovered(slice, covered)
     .map((span) => createNarrowerSlice(slice, span.start, span.end))
+}
+
+/**
+ * Collapses same-source runs of a slice list into one slice per run spanning
+ * the run's lateral hull. Input sorted by `compareSlices` keeps same-source
+ * fragments adjacent and start-ordered. The hull can bridge territory where
+ * the source is actually visible; consumers derive start/end continuity from
+ * the outermost hidden edges, not exact hidden coverage.
+ */
+function mergeAdjacentSlices(slices: readonly Slice[]): Slice[] {
+  const merged: Slice[] = []
+
+  for (const slice of slices) {
+    const previous = merged[merged.length - 1]
+
+    if (previous && previous.id === slice.id) {
+      previous.end = Math.max(previous.end, slice.end)
+    } else {
+      merged.push({ ...slice })
+    }
+  }
+  return merged
 }
 
 /** Finds the strict intersection while retaining source identity and order. */
