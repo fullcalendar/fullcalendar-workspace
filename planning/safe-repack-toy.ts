@@ -97,14 +97,6 @@ export function buildPixelLimitedLayout(
     maxPixels,
   )
 
-  // Candidate construction reuses every safe slice object and adds any whole
-  // or partial slices it managed to reinsert. Object identity therefore gives
-  // us the exact set of DOM nodes that exist only to evaluate the candidate.
-  const safeSlices = new Set(safeLogicalLayout.sliceLevels.flat())
-  const candidateMeasurementSlices = candidateLogicalLayout.sliceLevels
-    .flat()
-    .filter((slice) => !safeSlices.has(slice))
-
   // The safe topology stays visibly selected until the candidate is accepted.
   // Its render set must nevertheless retain every candidate-only slice, even
   // after measurement, so rejection cannot start a mount-measure-reject loop.
@@ -112,7 +104,7 @@ export function buildPixelLimitedLayout(
   const safeLayoutWithCandidateMeasurements: ResolvedLimitedLayout = {
     ...safeLayout,
     renderSlices: safeLayout.renderSlices.concat(
-      candidateMeasurementSlices,
+      candidateLogicalLayout.addedSlices,
     ),
   }
 
@@ -377,6 +369,11 @@ interface LimitedLayout {
   moreLinkGroups: MoreLinkGroup[]
 }
 
+interface ExtraSlicePlacement extends LimitedLayout {
+  /** Slices in the final topology that were not in the received levels. */
+  addedSlices: Slice[]
+}
+
 /** Work alternates between attempting slices and reserving bottom link space. */
 type Work =
   | { type: 'fire'; slice: Slice }
@@ -392,9 +389,10 @@ function placeExtraSlicesInLevels(
   extraSlices: readonly Slice[],
   eventSlicing: boolean,
   moreLinkLevelTax: 0 | 1,
-): LimitedLayout {
+): ExtraSlicePlacement {
   const sliceLevels = initialSliceLevels.map((level) => [...level])
   const extras = [...extraSlices].sort(compareSlices)
+  const addedSliceSet = new Set<Slice>()
 
   // Hidden membership remains flat for whole-layout operations. More-link
   // groups duplicate that membership locally while also recording which
@@ -425,6 +423,7 @@ function placeExtraSlicesInLevels(
     sliceLevels,
     hiddenSlices,
     moreLinkGroups,
+    addedSlices: [...addedSliceSet],
   }
 
   /** Tries a whole insertion before considering scored same-level slices. */
@@ -433,6 +432,7 @@ function placeExtraSlicesInLevels(
 
     if (levelIndex !== null) {
       insertLaterally(sliceLevels[levelIndex], slice)
+      addedSliceSet.add(slice)
       return
     }
     if (!eventSlicing) {
@@ -448,6 +448,7 @@ function placeExtraSlicesInLevels(
 
     for (const visibleSlice of plan.slices) {
       insertLaterally(sliceLevels[plan.levelIndex], visibleSlice)
+      addedSliceSet.add(visibleSlice)
     }
     for (const hiddenSlice of subtractCoveredFromSlice(slice, plan.slices)) {
       hide(hiddenSlice)
@@ -490,6 +491,8 @@ function placeExtraSlicesInLevels(
     }
 
     for (const { slice: victim } of victims) {
+      addedSliceSet.delete(victim)
+
       if (eventSlicing) {
         hide(intersectSlice(victim, span)!)
         pushFire(subtractCoveredFromSlice(victim, [span]))

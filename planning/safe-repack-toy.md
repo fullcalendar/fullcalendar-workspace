@@ -50,6 +50,11 @@ it afterward.
 `placeExtraSlicesInLevels` receives a fixed set of existing logical levels and
 a flat stream of extra slices. It never creates another level.
 
+The placement engine also reports `addedSlices`: the slices present in its
+final topology that were not part of the received levels. It updates this set
+at the same insertion and eviction points that mutate the topology, so callers
+do not need to reconstruct the delta afterward.
+
 For each extra slice it:
 
 1. Attempts to place the whole slice into the shallowest vacant level.
@@ -170,9 +175,9 @@ created partial slices.
 The candidate is resolved against `maxPixels` using exact heights.
 
 If any candidate slice is pending or ordinarily pixel-excluded, the safe plan
-remains visibly selected. Every candidate-only slice is nevertheless included
-in the safe result's `renderSlices` without a coordinate. Keeping both measured
-and unmeasured candidate donors mounted prevents a repeated
+remains visibly selected. The logical placement engine's `addedSlices` are
+nevertheless included in the safe result's `renderSlices` without coordinates.
+Keeping both measured and unmeasured candidate donors mounted prevents a repeated
 mount-measure-reject-unmount cycle.
 
 Once fully measured and ordinarily in bounds, the candidate receives one final
