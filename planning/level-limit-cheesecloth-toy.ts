@@ -26,29 +26,41 @@ export interface Slice extends Seg {
  * Pixel-limited layout
  * ===================================================================== */
 
-type PixelCandidateStatus = 'pending' | 'accepted' | 'rejected'
-
 /**
  * Builds and resolves a safe whole-only layout, then attempts and resolves its
- * extras with the logical slicing algorithm. Until the component-provided
- * measurements cover that candidate, or when it violates either pixel
- * boundary, the safe layout remains selected.
+ * extras with the logical slicing algorithm. While candidate measurements are
+ * pending, the safe topology remains selected and those candidate slices are
+ * returned separately for the component to mount in its measurement layer.
+ * A fully measured candidate replaces the safe layout only when valid.
+ * `neededLevelCount` bounds the initial DOM whole-slice candidates; later
+ * slices begin hidden and unmeasured.
  */
 export function buildPixelLimitedLayout(
   segs: readonly Seg[],
   eventSlicing: boolean,
   sliceHeights: SliceHeightMap,
   maxPixels: number,
+  neededLevelCount: number,
   moreLinkHeight: number,
 ): ResolvedLimitedLayout {
-  const unlimitedLevels = buildUnlimitedSliceLevels(segs)
-  const unlimitedResolution = resolveSliceLevelCoords(
-    unlimitedLevels,
+  const wholeSlices = convertSegsToWholeSlices(segs)
+  const {
+    sliceLevels: domSliceLevels,
+    excludedSlices: domExcludedSlices,
+  } = buildSliceLevels(wholeSlices, neededLevelCount)
+  const wholeResolution = resolveSliceLevelCoords(
+    domSliceLevels,
     sliceHeights,
+    maxPixels,
+  )
+  const initialHiddenSlices = domExcludedSlices.concat(
+    wholeResolution.pendingSlices,
+    wholeResolution.excludedSlices,
   )
   const safeLogicalLayout = buildWholePixelSafeLayout(
-    unlimitedLevels,
-    unlimitedResolution.sliceCoords,
+    wholeResolution.sliceLevels,
+    initialHiddenSlices,
+    wholeResolution.sliceCoords,
     sliceHeights,
     maxPixels,
     moreLinkHeight,
@@ -70,18 +82,30 @@ export function buildPixelLimitedLayout(
   const candidateResolution = resolveSliceLevelCoords(
     candidateLogicalLayout.sliceLevels,
     sliceHeights,
+    maxPixels,
   )
+
+  if (candidateResolution.pendingSlices.length) {
+    return {
+      ...safeLayout,
+      pendingSlices: candidateResolution.pendingSlices,
+    }
+  }
+  if (candidateResolution.excludedSlices.length) {
+    return safeLayout
+  }
+
   const candidateLayout: ResolvedLimitedLayout = {
     ...candidateLogicalLayout,
     ...candidateResolution,
   }
-  const candidateStatus = validatePixelCandidate(
+
+  return isPixelCandidateValid(
     candidateLayout,
     sliceHeights,
     maxPixels,
     moreLinkHeight,
   )
-  return candidateStatus === 'accepted'
     ? candidateLayout
     : safeLayout
 }
@@ -91,8 +115,8 @@ export function buildPixelLimitedLayout(
  * ===================================================================== */
 
 /**
- * Retains `maxLevels` from an unrestricted structure and fires every later
- * slice back at those levels in source order.
+ * Streams at most `maxLevels` into the initial structure and fires every
+ * rejected slice back at those levels in source order.
  *
  * With slicing disabled, a failed slice hides whole. With slicing enabled,
  * every level independently offers its maximal free runs. The winning plan
@@ -111,18 +135,14 @@ export function buildLevelLimitedLayout(
   maxLevels: number,
   moreLinkLevelTax: 0 | 1,
 ): ResolvedLimitedLayout {
-  const unlimitedLevels = buildUnlimitedSliceLevels(segs)
-  const initialSliceLevels = Array.from(
-    { length: maxLevels },
-    (_, levelIndex) => unlimitedLevels[levelIndex] ?? [],
-  )
-  // Truncating levels loses source order, so restore it before firing extras.
-  const extras = unlimitedLevels
-    .slice(maxLevels)
-    .flat()
+  const wholeSlices = convertSegsToWholeSlices(segs)
+  const {
+    sliceLevels: initialSliceLevels,
+    excludedSlices: extraSlices,
+  } = buildSliceLevels(wholeSlices, maxLevels)
   const logicalLayout = placeExtraSlicesInLevels(
     initialSliceLevels,
-    extras,
+    extraSlices,
     eventSlicing,
     moreLinkLevelTax,
   )
@@ -147,19 +167,28 @@ interface SlicePlacementState {
   bottomReservedSpans: readonly Span[]
 }
 
-/** Builds unrestricted whole-slice levels in received event order. */
-export function buildUnlimitedSliceLevels(
-  segs: readonly Seg[],
-): Slice[][] {
-  return buildSliceLevels(segs.map((seg, orderIndex) => ({
-    ...seg,
-    orderIndex,
-  })))
+interface SliceLevelBuild {
+  sliceLevels: Slice[][]
+  excludedSlices: Slice[]
 }
 
-/** Rebuilds compact levels from existing immutable slices in source order. */
-function buildSliceLevels(slices: readonly Slice[]): Slice[][] {
+/** Converts received segments to immutable whole slices in source order. */
+function convertSegsToWholeSlices(
+  segs: readonly Seg[],
+): Slice[] {
+  return segs.map((seg, orderIndex) => ({
+    ...seg,
+    orderIndex,
+  }))
+}
+
+/** Builds at most `maxLevels`; rejected slices never enter level intersections. */
+function buildSliceLevels(
+  slices: readonly Slice[],
+  maxLevels: number,
+): SliceLevelBuild {
   const levels: Slice[][] = []
+  const excludedSlices: Slice[] = []
   const placementState: SlicePlacementState = {
     levels,
     bottomReservedSpans: [],
@@ -169,13 +198,37 @@ function buildSliceLevels(slices: readonly Slice[]): Slice[][] {
     const levelIndex = findInsertionLevel(slice, placementState)
 
     if (levelIndex === null) {
-      levels.push([slice])
+      if (levels.length < maxLevels) {
+        levels.push([slice])
+      } else {
+        excludedSlices.push(slice)
+      }
     } else {
       insertLaterally(levels[levelIndex], slice)
     }
   }
 
-  return levels
+  return {
+    sliceLevels: levels,
+    excludedSlices,
+  }
+}
+
+/** Removes selected slices while preserving surviving levels' relative order. */
+function excludeSlicesFromLevels(
+  inputSliceLevels: readonly (readonly Slice[])[],
+  excludedSlices: ReadonlySet<Slice>,
+): Slice[][] {
+  const sliceLevels: Slice[][] = []
+
+  for (const inputLevel of inputSliceLevels) {
+    const level = inputLevel.filter((slice) => !excludedSlices.has(slice))
+
+    if (level.length) {
+      sliceLevels.push(level)
+    }
+  }
+  return sliceLevels
 }
 
 /** Returns the shallowest vacant level under the span's local event cap. */
@@ -200,40 +253,32 @@ function findInsertionLevel(
  * ===================================================================== */
 
 /**
- * Builds a conservative safe plan using only measured whole slices.
+ * Builds a conservative safe plan from bounded, measured, pixel-admitted
+ * whole slices and the slices omitted by earlier construction or resolution.
  *
- * Initial pixel overflow seeds an append-only hidden-slice worklist. Each
- * hidden slice grows the more-link reservation, and only its newly covered
- * spans are inspected for visible slices that intrude into the reserved
- * bottom band. Those victims are hidden whole and later grow the reservation
- * themselves.
+ * Builder exclusions, pending slices, and ordinary pixel exclusions seed an
+ * append-only hidden-slice worklist. Each hidden slice grows the more-link
+ * reservation, and only its newly covered spans are inspected for admitted
+ * slices that intrude into the reserved bottom band. Those victims are hidden
+ * whole and later grow the reservation themselves.
  *
- * Coordinates deliberately remain those of the unlimited structure during
- * the closure. Rebuilding only the survivors can move them upward, so those
- * stale bottoms may overreserve but cannot make the result unsafe.
+ * Coordinates deliberately remain those of the initial admitted structure
+ * during the closure. Rebuilding only the survivors can move them upward, so
+ * those stale bottoms may overreserve but cannot make the result unsafe.
  */
 function buildWholePixelSafeLayout(
-  unlimitedLevels: readonly (readonly Slice[])[],
+  initialSliceLevels: readonly (readonly Slice[])[],
+  initialHiddenSlices: readonly Slice[],
   sliceCoords: SliceCoordMap,
   sliceHeights: SliceHeightMap,
   maxPixels: number,
   moreLinkHeight: number,
 ): LimitedLayout {
-  const wholeSlices = unlimitedLevels.flat().sort(compareSlices)
-  const hiddenSlices: Slice[] = []
-  const hiddenSet = new Set<Slice>()
+  const wholeSlices = initialSliceLevels.flat().sort(compareSlices)
+  const hiddenSlices = [...initialHiddenSlices]
+  const hiddenSet = new Set(initialHiddenSlices)
   const moreLinkSpans: Span[] = []
   const moreLinkEventMax = maxPixels - moreLinkHeight
-
-  // Seed the worklist with slices that already exceed the ordinary boundary.
-  for (const slice of wholeSlices) {
-    const sliceBottom = getSliceBottom(slice, sliceCoords, sliceHeights)
-
-    if (sliceBottom === undefined || sliceBottom > maxPixels) {
-      hiddenSlices.push(slice)
-      hiddenSet.add(slice)
-    }
-  }
 
   // Appending victims to this same array forms a monotonic worklist. Every
   // iteration either grows normalized coverage or merely records membership.
@@ -243,9 +288,7 @@ function buildWholePixelSafeLayout(
     hiddenIndex++
   ) {
     const hiddenSlice = hiddenSlices[hiddenIndex]
-    const newMoreLinkSpans = subtractCovered(hiddenSlice, moreLinkSpans)
-
-    addToUnion(moreLinkSpans, hiddenSlice)
+    const newMoreLinkSpans = growCoverage(moreLinkSpans, hiddenSlice)
 
     for (const newMoreLinkSpan of newMoreLinkSpans) {
       for (const slice of wholeSlices) {
@@ -264,44 +307,36 @@ function buildWholePixelSafeLayout(
   hiddenSlices.sort(compareSlices)
 
   return {
-    sliceLevels: buildSliceLevels(
-      wholeSlices.filter((slice) => !hiddenSet.has(slice)),
-    ),
+    sliceLevels: excludeSlicesFromLevels(initialSliceLevels, hiddenSet),
     hiddenSlices,
     moreLinkSpans,
   }
 }
 
-/** Validates exact candidate bottoms against normal and more-link boundaries. */
-function validatePixelCandidate(
+/** Tests exact candidate bottoms against the bottom-fixed more-link boundary. */
+function isPixelCandidateValid(
   layout: ResolvedLimitedLayout,
   sliceHeights: SliceHeightMap,
   maxPixels: number,
   moreLinkHeight: number,
-): PixelCandidateStatus {
+): boolean {
   if (layout.moreLinkSpans.length && moreLinkHeight > maxPixels) {
-    return 'rejected'
-  }
-
-  if (layout.pendingSlices.length) {
-    return 'pending'
+    return false
   }
 
   for (const level of layout.sliceLevels) {
     for (const slice of level) {
-      const sliceMax = intersectsAny(layout.moreLinkSpans, slice)
-        ? maxPixels - moreLinkHeight
-        : maxPixels
-
       if (
-        getSliceBottom(slice, layout.sliceCoords, sliceHeights)! > sliceMax
+        intersectsAny(layout.moreLinkSpans, slice) &&
+        getSliceBottom(slice, layout.sliceCoords, sliceHeights)! >
+          maxPixels - moreLinkHeight
       ) {
-        return 'rejected'
+        return false
       }
     }
   }
 
-  return 'accepted'
+  return true
 }
 
 /* ========================================================================
@@ -398,8 +433,7 @@ function placeExtraSlicesInLevels(
 
     // Only the set difference is fresh more-link territory; it can consist of
     // several disjoint runs.
-    const newMoreLinkSpans = subtractCovered(slice, coverageAccumulator)
-    addToUnion(coverageAccumulator, slice)
+    const newMoreLinkSpans = growCoverage(coverageAccumulator, slice)
 
     if (moreLinkLevelTax) {
       for (let i = newMoreLinkSpans.length - 1; i >= 0; i--) {
@@ -448,12 +482,17 @@ export type SliceCoordMap = ReadonlyMap<string, number>
 
 export interface ResolvedLimitedLayout extends LimitedLayout {
   sliceCoords: SliceCoordMap
+  /** Slices the component must mount in its measurement layer. */
   pendingSlices: Slice[]
+  /** Measured slices omitted because their bottoms exceeded the pixel limit. */
+  excludedSlices: Slice[]
 }
 
 export interface SliceLevelCoordResolution {
+  sliceLevels: Slice[][]
   sliceCoords: SliceCoordMap
   pendingSlices: Slice[]
+  excludedSlices: Slice[]
 }
 
 /** Stable measurement and coordinate key for one exact lateral slice. */
@@ -461,36 +500,59 @@ export function getSliceKey(slice: Seg): string {
   return `${slice.id}:${slice.start}:${slice.end}`
 }
 
-/** Inflates fixed logical levels with the currently measured slice heights. */
+/**
+ * Inflates fixed logical levels while accumulating only measured slices that
+ * fit within `maxPixels`. Later coordinates consult that admitted structure,
+ * so excluding a lower slice can let a later slice move upward.
+ */
 export function resolveSliceLevelCoords(
-  sliceLevels: readonly (readonly Slice[])[],
+  inputSliceLevels: readonly (readonly Slice[])[],
   sliceHeights: SliceHeightMap,
+  maxPixels: number = Infinity,
 ): SliceLevelCoordResolution {
+  const sliceLevels: Slice[][] = []
   const sliceCoords = new Map<string, number>()
   const pendingSlices: Slice[] = []
+  const excludedSlices: Slice[] = []
 
-  for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
-    for (const slice of sliceLevels[levelIndex]) {
-      if (sliceHeights.has(getSliceKey(slice))) {
-        sliceCoords.set(
-          getSliceKey(slice),
-          computeSliceCoord(
-            sliceLevels,
-            sliceCoords,
-            sliceHeights,
-            slice,
-            levelIndex,
-          ),
-        )
-      } else {
+  for (const inputLevel of inputSliceLevels) {
+    const admittedLevel: Slice[] = []
+    const admittedLevelIndex = sliceLevels.length
+
+    for (const slice of inputLevel) {
+      const sliceHeight = sliceHeights.get(getSliceKey(slice))
+
+      if (sliceHeight === undefined) {
         pendingSlices.push(slice)
+        continue
       }
+
+      const sliceCoord = computeSliceCoord(
+        sliceLevels,
+        sliceCoords,
+        sliceHeights,
+        slice,
+        admittedLevelIndex,
+      )
+
+      if (sliceCoord + sliceHeight <= maxPixels) {
+        admittedLevel.push(slice)
+        sliceCoords.set(getSliceKey(slice), sliceCoord)
+      } else {
+        excludedSlices.push(slice)
+      }
+    }
+
+    if (admittedLevel.length) {
+      sliceLevels.push(admittedLevel)
     }
   }
 
   return {
+    sliceLevels,
     sliceCoords,
     pendingSlices,
+    excludedSlices,
   }
 }
 
@@ -724,6 +786,14 @@ function subtractCovered(span: Span, covered: readonly Span[]): Span[] {
     result.push({ start: cursor, end: span.end })
   }
   return result
+}
+
+/** Grows normalized coverage and returns only the newly covered spans. */
+function growCoverage(coverage: Span[], addition: Span): Span[] {
+  const newSpans = subtractCovered(addition, coverage)
+
+  addToUnion(coverage, addition)
+  return newSpans
 }
 
 /** Maintains a sorted union. Adjacency is merged because only coverage matters. */
