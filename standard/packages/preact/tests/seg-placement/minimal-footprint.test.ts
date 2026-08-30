@@ -5,21 +5,20 @@ import {
   type DayGridPlacementColumn,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
-  buildDayGridSegSources,
-  computeDayGridLargestWholeHeight,
 } from '../../src/daygrid/seg-placement-adapter'
 
 /*
-Hidden footprints must be the minimal infeasible lateral span, never a
-colliding barrier's span. See planning/barrier-masking.md for the failure
-catalog these fixtures encode.
+Historical hiding fixtures, re-derived for the safe-repack engine. The level
+fixtures still peel collision footprints through scored slice plans; the pixel
+fixtures now prefer the conservative whole-only safe plan, which can hide more
+than the old minimal-footprint rule (see the issue-7573 fixture below).
 */
 
 const EVENT_HEIGHT = 10
 
-describe('minimal-footprint hiding, level currency', () => {
+describe('slice-plan hiding, level currency', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5883
-  it('peels a wide overflow and a consumed placement around one full day', () => {
+  it('peels a wide overflow and an evicted occupant around one full day', () => {
     // week columns; day 20 = col 2, 21 = col 3, 22 = col 4
     const columns = layoutLevelRow([
       makeSeg('b1', 2, 4),
@@ -91,9 +90,11 @@ describe('minimal-footprint hiding, level currency', () => {
     expect(visibleKeys(columns[6])).toEqual(['b:4:6:slice', 'f:4:6:slice'])
   })
 
-  // Adjacent spans can be individually feasible only at disjoint levels, so
-  // no single position admits their union: the greedy prefix split applies.
-  it('splits a run whose halves fit only at different levels', () => {
+  // A slice plan commits to one level, so a run whose halves fit only at
+  // disjoint levels keeps the best-scoring half and hides the other. The old
+  // engine's greedy prefix split showed both halves; safe repack trades that
+  // completeness for plan simplicity.
+  it('keeps the best half of a run whose halves fit only at different levels', () => {
     const columns = layoutLevelRow([
       makeSeg('m', 0, 1),
       makeSeg('w', 2, 3),
@@ -101,16 +102,20 @@ describe('minimal-footprint hiding, level currency', () => {
       makeSeg('z', 0, 2),
     ], 3, 2)
 
-    expect(columns.map((column) => hiddenIds(column))).toEqual([[], [], []])
-    expect(visibleKeys(columns[0])).toEqual(['m:0', 'z:0:0:slice'])
+    expect(columns.map((column) => hiddenIds(column))).toEqual([['z'], [], []])
+    expect(visibleKeys(columns[0])).toEqual(['m:0'])
     expect(visibleKeys(columns[1])).toEqual(['n:1', 'z:0:1:slice'])
+    expect(visibleKeys(columns[2])).toEqual(['w:2'])
   })
 })
 
-describe('minimal-footprint hiding, pixel currency', () => {
-  // https://github.com/fullcalendar/fullcalendar/issues/7573
-  it('rescues a consumed wide event outside the link day', () => {
-    // month row; Jan 15 2024 = col 1
+describe('safe-plan hiding, pixel currency', () => {
+  // https://github.com/fullcalendar/fullcalendar/issues/7573 — the safe
+  // closure hides e2 whole because its exact bottom intrudes into the link
+  // band, and the candidate finds no free run in the surviving level. The old
+  // engine rescued e2's [2,6) span outside the link day; safe repack accepts
+  // the extra hiding in exchange for its wholesale validation guarantee.
+  it('hides a link-band intruder whole when no level gap can rescue it', () => {
     const segs = [
       makeSeg('e1', 1, 6),
       makeSeg('e2', 1, 6),
@@ -119,7 +124,6 @@ describe('minimal-footprint hiding, pixel currency', () => {
     const heights = new Map<string, number>([
       ['e1:1', EVENT_HEIGHT],
       ['e2:1', EVENT_HEIGHT],
-      ['e2:1:2:slice', EVENT_HEIGHT],
       ['e3:1', EVENT_HEIGHT],
     ])
     const layout = buildDayGridPixelPlacements(
@@ -130,21 +134,24 @@ describe('minimal-footprint hiding, pixel currency', () => {
       25,
       EVENT_HEIGHT,
       8,
-      0,
       heights,
-      computeDayGridLargestWholeHeight(buildDayGridSegSources(segs), heights),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
-      [], ['e2', 'e3'], [], [], [], [], [],
+      [], ['e2', 'e3'], ['e2'], ['e2'], ['e2'], ['e2'], [],
     ])
     expect(visibleKeys(layout.columns[1], layout.sliceCoords)).toEqual(['e1:1'])
-    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual(['e2:1:2:slice'])
+    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual([])
+    // The consumed whole stays mounted as an invisible measurement donor.
+    expect(layout.columns[1].renderSlices.map(getSliceKey)).toEqual([
+      'e1:1',
+      'e2:1',
+      'e3:1',
+    ])
   })
 
-  // The observed browser geometry of the 7573 failure, used as the stable
-  // merge-planning thickness.
-  it('rescues with the observed planning thickness', () => {
+  // The observed browser geometry of the 7573 failure.
+  it('hides the intruder under exact fractional measurements too', () => {
     const segs = [
       makeSeg('e1', 1, 6),
       makeSeg('e2', 1, 6),
@@ -153,7 +160,6 @@ describe('minimal-footprint hiding, pixel currency', () => {
     const heights = new Map<string, number>([
       ['e1:1', 17],
       ['e2:1', 17],
-      ['e2:1:2:slice', 17],
       ['e3:1', 17],
     ])
     const layout = buildDayGridPixelPlacements(
@@ -164,16 +170,14 @@ describe('minimal-footprint hiding, pixel currency', () => {
       38.640625,
       17,
       9,
-      0,
       heights,
-      computeDayGridLargestWholeHeight(buildDayGridSegSources(segs), heights),
     )
 
     expect(layout.columns.map((column) => hiddenIds(column))).toEqual([
-      [], ['e2', 'e3'], [], [], [], [], [],
+      [], ['e2', 'e3'], ['e2'], ['e2'], ['e2'], ['e2'], [],
     ])
     expect(visibleKeys(layout.columns[1], layout.sliceCoords)).toEqual(['e1:1'])
-    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual(['e2:1:2:slice'])
+    expect(visibleKeys(layout.columns[2], layout.sliceCoords)).toEqual([])
   })
 })
 

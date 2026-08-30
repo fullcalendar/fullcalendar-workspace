@@ -295,7 +295,7 @@ describe('Timeline production placement adapter', () => {
       undefined,
     ])
     expect(unmeasured.contentHeight).toBe(0)
-    expect(unmeasured.allHeightsSettled).toBe(false)
+    expect(unmeasured.isSettled).toBe(false)
 
     heights.set('first', 30)
     const partiallyMeasured = place(sourceSegs, heights)
@@ -304,13 +304,13 @@ describe('Timeline production placement adapter', () => {
       undefined,
     ])
     expect(partiallyMeasured.contentHeight).toBe(30)
-    expect(partiallyMeasured.allHeightsSettled).toBe(false)
+    expect(partiallyMeasured.isSettled).toBe(false)
 
     heights.set('second', 12)
     const exact = place(sourceSegs, heights)
     expect(sliceTops(exact)).toEqual([0, 30])
     expect(exact.contentHeight).toBe(42)
-    expect(exact.allHeightsSettled).toBe(true)
+    expect(exact.isSettled).toBe(true)
 
     heights.map.createRef('first')(null)
     const remounted = place(sourceSegs, heights)
@@ -319,7 +319,7 @@ describe('Timeline production placement adapter', () => {
       0,
     ])
     expect(remounted.contentHeight).toBe(12)
-    expect(remounted.allHeightsSettled).toBe(false)
+    expect(remounted.isSettled).toBe(false)
   })
 
   it('uses kernel hidden groups and positions tax-free links from the skyline', () => {

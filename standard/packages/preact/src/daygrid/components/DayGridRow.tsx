@@ -34,10 +34,8 @@ import {
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   computeDayGridDomCandidateMaxLevels,
-  computeDayGridLargestWholeHeight,
   computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
-  ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
 } from '../seg-placement-adapter'
 import {
@@ -120,9 +118,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
   private neededLevelCount = DEFAULT_NEEDED_LEVEL_COUNT
-  private sliceHeightGrowthRate = 0
-  private latestScreenSlices: readonly Slice<DayGridSourceSeg>[] = []
-  private largestWholeHeight?: number
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -138,7 +133,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     let screenSliceCoords: ReadonlyMap<string, number> = new Map()
     let screenMaxMainTop: number | undefined
     let screenHeightsByCol: (number | undefined)[] = []
-    this.latestScreenSlices = []
 
     if (props.forPrint) {
       printPlan = this.buildPrintPlan(
@@ -167,9 +161,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           minMainHeight,
           props.moreLinkHeight,
           this.neededLevelCount,
-          this.sliceHeightGrowthRate,
           this.sliceHeightRefMap.current,
-          this.largestWholeHeight,
         )
         : buildDayGridLevelPlacements(
           fgEventSegs,
@@ -187,9 +179,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         )
       screenColumns = screenLayout.columns
       screenSliceCoords = screenLayout.sliceCoords
-      if (placementMode === 'auto') {
-        this.latestScreenSlices = screenLayout.renderSlices
-      }
 
       if (maxMainTop != null) {
         for (let col = 0; col < cells.length; col++) {
@@ -638,7 +627,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     this.forceUpdate()
   }
 
-  /** Updates row-local monotone state from one complete post-size snapshot. */
+  /**
+   * Grows the row-local DOM candidate frontier from one post-size snapshot.
+   * This is the only monotone state auto placement needs: the engine itself
+   * consumes exact measurements and never predicts a thickness.
+   */
   private updateAutoPlacementRatchets(): void {
     if (resolveDayGridPlacementMode(
       this.props.dayMaxEvents,
@@ -653,20 +646,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         estimateLevelCapacity(canvasHeight, smallestSliceHeight),
       )
     }
-
-    // Capture the fallback base shared by this snapshot and the next render.
-    this.largestWholeHeight = computeDayGridLargestWholeHeight(
-      this.latestScreenSlices.map((slice) => slice.sourceSeg),
-      this.sliceHeightRefMap.current,
-    )
-
-    // Retain the largest partial-slice growth rate observed so far.
-    this.sliceHeightGrowthRate = ratchetDayGridSliceHeightGrowthRate(
-      this.sliceHeightGrowthRate,
-      this.latestScreenSlices,
-      this.sliceHeightRefMap.current,
-      this.largestWholeHeight,
-    )
   }
 
   private handlePrintSegHeights = () => {

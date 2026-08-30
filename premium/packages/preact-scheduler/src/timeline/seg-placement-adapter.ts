@@ -39,8 +39,8 @@ export interface TimelineSegPlacementResult {
   sliceCoords: ReadonlyMap<string, number>
   moreLinks: TimelineSegMoreLink[]
   contentHeight: number
-  /** False while any visible event wrapper still lacks an exact measurement. */
-  allHeightsSettled: boolean
+  /** Whether this layout is a fixed point of the current measurements. */
+  isSettled: boolean
 }
 
 /**
@@ -130,7 +130,7 @@ export function buildTimelineSegPlacements(
     start: group.start,
     end: group.end,
     top: computeLateralSpanBottom(
-      layout.sliceLevels,
+      layout.renderSlices,
       group,
       layout.sliceCoords,
       sliceHeights,
@@ -149,9 +149,7 @@ export function buildTimelineSegPlacements(
       moreLinks,
       moreLinkHeights,
     ),
-    allHeightsSettled: renderSlices.every((slice) =>
-      sliceHeights.get(getSliceKey(slice)) !== undefined,
-    ),
+    isSettled: layout.isSettled,
   }
 }
 

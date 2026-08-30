@@ -2,6 +2,7 @@ import {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
   type HiddenSliceGroup,
   type Slice,
+  type SliceLayout,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
   getSliceKey,
@@ -37,11 +38,8 @@ export interface DayGridPlacementColumn {
 
 interface DayGridPlacementLayout {
   columns: DayGridPlacementColumn[]
-  renderSlices: readonly Slice<DayGridSourceSeg>[]
   /** Positioned slice tops keyed by DayGrid's event-part convention. */
   sliceCoords: ReadonlyMap<string, number>
-  /** Whether every currently visible slice has an exact occupied height. */
-  isSettled: boolean
 }
 
 /**
@@ -57,7 +55,6 @@ type DayGridPlacementMode =
   | 'auto'
 
 const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
-const SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX = 2
 
 /** Initial DOM candidate frontier, before any measurement can widen it. */
 export const DEFAULT_NEEDED_LEVEL_COUNT = estimateLevelCapacity(
@@ -115,23 +112,9 @@ export function buildDayGridPixelPlacements(
   canvasHeight: number | undefined,
   moreLinkHeight: number | undefined,
   neededLevelCount: number,
-  sliceHeightGrowthRate: number,
   sliceHeights: ReadonlyMap<string, number>,
-  largestWholeHeight: number | undefined,
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
-  const getPlanningSliceThickness = largestWholeHeight == null
-    ? undefined
-    : (slice: Slice<DayGridSourceSeg>) =>
-      computeDayGridPlanningSliceThickness(
-        slice,
-        resolveDayGridSourceHeight(
-          sliceHeights,
-          slice.sourceSeg.key,
-          largestWholeHeight,
-        ),
-        sliceHeightGrowthRate,
-      )
   const layout = buildPixelLimitedLayout(
     sourceSegs,
     orderStrict,
@@ -140,7 +123,6 @@ export function buildDayGridPixelPlacements(
     canvasHeight,
     neededLevelCount,
     moreLinkHeight,
-    getPlanningSliceThickness,
   )
   return buildDayGridPlacementLayout(
     sourceSegs,
@@ -251,28 +233,21 @@ export function computeDayGridMoreLinkLevelTax(mode: DayGridPlacementMode): numb
 
 function buildDayGridPlacementLayout(
   sourceSegs: readonly DayGridSourceSeg[],
-  layout: {
-    hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[]
-    renderSlices: readonly Slice<DayGridSourceSeg>[]
-    placementSliceLevels: readonly (readonly Slice<DayGridSourceSeg>[])[]
-    sliceCoords: ReadonlyMap<string, number>
-    pendingSlices: readonly Slice<DayGridSourceSeg>[]
-  },
+  layout: SliceLayout<DayGridSourceSeg>,
   sliceHeights: ReadonlyMap<string, number>,
   columnCount: number,
 ): DayGridPlacementLayout {
   const {
     hiddenGroups,
     renderSlices,
-    placementSliceLevels,
     sliceCoords,
-    pendingSlices,
   } = layout
   const slicesByStart = federateSlicesByStart(renderSlices, columnCount)
   const columns = Array.from(
     { length: columnCount },
     (_, column): DayGridPlacementColumn => ({
-      renderSlices: [...slicesByStart[column]],
+      // Freshly built per column by federateSlicesByStart; owned outright.
+      renderSlices: slicesByStart[column],
       contentHeight: 0,
       ...buildDayGridPopoverSegs(
         sourceSegs,
@@ -282,26 +257,28 @@ function buildDayGridPlacementLayout(
     }),
   )
 
-  for (const level of placementSliceLevels) {
-    for (const slice of level) {
-      const key = getSliceKey(slice)
-      const sliceHeight = sliceHeights.get(key)!
-      const sliceBottom = sliceCoords.get(key)! + sliceHeight
+  // A mounted slice is visible exactly when it has a coordinate; a coordinate
+  // in turn guarantees a measurement.
+  for (const slice of renderSlices) {
+    const key = getSliceKey(slice)
+    const sliceTop = sliceCoords.get(key)
 
-      for (let column = slice.start; column < slice.end; column += 1) {
-        columns[column].contentHeight = Math.max(
-          columns[column].contentHeight,
-          sliceBottom,
-        )
-      }
+    if (sliceTop === undefined) {
+      continue
+    }
+    const sliceBottom = sliceTop + sliceHeights.get(key)!
+
+    for (let column = slice.start; column < slice.end; column += 1) {
+      columns[column].contentHeight = Math.max(
+        columns[column].contentHeight,
+        sliceBottom,
+      )
     }
   }
 
   return {
     columns,
-    renderSlices,
     sliceCoords,
-    isSettled: pendingSlices.length === 0,
   }
 }
 
@@ -330,100 +307,4 @@ function federateSlicesByStart(
 
 export function estimateLevelCapacity(eventAreaHeight: number, eventHeight: number): number {
   return Math.max(1, Math.ceil(eventAreaHeight / eventHeight))
-}
-
-/**
- * Ratchets the largest partial-to-source growth sample in one live snapshot.
- *
- * A partial without a measured whole source samples against the same fallback
- * base the planner reserves with. Sharing the base makes under-reservation
- * self-correcting in one pass: a sample of measured height `h` against base
- * `B` at compression growth `g` stores rate `(h/B - 1)/g`, so the next plan
- * reserves `B * (1 + rate * g) = h` exactly. The correction lives in this
- * monotone rate, not in the partial's deletable measurement, so hiding the
- * slice cannot erase the evidence that hid it.
- */
-export function ratchetDayGridSliceHeightGrowthRate(
-  currentRate: number,
-  slices: readonly Slice<DayGridSourceSeg>[],
-  sliceHeights: ReadonlyMap<string, number>,
-  largestWholeHeight: number | undefined,
-): number {
-  if (largestWholeHeight == null) return currentRate
-  let nextRate = currentRate
-
-  for (const slice of slices) {
-    const { sourceSeg } = slice
-
-    if (!isPartialSlice(slice)) continue
-
-    const sourceHeight = resolveDayGridSourceHeight(
-      sliceHeights,
-      sourceSeg.key,
-      largestWholeHeight,
-    )
-    const sliceHeight = sliceHeights.get(getSliceKey(slice))
-
-    if (
-      sliceHeight == null ||
-      sliceHeight <= sourceHeight + SLICE_HEIGHT_GROWTH_NOISE_FLOOR_PX
-    ) continue
-
-    const sourceWidth = sourceSeg.end - sourceSeg.start
-    const sliceWidth = slice.end - slice.start
-    const compressionGrowth = sourceWidth / sliceWidth - 1
-    const observedRate = (sliceHeight / sourceHeight - 1) / compressionGrowth
-    if (observedRate > nextRate) {
-      nextRate = observedRate
-    }
-  }
-
-  return nextRate
-}
-
-/** Predicts one slice's topology thickness from its source height and row rate. */
-export function computeDayGridPlanningSliceThickness(
-  slice: Slice<DayGridSourceSeg>,
-  sourceHeight: number,
-  growthRate: number,
-): number {
-  const sourceWidth = slice.sourceSeg.end - slice.sourceSeg.start
-  const sliceWidth = slice.end - slice.start
-  const compressionGrowth = sourceWidth / sliceWidth - 1
-  return sourceHeight * (1 + growthRate * compressionGrowth)
-}
-
-/**
- * The fallback base for slices whose whole source is unmeasured. Undefined
- * until any whole is measured, which gates the pixel merge.
- *
- * The owning row computes this once per measurement snapshot and hands the
- * same value to the planner and the growth-rate sampler — the one-pass
- * correction fixed point depends on them sharing this base.
- */
-export function computeDayGridLargestWholeHeight(
-  sourceSegs: readonly DayGridSourceSeg[],
-  sliceHeights: ReadonlyMap<string, number>,
-): number | undefined {
-  let largestWholeHeight: number | undefined
-
-  for (const sourceSeg of sourceSegs) {
-    const height = sliceHeights.get(sourceSeg.key)
-    if (height != null && (
-      largestWholeHeight == null || height > largestWholeHeight
-    )) {
-      largestWholeHeight = height
-    }
-  }
-
-  return largestWholeHeight
-}
-
-/** The one definition of planning's source-height expression. */
-function resolveDayGridSourceHeight(
-  sliceHeights: ReadonlyMap<string, number>,
-  sourceKey: string,
-  largestWholeHeight: number,
-): number {
-  return sliceHeights.get(sourceKey) ?? largestWholeHeight
 }

@@ -6,9 +6,9 @@ import {
   type SourceSeg,
   buildSegLevels,
   convertSegsToWholeSlices,
-  findIntersections,
   groupLaterallyIntersecting,
 } from '../seg-placement/kernel'
+import { findIntersections } from '../seg-placement/span-math'
 import { computeDateTopFrac } from './components/util'
 import { type TimeGridRange } from './TimeColsSeg'
 

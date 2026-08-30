@@ -7,9 +7,7 @@ import {
   buildSegLevels,
   convertSegLevelsToWholeSlices,
   convertSegsToWholeSlices,
-  getSliceKey,
-  mergeExtraIntoLevels,
-  sortByEventOrder,
+  placeExtraSlicesInLevels,
 } from './kernel'
 
 /** High but finite safety cap for event levels in either print view. */
@@ -37,22 +35,17 @@ export function planPrintDomCandidates<S extends SourceSeg>(
     eventOrderStrict,
     DEFAULT_PRINT_MAX_LEVELS,
   )
-  const sliceLevels = convertSegLevelsToWholeSlices(segLevels)
-  const hiddenGroups = mergeExtraIntoLevels(
-    sliceLevels,
+  const placement = placeExtraSlicesInLevels(
+    convertSegLevelsToWholeSlices(segLevels),
     convertSegsToWholeSlices(excludedSegs),
     eventOrderStrict,
     eventSlicing,
-    DEFAULT_PRINT_MAX_LEVELS,
     0,
-    // Capped extras may re-enter whole: the print bands render sliceLevels
-    // directly, so planning topology is the render set.
-    true,
   )
 
   return {
-    sliceLevels,
-    hiddenGroups,
+    sliceLevels: placement.sliceLevels,
+    hiddenGroups: placement.hiddenGroups,
   }
 }
 
@@ -79,7 +72,7 @@ export interface PrintEventBand<S extends SourceSeg = SourceSeg> {
  * use this structure because it prints links outside the event bands.
  */
 export interface PrintMoreLinkBand<S extends SourceSeg = SourceSeg> {
-  moreLinkGroups: HiddenSliceGroup<S>[]
+  moreLinkGroups: readonly HiddenSliceGroup<S>[]
   /** Tallest current or fallback occupied link thickness in this band. */
   thickness: number
 }
@@ -131,23 +124,14 @@ export function buildPrintMoreLinkBand<S extends SourceSeg>(
   hiddenGroups: readonly HiddenSliceGroup<S>[],
   printMoreLinkHeights: ReadonlyMap<string, number>,
 ): PrintMoreLinkBand<S> | null {
-  if (!hiddenGroups.length) return null
+  if (!hiddenGroups.length) {
+    return null
+  }
 
-  const moreLinkGroups = hiddenGroups.map((group) => {
-    const hiddenSlices = sortByEventOrder(group.hiddenSlices)
-    // Rekey against the first slice in print's normalized event order.
-    const key = getSliceKey(hiddenSlices[0])
-
-    return {
-      ...group,
-      key,
-      hiddenSlices,
-    }
-  })
-
+  // Groups arrive already event-ordered and keyed by their first slice.
   return {
-    moreLinkGroups,
-    thickness: Math.max(...moreLinkGroups.map((group) =>
+    moreLinkGroups: hiddenGroups,
+    thickness: Math.max(...hiddenGroups.map((group) =>
       printMoreLinkHeights.get(group.key) ??
         DEFAULT_UNMEASURED_MORE_LINK_THICKNESS,
     )),

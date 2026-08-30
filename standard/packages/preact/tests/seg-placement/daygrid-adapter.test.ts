@@ -1,38 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { getDayGridSegKey } from '../../src/daygrid/TableSeg'
-import { type Slice, getSliceKey } from '../../src/seg-placement/kernel'
+import { getSliceKey } from '../../src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
-  type DayGridSourceSeg,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
   buildDayGridSegSources,
-  computeDayGridPlanningSliceThickness,
   computeDayGridDomCandidateMaxLevels,
-  computeDayGridLargestWholeHeight,
   computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
-  ratchetDayGridSliceHeightGrowthRate,
   resolveDayGridPlacementMode,
 } from '../../src/daygrid/seg-placement-adapter'
-
-/** Samples with the fallback base computed the way the owning row does. */
-function sampleGrowthRate(
-  currentRate: number,
-  slices: Slice<DayGridSourceSeg>[],
-  sliceHeights: Map<string, number>,
-): number {
-  return ratchetDayGridSliceHeightGrowthRate(
-    currentRate,
-    slices,
-    sliceHeights,
-    computeDayGridLargestWholeHeight(
-      slices.map((slice) => slice.sourceSeg),
-      sliceHeights,
-    ),
-  )
-}
 
 describe('DayGrid production placement adapter', () => {
   it('builds integer-column sources with stable production identity and order', () => {
@@ -75,88 +54,6 @@ describe('DayGrid row-local placement state', () => {
   it('estimates the candidate frontier from current canvas and slice heights', () => {
     expect(estimateLevelCapacity(220, 30)).toBe(8)
     expect(estimateLevelCapacity(220, 10)).toBe(22)
-  })
-
-  it('learns direct compression growth above the pixel noise floor', () => {
-    const source = buildDayGridSegSources([makeSeg('wide', 0, 4)])[0]
-    const half = makeSlice(source, 0, 2)
-    const quarter = makeSlice(source, 0, 1)
-
-    expect(sampleGrowthRate(
-      0,
-      [half],
-      new Map([
-        [source.key, 20],
-        [getSliceKey(half), 22],
-      ]),
-    )).toBe(0)
-
-    const learnedRate = sampleGrowthRate(
-      0,
-      [half],
-      new Map([
-        [source.key, 20],
-        [getSliceKey(half), 30],
-      ]),
-    )
-    expect(learnedRate).toBe(0.5)
-    expect(computeDayGridPlanningSliceThickness(half, 20, learnedRate)).toBe(30)
-    expect(computeDayGridPlanningSliceThickness(quarter, 20, learnedRate)).toBe(50)
-    expect(sampleGrowthRate(
-      learnedRate,
-      [half],
-      new Map([
-        [source.key, 20],
-        [getSliceKey(half), 24],
-      ]),
-    )).toBe(learnedRate)
-  })
-
-  it('learns the same rate from inverse-width partials of different widths', () => {
-    const source = buildDayGridSegSources([makeSeg('wide', 0, 4)])[0]
-    const half = makeSlice(source, 0, 2)
-    const quarter = makeSlice(source, 3, 4)
-
-    expect(sampleGrowthRate(
-      0,
-      [half, quarter],
-      new Map([
-        [source.key, 20],
-        [getSliceKey(half), 40],
-        [getSliceKey(quarter), 80],
-      ]),
-    )).toBe(1)
-  })
-
-  it('samples sourceless partials against the planning fallback base', () => {
-    const [anchor, deep] = buildDayGridSegSources([
-      makeSeg('anchor', 0, 1),
-      makeSeg('deep', 0, 2),
-    ])
-    const anchorWhole = makeSlice(anchor, 0, 1)
-    const deepPartial = makeSlice(deep, 0, 1)
-    const heights = new Map([
-      [anchor.key, 20],
-      [getSliceKey(deepPartial), 50],
-    ])
-
-    // The rate learned against the fallback base of 20 makes the next plan
-    // reserve the measured 50 exactly: the one-pass correction fixed point.
-    const learnedRate = sampleGrowthRate(
-      0,
-      [anchorWhole, deepPartial],
-      heights,
-    )
-    expect(learnedRate).toBe(1.5)
-    expect(computeDayGridPlanningSliceThickness(deepPartial, 20, learnedRate))
-      .toBe(50)
-
-    // With no measured whole anywhere, there is no base and no sample.
-    expect(sampleGrowthRate(
-      0,
-      [deepPartial],
-      new Map([[getSliceKey(deepPartial), 50]]),
-    )).toBe(0)
   })
 })
 
@@ -292,7 +189,6 @@ describe('DayGrid kernel pixel placement', () => {
     ])
     expect(layout.columns[0].hiddenSegs).toEqual([])
     expect(layout.columns[0].contentHeight).toBe(0)
-    expect(layout.isSettled).toBe(false)
   })
 
   it('defers partial donor planning until the more-link probe has measured', () => {
@@ -311,7 +207,6 @@ describe('DayGrid kernel pixel placement', () => {
     expect(layout.columns.flatMap((column) =>
       column.renderSlices.map(getSliceKey),
     )).toEqual(['wide:0', 'blocker:1'])
-    expect(layout.isSettled).toBe(true)
   })
 
   it('shows every mounted candidate before the event area has measured', () => {
@@ -324,7 +219,6 @@ describe('DayGrid kernel pixel placement', () => {
       'c:0': EVENT_HEIGHT * 2,
     })
     expect(columns.every((column) => !column.hiddenSegs.length)).toBe(true)
-    expect(layout.isSettled).toBe(true)
   })
 
   it('emits a hidden whole donor and self-measuring partials after bounded exclusion', () => {
@@ -350,7 +244,6 @@ describe('DayGrid kernel pixel placement', () => {
     })
     expect(awaitingPartials.columns[0].renderSlices.map(getSliceKey))
       .toEqual(['wide:0', 'wide:0:0:slice'])
-    expect(awaitingPartials.isSettled).toBe(false)
 
     const settled = layoutPixelRow([
       makeSeg('blocker', 1, 2),
@@ -365,7 +258,6 @@ describe('DayGrid kernel pixel placement', () => {
       },
       moreLinkHeight: 1,
     })
-    expect(settled.isSettled).toBe(true)
     expect(settled.columns.map((column) => column.contentHeight)).toEqual([6, 5, 6])
   })
 
@@ -391,7 +283,7 @@ describe('DayGrid kernel pixel placement', () => {
     expect(levelItemTops(layout, 2)).toEqual({ 'wide:0:2:slice': 0 })
   })
 
-  it('keeps partial donor selection stable after its measurements disappear', () => {
+  it('keeps the donor set stable after partial measurements disappear', () => {
     const segs = [
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
@@ -405,16 +297,14 @@ describe('DayGrid kernel pixel placement', () => {
         'wide:0:2:slice': 12,
       },
       moreLinkHeight: 1,
-      sliceHeightGrowthRate: 0.5,
     })
-    const afterPartialsUnmount = layoutPixelRow(segs, 3, {
+    const afterPartialsUnmeasure = layoutPixelRow(segs, 3, {
       canvasHeight: 10,
       heights: {
         'blocker:1': 5,
         'wide:0': 6,
       },
       moreLinkHeight: 1,
-      sliceHeightGrowthRate: 0.5,
     })
 
     const renderKeys = (layout: ReturnType<typeof layoutPixelRow>) =>
@@ -422,9 +312,12 @@ describe('DayGrid kernel pixel placement', () => {
         column.renderSlices.map(getSliceKey),
       )
 
-    expect(renderKeys(afterPartialsUnmount)).toEqual(renderKeys(withPartialsMeasured))
-    expect(renderKeys(afterPartialsUnmount)).not.toContain('wide:0:0:slice')
-    expect(renderKeys(afterPartialsUnmount)).not.toContain('wide:0:2:slice')
+    // The same donors stay mounted whether their measurements confirmed the
+    // rejection or vanished, so no mount-measure-reject loop can start.
+    expect(renderKeys(afterPartialsUnmeasure)).toEqual(renderKeys(withPartialsMeasured))
+    expect(renderKeys(afterPartialsUnmeasure)).toContain('wide:0')
+    expect(renderKeys(afterPartialsUnmeasure)).toContain('wide:0:0:slice')
+    expect(renderKeys(afterPartialsUnmeasure)).toContain('wide:0:2:slice')
   })
 
   it('keeps bounded exclusions as donors while later wholes can place', () => {
@@ -444,7 +337,7 @@ describe('DayGrid kernel pixel placement', () => {
     expect(layout.columns.map((column) => column.contentHeight)).toEqual([0, 5])
   })
 
-  it('projects occupant consumption into donors, hidden segs, and content height', () => {
+  it('projects safe-closure consumption into donors, hidden segs, and content height', () => {
     const layout = layoutPixelRow([
       makeSeg('a', 0, 1),
       makeSeg('b', 0, 1),
@@ -473,7 +366,7 @@ describe('DayGrid kernel pixel placement', () => {
     expect(segIds(columns[0].segs)).toEqual(['a', 'b', 'c'])
   })
 
-  it('salvages partials beyond the DOM frontier using fallback thickness', () => {
+  it('mounts candidate partials beyond the DOM frontier without the whole', () => {
     const layout = layoutPixelRow([
       makeSeg('blocker', 1, 2),
       makeSeg('wide', 0, 3),
@@ -494,8 +387,13 @@ describe('DayGrid kernel pixel placement', () => {
     expect(levelItemTops(layout, 2)).toEqual({
       'wide:0:2:slice': undefined,
     })
-    expect(segIds(layout.columns[1].hiddenSegs)).toEqual(['wide'])
-    expect(layout.isSettled).toBe(false)
+    // The whole hides while its candidate fragments measure; its hull spans
+    // every column it crosses.
+    expect(layout.columns.map((column) => segIds(column.hiddenSegs))).toEqual([
+      ['wide'],
+      ['wide'],
+      ['wide'],
+    ])
   })
 })
 
@@ -556,14 +454,12 @@ function layoutPixelRow(
     canvasHeight?: number,
     neededLevelCount?: number,
     moreLinkHeight?: number,
-    sliceHeightGrowthRate?: number,
     hasMeasuredMoreLink?: boolean,
   } = {},
 ) {
   const heights = config.heights ?? Object.fromEntries(
     eventOrderedSegs.map((seg) => [getDayGridSegKey(seg), EVENT_HEIGHT]),
   )
-  const sliceHeights = new Map(Object.entries(heights))
 
   return buildDayGridPixelPlacements(
     eventOrderedSegs,
@@ -575,12 +471,7 @@ function layoutPixelRow(
       ? undefined
       : config.moreLinkHeight ?? EVENT_HEIGHT,
     config.neededLevelCount ?? 8,
-    config.sliceHeightGrowthRate ?? 0,
-    sliceHeights,
-    computeDayGridLargestWholeHeight(
-      buildDayGridSegSources(eventOrderedSegs),
-      sliceHeights,
-    ),
+    new Map(Object.entries(heights)),
   )
 }
 
@@ -614,20 +505,6 @@ function makeSeg(
       instance: { instanceId },
     },
   } as DayGridEventSeg
-}
-
-function makeSlice(
-  sourceSeg: DayGridSourceSeg,
-  start: number,
-  end: number,
-): Slice<DayGridSourceSeg> {
-  return {
-    sourceSeg,
-    start,
-    end,
-    isStart: sourceSeg.isStart && start === sourceSeg.start,
-    isEnd: sourceSeg.isEnd && end === sourceSeg.end,
-  }
 }
 
 function segIds(segs: DayGridEventSeg[]): string[] {

@@ -4,14 +4,13 @@ import {
   type HiddenSliceGroup,
   type Slice,
   type SourceSeg,
+  buildPixelLimitedLayout,
   buildSegLevels,
-  compilePixelLimitedRenderSlices,
   convertSegLevelsToWholeSlices,
   convertSegsToWholeSlices,
   getSliceKey,
   groupLaterallyIntersecting,
-  mergeExtraIntoLevelCoords,
-  mergeExtraIntoLevels,
+  placeExtraSlicesInLevels,
   resolveLevelCoords,
 } from '../../src/seg-placement/kernel'
 
@@ -45,82 +44,79 @@ describe('pure positioning kernel', () => {
     )).toEqual([['a'], ['b'], ['c']])
   })
 
-  it('peels only collision footprints when slicing is enabled', () => {
+  it('places the best scored slice plan and hides the remainder', () => {
     const [base, extra] = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
     ])
 
-    const unslicedLevels = convertSegLevelsToWholeSlices([[base]])
-    const unslicedGroups = mergeExtraIntoLevels(
-      unslicedLevels,
+    const unsliced = placeExtraSlicesInLevels(
+      convertSegLevelsToWholeSlices([[base]]),
       convertSegsToWholeSlices([extra]),
       false,
       false,
-      1,
       0,
     )
-    expect(projectSlices(unslicedLevels.flat())).toEqual([
+    expect(projectSlices(unsliced.sliceLevels.flat())).toEqual([
       ['base', 1, 2],
     ])
-    expect(projectSlices(unslicedGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(unsliced.hiddenGroups[0].hiddenSlices)).toEqual([
       ['extra', 0, 3],
     ])
 
-    const slicedLevels = convertSegLevelsToWholeSlices([[base]])
-    const slicedGroups = mergeExtraIntoLevels(
-      slicedLevels,
+    const sliced = placeExtraSlicesInLevels(
+      convertSegLevelsToWholeSlices([[base]]),
       convertSegsToWholeSlices([extra]),
       false,
       true,
-      1,
       0,
     )
-    expect(projectSlices(slicedLevels.flat())).toEqual([
+    expect(projectSlices(sliced.sliceLevels.flat())).toEqual([
       ['extra', 0, 1],
       ['base', 1, 2],
       ['extra', 2, 3],
     ])
-    expect(projectSlices(slicedGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(sliced.hiddenGroups[0].hiddenSlices)).toEqual([
       ['extra', 1, 2],
     ])
-    auditCoverage([base, extra], slicedLevels, slicedGroups)
+    expect(projectSlices(sliced.addedSlices)).toEqual([
+      ['extra', 0, 1],
+      ['extra', 2, 3],
+    ])
+    auditCoverage([base, extra], sliced.sliceLevels, sliced.hiddenSlices)
   })
 
-  it('charges occupants one row level but zero event levels', () => {
+  it('reserves the bottom level only under a level tax', () => {
     const [base, extra] = segs([
       ['base', 0, 1],
       ['extra', 0, 1],
     ])
-    const eventLevels = convertSegLevelsToWholeSlices([[base]])
-    const eventGroups = mergeExtraIntoLevels(
-      eventLevels,
+
+    const untaxed = placeExtraSlicesInLevels(
+      convertSegLevelsToWholeSlices([[base]]),
       convertSegsToWholeSlices([extra]),
       false,
       false,
-      1,
       0,
     )
-    expect(projectSlices(eventLevels.flat())).toEqual([['base', 0, 1]])
-    expect(eventGroups[0].thickness).toBe(0)
+    expect(projectSlices(untaxed.sliceLevels.flat())).toEqual([['base', 0, 1]])
+    expect(projectSlices(untaxed.hiddenGroups[0].hiddenSlices)).toEqual([
+      ['extra', 0, 1],
+    ])
 
-    const rowLevels = convertSegLevelsToWholeSlices([[base]])
-    const rowGroups = mergeExtraIntoLevels(
-      rowLevels,
+    const taxed = placeExtraSlicesInLevels(
+      convertSegLevelsToWholeSlices([[base]]),
       convertSegsToWholeSlices([extra]),
       false,
       false,
       1,
-      1,
     )
-    expect(rowLevels.flat()).toEqual([])
-    expect(rowGroups[0]).toMatchObject({
-      levelCoord: 0,
-      thickness: 1,
-    })
-    expect(rowGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
-      .toEqual(['extra', 'base'])
-    auditCoverage([base, extra], rowLevels, rowGroups)
+    expect(taxed.sliceLevels.flat()).toEqual([])
+    expect(taxed.hiddenGroups[0]).toMatchObject({ start: 0, end: 1 })
+    // Group members are in event order, not hiding order.
+    expect(taxed.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+      .toEqual(['base', 'extra'])
+    auditCoverage([base, extra], taxed.sliceLevels, taxed.hiddenSlices)
   })
 
   it('makes bounded coordinate exclusion final and non-blocking', () => {
@@ -145,34 +141,6 @@ describe('pure positioning kernel', () => {
     ])
     expect(result.excludedSlices).toEqual([levels[0][0]])
     expect(result.sliceCoords.get(later.key)).toBe(0)
-    expect(compilePixelLimitedRenderSlices(
-      levels,
-      result.placementSliceLevels,
-    ).filter((slice) => slice.sourceSeg === tooTall)).toEqual([levels[0][0]])
-
-    const [trigger, frontier, excludedWhole] = segs([
-      ['trigger', 0, 1],
-      ['frontier', 0, 1],
-      ['excluded-whole', 0, 1],
-    ])
-    const mergeLevels = convertSegLevelsToWholeSlices([[frontier]])
-    const mergeCoords = new Map([[frontier.key, 0]])
-    const groups = mergeExtraIntoLevelCoords(
-      mergeLevels,
-      mergeCoords,
-      convertSegsToWholeSlices([trigger, excludedWhole]),
-      false,
-      false,
-      10,
-      6,
-      () => 5,
-    )
-    expect(mergeLevels.flat()).toEqual([])
-    expect(groups[0].hiddenSlices.some((slice) =>
-      slice.sourceSeg === excludedWhole &&
-      slice.start === excludedWhole.start &&
-      slice.end === excludedWhole.end,
-    )).toBe(true)
   })
 
   it('keeps unmeasured slices pending and non-blocking', () => {
@@ -194,17 +162,10 @@ describe('pure positioning kernel', () => {
       [['measured', 0, 1]],
     ])
     expect(result.sliceCoords.get(measured.key)).toBe(0)
-    expect(compilePixelLimitedRenderSlices(
-      levels,
-      result.placementSliceLevels,
-    ).map(getSliceKey)).toEqual([pending.key, measured.key])
   })
 
   it('uses coordinate tolerance without relaxing lateral intersections', () => {
-    const [source, barrierSource] = segs([
-      ['source', 0, 2],
-      ['barrier', 0, 1],
-    ])
+    const [source] = segs([['source', 0, 2]])
     const whole = convertSegsToWholeSlices([source])[0]
     const slightlyOver = 10 + GEOMETRY_TOLERANCE / 2
     const resolved = resolveLevelCoords(
@@ -214,167 +175,162 @@ describe('pure positioning kernel', () => {
     )
     expect(resolved.placementSliceLevels[0]).toEqual([whole])
 
-    const partial = { ...whole, end: 1, isEnd: false }
-    const mergeLevels: Slice<TestSeg>[][] = []
-    mergeExtraIntoLevelCoords(
-      mergeLevels,
-      new Map(),
-      [partial],
-      false,
-      true,
-      10,
-      1,
-      () => slightlyOver,
-    )
-    expect(mergeLevels[0]).toEqual([partial])
-
-    const barrier = convertSegsToWholeSlices([barrierSource])[0]
-    const ceilingLevels: Slice<TestSeg>[][] = [[], [barrier]]
-    const ceilingCoords = new Map([[barrierSource.key, 10]])
-    mergeExtraIntoLevelCoords(
-      ceilingLevels,
-      ceilingCoords,
-      [partial],
-      false,
-      true,
-      21,
-      1,
-      () => slightlyOver,
-    )
-    expect(ceilingLevels[0]).toEqual([partial])
-
     expect(groupLaterallyIntersecting([
       { ...whole, end: 1 },
       { ...whole, start: 1 },
     ])).toHaveLength(2)
   })
 
-  it('salvages pixel partials using stable planning thickness', () => {
-    const [base, extra] = segs([
-      ['base', 1, 2],
-      ['extra', 0, 3],
-    ])
-    const levels = convertSegLevelsToWholeSlices([[base]])
-    const coords = new Map([[base.key, 0]])
-    const groups = mergeExtraIntoLevelCoords(
-      levels,
-      coords,
-      convertSegsToWholeSlices([extra]),
-      false,
-      true,
-      15,
-      5,
-      () => 10,
-    )
-
-    expect(projectSlices(levels.flat())).toEqual([
-      ['extra', 0, 1],
-      ['base', 1, 2],
-      ['extra', 2, 3],
-    ])
-    expect(projectSlices(groups[0].hiddenSlices)).toEqual([
-      ['extra', 1, 2],
-    ])
-    expect(groups[0]).toMatchObject({ levelCoord: 10, thickness: 5 })
-    auditCoverage([base, extra], levels, groups)
-  })
-
-  it('uses thicker reservations for narrower candidate slices', () => {
-    const [base, extra] = segs([
-      ['base', 1, 2],
-      ['extra', 0, 3],
-    ])
-    const levels = convertSegLevelsToWholeSlices([[base]])
-    const coords = new Map([[base.key, 0]])
-    const getSliceThickness = (slice: Slice<TestSeg>) => {
-      if (slice.sourceSeg === base) return 5
-      return slice.end - slice.start === 3 ? 6 : 10
-    }
-    const groups = mergeExtraIntoLevelCoords(
-      levels,
-      coords,
-      convertSegsToWholeSlices([extra]),
-      false,
-      true,
-      10,
-      5,
-      getSliceThickness,
-    )
-
-    expect(projectSlices(levels.flat())).toEqual([
-      ['extra', 0, 1],
-      ['base', 1, 2],
-      ['extra', 2, 3],
-    ])
-    expect(projectSlices(groups[0].hiddenSlices)).toEqual([
-      ['extra', 1, 2],
-    ])
-    expect(groups[0]).toMatchObject({ levelCoord: 5, thickness: 5 })
-  })
-
-  it('recursively consumes pixel frontiers until the occupant fits', () => {
-    const [a, b, c, extra] = segs([
+  it('accepts a fully measured, in-band pixel candidate wholesale', () => {
+    const sources = segs([
       ['a', 0, 1],
       ['b', 0, 1],
       ['c', 0, 1],
-      ['extra', 0, 1],
     ])
-    const levels = convertSegLevelsToWholeSlices([[a], [b], [c]])
-    const coords = new Map([
-      [a.key, 0],
-      [b.key, 10],
-      [c.key, 20],
-    ])
-    const groups = mergeExtraIntoLevelCoords(
-      levels,
-      coords,
-      convertSegsToWholeSlices([extra]),
+    const layout = buildPixelLimitedLayout(
+      sources,
       false,
       false,
-      30,
-      15,
-      () => 10,
+      new Map(sources.map((source) => [source.key, 10])),
+      25,
+      3,
+      5,
     )
 
-    expect(projectSlices(levels.flat())).toEqual([['a', 0, 1]])
-    expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
-      .toEqual(['extra', 'c', 'b'])
-    expect(groups[0]).toMatchObject({ levelCoord: 10, thickness: 15 })
-    auditCoverage([a, b, c, extra], levels, groups)
+    // c's bottom would reach 30; it hides, and the survivors' bottoms of 10
+    // and 20 both respect the reserved link band of 25 - 5 = 20.
+    expect(coordOf(layout, 'a:0')).toBe(0)
+    expect(coordOf(layout, 'b:0')).toBe(10)
+    expect(coordOf(layout, 'c:0')).toBe(undefined)
+    expect(layout.renderSlices.map(getSliceKey)).toEqual(['a:0', 'b:0', 'c:0'])
+    expect(layout.hiddenGroups).toHaveLength(1)
+    expect(layout.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+      .toEqual(['c'])
   })
 
-  it('compacts when measured heights shrink', () => {
-    const [base, extra] = segs([
+  it('evicts whole slices intruding into the link band via the safe closure', () => {
+    const sources = segs([
+      ['a', 0, 1],
+      ['b', 0, 1],
+      ['c', 0, 1],
+      ['d', 0, 1],
+    ])
+    const layout = buildPixelLimitedLayout(
+      sources,
+      false,
+      false,
+      new Map(sources.map((source) => [source.key, 10])),
+      30,
+      4,
+      15,
+    )
+
+    // All four fit 30 except d (bottom 40). d's link reserves the band below
+    // 30 - 15 = 15, so b (bottom 20) and c (bottom 30) are consumed too.
+    expect(coordOf(layout, 'a:0')).toBe(0)
+    expect(coordOf(layout, 'b:0')).toBe(undefined)
+    expect(coordOf(layout, 'c:0')).toBe(undefined)
+    expect(coordOf(layout, 'd:0')).toBe(undefined)
+    // Consumed wholes stay mounted as invisible measurement donors.
+    expect(layout.renderSlices.map(getSliceKey)).toEqual([
+      'a:0', 'b:0', 'c:0', 'd:0',
+    ])
+    expect(layout.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+      .toEqual(['b', 'c', 'd'])
+  })
+
+  it('mounts candidate partials as donors, then accepts them once measured', () => {
+    const sources = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
     ])
-    const levels = convertSegLevelsToWholeSlices([[base]])
-    const initialCoords = new Map([[base.key, 0]])
-    mergeExtraIntoLevelCoords(
-      levels,
-      initialCoords,
-      convertSegsToWholeSlices([extra]),
+    const [base] = sources
+    const wholeHeights = new Map([[base.key, 10]])
+
+    // extra never fit the one-level frontier, so it hides whole while its
+    // candidate fragments mount invisibly for measurement.
+    const awaiting = buildPixelLimitedLayout(
+      sources,
       false,
       true,
-      15,
+      wholeHeights,
+      20,
+      1,
       5,
-      () => 10,
     )
-    const exact = resolveLevelCoords(
-      levels,
-      new Map(levels.flat().map((slice) => [getSliceKey(slice), 6])),
-    )
+    expect(awaiting.renderSlices.map(getSliceKey)).toEqual([
+      'base:1',
+      'extra:0:0:slice',
+      'extra:0:2:slice',
+    ])
+    expect(coordOf(awaiting, 'extra:0:0:slice')).toBe(undefined)
+    expect(unmeasuredKeys(awaiting, wholeHeights)).toEqual([
+      'extra:0:0:slice',
+      'extra:0:2:slice',
+    ])
+    expect(awaiting.isSettled).toBe(false)
+    expect(awaiting.hiddenGroups[0].hiddenSlices.map(projectSlice)).toEqual([
+      ['extra', 0, 3],
+    ])
 
-    for (const slice of levels.flat()) {
-      const key = getSliceKey(slice)
-      expect(exact.sliceCoords.get(key)).toBeLessThanOrEqual(
-        initialCoords.get(key)!,
-      )
-      expect(exact.sliceCoords.get(key)! + 6).toBeLessThanOrEqual(15)
-    }
+    // With both fragment measurements in hand, the candidate validates and
+    // replaces the safe plan wholesale.
+    const accepted = buildPixelLimitedLayout(
+      sources,
+      false,
+      true,
+      new Map([
+        [base.key, 10],
+        ['extra:0:0:slice', 10],
+        ['extra:0:2:slice', 10],
+      ]),
+      20,
+      1,
+      5,
+    )
+    expect(coordOf(accepted, 'extra:0:0:slice')).toBe(0)
+    expect(coordOf(accepted, 'extra:0:2:slice')).toBe(0)
+    expect(coordOf(accepted, 'base:1')).toBe(0)
+    expect(accepted.isSettled).toBe(true)
+    expect(accepted.hiddenGroups[0].hiddenSlices.map(projectSlice)).toEqual([
+      ['extra', 1, 2],
+    ])
+    expect(accepted.hiddenGroups[0].hiddenSlices[0]).toMatchObject({
+      isStart: false,
+      isEnd: false,
+    })
   })
 
-  it('merges globs laterally in received order and widens through consumption', () => {
+  it('keeps unmeasured frontier wholes as donors outside the hidden stream', () => {
+    const sources = segs([
+      ['measured', 0, 1],
+      ['pending', 0, 1],
+    ])
+    const [measured] = sources
+    const heights = new Map([[measured.key, 10]])
+    const layout = buildPixelLimitedLayout(
+      sources,
+      false,
+      false,
+      heights,
+      25,
+      2,
+      5,
+    )
+
+    expect(coordOf(layout, 'measured:0')).toBe(0)
+    expect(coordOf(layout, 'pending:0')).toBe(undefined)
+    expect(layout.renderSlices.map(getSliceKey)).toEqual([
+      'measured:0',
+      'pending:0',
+    ])
+    expect(unmeasuredKeys(layout, heights)).toEqual(['pending:0'])
+    expect(layout.isSettled).toBe(false)
+    // A pending whole's fate is undetermined: it must not grow any more link.
+    expect(layout.hiddenGroups).toEqual([])
+  })
+
+  it('merges hull groups per source event in event order', () => {
     const [first, second, bridge] = convertSegsToWholeSlices(segs([
       ['first', 0, 1],
       ['second', 2, 3],
@@ -383,24 +339,56 @@ describe('pure positioning kernel', () => {
     const groups = groupLaterallyIntersecting([first, second, bridge])
     expect(groups).toHaveLength(1)
     expect(groups[0]).toMatchObject({ start: 0, end: 3 })
+    expect(groups[0].key).toBe(getSliceKey(first))
     expect(groups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['first', 'second', 'bridge'])
 
+    // Disconnected fragments of one source stay in separate groups: exact
+    // adjacency never merges.
+    const [wide, bridger] = convertSegsToWholeSlices(segs([
+      ['wide', 0, 4],
+      ['bridger', 0.5, 2.5],
+    ]))
+    expect(groupLaterallyIntersecting([
+      { ...wide, end: 1, isEnd: false },
+      { ...wide, start: 3, isStart: false },
+    ])).toHaveLength(2)
+
+    // When another slice connects two fragments of one source into one group,
+    // that source's entries collapse into their lateral hull, with start/end
+    // continuity derived from the source's real boundaries.
+    const bridged = groupLaterallyIntersecting([
+      { ...wide, end: 1, isEnd: false },
+      { ...wide, start: 2, end: 3, isStart: false, isEnd: false },
+      bridger,
+    ])
+    expect(bridged).toHaveLength(1)
+    expect(projectSlices(bridged[0].hiddenSlices)).toEqual([
+      ['wide', 0, 3],
+      ['bridger', 0.5, 2.5],
+    ])
+    expect(bridged[0].hiddenSlices[0]).toMatchObject({
+      isStart: true,
+      isEnd: false,
+    })
+  })
+
+  it('widens taxed link coverage through bottom-level consumption', () => {
     const [base, extra] = segs([
       ['base', 0, 3],
       ['extra', 1, 2],
     ])
-    const levels = convertSegLevelsToWholeSlices([[base]])
-    const widened = mergeExtraIntoLevels(
-      levels,
+    const placement = placeExtraSlicesInLevels(
+      convertSegLevelsToWholeSlices([[base]]),
       convertSegsToWholeSlices([extra]),
       false,
       false,
       1,
-      1,
     )
-    expect(widened[0]).toMatchObject({ start: 0, end: 3 })
-    auditCoverage([base, extra], levels, widened)
+    expect(placement.hiddenGroups[0]).toMatchObject({ start: 0, end: 3 })
+    expect(placement.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+      .toEqual(['base', 'extra'])
+    auditCoverage([base, extra], placement.sliceLevels, placement.hiddenSlices)
   })
 
   it('derives whole keys from the source and partial keys from the slice start', () => {
@@ -411,7 +399,50 @@ describe('pure positioning kernel', () => {
 
     expect(getSliceKey(whole)).toBe('event:2')
     expect(getSliceKey(shifted)).toBe('event:2:3:slice')
+    // An end-only re-cut keeps its key, and with it its DOM wrapper.
     expect(getSliceKey(narrowed)).toBe('event:2:2:slice')
+  })
+
+  it('respects strict event order when repacking extras', () => {
+    // late (order 2) may not sit above early (order 0) where they intersect.
+    const [early, unrelated, late] = segs([
+      ['early', 0, 2],
+      ['unrelated', 2, 3],
+      ['late', 0, 2],
+    ])
+    const looseLevels = convertSegLevelsToWholeSlices([
+      [unrelated],
+      [early],
+    ])
+    const loose = placeExtraSlicesInLevels(
+      looseLevels,
+      convertSegsToWholeSlices([late]),
+      false,
+      false,
+      0,
+    )
+    expect(projectSlices(loose.sliceLevels[0])).toEqual([
+      ['late', 0, 2],
+      ['unrelated', 2, 3],
+    ])
+
+    const strictLevels = convertSegLevelsToWholeSlices([
+      [unrelated],
+      [early],
+    ])
+    const strict = placeExtraSlicesInLevels(
+      strictLevels,
+      convertSegsToWholeSlices([late]),
+      true,
+      false,
+      0,
+    )
+    expect(projectSlices(strict.sliceLevels[0])).toEqual([
+      ['unrelated', 2, 3],
+    ])
+    expect(projectSlices(strict.hiddenGroups[0].hiddenSlices)).toEqual([
+      ['late', 0, 2],
+    ])
   })
 })
 
@@ -433,43 +464,42 @@ function projectSegLevels(levels: readonly (readonly TestSeg[])[]) {
   return levels.map((level) => level.map((seg) => seg.id))
 }
 
+function projectSlice(slice: Slice<TestSeg>) {
+  return [slice.sourceSeg.id, slice.start, slice.end]
+}
+
 function projectSlices(slices: readonly Slice<TestSeg>[]) {
-  return slices.map((slice) => [
-    slice.sourceSeg.id,
-    slice.start,
-    slice.end,
-  ])
+  return slices.map(projectSlice)
 }
 
-function constantHeights(
-  sources: readonly TestSeg[],
-  height: number,
-): Map<string, number> {
-  const breakpoints = new Set(sources.flatMap((source) => [
-    source.start,
-    source.end,
-  ]))
-  const heights = new Map<string, number>()
-
-  for (const source of sources) {
-    heights.set(source.key, height)
-    for (const start of breakpoints) {
-      if (start >= source.start && start < source.end) {
-        heights.set(`${source.key}:${start}:slice`, height)
-      }
-    }
-  }
-  return heights
+function coordOf(
+  layout: { sliceCoords: ReadonlyMap<string, number> },
+  key: string,
+): number | undefined {
+  return layout.sliceCoords.get(key)
 }
 
+/** Mounted-but-unmeasured donors, derived the way any caller can derive them. */
+function unmeasuredKeys(
+  layout: { renderSlices: Slice<TestSeg>[] },
+  heights: ReadonlyMap<string, number>,
+): string[] {
+  return layout.renderSlices
+    .map(getSliceKey)
+    .filter((key) => !heights.has(key))
+}
+
+/**
+ * Audits exact hidden coverage using the flat hidden list, not the hull-merged
+ * groups: every source must be perfectly partitioned into visible and hidden
+ * fragments carrying correct continuity flags.
+ */
 function auditCoverage(
   sources: readonly TestSeg[],
   levels: readonly (readonly Slice<TestSeg>[])[],
-  groups: readonly HiddenSliceGroup<TestSeg>[],
+  hiddenSlices: readonly Slice<TestSeg>[],
 ): void {
-  const pieces = levels.flat().concat(
-    groups.flatMap((group) => group.hiddenSlices),
-  )
+  const pieces = levels.flat().concat(hiddenSlices)
 
   for (const source of sources) {
     const sourcePieces = pieces

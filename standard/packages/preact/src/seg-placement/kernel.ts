@@ -1,16 +1,23 @@
 /**
- * Pure event-positioning kernel.
+ * Pure event-positioning kernel implementing "safe repack".
  *
  * Source segs own identity and event order. Slices own only lateral geometry,
- * while their outer array index is their dimensionless level. More-link
- * occupants are deliberately kept on hidden groups instead of entering those
- * levels, which keeps coordinate resolution link-blind.
+ * while their outer array index is their dimensionless level. Limiting stays
+ * primarily in logical slice-level space; the pixel path builds a conservative
+ * whole-slice baseline and accepts a speculatively repacked candidate only
+ * after exact measurements validate it against the pixel boundary.
  */
 
-interface LateralSpan {
-  start: number
-  end: number
-}
+import {
+  type LateralSpan,
+  addToUnion,
+  doSpansIntersect,
+  findIntersections,
+  getSpanLength,
+  insertLaterally,
+  intersectSpans,
+  subtractCoveredSpans,
+} from './span-math'
 
 /** Permissive epsilon for level-axis coordinate and budget comparisons. */
 export const GEOMETRY_TOLERANCE = 0.000_001
@@ -40,20 +47,251 @@ export interface Slice<S extends SourceSeg = SourceSeg> extends LateralSpan {
   isEnd: boolean
 }
 
+/**
+ * One independently rendered more link and the hidden slices it represents.
+ * Members are in event order, one entry per hidden source, each spanning the
+ * lateral hull of that source's hidden fragments so components can derive
+ * start/end continuity from its coordinates.
+ */
 export interface HiddenSliceGroup<S extends SourceSeg = SourceSeg> extends LateralSpan {
   /** `getSliceKey(hiddenSlices[0])`; changes if the group's first slice changes. */
   key: string
   hiddenSlices: Slice<S>[]
-  levelIndex: number | null
-  levelCoord: number | null
-  thickness: number
 }
 
-/** Identifies a whole or partial slice derived from a source seg. */
+/**
+ * Identifies a whole or partial slice derived from a source seg. Partial keys
+ * deliberately omit the lateral end so a fragment re-cut at the same start
+ * keeps its DOM wrapper. The re-cut fragment transiently reuses the previous
+ * cut's measurement, which can mis-validate one candidate; the structure still
+ * settles, because the safe plan and every fragment cut depend only on whole
+ * measurements — the same wrapper just re-reports at its new width and the
+ * next pass corrects the accept/reject decision.
+ */
 export function getSliceKey<S extends SourceSeg>(slice: Slice<S>): string {
-  if (!isPartialSlice(slice)) return slice.sourceSeg.key
+  if (!isPartialSlice(slice)) {
+    return slice.sourceSeg.key
+  }
   return `${slice.sourceSeg.key}:${slice.start}:slice`
 }
+
+export function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
+  return slice.start !== slice.sourceSeg.start ||
+    slice.end !== slice.sourceSeg.end
+}
+
+/* ========================================================================
+ * Top-level layout entry points
+ * ===================================================================== */
+
+/** What every layout entry point returns, level-limited or pixel-limited. */
+export interface SliceLayout<S extends SourceSeg = SourceSeg> {
+  /** Every slice the component must mount, invisible measurement donors included. */
+  renderSlices: Slice<S>[]
+  hiddenGroups: HiddenSliceGroup<S>[]
+  /** A mounted slice is visible exactly when its key has a coordinate here. */
+  sliceCoords: Map<string, number>
+  /**
+   * Whether every render slice has a measurement, making this layout a fixed
+   * point of the current heights: rerunning with the same inputs reproduces
+   * it. Measurements themselves may still be re-reported later.
+   */
+  isSettled: boolean
+}
+
+/**
+ * Streams at most `maxLevels` into the initial structure and fires every
+ * rejected slice back at those levels in event order.
+ *
+ * With slicing disabled, a failed slice hides whole. With slicing enabled,
+ * every level independently offers its maximal free runs and the winning plan
+ * balances exposed length against fragmentation. Every hidden slice grows a
+ * coverage accumulator; with a level tax, only newly covered runs reserve the
+ * bottom event level for a more link, evicting any slice already there.
+ */
+export function buildLevelLimitedLayout<S extends SourceSeg>(
+  segs: readonly S[],
+  eventOrderStrict: boolean,
+  eventSlicing: boolean,
+  maxLevels: number,
+  moreLinkLevelTax: number,
+  sliceHeights: ReadonlyMap<string, number>,
+): SliceLayout<S> {
+  const { segLevels, excludedSegs } = buildSegLevels(
+    segs,
+    eventOrderStrict,
+    maxLevels,
+  )
+  const placement = placeExtraSlicesInLevels(
+    convertSegLevelsToWholeSlices(segLevels),
+    convertSegsToWholeSlices(excludedSegs),
+    eventOrderStrict,
+    eventSlicing,
+    moreLinkLevelTax,
+  )
+  const resolution = resolveLevelCoords(
+    placement.sliceLevels,
+    sliceHeights,
+  )
+
+  return {
+    renderSlices: placement.sliceLevels.flat(),
+    hiddenGroups: placement.hiddenGroups,
+    sliceCoords: resolution.sliceCoords,
+    isSettled: !resolution.pendingSlices.length,
+  }
+}
+
+/**
+ * Builds and resolves a safe whole-only layout, then attempts and resolves its
+ * extras with the logical slicing algorithm. While candidate measurements are
+ * pending, the safe topology remains selected. Candidate-only slices remain
+ * mounted in the measurement layer even after rejection, preventing repeated
+ * mount-measure-reject cycles. A fully measured candidate replaces the safe
+ * layout only when valid.
+ *
+ * `neededLevelCount` bounds the initial DOM whole-slice candidates; later
+ * slices begin hidden and unmeasured.
+ */
+export function buildPixelLimitedLayout<S extends SourceSeg>(
+  segs: readonly S[],
+  eventOrderStrict: boolean,
+  eventSlicing: boolean,
+  sliceHeights: ReadonlyMap<string, number>,
+  canvasHeight: number | undefined,
+  neededLevelCount: number,
+  moreLinkHeight: number | undefined,
+): SliceLayout<S> {
+  const { segLevels, excludedSegs } = buildSegLevels(
+    segs,
+    eventOrderStrict,
+    neededLevelCount,
+  )
+  const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
+  const domExcludedSlices = convertSegsToWholeSlices(excludedSegs)
+  const wholeResolution = resolveLevelCoords(
+    domWholeSliceLevels,
+    sliceHeights,
+    canvasHeight,
+  )
+
+  // Until the canvas and the link probe report a size, mount only the bounded
+  // whole-slice frontier so its measurements can arrive.
+  if (canvasHeight == null || moreLinkHeight == null) {
+    return {
+      renderSlices: domWholeSliceLevels.flat(),
+      hiddenGroups: groupLaterallyIntersecting(domExcludedSlices),
+      sliceCoords: wholeResolution.sliceCoords,
+      isSettled: !wholeResolution.pendingSlices.length,
+    }
+  }
+
+  // Frontier wholes awaiting measurement are deliberately not hidden: their
+  // fate is undetermined, so they must not count toward any more link. They
+  // mount as invisible donors and join the layout once measured. Wholes
+  // beyond the frontier are different: they failed logical whole placement
+  // regardless of height, so they belong in the hidden stream unmeasured.
+  const initialHiddenSlices = domExcludedSlices.concat(
+    wholeResolution.excludedSlices,
+  )
+
+  // More links always render. When one consumes the full budget or more, zero
+  // is the deepest coordinate an intersecting event may reach.
+  const moreLinkEventMax = Math.max(0, canvasHeight - moreLinkHeight)
+
+  const safeLayout = buildWholePixelSafeLayout(
+    wholeResolution.placementSliceLevels,
+    initialHiddenSlices,
+    wholeResolution.sliceCoords,
+    sliceHeights,
+    moreLinkEventMax,
+  )
+  const safeResolution = resolveLevelCoords(
+    safeLayout.sliceLevels,
+    sliceHeights,
+  )
+
+  const candidate = placeExtraSlicesInLevels(
+    safeLayout.sliceLevels,
+    safeLayout.hiddenSlices,
+    eventOrderStrict,
+    eventSlicing,
+    0,
+  )
+  const candidateResolution = resolveLevelCoords(
+    candidate.sliceLevels,
+    sliceHeights,
+    canvasHeight,
+  )
+
+  // Every DOM-frontier whole stays mounted no matter its fate, alongside
+  // every candidate-added slice. A production measurement lives only while
+  // its wrapper is mounted, so unmounting a measured-but-rejected slice would
+  // delete the very measurement that rejected it and start a
+  // mount-measure-reject oscillation. Slices without a coordinate render
+  // invisible.
+  const renderSlices = compilePixelRenderSlices(
+    domWholeSliceLevels,
+    candidate.addedSlices,
+  )
+
+  // Frontier wholes resolve in the whole pass and every candidate-added slice
+  // resolves in the candidate pass, so together the two cover the render set.
+  const isSettled = !wholeResolution.pendingSlices.length &&
+    !candidateResolution.pendingSlices.length
+
+  if (
+    !candidateResolution.pendingSlices.length &&
+    !candidateResolution.excludedSlices.length &&
+    isPixelCandidateValid(
+      candidateResolution.placementSliceLevels,
+      candidate.hiddenGroups,
+      candidateResolution.sliceCoords,
+      sliceHeights,
+      moreLinkEventMax,
+    )
+  ) {
+    return {
+      renderSlices,
+      hiddenGroups: candidate.hiddenGroups,
+      sliceCoords: candidateResolution.sliceCoords,
+      isSettled,
+    }
+  }
+
+  // The safe topology stays visibly selected until a candidate is accepted.
+  return {
+    renderSlices,
+    hiddenGroups: finalizeHiddenGroups(safeLayout.moreLinkGroups),
+    sliceCoords: safeResolution.sliceCoords,
+    isSettled,
+  }
+}
+
+/**
+ * The pixel render set: every DOM-frontier whole (visible, pending, excluded,
+ * or hidden) plus every slice the candidate placement added. Extras re-placed
+ * whole by the candidate reuse their frontier slice object, so identity
+ * deduplication suffices.
+ */
+function compilePixelRenderSlices<S extends SourceSeg>(
+  domWholeSliceLevels: readonly (readonly Slice<S>[])[],
+  addedSlices: readonly Slice<S>[],
+): Slice<S>[] {
+  const renderSlices = domWholeSliceLevels.flat()
+  const renderSet = new Set(renderSlices)
+
+  for (const slice of addedSlices) {
+    if (!renderSet.has(slice)) {
+      renderSlices.push(slice)
+    }
+  }
+  return renderSlices
+}
+
+/* ========================================================================
+ * Whole-source level construction
+ * ===================================================================== */
 
 /** Builds whole-source logical levels without consulting any dimensions. */
 export function buildSegLevels<S extends SourceSeg>(
@@ -72,7 +310,9 @@ export function buildSegLevels<S extends SourceSeg>(
 
     if (eventOrderStrict) {
       for (let i = 0; i < segLevels.length; i++) {
-        if (findIntersections(segLevels[i], seg).length) levelIndex = i + 1
+        if (findIntersections(segLevels[i], seg).length) {
+          levelIndex = i + 1
+        }
       }
     } else {
       while (
@@ -108,10 +348,15 @@ export function convertSegsToWholeSlices<S extends SourceSeg>(
   return segs.map(createWholeSlice)
 }
 
+/* ========================================================================
+ * Slice-level coordinate resolution
+ * ===================================================================== */
+
 /**
  * Resolves fixed logical levels without changing level membership or slices.
  * An unmeasured slice stays pending; a measured bounded rejection is final.
- * Neither blocks later traversal entries.
+ * Neither blocks later traversal entries, so excluding a lower slice can let
+ * a later slice move upward.
  */
 export function resolveLevelCoords<S extends SourceSeg>(
   sliceLevels: readonly (readonly Slice<S>[])[],
@@ -124,6 +369,7 @@ export function resolveLevelCoords<S extends SourceSeg>(
   excludedSlices: Slice<S>[]
 } {
   const placementSliceLevels = sliceLevels.map(() => [] as Slice<S>[])
+  const placedSlices: Slice<S>[] = []
   const sliceCoords = new Map<string, number>()
   const pendingSlices: Slice<S>[] = []
   const excludedSlices: Slice<S>[] = []
@@ -135,12 +381,13 @@ export function resolveLevelCoords<S extends SourceSeg>(
         pendingSlices.push(slice)
         continue
       }
+      // The flat placed list may include same-level slices, which never
+      // laterally intersect the incoming slice, so only prior levels weigh in.
       const levelCoord = computeLateralSpanBottom(
-        placementSliceLevels,
+        placedSlices,
         slice,
         sliceCoords,
         sliceHeights,
-        levelIndex,
       )
 
       if (
@@ -148,6 +395,7 @@ export function resolveLevelCoords<S extends SourceSeg>(
           maxPixels + GEOMETRY_TOLERANCE
       ) {
         placementSliceLevels[levelIndex].push(slice)
+        placedSlices.push(slice)
         sliceCoords.set(getSliceKey(slice), levelCoord)
       } else {
         excludedSlices.push(slice)
@@ -158,631 +406,609 @@ export function resolveLevelCoords<S extends SourceSeg>(
   return { placementSliceLevels, sliceCoords, pendingSlices, excludedSlices }
 }
 
-/**
- * Merges level-capped extras into dimensionless topology.
- * `mayReinstateWholeExtras` is the caller's render-model statement: pass true
- * only when rendering follows the mutated planning topology.
- */
-export function mergeExtraIntoLevels<S extends SourceSeg>(
-  sliceLevels: Slice<S>[][],
-  extraSlices: readonly Slice<S>[],
-  eventOrderStrict: boolean,
-  eventSlicing: boolean,
-  maxLevels: number,
-  moreLinkLevelTax: number,
-  mayReinstateWholeExtras: boolean,
-): HiddenSliceGroup<S>[] {
-  if (!eventSlicing && !moreLinkLevelTax) {
-    return groupLaterallyIntersecting(extraSlices)
+/** Deepest measured, coordinated bottom among slices touching the span. */
+export function computeLateralSpanBottom<S extends SourceSeg>(
+  slices: readonly Slice<S>[],
+  span: LateralSpan,
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeights: ReadonlyMap<string, number>,
+): number {
+  let bottom = 0
+
+  for (const slice of slices) {
+    if (doSpansIntersect(slice, span)) {
+      const key = getSliceKey(slice)
+      const sliceTop = sliceCoords.get(key)
+      const sliceHeight = sliceHeights.get(key)
+      if (sliceTop !== undefined && sliceHeight !== undefined) {
+        bottom = Math.max(bottom, sliceTop + sliceHeight)
+      }
+    }
   }
 
-  return mergeExtraIntoStructure(
-    sliceLevels,
-    // Coordinate reads fall back to the residing level index (getStoredCoord),
-    // which is exactly what a prebuilt whole-slice map would hold here.
-    new Map(),
-    extraSlices,
-    eventSlicing,
-    mayReinstateWholeExtras,
-    (levelCoord, thickness) =>
-      thickness === 0 || levelCoord + thickness <= maxLevels,
-    {
-      eventOrderStrict,
-      getSliceThickness: () => 1,
-      occupantThickness: moreLinkLevelTax,
-    },
-  )
+  return bottom
+}
+
+/** Returns a measured slice's bottom, or `undefined` while it is pending. */
+function getSliceBottom<S extends SourceSeg>(
+  slice: Slice<S>,
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeights: ReadonlyMap<string, number>,
+): number | undefined {
+  const key = getSliceKey(slice)
+  const coord = sliceCoords.get(key)
+  const height = sliceHeights.get(key)
+
+  return coord === undefined || height === undefined
+    ? undefined
+    : coord + height
+}
+
+/* ========================================================================
+ * Whole-slice pixel safety
+ * ===================================================================== */
+
+interface LogicalLayout<S extends SourceSeg> {
+  sliceLevels: Slice<S>[][]
+  /** Deliberately flat for event-order and whole-layout operations. */
+  hiddenSlices: Slice<S>[]
+  /** Strictly intersecting hidden slices grouped for individual more links. */
+  moreLinkGroups: RawHiddenGroup<S>[]
 }
 
 /**
- * Builds pixel-limited planning topology. The planning thickness must be
- * stable across donor unmounts; the caller resolves exact coordinates after
- * this function has decided which partial-slice donors belong in the DOM.
- * `mayReinstateWholeExtras` is the caller's render-model statement: pass true
- * only when rendering follows the mutated planning topology.
+ * Builds a conservative safe plan from bounded, measured, pixel-admitted
+ * whole slices and the slices omitted by earlier construction or resolution.
+ *
+ * Builder exclusions and ordinary pixel exclusions seed an append-only
+ * hidden-slice worklist. Each hidden slice grows the more-link reservation,
+ * and only its newly covered spans are inspected for admitted slices that
+ * intrude into the reserved bottom band. Those victims are hidden whole and
+ * later grow the reservation themselves.
+ *
+ * Coordinates deliberately remain those of the initial admitted structure
+ * during the closure. Rebuilding only the survivors can move them upward, so
+ * those stale bottoms may overreserve but cannot make the result unsafe.
  */
-export function mergeExtraIntoLevelCoords<S extends SourceSeg>(
-  sliceLevels: Slice<S>[][],
-  sliceCoords: Map<string, number>,
+function buildWholePixelSafeLayout<S extends SourceSeg>(
+  initialSliceLevels: readonly (readonly Slice<S>[])[],
+  initialHiddenSlices: readonly Slice<S>[],
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeights: ReadonlyMap<string, number>,
+  moreLinkEventMax: number,
+): LogicalLayout<S> {
+  const wholeSlices = sortByEventOrder(initialSliceLevels.flat())
+  const hiddenSlices = [...initialHiddenSlices]
+  const hiddenSet = new Set(initialHiddenSlices)
+  const moreLinkGroups: RawHiddenGroup<S>[] = []
+
+  // Appending victims to this same array forms a monotonic worklist. Every
+  // iteration either grows covered territory or merely records membership.
+  for (
+    let hiddenIndex = 0;
+    hiddenIndex < hiddenSlices.length;
+    hiddenIndex++
+  ) {
+    const newMoreLinkSpans = addHiddenSliceToGroups(
+      moreLinkGroups,
+      hiddenSlices[hiddenIndex],
+    )
+
+    for (const newMoreLinkSpan of newMoreLinkSpans) {
+      for (const slice of wholeSlices) {
+        if (
+          !hiddenSet.has(slice) &&
+          intersectSpans(slice, newMoreLinkSpan) &&
+          getSliceBottom(slice, sliceCoords, sliceHeights)! >
+            moreLinkEventMax + GEOMETRY_TOLERANCE
+        ) {
+          hiddenSlices.push(slice)
+          hiddenSet.add(slice)
+        }
+      }
+    }
+  }
+
+  hiddenSlices.sort(compareByEventOrder)
+
+  return {
+    sliceLevels: excludeSlicesFromLevels(initialSliceLevels, hiddenSet),
+    hiddenSlices,
+    moreLinkGroups,
+  }
+}
+
+/** Tests exact candidate bottoms against the bottom-fixed more-link boundary. */
+function isPixelCandidateValid<S extends SourceSeg>(
+  sliceLevels: readonly (readonly Slice<S>[])[],
+  moreLinkGroups: readonly RawHiddenGroup<S>[],
+  sliceCoords: ReadonlyMap<string, number>,
+  sliceHeights: ReadonlyMap<string, number>,
+  moreLinkEventMax: number,
+): boolean {
+  for (const level of sliceLevels) {
+    for (const slice of level) {
+      if (
+        findIntersections(moreLinkGroups, slice).length &&
+        getSliceBottom(slice, sliceCoords, sliceHeights)! >
+          moreLinkEventMax + GEOMETRY_TOLERANCE
+      ) {
+        return false
+      }
+    }
+  }
+
+  return true
+}
+
+/** Removes selected slices while preserving surviving levels' relative order. */
+function excludeSlicesFromLevels<S extends SourceSeg>(
+  inputSliceLevels: readonly (readonly Slice<S>[])[],
+  excludedSlices: ReadonlySet<Slice<S>>,
+): Slice<S>[][] {
+  const sliceLevels: Slice<S>[][] = []
+
+  for (const inputLevel of inputSliceLevels) {
+    const level = inputLevel.filter((slice) => !excludedSlices.has(slice))
+
+    if (level.length) {
+      sliceLevels.push(level)
+    }
+  }
+  return sliceLevels
+}
+
+/* ========================================================================
+ * Logical slice placement
+ * ===================================================================== */
+
+/** Live logical state consulted when placing a whole slice or slice plan. */
+interface SlicePlacementState<S extends SourceSeg> {
+  levels: readonly (readonly Slice<S>[])[]
+  bottomReservedSpans: readonly LateralSpan[]
+  eventOrderStrict: boolean
+}
+
+export interface ExtraSlicePlacement<S extends SourceSeg> {
+  /** Final logical topology, hidden slices excluded. */
+  sliceLevels: Slice<S>[][]
+  /** Flat hidden membership, in event order of hiding. */
+  hiddenSlices: Slice<S>[]
+  hiddenGroups: HiddenSliceGroup<S>[]
+  /** Slices in the final topology that were not in the received levels. */
+  addedSlices: Slice<S>[]
+}
+
+/** Work alternates between attempting slices and reserving bottom link space. */
+type PlacementWork<S extends SourceSeg> =
+  | { type: 'fire', slice: Slice<S> }
+  | { type: 'moreLink', span: LateralSpan }
+
+/**
+ * Fires extras into a fixed set of logical levels in event order. Repacking
+ * may reuse gaps in the received levels but never creates additional levels.
+ * Pixel candidates use no level tax because their safe plan already reserved
+ * link space conservatively; level-limited layouts can reserve the bottom
+ * level.
+ */
+export function placeExtraSlicesInLevels<S extends SourceSeg>(
+  initialSliceLevels: readonly (readonly Slice<S>[])[],
   extraSlices: readonly Slice<S>[],
   eventOrderStrict: boolean,
   eventSlicing: boolean,
-  maxPixels: number,
-  moreLinkPixelHeight: number,
-  getSliceThickness: (slice: Slice<S>) => number,
-  mayReinstateWholeExtras: boolean,
-): HiddenSliceGroup<S>[] {
-  return mergeExtraIntoStructure(
+  moreLinkLevelTax: number,
+): ExtraSlicePlacement<S> {
+  const sliceLevels = initialSliceLevels.map((level) => [...level])
+  const extras = sortByEventOrder(extraSlices)
+  const addedSliceSet = new Set<Slice<S>>()
+
+  // Hidden membership remains flat for whole-layout operations. More-link
+  // groups duplicate that membership locally while also recording which
+  // lateral territory has already fired its link tax.
+  const hiddenSlices: Slice<S>[] = []
+  const moreLinkGroups: RawHiddenGroup<S>[] = []
+  const placementState: SlicePlacementState<S> = {
+    levels: sliceLevels,
+    bottomReservedSpans: moreLinkLevelTax ? moreLinkGroups : [],
+    eventOrderStrict,
+  }
+
+  const work: PlacementWork<S>[] = []
+
+  pushFire(extras)
+
+  // Depth-first work lets fresh accumulator coverage reserve the bottom level
+  // before the next unrelated extra gets a chance to insert.
+  while (work.length) {
+    const item = work.pop()!
+    if (item.type === 'fire') {
+      fire(item.slice)
+    } else {
+      fireMoreLink(item.span)
+    }
+  }
+
+  return {
     sliceLevels,
-    sliceCoords,
-    extraSlices,
-    eventSlicing,
-    mayReinstateWholeExtras,
-    (levelCoord, thickness) =>
-      levelCoord + thickness <= maxPixels + GEOMETRY_TOLERANCE,
-    {
-      eventOrderStrict,
-      getSliceThickness,
-      occupantThickness: moreLinkPixelHeight,
-    },
+    hiddenSlices,
+    hiddenGroups: finalizeHiddenGroups(moreLinkGroups),
+    addedSlices: [...addedSliceSet],
+  }
+
+  /** Tries a whole insertion before considering scored same-level slices. */
+  function fire(slice: Slice<S>): void {
+    const levelIndex = findInsertionLevel(slice, placementState)
+
+    if (levelIndex !== null) {
+      insertLaterally(sliceLevels[levelIndex], slice)
+      addedSliceSet.add(slice)
+      return
+    }
+    if (!eventSlicing) {
+      hide(slice)
+      return
+    }
+
+    const plan = findBestSlicePlan(slice, placementState)
+    if (!plan) {
+      hide(slice)
+      return
+    }
+
+    for (const visibleSlice of plan.slices) {
+      insertLaterally(sliceLevels[plan.levelIndex], visibleSlice)
+      addedSliceSet.add(visibleSlice)
+    }
+    for (const hiddenSlice of subtractSpansFromSlice(slice, plan.slices)) {
+      hide(hiddenSlice)
+    }
+  }
+
+  /** Adds hidden membership and fires links only over new accumulator coverage. */
+  function hide(slice: Slice<S>): void {
+    hiddenSlices.push(slice)
+
+    // Only the set difference is fresh more-link territory; it can consist of
+    // several disjoint runs.
+    const newMoreLinkSpans = addHiddenSliceToGroups(moreLinkGroups, slice)
+
+    if (moreLinkLevelTax) {
+      for (let i = newMoreLinkSpans.length - 1; i >= 0; i--) {
+        work.push({ type: 'moreLink', span: newMoreLinkSpans[i] })
+      }
+    }
+  }
+
+  /**
+   * Reserves the bottom logical level over fresh accumulator coverage. Because
+   * the tax is exactly one level, only slices in the final level can be
+   * displaced.
+   */
+  function fireMoreLink(span: LateralSpan): void {
+    if (!sliceLevels.length) {
+      return
+    }
+
+    const taxedLevel = sliceLevels[sliceLevels.length - 1]
+    const victims = findIntersections(taxedLevel, span)
+
+    for (const victim of victims) {
+      taxedLevel.splice(taxedLevel.indexOf(victim), 1)
+      addedSliceSet.delete(victim)
+
+      if (eventSlicing) {
+        hide(intersectSlice(victim, span)!)
+        pushFire(subtractSpansFromSlice(victim, [span]))
+      } else {
+        hide(victim)
+      }
+    }
+  }
+
+  /** Reversing preserves received order on the LIFO work stack. */
+  function pushFire(slices: readonly Slice<S>[]): void {
+    for (let i = slices.length - 1; i >= 0; i--) {
+      work.push({ type: 'fire', slice: slices[i] })
+    }
+  }
+}
+
+/** Returns the shallowest vacant level within the slice's fence, if any. */
+function findInsertionLevel<S extends SourceSeg>(
+  slice: Slice<S>,
+  state: SlicePlacementState<S>,
+): number | null {
+  const fence = computeLevelFence(slice, state)
+
+  for (
+    let levelIndex = fence.min;
+    levelIndex < fence.maxExclusive;
+    levelIndex++
+  ) {
+    if (!findIntersections(state.levels[levelIndex], slice).length) {
+      return levelIndex
+    }
+  }
+  return null
+}
+
+/**
+ * The level range where a slice may legally sit. The bottom reservation
+ * closes the final level over link coverage; strict event order additionally
+ * fences against intersecting neighbors' order.
+ *
+ * The pre-kernel SegHierarchy needed no upper fence: it inserted everything
+ * in event order, so "stay below anything you touch" sufficed. Repacking
+ * fires rejected extras after later-ordered slices are already committed,
+ * which is what makes strict order two-sided here.
+ */
+function computeLevelFence<S extends SourceSeg>(
+  slice: Slice<S>,
+  state: SlicePlacementState<S>,
+): { min: number, maxExclusive: number } {
+  const { levels } = state
+  let min = 0
+  let maxExclusive = levels.length - Number(
+    findIntersections(state.bottomReservedSpans, slice).length > 0,
   )
+
+  if (state.eventOrderStrict) {
+    for (let levelIndex = 0; levelIndex < levels.length; levelIndex++) {
+      for (const other of findIntersections(levels[levelIndex], slice)) {
+        if (other.sourceSeg.orderIndex < slice.sourceSeg.orderIndex) {
+          min = Math.max(min, levelIndex + 1)
+        } else if (other.sourceSeg.orderIndex > slice.sourceSeg.orderIndex) {
+          maxExclusive = Math.min(maxExclusive, levelIndex)
+        }
+      }
+    }
+  }
+
+  return { min, maxExclusive }
+}
+
+/* ========================================================================
+ * Slice plans
+ * ===================================================================== */
+
+const MAX_SLICES_PER_PLAN = 3
+const EXTRA_SLICE_PENALTY = 0.15
+
+/** One hypothetical sliced insertion, confined to a single logical level. */
+interface SlicePlan<S extends SourceSeg> {
+  levelIndex: number
+  slices: Slice<S>[]
+  score: number
+}
+
+/**
+ * Scores the best one-, two-, or three-run insertion offered by each level.
+ * Runs from different levels are deliberately never mixed into one plan.
+ */
+function findBestSlicePlan<S extends SourceSeg>(
+  slice: Slice<S>,
+  state: SlicePlacementState<S>,
+): SlicePlan<S> | null {
+  let selected: SlicePlan<S> | null = null
+  const sourceLength = getSpanLength(slice)
+
+  for (let levelIndex = 0; levelIndex < state.levels.length; levelIndex++) {
+    // findIntersections returns a fresh, start-sorted array, and addToUnion
+    // replaces array contents without ever mutating a member, so bottom-link
+    // coverage can be folded in without touching the actual level.
+    const blockers: LateralSpan[] = findIntersections(
+      state.levels[levelIndex],
+      slice,
+    )
+    if (levelIndex === state.levels.length - 1) {
+      for (const span of state.bottomReservedSpans) {
+        addToUnion(blockers, span)
+      }
+    }
+
+    const runs = subtractSpansFromSlice(slice, blockers)
+      .filter((run) => isWithinLevelFence(run, levelIndex, state))
+      .sort((a, b) => getSpanLength(b) - getSpanLength(a) || a.start - b.start)
+    let visibleLength = 0
+
+    for (
+      let sliceCount = 1;
+      sliceCount <= Math.min(MAX_SLICES_PER_PLAN, runs.length);
+      sliceCount++
+    ) {
+      visibleLength += getSpanLength(runs[sliceCount - 1])
+      const candidate: SlicePlan<S> = {
+        levelIndex,
+        slices: runs.slice(0, sliceCount).sort(compareByEventOrder),
+        score: visibleLength / sourceLength -
+          EXTRA_SLICE_PENALTY * (sliceCount - 1),
+      }
+      if (isBetterSlicePlan(candidate, selected)) {
+        selected = candidate
+      }
+    }
+  }
+
+  return selected
+}
+
+/** Whether a slice may legally sit at this level, per its own fence. */
+function isWithinLevelFence<S extends SourceSeg>(
+  slice: Slice<S>,
+  levelIndex: number,
+  state: SlicePlacementState<S>,
+): boolean {
+  const fence = computeLevelFence(slice, state)
+
+  return levelIndex >= fence.min && levelIndex < fence.maxExclusive
+}
+
+/** Comparison: score, then less fragmentation, then the shallower level. */
+function isBetterSlicePlan<S extends SourceSeg>(
+  candidate: SlicePlan<S>,
+  current: SlicePlan<S> | null,
+): boolean {
+  if (!current || candidate.score > current.score) {
+    return true
+  }
+  if (candidate.score < current.score) {
+    return false
+  }
+  if (candidate.slices.length !== current.slices.length) {
+    return candidate.slices.length < current.slices.length
+  }
+  return candidate.levelIndex < current.levelIndex
+}
+
+/* ========================================================================
+ * More-link groups
+ * ===================================================================== */
+
+/**
+ * Internal accumulator group: a maximal strict-intersection component of
+ * hidden slices, which can hold several fragments of one source. Sorted
+ * group lists double as coverage sets for span geometry.
+ */
+interface RawHiddenGroup<S extends SourceSeg> extends LateralSpan {
+  hiddenSlices: Slice<S>[]
+}
+
+/** Merges strict lateral intersections into component-facing groups. */
+export function groupLaterallyIntersecting<S extends SourceSeg>(
+  hiddenSlices: readonly Slice<S>[],
+): HiddenSliceGroup<S>[] {
+  const groups: RawHiddenGroup<S>[] = []
+
+  for (const slice of hiddenSlices) {
+    addHiddenSliceToGroups(groups, slice)
+  }
+  return finalizeHiddenGroups(groups)
+}
+
+/**
+ * Adds one hidden slice to its strict-intersection component and returns only
+ * the newly covered spans. Exactly adjacent groups deliberately stay separate
+ * because each group corresponds to one independently rendered more link.
+ * The group list remains sorted by lateral start.
+ */
+function addHiddenSliceToGroups<S extends SourceSeg>(
+  groups: RawHiddenGroup<S>[],
+  slice: Slice<S>,
+): LateralSpan[] {
+  const newSpans = subtractCoveredSpans(slice, groups)
+  const untouchedGroups: RawHiddenGroup<S>[] = []
+  const mergedSlices: Slice<S>[] = [slice]
+  let start = slice.start
+  let end = slice.end
+
+  for (const group of groups) {
+    if (intersectSpans(group, slice)) {
+      mergedSlices.push(...group.hiddenSlices)
+      start = Math.min(start, group.start)
+      end = Math.max(end, group.end)
+    } else {
+      untouchedGroups.push(group)
+    }
+  }
+
+  mergedSlices.sort(compareByEventOrder)
+  untouchedGroups.push({ start, end, hiddenSlices: mergedSlices })
+  untouchedGroups.sort((a, b) => a.start - b.start)
+  groups.splice(0, groups.length, ...untouchedGroups)
+
+  return newSpans
+}
+
+/**
+ * Compiles internal accumulator groups for components: one entry per hidden
+ * source event, in event order, spanning that source's fragment hull.
+ */
+function finalizeHiddenGroups<S extends SourceSeg>(
+  groups: readonly RawHiddenGroup<S>[],
+): HiddenSliceGroup<S>[] {
+  return groups.map((group) => {
+    const hiddenSlices = mergeAdjacentSlices(group.hiddenSlices)
+
+    return {
+      key: getSliceKey(hiddenSlices[0]),
+      start: group.start,
+      end: group.end,
+      hiddenSlices,
+    }
+  })
+}
+
+/* ========================================================================
+ * Slice utilities
+ * ===================================================================== */
+
+export function compareByEventOrder<S extends SourceSeg>(
+  a: Slice<S>,
+  b: Slice<S>,
+): number {
+  return a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
+    a.start - b.start ||
+    a.end - b.end
 }
 
 export function sortByEventOrder<S extends SourceSeg>(
   slices: readonly Slice<S>[],
 ): Slice<S>[] {
-  return [...slices].sort((a, b) =>
-    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
-    a.start - b.start ||
-    a.end - b.end,
-  )
+  return [...slices].sort(compareByEventOrder)
 }
 
 /**
- * The pixel render set: every initial DOM-frontier whole (visibly placed or
- * retained as a measurement donor) plus every planning partial. Complete only
- * while the pixel merge runs with `mayReinstateWholeExtras: false`, which
- * guarantees planning topology never holds a whole outside the DOM frontier.
+ * Collapses same-source runs of an event-ordered slice list into one slice
+ * per run spanning the run's lateral hull. The hull can bridge territory
+ * where the source is actually visible; consumers derive start/end
+ * continuity from the outermost hidden edges, not exact hidden coverage.
  */
-export function compilePixelLimitedRenderSlices<S extends SourceSeg>(
-  domWholeSliceLevels: readonly (readonly Slice<S>[])[],
-  planningSliceLevels: readonly (readonly Slice<S>[])[],
+function mergeAdjacentSlices<S extends SourceSeg>(
+  slices: readonly Slice<S>[],
 ): Slice<S>[] {
-  const renderSlices = domWholeSliceLevels.flat()
-  const renderKeys = new Set(renderSlices.map(getSliceKey))
+  const merged: Slice<S>[] = []
 
-  for (const slices of planningSliceLevels) {
-    for (const slice of slices) {
-      const key = getSliceKey(slice)
-      if (isPartialSlice(slice) && !renderKeys.has(key)) {
-        renderSlices.push(slice)
-        renderKeys.add(key)
-      }
-    }
-  }
+  for (const slice of slices) {
+    const previous = merged[merged.length - 1]
 
-  return renderSlices
-}
-
-export function isPartialSlice<S extends SourceSeg>(slice: Slice<S>): boolean {
-  return slice.start !== slice.sourceSeg.start ||
-    slice.end !== slice.sourceSeg.end
-}
-
-/** Merges strict lateral intersections and retains witness encounter order. */
-export function groupLaterallyIntersecting<S extends SourceSeg>(
-  hiddenSlices: readonly Slice<S>[],
-): HiddenSliceGroup<S>[] {
-  let groups: HiddenSliceGroup<S>[] = []
-  const orders = new Map<Slice<S>, number>()
-
-  hiddenSlices.forEach((slice, order) => {
-    orders.set(slice, order)
-    groups = addToGroups(groups, slice, orders, 0)
-  })
-  return groups
-}
-
-export function buildLevelLimitedLayout<S extends SourceSeg>(
-  segs: readonly S[],
-  eventOrderStrict: boolean,
-  eventSlicing: boolean,
-  maxLevels: number,
-  moreLinkLevelTax: number,
-  sliceHeights: ReadonlyMap<string, number>,
-) {
-  const { segLevels, excludedSegs } = buildSegLevels(
-    segs,
-    eventOrderStrict,
-    maxLevels,
-  )
-  const sliceLevels = convertSegLevelsToWholeSlices(segLevels)
-  const hiddenGroups = mergeExtraIntoLevels(
-    sliceLevels,
-    convertSegsToWholeSlices(excludedSegs),
-    eventOrderStrict,
-    eventSlicing,
-    maxLevels,
-    moreLinkLevelTax,
-    // Level-capped extras may re-enter whole: renderSlices below follows
-    // planning topology directly, and occupant consumption can free
-    // in-budget space.
-    true,
-  )
-  const resolution = resolveLevelCoords(
-    sliceLevels,
-    sliceHeights,
-  )
-  const renderSlices = sliceLevels.flat()
-
-  return {
-    sliceLevels,
-    renderSlices,
-    placementSliceLevels: resolution.placementSliceLevels,
-    pendingSlices: resolution.pendingSlices,
-    hiddenGroups,
-    sliceCoords: resolution.sliceCoords,
-  }
-}
-
-export function buildPixelLimitedLayout<S extends SourceSeg>(
-  segs: readonly S[],
-  eventOrderStrict: boolean,
-  eventSlicing: boolean,
-  sliceHeights: ReadonlyMap<string, number>,
-  canvasHeight: number | undefined,
-  neededLevelCount: number,
-  moreLinkHeight: number | undefined,
-  getPlanningSliceThickness: ((slice: Slice<S>) => number) | undefined,
-) {
-  const { segLevels, excludedSegs } = buildSegLevels(
-    segs,
-    eventOrderStrict,
-    neededLevelCount,
-  )
-  const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
-  const domExcludedSlices = convertSegsToWholeSlices(excludedSegs)
-  const wholeResolution = resolveLevelCoords(
-    domWholeSliceLevels,
-    sliceHeights,
-    canvasHeight,
-  )
-  // The merge owns DOM topology and uses stable per-slice planning thicknesses.
-  // Exact resolution below owns coordinates.
-  const planningSliceLevels = wholeResolution.placementSliceLevels
-  let placementSliceLevels = planningSliceLevels
-  let sliceCoords = wholeResolution.sliceCoords
-  let hiddenGroups = groupLaterallyIntersecting(domExcludedSlices)
-  let pendingSlices = wholeResolution.pendingSlices
-
-  // Until every planning dimension is observed, retain only the whole-slice
-  // DOM candidates. The next measurement pass can then plan stable partials.
-  if (
-    canvasHeight != null &&
-    moreLinkHeight != null &&
-    getPlanningSliceThickness
-  ) {
-    const extraSlices = sortByEventOrder(
-      wholeResolution.excludedSlices.concat(domExcludedSlices),
-    )
-    hiddenGroups = mergeExtraIntoLevelCoords(
-      planningSliceLevels,
-      sliceCoords,
-      extraSlices,
-      eventOrderStrict,
-      eventSlicing,
-      canvasHeight,
-      moreLinkHeight,
-      getPlanningSliceThickness,
-      // Whole rejection is final here; see planning/pixel-whole-reinsertion.md.
-      // The extras stream just concatenated above mixes cohorts whose wholes
-      // must stay out: a reinstated DOM-excluded whole would mount on fallback
-      // thickness with no monotone correction once its measurement is deleted
-      // on unmount (the growth-rate ratchet samples only partials), risking an
-      // admit/evict oscillation. Finality also keeps the render compilation
-      // below complete: planning topology never gains a whole that lacks a
-      // render owner.
-      false,
-    )
-    const exactResolution = resolveLevelCoords(
-      planningSliceLevels,
-      sliceHeights,
-    )
-    placementSliceLevels = exactResolution.placementSliceLevels
-    sliceCoords = exactResolution.sliceCoords
-    pendingSlices = pendingSlices.concat(exactResolution.pendingSlices)
-  }
-
-  const renderSlices = compilePixelLimitedRenderSlices(
-    domWholeSliceLevels,
-    planningSliceLevels,
-  )
-
-  return {
-    domWholeSliceLevels,
-    renderSlices,
-    placementSliceLevels,
-    pendingSlices,
-    hiddenGroups,
-    sliceCoords,
-  }
-}
-
-/**
- * Configuration threaded through to `findInsertion`. Anything the insertion
- * search does not read is a positional parameter of `mergeExtraIntoStructure`
- * instead.
- */
-interface InsertionOptions<S extends SourceSeg> {
-  eventOrderStrict: boolean
-  /** Stable planning thickness for each slice while constructing DOM topology. */
-  getSliceThickness: (slice: Slice<S>) => number
-  occupantThickness: number
-}
-
-interface Insertion {
-  levelIndex: number
-  levelCoord: number
-}
-
-/**
- * Shared fire/collide/peel/consume implementation for both currencies.
- *
- * `fireSlice` drives placement; `consumeInvalidOccupants` evicts colliders
- * that push a positioned occupant over budget. Their mutual recursion
- * terminates because every refire is a strict sub-span drawn from the finite
- * lattice of slice edges.
- *
- * Hiding is minimal-footprint: a slice that cannot place whole loses exactly
- * the lateral spans where no admissible position exists, decided by probing
- * the elementary intervals between collider edges, and the feasible remainder
- * re-fires. Consumption applies the same rule to an unplaceable occupant's
- * over-budget spans. A colliding barrier's own span never widens a footprint.
- *
- * When `mayReinstateWholeExtras` is false, upstream whole rejection is final:
- * a placeable whole extra hides instead, so topology can only ever gain
- * collision-peeled partials.
- */
-function mergeExtraIntoStructure<S extends SourceSeg>(
-  sliceLevels: Slice<S>[][],
-  sliceCoords: Map<string, number>,
-  extraSlices: readonly Slice<S>[],
-  eventSlicing: boolean,
-  mayReinstateWholeExtras: boolean,
-  isValid: (levelCoord: number, thickness: number) => boolean,
-  options: InsertionOptions<S>,
-): HiddenSliceGroup<S>[] {
-  let hiddenGroups: HiddenSliceGroup<S>[] = []
-  let hiddenOrder = 0
-  const hiddenOrders = new Map<Slice<S>, number>()
-
-  const getSliceBottom = (slice: Slice<S>, levelIndex: number) =>
-    getStoredCoord(sliceCoords, slice, levelIndex) +
-    options.getSliceThickness(slice)
-
-  function fireSlice(
-    slice: Slice<S>,
-    mayPlaceWhole: boolean = true,
-  ): void {
-    const insertion = findValidInsertion(slice)
-
-    if (insertion && (mayPlaceWhole || isPartialSlice(slice))) {
-      insertSlice(
-        sliceLevels,
-        sliceCoords,
-        slice,
-        insertion.levelIndex,
-        insertion.levelCoord,
+    if (previous && previous.sourceSeg === slice.sourceSeg) {
+      merged[merged.length - 1] = createNarrowerSlice(
+        createWholeSlice(previous.sourceSeg),
+        previous.start,
+        Math.max(previous.end, slice.end),
       )
-      return
-    }
-
-    // A placeable-but-disallowed whole falls through to hide: only a genuine
-    // geometric failure earns a slicing pass.
-    if (eventSlicing && !insertion) {
-      const { feasibleRuns, infeasibleSpans } = partitionByFeasibility(slice)
-
-      if (feasibleRuns.length && infeasibleSpans.length) {
-        for (const span of infeasibleSpans) addHiddenRaw(span)
-        consumeInvalidOccupants()
-        for (const run of feasibleRuns) fireSlice(run)
-        return
-      }
-      if (
-        !infeasibleSpans.length &&
-        placeLongestPrefix(slice)
-      ) return
-    }
-
-    addHiddenRaw(slice)
-    consumeInvalidOccupants()
-  }
-
-  /** The insertion search under the caller's budget, or null when none fits. */
-  function findValidInsertion(slice: Slice<S>): Insertion | null {
-    const insertion = findInsertion(
-      sliceLevels,
-      sliceCoords,
-      hiddenGroups,
-      slice,
-      options,
-    )
-    return insertion &&
-      isValid(insertion.levelCoord, options.getSliceThickness(slice))
-      ? insertion
-      : null
-  }
-
-  /**
-   * Lateral coordinates where a span's collision environment can change.
-   * Between consecutive breakpoints, feasibility is constant.
-   */
-  function collectBreakpoints(span: LateralSpan): number[] {
-    const coords = new Set([span.start, span.end])
-    const admit = (coord: number) => {
-      if (coord > span.start && coord < span.end) coords.add(coord)
-    }
-
-    for (const item of collectIntersectingSlices(sliceLevels, span)) {
-      admit(item.slice.start)
-      admit(item.slice.end)
-    }
-    if (options.occupantThickness) {
-      for (const group of hiddenGroups) {
-        if (group.levelIndex != null && doSpansIntersect(group, span)) {
-          admit(group.start)
-          admit(group.end)
-        }
-      }
-    }
-    return [...coords].sort((a, b) => a - b)
-  }
-
-  /** Discovers candidate runs with the stable planning thickness. */
-  function partitionByFeasibility(
-    slice: Slice<S>,
-  ): {
-    feasibleRuns: Slice<S>[]
-    infeasibleSpans: Slice<S>[]
-  } {
-    const breakpoints = collectBreakpoints(slice)
-    const feasible: LateralSpan[] = []
-    const infeasible: LateralSpan[] = []
-
-    for (let i = 0; i < breakpoints.length - 1; i++) {
-      const start = breakpoints[i]
-      const end = breakpoints[i + 1]
-      const candidate = createNarrowerSlice(slice, start, end)
-      pushRun(findValidInsertion(candidate) ? feasible : infeasible, start, end)
-    }
-
-    const narrow = (span: LateralSpan) =>
-      createNarrowerSlice(slice, span.start, span.end)
-    return {
-      feasibleRuns: feasible.map(narrow),
-      infeasibleSpans: infeasible.map(narrow),
+    } else {
+      merged.push(slice)
     }
   }
-
-  /**
-   * Handles a fully feasible slice that still fits no single position:
-   * adjacent runs can be individually admissible only at disjoint levels.
-   * Places the longest placeable proper prefix and re-fires the rest.
-   */
-  function placeLongestPrefix(
-    slice: Slice<S>,
-  ): boolean {
-    const breakpoints = collectBreakpoints(slice)
-
-    for (let i = breakpoints.length - 2; i >= 1; i--) {
-      const prefix = createNarrowerSlice(slice, slice.start, breakpoints[i])
-      if (findValidInsertion(prefix)) {
-        fireSlice(prefix)
-        fireSlice(createNarrowerSlice(slice, breakpoints[i], slice.end))
-        return true
-      }
-    }
-    return false
-  }
-
-  function addHiddenRaw(slice: Slice<S>): void {
-    hiddenOrders.set(slice, hiddenOrder++)
-    hiddenGroups = addToGroups(
-      hiddenGroups,
-      slice,
-      hiddenOrders,
-      options.occupantThickness,
-    )
-  }
-
-  function positionOccupants(): HiddenSliceGroup<S> | undefined {
-    for (const group of hiddenGroups) {
-      const colliders = collectIntersectingSlices(sliceLevels, group)
-      group.levelIndex = colliders.length
-        ? Math.max(...colliders.map((item) => item.levelIndex)) + 1
-        : 0
-      group.levelCoord = colliders.length
-        ? Math.max(...colliders.map((item) =>
-          getSliceBottom(item.slice, item.levelIndex),
-        ))
-        : 0
-      if (!isValid(
-        group.levelCoord,
-        group.thickness,
-      )) return group
-    }
-    return undefined
-  }
-
-  /** The sub-spans of a group where its occupant's budget is exceeded. */
-  function findOccupantViolations(group: HiddenSliceGroup<S>): LateralSpan[] {
-    const colliders = collectIntersectingSlices(sliceLevels, group)
-    const breakpoints = collectBreakpoints(group)
-    const violations: LateralSpan[] = []
-
-    for (let i = 0; i < breakpoints.length - 1; i++) {
-      const span = { start: breakpoints[i], end: breakpoints[i + 1] }
-      let bottom = 0
-      for (const item of colliders) {
-        if (doSpansIntersect(item.slice, span)) {
-          bottom = Math.max(bottom, getSliceBottom(item.slice, item.levelIndex))
-        }
-      }
-      if (!isValid(bottom, group.thickness)) {
-        pushRun(violations, span.start, span.end)
-      }
-    }
-    return violations
-  }
-
-  function consumeInvalidOccupants(): void {
-    const refires: Slice<S>[] = []
-    let invalidGroup: HiddenSliceGroup<S> | undefined
-
-    while ((invalidGroup = positionOccupants())) {
-      const violations = findOccupantViolations(invalidGroup)
-      const colliders: { slice: Slice<S>; levelIndex: number }[] = []
-      for (const violation of violations) {
-        for (const item of collectIntersectingSlices(sliceLevels, violation)) {
-          if (!colliders.some((other) => other.slice === item.slice)) {
-            colliders.push(item)
-          }
-        }
-      }
-      if (!colliders.length) break
-      const frontierBottom = Math.max(...colliders.map((item) =>
-        getSliceBottom(item.slice, item.levelIndex),
-      ))
-      const frontier = colliders.filter((item) =>
-        getSliceBottom(item.slice, item.levelIndex) === frontierBottom,
-      )
-
-      for (const item of frontier) {
-        if (!sliceLevels[item.levelIndex].includes(item.slice)) continue
-        removeSlice(sliceLevels, sliceCoords, item.slice, item.levelIndex)
-
-        if (eventSlicing) {
-          // Frontier members intersect a violation by construction, so
-          // consumption always leaves a non-empty footprint.
-          const footprints = violations
-            .map((violation) => intersectSlice(item.slice, violation))
-            .filter((footprint): footprint is Slice<S> => footprint != null)
-          for (const footprint of footprints) addHiddenRaw(footprint)
-          refires.push(...subtractSpans(item.slice, footprints))
-        } else {
-          addHiddenRaw(item.slice)
-        }
-      }
-    }
-
-    for (const slice of refires) {
-      fireSlice(slice)
-    }
-  }
-
-  for (const extra of extraSlices) {
-    fireSlice(extra, mayReinstateWholeExtras)
-  }
-
-  positionOccupants()
-  return hiddenGroups
+  return merged
 }
 
 /**
- * Finds the smallest geometrically admissible position, ignoring the
- * caller's budget. Null means no position exists at all: strict-order or
- * occupant fencing has closed every level, including a newly appended one.
+ * Removes covered spans from a slice, returning identity-preserving
+ * remainders. Like `subtractCoveredSpans`, the covered spans must be sorted
+ * by start and pairwise non-overlapping — every caller already holds them
+ * that way (plan slices, union blockers, a single span).
  */
-function findInsertion<S extends SourceSeg>(
-  sliceLevels: readonly (readonly Slice<S>[])[],
-  sliceCoords: ReadonlyMap<string, number>,
-  hiddenGroups: readonly HiddenSliceGroup<S>[],
+function subtractSpansFromSlice<S extends SourceSeg>(
   slice: Slice<S>,
-  options: InsertionOptions<S>,
-): Insertion | null {
-  const collidersByLevel = sliceLevels.map((level) =>
-    findIntersections(level, slice),
+  covered: readonly LateralSpan[],
+): Slice<S>[] {
+  return subtractCoveredSpans(slice, covered).map((span) =>
+    createNarrowerSlice(slice, span.start, span.end),
   )
-  const getBottom = (other: Slice<S>, levelIndex: number) =>
-    getStoredCoord(sliceCoords, other, levelIndex) +
-    options.getSliceThickness(other)
-  let strictMinLevelIndex = 0
-  let strictMaxLevelIndexExclusive = Infinity
-
-  if (options.eventOrderStrict) {
-    collidersByLevel.forEach((colliders, levelIndex) => {
-      for (const other of colliders) {
-        if (other.sourceSeg.orderIndex < slice.sourceSeg.orderIndex) {
-          strictMinLevelIndex = Math.max(strictMinLevelIndex, levelIndex + 1)
-        } else if (other.sourceSeg.orderIndex > slice.sourceSeg.orderIndex) {
-          strictMaxLevelIndexExclusive = Math.min(
-            strictMaxLevelIndexExclusive,
-            levelIndex,
-          )
-        }
-      }
-    })
-  }
-
-  const occupantGroups = options.occupantThickness
-    ? hiddenGroups.filter((group) =>
-      group.levelIndex != null && doSpansIntersect(group, slice),
-    )
-    : []
-  for (const group of occupantGroups) {
-    strictMaxLevelIndexExclusive = Math.min(
-      strictMaxLevelIndexExclusive,
-      group.levelIndex!,
-    )
-  }
-
-  const ceilings: number[] = []
-  let ceiling = occupantGroups.length
-    ? Math.min(...occupantGroups.map((group) => group.levelCoord!))
-    : Infinity
-  for (let levelIndex = sliceLevels.length - 1; levelIndex >= 0; levelIndex--) {
-    ceilings[levelIndex] = ceiling
-    for (const other of collidersByLevel[levelIndex]) {
-      ceiling = Math.min(ceiling, getStoredCoord(sliceCoords, other, levelIndex))
-    }
-  }
-
-  let minLevelCoord = 0
-  for (let levelIndex = 0; levelIndex < sliceLevels.length; levelIndex++) {
-    if (
-      !collidersByLevel[levelIndex].length &&
-      levelIndex >= strictMinLevelIndex &&
-      levelIndex < strictMaxLevelIndexExclusive &&
-      minLevelCoord + options.getSliceThickness(slice) <=
-        ceilings[levelIndex] + GEOMETRY_TOLERANCE
-    ) {
-      return { levelIndex, levelCoord: minLevelCoord }
-    }
-
-    for (const other of collidersByLevel[levelIndex]) {
-      minLevelCoord = Math.max(minLevelCoord, getBottom(other, levelIndex))
-    }
-  }
-
-  if (sliceLevels.length >= strictMaxLevelIndexExclusive) return null
-
-  return { levelIndex: sliceLevels.length, levelCoord: minLevelCoord }
 }
 
-/** A slice's tracked placement coordinate, defaulting to its residing level. */
-function getStoredCoord<S extends SourceSeg>(
-  sliceCoords: ReadonlyMap<string, number>,
+/** Finds the strict intersection while retaining source identity. */
+function intersectSlice<S extends SourceSeg>(
   slice: Slice<S>,
-  levelIndex: number,
-): number {
-  return sliceCoords.get(getSliceKey(slice)) ?? levelIndex
-}
+  barrier: LateralSpan,
+): Slice<S> | null {
+  const intersection = intersectSpans(slice, barrier)
 
-/** Appends a span to a run list, coalescing with an adjacent previous run. */
-function pushRun(spans: LateralSpan[], start: number, end: number): void {
-  const previous = spans[spans.length - 1]
-  if (previous && previous.end === start) previous.end = end
-  else spans.push({ start, end })
+  return intersection
+    ? createNarrowerSlice(slice, intersection.start, intersection.end)
+    : null
 }
 
 function createWholeSlice<S extends SourceSeg>(
@@ -797,15 +1023,6 @@ function createWholeSlice<S extends SourceSeg>(
   }
 }
 
-function intersectSlice<S extends SourceSeg>(
-  slice: Slice<S>,
-  barrier: LateralSpan,
-): Slice<S> | null {
-  const start = Math.max(slice.start, barrier.start)
-  const end = Math.min(slice.end, barrier.end)
-  return start < end ? createNarrowerSlice(slice, start, end) : null
-}
-
 function createNarrowerSlice<S extends SourceSeg>(
   parent: Slice<S>,
   start: number,
@@ -817,165 +1034,5 @@ function createNarrowerSlice<S extends SourceSeg>(
     end,
     isStart: parent.isStart && start === parent.start,
     isEnd: parent.isEnd && end === parent.end,
-  }
-}
-
-/** Removes a set of spans from a slice, returning remainders, interior gaps included. */
-function subtractSpans<S extends SourceSeg>(
-  slice: Slice<S>,
-  spans: readonly LateralSpan[],
-): Slice<S>[] {
-  const sorted = [...spans].sort((a, b) => a.start - b.start)
-  const remainders: Slice<S>[] = []
-  let cursor = slice.start
-
-  for (const span of sorted) {
-    if (span.start > cursor) {
-      remainders.push(
-        createNarrowerSlice(slice, cursor, Math.min(span.start, slice.end)),
-      )
-    }
-    cursor = Math.max(cursor, span.end)
-    if (cursor >= slice.end) return remainders
-  }
-  if (cursor < slice.end) {
-    remainders.push(createNarrowerSlice(slice, cursor, slice.end))
-  }
-  return remainders
-}
-
-function collectIntersectingSlices<S extends SourceSeg>(
-  sliceLevels: readonly (readonly Slice<S>[])[],
-  span: LateralSpan,
-): { slice: Slice<S>; levelIndex: number }[] {
-  return sliceLevels.flatMap((level, levelIndex) =>
-    findIntersections(level, span).map((slice) => ({ slice, levelIndex })),
-  )
-}
-
-function insertSlice<S extends SourceSeg>(
-  sliceLevels: Slice<S>[][],
-  sliceCoords: Map<string, number>,
-  slice: Slice<S>,
-  levelIndex: number,
-  levelCoord: number,
-): void {
-  while (sliceLevels.length <= levelIndex) sliceLevels.push([])
-  insertLaterally(sliceLevels[levelIndex], slice)
-  sliceCoords.set(getSliceKey(slice), levelCoord)
-}
-
-function removeSlice<S extends SourceSeg>(
-  sliceLevels: Slice<S>[][],
-  sliceCoords: Map<string, number>,
-  slice: Slice<S>,
-  levelIndex: number,
-): void {
-  const index = sliceLevels[levelIndex].indexOf(slice)
-  if (index !== -1) sliceLevels[levelIndex].splice(index, 1)
-  sliceCoords.delete(getSliceKey(slice))
-}
-
-export function findIntersections<Item extends LateralSpan>(
-  entries: readonly Item[],
-  span: LateralSpan,
-): Item[] {
-  let index = findLowerBoundByStart(entries, span.start)
-  if (index > 0) index--
-  const matches: Item[] = []
-
-  for (; index < entries.length; index++) {
-    const entry = entries[index]
-    if (entry.start >= span.end) break
-    if (doSpansIntersect(entry, span)) matches.push(entry)
-  }
-  return matches
-}
-
-export function computeLateralSpanBottom<S extends SourceSeg>(
-  sliceLevels: readonly (readonly Slice<S>[])[],
-  span: LateralSpan,
-  sliceCoords: ReadonlyMap<string, number>,
-  sliceHeights: ReadonlyMap<string, number>,
-  levelCount: number = sliceLevels.length,
-): number {
-  let bottom = 0
-
-  for (let levelIndex = 0; levelIndex < levelCount; levelIndex++) {
-    for (const slice of findIntersections(sliceLevels[levelIndex], span)) {
-      const key = getSliceKey(slice)
-      const sliceTop = sliceCoords.get(key)
-      const sliceHeight = sliceHeights.get(key)
-      if (sliceTop !== undefined && sliceHeight !== undefined) {
-        bottom = Math.max(bottom, sliceTop + sliceHeight)
-      }
-    }
-  }
-
-  return bottom
-}
-
-function insertLaterally<Item extends LateralSpan>(
-  entries: Item[],
-  entry: Item,
-): void {
-  entries.splice(findLowerBoundByStart(entries, entry.start), 0, entry)
-}
-
-function findLowerBoundByStart<Item extends LateralSpan>(
-  entries: readonly Item[],
-  start: number,
-): number {
-  let low = 0
-  let high = entries.length
-  while (low < high) {
-    const middle = (low + high) >>> 1
-    if (entries[middle].start < start) low = middle + 1
-    else high = middle
-  }
-  return low
-}
-
-function doSpansIntersect(a: LateralSpan, b: LateralSpan): boolean {
-  return a.start < b.end && b.start < a.end
-}
-
-/**
- * Merges a slice into pairwise-disjoint groups, ordering members by `orders`.
- * Every merged group overlaps the slice's own span, so the union is connected
- * and one pass captures the transitive union.
- */
-function addToGroups<S extends SourceSeg>(
-  groups: readonly HiddenSliceGroup<S>[],
-  slice: Slice<S>,
-  orders: ReadonlyMap<Slice<S>, number>,
-  thickness: number,
-): HiddenSliceGroup<S>[] {
-  const intersecting = groups.filter((group) => doSpansIntersect(group, slice))
-  const untouched = groups.filter((group) => !intersecting.includes(group))
-  const hiddenSlices = intersecting.flatMap((group) => group.hiddenSlices)
-  hiddenSlices.push(slice)
-  hiddenSlices.sort((a, b) => orders.get(a)! - orders.get(b)!)
-  const start = Math.min(slice.start, ...intersecting.map((group) => group.start))
-  const end = Math.max(slice.end, ...intersecting.map((group) => group.end))
-  const merged = createPublicGroup(hiddenSlices, start, end)
-  merged.thickness = thickness
-  return untouched.concat(merged)
-}
-
-function createPublicGroup<S extends SourceSeg>(
-  hiddenSlices: Slice<S>[],
-  start: number,
-  end: number,
-): HiddenSliceGroup<S> {
-  const key = getSliceKey(hiddenSlices[0])
-  return {
-    key,
-    start,
-    end,
-    hiddenSlices,
-    levelIndex: null,
-    levelCoord: null,
-    thickness: 0,
   }
 }

@@ -125,7 +125,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     */
     this.totalHeightSettled = props.slotWidth != null &&
       allSegsProjected &&
-      placementResult.allHeightsSettled
+      placementResult.isSettled
 
     return (
       <div
