@@ -195,6 +195,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                     : `.${classNames.internalView}`
                 }
                 dateSpanProps={props.dateSpanProps}
+                renderProps={props.renderProps}
                 dateProfile={props.dateProfile}
                 eventSelection={props.eventSelection}
                 eventDrag={props.eventDrag}
