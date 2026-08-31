@@ -120,6 +120,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
       todayRange: props.todayRange,
       eventSelection: slicedProps.eventSelection,
       resourceId: resource.id,
+      extraRenderProps: { resource: renderProps.resource },
     }
 
     return (

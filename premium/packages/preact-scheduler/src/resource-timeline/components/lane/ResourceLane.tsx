@@ -168,6 +168,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 eventResize={slicedProps.eventResize}
                 eventSelection={slicedProps.eventSelection}
                 resourceId={resource.id}
+                extraRenderProps={{ resource: renderProps.resource }}
 
                 // dimensions
                 slotWidth={props.slotWidth}
