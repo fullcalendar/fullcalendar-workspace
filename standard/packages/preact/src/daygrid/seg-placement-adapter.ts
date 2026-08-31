@@ -8,6 +8,7 @@ import {
   getSliceKey,
   sortByEventOrder,
 } from '../seg-placement/kernel'
+import { flatMapArray } from '../util/array'
 import {
   type DayRowEventRange,
   type DayRowEventRangePart,
@@ -142,10 +143,10 @@ export function buildDayGridPopoverSegs(
   hiddenSegs: DayRowEventRangePart[]
 } {
   return {
-    segs: eventOrderedSegs.flatMap((source) =>
+    segs: flatMapArray(eventOrderedSegs, (source) =>
       cutSegToColumn(source, column) ?? [],
     ),
-    hiddenSegs: hiddenSlices.flatMap((slice) =>
+    hiddenSegs: flatMapArray(hiddenSlices, (slice) =>
       cutSegToColumn(slice.sourceSeg, column, slice) ?? [],
     ),
   }

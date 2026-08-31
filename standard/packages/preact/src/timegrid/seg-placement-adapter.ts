@@ -10,6 +10,7 @@ import {
   sortByAxisOrder,
 } from '../seg-placement/kernel'
 import { findIntersections } from '../seg-placement/span-math'
+import { flatArray } from '../util/array'
 import { computeDateTopFrac } from './components/util'
 import { type TimeGridRange } from './TimeColsSeg'
 
@@ -262,7 +263,7 @@ function positionTimeGridPlacements<S extends SourceSeg>(
     })),
   )
   // Level order matters below: every placement precedes its deeper colliders.
-  const placements = placementLevels.flat()
+  const placements = flatArray(placementLevels)
   const collidersByKey = new Map<string, typeof placements>()
   const parentByKey = new Map(placements.map((placement) => [
     placement.sourceSeg.key,

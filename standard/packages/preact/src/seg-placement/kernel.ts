@@ -8,6 +8,7 @@
  * the measured result against exact pixel and more-link boundaries.
  */
 
+import { flatArray } from '../util/array'
 import {
   type LateralSpan,
   addToUnion,
@@ -115,7 +116,7 @@ export function buildLevelLimitedLayout<S extends SourceSeg>(
     sliceHeights,
   )
   return {
-    renderSlices: placement.sliceLevels.flat(),
+    renderSlices: flatArray(placement.sliceLevels),
     hiddenSlices: placement.hiddenSlices,
     sliceLevels: placement.sliceLevels,
     sliceCoords: resolution.sliceCoords,
@@ -159,7 +160,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
   // whole-slice frontier so its measurements can arrive.
   if (canvasHeight == null || moreLinkHeight == null) {
     return {
-      renderSlices: domWholeSliceLevels.flat(),
+      renderSlices: flatArray(domWholeSliceLevels),
       hiddenSlices: domExcludedWholeSlices,
       sliceLevels: domWholeSliceLevels,
       sliceCoords: wholeResolution.sliceCoords,
@@ -206,7 +207,7 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
   // donors; missing coordinates make rejected or pending slices invisible.
   // Disjoint: requiresSlicing bars whole re-insertion, so every added slice is
   // a freshly cut object, never a frontier whole.
-  const renderSlices = domWholeSliceLevels.flat().concat(placement.addedSlices)
+  const renderSlices = flatArray(domWholeSliceLevels).concat(placement.addedSlices)
 
   // Frontier wholes resolve in the whole pass and every placement-added slice
   // resolves in the placement pass, so together the two cover the render set.
