@@ -836,7 +836,7 @@ function findBestSlicePlan<S extends SourceSeg>(
 
       const candidate: SlicePlan<S> = {
         levelIndex,
-        slices: runs.slice(0, sliceCount).sort(compareByEventOrder),
+        slices: runs.slice(0, sliceCount),
         score: visibleLength / sourceLength -
           EXTRA_SLICE_PENALTY * (sliceCount - 1),
       }
@@ -844,6 +844,10 @@ function findBestSlicePlan<S extends SourceSeg>(
         selected = candidate
       }
     }
+  }
+
+  if (selected) {
+    selected.slices.sort(compareByEventOrder)
   }
 
   return selected
@@ -887,10 +891,14 @@ function isBetterSlicePlan<S extends SourceSeg>(
  * group lists double as coverage sets for span geometry.
  */
 interface RawHiddenGroup<S extends SourceSeg> extends LateralSpan {
+  /** Event-ordered so same-source fragments form runs for final merging. */
   hiddenSlices: Slice<S>[]
 }
 
-/** Merges strict lateral intersections into component-facing groups. */
+/**
+ * Merges strict lateral intersections into groups sorted by lateral start.
+ * Each group's hidden slices are event-ordered.
+ */
 export function groupLaterallyIntersecting<S extends SourceSeg>(
   hiddenSlices: readonly Slice<S>[],
 ): HiddenSliceGroup<S>[] {
@@ -899,6 +907,7 @@ export function groupLaterallyIntersecting<S extends SourceSeg>(
   for (const slice of hiddenSlices) {
     addHiddenSliceToGroups(groups, slice)
   }
+
   return finalizeHiddenGroups(groups)
 }
 
@@ -929,8 +938,11 @@ function addHiddenSliceToGroups<S extends SourceSeg>(
   }
 
   mergedSlices.sort(compareByEventOrder)
-  untouchedGroups.push({ start, end, hiddenSlices: mergedSlices })
-  untouchedGroups.sort((a, b) => a.start - b.start)
+  insertLaterally(untouchedGroups, {
+    start,
+    end,
+    hiddenSlices: mergedSlices,
+  })
   groups.splice(0, groups.length, ...untouchedGroups)
 
   return newSpans
@@ -993,6 +1005,22 @@ export function sortByEventOrder<S extends SourceSeg>(
   slices: readonly Slice<S>[],
 ): Slice<S>[] {
   return [...slices].sort(compareByEventOrder)
+}
+
+/** Orders by axis start, then resolved event order. */
+export function compareByAxisOrder<T extends {
+  start: number
+  sourceSeg: { orderIndex: number }
+}>(a: T, b: T): number {
+  return a.start - b.start ||
+    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex
+}
+
+export function sortByAxisOrder<T extends {
+  start: number
+  sourceSeg: { orderIndex: number }
+}>(items: readonly T[]): T[] {
+  return [...items].sort(compareByAxisOrder)
 }
 
 /**

@@ -6,6 +6,7 @@ import {
   computeLateralSpanBottom,
   getSliceKey,
   groupLaterallyIntersecting,
+  sortByAxisOrder,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
 import { type TimelineDateProfile } from './timeline-date-profile'
@@ -120,10 +121,7 @@ export function buildTimelineSegPlacements(
     sliceHeights,
   )
 
-  const renderSlices = [...layout.renderSlices].sort((a, b) =>
-    a.start - b.start ||
-    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
-  )
+  const renderSlices = sortByAxisOrder(layout.renderSlices)
   const hiddenGroups = groupLaterallyIntersecting(layout.hiddenSlices)
 
   const moreLinks = hiddenGroups.map((group) => ({

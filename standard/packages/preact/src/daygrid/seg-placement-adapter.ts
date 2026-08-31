@@ -4,8 +4,8 @@ import {
   type SliceLayout,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
+  compareByEventOrder,
   getSliceKey,
-  isPartialSlice,
   sortByEventOrder,
 } from '../seg-placement/kernel'
 import {
@@ -294,10 +294,7 @@ function federateSlicesByStart(
   }
 
   for (const slices of slicesByStart) {
-    slices.sort((a, b) =>
-      a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
-      Number(isPartialSlice(a)) - Number(isPartialSlice(b)),
-    )
+    slices.sort(compareByEventOrder)
   }
 
   return slicesByStart

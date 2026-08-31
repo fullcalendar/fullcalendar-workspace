@@ -108,6 +108,7 @@ export {
   computeLateralSpanBottom,
   getSliceKey,
   groupLaterallyIntersecting,
+  sortByAxisOrder,
 } from './seg-placement/kernel'
 export type {
   PrintCandidatePlan,

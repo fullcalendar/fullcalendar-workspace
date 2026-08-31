@@ -7,6 +7,7 @@ import {
   buildSegLevels,
   convertSegsToWholeSlices,
   groupLaterallyIntersecting,
+  sortByAxisOrder,
 } from '../seg-placement/kernel'
 import { findIntersections } from '../seg-placement/span-math'
 import { computeDateTopFrac } from './components/util'
@@ -232,10 +233,9 @@ function layoutTimeGridColumnByMaxLevel<S extends SourceSeg>(
   const moreLinkGroups = groupLaterallyIntersecting(
     convertSegsToWholeSlices(excludedSegs),
   )
-    .sort((a, b) => a.start - b.start || a.end - b.end)
 
   return {
-    domOrderedPlacements: orderTimeGridPlacements(placements),
+    domOrderedPlacements: sortByAxisOrder(placements),
     moreLinkGroups,
   }
 }
@@ -356,15 +356,6 @@ function positionTimeGridPlacements<S extends SourceSeg>(
       forwardDepth: forwardDepthByKey.get(key)!,
     }
   })
-}
-
-function orderTimeGridPlacements<S extends SourceSeg>(
-  placements: readonly TimeGridPlacement<S>[],
-): TimeGridPlacement<S>[] {
-  return [...placements].sort((a, b) =>
-    a.start - b.start ||
-    a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
-  )
 }
 
 function findPlacementRoot(
