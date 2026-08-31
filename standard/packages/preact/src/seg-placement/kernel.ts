@@ -130,7 +130,7 @@ export function buildLevelLimitedLayout<S extends SourceSeg>(
  * Placement-only slices remain mounted as invisible measurement donors until
  * measured, preventing mount-measure cycles.
  *
- * `neededLevelCount` bounds the initial DOM whole-slice candidates; later
+ * `levelCapacity` bounds the initial DOM whole-slice candidates; later
  * slices begin hidden and unmeasured.
  */
 export function buildPixelLimitedLayout<S extends SourceSeg>(
@@ -139,13 +139,13 @@ export function buildPixelLimitedLayout<S extends SourceSeg>(
   eventSlicing: boolean,
   sliceHeights: ReadonlyMap<string, number>,
   canvasHeight: number | undefined,
-  neededLevelCount: number,
+  levelCapacity: number,
   moreLinkHeight: number | undefined,
 ): SliceLayout<S> {
   const { segLevels, excludedSegs } = buildSegLevels(
     segs,
     eventOrderStrict,
-    neededLevelCount,
+    levelCapacity,
   )
   const domWholeSliceLevels = convertSegLevelsToWholeSlices(segLevels)
   const domExcludedWholeSlices = convertSegsToWholeSlices(excludedSegs)
@@ -600,8 +600,8 @@ export function placeExtraSlicesInLevels<S extends SourceSeg>(
 
   pushFire(extraSlices, requiresSlicing)
 
-  // Depth-first work lets fresh accumulator coverage reserve the bottom level
-  // before the next unrelated extra gets a chance to insert.
+  // LIFO runs newly created link reservations before older unrelated extras,
+  // so an extra cannot insert into space that a fresh reservation will claim.
   while (work.length) {
     const item = work.pop()!
     if (item.type === 'fire') {

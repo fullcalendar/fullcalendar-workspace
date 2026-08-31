@@ -209,7 +209,7 @@ describe('Timeline production placement adapter', () => {
     expect(result.sliceCoords.get('late')).toBe(0)
   })
 
-  it('keeps temporal DOM order stable when clipping clamps distinct starts', () => {
+  it('uses resolved order when clipping clamps distinct starts', () => {
     const profile = uniformTimedProfile(4)
     const later = makeTimedSeg(
       'later-resolved-first',
@@ -247,7 +247,10 @@ describe('Timeline production placement adapter', () => {
       'later-resolved-first',
     ])
     expect(clippedResult.renderSlices.map((slice) => slice.sourceSeg.key))
-      .toEqual(fullResult.renderSlices.map((slice) => slice.sourceSeg.key))
+      .toEqual([
+        'later-resolved-first',
+        'earlier-resolved-second',
+      ])
   })
 
   it('preserves resolved order geometrically when eventOrderStrict is true', () => {

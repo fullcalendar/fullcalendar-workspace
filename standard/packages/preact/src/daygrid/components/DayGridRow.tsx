@@ -29,7 +29,7 @@ import {
 import {
   type DayGridPlacementColumn,
   type DayGridSourceSeg,
-  DEFAULT_NEEDED_LEVEL_COUNT,
+  DEFAULT_LEVEL_CAPACITY,
   buildDayGridPopoverSegs,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
@@ -117,7 +117,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // internal
   private _isUnmounting: boolean
   private disconnectHeight?: () => void
-  private neededLevelCount = DEFAULT_NEEDED_LEVEL_COUNT
+  private levelCapacity = DEFAULT_LEVEL_CAPACITY
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -160,7 +160,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           cells.length,
           minMainHeight,
           props.moreLinkHeight,
-          this.neededLevelCount,
+          this.levelCapacity,
           this.sliceHeightRefMap.current,
         )
         : buildDayGridLevelPlacements(
@@ -641,8 +641,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const [, canvasHeight] = this.computeFgDims()
     if (canvasHeight != null) {
       const smallestSliceHeight = Math.min(...this.sliceHeightRefMap.current.values())
-      this.neededLevelCount = Math.max(
-        this.neededLevelCount,
+      this.levelCapacity = Math.max(
+        this.levelCapacity,
         estimateLevelCapacity(canvasHeight, smallestSliceHeight),
       )
     }

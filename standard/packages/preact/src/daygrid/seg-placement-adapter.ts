@@ -57,7 +57,7 @@ type DayGridPlacementMode =
 const DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT = 150
 
 /** Initial DOM candidate frontier, before any measurement can widen it. */
-export const DEFAULT_NEEDED_LEVEL_COUNT = estimateLevelCapacity(
+export const DEFAULT_LEVEL_CAPACITY = estimateLevelCapacity(
   DEFAULT_UNMEASURED_EVENT_AREA_HEIGHT,
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
 )
@@ -111,7 +111,7 @@ export function buildDayGridPixelPlacements(
   columnCount: number,
   canvasHeight: number | undefined,
   moreLinkHeight: number | undefined,
-  neededLevelCount: number,
+  levelCapacity: number,
   sliceHeights: ReadonlyMap<string, number>,
 ): DayGridPlacementLayout {
   const sourceSegs = buildDayGridSegSources(eventOrderedSegs)
@@ -121,7 +121,7 @@ export function buildDayGridPixelPlacements(
     eventSlicing,
     sliceHeights,
     canvasHeight,
-    neededLevelCount,
+    levelCapacity,
     moreLinkHeight,
   )
   return buildDayGridPlacementLayout(

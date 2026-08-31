@@ -358,7 +358,7 @@ describe('DayGrid kernel pixel placement', () => {
   })
 
   it('stops mounting candidates beyond the row-local DOM frontier', () => {
-    const layout = layoutPixelRow(twoStacks, 2, { neededLevelCount: 2 })
+    const layout = layoutPixelRow(twoStacks, 2, { levelCapacity: 2 })
     const { columns } = layout
 
     // The third level never mounts, yet both columns still list their rejected
@@ -374,7 +374,7 @@ describe('DayGrid kernel pixel placement', () => {
       makeSeg('wide', 0, 3),
     ], 3, {
       canvasHeight: 6,
-      neededLevelCount: 1,
+      levelCapacity: 1,
       moreLinkHeight: 1,
       heights: { 'blocker:1': 5 },
     })
@@ -454,7 +454,7 @@ function layoutPixelRow(
     eventSlicing?: boolean,
     heights?: Record<string, number>,
     canvasHeight?: number,
-    neededLevelCount?: number,
+    levelCapacity?: number,
     moreLinkHeight?: number,
     hasMeasuredMoreLink?: boolean,
   } = {},
@@ -472,7 +472,7 @@ function layoutPixelRow(
     config.hasMeasuredMoreLink === false
       ? undefined
       : config.moreLinkHeight ?? EVENT_HEIGHT,
-    config.neededLevelCount ?? 8,
+    config.levelCapacity ?? 8,
     new Map(Object.entries(heights)),
   )
 }

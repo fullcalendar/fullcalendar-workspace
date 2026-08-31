@@ -121,8 +121,7 @@ export function buildTimelineSegPlacements(
   )
 
   const renderSlices = [...layout.renderSlices].sort((a, b) =>
-    computeTimelineSegStart(a.sourceSeg) -
-      computeTimelineSegStart(b.sourceSeg) ||
+    a.start - b.start ||
     a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
   )
   const hiddenGroups = groupLaterallyIntersecting(layout.hiddenSlices)
@@ -182,8 +181,4 @@ function calculateTimelineContentHeight(
   }
 
   return contentHeight
-}
-
-function computeTimelineSegStart(seg: TimelineEventSeg): number {
-  return seg.startMs ?? seg.startDate.valueOf()
 }
