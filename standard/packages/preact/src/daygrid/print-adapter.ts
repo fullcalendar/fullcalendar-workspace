@@ -1,7 +1,4 @@
-import {
-  type HiddenSliceGroup,
-  type Slice,
-} from '../seg-placement/kernel'
+import { type Slice, sortByEventOrder } from '../seg-placement/kernel'
 import {
   buildPrintEventBands,
   planPrintDomCandidates,
@@ -15,7 +12,7 @@ import {
 export interface DayGridPrintPlan {
   sourceSegs: DayGridSourceSeg[]
   sliceLevels: Slice<DayGridSourceSeg>[][]
-  hiddenGroups: HiddenSliceGroup<DayGridSourceSeg>[]
+  hiddenSlices: Slice<DayGridSourceSeg>[]
   columnCount: number
 }
 
@@ -41,6 +38,7 @@ export function buildDayGridPrintPlan(
 
   return {
     ...candidatePlan,
+    hiddenSlices: sortByEventOrder(candidatePlan.hiddenSlices),
     sourceSegs,
     columnCount,
   }

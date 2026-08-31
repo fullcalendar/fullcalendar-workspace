@@ -8,6 +8,7 @@ import {
   afterSize,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
+  groupLaterallyIntersecting,
   memoize,
   planPrintDomCandidates,
   sortEventSegs,
@@ -53,7 +54,7 @@ export function buildTimelinePrintLayout(
   return {
     eventBands: buildPrintEventBands(plan.sliceLevels, printSegHeights),
     moreLinkBand: buildPrintMoreLinkBand(
-      plan.hiddenGroups,
+      groupLaterallyIntersecting(plan.hiddenSlices),
       printMoreLinkHeights,
     ),
   }

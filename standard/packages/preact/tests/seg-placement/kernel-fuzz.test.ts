@@ -9,6 +9,7 @@ import {
   convertSegLevelsToWholeSlices,
   convertSegsToWholeSlices,
   getSliceKey,
+  groupLaterallyIntersecting,
   isPartialSlice,
   placeExtraSlicesInLevels,
 } from '../../src/seg-placement/kernel'
@@ -41,8 +42,9 @@ describe('pure positioning kernel fuzzing', () => {
         tax,
       )
       const label = JSON.stringify({ seed, maxLevels, strict, slicing, tax })
+      const hiddenGroups = groupLaterallyIntersecting(placement.hiddenSlices)
       auditLevels(placement.sliceLevels, strict, label)
-      auditGroups(placement.hiddenGroups, label)
+      auditGroups(hiddenGroups, label)
       auditCoverage(sources, placement.sliceLevels, placement.hiddenSlices, label)
 
       if (tax && placement.sliceLevels.length) {
@@ -50,7 +52,7 @@ describe('pure positioning kernel fuzzing', () => {
           placement.sliceLevels[placement.sliceLevels.length - 1]
         for (const slice of bottomLevel) {
           invariant(
-            !placement.hiddenGroups.some((group) => intersects(group, slice)),
+            !hiddenGroups.some((group) => intersects(group, slice)),
             'bottom-level slice overlaps taxed link coverage',
             label,
           )
@@ -80,7 +82,7 @@ describe('pure positioning kernel fuzzing', () => {
       )
       const label = JSON.stringify({ seed, maxPixels, moreLinkHeight, frontier, strict, slicing })
 
-      auditGroups(layout.hiddenGroups, label)
+      auditGroups(groupLaterallyIntersecting(layout.hiddenSlices), label)
       auditPixelPlacement(layout, heights, maxPixels, moreLinkHeight, label)
       auditAccountability(sources, layout, label)
       auditRenderSet(layout, heights, label)
@@ -133,7 +135,7 @@ describe('pure positioning kernel fuzzing', () => {
       const label = JSON.stringify({ seed, maxPixels, moreLinkHeight })
 
       auditPixelPlacement(layout, heights, maxPixels, moreLinkHeight, label)
-      auditGroups(layout.hiddenGroups, label)
+      auditGroups(groupLaterallyIntersecting(layout.hiddenSlices), label)
       auditRenderSet(layout, heights, label)
 
       // A pending slice is a mounted slice without a measurement.
@@ -153,10 +155,8 @@ describe('pure positioning kernel fuzzing', () => {
         // plan legitimately keeps it hidden.
         if (!isPartialSlice(slice) && frontierKeys.has(key)) {
           invariant(
-            !layout.hiddenGroups.some((group) =>
-              group.hiddenSlices.some((hidden) =>
-                hidden.sourceSeg === slice.sourceSeg,
-              ),
+            !layout.hiddenSlices.some((hidden) =>
+              hidden.sourceSeg === slice.sourceSeg,
             ),
             'pending whole leaked into a more link',
             label,
@@ -310,7 +310,7 @@ function visibleSlices(
 function auditPixelPlacement(
   layout: {
     renderSlices: Slice<TestSeg>[]
-    hiddenGroups: HiddenSliceGroup<TestSeg>[]
+    hiddenSlices: Slice<TestSeg>[]
     sliceCoords: ReadonlyMap<string, number>
   },
   heights: ReadonlyMap<string, number>,
@@ -320,6 +320,7 @@ function auditPixelPlacement(
 ): void {
   const moreLinkEventMax = Math.max(0, maxPixels - moreLinkHeight)
   const visible = visibleSlices(layout)
+  const hiddenGroups = groupLaterallyIntersecting(layout.hiddenSlices)
 
   for (const slice of visible) {
     const key = getSliceKey(slice)
@@ -331,7 +332,7 @@ function auditPixelPlacement(
       `${key} broke the pixel budget`,
       label,
     )
-    if (layout.hiddenGroups.some((group) => intersects(group, slice))) {
+    if (hiddenGroups.some((group) => intersects(group, slice))) {
       invariant(
         coord + height! <= moreLinkEventMax + GEOMETRY_TOLERANCE,
         `${key} intrudes into the reserved link band`,
@@ -364,7 +365,7 @@ function auditAccountability(
   sources: readonly TestSeg[],
   layout: {
     renderSlices: Slice<TestSeg>[]
-    hiddenGroups: HiddenSliceGroup<TestSeg>[]
+    hiddenSlices: Slice<TestSeg>[]
     sliceCoords: ReadonlyMap<string, number>
   },
   label: string,
@@ -373,10 +374,8 @@ function auditAccountability(
   for (const slice of visibleSlices(layout)) {
     accounted.add(slice.sourceSeg)
   }
-  for (const group of layout.hiddenGroups) {
-    for (const slice of group.hiddenSlices) {
-      accounted.add(slice.sourceSeg)
-    }
+  for (const slice of layout.hiddenSlices) {
+    accounted.add(slice.sourceSeg)
   }
 
   for (const source of sources) {
@@ -419,13 +418,15 @@ function projectLayout(
   layout: {
     renderSlices: Slice<TestSeg>[]
     sliceCoords: ReadonlyMap<string, number>
-    hiddenGroups: HiddenSliceGroup<TestSeg>[]
+    hiddenSlices: Slice<TestSeg>[]
   },
 ): string {
+  const hiddenGroups = groupLaterallyIntersecting(layout.hiddenSlices)
+
   return JSON.stringify({
     render: layout.renderSlices.map(getSliceKey),
     coords: [...layout.sliceCoords.entries()].sort(),
-    hidden: layout.hiddenGroups.map((group) => [
+    hidden: hiddenGroups.map((group) => [
       group.start,
       group.end,
       group.hiddenSlices.map(getSliceKey),

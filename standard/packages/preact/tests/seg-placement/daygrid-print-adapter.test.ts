@@ -18,7 +18,7 @@ describe('DayGrid print planning', () => {
     )
     const plan = buildDayGridPrintPlan(segs, false, true, 2)
     const visibleSlices = plan.sliceLevels.flat()
-    const hiddenSlices = plan.hiddenGroups.flatMap((group) => group.hiddenSlices)
+    const { hiddenSlices } = plan
 
     expect(plan.sourceSegs).toHaveLength(DEFAULT_PRINT_MAX_LEVELS + 2)
     expect(new Set(visibleSlices.map((slice) => slice.sourceSeg.key)))
@@ -49,19 +49,19 @@ describe('DayGrid print planning', () => {
     expect(hiddenCountsByColumn(plan)).toEqual([1, 2, 1])
     expect(buildDayGridPopoverSegs(
       plan.sourceSegs,
-      plan.hiddenGroups,
+      plan.hiddenSlices,
       0,
     ).hiddenSegs.map(segId))
       .toEqual(['left-hidden'])
     expect(buildDayGridPopoverSegs(
       plan.sourceSegs,
-      plan.hiddenGroups,
+      plan.hiddenSlices,
       1,
     ).hiddenSegs.map(segId))
       .toEqual(['left-hidden', 'right-hidden'])
     expect(buildDayGridPopoverSegs(
       plan.sourceSegs,
-      plan.hiddenGroups,
+      plan.hiddenSlices,
       2,
     ).hiddenSegs.map(segId))
       .toEqual(['right-hidden'])
@@ -77,8 +77,8 @@ describe('DayGrid print planning', () => {
     const unsliced = buildDayGridPrintPlan([...blockers, wide], false, false, 3)
     const slicedVisible = sliced.sliceLevels.flat()
     const unslicedVisible = unsliced.sliceLevels.flat()
-    const slicedHidden = sliced.hiddenGroups.flatMap((group) => group.hiddenSlices)
-    const unslicedHidden = unsliced.hiddenGroups.flatMap((group) => group.hiddenSlices)
+    const slicedHidden = sliced.hiddenSlices
+    const unslicedHidden = unsliced.hiddenSlices
 
     expect(slicedVisible.some((slice) => slice.sourceSeg.key === 'wide:0'))
       .toBe(true)
@@ -110,8 +110,8 @@ describe('DayGrid print band transposition', () => {
 
   it('gives every column the same slots, including empty ones', () => {
     const columns = buildDayGridPrintColumns(plan, new Map([
-      ['wide:0', 12],
-      ['left-later:0', 7],
+      ['wide:0:0:2', 12],
+      ['left-later:0:0:1', 7],
     ]))
     const signatures = columns.map((column) => column.map((slot) => ({
       levelIndex: slot.levelIndex,
@@ -145,9 +145,9 @@ describe('DayGrid print band transposition', () => {
   it('uses current measurements directly so bands can grow and shrink', () => {
     const sizes = (heights: [number, number, number]) =>
       buildDayGridPrintColumns(plan, new Map([
-        ['wide:0', heights[0]],
-        ['right:2', heights[1]],
-        ['left-later:0', heights[2]],
+        ['wide:0:0:2', heights[0]],
+        ['right:2:2:3', heights[1]],
+        ['left-later:0:0:1', heights[2]],
       ]))[0].map((slot) => slot.thickness)
 
     expect(sizes([8, 9, 6])).toEqual([9, 6])
@@ -209,7 +209,7 @@ function hiddenCountsByColumn(plan: ReturnType<typeof buildDayGridPrintPlan>): n
     { length: plan.columnCount },
     (_, column) => buildDayGridPopoverSegs(
       plan.sourceSegs,
-      plan.hiddenGroups,
+      plan.hiddenSlices,
       column,
     ).hiddenSegs.length,
   )

@@ -22,7 +22,8 @@ export const DEFAULT_PRINT_MAX_LEVELS = 200
  */
 export interface PrintCandidatePlan<S extends SourceSeg = SourceSeg> {
   sliceLevels: Slice<S>[][]
-  hiddenGroups: HiddenSliceGroup<S>[]
+  /** Exact hidden membership, with no ordering guarantee. */
+  hiddenSlices: Slice<S>[]
 }
 
 export function planPrintDomCandidates<S extends SourceSeg>(
@@ -45,7 +46,7 @@ export function planPrintDomCandidates<S extends SourceSeg>(
 
   return {
     sliceLevels: placement.sliceLevels,
-    hiddenGroups: placement.hiddenGroups,
+    hiddenSlices: placement.hiddenSlices,
   }
 }
 
@@ -128,7 +129,7 @@ export function buildPrintMoreLinkBand<S extends SourceSeg>(
     return null
   }
 
-  // Groups arrive already event-ordered and keyed by their first slice.
+  // Group members arrive event-ordered, with the first member defining the key.
   return {
     moreLinkGroups: hiddenGroups,
     thickness: Math.max(...hiddenGroups.map((group) =>

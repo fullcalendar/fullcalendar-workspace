@@ -255,7 +255,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           const printPopover = printPlan
             ? buildDayGridPopoverSegs(
               printPlan.sourceSegs,
-              printPlan.hiddenGroups,
+              printPlan.hiddenSlices,
               col,
             )
             : null

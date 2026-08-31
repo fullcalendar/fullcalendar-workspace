@@ -1,12 +1,12 @@
 import {
   DEFAULT_UNMEASURED_EVENT_THICKNESS,
-  type HiddenSliceGroup,
   type Slice,
   type SliceLayout,
   buildLevelLimitedLayout,
   buildPixelLimitedLayout,
   getSliceKey,
   isPartialSlice,
+  sortByEventOrder,
 } from '../seg-placement/kernel'
 import {
   type DayRowEventRange,
@@ -32,7 +32,7 @@ export interface DayGridPlacementColumn {
   contentHeight: number
   /** Every source crossing this column, cut for more-link APIs. */
   segs: DayRowEventRangePart[]
-  /** Hidden source membership projected from kernel glob groups. */
+  /** Hidden source membership projected from the kernel's hidden slices. */
   hiddenSegs: DayRowEventRangePart[]
 }
 
@@ -132,10 +132,10 @@ export function buildDayGridPixelPlacements(
   )
 }
 
-/** Projects ordered sources and hidden slices into one cell's more-link inputs. */
+/** Projects ordered sources and event-ordered hidden slices into one cell. */
 export function buildDayGridPopoverSegs(
   eventOrderedSegs: readonly DayGridSourceSeg[],
-  hiddenGroups: readonly HiddenSliceGroup<DayGridSourceSeg>[],
+  hiddenSlices: readonly Slice<DayGridSourceSeg>[],
   column: number,
 ): {
   segs: DayRowEventRangePart[]
@@ -145,12 +145,9 @@ export function buildDayGridPopoverSegs(
     segs: eventOrderedSegs.flatMap((source) =>
       cutSegToColumn(source, column) ?? [],
     ),
-    hiddenSegs: hiddenGroups
-      .flatMap((group) => group.hiddenSlices)
-      .sort((a, b) => a.sourceSeg.orderIndex - b.sourceSeg.orderIndex)
-      .flatMap((slice) =>
-        cutSegToColumn(slice.sourceSeg, column, slice) ?? [],
-      ),
+    hiddenSegs: hiddenSlices.flatMap((slice) =>
+      cutSegToColumn(slice.sourceSeg, column, slice) ?? [],
+    ),
   }
 }
 
@@ -238,10 +235,11 @@ function buildDayGridPlacementLayout(
   columnCount: number,
 ): DayGridPlacementLayout {
   const {
-    hiddenGroups,
+    hiddenSlices,
     renderSlices,
     sliceCoords,
   } = layout
+  const eventOrderedHiddenSlices = sortByEventOrder(hiddenSlices)
   const slicesByStart = federateSlicesByStart(renderSlices, columnCount)
   const columns = Array.from(
     { length: columnCount },
@@ -251,7 +249,7 @@ function buildDayGridPlacementLayout(
       contentHeight: 0,
       ...buildDayGridPopoverSegs(
         sourceSegs,
-        hiddenGroups,
+        eventOrderedHiddenSlices,
         column,
       ),
     }),

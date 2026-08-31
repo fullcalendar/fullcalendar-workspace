@@ -5,6 +5,7 @@ import {
   buildLevelLimitedLayout,
   computeLateralSpanBottom,
   getSliceKey,
+  groupLaterallyIntersecting,
 } from '@fullcalendar/preact/protected-api'
 import { type TimelineRange } from './TimelineLaneSlicer'
 import { type TimelineDateProfile } from './timeline-date-profile'
@@ -124,13 +125,14 @@ export function buildTimelineSegPlacements(
       computeTimelineSegStart(b.sourceSeg) ||
     a.sourceSeg.orderIndex - b.sourceSeg.orderIndex,
   )
+  const hiddenGroups = groupLaterallyIntersecting(layout.hiddenSlices)
 
-  const moreLinks = layout.hiddenGroups.map((group) => ({
+  const moreLinks = hiddenGroups.map((group) => ({
     key: group.key,
     start: group.start,
     end: group.end,
     top: computeLateralSpanBottom(
-      layout.renderSlices,
+      layout.sliceLevels,
       group,
       layout.sliceCoords,
       sliceHeights,

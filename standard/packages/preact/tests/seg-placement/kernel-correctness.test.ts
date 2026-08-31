@@ -60,7 +60,7 @@ describe('pure positioning kernel', () => {
     expect(projectSlices(unsliced.sliceLevels.flat())).toEqual([
       ['base', 1, 2],
     ])
-    expect(projectSlices(unsliced.hiddenGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(hiddenGroupsOf(unsliced)[0].hiddenSlices)).toEqual([
       ['extra', 0, 3],
     ])
 
@@ -76,7 +76,7 @@ describe('pure positioning kernel', () => {
       ['base', 1, 2],
       ['extra', 2, 3],
     ])
-    expect(projectSlices(sliced.hiddenGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(hiddenGroupsOf(sliced)[0].hiddenSlices)).toEqual([
       ['extra', 1, 2],
     ])
     expect(projectSlices(sliced.addedSlices)).toEqual([
@@ -100,7 +100,7 @@ describe('pure positioning kernel', () => {
       0,
     )
     expect(projectSlices(untaxed.sliceLevels.flat())).toEqual([['base', 0, 1]])
-    expect(projectSlices(untaxed.hiddenGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(hiddenGroupsOf(untaxed)[0].hiddenSlices)).toEqual([
       ['extra', 0, 1],
     ])
 
@@ -112,9 +112,9 @@ describe('pure positioning kernel', () => {
       1,
     )
     expect(taxed.sliceLevels.flat()).toEqual([])
-    expect(taxed.hiddenGroups[0]).toMatchObject({ start: 0, end: 1 })
+    expect(hiddenGroupsOf(taxed)[0]).toMatchObject({ start: 0, end: 1 })
     // Group members are in event order, not hiding order.
-    expect(taxed.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+    expect(hiddenGroupsOf(taxed)[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['base', 'extra'])
     auditCoverage([base, extra], taxed.sliceLevels, taxed.hiddenSlices)
   })
@@ -135,8 +135,8 @@ describe('pure positioning kernel', () => {
       10,
     )
 
+    // The placement structure re-levels around the exclusion.
     expect(result.placementSliceLevels.map(projectSlices)).toEqual([
-      [],
       [['later', 0, 1]],
     ])
     expect(result.excludedSlices).toEqual([levels[0][0]])
@@ -155,10 +155,10 @@ describe('pure positioning kernel', () => {
       10,
     )
 
-    expect(result.pendingSlices).toEqual([levels[0][0]])
+    expect(result.isSettled).toBe(false)
     expect(result.excludedSlices).toEqual([])
+    // The placement structure re-levels around the pending slice.
     expect(result.placementSliceLevels.map(projectSlices)).toEqual([
-      [],
       [['measured', 0, 1]],
     ])
     expect(result.sliceCoords.get(measured.key)).toBe(0)
@@ -203,8 +203,8 @@ describe('pure positioning kernel', () => {
     expect(coordOf(layout, 'b:0')).toBe(10)
     expect(coordOf(layout, 'c:0')).toBe(undefined)
     expect(layout.renderSlices.map(getSliceKey)).toEqual(['a:0', 'b:0', 'c:0'])
-    expect(layout.hiddenGroups).toHaveLength(1)
-    expect(layout.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+    expect(hiddenGroupsOf(layout)).toHaveLength(1)
+    expect(hiddenGroupsOf(layout)[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['c'])
   })
 
@@ -235,11 +235,11 @@ describe('pure positioning kernel', () => {
     expect(layout.renderSlices.map(getSliceKey)).toEqual([
       'a:0', 'b:0', 'c:0', 'd:0',
     ])
-    expect(layout.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+    expect(hiddenGroupsOf(layout)[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['b', 'c', 'd'])
   })
 
-  it('mounts candidate partials as donors, then accepts them once measured', () => {
+  it('mounts candidate partials while the deepest occupant pays the link tax', () => {
     const sources = segs([
       ['base', 1, 2],
       ['extra', 0, 3],
@@ -247,8 +247,9 @@ describe('pure positioning kernel', () => {
     const [base] = sources
     const wholeHeights = new Map([[base.key, 10]])
 
-    // extra never fit the one-level frontier, so it hides whole while its
-    // candidate fragments mount invisibly for measurement.
+    // extra never fit the one-level frontier, so its candidate fragments
+    // mount invisibly for measurement. Its hidden middle reserves the only
+    // occupied level for the link, consuming base by deliberate policy.
     const awaiting = buildPixelLimitedLayout(
       sources,
       false,
@@ -269,12 +270,13 @@ describe('pure positioning kernel', () => {
       'extra:0:2:slice',
     ])
     expect(awaiting.isSettled).toBe(false)
-    expect(awaiting.hiddenGroups[0].hiddenSlices.map(projectSlice)).toEqual([
-      ['extra', 0, 3],
+    expect(hiddenGroupsOf(awaiting)[0].hiddenSlices.map(projectSlice)).toEqual([
+      ['base', 1, 2],
+      ['extra', 1, 2],
     ])
 
-    // With both fragment measurements in hand, the candidate validates and
-    // replaces the safe plan wholesale.
+    // With both fragment measurements in hand, the fragments become visible;
+    // base remains an invisible donor and a member of the link group.
     const accepted = buildPixelLimitedLayout(
       sources,
       false,
@@ -290,12 +292,13 @@ describe('pure positioning kernel', () => {
     )
     expect(coordOf(accepted, 'extra:0:0:slice')).toBe(0)
     expect(coordOf(accepted, 'extra:0:2:slice')).toBe(0)
-    expect(coordOf(accepted, 'base:1')).toBe(0)
+    expect(coordOf(accepted, 'base:1')).toBe(undefined)
     expect(accepted.isSettled).toBe(true)
-    expect(accepted.hiddenGroups[0].hiddenSlices.map(projectSlice)).toEqual([
+    expect(hiddenGroupsOf(accepted)[0].hiddenSlices.map(projectSlice)).toEqual([
+      ['base', 1, 2],
       ['extra', 1, 2],
     ])
-    expect(accepted.hiddenGroups[0].hiddenSlices[0]).toMatchObject({
+    expect(hiddenGroupsOf(accepted)[0].hiddenSlices[1]).toMatchObject({
       isStart: false,
       isEnd: false,
     })
@@ -327,7 +330,7 @@ describe('pure positioning kernel', () => {
     expect(unmeasuredKeys(layout, heights)).toEqual(['pending:0'])
     expect(layout.isSettled).toBe(false)
     // A pending whole's fate is undetermined: it must not grow any more link.
-    expect(layout.hiddenGroups).toEqual([])
+    expect(hiddenGroupsOf(layout)).toEqual([])
   })
 
   it('merges hull groups per source event in event order', () => {
@@ -385,8 +388,8 @@ describe('pure positioning kernel', () => {
       false,
       1,
     )
-    expect(placement.hiddenGroups[0]).toMatchObject({ start: 0, end: 3 })
-    expect(placement.hiddenGroups[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
+    expect(hiddenGroupsOf(placement)[0]).toMatchObject({ start: 0, end: 3 })
+    expect(hiddenGroupsOf(placement)[0].hiddenSlices.map((slice) => slice.sourceSeg.id))
       .toEqual(['base', 'extra'])
     auditCoverage([base, extra], placement.sliceLevels, placement.hiddenSlices)
   })
@@ -440,7 +443,7 @@ describe('pure positioning kernel', () => {
     expect(projectSlices(strict.sliceLevels[0])).toEqual([
       ['unrelated', 2, 3],
     ])
-    expect(projectSlices(strict.hiddenGroups[0].hiddenSlices)).toEqual([
+    expect(projectSlices(hiddenGroupsOf(strict)[0].hiddenSlices)).toEqual([
       ['late', 0, 2],
     ])
   })
@@ -470,6 +473,12 @@ function projectSlice(slice: Slice<TestSeg>) {
 
 function projectSlices(slices: readonly Slice<TestSeg>[]) {
   return slices.map(projectSlice)
+}
+
+function hiddenGroupsOf(
+  result: { hiddenSlices: readonly Slice<TestSeg>[] },
+): HiddenSliceGroup<TestSeg>[] {
+  return groupLaterallyIntersecting(result.hiddenSlices)
 }
 
 function coordOf(

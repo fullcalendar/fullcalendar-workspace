@@ -4,6 +4,7 @@ import {
   type SourceSeg,
   convertSegsToWholeSlices,
   groupLaterallyIntersecting,
+  sortByEventOrder,
 } from '../../src/seg-placement/kernel'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
@@ -102,7 +103,7 @@ describe('print DOM planning', () => {
     ))
     const plan = planPrintDomCandidates(segs, false, false)
     const visibleSlices = plan.sliceLevels.flat()
-    const hiddenSlices = plan.hiddenGroups.flatMap((group) => group.hiddenSlices)
+    const hiddenSlices = sortByEventOrder(plan.hiddenSlices)
 
     expect(plan.sliceLevels).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
     expect(visibleSlices).toHaveLength(DEFAULT_PRINT_MAX_LEVELS)
