@@ -1,12 +1,7 @@
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-/*
-Very similar to timeline-resource-cell-content.ts, but broken because, I think,
-Preact's new native flushSync isn't really flushing everything
-(needs to flush customContentRenderId context)
-*/
-xdescribe('timeline resource rerendering', () => {
+describe('timeline resource rerendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5586
   it('adjusts height of resource row', async () => {
     let isBig = false

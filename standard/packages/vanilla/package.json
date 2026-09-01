@@ -6,7 +6,7 @@
   "dependencies": {
     "@full-ui/headless-calendar": "workspace:7.0.2",
     "@fullcalendar/core": "workspace:7.0.2",
-    "preact": "^10.29.0"
+    "preact": "^10.29.8"
   },
   "peerDependencies": {
     "temporal-polyfill": "^1.0.1"

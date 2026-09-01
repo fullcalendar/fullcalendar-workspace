@@ -789,10 +789,10 @@ importers:
     dependencies:
       '@fullcalendar/preact':
         specifier: ^7.0.2
-        version: file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1)
+        version: file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1)
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
@@ -802,7 +802,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
-        version: 2.10.5(@babel/core@7.29.0)(preact@10.29.1)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
+        version: 2.10.5(@babel/core@7.29.0)(preact@10.29.8)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
       typescript:
         specifier: ^5.5.0
         version: 5.9.3
@@ -814,13 +814,13 @@ importers:
     dependencies:
       '@fullcalendar/preact':
         specifier: ^7.0.2
-        version: file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1)
+        version: file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1)
       '@fullcalendar/preact-scheduler':
         specifier: ^7.0.2
-        version: file:premium/packages/preact-scheduler/dist(@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1))(preact@10.29.1)(temporal-polyfill@1.0.1)
+        version: file:premium/packages/preact-scheduler/dist(@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1))(preact@10.29.8)(temporal-polyfill@1.0.1)
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
@@ -832,7 +832,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
-        version: 2.10.5(@babel/core@7.29.0)(preact@10.29.1)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
+        version: 2.10.5(@babel/core@7.29.0)(preact@10.29.8)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
       typescript:
         specifier: ^5.5.0
         version: 5.9.3
@@ -1731,8 +1731,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../../../standard/packages/preact/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1800,8 +1800,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../../../standard/packages/vanilla/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar/preact':
         specifier: workspace:7.0.2
@@ -1916,8 +1916,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../../../standard/packages/core-types/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar/vue3':
         specifier: workspace:7.0.2
@@ -1948,8 +1948,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../../../standard/packages/core-types/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar/web-component':
         specifier: workspace:7.0.2
@@ -2241,8 +2241,8 @@ importers:
         specifier: ^4.1.2
         version: 4.7.8
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
@@ -2327,8 +2327,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../core-types/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2365,8 +2365,8 @@ importers:
         specifier: ^0.5.40
         version: 0.5.48
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
       xhr-mock:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2467,8 +2467,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../core-types/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2520,8 +2520,8 @@ importers:
         specifier: workspace:7.0.2
         version: link:../core-types/dist
       preact:
-        specifier: ^10.29.0
-        version: 10.29.1
+        specifier: ^10.29.8
+        version: 10.29.8
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -7494,13 +7494,13 @@ packages:
     resolution: {directory: premium/packages/preact-scheduler/dist, type: directory}
     peerDependencies:
       '@fullcalendar/preact': workspace:7.0.2
-      preact: ^10.29.0
+      preact: ^10.29.8
       temporal-polyfill: ^1.0.1
 
   '@fullcalendar/preact@file:standard/packages/preact/dist':
     resolution: {directory: standard/packages/preact/dist, type: directory}
     peerDependencies:
-      preact: ^10.29.0
+      preact: ^10.29.8
       temporal-polyfill: ^1.0.1
 
   '@fullcalendar/react-scheduler@file:premium/packages/react-scheduler/dist':
@@ -20077,8 +20077,13 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact@10.29.1:
-    resolution: {integrity: sha512-gQCLc/vWroE8lIpleXtdJhTFDogTdZG9AjMUpVkDf2iTCNwYNWA+u16dL41TqUDJO4gm2IgrcMv3uTpjd4Pwmg==}
+  preact@10.29.8:
+    resolution: {integrity: sha512-ej2aVZ+vZ8WO7tvlQWRM9N63A0KzF9q4mWJfDUHgYaIofWY9hu74QdnQrjoPMmZi2/nZ5gN0bJCQF49xQqx09Q==}
+    peerDependencies:
+      preact-render-to-string: '>=5'
+    peerDependenciesMeta:
+      preact-render-to-string:
+        optional: true
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -28717,20 +28722,20 @@ snapshots:
       temporal-polyfill: 1.0.1
       tslib: 2.8.1
 
-  '@fullcalendar/preact-scheduler@file:premium/packages/preact-scheduler/dist(@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1))(preact@10.29.1)(temporal-polyfill@1.0.1)':
+  '@fullcalendar/preact-scheduler@file:premium/packages/preact-scheduler/dist(@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1))(preact@10.29.8)(temporal-polyfill@1.0.1)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      '@fullcalendar/preact': file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1)
-      preact: 10.29.1
+      '@fullcalendar/preact': file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1)
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
 
-  '@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.1)(temporal-polyfill@1.0.1)':
+  '@fullcalendar/preact@file:standard/packages/preact/dist(preact@10.29.8)(temporal-polyfill@1.0.1)':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
 
   '@fullcalendar/react-scheduler@file:premium/packages/react-scheduler/dist(@fullcalendar/react@file:standard/packages/react/dist(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@1.0.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(temporal-polyfill@1.0.1)':
@@ -28791,25 +28796,31 @@ snapshots:
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
       '@fullcalendar/vue3': file:standard/packages/vue3/dist(temporal-polyfill@1.0.1)(vue@3.5.27(typescript@4.9.5))
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
       vue: 3.5.27(typescript@4.9.5)
+    transitivePeerDependencies:
+      - preact-render-to-string
 
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(temporal-polyfill@1.0.1)(vue@3.5.27(typescript@4.9.5))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
       vue: 3.5.27(typescript@4.9.5)
+    transitivePeerDependencies:
+      - preact-render-to-string
 
   '@fullcalendar/vue3@file:standard/packages/vue3/dist(temporal-polyfill@1.0.1)(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
       vue: 3.5.27(typescript@5.9.3)
+    transitivePeerDependencies:
+      - preact-render-to-string
 
   '@gar/promise-retry@1.0.3': {}
 
@@ -29445,25 +29456,49 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/base64@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/base64@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/buffers@1.2.1(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/buffers@1.2.1(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/buffers@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/buffers@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/codegen@1.0.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
 
+  '@jsonjoy.com/codegen@1.0.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
+
   '@jsonjoy.com/codegen@17.65.0(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/codegen@17.65.0(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-core@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29471,6 +29506,13 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-core@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29480,9 +29522,21 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-fsa@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.6.3)':
     dependencies:
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-node-builtins@4.56.10(tslib@2.8.1)':
+    dependencies:
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29491,10 +29545,22 @@ snapshots:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-node-to-fsa@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-node-utils@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-node@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29507,11 +29573,28 @@ snapshots:
       thingies: 2.5.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/fs-node@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
+      glob-to-regex.js: 1.2.0(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/fs-print@4.56.10(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-print@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.6.3)':
     dependencies:
@@ -29520,6 +29603,14 @@ snapshots:
       '@jsonjoy.com/json-pack': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/fs-snapshot@4.56.10(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/json-pack': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/json-pack@1.21.0(tslib@2.6.3)':
     dependencies:
@@ -29535,14 +29626,14 @@ snapshots:
 
   '@jsonjoy.com/json-pack@1.21.0(tslib@2.8.1)':
     dependencies:
-      '@jsonjoy.com/base64': 1.1.2(tslib@2.6.3)
-      '@jsonjoy.com/buffers': 1.2.1(tslib@2.6.3)
-      '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
-      '@jsonjoy.com/json-pointer': 1.0.2(tslib@2.6.3)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
+      '@jsonjoy.com/base64': 1.1.2(tslib@2.8.1)
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      '@jsonjoy.com/json-pointer': 1.0.2(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
       hyperdyperid: 1.2.0
-      thingies: 2.5.0(tslib@2.6.3)
-      tree-dump: 1.1.0(tslib@2.6.3)
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
 
   '@jsonjoy.com/json-pack@17.65.0(tslib@2.6.3)':
@@ -29557,16 +29648,39 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/json-pack@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/base64': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/json-pointer': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      hyperdyperid: 1.2.0
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/json-pointer@1.0.2(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
       '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
       tslib: 2.6.3
 
+  '@jsonjoy.com/json-pointer@1.0.2(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      tslib: 2.8.1
+
   '@jsonjoy.com/json-pointer@17.65.0(tslib@2.6.3)':
     dependencies:
       '@jsonjoy.com/util': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/json-pointer@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/util': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jsonjoy.com/util@1.9.0(tslib@2.6.3)':
     dependencies:
@@ -29576,8 +29690,8 @@ snapshots:
 
   '@jsonjoy.com/util@1.9.0(tslib@2.8.1)':
     dependencies:
-      '@jsonjoy.com/buffers': 1.2.1(tslib@2.6.3)
-      '@jsonjoy.com/codegen': 1.0.0(tslib@2.6.3)
+      '@jsonjoy.com/buffers': 1.2.1(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 1.0.0(tslib@2.8.1)
       tslib: 2.8.1
 
   '@jsonjoy.com/util@17.65.0(tslib@2.6.3)':
@@ -29585,6 +29699,12 @@ snapshots:
       '@jsonjoy.com/buffers': 17.65.0(tslib@2.6.3)
       '@jsonjoy.com/codegen': 17.65.0(tslib@2.6.3)
       tslib: 2.6.3
+
+  '@jsonjoy.com/util@17.65.0(tslib@2.8.1)':
+    dependencies:
+      '@jsonjoy.com/buffers': 17.65.0(tslib@2.8.1)
+      '@jsonjoy.com/codegen': 17.65.0(tslib@2.8.1)
+      tslib: 2.8.1
 
   '@jspm/core@2.1.0': {}
 
@@ -31549,12 +31669,12 @@ snapshots:
 
   '@poppinss/exception@1.2.3': {}
 
-  '@preact/preset-vite@2.10.5(@babel/core@7.29.0)(preact@10.29.1)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
+  '@preact/preset-vite@2.10.5(@babel/core@7.29.0)(preact@10.29.8)(rollup@4.60.2)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-transform-react-jsx': 7.28.6(@babel/core@7.29.0)
       '@babel/plugin-transform-react-jsx-development': 7.27.1(@babel/core@7.29.0)
-      '@prefresh/vite': 2.4.12(preact@10.29.1)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
+      '@prefresh/vite': 2.4.12(preact@10.29.8)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
       '@rollup/pluginutils': 5.3.0(rollup@4.60.2)
       babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.29.0)
       debug: 4.4.3(supports-color@8.1.1)
@@ -31570,20 +31690,20 @@ snapshots:
 
   '@prefresh/babel-plugin@0.5.3': {}
 
-  '@prefresh/core@1.5.9(preact@10.29.1)':
+  '@prefresh/core@1.5.9(preact@10.29.8)':
     dependencies:
-      preact: 10.29.1
+      preact: 10.29.8
 
   '@prefresh/utils@1.2.1': {}
 
-  '@prefresh/vite@2.4.12(preact@10.29.1)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
+  '@prefresh/vite@2.4.12(preact@10.29.8)(vite@6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
     dependencies:
       '@babel/core': 7.29.0
       '@prefresh/babel-plugin': 0.5.3
-      '@prefresh/core': 1.5.9(preact@10.29.1)
+      '@prefresh/core': 1.5.9(preact@10.29.8)
       '@prefresh/utils': 1.2.1
       '@rollup/pluginutils': 4.2.1
-      preact: 10.29.1
+      preact: 10.29.8
       vite: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - supports-color
@@ -39173,15 +39293,19 @@ snapshots:
       '@full-ui/headless-grid': link:premium/packages/headless-grid/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
       fullcalendar: file:standard/packages/vanilla/dist(temporal-polyfill@1.0.1)
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
+    transitivePeerDependencies:
+      - preact-render-to-string
 
   fullcalendar@file:standard/packages/vanilla/dist(temporal-polyfill@1.0.1):
     dependencies:
       '@full-ui/headless-calendar': link:standard/packages/headless-calendar/dist
       '@fullcalendar/core': link:standard/packages/core-types/dist
-      preact: 10.29.1
+      preact: 10.29.8
       temporal-polyfill: 1.0.1
+    transitivePeerDependencies:
+      - preact-render-to-string
 
   function-bind@1.1.2: {}
 
@@ -41793,19 +41917,19 @@ snapshots:
 
   memfs@4.56.10(tslib@2.8.1):
     dependencies:
-      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.6.3)
-      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.6.3)
-      '@jsonjoy.com/util': 1.9.0(tslib@2.6.3)
-      glob-to-regex.js: 1.2.0(tslib@2.6.3)
-      thingies: 2.5.0(tslib@2.6.3)
-      tree-dump: 1.1.0(tslib@2.6.3)
+      '@jsonjoy.com/fs-core': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-builtins': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-to-fsa': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-node-utils': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-print': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/fs-snapshot': 4.56.10(tslib@2.8.1)
+      '@jsonjoy.com/json-pack': 1.21.0(tslib@2.8.1)
+      '@jsonjoy.com/util': 1.9.0(tslib@2.8.1)
+      glob-to-regex.js: 1.2.0(tslib@2.8.1)
+      thingies: 2.5.0(tslib@2.8.1)
+      tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
 
   merge-descriptors@1.0.3: {}
@@ -44771,7 +44895,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  preact@10.29.1: {}
+  preact@10.29.8: {}
 
   prelude-ls@1.2.1: {}
 
