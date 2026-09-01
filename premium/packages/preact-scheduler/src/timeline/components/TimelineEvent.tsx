@@ -1,7 +1,8 @@
-import { MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/preact/protected-api'
+import { Dictionary, MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
+  extraRenderProps?: Dictionary // so can include a resource
 }
 
 const DEFAULT_TIME_FORMAT = createFormatter({

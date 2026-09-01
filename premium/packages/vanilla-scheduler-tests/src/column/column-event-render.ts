@@ -306,5 +306,96 @@ describe('vresource event rendering', () => {
       })
       expect($('.event1').length).toBe(1)
     })
+
+    // https://github.com/fullcalendar/fullcalendar/issues/4926
+    it('gives eventContent the resource of the column being rendered', () => {
+      const resourceIds: string[] = []
+      initCalendar({
+        initialView: 'resourceTimeGridDay',
+        eventContent(arg) {
+          const id = arg.resource ? arg.resource.id : '(none)'
+          if (!resourceIds.includes(id)) { // hook can fire again on re-render
+            resourceIds.push(id)
+          }
+        },
+      })
+      expect(resourceIds.sort()).toEqual(['a', 'b'])
+    })
+
+    it('gives eventClass the resource of the column being rendered', () => {
+      initCalendar({
+        initialView: 'resourceTimeGridDay',
+        eventClass(arg) {
+          return arg.resource ? `res-${arg.resource.id}` : 'res-none'
+        },
+      })
+      expect($('.res-a').length).toBe(1)
+      expect($('.res-b').length).toBe(1)
+      expect($('.res-none').length).toBe(0)
+    })
+
+    it('leaves eventContent without a resource in a non-resource view', () => {
+      let callCnt = 0
+      let sawResource = false
+      initCalendar({
+        initialView: 'timeGridTwoDay',
+        views: {
+          timeGridTwoDay: {
+            type: 'timeGrid',
+            duration: { days: 2 },
+          },
+        },
+        eventContent(arg) {
+          callCnt += 1
+          if (arg.resource !== undefined) {
+            sawResource = true
+          }
+        },
+      })
+      expect(callCnt).toBeGreaterThan(0)
+      expect(sawResource).toBe(false)
+    })
+
+    it('gives eventContent the resource in resourceDayGrid', () => {
+      const resourceIds: string[] = []
+      initCalendar({
+        initialView: 'resourceDayGridDay',
+        eventContent(arg) {
+          const id = arg.resource ? arg.resource.id : '(none)'
+          if (!resourceIds.includes(id)) {
+            resourceIds.push(id)
+          }
+        },
+      })
+      expect(resourceIds.sort()).toEqual(['a', 'b'])
+    })
+  })
+
+  // the all-day lane of resourceTimeGrid is a DayGrid row, a separate code path
+  // from the timed columns
+  describe('with an all-day event with multiple resources', () => {
+    pushOptions({
+      events: [{
+        title: 'all day 1',
+        className: 'allday1',
+        start: '2015-11-17',
+        allDay: true,
+        resourceIds: ['a', 'b'],
+      }],
+    })
+
+    it('gives eventContent the resource in the resourceTimeGrid all-day lane', () => {
+      const resourceIds: string[] = []
+      initCalendar({
+        initialView: 'resourceTimeGridDay',
+        eventContent(arg) {
+          const id = arg.resource ? arg.resource.id : '(none)'
+          if (!resourceIds.includes(id)) {
+            resourceIds.push(id)
+          }
+        },
+      })
+      expect(resourceIds.sort()).toEqual(['a', 'b'])
+    })
   })
 })

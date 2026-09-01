@@ -8,6 +8,7 @@ import { EventDef } from '../structs/event-def'
 import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
+import { Dictionary } from '../options'
 import { joinClassNames } from '../util/html'
 import classNames from '../styles.module.css'
 import { isPropsEqualShallow } from '../util/object'
@@ -42,6 +43,7 @@ export interface StandardEventProps {
   forcedTimeText?: string
   disableLiquid?: boolean // for inner-element
   disableZindexes?: boolean
+  extraRenderProps?: Dictionary // so can include a resource
 }
 
 export class StandardEvent extends BaseComponent<StandardEventProps> {
@@ -75,13 +77,15 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const isDraggable = !props.disableDragging && computeEventRangeDraggable(eventRange, context)
     const isBlock = /row|column/.test(props.display)
-    const subcontentRenderProps = { // TODO: spread with renderProps?
+    const subcontentRenderProps = {
+      ...props.extraRenderProps,
       event: eventApi,
       isNarrow: props.isNarrow || false,
       isShort: props.isShort || false,
       timeText,
     }
     const renderProps: EventDisplayInfo = {
+      ...props.extraRenderProps, // spread first; built-in fields below always win
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
       view: context.viewApi,
       timeText: timeText,
@@ -295,7 +299,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
 }
 
 StandardEvent.addPropsEquality({
-  seg: isPropsEqualShallow,
+  extraRenderProps: isPropsEqualShallow,
 })
 
 function renderInnerContent(innerProps: EventDisplayInfo) {

@@ -3,6 +3,7 @@ import {
   DateMarker,
   DateProfile,
   DateRange,
+  Dictionary,
   EventRangeProps,
   getEventRangeMeta,
   PrintEventBand,
@@ -29,6 +30,7 @@ export interface TimelinePrintFgProps {
   fgEventSegs: (TimelineRange & EventRangeProps)[]
   eventSelection: string
   resourceId?: string
+  extraRenderProps?: Dictionary // so can include a resource
 
   // dimensions
   slotWidth: number | undefined
@@ -57,6 +59,7 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
+            extraRenderProps={props.extraRenderProps}
           />
         ))}
         {moreLinkBand && (
@@ -70,6 +73,7 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
+            extraRenderProps={props.extraRenderProps}
           />
         )}
       </div>
@@ -85,6 +89,7 @@ interface TimelinePrintBandBaseProps {
   todayRange: DateRange
   eventSelection: string
   resourceId?: string
+  extraRenderProps?: Dictionary // so can include a resource
 }
 
 export interface TimelinePrintEventBandProps extends TimelinePrintBandBaseProps {
@@ -128,6 +133,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
               isResizing={false}
               isMirror={false}
               isSelected={isSelected}
+              extraRenderProps={props.extraRenderProps}
               {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
             />
           </MeasuredAbsoluteHarness>
@@ -172,6 +178,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
             eventResize={null}
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
+            extraRenderProps={props.extraRenderProps}
           />
         </MeasuredAbsoluteHarness>
       ))}

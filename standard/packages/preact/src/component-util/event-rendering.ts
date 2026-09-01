@@ -279,6 +279,7 @@ export interface EventDisplayInfo { // for *Content handlers
   titleClass: string
 
   options: { eventOverlap: boolean }
+  [extraProp: string]: any // so can include a resource
 }
 
 export function computeEventRangeDraggable(eventRange: EventRenderRange, context: ViewContext) {

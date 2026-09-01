@@ -805,4 +805,54 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
     expect(emptyLaneHeight).toBe(timelineGridWrapper.getResourceLaneEl('b').offsetHeight)
     expect(emptyLaneHeight).toBeLessThan(tallLaneHeight)
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/4926
+  describe('with an event shared by multiple resources', () => {
+    it('gives eventContent the resource of the lane being rendered', () => {
+      const resourceIds: string[] = []
+      initCalendar({
+        initialView: 'resourceTimelineDay',
+        now: '2015-11-17',
+        resources: [
+          { id: 'a', title: 'Resource A' },
+          { id: 'b', title: 'Resource B' },
+        ],
+        events: [{
+          title: 'shared',
+          start: '2015-11-17T02:00:00',
+          end: '2015-11-17T06:00:00',
+          resourceIds: ['a', 'b'],
+        }],
+        eventContent(arg) {
+          const id = arg.resource ? arg.resource.id : '(none)'
+          if (!resourceIds.includes(id)) { // hook can fire again on re-render
+            resourceIds.push(id)
+          }
+        },
+      })
+      expect(resourceIds.sort()).toEqual(['a', 'b'])
+    })
+
+    it('leaves eventContent without a resource in a non-resource timeline', () => {
+      let callCnt = 0
+      let sawResource = false
+      initCalendar({
+        initialView: 'timelineDay',
+        now: '2015-11-17',
+        events: [{
+          title: 'plain',
+          start: '2015-11-17T02:00:00',
+          end: '2015-11-17T06:00:00',
+        }],
+        eventContent(arg) {
+          callCnt += 1
+          if (arg.resource !== undefined) {
+            sawResource = true
+          }
+        },
+      })
+      expect(callCnt).toBeGreaterThan(0)
+      expect(sawResource).toBe(false)
+    })
+  })
 })

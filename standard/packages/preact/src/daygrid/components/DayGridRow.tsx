@@ -458,6 +458,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         defaultDisplayEventEnd={props.cells.length === 1}
         disableResizing={isListItem}
         forcedTimeText={props.cellIsMicro ? '' : undefined}
+        // the seg spans columns, so the resource comes from its start-column's cell
+        extraRenderProps={props.cells[range.start]?.renderProps}
         {...getEventRangeMeta(eventRange, props.todayRange)}
       />
     )

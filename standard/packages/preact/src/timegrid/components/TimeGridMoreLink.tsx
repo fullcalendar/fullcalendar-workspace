@@ -16,6 +16,7 @@ export interface TimeGridMoreLinkProps {
   top: CssDimValue
   height: CssDimValue
   dateSpanProps?: Dictionary
+  renderProps?: Dictionary // so can include a resource; forwarded to popover event content
   dateProfile: DateProfile
   todayRange: DateRange
   nowDate: DateMarker

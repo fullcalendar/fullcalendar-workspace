@@ -1,5 +1,5 @@
 import {
-  BaseComponent, DateMarker, DateProfile, DateRange, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
+  BaseComponent, DateMarker, DateProfile, DateRange, Dictionary, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
 } from '@fullcalendar/preact/protected-api'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
@@ -17,6 +17,7 @@ export interface TimelineLaneMoreLinkProps {
   eventResize: EventSegUiInteractionState<TimelineRange> | null
   eventSelection: string
   resourceId?: string // HACK... make a generic keyval like renderProps
+  extraRenderProps?: Dictionary // so can include a resource
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
@@ -59,6 +60,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
                     isResizing={isResizing}
                     isMirror={false}
                     isSelected={instanceId === props.eventSelection}
+                    extraRenderProps={props.extraRenderProps}
                     {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
                   />
                 </div>

@@ -23,6 +23,12 @@ declare module '@fullcalendar/preact/public-api' {
     resource?: ResourceApi
   }
 
+  // the resource of the column the event is being rendered in.
+  // only populated by vertical-resource views (resourceTimeGrid).
+  interface EventDisplayInfo {
+    resource?: ResourceApi
+  }
+
   interface EventDropInfo {
     oldResource?: ResourceApi
     newResource?: ResourceApi

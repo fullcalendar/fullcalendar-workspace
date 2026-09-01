@@ -1,4 +1,5 @@
 import { BaseComponent } from '../../vdom-util'
+import { Dictionary } from '../../options'
 import { MinimalEventProps } from '../../component-util/event-rendering'
 import { createFormatter } from '../../datelib/formatting'
 import { StandardEvent } from '../../common/StandardEvent'
@@ -16,6 +17,7 @@ export interface TimeGridEventProps extends MinimalEventProps {
   isShort: boolean
   isLiquid?: boolean
   disableResizing?: boolean // HACK
+  extraRenderProps?: Dictionary // so can include a resource
 }
 
 export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {

@@ -19,6 +19,7 @@ export interface DayGridMoreLinkProps {
   alignElRef: RefObject<HTMLElement>
   alignParentTop: string // for popover
   dateSpanProps?: Dictionary
+  renderProps?: Dictionary // so can include a resource; forwarded to popover event content
   dateProfile: DateProfile
   todayRange: DateRange
   eventSelection: string
@@ -73,6 +74,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                     isSelected={instanceId === props.eventSelection}
                     defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
                     defaultDisplayEventEnd={false}
+                    extraRenderProps={props.renderProps}
                     {...getEventRangeMeta(eventRange, props.todayRange)}
                   />
                 </div>
