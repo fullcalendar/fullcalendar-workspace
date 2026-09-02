@@ -5,7 +5,6 @@ import {
   DateMarker,
   DateProfile,
   DateRange,
-  EventStore,
   generateClassName,
   memoize,
   RefMap,
@@ -41,8 +40,6 @@ import { computeResourceTimelineHeaderHeight } from '../header-height'
 
 export interface ResourceTimelineLayoutPrintProps {
   className?: string
-  labelId: string | undefined
-  labelStr: string | undefined
 
   tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
@@ -60,9 +57,6 @@ export interface ResourceTimelineLayoutPrintProps {
 
   splitProps: { [key: string]: SplittableProps }
   bgSlicedProps: SlicedProps<TimelineRange>
-
-  hasResourceBusinessHours: boolean
-  fallbackBusinessHours: EventStore
 
   // Overall resource-area width, preserving its percentage and pixel components for liquid print CSS.
   spreadsheetWidthConfig: DimConfig

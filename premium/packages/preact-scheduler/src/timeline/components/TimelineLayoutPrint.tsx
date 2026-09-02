@@ -162,7 +162,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
           >
             <tr>
               <td
-                className={joinClassNames(classNames.noPadding, classNames.borderNone, classNames.rel)}
+                className={joinClassNames(classNames.noPadding, classNames.borderNone)}
               >
                 <div className={joinClassNames(options.timelineTopClass)} />
                 <TimelinePrintFg

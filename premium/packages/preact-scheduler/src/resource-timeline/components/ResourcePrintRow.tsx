@@ -143,7 +143,6 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
             classNames.noPadding,
             classNames.contentBox,
             props.isNotLast ? classNames.borderOnlyB : classNames.borderNone,
-            classNames.rel,
           )}
           renderProps={renderProps}
           generatorName={undefined}
@@ -151,19 +150,21 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
           willUnmount={options.resourceLaneWillUnmount}
         >
           {() => (
-            <>
-              <TimelineBg
-                tDateProfile={props.tDateProfile}
-                nowDate={props.nowDate}
-                nowMs={props.nowMs}
-                todayRange={props.todayRange}
-                bgEventSegs={slicedProps.bgEventSegs}
-                businessHourSegs={null}
-                dateSelectionSegs={null}
-                eventResizeSegs={null}
-                slotWidth={props.slotWidth}
-                clipStart={props.timeCanvasClipStart}
-              />
+            <div className={classNames.rel}>
+              <div className={joinClassNames(classNames.fill, classNames.crop)}>
+                <TimelineBg
+                  tDateProfile={props.tDateProfile}
+                  nowDate={props.nowDate}
+                  nowMs={props.nowMs}
+                  todayRange={props.todayRange}
+                  bgEventSegs={slicedProps.bgEventSegs}
+                  businessHourSegs={null}
+                  dateSelectionSegs={null}
+                  eventResizeSegs={null}
+                  slotWidth={props.slotWidth}
+                  clipStart={props.timeCanvasClipStart}
+                />
+              </div>
               <ContentContainer
                 tag="div"
                 className={joinClassNames(classNames.noMargin, classNames.noShrink)}
@@ -195,7 +196,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                 customGenerator={options.resourceLaneBottomContent}
                 classNameGenerator={options.resourceLaneBottomClass}
               />
-            </>
+            </div>
           )}
         </ContentContainer>
       </tr>

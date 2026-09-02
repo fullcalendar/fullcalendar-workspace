@@ -149,8 +149,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
             const baseProps = {
               className: props.className,
-              labelId: props.labelId,
-              labelStr: props.labelStr,
               tDateProfile,
               dateProfile,
               resourceHierarchy,
@@ -164,9 +162,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               superHeaderRendering,
               splitProps,
               bgSlicedProps,
-              eventSelection: props.eventSelection,
-              hasResourceBusinessHours,
-              fallbackBusinessHours,
               slotWidth,
               timeCanvasWidth,
               spreadsheetColWidths,
@@ -182,6 +177,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             ) : (
               <ResourceTimelineLayoutNormal
                 {...baseProps}
+                labelId={props.labelId}
+                labelStr={props.labelStr}
+                eventSelection={props.eventSelection}
+                hasResourceBusinessHours={hasResourceBusinessHours}
+                fallbackBusinessHours={fallbackBusinessHours}
                 slotLiquid={slotLiquid}
                 timeClientWidthRef={this.handleTimeClientWidth}
                 slotInnerWidthRef={this.handleSlotInnerWidth}
