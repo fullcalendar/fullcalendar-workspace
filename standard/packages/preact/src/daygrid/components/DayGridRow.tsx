@@ -20,7 +20,7 @@ import { type ReactElement, type Ref } from 'react'
 import { DayRowEventRangePart, getDayGridSegKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
-import { computeHorizontalsFromSeg } from './util'
+import { computeCellRelativeHorizontals, computeHorizontalsFromSeg } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import {
   type Slice,
@@ -71,7 +71,7 @@ export interface DayGridRowProps {
   dayMaxEventRows: boolean | number
 
   // dimensions
-  colWidth?: number // the applied width (NOT the computed width)
+  colWidth?: number
   basis?: number // height before growing
   moreLinkHeight?: number
 
@@ -81,6 +81,8 @@ export interface DayGridRowProps {
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
+const DAY_GRID_EVENT_Z_INDEX = 1
+const DAY_GRID_INTERACTION_Z_INDEX = 1000
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
@@ -131,7 +133,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     let printColumns: DayGridPrintBandSlot[][] | null = null
     let screenColumns: DayGridPlacementColumn[] | null = null
     let screenSliceCoords: ReadonlyMap<string, number> = new Map()
-    let screenMaxMainTop: number | undefined
+    let screenMainOffsetsByCol: (number | undefined)[] = []
     let screenHeightsByCol: (number | undefined)[] = []
 
     if (props.forPrint) {
@@ -151,7 +153,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         props.dayMaxEventRows,
       )
       const [maxMainTop, minMainHeight] = this.computeFgDims()
-      screenMaxMainTop = maxMainTop
       const screenLayout = placementMode === 'auto'
         ? buildDayGridPixelPlacements(
           fgEventSegs,
@@ -183,9 +184,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       if (maxMainTop != null) {
         for (let col = 0; col < cells.length; col++) {
           const cellHeaderHeight = headerHeightRefMap.current.get(cells[col].key)
+          const mainOffset = cellHeaderHeight != null
+            ? maxMainTop - cellHeaderHeight
+            : undefined
+
+          screenMainOffsetsByCol.push(mainOffset)
           screenHeightsByCol.push(
-            cellHeaderHeight != null
-              ? screenColumns[col].contentHeight + maxMainTop - cellHeaderHeight
+            mainOffset != null
+              ? screenColumns[col].contentHeight + mainOffset
               : undefined,
           )
         }
@@ -215,7 +221,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           options.dayRowClass,
           props.className,
           classNames.flexRow,
-          classNames.rel, // origin for inlineWeekNumber?
+          classNames.rel, // origin for row-wide fills and the inline week number
           classNames.isolate,
           (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
             classNames.printSiblingRow,
@@ -264,11 +270,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           if (printPlan) {
             fg = this.renderPrintBandSlots(printColumns![col])
           } else {
-            fg = this.renderLevelFgSegs(
-              screenMaxMainTop,
-              screenColumns![col].renderSlices,
-              screenSliceCoords,
-            )
+            fg = [
+              ...this.renderLevelFgSegs(
+                screenMainOffsetsByCol[col],
+                screenColumns![col].renderSlices,
+                screenSliceCoords,
+              ),
+              ...this.renderMirrorFgSegs(
+                col,
+                screenMainOffsetsByCol[col],
+                screenSliceCoords,
+              ),
+            ]
           }
 
           return (
@@ -308,31 +321,30 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             />
           )
         })}
-        {!printPlan && this.renderMirrorFgSegs(
-          screenMaxMainTop,
-          screenSliceCoords,
-        )}
       </div>
     )
   }
 
   /** Mirrors align with kernel coordinates but bypass admission and measurement. */
   renderMirrorFgSegs(
-    headerHeight: number | undefined,
+    col: number,
+    mainOffset: number | undefined,
     sliceCoords: ReadonlyMap<string, number>,
   ): ReactElement[] {
     const { props } = this
-    const { colWidth, eventSelection } = props
-    const colCount = props.cells.length
+    const { eventSelection } = props
     const nodes: ReactElement[] = []
 
     for (const seg of this.getMirrorSegs()) {
+      if (seg.start !== col) {
+        continue
+      }
+
       const key = getDayGridSegKey(seg)
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
-      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
-      const top = headerHeight != null
-        ? headerHeight + (sliceCoords.get(key) ?? 0)
+      const top = mainOffset != null
+        ? mainOffset + (sliceCoords.get(key) ?? 0)
         : undefined
       const isDragging = Boolean(
         props.eventDrag && props.eventDrag.affectedInstances[instanceId],
@@ -344,13 +356,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
       nodes.push(
         <MeasuredAbsoluteHarness
-          key={key}
-          className={seg.start ? classNames.fakeBorderS : ''}
+          key={`mirror:${key}`}
           style={{
             top,
-            insetInlineStart,
-            insetInlineEnd,
-            zIndex: isSelected ? 1000 : 0, // container inner z-indexes; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
+            ...computeCellRelativeHorizontals(seg),
+            // HACK: relies on hardcoded container-inner z-indexes
+            zIndex: DAY_GRID_INTERACTION_Z_INDEX,
           }}
           heightRef={null}
         >
@@ -369,13 +380,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   /** Renders every kernel slice with its own measurement ref. */
   renderLevelFgSegs(
-    headerHeight: number | undefined,
+    mainOffset: number | undefined,
     slices: Slice<DayGridSourceSeg>[],
     sliceCoords: ReadonlyMap<string, number>,
   ): ReactElement[] {
     const { props } = this
-    const { colWidth, eventSelection } = props
-    const colCount = props.cells.length
+    const { eventSelection } = props
     const nodes: ReactElement[] = []
 
     for (const slice of slices) {
@@ -383,13 +393,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const sliceTop = sliceCoords.get(key)
       const { eventRange } = slice.sourceSeg
       const { instanceId } = eventRange.instance
-      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(
-        slice,
-        colWidth,
-        colCount,
-      )
-      const top = headerHeight != null && sliceTop != null
-        ? headerHeight + sliceTop
+      const top = mainOffset != null && sliceTop != null
+        ? mainOffset + sliceTop
         : undefined
       const isDragging = Boolean(
         props.eventDrag && props.eventDrag.affectedInstances[instanceId],
@@ -403,13 +408,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <MeasuredAbsoluteHarness
           key={key}
-          className={slice.start ? classNames.fakeBorderS : ''}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
-            insetInlineStart,
-            insetInlineEnd,
-            zIndex: isSelected ? 1000 : 0,
+            ...computeCellRelativeHorizontals(slice),
+            zIndex: isSelected ? DAY_GRID_INTERACTION_Z_INDEX : DAY_GRID_EVENT_Z_INDEX,
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
         >
@@ -463,11 +466,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     )
   }
 
-  /** Renders print's normal-flow slots and their in-place measured wrappers. */
+  /** Renders print slots that reserve space for their positioned event wrappers. */
   private renderPrintBandSlots(slots: DayGridPrintBandSlot[]): ReactElement[] {
-    const { props, printSegHeightRefMap } = this
-    const { colWidth } = props
-    const colCount = props.cells.length
+    const { printSegHeightRefMap } = this
 
     return slots.map((slot) => {
       const { slice } = slot
@@ -476,19 +477,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       if (slice) {
         const sliceKey = getDayGridPrintSliceKey(slice)
 
-        // Insets resolve against the row (the nearest positioned ancestor,
-        // same as the screen wrappers), not the slot, whose width is inset by
-        // cell borders/padding. The unspecified `top` keeps the wrapper at its
-        // static position: the top of its slot.
-        const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(slice, colWidth, colCount)
-
         eventNode = (
           <MeasuredAbsoluteHarness
             key={sliceKey}
-            className={slice.start ? classNames.fakeBorderS : ''}
             style={{
-              insetInlineStart,
-              insetInlineEnd,
+              ...computeCellRelativeHorizontals(slice),
+              zIndex: DAY_GRID_EVENT_Z_INDEX,
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
@@ -501,7 +495,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       return (
         <div
           key={slot.levelIndex}
-          // no `rel` — the slot must not become the offset parent (see above)
           className={classNames.breakInsideAvoid}
           style={{ height: slot.thickness }}
         >
@@ -523,7 +516,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     for (const seg of segs) {
       const key = seg.start + ':' + seg.end // NOTE: don't use date, because could be multiple of same (w/ resources)
-      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
+      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(
+        seg,
+        colWidth,
+        colCount,
+      )
 
       nodes.push(
         <div

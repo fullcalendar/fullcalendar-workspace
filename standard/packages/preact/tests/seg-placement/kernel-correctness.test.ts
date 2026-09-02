@@ -12,11 +12,23 @@ import {
   groupLaterallyIntersecting,
   placeExtraSlicesInLevels,
   resolveLevelCoords,
+  sortByEventOrder,
 } from '../../src/seg-placement/kernel'
 
 type TestSeg = SourceSeg & { id: string }
 
 describe('pure positioning kernel', () => {
+  it('puts wider same-start slices of one event first', () => {
+    const [source] = segs([['event', 0, 3]])
+    const [whole] = convertSegsToWholeSlices([source])
+    const narrower = { ...whole, end: 1, isEnd: false }
+
+    expect(projectSlices(sortByEventOrder([narrower, whole]))).toEqual([
+      ['event', 0, 3],
+      ['event', 0, 1],
+    ])
+  })
+
   it('preserves rejection order and makes strict order part of topology', () => {
     const rejectedScenario = segs([
       ['first', 0, 3],

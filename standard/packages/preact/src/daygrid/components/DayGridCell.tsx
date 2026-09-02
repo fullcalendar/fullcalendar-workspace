@@ -177,7 +177,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               ref={this.handleBodyEl}
             >
               <div
-                className={generateClassName(options.dayCellInnerClass, renderProps)}
+                className={joinClassNames(
+                  classNames.rel, // origin for this cell's foreground event wrappers
+                  generateClassName(options.dayCellInnerClass, renderProps),
+                )}
                 style={{ minHeight: props.fgHeight }}
                 // TODO: prevent margins/padding!?
               >

@@ -43,7 +43,8 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
           rootElRef={this.handleRootEl}
           heightRef={this.heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
         />
-        {needsMoreLinkProbe && props.colWidth != null && (
+        {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
+        {needsMoreLinkProbe && (
           <MoreLinkTrigger
             num={1}
             display='row'
@@ -51,7 +52,6 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
             isMicro={props.cellIsMicro}
             elRef={this.handleMoreLinkEl}
             className={classNames.offscreen}
-            style={{ width: props.colWidth }}
             attrs={{
               'aria-hidden': true,
               inert: '',

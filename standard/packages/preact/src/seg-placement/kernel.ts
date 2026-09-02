@@ -999,7 +999,7 @@ export function compareByEventOrder<S extends SourceSeg>(
 ): number {
   return a.sourceSeg.orderIndex - b.sourceSeg.orderIndex ||
     a.start - b.start ||
-    a.end - b.end
+    b.end - a.end // longer events first
 }
 
 export function sortByEventOrder<S extends SourceSeg>(

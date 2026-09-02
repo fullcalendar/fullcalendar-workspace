@@ -49,13 +49,13 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
     /*
     A liquid cell that spans multiple columns can't use the .liquid class, which gives every
     cell an equal share regardless of colSpan. Instead, grow proportionally to the columns
-    covered, with a flex-basis for the start-borders swallowed by the span (assumed 1px, like
-    .fakeBorderS), which are part of each covered column's base size. Keeps edges aligned.
+    covered. Like the body cells, use a zero basis so borders remain within the distributed
+    border-box width.
     */
     const isSpanning = isLiquid && colSpan > 1
     const style = isSpanning ? {
       flexGrow: colSpan,
-      flexBasis: (colSpan - 1) + 'px',
+      flexBasis: 0,
       minWidth: 0,
     } : {
       width: totalColWidth,

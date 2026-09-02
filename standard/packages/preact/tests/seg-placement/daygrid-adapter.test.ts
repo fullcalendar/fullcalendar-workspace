@@ -245,7 +245,7 @@ describe('DayGrid kernel pixel placement', () => {
       'wide:0:2:slice': undefined,
     })
     expect(awaitingPartials.columns[0].renderSlices.map(getSliceKey))
-      .toEqual(['wide:0:0:slice', 'wide:0'])
+      .toEqual(['wide:0', 'wide:0:0:slice'])
 
     const settled = layoutPixelRow([
       makeSeg('blocker', 1, 2),

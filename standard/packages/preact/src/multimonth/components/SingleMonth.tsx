@@ -102,9 +102,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const isAspectRatio = !forPrint || props.hasLateralSiblings
 
     const cellColCnt = dayTableModel.cellRows[0].length
-    const colWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
-    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const measuredColWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
+    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
     const rowHeightGuess = state.gridWidth != null
       ? (1 / options.aspectRatio) * state.gridWidth / 6
@@ -269,7 +269,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 eventSelection={slicedProps.eventSelection}
 
                 // dimensions
-                colWidth={colWidth}
                 visibleWidth={state.gridWidth}
                 cellIsNarrow={cellIsNarrow}
                 cellIsMicro={cellIsMicro}

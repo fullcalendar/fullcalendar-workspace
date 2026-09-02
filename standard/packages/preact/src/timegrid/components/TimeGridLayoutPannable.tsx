@@ -161,9 +161,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const simplePrint = forPrint && printStackEnabled
 
     const colCount = props.cells.length
-    const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
-    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const [canvasWidth, appliedColWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
+    const measuredColWidth = appliedColWidth ?? (clientWidth != null ? clientWidth / colCount : undefined)
+    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquidHeight] = computeSlatHeight( // TODO: memo?
@@ -283,7 +284,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       rowIndex={tierNum}
                       borderBottom={tierNum < props.headerTiers.length - 1}
                       height={state.headerTierHeights[tierNum]}
-                      colWidth={colWidth}
+                      colWidth={appliedColWidth}
                       viewportWidth={clientWidth}
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                       cellIsNarrow={cellIsNarrow}
@@ -386,7 +387,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       dayMaxEventRows={props.dayMaxEventRows}
 
                       // dimensions
-                      colWidth={colWidth}
+                      colWidth={appliedColWidth}
                     />
                   </div>
                   {Boolean(endScrollbarWidth) && (
@@ -549,7 +550,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     eventSelection={props.eventSelection}
 
                     // dimensions
-                    colWidth={colWidth}
+                    colWidth={appliedColWidth}
                     slatHeight={slatHeight}
                     cellIsNarrow={cellIsNarrow}
                     cellIsMicro={cellIsMicro}

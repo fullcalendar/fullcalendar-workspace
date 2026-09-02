@@ -39,7 +39,7 @@ export interface DayGridRowsProps {
   eventSelection: string
 
   // dimensions
-  colWidth?: number
+  colWidth?: number // enforced only by fixed/pannable layouts
   width?: number | string // a CSS value
   visibleWidth?: number // for row min-height
   cellIsNarrow: boolean
@@ -162,7 +162,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             />
           ))}
         </div>
-        {needsMoreLinkProbe && props.colWidth != null && (
+        {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
+        {needsMoreLinkProbe && (
           <MoreLinkTrigger
             num={1}
             display='row'
@@ -170,7 +171,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             isMicro={props.cellIsMicro}
             elRef={this.handleMoreLinkEl}
             className={classNames.offscreen}
-            style={{ width: props.colWidth }}
             attrs={{
               'aria-hidden': true,
               inert: '',

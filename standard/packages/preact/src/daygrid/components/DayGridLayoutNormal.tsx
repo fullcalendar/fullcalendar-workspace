@@ -73,9 +73,9 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const tableHeaderSticky = !props.forPrint && getTableHeaderSticky(options)
 
     const colCount = props.cellRows[0].length
-    const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
-    const cellIsMicro = cellWidth != null && cellWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (cellWidth != null && cellWidth <= options.dayNarrowWidth)
+    const measuredColWidth = clientWidth != null ? clientWidth / colCount : undefined
+    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
     return (
       <>
@@ -153,7 +153,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventSelection={props.eventSelection}
 
             // dimensions
-            colWidth={cellWidth}
             visibleWidth={totalWidth}
             cellIsNarrow={cellIsNarrow}
             cellIsMicro={cellIsMicro}

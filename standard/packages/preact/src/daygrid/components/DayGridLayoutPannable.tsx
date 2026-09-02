@@ -78,9 +78,10 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const footerScrollbarSticky = !props.forPrint && getFooterScrollbarSticky(options)
 
     const colCount = props.cellRows[0].length
-    const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
-    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const [canvasWidth, appliedColWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
+    const measuredColWidth = appliedColWidth ?? (clientWidth != null ? clientWidth / colCount : undefined)
+    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
     return (
       <>
@@ -104,7 +105,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             >
               <DayGridHeader
                 headerTiers={props.headerTiers}
-                colWidth={colWidth}
+                colWidth={appliedColWidth}
                 viewportWidth={clientWidth}
                 width={canvasWidth}
                 cellIsNarrow={cellIsNarrow}
@@ -171,7 +172,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             eventSelection={props.eventSelection}
 
             // dimensions
-            colWidth={colWidth}
+            colWidth={appliedColWidth}
             width={canvasWidth}
             visibleWidth={totalWidth}
             cellIsNarrow={cellIsNarrow}

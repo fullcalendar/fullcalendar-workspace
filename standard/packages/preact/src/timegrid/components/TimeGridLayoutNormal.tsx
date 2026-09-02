@@ -152,9 +152,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
     const colCount = props.cells.length
-    const colWidth = clientWidth != null ? clientWidth / colCount : undefined
-    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const measuredColWidth = clientWidth != null ? clientWidth / colCount : undefined
+    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
     return (
       <>
@@ -302,9 +302,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   eventSelection={props.eventSelection}
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
-
-                  // dimensions
-                  colWidth={colWidth}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div

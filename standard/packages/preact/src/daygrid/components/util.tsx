@@ -9,6 +9,7 @@ import { DayTableCell, DayTableModel } from '../DayTableModel'
 import { fracToCssDim } from '../../util/html'
 import { SlicedCoordRange } from '../../coord-range'
 import type { ReactNode } from 'react'
+import { COL_BORDER_WIDTH } from '../../util/dimensions'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
@@ -30,7 +31,7 @@ export function buildDayTableModel(
 
 export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [
   canvasWidth: number | undefined, // does NOT include scrollbar gutter
-  colWidth: number | undefined,
+  appliedColWidth: number | undefined,
 ] {
   if (viewportWidth == null) {
     return [undefined, undefined]
@@ -103,6 +104,28 @@ export function computeHorizontalsFromSeg(
   }
 
   return { insetInlineStart: fromStart, insetInlineEnd: fromEnd }
+}
+
+/** Horizontals for a seg whose wrapper begins at the content edge of its first cell. */
+export function computeCellRelativeHorizontals(
+  seg: SlicedCoordRange,
+): {
+  insetInlineStart: number
+  insetInlineEnd: CssDimValue
+} {
+  const span = seg.end - seg.start
+  const crossedCellCount = Math.max(0, span - 1)
+  const crossedBorderWidth = crossedCellCount * COL_BORDER_WIDTH
+
+  // Let CSS resolve the current cell width so print-time compression does not
+  // depend on resize observers. The origin is already past the starting cell's
+  // border, so extend across only the subsequently crossed cells and borders.
+  return {
+    insetInlineStart: 0,
+    insetInlineEnd: crossedCellCount
+      ? `calc(-${crossedCellCount * 100}% - ${crossedBorderWidth}px)`
+      : 0,
+  }
 }
 
 export function computeColFromPosition(
