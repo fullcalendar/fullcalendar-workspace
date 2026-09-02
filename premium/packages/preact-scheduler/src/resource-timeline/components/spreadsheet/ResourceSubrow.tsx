@@ -28,15 +28,16 @@ export interface ResourceSubrowProps {
 
   // sizing
   colWidths: number[] | undefined
-  colGrows?: number[]
   indentWidth: number | undefined
 
   // positioning
   top?: number
   height?: number
-  totalX?: boolean
 }
 
+/*
+For screen-only
+*/
 export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewContext> {
   // refs
   private innerHeightRefMap = new RefMap<number, number>(() => {
@@ -51,19 +52,6 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
     const { options } = this.context
 
     const colWidths = props.colWidths || []
-    const colGrows = props.colGrows || []
-
-    let totalColWidth: number
-    let totalColGrow: number
-
-    if (props.totalX) {
-      if (props.colWidths) {
-        totalColWidth = totalColDims(props.colWidths, props.colStartIndex, colSpecs.length)
-      }
-      if (props.colGrows) {
-        totalColGrow = totalColDims(props.colGrows, props.colStartIndex, colSpecs.length)
-      }
-    }
 
     return (
       <div
@@ -77,8 +65,6 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         style={{
           top: props.top,
           height: props.height,
-          width: totalColWidth,
-          flexGrow: totalColGrow,
         }}
       >
         {mapRange(props.colStartIndex, colSpecs.length, (i) => {
@@ -102,7 +88,6 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
               innerHeightRef={innerHeightRefMap.createRef(i)}
               width={colWidths[i]}
               indentWidth={props.indentWidth}
-              grow={colGrows[i]}
               borderStart={props.borderStart || Boolean(i)}
             />
           )
@@ -153,14 +138,4 @@ function mapRange<Item>(start: number, end: number, func: (index: number) => Ite
   }
 
   return items
-}
-
-function totalColDims(colDims: number[], startIndex: number, endIndex: number): number {
-  let total = 0
-
-  for (let i = startIndex; i < endIndex; i++) {
-    total += colDims[i]
-  }
-
-  return total
 }

@@ -22,6 +22,7 @@ export interface TimelineSlatsProps {
   // dimensions
   height?: number
   slotWidth: number | undefined
+  clipStart?: number
 }
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
@@ -50,7 +51,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         style={{
           height: props.height,
           width: (props.slotWidth ?? 0) * slots.length,
-          insetInlineStart: 0,
+          insetInlineStart: -(props.clipStart ?? 0),
         }}
       >
         {slots.map((slot, i) => {

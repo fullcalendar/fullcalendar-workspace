@@ -8,12 +8,11 @@ import { ResourceExpander } from './ResourceExpander'
 import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
 import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
 
-export interface ResourceGroupHeaderSubrowProps extends AriaCellInput {
+export interface ResourceGroupHeaderCellProps extends AriaCellInput {
   group: Group
   isExpanded: boolean // for expander icon (aria-expanded lives on the row)
-  colSpan: number // for aria
+  colSpan: number
   borderBottom: boolean
-  className?: string // not ultimately user-supplied. internally-supplied
   indentWidth: number | undefined
 
   // refs
@@ -21,12 +20,13 @@ export interface ResourceGroupHeaderSubrowProps extends AriaCellInput {
 
   // position
   height?: number // does NOT include the border
+  forPrint?: boolean
 }
 
 /*
 Group cell that spans horizontally, consuming multiple colspans
 */
-export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeaderSubrowProps, ViewContext> {
+export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCellProps, ViewContext> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 
@@ -36,6 +36,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
 
   render() {
     let { props, context } = this
+    let { forPrint } = props
     let renderProps: ResourceGroupHeaderInfo = {
       fieldValue: props.group.value,
       view: context.viewApi,
@@ -44,23 +45,25 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
 
     return (
       <ContentContainer
-        tag="div"
-        attrs={{
+        tag={forPrint ? 'td' : 'div'}
+        attrs={forPrint ? {
+          colSpan: props.colSpan,
+        } : {
           ...buildAriaCellAttrs(props),
           role: 'rowheader',
           'aria-colspan': props.colSpan,
         }}
         className={joinClassNames(
-          classNames.liquid, // expand to whole row
+          !forPrint && classNames.liquid, // expand to whole row
           classNames.noMargin,
           classNames.noPadding,
-          classNames.flexCol,
+          !forPrint && classNames.flexCol,
           classNames.alignStart, // h-align
           classNames.crop,
           classNames.contentBox,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
-        style={{
+        style={forPrint ? undefined : {
           height: props.height,
         }}
         renderProps={renderProps}
@@ -94,7 +97,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
               />
             </ResourceIndent>
             <InnerContent
-              tag='div'
+              tag="div"
               className={generateClassName(spec.labelInnerClass, renderProps)}
               style={{ zIndex: 1 }}
             />
@@ -131,7 +134,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
   }
 }
 
-ResourceGroupHeaderSubrow.addPropsEquality({
+ResourceGroupHeaderCell.addPropsEquality({
   group: isGroupsEqual,
 })
 

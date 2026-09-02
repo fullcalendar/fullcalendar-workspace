@@ -28,8 +28,9 @@ export interface ResourceCellProps extends AriaCellInput {
   innerHeightRef?: Ref<number>
   width: number | undefined
   indentWidth: number | undefined
-  grow: number | undefined
   borderStart: boolean
+  borderBottom?: boolean
+  forPrint?: boolean
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -40,7 +41,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
   render() {
     let { props, context } = this
-    let { colSpec } = props
+    let { colSpec, forPrint } = props
 
     let renderProps = this.refineRenderProps({
       resource: props.resource,
@@ -51,7 +52,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
     return (
       <ContentContainer
-        tag="div"
+        tag={forPrint ? 'td' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(props),
           role: colSpec.isMain ? 'rowheader' : 'gridcell',
@@ -60,18 +61,20 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         className={joinClassNames(
           classNames.noMargin,
           classNames.noPadding,
-          classNames.flexCol,
+          !forPrint && classNames.flexCol,
           classNames.alignStart,
-          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          forPrint && context.options.resourceRowClass,
+          props.borderBottom
+            ? (props.borderStart ? classNames.borderOnlySB : classNames.borderOnlyB)
+            : (props.borderStart ? classNames.borderOnlyS : classNames.borderNone),
           classNames.crop,
         )}
-        style={{
+        style={forPrint ? undefined : {
           minWidth: 0,
           width: props.width,
-          flexGrow: props.grow,
         }}
         renderProps={renderProps}
-        generatorName='resourceCellContent'
+        generatorName="resourceCellContent"
         customGenerator={colSpec.cellContent}
         defaultGenerator={renderResourceInner}
         classNameGenerator={colSpec.cellClass}
@@ -105,7 +108,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               </ResourceIndent>
             )}
             <InnerContent
-              tag='div'
+              tag="div"
               className={generateClassName(colSpec.cellInnerClass, renderProps)}
               style={{ zIndex: 1 }}
             />

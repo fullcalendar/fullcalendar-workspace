@@ -32,6 +32,7 @@ export interface TimelinePrintFgProps {
 
   // dimensions
   slotWidth: number | undefined
+  timeCanvasClipStart?: number
 }
 
 export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps> {
@@ -57,6 +58,7 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
+            timeCanvasClipStart={props.timeCanvasClipStart}
           />
         ))}
         {moreLinkBand && (
@@ -70,6 +72,7 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
             resourceId={props.resourceId}
+            timeCanvasClipStart={props.timeCanvasClipStart}
           />
         )}
       </div>
@@ -85,6 +88,7 @@ interface TimelinePrintBandBaseProps {
   todayRange: DateRange
   eventSelection: string
   resourceId?: string
+  timeCanvasClipStart?: number
 }
 
 export interface TimelinePrintEventBandProps extends TimelinePrintBandBaseProps {
@@ -98,7 +102,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
 
   return (
     <div
-      className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
+      className={joinClassNames(classNames.rel, classNames.crop, classNames.breakInsideAvoid)}
       style={{ height: band.thickness }}
     >
       {band.slices.map((slice) => {
@@ -114,7 +118,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
             style={{
               zIndex: isSelected ? 1000 : 1,
               top: 0,
-              insetInlineStart: slice.start,
+              insetInlineStart: slice.start - (props.timeCanvasClipStart ?? 0),
               width: slice.end - slice.start,
             }}
             heightRef={props.heightRefMap.createRef(sourceSeg.key)}
@@ -148,7 +152,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
 
   return (
     <div
-      className={joinClassNames(classNames.rel, classNames.breakInsideAvoid)}
+      className={joinClassNames(classNames.rel, classNames.crop, classNames.breakInsideAvoid)}
       style={{ height: band.thickness }}
     >
       {band.moreLinkGroups.map((group) => (
@@ -156,7 +160,7 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
           key={group.key}
           style={{
             top: 0,
-            insetInlineStart: group.start,
+            insetInlineStart: group.start - (props.timeCanvasClipStart ?? 0),
             width: group.end - group.start,
           }}
           heightRef={props.heightRefMap.createRef(group.key)}

@@ -1,19 +1,16 @@
-import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, PointerDragEvent, RefMap, setRef } from '@fullcalendar/preact/protected-api'
-import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
 import { HeaderCell } from './HeaderCell'
 
-export interface HeaderRowProps {
-  role?: 'row' | 'presentation'
+export interface HeaderCellsProps {
   colSpecs: ColSpec[]
   colWidths: number[] | undefined
-  colGrows?: number[]
   indent?: boolean // only for the 'main' cell
   indentWidth: number | undefined
   rowIndex?: number // 0-based
   cellIdPrefix?: string
+  forPrint?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
@@ -22,7 +19,7 @@ export interface HeaderRowProps {
   onColResize?: (colIndex: number, newWidth: number) => void
 }
 
-export class HeaderRow extends BaseComponent<HeaderRowProps> {
+export class HeaderCells extends BaseComponent<HeaderCellsProps> {
   // refs
   private resizerElRefMap = new RefMap<number, HTMLDivElement>((resizerEl, index) => {
     let { colDraggings } = this
@@ -54,42 +51,28 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
   render() {
     const { props, innerHeightRefMap, resizerElRefMap } = this
     const { colSpecs } = props
-    const { options } = this.context
-
     const colWidths = props.colWidths || []
-    const colGrows = props.colGrows || []
 
     return (
-      <div
-        role={props.role || 'row'}
-        aria-rowindex={props.role !== 'presentation' && props.rowIndex != null ? 1 + props.rowIndex : undefined}
-        className={joinClassNames(
-          options.resourceHeaderRowClass,
-          classNames.flexRow,
-          classNames.grow,
-          classNames.borderNone,
-        )}
-      >
-        {colSpecs.map((colSpec, colIndex) => {
-          return (
-            <HeaderCell
-              key={colIndex}
-              cellIdPrefix={props.cellIdPrefix}
-              cellRowIndex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
-              cellColIndex={props.cellIdPrefix ? colIndex : undefined}
-              width={colWidths[colIndex]}
-              grow={colGrows[colIndex]}
-              colSpec={colSpec}
-              resizer={colIndex < colSpecs.length - 1}
-              indent={colSpec.isMain && props.indent}
-              resizerElRef={resizerElRefMap.createRef(colIndex)}
-              innerHeightRef={innerHeightRefMap.createRef(colIndex)}
-              borderStart={Boolean(colIndex)}
-              indentWidth={props.indentWidth}
-            />
-          )
-        })}
-      </div>
+      <>
+        {colSpecs.map((colSpec, colIndex) => (
+          <HeaderCell
+            key={colIndex}
+            cellIdPrefix={props.cellIdPrefix}
+            cellRowIndex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
+            cellColIndex={props.cellIdPrefix ? colIndex : undefined}
+            width={colWidths[colIndex]}
+            colSpec={colSpec}
+            resizer={colIndex < colSpecs.length - 1}
+            indent={colSpec.isMain && props.indent}
+            resizerElRef={resizerElRefMap.createRef(colIndex)}
+            innerHeightRef={innerHeightRefMap.createRef(colIndex)}
+            borderStart={Boolean(colIndex)}
+            indentWidth={props.indentWidth}
+            forPrint={props.forPrint}
+          />
+        ))}
+      </>
     )
   }
 
@@ -136,7 +119,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
           if (this.props.onColResize) {
             this.props.onColResize(
               colIndex,
-              startWidth + pev.deltaX * (isRtl ? -1 : 1)
+              startWidth + pev.deltaX * (isRtl ? -1 : 1),
             )
           }
         })

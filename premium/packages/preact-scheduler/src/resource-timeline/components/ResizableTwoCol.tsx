@@ -1,8 +1,8 @@
-import { CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, computeElIsRtl } from '@fullcalendar/preact/protected-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, computeElIsRtl } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
-import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
+import { DimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
 
 export interface ResizableTwoColProps {
   className?: string
@@ -12,21 +12,16 @@ export interface ResizableTwoColProps {
   endClassName?: string
   elRef?: Ref<HTMLDivElement>
 
-  initialStartWidth: CssDimValue
-  resizedWidthRef?: Ref<CssDimValue> // fires after drag end
+  initialStartWidthConfig: DimConfig
+  resizedWidthConfigRef?: Ref<DimConfig> // fires after drag end
 }
 
 interface ResizableTwoColState {
   widthOverride: DimConfig
 }
 
-const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
-
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
   state = {} as ResizableTwoColState
-
-  // memo
-  parseWidthConfig: typeof parseDimConfig = memoize(parseDimConfig)
 
   // ref
   rootEl: null | HTMLDivElement = null
@@ -34,15 +29,14 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   resizerElRef = createRef<HTMLDivElement>()
 
   // internal
-  widthConfig?: DimConfig
+  widthConfig: DimConfig
   resizerDragging: ElementDragging
 
   render() {
     const { props, state, context } = this
     const { options } = context
 
-    const initialWidthConfig = this.parseWidthConfig(props.initialStartWidth, MIN_RESOURCE_AREA_WIDTH)
-    const widthConfig = this.widthConfig = state.widthOverride || initialWidthConfig
+    const widthConfig = this.widthConfig = state.widthOverride || props.initialStartWidthConfig
 
     return (
       <div
@@ -116,7 +110,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
 
         dragging.emitter.on('dragend', () => {
           if (newWidthConfig) {
-            setRef(this.props.resizedWidthRef, serializeDimConfig(newWidthConfig))
+            setRef(this.props.resizedWidthConfigRef, newWidthConfig)
           }
         })
 

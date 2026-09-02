@@ -26,7 +26,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
           ...props.style,
           width: props.indentWidth != null
             ? props.indentWidth * props.level
-            : 0
+            : 0,
         }}
       >
         {props.children}

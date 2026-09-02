@@ -1,10 +1,10 @@
 import { BaseComponent, RefMap } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { ROW_BORDER_WIDTH } from '@full-ui/headless-grid'
-import { ResourceGroupSubrow } from "./ResourceGroupSubrow"
-import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow"
-import { ResourceSubrow } from "./ResourceSubrow"
-import { GroupCellLayout, GroupRowLayout, ResourceRowLayout } from "../../resource-layout"
+import { ResourceGroupSubrow } from './ResourceGroupSubrow'
+import { ResourceGroupHeaderCell } from './ResourceGroupHeaderCell'
+import { ResourceSubrow } from './ResourceSubrow'
+import { GroupCellLayout, GroupRowLayout, ResourceRowLayout } from '../../resource-layout'
 import { ColSpec } from '../../structs'
 import { ItemPosition } from '../../virtual/virtualizer'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
@@ -48,7 +48,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {props.groupColPositions.map((groupCellPositions, colIndex) => (
           <div
             key={colIndex}
-            role='presentation'
+            role="presentation"
             className={classNames.rel /* origin for abs-positioned rows */}
             style={{
               height: 0,
@@ -72,7 +72,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   className={classNames.fillX}
                   borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
-                  role='presentation'
+                  role="presentation"
                   cellIdPrefix={props.cellIdPrefix}
                   cellRowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   cellColIndex={colIndex}
@@ -90,7 +90,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         ))}
 
         <div
-          role='presentation'
+          role="presentation"
           className={classNames.rel}
           style={{
             height: 0,
@@ -108,7 +108,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             return (
               <div
                 key={groupKey}
-                role='presentation'
+                role="presentation"
                 className={joinClassNames(
                   classNames.fillX,
                   classNames.flexRow,
@@ -117,7 +117,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   top: rowPosition.start,
                 }}
               >
-                <ResourceGroupHeaderSubrow
+                <ResourceGroupHeaderCell
                   cellIdPrefix={props.cellIdPrefix}
                   cellRowIndex={1 + headerRowSpan + groupRowLayout.rowIndex}
                   cellColIndex={0}
@@ -128,7 +128,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   borderBottom={isNotLast}
                   height={rowPosition.size}
                   indentWidth={props.indentWidth}
-                  className={classNames.fillX}
                 />
               </div>
             )
@@ -156,7 +155,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 className={classNames.fillX}
                 borderStart={Boolean(groupColCnt)}
                 borderBottom={isNotLast}
-                role='presentation'
+                role="presentation"
                 cellIdPrefix={props.cellIdPrefix}
                 cellRowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 top={rowPosition.start}

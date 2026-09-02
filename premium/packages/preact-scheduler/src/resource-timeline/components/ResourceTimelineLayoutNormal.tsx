@@ -1,4 +1,4 @@
-import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/preact/public-api'
+import { Duration, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
   DateComponent,
@@ -41,7 +41,7 @@ import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
 import { computeTimelineHitData, timeToCoord } from '../../timeline/timeline-positioning'
 import { ESTIMATED_SLOT_WIDTH } from '../../timeline/slot-estimate'
-import { ROW_BORDER_WIDTH, computeHeights, computeTopsFromHeights, findEntityByCoord } from '@full-ui/headless-grid'
+import { computeHeights, computeTopsFromHeights, DimConfig, findEntityByCoord } from '@full-ui/headless-grid'
 import {
   buildResourceLayouts,
   GenericLayout,
@@ -55,10 +55,11 @@ import { GroupLane } from './lane/GroupLane'
 import { ResourceLane } from './lane/ResourceLane'
 import { ResizableTwoCol } from './ResizableTwoCol'
 import { BodySection } from './spreadsheet/BodySection'
-import { HeaderRow } from './spreadsheet/HeaderRow'
+import { HeaderCells } from './spreadsheet/HeaderCells'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
 import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs } from '../aria'
+import { computeResourceTimelineHeaderHeight } from '../header-height'
 
 interface ResourceTimelineLayoutNormalProps {
   className?: string
@@ -101,8 +102,8 @@ interface ResourceTimelineLayoutNormalProps {
   onColResize?: (colIndex: number, newWidth: number) => void
 
   // resource area
-  initialSpreadsheetWidth?: CssDimValue
-  spreadsheetResizedWidthRef?: Ref<CssDimValue>
+  initialSpreadsheetWidthConfig: DimConfig
+  spreadsheetResizedWidthConfigRef?: Ref<DimConfig>
 
   // scroll
   initialScroll?: TimeScroll & EntityScroll
@@ -323,7 +324,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     /* table positions */
 
     // does not include bottom border between header and body
-    const headerHeight = computeHeaderHeight(
+    const headerHeight = computeResourceTimelineHeaderHeight(
       this.dataGridHeaderRowInnerHeightMap.current,
       this.timelineHeaderRowInnerHeightMap.current,
       Boolean(superHeaderRendering),
@@ -486,8 +487,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           hasNesting={hasNesting}
         />
         <ResizableTwoCol
-          initialStartWidth={props.initialSpreadsheetWidth}
-          resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
+          initialStartWidthConfig={props.initialSpreadsheetWidthConfig}
+          resizedWidthConfigRef={props.spreadsheetResizedWidthConfigRef}
           className={allowVerticalScrolling ? classNames.liquid : ''}
 
           /* spreadsheet
@@ -500,7 +501,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* spreadsheet HEADER
               ---------------------------------------------------------------------------- */}
               <div
-                role='presentation'
+                role="presentation"
                 className={joinClassNames(
                   generateClassName(options.tableHeaderClass, {
                     isSticky: tableHeaderSticky,
@@ -527,7 +528,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 >
                   {Boolean(superHeaderRendering) && (
                     <div
-                      role='presentation'
+                      role="presentation"
                       className={joinClassNames(
                         options.resourceHeaderRowClass,
                         classNames.flexRow,
@@ -557,19 +558,28 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       className={joinClassNames(classNames.flexCol, classNames.grow)}
                       style={{ minWidth: spreadsheetCanvasWidth }}
                     >
-                      <HeaderRow
-                        role='presentation'
-                        colSpecs={colSpecs}
-                        colWidths={spreadsheetColWidths}
-                        indent={hasNesting}
-                        indentWidth={props.indentWidth}
-                        rowIndex={superHeaderRowSpan}
-                        cellIdPrefix={cellIdPrefix}
+                      <div
+                        role="presentation"
+                        className={joinClassNames(
+                          options.resourceHeaderRowClass,
+                          classNames.flexRow,
+                          classNames.grow,
+                          classNames.borderNone,
+                        )}
+                      >
+                        <HeaderCells
+                          colSpecs={colSpecs}
+                          colWidths={spreadsheetColWidths}
+                          indent={hasNesting}
+                          indentWidth={props.indentWidth}
+                          rowIndex={superHeaderRowSpan}
+                          cellIdPrefix={cellIdPrefix}
 
-                        // refs
-                        innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
-                        onColResize={props.onColResize}
-                      />
+                          // refs
+                          innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
+                          onColResize={props.onColResize}
+                        />
+                      </div>
                     </div>
                   </Scroller>
                 </div>
@@ -683,14 +693,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   }}
                 >
                   {/* for screen reader users. zero-height */}
-                  <div role='presentation'>
+                  <div role="presentation">
                     <div
                       {...buildAriaCellAttrs({
                         cellIdPrefix,
                         cellRowIndex: 1,
                         cellColIndex: colSpecs.length,
                       })}
-                      role='columnheader'
+                      role="columnheader"
                       aria-rowspan={totalHeaderRowSpan}
                       aria-label={options.eventsHint}
                     />
@@ -725,7 +735,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       return (
                         <TimelineHeaderRow
                           key={rowIndex}
-                          className={classNames.rel}
+                          className={joinClassNames(classNames.rel, classNames.grow)}
                           dateProfile={props.dateProfile}
                           tDateProfile={tDateProfile}
                           nowDate={props.nowDate}
@@ -880,7 +890,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     // roving-origin for all types of resource(-group)-rows
                     // is ZERO-height, always fixed to top, but has definet x-coordinate and width
-                    role='presentation'
+                    role="presentation"
                     className={classNames.abs}
                     style={{
                       top: 0,
@@ -896,7 +906,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       return (
                         <div
                           key={groupKey}
-                          role='presentation'
+                          role="presentation"
                           className={joinClassNames(
                             classNames.fillX,
                             classNames.flexRow,
@@ -926,7 +936,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <ResourceLane
                           {...splitProps[resource.id]}
                           key={resource.id /* TODO: use rowPosition.key? */}
-                          role='presentation'
+                          role="presentation"
                           cellIdPrefix={cellIdPrefix}
                           cellRowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
                           cellColIndex={colSpecs.length}
@@ -966,7 +976,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       )}
                       style={{
                         top: yFillBottom,
-                        minHeight: timelineBottomFiller
+                        minHeight: timelineBottomFiller,
                       }}
                     />
                   )}
@@ -1470,40 +1480,4 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     return null
   }
-}
-
-function computeHeaderHeight(
-  dataGridHeaderRowInnerHeightMap: Map<boolean, number>,
-  timelineHeaderRowInnerHeightMap: Map<number, number>,
-  hasDateGridSuperHeader: boolean,
-  timelineHeaderRowCnt: number,
-): number | undefined {
-  const dataGridKeys: boolean[] = (hasDateGridSuperHeader ? [true] : []).concat(false)
-  let dataGridH = 0
-
-  // TODO: use summing util?
-  for (const key of dataGridKeys) {
-    const rowHeight = dataGridHeaderRowInnerHeightMap.get(key)
-    if (rowHeight == null) {
-      return
-    }
-    dataGridH += rowHeight
-  }
-
-  let timelineH = 0
-
-  // TODO: use summing util?
-  for (let row = 0; row < timelineHeaderRowCnt; row++) {
-    const rowHeight = timelineHeaderRowInnerHeightMap.get(row)
-    if (rowHeight == null) {
-      return
-    }
-    timelineH += rowHeight
-  }
-
-  // add in-between borders too
-  return Math.max(
-    dataGridH + (hasDateGridSuperHeader ? ROW_BORDER_WIDTH : 0),
-    timelineH + ROW_BORDER_WIDTH * (timelineHeaderRowCnt - 1),
-  )
 }

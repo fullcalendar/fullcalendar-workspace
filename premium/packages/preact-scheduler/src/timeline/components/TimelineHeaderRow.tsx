@@ -2,7 +2,7 @@ import type { Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, RefMap, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile"
+import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
 import { TimelineHeaderCell } from './TimelineHeaderCell'
 
 export interface TimelineHeaderRowProps {
@@ -65,7 +65,6 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
           props.className,
           options.slotHeaderRowClass,
           classNames.flexRow,
-          classNames.grow,
           props.rowLevel // not the last row?
             ? classNames.borderOnlyB
             : classNames.borderNone,

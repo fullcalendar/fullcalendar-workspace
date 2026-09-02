@@ -1,9 +1,10 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { BaseComponent } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type ReactNode, createRef, type Ref } from 'react'
-import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import type { Ref } from 'react'
+import { ColSpec } from '../../structs'
+import { type AriaCellInput } from '../../aria'
+import { ResourceGroupCell } from './ResourceGroupCell'
 
 export interface ResourceGroupSubrowProps extends AriaCellInput {
   colSpec: ColSpec
@@ -27,24 +28,12 @@ export interface ResourceGroupSubrowProps extends AriaCellInput {
 }
 
 /*
-Group cell that spans vertically, consuming multiple rowspan
+Screen-only row wrapper for a vertically spanning resource-group cell.
 */
 export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
-
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerHeight?: () => void
-
   render() {
     let { props, context } = this
     let { options } = context
-    let { colSpec } = props
-    let renderProps: ResourceGroupHeaderInfo = {
-      fieldValue: props.fieldValue,
-      view: context.viewApi,
-    }
 
     // a grouped cell. no data that is specific to this specific resource
     // `colSpec` is for the group. a GroupSpec :(
@@ -65,67 +54,17 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           flexGrow: props.grow,
         }}
       >
-        <ContentContainer // the "cell"
-          tag="div"
-          attrs={{
-            ...buildAriaCellAttrs(props),
-            role: 'rowheader',
-            'aria-rowspan': props.rowSpan,
-          }}
-          className={joinClassNames(
-            classNames.noMargin,
-            classNames.noPadding,
-            classNames.flexCol,
-            classNames.alignStart,
-            classNames.liquid, // liquid-height
-            props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
-          )}
-          renderProps={renderProps}
-          generatorName="resourceCellContent"
-          customGenerator={colSpec.cellContent}
-          defaultGenerator={renderGroupInner}
-          classNameGenerator={colSpec.cellClass}
-          didMount={colSpec.cellDidMount}
-          willUnmount={colSpec.cellWillUnmount}
-        >
-          {(InnerContent) => (
-            <div // measures the "inner"
-              ref={this.innerElRef}
-              className={joinClassNames(
-                classNames.noShrink,
-                classNames.whiteSpaceNoWrap,
-                classNames.flexRow, // mimics what ResourceCell does
-                classNames.stickyT,
-              )}
-            >
-              <InnerContent // the "inner"
-                tag="div"
-                className={generateClassName(colSpec.cellInnerClass, renderProps)}
-              />
-            </div>
-          )}
-        </ContentContainer>
+        <ResourceGroupCell
+          cellIdPrefix={props.cellIdPrefix}
+          cellRowIndex={props.cellRowIndex}
+          cellColIndex={props.cellColIndex}
+          colSpec={props.colSpec}
+          fieldValue={props.fieldValue}
+          rowSpan={props.rowSpan}
+          borderStart={props.borderStart}
+          innerHeightRef={props.innerHeightRef}
+        />
       </div>
     )
   }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const innerEl = this.innerElRef.current
-
-    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
-      if (this._isUnmounting) return
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
-  }
-}
-
-function renderGroupInner(renderProps: ResourceGroupHeaderInfo): ReactNode {
-  return renderProps.fieldValue || <>&nbsp;</>
 }

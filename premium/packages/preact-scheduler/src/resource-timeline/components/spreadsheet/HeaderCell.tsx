@@ -19,7 +19,7 @@ export interface HeaderCellProps extends AriaCellInput {
   // size
   width: number | undefined
   indentWidth: number | undefined
-  grow: number | undefined
+  forPrint?: boolean
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
@@ -32,29 +32,29 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
 
   render() {
     let { props, context } = this
-    let { colSpec } = props
+    let { colSpec, forPrint } = props
     let renderProps: ResourceColumnHeaderInfo = { view: context.viewApi }
 
     // need empty inner div for abs positioning for resizer
     return (
       <ContentContainer
-        tag="div"
+        tag={forPrint ? 'th' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(props),
           role: 'columnheader',
         }}
         className={joinClassNames(
+          forPrint && context.options.resourceHeaderRowClass,
           classNames.noMargin,
           classNames.noPadding,
-          classNames.flexCol,
+          !forPrint && classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           classNames.rel, // for resizer abs positioning
           // cannot crop because resizer is allowed to bleed out
         )}
-        style={{
+        style={forPrint ? undefined : {
           minWidth: 0,
           width: props.width,
-          flexGrow: props.grow,
         }}
         renderProps={renderProps}
         generatorName="resourceColumnHeaderContent"
@@ -88,12 +88,12 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                   />
                 )}
                 <InnerContent
-                  tag='div'
+                  tag="div"
                   className={generateClassName(colSpec.headerInnerClass, renderProps)}
                 />
               </div>
             </div>
-            {props.resizer && (
+            {props.resizer && !forPrint && (
               <div
                 ref={props.resizerElRef}
                 className={joinClassNames(

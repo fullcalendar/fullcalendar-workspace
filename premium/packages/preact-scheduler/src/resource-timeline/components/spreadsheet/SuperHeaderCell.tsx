@@ -11,6 +11,7 @@ export interface SuperHeaderCellProps extends AriaCellInput {
   indent?: boolean
   indentWidth: number | undefined
   colSpan: number
+  forPrint?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
@@ -28,25 +29,29 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
   private disconnectInnerHeight?: () => void
 
   render() {
-    let { renderHooks } = this.props
-    let renderProps: ResourceColumnHeaderInfo = { view: this.context.viewApi }
+    let { props, context } = this
+    let { renderHooks, forPrint } = props
+    let renderProps: ResourceColumnHeaderInfo = { view: context.viewApi }
+    const { options } = context
 
     return (
       <ContentContainer
-        tag="div"
+        tag={forPrint ? 'th' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(this.props),
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
+          colSpan: forPrint ? props.colSpan : undefined,
         }}
         className={joinClassNames(
-          classNames.liquid,
+          forPrint && options.resourceHeaderRowClass,
+          !forPrint && classNames.liquid,
           classNames.noMargin,
           classNames.noPadding,
-          classNames.flexCol,
+          !forPrint && classNames.flexCol,
           classNames.alignStart,
-          classNames.borderNone,
-          classNames.crop,
+          forPrint ? classNames.borderOnlyB : classNames.borderNone,
+          !forPrint && classNames.crop,
         )}
         renderProps={renderProps}
         generatorName="resourceColumnHeaderContent"
@@ -72,7 +77,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
               />
             )}
             <InnerContent
-              tag='div'
+              tag="div"
               className={generateClassName(renderHooks.headerInnerClass, renderProps)}
             />
           </div>

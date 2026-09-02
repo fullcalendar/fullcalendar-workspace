@@ -10,7 +10,7 @@ import {
   getDateMeta,
   memoize,
   setRef,
-  watchSize
+  watchSize,
 } from '@fullcalendar/preact/protected-api'
 import { createRef, type Ref } from 'react'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
@@ -157,7 +157,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
             }}
           >
             <InnerContent
-              tag='div'
+              tag="div"
               attrs={
                 hasNavLink
                   // not tabbable because parent is aria-hidden

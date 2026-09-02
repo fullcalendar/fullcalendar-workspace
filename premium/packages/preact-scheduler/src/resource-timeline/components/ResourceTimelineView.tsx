@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/preact/public-api'
 import {
   DateComponent,
   DateMarker,
@@ -18,7 +17,7 @@ import { ResourceViewProps } from '../../resource/View'
 import { buildTimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { computeSlotWidth } from '../../timeline/timeline-positioning'
 import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
-import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '@full-ui/headless-grid'
+import { DimConfig, parseDimConfig, pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '@full-ui/headless-grid'
 import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal'
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint'
 import { processColOptions } from '../col-options'
@@ -31,6 +30,8 @@ interface ResourceTimelineViewState {
   slotInnerWidth?: number
   expanderWidth?: number
 }
+
+const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
   state = {} as ResourceTimelineViewState
@@ -46,7 +47,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   // ref
   private scrollRef = createRef<EntityScroll & TimeScroll>()
-  private spreadsheetResizedWidthRef = createRef<CssDimValue>() // the CSS dimension. could be percent
+  private spreadsheetResizedWidthConfigRef = createRef<DimConfig>()
 
   // internal
   private _isUnmounting: boolean
@@ -82,6 +83,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       colWidthConfigs: initialColWidthConfigs,
       superHeaderRendering,
     } = this.processColOptions(context.options)
+
+    const spreadsheetWidthConfig = this.spreadsheetResizedWidthConfigRef.current ??
+      parseDimConfig(options.resourceColumnsWidth, MIN_RESOURCE_AREA_WIDTH)!
 
     /* spreadsheet col widths */
 
@@ -171,12 +175,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             return props.forPrint ? (
               <ResourceTimelineLayoutPrint
                 {...baseProps}
-                spreadsheetWidth={
-                  this.spreadsheetResizedWidthRef.current ??
-                    options.resourceColumnsWidth
-                }
-                spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
-                timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
+                spreadsheetWidthConfig={spreadsheetWidthConfig}
+                timeCanvasClipStart={this.scrollRef.current.x /* for simulating horizontal scroll */}
                 indentWidth={state.expanderWidth}
               />
             ) : (
@@ -185,15 +185,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 slotLiquid={slotLiquid}
                 timeClientWidthRef={this.handleTimeClientWidth}
                 slotInnerWidthRef={this.handleSlotInnerWidth}
-                initialSpreadsheetWidth={
-                  this.spreadsheetResizedWidthRef.current ??
-                    options.resourceColumnsWidth
-                }
+                initialSpreadsheetWidthConfig={spreadsheetWidthConfig}
                 spreadsheetCanvasWidth={spreadsheetCanvasWidth}
                 initialScroll={this.scrollRef.current /* for reviving after print-view */}
 
                 // refs
-                spreadsheetResizedWidthRef={this.spreadsheetResizedWidthRef} // for resource-area resize
+                spreadsheetResizedWidthConfigRef={this.spreadsheetResizedWidthConfigRef}
                 spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
                 scrollRef={this.scrollRef}
 

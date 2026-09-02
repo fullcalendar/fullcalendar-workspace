@@ -164,6 +164,11 @@ This will prevent all ancestors from customizing their box size unless they use 
   border-right: 0 !important;
 }
 
+.borderOnlySB {
+  border-top: 0 !important;
+  border-inline-end: 0 !important;
+}
+
 .borderOnlyS,
 .borderOnlyE {
   border-top: 0 !important;
@@ -239,11 +244,46 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   flex-direction: column !important;
 }
 
+/* Semantic Print Table */
+/* ------------------------------------------------------------------------------------------------- */
+
+.printTable {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.printTable > thead {
+  /* Both properties are needed for cross-browser repeated headers across printed pages. */
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+.printTable > tbody {
+  /* Timeline print-layout hack (resource and non-resource): lets shared absolute backgrounds show through. */
+  background: transparent !important;
+}
+
+.printTable > thead > tr > th,
+.printTable > tbody > tr > th,
+.printTable > tbody > tr > td {
+  vertical-align: top !important;
+  font-weight: inherit;
+  text-align: inherit;
+}
+
 /* Table Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
 .noPadding {
   padding: 0 !important;
+}
+
+.noPaddingY {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .noMargin {
@@ -396,6 +436,7 @@ which can't rely on dynamic height detection after print-flag activated.
 }
 
 /* Print-Safe Utils */
+/* (Still used by DayGrid, eventually move all to printTable) */
 /* ------------------------------------------------------------------------------------------------- */
 
 .calendarPrintRoot .breakInsideAvoid {
@@ -413,7 +454,9 @@ which can't rely on dynamic height detection after print-flag activated.
 
 .calendarPrintRoot .printHeader {
   display: table-header-group !important;
+  /* Both properties are needed for cross-browser repeated headers across printed pages. */
   break-inside: avoid !important;
+  page-break-inside: avoid !important;
   background: #fff !important;
   z-index: 9999 !important;
   position: relative !important;

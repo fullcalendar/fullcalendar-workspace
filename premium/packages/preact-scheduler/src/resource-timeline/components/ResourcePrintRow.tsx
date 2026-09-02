@@ -1,4 +1,4 @@
-import { CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   ContentContainer,
   DateMarker,
@@ -17,22 +17,17 @@ import {
 import { TimelinePrintRenderer } from '../../timeline/print-adapter'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
-import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
-import { ResourcePrintLayout } from '../resource-layout-print'
+import { getPublicId } from '../../resource/structs/resource'
+import { ResourcePrintTableRow } from '../resource-layout-print'
 import { ColSpec } from '../structs'
 import { refineResourceLaneRenderProps } from './lane/ResourceLane'
-import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows'
-import { ResourceSubrow } from './spreadsheet/ResourceSubrow'
+import { ResourceCell } from './spreadsheet/ResourceCell'
+import { ResourceGroupCell } from './spreadsheet/ResourceGroupCell'
 
-interface ColGroupStats {
-  render: boolean
-  borderBottom: boolean
-}
-
-export interface ResourcePrintRowProps extends SplittableProps, AriaCellInput {
-  layout: ResourcePrintLayout
-  colGroupStats: ColGroupStats[]
-  hasNesting: boolean
+export interface ResourcePrintRowProps extends SplittableProps {
+  layout: ResourcePrintTableRow
+  rowIndex: number
+  rowCount: number
   isNotLast: boolean
 
   dateProfile: DateProfile
@@ -43,12 +38,7 @@ export interface ResourcePrintRowProps extends SplittableProps, AriaCellInput {
 
   colSpecs: ColSpec[]
   groupColCnt: number
-  colWidths: number[] | undefined
-  colGrows: number[] | undefined
-  spreadsheetCanvasWidth: CssDimValue | undefined
-  spreadsheetWidth: CssDimValue
-  timeCanvasWidth: number | undefined
-  timeAreaOffset: number
+  timeCanvasClipStart: number
   slotWidth: number | undefined
   indentWidth: number | undefined
 }
@@ -96,129 +86,119 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
       todayRange: props.todayRange,
       eventSelection: slicedProps.eventSelection,
       resourceId: resource.id,
+      timeCanvasClipStart: props.timeCanvasClipStart,
     }
 
     return (
-      <div
-        role='row'
-        aria-level={props.hasNesting ? layout.indent : undefined}
-        aria-expanded={layout.hasChildren ? layout.isExpanded : undefined}
-        className={classNames.flexRow}
-      >
-        <div
-          className={joinClassNames(classNames.flexCol, classNames.crop)}
-          style={{ width: props.spreadsheetWidth }}
-        >
-          <div
-            className={joinClassNames(classNames.grow, classNames.flexRow)}
-            style={{ minWidth: props.spreadsheetCanvasWidth }}
-          >
-            <ResourceGroupSubrows
-              colGroups={layout.colGroups}
-              colGroupStats={props.colGroupStats}
-              colWidths={props.colWidths}
-              colGrows={props.colGrows}
-            />
-            <ResourceSubrow
+      <tr>
+        {layout.colGroupCells.map((cell, colIndex) => cell && (
+          <ResourceGroupCell
+            key={colIndex}
+            colSpec={cell.group.spec}
+            fieldValue={cell.group.value}
+            rowSpan={cell.rowSpan}
+            borderStart={Boolean(colIndex)}
+            borderBottom={props.rowIndex + cell.rowSpan < props.rowCount}
+            forPrint
+          />
+        ))}
+        {props.colSpecs.slice(props.groupColCnt).map((colSpec, colIndex0) => {
+          const colIndex = props.groupColCnt + colIndex0
+          const fieldValue = colSpec.field
+            ? layout.resourceFields[colSpec.field]
+            : (resource.title || getPublicId(resource.id))
+
+          return (
+            <ResourceCell
+              key={colIndex}
+              colSpec={colSpec}
               resource={resource}
-              resourceFields={layout.resourceFields}
+              field={colSpec.field || 'title'}
+              fieldValue={fieldValue}
               indent={layout.indent}
               hasChildren={layout.hasChildren}
               isExpanded={layout.isExpanded}
-              colStartIndex={props.groupColCnt}
-              colSpecs={props.colSpecs}
-              colWidths={props.colWidths}
-              colGrows={props.colGrows}
-              borderStart={Boolean(props.groupColCnt)}
-              borderBottom={props.isNotLast}
+              width={undefined}
               indentWidth={props.indentWidth}
-              totalX
+              borderStart={Boolean(colIndex)}
+              borderBottom={props.isNotLast}
+              forPrint
             />
-          </div>
-        </div>
+          )
+        })}
 
-        <div className={joinClassNames(options.resourceColumnDividerClass)} />
+        <td
+          className={joinClassNames(options.resourceColumnDividerClass)}
+        />
 
-        <div className={joinClassNames(classNames.flexCol, classNames.crop, classNames.liquid)}>
-          <div
-            className={joinClassNames(classNames.flexCol, classNames.rel, classNames.grow)}
-            style={{
-              width: props.timeCanvasWidth,
-              insetInlineStart: -props.timeAreaOffset,
-            }}
-          >
-            <ContentContainer
-              tag='div'
-              attrs={{
-                ...buildAriaCellAttrs(props),
-                role: 'gridcell',
-                'data-resource-id': resource.id,
-              }}
-              className={joinClassNames(
-                resourceLaneClassName,
-                classNames.grow,
-                classNames.noMargin,
-                classNames.noPadding,
-                classNames.flexCol,
-                classNames.contentBox,
-                props.isNotLast ? classNames.borderOnlyB : classNames.borderNone,
-                classNames.rel,
+        <ContentContainer
+          tag="td"
+          attrs={{
+            'data-resource-id': resource.id,
+          }}
+          className={joinClassNames(
+            resourceLaneClassName,
+            options.resourceRowClass,
+            classNames.noMargin,
+            classNames.noPadding,
+            classNames.contentBox,
+            props.isNotLast ? classNames.borderOnlyB : classNames.borderNone,
+            classNames.rel,
+          )}
+          renderProps={renderProps}
+          generatorName={undefined}
+          didMount={options.resourceLaneDidMount}
+          willUnmount={options.resourceLaneWillUnmount}
+        >
+          {() => (
+            <>
+              <TimelineBg
+                tDateProfile={props.tDateProfile}
+                nowDate={props.nowDate}
+                nowMs={props.nowMs}
+                todayRange={props.todayRange}
+                bgEventSegs={slicedProps.bgEventSegs}
+                businessHourSegs={null}
+                dateSelectionSegs={null}
+                eventResizeSegs={null}
+                slotWidth={props.slotWidth}
+                clipStart={props.timeCanvasClipStart}
+              />
+              <ContentContainer
+                tag="div"
+                className={joinClassNames(classNames.noMargin, classNames.noShrink)}
+                renderProps={renderProps}
+                generatorName="resourceLaneTopContent"
+                customGenerator={options.resourceLaneTopContent}
+                classNameGenerator={options.resourceLaneTopClass}
+              />
+              {eventBands.map((band) => (
+                <TimelinePrintEventBand
+                  {...timelineBandProps}
+                  key={band.levelIndex}
+                  band={band}
+                  heightRefMap={this.printHeights.segHeightRefMap}
+                />
+              ))}
+              {moreLinkBand && (
+                <TimelinePrintMoreLinkBand
+                  {...timelineBandProps}
+                  band={moreLinkBand}
+                  heightRefMap={this.printHeights.moreLinkHeightRefMap}
+                />
               )}
-              renderProps={renderProps}
-              generatorName={undefined}
-              didMount={options.resourceLaneDidMount}
-              willUnmount={options.resourceLaneWillUnmount}
-            >
-              {() => (
-                <>
-                  <TimelineBg
-                    tDateProfile={props.tDateProfile}
-                    nowDate={props.nowDate}
-                    nowMs={props.nowMs}
-                    todayRange={props.todayRange}
-                    bgEventSegs={slicedProps.bgEventSegs}
-                    businessHourSegs={null}
-                    dateSelectionSegs={null}
-                    eventResizeSegs={null}
-                    slotWidth={props.slotWidth}
-                  />
-                  <ContentContainer
-                    tag='div'
-                    className={joinClassNames(classNames.noMargin, classNames.noShrink)}
-                    renderProps={renderProps}
-                    generatorName='resourceLaneTopContent'
-                    customGenerator={options.resourceLaneTopContent}
-                    classNameGenerator={options.resourceLaneTopClass}
-                  />
-                  {eventBands.map((band) => (
-                    <TimelinePrintEventBand
-                      {...timelineBandProps}
-                      key={band.levelIndex}
-                      band={band}
-                      heightRefMap={this.printHeights.segHeightRefMap}
-                    />
-                  ))}
-                  {moreLinkBand && (
-                    <TimelinePrintMoreLinkBand
-                      {...timelineBandProps}
-                      band={moreLinkBand}
-                      heightRefMap={this.printHeights.moreLinkHeightRefMap}
-                    />
-                  )}
-                  <ContentContainer
-                    tag='div'
-                    className={joinClassNames(classNames.noMargin, classNames.noShrink)}
-                    renderProps={renderProps}
-                    generatorName='resourceLaneBottomContent'
-                    customGenerator={options.resourceLaneBottomContent}
-                    classNameGenerator={options.resourceLaneBottomClass}
-                  />
-                </>
-              )}
-            </ContentContainer>
-          </div>
-        </div>
-      </div>
+              <ContentContainer
+                tag="div"
+                className={joinClassNames(classNames.noMargin, classNames.noShrink)}
+                renderProps={renderProps}
+                generatorName="resourceLaneBottomContent"
+                customGenerator={options.resourceLaneBottomContent}
+                classNameGenerator={options.resourceLaneBottomClass}
+              />
+            </>
+          )}
+        </ContentContainer>
+      </tr>
     )
   }
 }

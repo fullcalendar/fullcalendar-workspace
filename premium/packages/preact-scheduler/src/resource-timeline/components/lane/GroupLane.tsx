@@ -16,10 +16,11 @@ export interface GroupLaneProps extends AriaCellInput {
 
   // positioning
   height?: number // does NOT include the border
+  forPrint?: boolean
 }
 
 /*
-parallels the ResourceGroupHeaderSubrow
+parallels the ResourceGroupHeaderCell
 */
 export class GroupLane extends BaseComponent<GroupLaneProps> {
   // ref
@@ -31,7 +32,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
 
   render() {
     let { props, context } = this
-    let { group } = props
+    let { group, forPrint } = props
     let groupSpec = group.spec as GroupSpec // type HACK
     let renderProps: ResourceGroupLaneInfo = {
       fieldValue: group.value,
@@ -40,20 +41,20 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
 
     return (
       <ContentContainer
-        tag="div"
+        tag={forPrint ? 'td' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(props),
           role: 'gridcell',
         }}
         className={joinClassNames(
-          classNames.liquid, // expand to whole row
+          !forPrint && classNames.liquid, // expand to whole row
           classNames.noMargin,
           classNames.noPadding,
-          classNames.flexCol,
+          !forPrint && classNames.flexCol,
           classNames.contentBox,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
-        style={{
+        style={forPrint ? undefined : {
           height: props.height,
         }}
         renderProps={renderProps}
