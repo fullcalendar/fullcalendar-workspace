@@ -52,11 +52,11 @@ import {
 } from '../print-adapter'
 import classNames from '../../styles.module.css'
 import {
-  DAY_GRID_BG_EVENT_Z_INDEX,
-  DAY_GRID_EVENT_Z_INDEX,
-  DAY_GRID_HIGHLIGHT_Z_INDEX,
-  DAY_GRID_INTERACTION_Z_INDEX,
-  DAY_GRID_NON_BUSINESS_Z_INDEX,
+  DAY_GRID_BG_EVENT_Z_CLASS,
+  DAY_GRID_EVENT_Z_CLASS,
+  DAY_GRID_HIGHLIGHT_Z_CLASS,
+  DAY_GRID_INTERACTION_Z_CLASS,
+  DAY_GRID_NON_BUSINESS_Z_CLASS,
 } from './z-index'
 
 export interface DayGridRowProps {
@@ -225,19 +225,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       fillsByCol,
       props.businessHourSegs,
       'non-business',
-      DAY_GRID_NON_BUSINESS_Z_INDEX,
+      DAY_GRID_NON_BUSINESS_Z_CLASS,
     )
     this.appendFillSegs(
       fillsByCol,
       props.bgEventSegs,
       'bg-event',
-      DAY_GRID_BG_EVENT_Z_INDEX,
+      DAY_GRID_BG_EVENT_Z_CLASS,
     )
     this.appendFillSegs(
       fillsByCol,
       highlightSegs,
       'highlight',
-      DAY_GRID_HIGHLIGHT_Z_INDEX,
+      DAY_GRID_HIGHLIGHT_Z_CLASS,
     )
 
     // Table mode gives this theme-positioned node a row-wide canvas hosted by the first cell.
@@ -253,7 +253,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           'role': undefined, // HACK: a 'link' role can't be child of a 'row' role
           'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
         }}
-        style={{ zIndex: DAY_GRID_EVENT_Z_INDEX }}
+        className={DAY_GRID_EVENT_Z_CLASS}
         renderProps={weekNumberRenderProps}
         generatorName="inlineWeekNumberContent"
         customGenerator={options.inlineWeekNumberContent}
@@ -410,13 +410,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <MeasuredHeightHarness
           key={`mirror:${key}`}
-          className={classNames.abs}
+          className={joinClassNames(classNames.abs, DAY_GRID_INTERACTION_Z_CLASS)}
           style={{
             top,
             insetInlineStart: 0,
             width: computeCellSpanWidth(seg.end - seg.start),
-            // HACK: relies on hardcoded container-inner z-indexes
-            zIndex: DAY_GRID_INTERACTION_Z_INDEX,
           }}
           heightRef={null}
         >
@@ -463,13 +461,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <MeasuredHeightHarness
           key={key}
-          className={classNames.abs}
+          className={joinClassNames(
+            classNames.abs,
+            isSelected ? DAY_GRID_INTERACTION_Z_CLASS : DAY_GRID_EVENT_Z_CLASS,
+          )}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
             insetInlineStart: 0,
             width: computeCellSpanWidth(slice.end - slice.start),
-            zIndex: isSelected ? DAY_GRID_INTERACTION_Z_INDEX : DAY_GRID_EVENT_Z_INDEX,
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
         >
@@ -537,10 +537,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         eventNode = (
           <MeasuredHeightHarness
             key={sliceKey}
-            className={joinClassNames(classNames.rel, classNames.flowRoot)}
+            className={joinClassNames(
+              classNames.rel,
+              classNames.flowRoot,
+              DAY_GRID_EVENT_Z_CLASS,
+            )}
             style={{
               width: computeCellSpanWidth(slice.end - slice.start),
-              zIndex: DAY_GRID_EVENT_Z_INDEX,
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
@@ -567,7 +570,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     fillsByCol: ReactElement[][],
     segs: DayRowEventRangePart[],
     fillType: string,
-    zIndex: number,
+    zClassName: string,
   ): void {
     const { props, context } = this
     const { todayRange } = props
@@ -576,11 +579,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       fillsByCol[seg.start].push(
         <div
           key={`${fillType}:${buildEventRangeKey(seg.eventRange)}:${seg.start}:${seg.end}`}
-          className={classNames.fillY}
+          className={joinClassNames(classNames.fillY, zClassName)}
           style={{
             insetInlineStart: 0,
             width: computeCellSpanWidth(seg.end - seg.start),
-            zIndex,
           }}
         >
           {fillType === 'bg-event' ?

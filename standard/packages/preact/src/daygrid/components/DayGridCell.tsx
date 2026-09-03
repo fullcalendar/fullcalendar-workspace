@@ -23,7 +23,7 @@ import {
 } from 'react'
 import { DayGridMoreLink } from './DayGridMoreLink'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
-import { DAY_GRID_CELL_CONTENT_Z_INDEX } from './z-index'
+import { DAY_GRID_CELL_CONTENT_Z_CLASS } from './z-index'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -163,9 +163,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             <div
               className={joinClassNames(
                 classNames.rel, // puts it above bg-fills, which are positioned on TOP of this component :|
+                DAY_GRID_CELL_CONTENT_Z_CLASS,
                 generateClassName(options.dayCellTopClass, renderProps),
               )}
-              style={{ zIndex: DAY_GRID_CELL_CONTENT_Z_INDEX }}
               // TODO: prevent margins/padding!?
             >
               {props.showDayNumber && (
@@ -224,9 +224,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             <div
               className={joinClassNames(
                 classNames.rel, // puts it above bg-fills
+                DAY_GRID_CELL_CONTENT_Z_CLASS,
                 generateClassName(options.dayCellBottomClass, renderProps),
               )}
-              style={{ zIndex: DAY_GRID_CELL_CONTENT_Z_INDEX }}
             />
           </>
         )}
