@@ -230,9 +230,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       options.dayHeaderRowClass,
                       classNames.flexRow,
                       classNames.contentBox,
-                      tierNum < props.headerTiers.length - 1
-                        ? classNames.borderOnlyB
-                        : classNames.borderNone
+                      classNames.borderlessX,
+                      classNames.borderlessTop,
+                      tierNum === props.headerTiers.length - 1 && classNames.borderlessBottom,
                     )}
                     style={{
                       height: state.headerTierHeights[tierNum]
@@ -297,7 +297,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <div
                     className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: true }),
-                      classNames.borderOnlyS,
+                      classNames.borderlessY,
+                      classNames.borderlessEnd,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
@@ -371,7 +372,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       showDayNumbers={false}
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
-                      className={joinClassNames(classNames.borderNone, classNames.liquidX)}
+                      className={joinClassNames(classNames.borderless, classNames.liquidX)}
                       cellIsNarrow={cellIsNarrow}
                       cellIsMicro={cellIsMicro}
 
@@ -394,7 +395,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     <div
                       className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
-                        classNames.borderOnlyS,
+                        classNames.borderlessY,
+                        classNames.borderlessEnd,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
                     />
@@ -480,7 +482,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       <div
                         className={joinClassNames(
                           generateClassName(options.fillerClass, { inTableHeader: false }),
-                          classNames.borderOnlyT,
+                          classNames.borderlessX,
+                          classNames.borderlessBottom,
                           rowsNotExpanding && classNames.liquid,
                         )}
                         style={{
@@ -589,7 +592,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         <div
                           className={joinClassNames(
                             generateClassName(options.fillerClass, { inTableHeader: false }),
-                            classNames.borderOnlyT,
+                            classNames.borderlessX,
+                            classNames.borderlessBottom,
                             classNames.liquid,
                           )}
                         />

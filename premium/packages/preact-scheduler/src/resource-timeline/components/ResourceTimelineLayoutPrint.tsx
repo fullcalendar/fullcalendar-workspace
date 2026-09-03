@@ -167,7 +167,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         rowSpan={superHeaderRendering ? 2 : undefined}
         className={joinClassNames(
           classNames.noPadding,
-          classNames.borderNone,
+          classNames.borderless,
           classNames.crop,
         )}
       >

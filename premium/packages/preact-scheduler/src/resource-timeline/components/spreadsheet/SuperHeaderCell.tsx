@@ -50,7 +50,9 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           classNames.noPadding,
           !forPrint && classNames.flexCol,
           classNames.alignStart,
-          forPrint ? classNames.borderOnlyB : classNames.borderNone,
+          classNames.borderlessX,
+          classNames.borderlessTop,
+          !forPrint && classNames.borderlessBottom,
           !forPrint && classNames.crop,
         )}
         renderProps={renderProps}

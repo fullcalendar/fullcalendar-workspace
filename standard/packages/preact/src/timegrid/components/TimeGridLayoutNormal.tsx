@@ -189,9 +189,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   className={joinClassNames(
                     options.dayHeaderRowClass,
                     classNames.flexRow,
-                    tierNum < props.headerTiers.length - 1
-                      ? classNames.borderOnlyB
-                      : classNames.borderNone
+                    classNames.borderlessX,
+                    classNames.borderlessTop,
+                    tierNum === props.headerTiers.length - 1 && classNames.borderlessBottom,
                   )}
                 >
                   {(options.weekNumbers && rowConfig.isDateRow) ? (
@@ -229,7 +229,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   <div
                     className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: true }),
-                      classNames.borderOnlyS,
+                      classNames.borderlessY,
+                      classNames.borderlessEnd,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
@@ -289,7 +290,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   showDayNumbers={false}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className={joinClassNames(classNames.liquidX, classNames.borderNone)}
+                  className={joinClassNames(classNames.liquidX, classNames.borderless)}
                   cellIsNarrow={cellIsNarrow}
                   cellIsMicro={cellIsMicro}
                   // content
@@ -307,7 +308,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   <div
                     className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: false }),
-                      classNames.borderOnlyS,
+                      classNames.borderlessY,
+                      classNames.borderlessEnd,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
@@ -456,7 +458,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     <div
                       className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
-                        classNames.borderOnlyT,
+                        classNames.borderlessX,
+                        classNames.borderlessBottom,
                         classNames.liquid,
                       )}
                     />

@@ -116,7 +116,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
           classNames.noMargin,
           classNames.noPadding,
           classNames.flexCol,
-          props.isFirst ? classNames.borderNone : classNames.borderOnlyS,
+          classNames.borderlessY,
+          classNames.borderlessEnd,
+          props.isFirst && classNames.borderlessStart,
           align === 'center' ? classNames.alignCenter :
             align === 'end' ? classNames.alignEnd :
               classNames.alignStart,

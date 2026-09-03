@@ -75,7 +75,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+      classNames.borderlessY,
+      classNames.borderlessEnd,
+      !props.borderStart && classNames.borderlessStart,
       props.width == null && classNames.liquid,
       classNames.rel, // origin for abs-positioned children within
     )

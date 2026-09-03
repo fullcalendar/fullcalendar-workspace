@@ -64,9 +64,10 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           !forPrint && classNames.flexCol,
           classNames.alignStart,
           forPrint && context.options.resourceRowClass,
-          props.borderBottom
-            ? (props.borderStart ? classNames.borderOnlySB : classNames.borderOnlyB)
-            : (props.borderStart ? classNames.borderOnlyS : classNames.borderNone),
+          classNames.borderlessTop,
+          classNames.borderlessEnd,
+          !props.borderStart && classNames.borderlessStart,
+          !props.borderBottom && classNames.borderlessBottom,
           classNames.crop,
         )}
         style={forPrint ? undefined : {

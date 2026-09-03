@@ -145,42 +145,8 @@ This will prevent all ancestors from customizing their box size unless they use 
 /* Border Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
-/* TODO: break-out to x and y. don't have "only" all */
-/* TODO: instead of "border" utils, call them "borderless" to subtract? */
-
-.borderNone {
+.borderless {
   border: 0 !important;
-}
-
-.borderOnlyT {
-  border-left: 0 !important;
-  border-right: 0 !important;
-  border-bottom: 0 !important;
-}
-
-.borderOnlyB {
-  border-top: 0 !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-}
-
-.borderOnlySB {
-  border-top: 0 !important;
-  border-inline-end: 0 !important;
-}
-
-.borderOnlyS,
-.borderOnlyE {
-  border-top: 0 !important;
-  border-bottom: 0 !important;
-}
-
-.borderOnlyS {
-  border-inline-end: 0 !important;
-}
-
-.borderOnlyE {
-  border-inline-start: 0 !important;
 }
 
 .borderlessX {
@@ -191,6 +157,22 @@ This will prevent all ancestors from customizing their box size unless they use 
 .borderlessY {
   border-top: 0 !important;
   border-bottom: 0 !important;
+}
+
+.borderlessTop {
+  border-top: 0 !important;
+}
+
+.borderlessBottom {
+  border-bottom: 0 !important;
+}
+
+.borderlessStart {
+  border-inline-start: 0 !important;
+}
+
+.borderlessEnd {
+  border-inline-end: 0 !important;
 }
 
 /* Flexbox Utils */

@@ -60,7 +60,9 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
           options.resourceRowClass,
           props.className, // what for???
           classNames.flexRow,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+          classNames.borderlessX,
+          classNames.borderlessTop,
+          !props.borderBottom && classNames.borderlessBottom,
         )}
         style={{
           top: props.top,

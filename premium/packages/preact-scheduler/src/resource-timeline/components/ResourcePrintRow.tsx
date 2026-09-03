@@ -142,7 +142,9 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
             classNames.noMargin,
             classNames.noPadding,
             classNames.contentBox,
-            props.isNotLast ? classNames.borderOnlyB : classNames.borderNone,
+            classNames.borderlessX,
+            classNames.borderlessTop,
+            !props.isNotLast && classNames.borderlessBottom,
           )}
           renderProps={renderProps}
           generatorName={undefined}

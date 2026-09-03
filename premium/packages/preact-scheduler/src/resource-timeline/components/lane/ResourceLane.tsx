@@ -110,7 +110,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             classNames.noPadding,
             classNames.flexCol,
             classNames.contentBox,
-            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+            classNames.borderlessX,
+            classNames.borderlessTop,
+            !props.borderBottom && classNames.borderlessBottom,
             classNames.rel, // for fillTop
           )}
           style={{

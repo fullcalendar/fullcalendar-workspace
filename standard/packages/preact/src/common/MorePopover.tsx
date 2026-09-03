@@ -130,7 +130,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           className={joinClassNames(
             generateClassName(options.dayHeaderClass, dayHeaderRenderProps),
             classNames.flexCol,
-            classNames.borderOnlyB,
+            classNames.borderlessX,
+            classNames.borderlessTop,
             align === 'center' ? classNames.alignCenter :
               align === 'end' ? classNames.alignEnd :
                 classNames.alignStart,
@@ -173,7 +174,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           className={joinClassNames(
             generateClassName(options.dayCellClass, dayCellRenderProps),
             classNames.flexCol,
-            classNames.borderNone,
+            classNames.borderless,
           )}
         >
           <div className={generateClassName(options.dayCellInnerClass, dayCellRenderProps)}>

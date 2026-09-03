@@ -292,12 +292,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         className={joinClassNames(
           options.dayRowClass,
           props.className,
-          tableMode && classNames.borderNone,
+          tableMode && classNames.borderless,
           !tableMode && classNames.flexRow,
           !tableMode && classNames.rel, // origin for the inline week number
-          !tableMode && (
-            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone
-          ),
+          !tableMode && classNames.borderlessX,
+          !tableMode && classNames.borderlessTop,
+          (!tableMode && !props.borderBottom) && classNames.borderlessBottom,
           classNames.isolate,
           (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
             classNames.printSiblingRow,

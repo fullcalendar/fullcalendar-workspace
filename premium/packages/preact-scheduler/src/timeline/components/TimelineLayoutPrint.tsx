@@ -125,7 +125,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
             })}
           >
             <tr>
-              <th className={joinClassNames(classNames.noPadding, classNames.borderNone, classNames.crop)}>
+              <th className={joinClassNames(classNames.noPadding, classNames.borderless, classNames.crop)}>
                 <div
                   className={classNames.rel}
                   style={{
@@ -162,7 +162,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
           >
             <tr>
               <td
-                className={joinClassNames(classNames.noPadding, classNames.borderNone)}
+                className={joinClassNames(classNames.noPadding, classNames.borderless)}
               >
                 <div className={joinClassNames(options.timelineTopClass)} />
                 <TimelinePrintFg

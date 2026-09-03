@@ -533,7 +533,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         options.resourceHeaderRowClass,
                         classNames.flexRow,
                         classNames.grow,
-                        classNames.borderOnlyB,
+                        classNames.borderlessX,
+                        classNames.borderlessTop,
                       )}
                     >
                       <SuperHeaderCell
@@ -564,7 +565,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           options.resourceHeaderRowClass,
                           classNames.flexRow,
                           classNames.grow,
-                          classNames.borderNone,
+                          classNames.borderless,
                         )}
                       >
                         <HeaderCells
@@ -633,7 +634,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div
                     className={joinClassNames(
                       generateClassName(options.fillerClass, { inTableHeader: false }),
-                      classNames.borderOnlyT,
+                      classNames.borderlessX,
+                      classNames.borderlessBottom,
                     )}
                     style={{ minHeight: spreadsheetBottomFiller }}
                   />
@@ -767,7 +769,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: true }),
-                        classNames.borderOnlyS,
+                        classNames.borderlessY,
+                        classNames.borderlessEnd,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
                     />
@@ -971,7 +974,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       className={joinClassNames(
                         generateClassName(options.fillerClass, { inTableHeader: false }),
-                        classNames.borderOnlyT,
+                        classNames.borderlessX,
+                        classNames.borderlessBottom,
                         classNames.fillX,
                       )}
                       style={{

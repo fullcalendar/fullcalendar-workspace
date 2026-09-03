@@ -6,7 +6,7 @@ import { watchSize } from '../../component-util/resize-observer'
 import { memoize } from '../../util/memoize'
 import type { Ref } from 'react'
 import { BaseDayHeaderData, CellDataConfig, CellRenderConfig } from '../header-tier'
-import { buildCellBorderClassName, dayHeaderMicroFormat } from './util'
+import { dayHeaderMicroFormat } from './util'
 import classNames from '../../styles.module.css'
 import { DateFormatter, DateMarker, DateTimeFormatPartWithWeek, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { findDayNumberText, findWeekdayText } from '../../util/date-format'
@@ -143,7 +143,10 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
           classNames.noMargin,
           classNames.noPadding,
           !tableMode && classNames.flexCol,
-          buildCellBorderClassName(props.borderStart, Boolean(tableMode && props.borderBottom)),
+          classNames.borderlessTop,
+          classNames.borderlessEnd,
+          !props.borderStart && classNames.borderlessStart,
+          !(tableMode && props.borderBottom) && classNames.borderlessBottom,
           !tableMode && alignClassName,
           isLiquid && !isSpanning && classNames.liquid,
           !isSticky && classNames.crop,

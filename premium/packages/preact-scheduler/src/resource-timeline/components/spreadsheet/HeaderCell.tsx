@@ -48,7 +48,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           classNames.noMargin,
           classNames.noPadding,
           !forPrint && classNames.flexCol,
-          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          classNames.borderlessY,
+          classNames.borderlessEnd,
+          !props.borderStart && classNames.borderlessStart,
           classNames.rel, // for resizer abs positioning
           // cannot crop because resizer is allowed to bleed out
         )}

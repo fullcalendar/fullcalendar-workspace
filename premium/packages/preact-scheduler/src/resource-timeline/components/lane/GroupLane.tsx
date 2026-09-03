@@ -52,7 +52,9 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           classNames.noPadding,
           !forPrint && classNames.flexCol,
           classNames.contentBox,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+          classNames.borderlessX,
+          classNames.borderlessTop,
+          !props.borderBottom && classNames.borderlessBottom,
         )}
         style={forPrint ? undefined : {
           height: props.height,

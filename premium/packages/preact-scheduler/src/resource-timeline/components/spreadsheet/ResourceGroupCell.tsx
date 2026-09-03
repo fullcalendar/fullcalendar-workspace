@@ -49,9 +49,10 @@ export class ResourceGroupCell extends BaseComponent<ResourceGroupCellProps> {
           !forPrint && classNames.liquid,
           forPrint && classNames.crop,
           forPrint && context.options.resourceRowClass,
-          props.borderBottom
-            ? (props.borderStart ? classNames.borderOnlySB : classNames.borderOnlyB)
-            : (props.borderStart ? classNames.borderOnlyS : classNames.borderNone),
+          classNames.borderlessTop,
+          classNames.borderlessEnd,
+          !props.borderStart && classNames.borderlessStart,
+          !props.borderBottom && classNames.borderlessBottom,
         )}
         renderProps={renderProps}
         generatorName="resourceCellContent"

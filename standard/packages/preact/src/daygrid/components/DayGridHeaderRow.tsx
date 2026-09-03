@@ -45,12 +45,12 @@ export class DayGridHeaderRow<BaseRenderProps extends { isDisabled: boolean }, R
         className={joinClassNames(
           options.dayHeaderRowClass,
           props.className,
-          tableMode && classNames.borderNone,
+          tableMode && classNames.borderless,
           !tableMode && classNames.flexRow,
           !tableMode && classNames.contentBox,
-          !tableMode && (
-            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone
-          ),
+          !tableMode && classNames.borderlessX,
+          !tableMode && classNames.borderlessTop,
+          (!tableMode && !props.borderBottom) && classNames.borderlessBottom,
         )}
         style={{
           height: props.height,

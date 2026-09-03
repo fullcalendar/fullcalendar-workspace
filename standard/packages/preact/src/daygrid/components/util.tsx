@@ -9,7 +9,6 @@ import { DayTableCell, DayTableModel } from '../DayTableModel'
 import { SlicedCoordRange } from '../../coord-range'
 import type { ReactNode } from 'react'
 import { COL_BORDER_WIDTH } from '../../util/dimensions'
-import classNames from '../../styles.module.css'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
@@ -109,14 +108,6 @@ export function computeCellSpanHorizontals(
       ? `calc(-${crossedCellCount * 100}% - ${crossedBorderWidth}px)`
       : 0,
   }
-}
-
-export function buildCellBorderClassName(borderStart: boolean, borderBottom: boolean): string {
-  if (borderBottom) {
-    return borderStart ? classNames.borderOnlySB : classNames.borderOnlyB
-  }
-
-  return borderStart ? classNames.borderOnlyS : classNames.borderNone
 }
 
 export function computeColFromPosition(

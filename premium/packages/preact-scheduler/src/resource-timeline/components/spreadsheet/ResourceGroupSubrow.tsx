@@ -44,7 +44,9 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           options.resourceRowClass,
           props.className,
           classNames.flexRow,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+          classNames.borderlessX,
+          classNames.borderlessTop,
+          !props.borderBottom && classNames.borderlessBottom,
         )}
         style={{
           top: props.top,

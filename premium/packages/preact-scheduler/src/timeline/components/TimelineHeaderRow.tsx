@@ -65,9 +65,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
           props.className,
           options.slotHeaderRowClass,
           classNames.flexRow,
-          props.rowLevel // not the last row?
-            ? classNames.borderOnlyB
-            : classNames.borderNone,
+          classNames.borderlessX,
+          classNames.borderlessTop,
+          !props.rowLevel && classNames.borderlessBottom, // last row
         )}
         style={{
           insetInlineStart: props.insetInlineStart,

@@ -23,7 +23,6 @@ import {
 } from 'react'
 import { DayGridMoreLink } from './DayGridMoreLink'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
-import { buildCellBorderClassName } from './util'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -87,7 +86,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      buildCellBorderClassName(props.borderStart, Boolean(tableMode && props.borderBottom)),
+      classNames.borderlessTop,
+      classNames.borderlessEnd,
+      !props.borderStart && classNames.borderlessStart,
+      !(tableMode && props.borderBottom) && classNames.borderlessBottom,
       !tableMode && props.width == null && classNames.liquid,
       !tableMode && classNames.flexCol,
       classNames.rel,
