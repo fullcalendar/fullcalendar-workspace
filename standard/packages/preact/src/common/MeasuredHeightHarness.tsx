@@ -11,7 +11,7 @@ export interface MeasuredHeightHarnessProps {
 
 export class MeasuredHeightHarness extends Component<MeasuredHeightHarnessProps> {
   private rootElRef = createRef<HTMLDivElement>()
-  private isUnmounting = false
+  private _isUnmounting = false
   private disconnectHeight?: () => void
   private height?: number
 
@@ -30,10 +30,11 @@ export class MeasuredHeightHarness extends Component<MeasuredHeightHarnessProps>
   }
 
   componentDidMount(): void {
+    this._isUnmounting = false
     const rootEl = this.rootElRef.current // TODO: make dynamic with useEffect
 
     this.disconnectHeight = watchHeight(rootEl, (height) => {
-      if (this.isUnmounting) return
+      if (this._isUnmounting) return
       this.height = height
       setRef(this.props.heightRef, height)
     })
@@ -59,7 +60,7 @@ export class MeasuredHeightHarness extends Component<MeasuredHeightHarnessProps>
   }
 
   componentWillUnmount(): void {
-    this.isUnmounting = true
+    this._isUnmounting = true
     this.disconnectHeight?.()
     setRef(this.props.heightRef, null)
   }
