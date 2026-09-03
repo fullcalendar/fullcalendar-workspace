@@ -24,7 +24,13 @@ export function buildDayTableModel(
 
   // Exclude 'day': when cells are themselves days, all would match and the boundary
   // distinction is meaningless (unlike timeline slots which can be sub-day).
-  return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit !== 'day' ? majorUnit : undefined)
+  return new DayTableModel(
+    daySeries,
+    breakOnWeeks,
+    dateEnv,
+    majorUnit !== 'day' ? majorUnit : undefined,
+    dateProfile.activeRange,
+  )
 }
 
 export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [

@@ -1,5 +1,5 @@
 import { DaySeriesModel } from '../common/DaySeriesModel'
-import { DateMarker, DateEnv } from '@full-ui/headless-calendar'
+import { DateMarker, DateEnv, DateRange, rangeContainsMarker } from '@full-ui/headless-calendar'
 import { Dictionary } from '../options'
 import { SlicedCoordRange } from '../coord-range'
 import { isMajorUnit } from '../DateProfileGenerator'
@@ -17,6 +17,7 @@ export interface DayTableCell {
   key: string // probably just the serialized date, but could be other metadata if this col is specific to another entity
   date: DateMarker
   isMajor: boolean
+  isDisabled: boolean
   renderProps?: Dictionary
   attrs?: Dictionary
   className?: string
@@ -34,6 +35,7 @@ export class DayTableModel {
     breakOnWeeks: boolean,
     private dateEnv: DateEnv,
     private majorUnit = '',
+    private activeRange?: DateRange | null,
   ) {
     let { dates } = daySeries
     let daysPerRow: number
@@ -85,6 +87,9 @@ export class DayTableModel {
       key: date.toISOString(),
       date,
       isMajor: this.cellIsMajor(date),
+      isDisabled: this.activeRange === null || (
+        this.activeRange !== undefined && !rangeContainsMarker(this.activeRange, date)
+      ),
     }
   }
 

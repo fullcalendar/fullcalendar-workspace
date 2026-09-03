@@ -30,6 +30,7 @@ export interface DayGridCellProps {
   todayRange: DateRange
   date: DateMarker
   isMajor: boolean
+  isDisabled: boolean
   showDayNumber: boolean
   isNarrow: boolean
   isMicro: boolean
@@ -84,7 +85,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const isMonthStart = props.showDayNumber &&
       shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
-    const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
+    const dateMeta = {
+      ...this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange),
+      isDisabled: props.isDisabled,
+    }
 
     const baseClassName = joinClassNames(
       classNames.borderlessTop,

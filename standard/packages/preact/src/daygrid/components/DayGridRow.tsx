@@ -346,6 +346,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               todayRange={props.todayRange}
               date={cell.date}
               isMajor={cell.isMajor}
+              isDisabled={cell.isDisabled}
               showDayNumber={props.showDayNumbers}
               isNarrow={props.cellIsNarrow}
               isMicro={props.cellIsMicro}
@@ -649,6 +650,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     let isComplete = true
 
     for (const cell of cells) {
+      if (cell.isDisabled) {
+        continue
+      }
+
       const mainTop = headerHeightMap.get(cell.key)
       const mainHeight = mainHeightMap.get(cell.key)
 

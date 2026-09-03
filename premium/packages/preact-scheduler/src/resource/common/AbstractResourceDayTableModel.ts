@@ -145,7 +145,8 @@ function buildResourceCells(
 
   for (let row = 0; row < dayTableModel.rowCount; row += 1) {
     rows.push(cols.map((col) => {
-      let date = dayTableModel.cellRows[row][col.dateI].date
+      let sourceCell = dayTableModel.cellRows[row][col.dateI]
+      let { date, isDisabled } = sourceCell
       let { resource } = col
 
       if (!resource) {
@@ -153,6 +154,7 @@ function buildResourceCells(
           key: date.toISOString(),
           date,
           isMajor: col.isMajor,
+          isDisabled,
         }
       }
 
@@ -160,6 +162,7 @@ function buildResourceCells(
         ...buildResourceCellFields(resource, date, context),
         date,
         isMajor: col.isMajor,
+        isDisabled,
       }
     }))
   }

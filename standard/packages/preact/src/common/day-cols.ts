@@ -1,4 +1,4 @@
-import { DateEnv, DateMarker, DateRange, Duration, addDays } from '@full-ui/headless-calendar'
+import { DateEnv, DateMarker, DateRange, Duration, addDays, rangeContainsMarker } from '@full-ui/headless-calendar'
 import { DateProfile, DateProfileGenerator, isMajorUnit } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
 import { DaySeriesModel } from './DaySeriesModel'
@@ -8,6 +8,7 @@ export interface DayCol {
   date: DateMarker
   range: DateRange
   isMajor: boolean
+  isDisabled: boolean
   renderProps?: Dictionary
   attrs?: Dictionary
   className?: string
@@ -31,6 +32,7 @@ export function buildDayCols(
     dateEnv,
     slotRange,
     majorUnit,
+    dateProfile.activeRange,
   )
 }
 
@@ -39,6 +41,7 @@ export function buildDayColsFromSeries(
   dateEnv: DateEnv,
   slotRange?: DayColSlotRange,
   majorUnit = '',
+  activeRange?: DateRange | null,
 ): DayCol[] {
   return daySeries.dates.map((date) => ({
     key: date.toISOString(),
@@ -53,5 +56,8 @@ export function buildDayColsFromSeries(
           end: addDays(date, 1),
         },
     isMajor: majorUnit ? isMajorUnit(date, majorUnit, dateEnv) : false,
+    isDisabled: activeRange === null || (
+      activeRange !== undefined && !rangeContainsMarker(activeRange, date)
+    ),
   }))
 }
