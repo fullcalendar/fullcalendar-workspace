@@ -25,7 +25,7 @@ import { type ReactElement, type Ref } from 'react'
 import { DayRowEventRangePart, getDayGridSegKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
-import { computeCellSpanWidth } from './util'
+import { COL_BORDER_WIDTH } from '../../util/dimensions'
 import { MeasuredHeightHarness } from '../../common/MeasuredHeightHarness'
 import {
   type Slice,
@@ -221,25 +221,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     )
     const fillsByCol: ReactElement[][] = cells.map(() => [])
 
-    this.appendFillSegs(
-      fillsByCol,
-      props.businessHourSegs,
-      'non-business',
-      DAY_GRID_NON_BUSINESS_Z_CLASS,
-    )
-    this.appendFillSegs(
-      fillsByCol,
-      props.bgEventSegs,
-      'bg-event',
-      DAY_GRID_BG_EVENT_Z_CLASS,
-    )
-    this.appendFillSegs(
-      fillsByCol,
-      highlightSegs,
-      'highlight',
-      DAY_GRID_HIGHLIGHT_Z_CLASS,
-    )
-
     // Table mode gives this theme-positioned node a row-wide canvas hosted by the first cell.
     const weekNumberNode = (props.showWeekNumbers && !props.cellIsMicro) ? (
       <ContentContainer<InlineWeekNumberInfo>
@@ -269,21 +250,37 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         <div
           key="week-number"
           className={joinClassNames(
-            // temporarily disabled -- caused lots of blank pages in Firefox
-            // works fine as zero-height div for themes
-            // confusing, because business-hours, which use same technique, do not cause problem
-            // classNames.fillY,
+            classNames.fillY,
             classNames.start0,
             classNames.pointerEventsNone,
           )}
           style={{
-            width: computeCellSpanWidth(cells.length),
+            width: this.computeSpanWidth(0, cells.length),
           }}
         >
           {weekNumberNode}
         </div>,
       )
     }
+
+    this.appendFillSegs(
+      fillsByCol,
+      props.businessHourSegs,
+      'non-business',
+      DAY_GRID_NON_BUSINESS_Z_CLASS,
+    )
+    this.appendFillSegs(
+      fillsByCol,
+      props.bgEventSegs,
+      'bg-event',
+      DAY_GRID_BG_EVENT_Z_CLASS,
+    )
+    this.appendFillSegs(
+      fillsByCol,
+      highlightSegs,
+      'highlight',
+      DAY_GRID_HIGHLIGHT_Z_CLASS,
+    )
 
     const RowTag = tableMode ? 'tr' : 'div'
 
@@ -423,7 +420,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           )}
           style={{
             top,
-            width: computeCellSpanWidth(seg.end - seg.start),
+            width: this.computeSpanWidth(seg.start, seg.end),
           }}
           heightRef={null}
         >
@@ -478,7 +475,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
-            width: computeCellSpanWidth(slice.end - slice.start),
+            width: this.computeSpanWidth(slice.start, slice.end),
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
         >
@@ -552,7 +549,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               DAY_GRID_EVENT_Z_CLASS,
             )}
             style={{
-              width: computeCellSpanWidth(slice.end - slice.start),
+              width: this.computeSpanWidth(slice.start, slice.end),
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
@@ -574,6 +571,22 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     })
   }
 
+  private computeSpanWidth(start: number, end: number) {
+    const span = end - start
+    const percentWidth = `${span * 100}%`
+
+    // Flex cells have uniform inner widths, so spans must add crossed borders.
+    // Fixed-table cells have uniform outer widths; the borderless first cell's inner
+    // width already includes that space, so no border compensation is needed.
+    const crossedBorderWidth = this.props.tableMode && start === 0
+      ? 0
+      : Math.max(0, span - 1) * COL_BORDER_WIDTH
+
+    return crossedBorderWidth
+      ? `calc(${percentWidth} + ${crossedBorderWidth}px)`
+      : percentWidth
+  }
+
   /** Places each fill in its first cell while allowing its wrapper to span subsequent cells. */
   appendFillSegs(
     fillsByCol: ReactElement[][],
@@ -590,7 +603,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={`${fillType}:${buildEventRangeKey(seg.eventRange)}:${seg.start}:${seg.end}`}
           className={joinClassNames(classNames.fillY, classNames.start0, zClassName)}
           style={{
-            width: computeCellSpanWidth(seg.end - seg.start),
+            width: this.computeSpanWidth(seg.start, seg.end),
           }}
         >
           {fillType === 'bg-event' ?

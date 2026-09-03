@@ -1,4 +1,3 @@
-import { CssDimValue } from '../../scrollgrid/util'
 import { DayHeaderInfo } from '../../render-hook-misc'
 import { computeMajorUnit } from '../../DateProfileGenerator'
 import { createFormatter } from '../../datelib/formatting'
@@ -7,7 +6,6 @@ import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
 import { DaySeriesModel } from '../../common/DaySeriesModel'
 import { DayTableCell, DayTableModel } from '../DayTableModel'
 import type { ReactNode } from 'react'
-import { COL_BORDER_WIDTH } from '../../util/dimensions'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
@@ -82,19 +80,6 @@ export function computeTopFromDate(
   }
 
   return top
-}
-
-/** Width for content whose containing block is one cell but whose canvas spans many. */
-export function computeCellSpanWidth(span: number): CssDimValue {
-  const crossedCellCount = Math.max(0, span - 1)
-  const crossedBorderWidth = crossedCellCount * COL_BORDER_WIDTH
-
-  // Let CSS resolve the current cell width so print-time compression does not
-  // depend on resize observers. The origin is already past the starting cell's
-  // border, so extend across only the subsequently crossed cells and borders.
-  return crossedBorderWidth
-    ? `calc(${span * 100}% + ${crossedBorderWidth}px)`
-    : '100%'
 }
 
 export function computeColFromPosition(
