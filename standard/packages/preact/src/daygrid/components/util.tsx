@@ -6,7 +6,6 @@ import { DateEnv, DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
 import { DaySeriesModel } from '../../common/DaySeriesModel'
 import { DayTableCell, DayTableModel } from '../DayTableModel'
-import { SlicedCoordRange } from '../../coord-range'
 import type { ReactNode } from 'react'
 import { COL_BORDER_WIDTH } from '../../util/dimensions'
 
@@ -79,35 +78,17 @@ export function computeTopFromDate(
   return top
 }
 
-/** Horizontals for a seg whose wrapper begins at the content edge of its first cell. */
-export function computeCellRelativeHorizontals(
-  seg: SlicedCoordRange,
-): {
-  insetInlineStart: number
-  insetInlineEnd: CssDimValue
-} {
-  return computeCellSpanHorizontals(seg.end - seg.start)
-}
-
-/** Horizontals for content whose containing block is one cell but whose canvas spans many. */
-export function computeCellSpanHorizontals(
-  span: number,
-): {
-  insetInlineStart: number
-  insetInlineEnd: CssDimValue
-} {
+/** Width for content whose containing block is one cell but whose canvas spans many. */
+export function computeCellSpanWidth(span: number): CssDimValue {
   const crossedCellCount = Math.max(0, span - 1)
   const crossedBorderWidth = crossedCellCount * COL_BORDER_WIDTH
 
   // Let CSS resolve the current cell width so print-time compression does not
   // depend on resize observers. The origin is already past the starting cell's
   // border, so extend across only the subsequently crossed cells and borders.
-  return {
-    insetInlineStart: 0,
-    insetInlineEnd: crossedCellCount
-      ? `calc(-${crossedCellCount * 100}% - ${crossedBorderWidth}px)`
-      : 0,
-  }
+  return crossedBorderWidth
+    ? `calc(${span * 100}% + ${crossedBorderWidth}px)`
+    : '100%'
 }
 
 export function computeColFromPosition(

@@ -187,7 +187,7 @@ export { NowIndicatorDot } from './common/NowIndicatorDot'
 
 export { renderFill, BgEvent } from './common/bg-fill'
 export { MoreLinkContainer } from './common/MoreLinkContainer'
-export { MeasuredAbsoluteHarness } from './common/MeasuredAbsoluteHarness'
+export { MeasuredHeightHarness } from './common/MeasuredHeightHarness'
 
 export { ViewContainer } from './common/ViewContainer'
 

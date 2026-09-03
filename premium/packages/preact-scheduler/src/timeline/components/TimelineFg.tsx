@@ -7,7 +7,7 @@ import {
   EventRangeProps,
   setRef,
   EventSegUiInteractionState,
-  MeasuredAbsoluteHarness,
+  MeasuredHeightHarness,
   type Slice,
   getSliceKey,
 } from '@fullcalendar/preact/protected-api'
@@ -168,8 +168,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           const isSelected = instanceId === props.eventSelection
 
           return (
-            <MeasuredAbsoluteHarness
+            <MeasuredHeightHarness
               key={key}
+              className={classNames.abs}
               style={{
                 visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
@@ -190,7 +191,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isSelected={isSelected}
                 {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
               />
-            </MeasuredAbsoluteHarness>
+            </MeasuredHeightHarness>
           )
         })}
       </>
@@ -225,8 +226,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       const isSelected = instanceId === props.eventSelection
 
       return (
-        <MeasuredAbsoluteHarness
+        <MeasuredHeightHarness
           key={instanceId}
+          className={classNames.abs}
           style={{
             zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
             top: fgSegTops.get(instanceId) ?? 0,
@@ -245,7 +247,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             isSelected={isSelected}
             {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
           />
-        </MeasuredAbsoluteHarness>
+        </MeasuredHeightHarness>
       )
     })
   }
@@ -256,8 +258,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     return (
       <>
         {moreLinks.map((moreLink) => (
-          <MeasuredAbsoluteHarness
+          <MeasuredHeightHarness
             key={moreLink.key}
+            className={classNames.abs}
             style={{
               top: moreLink.top,
               insetInlineStart: moreLink.start,
@@ -277,7 +280,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               eventSelection={props.eventSelection}
               resourceId={props.resourceId}
             />
-          </MeasuredAbsoluteHarness>
+          </MeasuredHeightHarness>
         ))}
       </>
     )

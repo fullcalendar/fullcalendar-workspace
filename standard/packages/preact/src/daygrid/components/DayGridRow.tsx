@@ -25,8 +25,8 @@ import { type ReactElement, type Ref } from 'react'
 import { DayRowEventRangePart, getDayGridSegKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
-import { computeCellRelativeHorizontals, computeCellSpanHorizontals } from './util'
-import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
+import { computeCellSpanWidth } from './util'
+import { MeasuredHeightHarness } from '../../common/MeasuredHeightHarness'
 import {
   type Slice,
   getSliceKey,
@@ -270,7 +270,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key="week-number"
           className={classNames.fillY}
           style={{
-            ...computeCellSpanHorizontals(cells.length),
+            insetInlineStart: 0,
+            width: computeCellSpanWidth(cells.length),
             pointerEvents: 'none',
           }}
         >
@@ -407,11 +408,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const isSelected = instanceId === eventSelection
 
       nodes.push(
-        <MeasuredAbsoluteHarness
+        <MeasuredHeightHarness
           key={`mirror:${key}`}
+          className={classNames.abs}
           style={{
             top,
-            ...computeCellRelativeHorizontals(seg),
+            insetInlineStart: 0,
+            width: computeCellSpanWidth(seg.end - seg.start),
             // HACK: relies on hardcoded container-inner z-indexes
             zIndex: DAY_GRID_INTERACTION_Z_INDEX,
           }}
@@ -423,7 +426,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isMirror: true,
             isSelected,
           })}
-        </MeasuredAbsoluteHarness>,
+        </MeasuredHeightHarness>,
       )
     }
 
@@ -458,12 +461,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const isSelected = instanceId === eventSelection
 
       nodes.push(
-        <MeasuredAbsoluteHarness
+        <MeasuredHeightHarness
           key={key}
+          className={classNames.abs}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
-            ...computeCellRelativeHorizontals(slice),
+            insetInlineStart: 0,
+            width: computeCellSpanWidth(slice.end - slice.start),
             zIndex: isSelected ? DAY_GRID_INTERACTION_Z_INDEX : DAY_GRID_EVENT_Z_INDEX,
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
@@ -473,7 +478,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isResizing,
             isSelected,
           })}
-        </MeasuredAbsoluteHarness>,
+        </MeasuredHeightHarness>,
       )
     }
 
@@ -518,7 +523,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     )
   }
 
-  /** Renders print slots that reserve space for their positioned event wrappers. */
+  /** Renders aligned print slots with in-flow event wrappers that can paginate with their bands. */
   private renderPrintBandSlots(slots: DayGridPrintBandSlot[]): ReactElement[] {
     const { printSegHeightRefMap } = this
 
@@ -530,17 +535,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         const sliceKey = getDayGridPrintSliceKey(slice)
 
         eventNode = (
-          <MeasuredAbsoluteHarness
+          <MeasuredHeightHarness
             key={sliceKey}
+            className={joinClassNames(classNames.rel, classNames.flowRoot)}
             style={{
-              ...computeCellRelativeHorizontals(slice),
+              width: computeCellSpanWidth(slice.end - slice.start),
               zIndex: DAY_GRID_EVENT_Z_INDEX,
             }}
             heightRef={printSegHeightRefMap.createRef(sliceKey)}
           >
             {/* print has no interaction state at all */}
             {this.renderEventContent(slice, slice.sourceSeg.eventRange, {})}
-          </MeasuredAbsoluteHarness>
+          </MeasuredHeightHarness>
         )
       }
 
@@ -572,7 +578,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={`${fillType}:${buildEventRangeKey(seg.eventRange)}:${seg.start}:${seg.end}`}
           className={classNames.fillY}
           style={{
-            ...computeCellRelativeHorizontals(seg),
+            insetInlineStart: 0,
+            width: computeCellSpanWidth(seg.end - seg.start),
             zIndex,
           }}
         >

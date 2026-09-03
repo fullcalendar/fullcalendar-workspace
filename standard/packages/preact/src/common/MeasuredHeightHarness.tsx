@@ -1,17 +1,15 @@
 import { Component, createRef, type Ref, type ReactNode } from 'react'
 import { watchHeight } from '../component-util/resize-observer'
-import { joinClassNames } from '../util/html'
 import { setRef } from '../vdom-util'
-import classNames from '../styles.module.css'
 
-export interface MeasuredAbsoluteHarnessProps {
+export interface MeasuredHeightHarnessProps {
   style: any // TODO
   className?: string
   children?: ReactNode
   heightRef?: Ref<number>
 }
 
-export class MeasuredAbsoluteHarness extends Component<MeasuredAbsoluteHarnessProps> {
+export class MeasuredHeightHarness extends Component<MeasuredHeightHarnessProps> {
   private rootElRef = createRef<HTMLDivElement>()
   private isUnmounting = false
   private disconnectHeight?: () => void
@@ -22,7 +20,7 @@ export class MeasuredAbsoluteHarness extends Component<MeasuredAbsoluteHarnessPr
 
     return (
       <div
-        className={joinClassNames(props.className, classNames.abs)}
+        className={props.className}
         style={props.style}
         ref={this.rootElRef}
       >
@@ -48,7 +46,7 @@ export class MeasuredAbsoluteHarness extends Component<MeasuredAbsoluteHarnessPr
   change, so hand the newly attached ref what was already observed, and release
   the detached one.
   */
-  componentDidUpdate(prevProps: MeasuredAbsoluteHarnessProps): void {
+  componentDidUpdate(prevProps: MeasuredHeightHarnessProps): void {
     const { heightRef } = this.props
 
     if (prevProps.heightRef !== heightRef) {
