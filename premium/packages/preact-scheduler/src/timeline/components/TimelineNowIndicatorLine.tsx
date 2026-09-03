@@ -34,11 +34,11 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
 
     return (
       <div
-        className={classNames.fill}
-        style={{
-          zIndex: 2, // inlined from $now-indicator-z
-          pointerEvents: 'none', // TODO: className
-        }}
+        className={joinClassNames(
+          classNames.fill,
+          classNames.pointerEventsNone,
+          classNames.z2,
+        )}
       >
         <NowIndicatorLineContainer
           className={joinClassNames(

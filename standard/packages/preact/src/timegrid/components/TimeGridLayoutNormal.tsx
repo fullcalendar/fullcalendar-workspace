@@ -174,10 +174,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               // See the note in TimeGridLayout about why print doesn't use repeating headers.
               classNames.flexCol,
               tableHeaderSticky && classNames.tableHeaderSticky,
+              classNames.z1,
             )}
-            style={{
-              zIndex: 1,
-            }}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
@@ -258,10 +256,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
             classNames.isolate,
+            classNames.z0,
           )}
-          style={{
-            zIndex: 0,
-          }}
         >
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
@@ -269,8 +265,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             <>
               <div
                 role='row'
-                className={classNames.flexRow}
-                style={{ zIndex: 1 }}
+                className={joinClassNames(classNames.flexRow, classNames.z1)}
               >
                 <TimeGridAllDayHeader
                   width={axisWidth}
@@ -317,8 +312,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               </div>
               {/* TODO: don't show div if no classname */}
               <div
-                className={joinClassNames(options.allDayDividerClass)}
-                style={{ zIndex: 2 }}
+                className={joinClassNames(options.allDayDividerClass, classNames.z2)}
               />
             </>
           )}
@@ -330,10 +324,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               classNames.flexCol,
               classNames.rel, // for Ruler.fillStart
               verticalScrolling && classNames.liquid,
+              classNames.z0,
             )}
-            style={{
-              zIndex: 0,
-            }}
             ref={props.timeScrollerRef as any} // HACK
             clientWidthRef={this.handleClientWidth}
             clientHeightRef={this.handleClientHeight}

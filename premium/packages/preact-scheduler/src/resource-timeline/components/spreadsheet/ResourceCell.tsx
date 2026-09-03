@@ -98,7 +98,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               <ResourceIndent
                 level={props.indent}
                 indentWidth={props.indentWidth}
-                style={{ zIndex: 2 }}
+                className={classNames.z2}
               >
                 {props.hasChildren && (
                   <ResourceExpander
@@ -110,8 +110,10 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             )}
             <InnerContent
               tag="div"
-              className={generateClassName(colSpec.cellInnerClass, renderProps)}
-              style={{ zIndex: 1 }}
+              className={joinClassNames(
+                generateClassName(colSpec.cellInnerClass, renderProps),
+                classNames.z1,
+              )}
             />
           </div>
         )}

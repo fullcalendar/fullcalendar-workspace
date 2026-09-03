@@ -512,10 +512,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   }),
                   classNames.flexCol,
                   tableHeaderSticky && classNames.tableHeaderSticky,
+                  classNames.z1,
                 )}
-                style={{
-                  zIndex: 1,
-                }}
               >
                 <div
                   className={joinClassNames(
@@ -608,10 +606,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   allowVerticalScrolling && classNames.liquid,
+                  classNames.z0,
                 )}
-                style={{
-                  zIndex: 0,
-                }}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
               >
@@ -677,10 +673,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   }),
                   classNames.flexCol,
                   tableHeaderSticky && classNames.tableHeaderSticky,
+                  classNames.z1,
                 )}
-                style={{
-                  zIndex: 1,
-                }}
               >
                 <Scroller
                   ref={this.timeHeaderScrollerRef}
@@ -804,10 +798,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   allowVerticalScrolling && classNames.liquid,
+                  classNames.z0,
                 )}
-                style={{
-                  zIndex: 0,
-                }}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
                 clientHeightRef={

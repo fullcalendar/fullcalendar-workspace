@@ -121,8 +121,8 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
             }),
             classNames.flexCol,
             tableHeaderSticky && classNames.tableHeaderSticky,
+            classNames.z1,
           )}
-          style={{ zIndex: 1 }}
         >
           <Scroller
             horizontal
@@ -195,8 +195,8 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
             }),
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
+            classNames.z0,
           )}
-          style={{ zIndex: 0 }}
           ref={this.bodyScrollerRef}
           clientWidthRef={props.clientWidthRef}
         >

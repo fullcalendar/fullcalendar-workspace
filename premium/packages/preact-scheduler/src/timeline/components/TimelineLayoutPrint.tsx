@@ -75,15 +75,17 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
         )}
       >
         <div
-          className={classNames.abs}
+          className={joinClassNames(
+            classNames.abs,
+            classNames.start0,
+            classNames.end0,
+            classNames.pointerEventsNone,
+            classNames.z0,
+          )}
           style={{
-            zIndex: 0,
             top: this.state.headerHeight ?? 0,
             // Compensates for Firefox miscomputing absolute height with repeated print headers.
             bottom: '-5%',
-            insetInlineStart: 0,
-            insetInlineEnd: 0,
-            pointerEvents: 'none',
           }}
         >
           <TimelineSlats
@@ -114,8 +116,8 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
             generateClassName(options.tableClass, tableDisplayInfo),
             classNames.printTable,
             classNames.rel,
+            classNames.z1,
           )}
-          style={{ zIndex: 1 }}
         >
           <thead
             ref={this.headerElRef}

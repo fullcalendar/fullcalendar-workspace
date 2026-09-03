@@ -62,10 +62,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           style={{ cursor: 'col-resize' }}
           ref={this.resizerElRef}
         >
-          <div
-            className={classNames.hitXSkinny}
-            style={{ zIndex: 1 }} // TODO: className?
-          />
+          <div className={joinClassNames(classNames.hitXSkinny, classNames.z1)} />
         </div>
         <div className={joinClassNames(props.endClassName, classNames.liquid)}>
           {props.endContent}

@@ -80,11 +80,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       !props.borderStart && classNames.borderlessStart,
       props.width == null && classNames.liquid,
       classNames.rel, // origin for abs-positioned children within
+      classNames.z1, // get above slots
     )
 
     const baseStyle = {
       width: props.width,
-      zIndex: 1, // get above slots
     }
 
     const isStack = this.getIsStack()
@@ -114,6 +114,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     const innerClassName = joinClassNames(
       generateClassName(options.dayLaneInnerClass, renderProps),
       !isStack && classNames.fill,
+      classNames.z1, // scope event z-indexes
     )
 
     const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
@@ -142,7 +143,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
             <div
               className={innerClassName}
-              style={{ zIndex: 1 }} // scope event z-indexes
             >
               {this.renderFgSegs(
                 sortedFgSegs,
@@ -153,7 +153,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               // but only show it when there are actual mirror events, to avoid blocking clicks
               <div
                 className={innerClassName}
-                style={{ zIndex: 1 }} // scope event z-indexes
               >
                 {this.renderFgSegs(
                   mirrorSegs,

@@ -36,12 +36,12 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         className={joinClassNames(
           classNames.abs,
           classNames.flexCol,
+          classNames.end0,
+          classNames.z9999,
         )}
         style={{
           top: props.top,
           height: props.height,
-          insetInlineEnd: 0,
-          zIndex: 9999, // HACK. move to className?
         }}
       >
         <MoreLinkContainer

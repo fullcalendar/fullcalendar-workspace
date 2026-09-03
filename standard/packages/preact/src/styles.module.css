@@ -283,6 +283,10 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   overflow-anchor: none;
 }
 
+.pointerEventsNone {
+  pointer-events: none !important;
+}
+
 .crop {
   overflow: hidden !important;
 }
@@ -307,6 +311,10 @@ which can't rely on dynamic height detection after print-flag activated.
 
 .start0 {
   inset-inline-start: 0 !important;
+}
+
+.end0 {
+  inset-inline-end: 0 !important;
 }
 
 .fill {
@@ -448,6 +456,10 @@ which can't rely on dynamic height detection after print-flag activated.
 
 .z1000 {
   z-index: 1000;
+}
+
+.z9999 {
+  z-index: 9999;
 }
 
 .focusZ2:focus-visible {

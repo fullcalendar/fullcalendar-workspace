@@ -170,10 +170,12 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           return (
             <MeasuredHeightHarness
               key={key}
-              className={classNames.abs}
+              className={joinClassNames(
+                classNames.abs,
+                isSelected ? classNames.z1000 : classNames.z1,
+              )}
               style={{
                 visibility: isInvisible ? 'hidden' : undefined,
-                zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
                 top,
                 insetInlineStart: slice.start,
                 width: slice.end - slice.start,
@@ -228,9 +230,11 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       return (
         <MeasuredHeightHarness
           key={instanceId}
-          className={classNames.abs}
+          className={joinClassNames(
+            classNames.abs,
+            isSelected ? classNames.z1000 : classNames.z1,
+          )}
           style={{
-            zIndex: isSelected ? 1000 : 1, // scope z-indexes within; HACK: relies on hardcoded z-index offset; fragile if stacking context changes
             top: fgSegTops.get(instanceId) ?? 0,
             insetInlineStart: horizontal?.start,
             width: horizontal && horizontal.end - horizontal.start,

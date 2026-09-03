@@ -6,6 +6,7 @@ import type { ReactNode } from 'react'
 export interface ResourceIndentProps {
   level: number // assumed >=1 ... or else caller should not include in DOM
   indentWidth: number | undefined
+  className?: string
   style?: any // TODO
   children?: ReactNode
 }
@@ -21,6 +22,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
           classNames.noShrink,
           classNames.flexCol,
           classNames.alignEnd,
+          props.className,
         )}
         style={{
           ...props.style,

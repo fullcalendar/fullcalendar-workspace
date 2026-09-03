@@ -161,6 +161,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             className={joinClassNames(
               generateClassName(options.singleMonthHeaderClass, headerRenderProps),
               isTitleAndHeaderSticky && classNames.stickyT,
+              isTitleAndHeaderSticky && classNames.z3,
               classNames.flexCol,
             )}
             style={{
@@ -168,7 +169,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               // because in Chrome, something about position:sticky on this title div
               // causes its bottom border to no be considered part of its mass,
               // and would get overlapped and hidden by the table-header div
-              zIndex: isTitleAndHeaderSticky ? 3 : undefined, // TODO: className?
               marginBottom: titleStickyBottom,
             }}
           >
@@ -234,9 +234,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   }),
                   classNames.flexCol,
                   isTitleAndHeaderSticky && classNames.sticky,
+                  isTitleAndHeaderSticky && classNames.z2,
                 )}
                 style={{
-                  zIndex: isTitleAndHeaderSticky ? 2 : undefined, // TODO: className?
                   top: isTitleAndHeaderSticky ? state.titleHeight : 0,
                   marginBottom: headerStickyBottom,
                 }}
@@ -267,9 +267,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   }),
                   classNames.flexCol,
                   isAspectRatio && classNames.rel,
+                  isTitleAndHeaderSticky && classNames.z1,
                 )}
                 style={{
-                  zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?
                   marginTop: headerStickyBottom != null ? -headerStickyBottom : undefined,
                   aspectRatio: isAspectRatio ? String(options.aspectRatio) : undefined,
                 }}

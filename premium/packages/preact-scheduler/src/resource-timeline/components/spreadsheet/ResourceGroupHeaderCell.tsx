@@ -91,7 +91,7 @@ export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCe
             <ResourceIndent
               level={1}
               indentWidth={props.indentWidth}
-              style={{ zIndex: 2 }}
+              className={classNames.z2}
             >
               <ResourceExpander
                 isExpanded={props.isExpanded}
@@ -100,8 +100,10 @@ export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCe
             </ResourceIndent>
             <InnerContent
               tag="div"
-              className={generateClassName(spec.labelInnerClass, renderProps)}
-              style={{ zIndex: 1 }}
+              className={joinClassNames(
+                generateClassName(spec.labelInnerClass, renderProps),
+                classNames.z1,
+              )}
             />
           </div>
         )}

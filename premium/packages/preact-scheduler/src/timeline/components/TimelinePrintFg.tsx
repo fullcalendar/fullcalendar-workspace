@@ -115,9 +115,11 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
         return (
           <MeasuredHeightHarness
             key={sourceSeg.key}
-            className={classNames.abs}
+            className={joinClassNames(
+              classNames.abs,
+              isSelected ? classNames.z1000 : classNames.z1,
+            )}
             style={{
-              zIndex: isSelected ? 1000 : 1,
               top: 0,
               insetInlineStart: slice.start - (props.timeCanvasClipStart ?? 0),
               width: slice.end - slice.start,

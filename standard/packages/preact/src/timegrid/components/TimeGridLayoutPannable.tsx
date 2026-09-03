@@ -208,10 +208,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               // See the note in TimeGridLayout about why print doesn't use repeating headers.
               classNames.flexCol,
               tableHeaderSticky && classNames.tableHeaderSticky,
+              classNames.z1,
             )}
-            style={{
-              zIndex: 1,
-            }}
           >
             <div className={classNames.flexRow}>
               {/* HEADER / labels
@@ -326,18 +324,15 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
             classNames.isolate,
+            classNames.z0,
           )}
-          style={{
-            zIndex: 0,
-          }}
         >
           {options.allDaySlot && (
             <>
               <div
                 role='row'
                 aria-rowindex={firstBodyRowIndex}
-                className={classNames.flexRow}
-                style={{ zIndex: 1 }}
+                className={joinClassNames(classNames.flexRow, classNames.z1)}
               >
                 {/* ALL-DAY / label
                 -----------------------------------------------------------------------------------*/}
@@ -405,8 +400,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               </div>
               {/* TODO: don't show div if no classname */}
               <div
-                className={joinClassNames(options.allDayDividerClass)}
-                style={{ zIndex: 2 }}
+                className={joinClassNames(options.allDayDividerClass, classNames.z2)}
               />
             </>
           )}
@@ -417,10 +411,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               classNames.flexRow,
               classNames.rel, // for Ruler.fillStart
               verticalScrolling && classNames.liquid,
+              classNames.z0,
             )}
-            style={{
-              zIndex: 0,
-            }}
           >
             {/* SLATS / labels (vertical scroller)
             ---------------------------------------------------------------------------------------*/}

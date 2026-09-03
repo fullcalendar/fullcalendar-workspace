@@ -268,11 +268,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       fillsByCol[0].push(
         <div
           key="week-number"
-          className={classNames.fillY}
+          className={joinClassNames(
+            classNames.fillY,
+            classNames.start0,
+            classNames.pointerEventsNone,
+          )}
           style={{
-            insetInlineStart: 0,
             width: computeCellSpanWidth(cells.length),
-            pointerEvents: 'none',
           }}
         >
           {weekNumberNode}
@@ -410,10 +412,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <MeasuredHeightHarness
           key={`mirror:${key}`}
-          className={joinClassNames(classNames.abs, DAY_GRID_INTERACTION_Z_CLASS)}
+          className={joinClassNames(
+            classNames.abs,
+            classNames.start0,
+            DAY_GRID_INTERACTION_Z_CLASS,
+          )}
           style={{
             top,
-            insetInlineStart: 0,
             width: computeCellSpanWidth(seg.end - seg.start),
           }}
           heightRef={null}
@@ -463,12 +468,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={key}
           className={joinClassNames(
             classNames.abs,
+            classNames.start0,
             isSelected ? DAY_GRID_INTERACTION_Z_CLASS : DAY_GRID_EVENT_Z_CLASS,
           )}
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
-            insetInlineStart: 0,
             width: computeCellSpanWidth(slice.end - slice.start),
           }}
           heightRef={this.sliceHeightRefMap.createRef(key)}
@@ -579,9 +584,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       fillsByCol[seg.start].push(
         <div
           key={`${fillType}:${buildEventRangeKey(seg.eventRange)}:${seg.start}:${seg.end}`}
-          className={joinClassNames(classNames.fillY, zClassName)}
+          className={joinClassNames(classNames.fillY, classNames.start0, zClassName)}
           style={{
-            insetInlineStart: 0,
             width: computeCellSpanWidth(seg.end - seg.start),
           }}
         >

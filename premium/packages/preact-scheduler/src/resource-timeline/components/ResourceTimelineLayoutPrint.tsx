@@ -227,15 +227,18 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         />
 
         <div
-          className={joinClassNames(classNames.abs, classNames.crop)}
+          className={joinClassNames(
+            classNames.abs,
+            classNames.crop,
+            classNames.end0,
+            classNames.pointerEventsNone,
+            classNames.z0,
+          )}
           style={{
-            zIndex: 0,
             top: this.state.headerHeight ?? 0,
             // Compensates for Firefox miscomputing absolute height with repeated print headers.
             bottom: '-5%',
             insetInlineStart: timelineViewportInsetStart,
-            insetInlineEnd: 0,
-            pointerEvents: 'none',
           }}
         >
           <TimelineSlats
@@ -268,8 +271,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             generateClassName(options.tableClass, tableDisplayInfo),
             classNames.printTable,
             classNames.rel,
+            classNames.z1,
           )}
-          style={{ zIndex: 1 }}
         >
           <colgroup>
             {colSpecs.map((_colSpec, colIndex) => (
