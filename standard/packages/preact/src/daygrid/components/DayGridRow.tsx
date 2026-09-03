@@ -269,7 +269,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         <div
           key="week-number"
           className={joinClassNames(
-            classNames.fillY,
+            // temporarily disabled -- caused lots of blank pages in Firefox
+            // works fine as zero-height div for themes
+            // confusing, because business-hours, which use same technique, do not cause problem
+            // classNames.fillY,
             classNames.start0,
             classNames.pointerEventsNone,
           )}
