@@ -205,7 +205,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 borderlessBottom,
                 multiMonthColumns: 0,
               }),
-              // see note in TimeGridLayout about why we don't do classNames.printHeader
+              // See the note in TimeGridLayout about why print doesn't use repeating headers.
               classNames.flexCol,
               tableHeaderSticky && classNames.tableHeaderSticky,
             )}

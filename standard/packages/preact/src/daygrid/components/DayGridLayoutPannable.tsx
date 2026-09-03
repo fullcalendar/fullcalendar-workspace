@@ -21,6 +21,7 @@ import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
 import { computeViewBorderless } from '../../util/misc'
+import { DayGridLayoutPrint } from './DayGridLayoutPrint'
 
 export interface DayGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -83,6 +84,30 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
     const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
+    if (props.forPrint) {
+      return (
+        <DayGridLayoutPrint
+          dateProfile={props.dateProfile}
+          todayRange={props.todayRange}
+          cellRows={props.cellRows}
+          headerTiers={props.headerTiers}
+          showHeader={Boolean(options.dayHeaders)}
+          fgEventSegs={props.fgEventSegs}
+          bgEventSegs={props.bgEventSegs}
+          eventSelection={props.eventSelection}
+          dayMaxEventRows={options.dayMaxEventRows}
+          borderlessX={borderlessX}
+          borderlessTop={borderlessTop}
+          borderlessBottom={borderlessBottom}
+          multiMonthColumns={0}
+          visibleWidth={totalWidth}
+          cellIsNarrow={cellIsNarrow}
+          cellIsMicro={cellIsMicro}
+          rowHeightRefMap={props.rowHeightRefMap}
+        />
+      )
+    }
+
     return (
       <>
         {options.dayHeaders && (
@@ -94,7 +119,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               borderlessBottom,
               multiMonthColumns: 0,
             }),
-            classNames.printHeader, // either flexCol or table-header-group
+            classNames.flexCol,
             tableHeaderSticky && classNames.tableHeaderSticky,
           )}>
             <Scroller

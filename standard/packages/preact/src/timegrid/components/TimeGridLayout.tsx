@@ -172,7 +172,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
             borderlessBottom,
             multiMonthColumns: 0,
           }),
-          // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
+          // We don't use the repeating-header print treatment here because it works poorly:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
           // - Chrome works okay, but abs-positioned events cover the repeated header
           //   Also, there's weird padding on the last page at bottom of container, which matches

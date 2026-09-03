@@ -85,8 +85,8 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         }}
         className={joinClassNames(
           props.className,
-          classNames.printRoot, // either flexCol or table
-          generateClassName(options.tableClass, {
+          !props.forPrint && classNames.flexCol,
+          !props.forPrint && generateClassName(options.tableClass, {
             borderlessX,
             borderlessTop,
             borderlessBottom,
@@ -108,11 +108,18 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
 
   componentDidMount() {
     this._isUnmounting = false
-    this.resetScroll()
-    this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
+    if (!this.props.forPrint) {
+      this.resetScroll()
+      this.scrollerRef.current?.addScrollEndListener(this.handleScrollEnd)
+    }
   }
 
   componentDidUpdate(prevProps: DayGridLayoutProps) {
+    if (prevProps.forPrint && !this.props.forPrint) {
+      this.scrollerRef.current?.addScrollEndListener(this.handleScrollEnd)
+      this.resetScroll()
+    }
+
     if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
       this.resetScroll()
     }
@@ -120,7 +127,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
 
   componentWillUnmount() {
     this._isUnmounting = true
-    this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
+    this.scrollerRef.current?.removeScrollEndListener(this.handleScrollEnd)
   }
 
   // Scrolling
@@ -130,8 +137,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     this.scrollDate = this.props.dateProfile.currentDate
     this.updateScrollY()
 
-    const scroller = this.scrollerRef.current
-    scroller.scrollTo({ x: 0 })
+    this.scrollerRef.current?.scrollTo({ x: 0 })
   }
 
   updateScrollY = () => {

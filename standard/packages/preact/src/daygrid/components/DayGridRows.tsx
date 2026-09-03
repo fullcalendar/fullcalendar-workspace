@@ -22,6 +22,7 @@ export interface DayGridRowsProps {
   todayRange: DateRange
   cellRows: DayTableCell[][]
   forPrint: boolean
+  tableMode?: boolean // real table markup, unlike print-rendered TimeGrid all-day rows
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string
 
@@ -57,7 +58,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
   state: DayGridRowsState = {}
 
   // ref
-  private rootEl: HTMLDivElement
+  private rootEl: HTMLElement
   private disconnectMoreLinkHeight?: () => void
 
   // memo
@@ -81,7 +82,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
   render() {
     let { props, state, context, rowHeightRefMap } = this
     let { options } = context
-    let { cellRows } = props
+    let { cellRows, tableMode } = props
     let rowCount = cellRows.length
 
     // Will cause rows to not be reused across months
@@ -108,18 +109,19 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
       props.dayMaxEvents,
       props.dayMaxEventRows,
     ) === 'auto'
+    const RowsTag = tableMode ? 'tbody' : 'div'
 
     return (
       <>
-        <div
+        <RowsTag
           role="rowgroup"
           className={joinClassNames(
             props.className,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
-            !props.forPrint && classNames.flexCol,
+            !tableMode && !props.forPrint && classNames.flexCol,
           )}
-          style={{ width: props.width }}
+          style={tableMode ? undefined : { width: props.width }}
           ref={this.handleRootEl}
         >
           {cellRows.map((cells, row) => (
@@ -134,12 +136,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
               showDayNumbers={rowCount > 1}
               showWeekNumbers={rowCount > 1 && options.weekNumbers}
               forPrint={props.forPrint}
+              tableMode={tableMode}
+              borderBottom={row < rowCount - 1}
 
               // if not auto-height, distribute height of container somewhat evently to rows
-              className={joinClassNames(
-                rowHeightsRedistribute && classNames.grow,
-                row < rowCount - 1 ? classNames.borderOnlyB : classNames.borderNone,
-              )}
+              className={rowHeightsRedistribute ? classNames.grow : undefined}
 
               // content
               fgEventSegs={fgEventSegsByRow[row]}
@@ -161,7 +162,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
               heightRef={rowHeightRefMap.createRef(cells[0].key)}
             />
           ))}
-        </div>
+        </RowsTag>
         {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
         {needsMoreLinkProbe && (
           <MoreLinkTrigger
@@ -193,7 +194,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
     }
   }
 
-  handleRootEl = (rootEl: HTMLDivElement) => {
+  handleRootEl = (rootEl: HTMLElement) => {
     this.rootEl = rootEl
 
     if (rootEl) {

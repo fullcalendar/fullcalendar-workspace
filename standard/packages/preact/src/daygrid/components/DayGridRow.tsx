@@ -2,7 +2,12 @@ import { InlineWeekNumberInfo } from '../../common/WeekNumberContainer'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { getEventRangeMeta, sortEventSegs, EventRangeProps } from '../../component-util/event-rendering'
+import {
+  buildEventRangeKey,
+  getEventRangeMeta,
+  sortEventSegs,
+  EventRangeProps,
+} from '../../component-util/event-rendering'
 import { SlicedCoordRange } from '../../coord-range'
 import { DateProfile } from '../../DateProfileGenerator'
 import { BgEvent, renderFill } from '../../common/bg-fill'
@@ -20,7 +25,7 @@ import { type ReactElement, type Ref } from 'react'
 import { DayRowEventRangePart, getDayGridSegKey } from '../TableSeg'
 import { DayGridCell } from './DayGridCell'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
-import { computeCellRelativeHorizontals, computeHorizontalsFromSeg } from './util'
+import { computeCellRelativeHorizontals, computeCellSpanHorizontals } from './util'
 import { MeasuredAbsoluteHarness } from '../../common/MeasuredAbsoluteHarness'
 import {
   type Slice,
@@ -56,6 +61,8 @@ export interface DayGridRowProps {
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
+  tableMode?: boolean // real tr/td markup, independent of print placement behavior
+  borderBottom?: boolean
   className?: string
   role?: string
 
@@ -81,12 +88,15 @@ export interface DayGridRowProps {
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
+// Div-layout fills share the row's isolated stacking context, below positioned cells and foreground events.
+const DAY_GRID_DIV_NON_BUSINESS_Z_INDEX = -3
+const DAY_GRID_DIV_BG_EVENT_Z_INDEX = -2
+const DAY_GRID_DIV_HIGHLIGHT_Z_INDEX = -1
 const DAY_GRID_EVENT_Z_INDEX = 1
 const DAY_GRID_INTERACTION_Z_INDEX = 1000
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
-  private rootEl: HTMLElement | undefined
   private headerHeightRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleSegPositioning)
   })
@@ -123,7 +133,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
-    const { cells } = props
+    const { cells, tableMode } = props
     const { options } = context
 
     const weekDateMarker = props.cells[0].date
@@ -208,9 +218,71 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       props.cellIsNarrow,
       hasNavLink,
     )
+    const fillsByCol: ReactElement[][] = cells.map(() => [])
+
+    this.appendFillSegs(
+      fillsByCol,
+      props.businessHourSegs,
+      'non-business',
+      DAY_GRID_DIV_NON_BUSINESS_Z_INDEX,
+    )
+    this.appendFillSegs(
+      fillsByCol,
+      props.bgEventSegs,
+      'bg-event',
+      DAY_GRID_DIV_BG_EVENT_Z_INDEX,
+    )
+    this.appendFillSegs(
+      fillsByCol,
+      highlightSegs,
+      'highlight',
+      DAY_GRID_DIV_HIGHLIGHT_Z_INDEX,
+    )
+
+    // Table mode gives this theme-positioned node a row-wide canvas hosted by the first cell.
+    const weekNumberNode = (props.showWeekNumbers && !props.cellIsMicro) ? (
+      <ContentContainer<InlineWeekNumberInfo>
+        tag="div"
+        attrs={{
+          ...(
+            hasNavLink
+              ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
+              : {}
+          ),
+          'role': undefined, // HACK: a 'link' role can't be child of a 'row' role
+          'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
+        }}
+        style={{ pointerEvents: 'auto' }}
+        className={classNames.z1}
+        renderProps={weekNumberRenderProps}
+        generatorName="inlineWeekNumberContent"
+        customGenerator={options.inlineWeekNumberContent}
+        defaultGenerator={renderText}
+        classNameGenerator={options.inlineWeekNumberClass}
+        didMount={options.inlineWeekNumberDidMount}
+        willUnmount={options.inlineWeekNumberWillUnmount}
+      />
+    ) : null
+
+    if (tableMode && weekNumberNode) {
+      fillsByCol[0].push(
+        <div
+          key="week-number"
+          className={classNames.fillY}
+          style={{
+            ...computeCellSpanHorizontals(cells.length),
+            pointerEvents: 'none',
+          }}
+        >
+          {weekNumberNode}
+        </div>,
+      )
+    }
+
+    const RowTag = tableMode ? 'tr' : 'div'
 
     return (
-      <div
+      <RowTag
         role={props.role as any /* !!! */}
         aria-label={
           props.role === 'row' // HACK
@@ -220,43 +292,22 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         className={joinClassNames(
           options.dayRowClass,
           props.className,
-          classNames.flexRow,
-          classNames.rel, // origin for row-wide fills and the inline week number
+          tableMode && classNames.borderNone,
+          !tableMode && classNames.flexRow,
+          !tableMode && classNames.rel, // origin for the inline week number
+          !tableMode && (
+            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone
+          ),
           classNames.isolate,
           (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
             classNames.printSiblingRow,
         )}
         style={{
-          flexBasis: props.basis,
+          flexBasis: tableMode ? undefined : props.basis,
         }}
         ref={this.handleRootEl}
       >
-        {(props.showWeekNumbers && !props.cellIsMicro) && (
-          <ContentContainer<InlineWeekNumberInfo>
-            tag="div"
-            attrs={{
-              ...(
-                hasNavLink
-                  ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
-                  : {}
-              ),
-              'role': undefined, // HACK: a 'link' role can't be child of 'row' role
-              'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
-            }}
-            // put above all cells (TODO: put explicit z0 on each cell?)
-            className={classNames.z1}
-            renderProps={weekNumberRenderProps}
-            generatorName="inlineWeekNumberContent"
-            customGenerator={options.inlineWeekNumberContent}
-            defaultGenerator={renderText}
-            classNameGenerator={options.inlineWeekNumberClass}
-            didMount={options.inlineWeekNumberDidMount}
-            willUnmount={options.inlineWeekNumberWillUnmount}
-          />
-        )}
-        {this.renderFillSegs(props.businessHourSegs, 'non-business')}
-        {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
-        {this.renderFillSegs(highlightSegs, 'highlight')}
+        {!tableMode && weekNumberNode}
         {props.cells.map((cell, col) => {
           const printPopover = printPlan
             ? buildDayGridPopoverSegs(
@@ -295,8 +346,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               isNarrow={props.cellIsNarrow}
               isMicro={props.cellIsMicro}
               borderStart={Boolean(col)}
+              borderBottom={props.borderBottom}
+              tableMode={tableMode}
 
               // content
+              fills={fillsByCol[col]}
               segs={printPopover ? printPopover.segs : screenColumns![col].segs}
               hiddenSegs={printPopover ? printPopover.hiddenSegs : screenColumns![col].hiddenSegs}
               fgLiquidHeight={printPlan ? false : screenFgLiquidHeight}
@@ -321,7 +375,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             />
           )
         })}
-      </div>
+      </RowTag>
     )
   }
 
@@ -504,31 +558,24 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     })
   }
 
-  renderFillSegs(
+  /** Places each fill in its first cell while allowing its wrapper to span subsequent cells. */
+  appendFillSegs(
+    fillsByCol: ReactElement[][],
     segs: DayRowEventRangePart[],
     fillType: string,
-  ): ReactElement {
+    divZIndex: number,
+  ): void {
     const { props, context } = this
-    const { todayRange, colWidth } = props
-
-    const colCount = props.cells.length
-    const nodes: ReactElement[] = []
+    const { todayRange } = props
 
     for (const seg of segs) {
-      const key = seg.start + ':' + seg.end // NOTE: don't use date, because could be multiple of same (w/ resources)
-      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(
-        seg,
-        colWidth,
-        colCount,
-      )
-
-      nodes.push(
+      fillsByCol[seg.start].push(
         <div
-          key={key}
+          key={`${fillType}:${buildEventRangeKey(seg.eventRange)}:${seg.start}:${seg.end}`}
           className={classNames.fillY}
           style={{
-            insetInlineStart,
-            insetInlineEnd,
+            ...computeCellRelativeHorizontals(seg),
+            zIndex: props.tableMode ? undefined : divZIndex,
           }}
         >
           {fillType === 'bg-event' ?
@@ -546,13 +593,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         </div>,
       )
     }
-
-    return <>{nodes}</>
   }
 
-  handleRootEl = (rootEl: HTMLElement) => {
-    this.rootEl = rootEl
+  handleRootEl = (rootEl: HTMLElement | null) => {
+    this.disconnectHeight?.()
+    this.disconnectHeight = undefined
     setRef(this.props.rootElRef, rootEl)
+
+    if (rootEl) {
+      this.disconnectHeight = watchHeight(rootEl, (contentHeight) => {
+        setRef(this.props.heightRef, contentHeight)
+      })
+    }
   }
 
   // Sizing
@@ -560,11 +612,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   componentDidMount() {
     this._isUnmounting = false
-    const { rootEl } = this // TODO: make dynamic with useEffect
-
-    this.disconnectHeight = watchHeight(rootEl, (contentHeight) => {
-      setRef(this.props.heightRef, contentHeight)
-    })
   }
 
   componentDidUpdate(prevProps: DayGridRowProps): void {
@@ -575,7 +622,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   componentWillUnmount(): void {
     this._isUnmounting = true
-    this.disconnectHeight()
+    this.disconnectHeight?.()
     setRef(this.props.heightRef, null)
   }
 

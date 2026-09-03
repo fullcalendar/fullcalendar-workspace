@@ -6,10 +6,10 @@ import { DateEnv, DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
 import { DaySeriesModel } from '../../common/DaySeriesModel'
 import { DayTableCell, DayTableModel } from '../DayTableModel'
-import { fracToCssDim } from '../../util/html'
 import { SlicedCoordRange } from '../../coord-range'
 import type { ReactNode } from 'react'
 import { COL_BORDER_WIDTH } from '../../util/dimensions'
+import classNames from '../../styles.module.css'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
@@ -80,32 +80,6 @@ export function computeTopFromDate(
   return top
 }
 
-/*
-FYI, `width` is not dependable for aligning completely to farside
-*/
-export function computeHorizontalsFromSeg(
-  seg: SlicedCoordRange,
-  colWidth: number | undefined,
-  colCount: number,
-): {
-  insetInlineStart: CssDimValue | undefined,
-  insetInlineEnd: CssDimValue | undefined,
-} {
-  let fromStart: CssDimValue
-  let fromEnd: CssDimValue
-
-  if (colWidth != null) {
-    fromStart = seg.start * colWidth
-    fromEnd = (colCount - seg.end) * colWidth
-  } else {
-    const colWidthFrac = 1 / colCount
-    fromStart = fracToCssDim(seg.start * colWidthFrac)
-    fromEnd = fracToCssDim(1 - seg.end * colWidthFrac)
-  }
-
-  return { insetInlineStart: fromStart, insetInlineEnd: fromEnd }
-}
-
 /** Horizontals for a seg whose wrapper begins at the content edge of its first cell. */
 export function computeCellRelativeHorizontals(
   seg: SlicedCoordRange,
@@ -113,7 +87,16 @@ export function computeCellRelativeHorizontals(
   insetInlineStart: number
   insetInlineEnd: CssDimValue
 } {
-  const span = seg.end - seg.start
+  return computeCellSpanHorizontals(seg.end - seg.start)
+}
+
+/** Horizontals for content whose containing block is one cell but whose canvas spans many. */
+export function computeCellSpanHorizontals(
+  span: number,
+): {
+  insetInlineStart: number
+  insetInlineEnd: CssDimValue
+} {
   const crossedCellCount = Math.max(0, span - 1)
   const crossedBorderWidth = crossedCellCount * COL_BORDER_WIDTH
 
@@ -126,6 +109,14 @@ export function computeCellRelativeHorizontals(
       ? `calc(-${crossedCellCount * 100}% - ${crossedBorderWidth}px)`
       : 0,
   }
+}
+
+export function buildCellBorderClassName(borderStart: boolean, borderBottom: boolean): string {
+  if (borderBottom) {
+    return borderStart ? classNames.borderOnlySB : classNames.borderOnlyB
+  }
+
+  return borderStart ? classNames.borderOnlyS : classNames.borderNone
 }
 
 export function computeColFromPosition(

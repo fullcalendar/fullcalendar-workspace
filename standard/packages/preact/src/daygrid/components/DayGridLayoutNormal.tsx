@@ -19,6 +19,7 @@ import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
 import { dayMicroWidth } from './util'
 import { computeViewBorderless } from '../../util/misc'
+import { DayGridLayoutPrint } from './DayGridLayoutPrint'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
@@ -77,6 +78,30 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
     const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
 
+    if (props.forPrint) {
+      return (
+        <DayGridLayoutPrint
+          dateProfile={props.dateProfile}
+          todayRange={props.todayRange}
+          cellRows={props.cellRows}
+          headerTiers={props.headerTiers}
+          showHeader={Boolean(options.dayHeaders)}
+          fgEventSegs={props.fgEventSegs}
+          bgEventSegs={props.bgEventSegs}
+          eventSelection={props.eventSelection}
+          dayMaxEventRows={options.dayMaxEventRows}
+          borderlessX={borderlessX}
+          borderlessTop={borderlessTop}
+          borderlessBottom={borderlessBottom}
+          multiMonthColumns={0}
+          visibleWidth={totalWidth}
+          cellIsNarrow={cellIsNarrow}
+          cellIsMicro={cellIsMicro}
+          rowHeightRefMap={props.rowHeightRefMap}
+        />
+      )
+    }
+
     return (
       <>
         {options.dayHeaders && (
@@ -88,7 +113,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               borderlessBottom,
               multiMonthColumns: 0,
             }),
-            classNames.printHeader, // either flexCol or table-header-group
+            classNames.flexCol,
             tableHeaderSticky && classNames.tableHeaderSticky,
           )}>
             <div className={classNames.flexRow}>

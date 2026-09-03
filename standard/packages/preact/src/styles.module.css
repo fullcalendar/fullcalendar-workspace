@@ -230,15 +230,6 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   min-width: 0 !important;
 }
 
-/* Print-Safe Utils (media:screen ONLY) */
-/* ------------------------------------------------------------------------------------------------- */
-
-.calendarScreenRoot .printRoot,
-.calendarScreenRoot .printHeader {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
 /* Semantic Print Table */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -430,31 +421,12 @@ which can't rely on dynamic height detection after print-flag activated.
   height: 1px !important;
 }
 
-/* Print-Safe Utils */
-/* (Still used by DayGrid, eventually move all to printTable) */
+/* Print Utils */
 /* ------------------------------------------------------------------------------------------------- */
 
-.calendarPrintRoot .breakInsideAvoid {
+.breakInsideAvoid {
   break-inside: avoid !important;
   page-break-inside: avoid !important;
-}
-
-.calendarPrintRoot .printRoot {
-  display: table !important;
-  table-layout: fixed !important;
-  width: 100% !important;
-  border-spacing: 0 !important;
-  border-collapse: separate !important;
-}
-
-.calendarPrintRoot .printHeader {
-  display: table-header-group !important;
-  /* Both properties are needed for cross-browser repeated headers across printed pages. */
-  break-inside: avoid !important;
-  page-break-inside: avoid !important;
-  background: #fff !important;
-  z-index: 9999 !important;
-  position: relative !important;
 }
 
 .printSiblingRow {
