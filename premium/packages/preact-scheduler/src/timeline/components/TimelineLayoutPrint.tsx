@@ -101,7 +101,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
             nowMs={props.nowMs}
             todayRange={todayRange}
             bgEventSegs={slicedProps.bgEventSegs}
-            businessHourSegs={null}
+            businessHourSegs={slicedProps.businessHourSegs}
             dateSelectionSegs={null}
             eventResizeSegs={null}
             slotWidth={props.slotWidth}

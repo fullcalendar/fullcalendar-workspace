@@ -160,7 +160,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                   nowMs={props.nowMs}
                   todayRange={props.todayRange}
                   bgEventSegs={slicedProps.bgEventSegs}
-                  businessHourSegs={null}
+                  businessHourSegs={slicedProps.businessHourSegs}
                   dateSelectionSegs={null}
                   eventResizeSegs={null}
                   slotWidth={props.slotWidth}

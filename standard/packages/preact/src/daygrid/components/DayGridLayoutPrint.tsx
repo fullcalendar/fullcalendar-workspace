@@ -25,6 +25,7 @@ export interface DayGridLayoutPrintProps {
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
   bgEventSegs: (DayGridRange & EventRangeProps)[]
+  businessHourSegs: (DayGridRange & EventRangeProps)[]
   eventSelection: string
   dayMaxEventRows?: number | boolean
 
@@ -108,7 +109,7 @@ export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
 
           fgEventSegs={props.fgEventSegs}
           bgEventSegs={props.bgEventSegs}
-          businessHourSegs={[]}
+          businessHourSegs={props.businessHourSegs}
           dateSelectionSegs={[]}
           eventDrag={null}
           eventResize={null}

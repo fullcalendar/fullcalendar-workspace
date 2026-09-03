@@ -170,6 +170,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             return props.forPrint ? (
               <ResourceTimelineLayoutPrint
                 {...baseProps}
+                hasResourceBusinessHours={hasResourceBusinessHours}
                 spreadsheetWidthConfig={spreadsheetWidthConfig}
                 timeCanvasClipStart={this.scrollRef.current.x /* for simulating horizontal scroll */}
                 indentWidth={state.expanderWidth}

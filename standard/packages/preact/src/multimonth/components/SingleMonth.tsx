@@ -117,7 +117,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const titleStickyBottom = isTitleAndHeaderSticky && rowHeightGuess != null && state.tableHeaderHeight != null
       ? rowHeightGuess + state.tableHeaderHeight + 1
       : undefined
-    const businessHourSegs = forPrint ? [] : slicedProps.businessHourSegs
+    const businessHourSegs = slicedProps.businessHourSegs
     const dateSelectionSegs = forPrint ? [] : slicedProps.dateSelectionSegs
     const eventDrag = forPrint ? null : slicedProps.eventDrag
     const eventResize = forPrint ? null : slicedProps.eventResize
@@ -192,6 +192,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               headerElRef={this.handleTableHeaderEl}
               fgEventSegs={slicedProps.fgEventSegs}
               bgEventSegs={slicedProps.bgEventSegs}
+              businessHourSegs={businessHourSegs}
               eventSelection={slicedProps.eventSelection}
               dayMaxEventRows
               borderlessX={borderlessX}

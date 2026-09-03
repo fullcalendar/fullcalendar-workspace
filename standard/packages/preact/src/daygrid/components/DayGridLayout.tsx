@@ -58,14 +58,12 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     const { props, context } = this
     const { options } = context
     const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-    const businessHourSegs = props.forPrint ? [] : props.businessHourSegs
     const dateSelectionSegs = props.forPrint ? [] : props.dateSelectionSegs
     const eventDrag = props.forPrint ? null : props.eventDrag
     const eventResize = props.forPrint ? null : props.eventResize
 
     const commonLayoutProps = {
       ...props,
-      businessHourSegs,
       dateSelectionSegs,
       eventDrag,
       eventResize,

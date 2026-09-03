@@ -57,6 +57,7 @@ export interface ResourceTimelineLayoutPrintProps {
 
   splitProps: { [key: string]: SplittableProps }
   bgSlicedProps: SlicedProps<TimelineRange>
+  hasResourceBusinessHours: boolean
 
   // Overall resource-area width, preserving its percentage and pixel components for liquid print CSS.
   spreadsheetWidthConfig: DimConfig
@@ -252,7 +253,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             nowMs={props.nowMs}
             todayRange={todayRange}
             bgEventSegs={bgSlicedProps.bgEventSegs}
-            businessHourSegs={null}
+            businessHourSegs={props.hasResourceBusinessHours
+              ? null
+              : bgSlicedProps.businessHourSegs}
             dateSelectionSegs={null}
             eventResizeSegs={null}
             slotWidth={slotWidth}
@@ -369,7 +372,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     timeCanvasClipStart={timeCanvasClipStart}
                     slotWidth={slotWidth}
                     indentWidth={props.indentWidth}
-                    businessHours={null}
+                    businessHours={props.hasResourceBusinessHours
+                      ? splitProps[resource.id].businessHours
+                      : null}
                     dateSelection={null}
                     eventDrag={null}
                     eventResize={null}

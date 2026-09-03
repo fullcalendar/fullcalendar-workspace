@@ -94,6 +94,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           showHeader={Boolean(options.dayHeaders)}
           fgEventSegs={props.fgEventSegs}
           bgEventSegs={props.bgEventSegs}
+          businessHourSegs={props.businessHourSegs}
           eventSelection={props.eventSelection}
           dayMaxEventRows={options.dayMaxEventRows}
           borderlessX={borderlessX}

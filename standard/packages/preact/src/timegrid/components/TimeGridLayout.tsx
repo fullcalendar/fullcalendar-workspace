@@ -104,11 +104,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       dateEnv,
     )
     this.currentSlatCnt = slatMetas.length
-    const businessHourSegs = props.forPrint ? [] : props.businessHourSegs
     const dateSelectionSegs = props.forPrint ? [] : props.dateSelectionSegs
     const eventDrag = props.forPrint ? null : props.eventDrag
     const eventResize = props.forPrint ? null : props.eventResize
-    const businessHourSegsByCol = props.forPrint ? buildEmptySegCols(props.businessHourSegsByCol) : props.businessHourSegsByCol
     const dateSelectionSegsByCol = props.forPrint ? buildEmptySegCols(props.dateSelectionSegsByCol) : props.dateSelectionSegsByCol
     const eventDragByCol = props.forPrint ? buildEmptyInteractionCols(props.eventDragByCol) : props.eventDragByCol
     const eventResizeByCol = props.forPrint ? buildEmptyInteractionCols(props.eventResizeByCol) : props.eventResizeByCol
@@ -129,7 +127,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       // all-day content
       fgEventSegs: props.fgEventSegs,
       bgEventSegs: props.bgEventSegs,
-      businessHourSegs,
+      businessHourSegs: props.businessHourSegs,
       dateSelectionSegs,
       eventDrag,
       eventResize,
@@ -138,7 +136,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       // timed content
       fgEventSegsByCol: props.fgEventSegsByCol,
       bgEventSegsByCol: props.bgEventSegsByCol,
-      businessHourSegsByCol,
+      businessHourSegsByCol: props.businessHourSegsByCol,
       nowIndicatorSegsByCol: props.nowIndicatorSegsByCol,
       dateSelectionSegsByCol,
       eventDragByCol,

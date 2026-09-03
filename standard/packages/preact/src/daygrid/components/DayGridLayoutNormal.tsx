@@ -88,6 +88,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           showHeader={Boolean(options.dayHeaders)}
           fgEventSegs={props.fgEventSegs}
           bgEventSegs={props.bgEventSegs}
+          businessHourSegs={props.businessHourSegs}
           eventSelection={props.eventSelection}
           dayMaxEventRows={options.dayMaxEventRows}
           borderlessX={borderlessX}

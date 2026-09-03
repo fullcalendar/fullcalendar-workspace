@@ -51,6 +51,13 @@ import {
   getDayGridPrintSliceKey,
 } from '../print-adapter'
 import classNames from '../../styles.module.css'
+import {
+  DAY_GRID_BG_EVENT_Z_INDEX,
+  DAY_GRID_EVENT_Z_INDEX,
+  DAY_GRID_HIGHLIGHT_Z_INDEX,
+  DAY_GRID_INTERACTION_Z_INDEX,
+  DAY_GRID_NON_BUSINESS_Z_INDEX,
+} from './z-index'
 
 export interface DayGridRowProps {
   dateProfile: DateProfile
@@ -88,12 +95,6 @@ export interface DayGridRowProps {
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
-// Div-layout fills share the row's isolated stacking context, below positioned cells and foreground events.
-const DAY_GRID_DIV_NON_BUSINESS_Z_INDEX = -3
-const DAY_GRID_DIV_BG_EVENT_Z_INDEX = -2
-const DAY_GRID_DIV_HIGHLIGHT_Z_INDEX = -1
-const DAY_GRID_EVENT_Z_INDEX = 1
-const DAY_GRID_INTERACTION_Z_INDEX = 1000
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
@@ -224,19 +225,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       fillsByCol,
       props.businessHourSegs,
       'non-business',
-      DAY_GRID_DIV_NON_BUSINESS_Z_INDEX,
+      DAY_GRID_NON_BUSINESS_Z_INDEX,
     )
     this.appendFillSegs(
       fillsByCol,
       props.bgEventSegs,
       'bg-event',
-      DAY_GRID_DIV_BG_EVENT_Z_INDEX,
+      DAY_GRID_BG_EVENT_Z_INDEX,
     )
     this.appendFillSegs(
       fillsByCol,
       highlightSegs,
       'highlight',
-      DAY_GRID_DIV_HIGHLIGHT_Z_INDEX,
+      DAY_GRID_HIGHLIGHT_Z_INDEX,
     )
 
     // Table mode gives this theme-positioned node a row-wide canvas hosted by the first cell.
@@ -252,8 +253,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           'role': undefined, // HACK: a 'link' role can't be child of a 'row' role
           'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
         }}
-        style={{ pointerEvents: 'auto' }}
-        className={classNames.z1}
+        style={{ zIndex: DAY_GRID_EVENT_Z_INDEX }}
         renderProps={weekNumberRenderProps}
         generatorName="inlineWeekNumberContent"
         customGenerator={options.inlineWeekNumberContent}
@@ -299,8 +299,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           !tableMode && classNames.borderlessTop,
           (!tableMode && !props.borderBottom) && classNames.borderlessBottom,
           classNames.isolate,
-          (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
-            classNames.printSiblingRow,
         )}
         style={{
           flexBasis: tableMode ? undefined : props.basis,
@@ -563,7 +561,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     fillsByCol: ReactElement[][],
     segs: DayRowEventRangePart[],
     fillType: string,
-    divZIndex: number,
+    zIndex: number,
   ): void {
     const { props, context } = this
     const { todayRange } = props
@@ -575,7 +573,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           className={classNames.fillY}
           style={{
             ...computeCellRelativeHorizontals(seg),
-            zIndex: props.tableMode ? undefined : divZIndex,
+            zIndex,
           }}
         >
           {fillType === 'bg-event' ?

@@ -411,9 +411,8 @@ which can't rely on dynamic height detection after print-flag activated.
   page-break-inside: avoid !important;
 }
 
-.printSiblingRow {
-  /* min-height when multiple rows coexist, provides sane aspect-ratio for cells */
-  min-height: 6em !important;
+.printCellContentMinHeight {
+  min-height: 4em !important;
 }
 
 /* Z-index */
