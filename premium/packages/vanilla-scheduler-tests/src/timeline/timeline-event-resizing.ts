@@ -1,3 +1,4 @@
+import { strictModeFactor } from 'fullcalendar/protected-api'
 import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
@@ -320,9 +321,9 @@ describe('timeline event resizing', () => {
       await timelineGridWrapper.resizeEvent(
         timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00',
       )
-      expect(mirrorMountCnt).toBe(1)
-      expect(mirrorContentCnt).toBe(3)
-      expect(mirrorUnmountCnt).toBe(1)
+      expect(mirrorMountCnt).toBe(1 * strictModeFactor)
+      expect(mirrorContentCnt).toBe(3 * strictModeFactor)
+      expect(mirrorUnmountCnt).toBe(1 * strictModeFactor)
     })
   })
 })

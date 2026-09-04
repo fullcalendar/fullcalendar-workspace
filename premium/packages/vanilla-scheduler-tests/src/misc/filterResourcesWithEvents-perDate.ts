@@ -1,4 +1,5 @@
 import { Calendar } from 'fullcalendar'
+import { strictModeFactor } from 'fullcalendar/protected-api'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import { ResourceDayHeaderWrapper } from '../lib/wrappers/ResourceDayHeaderWrapper'
@@ -462,7 +463,7 @@ describe('filterResourcesWithEvents per date', () => {
       let header = new ResourceTimeGridViewWrapper(calendar).header
       let resourceHeaderArgs = resourceDayHeaderContent.calls.allArgs().map((args) => args[0])
 
-      expect(resourceDayHeaderContent.calls.count()).toBe(1)
+      expect(resourceDayHeaderContent.calls.count()).toBe(1 * strictModeFactor)
       expect(resourceHeaderArgs[0].resource.id).toBe('a')
       expect(header.getCellInfoByRow().some((row) => (
         row.some((cell) => cell.date === DAY_2)
@@ -488,7 +489,7 @@ describe('filterResourcesWithEvents per date', () => {
       expect(viewWrapper.timeGrid.getColumnInfo()).toEqual(plainColumns)
       expect(viewWrapper.header.getResourceIds()).toEqual([])
       expect(resourceDayHeaderContent.calls.count()).toBe(0)
-      expect(dayHeaderContent.calls.count()).toBe(2)
+      expect(dayHeaderContent.calls.count()).toBe(2 * strictModeFactor)
       expect(dayHeaderArgs.every((arg) => arg.resource === undefined)).toBe(true)
     })
 
