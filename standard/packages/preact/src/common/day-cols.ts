@@ -20,6 +20,12 @@ export interface DayColSlotRange {
   slotMaxTime: Duration
 }
 
+interface BuildDayColsConfig {
+  slotRange?: DayColSlotRange
+  majorUnit?: string
+  activeRange?: DateRange | null
+}
+
 export function buildDayCols(
   dateProfile: DateProfile,
   dateProfileGenerator: DateProfileGenerator,
@@ -30,19 +36,21 @@ export function buildDayCols(
   return buildDayColsFromSeries(
     new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator),
     dateEnv,
-    slotRange,
-    majorUnit,
-    dateProfile.activeRange,
+    {
+      slotRange,
+      majorUnit,
+      activeRange: dateProfile.activeRange,
+    },
   )
 }
 
 export function buildDayColsFromSeries(
   daySeries: DaySeriesModel,
   dateEnv: DateEnv,
-  slotRange?: DayColSlotRange,
-  majorUnit = '',
-  activeRange?: DateRange | null,
+  config: BuildDayColsConfig = {},
 ): DayCol[] {
+  const { slotRange, majorUnit = '', activeRange } = config
+
   return daySeries.dates.map((date) => ({
     key: date.toISOString(),
     date,

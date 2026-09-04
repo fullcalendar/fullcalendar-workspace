@@ -65,7 +65,7 @@ export interface DayGridCellProps {
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // memo
-  private getDateMeta = memoize(getDateMeta)
+  private getDateMeta = memoize(getDayGridCellDateMeta)
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   // ref
@@ -85,10 +85,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const isMonthStart = props.showDayNumber &&
       shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
-    const dateMeta = {
-      ...this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange),
-      isDisabled: props.isDisabled,
-    }
+    const dateMeta = this.getDateMeta(
+      props.date,
+      dateEnv,
+      props.dateProfile,
+      props.todayRange,
+      props.isDisabled,
+    )
 
     const baseClassName = joinClassNames(
       classNames.borderlessTop,
@@ -294,6 +297,19 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
 // Utils
 // -------------------------------------------------------------------------------------------------
+
+function getDayGridCellDateMeta(
+  date: DateMarker,
+  dateEnv: DateEnv,
+  dateProfile: DateProfile,
+  todayRange: DateRange,
+  isDisabled: boolean,
+): DateMeta {
+  return {
+    ...getDateMeta(date, dateEnv, dateProfile, todayRange),
+    isDisabled,
+  }
+}
 
 function renderTopInner(props: DayCellInfo): ReactNode {
   return props.text || <>&nbsp;</> // TODO: DRY?

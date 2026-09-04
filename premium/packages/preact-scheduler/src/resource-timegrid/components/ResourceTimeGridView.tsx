@@ -84,7 +84,10 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(resourceStore, resourceOrderSpecs)
     let daySeries = this.buildDaySeries(dateProfile, context.dateProfileGenerator)
-    let dayCols = this.buildDayCols(daySeries, dateEnv, dateProfile)
+    let dayCols = this.buildDayCols(daySeries, dateEnv, {
+      slotRange: dateProfile,
+      activeRange: dateProfile.activeRange,
+    })
     let dayRanges = this.dayRanges = this.extractDayRanges(dayCols)
 
     // an event must intersect a column's rendered range to earn a column there
