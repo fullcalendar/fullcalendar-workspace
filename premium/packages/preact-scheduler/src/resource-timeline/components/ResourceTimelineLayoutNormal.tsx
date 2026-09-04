@@ -698,8 +698,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       })}
                       role="columnheader"
                       aria-rowspan={totalHeaderRowSpan}
-                      aria-label={options.eventsHint}
-                    />
+                      className={classNames.offscreen}
+                    >
+                      {options.eventsHint}
+                    </div>
                   </div>
 
                   {/* for sighted users */}
