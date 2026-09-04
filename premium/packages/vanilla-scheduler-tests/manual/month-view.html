@@ -16,6 +16,7 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      weekNumbers: true,
       initialDate: '2023-01-12',
       editable: true,
       selectable: true,
@@ -34,6 +35,26 @@
           title: 'Long Event',
           start: '2023-01-07',
           end: '2023-01-10'
+        },
+        {
+          title: 'Single-Day Background',
+          start: '2023-01-04',
+          display: 'background',
+          backgroundColor: 'rgba(59, 130, 246, 0.35)'
+        },
+        {
+          title: 'Multi-Day Background',
+          start: '2023-01-10',
+          end: '2023-01-14',
+          display: 'background',
+          backgroundColor: 'rgba(239, 68, 68, 0.35)'
+        },
+        {
+          title: 'Cross-Week Background',
+          start: '2023-01-19',
+          end: '2023-01-24',
+          display: 'background',
+          backgroundColor: 'rgba(34, 197, 94, 0.35)'
         },
         {
           groupId: 999,

@@ -69,6 +69,8 @@
     var varyingHeightsEl = document.getElementById('varying-heights');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      weekNumbers: true,
+      businessHours: true,
       initialDate: '2026-08-15',
       initialView: 'dayGridMonth',
       aspectRatio: aspectRatio,
