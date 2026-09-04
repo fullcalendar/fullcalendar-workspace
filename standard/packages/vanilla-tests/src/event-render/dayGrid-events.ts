@@ -150,7 +150,7 @@ describe('dayGrid advanced event rendering', () => {
     expect(anyElsIntersect(eventEls)).toBe(false)
   })
 
-  it('renders single-day timed event as list-item', () => {
+  it('renders single-day timed event as list-item', async () => {
     let calendar = initCalendar({
       initialView: 'dayGridMonth',
       initialDate: '2020-05-01',
@@ -162,11 +162,13 @@ describe('dayGrid advanced event rendering', () => {
         },
       ],
     })
+    await waitTimeout()
 
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEl = dayGridWrapper.getEventEls()[0]
 
     expect(dayGridWrapper.isEventListItem(eventEl)).toBe(true)
+    expect(filterVisibleEls([eventEl]).length).toBe(1)
   })
 
   it('does not render multi-day event as list-item', () => {

@@ -245,6 +245,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     if (this.disconnectBodyHeight) {
       this.disconnectBodyHeight()
       this.disconnectBodyHeight = undefined
+      this.headerHeight = undefined
       setRef(this.props.headerHeightRef, null)
       setRef(this.props.mainHeightRef, null)
     }
