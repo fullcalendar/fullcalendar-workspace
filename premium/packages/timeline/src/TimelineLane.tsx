@@ -2,7 +2,7 @@ import { Duration } from '@fullcalendar/core'
 import {
   EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, memoize, RefMap, mapHash,
-  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
+  getSegMeta, DateMarker, DateRange, DateProfile, Dictionary, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
@@ -33,6 +33,7 @@ export interface TimelineLaneCoreProps {
   eventResize: EventInteractionState | null
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
   resourceId?: string // hack
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
   syncParentMinHeight?: boolean // hack
 }
 
@@ -210,6 +211,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isTimeScale={props.tDateProfile.isTimeScale}
                 eventSelection={props.eventSelection}
                 resourceId={props.resourceId}
+                extraRenderProps={props.extraRenderProps}
                 isForcedInvisible={isForcedInvisible}
               />
             )
@@ -237,6 +239,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === props.eventSelection /* TODO: bad for mirror? */}
+                extraRenderProps={props.extraRenderProps}
                 {...getSegMeta(seg, props.todayRange, props.nowDate)}
               />
             </div>

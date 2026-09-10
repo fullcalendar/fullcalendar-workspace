@@ -12,6 +12,7 @@ import {
 } from '../component/event-rendering.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
+import { Dictionary } from '../options.js'
 import { memoize } from '../util/memoize.js'
 import { ViewContext } from '../ViewContext.js'
 import { EventDef } from '../structs/event-def.js'
@@ -33,6 +34,7 @@ export type EventContainerProps = ElProps & MinimalEventProps & {
   disableDragging?: boolean
   disableResizing?: boolean
   timeText: string
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
   children?: InnerContainerFunc<EventContentArg>
 }
 
@@ -52,6 +54,7 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
     const { ui } = eventRange
 
     const renderProps: EventContentArg = {
+      ...props.extraRenderProps, // spread first, so the built-in fields below always win
       event: this.buildPublicEvent(context, eventRange.def, eventRange.instance),
       view: context.viewApi,
       timeText: props.timeText,

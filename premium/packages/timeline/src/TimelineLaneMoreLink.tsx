@@ -1,6 +1,6 @@
 import {
   BaseComponent, MoreLinkContainer,
-  DateProfile, DateRange, DateMarker, getSegMeta,
+  DateProfile, DateRange, DateMarker, Dictionary, getSegMeta,
 } from '@fullcalendar/core/internal'
 import { createElement, Ref, Fragment } from '@fullcalendar/core/preact'
 import { TimelineSegPlacement } from './event-placement.js'
@@ -18,6 +18,7 @@ export interface TimelineLaneMoreLinkProps {
   isTimeScale: boolean
   eventSelection: string
   resourceId?: string
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered; forwarded to the popover's events
   isForcedInvisible: { [instanceId: string]: any }
 }
 
@@ -62,6 +63,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
                     isResizing={false}
                     isDateSelecting={false}
                     isSelected={instanceId === props.eventSelection}
+                    extraRenderProps={props.extraRenderProps}
                     {...getSegMeta(seg, props.todayRange, props.nowDate)}
                   />
                 </div>

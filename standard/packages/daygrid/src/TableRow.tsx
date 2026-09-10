@@ -219,6 +219,8 @@ export class TableRow extends DateComponent<TableRowProps, TableRowState> {
     let { eventSelection } = this.props
     let { framePositions } = this.state
     let defaultDisplayEventEnd = this.props.cells.length === 1 // colCnt === 1
+    // a seg can span columns, so the resource comes from the column it starts in
+    let extraRenderProps = this.props.cells[col]?.extraRenderProps
     let isMirror = isDragging || isResizing || isDateSelecting
     let nodes: VNode[] = []
 
@@ -264,6 +266,7 @@ export class TableRow extends DateComponent<TableRowProps, TableRowState> {
                 isDragging={isDragging}
                 isSelected={instanceId === eventSelection}
                 defaultDisplayEventEnd={defaultDisplayEventEnd}
+                extraRenderProps={extraRenderProps}
                 {...getSegMeta(seg, todayRange)}
               />
             ) : (
@@ -274,6 +277,7 @@ export class TableRow extends DateComponent<TableRowProps, TableRowState> {
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
                 defaultDisplayEventEnd={defaultDisplayEventEnd}
+                extraRenderProps={extraRenderProps}
                 {...getSegMeta(seg, todayRange)}
               />
             )}

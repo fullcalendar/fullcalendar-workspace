@@ -62,6 +62,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
                 timelineCoords={props.timelineCoords}
                 onHeightChange={this.handleHeightChange}
                 resourceId={props.resource.id}
+                extraRenderProps={renderProps /* memoized, and already { resource } */}
               />
             </div>
           )}

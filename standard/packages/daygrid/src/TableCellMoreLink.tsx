@@ -28,6 +28,7 @@ export interface TableCellMoreLinkProps {
   eventSelection: string
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered; forwarded to the popover's events
 }
 
 export class TableCellMoreLink extends BaseComponent<TableCellMoreLinkProps> {
@@ -72,6 +73,7 @@ export class TableCellMoreLink extends BaseComponent<TableCellMoreLinkProps> {
                         isDragging={false}
                         isSelected={instanceId === props.eventSelection}
                         defaultDisplayEventEnd={false}
+                        extraRenderProps={props.extraRenderProps}
                         {...getSegMeta(seg, props.todayRange)}
                       />
                     ) : (
@@ -82,6 +84,7 @@ export class TableCellMoreLink extends BaseComponent<TableCellMoreLinkProps> {
                         isDateSelecting={false}
                         isSelected={instanceId === props.eventSelection}
                         defaultDisplayEventEnd={false}
+                        extraRenderProps={props.extraRenderProps}
                         {...getSegMeta(seg, props.todayRange)}
                       />
                     )}

@@ -1,8 +1,9 @@
-import { StandardEvent, MinimalEventProps, BaseComponent, createFormatter } from '@fullcalendar/core/internal'
+import { StandardEvent, Dictionary, MinimalEventProps, BaseComponent, createFormatter } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
 }
 
 const DEFAULT_TIME_FORMAT = createFormatter({

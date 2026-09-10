@@ -186,6 +186,7 @@ export class TimeCol extends BaseComponent<TimeColProps> {
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
                 isShort={isShort}
+                extraRenderProps={this.props.extraRenderProps}
                 {...getSegMeta(seg, todayRange, nowDate)}
               />
             </div>
@@ -197,7 +198,7 @@ export class TimeCol extends BaseComponent<TimeColProps> {
 
   // will already have eventMinHeight applied because segInputs already had it
   renderHiddenGroups(hiddenGroups: SegEntryGroup[], segs: TimeColsSeg[]) {
-    let { extraDateSpan, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
+    let { extraDateSpan, extraRenderProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
     return (
       <Fragment>
         {hiddenGroups.map((hiddenGroup) => {
@@ -216,6 +217,7 @@ export class TimeCol extends BaseComponent<TimeColProps> {
               eventSelection={eventSelection}
               eventDrag={eventDrag}
               eventResize={eventResize}
+              extraRenderProps={extraRenderProps}
             />
           )
         })}
@@ -302,12 +304,13 @@ export class TimeCol extends BaseComponent<TimeColProps> {
 
 export function renderPlainFgSegs(
   sortedFgSegs: TimeColsSeg[],
-  { todayRange, nowDate, eventSelection, eventDrag, eventResize }: {
+  { todayRange, nowDate, eventSelection, eventDrag, eventResize, extraRenderProps }: {
     todayRange: DateRange
     nowDate: DateMarker
     eventSelection: string
     eventDrag: EventSegUiInteractionState | null
     eventResize: EventSegUiInteractionState | null
+    extraRenderProps?: Dictionary // so a view can expose the resource being rendered
   },
 ) {
   let hiddenInstances =
@@ -330,6 +333,7 @@ export function renderPlainFgSegs(
               isDateSelecting={false}
               isSelected={instanceId === eventSelection}
               isShort={false}
+              extraRenderProps={extraRenderProps}
               {...getSegMeta(seg, todayRange, nowDate)}
             />
           </div>

@@ -18,6 +18,7 @@ export interface TimeColMoreLinkProps {
   eventSelection: string
   eventDrag: EventSegUiInteractionState
   eventResize: EventSegUiInteractionState
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered; forwarded to the popover's events
 }
 
 export class TimeColMoreLink extends BaseComponent<TimeColMoreLinkProps> {

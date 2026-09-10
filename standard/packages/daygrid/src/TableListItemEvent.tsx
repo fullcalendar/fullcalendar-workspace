@@ -1,6 +1,7 @@
 import { EventContentArg } from '@fullcalendar/core'
 import {
   BaseComponent,
+  Dictionary,
   Seg,
   buildSegTimeText,
   EventContainer,
@@ -17,6 +18,7 @@ export interface DotTableEventProps {
   isFuture: boolean
   isToday: boolean
   defaultDisplayEventEnd: boolean
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
   children?: never
 }
 

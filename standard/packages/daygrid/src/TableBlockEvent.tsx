@@ -1,9 +1,10 @@
-import { StandardEvent, BaseComponent, MinimalEventProps } from '@fullcalendar/core/internal'
+import { StandardEvent, BaseComponent, Dictionary, MinimalEventProps } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT } from './event-rendering.js'
 
 export interface TableBlockEventProps extends MinimalEventProps {
   defaultDisplayEventEnd: boolean
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
 }
 
 export class TableBlockEvent extends BaseComponent<TableBlockEventProps> {

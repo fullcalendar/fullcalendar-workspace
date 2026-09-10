@@ -22,6 +22,12 @@ declare module '@fullcalendar/core' {
     resource?: ResourceApi
   }
 
+  // the resource of the column/lane the event is being rendered in.
+  // only populated by the resource views, which render an event once per resource.
+  interface EventContentArg {
+    resource?: ResourceApi
+  }
+
   interface EventDropArg {
     oldResource?: ResourceApi
     newResource?: ResourceApi

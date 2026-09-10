@@ -5,6 +5,7 @@ import { DateFormatter } from '../datelib/DateFormatter.js'
 import { EventContainer } from './EventContainer.js'
 import { Seg } from '../component/DateComponent.js'
 import { ElRef } from '../content-inject/ContentInjector.js'
+import { Dictionary } from '../options.js'
 import { isPropsEqual } from '../util/object.js'
 
 export interface StandardEventProps {
@@ -23,6 +24,7 @@ export interface StandardEventProps {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
+  extraRenderProps?: Dictionary // so a view can expose the resource being rendered
 }
 
 // should not be a purecomponent
@@ -75,6 +77,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
 
 StandardEvent.addPropsEquality({
   seg: isPropsEqual,
+  extraRenderProps: isPropsEqual,
 })
 
 function renderInnerContent(innerProps: EventContentArg) {
