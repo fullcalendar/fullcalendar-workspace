@@ -415,7 +415,10 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
 
   // Remove days from the beginning and end of the range that are computed as hidden.
   // If the whole range is trimmed off, returns null
-  trimHiddenDays(range: DateRange): DateRange | null {
+  trimHiddenDays(range: DateRange | null): DateRange | null {
+    if (!range) {
+      return null;
+    }
     let { start, end } = range
 
     if (start) {
