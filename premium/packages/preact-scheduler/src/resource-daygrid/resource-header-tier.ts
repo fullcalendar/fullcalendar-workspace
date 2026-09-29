@@ -1,4 +1,4 @@
-import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, ViewContext } from '@fullcalendar/preact/protected-api'
+import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, computeTimeGridPrintMode, ViewContext } from '@fullcalendar/preact/protected-api'
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
@@ -16,6 +16,8 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
+  blankClass: 'dayCell' | 'dayLane',
+  forPrint: boolean,
 ): RowConfig<any, DayHeaderInfo | ResourceDayHeaderInfo>[] {
   let { cols, groups, resources } = resourceDayTableModel
 
@@ -46,6 +48,39 @@ export function buildResourceRowConfigs(
 
   if (resourceDayTableModel.datesAboveResources) {
     const resourceDataConfigsPerDate = groups.map((group) => {
+      const col = group.cols[0]
+
+      if (!col.resource) {
+        return [{
+          key: col.key + ':blank',
+          dateMarker: col.date,
+          blank: {
+            classNameGenerator: blankClass === 'dayLane'
+              ? context.options.dayLaneClass
+              : context.options.dayCellClass,
+          },
+          renderProps: {
+            ...getDateMeta(col.date, context.dateEnv, dateProfile, todayRange),
+            isMajor: col.isMajor,
+            isNarrow: false, // overridden by the header cell
+            view: context.viewApi,
+            ...(blankClass === 'dayLane' ? {
+              isStack: computeTimeGridPrintMode(forPrint, context.options.eventPrintLayout) === 'stack',
+            } : {
+              inPopover: false,
+              hasNavLink: false,
+              text: '',
+              textParts: [],
+              weekdayText: '',
+              dayNumberText: '',
+              monthText: '',
+              options: { businessHours: Boolean(context.options.businessHours) },
+            }),
+          },
+          colSpan: 1,
+        }]
+      }
+
       return buildResourceDataConfigs(
         group.cols.map((col) => col.resource as Resource),
         group.date,
@@ -65,7 +100,7 @@ export function buildResourceRowConfigs(
       context,
       /* colSpan = */ 1,
       /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
-      // per-date filtering can omit dates, but surviving ones should keep nav links
+      // Keep navigation based on the full date range.
       /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
     )
 

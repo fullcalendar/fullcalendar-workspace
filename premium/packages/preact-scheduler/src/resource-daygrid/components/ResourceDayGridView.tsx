@@ -106,6 +106,8 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             todayRange,
             dayHeaderFormat,
             context,
+            'dayCell',
+            props.forPrint,
           )
 
           return (

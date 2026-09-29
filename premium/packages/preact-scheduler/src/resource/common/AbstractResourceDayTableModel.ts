@@ -155,6 +155,8 @@ function buildResourceCells(
           date,
           isMajor: col.isMajor,
           isDisabled,
+          isInert: true,
+          attrs: { 'aria-disabled': true },
         }
       }
 
@@ -182,6 +184,8 @@ export function buildResourceDayCol(
     return {
       ...dayCol,
       dateI,
+      isInert: true,
+      attrs: { 'aria-disabled': true },
       resource: null,
       resourceI,
       isMajor,

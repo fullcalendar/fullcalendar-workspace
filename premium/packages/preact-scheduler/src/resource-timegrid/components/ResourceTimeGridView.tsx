@@ -195,6 +195,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
             todayRange,
             dayHeaderFormat,
             context,
+            'dayLane',
+            props.forPrint,
           )
 
           return (
