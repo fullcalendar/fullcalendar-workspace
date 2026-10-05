@@ -157,6 +157,86 @@ describe('timeline addResource', () => {
     })
   })
 
+  // A filter change in an app typically removes all resources and re-adds the matching ones
+  describe('when replacing all resources with virtualization', () => {
+    pushOptions({
+      initialView: 'resourceTimelineDay',
+      virtualization: true,
+      height: 400,
+      resourceOrder: 'id',
+    })
+
+    it('renders rows in view after re-adding them with scrollTo', async () => {
+      let calendar = initCalendar(buildResourcesWithEvents(buildIds(0, 20)))
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+      await ignoreResizeObserverLoops(async () => {
+        await waitTimeout()
+        await replaceResources(calendar, buildResourcesWithEvents(buildIds(0, 90)), true) // scrolls to last
+        viewWrapper.getTimeBodyEl().scrollTop = 0
+        await waitTimeout(SCROLL_END_WAIT)
+
+        // row heights are already known this time, so no height change triggers a rerender
+        await replaceResources(calendar, buildResourcesWithEvents(buildIds(0, 90)), true)
+        expect(getVisibleResourceIds(calendar)).toContain('r089')
+      })
+    })
+
+    const SCROLL_END_WAIT = 700
+
+    function buildIds(start, end) {
+      let ids = []
+
+      for (let i = start; i < end; i += 1) {
+        ids.push('r' + String(i).padStart(3, '0'))
+      }
+
+      return ids
+    }
+
+    // row heights vary by position, so rows change height when other rows are filtered out
+    function buildResourcesWithEvents(ids) {
+      let resources = []
+      let events = []
+
+      ids.forEach((id, i) => {
+        resources.push({ id, title: id })
+
+        for (let j = 0; j <= i % 4; j += 1) {
+          events.push({ resourceId: id, start: '2016-05-31T01:00:00', end: '2016-05-31T05:00:00' })
+        }
+      })
+
+      return { resources, events }
+    }
+
+    async function replaceResources(calendar, { resources, events }, scrollTo) {
+      calendar.batchRendering(() => {
+        calendar.getResources().forEach((resource) => resource.remove())
+        calendar.removeAllEventSources()
+      })
+      await waitTimeout()
+
+      calendar.batchRendering(() => {
+        resources.forEach((resource) => calendar.addResource(resource, scrollTo))
+      })
+      calendar.addEventSource(events)
+      await waitTimeout()
+    }
+
+    function getVisibleResourceIds(calendar) {
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+      let scrollerRect = viewWrapper.getDataGridBodyEl().getBoundingClientRect()
+
+      return viewWrapper.dataGrid.getResourceCellEls(null)
+        .filter((cellEl) => {
+          let cellRect = cellEl.getBoundingClientRect()
+          return cellRect.bottom > scrollerRect.top && cellRect.top < scrollerRect.bottom
+        })
+        .map((cellEl) => cellEl.getAttribute('data-resource-id'))
+    }
+  })
+
   function buildResources(cnt) {
     let resources = []
 

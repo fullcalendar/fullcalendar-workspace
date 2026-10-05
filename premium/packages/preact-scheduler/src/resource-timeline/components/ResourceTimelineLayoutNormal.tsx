@@ -1327,7 +1327,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private handleResourceScrollRequest = (resourceId: string) => {
     this.scroll.entityId = resourceId
     this.scroll.fromBottom = undefined
-    this.applyEntityScroll()
+
+    // The resource might not be rendered yet, such as when added within batchRendering. Otherwise
+    // render() would virtualize rows around the requested scroll without ever applying it
+    if (!this.applyEntityScroll()) {
+      this.queuedEntityScroll = true
+    }
   }
 
   // START vertical scroll
@@ -1395,11 +1400,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
-  private applyEntityScroll() {
+  // returns whether applied
+  private applyEntityScroll(): boolean {
     const scrollTop = this.computeEntityScroll()
     if (scrollTop !== undefined) {
       this.bodyScroller.scrollTo({ y: scrollTop })
+      return true
     }
+    return false
   }
 
   private computeEntityScroll(): number | undefined {
