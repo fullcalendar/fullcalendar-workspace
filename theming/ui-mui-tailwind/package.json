@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "@fullcalendar/react": "workspace:*",
-    "@mui/icons-material": "^7.1.2",
-    "@mui/material": "^7.1.2",
+    "@mui/icons-material": "^7.1.2 || ^9.0.0",
+    "@mui/material": "^7.1.2 || ^9.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "temporal-polyfill": "^1.0.1"
