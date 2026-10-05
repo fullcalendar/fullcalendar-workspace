@@ -3,6 +3,7 @@ import {
   DateMarker,
   DateProfile,
   DateRange,
+  Dictionary,
   EventRangeProps,
   getEventRangeMeta,
   PrintEventBand,
@@ -28,7 +29,8 @@ export interface TimelinePrintFgProps {
   // content
   fgEventSegs: (TimelineRange & EventRangeProps)[]
   eventSelection: string
-  resourceId?: string
+  dateSpanProps?: Dictionary // so can include a resource
+  renderProps?: Dictionary // so can include a resource
 
   // dimensions
   slotWidth: number | undefined
@@ -57,7 +59,8 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             nowMs={props.nowMs}
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
-            resourceId={props.resourceId}
+            dateSpanProps={props.dateSpanProps}
+            renderProps={props.renderProps}
             timeCanvasClipStart={props.timeCanvasClipStart}
           />
         ))}
@@ -71,7 +74,8 @@ export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps>
             nowMs={props.nowMs}
             todayRange={props.todayRange}
             eventSelection={props.eventSelection}
-            resourceId={props.resourceId}
+            dateSpanProps={props.dateSpanProps}
+            renderProps={props.renderProps}
             timeCanvasClipStart={props.timeCanvasClipStart}
           />
         )}
@@ -87,7 +91,8 @@ interface TimelinePrintBandBaseProps {
   nowMs: number
   todayRange: DateRange
   eventSelection: string
-  resourceId?: string
+  dateSpanProps?: Dictionary
+  renderProps?: Dictionary
   timeCanvasClipStart?: number
 }
 
@@ -135,6 +140,7 @@ export function TimelinePrintEventBand(props: TimelinePrintEventBandProps) {
               isResizing={false}
               isMirror={false}
               isSelected={isSelected}
+              renderProps={props.renderProps}
               {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
             />
           </MeasuredHeightHarness>
@@ -179,7 +185,8 @@ export function TimelinePrintMoreLinkBand(props: TimelinePrintMoreLinkBandProps)
             eventDrag={null}
             eventResize={null}
             eventSelection={props.eventSelection}
-            resourceId={props.resourceId}
+            dateSpanProps={props.dateSpanProps}
+            renderProps={props.renderProps}
           />
         </MeasuredHeightHarness>
       ))}

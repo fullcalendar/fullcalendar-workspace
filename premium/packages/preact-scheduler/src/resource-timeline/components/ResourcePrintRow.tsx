@@ -5,6 +5,7 @@ import {
   DateProfile,
   DateRange,
   generateClassName,
+  memoize,
   memoizeObjArg,
   SplittableProps,
 } from '@fullcalendar/preact/protected-api'
@@ -20,7 +21,11 @@ import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
 import { getPublicId } from '../../resource/structs/resource'
 import { ResourcePrintTableRow } from '../resource-layout-print'
 import { ColSpec } from '../structs'
-import { refineResourceLaneRenderProps } from './lane/ResourceLane'
+import {
+  buildResourceDateSpanProps,
+  buildResourceEventRenderProps,
+  refineResourceLaneRenderProps,
+} from './lane/ResourceLane'
 import { ResourceCell } from './spreadsheet/ResourceCell'
 import { ResourceGroupCell } from './spreadsheet/ResourceGroupCell'
 
@@ -47,6 +52,8 @@ export interface ResourcePrintRowProps extends SplittableProps {
 export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProps> {
   // memo
   private refineRenderProps = memoizeObjArg(refineResourceLaneRenderProps)
+  private buildDateSpanProps = memoize(buildResourceDateSpanProps)
+  private buildEventRenderProps = memoize(buildResourceEventRenderProps)
 
   // internal
   private slicer = new TimelineLaneSlicer()
@@ -61,6 +68,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
       context,
       eventOverlap: Boolean(options.eventOverlap),
     })
+    const eventRenderProps = this.buildEventRenderProps(renderProps.resource)
     const resourceLaneClassName = generateClassName(options.resourceLaneClass, renderProps)
 
     const slicedProps = this.slicer.sliceProps(
@@ -85,7 +93,8 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
       nowMs: props.nowMs,
       todayRange: props.todayRange,
       eventSelection: slicedProps.eventSelection,
-      resourceId: resource.id,
+      dateSpanProps: this.buildDateSpanProps(resource.id),
+      renderProps: eventRenderProps,
       timeCanvasClipStart: props.timeCanvasClipStart,
     }
 
@@ -163,6 +172,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                   businessHourSegs={slicedProps.businessHourSegs}
                   dateSelectionSegs={null}
                   eventResizeSegs={null}
+                  renderProps={eventRenderProps}
                   slotWidth={props.slotWidth}
                   clipStart={props.timeCanvasClipStart}
                 />

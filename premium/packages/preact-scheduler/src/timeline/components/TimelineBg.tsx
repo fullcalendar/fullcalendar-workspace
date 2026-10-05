@@ -1,6 +1,6 @@
 import {
   BaseComponent, BgEvent, renderFill,
-  getEventRangeMeta, DateRange, DateMarker, buildEventRangeKey,
+  getEventRangeMeta, DateRange, DateMarker, Dictionary, buildEventRangeKey,
   EventRangeProps,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -20,6 +20,7 @@ export interface TimelineBgProps {
   businessHourSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
   dateSelectionSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
   eventResizeSegs: (TimelineRange & EventRangeProps)[] | null
+  renderProps?: Dictionary // so can include a resource
 
   // dimensions
   slotWidth: number | undefined
@@ -79,6 +80,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
                       isStart={seg.isStart}
                       isEnd={seg.isEnd}
                       isVertical={false}
+                      renderProps={props.renderProps}
                       {...getEventRangeMeta(seg.eventRange, todayRange, nowDate, props.nowMs)}
                     />
                   ) : (

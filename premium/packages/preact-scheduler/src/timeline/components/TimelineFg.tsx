@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent, memoize,
-  getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
+  getEventRangeMeta, DateMarker, DateRange, DateProfile, Dictionary, sortEventSegs,
   RefMap,
   afterSize,
   EventRangeProps,
@@ -38,7 +38,8 @@ export interface TimelineFgProps {
   eventDrag: EventSegUiInteractionState<TimelineRange> | null
   eventResize: EventSegUiInteractionState<TimelineRange> | null
   eventSelection: string
-  resourceId?: string // hack
+  dateSpanProps?: Dictionary // so can include a resource
+  renderProps?: Dictionary // so can include a resource
 
   // dimensions
   slotWidth: number | undefined
@@ -191,6 +192,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isResizing={isResizing}
                 isMirror={false}
                 isSelected={isSelected}
+                renderProps={props.renderProps}
                 {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
               />
             </MeasuredHeightHarness>
@@ -249,6 +251,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             isResizing={isResizing}
             isMirror
             isSelected={isSelected}
+            renderProps={props.renderProps}
             {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate, props.nowMs)}
           />
         </MeasuredHeightHarness>
@@ -282,7 +285,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               eventDrag={props.eventDrag}
               eventResize={props.eventResize}
               eventSelection={props.eventSelection}
-              resourceId={props.resourceId}
+              dateSpanProps={props.dateSpanProps}
+              renderProps={props.renderProps}
             />
           </MeasuredHeightHarness>
         ))}

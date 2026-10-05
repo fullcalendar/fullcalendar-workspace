@@ -27,6 +27,17 @@ declare module '@fullcalendar/preact/public-api' {
     oldResource?: ResourceApi
     newResource?: ResourceApi
   }
+
+  // the resource whose column/lane the event is rendered within
+  // (EventDisplayInfo extends this)
+  interface EventTextInfo {
+    resource?: ResourceApi
+  }
+
+  // the resource whose column/lane the more-link is rendered within
+  interface MoreLinkInfo {
+    resource?: ResourceApi
+  }
 }
 
 declare module '@fullcalendar/core/protected-api' {

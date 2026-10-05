@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, memoize, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
@@ -51,6 +51,8 @@ export interface ResourceLaneProps extends AriaCellInput {
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   // memo
   private refineRenderProps = memoizeObjArg(refineResourceLaneRenderProps)
+  private buildDateSpanProps = memoize(buildResourceDateSpanProps)
+  private buildEventRenderProps = memoize(buildResourceEventRenderProps)
 
   // internal
   private _isUnmounting: boolean
@@ -70,6 +72,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       context,
       eventOverlap: Boolean(options.eventOverlap),
     })
+    let eventRenderProps = this.buildEventRenderProps(renderProps.resource)
 
     /* sliced */
 
@@ -137,6 +140,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 businessHourSegs={slicedProps.businessHourSegs}
                 dateSelectionSegs={slicedProps.dateSelectionSegs}
                 eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
+                renderProps={eventRenderProps}
 
                 // dimensions
                 slotWidth={props.slotWidth}
@@ -169,7 +173,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 eventDrag={slicedProps.eventDrag}
                 eventResize={slicedProps.eventResize}
                 eventSelection={slicedProps.eventSelection}
-                resourceId={resource.id}
+                dateSpanProps={this.buildDateSpanProps(resource.id)}
+                renderProps={eventRenderProps}
 
                 // dimensions
                 slotWidth={props.slotWidth}
@@ -250,6 +255,16 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   componentWillUnmount(): void {
     this._isUnmounting = true
   }
+}
+
+/*
+For the lane's events and more-links. Memoize these, for stable references
+*/
+export function buildResourceDateSpanProps(resourceId: string) {
+  return { resourceId }
+}
+export function buildResourceEventRenderProps(resource: ResourceApi) {
+  return { resource }
 }
 
 export function refineResourceLaneRenderProps(input: ResourceLaneContentArgInput): ResourceLaneInfo {
