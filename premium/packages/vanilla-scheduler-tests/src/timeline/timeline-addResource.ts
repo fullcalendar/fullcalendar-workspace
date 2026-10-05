@@ -182,6 +182,80 @@ describe('timeline addResource', () => {
       })
     })
 
+    it('shows the new first row when re-added while scrolled near the top', async () => {
+      let calendar = initCalendar(buildResourcesWithEvents(buildIds(0, 90)))
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+      await ignoreResizeObserverLoops(async () => {
+        await waitTimeout()
+        viewWrapper.getTimeBodyEl().scrollTop = 20
+        await waitTimeout(SCROLL_END_WAIT)
+
+        await replaceResources(calendar, buildResourcesWithEvents(buildIds(3, 90)), false)
+        expectRowAtTop(calendar, 'r003')
+      })
+    })
+
+    it('shows the new first row when re-added while scrolled to the top', async () => {
+      let calendar = initCalendar(buildResourcesWithEvents(buildIds(0, 90)))
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+      await ignoreResizeObserverLoops(async () => {
+        await waitTimeout()
+        viewWrapper.getTimeBodyEl().scrollTop = 300
+        await waitTimeout(SCROLL_END_WAIT)
+        viewWrapper.getTimeBodyEl().scrollTop = 0
+        await waitTimeout(SCROLL_END_WAIT)
+
+        await replaceResources(calendar, buildResourcesWithEvents(['a000', ...buildIds(0, 90)]), false)
+        expectRowAtTop(calendar, 'a000')
+      })
+    })
+
+    // the first row's height changes while the scroll position is stale
+    describeValues({
+      'when the first row shrinks': 0,
+      'when the first row grows': 6,
+    }, (extraEventCnt) => {
+      it('shows the new first row when re-added mid-scroll', async () => {
+        let calendar = initCalendar(buildResourcesWithEvents(buildIds(0, 90)))
+        let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+        let scrollerEl = viewWrapper.getTimeBodyEl()
+
+        await ignoreResizeObserverLoops(async () => {
+          await waitTimeout()
+          scrollerEl.scrollTop = 300
+          await waitTimeout(SCROLL_END_WAIT)
+          scrollerEl.scrollTop = 0
+          await waitTimeout(SCROLL_END_WAIT)
+          scrollerEl.scrollTop = 200
+          await waitTimeout() // well before the scroll ends, 500ms after its last scroll event
+
+          let { resources, events } = buildResourcesWithEvents(buildIds(3, 90))
+          for (let i = 0; i < extraEventCnt; i += 1) {
+            events.push({ resourceId: 'r003', start: '2016-05-31T01:00:00', end: '2016-05-31T05:00:00' })
+          }
+
+          calendar.batchRendering(() => {
+            calendar.getResources().forEach((resource) => resource.remove())
+            calendar.removeAllEventSources()
+          })
+
+          // Forcing layout clamps the scroll back to where the scroll started, but the scroll
+          // event only fires after the re-added rows change height
+          expect(scrollerEl.scrollTop).toBe(0)
+
+          calendar.batchRendering(() => {
+            resources.forEach((resource) => calendar.addResource(resource, false))
+          })
+          calendar.addEventSource(events)
+          await waitTimeout(SCROLL_END_WAIT)
+
+          expectRowAtTop(calendar, 'r003')
+        })
+      })
+    })
+
     const SCROLL_END_WAIT = 700
 
     function buildIds(start, end) {
@@ -234,6 +308,20 @@ describe('timeline addResource', () => {
           return cellRect.bottom > scrollerRect.top && cellRect.top < scrollerRect.bottom
         })
         .map((cellEl) => cellEl.getAttribute('data-resource-id'))
+    }
+
+    function expectRowAtTop(calendar, resourceId) {
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+      let scrollerEl = viewWrapper.getDataGridBodyEl()
+      let cellEl = viewWrapper.dataGrid.getResourceCellEl(resourceId)
+
+      expect(scrollerEl.scrollTop).toBe(0)
+      expect(cellEl).toBeTruthy()
+
+      if (cellEl) {
+        expect(Math.abs(cellEl.getBoundingClientRect().top - scrollerEl.getBoundingClientRect().top))
+          .toBeLessThanOrEqual(1)
+      }
     }
   })
 

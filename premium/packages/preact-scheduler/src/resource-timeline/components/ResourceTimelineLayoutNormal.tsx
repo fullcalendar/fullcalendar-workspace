@@ -156,7 +156,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
         if (scrollSlackDelta) {
           const topCoord = this.bodyTops.get(key)
-          if (topCoord != null && topCoord < this.currentEntityScroll) {
+          // Live scroll position, because currentEntityScroll lags when the browser clamps the
+          // scroll after content shrinks, and its scroll event hasn't fired yet
+          if (topCoord != null && topCoord < this.bodyScroller.y) {
             if (!getIsHeightAuto(this.context.options)) {
               // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
               this.scrollSlack += scrollSlackDelta
@@ -1370,21 +1372,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
 
-      const coordRes = findEntityByCoord(
-        bodyLayouts,
-        bodyTops,
-        bodyHeights,
-        y,
-        createEntityId,
-      )
+      if (!y) {
+        // If already at top, keep at top. Anchoring to the first row would hide any rows that are
+        // later inserted above it
+        scroll.entityId = undefined
+        scroll.fromBottom = undefined
+      } else {
+        const coordRes = findEntityByCoord(
+          bodyLayouts,
+          bodyTops,
+          bodyHeights,
+          y,
+          createEntityId,
+        )
 
-      if (coordRes) {
-        const [entity, elTop, elHeight] = coordRes
+        if (coordRes) {
+          const [entity, elTop, elHeight] = coordRes
 
-        scroll.entityId = createEntityId(entity)
-        scroll.fromBottom = y
-          ? elTop + elHeight - y
-          : undefined // if already at top, keep at top
+          scroll.entityId = createEntityId(entity)
+          scroll.fromBottom = elTop + elHeight - y
+        }
       }
 
       // At scrolling end, convert scrollSlack into real scroll and zero out
