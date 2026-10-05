@@ -13,7 +13,8 @@ export function buildDayResourceTableModel(
   context: CalendarContext,
   hasEventsByDate: HasEventsByDate | null = null,
 ): AbstractResourceDayTableModel {
-  let hasMajor = resources.length > 1 && dayCols.length > 1
+  // Day boundaries remain major even when filtering leaves only one resource.
+  let hasMajor = dayCols.length > 1
   let groups: ResourceDayGroup[] = []
 
   for (let dateI = 0; dateI < dayCols.length; dateI += 1) {
@@ -35,13 +36,11 @@ export function buildDayResourceTableModel(
       }
     }
 
-    // a date on which no resource has events is omitted WHOLESALE — no header cell, no
-    // column, the neighbouring dates simply sit adjacent. intentional (a filtered view never
-    // mixes resource columns with bare day columns); day-only rendering happens only via the
-    // resourceless model, and then covers every date
-    if (cols.length) {
-      groups.push({ date: dayCol.date, cols })
+    if (!cols.length) {
+      cols.push(buildResourceDayCol(dayCol, dateI, null, -1, hasMajor, context))
     }
+
+    groups.push({ date: dayCol.date, cols })
   }
 
   return new AbstractResourceDayTableModel(dayCols, dayTableModel, resources, groups, true, context)

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Issue 8099 — empty resource dates</title>
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/skeleton.css" />
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/themes/forma/theme.css" />
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/themes/forma/palettes/blue.css" />
+<script src="../../../../standard/packages/vanilla/dist/all/global.js"></script>
+<script src="../../../../standard/packages/vanilla/dist/themes/forma/global.js"></script>
+<script src="../../vanilla-scheduler/dist/all/global.js"></script>
+<style>
+  body { margin: 32px auto; padding: 0 20px; max-width: 1100px; font: 14px system-ui, sans-serif; }
+  label { display: inline-block; margin: 0 20px 16px 0; }
+  #log { white-space: pre-wrap; min-height: 3em; padding: 12px; background: #f1f5f9; }
+</style>
+</head>
+<body>
+<h1>Empty resource dates — #8099</h1>
+<p>September 7: A / C; September 8: B; September 9: C; September 10: blank.
+The blank date should keep its header and column, with no resource label.</p>
+<p>Try clicking, selecting, dragging, and resizing into September 10 in both views.
+The empty column must not be an interaction target. Real resource columns remain interactive.</p>
+<label><input id="filter" type="checkbox" checked /> Filter resources with events</label>
+<label>Events <select id="dataset">
+  <option value="original">Original example</option>
+  <option value="one-day">All events in Room B on Tuesday</option>
+  <option value="two-days">Room C on Monday and Wednesday</option>
+  <option value="empty">Entire range empty</option>
+</select></label>
+<div id="calendar"></div>
+<h2>Interaction log</h2>
+<pre id="log" aria-live="polite">No interactions yet.</pre>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var events = [
+      { id: '1', resourceId: 'a', start: '2020-09-07T09:00:00', end: '2020-09-07T11:00:00', title: 'A / day 1' },
+      { id: '2', resourceId: 'c', start: '2020-09-07T13:00:00', end: '2020-09-07T15:00:00', title: 'C / day 1' },
+      { id: '3', resourceId: 'b', start: '2020-09-08T10:00:00', end: '2020-09-08T12:00:00', title: 'B / day 2' },
+      { id: '4', resourceId: 'c', start: '2020-09-09T09:00:00', end: '2020-09-09T11:00:00', title: 'C / day 3' }
+    ];
+
+    function log(message) {
+      document.getElementById('log').textContent = message;
+    }
+
+    var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+      schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+      initialDate: '2020-09-07',
+      initialView: 'resourceTimeGridFourDay',
+      datesAboveResources: true,
+      filterResourcesWithEvents: true,
+      editable: true,
+      selectable: true,
+      slotMinTime: '08:00',
+      slotMaxTime: '18:00',
+      height: 650,
+      headerToolbar: { left: 'prev,next', center: 'title', right: 'resourceTimeGridFourDay,resourceDayGridFourDay' },
+      buttons: {
+        resourceTimeGridFourDay: { text: 'Time grid' },
+        resourceDayGridFourDay: { text: 'Day grid' }
+      },
+      views: {
+        resourceTimeGridFourDay: { type: 'resourceTimeGrid', duration: { days: 4 } },
+        resourceDayGridFourDay: { type: 'resourceDayGrid', duration: { days: 4 } }
+      },
+      resources: [
+        { id: 'a', title: 'Room A' },
+        { id: 'b', title: 'Room B', eventColor: 'green' },
+        { id: 'c', title: 'Room C', eventColor: 'orange' },
+        { id: 'd', title: 'Room D (no events)' }
+      ],
+      events: events,
+      // Real resource callbacks can continue to assume a ResourceApi exists.
+      resourceDayHeaderContent: function(info) {
+        return info.resource.title;
+      },
+      dateClick: function(info) {
+        log('Clicked ' + info.dateStr + ' / ' + (info.resource ? info.resource.id : 'no resource'));
+      },
+      select: function(info) {
+        log('Selected ' + info.startStr + ' to ' + info.endStr + ' / ' + (info.resource ? info.resource.id : 'no resource'));
+      },
+      eventDrop: function(info) {
+        log('Dropped ' + info.event.title + ' at ' + info.event.startStr);
+      },
+      eventResize: function(info) {
+        log('Resized ' + info.event.title + ' to ' + info.event.endStr);
+      }
+    });
+    calendar.render();
+
+    document.getElementById('filter').addEventListener('change', function(ev) {
+      calendar.setOption('filterResourcesWithEvents', ev.target.checked);
+    });
+    document.getElementById('dataset').addEventListener('change', function(ev) {
+      var scenario = ev.target.value;
+      var selectedEvents = scenario === 'empty' ? [] : events.map(function(event, i) {
+        if (scenario === 'original') {
+          return event;
+        }
+        var day = scenario === 'one-day' ? '08' : (i < 2 ? '07' : '09');
+        return Object.assign({}, event, {
+          resourceId: scenario === 'one-day' ? 'b' : 'c',
+          start: '2020-09-' + day + event.start.slice(10),
+          end: '2020-09-' + day + event.end.slice(10)
+        });
+      });
+      calendar.batchRendering(function() {
+        calendar.removeAllEventSources();
+        calendar.addEventSource(selectedEvents);
+      });
+      log('Dataset changed.');
+    });
+  });
+</script>
+</body>
+</html>

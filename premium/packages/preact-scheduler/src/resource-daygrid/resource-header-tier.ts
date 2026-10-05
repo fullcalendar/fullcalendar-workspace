@@ -1,4 +1,4 @@
-import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, ViewContext } from '@fullcalendar/preact/protected-api'
+import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, Dictionary, ViewContext } from '@fullcalendar/preact/protected-api'
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
@@ -16,6 +16,8 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
+  blankClassNameGenerator: CellRenderConfig<any>['classNameGenerator'],
+  blankRenderProps: Dictionary,
 ): RowConfig<any, DayHeaderInfo | ResourceDayHeaderInfo>[] {
   let { cols, groups, resources } = resourceDayTableModel
 
@@ -46,6 +48,29 @@ export function buildResourceRowConfigs(
 
   if (resourceDayTableModel.datesAboveResources) {
     const resourceDataConfigsPerDate = groups.map((group) => {
+      const col = group.cols[0]
+
+      if (!col.resource) {
+        return [{
+          key: col.key + ':blank',
+          dateMarker: col.date,
+          blank: {
+            classNameGenerator: blankClassNameGenerator,
+          },
+          renderProps: {
+            ...getDateMeta(col.date, context.dateEnv, dateProfile, todayRange),
+            isMajor: col.isMajor,
+            isNarrow: false, // overridden by the header cell
+            view: context.viewApi,
+            ...blankRenderProps,
+          },
+          attrs: {
+            'data-date': formatDayString(col.date),
+          },
+          colSpan: 1,
+        }]
+      }
+
       return buildResourceDataConfigs(
         group.cols.map((col) => col.resource as Resource),
         group.date,
@@ -65,7 +90,7 @@ export function buildResourceRowConfigs(
       context,
       /* colSpan = */ 1,
       /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
-      // per-date filtering can omit dates, but surviving ones should keep nav links
+      // Keep navigation based on the full date range.
       /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
     )
 

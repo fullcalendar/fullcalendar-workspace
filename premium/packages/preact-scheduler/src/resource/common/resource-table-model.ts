@@ -29,8 +29,9 @@ export function buildResourceTableModel(
   // per-date filtering asks a per-column question, so it's strictly finer than the view-wide
   // pass that produced `resources`. a resource can clear that and still match no column — its
   // only events fall on a hidden day, or outside every column's rendered range. if that's true
-  // of every resource there's nothing to show, so render plain day columns
-  if (hasEventsByDate && !model.colCount) {
+  // of every resource, every column is a placeholder (or there are none), so render plain day
+  // columns instead
+  if (hasEventsByDate && !model.resourceColCount) {
     return buildResourcelessDayTableModel(dayTableModel, dayCols, context)
   }
 

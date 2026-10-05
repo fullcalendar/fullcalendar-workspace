@@ -11,6 +11,7 @@ import {
   mapHash,
   memoize,
   buildDayColsFromSeries,
+  computeTimeGridPrintMode,
 } from '@fullcalendar/preact/protected-api'
 import { DaySeriesSlicer, createDayHeaderFormatter } from '@fullcalendar/preact/protected-api'
 import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
@@ -44,6 +45,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   private computeHasEventsByDate = memoize(computeHasEventsByDate)
   private buildResourceTableModel = memoize(buildResourceTableModel)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
+  private buildBlankRenderProps = memoize(buildBlankDayLaneProps)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   // internal
@@ -195,6 +197,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
             todayRange,
             dayHeaderFormat,
             context,
+            options.dayLaneClass,
+            this.buildBlankRenderProps(computeTimeGridPrintMode(props.forPrint, options.eventPrintLayout) === 'stack'),
           )
 
           return (
@@ -244,4 +248,10 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     let allowAcrossResources = this.dayRanges.length === 1
     return this.resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
   }
+}
+
+// Extra DayLaneInfo props for the blank header's dayLaneClass hook.
+// buildResourceRowConfigs supplies the shared date props.
+function buildBlankDayLaneProps(isStack: boolean) {
+  return { isStack }
 }

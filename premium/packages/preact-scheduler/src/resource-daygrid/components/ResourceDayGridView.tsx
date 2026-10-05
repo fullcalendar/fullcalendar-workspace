@@ -31,6 +31,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   private buildResourceTableModel = memoize(buildResourceTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
+  private buildBlankRenderProps = memoize(buildBlankDayCellProps)
 
   private dayTableModel: DayTableModel
   private resourceDayTableModel: AbstractResourceDayTableModel
@@ -106,6 +107,8 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             todayRange,
             dayHeaderFormat,
             context,
+            options.dayCellClass,
+            this.buildBlankRenderProps(Boolean(options.businessHours)),
           )
 
           return (
@@ -141,6 +144,21 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
     let allowAcrossResources = this.dayTableModel.colCount === 1
     return this.resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
+  }
+}
+
+// Extra DayCellInfo props for the blank header's dayCellClass hook.
+// buildResourceRowConfigs supplies the shared date props.
+function buildBlankDayCellProps(businessHours: boolean) {
+  return {
+    inPopover: false,
+    hasNavLink: false,
+    text: '',
+    textParts: [],
+    weekdayText: '',
+    dayNumberText: '',
+    monthText: '',
+    options: { businessHours },
   }
 }
 

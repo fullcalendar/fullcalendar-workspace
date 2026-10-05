@@ -7,7 +7,7 @@ export type ViewIndexedSeg<R> = R & EventRangeProps // coordinates index final v
 
 export abstract class VResourceJoiner<R> {
   private joinDateSelection = memoize(this.joinSegs)
-  private joinBusinessHours = memoize(this.joinSegs)
+  private joinBusinessHours = memoize(this.joinBusinessHourSegs)
   private joinFgEvents = memoize(this.joinSegs)
   private joinBgEvents = memoize(this.joinSegs)
   private joinEventDrags = memoize(this.joinInteractions)
@@ -33,7 +33,7 @@ export abstract class VResourceJoiner<R> {
       let props = propSets[key]
 
       dateSelectionSets.push(props.dateSelectionSegs)
-      businessHoursSets.push(key ? props.businessHourSegs : NO_SEGS) // don't include redundant all-resource businesshours
+      businessHoursSets.push(props.businessHourSegs)
       fgEventSets.push(key ? props.fgEventSegs : NO_SEGS) // don't include fg all-resource segs
       bgEventSets.push(props.bgEventSegs)
       eventDrags.push(props.eventDrag)
@@ -52,6 +52,10 @@ export abstract class VResourceJoiner<R> {
     }
   }
 
+  /*
+  Placeholder columns (resourceI -1) belong to no resource, so they take only the
+  all-resource segs, like a resource timeline's non-resource background spanning every row
+  */
   joinSegs(
     resourceDayTable: AbstractResourceDayTableModel,
     ...segGroups: DateIndexedSeg<R>[][]
@@ -73,11 +77,45 @@ export abstract class VResourceJoiner<R> {
       }
     }
 
+    for (let seg of segGroups[resourceCnt]) {
+      transformedSegs.push(
+        ...this.transformSeg(seg, resourceDayTable, -1),
+      )
+    }
+
     return transformedSegs
   }
 
   /*
-  for expanding non-resource segs to all resources.
+  Like joinSegs, but the splitter already gives every resource its own business hours (falling
+  back to the calendar's), so the all-resource business hours go to placeholder columns only
+  */
+  joinBusinessHourSegs(
+    resourceDayTable: AbstractResourceDayTableModel,
+    ...segGroups: DateIndexedSeg<R>[][]
+  ): ViewIndexedSeg<R>[] {
+    let resourceCnt = resourceDayTable.resources.length
+    let transformedSegs = []
+
+    for (let i = 0; i < resourceCnt; i += 1) {
+      for (let seg of segGroups[i]) {
+        transformedSegs.push(
+          ...this.transformSeg(seg, resourceDayTable, i),
+        )
+      }
+    }
+
+    for (let seg of segGroups[resourceCnt]) {
+      transformedSegs.push(
+        ...this.transformSeg(seg, resourceDayTable, -1),
+      )
+    }
+
+    return transformedSegs
+  }
+
+  /*
+  for expanding non-resource segs to all resources, and to placeholder columns.
   only for public use.
   no memoizing.
   */
@@ -85,18 +123,11 @@ export abstract class VResourceJoiner<R> {
     resourceDayTable: AbstractResourceDayTableModel,
     segs: R[], // HACK
   ): ViewIndexedSeg<R>[] {
-    let resourceCnt = resourceDayTable.resources.length
-    let transformedSegs = []
-
-    for (let i = 0; i < resourceCnt; i += 1) {
-      for (let seg of segs) {
-        transformedSegs.push(
-          ...this.transformSeg(seg as any, resourceDayTable, i), // HACK
-        )
-      }
-    }
-
-    return transformedSegs
+    return this.joinSegs(
+      resourceDayTable,
+      ...resourceDayTable.resources.map(() => NO_SEGS),
+      segs as any, // HACK
+    )
   }
 
   joinInteractions(

@@ -18,7 +18,20 @@ Much of the other code is superfluous or mechanically derived from the above dir
 
 ## Verifying Fixes By Running Tests
 
-Do not bother trying to run automated tests yourself. It's too hard. Just ask for user verification.
+Run the automated tests yourself to verify changes. They are Karma/Jasmine specs in `standard/packages/vanilla-tests` and `premium/packages/vanilla-scheduler-tests`, run in headless Chrome.
+
+**Run targeted specs by default.** Run the full suite of a package only when the developer explicitly asks.
+
+```sh
+node scripts/bin/karma-test.js premium/packages/vanilla-scheduler-tests "filterResourcesWithEvents"
+node scripts/bin/karma-test.js premium/packages/vanilla-scheduler-tests "/^(vresource|timeGrid-view)/"
+```
+
+- **Filter:** the second argument matches each spec's full name (all enclosing `describe` titles plus the `it` title, joined by spaces). Use a plain substring, or `/regex/flags`. Leave it out to run everything. Prefer this over `fdescribe`/`fit`: the test index generator also treats those as a filter, which changes what gets built.
+- **Build first:** the runner executes the package's already-built `dist/index.js`, which inlines all of fullcalendar. The developer usually has `pnpm dev` running, which rebuilds it within seconds of any source or test edit. Before running, confirm the bundle is current, e.g. grep `dist/index.js` for an identifier you just added. If it isn't updating, ask the developer to start `pnpm dev`.
+- **Sandbox:** Karma binds local port 9876. If the sandbox blocks that (`EPERM`), run the command outside the sandbox.
+- **Output:** only failures and a summary line (`Executed N of M ... SUCCESS`). Skipped specs are the ones the filter excluded. Report pass/fail counts and failure output as-is.
+- **Gotcha:** an "invalid license key" banner overlays the bottom-left of scheduler calendars, so simulated clicks near the bottom edge of a cell hit the banner instead of the cell.
 
 ## Theme Pipeline
 

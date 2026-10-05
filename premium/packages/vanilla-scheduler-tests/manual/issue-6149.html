@@ -23,7 +23,7 @@
   //   Sep 7  - Room A, Room C
   //   Sep 8  - Room B
   //   Sep 9  - Room C
-  //   Sep 10 - nobody, so the date is omitted ENTIRELY (no header cell, no column)
+  //   Sep 10 - nobody; dates-above-resources keeps an inert empty date column
   //   Room D - no events at all, so it never appears
   //
   // Toggle "filter" off and you should get the full 4 resources x 4 dates grid back.
@@ -146,7 +146,7 @@
     <label><input type='checkbox' id='dates-above-toggle' /> datesAboveResources</label>
     <ul>
       <li>With the filter ON, the 4-day views show only: Sep 7 &rarr; A, C &nbsp;|&nbsp; Sep 8 &rarr; B &nbsp;|&nbsp; Sep 9 &rarr; C</li>
-      <li>Sep 10 disappears completely &mdash; no header cell, no column &mdash; because no resource has events that day</li>
+      <li>With datesAboveResources, Sep 10 remains as an empty, non-interactive date column</li>
       <li>Room D never appears at all, in any view</li>
       <li>Turn the filter OFF for the full 4 &times; 4 grid; toggle datesAboveResources to check both orderings</li>
       <li><strong>daygrid month</strong> keeps the old whole-view behavior on purpose: a column there is a weekday shared by every week row, so there's no single date to filter by</li>

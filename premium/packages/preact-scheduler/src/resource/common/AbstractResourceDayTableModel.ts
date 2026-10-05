@@ -26,6 +26,7 @@ export class AbstractResourceDayTableModel {
   cells: DayTableCell[][]
   resourceIndex: ResourceIndex
   colCount: number
+  resourceColCount: number // columns that belong to a resource. the rest are inert placeholders
   cols: ResourceDayCol[]
   colLookup: { [key: string]: ViewColIndex }
   dateFirstCols: ViewColIndex[]
@@ -47,6 +48,7 @@ export class AbstractResourceDayTableModel {
     let colLookup = {}
     let dateFirstCols = []
     let colGroupIndices = []
+    let resourceColCount = 0
 
     for (let groupI = 0; groupI < groups.length; groupI += 1) {
       for (let col of groups[groupI].cols) {
@@ -56,6 +58,10 @@ export class AbstractResourceDayTableModel {
         colLookup[buildColKey(col.dateI, col.resourceI)] = colI
         colGroupIndices.push(groupI)
 
+        if (col.resource) {
+          resourceColCount += 1
+        }
+
         if (dateFirstCols[col.dateI] == null) {
           dateFirstCols[col.dateI] = colI
         }
@@ -64,6 +70,7 @@ export class AbstractResourceDayTableModel {
 
     this.resourceIndex = new ResourceIndex(resources)
     this.colCount = cols.length
+    this.resourceColCount = resourceColCount
     this.cols = cols
     this.colLookup = colLookup
     this.dateFirstCols = dateFirstCols
@@ -74,13 +81,14 @@ export class AbstractResourceDayTableModel {
   }
 
   /*
-  -1 means the pair has no column: either per-date filtering dropped it, or the whole date
-  was omitted. Callers must handle that — a seg aimed at a missing pair is discarded, which
-  is how filtered layouts avoid rendering events into columns that don't exist.
+  -1 means the pair has no column, because per-date filtering dropped it. Callers must handle
+  that — a seg aimed at a missing pair is discarded, which is how filtered layouts avoid
+  rendering events into columns that don't exist.
   */
   computeCol(dateI: DateColIndex, resourceI: number): ViewColIndex {
     // the resourceless model keys every column under -1, so lookups succeed no matter which
-    // resource index a splitter happens to pass in
+    // resource index a splitter happens to pass in. placeholder columns for dates with no
+    // resources are also keyed under -1, reachable by passing -1 explicitly
     let key = buildColKey(dateI, this.resources.length ? resourceI : -1)
     let col = this.colLookup[key]
 
@@ -128,7 +136,7 @@ export class AbstractResourceDayTableModel {
   }
 
   /*
-  dates missing this resource's column (filtered-out or fully-omitted) don't break the span.
+  dates missing this resource's column (filtered-out) don't break the span.
   the highlight simply skips them while the reported range stays continuous, like a hidden day
   */
   isHitComboAllowed(hit0: Hit, hit1: Hit, allowAcrossResources: boolean): boolean {
@@ -155,6 +163,8 @@ function buildResourceCells(
           date,
           isMajor: col.isMajor,
           isDisabled,
+          isInert: true,
+          attrs: { 'aria-disabled': true },
         }
       }
 
@@ -182,6 +192,8 @@ export function buildResourceDayCol(
     return {
       ...dayCol,
       dateI,
+      isInert: true,
+      attrs: { 'aria-disabled': true },
       resource: null,
       resourceI,
       isMajor,
