@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Resource timeline — blank rows after re-adding resources</title>
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/skeleton.css" />
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/themes/classic/theme.css" />
+<link rel="stylesheet" href="../../../../standard/packages/vanilla/dist/themes/classic/palette.css" />
+<script src="../../../../standard/packages/vanilla/dist/all/global.js"></script>
+<script src="../../../../standard/packages/vanilla/dist/themes/classic/global.js"></script>
+<script src="../../vanilla-scheduler/dist/all/global.js"></script>
+<style>
+  body { margin: 32px auto; padding: 0 20px; max-width: 1100px; font: 14px system-ui, sans-serif; }
+  button { margin: 0 8px 12px 0; padding: 6px 12px; }
+  #log { white-space: pre-wrap; min-height: 3em; margin-bottom: 12px; padding: 12px; background: #f1f5f9; font: 12px monospace; }
+  .pass { color: #15803d; font-weight: bold; }
+  .fail { color: #b91c1c; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h2>Resource timeline — rows blank after re-adding resources</h2>
+<p>
+  Simulates an app's filter change: remove all resources and events, wait 300ms (an API call),
+  then re-add them within <code>batchRendering</code>. <code>addResource()</code> scrolls to each
+  added resource by default, so the view should end up showing the last one.
+</p>
+<p>
+  <b>Steps:</b> click <i>Run scenario</i>. Or by hand: click <i>Apply</i>, scroll the timeline body
+  to the very top, then click <i>Apply</i> or <i>Reset</i> again.<br />
+  <b>Expected:</b> rows and events visible in the body, without scrolling.<br />
+  <b>Bug:</b> body stays blank until you scroll it by a pixel.
+</p>
+
+<button id="run">Run scenario</button>
+<button id="apply">Apply (20 → 90 resources)</button>
+<button id="reset">Reset (→ 20 resources)</button>
+<div id="log">(not run yet)</div>
+<div id="calendar"></div>
+
+<script>
+  const START_DATE = '2026-09-21' // a Monday
+
+  // varied events per resource, so row heights differ
+  function buildResourcesAndEvents(count) {
+    const resources = []
+    const events = []
+    for (let i = 0; i < count; i++) {
+      const id = 'r' + i
+      resources.push({ id, title: 'Space ' + id })
+      for (let s = 0; s <= i % 4; s++) {
+        events.push({ id: `${id}-e${s}`, resourceId: id, title: `Booking ${id}.${s}`, start: START_DATE, end: START_DATE })
+      }
+    }
+    return { resources, events }
+  }
+
+  const SMALL = buildResourcesAndEvents(20)
+  const BIG = buildResourcesAndEvents(90)
+
+  const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+    initialView: 'resourceTimelineWeek',
+    initialDate: START_DATE,
+    firstDay: 1,
+    slotDuration: '24:00:00',
+    virtualization: true,
+    contentHeight: 500,
+    tableBodyClass: 'demo-body',
+    eventClass: 'demo-event',
+    resources: SMALL.resources,
+    events: SMALL.events,
+  })
+  calendar.render()
+
+  const logEl = document.getElementById('log')
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+  const getTimeBodyEl = () => Array.from(document.querySelectorAll('#calendar .demo-body')).pop()
+
+  async function replace({ resources, events }) {
+    logEl.textContent = ''
+    calendar.batchRendering(() => {
+      calendar.getResources().forEach((resource) => resource.remove())
+      calendar.removeAllEventSources()
+    })
+    await sleep(300)
+    calendar.batchRendering(() => {
+      resources.forEach((resource) => calendar.addResource(resource))
+    })
+    calendar.addEventSource(events)
+
+    let elapsed = 0
+    for (const ms of [0, 300, 1000, 2000]) {
+      await sleep(ms - elapsed)
+      elapsed = ms
+      report(ms)
+    }
+  }
+
+  function report(ms) {
+    const scrollerRect = getTimeBodyEl().getBoundingClientRect()
+    const eventEls = Array.from(document.querySelectorAll('#calendar .demo-event'))
+    const visibleCnt = eventEls.filter((el) => {
+      const rect = el.getBoundingClientRect()
+      return rect.bottom > scrollerRect.top && rect.top < scrollerRect.bottom
+    }).length
+    const status = visibleCnt
+      ? '<span class="pass">PASS</span>'
+      : '<span class="fail">FAIL (blank)</span>'
+    logEl.innerHTML += `+${ms}ms: ${status} visible events=${visibleCnt} rendered=${eventEls.length}\n`
+  }
+
+  document.getElementById('apply').addEventListener('click', () => replace(BIG))
+  document.getElementById('reset').addEventListener('click', () => replace(SMALL))
+  document.getElementById('run').addEventListener('click', async () => {
+    await replace(BIG)
+    getTimeBodyEl().scrollTop = 0
+    await sleep(700) // let the scroll end
+    await replace(BIG)
+  })
+</script>
+</body>
+</html>

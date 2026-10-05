@@ -76,7 +76,11 @@ function computeTightHeights<Entity, Key>(
 
       totalHeight += ownHeight
     } else { // 'own' is above children
-      totalHeight += ownHeight + ROW_BORDER_WIDTH + childrenHeight
+      totalHeight += ownHeight
+
+      if (siblingNode.children.length) {
+        totalHeight += ROW_BORDER_WIDTH + childrenHeight
+      }
     }
 
     heightMap.set(entityKey, ownHeight)
@@ -89,10 +93,12 @@ function computeTightHeights<Entity, Key>(
     expandableCount += childrenExpandableCount
   }
 
-  return [
-    totalHeight + ROW_BORDER_WIDTH * (siblingNodes.length - 1),
-    expandableCount,
-  ]
+  // borders between siblings
+  if (siblingNodes.length) {
+    totalHeight += ROW_BORDER_WIDTH * (siblingNodes.length - 1)
+  }
+
+  return [totalHeight, expandableCount]
 }
 
 function expandHeights<Entity, Key>(

@@ -156,7 +156,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
         if (scrollSlackDelta) {
           const topCoord = this.bodyTops.get(key)
-          if (topCoord != null && topCoord < this.currentEntityScroll) {
+          // Live scroll position, because currentEntityScroll lags when the browser clamps the
+          // scroll after content shrinks, and its scroll event hasn't fired yet
+          if (topCoord != null && topCoord < this.bodyScroller.y) {
             if (!getIsHeightAuto(this.context.options)) {
               // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
               this.scrollSlack += scrollSlackDelta
@@ -213,6 +215,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private maxVScroll: number | undefined
+  private maxHScroll: number | undefined
 
   // updated in-place
   // .time takes precedence
@@ -408,6 +411,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     } else {
       yFillHeight = yFillBottom - yFillTop
     }
+
+    // Uses the same slot geometry as slotVirtualizer, which is estimated until measured.
+    // When the canvas fits without scrolling, scrollTo() is a no-op that fires no scroll event,
+    // so an uncapped time-based scroll would linger and the virtualizer would skip the leading
+    // slots (#8093)
+    this.maxHScroll = timeClientWidth != null
+      ? Math.max(0, tDateProfile.slotCnt * (props.slotWidth ?? ESTIMATED_SLOT_WIDTH) - timeClientWidth)
+      : undefined
 
     const forcedTimeScroll = this.computeTimeScroll()
     const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotKeys, virtualizationDisabled, forcedTimeScroll)
@@ -1301,6 +1312,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       }
     }
 
+    if (x !== undefined && this.maxHScroll !== undefined) {
+      x = Math.min(this.maxHScroll, x)
+    }
+
     return x
   }
 
@@ -1314,7 +1329,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private handleResourceScrollRequest = (resourceId: string) => {
     this.scroll.entityId = resourceId
     this.scroll.fromBottom = undefined
-    this.applyEntityScroll()
+
+    // The resource might not be rendered yet, such as when added within batchRendering. Otherwise
+    // render() would virtualize rows around the requested scroll without ever applying it
+    if (!this.applyEntityScroll()) {
+      this.queuedEntityScroll = true
+    }
   }
 
   // START vertical scroll
@@ -1352,21 +1372,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
 
-      const coordRes = findEntityByCoord(
-        bodyLayouts,
-        bodyTops,
-        bodyHeights,
-        y,
-        createEntityId,
-      )
+      if (!y) {
+        // If already at top, keep at top. Anchoring to the first row would hide any rows that are
+        // later inserted above it
+        scroll.entityId = undefined
+        scroll.fromBottom = undefined
+      } else {
+        const coordRes = findEntityByCoord(
+          bodyLayouts,
+          bodyTops,
+          bodyHeights,
+          y,
+          createEntityId,
+        )
 
-      if (coordRes) {
-        const [entity, elTop, elHeight] = coordRes
+        if (coordRes) {
+          const [entity, elTop, elHeight] = coordRes
 
-        scroll.entityId = createEntityId(entity)
-        scroll.fromBottom = y
-          ? elTop + elHeight - y
-          : undefined // if already at top, keep at top
+          scroll.entityId = createEntityId(entity)
+          scroll.fromBottom = elTop + elHeight - y
+        }
       }
 
       // At scrolling end, convert scrollSlack into real scroll and zero out
@@ -1382,11 +1407,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
   }
 
-  private applyEntityScroll() {
+  // returns whether applied
+  private applyEntityScroll(): boolean {
     const scrollTop = this.computeEntityScroll()
     if (scrollTop !== undefined) {
       this.bodyScroller.scrollTo({ y: scrollTop })
+      return true
     }
+    return false
   }
 
   private computeEntityScroll(): number | undefined {

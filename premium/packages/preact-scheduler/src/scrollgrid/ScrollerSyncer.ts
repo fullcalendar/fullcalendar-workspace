@@ -14,9 +14,6 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   private masterScroller: Scroller
   private isPaused: boolean = false
 
-  private prevX: number
-  private prevY: number
-
   constructor(
     private isHorizontal = false,
   ) {}
@@ -121,24 +118,9 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
       if (this.masterScroller === scroller) {
         this.masterScroller = null
 
-        const { x, y } = this // new values
-        let isMoved = false
-
-        if (this.isHorizontal) {
-          if (x !== this.prevX) {
-            this.prevX = x
-            isMoved = true
-          }
-        } else {
-          if (y !== this.prevY) {
-            this.prevY = y
-            isMoved = true
-          }
-        }
-
-        if (isMoved) {
-          this.emitter.trigger('scrollEnd', isDevice)
-        }
+        // Always pair with scrollStart, even if the scroll ended where it started, such as when
+        // the browser clamps it after content shrinks. Listeners track scrolling state
+        this.emitter.trigger('scrollEnd', isDevice)
       }
     }
 
