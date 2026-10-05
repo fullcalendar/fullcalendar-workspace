@@ -213,6 +213,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private maxVScroll: number | undefined
+  private maxHScroll: number | undefined
 
   // updated in-place
   // .time takes precedence
@@ -408,6 +409,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     } else {
       yFillHeight = yFillBottom - yFillTop
     }
+
+    // Uses the same slot geometry as slotVirtualizer, which is estimated until measured.
+    // When the canvas fits without scrolling, scrollTo() is a no-op that fires no scroll event,
+    // so an uncapped time-based scroll would linger and the virtualizer would skip the leading
+    // slots (#8093)
+    this.maxHScroll = timeClientWidth != null
+      ? Math.max(0, tDateProfile.slotCnt * (props.slotWidth ?? ESTIMATED_SLOT_WIDTH) - timeClientWidth)
+      : undefined
 
     const forcedTimeScroll = this.computeTimeScroll()
     const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotKeys, virtualizationDisabled, forcedTimeScroll)
@@ -1299,6 +1308,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       if (x) {
         x += 1 // overcome border. TODO: DRY this up
       }
+    }
+
+    if (x !== undefined && this.maxHScroll !== undefined) {
+      x = Math.min(this.maxHScroll, x)
     }
 
     return x

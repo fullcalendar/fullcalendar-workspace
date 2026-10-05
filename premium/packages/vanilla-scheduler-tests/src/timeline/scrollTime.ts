@@ -65,6 +65,112 @@ describe('scrollTime', () => {
     ).toBeLessThanOrEqual(1)
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/8093
+  // When the whole timeline fits without scrolling, a time-based scroll is a no-op that fires no
+  // scroll event. Whether initial render hits this depends on layout timing, so scrollToTime()
+  // and a rerender are used to reproduce it deterministically.
+  it('renders leading slots when virtualized and too wide to scroll', async () => {
+    let el = document.createElement('div')
+    el.style.width = '3000px' // wide enough for the whole day to fit without scrolling
+    el.style.maxWidth = 'none' // override test stylesheet
+    document.body.appendChild(el)
+
+    await ignoreResizeObserverLoops(async () => {
+      let calendar = initCalendar({
+        initialDate: '2020-08-09',
+        initialView: 'resourceTimelineDay',
+        scrollTime: '12:00',
+        virtualization: true,
+        resources: [{ id: 'a', title: 'Resource A' }],
+        events: [
+          { resourceId: 'a', start: '2020-08-09T00:00:00', end: '2020-08-09T23:00:00', title: 'event' },
+        ],
+      }, el)
+
+      try {
+        await waitTimeout()
+        expectLeadingSlotsRendered(calendar)
+
+        calendar.scrollToTime('12:00')
+        calendar.addEvent({ resourceId: 'a', start: '2020-08-09T23:00:00', title: 'rerender trigger' })
+        await waitTimeout()
+        expectLeadingSlotsRendered(calendar)
+      } finally {
+        calendar.destroy()
+        el.remove()
+      }
+    })
+
+    function expectLeadingSlotsRendered(calendar) {
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+      let headerScrollEl = viewWrapper.header.getScrollerEl()
+      let bodyScrollEl = viewWrapper.getTimeBodyEl()
+      let headerSlotEl = viewWrapper.header.getDateElByDate('2020-08-09T00:00:00')
+      let bodySlotEl = viewWrapper.timelineGrid.getSlatElByDate('2020-08-09T00:00:00')
+      let eventEl = viewWrapper.timelineGrid.getFirstEventEl()
+
+      expect(bodyScrollEl.scrollWidth).toBeLessThanOrEqual(bodyScrollEl.clientWidth)
+      expect(headerSlotEl).toBeTruthy()
+      expect(bodySlotEl).toBeTruthy()
+      expect(eventEl).toBeTruthy()
+
+      if (headerSlotEl && bodySlotEl && eventEl) {
+        let headerScrollLeft = headerScrollEl.getBoundingClientRect().left
+        let bodyScrollLeft = bodyScrollEl.getBoundingClientRect().left
+
+        expect(Math.abs(headerScrollLeft - headerSlotEl.getBoundingClientRect().left)).toBeLessThanOrEqual(1)
+        expect(Math.abs(bodyScrollLeft - bodySlotEl.getBoundingClientRect().left)).toBeLessThanOrEqual(1)
+        expect(Math.abs(bodyScrollLeft - eventEl.getBoundingClientRect().left)).toBeLessThanOrEqual(2)
+      }
+    }
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/8093
+  // Print clips the canvas to the recorded on-screen scroll position, which must not exceed
+  // what the screen could actually scroll to. Initial render sometimes corrects itself via an
+  // incidental scroll event, so scrollToTime() is used to reproduce deterministically.
+  describeOptions('initialView', {
+    'with resource timeline': 'resourceTimelineDay',
+    'with plain timeline': 'timelineDay',
+  }, () => {
+    it('prints leading slots when too wide to scroll', async () => {
+      let el = document.createElement('div')
+      el.style.width = '3000px' // wide enough for the whole day to fit without scrolling
+      el.style.maxWidth = 'none' // override test stylesheet
+      document.body.appendChild(el)
+
+      await ignoreResizeObserverLoops(async () => {
+        let calendar = initCalendar({
+          initialDate: '2020-08-09',
+          scrollTime: '12:00',
+          resources: [{ id: 'a', title: 'Resource A' }],
+        }, el)
+
+        try {
+          await waitTimeout()
+          calendar.scrollToTime('12:00')
+          await waitTimeout()
+          calendar.trigger('_beforeprint')
+          await waitTimeout()
+
+          let headerSlotEl = el.querySelector('th [data-date="2020-08-09T00:00:00"]') as HTMLElement
+          expect(headerSlotEl).toBeTruthy()
+
+          if (headerSlotEl) {
+            let cropEl = headerSlotEl.closest('th')
+            expect(
+              Math.abs(cropEl.getBoundingClientRect().left - headerSlotEl.getBoundingClientRect().left),
+            ).toBeLessThanOrEqual(1)
+          }
+        } finally {
+          calendar.trigger('_afterprint')
+          calendar.destroy()
+          el.remove()
+        }
+      })
+    })
+  })
+
   // https://github.com/fullcalendar/fullcalendar/issues/5351
   it('is preserved when prev/next with resources and nowIndicator', async () => {
     let calendar = initCalendar({

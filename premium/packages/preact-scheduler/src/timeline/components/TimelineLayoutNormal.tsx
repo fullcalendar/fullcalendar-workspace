@@ -77,6 +77,7 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
   private _isUnmounting: boolean
   private syncedScroller: ScrollerSyncerInterface
   private scroll: TimelineScroll = {}
+  private maxHScroll: number | undefined
 
   render() {
     const { props, state, context } = this
@@ -90,6 +91,14 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
     const endScrollbarWidth = (state.totalWidth != null && props.clientWidth != null)
       ? state.totalWidth - props.clientWidth
       : undefined
+
+    // When the canvas fits without scrolling, scrollTo() is a no-op that fires no scroll event,
+    // so an uncapped time-based scroll would linger in scrollRef and print would clip the
+    // leading slots (#8093)
+    this.maxHScroll = (canvasWidth != null && props.clientWidth != null)
+      ? Math.max(0, canvasWidth - props.clientWidth)
+      : undefined
+
     const enableNowIndicator =
       options.nowIndicator &&
       slotWidth != null &&
@@ -378,6 +387,10 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
       if (x) {
         x += 1 // overcome border. TODO: DRY this up
       }
+    }
+
+    if (x !== undefined && this.maxHScroll !== undefined) {
+      x = Math.min(this.maxHScroll, x)
     }
 
     return x

@@ -7,6 +7,8 @@
     dayLaneClass: (info) => info.resource ? `lane-${info.resource.id}` : ''
     ```
 - FIX: Resource TimeGrid/DayGrid, spanning header cells misaligned with body columns
+- FIX: Resource Timeline view, with `virtualization`, leading header cells and slots missing when the timeline is wide enough to not need horizontal scrolling (#8093)
+- FIX: Timeline views, printing a timeline that's wide enough to not need horizontal scrolling clips the leading slots, as if scrolled to `scrollTime`
 - FEATURE: Resource views, render hooks receive `info.resource`, the resource of the column/lane being rendered into (#4926)
   - Event hooks: `eventContent`, `eventClass`, `eventDidMount`, etc, including the `*EventTimeClass`/`*EventTitleClass` variants and `backgroundEvent*` hooks. An event with multiple resources renders once per resource, each with its own `info.resource`. A dragged event's mirror receives the resource it's being dragged over
   - +more link hooks: `moreLinkContent`, `moreLinkClass`, `moreLinkDidMount`, etc
