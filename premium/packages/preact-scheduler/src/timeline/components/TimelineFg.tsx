@@ -41,6 +41,9 @@ export interface TimelineFgProps {
   dateSpanProps?: Dictionary // so can include a resource
   renderProps?: Dictionary // so can include a resource
 
+  // a11y
+  label?: string
+
   // dimensions
   slotWidth: number | undefined
 
@@ -128,8 +131,14 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       allSegsProjected &&
       placementResult.isSettled
 
+    const hasListItems = Boolean(
+      placementResult.renderSlices.length || placementResult.moreLinks.length,
+    )
+
     return (
       <div
+        // events and more-links are list items. mirrors are aria-hidden
+        {...(hasListItems ? { role: 'list', 'aria-label': props.label } : {})}
         className={joinClassNames(
           classNames.rel,
           classNames.noShrink,
@@ -171,6 +180,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           return (
             <MeasuredHeightHarness
               key={key}
+              attrs={{ role: 'listitem' }}
               className={joinClassNames(
                 classNames.abs,
                 isSelected ? classNames.z1000 : classNames.z1,
@@ -232,6 +242,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
       return (
         <MeasuredHeightHarness
           key={instanceId}
+          attrs={{ 'aria-hidden': true }}
           className={joinClassNames(
             classNames.abs,
             isSelected ? classNames.z1000 : classNames.z1,
@@ -267,6 +278,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
         {moreLinks.map((moreLink) => (
           <MeasuredHeightHarness
             key={moreLink.key}
+            attrs={{ role: 'listitem' }}
             className={classNames.abs}
             style={{
               top: moreLink.top,

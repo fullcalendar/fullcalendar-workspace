@@ -49,6 +49,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               return (
                 <div
                   key={instanceId}
+                  role='listitem'
                   style={{ visibility: isInvisible ? 'hidden' : undefined }}
                 >
                   <TimelineEvent

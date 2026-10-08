@@ -210,7 +210,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
           clientWidthRef={props.clientWidthRef}
         >
           <div
-            aria-label={options.eventsHint}
             className={joinClassNames(classNames.rel, classNames.grow)}
             style={{ width: canvasWidth }}
             ref={this.handleBodyEl}
@@ -245,6 +244,7 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
               eventDrag={slicedProps.eventDrag}
               eventResize={slicedProps.eventResize}
               eventSelection={slicedProps.eventSelection}
+              label={options.eventsHint}
               slotWidth={slotWidth}
             />
             <div className={joinClassNames(options.timelineBottomClass)} />
