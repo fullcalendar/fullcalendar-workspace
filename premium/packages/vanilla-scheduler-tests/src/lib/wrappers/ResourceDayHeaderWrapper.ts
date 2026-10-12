@@ -47,7 +47,8 @@ export class ResourceDayHeaderWrapper {
 
   getCellElsByRow() {
     return findElements(this.el, '[role=row]').map((rowEl) => (
-      findElements(rowEl, '[role=columnheader]').filter((cellEl) => (
+      // blank cells are cells
+      findElements(rowEl, '[role=columnheader], [role=cell]').filter((cellEl) => (
         cellEl.hasAttribute('data-date') || cellEl.hasAttribute('data-resource-id')
       ))
     )).filter((row) => row.length)

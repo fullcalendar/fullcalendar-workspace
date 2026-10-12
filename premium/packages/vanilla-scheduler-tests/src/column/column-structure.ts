@@ -205,10 +205,10 @@ describe('vresource structure', () => {
         expect(headerWrapper.getDowEls('sun').length).toBe(2)
         expect(dayGridWrapper.getRowEls().length).toBe(6)
 
-        const firstADayRect = getLeadingBoundingRect('[role=gridcell][data-date="2015-11-01"]', direction)
-        const lastADayRect = getLeadingBoundingRect('[role=gridcell][data-date="2015-12-12"]', direction)
-        const firstBDayRect = getTrailingBoundingRect('[role=gridcell][data-date="2015-11-01"]', direction)
-        const lastBDayRect = getTrailingBoundingRect('[role=gridcell][data-date="2015-12-12"]', direction)
+        const firstADayRect = getLeadingBoundingRect('[role=cell][data-date="2015-11-01"]', direction)
+        const lastADayRect = getLeadingBoundingRect('[role=cell][data-date="2015-12-12"]', direction)
+        const firstBDayRect = getTrailingBoundingRect('[role=cell][data-date="2015-11-01"]', direction)
+        const lastBDayRect = getTrailingBoundingRect('[role=cell][data-date="2015-12-12"]', direction)
         const aDayRect = joinRects(firstADayRect, lastADayRect)
         aDayRect.right -= 1 // might share a pixel
         aDayRect.left += 1 // ditto, but for rtl

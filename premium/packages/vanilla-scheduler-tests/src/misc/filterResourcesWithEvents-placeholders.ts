@@ -132,6 +132,16 @@ describe('filterResourcesWithEvents placeholder columns', () => {
       expect(getResourceLaneEl(calendar, 'a', DAY_1).hasAttribute('aria-disabled')).toBe(false)
     })
 
+    it('renders the blank header cell as an empty cell, not an empty columnheader', () => {
+      let calendar = initCalendar({
+        events: A_AROUND_DAY_2,
+      })
+      let blankEl = getBlankHeaderCellEl(new ResourceTimeGridViewWrapper(calendar).header, DAY_2)
+
+      expect(blankEl.getAttribute('role')).toBe('cell')
+      expect(blankEl.textContent).toBe('')
+    })
+
     it('ignores clicks and selections in the timed area of a placeholder', async () => {
       let dateClickSpy = jasmine.createSpy('dateClick')
       let selectSpy = jasmine.createSpy('select')
@@ -550,7 +560,7 @@ describe('filterResourcesWithEvents placeholder columns', () => {
         { date: DAY_3, resourceId: 'a' },
         { date: DAY_3, resourceId: 'b' },
       ])
-      expect(calendar.el.querySelectorAll('[role=gridcell][aria-disabled]').length).toBe(0)
+      expect(calendar.el.querySelectorAll('[role=cell][aria-disabled]').length).toBe(0)
     })
   })
 
@@ -666,30 +676,31 @@ describe('filterResourcesWithEvents placeholder columns', () => {
 
 // Utils
 // -------------------------------------------------------------------------------------------------
-// [role=gridcell] restricts matches to the body. the blank header cell takes the same day classes
+// [aria-disabled] restricts placeholder matches to the body. the blank header cell takes the same
+// day classes and is also a cell, but isn't aria-disabled
 
 function getPlaceholderLaneEl(calendar: Calendar, date: string): HTMLElement {
   return calendar.el.querySelector(
-    `.fc-timegrid-day[role=gridcell][data-date="${date}"]:not([data-resource-id])`,
+    `.fc-timegrid-day[role=cell][aria-disabled][data-date="${date}"]:not([data-resource-id])`,
   ) as HTMLElement
 }
 
 function getResourceLaneEl(calendar: Calendar, resourceId: string, date: string): HTMLElement {
   return calendar.el.querySelector(
-    `.fc-timegrid-day[role=gridcell][data-date="${date}"][data-resource-id="${resourceId}"]`,
+    `.fc-timegrid-day[role=cell][data-date="${date}"][data-resource-id="${resourceId}"]`,
   ) as HTMLElement
 }
 
 // a resource dayGrid body cell, or a resource timeGrid all-day cell
 function getPlaceholderDayCellEl(calendar: Calendar, date: string): HTMLElement {
   return calendar.el.querySelector(
-    `.fc-daygrid-day[role=gridcell][data-date="${date}"]:not([data-resource-id])`,
+    `.fc-daygrid-day[role=cell][aria-disabled][data-date="${date}"]:not([data-resource-id])`,
   ) as HTMLElement
 }
 
 function getResourceDayCellEl(calendar: Calendar, resourceId: string, date: string): HTMLElement {
   return calendar.el.querySelector(
-    `.fc-daygrid-day[role=gridcell][data-date="${date}"][data-resource-id="${resourceId}"]`,
+    `.fc-daygrid-day[role=cell][data-date="${date}"][data-resource-id="${resourceId}"]`,
   ) as HTMLElement
 }
 

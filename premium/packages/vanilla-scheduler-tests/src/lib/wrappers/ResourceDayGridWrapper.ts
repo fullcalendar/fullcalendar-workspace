@@ -25,7 +25,7 @@ export class ResourceDayGridWrapper {
   }
 
   getCellInfo() {
-    return findElements(this.el, '.fc-day[role=gridcell][data-date]').map((dayEl) => ({
+    return findElements(this.el, '.fc-day[role=cell][data-date]').map((dayEl) => ({
       date: dayEl.getAttribute('data-date'),
       resourceId: dayEl.getAttribute('data-resource-id'),
     }))
