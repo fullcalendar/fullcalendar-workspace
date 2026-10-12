@@ -68,6 +68,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
               return (
                 <div
                   key={buildEventRangeKey(seg.eventRange)}
+                  aria-hidden // fills, including bg events, are decorative. hidden from screen readers
                   className={classNames.fillY}
                   style={{
                     insetInlineStart: start - clipStart,
