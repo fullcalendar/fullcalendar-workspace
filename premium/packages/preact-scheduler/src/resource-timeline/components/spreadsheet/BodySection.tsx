@@ -11,6 +11,7 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 
 export interface BodySectionProps {
   cellIdPrefix: string
+  inTreeGrid: boolean
   groupRowPositions: ItemPosition<GroupRowLayout>[]
   resourceRowPositions: ItemPosition<ResourceRowLayout>[]
   groupColPositions: ItemPosition<GroupCellLayout>[][]
@@ -157,6 +158,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 borderBottom={isNotLast}
                 role="presentation"
                 cellIdPrefix={props.cellIdPrefix}
+                inTreeGrid={props.inTreeGrid}
                 cellRowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
                 top={rowPosition.start}
                 height={

@@ -4,7 +4,7 @@ import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { Group } from '../../../resource/common/resource-hierarchy'
 import { GroupSpec, ResourceGroupLaneInfo } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
 
 export interface GroupLaneProps extends AriaCellInput {
   group: Group
@@ -44,7 +44,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         tag={forPrint ? 'td' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(props),
-          role: 'gridcell',
+          role: getAriaCellRole(props),
         }}
         className={joinClassNames(
           !forPrint && classNames.liquid, // expand to whole row

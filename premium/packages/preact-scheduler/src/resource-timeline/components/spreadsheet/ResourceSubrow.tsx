@@ -22,6 +22,7 @@ export interface ResourceSubrowProps {
   role?: string
   cellIdPrefix?: string
   cellRowIndex?: number
+  inTreeGrid?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
@@ -79,6 +80,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
               key={i} // eslint-disable-line react/no-array-index-key
               cellIdPrefix={props.cellIdPrefix}
               cellRowIndex={props.cellRowIndex}
+              inTreeGrid={props.inTreeGrid}
               cellColIndex={props.cellIdPrefix ? i : undefined}
               colSpec={colSpec}
               resource={resource}

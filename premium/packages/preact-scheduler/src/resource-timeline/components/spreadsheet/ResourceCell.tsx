@@ -15,7 +15,7 @@ import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
 import { ResourceCellInfo, ColSpec } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
 
 export interface ResourceCellProps extends AriaCellInput {
   colSpec: ColSpec
@@ -55,7 +55,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         tag={forPrint ? 'td' : 'div'}
         attrs={{
           ...buildAriaCellAttrs(props),
-          role: colSpec.isMain ? 'rowheader' : 'gridcell',
+          role: colSpec.isMain ? 'rowheader' : getAriaCellRole(props),
           'data-resource-id': props.resource.id,
         }}
         className={joinClassNames(

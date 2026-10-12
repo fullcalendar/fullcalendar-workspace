@@ -9,7 +9,7 @@ import { TimelineBg } from '../../../timeline/components/TimelineBg'
 import { TimelineLaneSlicer } from '../../../timeline/TimelineLaneSlicer'
 import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../structs'
 import { ResourceApi } from '../../../resource/public-api'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
 
 export interface ResourceLaneProps extends AriaCellInput {
   dateProfile: DateProfile
@@ -104,7 +104,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           tag="div"
           attrs={{
             ...buildAriaCellAttrs(props),
-            role: 'gridcell',
+            role: getAriaCellRole(props),
             'data-resource-id': resource.id,
           }}
           className={joinClassNames(

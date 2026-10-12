@@ -58,7 +58,7 @@ import { BodySection } from './spreadsheet/BodySection'
 import { HeaderCells } from './spreadsheet/HeaderCells'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
-import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs } from '../aria'
+import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs, getAriaTableRole } from '../aria'
 import { computeResourceTimelineHeaderHeight } from '../header-height'
 
 interface ResourceTimelineLayoutNormalProps {
@@ -473,7 +473,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       <ViewContainer
         viewSpec={viewSpec}
         attrs={{
-          role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
+          role: getAriaTableRole(hasNesting),
           'aria-rowcount': totalHeaderRowSpan + totalCnt,
           'aria-colcount': colSpecs.length + 1,
           'aria-label': props.labelStr,
@@ -624,6 +624,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               >
                 <BodySection
                   cellIdPrefix={cellIdPrefix}
+                  inTreeGrid={hasNesting}
                   groupRowPositions={groupRowPositions}
                   resourceRowPositions={resourceRowPositions}
                   groupColPositions={groupColPositions}
@@ -925,6 +926,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         >
                           <GroupLane
                             cellIdPrefix={cellIdPrefix}
+                            inTreeGrid={hasNesting}
                             cellRowIndex={1 + totalHeaderRowSpan + rowLayout.rowIndex}
                             cellColIndex={colSpecs.length}
                             group={group}
@@ -946,6 +948,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={resource.id /* TODO: use rowPosition.key? */}
                           role="presentation"
                           cellIdPrefix={cellIdPrefix}
+                          inTreeGrid={hasNesting}
                           cellRowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
                           cellColIndex={colSpecs.length}
                           className={classNames.fillX}

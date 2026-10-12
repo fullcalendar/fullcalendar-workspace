@@ -24,6 +24,19 @@ export interface AriaCellInput {
   cellIdPrefix?: string
   cellRowIndex?: number // 1-based, the final aria row index
   cellColIndex?: number // 0-based
+  inTreeGrid?: boolean
+}
+
+// Without nesting, a table: there's no roving tabindex, and a grid makes JAWS switch to forms mode
+// (arrow keys passed to the page, which ignores them) when focus lands on an event.
+// With nesting, still a treegrid, the only role that conveys the hierarchy (aria-level/aria-expanded),
+// until roving tabindex is implemented
+export function getAriaTableRole(hasNesting: boolean): 'table' | 'treegrid' {
+  return hasNesting ? 'treegrid' : 'table'
+}
+
+export function getAriaCellRole(props: AriaCellInput): 'cell' | 'gridcell' {
+  return props.inTreeGrid ? 'gridcell' : 'cell'
 }
 
 // Derives the cell's DOM id (referenced by proxy-row aria-owns) and aria-colindex from the same
