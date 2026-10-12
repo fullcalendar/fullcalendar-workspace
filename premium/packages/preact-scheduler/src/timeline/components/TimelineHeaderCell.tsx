@@ -163,7 +163,13 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
               attrs={
                 hasNavLink
                   // not tabbable because parent is aria-hidden
-                  ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
+                  ? buildNavLinkAttrs(
+                    context,
+                    cell.date,
+                    cell.rowUnit,
+                    undefined,
+                    /* isTabbable = */ false,
+                  )
                   : {} // don't bother with aria-hidden because parent already hidden
               }
               className={generateClassName(options.slotHeaderInnerClass, renderProps)}
