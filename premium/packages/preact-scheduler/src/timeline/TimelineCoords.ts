@@ -1,7 +1,7 @@
 import {
   DateEnv,
   DateMarker,
-  isInt
+  isInt,
 } from '@fullcalendar/preact/protected-api'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -14,11 +14,26 @@ For WHOLE-DAY axes only. Timed axes use computeMsSlotCoverage instead.
 Returned value is between 0 and the number of snaps.
 */
 export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
-  let snapDiff = dateEnv.countDurationsBetween(
-    tDateProfile.normalizedRange.start,
-    date,
-    tDateProfile.snapDuration,
-  )
+  let snapDiff
+
+  if (tDateProfile.largeUnit) {
+    const slotStart = dateEnv.startOf(date, tDateProfile.largeUnit)
+    const slotIndex = dateEnv.countDurationsBetween(
+      tDateProfile.normalizedRange.start,
+      slotStart,
+      tDateProfile.slotDuration,
+    )
+    const slotEnd = dateEnv.add(slotStart, tDateProfile.slotDuration)
+    const slotProgress = (date.valueOf() - slotStart.valueOf()) / (slotEnd.valueOf() - slotStart.valueOf())
+
+    snapDiff = (slotIndex + slotProgress) * tDateProfile.snapsPerSlot
+  } else {
+    snapDiff = dateEnv.countDurationsBetween(
+      tDateProfile.normalizedRange.start,
+      date,
+      tDateProfile.snapDuration,
+    )
+  }
 
   if (snapDiff < 0) {
     return 0
