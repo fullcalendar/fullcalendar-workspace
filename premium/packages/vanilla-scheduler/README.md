@@ -68,4 +68,4 @@ calendar.render()
 
 - [Documentation](https://fullcalendar.io/docs/getting-started)
 - [Scheduler Documentation](https://fullcalendar.io/docs/premium)
-- [Options Reference](https://fullcalendar.io/docs#toc)
+- [Options Reference](https://fullcalendar.io/docs/all)

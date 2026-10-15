@@ -58,4 +58,4 @@ import '@fullcalendar/preact/themes/classic/palette.css'
 - [Preact Documentation](https://fullcalendar.io/docs/preact)
 - [Preact Scheduler Documentation](https://fullcalendar.io/docs/preact#fullcalendar-premium)
 - [Preact Scheduler Example Project](https://github.com/fullcalendar/fullcalendar-examples/tree/main/preact-scheduler)
-- [Options Reference](https://fullcalendar.io/docs#toc)
+- [Options Reference](https://fullcalendar.io/docs/all)

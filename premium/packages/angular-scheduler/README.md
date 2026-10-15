@@ -90,4 +90,4 @@ Then, in your component's template file, you have access to the `<full-calendar>
 - [Angular Documentation](https://fullcalendar.io/docs/angular)
 - [Angular Scheduler Documentation](https://fullcalendar.io/docs/angular#fullcalendar-premium)
 - [Angular Scheduler Example Project](https://github.com/fullcalendar/fullcalendar-examples/tree/main/angular21-scheduler)
-- [Options Reference](https://fullcalendar.io/docs#toc)
+- [Options Reference](https://fullcalendar.io/docs/all)

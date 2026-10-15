@@ -58,4 +58,4 @@ import '@fullcalendar/react/themes/classic/palette.css'
 - [React Documentation](https://fullcalendar.io/docs/react)
 - [React Scheduler Documentation](https://fullcalendar.io/docs/react#fullcalendar-premium)
 - [React Scheduler Example Project](https://github.com/fullcalendar/fullcalendar-examples/tree/main/react19-scheduler)
-- [Options Reference](https://fullcalendar.io/docs#toc)
+- [Options Reference](https://fullcalendar.io/docs/all)
