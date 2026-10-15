@@ -8,6 +8,7 @@ import {
   computeMajorUnit,
   isMajorUnit,
   warn,
+  rangeContainsMarker,
 } from '@fullcalendar/preact/protected-api'
 import { buildTimelineTimeAxis, TimelineTimeAxis } from './timeline-time-axis'
 
@@ -260,6 +261,17 @@ export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfil
 /*
 snaps to appropriate unit
 */
+/*
+Time-scale axes include hours past midnight when slotMaxTime is beyond a day (#6394).
+Day-or-coarser axes ignore slotMinTime/slotMaxTime, so only check the current range for them.
+*/
+export function isNowInTimelineRange(nowDate: DateMarker, dateProfile: DateProfile, tDateProfile: TimelineDateProfile): boolean {
+  return rangeContainsMarker(dateProfile.currentRange, nowDate) || (
+    tDateProfile.isTimeScale &&
+    rangeContainsMarker(tDateProfile.normalizedRange, nowDate)
+  )
+}
+
 export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateRange {
   if (!tDateProfile.isTimeScale) {
     range = computeVisibleDayRange(range)

@@ -11,7 +11,6 @@ import {
   getTableHeaderSticky,
   Hit,
   memoize,
-  rangeContainsMarker,
   RefMap,
   Ruler,
   Scroller,
@@ -32,7 +31,7 @@ import { Resource } from '../../resource/structs/resource'
 import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { getTimelineSlotEl } from '../../timeline/components/util'
-import { TimelineDateProfile, TimelineHeaderCellData } from '../../timeline/timeline-date-profile'
+import { TimelineDateProfile, TimelineHeaderCellData, isNowInTimelineRange } from '../../timeline/timeline-date-profile'
 import { TimelineHeaderRow } from '../../timeline/components/TimelineHeaderRow'
 import { TimelineBg } from '../../timeline/components/TimelineBg'
 import { TimelineNowIndicatorArrow } from '../../timeline/components/TimelineNowIndicatorArrow'
@@ -441,7 +440,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const enableNowIndicator = // TODO: DRY
       options.nowIndicator &&
-      rangeContainsMarker(props.dateProfile.currentRange, props.nowDate)
+      isNowInTimelineRange(props.nowDate, props.dateProfile, props.tDateProfile)
 
     /* filler */
 

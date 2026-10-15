@@ -12,7 +12,6 @@ import {
   getIsHeightAuto,
   getTableHeaderSticky,
   Hit,
-  rangeContainsMarker,
   RefMap,
   Ruler,
   Scroller,
@@ -24,7 +23,7 @@ import {
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
-import { TimelineDateProfile } from '../timeline-date-profile'
+import { TimelineDateProfile, isNowInTimelineRange } from '../timeline-date-profile'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { computeTimelineHitData, timeToCoord } from '../timeline-positioning'
 import { TimelineBg } from './TimelineBg'
@@ -102,7 +101,7 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
     const enableNowIndicator =
       options.nowIndicator &&
       slotWidth != null &&
-      rangeContainsMarker(props.dateProfile.currentRange, nowDate)
+      isNowInTimelineRange(nowDate, props.dateProfile, tDateProfile)
 
     return (
       <ViewContainer
