@@ -35,8 +35,15 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     )
   }
 
+  /*
+  Time-scale axes include hours past midnight when slotMaxTime is beyond a day (#6394).
+  Day-or-coarser axes ignore slotMinTime/slotMaxTime, so only check the current range for them.
+  */
   isDateInRange(date: DateMarker) {
-    return rangeContainsMarker(this.dateProfile.currentRange, date)
+    return rangeContainsMarker(this.dateProfile.currentRange, date) || (
+      this.tDateProfile.isTimeScale &&
+      rangeContainsMarker(this.tDateProfile.normalizedRange, date)
+    )
   }
 
   // results range from negative width of area to 0

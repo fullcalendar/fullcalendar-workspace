@@ -102,13 +102,59 @@ describe('timeline now-indicator', () => {
     }, 100)
   })
 
-  function nowIndicatorRendersAt(date, thresh = PIXEL_THRESHOLD) {
+  // https://github.com/fullcalendar/fullcalendar/issues/6394
+  describe('when slotMaxTime extends past midnight', () => {
+    pushOptions({
+      initialDate: '2015-12-26',
+      slotMaxTime: '30:00',
+    })
+
+    describeOptions({
+      'when no resources': {
+        initialView: 'timelineDay',
+      },
+      'when resources': {
+        initialView: 'resourceTimelineDay',
+        resources: [{ id: 'a', title: 'Resource A' }],
+      },
+    }, () => {
+      it('renders after midnight', () => {
+        let calendar = initCalendar({
+          now: '2015-12-27T02:30:00',
+        })
+        nowIndicatorRendersAt('2015-12-27T02:30:00', PIXEL_THRESHOLD, Boolean(calendar.getOption('resources')))
+      })
+
+      it('doesn\'t render when past the extended end', () => {
+        let calendar = initCalendar({
+          now: '2015-12-27T07:00:00',
+        })
+        let ViewWrapper = calendar.getOption('resources') ? ResourceTimelineViewWrapper : TimelineViewWrapper
+        expect(new ViewWrapper(calendar).hasNowIndicator()).toBe(false)
+      })
+    })
+
+    it('doesn\'t render past the end of a day-scale axis, which ignores slotMaxTime', () => {
+      let calendar = initCalendar({
+        initialView: 'timelineMonth',
+        slotDuration: { days: 1 },
+        initialDate: '2015-12-01',
+        now: '2016-01-01T02:30:00',
+      })
+      expect(new TimelineViewWrapper(calendar).hasNowIndicator()).toBe(false)
+    })
+  })
+
+  function nowIndicatorRendersAt(date, thresh = PIXEL_THRESHOLD, isResourceView = false) {
     // wish threshold could do a smaller default threshold, but RTL messing up
 
-    let viewWrapper = new TimelineViewWrapper(currentCalendar)
-    let line = viewWrapper.timelineGrid.getLine(date)
+    let viewWrapper = isResourceView ? new ResourceTimelineViewWrapper(currentCalendar) : new TimelineViewWrapper(currentCalendar)
+    let gridWrapper = isResourceView
+      ? (viewWrapper as ResourceTimelineViewWrapper).timelineGrid.base
+      : (viewWrapper as TimelineViewWrapper).timelineGrid
+    let line = gridWrapper.getLine(date)
     let arrowRect = getBoundingRect(viewWrapper.header.getNowIndicatorEl())
-    let lineRect = getBoundingRect(viewWrapper.timelineGrid.getNowIndicatorEl())
+    let lineRect = getBoundingRect(gridWrapper.getNowIndicatorEl())
 
     expect(Math.abs(
       ((arrowRect.left + arrowRect.right) / 2) -
