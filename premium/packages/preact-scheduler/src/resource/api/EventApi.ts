@@ -1,5 +1,6 @@
 import { EventImpl, warn } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
+import { EVENT_REFINERS } from '../structs/event-parse'
 
 declare module '@fullcalendar/preact/public-api' {
   interface EventApi {
@@ -52,4 +53,23 @@ EventImpl.prototype.setResources = function ( // eslint-disable-line func-names
       resourceIds,
     },
   })
+}
+
+// core's setProp doesn't know about the scheduler's event props (#5166)
+const origSetProp = EventImpl.prototype.setProp
+
+EventImpl.prototype.setProp = function ( // eslint-disable-line func-names
+  this: EventImpl,
+  name: string,
+  val: any,
+) {
+  if (name === 'resourceEditable') {
+    this.mutate({
+      standardProps: {
+        resourceEditable: EVENT_REFINERS.resourceEditable(val),
+      },
+    })
+  } else {
+    origSetProp.call(this, name, val)
+  }
 }
