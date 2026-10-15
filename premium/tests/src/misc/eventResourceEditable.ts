@@ -94,4 +94,48 @@ describe('eventResourceEditable', () => {
       })
     })
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5166
+  describe('when set dynamically with setProp', () => {
+    pushOptions({
+      editable: true,
+    })
+
+    it('can make resource draggable', (done) => {
+      let calendar = initCalendar({
+        events: [buildEvent({ id: '1', resourceEditable: false })],
+      })
+      spyOn(console, 'warn')
+      calendar.getEventById('1').setProp('resourceEditable', true)
+      expect(console.warn).not.toHaveBeenCalled()
+
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
+        expect(modifiedEvent.getResources()[0].id).toBe('c')
+        done()
+      })
+    })
+
+    it('can make resource NOT draggable', (done) => {
+      let calendar = initCalendar({
+        events: [buildEvent({ id: '1', resourceEditable: true })],
+      })
+      calendar.getEventById('1').setProp('resourceEditable', false)
+
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
+        expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+        expect(modifiedEvent.getResources()[0].id).toBe('b')
+        done()
+      })
+    })
+  })
 })
