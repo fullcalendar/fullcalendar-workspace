@@ -52,6 +52,9 @@ describe('eventResourceEditable', () => {
           expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
           expect(info.event.getResources().length).toBe(1)
           expect(info.event.getResources()[0].id).toBe('b')
+          // https://github.com/fullcalendar/fullcalendar/issues/4943
+          expect(info.oldResource).toBe(null)
+          expect(info.newResource).toBe(null)
           done()
         })
       })
@@ -89,6 +92,8 @@ describe('eventResourceEditable', () => {
           expect(info.event.start).toEqualDate('2016-09-04T01:00:00Z')
           expect(info.event.getResources().length).toBe(1)
           expect(info.event.getResources()[0].id).toBe('c')
+          expect(info.oldResource.id).toBe('b')
+          expect(info.newResource.id).toBe('c')
           done()
         })
       })
@@ -134,6 +139,8 @@ describe('eventResourceEditable', () => {
       waitEventDrag(calendar, dragging).then((info) => {
         expect(info.event.start).toEqualDate('2016-09-04T03:00:00Z')
         expect(info.event.getResources()[0].id).toBe('b')
+        expect(info.oldResource).toBe(null)
+        expect(info.newResource).toBe(null)
         done()
       })
     })

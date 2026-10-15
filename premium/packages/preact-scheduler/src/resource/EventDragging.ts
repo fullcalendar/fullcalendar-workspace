@@ -65,10 +65,11 @@ export function computeResourceEditable(eventDef: EventDef, context: CalendarCon
   return resourceEditable
 }
 
-export function transformEventDrop(mutation: EventMutation, context: CalendarContext): Partial<EventDropInfo> {
+export function transformEventDrop(mutation: EventMutation, context: CalendarContext, eventDef: EventDef): Partial<EventDropInfo> {
   let { resourceMutation } = mutation
 
-  if (resourceMutation) {
+  // like applyEventDefMutation, ignore the resource change when not resource-editable (#4943)
+  if (resourceMutation && computeResourceEditable(eventDef, context)) {
     let { calendarApi } = context
 
     return {
