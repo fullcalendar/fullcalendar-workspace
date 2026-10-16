@@ -63,8 +63,9 @@ async function tagAndReleaseSubrepo(
   subrepoSubdir: string,
   subrepo: any,
 ): Promise<void> {
-  // HACK. TODO: filter away subrepos that don't have package.json
-  if (subrepoSubdir === 'examples') {
+  // Like v7, sync examples but only tag/release standard (plus the workspace above).
+  // v6 also retains Angular, React, and Vue subrepos, so explicitly allow only standard.
+  if (subrepoSubdir !== 'standard') {
     return
   }
 
@@ -90,8 +91,7 @@ async function tagAndReleaseSubrepo(
     tagName, // the tag the remote uses
     version,
     monorepoDir,
-    subrepoSubdir === 'standard' && `standard/dist/fullcalendar-${version}.zip`,
-    subrepoSubdir !== 'standard', // linkToStandard
+    `standard/dist/fullcalendar-${version}.zip`,
   )
 }
 
@@ -113,6 +113,7 @@ async function createGithubRelease(
   await execLive([
     'gh', 'release', 'create',
     '--repo', githubRepo,
+    '--latest=false',
     ...(tagName.includes('-') ? ['--prerelease'] : []),
     '--notes', releaseNotes,
     tagName,

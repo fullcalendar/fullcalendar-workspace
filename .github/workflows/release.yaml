@@ -16,6 +16,7 @@ env:
 jobs:
   release:
     name: Release
+    if: github.ref == 'refs/heads/v6'
     runs-on: ubuntu-latest
     environment: Production
 
@@ -96,7 +97,7 @@ jobs:
             run test
 
       # Must happen before tag-and-release. Would prefer to do it after as a
-      # `continue-on-error:true` optional task, in case pushing back to main fails,
+      # `continue-on-error:true` optional task, in case pushing back to v6 fails,
       # but the tag-and-release script expects everything to be ready.
       #
       # Also, do as few pushes as possible, because each triggers CI.

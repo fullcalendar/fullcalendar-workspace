@@ -5,7 +5,7 @@
   "fixed": [["@fullcalendar/*", "fullcalendar", "fullcalendar-scheduler"]],
   "linked": [],
   "access": "public",
-  "baseBranch": "main",
+  "baseBranch": "v6",
   "updateInternalDependencies": "patch",
   "ignore": []
 }

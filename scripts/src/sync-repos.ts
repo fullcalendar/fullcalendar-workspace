@@ -8,8 +8,10 @@ export default async function() {
   const monorepoDir = process.cwd()
   const gitSubrepoBin = joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh') // TODO: DRY
 
-  // Push to subrepos. Will fail if our copies are not up-to-date
-  await execLive([gitSubrepoBin, 'push', '--all'])
+  // Push standard and examples to their configured branches. Fails if our copies are not up-to-date
+  for (const subdir of ['standard', 'examples']) {
+    await execLive([gitSubrepoBin, 'push', subdir])
+  }
 
   // Push the git-subrepo meta-file updates back to our remote
   await execLive(['git', 'push'])
