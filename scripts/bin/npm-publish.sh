@@ -55,5 +55,5 @@ declare -a publish_dirs=( \
 
 for publish_dir in ${publish_dirs[@]}; do
   cd "$publish_dir"
-  pnpm publish --no-git-checks --access public
+  pnpm publish --no-git-checks --access public --tag legacy
 done
