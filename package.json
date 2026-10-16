@@ -25,7 +25,7 @@
     "pull-from-subrepos": "workspace-scripts pull-from-subrepos",
     "archive": "standard-scripts archive",
     "tag-and-release": "workspace-scripts tag-and-release",
-    "publish": "changeset publish --no-git-tag --tag legacy"
+    "publish": "./scripts/bin/npm-publish.sh"
   },
   "type": "module",
   "monorepoConfig": {
