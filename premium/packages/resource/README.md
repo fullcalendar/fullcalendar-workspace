@@ -1,6 +1,8 @@
 
 # FullCalendar Resource Plugin
 
+> **This package is for FullCalendar v6.** The current version is v7, where `@fullcalendar/resource` is no longer a separate package. With v7, don't install `@fullcalendar/resource` or `@fullcalendar/core`, and don't downgrade to v6: its functionality is built into each framework's v7 scheduler package, e.g. `@fullcalendar/react-scheduler`, whose view plugins load it for you (`import resourceTimelinePlugin from '@fullcalendar/react-scheduler/resource-timeline'`). See the [upgrade guide](https://fullcalendar.io/docs/upgrading-from-v6).
+
 Base support for resources, required by resource views
 
 ## Installation

@@ -2,7 +2,7 @@
   "name": "@fullcalendar/resource",
   "version": "6.1.21",
   "title": "FullCalendar Resource Plugin",
-  "description": "Base support for resources, required by resource views",
+  "description": "FullCalendar v6 only (in v7, this is built into each framework's scheduler package, e.g. @fullcalendar/react-scheduler). Base support for resources, required by resource views",
   "keywords": [
     "scheduler",
     "resource"

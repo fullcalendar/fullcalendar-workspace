@@ -2,7 +2,7 @@
   "name": "@fullcalendar/adaptive",
   "version": "6.1.21",
   "title": "FullCalendar Adaptive Plugin",
-  "description": "Optimizes FullCalendar for print",
+  "description": "FullCalendar v6 only (in v7, this plugin is built into each framework package, e.g. @fullcalendar/react-scheduler/adaptive). Optimizes FullCalendar for print",
   "keywords": [
     "print"
   ],

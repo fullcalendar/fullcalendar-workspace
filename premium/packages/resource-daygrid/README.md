@@ -1,6 +1,8 @@
 
 # FullCalendar Resource Day Grid Plugin
 
+> **This package is for FullCalendar v6.** The current version is v7, where `@fullcalendar/resource-daygrid` is no longer a separate package. With v7, don't install `@fullcalendar/resource-daygrid` or `@fullcalendar/core`, and don't downgrade to v6: import the plugin from your framework's v7 package instead, e.g. `import resourceDayGridPlugin from '@fullcalendar/react-scheduler/resource-daygrid'`. See the [upgrade guide](https://fullcalendar.io/docs/upgrading-from-v6).
+
 Display events on day/resource columns
 
 ## Installation

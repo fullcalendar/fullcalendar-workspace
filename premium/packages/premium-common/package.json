@@ -2,7 +2,7 @@
   "name": "@fullcalendar/premium-common",
   "version": "6.1.21",
   "title": "FullCalendar Premium Common",
-  "description": "Utilities for FullCalendar's premium plugins",
+  "description": "FullCalendar v6 only (in v7, this is built into each framework's scheduler package, e.g. @fullcalendar/react-scheduler). Utilities for FullCalendar's premium plugins",
   "peerDependencies": {
     "@fullcalendar/core": "~6.1.21"
   },
