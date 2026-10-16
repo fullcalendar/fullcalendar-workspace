@@ -9,6 +9,10 @@ FullCalendar [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Co
 npm install @fullcalendar/web-component @fullcalendar/web-component-scheduler temporal-polyfill
 ```
 
+## Coming from v6?
+
+In v7, the premium plugins are part of this package, imported from subpaths like `@fullcalendar/web-component-scheduler/resource-timeline`, and the standard plugins come from `@fullcalendar/web-component` (e.g. `@fullcalendar/web-component/daygrid`). The separate `@fullcalendar/resource`, `@fullcalendar/resource-timeline`, `@fullcalendar/timeline`, `@fullcalendar/core`, `@fullcalendar/daygrid` (etc.) packages are FullCalendar v6. Don't install them with v7, and don't downgrade to v6: uninstall them and import plugins from `@fullcalendar/web-component-scheduler/resource-timeline` and `@fullcalendar/web-component/daygrid`. See the [upgrade guide](https://fullcalendar.io/docs/upgrading-from-v6).
+
 ## Usage
 
 Render a `FullCalendar` component with [options](https://fullcalendar.io/docs#toc), including one or more scheduler plugins:
