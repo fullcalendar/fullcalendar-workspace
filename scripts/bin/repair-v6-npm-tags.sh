@@ -3,7 +3,8 @@
 set -euo pipefail
 
 # One-time repair for v6.1.22 packages that did not continue as stable v7 packages.
-# The shared list comes from a13431bb7, excluding @fullcalendar/core, which has a v7 types package.
+# The shared list comes from a13431bb7, excluding @fullcalendar/core, which has a v7 types package,
+# plus @fullcalendar/vue (Vue 2), which has no v7 package.
 # Preserve legacy/latest tags on core, React, and all other packages outside this list.
 version='6.1.22'
 package_list="$(dirname "$0")/../npm-latest-packages.txt"
