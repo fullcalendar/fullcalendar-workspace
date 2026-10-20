@@ -1,51 +1,14 @@
-import { DateComponent } from '../component/DateComponent'
-import { Hit } from './hit'
+import { HitTarget } from './hit-target'
 
 export abstract class Interaction {
-  component: DateComponent<any>
-  isHitComboAllowed: ((hit0: Hit, hit1: Hit) => boolean) | null
+  target: HitTarget
 
-  constructor(settings: InteractionSettings) {
-    this.component = settings.component
-    this.isHitComboAllowed = settings.isHitComboAllowed || null
+  constructor(target: HitTarget) {
+    this.target = target
   }
 
   destroy() {
   }
 }
 
-export type InteractionClass = { new(settings: InteractionSettings): Interaction }
-
-export interface InteractionSettingsInput {
-  el: HTMLElement
-  useEventCenter?: boolean
-  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
-  disableHits?: boolean
-}
-
-export interface InteractionSettings {
-  component: DateComponent<any>
-  el: HTMLElement
-  useEventCenter: boolean
-  isHitComboAllowed: ((hit0: Hit, hit1: Hit) => boolean) | null
-}
-
-export type InteractionSettingsStore = { [componenUid: string]: InteractionSettings }
-
-export function parseInteractionSettings(component: DateComponent<any>, input: InteractionSettingsInput): InteractionSettings {
-  return {
-    component,
-    el: input.el,
-    useEventCenter: input.useEventCenter != null ? input.useEventCenter : true,
-    isHitComboAllowed: input.isHitComboAllowed || null,
-  }
-}
-
-export function interactionSettingsToStore(settings: InteractionSettings): InteractionSettingsStore {
-  return {
-    [settings.component.uid]: settings,
-  }
-}
-
-// global state
-export const interactionSettingsStore: InteractionSettingsStore = {}
+export type InteractionClass = { new(target: HitTarget): Interaction }

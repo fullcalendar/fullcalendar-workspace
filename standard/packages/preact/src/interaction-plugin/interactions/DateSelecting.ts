@@ -1,5 +1,4 @@
 import { compareNumbers, enableCursor, disableCursor } from '../../util/misc'
-import { DateComponent } from '../../component/DateComponent'
 import type { Hit } from '../../interactions/hit'
 import type { DateSpan } from '../../structs/date-span'
 import { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from '../../structs/date-span'
@@ -7,8 +6,7 @@ import { buildValidInstanceRange } from '../../structs/event-instance'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { dateSelectionJoinTransformer } from '../../interactions/date-selecting'
 import { Interaction } from '../../interactions/interaction'
-import type { InteractionSettings } from '../../interactions/interaction'
-import { interactionSettingsToStore } from '../../interactions/interaction'
+import { HitTarget, hitTargetToStore, isValidDateDownEl } from '../../interactions/hit-target'
 import { triggerDateSelect } from '../../calendar-utils'
 import { isDateSelectionValid } from '../../validation'
 import { HitDragging } from './HitDragging'
@@ -23,17 +21,16 @@ export class DateSelecting extends Interaction {
   hitDragging: HitDragging
   dragSelection: DateSpan | null = null
 
-  constructor(settings: InteractionSettings) {
-    super(settings)
-    let { component } = settings
-    let { options } = component.context
+  constructor(target: HitTarget) {
+    super(target)
+    let { options } = target.context
 
-    let dragging = this.dragging = new FeaturefulElementDragging(settings.el)
+    let dragging = this.dragging = new FeaturefulElementDragging(target.el)
     dragging.touchScrollAllowed = false
     dragging.minDistance = options.selectMinDistance || 0
     dragging.autoScroller.isEnabled = options.dragScroll
 
-    let hitDragging = this.hitDragging = new HitDragging(this.dragging, interactionSettingsToStore(settings))
+    let hitDragging = this.hitDragging = new HitDragging(this.dragging, hitTargetToStore(target))
     hitDragging.emitter.on('pointerdown', this.handlePointerDown)
     hitDragging.emitter.on('dragstart', this.handleDragStart)
     hitDragging.emitter.on('hitupdate', this.handleHitUpdate)
@@ -45,34 +42,34 @@ export class DateSelecting extends Interaction {
   }
 
   handlePointerDown = (ev: PointerDragEvent) => {
-    let { component, dragging } = this
-    let { options } = component.context
+    let { target, dragging } = this
+    let { options } = target.context
 
     let canDateSelect = options.selectable &&
-      component.isValidDateDownEl(ev.origEvent.target as HTMLElement)
+      isValidDateDownEl(ev.origEvent.target as HTMLElement)
 
     if (!canDateSelect) {
       dragging.cancel()
     } else {
       // if touch, require user to hold down
-      dragging.delay = ev.isTouch ? getComponentTouchDelay(component) : null
+      dragging.delay = ev.isTouch ? getTouchDelay(target) : null
     }
   }
 
   handleDragStart = (ev: PointerDragEvent) => {
-    this.component.context.calendarApi.unselect(ev) // unselect previous selections
+    this.target.context.calendarApi.unselect(ev) // unselect previous selections
   }
 
   handleHitUpdate = (hit: Hit | null, isFinal: boolean) => {
-    let { context } = this.component
+    let { context } = this.target
     let dragSelection: DateSpan | null = null
     let isInvalid = false
 
     if (hit) {
       let initialHit = this.hitDragging.initialHit!
       let disallowed = hit.componentId === initialHit.componentId
-        && this.isHitComboAllowed
-        && !this.isHitComboAllowed(initialHit, hit)
+        && this.target.isHitComboAllowed
+        && !this.target.isHitComboAllowed(initialHit, hit)
 
       if (!disallowed) {
         dragSelection = joinHitsIntoSelection(
@@ -108,17 +105,17 @@ export class DateSelecting extends Interaction {
   handlePointerUp = (pev: PointerDragEvent) => {
     if (this.dragSelection) {
       // selection is already rendered, so just need to report selection
-      triggerDateSelect(this.dragSelection, pev, this.component.context)
+      triggerDateSelect(this.dragSelection, pev, this.target.context)
 
       this.dragSelection = null
     } else {
-      this.component.context.emitter.trigger('_noDateSelect')
+      this.target.context.emitter.trigger('_noDateSelect')
     }
   }
 }
 
-function getComponentTouchDelay(component: DateComponent<any>): number {
-  let { options } = component.context
+function getTouchDelay(target: HitTarget): number {
+  let { options } = target.context
   let delay = options.selectLongPressDelay
 
   if (delay == null) {

@@ -1447,9 +1447,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.bodyEl = el
 
     if (el) {
-      this.context.registerInteractiveComponent(this, { el })
+      this.registerHitTarget({ el })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

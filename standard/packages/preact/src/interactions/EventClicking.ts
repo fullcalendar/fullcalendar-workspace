@@ -1,7 +1,8 @@
 import { listenBySelector } from '../util/dom-event'
 import { EventImpl } from '../api/EventImpl'
 import { getElEventRange } from '../component-util/event-rendering'
-import { Interaction, InteractionSettings } from './interaction'
+import { Interaction } from './interaction'
+import { HitTarget, isValidSegDownEl } from './hit-target'
 import { ViewApi } from '../api/ViewApi'
 import classNames from '../styles.module.css'
 
@@ -16,11 +17,11 @@ export interface EventClickInfo {
 Detects when the user clicks on an event within a DateComponent
 */
 export class EventClicking extends Interaction {
-  constructor(settings: InteractionSettings) {
-    super(settings)
+  constructor(target: HitTarget) {
+    super(target)
 
     this.destroy = listenBySelector(
-      settings.el,
+      target.el,
       'click',
       `.${classNames.internalEvent}`, // on both fg and bg events
       this.handleSegClick,
@@ -28,18 +29,18 @@ export class EventClicking extends Interaction {
   }
 
   handleSegClick = (ev: Event, segEl: HTMLElement) => {
-    let { component } = this
-    let { context } = component
+    let { target } = this
+    let { context } = target
     let eventRange = getElEventRange(segEl)
 
     if (
       eventRange && // might be the <div> surrounding the more link
-      component.isValidSegDownEl(ev.target as HTMLElement)
+      isValidSegDownEl(target, ev.target as HTMLElement)
     ) {
       context.emitter.trigger('eventClick', {
         el: segEl,
         event: new EventImpl(
-          component.context,
+          target.context,
           eventRange.def,
           eventRange.instance,
         ),

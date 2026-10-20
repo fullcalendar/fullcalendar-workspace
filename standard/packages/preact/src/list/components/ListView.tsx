@@ -69,12 +69,12 @@ export class ListView extends DateComponent<ViewProps> {
 
   setRootEl = (rootEl: HTMLElement | null) => {
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
+      this.registerHitTarget({
         el: rootEl,
         disableHits: true, // HACK to not do date-clicking/selecting
       })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

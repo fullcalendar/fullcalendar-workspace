@@ -2,8 +2,7 @@ import { ViewApi } from '../../api/ViewApi'
 import type { DatePointApi } from '../../structs/date-span'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import { Interaction } from '../../interactions/interaction'
-import type { InteractionSettings } from '../../interactions/interaction'
-import { interactionSettingsToStore } from '../../interactions/interaction'
+import { HitTarget, hitTargetToStore, isValidDateDownEl } from '../../interactions/hit-target'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 import { HitDragging, isHitsEqual } from './HitDragging'
 import { buildDatePointApiWithContext } from '../utils'
@@ -22,14 +21,14 @@ export class DateClicking extends Interaction {
   dragging: FeaturefulElementDragging
   hitDragging: HitDragging
 
-  constructor(settings: InteractionSettings) {
-    super(settings)
+  constructor(target: HitTarget) {
+    super(target)
 
     // we DO want to watch pointer moves because otherwise finalHit won't get populated
-    this.dragging = new FeaturefulElementDragging(settings.el)
+    this.dragging = new FeaturefulElementDragging(target.el)
     this.dragging.autoScroller.isEnabled = false
 
-    let hitDragging = this.hitDragging = new HitDragging(this.dragging, interactionSettingsToStore(settings))
+    let hitDragging = this.hitDragging = new HitDragging(this.dragging, hitTargetToStore(target))
     hitDragging.emitter.on('pointerdown', this.handlePointerDown)
     hitDragging.emitter.on('dragend', this.handleDragEnd)
   }
@@ -45,8 +44,8 @@ export class DateClicking extends Interaction {
     /*
     If no dateClick, allow text on dates to be text-selectable
     */
-    const canDateClick = this.component.context.emitter.hasHandlers('dateClick') &&
-      this.component.isValidDateDownEl(downEl)
+    const canDateClick = this.target.context.emitter.hasHandlers('dateClick') &&
+      isValidDateDownEl(downEl)
 
     if (!canDateClick) {
       dragging.cancel()
@@ -55,14 +54,14 @@ export class DateClicking extends Interaction {
 
   // won't even fire if moving was ignored
   handleDragEnd = (ev: PointerDragEvent) => {
-    let { component } = this
+    let { target } = this
     let { pointer } = this.dragging
 
     if (!pointer.wasTouchScroll) {
       let { initialHit, finalHit } = this.hitDragging
 
       if (initialHit && finalHit && isHitsEqual(initialHit, finalHit)) {
-        let { context } = component
+        let { context } = target
         let data: DateClickInfo = {
           ...buildDatePointApiWithContext(initialHit.dateSpan, context),
           dayEl: initialHit.getDayEl(),

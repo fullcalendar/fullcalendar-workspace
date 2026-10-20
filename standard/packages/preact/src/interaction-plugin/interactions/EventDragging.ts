@@ -2,7 +2,6 @@ import { EventApi } from '../../api/EventApi'
 import { ViewApi } from '../../api/ViewApi'
 import type { EventChangeInfo, EventAddInfo, EventRemoveInfo } from '../../event-crud'
 import type { EventRenderRange } from '../../component-util/event-rendering'
-import { DateComponent } from '../../component/DateComponent'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import type { Hit } from '../../interactions/hit'
 import { computeHitDelta } from '../../interactions/hit'
@@ -16,8 +15,7 @@ import { enableCursor, disableCursor } from '../../util/misc'
 import { getElEventRange } from '../../component-util/event-rendering'
 import type { eventDragMutationMassager } from '../../interactions/event-dragging'
 import { Interaction } from '../../interactions/interaction'
-import type { InteractionSettings } from '../../interactions/interaction'
-import { interactionSettingsStore } from '../../interactions/interaction'
+import { HitTarget, hitTargetStore, isValidSegDownEl } from '../../interactions/hit-target'
 import type { EventDropTransformers } from '../../interactions/event-dragging'
 import type { CalendarContext } from '../../CalendarContext'
 import { buildEventApis } from '../../api/EventImpl'
@@ -56,18 +54,17 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
   validMutation: EventMutation | null = null
   mutatedRelevantEvents: EventStore | null = null
 
-  constructor(settings: InteractionSettings) {
-    super(settings)
-    let { component } = this
-    let { options } = component.context
+  constructor(target: HitTarget) {
+    super(target)
+    let { options } = target.context
 
-    let dragging = this.dragging = new FeaturefulElementDragging(settings.el)
+    let dragging = this.dragging = new FeaturefulElementDragging(target.el)
     dragging.pointer.selector = EventDragging.SELECTOR
     dragging.touchScrollAllowed = false
     dragging.autoScroller.isEnabled = options.dragScroll
 
-    let hitDragging = this.hitDragging = new HitDragging(this.dragging, interactionSettingsStore)
-    hitDragging.useSubjectCenter = settings.useEventCenter
+    let hitDragging = this.hitDragging = new HitDragging(this.dragging, hitTargetStore)
+    hitDragging.useSubjectCenter = target.useEventCenter
     hitDragging.emitter.on('pointerdown', this.handlePointerDown)
     hitDragging.emitter.on('dragstart', this.handleDragStart)
     hitDragging.emitter.on('hitupdate', this.handleHitUpdate)
@@ -81,10 +78,10 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
   handlePointerDown = (ev: PointerDragEvent) => {
     let origTarget = ev.origEvent.target as HTMLElement
-    let { component, dragging } = this
+    let { target, dragging } = this
     let { mirror } = dragging
-    let { options } = component.context
-    let initialContext = component.context
+    let { options } = target.context
+    let initialContext = target.context
     this.subjectEl = ev.subjectEl as HTMLElement
     let eventRange = this.eventRange = getElEventRange(ev.subjectEl as HTMLElement)!
     let eventInstanceId = eventRange.instance!.instanceId
@@ -97,8 +94,8 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     dragging.minDistance = ev.isTouch ? 0 : options.eventDragMinDistance
     dragging.delay =
       // only do a touch delay if touch and this event hasn't been selected yet
-      (ev.isTouch && eventInstanceId !== component.props.eventSelection) ?
-        getComponentTouchDelay(component) :
+      (ev.isTouch && eventInstanceId !== target.eventSelection) ?
+        getTouchDelay(target) :
         null
 
     mirror.parentNode = getAppendableRoot(origTarget) as HTMLElement
@@ -106,7 +103,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     mirror.colorScheme = options.colorScheme || ''
 
     let isValid =
-      component.isValidSegDownEl(origTarget) &&
+      isValidSegDownEl(target, origTarget) &&
       !origTarget.closest(`.${classNames.internalEventResizer}`) // NOT on a resizer
 
     if (!isValid) {
@@ -121,13 +118,13 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
   }
 
   handleDragStart = (ev: PointerDragEvent) => {
-    let initialContext = this.component.context
+    let initialContext = this.target.context
     let eventRange = this.eventRange!
     let eventInstanceId = eventRange.instance.instanceId
 
     if (ev.isTouch) {
       // need to select a different event?
-      if (eventInstanceId !== this.component.props.eventSelection) {
+      if (eventInstanceId !== this.target.eventSelection) {
         initialContext.dispatch({ type: 'SELECT_EVENT', eventInstanceId })
       }
     } else {
@@ -153,7 +150,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
     let relevantEvents = this.relevantEvents!
     let initialHit = this.hitDragging.initialHit!
-    let initialContext = this.component.context
+    let initialContext = this.target.context
 
     // states based on new hit
     let receivingContext: CalendarContext | null = null
@@ -241,7 +238,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
   handleDragEnd = (ev: PointerDragEvent) => {
     if (this.isDragging) {
-      let initialContext = this.component.context
+      let initialContext = this.target.context
       let initialView = initialContext.viewApi
       let { receivingContext, validMutation } = this
       let eventDef = this.eventRange!.def
@@ -380,7 +377,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
   // render a drag state on the next receivingCalendar
   displayDrag(nextContext: CalendarContext | null, state: EventInteractionState) {
-    let initialContext = this.component.context
+    let initialContext = this.target.context
     let prevContext = this.receivingContext
 
     // does the previous calendar need to be cleared?
@@ -409,7 +406,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
   }
 
   clearDrag() {
-    let initialCalendar = this.component.context
+    let initialCalendar = this.target.context
     let { receivingContext } = this
 
     if (receivingContext) {
@@ -482,8 +479,8 @@ function computeEventMutation(
   return mutation
 }
 
-function getComponentTouchDelay(component: DateComponent<any>): number | null {
-  let { options } = component.context
+function getTouchDelay(target: HitTarget): number | null {
+  let { options } = target.context
   let delay = options.eventLongPressDelay
 
   if (delay == null) {

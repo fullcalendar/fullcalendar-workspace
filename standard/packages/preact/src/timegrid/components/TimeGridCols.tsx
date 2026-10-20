@@ -97,12 +97,11 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     this.rootEl = el
 
     if (el) {
-      this.context.registerInteractiveComponent(this, {
+      this.registerHitTarget({
         el,
-        isHitComboAllowed: this.props.isHitComboAllowed,
       })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

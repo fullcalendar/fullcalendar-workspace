@@ -155,6 +155,52 @@ describe('timeGrid-view selection', () => {
 
       expect(selectCalled).toBe(false)
     })
+
+    it('allows an all-day selection within a resource', async () => {
+      let selectInfo = null
+      let calendar = initCalendar({
+        select(info) {
+          selectInfo = info
+        },
+      })
+      await waitTimeout()
+      let dayGridWrapper = new ResourceTimeGridViewWrapper(calendar).dayGrid
+
+      await new Promise<void>((resolve) => {
+        $(dayGridWrapper.getDayEl('b', '2015-11-29')).simulate('drag', {
+          end: dayGridWrapper.getDayEl('b', '2015-11-30'),
+          callback() {
+            resolve()
+          },
+        })
+      })
+
+      expect(selectInfo.start).toEqualDate('2015-11-29')
+      expect(selectInfo.end).toEqualDate('2015-12-01')
+      expect(selectInfo.resource.id).toBe('b')
+    })
+
+    it('disallows an all-day selection across resources', async () => {
+      let selectCalled = false
+      let calendar = initCalendar({
+        select() {
+          selectCalled = true
+        },
+      })
+      await waitTimeout()
+      let dayGridWrapper = new ResourceTimeGridViewWrapper(calendar).dayGrid
+
+      await new Promise<void>((resolve) => {
+        $(dayGridWrapper.getDayEl('a', '2015-11-29')).simulate('drag', {
+          end: dayGridWrapper.getDayEl('b', '2015-11-30'),
+          callback() {
+            resolve()
+          },
+        })
+      })
+
+      expect(selectCalled).toBe(false)
+    })
   })
 
   describe('with date columns above resource columns', () => {

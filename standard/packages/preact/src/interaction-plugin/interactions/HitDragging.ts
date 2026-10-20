@@ -5,7 +5,7 @@ import { computeRect } from '../../util/dom-geom'
 import { constrainPoint, intersectRects, getRectCenter, diffPoints, type Point } from '../../util/geom'
 import { rangeContainsRange } from '@full-ui/headless-calendar'
 import type { Hit } from '../../interactions/hit'
-import type { InteractionSettingsStore } from '../../interactions/interaction'
+import type { HitTargetStore } from '../../interactions/hit-target'
 import { mapHash } from '../../util/object'
 import type { ElementDragging } from '../../interactions/ElementDragging'
 import { OffsetTracker } from '../OffsetTracker'
@@ -24,7 +24,7 @@ emits:
 - dragend
 */
 export class HitDragging {
-  droppableStore: InteractionSettingsStore
+  droppableStore: HitTargetStore
   dragging: ElementDragging
   emitter: Emitter<any>
 
@@ -40,7 +40,7 @@ export class HitDragging {
   finalHit: Hit | null = null // won't ever be populated if shouldIgnoreMove
   coordAdjust?: Point
 
-  constructor(dragging: ElementDragging, droppableStore: InteractionSettingsStore) {
+  constructor(dragging: ElementDragging, droppableStore: HitTargetStore) {
     this.droppableStore = droppableStore
 
     dragging.emitter.on('pointerdown', this.handlePointerDown)
@@ -137,9 +137,9 @@ export class HitDragging {
   }
 
   prepareHits() {
-    this.offsetTrackers = mapHash(this.droppableStore, (interactionSettings) => {
-      interactionSettings.component.prepareHits()
-      return new OffsetTracker(interactionSettings.el)
+    this.offsetTrackers = mapHash(this.droppableStore, (target) => {
+      target.prepareHits()
+      return new OffsetTracker(target.el)
     })
   }
 
@@ -158,7 +158,7 @@ export class HitDragging {
     let bestHit: Hit | null = null
 
     for (let id in droppableStore) {
-      let component = droppableStore[id].component
+      let target = droppableStore[id]
       let offsetTracker = offsetTrackers[id]
 
       if (
@@ -178,7 +178,7 @@ export class HitDragging {
           positionLeft >= 0 && positionLeft < width &&
           positionTop >= 0 && positionTop < height
         ) {
-          let hit = component.queryHit(offsetTracker.isRtl, positionLeft, positionTop, width, height)
+          let hit = target.queryHit(offsetTracker.isRtl, positionLeft, positionTop, width, height)
           if (
             hit && (
               // make sure the hit is within activeRange, meaning it's not a dead cell
@@ -200,7 +200,7 @@ export class HitDragging {
             (!bestHit || hit.layer > bestHit.layer)
           ) {
             hit.componentId = id
-            hit.context = component.context
+            hit.context = target.context
 
             // TODO: better way to re-orient rectangle
             hit.rect.left += originLeft

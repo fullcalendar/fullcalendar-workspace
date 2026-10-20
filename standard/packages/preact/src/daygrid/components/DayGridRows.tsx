@@ -197,12 +197,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
     this.rootEl = rootEl
 
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
+      this.registerHitTarget({
         el: rootEl,
-        isHitComboAllowed: this.props.isHitComboAllowed,
       })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

@@ -8,8 +8,7 @@ import { ViewSpec } from './structs/view-spec'
 import { CalendarData } from './reducers/data-types'
 import { Action } from './reducers/Action'
 import { Emitter } from './common/Emitter'
-import { InteractionSettingsInput } from './interactions/interaction'
-import { DateComponent } from './component/DateComponent'
+import { HitTarget } from './interactions/hit-target'
 import { CalendarContext } from './CalendarContext'
 import { ViewOptionsRefined, CalendarListeners } from './options'
 import { CalendarNowManager } from './reducers/CalendarNowManager'
@@ -27,8 +26,8 @@ export interface ViewContext extends CalendarContext {
   viewSpec: ViewSpec
   viewApi: ViewImpl
   baseId: string
-  registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void
-  unregisterInteractiveComponent: (component: DateComponent<any>) => void
+  registerHitTarget: (target: HitTarget) => void
+  unregisterHitTarget: (uid: string) => void
 }
 
 export function buildViewContext(
@@ -44,8 +43,8 @@ export function buildViewContext(
   emitter: Emitter<Required<CalendarListeners>>,
   calendarApi: CalendarApiImpl,
   baseId: string,
-  registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void,
-  unregisterInteractiveComponent: (component: DateComponent<any>) => void,
+  registerHitTarget: (target: HitTarget) => void,
+  unregisterHitTarget: (uid: string) => void,
 ): ViewContext {
   return {
     dateEnv,
@@ -60,7 +59,7 @@ export function buildViewContext(
     viewApi,
     dateProfileGenerator,
     baseId,
-    registerInteractiveComponent,
-    unregisterInteractiveComponent,
+    registerHitTarget,
+    unregisterHitTarget,
   }
 }

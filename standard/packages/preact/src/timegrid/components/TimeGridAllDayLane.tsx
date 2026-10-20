@@ -85,11 +85,11 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, T
     this.rootEl = rootEl
 
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
+      this.registerHitTarget({
         el: rootEl,
       })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

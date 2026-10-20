@@ -1,12 +1,10 @@
 import { CalendarInteraction } from './calendar-utils'
 import { ViewProps } from './component-util/View'
-import { DateComponent } from './component/DateComponent'
 import { Toolbar } from './component/Toolbar'
 import { EventClicking } from './interactions/EventClicking'
 import { EventHovering } from './interactions/EventHovering'
-import {
-  Interaction, InteractionClass, InteractionSettingsInput, interactionSettingsStore, parseInteractionSettings
-} from './interactions/interaction'
+import { Interaction, InteractionClass } from './interactions/interaction'
+import { HitTarget, hitTargetStore } from './interactions/hit-target'
 import classNames from './styles.module.css'
 import { ViewPropsTransformerClass } from './plugin-system-struct'
 import { type ReactElement, Fragment } from 'react'
@@ -71,8 +69,8 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       props.emitter,
       props.calendarApi,
       props.baseId,
-      this.registerInteractiveComponent,
-      this.unregisterInteractiveComponent,
+      this.registerHitTarget,
+      this.unregisterHitTarget,
     )
     return (
       <ViewContextType.Provider value={viewContext}>
@@ -226,35 +224,36 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     props.emitter.trigger('_unmount')
   }
 
-  private registerInteractiveComponent = (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => {
-    let settings = parseInteractionSettings(component, settingsInput)
+  private registerHitTarget = (target: HitTarget) => {
+    this.unregisterHitTarget(target.uid) // in case it registers again without unregistering
+
     let DEFAULT_INTERACTIONS: InteractionClass[] = [
       EventClicking,
       EventHovering,
     ]
 
     let interactionClasses = DEFAULT_INTERACTIONS
-    if (!settingsInput.disableHits) {
+    if (!target.disableHits) {
       interactionClasses = interactionClasses.concat(this.props.pluginHooks.componentInteractions)
     }
 
-    let interactions = interactionClasses.map((TheInteractionClass) => new TheInteractionClass(settings))
+    let interactions = interactionClasses.map((TheInteractionClass) => new TheInteractionClass(target))
 
-    this.interactionsStore[component.uid] = interactions
-    interactionSettingsStore[component.uid] = settings
+    this.interactionsStore[target.uid] = interactions
+    hitTargetStore[target.uid] = target
   }
 
-  private unregisterInteractiveComponent = (component: DateComponent<any>) => {
-    let listeners = this.interactionsStore[component.uid]
+  private unregisterHitTarget = (uid: string) => {
+    let listeners = this.interactionsStore[uid]
 
     if (listeners) {
       for (let listener of listeners) {
         listener.destroy()
       }
-      delete this.interactionsStore[component.uid]
+      delete this.interactionsStore[uid]
     }
 
-    delete interactionSettingsStore[component.uid]
+    delete hitTargetStore[uid]
   }
 }
 

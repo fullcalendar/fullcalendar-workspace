@@ -122,6 +122,9 @@ export {
 } from './seg-placement/print'
 export type { PointerDragEvent } from './interactions/pointer'
 export type { Hit } from './interactions/hit'
+export type { HitTarget } from './interactions/hit-target'
+export type { HitSource } from './hooks/useHitTarget'
+export { useHitTarget } from './hooks/useHitTarget'
 export { ElementDragging } from './interactions/ElementDragging'
 
 export { config } from './global-config'

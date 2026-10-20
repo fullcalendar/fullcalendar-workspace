@@ -200,12 +200,12 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     this.rootEl = rootEl
 
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
+      this.registerHitTarget({
         el: rootEl,
         useEventCenter: false,
       })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

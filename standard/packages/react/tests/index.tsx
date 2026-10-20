@@ -10,7 +10,7 @@ import classicThemePlugin from '../dist/themes/classic'
 import dayGridPlugin from '../dist/daygrid'
 import listPlugin from '../dist/list'
 import { anyElsIntersect } from './utils'
-import type { DateComponent } from '../dist/.tsout/protected-api'
+import type { HitTarget } from '../dist/.tsout/protected-api'
 
 const NOW_DATE = new Date()
 const TEST_TOOLBAR_CLASS = 'test-toolbar'
@@ -132,7 +132,7 @@ it('won\'t rerender events if nothing changed', function() {
 it('preserves day-grid hit detection when Strict Mode replays mount lifecycles', async () => {
   const elements = new Set<Element>()
   let deliver: (entries: unknown[]) => void
-  let dayGrid: DateComponent<any>
+  let dayGrid: HitTarget
   let rowEl: HTMLElement
   let unmount: (() => void) | undefined
 
@@ -152,13 +152,9 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
   })
 
   class TrackDayGrid {
-    component: DateComponent<any>
-    isHitComboAllowed = null
-
-    constructor(settings: { component: DateComponent<any>, el: HTMLElement }) {
-      this.component = settings.component
-      dayGrid = settings.component
-      rowEl = settings.el.querySelector('[role=row]')!
+    constructor(target: HitTarget) {
+      dayGrid = target
+      rowEl = target.el.querySelector('[role=row]')!
     }
 
     destroy() {
@@ -192,7 +188,7 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
     const secondHit = dayGrid.queryHit(false, 150, 150, 700, 600)!
     expect(firstHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-09-27')
     expect(secondHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-10-05')
-    expect(dayGrid.state.moreLinkHeight).toBe(100)
+    expect(findComponentState(dayGrid.el, 'moreLinkHeight').moreLinkHeight).toBe(100)
 
     unmount()
     expect(elements.has(rowEl)).toBe(false)
@@ -201,6 +197,18 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
     vi.unstubAllGlobals()
   }
 })
+
+// the state of the nearest class component, at or above el, that has the key
+function findComponentState(el: HTMLElement, key: string): Record<string, unknown> {
+  let fiberKey = Object.keys(el).find((elKey) => elKey.startsWith('__reactFiber$'))!
+  let fiber = (el as any)[fiberKey]
+
+  while (!(fiber.stateNode?.state && key in fiber.stateNode.state)) {
+    fiber = fiber.return
+  }
+
+  return fiber.stateNode.state
+}
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/185
 it('will not inifinitely recurse in strict mode with datesSet', async () => {

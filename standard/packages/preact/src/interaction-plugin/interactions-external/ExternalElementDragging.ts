@@ -1,7 +1,7 @@
 import { ViewApi } from '../../api/ViewApi'
 import type { DatePointApi } from '../../structs/date-span'
 import type { Hit } from '../../interactions/hit'
-import { interactionSettingsStore } from '../../interactions/interaction'
+import { hitTargetStore } from '../../interactions/hit-target'
 import type { PointerDragEvent } from '../../interactions/pointer'
 import { parseEventDef } from '../../structs/event-parse'
 import {
@@ -46,7 +46,7 @@ export class ExternalElementDragging {
   dragMeta: DragMeta | null = null
 
   constructor(dragging: ElementDragging, suppliedDragMeta?: DragMetaGenerator) {
-    let hitDragging = this.hitDragging = new HitDragging(dragging, interactionSettingsStore)
+    let hitDragging = this.hitDragging = new HitDragging(dragging, hitTargetStore)
     hitDragging.requireInitial = false // will start outside of a component
     hitDragging.emitter.on('dragstart', this.handleDragStart)
     hitDragging.emitter.on('hitupdate', this.handleHitUpdate)

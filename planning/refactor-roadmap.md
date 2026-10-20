@@ -100,7 +100,7 @@ Its objections are weighed, not followed blindly.
 | 3 | Hook toolkit spec and review | `phase-3-hook-toolkit-spec.md` | — |
 | 4 | Pilot: composed event components | `phase-4-event-pilot.md` (done) | 1, 2, 3 |
 | 5 | Render-hook rollout and leaf conversions | sketched below | 4 |
-| 6 | `useHitTarget` and interactions | sketched below | 3 |
+| 6 | `useHitTarget` and interactions | `phase-6-hit-target.md` (done) | 3 |
 | 7 | Layout families | sketched below | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
 | 9 | Store slices, actions, API facade | sketched below | 8 |
@@ -127,7 +127,10 @@ Its objections are weighed, not followed blindly.
   `FooterScrollbar`, `MeasuredHeightHarness`, `TimeGridAllDayHeader`, `TimeGridSlatHeader`,
   `TimeGridWeekNumber`, `TimelineHeaderCell`.
 
-### 6. `useHitTarget` and interactions
+### 6. `useHitTarget` and interactions (done, see `phase-6-hit-target.md`)
+
+As built, the 7 registrants use a class adapter on `DateComponent`, and the hook has no built-in
+user yet. Originally sketched as follows.
 
 - Interactions currently hold the component instance (`registerInteractiveComponent(this)`) and
   read `component.props` and `component.queryHit()`.

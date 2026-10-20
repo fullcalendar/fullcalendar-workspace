@@ -1,7 +1,8 @@
 import { listenToHoverBySelector } from '../util/dom-event'
 import { EventImpl } from '../api/EventImpl'
 import { getElEventRange } from '../component-util/event-rendering'
-import { Interaction, InteractionSettings } from './interaction'
+import { Interaction } from './interaction'
+import { HitTarget, isValidSegDownEl } from './hit-target'
 import { ViewApi } from '../api/ViewApi'
 import classNames from '../styles.module.css'
 
@@ -21,11 +22,11 @@ export class EventHovering extends Interaction {
 
   currentSegEl: HTMLElement
 
-  constructor(settings: InteractionSettings) {
-    super(settings)
+  constructor(target: HitTarget) {
+    super(target)
 
     this.removeHoverListeners = listenToHoverBySelector(
-      settings.el,
+      target.el,
       `.${classNames.internalEvent}`, // on both fg and bg events
       this.handleSegEnter,
       this.handleSegLeave,
@@ -58,11 +59,11 @@ export class EventHovering extends Interaction {
   }
 
   triggerEvent(publicEvName: 'eventMouseEnter' | 'eventMouseLeave', ev: Event | null, segEl: HTMLElement) {
-    let { component } = this
-    let { context } = component
+    let { target } = this
+    let { context } = target
     let eventRange = getElEventRange(segEl)!
 
-    if (!ev || component.isValidSegDownEl(ev.target as HTMLElement)) {
+    if (!ev || isValidSegDownEl(target, ev.target as HTMLElement)) {
       context.emitter.trigger(publicEvName, {
         el: segEl,
         event: new EventImpl(

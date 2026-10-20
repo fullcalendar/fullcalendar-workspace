@@ -399,9 +399,9 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
     this.bodyEl = el
 
     if (el) {
-      this.context.registerInteractiveComponent(this, { el })
+      this.registerHitTarget({ el })
     } else {
-      this.context.unregisterInteractiveComponent(this)
+      this.unregisterHitTarget()
     }
   }
 

@@ -17,8 +17,7 @@ import { getElEventRange } from '../../component-util/event-rendering'
 import { createDuration } from '@full-ui/headless-calendar'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
 import { Interaction } from '../../interactions/interaction'
-import type { InteractionSettings } from '../../interactions/interaction'
-import { interactionSettingsToStore } from '../../interactions/interaction'
+import { HitTarget, hitTargetToStore, isValidSegDownEl } from '../../interactions/hit-target'
 import { buildEventApis } from '../../api/EventImpl'
 import { isInteractionValid } from '../../validation'
 import { EventImpl } from '../../api/EventImpl'
@@ -56,16 +55,15 @@ export class EventResizing extends Interaction {
   validMutation: EventMutation | null = null
   mutatedRelevantEvents: EventStore | null = null
 
-  constructor(settings: InteractionSettings) {
-    super(settings)
-    let { component } = settings
+  constructor(target: HitTarget) {
+    super(target)
 
-    let dragging = this.dragging = new FeaturefulElementDragging(settings.el)
+    let dragging = this.dragging = new FeaturefulElementDragging(target.el)
     dragging.pointer.selector = `.${classNames.internalEventResizer}`
     dragging.touchScrollAllowed = false
-    dragging.autoScroller.isEnabled = component.context.options.dragScroll
+    dragging.autoScroller.isEnabled = target.context.options.dragScroll
 
-    let hitDragging = this.hitDragging = new HitDragging(this.dragging, interactionSettingsToStore(settings))
+    let hitDragging = this.hitDragging = new HitDragging(this.dragging, hitTargetToStore(target))
     hitDragging.emitter.on('pointerdown', this.handlePointerDown)
     hitDragging.emitter.on('dragstart', this.handleDragStart)
     hitDragging.emitter.on('hitupdate', this.handleHitUpdate)
@@ -77,15 +75,15 @@ export class EventResizing extends Interaction {
   }
 
   handlePointerDown = (ev: PointerDragEvent) => {
-    let { component } = this
+    let { target } = this
     let segEl = this.querySegEl(ev)
     let eventRange = this.eventRange = getElEventRange(segEl)!
 
-    this.dragging.minDistance = component.context.options.eventDragMinDistance
+    this.dragging.minDistance = target.context.options.eventDragMinDistance
 
     const isValid =
-      this.component.isValidSegDownEl(ev.origEvent.target as HTMLElement) &&
-      !(ev.isTouch && this.component.props.eventSelection !== eventRange.instance!.instanceId)
+      isValidSegDownEl(this.target, ev.origEvent.target as HTMLElement) &&
+      !(ev.isTouch && this.target.eventSelection !== eventRange.instance!.instanceId)
 
     if (!isValid) {
       this.dragging.cancel()
@@ -93,7 +91,7 @@ export class EventResizing extends Interaction {
   }
 
   handleDragStart = (ev: PointerDragEvent) => {
-    let { context } = this.component
+    let { context } = this.target
     let eventRange = this.eventRange!
 
     this.relevantEvents = getRelevantEvents(
@@ -115,7 +113,7 @@ export class EventResizing extends Interaction {
   }
 
   handleHitUpdate = (hit: Hit | null, isFinal: boolean, ev: PointerDragEvent) => {
-    let { context } = this.component
+    let { context } = this.target
     let relevantEvents = this.relevantEvents!
     let initialHit = this.hitDragging.initialHit!
     let eventInstance = this.eventRange.instance!
@@ -130,8 +128,8 @@ export class EventResizing extends Interaction {
 
     if (hit) {
       let disallowed = hit.componentId === initialHit.componentId
-        && this.isHitComboAllowed
-        && !this.isHitComboAllowed(initialHit, hit)
+        && this.target.isHitComboAllowed
+        && !this.target.isHitComboAllowed(initialHit, hit)
 
       if (!disallowed) {
         mutation = computeMutation(
@@ -181,7 +179,7 @@ export class EventResizing extends Interaction {
   }
 
   handleDragEnd = (ev: PointerDragEvent) => {
-    let { context } = this.component
+    let { context } = this.target
     let eventDef = this.eventRange!.def
     let eventInstance = this.eventRange!.instance
     let eventApi = new EventImpl(context, eventDef, eventInstance)

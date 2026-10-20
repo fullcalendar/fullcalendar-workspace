@@ -122,6 +122,42 @@ describe('timeGrid-view event resizing', () => {
       )
       expect(resizeSpy).not.toHaveBeenCalled()
     })
+
+    it('allows an all-day resize within a resource', async () => {
+      let resizeSpy
+      let calendar = initCalendar({
+        events: [
+          { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'b' },
+        ],
+        eventResize:
+          (resizeSpy = spyCall()),
+      })
+
+      await waitTimeout()
+      let dayGridWrapper = new ResourceTimeGridViewWrapper(calendar).dayGrid
+      await dayGridWrapper.resizeEvent(
+        $('.event1')[0], { resourceId: 'b', date: '2015-11-28' }, { resourceId: 'b', date: '2015-11-29' },
+      )
+      expect(resizeSpy).toHaveBeenCalled()
+    })
+
+    it('disallows an all-day resize across resources', async () => {
+      let resizeSpy
+      let calendar = initCalendar({
+        events: [
+          { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'a' },
+        ],
+        eventResize:
+          (resizeSpy = spyCall()),
+      })
+
+      await waitTimeout()
+      let dayGridWrapper = new ResourceTimeGridViewWrapper(calendar).dayGrid
+      await dayGridWrapper.resizeEvent(
+        $('.event1')[0], { resourceId: 'a', date: '2015-11-28' }, { resourceId: 'b', date: '2015-11-29' },
+      )
+      expect(resizeSpy).not.toHaveBeenCalled()
+    })
   })
 
   describe('with date columns above resource columns', () => {
