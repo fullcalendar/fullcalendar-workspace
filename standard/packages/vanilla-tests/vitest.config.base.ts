@@ -74,6 +74,11 @@ export function createTestConfig(options: {
               enabled: true,
               headless: true,
               provider: playwright({
+                launchOptions: {
+                  // Playwright hides scrollbars by default (they take no space). Show them, as most
+                  // desktop browsers do, so layouts that compensate for scrollbars are tested
+                  ignoreDefaultArgs: ['--hide-scrollbars'],
+                },
                 contextOptions: {
                   viewport: VIEWPORT,
                   timezoneId: TIME_ZONE,

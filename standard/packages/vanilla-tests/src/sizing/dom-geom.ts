@@ -3,11 +3,9 @@ import { computeEdges, computeInnerRect } from 'fullcalendar/protected-api'
 import { appendTestElement } from '../lib/calendar'
 
 /*
-Internal DOM geometry used for drag auto-scrolling (ElementScrollGeomCache): an element's borders
-and padding, and the rect inside them.
-
-Scrollbars aren't covered: headless Chromium runs with hidden scrollbars (Playwright's
---hide-scrollbars), which take no space even when styled, so their thickness is always 0 here.
+Internal DOM geometry used for drag auto-scrolling (ElementScrollGeomCache): an element's borders,
+scrollbars and padding, and the rect inside them. The test browser shows real scrollbars (see
+vitest.config.base.ts).
 */
 
 function createBox(css: Partial<CSSStyleDeclaration>, innerWidth = 100, innerHeight = 100): HTMLElement {
@@ -16,6 +14,16 @@ function createBox(css: Partial<CSSStyleDeclaration>, innerWidth = 100, innerHei
   const innerEl = el.appendChild(document.createElement('div'))
   Object.assign(innerEl.style, { position: 'relative', width: innerWidth + 'px', height: innerHeight + 'px' })
   return el
+}
+
+/*
+The thickness of the browser's scrollbars, from a plain scrolling box.
+*/
+function getScrollbarWidth(): number {
+  const el = createBox({ overflow: 'scroll' })
+  const width = el.offsetWidth - el.clientWidth
+  el.remove()
+  return width
 }
 
 describe('computeEdges', () => {
@@ -45,6 +53,31 @@ describe('computeEdges', () => {
         paddingBottom: paddingY,
       })
     }
+  })
+})
+
+describe('computeEdges with scrollbars', () => {
+  it.each([
+    ['ltr', 0, 'scrollbarRight'],
+    ['ltr', 5, 'scrollbarRight'],
+    ['rtl', 0, 'scrollbarLeft'],
+    ['rtl', 5, 'scrollbarLeft'],
+  ] as const)('in %s with a %ipx border, measures the scrollbars apart from the border', (direction, borderWidth, verticalSide) => {
+    const scrollbarWidth = getScrollbarWidth()
+    expect(scrollbarWidth).toBeGreaterThan(0)
+
+    const el = createBox({ direction, overflow: 'scroll', border: `${borderWidth}px solid red` })
+
+    expect(computeEdges(el)).toEqual({
+      borderLeft: borderWidth,
+      borderRight: borderWidth,
+      borderTop: borderWidth,
+      borderBottom: borderWidth,
+      scrollbarLeft: 0,
+      scrollbarRight: 0,
+      [verticalSide]: scrollbarWidth, // the vertical scrollbar is on the end side
+      scrollbarBottom: scrollbarWidth,
+    })
   })
 })
 
@@ -81,6 +114,20 @@ describe('computeInnerRect', () => {
       right: BORDER.left + PADDING.left + INNER_WIDTH,
       top: BORDER.top + PADDING.top,
       bottom: BORDER.top + PADDING.top + INNER_HEIGHT,
+    })
+  })
+})
+
+describe('computeInnerRect with scrollbars', () => {
+  it.each(['ltr', 'rtl'])('in %s, excludes the scrollbars', (direction) => {
+    const scrollbarWidth = getScrollbarWidth()
+    const el = createBox({ direction, overflow: 'scroll', width: '200px', height: '150px' })
+
+    expect(computeInnerRect(el)).toEqual({
+      left: direction === 'rtl' ? scrollbarWidth : 0,
+      right: direction === 'rtl' ? 200 : 200 - scrollbarWidth,
+      top: 0,
+      bottom: 150 - scrollbarWidth,
     })
   })
 })
