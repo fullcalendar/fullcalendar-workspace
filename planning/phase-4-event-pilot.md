@@ -6,8 +6,12 @@ Done.
 
 **Files:**
 
-- `standard/packages/preact/src/common/events.tsx`: `RowEvent`, `ColumnEvent` and `ListItemEvent`, built
-  from shared parts.
+- `standard/packages/preact/src/common/events.tsx`: one shell, `ForegroundEvent`, and three variants,
+  `rowEventVariant`, `columnEventVariant` and `listItemEventVariant`.
+  - A variant is data (class layers, flex class, sticky title class) plus a composed `Body`
+    component. The shell owns the outer element and the mount hooks. A caller that switches an event
+    between variants therefore swaps only the body, and the event doesn't remount. (The first version
+    had three separate components, which remounted; see "Review" below.)
   - `useEventDisplay` does the shared computation.
   - `buildLayerClassName` joins a part's class options across the event, block and variant layers.
   - The parts are `EventEl` (outer element: eventClass, the mount hooks, `setElEventRange`, the RTL
@@ -18,9 +22,9 @@ Done.
   §6.3.
 - `standard/packages/preact/src/hooks/`: `useViewContext`, `useLatest`, `useMountHooks`.
 - `StandardEvent.tsx` is deleted.
-  - Callers pick a variant: DayGrid and its popover per event (`hasListItemDisplay`), TimeGrid →
-    `ColumnEvent`, List → `ListItemEvent`, Timeline → `RowEvent`.
-  - `protected-api` exports the three variants and `EventProps`.
+  - Callers pass a variant: DayGrid and its popover per event (`hasListItemDisplay`), TimeGrid →
+    column, List → list-item, Timeline → row.
+  - `protected-api` exports the shell, the three variants and their types.
 - `useRenderHookEl` (spec §6.4) wasn't needed. `EventEl` calls `generateClassName` and
   `useMountHooks` directly, which is all that hook would wrap. Revisit in phase 5 when several areas
   share it.
@@ -53,10 +57,30 @@ Done.
   bumps it, and the Vue/Angular wrappers rely on that. The bump still re-runs every content
   generator, through `<CustomContent>`. Class generators are recomputed on any real prop change, as
   before.
-- **Switching display variant remounts the event.** If an event switches between list-item and row
-  display (its range or `eventDisplay` changes), the event component type changes, so it remounts:
-  `eventWillUnmount` then `eventDidMount`. Before, the same instance re-rendered. This is rare, and it
-  falls under the timing changes the roadmap tolerates.
+- **Switching display variant re-runs `eventContent`.** When an event switches between list-item and
+  row display, its body remounts, so `eventContent` runs once, and the Vue/Angular connectors see the
+  content deactivated and activated again under a new id. Its class options change in that case
+  anyway. `eventDidMount`/`eventWillUnmount` don't fire, as before.
+
+## Review
+
+GPT-6.1-Sol reviewed `c652e34cb` and found three regressions, all fixed in the follow-up commit with
+specs in `vanilla-tests/src/render-hooks/event-mount-hooks.ts` that fail on `c652e34cb`:
+
+1. `<CustomContent>`'s unmount cleanup used the first render's options. With `customRenderingMetaMap`
+   gaining `eventContent` after mount, the connector got `isActive: true` but never `false`. The
+   cleanup now uses the latest committed options.
+2. `useMountHooks` passed the first element to `*WillUnmount`. When an event gains a `url`, its root
+   becomes an `<a>`, and `eventWillUnmount` got the detached `<div>`. It now gets the latest committed
+   element, as before.
+3. Separate variant components remounted an event switching between list-item and row display, firing
+   an extra `eventWillUnmount`/`eventDidMount`. That broke the call-count rule, and can happen in an
+   interaction: resizing a timed dot event across days in month view makes it a block event. Fixed
+   with the shell/variant split above.
+
+Results after the fixes: DOM snapshots and counts are unchanged from the first phase-4 commit under
+both runtimes, so the 18 decreases stand. Broad filters pass (standard 1014 + 1043, scheduler
+1163 + 1055), contract specs pass under both runtimes, and the React suite passes (37).
 
 ## Purpose
 
@@ -177,5 +201,10 @@ None expected. Record any here.
   - `MoreLinkTrigger` (`display` row/column);
   - `DayGridHeaderCell`, shared by DayGrid, TimeGrid and the resource views;
   - the resource spreadsheet cells (`forPrint` td/div).
+- **A component that switches on a mode becomes a shell plus variants, not sibling components**, when
+  callers switch one instance between modes. Otherwise the switch remounts, and its mount hooks fire
+  again.
+- **Mount-hook and custom-rendering cleanups must use the latest committed values** (element, options),
+  not the first render's.
 - **`generic memo`** needs `as unknown as typeof Impl` to keep a component's type parameter (see
   `CustomContent`).

@@ -12,6 +12,7 @@ import { isPropsEqualShallow, isPropsEqualWithMap } from '../util/object'
 import { isNonHandlerPropsEqual } from '../options-manip'
 import { hasCustomRenderingHandler, ElAttrs } from './ContentInjector'
 import { RenderId } from './RenderId'
+import { ViewOptionsRefined } from '../options'
 
 export interface CustomContentProps<RenderProps> {
   tag: string
@@ -96,32 +97,8 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
     innerContent = fallback(renderProps)
   }
 
-  // for the unmount cleanup, which runs after other effects
-  const latestRef = useLatest({ generatorMeta, renderProps, generatorName: props.generatorName })
-
-  function triggerCustomRendering(
-    isActive: boolean,
-    containerEl: HTMLElement,
-    meta: any,
-    renderPropsForMeta: RenderProps,
-    name: string | undefined,
-  ) {
-    const { handleCustomRendering, customRenderingMetaMap } = options
-
-    if (handleCustomRendering) {
-      const resolvedMeta = meta ?? customRenderingMetaMap?.[name]
-
-      if (resolvedMeta) {
-        handleCustomRendering({
-          id: idRef.current,
-          isActive,
-          containerEl,
-          generatorMeta: resolvedMeta,
-          renderProps: renderPropsForMeta,
-        })
-      }
-    }
-  }
+  // for the unmount cleanup, which must use the latest committed values, not the first render's
+  const latestRef = useLatest({ options, generatorMeta, renderProps, generatorName: props.generatorName })
 
   // after every commit of this component, like ContentInjector's componentDidMount/DidUpdate
   useLayoutEffect(() => {
@@ -138,15 +115,46 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
     }
 
     committedElRef.current = elRef.current
-    triggerCustomRendering(true, elRef.current, generatorMeta, renderProps, props.generatorName)
+    triggerCustomRendering(
+      options, idRef.current, true, elRef.current, generatorMeta, renderProps, props.generatorName,
+    )
   })
 
   useLayoutEffect(() => () => {
     const latest = latestRef.current
-    triggerCustomRendering(false, committedElRef.current, latest.generatorMeta, latest.renderProps, latest.generatorName)
+    triggerCustomRendering(
+      latest.options, idRef.current, false, committedElRef.current,
+      latest.generatorMeta, latest.renderProps, latest.generatorName,
+    )
   }, [])
 
   return createElement(props.tag as any, attrs, innerContent)
+}
+
+function triggerCustomRendering<RenderProps>(
+  options: ViewOptionsRefined,
+  id: string,
+  isActive: boolean,
+  containerEl: HTMLElement,
+  meta: any,
+  renderProps: RenderProps,
+  generatorName: string | undefined,
+) {
+  const { handleCustomRendering, customRenderingMetaMap } = options
+
+  if (handleCustomRendering) {
+    const resolvedMeta = meta ?? customRenderingMetaMap?.[generatorName]
+
+    if (resolvedMeta) {
+      handleCustomRendering({
+        id,
+        isActive,
+        containerEl,
+        generatorMeta: resolvedMeta,
+        renderProps,
+      })
+    }
+  }
 }
 
 const CUSTOM_CONTENT_PROP_EQUALITY = {

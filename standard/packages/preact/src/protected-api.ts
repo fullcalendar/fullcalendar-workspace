@@ -180,8 +180,8 @@ export {
   refineClassName,
   refineClassNameGenerator,
 } from './common/render-hook'
-export { RowEvent, ColumnEvent, ListItemEvent } from './common/events'
-export type { EventProps } from './common/events'
+export { ForegroundEvent, rowEventVariant, columnEventVariant, listItemEventVariant } from './common/events'
+export type { EventProps, ForegroundEventProps, EventVariant } from './common/events'
 export { NowIndicatorHeaderContainer } from './common/NowIndicatorHeaderContainer'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer'
 export { NowIndicatorDot } from './common/NowIndicatorDot'

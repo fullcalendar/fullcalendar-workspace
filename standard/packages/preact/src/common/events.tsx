@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react'
+import { memo, useLayoutEffect, useMemo, useRef, type ComponentType, type ReactNode } from 'react'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import {
   buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayInfo, EventTextInfo, EventRenderRange,
@@ -17,8 +17,8 @@ import classNames from '../styles.module.css'
 import { Dictionary, ViewOptionsRefined } from '../options'
 
 /*
-Foreground events, as composed components. Each variant declares its class layers and geometry,
-instead of one component switching on a display mode. Things that differ between callers of the same
+Foreground events, as composed components. Each variant declares its class layers, geometry and
+body, instead of one component switching on a display mode. Things that differ between callers of the same
 variant (dragging, resizing, z-indexes, liquid inner) stay props.
 See planning/phase-4-event-pilot.md
 */
@@ -55,75 +55,110 @@ export interface EventProps {
   renderProps?: Dictionary // so can include a resource
 }
 
-// Variants
+// Shell and variants
 // -------------------------------------------------------------------------------------------------
 
-// DayGrid block events, the TimeGrid all-day row, Timeline
-export const RowEvent = memo((props: EventProps) => {
+export interface ForegroundEventProps extends EventProps {
+  variant: EventVariant
+}
+
+/*
+A variant is data plus a composed body. The shell owns the outer element and its mount hooks, so a
+caller switching an event between variants (DayGrid, per event) swaps only the body, and doesn't
+remount the element or re-fire eventDidMount/eventWillUnmount
+*/
+export interface EventVariant {
+  layers: EventLayer[] // class-option prefixes after `event`
+  className: string
+  getTitleClassName?: (options: ViewOptionsRefined) => string | undefined
+  Body: ComponentType<EventPartProps>
+}
+
+export const ForegroundEvent = memo((props: ForegroundEventProps) => {
   const { options } = useViewContext()
-  const display = useEventDisplay(props, ['blockEvent', 'rowEvent'], {
-    titleClassName: options.rowEventTitleSticky ? classNames.stickyS : undefined,
+  const { variant } = props
+  const { Body } = variant
+  const display = useEventDisplay(props, variant.layers, {
+    titleClassName: variant.getTitleClassName?.(options),
   })
 
   return (
-    <EventEl props={props} display={display} className={classNames.flexRow}>
-      {display.renderProps.isSelected && <div className={classNames.hitY} />}
-      <EventEdge
-        edge="start"
-        axis="x"
-        props={props}
-        display={display}
-        content={options.rowEventBeforeContent}
-      />
-      <EventInner props={props} display={display} />
-      <EventEdge
-        edge="end"
-        axis="x"
-        props={props}
-        display={display}
-        content={options.rowEventAfterContent}
-      />
+    <EventEl props={props} display={display} className={variant.className}>
+      <Body props={props} display={display} />
     </EventEl>
   )
 })
+
+// DayGrid block events, the TimeGrid all-day row, Timeline
+export const rowEventVariant: EventVariant = {
+  layers: ['blockEvent', 'rowEvent'],
+  className: classNames.flexRow,
+  getTitleClassName: (options) => options.rowEventTitleSticky ? classNames.stickyS : undefined,
+  Body: function RowEventBody({ props, display }: EventPartProps) {
+    const { options } = useViewContext()
+
+    return (
+      <>
+        {display.renderProps.isSelected && <div className={classNames.hitY} />}
+        <EventEdge
+          edge="start"
+          axis="x"
+          props={props}
+          display={display}
+          content={options.rowEventBeforeContent}
+        />
+        <EventInner props={props} display={display} />
+        <EventEdge
+          edge="end"
+          axis="x"
+          props={props}
+          display={display}
+          content={options.rowEventAfterContent}
+        />
+      </>
+    )
+  },
+}
 
 // TimeGrid timed events
-export const ColumnEvent = memo((props: EventProps) => {
-  const { options } = useViewContext()
-  const display = useEventDisplay(props, ['blockEvent', 'columnEvent'], {
-    titleClassName: options.columnEventTitleSticky ? classNames.stickyT : undefined,
-  })
-
-  return (
-    <EventEl props={props} display={display} className={classNames.flexCol}>
-      {display.renderProps.isSelected && <div className={classNames.hitX} />}
-      <EventEdge edge="start" axis="y" props={props} display={display} />
-      <EventInner props={props} display={display} />
-      <EventEdge edge="end" axis="y" props={props} display={display} />
-    </EventEl>
-  )
-})
+export const columnEventVariant: EventVariant = {
+  layers: ['blockEvent', 'columnEvent'],
+  className: classNames.flexCol,
+  getTitleClassName: (options) => options.columnEventTitleSticky ? classNames.stickyT : undefined,
+  Body: function ColumnEventBody({ props, display }: EventPartProps) {
+    return (
+      <>
+        {display.renderProps.isSelected && <div className={classNames.hitX} />}
+        <EventEdge edge="start" axis="y" props={props} display={display} />
+        <EventInner props={props} display={display} />
+        <EventEdge edge="end" axis="y" props={props} display={display} />
+      </>
+    )
+  },
+}
 
 // List view, DayGrid dot events
-export const ListItemEvent = memo((props: EventProps) => {
-  const display = useEventDisplay(props, ['listItemEvent'], {})
-
-  return (
-    <EventEl props={props} display={display} className={classNames.flexRow}>
-      <EventEdge edge="start" axis="x" props={props} display={display} />
-      <EventInner props={props} display={display} />
-      <EventEdge edge="end" axis="x" props={props} display={display} />
-    </EventEl>
-  )
-})
+export const listItemEventVariant: EventVariant = {
+  layers: ['listItemEvent'],
+  className: classNames.flexRow,
+  Body: function ListItemEventBody({ props, display }: EventPartProps) {
+    return (
+      <>
+        <EventEdge edge="start" axis="x" props={props} display={display} />
+        <EventInner props={props} display={display} />
+        <EventEdge edge="end" axis="x" props={props} display={display} />
+      </>
+    )
+  },
+}
 
 // Shared computation
 // -------------------------------------------------------------------------------------------------
 
 // option-name prefixes, after the `event` layer every variant has
-type EventLayer = 'blockEvent' | 'rowEvent' | 'columnEvent' | 'listItemEvent'
+export type EventLayer = 'blockEvent' | 'rowEvent' | 'columnEvent' | 'listItemEvent'
 
-interface EventDisplay {
+export interface EventDisplay {
   tag: string
   attrs: any
   renderProps: EventDisplayInfo
@@ -227,7 +262,7 @@ function buildLayerClassName(
 // Parts
 // -------------------------------------------------------------------------------------------------
 
-interface EventPartProps {
+export interface EventPartProps {
   props: EventProps
   display: EventDisplay
 }

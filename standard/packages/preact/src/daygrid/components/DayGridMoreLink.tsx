@@ -6,7 +6,7 @@ import { DateProfile } from '../../DateProfileGenerator'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { getEventRangeMeta } from '../../component-util/event-rendering'
 import { SlicedCoordRange } from '../../coord-range'
-import { ListItemEvent, RowEvent } from '../../common/events'
+import { ForegroundEvent, listItemEventVariant, rowEventVariant } from '../../common/events'
 import { type RefObject } from 'react'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg'
@@ -58,7 +58,6 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
               let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
               let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
               let isInvisible = isDragging || isResizing
-              let EventComponent = hasListItemDisplay(seg, eventRange) ? ListItemEvent : RowEvent
 
               return (
                 <div
@@ -68,7 +67,8 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                     visibility: isInvisible ? 'hidden' : undefined,
                   }}
                 >
-                  <EventComponent
+                  <ForegroundEvent
+                    variant={hasListItemDisplay(seg, eventRange) ? listItemEventVariant : rowEventVariant}
                     eventRange={eventRange}
                     isStart={seg.isStart}
                     isEnd={seg.isEnd}

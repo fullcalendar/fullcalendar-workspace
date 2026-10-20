@@ -1,7 +1,7 @@
 import { BaseComponent } from '../../vdom-util'
 import { MinimalEventProps } from '../../component-util/event-rendering'
 import { createFormatter } from '../../datelib/formatting'
-import { ColumnEvent } from '../../common/events'
+import { ForegroundEvent, columnEventVariant } from '../../common/events'
 import classNames from '../../styles.module.css'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -23,7 +23,8 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     const { props } = this
 
     return (
-      <ColumnEvent
+      <ForegroundEvent
+        variant={columnEventVariant}
         {...props}
         level={props.level}
         isNarrow={props.isNarrow}
