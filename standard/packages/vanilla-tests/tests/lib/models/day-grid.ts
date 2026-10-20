@@ -1,6 +1,6 @@
 import { getRectCenter, pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
-import { assertGrabbable, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
+import { assertGrabbable, assertNotOnEvent, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
 import { ResizeEdge, resizeSegment } from './resize'
 
@@ -86,16 +86,43 @@ export class DayGridModel {
     return { point, eventEl }
   }
 
+  /*
+  A point in the cell that isn't on an event: the center if it's free, otherwise the first free spot
+  going up from the bottom. For presses that must land on the day itself (clicking, starting a
+  selection).
+  */
+  pointForEmptyDate(spot: Spot): Point {
+    const center = this.pointForDate(spot)
+    const rect = this.getDayCell(spot).getBoundingClientRect()
+    const candidates = [center.y]
+
+    for (let y = rect.bottom - 3; y > rect.top; y -= 4) {
+      candidates.push(y)
+    }
+
+    for (const y of candidates) {
+      const hitEl = document.elementFromPoint(center.x, y)
+      if (hitEl && this.getDayCell(spot).contains(hitEl) && !hitEl.closest('[data-fc-part~="event"]')) {
+        return { x: center.x, y }
+      }
+    }
+
+    throw new Error(`No empty spot in the cell for ${describeSpot(spot)}`)
+  }
+
   async clickDate(spot: Spot): Promise<void> {
-    await pointer.click(this.pointForDate(spot))
+    await pointer.click(this.pointForEmptyDate(spot))
     await waitForSettle()
   }
 
   /*
-  Selects the days from `first` to `last`, inclusive, by dragging.
+  Selects the days from `first` to `last`, inclusive, by dragging. The press must be on empty space,
+  so it's at an empty spot of the first day.
   */
   async selectDates(first: Spot, last: Spot): Promise<void> {
-    await pointer.press(this.pointForDate(first), async () => {
+    const start = this.pointForEmptyDate(first)
+    assertNotOnEvent(start, `the selection start ${describeSpot(first)}`)
+    await pointer.press(start, async () => {
       await pointer.move(this.pointForDate(last))
       await waitForSettle()
     })

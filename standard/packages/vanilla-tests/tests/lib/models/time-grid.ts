@@ -1,7 +1,7 @@
 import { pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
 import { DayGridModel } from './day-grid'
-import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from './events'
+import { assertGrabbable, assertNotOnEvent, getEventEls, getMirrorEls, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
 import { ResizeEdge, resizeSegment } from './resize'
 import { scrollIntoViewOnAxis } from './scroll'
@@ -82,11 +82,15 @@ export class TimeGridModel {
   }
 
   /*
-  Selects from `start` to the exclusive `end` by dragging.
+  Selects from `start` to the exclusive `end` by dragging. Selections can't start on an event, so
+  with `fromEnd`, the drag goes backwards from the end (for ranges that start on an event).
   */
-  async selectRange(start: Spot, end: Spot): Promise<void> {
-    await pointer.press(this.pointForDateTime(start), async () => {
-      await pointer.move(this.pointForDateTimeEnd(end))
+  async selectRange(start: Spot, end: Spot, { fromEnd = false } = {}): Promise<void> {
+    const pressPoint = fromEnd ? this.pointForDateTimeEnd(end) : this.pointForDateTime(start)
+    assertNotOnEvent(pressPoint, `the selection's ${fromEnd ? 'end' : 'start'}`)
+
+    await pointer.press(pressPoint, async () => {
+      await pointer.move(fromEnd ? this.pointForDateTime(start) : this.pointForDateTimeEnd(end))
       await waitForSettle()
     })
     await waitForSettle()

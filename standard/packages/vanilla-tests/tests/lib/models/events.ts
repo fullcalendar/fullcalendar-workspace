@@ -38,6 +38,18 @@ function isMirrorEl(el: HTMLElement): boolean {
 }
 
 /*
+Throws if the point is on an event. Selections can't start on an event (FullCalendar ignores those
+presses), so selection gestures must start on empty space.
+*/
+export function assertNotOnEvent(point: Point, what: string): void {
+  const hitEl = document.elementFromPoint(point.x, point.y)
+
+  if (hitEl && hitEl.closest('[data-fc-part~="event"]')) {
+    throw new Error(`Point for ${what} is on an event, where a selection can't start`)
+  }
+}
+
+/*
 Resize handles inside the event element. A press on one resizes instead of dragging.
 */
 export function getResizerEls(eventEl: HTMLElement): HTMLElement[] {
