@@ -1,5 +1,6 @@
 import { joinClassNames } from '../../util/html'
-import { ContentContainer, renderText, generateClassName } from '../../content-inject/ContentContainer'
+import { ContentContainer } from '../../content-inject/ContentContainer'
+import { renderText, generateClassName } from '../../common/render-hook'
 import { setRef } from '../../vdom-util'
 import { BaseComponent } from '../../vdom-util'
 import { watchSize } from '../../component-util/resize-observer'

@@ -1,5 +1,5 @@
 import { Component, type FC, type ReactNode, createElement } from 'react'
-import { ClassNameGenerator } from '../common/render-hook'
+import { ClassNameGenerator, generateClassName } from '../common/render-hook'
 import {
   ContentInjector,
   ContentGeneratorProps,
@@ -111,21 +111,4 @@ function InnerContentInjector<RenderProps>(
     renderId: containerComponent.context,
     ...props,
   })
-}
-
-// Utils
-
-export function generateClassName<RenderProps>(
-  classNameGenerator: ClassNameGenerator<RenderProps> | undefined,
-  renderProps: RenderProps,
-): string {
-  return (
-    typeof classNameGenerator === 'function' ?
-      classNameGenerator(renderProps) :
-      classNameGenerator
-  ) || '' // handles undefined
-}
-
-export function renderText(renderProps: { text: string }): ReactNode {
-  return renderProps.text
 }

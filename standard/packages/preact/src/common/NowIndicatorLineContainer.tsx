@@ -1,12 +1,13 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { ViewContextType } from '../ViewContext'
 import { ViewApi } from '../api/ViewApi'
 import { ElProps } from '../content-inject/ContentInjector'
-import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer'
+import { CustomContent } from '../content-inject/CustomContent'
+import { useViewContext } from '../hooks/useViewContext'
+import { useRenderHookEl } from '../hooks/useRenderHookEl'
+import { joinClassNames } from '../util/html'
 
 export interface NowIndicatorLineContainerProps extends Partial<ElProps> {
   date: DateMarker
-  children?: InnerContainerFunc<NowIndicatorLineInfo>
 }
 
 export interface NowIndicatorLineInfo {
@@ -14,30 +15,31 @@ export interface NowIndicatorLineInfo {
   view: ViewApi
 }
 
-export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps) => (
-  <ViewContextType.Consumer
-    children={(context) => {
-      let { options } = context
-      let renderProps: NowIndicatorLineInfo = {
-        date: context.dateEnv.toDate(props.date),
-        view: context.viewApi,
-      }
+export function NowIndicatorLineContainer(props: NowIndicatorLineContainerProps) {
+  const context = useViewContext()
+  const { options } = context
+  const renderProps: NowIndicatorLineInfo = {
+    date: context.dateEnv.toDate(props.date),
+    view: context.viewApi,
+  }
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.nowIndicatorLineClass,
+    didMount: options.nowIndicatorLineDidMount,
+    willUnmount: options.nowIndicatorLineWillUnmount,
+    renderProps,
+    elRef: props.elRef,
+  })
 
-      return (
-        <ContentContainer
-          elRef={props.elRef}
-          tag={props.tag || 'div'}
-          attrs={props.attrs}
-          className={props.className}
-          style={props.style}
-          renderProps={renderProps}
-          generatorName="nowIndicatorLineContent"
-          customGenerator={options.nowIndicatorLineContent}
-          classNameGenerator={options.nowIndicatorLineClass}
-          didMount={options.nowIndicatorLineDidMount}
-          willUnmount={options.nowIndicatorLineWillUnmount}
-        >{props.children}</ContentContainer>
-      )
-    }}
-  />
-)
+  return (
+    <CustomContent
+      tag={props.tag || 'div'}
+      attrs={props.attrs}
+      className={joinClassNames(props.className, renderHookEl.className)}
+      style={props.style}
+      elRef={renderHookEl.ref}
+      renderProps={renderProps}
+      generatorName="nowIndicatorLineContent"
+      generator={options.nowIndicatorLineContent}
+    />
+  )
+}

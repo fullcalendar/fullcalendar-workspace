@@ -45,3 +45,18 @@ function warnInvalidClassName(optionName: string): void {
     warnedClassNameOptions[optionName] = true
   }
 }
+
+export function generateClassName<RenderProps>(
+  classNameGenerator: ClassNameGenerator<RenderProps> | undefined,
+  renderProps: RenderProps,
+): string {
+  return (
+    typeof classNameGenerator === 'function' ?
+      classNameGenerator(renderProps) :
+      classNameGenerator
+  ) || '' // handles undefined
+}
+
+export function renderText(renderProps: { text: string }): ReactNode {
+  return renderProps.text
+}

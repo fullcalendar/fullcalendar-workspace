@@ -4,13 +4,12 @@ import {
   buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayInfo, EventTextInfo, EventRenderRange,
   getEventTagAndAttrs, setElEventRange,
 } from '../component-util/event-rendering'
-import { generateClassName } from '../content-inject/ContentContainer'
 import { CustomContent } from '../content-inject/CustomContent'
 import { ElRef } from '../content-inject/ContentInjector'
 import { useViewContext } from '../hooks/useViewContext'
 import { useMountHooks } from '../hooks/useMountHooks'
 import { EventImpl } from '../api/EventImpl'
-import { ContentGenerator } from './render-hook'
+import { ContentGenerator, generateClassName } from './render-hook'
 import { joinClassNames } from '../util/html'
 import { setRef } from '../vdom-util'
 import classNames from '../styles.module.css'

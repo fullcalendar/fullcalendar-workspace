@@ -182,6 +182,7 @@ export function watchWidth(
     el,
     callback,
     /* watchWidth = */ true,
+    /* watchHeight = */ false,
   )
 }
 

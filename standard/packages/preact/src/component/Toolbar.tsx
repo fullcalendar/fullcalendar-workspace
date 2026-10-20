@@ -1,9 +1,10 @@
-import { BaseComponent } from '../vdom-util'
+import { memo } from 'react'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection'
 import { joinClassNames } from '../util/html'
-import { generateClassName } from '../content-inject/ContentContainer'
+import { generateClassName } from '../common/render-hook'
 import { computeViewBorderless } from '../util/misc'
+import { useViewContext } from '../hooks/useViewContext'
 
 export interface ToolbarProps extends ToolbarContent {
   model: ToolbarModel
@@ -11,45 +12,40 @@ export interface ToolbarProps extends ToolbarContent {
   titleId?: string
 }
 
-export class Toolbar extends BaseComponent<ToolbarProps> {
-  render() {
-    let { props } = this
-    let options = this.context.options
-    let { sectionWidgets } = props.model
+export const Toolbar = memo(function Toolbar(props: ToolbarProps) {
+  let { options } = useViewContext()
+  let { sectionWidgets } = props.model
 
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-    const toolbarClassOption = props.isHeader ? options.headerToolbarClass : options.footerToolbarClass
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+  const toolbarClassOption = props.isHeader ? options.headerToolbarClass : options.footerToolbarClass
 
-    return (
-      <div
-        className={joinClassNames(
-          generateClassName(toolbarClassOption, { borderlessX, borderlessTop, borderlessBottom }),
-          generateClassName(options.toolbarClass, { borderlessX, borderlessTop, borderlessBottom }),
-        )}
-      >
-        {this.renderSection('start', sectionWidgets.start)}
-        {this.renderSection('center', sectionWidgets.center)}
-        {this.renderSection('end', sectionWidgets.end)}
-      </div>
-    )
-  }
+  return (
+    <div
+      className={joinClassNames(
+        generateClassName(toolbarClassOption, { borderlessX, borderlessTop, borderlessBottom }),
+        generateClassName(options.toolbarClass, { borderlessX, borderlessTop, borderlessBottom }),
+      )}
+    >
+      {renderSection('start', sectionWidgets.start, props)}
+      {renderSection('center', sectionWidgets.center, props)}
+      {renderSection('end', sectionWidgets.end, props)}
+    </div>
+  )
+})
 
-  renderSection(name: string, widgetGroups: ToolbarWidget[][]) {
-    let { props } = this
-
-    return (
-      <ToolbarSection
-        key={name}
-        name={name}
-        widgetGroups={widgetGroups}
-        title={props.title}
-        titleId={props.titleId}
-        navUnit={props.navUnit}
-        selectedButton={props.selectedButton}
-        isTodayEnabled={props.isTodayEnabled}
-        isPrevEnabled={props.isPrevEnabled}
-        isNextEnabled={props.isNextEnabled}
-      />
-    )
-  }
+function renderSection(name: string, widgetGroups: ToolbarWidget[][], props: ToolbarProps) {
+  return (
+    <ToolbarSection
+      key={name}
+      name={name}
+      widgetGroups={widgetGroups}
+      title={props.title}
+      titleId={props.titleId}
+      navUnit={props.navUnit}
+      selectedButton={props.selectedButton}
+      isTodayEnabled={props.isTodayEnabled}
+      isPrevEnabled={props.isPrevEnabled}
+      isNextEnabled={props.isNextEnabled}
+    />
+  )
 }

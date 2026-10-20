@@ -1,9 +1,11 @@
 import { AllDayHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
-import { type ReactNode, type Ref, createRef } from 'react'
-import { BaseComponent, setRef } from '../../vdom-util'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
-import { watchWidth } from '../../component-util/resize-observer'
+import { memo, type ReactNode, type Ref } from 'react'
+import { CustomContent } from '../../content-inject/CustomContent'
+import { generateClassName } from '../../common/render-hook'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
+import { useReportedSize } from '../../hooks/useReportedSize'
 import classNames from '../../styles.module.css'
 
 export interface TimeGridAllDayHeaderProps {
@@ -15,83 +17,57 @@ export interface TimeGridAllDayHeaderProps {
   innerWidthRef?: Ref<number>
 }
 
-export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProps> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
+export const TimeGridAllDayHeader = memo(function TimeGridAllDayHeader(props: TimeGridAllDayHeaderProps) {
+  let { options, viewApi } = useViewContext()
+  let renderProps: AllDayHeaderInfo = {
+    text: options.allDayText,
+    view: viewApi,
+    isNarrow: props.isNarrow,
+  }
+  let renderHookEl = useRenderHookEl({
+    classGenerator: options.allDayHeaderClass,
+    didMount: options.allDayHeaderDidMount,
+    willUnmount: options.allDayHeaderWillUnmount,
+    renderProps,
+  })
+  // TODO: only attach this if refs props present
+  let innerElRef = useReportedSize({ watchWidth: true, widthRef: props.innerWidthRef })
 
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerWidth?: () => void
-
-  render() {
-    let { props } = this
-    let { options, viewApi } = this.context
-    let renderProps: AllDayHeaderInfo = {
-      text: options.allDayText,
-      view: viewApi,
-      isNarrow: props.isNarrow,
-    }
-
-    return (
-      <ContentContainer
-        tag="div"
-        attrs={{
-          role: 'rowheader',
-        }}
+  return (
+    <div
+      ref={renderHookEl.ref}
+      role='rowheader'
+      className={joinClassNames(
+        renderHookEl.className,
+        classNames.flexRow,
+        classNames.noMargin,
+        classNames.noPadding,
+        classNames.contentBox,
+      )}
+      style={{
+        width: props.width,
+      }}
+    >
+      <div
         className={joinClassNames(
           classNames.flexRow,
-          classNames.noMargin,
-          classNames.noPadding,
-          classNames.contentBox,
+          classNames.noShrink,
+          classNames.whiteSpacePre, // respects line-breaks for localized text
         )}
-        style={{
-          width: props.width,
-        }}
-        renderProps={renderProps}
-        generatorName="allDayHeaderContent"
-        customGenerator={options.allDayHeaderContent}
-        defaultGenerator={renderAllDayInner}
-        classNameGenerator={options.allDayHeaderClass}
-        didMount={options.allDayHeaderDidMount}
-        willUnmount={options.allDayHeaderWillUnmount}
+        ref={innerElRef}
       >
-        {(InnerContent) => (
-          <div
-            className={joinClassNames(
-              classNames.flexRow,
-              classNames.noShrink,
-              classNames.whiteSpacePre, // respects line-breaks for localized text
-            )}
-            ref={this.innerElRef}
-          >
-            <InnerContent
-              tag='div'
-              className={generateClassName(options.allDayHeaderInnerClass, renderProps)}
-            />
-          </div>
-        )}
-      </ContentContainer>
-    )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const { props } = this
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
-
-    // TODO: only attach this if refs props present
-    this.disconnectInnerWidth = watchWidth(innerEl, (width) => {
-      if (this._isUnmounting) return
-      setRef(props.innerWidthRef, width)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectInnerWidth()
-    setRef(this.props.innerWidthRef, null)
-  }
-}
+        <CustomContent
+          tag='div'
+          className={generateClassName(options.allDayHeaderInnerClass, renderProps)}
+          renderProps={renderProps}
+          generatorName="allDayHeaderContent"
+          generator={options.allDayHeaderContent}
+          fallback={renderAllDayInner}
+        />
+      </div>
+    </div>
+  )
+})
 
 function renderAllDayInner(renderProps: AllDayHeaderInfo): ReactNode {
   return renderProps.text

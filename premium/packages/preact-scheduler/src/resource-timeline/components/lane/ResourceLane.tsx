@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, memoize, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, memoize, memoizeObjArg, CustomContent, generateClassName, useRenderHookEl, useViewContext, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type Ref } from 'react'
+import { type ReactNode, type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
 import { TimelineDateProfile } from '../../../timeline/timeline-date-profile'
 import { TimelineFg } from '../../../timeline/components/TimelineFg'
@@ -100,8 +100,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           insetInlineStart: props.insetInlineStart ?? props.clipStart,
         }}
       >
-        <ContentContainer
-          tag="div"
+        <ResourceLaneCell
           attrs={{
             ...buildAriaCellAttrs(props),
             role: getAriaCellRole(props),
@@ -122,85 +121,77 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             height: props.height,
           }}
           renderProps={renderProps}
-          generatorName={undefined}
-          classNameGenerator={options.resourceLaneClass}
-          didMount={options.resourceLaneDidMount}
-          willUnmount={options.resourceLaneWillUnmount}
         >
-          {() => (
-            <>
-              <TimelineBg
-                tDateProfile={props.tDateProfile}
-                nowDate={props.nowDate}
-                nowMs={props.nowMs}
-                todayRange={props.todayRange}
+          <TimelineBg
+            tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            todayRange={props.todayRange}
 
-                // content
-                bgEventSegs={slicedProps.bgEventSegs}
-                businessHourSegs={slicedProps.businessHourSegs}
-                dateSelectionSegs={slicedProps.dateSelectionSegs}
-                eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
-                renderProps={eventRenderProps}
+            // content
+            bgEventSegs={slicedProps.bgEventSegs}
+            businessHourSegs={slicedProps.businessHourSegs}
+            dateSelectionSegs={slicedProps.dateSelectionSegs}
+            eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
+            renderProps={eventRenderProps}
 
-                // dimensions
-                slotWidth={props.slotWidth}
+            // dimensions
+            slotWidth={props.slotWidth}
 
-                // virtualization
-                clipStart={props.clipStart}
-                clipEnd={props.clipEnd}
-              />
-              <ContentContainer
-                tag='div'
-                elRef={this.handleTopEl}
-                className={joinClassNames(
-                  classNames.noMargin,
-                  classNames.noShrink,
-                )}
-                renderProps={renderProps}
-                generatorName='resourceLaneTopContent'
-                customGenerator={options.resourceLaneTopContent}
-                classNameGenerator={options.resourceLaneTopClass}
-              />
-              <TimelineFg
-                dateProfile={props.dateProfile}
-                tDateProfile={props.tDateProfile}
-                nowDate={props.nowDate}
-                nowMs={props.nowMs}
-                todayRange={props.todayRange}
+            // virtualization
+            clipStart={props.clipStart}
+            clipEnd={props.clipEnd}
+          />
+          <CustomContent
+            tag='div'
+            elRef={this.handleTopEl}
+            className={joinClassNames(
+              classNames.noMargin,
+              classNames.noShrink,
+              generateClassName(options.resourceLaneTopClass, renderProps),
+            )}
+            renderProps={renderProps}
+            generatorName='resourceLaneTopContent'
+            generator={options.resourceLaneTopContent}
+          />
+          <TimelineFg
+            dateProfile={props.dateProfile}
+            tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            todayRange={props.todayRange}
 
-                // content
-                fgEventSegs={slicedProps.fgEventSegs}
-                eventDrag={slicedProps.eventDrag}
-                eventResize={slicedProps.eventResize}
-                eventSelection={slicedProps.eventSelection}
-                dateSpanProps={this.buildDateSpanProps(resource.id)}
-                renderProps={eventRenderProps}
+            // content
+            fgEventSegs={slicedProps.fgEventSegs}
+            eventDrag={slicedProps.eventDrag}
+            eventResize={slicedProps.eventResize}
+            eventSelection={slicedProps.eventSelection}
+            dateSpanProps={this.buildDateSpanProps(resource.id)}
+            renderProps={eventRenderProps}
 
-                // dimensions
-                slotWidth={props.slotWidth}
+            // dimensions
+            slotWidth={props.slotWidth}
 
-                // virtualization
-                clipStart={props.clipStart}
-                clipEnd={props.clipEnd}
+            // virtualization
+            clipStart={props.clipStart}
+            clipEnd={props.clipEnd}
 
-                // ref
-                heightRef={this.handleEventsHeight}
-              />
-              <ContentContainer
-                tag='div'
-                elRef={this.handleBottomEl}
-                className={joinClassNames(
-                  classNames.noMargin,
-                  classNames.noShrink,
-                )}
-                renderProps={renderProps}
-                generatorName='resourceLaneBottomContent'
-                customGenerator={options.resourceLaneBottomContent}
-                classNameGenerator={options.resourceLaneBottomClass}
-              />
-            </>
-          )}
-        </ContentContainer>
+            // ref
+            heightRef={this.handleEventsHeight}
+          />
+          <CustomContent
+            tag='div'
+            elRef={this.handleBottomEl}
+            className={joinClassNames(
+              classNames.noMargin,
+              classNames.noShrink,
+              generateClassName(options.resourceLaneBottomClass, renderProps),
+            )}
+            renderProps={renderProps}
+            generatorName='resourceLaneBottomContent'
+            generator={options.resourceLaneBottomContent}
+          />
+        </ResourceLaneCell>
       </div>
     )
   }
@@ -255,6 +246,34 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   componentWillUnmount(): void {
     this._isUnmounting = true
   }
+}
+
+interface ResourceLaneCellProps {
+  attrs: Record<string, any>
+  className: string
+  style: { height: number | undefined }
+  renderProps: ResourceLaneInfo
+  children: ReactNode
+}
+
+// the lane's cell element, with its resourceLane* render hooks
+function ResourceLaneCell({ attrs, className, style, renderProps, children }: ResourceLaneCellProps) {
+  const { options } = useViewContext()
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.resourceLaneClass,
+    didMount: options.resourceLaneDidMount,
+    willUnmount: options.resourceLaneWillUnmount,
+    renderProps,
+  })
+
+  return (
+    <div
+      {...attrs}
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, className)}
+      style={style}
+    >{children}</div>
+  )
 }
 
 /*

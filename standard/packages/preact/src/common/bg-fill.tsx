@@ -1,12 +1,11 @@
-import { BaseComponent } from '../vdom-util'
+import { memo, useLayoutEffect, useMemo, useRef } from 'react'
 import { EventDisplayInfo, EventTextInfo, EventRenderRange, setElEventRange } from '../component-util/event-rendering'
-import { memoize } from '../util/memoize'
-import { EventDef } from '../structs/event-def'
-import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
-import { ViewContext } from '../ViewContext'
 import { joinClassNames } from '../util/html'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { CustomContent } from '../content-inject/CustomContent'
+import { useViewContext } from '../hooks/useViewContext'
+import { useRenderHookEl } from '../hooks/useRenderHookEl'
+import { generateClassName } from './render-hook'
 import { Dictionary, ViewOptionsRefined } from '../options'
 import classNames from '../styles.module.css'
 
@@ -23,109 +22,100 @@ export interface BgEventProps {
   renderProps?: Dictionary // so can include a resource
 }
 
-export class BgEvent extends BaseComponent<BgEventProps> {
-  // memo
-  private buildPublicEvent = memoize(
-    (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
+export const BgEvent = memo(function BgEvent(props: BgEventProps) {
+  const context = useViewContext()
+  const { eventRange } = props
+  const { options } = context
+  const eventUi = eventRange.ui
+  const elRef = useRef<HTMLElement | null>(null)
+
+  const eventApi = useMemo(
+    () => new EventImpl(context, eventRange.def, eventRange.instance),
+    [context, eventRange.def, eventRange.instance],
+  )
+  const eventOverlap = Boolean(options.eventOverlap)
+  const renderPropsOptions = useMemo(() => ({ eventOverlap }), [eventOverlap])
+  const subcontentRenderProps: EventTextInfo = {
+    ...props.renderProps, // first, so built-in props take precedence
+    event: eventApi,
+    timeText: '', // never display time
+    isNarrow: props.isNarrow || false,
+    isShort: props.isShort || false,
+  }
+  const renderProps: EventDisplayInfo = {
+    ...props.renderProps, // first, so built-in props take precedence
+    event: eventApi,
+    view: context.viewApi,
+    timeText: '', // never display time
+    color: eventUi.color || options.backgroundEventColor,
+    contrastColor: eventUi.contrastColor,
+    isDraggable: false,
+    isStartResizable: false,
+    isEndResizable: false,
+    isMirror: false,
+    isStart: props.isStart,
+    isEnd: props.isEnd,
+    isFirst: false,
+    isLast: false,
+    isPast: props.isPast,
+    isFuture: props.isFuture,
+    isToday: props.isToday,
+    isSelected: false,
+    isDragging: false,
+    isResizing: false,
+    isInteractive: false,
+    level: 0,
+    isNarrow: props.isNarrow || false,
+    isShort: props.isShort || false,
+    timeClass: '', // never display time
+    titleClass: generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
+    options: renderPropsOptions,
+  }
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.backgroundEventClass,
+    didMount: options.backgroundEventDidMount,
+    willUnmount: options.backgroundEventWillUnmount,
+    renderProps,
+    elRef,
+  })
+
+  useLayoutEffect(() => {
+    setElEventRange(elRef.current, eventRange)
+  }, [eventRange])
+
+  // does not include backgroundEventClass.. added below
+  const outerClassName = joinClassNames(
+    eventUi.className,
+    classNames.fill,
+    classNames.internalEvent,
+    classNames.internalBgEvent,
+    props.isVertical ? classNames.flexCol : classNames.flexRow,
+  )
+  const innerClassName = joinClassNames(
+    generateClassName(options.backgroundEventInnerClass, renderProps),
+    classNames.liquid,
   )
 
-  // ref
-  private el: HTMLElement
-
-  render() {
-    const { props, context } = this
-    const { eventRange } = props
-    const { options } = context
-    const eventUi = eventRange.ui
-
-    const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
-    const subcontentRenderProps: EventTextInfo = {
-      ...props.renderProps, // first, so built-in props take precedence
-      event: eventApi,
-      timeText: '', // never display time
-      isNarrow: props.isNarrow || false,
-      isShort: props.isShort || false,
-    }
-    const renderProps: EventDisplayInfo = {
-      ...props.renderProps, // first, so built-in props take precedence
-      event: eventApi,
-      view: context.viewApi,
-      timeText: '', // never display time
-      color: eventUi.color || options.backgroundEventColor,
-      contrastColor: eventUi.contrastColor,
-      isDraggable: false,
-      isStartResizable: false,
-      isEndResizable: false,
-      isMirror: false,
-      isStart: props.isStart,
-      isEnd: props.isEnd,
-      isFirst: false,
-      isLast: false,
-      isPast: props.isPast,
-      isFuture: props.isFuture,
-      isToday: props.isToday,
-      isSelected: false,
-      isDragging: false,
-      isResizing: false,
-      isInteractive: false,
-      level: 0,
-      isNarrow: props.isNarrow || false,
-      isShort: props.isShort || false,
-      timeClass: '', // never display time
-      titleClass: generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
-      options: { eventOverlap: Boolean(options.eventOverlap) },
-    }
-    // does not include backgroundEventClass.. added below
-    const outerClassName = joinClassNames(
-      eventUi.className,
-      classNames.fill,
-      classNames.internalEvent,
-      classNames.internalBgEvent,
-      props.isVertical ? classNames.flexCol : classNames.flexRow,
-    )
-    const innerClassName = joinClassNames(
-      generateClassName(options.backgroundEventInnerClass, renderProps),
-      classNames.liquid,
-    )
-
-    return (
-      <ContentContainer
+  return (
+    <div
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, outerClassName)}
+      style={{
+        '--fc-event-color': renderProps.color,
+        '--fc-event-contrast-color': renderProps.contrastColor,
+      } as any}
+    >
+      <CustomContent
         tag='div'
-        className={outerClassName}
-        style={{
-          '--fc-event-color': renderProps.color,
-          '--fc-event-contrast-color': renderProps.contrastColor,
-        }}
-        defaultGenerator={renderInnerContent}
-        elRef={this.handleEl}
+        className={innerClassName}
         renderProps={renderProps}
         generatorName="backgroundEventContent"
-        customGenerator={options.backgroundEventContent}
-        classNameGenerator={options.backgroundEventClass}
-        didMount={options.backgroundEventDidMount}
-        willUnmount={options.backgroundEventWillUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent tag='div' className={innerClassName} />
-        )}
-      </ContentContainer>
-    )
-  }
-
-  handleEl = (el: HTMLElement | null) => {
-    this.el = el
-
-    if (el) {
-      setElEventRange(el, this.props.eventRange)
-    }
-  }
-
-  componentDidUpdate(prevProps: BgEventProps): void {
-    if (this.el && this.props.eventRange !== prevProps.eventRange) {
-      setElEventRange(this.el, this.props.eventRange)
-    }
-  }
-}
+        generator={options.backgroundEventContent}
+        fallback={renderInnerContent}
+      />
+    </div>
+  )
+})
 
 function renderInnerContent(props: EventDisplayInfo) {
   let { title } = props.event

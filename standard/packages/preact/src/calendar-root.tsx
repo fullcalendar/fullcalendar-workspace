@@ -4,7 +4,7 @@ import { CalendarListeners, CalendarOptions } from './options'
 import { Component, type ReactElement } from 'react'
 import { joinClassNames } from './util/html'
 import { flushSyncWithSizeBatching } from './component-util/resize-observer'
-import { generateClassName } from './content-inject/ContentContainer'
+import { generateClassName } from './common/render-hook'
 
 export interface CalendarDisplayInfo {
   borderlessX: boolean

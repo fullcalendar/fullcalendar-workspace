@@ -1,6 +1,6 @@
 # Phase 5: render-hook rollout and leaf conversions
 
-Status: planned.
+Status: in progress. 5a–5c done; 5d and 5e to do.
 
 ## Goal
 
@@ -63,6 +63,76 @@ never go up), the React suite, then a commit. Sol reviews after 5b, 5c and 5e.
 - `ContentContainer` and `ContentInjector`, along with their `protected-api` exports, which may
   break.
 - Record any leftover `didMountMisfire`-style workaround removals.
+
+## Progress
+
+### 5a–5c (done)
+
+- **Primitives** in `standard/packages/preact/src/hooks/`, all exported from `protected-api`:
+  - `useRenderHookEl`: `generateClassName` plus `useMountHooks`, returning `{ className, ref }`. The
+    ref is stable and can also forward to an `elRef`.
+  - `useReportedSize({ watchWidth, watchHeight, widthRef, heightRef, onSize })`: one watcher per
+    element for both dimensions, as `watchSize` requires, so it replaces `useElementSize` too.
+    - `onSize` is for components that also keep the size locally (`TimelineHeaderCell`).
+    - It reports directly from the watcher callback, as the class code did. State updates go through
+      `afterSize`.
+  - `useStableCallback`, for handlers passed to memoized children (the resource expanders).
+  - `memoWithEquality` (in `vdom-util`), for `ResourceGroupHeaderCell`'s `group` comparator.
+  - `generateClassName` and `renderText` moved to `common/render-hook.tsx`.
+- **Converted to function components** (with `memo` where they were `BaseComponent`s, which compare
+  props shallowly):
+  - 5b: `ButtonIcon`, `ToolbarSection` (plus a new `ToolbarButton`), `Toolbar`, `ViewContainer`,
+    the two now-indicator containers, `TimeGridSlatLane`, `ListDayHeaderInner`, `ListDayHeader`,
+    `ListDay`, `BgEvent`, `TimelineSlatCell`, `ResourceExpander`, and `createViewHookComponent`.
+  - 5c: the seven stale watchers (`Ruler`, `MeasuredHeightHarness`, `FooterScrollbar`,
+    `TimeGridAllDayHeader`, `TimeGridSlatHeader`, `TimeGridWeekNumber`, `TimelineHeaderCell`), and
+    the spreadsheet cells (`HeaderCell`, `SuperHeaderCell`, `ResourceCell`, `ResourceGroupCell`,
+    `ResourceGroupHeaderCell`) and `GroupLane`.
+- **Areas moved out of big classes:**
+  - `TimeGridColLane` (from `TimeGridCol`). It's only for enabled days, as before, so a day turning
+    disabled still remounts and its mount hooks still fire.
+  - `TimeGridSlatHeaderLabel`, for labeled slats only, for the same reason.
+  - `ResourceLaneCell` (from `ResourceLane`). The lane's top and bottom slots render
+    `<CustomContent>` directly from the class.
+- **The `forPrint` td/div switch** in the spreadsheet cells needed no shell. It only changes the
+  tag, and the hooks follow the new element. `useReportedSize` re-registers on it, whereas the class
+  code kept watching the detached element.
+- **Fixes:**
+  - `<CustomContent>` now merges `attrs.className` with `className`, as `ContentInjector` did. It
+    used to drop it, which lost the list view's nav-link class.
+    - Found by `navLinks in listWeek moves to day view`. The DOM fixtures have no nav links in
+      list view.
+  - `<CustomContent>`'s `attrs` comparator handles `attrs` being absent on one side.
+    - The week number's `attrs` goes from nav-link attributes to `undefined` when day view
+      switches to week view (`navLinks in day view moves to week view`). `ContentInjector` used the
+      same comparator, so the old code presumably remounted that slot there, but I didn't confirm
+      it. If it did, the new code fires the week number's mount hooks less often, which the
+      call-count rule allows.
+  - `watchWidth` no longer fires on height-only changes (spec §4).
+  - `TimeGridLayoutNormal` no longer counts the week number's height toward the axis width (spec
+    §9). Spec: `timeGrid axis width is not widened by a tall week-number label`, which fails on the
+    old code (304px).
+  - Unstable render-prop objects memoized, which can only lower `*Content` call counts:
+    - `options` in the custom view `content` hook's render props;
+    - `options` in `BgEvent`'s render props.
+- **Departures from the spec, both found by specs:**
+  - **Hidden-element rule dropped** (spec §4.1). Ignoring reports from elements with no client rects
+    made `eventMaxStack` in the resource timeline fail. A hidden `<Activity>` runs the cleanup,
+    which disconnects, before any hidden report could arrive, so the rule wasn't needed for it.
+    - Instrumenting showed the ignored reports were all 0×0, from elements no longer in the document
+      (`isConnected` false): the time-header labels and some resource cells. Why the timeline needs
+      them isn't understood yet; it's an open question for review.
+  - **A memo comparator that ignores some of a prop's fields gives stale props.** Unlike a class,
+    a `memo` that skips a render keeps the old props, and a later context-driven render uses them.
+    A class's props update even when `shouldComponentUpdate` returns false.
+    - `ResourceGroupHeaderCell` compared `group` by id only, so a changed
+      `resourceGroupHeaderContent` (on `group.spec`) never reached it. Found by `render hooks:
+      resourceGroupHeader … replacing them when they change`. Its comparator now also checks `spec`
+      identity.
+    - This can't cause more renders than the class did, because a class re-rendered on every context
+      change anyway.
+- **No spec for the stale-watcher fixes.** Every caller passes a stable ref (a `RefMap` entry or
+  a class-field handler), so the stale capture isn't reachable through the public API.
 
 ## Watch for
 

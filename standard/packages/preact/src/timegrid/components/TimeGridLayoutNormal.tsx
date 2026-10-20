@@ -6,7 +6,7 @@ import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../common/render-hook'
 import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/util'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
@@ -86,9 +86,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   private _isUnmounting: boolean
 
   // refs
-  private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
-    afterSize(this.handleAxisInnerWidths)
-  })
   private allDayLabelInnerWidth?: number
   private handleAllDayLabelInnerWidth = (width: number) => {
     this.allDayLabelInnerWidth = width
@@ -109,7 +106,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   private prevSlatHeight?: number
 
   render() {
-    const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, headerLabelInnerWidthRefMap } = this
+    const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap } = this
     const { nowDate, forPrint } = props
     const nowIndicatorDayDate = (!forPrint && context.options.nowIndicator)
       ? computeNowIndicatorDayDate(nowDate, props.nowIndicatorSegsByCol, props.cells)
@@ -198,7 +195,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     <TimeGridWeekNumber
                       dateProfile={props.dateProfile}
                       innerWidthRef={this.handleWeekNumberInnerWidth}
-                      innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
                       width={axisWidth}
                       isLiquid={false}
                       isNarrow={cellIsNarrow}
@@ -527,16 +523,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
   private handleAxisInnerWidths = () => {
     if (this._isUnmounting) return
-    const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
     let max = Math.max(
       this.weekNumberInnerWidth || 0, // might not exist
       this.allDayLabelInnerWidth || 0 // guard against all-day slot hidden
     )
-
-    for (const headerLabelInnerWidth of headerLabelInnerWidthMap.values()) {
-      max = Math.max(max, headerLabelInnerWidth)
-    }
 
     for (const slatLabelInnerWidth of slatLabelInnerWidthMap.values()) {
       max = Math.max(max, slatLabelInnerWidth)

@@ -1,15 +1,16 @@
 import { Duration, DateFormatter, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { SlotHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
-import { BaseComponent, setRef } from '../../vdom-util'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
+import { CustomContent } from '../../content-inject/CustomContent'
+import { generateClassName } from '../../common/render-hook'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
+import { useReportedSize } from '../../hooks/useReportedSize'
 import { createFormatter } from '../../datelib/formatting'
 import { getDateMeta } from '../../component-util/date-rendering'
-import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
-import { watchSize } from '../../component-util/resize-observer'
 import classNames from '../../styles.module.css'
-import { createRef, type Ref } from 'react'
+import { memo, useMemo, type Ref } from 'react'
 import { TimeSlatMeta } from '../time-slat-meta'
 
 const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
@@ -34,124 +35,113 @@ export interface TimeGridSlatHeaderProps extends TimeSlatMeta {
 /*
 Always oriented in a column
 */
-export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
-  // memo
-  private createRenderProps = memoize(createRenderProps)
+export const TimeGridSlatHeader = memo(function TimeGridSlatHeader(props: TimeGridSlatHeaderProps) {
+  let context = useViewContext()
+  let { options } = context
 
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
+  let headerFormat = // TODO: fully pre-parse
+    options.slotHeaderFormat == null ? DEFAULT_SLAT_LABEL_FORMAT :
+      Array.isArray(options.slotHeaderFormat) ? createFormatter(options.slotHeaderFormat[0]) :
+        createFormatter(options.slotHeaderFormat)
 
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerSize?: () => void
+  let isMinor = !props.isLabeled
+  let renderProps = useMemo(
+    () => createRenderProps(props.date, props.time, isMinor, props.isNarrow, props.isFirst, headerFormat, context),
+    [props.date, props.time, isMinor, props.isNarrow, props.isFirst, headerFormat, context],
+  )
 
-  render() {
-    let { props, context } = this
-    let { options } = context
+  let className = joinClassNames(
+    props.liquidHeight && classNames.liquid,
+    classNames.flexRow,
+    classNames.alignStart,
+    classNames.noMargin,
+    classNames.noPadding,
+    classNames.borderlessX,
+    classNames.borderlessBottom,
+    !props.borderTop && classNames.borderlessTop,
+  )
 
-    let headerFormat = // TODO: fully pre-parse
-      options.slotHeaderFormat == null ? DEFAULT_SLAT_LABEL_FORMAT :
-        Array.isArray(options.slotHeaderFormat) ? createFormatter(options.slotHeaderFormat[0]) :
-          createFormatter(options.slotHeaderFormat)
-
-    let renderProps = this.createRenderProps(
-      props.date,
-      props.time,
-      !props.isLabeled,
-      props.isNarrow,
-      props.isFirst,
-      headerFormat,
-      context,
-    )
-
-    let className = joinClassNames(
-      props.liquidHeight && classNames.liquid,
-      classNames.flexRow,
-      classNames.alignStart,
-      classNames.noMargin,
-      classNames.noPadding,
-      classNames.borderlessX,
-      classNames.borderlessBottom,
-      !props.borderTop && classNames.borderlessTop,
-    )
-
-    if (!props.isLabeled) {
-      return (
-        <div
-          className={joinClassNames(
-            generateClassName(options.slotHeaderClass, renderProps),
-            className,
-          )}
-          style={{
-            height: props.height,
-          }}
-        />
-      )
-    }
-
+  if (!props.isLabeled) {
     return (
-      <ContentContainer
-        tag="div"
-        attrs={{
-          'data-time': props.isoTimeStr,
-        }}
+      <div
+        className={joinClassNames(
+          generateClassName(options.slotHeaderClass, renderProps),
+          className,
+        )}
         style={{
           height: props.height,
         }}
-        className={className}
-        renderProps={renderProps}
-        generatorName="slotHeaderContent"
-        customGenerator={options.slotHeaderContent}
-        defaultGenerator={renderInnerContent}
-        classNameGenerator={options.slotHeaderClass}
-        didMount={options.slotHeaderDidMount}
-        willUnmount={options.slotHeaderWillUnmount}
-      >
-        {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              classNames.noShrink,
-              classNames.whiteSpaceNoWrap,
-              classNames.flexRow,
-            )}
-          >
-            <InnerContent
-              tag="div"
-              className={generateClassName(options.slotHeaderInnerClass, renderProps)}
-            />
-          </div>
-        )}
-      </ContentContainer>
+      />
     )
   }
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const { props } = this
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+  return (
+    <TimeGridSlatHeaderLabel
+      isoTimeStr={props.isoTimeStr}
+      height={props.height}
+      className={className}
+      renderProps={renderProps}
+      innerWidthRef={props.innerWidthRef}
+      innerHeightRef={props.innerHeightRef}
+    />
+  )
+})
 
-    if (innerEl) { // could be null if !isLabeled
-      // TODO: only attach this if refs props present
-      // TODO: fire width/height independently?
-      this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
-        if (this._isUnmounting) return
-        setRef(props.innerWidthRef, width)
-        setRef(props.innerHeightRef, height)
-      })
-    }
-  }
+interface TimeGridSlatHeaderLabelProps {
+  isoTimeStr: string
+  height: number | undefined
+  className: string
+  renderProps: SlotHeaderInfo
+  innerWidthRef: Ref<number> | undefined
+  innerHeightRef: Ref<number> | undefined
+}
 
-  componentWillUnmount(): void {
-    const { props } = this
+// a labeled slat header. only these have slotHeader* mount hooks and measure their label
+function TimeGridSlatHeaderLabel(props: TimeGridSlatHeaderLabelProps) {
+  let { options } = useViewContext()
+  let { renderProps } = props
+  let renderHookEl = useRenderHookEl({
+    classGenerator: options.slotHeaderClass,
+    didMount: options.slotHeaderDidMount,
+    willUnmount: options.slotHeaderWillUnmount,
+    renderProps,
+  })
+  // TODO: only attach this if refs props present
+  let innerElRef = useReportedSize({
+    watchWidth: true,
+    watchHeight: true,
+    widthRef: props.innerWidthRef,
+    heightRef: props.innerHeightRef,
+  })
 
-    this._isUnmounting = true
-    if (this.disconnectInnerSize) {
-      this.disconnectInnerSize()
-      setRef(props.innerWidthRef, null)
-      setRef(props.innerHeightRef, null)
-    }
-  }
+  return (
+    <div
+      ref={renderHookEl.ref}
+      data-time={props.isoTimeStr}
+      style={{
+        height: props.height,
+      }}
+      className={joinClassNames(renderHookEl.className, props.className)}
+    >
+      <div
+        ref={innerElRef}
+        className={joinClassNames(
+          classNames.noShrink,
+          classNames.whiteSpaceNoWrap,
+          classNames.flexRow,
+        )}
+      >
+        <CustomContent
+          tag="div"
+          className={generateClassName(options.slotHeaderInnerClass, renderProps)}
+          renderProps={renderProps}
+          generatorName="slotHeaderContent"
+          generator={options.slotHeaderContent}
+          fallback={renderInnerContent}
+        />
+      </div>
+    </div>
+  )
 }
 
 function createRenderProps(

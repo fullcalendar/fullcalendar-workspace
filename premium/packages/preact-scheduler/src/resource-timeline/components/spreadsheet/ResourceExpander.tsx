@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/protected-api'
+import { CustomContent, generateClassName, useViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import type { Ref } from 'react'
+import { memo, type Ref } from 'react'
 import { ResourceExpanderInfo } from '../../structs'
 
 export interface ResourceExpanderProps {
@@ -11,42 +11,42 @@ export interface ResourceExpanderProps {
   className?: string
 }
 
-export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
-  render() {
-    const { props } = this
-    const { options } = this.context
-    const classNameGenerator = options.resourceExpanderClass
-    const contentGenerator = options.resourceExpanderContent
+const CONTENT_STYLE = { display: 'contents' }
+const CONTENT_ATTRS = { 'aria-hidden': true }
 
-    const renderProps: ResourceExpanderInfo = {
-      isExpanded: props.isExpanded,
-    }
+export const ResourceExpander = memo(function ResourceExpander(props: ResourceExpanderProps) {
+  const { options } = useViewContext()
+  const classNameGenerator = options.resourceExpanderClass
+  const contentGenerator = options.resourceExpanderContent
 
-    return (
-      <span
-        aria-hidden // TODO: better a11y when doing roving tabindex
-        className={joinClassNames(
-          generateClassName(classNameGenerator, renderProps),
-          classNames.flexRow,
-          classNames.cursorPointer,
-          classNames.selectNone, // prevent text-selecting cell underneath
-          classNames.noMargin,
-          props.className,
-        )}
-        onClick={props.onExpanderClick}
-        ref={props.elRef}
-      >
-        {contentGenerator && (
-          <ContentContainer<ResourceExpanderInfo>
-            tag='span'
-            style={{ display: 'contents' }}
-            attrs={{ 'aria-hidden': true }}
-            renderProps={renderProps}
-            generatorName={undefined}
-            customGenerator={contentGenerator}
-          />
-        )}
-      </span>
-    )
+  const renderProps: ResourceExpanderInfo = {
+    isExpanded: props.isExpanded,
   }
-}
+
+  return (
+    <span
+      aria-hidden // TODO: better a11y when doing roving tabindex
+      className={joinClassNames(
+        generateClassName(classNameGenerator, renderProps),
+        classNames.flexRow,
+        classNames.cursorPointer,
+        classNames.selectNone, // prevent text-selecting cell underneath
+        classNames.noMargin,
+        props.className,
+      )}
+      onClick={props.onExpanderClick}
+      ref={props.elRef}
+    >
+      {contentGenerator && (
+        <CustomContent<ResourceExpanderInfo>
+          tag='span'
+          style={CONTENT_STYLE}
+          attrs={CONTENT_ATTRS}
+          renderProps={renderProps}
+          generatorName={undefined}
+          generator={contentGenerator}
+        />
+      )}
+    </span>
+  )
+})

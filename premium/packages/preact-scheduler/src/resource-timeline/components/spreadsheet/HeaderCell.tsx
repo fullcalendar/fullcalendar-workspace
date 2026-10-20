@@ -1,6 +1,8 @@
-import { createRef, type Ref } from 'react'
+import { createElement, memo, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import {
+  CustomContent, generateClassName, useRenderHookEl, useReportedSize, useViewContext,
+} from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
@@ -22,108 +24,82 @@ export interface HeaderCellProps extends AriaCellInput {
   forPrint?: boolean
 }
 
-export class HeaderCell extends BaseComponent<HeaderCellProps> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
+export const HeaderCell = memo(function HeaderCell(props: HeaderCellProps) {
+  let context = useViewContext()
+  let { colSpec, forPrint } = props
+  let renderProps: ResourceColumnHeaderInfo = { view: context.viewApi }
+  let renderHookEl = useRenderHookEl({
+    classGenerator: colSpec.headerClass,
+    didMount: colSpec.headerDidMount,
+    willUnmount: colSpec.headerWillUnmount,
+    renderProps,
+  })
+  let innerElRef = useReportedSize({ watchHeight: true, heightRef: props.innerHeightRef })
 
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerHeight?: () => void
-
-  render() {
-    let { props, context } = this
-    let { colSpec, forPrint } = props
-    let renderProps: ResourceColumnHeaderInfo = { view: context.viewApi }
-
-    // need empty inner div for abs positioning for resizer
-    return (
-      <ContentContainer
-        tag={forPrint ? 'th' : 'div'}
-        attrs={{
-          ...buildAriaCellAttrs(props),
-          role: 'columnheader',
-        }}
+  // need empty inner div for abs positioning for resizer
+  return createElement(
+    forPrint ? 'th' : 'div',
+    {
+      ...buildAriaCellAttrs(props),
+      role: 'columnheader',
+      ref: renderHookEl.ref,
+      className: joinClassNames(
+        renderHookEl.className,
+        forPrint && context.options.resourceHeaderRowClass,
+        classNames.noMargin,
+        classNames.noPadding,
+        !forPrint && classNames.flexCol,
+        classNames.borderlessY,
+        classNames.borderlessEnd,
+        !props.borderStart && classNames.borderlessStart,
+        classNames.rel, // for resizer abs positioning
+        // cannot crop because resizer is allowed to bleed out
+      ),
+      style: forPrint ? undefined : {
+        minWidth: 0,
+        width: props.width,
+      },
+    },
+    <div
+      className={joinClassNames(
+        classNames.crop, // must crop instead of outer
+        classNames.flexCol,
+        classNames.alignStart,
+      )}
+    >
+      <div
+        ref={innerElRef}
         className={joinClassNames(
-          forPrint && context.options.resourceHeaderRowClass,
-          classNames.noMargin,
-          classNames.noPadding,
-          !forPrint && classNames.flexCol,
-          classNames.borderlessY,
-          classNames.borderlessEnd,
-          !props.borderStart && classNames.borderlessStart,
-          classNames.rel, // for resizer abs positioning
-          // cannot crop because resizer is allowed to bleed out
+          classNames.noShrink,
+          classNames.whiteSpaceNoWrap,
+          classNames.flexRow,
         )}
-        style={forPrint ? undefined : {
-          minWidth: 0,
-          width: props.width,
-        }}
-        renderProps={renderProps}
-        generatorName="resourceColumnHeaderContent"
-        customGenerator={colSpec.headerContent}
-        defaultGenerator={colSpec.headerDefault}
-        classNameGenerator={colSpec.headerClass}
-        didMount={colSpec.headerDidMount}
-        willUnmount={colSpec.headerWillUnmount}
       >
-        {(InnerContent) => (
-          <>
-            <div
-              className={joinClassNames(
-                classNames.crop, // must crop instead of outer
-                classNames.flexCol,
-                classNames.alignStart,
-              )}
-            >
-              <div
-                ref={this.innerElRef}
-                className={joinClassNames(
-                  classNames.noShrink,
-                  classNames.whiteSpaceNoWrap,
-                  classNames.flexRow,
-                )}
-              >
-                {this.props.indent && (
-                  <ResourceIndent
-                    level={1}
-                    indentWidth={props.indentWidth}
-                  />
-                )}
-                <InnerContent
-                  tag="div"
-                  className={generateClassName(colSpec.headerInnerClass, renderProps)}
-                />
-              </div>
-            </div>
-            {props.resizer && !forPrint && (
-              <div
-                ref={props.resizerElRef}
-                className={joinClassNames(
-                  generateClassName(colSpec.headerResizerClass, renderProps),
-                  classNames.z1,
-                  classNames.cursorColResizer,
-                )}
-              />
-            )}
-          </>
+        {props.indent && (
+          <ResourceIndent
+            level={1}
+            indentWidth={props.indentWidth}
+          />
         )}
-      </ContentContainer>
-    )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const innerEl = this.innerElRef.current
-
-    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
-      if (this._isUnmounting) return
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
-  }
-}
+        <CustomContent
+          tag="div"
+          className={generateClassName(colSpec.headerInnerClass, renderProps)}
+          renderProps={renderProps}
+          generatorName="resourceColumnHeaderContent"
+          generator={colSpec.headerContent}
+          fallback={colSpec.headerDefault}
+        />
+      </div>
+    </div>,
+    props.resizer && !forPrint && (
+      <div
+        ref={props.resizerElRef}
+        className={joinClassNames(
+          generateClassName(colSpec.headerResizerClass, renderProps),
+          classNames.z1,
+          classNames.cursorColResizer,
+        )}
+      />
+    ),
+  )
+})

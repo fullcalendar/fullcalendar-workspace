@@ -1,8 +1,11 @@
-import { createElement, type ReactNode, type ReactElement } from 'react'
-import { BaseComponent } from '../vdom-util'
+import { memo, createElement, type ReactNode, type ReactElement } from 'react'
 import { ToolbarWidget, ButtonInfo, ButtonGroupInfo } from '../toolbar-struct'
 import { joinClassNames } from '../util/html'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { generateClassName } from '../common/render-hook'
+import { CustomContent } from '../content-inject/CustomContent'
+import { useViewContext } from '../hooks/useViewContext'
+import { useRenderHookEl } from '../hooks/useRenderHookEl'
+import { ViewOptionsRefined } from '../options'
 import { ButtonIcon } from './ButtonIcon'
 import classNames from '../styles.module.css'
 
@@ -21,149 +24,168 @@ export interface ToolbarSectionProps extends ToolbarContent {
   titleId?: string
 }
 
-export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
-  render(): any {
-    let { props } = this
-    let { options } = this.context
-    let children = props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
+const CUSTOM_ELEMENT_STYLE = { display: 'contents' }
+const CUSTOM_ELEMENT_RENDER_PROPS = {}
 
-    return createElement(
-      'div', {
-        className: generateClassName(options.toolbarSectionClass, { name: props.name }),
-      },
-      ...children, // spread, so no React key errors
-    )
+export const ToolbarSection = memo(function ToolbarSection(props: ToolbarSectionProps): any {
+  let { options } = useViewContext()
+  let children = props.widgetGroups.map((widgetGroup) => renderWidgetGroup(widgetGroup, props, options))
+
+  return createElement(
+    'div', {
+      className: generateClassName(options.toolbarSectionClass, { name: props.name }),
+    },
+    ...children, // spread, so no React key errors
+  )
+})
+
+function renderWidgetGroup(widgetGroup: ToolbarWidget[], props: ToolbarSectionProps, options: ViewOptionsRefined): any {
+  let children: ReactElement[] = []
+
+  let isOnlyButtons = true
+  let isOnlyView = true
+
+  for (const widget of widgetGroup) {
+    const { name, isView } = widget
+
+    if (name === 'title') {
+      isOnlyButtons = false
+    } else if (!isView) {
+      isOnlyView = false
+    }
   }
 
-  renderWidgetGroup(widgetGroup: ToolbarWidget[]): any {
-    let { props, context } = this
-    let { options } = context
-    let children: ReactElement[] = []
+  for (let widget of widgetGroup) {
+    let { name, customElement, buttonHint } = widget
 
-    let isOnlyButtons = true
-    let isOnlyView = true
+    if (name === 'title') {
+      children.push(
+        <div
+          role='heading'
+          aria-level={options.headingLevel}
+          id={props.titleId}
+          className={joinClassNames(options.toolbarTitleClass)}
+        >{props.title}</div>,
+      )
+    } else if (customElement) {
+      children.push(
+        <CustomContent
+          tag='span'
+          style={CUSTOM_ELEMENT_STYLE}
+          renderProps={CUSTOM_ELEMENT_RENDER_PROPS}
+          generatorName={undefined}
+          generator={customElement}
+        />
+      )
+    } else {
+      let isSelected = name === props.selectedButton
+      let isDisabled =
+        (!props.isTodayEnabled && name === 'today') ||
+        (!props.isPrevEnabled && name === 'prev') ||
+        (!props.isNextEnabled && name === 'next')
 
-    for (const widget of widgetGroup) {
-      const { name, isView } = widget
-
-      if (name === 'title') {
-        isOnlyButtons = false
-      } else if (!isView) {
-        isOnlyView = false
+      let buttonDisplay = widget.buttonDisplay ?? options.buttonDisplay
+      if (buttonDisplay === 'auto') {
+        buttonDisplay = (widget.buttonIconContent || widget.buttonIconClass)
+          ? 'icon'
+          : 'text'
       }
-    }
 
-    for (let widget of widgetGroup) {
-      let { name, customElement, buttonHint } = widget
-
-      if (name === 'title') {
-        children.push(
-          <div
-            role='heading'
-            aria-level={options.headingLevel}
-            id={props.titleId}
-            className={joinClassNames(options.toolbarTitleClass)}
-          >{props.title}</div>,
-        )
-      } else if (customElement) {
-        children.push(
-          <ContentContainer
-            tag='span'
-            style={{ display: 'contents' }}
-            renderProps={{}}
-            generatorName={undefined}
-            customGenerator={customElement}
+      let iconNode: ReactNode
+      if (buttonDisplay !== 'text') {
+        iconNode = (
+          <ButtonIcon
+            className={widget.buttonIconClass}
+            contentGenerator={widget.buttonIconContent}
           />
         )
-      } else {
-        let isSelected = name === props.selectedButton
-        let isDisabled =
-          (!props.isTodayEnabled && name === 'today') ||
-          (!props.isPrevEnabled && name === 'prev') ||
-          (!props.isNextEnabled && name === 'next')
-
-        let buttonDisplay = widget.buttonDisplay ?? options.buttonDisplay
-        if (buttonDisplay === 'auto') {
-          buttonDisplay = (widget.buttonIconContent || widget.buttonIconClass)
-            ? 'icon'
-            : 'text'
-        }
-
-        let iconNode: ReactNode
-        if (buttonDisplay !== 'text') {
-          iconNode = (
-            <ButtonIcon
-              className={widget.buttonIconClass}
-              contentGenerator={widget.buttonIconContent}
-            />
-          )
-        }
-
-        let inGroup = widgetGroup.length > 1 && isOnlyButtons
-        let buttonGroup: ButtonGroupInfo | null = inGroup ? { hasSelection: isOnlyView } : null
-        let renderProps: ButtonInfo = {
-          name,
-          text: widget.buttonText,
-          isPrimary: widget.buttonIsPrimary,
-          isSelected,
-          isDisabled,
-          isIconOnly: buttonDisplay === 'icon',
-          buttonGroup,
-        }
-
-        children.push(
-          <ContentContainer<ButtonInfo>
-            tag='button'
-            attrs={{
-              type: 'button',
-              disabled: isDisabled,
-              ...(
-                (isOnlyButtons && isOnlyView)
-                  ? { 'role': 'tab', 'aria-selected': isSelected }
-                  : { 'aria-pressed': isSelected }
-              ),
-              'aria-label': typeof buttonHint === 'function'
-                ? buttonHint(props.navUnit)
-                : buttonHint,
-              onClick: widget.buttonClick,
-            }}
-            className={joinClassNames(
-              generateClassName(options.buttonClass, renderProps),
-              !isDisabled && classNames.cursorPointer,
-              inGroup && joinClassNames(
-                isSelected ? classNames.z1 : classNames.z0,
-                classNames.focusZ2, // to ensure focus-ring is raised
-              ),
-            )}
-            renderProps={renderProps}
-            generatorName={undefined}
-            classNameGenerator={widget.buttonClass}
-            didMount={widget.buttonDidMount}
-            willUnmount={widget.buttonWillUnmount}
-          >{() => (
-            buttonDisplay === 'text'
-              ? widget.buttonText
-              : buttonDisplay === 'icon'
-                ? iconNode
-                : buttonDisplay === 'icon-text'
-                  ? (<>{iconNode}{widget.buttonText}</>)
-                  : (<>{widget.buttonText}{iconNode}</>) // text-icon
-          )}</ContentContainer>
-        )
       }
-    }
 
-    if (children.length > 1) {
-      return createElement('div', {
-        role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
-        'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
-        className: joinClassNames(
-          generateClassName(options.buttonGroupClass, { hasSelection: isOnlyView }),
-          classNames.isolate,
-        ),
-      }, ...children)
-    }
+      let inGroup = widgetGroup.length > 1 && isOnlyButtons
+      let buttonGroup: ButtonGroupInfo | null = inGroup ? { hasSelection: isOnlyView } : null
+      let renderProps: ButtonInfo = {
+        name,
+        text: widget.buttonText,
+        isPrimary: widget.buttonIsPrimary,
+        isSelected,
+        isDisabled,
+        isIconOnly: buttonDisplay === 'icon',
+        buttonGroup,
+      }
 
-    return children[0]
+      let buttonContent = buttonDisplay === 'text'
+        ? widget.buttonText
+        : buttonDisplay === 'icon'
+          ? iconNode
+          : buttonDisplay === 'icon-text'
+            ? (<>{iconNode}{widget.buttonText}</>)
+            : (<>{widget.buttonText}{iconNode}</>) // text-icon
+
+      children.push(
+        <ToolbarButton
+          widget={widget}
+          renderProps={renderProps}
+          attrs={{
+            type: 'button',
+            disabled: isDisabled,
+            ...(
+              (isOnlyButtons && isOnlyView)
+                ? { 'role': 'tab', 'aria-selected': isSelected }
+                : { 'aria-pressed': isSelected }
+            ),
+            'aria-label': typeof buttonHint === 'function'
+              ? buttonHint(props.navUnit)
+              : buttonHint,
+            onClick: widget.buttonClick,
+          }}
+          className={joinClassNames(
+            generateClassName(options.buttonClass, renderProps),
+            !isDisabled && classNames.cursorPointer,
+            inGroup && joinClassNames(
+              isSelected ? classNames.z1 : classNames.z0,
+              classNames.focusZ2, // to ensure focus-ring is raised
+            ),
+          )}
+        >{buttonContent}</ToolbarButton>
+      )
+    }
   }
+
+  if (children.length > 1) {
+    return createElement('div', {
+      role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
+      'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
+      className: joinClassNames(
+        generateClassName(options.buttonGroupClass, { hasSelection: isOnlyView }),
+        classNames.isolate,
+      ),
+    }, ...children)
+  }
+
+  return children[0]
+}
+
+interface ToolbarButtonProps {
+  widget: ToolbarWidget
+  renderProps: ButtonInfo
+  attrs: Record<string, any>
+  className: string
+  children: ReactNode
+}
+
+function ToolbarButton({ widget, renderProps, attrs, className, children }: ToolbarButtonProps) {
+  let renderHookEl = useRenderHookEl({
+    classGenerator: widget.buttonClass,
+    didMount: widget.buttonDidMount,
+    willUnmount: widget.buttonWillUnmount,
+    renderProps,
+  })
+
+  return (
+    <button
+      {...attrs}
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, className) || undefined}
+    >{children}</button>
+  )
 }

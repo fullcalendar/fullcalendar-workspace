@@ -1,7 +1,9 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import {
+  CustomContent, generateClassName, useRenderHookEl, useReportedSize, useViewContext,
+} from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef, type Ref } from 'react'
+import { createElement, memo, type Ref } from 'react'
 import { Group } from '../../../resource/common/resource-hierarchy'
 import { GroupSpec, ResourceGroupLaneInfo } from '../../structs'
 import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
@@ -22,78 +24,54 @@ export interface GroupLaneProps extends AriaCellInput {
 /*
 parallels the ResourceGroupHeaderCell
 */
-export class GroupLane extends BaseComponent<GroupLaneProps> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
-
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerHeight?: () => void
-
-  render() {
-    let { props, context } = this
-    let { group, forPrint } = props
-    let groupSpec = group.spec as GroupSpec // type HACK
-    let renderProps: ResourceGroupLaneInfo = {
-      fieldValue: group.value,
-      view: context.viewApi,
-    }
-
-    return (
-      <ContentContainer
-        tag={forPrint ? 'td' : 'div'}
-        attrs={{
-          ...buildAriaCellAttrs(props),
-          role: getAriaCellRole(props),
-        }}
-        className={joinClassNames(
-          !forPrint && classNames.liquid, // expand to whole row
-          classNames.noMargin,
-          classNames.noPadding,
-          !forPrint && classNames.flexCol,
-          classNames.contentBox,
-          classNames.borderlessX,
-          classNames.borderlessTop,
-          !props.borderBottom && classNames.borderlessBottom,
-        )}
-        style={forPrint ? undefined : {
-          height: props.height,
-        }}
-        renderProps={renderProps}
-        generatorName="resourceGroupLaneContent"
-        customGenerator={groupSpec.laneContent}
-        classNameGenerator={groupSpec.laneClass}
-        didMount={groupSpec.laneDidMount}
-        willUnmount={groupSpec.laneWillUnmount}
-      >
-        {(InnerContainer) => (
-          <InnerContainer
-            tag="div"
-            elRef={this.innerElRef}
-            className={joinClassNames(
-              generateClassName(groupSpec.laneInnerClass, renderProps),
-              classNames.noShrink,
-              classNames.noMargin,
-            )}
-          />
-        )}
-      </ContentContainer>
-    )
+export const GroupLane = memo(function GroupLane(props: GroupLaneProps) {
+  let context = useViewContext()
+  let { group, forPrint } = props
+  let groupSpec = group.spec as GroupSpec // type HACK
+  let renderProps: ResourceGroupLaneInfo = {
+    fieldValue: group.value,
+    view: context.viewApi,
   }
+  let renderHookEl = useRenderHookEl({
+    classGenerator: groupSpec.laneClass,
+    didMount: groupSpec.laneDidMount,
+    willUnmount: groupSpec.laneWillUnmount,
+    renderProps,
+  })
+  let innerElRef = useReportedSize({ watchHeight: true, heightRef: props.innerHeightRef })
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const innerEl = this.innerElRef.current
-
-    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
-      if (this._isUnmounting) return
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
-  }
-}
+  return createElement(
+    forPrint ? 'td' : 'div',
+    {
+      ...buildAriaCellAttrs(props),
+      role: getAriaCellRole(props),
+      ref: renderHookEl.ref,
+      className: joinClassNames(
+        renderHookEl.className,
+        !forPrint && classNames.liquid, // expand to whole row
+        classNames.noMargin,
+        classNames.noPadding,
+        !forPrint && classNames.flexCol,
+        classNames.contentBox,
+        classNames.borderlessX,
+        classNames.borderlessTop,
+        !props.borderBottom && classNames.borderlessBottom,
+      ),
+      style: forPrint ? undefined : {
+        height: props.height,
+      },
+    },
+    <CustomContent
+      tag="div"
+      elRef={innerElRef}
+      className={joinClassNames(
+        generateClassName(groupSpec.laneInnerClass, renderProps),
+        classNames.noShrink,
+        classNames.noMargin,
+      )}
+      renderProps={renderProps}
+      generatorName="resourceGroupLaneContent"
+      generator={groupSpec.laneContent}
+    />,
+  )
+})

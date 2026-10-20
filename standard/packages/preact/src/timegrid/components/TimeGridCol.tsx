@@ -3,7 +3,10 @@ import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
 import { BgEvent, renderFill } from '../../common/bg-fill'
 import { buildEventRangeKey, EventRangeProps, getEventRangeMeta, sortEventSegs } from '../../component-util/event-rendering'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
+import { useViewContext } from '../../hooks/useViewContext'
+import type { ReactNode } from 'react'
+import { generateClassName } from '../../common/render-hook'
 import { DateMarker, DateRange, formatDayString } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { Dictionary } from '../../options'
@@ -120,8 +123,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     return (
-      <ContentContainer
-        tag="div"
+      <TimeGridColLane
         attrs={{
           ...props.attrs,
           role: 'cell',
@@ -131,41 +133,33 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         className={baseClassName}
         style={baseStyle}
         renderProps={renderProps}
-        generatorName={undefined}
-        classNameGenerator={options.dayLaneClass}
-        didMount={options.dayLaneDidMount}
-        willUnmount={options.dayLaneWillUnmount}
       >
-        {() => (
-          <>
-            {this.renderFillSegs(props.businessHourSegs, 'non-business')}
-            {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
-            {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            <div
-              // events and more-links are list items
-              role={sortedFgSegs.length ? 'list' : undefined}
-              className={innerClassName}
-            >
-              {this.renderFgSegs(
-                sortedFgSegs,
-                /* isMirror = */ false,
-              )}
-            </div>
-            {Boolean(mirrorSegs.length) && (
-              // but only show it when there are actual mirror events, to avoid blocking clicks
-              <div
-                className={innerClassName}
-              >
-                {this.renderFgSegs(
-                  mirrorSegs,
-                  /* isMirror = */ true,
-                )}
-              </div>
+        {this.renderFillSegs(props.businessHourSegs, 'non-business')}
+        {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
+        {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
+        <div
+          // events and more-links are list items
+          role={sortedFgSegs.length ? 'list' : undefined}
+          className={innerClassName}
+        >
+          {this.renderFgSegs(
+            sortedFgSegs,
+            /* isMirror = */ false,
+          )}
+        </div>
+        {Boolean(mirrorSegs.length) && (
+          // but only show it when there are actual mirror events, to avoid blocking clicks
+          <div
+            className={innerClassName}
+          >
+            {this.renderFgSegs(
+              mirrorSegs,
+              /* isMirror = */ true,
             )}
-            {this.renderNowIndicator(props.nowIndicatorSegs)}
-          </>
+          </div>
         )}
-      </ContentContainer>
+        {this.renderNowIndicator(props.nowIndicatorSegs)}
+      </TimeGridColLane>
     )
   }
 
@@ -433,6 +427,34 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     const { eventPrintLayout } = this.context.options
     return computeTimeGridPrintMode(this.props.forPrint, eventPrintLayout) === 'stack'
   }
+}
+
+interface TimeGridColLaneProps {
+  attrs: Record<string, any>
+  className: string
+  style: { width: number | undefined }
+  renderProps: DayLaneInfo
+  children: ReactNode
+}
+
+// the day lane's element, with its dayLane* render hooks. only for enabled days
+function TimeGridColLane({ attrs, className, style, renderProps, children }: TimeGridColLaneProps) {
+  const { options } = useViewContext()
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.dayLaneClass,
+    didMount: options.dayLaneDidMount,
+    willUnmount: options.dayLaneWillUnmount,
+    renderProps,
+  })
+
+  return (
+    <div
+      {...attrs}
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, className, attrs.className)}
+      style={style}
+    >{children}</div>
+  )
 }
 
 export function renderPlainFgSegs(

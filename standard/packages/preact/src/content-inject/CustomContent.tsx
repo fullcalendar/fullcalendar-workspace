@@ -13,6 +13,7 @@ import { isNonHandlerPropsEqual } from '../options-manip'
 import { hasCustomRenderingHandler, ElAttrs } from './ContentInjector'
 import { RenderId } from './RenderId'
 import { ViewOptionsRefined } from '../options'
+import { joinClassNames } from '../util/html'
 
 export interface CustomContentProps<RenderProps> {
   tag: string
@@ -58,8 +59,8 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
   let queuedDomNodes: Node[] = []
   let generatorMeta: any
 
-  if (props.className) {
-    attrs.className = props.className
+  if (props.className || attrs.className) {
+    attrs.className = joinClassNames(props.className, attrs.className) // in ContentInjector's order
   }
   if (props.style) {
     attrs.style = props.style
@@ -159,7 +160,9 @@ function triggerCustomRendering<RenderProps>(
 
 const CUSTOM_CONTENT_PROP_EQUALITY = {
   renderProps: isPropsEqualShallow,
-  attrs: isNonHandlerPropsEqual,
+  attrs: (attrs0: ElAttrs | undefined, attrs1: ElAttrs | undefined) => (
+    attrs0 && attrs1 ? isNonHandlerPropsEqual(attrs0, attrs1) : attrs0 === attrs1 // either can be absent
+  ),
   style: isPropsEqualShallow,
 }
 

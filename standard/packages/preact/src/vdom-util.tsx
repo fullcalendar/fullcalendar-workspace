@@ -1,6 +1,6 @@
 /* eslint max-classes-per-file: off */
 
-import { Component, type Ref } from 'react'
+import { Component, memo, type FunctionComponent, type Ref } from 'react'
 import { ViewContextType, ViewContext } from './ViewContext'
 import { isPropsEqualWithMap } from './util/object'
 import { Dictionary } from './options'
@@ -56,4 +56,15 @@ export function setRef<RefType>(ref: Ref<RefType> | void, current: RefType) {
     // see https://github.com/facebook/react/issues/13029
     (ref as any).current = current
   }
+}
+
+/*
+memo() with per-prop equality functions, like PureComponent.addPropsEquality. Other props compare
+by identity. See planning/hook-toolkit-spec.md §3.1
+*/
+export function memoWithEquality<Props>(
+  component: FunctionComponent<Props>,
+  propEquality: EqualityFuncs<Props>,
+) {
+  return memo(component, (prevProps, nextProps) => isPropsEqualWithMap(prevProps, nextProps, propEquality as any))
 }

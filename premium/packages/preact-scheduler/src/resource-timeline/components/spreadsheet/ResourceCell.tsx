@@ -1,15 +1,15 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  BaseComponent,
-  memoizeObjArg,
-  ContentContainer,
+  CustomContent,
   ViewContext,
-  watchHeight,
-  setRef,
   generateClassName,
+  useRenderHookEl,
+  useReportedSize,
+  useStableCallback,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type ReactNode, createRef, type Ref } from 'react'
+import { type ReactNode, createElement, memo, useMemo, type Ref } from 'react'
 import { ResourceApi } from '../../../resource/api/ResourceApi'
 import { Resource } from '../../../resource/structs/resource'
 import { ResourceIndent } from './ResourceIndent'
@@ -33,120 +33,98 @@ export interface ResourceCellProps extends AriaCellInput {
   forPrint?: boolean
 }
 
-export class ResourceCell extends BaseComponent<ResourceCellProps> {
-  private innerElRef = createRef<HTMLDivElement>()
-  private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private _isUnmounting: boolean
-  private disconnectHeight?: () => void
+const INNER_STYLE = { isolation: 'isolate' } as const // TODO: className
 
-  render() {
-    let { props, context } = this
-    let { colSpec, forPrint } = props
+export const ResourceCell = memo(function ResourceCell(props: ResourceCellProps) {
+  let context = useViewContext()
+  let { colSpec, forPrint } = props
 
-    let renderProps = this.refineRenderProps({
-      resource: props.resource,
-      field: props.field,
-      fieldValue: props.fieldValue,
-      context,
-    })
+  let renderProps = useMemo(() => refineRenderProps({
+    resource: props.resource,
+    field: props.field,
+    fieldValue: props.fieldValue,
+    context,
+  }), [props.resource, props.field, props.fieldValue, context])
+  let renderHookEl = useRenderHookEl({
+    classGenerator: colSpec.cellClass,
+    didMount: colSpec.cellDidMount,
+    willUnmount: colSpec.cellWillUnmount,
+    renderProps,
+  })
+  let innerElRef = useReportedSize({ watchHeight: true, heightRef: props.innerHeightRef })
 
-    return (
-      <ContentContainer
-        tag={forPrint ? 'td' : 'div'}
-        attrs={{
-          ...buildAriaCellAttrs(props),
-          role: colSpec.isMain ? 'rowheader' : getAriaCellRole(props),
-          'data-resource-id': props.resource.id,
-        }}
-        className={joinClassNames(
-          classNames.noMargin,
-          classNames.noPadding,
-          !forPrint && classNames.flexCol,
-          classNames.alignStart,
-          forPrint && context.options.resourceRowClass,
-          classNames.borderlessTop,
-          classNames.borderlessEnd,
-          !props.borderStart && classNames.borderlessStart,
-          !props.borderBottom && classNames.borderlessBottom,
-          classNames.crop,
-        )}
-        style={forPrint ? undefined : {
-          minWidth: 0,
-          width: props.width,
-        }}
-        renderProps={renderProps}
-        generatorName="resourceCellContent"
-        customGenerator={colSpec.cellContent}
-        defaultGenerator={renderResourceInner}
-        classNameGenerator={colSpec.cellClass}
-        didMount={colSpec.cellDidMount}
-        willUnmount={colSpec.cellWillUnmount}
-      >
-        {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              classNames.noShrink,
-              classNames.whiteSpaceNoWrap,
-              classNames.flexRow,
-            )}
-            style={{
-              isolation: 'isolate', // TODO: className
-            }}
-          >
-            {colSpec.isMain && Boolean(props.indent) && (
-              <ResourceIndent
-                level={props.indent}
-                indentWidth={props.indentWidth}
-                className={classNames.z2}
-              >
-                {props.hasChildren && (
-                  <ResourceExpander
-                    isExpanded={props.isExpanded}
-                    onExpanderClick={this.onExpanderClick}
-                  />
-                )}
-              </ResourceIndent>
-            )}
-            <InnerContent
-              tag="div"
-              className={joinClassNames(
-                generateClassName(colSpec.cellInnerClass, renderProps),
-                classNames.z1,
-              )}
-            />
-          </div>
-        )}
-      </ContentContainer>
-    )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    this.disconnectHeight = watchHeight(this.innerElRef.current, (height) => {
-      if (this._isUnmounting) return
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectHeight()
-    setRef(this.props.innerHeightRef, null)
-  }
-
-  onExpanderClick = (ev: UIEvent) => {
-    let { props } = this
-
+  let onExpanderClick = useStableCallback(() => {
     if (props.hasChildren) {
-      this.context.dispatch({
+      context.dispatch({
         type: 'SET_RESOURCE_ENTITY_EXPANDED',
         id: props.resource.id,
         isExpanded: !props.isExpanded,
       })
     }
-  }
-}
+  })
+
+  return createElement(
+    forPrint ? 'td' : 'div',
+    {
+      ...buildAriaCellAttrs(props),
+      role: colSpec.isMain ? 'rowheader' : getAriaCellRole(props),
+      'data-resource-id': props.resource.id,
+      ref: renderHookEl.ref,
+      className: joinClassNames(
+        renderHookEl.className,
+        classNames.noMargin,
+        classNames.noPadding,
+        !forPrint && classNames.flexCol,
+        classNames.alignStart,
+        forPrint && context.options.resourceRowClass,
+        classNames.borderlessTop,
+        classNames.borderlessEnd,
+        !props.borderStart && classNames.borderlessStart,
+        !props.borderBottom && classNames.borderlessBottom,
+        classNames.crop,
+      ),
+      style: forPrint ? undefined : {
+        minWidth: 0,
+        width: props.width,
+      },
+    },
+    <div
+      ref={innerElRef}
+      className={joinClassNames(
+        classNames.noShrink,
+        classNames.whiteSpaceNoWrap,
+        classNames.flexRow,
+      )}
+      style={INNER_STYLE}
+    >
+      {colSpec.isMain && Boolean(props.indent) && (
+        <ResourceIndent
+          level={props.indent}
+          indentWidth={props.indentWidth}
+          className={classNames.z2}
+        >
+          {props.hasChildren && (
+            <ResourceExpander
+              isExpanded={props.isExpanded}
+              onExpanderClick={onExpanderClick}
+            />
+          )}
+        </ResourceIndent>
+      )}
+      <CustomContent
+        tag="div"
+        className={joinClassNames(
+          generateClassName(colSpec.cellInnerClass, renderProps),
+          classNames.z1,
+        )}
+        renderProps={renderProps}
+        generatorName="resourceCellContent"
+        generator={colSpec.cellContent}
+        fallback={renderResourceInner}
+      />
+    </div>,
+  )
+})
 
 function renderResourceInner(renderProps: ResourceCellInfo): ReactNode {
   return renderProps.fieldValue || <>&nbsp;</>

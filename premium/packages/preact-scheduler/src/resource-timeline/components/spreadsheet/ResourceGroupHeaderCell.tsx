@@ -1,7 +1,10 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName } from '@fullcalendar/preact/protected-api'
+import {
+  CustomContent, generateClassName, memoWithEquality, useRenderHookEl, useReportedSize, useStableCallback,
+  useViewContext,
+} from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { type ReactNode, type Ref, createRef } from 'react'
+import { type ReactNode, type Ref, createElement } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
@@ -26,120 +29,97 @@ export interface ResourceGroupHeaderCellProps extends AriaCellInput {
 /*
 Group cell that spans horizontally, consuming multiple colspans
 */
-export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCellProps, ViewContext> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
+const INNER_STYLE = { isolation: 'isolate' } as const // TODO: className
 
-  // internal
-  private _isUnmounting: boolean
-  private disconnectInnerHeight?: () => void
-
-  render() {
-    let { props, context } = this
-    let { forPrint } = props
-    let renderProps: ResourceGroupHeaderInfo = {
-      fieldValue: props.group.value,
-      view: context.viewApi,
-    }
-    let spec = props.group.spec as GroupSpec // type HACK
-
-    return (
-      <ContentContainer
-        tag={forPrint ? 'td' : 'div'}
-        attrs={forPrint ? {
-          colSpan: props.colSpan,
-        } : {
-          ...buildAriaCellAttrs(props),
-          role: 'rowheader',
-          'aria-colspan': props.colSpan,
-        }}
-        className={joinClassNames(
-          !forPrint && classNames.liquid, // expand to whole row
-          classNames.noMargin,
-          classNames.noPadding,
-          !forPrint && classNames.flexCol,
-          classNames.alignStart, // h-align
-          classNames.crop,
-          classNames.contentBox,
-          classNames.borderlessX,
-          classNames.borderlessTop,
-          !props.borderBottom && classNames.borderlessBottom,
-        )}
-        style={forPrint ? undefined : {
-          height: props.height,
-        }}
-        renderProps={renderProps}
-        generatorName="resourceGroupHeaderContent"
-        customGenerator={spec.labelContent}
-        defaultGenerator={renderCellInner}
-        classNameGenerator={spec.labelClass}
-        didMount={spec.labelDidMount}
-        willUnmount={spec.labelWillUnmount}
-      >
-        {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              classNames.noShrink,
-              classNames.whiteSpaceNoWrap,
-              classNames.flexRow,
-            )}
-            style={{
-              isolation: 'isolate', // TODO: className
-            }}
-          >
-            <ResourceIndent
-              level={1}
-              indentWidth={props.indentWidth}
-              className={classNames.z2}
-            >
-              <ResourceExpander
-                isExpanded={props.isExpanded}
-                onExpanderClick={this.onExpanderClick}
-              />
-            </ResourceIndent>
-            <InnerContent
-              tag="div"
-              className={joinClassNames(
-                generateClassName(spec.labelInnerClass, renderProps),
-                classNames.z1,
-              )}
-            />
-          </div>
-        )}
-      </ContentContainer>
-    )
+export const ResourceGroupHeaderCell = memoWithEquality(function ResourceGroupHeaderCell(
+  props: ResourceGroupHeaderCellProps,
+) {
+  let context = useViewContext()
+  let { forPrint } = props
+  let renderProps: ResourceGroupHeaderInfo = {
+    fieldValue: props.group.value,
+    view: context.viewApi,
   }
-
-  onExpanderClick = () => {
-    let { props } = this
-
-    this.context.dispatch({
+  let spec = props.group.spec as GroupSpec // type HACK
+  let renderHookEl = useRenderHookEl({
+    classGenerator: spec.labelClass,
+    didMount: spec.labelDidMount,
+    willUnmount: spec.labelWillUnmount,
+    renderProps,
+  })
+  let innerElRef = useReportedSize({ watchHeight: true, heightRef: props.innerHeightRef })
+  let onExpanderClick = useStableCallback(() => {
+    context.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
       id: createGroupId(props.group),
       isExpanded: !props.isExpanded,
     })
-  }
+  })
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-    const innerEl = this.innerElRef.current
-
-    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
-      if (this._isUnmounting) return
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
-  }
-}
-
-ResourceGroupHeaderCell.addPropsEquality({
-  group: isGroupsEqual,
+  return createElement(
+    forPrint ? 'td' : 'div',
+    {
+      ...(forPrint ? {
+        colSpan: props.colSpan,
+      } : {
+        ...buildAriaCellAttrs(props),
+        role: 'rowheader',
+        'aria-colspan': props.colSpan,
+      }),
+      ref: renderHookEl.ref,
+      className: joinClassNames(
+        renderHookEl.className,
+        !forPrint && classNames.liquid, // expand to whole row
+        classNames.noMargin,
+        classNames.noPadding,
+        !forPrint && classNames.flexCol,
+        classNames.alignStart, // h-align
+        classNames.crop,
+        classNames.contentBox,
+        classNames.borderlessX,
+        classNames.borderlessTop,
+        !props.borderBottom && classNames.borderlessBottom,
+      ),
+      style: forPrint ? undefined : {
+        height: props.height,
+      },
+    },
+    <div
+      ref={innerElRef}
+      className={joinClassNames(
+        classNames.noShrink,
+        classNames.whiteSpaceNoWrap,
+        classNames.flexRow,
+      )}
+      style={INNER_STYLE}
+    >
+      <ResourceIndent
+        level={1}
+        indentWidth={props.indentWidth}
+        className={classNames.z2}
+      >
+        <ResourceExpander
+          isExpanded={props.isExpanded}
+          onExpanderClick={onExpanderClick}
+        />
+      </ResourceIndent>
+      <CustomContent
+        tag="div"
+        className={joinClassNames(
+          generateClassName(spec.labelInnerClass, renderProps),
+          classNames.z1,
+        )}
+        renderProps={renderProps}
+        generatorName="resourceGroupHeaderContent"
+        generator={spec.labelContent}
+        fallback={renderCellInner}
+      />
+    </div>,
+  )
+}, {
+  // also the spec, which holds the render hooks. unlike a class, a memo that skips a render keeps the
+  // old props, which a later context-driven render would use
+  group: (group0: Group, group1: Group) => isGroupsEqual(group0, group1) && group0.spec === group1.spec,
 })
 
 function renderCellInner(renderProps: ResourceGroupHeaderInfo): ReactNode {

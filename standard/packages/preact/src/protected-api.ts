@@ -125,6 +125,16 @@ export type { Hit } from './interactions/hit'
 export type { HitTarget } from './interactions/hit-target'
 export type { HitSource } from './hooks/useHitTarget'
 export { useHitTarget } from './hooks/useHitTarget'
+export { useViewContext } from './hooks/useViewContext'
+export { useLatest } from './hooks/useLatest'
+export { useStableCallback } from './hooks/useStableCallback'
+export { useMountHooks } from './hooks/useMountHooks'
+export type { ReportedSizeInput } from './hooks/useReportedSize'
+export { useReportedSize } from './hooks/useReportedSize'
+export type { RenderHookElInput, RenderHookEl } from './hooks/useRenderHookEl'
+export { useRenderHookEl } from './hooks/useRenderHookEl'
+export type { CustomContentProps } from './content-inject/CustomContent'
+export { CustomContent } from './content-inject/CustomContent'
 export { ElementDragging } from './interactions/ElementDragging'
 
 export { config } from './global-config'
@@ -160,7 +170,7 @@ export { isPropsValid } from './validation'
 
 export { requestJson } from './util/requestJson'
 
-export { BaseComponent, setRef } from './vdom-util'
+export { BaseComponent, setRef, memoWithEquality } from './vdom-util'
 export { DelayedRunner } from './util/DelayedRunner'
 
 export {
@@ -201,7 +211,8 @@ export { EventImpl } from './api/EventImpl'
 export { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 export { RenderId } from './content-inject/RenderId'
 
-export { ContentContainer, generateClassName } from './content-inject/ContentContainer'
+export { ContentContainer } from './content-inject/ContentContainer'
+export { generateClassName } from './common/render-hook'
 export type { CustomRendering } from './content-inject/CustomRenderingStore'
 export { CustomRenderingStore } from './content-inject/CustomRenderingStore'
 

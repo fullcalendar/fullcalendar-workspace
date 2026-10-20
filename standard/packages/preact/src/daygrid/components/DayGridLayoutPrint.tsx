@@ -1,7 +1,7 @@
 import { DateRange } from '@full-ui/headless-calendar'
 import { type CSSProperties, type Ref } from 'react'
 import { EventRangeProps } from '../../component-util/event-rendering'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../common/render-hook'
 import { DateProfile } from '../../DateProfileGenerator'
 import { RefMap } from '../../util/RefMap'
 import { joinClassNames } from '../../util/html'

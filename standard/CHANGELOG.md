@@ -9,6 +9,7 @@
 - FIX: React, the `loading` callback was called during render, so setting state in it warned "Cannot update a component while rendering a different component"
 - FIX: React Strict Mode (development only), the now-indicator and the switch to a new day stopped updating after mount
 - FIX: Resource TimeGrid views spanning more than one day, a selection or event resize in the all-day row could span two resources, unlike in the time slots
+- FIX: TimeGrid, a week-number header label taller than it is wide (a custom `weekNumberHeaderContent`, for example) widened the time axis to the label's height
 - PERF: `eventContent` is called again only when its argument or the callback itself changes, not on every re-render of the event. For example, dragging an event in month view no longer calls it for every other visible event
 
 
