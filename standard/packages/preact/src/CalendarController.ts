@@ -70,13 +70,31 @@ export class CalendarController {
   _setApi(calendarApi: CalendarApi | undefined): void {
     if (this.calendarApi !== calendarApi) {
       if (this.calendarApi) {
-        this.calendarApi.off('datesSet', this.handleDateChange)
+        if (this.handleDateChange) {
+          this.calendarApi.off('datesSet', this.handleDateChange)
+        }
         this.calendarApi = undefined
       }
       if (calendarApi) {
         this.calendarApi = calendarApi
-        calendarApi.on('datesSet', this.handleDateChange)
+        if (this.handleDateChange) {
+          calendarApi.on('datesSet', this.handleDateChange)
+        }
       }
+    }
+  }
+
+  // only binds if not already bound, because another calendar might have taken this controller over
+  _restoreApi(calendarApi: CalendarApi): void {
+    if (!this.calendarApi) {
+      this._setApi(calendarApi)
+    }
+  }
+
+  // only unbinds if still bound to the given calendar, which might have handed this controller off
+  _unsetApi(calendarApi: CalendarApi): void {
+    if (this.calendarApi === calendarApi) {
+      this._setApi(undefined)
     }
   }
 }

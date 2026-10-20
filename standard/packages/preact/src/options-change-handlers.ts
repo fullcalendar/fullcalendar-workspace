@@ -6,9 +6,18 @@ import { hashValuesToArray } from './util/object'
 export const changeHandlerPlugin = {
   name: 'change-handler',
   optionChangeHandlers: {
-    controller(controller: CalendarController, context: CalendarContext) {
+    controller(controller: CalendarController | undefined, context: CalendarContext) {
       // TODO: the initial setting is in CalendarDataManager
-      controller._setApi(context.calendarApi)
+      // still the previous data while change handlers run
+      let prevController = context.getCurrentData().calendarOptions.controller
+
+      if (prevController && prevController !== controller) {
+        prevController._unsetApi(context.calendarApi)
+      }
+
+      if (controller) {
+        controller._setApi(context.calendarApi)
+      }
     },
     events(events, context) {
       handleEventSources([events], context)

@@ -106,6 +106,9 @@ export class CalendarDataManager {
 
   destroy() {
     this.nowTimer.destroy()
+
+    // CalendarInner rebinds on mount, for StrictMode remounts and rendering after destroy()
+    this.data.calendarOptions.controller?._unsetApi(this.config.calendarApi)
   }
 
   /*

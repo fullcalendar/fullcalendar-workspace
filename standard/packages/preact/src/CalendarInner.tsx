@@ -184,6 +184,11 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     this.calendarInteractions = props.pluginHooks.calendarInteractions
       .map((CalendarInteractionClass) => new CalendarInteractionClass(props))
 
+    // already bound by CalendarDataManager, but CalendarDataManager::destroy unbinds it,
+    // which happens before StrictMode remounts and before rendering again after destroy().
+    // do this before callbacks like datesSet, which might replace the controller
+    props.getCurrentData().calendarOptions.controller?._restoreApi(props.calendarApi)
+
     let { propSetHandlers } = props.pluginHooks
     for (let propName in propSetHandlers) {
       propSetHandlers[propName](props[propName], props)
