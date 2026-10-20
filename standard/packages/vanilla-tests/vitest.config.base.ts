@@ -7,7 +7,7 @@ import * as commands from './vitest.commands'
 Shared by this package's vitest.config.ts and the premium test package's.
 */
 
-// Matches Karma's --window-size. Some tests need the tall window.
+// Some tests need the tall window.
 // The Playwright context and Vitest's iframe get the same size so the iframe is never scaled,
 // which keeps page.mouse coordinates equal to getBoundingClientRect coordinates.
 export const VIEWPORT = { width: 1280, height: 1696 }
@@ -17,6 +17,16 @@ export const TIME_ZONE = 'America/New_York'
 
 process.env.TZ = TIME_ZONE // for the Node project's workers, which inherit it
 
+/*
+With FORCE_REACT set, the vanilla packages are swapped for their React-rendering builds, which have
+the same API. Order matters: the first match wins.
+*/
+const FORCE_REACT_ALIASES = [
+  { find: /^fullcalendar\/preact$/, replacement: 'fullcalendar-w-react/react' },
+  { find: /^fullcalendar(\/.*)?$/, replacement: 'fullcalendar-w-react$1' },
+  { find: /^fullcalendar-scheduler(\/.*)?$/, replacement: 'fullcalendar-scheduler-w-react$1' },
+]
+
 export function createTestConfig(options: {
   setupFile: string
   // deps that tests import lazily. pre-bundling them avoids a Vite reload mid-run on cold starts
@@ -25,6 +35,12 @@ export function createTestConfig(options: {
   return defineConfig({
     optimizeDeps: {
       include: options.optimizeDepsInclude || [],
+    },
+    resolve: {
+      alias: process.env.FORCE_REACT ? FORCE_REACT_ALIASES : [],
+    },
+    define: {
+      __FORCE_REACT__: JSON.stringify(Boolean(process.env.FORCE_REACT)), // see tests/lib/env.ts
     },
     test: {
       onConsoleLog(log) {

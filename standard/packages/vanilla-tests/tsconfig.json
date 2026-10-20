@@ -1,35 +1,16 @@
 {
   "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
   "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
     "types": [
-      "jasmine",
-      "jasmine-jquery",
-      "jquery"
-    ],
-    "rootDir": "./src",
-    "outDir": "./dist/.tsout"
+      "@vitest/browser-playwright"
+    ]
   },
   "include": [
-    "./src/**/*"
-  ],
-  "references": [
-    {
-      "path": "../vanilla"
-    },
-    {
-      "path": "../google-calendar"
-    },
-    {
-      "path": "../icalendar"
-    },
-    {
-      "path": "../format-luxon3"
-    },
-    {
-      "path": "../format-moment"
-    },
-    {
-      "path": "../rrule"
-    }
+    "./tests/**/*",
+    "./*.ts"
   ]
 }

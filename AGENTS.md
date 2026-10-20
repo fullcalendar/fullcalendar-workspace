@@ -18,20 +18,23 @@ Much of the other code is superfluous or mechanically derived from the above dir
 
 ## Verifying Fixes By Running Tests
 
-Run the automated tests yourself to verify changes. They are Karma/Jasmine specs in `standard/packages/vanilla-tests` and `premium/packages/vanilla-scheduler-tests`, run in headless Chrome.
+Run the automated tests yourself to verify changes. They are Vitest tests in `standard/packages/vanilla-tests` and `premium/packages/vanilla-scheduler-tests`. Most run in headless Chromium (Vitest browser mode, with real mouse and touch input through Playwright). `*.unit.ts` files run in Node.
 
-**Run targeted specs by default.** Run the full suite of a package only when the developer explicitly asks.
+**Run targeted tests by default.** Run the full suite of a package only when the developer explicitly asks.
 
 ```sh
-node scripts/bin/karma-test.js premium/packages/vanilla-scheduler-tests "filterResourcesWithEvents"
-node scripts/bin/karma-test.js premium/packages/vanilla-scheduler-tests "/^(vresource|timeGrid-view)/"
+cd premium/packages/vanilla-scheduler-tests
+pnpm exec vitest run tests/resource-data/filter-resources-with-events.ts
+pnpm exec vitest run tests/event-drag -t "resource"
 ```
 
-- **Filter:** the second argument matches each spec's full name (all enclosing `describe` titles plus the `it` title, joined by spaces). Use a plain substring, or `/regex/flags`. Leave it out to run everything. Prefer this over `fdescribe`/`fit`: the test index generator also treats those as a filter, which changes what gets built.
-- **Build first:** the runner executes the package's already-built `dist/index.js`, which inlines all of fullcalendar. The developer usually has `pnpm dev` running, which rebuilds it within seconds of any source or test edit. Before running, confirm the bundle is current, e.g. grep `dist/index.js` for an identifier you just added. If it isn't updating, ask the developer to start `pnpm dev`.
-- **Sandbox:** Karma binds local port 9876. If the sandbox blocks that (`EPERM`), run the command outside the sandbox.
-- **Output:** only failures and a summary line (`Executed N of M ... SUCCESS`). Skipped specs are the ones the filter excluded. Report pass/fail counts and failure output as-is.
-- **Gotcha:** an "invalid license key" banner overlays the bottom-left of scheduler calendars, so simulated clicks near the bottom edge of a cell hit the banner instead of the cell.
+- **Filter:** pass test files or folders, and/or `-t <pattern>` to match test names (all enclosing `describe` titles plus the `it` title). `--project browser` or `--project unit` limits the run to one kind.
+- **Build first:** the tests import the built packages (`fullcalendar`, `fullcalendar-scheduler`, ...), not their source. The developer usually has `pnpm dev` running, which rebuilds them within seconds of a source edit. Before running, confirm the build is current, e.g. grep the package's `dist/` for an identifier you just added. If it isn't updating, ask the developer to start `pnpm dev`. Test edits need no build.
+- **React:** `FORCE_REACT=1` runs the suites against the React-rendering builds (`fullcalendar-w-react`, ...). CI runs both.
+- **Sandbox:** the browser binds local ports. If the sandbox blocks that (`EPERM`), run the command outside the sandbox.
+- **Output:** report pass/fail counts and failure output as-is. Known library bugs are `it.fails` tests, which pass while the bug exists.
+- **Writing tests:** query elements by their `data-fc-part` attribute and use the models in `tests/lib/models/`, and await `waitForSettle()` (`tests/lib/settle.ts`) instead of sleeping. Use real input through `tests/lib/pointer.ts`, never synthetic events.
+- **Gotcha:** an "invalid license key" banner overlays the bottom-left of scheduler calendars with an invalid key. The test setup uses a valid one.
 
 ## Theme Pipeline
 

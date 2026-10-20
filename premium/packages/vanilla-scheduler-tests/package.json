@@ -3,15 +3,11 @@
   "name": "@fullcalendar-tests/premium",
   "version": "0.0.0",
   "dependencies": {
-    "@fullcalendar-tests/standard": "workspace:*",
-    "xhr-mock": "^2.5.1"
+    "@fullcalendar-tests/standard": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "@fullcalendar/preact": "workspace:*",
-    "@types/jasmine": "^3.3.12",
-    "@types/jasmine-jquery": "^1.5.33",
-    "@types/jquery": "^3.3.29",
     "@vitest/browser-playwright": "^4.0.18",
     "fetch-mock": "^9.11.0",
     "fullcalendar": "workspace:*",
@@ -19,24 +15,12 @@
     "fullcalendar-scheduler-w-react": "workspace:*",
     "fullcalendar-w-react": "workspace:*",
     "playwright": "^1.58.1",
-    "retry-cli": "^0.7.0",
-    "temporal-polyfill": "^1.0.1",
     "vitest": "^4.0.18"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build",
-    "test": "standard-scripts pkg:test",
-    "test:dev": "retry -n 999 -- standard-scripts pkg:test --dev",
-    "clean": "standard-scripts pkg:clean",
-    "lint": "eslint .",
-    "test:vitest": "vitest run",
-    "test:vitest:dev": "vitest"
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "lint": "eslint ."
   },
-  "type": "module",
-  "buildConfig": "./build.config.js",
-  "karmaConfig": {
-    "files": [
-      "./dist/index.js"
-    ]
-  }
+  "type": "module"
 }
