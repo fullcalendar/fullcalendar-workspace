@@ -10,21 +10,49 @@ describe('timeline visible range', () => {
   }
 
   /*
-  A duration in days aligns to the day, so the range and its 7-day header intervals start at the
-  initial date. firstDay doesn't shift them.
+  Week alignment: when the slots or their header intervals are a whole number of weeks, they start on
+  firstDay. Otherwise firstDay doesn't come into play.
   */
-  it('starts a range of days and its 7-day header intervals at the initial date, regardless of firstDay', async () => {
-    const calendar = initCalendar({
+  describe('aligning to firstDay', () => {
+    const options = {
       initialDate: '2018-01-24', // a Wednesday
       initialView: 'timeline',
       duration: { days: 183 },
-      slotHeaderInterval: { days: 7 },
       firstDay: 1, // Monday
-    })
-    await waitForSettle()
+    }
 
-    expect(getActiveRange(calendar)).toEqual(['2018-01-24T00:00:00.000Z', '2018-07-26T00:00:00.000Z'])
-    expect(getSlotHeaderDates(calendar.el, 0).slice(0, 2)).toEqual(['2018-01-24', '2018-01-31'])
+    it('starts header intervals that aren\'t whole weeks at the initial date', async () => {
+      const calendar = initCalendar({ ...options, slotHeaderInterval: { days: 5 } })
+      await waitForSettle()
+
+      expect(getActiveRange(calendar)).toEqual(['2018-01-24T00:00:00.000Z', '2018-07-26T00:00:00.000Z'])
+      expect(getSlotHeaderDates(calendar.el, 0).slice(0, 2)).toEqual(['2018-01-24', '2018-01-29'])
+    })
+
+    it.each([
+      ['slotDuration', { slotDuration: { weeks: 1 } }],
+      ['slotHeaderInterval', { slotHeaderInterval: { weeks: 1 } }],
+    ])('starts a %s in weeks on firstDay', async (_desc, moreOptions) => {
+      const calendar = initCalendar({ ...options, ...moreOptions })
+      await waitForSettle()
+
+      expect(getSlotHeaderDates(calendar.el, 0).slice(0, 2)).toEqual(['2018-01-22', '2018-01-29'])
+    })
+
+    /*
+    KNOWN BUG (`it.fails` until fixed): a whole number of weeks given in days isn't treated as weeks.
+    Only a slotDuration whose greatest unit is week/month/year sets largeUnit
+    (timeline-date-profile.ts), so these start on the initial Wednesday.
+    */
+    it.fails.each([
+      ['slotHeaderInterval of 7 days', { slotHeaderInterval: { days: 7 } }],
+      ['slotDuration of 14 days', { slotDuration: { days: 14 } }],
+    ])('starts a %s on firstDay', async (_desc, moreOptions) => {
+      const calendar = initCalendar({ ...options, ...moreOptions })
+      await waitForSettle()
+
+      expect(getSlotHeaderDates(calendar.el, 0)[0]).toBe('2018-01-22')
+    })
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
