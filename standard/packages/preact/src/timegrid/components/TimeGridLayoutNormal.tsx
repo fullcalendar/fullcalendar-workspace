@@ -13,6 +13,7 @@ import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { SlicedCoordRange } from '../../coord-range'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useMeasuredState } from '../../hooks/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { computeDayGridColumns } from '../../daygrid/components/util'
@@ -86,10 +87,14 @@ export const TimeGridLayoutNormal = memo(function TimeGridLayoutNormal(props: Ti
     slatLabelInnerHeightRefMap,
   } = useTimeGridAxis()
   const [totalWidth, setTotalWidth] = useState<number | undefined>(undefined)
-  const [clientWidth, setClientWidth] = useState<number | undefined>(undefined)
-  const [clientHeight, setClientHeight] = useState<number | undefined>(undefined)
+  const [clientWidth, setClientWidth] = useMeasuredState()
+  const [clientHeight, setClientHeight] = useMeasuredState()
   const isActiveRef = useRef(false)
-  const [handleTotalWidth] = useState(() => (totalWidth: number) => {
+  const [handleTotalWidth] = useState(() => (totalWidth: number | null) => {
+    if (totalWidth == null) { // unmounting. see useMeasuredState
+      return
+    }
+
     // Must delay the rerender because might change the width of the all-day DayGridRow events,
     // which shows a ResizeObserver loop warning
     requestAnimationFrame(() => {

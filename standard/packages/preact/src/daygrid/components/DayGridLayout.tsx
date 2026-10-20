@@ -13,7 +13,8 @@ import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../common/render-hook'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useInitialScroll } from '../../hooks/useInitialScroll'
-import { memo, useRef, useState } from 'react'
+import { useMeasuredState } from '../../hooks/useMeasuredState'
+import { memo, useRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
 import { DayGridLayoutPrint } from './DayGridLayoutPrint'
@@ -90,18 +91,8 @@ function DayGridLayoutBody(props: DayGridLayoutProps) {
 
   // measured on screen. kept while printing, which doesn't measure. print uses totalWidth for row
   // min-heights (see the roadmap's phase 7 catch)
-  const [totalWidth, setTotalWidth] = useState<number | undefined>(undefined)
-  const [clientWidth, setClientWidth] = useState<number | undefined>(undefined)
-  const [handleTotalWidth] = useState(() => (width: number | null) => {
-    if (width != null) {
-      setTotalWidth(width)
-    }
-  })
-  const [handleClientWidth] = useState(() => (width: number | null) => {
-    if (width != null) {
-      setClientWidth(width)
-    }
-  })
+  const [totalWidth, handleTotalWidth] = useMeasuredState()
+  const [clientWidth, handleClientWidth] = useMeasuredState()
 
   const scrollerRef = useRef<ScrollerInterface | null>(null) // the body scroller
   const xScrollerRef = useRef<ScrollerInterface | null>(null) // pannable's syncer

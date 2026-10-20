@@ -18,6 +18,7 @@ import { generateClassName } from '../../common/render-hook'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useScrollerSyncer } from '../../hooks/useScrollerSyncer'
+import { useMeasuredState } from '../../hooks/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { RowConfig } from '../../daygrid/header-tier'
@@ -95,11 +96,11 @@ export const TimeGridLayoutPannable = memo(function TimeGridLayoutPannable(props
     slatLabelInnerWidthRefMap,
     slatLabelInnerHeightRefMap,
   } = useTimeGridAxis()
-  const [totalWidth, setTotalWidth] = useState<number | undefined>(undefined)
-  const [bodyHeight, setBodyHeight] = useState<number | undefined>(undefined)
-  const [clientWidth, setClientWidth] = useState<number | undefined>(undefined)
-  const [clientHeight, setClientHeight] = useState<number | undefined>(undefined)
-  const [stickyBottomScrollbarWidth, setStickyBottomScrollbarWidth] = useState<number | undefined>(undefined)
+  const [totalWidth, setTotalWidth] = useMeasuredState()
+  const [bodyHeight, setBodyHeight] = useMeasuredState()
+  const [clientWidth, setClientWidth] = useMeasuredState()
+  const [clientHeight, setClientHeight] = useMeasuredState()
+  const [stickyBottomScrollbarWidth, setStickyBottomScrollbarWidth] = useMeasuredState()
   const [headerTierHeights, setHeaderTierHeights] = useState<number[]>(EMPTY_HEIGHTS)
 
   // header tier heights: the taller of each tier's label and main row

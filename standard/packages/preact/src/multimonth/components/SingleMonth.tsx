@@ -11,6 +11,7 @@ import { memo, useMemo, useState } from 'react'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { useReportedSize } from '../../hooks/useReportedSize'
+import { useMeasuredState } from '../../hooks/useMeasuredState'
 import { buildDateRowConfig } from '../../daygrid/header-tier'
 import { buildDayTableModel, computeDayGridColumns, createDayHeaderFormatter } from '../../daygrid/components/util'
 import { DayGridRows } from '../../daygrid/components/DayGridRows'
@@ -82,7 +83,7 @@ export const SingleMonth = memo(function SingleMonth(props: SingleMonthProps) {
   })
 
   // measurements
-  const [gridWidth, setGridWidth] = useState<number | undefined>(undefined)
+  const [gridWidth, setGridWidth] = useMeasuredState()
   const [titleHeight, setTitleHeight] = useState<number | undefined>(undefined)
   const [tableHeaderHeight, setTableHeaderHeight] = useState<number | undefined>(undefined)
   const handleTitleEl = useReportedSize({

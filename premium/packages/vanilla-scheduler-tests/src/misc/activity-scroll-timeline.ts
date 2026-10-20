@@ -86,3 +86,67 @@ describe('timeline scroll position across a hidden <Activity>', () => {
     }
   }
 })
+
+/*
+Hiding and showing must not re-render the layouts more than a plain re-render does (see
+standard/packages/vanilla-tests/src/view-render/activity-rerender.ts)
+*/
+describe('timeline render hooks across a hidden <Activity>', () => {
+  const react = vdom as any
+
+  for (const initialView of ['timelineDay']) {
+    it(`calls tableClass no more in ${initialView}`, async () => {
+      if (!react.Activity) {
+        pending('React runtime only')
+        return
+      }
+
+      let containerEl = document.createElement('div')
+      containerEl.style.width = '600px'
+      document.body.appendChild(containerEl)
+      let root = react.createRoot(containerEl)
+      let callCnt = 0
+      let fullCalendarProps = { // the same object every render
+        plugins: [timelinePlugin, resourceTimelinePlugin, classicThemePlugin, themeForTestsPlugin, themeForTestsPremiumPlugin],
+        initialView,
+        initialDate: '2024-01-03',
+        resources: [{ id: 'a', title: 'Resource A' }],
+        tableClass: () => {
+          callCnt++
+          return ''
+        },
+      }
+
+      function render(mode: 'visible' | 'hidden') {
+        react.flushSync(() => {
+          root.render(
+            react.createElement(react.Activity, { mode },
+              react.createElement(react.FullCalendar, fullCalendarProps),
+            ),
+          )
+        })
+      }
+
+      try {
+        render('visible')
+        await waitTimeout(200)
+
+        let settledCallCnt = callCnt
+        render('visible')
+        await waitTimeout(200)
+        let rerenderCallCnt = callCnt - settledCallCnt
+
+        settledCallCnt = callCnt
+        render('hidden')
+        await waitTimeout(100)
+        render('visible')
+        await waitTimeout(200)
+
+        expect(callCnt - settledCallCnt).toBeLessThanOrEqual(rerenderCallCnt)
+      } finally {
+        root.unmount()
+        containerEl.remove()
+      }
+    })
+  }
+})

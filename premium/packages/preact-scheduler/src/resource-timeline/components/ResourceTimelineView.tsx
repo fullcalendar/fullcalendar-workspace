@@ -3,6 +3,7 @@ import {
   greatestDurationDenominator,
   isArraysEqual,
   useLatest,
+  useMeasuredState,
   useNow,
   useReportedSize,
   useViewContext,
@@ -37,9 +38,9 @@ function ResourceTimelineViewBody(props: ResourceViewProps) {
   const { options } = context
 
   const [colWidthOverrides, setColWidthOverrides] = useState<SiblingDimConfig[] | undefined>(undefined)
-  const [spreadsheetClientWidth, setSpreadsheetClientWidth] = useState<number | undefined>(undefined) // pixel-width of scroll inner area
-  const [timeClientWidth, setTimeClientWidth] = useState<number | undefined>(undefined)
-  const [slotInnerWidth, setSlotInnerWidth] = useState<number | undefined>(undefined)
+  const [spreadsheetClientWidth, handleSpreadsheetClientWidth] = useMeasuredState() // pixel-width of scroll inner area
+  const [timeClientWidth, handleTimeClientWidth] = useMeasuredState()
+  const [slotInnerWidth, handleSlotInnerWidth] = useMeasuredState()
   const [expanderWidth, setExpanderWidth] = useState<number | undefined>(undefined)
 
   // kept here because print replaces the layout. see ResourceTimelineLayoutNormal
@@ -158,21 +159,6 @@ function ResourceTimelineViewBody(props: ResourceViewProps) {
 
       setColWidthOverrides((prev) => (prev && isArraysEqual(prev, newOverrides)) ? prev : newOverrides)
     },
-    handleSpreadsheetClientWidth(spreadsheetClientWidth: number | null) {
-      if (spreadsheetClientWidth != null) {
-        setSpreadsheetClientWidth(spreadsheetClientWidth)
-      }
-    },
-    handleTimeClientWidth(timeClientWidth: number | null) {
-      if (timeClientWidth != null) {
-        setTimeClientWidth(timeClientWidth)
-      }
-    },
-    handleSlotInnerWidth(slotInnerWidth: number | null) {
-      if (slotInnerWidth != null) {
-        setSlotInnerWidth(slotInnerWidth)
-      }
-    },
   }))
   const handleExpanderEl = useReportedSize({
     watchWidth: true,
@@ -220,15 +206,15 @@ function ResourceTimelineViewBody(props: ResourceViewProps) {
           hasResourceBusinessHours={hasResourceBusinessHours}
           fallbackBusinessHours={fallbackBusinessHours}
           slotLiquid={slotLiquid}
-          timeClientWidthRef={handlers.handleTimeClientWidth}
-          slotInnerWidthRef={handlers.handleSlotInnerWidth}
+          timeClientWidthRef={handleTimeClientWidth}
+          slotInnerWidthRef={handleSlotInnerWidth}
           initialSpreadsheetWidthConfig={spreadsheetWidthConfig}
           spreadsheetCanvasWidth={spreadsheetCanvasWidth}
           initialScroll={scrollRef.current /* for reviving after print-view */}
 
           // refs
           spreadsheetResizedWidthConfigRef={spreadsheetResizedWidthConfigRef}
-          spreadsheetClientWidthRef={handlers.handleSpreadsheetClientWidth} // for pixel value
+          spreadsheetClientWidthRef={handleSpreadsheetClientWidth} // for pixel value
           scrollRef={scrollRef}
 
           // handlers

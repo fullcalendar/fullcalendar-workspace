@@ -2,6 +2,7 @@ import {
   ViewProps,
   BaseComponent,
   greatestDurationDenominator,
+  useMeasuredState,
   useNow,
   useViewContext,
 } from '@fullcalendar/preact/protected-api'
@@ -22,8 +23,8 @@ export class TimelineView extends BaseComponent<ViewProps> {
 function TimelineViewBody(props: ViewProps) {
   const context = useViewContext()
   const { options } = context
-  const [clientWidth, setClientWidth] = useState<number | undefined>(undefined)
-  const [slotInnerWidth, setSlotInnerWidth] = useState<number | undefined>(undefined)
+  const [clientWidth, handleClientWidth] = useMeasuredState()
+  const [slotInnerWidth, handleSlotInnerWidth] = useMeasuredState()
 
   // the layout's scroll, kept here because print replaces the layout. see TimelineLayoutNormal
   const scrollRef = useRef<TimelineScroll | null>(null)
@@ -68,19 +69,6 @@ function TimelineViewBody(props: ViewProps) {
     tDateProfile,
     context.dateEnv,
   )
-
-  /* sizing */
-
-  const [handleSlotInnerWidth] = useState(() => (slotInnerWidth: number | null) => {
-    if (slotInnerWidth != null) {
-      setSlotInnerWidth(slotInnerWidth)
-    }
-  })
-  const [handleClientWidth] = useState(() => (clientWidth: number | null) => {
-    if (clientWidth != null) {
-      setClientWidth(clientWidth)
-    }
-  })
 
   const baseProps = {
     className: props.className,

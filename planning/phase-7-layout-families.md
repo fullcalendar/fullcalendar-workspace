@@ -309,3 +309,24 @@ Plan: `phase-7-resource-timeline-plan.md` (the layout's decomposition).
   (`ResourceLane`, `ResourceTimelineLayoutPrint`'s header rows). Guards reached through
   `afterSize` are fine either way, since it drains after the whole commit.
 
+
+### Timeline review (Sol, high effort)
+
+One P2, reproduced by the reviewer with React 19, and fixed across the families:
+
+- **An `<Activity>` hide and show re-rendered layouts, calling `tableClass` and other render hooks
+  again.** Two causes:
+  1. Measurements went to plain state setters, and children report `null` on cleanup (an
+     `<Activity>` hide, a Strict Mode replay), so the state was cleared, then measured again. The
+     classes ignored it, because `_isUnmounting` was set.
+  2. On show they report the same value again. React can't always skip a same-value update before
+     rendering (not while the component has pending work, as on reveal), so it called the component,
+     and its render hooks, then bailed out. The classes' `shouldComponentUpdate` stopped that.
+- **`useMeasuredState`** (`hooks/useMeasuredState.ts`): a stable setter that ignores `null` and
+  repeats. Now used by every layout measurement that went to a setter (TimeGrid Normal and Pannable,
+  MultiMonth and its months, Timeline, the DayGrid body, the Timeline and ResourceTimeline views).
+- **Specs:** `vanilla-tests/src/view-render/activity-rerender.ts` (dayGridMonth, timeGridWeek,
+  multiMonthYear, listWeek) and the timeline case in the premium `activity-scroll-timeline.ts`, React
+  runtime: hiding and showing may cost no more `tableClass` calls than a plain re-render with the same
+  props does. Not zero, because the calendar's data currently re-renders the standard views once on a
+  plain re-render (new event segs from upstream of the layouts). Follow-up: find why.

@@ -4,6 +4,7 @@ import { BaseComponent } from '../../vdom-util'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useNow } from '../../hooks/useNow'
 import { useInitialScroll } from '../../hooks/useInitialScroll'
+import { useMeasuredState } from '../../hooks/useMeasuredState'
 import { ViewProps } from '../../component-util/View'
 import { ViewContainer } from '../../common/ViewContainer'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
@@ -14,7 +15,7 @@ import { Scroller } from '../../scrollgrid/Scroller'
 import { fracToCssDim } from '../../util/html'
 import classNames from '../../styles.module.css'
 import { buildDayTableRenderRange } from '../../daygrid/TableDateProfileGenerator'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { SingleMonth } from './SingleMonth'
 
@@ -30,7 +31,7 @@ function MultiMonthViewBody(props: ViewProps) {
   const { options } = context
   const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
   const { todayRange } = useNow('day')
-  const [innerWidth, setInnerWidth] = useState<number | undefined>(undefined)
+  const [innerWidth, setInnerWidth] = useMeasuredState()
 
   const monthDateProfiles = useMemo(
     () => splitDateProfileByMonth(

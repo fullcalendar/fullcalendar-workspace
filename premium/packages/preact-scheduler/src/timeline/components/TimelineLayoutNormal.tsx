@@ -20,6 +20,7 @@ import {
   ViewContainer,
   useHitTarget,
   useLatest,
+  useMeasuredState,
   useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -61,7 +62,7 @@ export interface TimelineLayoutNormalProps {
 export const TimelineLayoutNormal = memo(function TimelineLayoutNormal(props: TimelineLayoutNormalProps) {
   const context = useViewContext()
   const { options } = context
-  const [totalWidth, setTotalWidth] = useState<number | undefined>(undefined)
+  const [totalWidth, setTotalWidth] = useMeasuredState()
 
   // refs
   const headerScrollerRef = useRef<Scroller | null>(null)
