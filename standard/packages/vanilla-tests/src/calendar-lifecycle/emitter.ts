@@ -53,9 +53,7 @@ describe('on and off', () => {
     calendar.next()
     await waitForSettle()
 
-    // CalendarApi types off()'s handler as required, though leaving it out is supported
-    const offWithoutHandler = calendar.off as (handlerName: 'datesSet') => void
-    offWithoutHandler.call(calendar, 'datesSet')
+    calendar.off('datesSet')
     calendar.next()
     await waitForSettle()
 
