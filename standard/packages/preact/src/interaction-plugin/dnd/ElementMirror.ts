@@ -1,6 +1,7 @@
 import classNames from '../../styles.module.css'
 import { applyStyle } from '../../util/dom-manip'
 import { whenTransitionDone } from '../../util/dom-event'
+import { holdSettle, settleSetTimeout } from '../../util/settle'
 import type { Rect } from '../../util/geom'
 
 /*
@@ -80,7 +81,7 @@ export class ElementMirror {
     ) {
       this.doRevertAnimation(done, this.revertDuration)
     } else {
-      setTimeout(done, 0)
+      settleSetTimeout(done, 0)
     }
   }
 
@@ -97,9 +98,15 @@ export class ElementMirror {
       top: finalSourceElRect.top,
     })
 
+    const releaseSettle = holdSettle()
+
     whenTransitionDone(mirrorEl, () => {
       mirrorEl.style.transition = ''
-      callback()
+      try {
+        callback()
+      } finally {
+        releaseSettle()
+      }
     })
   }
 

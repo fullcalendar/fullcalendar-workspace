@@ -28,8 +28,9 @@ export class ScrollListener {
   private isWheel = false
 
   constructor(public el: HTMLElement) {
-    this.wheelWaiter = new DelayedRunner(this.handleWheelWait)
-    this.scrollWaiter = new DelayedRunner(this.handleScrollWait)
+    // scroll-end detection waits 500ms and renders nothing, so tests needn't wait on it
+    this.wheelWaiter = new DelayedRunner(this.handleWheelWait, /* isSettleUntracked = */ true)
+    this.scrollWaiter = new DelayedRunner(this.handleScrollWait, /* isSettleUntracked = */ true)
 
     el.addEventListener('scroll', this.handleScroll, { passive: true })
     el.addEventListener('wheel', this.handleWheel, { passive: true })
