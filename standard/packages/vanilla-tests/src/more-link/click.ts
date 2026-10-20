@@ -94,6 +94,19 @@ describe('moreLinkClick', () => {
     expect(calendar.view.currentStart.toISOString()).toBe('2014-07-29T00:00:00.000Z')
   })
 
+  it.each([
+    ['nothing', () => undefined],
+    ['\'popover\'', () => 'popover'],
+  ])('opens a popover when a function returns %s', async (_desc, moreLinkClick) => {
+    const calendar = initCalendar({ ...options, moreLinkClick } as CalendarOptions)
+    await waitForSettle()
+
+    await clickMoreLink(calendar)
+
+    expect(queryPart(document, 'popover')).not.toBeNull()
+    expect(calendar.view.type).toBe('dayGridMonth')
+  })
+
   it('gives the date in a named time zone', async () => {
     const moreLinkClick = vi.fn()
     const calendar = initCalendar({ ...options, timeZone: 'Asia/Hong_Kong', moreLinkClick } as CalendarOptions)
