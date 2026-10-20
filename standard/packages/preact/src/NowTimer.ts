@@ -32,8 +32,13 @@ export class NowTimer extends Component<NowTimerProps> {
     return props.children(nowDate, todayRange, nowMs)
   }
 
+  // also on remounts from Strict Mode and <Activity>, which call componentWillUnmount first
+  componentDidMount() {
+    this.runner.start()
+  }
+
   componentWillUnmount() {
-    this.runner.destroy()
+    this.runner.stop()
   }
 
   private handleChange = () => {

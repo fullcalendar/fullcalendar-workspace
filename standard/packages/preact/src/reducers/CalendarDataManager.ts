@@ -47,6 +47,9 @@ import { warn } from '../util/warn'
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
   onDataChange?: (data: CalendarData, actionsComplete: Action[]) => void
+  // only deliver onDataChange while mounted. otherwise it's held until mount().
+  // for React, where a render might never commit, or the calendar might be unmounted
+  isMountGated?: boolean
 }
 
 export type ReducerFunc = (
@@ -78,6 +81,15 @@ export class CalendarDataManager {
   private isDrainingActionQueue = false
   private actionQueue: Action[] = []
 
+  /*
+  Side effects that users or other objects can observe (callbacks, bindings). They run after the
+  reduction that queued them, except during a render-time update(), where they wait for
+  flushEffects() after the commit. A render might never commit (Suspense), so it mustn't have them.
+  */
+  private effectQueue: (() => void)[] = []
+  private isMounted = false
+  private pendingActions: Action[] = [] // completed while not mounted, for isMountGated
+
   private optionOverrides: CalendarOptions = {}
   private config: CalendarDataManagerConfig
   private state: CalendarDataManagerState // internal state
@@ -104,22 +116,61 @@ export class CalendarDataManager {
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
   }
 
-  destroy() {
-    this.nowTimer.destroy()
+  /*
+  Starts timers, runs effects queued by render-time updates, and delivers data changes held while
+  not mounted. Idempotent. Called again after unmount() for remounts (Strict Mode, <Activity>,
+  rendering after destroy())
+  */
+  mount() {
+    if (!this.isMounted) {
+      this.isMounted = true
+      this.nowTimer.start()
+      this.flushEffects()
+
+      const { pendingActions } = this
+      if (pendingActions.length) {
+        this.pendingActions = []
+        this.config.onDataChange?.(this.data, pendingActions)
+      }
+    }
+  }
+
+  unmount() {
+    if (this.isMounted) {
+      this.isMounted = false
+      this.nowTimer.stop()
+    }
 
     // CalendarInner rebinds on mount, for StrictMode remounts and rendering after destroy()
     this.data.calendarOptions.controller?._unsetApi(this.config.calendarApi)
   }
 
+  destroy() {
+    this.unmount()
+  }
+
   /*
-  Will NOT trigger onDataChange unless there were other actions in the queue
+  Will NOT trigger onDataChange unless there were other actions in the queue.
+  With isRendering, called during a render: effects wait for flushEffects(), and onDataChange isn't
+  called, because the render uses the returned data
   */
-  update(optionOverrides: CalendarOptions): CalendarData {
+  update(optionOverrides: CalendarOptions, isRendering = false): CalendarData {
     this.optionOverrides = optionOverrides
     this.actionQueue.push({ type: 'IDLE' }) // ensure reducer gets called
-    this.drainActionQueue()
+    this.drainActionQueue(isRendering)
 
     return this.data
+  }
+
+  // runs effects queued by render-time updates. call after each commit
+  flushEffects() {
+    if (this.effectQueue.length && !this.isDrainingActionQueue) {
+      this.drainActionQueue()
+    }
+  }
+
+  queueEffect = (effect: () => void) => {
+    this.effectQueue.push(effect)
   }
 
   /*
@@ -150,8 +201,7 @@ export class CalendarDataManager {
     }
   }
 
-  private drainActionQueue() {
-    let calendarContext: CalendarContext
+  private drainActionQueue(isRendering = false) {
     let { state, data } = this
     const isInit = !state
 
@@ -160,32 +210,42 @@ export class CalendarDataManager {
 
     this.isDrainingActionQueue = true
 
-    while (actionQueue.length) {
-      const action = actionQueue.shift()
+    // effects run after the reduction that queued them, and may dispatch more actions
+    while (actionQueue.length || (!isRendering && this.effectQueue.length)) {
+      if (actionQueue.length) {
+        const action = actionQueue.shift()
 
-      ;({ state, data, calendarContext } = this.reduce(state, data, action))
-      this.state = state
-      this.data = data
+        ;({ state, data } = this.reduce(state, data, action))
+        this.state = state
+        this.data = data
 
-      if (action.type !== 'IDLE') {
-        actionsComplete.push(action)
+        if (action.type !== 'IDLE') {
+          actionsComplete.push(action)
+        }
+      } else {
+        const effects = this.effectQueue
+        this.effectQueue = []
+
+        for (const effect of effects) {
+          effect()
+        }
       }
     }
 
     this.isDrainingActionQueue = false
 
-    if (isInit) {
-      const controllerOption = calendarContext.options.controller
-      if (controllerOption) {
-        controllerOption._setApi(this.config.calendarApi)
-      }
+    if (!isInit && !isRendering && actionsComplete.length) {
+      this.deliverDataChange(actionsComplete)
     }
+  }
 
-    if (!isInit && actionsComplete.length) {
-      const { onDataChange } = this.config
-      if (onDataChange) {
-        onDataChange(this.data, actionsComplete)
-      }
+  private deliverDataChange(actionsComplete: Action[]) {
+    const { onDataChange, isMountGated } = this.config
+
+    if (isMountGated && !this.isMounted) {
+      this.pendingActions.push(...actionsComplete)
+    } else if (onDataChange) {
+      onDataChange(this.data, actionsComplete)
     }
   }
 
@@ -234,6 +294,15 @@ export class CalendarDataManager {
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
+    }
+
+    // === Bind controller ===
+    // later bindings are in the controller option's change handler
+    if (isInit) {
+      const controller = optionsData.calendarOptions.controller
+      if (controller) {
+        this.queueEffect(() => controller._setApi(config.calendarApi))
+      }
     }
 
     // === Update now timer ===
@@ -324,10 +393,8 @@ export class CalendarDataManager {
     let wasLoading = prevState ? computeIsLoading(prevState, calendarContext) : false
     let isLoading = computeIsLoading(newState, calendarContext)
 
-    if (!wasLoading && isLoading) {
-      this.emitter.trigger('loading', true)
-    } else if (wasLoading && !isLoading) {
-      this.emitter.trigger('loading', false)
+    if (wasLoading !== isLoading) {
+      this.queueEffect(() => this.emitter.trigger('loading', isLoading))
     }
 
     // === Build CalendarData ===
@@ -347,6 +414,7 @@ export class CalendarDataManager {
       nowManager: this.nowManager,
       calendarApi: config.calendarApi,
       dispatch: this.dispatch,
+      queueEffect: this.queueEffect,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
       toolbarProps,

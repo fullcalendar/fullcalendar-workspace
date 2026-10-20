@@ -3,6 +3,11 @@
 
 - FIX: `CalendarController` stayed bound to its calendar after the calendar was destroyed or the `controller` option was changed or removed, so it kept reporting the old calendar's view and date. Also, constructing it without a callback threw an error, and so did `setOption('controller', undefined)`
 - FIX: Server-side rendering leaked memory on the server: each render left a timer of up to a day running, which kept that render's calendar in memory until it fired
+- FIX: React 19, a calendar inside a hidden `<Activity>` (such as a route Next.js keeps alive) that re-rendered while hidden kept its timers running after it was removed, keeping it in memory (#8112)
+- FIX: React, a render discarded by `<Suspense>` started timers that were never cleared, and its event fetches later warned "Can't perform a React state update on a component that hasn't mounted yet" (#8092)
+- FIX: React, an event fetch that finished after the calendar unmounted tried to update it, warning "Can't perform a React state update on an unmounted component" in React 17 (#7070)
+- FIX: React, the `loading` callback was called during render, so setting state in it warned "Cannot update a component while rendering a different component"
+- FIX: React Strict Mode (development only), the now-indicator and the switch to a new day stopped updating after mount
 
 
 ## v7.1.3

@@ -68,6 +68,8 @@ export interface CalendarData extends CalendarDataBase {
   viewTitle: string // based on current date
   calendarApi: CalendarApiImpl // TODO: try to remove this
   dispatch: (action: Action) => void
+  // for side effects that users or other objects can observe. see CalendarDataManager
+  queueEffect: (effect: () => void) => void
   emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove
   toolbarProps: CalendarToolbarProps

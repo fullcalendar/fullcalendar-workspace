@@ -102,7 +102,7 @@ Its objections are weighed, not followed blindly.
 | 5 | Render-hook rollout and leaf conversions | sketched below | 4 |
 | 6 | `useHitTarget` and interactions | sketched below | 3 |
 | 7 | Layout families | sketched below | 5, 6 |
-| 8 | Reducer purity | sketched below | — |
+| 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
 | 9 | Store slices, actions, API facade | sketched below | 8 |
 | 10 | Date profile | sketched below | 9 |
 | 11 | Granular contexts | sketched below | 9 |
@@ -153,7 +153,10 @@ Its objections are weighed, not followed blindly.
 - Fix the bug where a grid shown again jumps back to its start (#8112 bug 2): the initial scroll runs
   once per instance or date range, not once per mount.
 
-### 8. Reducer purity
+### 8. Reducer purity (done, see `phase-8-reducer-purity.md`)
+
+As built, fetching stays in the reducer, to keep server-rendered events. Mount gating handles its
+results instead. Originally sketched as follows.
 
 Inside today's `CalendarDataManager`, before any store split:
 

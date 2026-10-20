@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-import React, { Activity, Suspense, StrictMode, act } from 'react'
+import React, { Activity, Suspense, StrictMode, act, useState } from 'react'
 import { render } from '@testing-library/react'
 
 /*
@@ -7,6 +7,7 @@ React lifecycle cases the vanilla Karma specs can't reach: Strict Mode replays, 
 Only works on build dist code!
 
 Known bugs are `it.fails`, citing the issue. When a fix lands, the spec starts failing; flip it to `it`.
+(none currently)
 See planning/phase-2-render-hook-specs.md
 */
 import FullCalendar, { CalendarController } from '../dist/index'
@@ -74,10 +75,9 @@ it('clears its long timers on unmount', () => {
   expect(liveLongTimers.size).toBe(0)
 })
 
-// Strict Mode's simulated unmount destroys the timers, and they're only armed during render, so
-// nothing re-arms them until the next render. Dev-only: the now-indicator and the midnight refresh
-// stall. Fixed by phase 8, which starts timers in effects
-it.fails('keeps its long timers after Strict Mode replays the mount', () => {
+// Strict Mode's simulated unmount stops the timers, and the replayed mount must start them again.
+// Before phase 8 they were only armed during render, so the now-indicator and midnight refresh stalled
+it('keeps its long timers after Strict Mode replays the mount', () => {
   render(
     <StrictMode>
       <FullCalendar {...OPTIONS} />
@@ -101,9 +101,9 @@ it('binds a CalendarController after Strict Mode replays the mount, and unbinds 
   expect(controller.view).toBeUndefined()
 })
 
-// #8112 bug 1: NowTimerRunner.update() runs during render. A hidden <Activity> has already run its
-// cleanups, so a re-render while hidden arms timers that nothing clears. Fixed by phase 8
-it.fails('#8112: hiding in <Activity>, re-rendering, then unmounting leaves no long timers', () => {
+// #8112 bug 1: a hidden <Activity> has already run its cleanups, so a re-render while hidden must not
+// arm timers, because nothing would clear them. Fixed by phase 8: timers only arm on mount
+it('#8112: hiding in <Activity>, re-rendering, then unmounting leaves no long timers', () => {
   function App({ isShown, revision }: { isShown: boolean, revision: number }) {
     return (
       <Activity mode={isShown ? 'visible' : 'hidden'}>
@@ -125,9 +125,9 @@ it.fails('#8112: hiding in <Activity>, re-rendering, then unmounting leaves no l
   expect(liveLongTimers.size).toBe(0)
 })
 
-// #8092: a render that React discards, because a sibling suspended, has already armed timers in
-// render. Nothing ever cleans them up. Fixed by phase 8
-it.fails('#8092: a render discarded by Suspense leaves no long timers', async () => {
+// #8092: a render that React discards, because a sibling suspended, must not have armed timers,
+// because nothing would clean them up. Fixed by phase 8: timers only arm on mount
+it('#8092: a render discarded by Suspense leaves no long timers', async () => {
   const neverResolves = new Promise(() => {})
 
   function Suspender(): React.ReactNode {
@@ -145,6 +145,75 @@ it.fails('#8092: a render discarded by Suspense leaves no long timers', async ()
   unmount()
 
   expect(liveLongTimers.size).toBe(0)
+})
+
+// #8092: an async fetch started by a render React discards must not deliver its result later. React
+// would warn "Can't perform a React state update on a component that hasn't mounted yet"
+it('#8092: an async fetch from a render discarded by Suspense updates nothing', async () => {
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  const neverResolves = new Promise(() => {})
+
+  function Suspender(): React.ReactNode {
+    throw neverResolves
+  }
+
+  try {
+    const { unmount } = render(
+      <Suspense fallback={<div>loading</div>}>
+        <FullCalendar
+          {...OPTIONS}
+          events={(_info, successCallback) => {
+            origSetTimeout(() => successCallback([]), 10)
+          }}
+        />
+        <Suspender />
+      </Suspense>,
+    )
+
+    await act(() => new Promise((resolve) => origSetTimeout(resolve, 50)))
+    unmount()
+
+    expect(consoleErrorSpy.mock.calls.map(String).join('\n')).not.toMatch(/state update/i)
+  } finally {
+    consoleErrorSpy.mockRestore()
+  }
+})
+
+// the `loading` callback runs after the commit, so it may set a parent's state. During render, React
+// would warn "Cannot update a component while rendering a different component"
+it('calls `loading` outside of render, so it can set state', async () => {
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  const loadingCalls: boolean[] = []
+  // stable, because a new function each render would refetch on every render
+  const fetchEvents = (_info, successCallback) => {
+    origSetTimeout(() => successCallback([]), 10)
+  }
+
+  function App() {
+    const [, setIsLoading] = useState(false)
+
+    return (
+      <FullCalendar
+        {...OPTIONS}
+        events={fetchEvents}
+        loading={(isLoading) => {
+          loadingCalls.push(isLoading)
+          setIsLoading(isLoading)
+        }}
+      />
+    )
+  }
+
+  try {
+    const { unmount } = render(<App />)
+    await act(() => new Promise((resolve) => origSetTimeout(resolve, 50)))
+    unmount()
+
+    expect(loadingCalls).toEqual([true, false])
+    expect(consoleErrorSpy.mock.calls.map(String).join('\n')).not.toMatch(/while rendering a different component/)
+  } finally {
+    consoleErrorSpy.mockRestore()
+  }
 })
 
 // #8112 bug 2 (a grid shown again in <Activity> jumps back to its initial scroll) needs real layout,

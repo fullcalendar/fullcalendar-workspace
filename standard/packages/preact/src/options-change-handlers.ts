@@ -1,23 +1,27 @@
 import { CalendarContext } from './CalendarContext'
 import { CalendarController, PluginInput } from './index'
+import { CalendarData } from './reducers/data-types'
 import { EventSource } from './structs/event-source'
 import { hashValuesToArray } from './util/object'
 
 export const changeHandlerPlugin = {
   name: 'change-handler',
   optionChangeHandlers: {
-    controller(controller: CalendarController | undefined, context: CalendarContext) {
+    controller(controller: CalendarController | undefined, context: CalendarData) {
       // TODO: the initial setting is in CalendarDataManager
       // still the previous data while change handlers run
       let prevController = context.getCurrentData().calendarOptions.controller
 
-      if (prevController && prevController !== controller) {
-        prevController._unsetApi(context.calendarApi)
-      }
+      // binding is observable outside the calendar, so it waits for the commit when rendering
+      context.queueEffect(() => {
+        if (prevController && prevController !== controller) {
+          prevController._unsetApi(context.calendarApi)
+        }
 
-      if (controller) {
-        controller._setApi(context.calendarApi)
-      }
+        if (controller) {
+          controller._setApi(context.calendarApi)
+        }
+      })
     },
     events(events, context) {
       handleEventSources([events], context)

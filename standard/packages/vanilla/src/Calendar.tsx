@@ -47,6 +47,9 @@ export class Calendar extends CalendarApiImpl {
       onDataChange: this.handleDataChange,
     })
     this.currentData = this.dataManager.update(optionOverrides)
+
+    // starts the now-timer. vanilla calendars are usable before render(), and always have been
+    this.dataManager.mount()
   }
 
   private handleDataChange = (data: CalendarData, actions: Action[]) => {
@@ -116,6 +119,9 @@ export class Calendar extends CalendarApiImpl {
 
   render() {
     let wasRendering = this.isRendering
+
+    // again after destroy()
+    this.dataManager.mount()
 
     if (!wasRendering) {
       this.isRendering = true

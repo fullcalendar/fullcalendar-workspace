@@ -3,6 +3,10 @@
 Check each one once the refactor lands, then close it with a changelog entry. None are fixed by the
 pre-pass (see `pre-pass-changelog.md`).
 
+**Status after phase 8 (2026-10-20):** #8092 and #7070 are fixed; close them with the changelog
+entries. #8112 bug 1 is fixed, but bug 2 waits for phase 7, so keep #8112 open. Each fix has a spec in
+`standard/packages/react/tests/lifecycle.tsx`.
+
 The shared root cause is side effects during render: `CalendarDataManager` runs its reducer from
 render, and the reducer starts fetches, dispatches from option change handlers, and arms timers
 through `NowTimerRunner.update()`. A render that React discards or re-runs (Suspense, concurrent

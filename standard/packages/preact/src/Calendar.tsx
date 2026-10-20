@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useState,
   useEffect,
+  useLayoutEffect,
   useImperativeHandle,
 } from 'react'
 import { flushSync } from 'react-dom'
@@ -41,19 +42,28 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
   const [calendarDataManager] = useState(() => new CalendarDataManager({
     calendarApi,
     onDataChange: handleDataChange,
+    isMountGated: true, // a render might never commit
   }))
 
-  useEffect(() => { // Cleanup on unmount
+  // timers, and data changes from async work (fetches), only while mounted.
+  // runs again for remounts from Strict Mode and <Activity>
+  useIsomorphicLayoutEffect(() => {
+    calendarDataManager.mount()
     return () => {
-      calendarDataManager.destroy()
+      calendarDataManager.unmount()
     }
   }, [])
+
+  // effects queued by the render, like the `loading` callback
+  useIsomorphicLayoutEffect(() => {
+    calendarDataManager.flushEffects()
+  })
 
   useImperativeHandle(ref, () => ({
     getApi: () => calendarApi
   }), [])
 
-  const data = calendarDataManager.update(props)
+  const data = calendarDataManager.update(props, /* isRendering = */ true)
 
   return (
     <CalendarMediaRoot emitter={data.emitter}>
@@ -76,6 +86,9 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
     </CalendarMediaRoot>
   )
 })
+
+// avoids React 17/18's warning about layout effects when server-side rendering
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 function needsSyncRender(actions: Action[]): boolean {
   for (const action of actions) {

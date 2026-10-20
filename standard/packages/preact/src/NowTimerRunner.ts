@@ -30,47 +30,32 @@ export class NowTimerRunner {
 
   // internal
   private timeoutId: any
-  private isMounted = false
+  private nextChangeMs: number // epoch ms when the output is next expected to change
+  private hasInputs = false
+  private isStarted = false
 
   constructor(
     private handleChange: () => void,
   ) {}
 
+  /*
+  Computes now. Pure unless started: called during render, where arming a timer would leak from
+  renders that never commit (Suspense) or that happen while hidden (<Activity>), because nothing
+  would call stop(). Timers are only armed between start() and stop(), which run on mount/unmount.
+  */
   update(input: NowTimerRunnerInput): NowTimerRunnerOutput {
-    if (!this.isMounted) {
-      this.isMounted = true
-
-      // init inputs
-      this.unit = input.unit
-      this.unitValue = input.unitValue
-      this.nowIndicatorSnap = input.nowIndicatorSnap
-      this.nowManager = input.nowManager
-      this.dateEnv = input.dateEnv
-
-      // init outputs
-      const timing = this.computeTiming()
-      this.nowDate = timing.nowDate
-      this.nowMs = timing.nowMs
-      this.todayRange = timing.todayRange
-
-      // init listeners
-      // SSR check. update() is called during render, and on the server nothing ever calls
-      // destroy(), so a timer would retain the calendar until it fires (up to a day)
-      if (isLiveEnvironment()) {
-        this.setTimeout(timing.waitMs)
-        this.nowManager.addResetListener(this.handleRefresh)
-
-        // fired tab becomes visible after being hidden
-        document.addEventListener('visibilitychange', this.handleVisibilityChange)
-      }
-    } else if (
+    if (
+      !this.hasInputs ||
       input.unit !== this.unit ||
       input.unitValue !== this.unitValue ||
       input.nowIndicatorSnap !== this.nowIndicatorSnap ||
       input.nowManager !== this.nowManager ||
       input.dateEnv !== this.dateEnv
     ) {
-      // update inputs
+      const hadInputs = this.hasInputs
+      const prevNowManager = this.nowManager
+
+      this.hasInputs = true
       this.unit = input.unit
       this.unitValue = input.unitValue
       this.nowIndicatorSnap = input.nowIndicatorSnap
@@ -84,10 +69,13 @@ export class NowTimerRunner {
       this.nowDate = timing.nowDate
       this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
+      this.nextChangeMs = timing.epochMs + timing.waitMs
 
-      if (isLiveEnvironment()) {
-        this.clearTimeout()
-        this.setTimeout(timing.waitMs)
+      if (this.isStarted) {
+        if (hadInputs) {
+          this.disarm(prevNowManager)
+        }
+        this.arm(timing.waitMs)
       }
     }
 
@@ -98,16 +86,59 @@ export class NowTimerRunner {
     }
   }
 
-  destroy() {
-    if (this.isMounted) {
-      this.isMounted = false
-      this.clearTimeout()
-      this.nowManager.removeResetListener(this.handleRefresh)
+  /*
+  Called on mount, including remounts from Strict Mode and <Activity>. If the output was due to
+  change while not started (time passed while hidden, or between render and mount), it's recomputed
+  and the change reported. Otherwise the timer waits out the remainder, so mounting alone never
+  causes a re-render.
+  */
+  start() {
+    if (!this.isStarted) {
+      this.isStarted = true
 
-      // SSR check. see update()
-      if (isLiveEnvironment()) {
-        document.removeEventListener('visibilitychange', this.handleVisibilityChange)
+      if (this.hasInputs) {
+        const remainingMs = this.nextChangeMs - this.nowManager.getEpochMs()
+
+        if (remainingMs <= 0) {
+          this.arm(this.refresh())
+        } else {
+          this.arm(remainingMs)
+        }
       }
+    }
+  }
+
+  stop() {
+    if (this.isStarted) {
+      this.isStarted = false
+
+      if (this.hasInputs) {
+        this.disarm(this.nowManager)
+      }
+    }
+  }
+
+  destroy() {
+    this.stop()
+  }
+
+  private arm(waitMs?: number) {
+    // SSR check. start() only runs on mount, which doesn't happen on the server, but vanilla
+    // calendars start in their constructor
+    if (isLiveEnvironment()) {
+      this.setTimeout(waitMs)
+      this.nowManager.addResetListener(this.handleRefresh)
+
+      // fired tab becomes visible after being hidden
+      document.addEventListener('visibilitychange', this.handleVisibilityChange)
+    }
+  }
+
+  private disarm(nowManager: CalendarNowManager) {
+    if (isLiveEnvironment()) {
+      this.clearTimeout()
+      nowManager.removeResetListener(this.handleRefresh)
+      document.removeEventListener('visibilitychange', this.handleVisibilityChange)
     }
   }
 
@@ -147,6 +178,7 @@ export class NowTimerRunner {
       nowDate,
       nowMs,
       todayRange: buildDayRange(nowDate),
+      epochMs: unroundedNowMs,
       waitMs,
     }
   }
@@ -161,6 +193,7 @@ export class NowTimerRunner {
       this.nowDate = timing.nowDate
       this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
+      this.nextChangeMs = timing.epochMs + timing.waitMs
       this.handleChange()
       this.setTimeout(timing.waitMs)
     }, waitMs)
@@ -169,11 +202,14 @@ export class NowTimerRunner {
   private clearTimeout() {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
+      this.timeoutId = undefined
     }
   }
 
-  private handleRefresh = () => {
+  // recomputes now, and reports a change
+  private refresh(): number {
     let timing = this.computeTiming()
+    this.nextChangeMs = timing.epochMs + timing.waitMs
 
     if (
       timing.nowDate.valueOf() !== this.nowDate.valueOf() ||
@@ -185,8 +221,14 @@ export class NowTimerRunner {
       this.handleChange()
     }
 
+    return timing.waitMs
+  }
+
+  private handleRefresh = () => {
+    let waitMs = this.refresh()
+
     this.clearTimeout()
-    this.setTimeout(timing.waitMs)
+    this.setTimeout(waitMs)
   }
 
   private handleVisibilityChange = () => {
