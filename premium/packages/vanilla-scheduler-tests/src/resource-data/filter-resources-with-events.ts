@@ -66,6 +66,21 @@ describe('filterResourcesWithEvents', () => {
       expect(getRenderedResourceIds(calendar)).toEqual(['b', 'd'])
       expect(getEventEls(calendar.el)).toHaveLength(2)
     })
+
+    it('filters resources that arrive before the events', async () => {
+      const heldEvents = createHeldFetch(() => eventsOfBAndD)
+      const calendar = initCalendar({ ...options, initialView, resources, events: heldEvents.fetch })
+      await waitForSettle()
+
+      expect(heldEvents.heldCallNums).toEqual([1])
+      expect(getRenderedResourceIds(calendar)).toEqual([])
+      expect(getEventEls(calendar.el)).toHaveLength(0)
+
+      await heldEvents.releaseAll()
+
+      expect(getRenderedResourceIds(calendar)).toEqual(['b', 'd'])
+      expect(getEventEls(calendar.el)).toHaveLength(2)
+    })
   })
 
   describe('in resource timeline', () => {

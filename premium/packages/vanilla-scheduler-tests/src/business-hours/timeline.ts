@@ -38,9 +38,22 @@ describe('timeline businessHours', () => {
     })
   }
 
+  /*
+  Throws unless each resource's lane has non-business fills spanning exactly the given time ranges,
+  vertically filling the lane.
+  */
   function expectResourceNonBusiness(root: HTMLElement, rangesByResource: Record<string, [string, string][]>): void {
     for (const [resourceId, ranges] of Object.entries(rangesByResource)) {
-      expectNonBusiness(root, getResourceLane(root, resourceId), ranges)
+      const laneEl = getResourceLane(root, resourceId)
+      const laneRect = laneEl.getBoundingClientRect()
+
+      expectNonBusiness(root, laneEl, ranges)
+      for (const fillEl of getNonBusinessEls(laneEl)) {
+        const fillRect = fillEl.getBoundingClientRect()
+        // tolerance for the lane's border and sub-pixel rounding
+        expect(Math.abs(fillRect.top - laneRect.top)).toBeLessThan(1.5)
+        expect(Math.abs(fillRect.bottom - laneRect.bottom)).toBeLessThan(1.5)
+      }
     }
   }
 
@@ -113,13 +126,12 @@ describe('timeline businessHours', () => {
       await waitForSettle()
 
       const laneHeights = getResourceLanes(calendar.el).map((el) => el.getBoundingClientRect().height)
-      expect(laneHeights[0]).toBeGreaterThan(100) // expanded
-      for (const resourceId of ['a', 'b', 'c']) {
-        const laneHeight = getResourceLane(calendar.el, resourceId).getBoundingClientRect().height
-        for (const fillEl of getNonBusinessEls(getResourceLane(calendar.el, resourceId))) {
-          expect(Math.abs(fillEl.getBoundingClientRect().height - laneHeight)).toBeLessThan(3)
-        }
+      expect(laneHeights).toHaveLength(3)
+      for (const laneHeight of laneHeights) {
+        expect(laneHeight).toBeGreaterThan(100) // expanded
       }
+      // the fills exist, cover the right times, and fill their lanes top to bottom
+      expectResourceNonBusiness(calendar.el, overrideRanges)
     })
 
     it('updates when a resource with an override is removed and re-added', async () => {

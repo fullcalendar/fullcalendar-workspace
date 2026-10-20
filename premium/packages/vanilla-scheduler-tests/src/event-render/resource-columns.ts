@@ -33,8 +33,9 @@ describe('event rendering in resource columns', () => {
   }
 
   /*
-  Checks that the element is in the column of (date, resource) and horizontally under its header cell
-  (the bottom header row has one cell per column, whichever is on top).
+  Checks that the element is in the column of (date, resource) and horizontally within its header cell
+  (the bottom header row has one cell per column, whichever is on top). Both edges must stay inside,
+  give or take a pixel of sub-pixel rounding. Margins only inset an event further.
   */
   function expectInColumn(calendar: Calendar, el: HTMLElement, date: string, resourceId: string) {
     const columns = new ResourceColumnsModel(calendar.el)
@@ -44,12 +45,22 @@ describe('event rendering in resource columns', () => {
     ))!
     const headerRect = headerCellEl.getBoundingClientRect()
     const rect = el.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
 
     const columnEl = el.closest('[data-fc-part~="dayLane"], [data-fc-part~="dayCell"]')!
     expect([columnEl.getAttribute('data-date'), columnEl.getAttribute('data-resource-id')]).toEqual([date, resourceId])
-    expect(centerX).toBeGreaterThan(headerRect.left)
-    expect(centerX).toBeLessThan(headerRect.right)
+    expect(rect.width).toBeGreaterThan(headerRect.width / 2) // not collapsed
+    expect(rect.left).toBeGreaterThanOrEqual(headerRect.left - 1)
+    expect(rect.right).toBeLessThanOrEqual(headerRect.right + 1)
+  }
+
+  /*
+  The isStart/isEnd of each rendered element, as reported to eventDidMount.
+  */
+  function getStartEndFlags(eventDidMount: ReturnType<typeof vi.fn>, els: HTMLElement[]): [boolean, boolean][] {
+    return els.map((el) => {
+      const info = eventDidMount.mock.calls.find(([callInfo]) => callInfo.el === el)![0]
+      return [info.isStart, info.isEnd]
+    })
   }
 
   describe.each(['auto', 'background'])('with display:%s', (display) => {
@@ -92,8 +103,7 @@ describe('event rendering in resource columns', () => {
       expectInColumn(calendar, els[1], WED, 'c')
 
       if (display === 'auto') {
-        const infos = els.map((el) => eventDidMount.mock.calls.find(([info]) => info.el === el)![0])
-        expect(infos.map((info) => [info.isStart, info.isEnd])).toEqual([[true, false], [false, true]])
+        expect(getStartEndFlags(eventDidMount, els)).toEqual([[true, false], [false, true]])
       }
     })
 
@@ -117,11 +127,13 @@ describe('event rendering in resource columns', () => {
     })
 
     it('splits a multi-day all-day event when dates are above resources', async () => {
+      const eventDidMount = vi.fn()
       const calendar = initCalendar({
         ...options,
         initialView: 'resourceDayGridTwoDay',
         datesAboveResources: true,
         events: [{ id: '1', title: 'event 1', start: TUE, end: '2015-11-19', resourceId: 'c', display }],
+        eventDidMount,
       })
       await waitForSettle()
       const els = getRenderedEls(calendar, display)
@@ -129,6 +141,10 @@ describe('event rendering in resource columns', () => {
       expect(els).toHaveLength(2)
       expectInColumn(calendar, els[0], TUE, 'c')
       expectInColumn(calendar, els[1], WED, 'c')
+
+      if (display === 'auto') {
+        expect(getStartEndFlags(eventDidMount, els)).toEqual([[true, false], [false, true]])
+      }
     })
   })
 

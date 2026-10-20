@@ -5,6 +5,7 @@ import { getRectCenter, pointer, touchPointer } from '@fullcalendar-tests/standa
 import { getEventEls, queryPart } from '@fullcalendar-tests/standard/src/lib/models/events'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
+import { expectElSpansSlots } from '../lib/models/timeline-layout'
 import {
   DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY, SPRING_FORWARD_0300_SLOT, expectCloseTo,
 } from '../lib/dst'
@@ -258,7 +259,7 @@ describe('event dragging in timeline', () => {
       const event = calendar.getEventById('1')!
       const eventLeft = timeline.getEventEls('1')[0].getBoundingClientRect().left
       const slotLeft = timeline.getSlotLanes()[slotIndex].getBoundingClientRect().left
-      return { event, eventLeft, slotLeft }
+      return { calendar, event, eventLeft, slotLeft }
     }
 
     it('moves across the fall-back transition by elapsed time', async () => {
@@ -271,11 +272,23 @@ describe('event dragging in timeline', () => {
     })
 
     it('drops onto the second copy of a repeated wall-clock time and stays there', async () => {
-      const { event, eventLeft, slotLeft } = await dragToSlot({ events: [dstEvent] }, FALL_BACK_SECOND_0130_SLOT)
+      const { calendar, event, eventLeft, slotLeft } = await dragToSlot({ events: [dstEvent] }, FALL_BACK_SECOND_0130_SLOT)
 
       expect(event.start!.toISOString()).toBe('2024-11-03T06:30:00.000Z') // the second 01:30 (EST)
-      expect(event.startStr).toBe('2024-11-03T01:30:00-05:00')
+      expect(event.end!.toISOString()).toBe('2024-11-03T07:00:00.000Z')
+      expect([event.startStr, event.endStr]).toEqual(['2024-11-03T01:30:00-05:00', '2024-11-03T02:00:00-05:00'])
       expectCloseTo(eventLeft, slotLeft)
+
+      // feeding the emitted strings back in, as an app saving and reloading its state would, renders the same
+      const { startStr, endStr } = event
+      event.remove()
+      calendar.addEvent({ id: '2', start: startStr, end: endStr })
+      await waitForSettle()
+
+      const reAddedEls = getEventEls(calendar.el, '2')
+      expect(getEventEls(calendar.el, '1')).toHaveLength(0)
+      expect(reAddedEls).toHaveLength(1)
+      expectElSpansSlots(calendar.el, reAddedEls[0], FALL_BACK_SECOND_0130_SLOT, FALL_BACK_0200_SLOT)
     })
 
     it('moves across the spring-forward gap by elapsed time', async () => {

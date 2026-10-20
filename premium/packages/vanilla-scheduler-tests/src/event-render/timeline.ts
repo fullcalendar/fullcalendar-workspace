@@ -6,7 +6,7 @@ import { getRectCenter, pointer } from '@fullcalendar-tests/standard/src/lib/poi
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 import {
   clickExpander, expectElSpansSlots, expectElSpansTimes, getBackgroundEventEls, getResourceAreaRows,
-  getResourceLane,
+  getResourceLane, getSlotLanes,
 } from '../lib/models/timeline-layout'
 import { DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY } from '../lib/dst'
 
@@ -358,6 +358,15 @@ describe('event rendering in timeline', () => {
       const eventsTop = Math.min(...eventEls.map((el) => el.getBoundingClientRect().top))
       expect(eventsBottom - eventsTop).toBeGreaterThan(110) // taller than contentHeight
       expect(bodyEl.scrollHeight).toBeGreaterThanOrEqual(Math.round(eventsBottom - eventsTop))
+
+      // the slots' background grows with them, down past the lowest event
+      const slotLaneEls = getSlotLanes(calendar.el)
+      expect(slotLaneEls).toHaveLength(48)
+      for (const slotLaneEl of slotLaneEls) {
+        const slotRect = slotLaneEl.getBoundingClientRect()
+        expect(slotRect.top).toBeLessThanOrEqual(eventsTop)
+        expect(slotRect.bottom).toBeGreaterThanOrEqual(eventsBottom)
+      }
     })
 
     it('shrinks a resource lane back after its resources and events are removed and re-added', async () => {

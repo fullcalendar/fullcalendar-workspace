@@ -111,6 +111,18 @@ describe('resource CRUD', () => {
         : new ResourceColumnsModel(calendar.el).getResourceHeaderIds()
     }
 
+    /*
+    The resources of the body: the timeline's lanes, or the columns' day lanes/day cells.
+    */
+    function getRenderedBodyIdsIn(view: string, calendar: Calendar): (string | null)[] {
+      if (view === 'resourceTimelineDay') {
+        return getTimelineResourceIds(calendar.el)
+      }
+      const columns = new ResourceColumnsModel(calendar.el)
+      const columnInfos = view === 'resourceTimeGridDay' ? columns.getDayLaneColumns() : columns.getDayCellColumns()
+      return columnInfos.map((column) => column.resourceId)
+    }
+
     describe.each(['resourceTimelineDay', 'resourceTimeGridDay', 'resourceDayGridDay'])('in %s', (initialView) => {
       const viewOptions = {
         ...options,
@@ -139,15 +151,21 @@ describe('resource CRUD', () => {
         const calendar = initCalendar(viewOptions)
         await waitForSettle()
 
+        expect(getRenderedBodyIdsIn(initialView, calendar)).toEqual(['a', 'b', 'c'])
+
         calendar.getResourceById('a')!.remove()
         expect(getRenderedIdsIn(initialView, calendar)).toEqual(['b', 'c'])
+        expect(getRenderedBodyIdsIn(initialView, calendar)).toEqual(['b', 'c'])
 
         calendar.getResourceById('b')!.remove()
         expect(getRenderedIdsIn(initialView, calendar)).toEqual(['c'])
+        expect(getRenderedBodyIdsIn(initialView, calendar)).toEqual(['c'])
 
         calendar.getResourceById('c')!.remove()
         await waitForSettle()
         expect(getRenderedIdsIn(initialView, calendar)).toEqual([])
+        // without resources, a column view falls back to one resource-less column for the day
+        expect(getRenderedBodyIdsIn(initialView, calendar)).toEqual(initialView === 'resourceTimelineDay' ? [] : [null])
         expect(calendar.getResources()).toEqual([])
       })
     })

@@ -10,6 +10,31 @@ With dayMinWidth, timeGrid views scroll horizontally, so the time axis and the h
 live outside the scrolling columns and must be kept in sync with them.
 */
 describe('timeGrid sizing with horizontal scrolling', () => {
+  /*
+  The header's rows are split between the fixed first column and the scrolling columns. Their heights,
+  grouped by row index: [fixed part, scrolling part] each.
+  */
+  function getHeaderRowHeightsByIndex(root: HTMLElement): { [rowIndex: string]: number[] } {
+    const rowEls = Array.from(queryPart(root, 'tableHeader')!.querySelectorAll<HTMLElement>('[role=row][aria-rowindex]'))
+    const heightsByRowIndex: { [rowIndex: string]: number[] } = {}
+
+    for (const rowEl of rowEls) {
+      (heightsByRowIndex[rowEl.getAttribute('aria-rowindex')!] ||= []).push(rowEl.getBoundingClientRect().height)
+    }
+    return heightsByRowIndex
+  }
+
+  function expectHeaderRowsInSync(root: HTMLElement, rowIndexes: string[]): void {
+    const heightsByRowIndex = getHeaderRowHeightsByIndex(root)
+
+    expect(Object.keys(heightsByRowIndex)).toEqual(rowIndexes)
+    for (const heights of Object.values(heightsByRowIndex)) {
+      expect(heights).toHaveLength(2) // the first column's part, and the scrolling part
+      expect(heights[0]).toBeGreaterThan(0)
+      expect(heights[0]).toBeCloseTo(heights[1], 0)
+    }
+  }
+
   // https://github.com/fullcalendar/fullcalendar/issues/5674
   it('keeps the slot labels lined up with the expanded slots', async () => {
     const calendar = initCalendar({
@@ -30,6 +55,7 @@ describe('timeGrid sizing with horizontal scrolling', () => {
 
       expect(Math.abs(slotHeaderEl.getBoundingClientRect().top - slotLaneEl.getBoundingClientRect().top)).toBeLessThan(1)
     }
+    expectHeaderRowsInSync(calendar.el, ['1']) // the date row
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5684
@@ -47,17 +73,7 @@ describe('timeGrid sizing with horizontal scrolling', () => {
     await waitForSettle()
     await heldResources.releaseAll()
 
-    const rowEls = Array.from(queryPart(calendar.el, 'tableHeader')!.querySelectorAll<HTMLElement>('[role=row][aria-rowindex]'))
-    const heightsByRowIndex: { [rowIndex: string]: number[] } = {}
-    for (const rowEl of rowEls) {
-      (heightsByRowIndex[rowEl.getAttribute('aria-rowindex')!] ||= []).push(rowEl.getBoundingClientRect().height)
-    }
-
-    expect(Object.keys(heightsByRowIndex)).toEqual(['1', '2']) // resource row, date row
-    for (const heights of Object.values(heightsByRowIndex)) {
-      expect(heights).toHaveLength(2) // the first column's part, and the scrolling part
-      expect(heights[0]).toBeCloseTo(heights[1], 0)
-    }
+    expectHeaderRowsInSync(calendar.el, ['1', '2']) // resource row, date row
   })
 
   describe('footerScrollbarSticky in resource timeGrid', () => {

@@ -268,18 +268,22 @@ describe('resource data in resource timeline', () => {
       expect(getVisibleResourceIds(calendar)).toContain('r089')
     })
 
+    // the new first row is either an existing row (r003) or a brand-new one (a000)
     it.each([
-      ['near the top', [20]],
-      ['to the top', [300, 0]],
-    ])('shows the new first row when re-added while scrolled %s', async (_desc, scrollTops) => {
+      ['r003', 'near the top', [20], buildIds(3, 90)],
+      ['a000', 'near the top', [20], ['a000', ...buildIds(3, 90)]],
+      ['r003', 'to the top', [300, 0], buildIds(3, 90)],
+      ['a000', 'to the top', [300, 0], ['a000', ...buildIds(3, 90)]],
+    ])('shows the new first row (%s) when re-added while scrolled %s', async (firstId, _desc, scrollTops, newIds) => {
       const calendar = initCalendar({ ...options, ...buildResourcesWithEvents(buildIds(0, 90)) })
       await waitForSettle()
       for (const scrollTop of scrollTops) {
         await scrollAndEnd(getTimeScroller(calendar.el), scrollTop)
       }
 
-      await replaceResources(calendar, buildResourcesWithEvents(['a000', ...buildIds(3, 90)]), false)
-      expectRowAtTop(calendar, 'a000')
+      await replaceResources(calendar, buildResourcesWithEvents(newIds), false)
+      expect(getResourceIds(calendar.el)[0]).toBe(firstId)
+      expectRowAtTop(calendar, firstId)
     })
 
     // the first row's height changes while the scroll position is stale
