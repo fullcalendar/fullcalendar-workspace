@@ -1,11 +1,11 @@
 import { DateRange } from '@full-ui/headless-calendar'
-import { type CSSProperties, type Ref } from 'react'
+import { memo, type CSSProperties, type Ref } from 'react'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { generateClassName } from '../../common/render-hook'
 import { DateProfile } from '../../DateProfileGenerator'
 import { RefMap } from '../../util/RefMap'
 import { joinClassNames } from '../../util/html'
-import { BaseComponent } from '../../vdom-util'
+import { useViewContext } from '../../hooks/useViewContext'
 import { DayGridRange, DayTableCell } from '../DayTableModel'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
@@ -43,84 +43,81 @@ export interface DayGridLayoutPrintProps {
   rowHeightRefMap?: RefMap<string, number>
 }
 
-export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
-  render() {
-    const { props, context } = this
-    const { options } = context
-    const tableDisplayInfo = {
-      borderlessX: props.borderlessX,
-      borderlessTop: props.borderlessTop,
-      borderlessBottom: props.borderlessBottom,
-      multiMonthColumns: props.multiMonthColumns,
-    }
-
-    return (
-      <table
-        role="presentation"
-        className={joinClassNames(
-          generateClassName(options.tableClass, tableDisplayInfo),
-          classNames.printTable,
-        )}
-        style={props.style}
-      >
-        <colgroup>
-          {props.cellRows[0].map((cell) => <col key={cell.key} />)}
-        </colgroup>
-        {props.showHeader && (
-          <thead
-            ref={props.headerElRef}
-            role="rowgroup"
-            className={generateClassName(options.tableHeaderClass, {
-              ...tableDisplayInfo,
-              isSticky: false,
-            })}
-          >
-            <DayGridHeaderRows
-              tableMode
-              headerTiers={props.headerTiers}
-              cellIsNarrow={props.cellIsNarrow}
-              cellIsMicro={props.cellIsMicro}
-            />
-            <tr role="presentation">
-              <th
-                role="presentation"
-                colSpan={props.cellRows[0].length}
-                className={joinClassNames(
-                  classNames.noPadding,
-                  generateClassName(options.dayHeaderDividerClass, {
-                    isSticky: false,
-                    multiMonthColumns: props.multiMonthColumns,
-                    options: { allDaySlot: Boolean(options.allDaySlot) },
-                  }),
-                )}
-              />
-            </tr>
-          </thead>
-        )}
-        <DayGridRows
-          dateProfile={props.dateProfile}
-          todayRange={props.todayRange}
-          cellRows={props.cellRows}
-          forPrint
-          tableMode
-          className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
-          dayMaxEvents={undefined}
-          dayMaxEventRows={props.dayMaxEventRows}
-
-          fgEventSegs={props.fgEventSegs}
-          bgEventSegs={props.bgEventSegs}
-          businessHourSegs={props.businessHourSegs}
-          dateSelectionSegs={[]}
-          eventDrag={null}
-          eventResize={null}
-          eventSelection={props.eventSelection}
-
-          visibleWidth={props.visibleWidth}
-          cellIsNarrow={props.cellIsNarrow}
-          cellIsMicro={props.cellIsMicro}
-          rowHeightRefMap={props.rowHeightRefMap}
-        />
-      </table>
-    )
+export const DayGridLayoutPrint = memo(function DayGridLayoutPrint(props: DayGridLayoutPrintProps) {
+  const { options } = useViewContext()
+  const tableDisplayInfo = {
+    borderlessX: props.borderlessX,
+    borderlessTop: props.borderlessTop,
+    borderlessBottom: props.borderlessBottom,
+    multiMonthColumns: props.multiMonthColumns,
   }
-}
+
+  return (
+    <table
+      role="presentation"
+      className={joinClassNames(
+        generateClassName(options.tableClass, tableDisplayInfo),
+        classNames.printTable,
+      )}
+      style={props.style}
+    >
+      <colgroup>
+        {props.cellRows[0].map((cell) => <col key={cell.key} />)}
+      </colgroup>
+      {props.showHeader && (
+        <thead
+          ref={props.headerElRef}
+          role="rowgroup"
+          className={generateClassName(options.tableHeaderClass, {
+            ...tableDisplayInfo,
+            isSticky: false,
+          })}
+        >
+          <DayGridHeaderRows
+            tableMode
+            headerTiers={props.headerTiers}
+            cellIsNarrow={props.cellIsNarrow}
+            cellIsMicro={props.cellIsMicro}
+          />
+          <tr role="presentation">
+            <th
+              role="presentation"
+              colSpan={props.cellRows[0].length}
+              className={joinClassNames(
+                classNames.noPadding,
+                generateClassName(options.dayHeaderDividerClass, {
+                  isSticky: false,
+                  multiMonthColumns: props.multiMonthColumns,
+                  options: { allDaySlot: Boolean(options.allDaySlot) },
+                }),
+              )}
+            />
+          </tr>
+        </thead>
+      )}
+      <DayGridRows
+        dateProfile={props.dateProfile}
+        todayRange={props.todayRange}
+        cellRows={props.cellRows}
+        forPrint
+        tableMode
+        className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
+        dayMaxEvents={undefined}
+        dayMaxEventRows={props.dayMaxEventRows}
+
+        fgEventSegs={props.fgEventSegs}
+        bgEventSegs={props.bgEventSegs}
+        businessHourSegs={props.businessHourSegs}
+        dateSelectionSegs={[]}
+        eventDrag={null}
+        eventResize={null}
+        eventSelection={props.eventSelection}
+
+        visibleWidth={props.visibleWidth}
+        cellIsNarrow={props.cellIsNarrow}
+        cellIsMicro={props.cellIsMicro}
+        rowHeightRefMap={props.rowHeightRefMap}
+      />
+    </table>
+  )
+})

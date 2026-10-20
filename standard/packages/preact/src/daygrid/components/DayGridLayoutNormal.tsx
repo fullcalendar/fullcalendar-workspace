@@ -1,5 +1,4 @@
 import { joinClassNames } from '../../util/html'
-import { BaseComponent, setRef } from '../../vdom-util'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DateRange } from '@full-ui/headless-calendar'
 import { DayTableCell, DayGridRange } from '../DayTableModel'
@@ -10,22 +9,19 @@ import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/util'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
-import { Ruler } from '../../scrollgrid/Ruler'
 import { generateClassName } from '../../common/render-hook'
-import { type Ref } from 'react'
+import { useViewContext } from '../../hooks/useViewContext'
+import { memo, type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
-import { dayMicroWidth } from './util'
 import { computeViewBorderless } from '../../util/misc'
-import { DayGridLayoutPrint } from './DayGridLayoutPrint'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cellRows: DayTableCell[][]
-  forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
@@ -40,178 +36,121 @@ export interface DayGridLayoutNormalProps {
   eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
 
+  // dimensions, measured by DayGridLayout (see DayGridColumns)
+  totalWidth: number | undefined
+  clientWidth: number | undefined
+  cellIsNarrow: boolean
+  cellIsMicro: boolean
+
   // refs
-  scrollerRef?: Ref<ScrollerInterface>
-  rowHeightRefMap?: RefMap<string, number>
+  clientWidthRef: Ref<number>
+  scrollerRef: Ref<ScrollerInterface>
+  rowHeightRefMap: RefMap<string, number>
 }
 
-interface DayGridViewState {
-  totalWidth?: number
-  clientWidth?: number
-}
+export const DayGridLayoutNormal = memo(function DayGridLayoutNormal(props: DayGridLayoutNormalProps) {
+  const { options } = useViewContext()
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+  const { totalWidth, clientWidth } = props
+  const { cellIsNarrow, cellIsMicro } = props
 
-export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
-  state = {} as DayGridViewState
-  private _isUnmounting: boolean
+  let endScrollbarWidth = (totalWidth != null && clientWidth != null)
+    ? totalWidth - clientWidth
+    : undefined
 
-  render() {
-    const { props, state, context } = this
-    const { options } = context
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+  // HACK when clientWidth does NOT include body-border, compared to totalWidth
+  if (endScrollbarWidth < 3) {
+    endScrollbarWidth = 0
+  }
 
-    const { totalWidth, clientWidth } = state
+  const verticalScrollbars = !getIsHeightAuto(options)
+  const tableHeaderSticky = getTableHeaderSticky(options)
 
-    let endScrollbarWidth = (totalWidth != null && clientWidth != null)
-      ? totalWidth - clientWidth
-      : undefined
-
-    // HACK when clientWidth does NOT include body-border, compared to totalWidth
-    if (endScrollbarWidth < 3) {
-      endScrollbarWidth = 0
-    }
-
-    const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
-    const tableHeaderSticky = !props.forPrint && getTableHeaderSticky(options)
-
-    const colCount = props.cellRows[0].length
-    const measuredColWidth = clientWidth != null ? clientWidth / colCount : undefined
-    const cellIsMicro = measuredColWidth != null && measuredColWidth <= dayMicroWidth
-    const cellIsNarrow = cellIsMicro || (measuredColWidth != null && measuredColWidth <= options.dayNarrowWidth)
-
-    if (props.forPrint) {
-      return (
-        <DayGridLayoutPrint
+  return (
+    <>
+      {options.dayHeaders && (
+        <div className={joinClassNames(
+          generateClassName(options.tableHeaderClass, {
+            isSticky: tableHeaderSticky,
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
+            multiMonthColumns: 0,
+          }),
+          classNames.flexCol,
+          tableHeaderSticky && classNames.tableHeaderSticky,
+        )}>
+          <div className={classNames.flexRow}>
+            <DayGridHeader
+              headerTiers={props.headerTiers}
+              cellIsNarrow={cellIsNarrow}
+              cellIsMicro={cellIsMicro}
+            />
+            {Boolean(endScrollbarWidth) && (
+              <div
+                className={joinClassNames(
+                  generateClassName(options.fillerClass, { inTableHeader: true }),
+                  classNames.borderlessY,
+                  classNames.borderlessEnd,
+                )}
+                style={{ minWidth: endScrollbarWidth }}
+              />
+            )}
+          </div>
+          <div
+            className={generateClassName(options.dayHeaderDividerClass, {
+              isSticky: tableHeaderSticky,
+              multiMonthColumns: 0,
+              options: { allDaySlot: Boolean(options.allDaySlot) },
+            })}
+          />
+        </div>
+      )}
+      <Scroller
+        vertical={verticalScrollbars}
+        className={joinClassNames(
+          generateClassName(options.tableBodyClass, {
+            borderlessX,
+            borderlessTop,
+            borderlessBottom,
+            multiMonthColumns: 0,
+          }),
+          // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
+          // https://stackoverflow.com/a/60256345
+          classNames.flexCol,
+          verticalScrollbars && classNames.liquid,
+        )}
+        ref={props.scrollerRef as Ref<Scroller>}
+        clientWidthRef={props.clientWidthRef}
+      >
+        <DayGridRows
           dateProfile={props.dateProfile}
           todayRange={props.todayRange}
           cellRows={props.cellRows}
-          headerTiers={props.headerTiers}
-          showHeader={Boolean(options.dayHeaders)}
+          forPrint={false}
+          isHitComboAllowed={props.isHitComboAllowed}
+          className={classNames.grow}
+          dayMaxEvents={options.dayMaxEvents}
+          dayMaxEventRows={options.dayMaxEventRows}
+
+          // content
           fgEventSegs={props.fgEventSegs}
           bgEventSegs={props.bgEventSegs}
           businessHourSegs={props.businessHourSegs}
+          dateSelectionSegs={props.dateSelectionSegs}
+          eventDrag={props.eventDrag}
+          eventResize={props.eventResize}
           eventSelection={props.eventSelection}
-          dayMaxEventRows={options.dayMaxEventRows}
-          borderlessX={borderlessX}
-          borderlessTop={borderlessTop}
-          borderlessBottom={borderlessBottom}
-          multiMonthColumns={0}
+
+          // dimensions
           visibleWidth={totalWidth}
           cellIsNarrow={cellIsNarrow}
           cellIsMicro={cellIsMicro}
+
+          // refs
           rowHeightRefMap={props.rowHeightRefMap}
         />
-      )
-    }
-
-    return (
-      <>
-        {options.dayHeaders && (
-          <div className={joinClassNames(
-            generateClassName(options.tableHeaderClass, {
-              isSticky: tableHeaderSticky,
-              borderlessX,
-              borderlessTop,
-              borderlessBottom,
-              multiMonthColumns: 0,
-            }),
-            classNames.flexCol,
-            tableHeaderSticky && classNames.tableHeaderSticky,
-          )}>
-            <div className={classNames.flexRow}>
-              <DayGridHeader
-                headerTiers={props.headerTiers}
-                cellIsNarrow={cellIsNarrow}
-                cellIsMicro={cellIsMicro}
-              />
-              {Boolean(endScrollbarWidth) && (
-                <div
-                  className={joinClassNames(
-                    generateClassName(options.fillerClass, { inTableHeader: true }),
-                    classNames.borderlessY,
-                    classNames.borderlessEnd,
-                  )}
-                  style={{ minWidth: endScrollbarWidth }}
-                />
-              )}
-            </div>
-            <div
-              className={generateClassName(options.dayHeaderDividerClass, {
-                isSticky: tableHeaderSticky,
-                multiMonthColumns: 0,
-                options: { allDaySlot: Boolean(options.allDaySlot) },
-              })}
-            />
-          </div>
-        )}
-        <Scroller
-          vertical={verticalScrollbars}
-          className={joinClassNames(
-            generateClassName(options.tableBodyClass, {
-              borderlessX,
-              borderlessTop,
-              borderlessBottom,
-              multiMonthColumns: 0,
-            }),
-            // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
-            // https://stackoverflow.com/a/60256345
-            !props.forPrint && classNames.flexCol,
-            verticalScrollbars && classNames.liquid,
-          )}
-          ref={this.handleScroller}
-          clientWidthRef={this.handleClientWidth}
-        >
-          <DayGridRows
-            dateProfile={props.dateProfile}
-            todayRange={props.todayRange}
-            cellRows={props.cellRows}
-            forPrint={props.forPrint}
-            isHitComboAllowed={props.isHitComboAllowed}
-            className={classNames.grow}
-            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
-            dayMaxEventRows={options.dayMaxEventRows}
-
-            // content
-            fgEventSegs={props.fgEventSegs}
-            bgEventSegs={props.bgEventSegs}
-            businessHourSegs={props.businessHourSegs}
-            dateSelectionSegs={props.dateSelectionSegs}
-            eventDrag={props.eventDrag}
-            eventResize={props.eventResize}
-            eventSelection={props.eventSelection}
-
-            // dimensions
-            visibleWidth={totalWidth}
-            cellIsNarrow={cellIsNarrow}
-            cellIsMicro={cellIsMicro}
-
-            // refs
-            rowHeightRefMap={props.rowHeightRefMap}
-          />
-        </Scroller>
-        <Ruler widthRef={this.handleTotalWidth} />
-      </>
-    )
-  }
-
-  private handleScroller = (scroller: Scroller | null) => {
-    setRef(this.props.scrollerRef, scroller)
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
-
-  private handleTotalWidth = (totalWidth: number) => {
-    if (this._isUnmounting) return
-    this.setState({ totalWidth })
-  }
-
-  private handleClientWidth = (clientWidth: number) => {
-    if (this._isUnmounting) return
-    this.setState({ clientWidth })
-  }
-}
+      </Scroller>
+    </>
+  )
+})

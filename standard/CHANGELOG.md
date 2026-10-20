@@ -7,6 +7,8 @@
 - FIX: React, a render discarded by `<Suspense>` started timers that were never cleared, and its event fetches later warned "Can't perform a React state update on a component that hasn't mounted yet" (#8092)
 - FIX: React, an event fetch that finished after the calendar unmounted tried to update it, warning "Can't perform a React state update on an unmounted component" in React 17 (#7070)
 - FIX: React, the `loading` callback was called during render, so setting state in it warned "Cannot update a component while rendering a different component"
+- FIX: React 19, a DayGrid shown again inside a hidden `<Activity>` jumped back to its initial scroll position, losing where the user had scrolled (#8112)
+- FIX: DayGrid, after printing, the scroll position reset to the current date instead of staying where the user had scrolled
 - FIX: React Strict Mode (development only), the now-indicator and the switch to a new day stopped updating after mount
 - FIX: Resource TimeGrid views spanning more than one day, a selection or event resize in the all-day row could span two resources, unlike in the time slots
 - FIX: TimeGrid, a week-number header label taller than it is wide (a custom `weekNumberHeaderContent`, for example) widened the time axis to the label's height

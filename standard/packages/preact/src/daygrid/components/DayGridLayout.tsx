@@ -1,20 +1,23 @@
 import { afterSize } from '../../component-util/resize-observer'
-import { BaseComponent } from '../../vdom-util'
-import { DateMarker, DateRange } from '@full-ui/headless-calendar'
+import { DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell, DayGridRange } from '../DayTableModel'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
-import { Scroller } from '../../scrollgrid/Scroller'
+import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
+import { Ruler } from '../../scrollgrid/Ruler'
 import { ViewContainer } from '../../common/ViewContainer'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../common/render-hook'
-import { createRef } from 'react'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useInitialScroll } from '../../hooks/useInitialScroll'
+import { memo, useRef, useState } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
-import { computeTopFromDate } from './util'
+import { DayGridLayoutPrint } from './DayGridLayoutPrint'
+import { computeDayGridColumns, computeTopFromDate } from './util'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
 import { computeViewBorderless } from '../../util/misc'
@@ -43,127 +46,152 @@ export interface DayGridLayoutProps {
   eventSelection: string
 }
 
-export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
-  // ref
-  private scrollerRef = createRef<Scroller>()
-  private rowHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.updateScrollY)
+/*
+The shell of the DayGrid layouts. Chooses between print, pannable (dayMinWidth) and normal, and owns
+what they share: the width measurements, which print reuses from the screen, and the initial scroll.
+*/
+export const DayGridLayout = memo(function DayGridLayout(props: DayGridLayoutProps) {
+  const context = useViewContext()
+  const { options } = context
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+
+  return (
+    <ViewContainer
+      viewSpec={context.viewSpec}
+      attrs={{
+        role: 'table',
+        'aria-rowcount': props.headerTiers.length + props.cellRows.length,
+        'aria-colcount': props.cellRows[0].length,
+        'aria-labelledby': props.labelId,
+        'aria-label': props.labelStr,
+      }}
+      className={joinClassNames(
+        props.className,
+        !props.forPrint && classNames.flexCol,
+        !props.forPrint && generateClassName(options.tableClass, {
+          borderlessX,
+          borderlessTop,
+          borderlessBottom,
+          multiMonthColumns: 0,
+        }),
+      )}
+    >
+      <DayGridLayoutBody {...props} />
+    </ViewContainer>
+  )
+})
+
+/*
+Inside the ViewContainer, so measurements re-render only this, as when the layouts held them
+*/
+function DayGridLayoutBody(props: DayGridLayoutProps) {
+  const { options } = useViewContext()
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+
+  // measured on screen. kept while printing, which doesn't measure. print uses totalWidth for row
+  // min-heights (see the roadmap's phase 7 catch)
+  const [totalWidth, setTotalWidth] = useState<number | undefined>(undefined)
+  const [clientWidth, setClientWidth] = useState<number | undefined>(undefined)
+  const [handleTotalWidth] = useState(() => (width: number | null) => {
+    if (width != null) {
+      setTotalWidth(width)
+    }
+  })
+  const [handleClientWidth] = useState(() => (width: number | null) => {
+    if (width != null) {
+      setClientWidth(width)
+    }
   })
 
-  // internal
-  private _isUnmounting: boolean
-  private scrollDate: DateMarker | null = null
-
-  render() {
-    const { props, context } = this
-    const { options } = context
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-    const dateSelectionSegs = props.forPrint ? [] : props.dateSelectionSegs
-    const eventDrag = props.forPrint ? null : props.eventDrag
-    const eventResize = props.forPrint ? null : props.eventResize
-
-    const commonLayoutProps = {
-      ...props,
-      dateSelectionSegs,
-      eventDrag,
-      eventResize,
-      scrollerRef: this.scrollerRef,
-      rowHeightRefMap: this.rowHeightRefMap,
-    }
-
-    return (
-      <ViewContainer
-        viewSpec={context.viewSpec}
-        attrs={{
-          role: 'table',
-          'aria-rowcount': props.headerTiers.length + props.cellRows.length,
-          'aria-colcount': props.cellRows[0].length,
-          'aria-labelledby': props.labelId,
-          'aria-label': props.labelStr,
-        }}
-        className={joinClassNames(
-          props.className,
-          !props.forPrint && classNames.flexCol,
-          !props.forPrint && generateClassName(options.tableClass, {
-            borderlessX,
-            borderlessTop,
-            borderlessBottom,
-            multiMonthColumns: 0,
-          }),
-        )}
-      >
-        {options.dayMinWidth ? (
-          <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />
-        ) : (
-          <DayGridLayoutNormal {...commonLayoutProps} />
-        )}
-      </ViewContainer>
-    )
-  }
-
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount() {
-    this._isUnmounting = false
-    if (!this.props.forPrint) {
-      this.resetScroll()
-      this.scrollerRef.current?.addScrollEndListener(this.handleScrollEnd)
-    }
-  }
-
-  componentDidUpdate(prevProps: DayGridLayoutProps) {
-    if (prevProps.forPrint && !this.props.forPrint) {
-      this.scrollerRef.current?.addScrollEndListener(this.handleScrollEnd)
-      this.resetScroll()
-    }
-
-    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
-      this.resetScroll()
-    }
-  }
-
-  componentWillUnmount() {
-    this._isUnmounting = true
-    this.scrollerRef.current?.removeScrollEndListener(this.handleScrollEnd)
-  }
-
-  // Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  resetScroll() {
-    this.scrollDate = this.props.dateProfile.currentDate
-    this.updateScrollY()
-
-    this.scrollerRef.current?.scrollTo({ x: 0 })
-  }
-
-  updateScrollY = () => {
-    if (this._isUnmounting) return
-    const rowHeightMap = this.rowHeightRefMap.current
-    const scroller = this.scrollerRef.current
-
-    // Since updateScrollY is called by rowHeightRefMap, could be called with null during cleanup,
-    // and the scroller might not exist
-    if (scroller && this.scrollDate) {
-      let scrollTop = computeTopFromDate(
-        this.scrollDate,
-        this.props.cellRows,
-        rowHeightMap,
-      )
+  const scrollerRef = useRef<ScrollerInterface | null>(null)
+  const rowHeightRefMapRef = useRef<RefMap<string, number>>(null)
+  const scroll = useInitialScroll({
+    scrollerRef,
+    isEnabled: !props.forPrint,
+    createInitial: () => props.dateProfile.currentDate,
+    resetKey: props.dateProfile,
+    isResetOnChange: options.scrollTimeReset,
+    project(scrollDate) {
+      let scrollTop = computeTopFromDate(scrollDate, props.cellRows, rowHeightRefMapRef.current.current)
 
       if (scrollTop != null) {
         if (scrollTop) {
           scrollTop++ // clear top border
         }
-        scroller.scrollTo({ y: scrollTop })
+        return { y: scrollTop }
       }
-    }
+    },
+    isUserScroll: (isDevice) => isDevice,
+  })
+  rowHeightRefMapRef.current ??= new RefMap<string, number>(() => {
+    afterSize(scroll.handleGeometry)
+  })
+  const rowHeightRefMap = rowHeightRefMapRef.current
+
+  const colCount = props.cellRows[0].length
+  const columns = computeDayGridColumns(
+    colCount,
+    // print has no scroller, so no client width. its cells were never narrow, so keep that
+    props.forPrint ? undefined : clientWidth,
+    options.dayMinWidth,
+    options,
+  )
+
+  if (props.forPrint) {
+    return (
+      <DayGridLayoutPrint
+        dateProfile={props.dateProfile}
+        todayRange={props.todayRange}
+        cellRows={props.cellRows}
+        headerTiers={props.headerTiers}
+        showHeader={Boolean(options.dayHeaders)}
+        fgEventSegs={props.fgEventSegs}
+        bgEventSegs={props.bgEventSegs}
+        businessHourSegs={props.businessHourSegs}
+        eventSelection={props.eventSelection}
+        dayMaxEventRows={options.dayMaxEventRows}
+        borderlessX={borderlessX}
+        borderlessTop={borderlessTop}
+        borderlessBottom={borderlessBottom}
+        multiMonthColumns={0}
+        visibleWidth={totalWidth}
+        cellIsNarrow={columns.cellIsNarrow}
+        cellIsMicro={columns.cellIsMicro}
+        rowHeightRefMap={rowHeightRefMap}
+      />
+    )
   }
 
-  handleScrollEnd = (isDevice: boolean) => {
-    if (isDevice) {
-      this.scrollDate = null
-    }
+  const screenLayoutProps = {
+    dateProfile: props.dateProfile,
+    todayRange: props.todayRange,
+    cellRows: props.cellRows,
+    isHitComboAllowed: props.isHitComboAllowed,
+    headerTiers: props.headerTiers,
+    fgEventSegs: props.fgEventSegs,
+    bgEventSegs: props.bgEventSegs,
+    businessHourSegs: props.businessHourSegs,
+    dateSelectionSegs: props.dateSelectionSegs,
+    eventDrag: props.eventDrag,
+    eventResize: props.eventResize,
+    eventSelection: props.eventSelection,
+    totalWidth,
+    clientWidth,
+    canvasWidth: columns.canvasWidth,
+    appliedColWidth: columns.appliedColWidth,
+    cellIsNarrow: columns.cellIsNarrow,
+    cellIsMicro: columns.cellIsMicro,
+    clientWidthRef: handleClientWidth,
+    scrollerRef,
+    rowHeightRefMap,
   }
+
+  return (
+    <>
+      {options.dayMinWidth
+        ? <DayGridLayoutPannable {...screenLayoutProps} />
+        : <DayGridLayoutNormal {...screenLayoutProps} />}
+      <Ruler widthRef={handleTotalWidth} />
+    </>
+  )
 }

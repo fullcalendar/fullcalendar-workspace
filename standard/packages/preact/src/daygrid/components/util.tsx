@@ -48,6 +48,45 @@ export function computeColWidth(colCount: number, colMinWidth: number, viewportW
   return [viewportWidth, undefined]
 }
 
+export interface CellDensity {
+  cellIsNarrow: boolean
+  cellIsMicro: boolean
+}
+
+// see planning/hook-toolkit-spec.md §4.5
+export function computeCellDensity(
+  cellWidth: number | undefined,
+  options: { dayNarrowWidth?: number },
+): CellDensity {
+  const cellIsMicro = cellWidth != null && cellWidth <= dayMicroWidth
+  const cellIsNarrow = cellIsMicro || (cellWidth != null && cellWidth <= options.dayNarrowWidth)
+  return { cellIsNarrow, cellIsMicro }
+}
+
+export interface DayGridColumns extends CellDensity {
+  canvasWidth: number | undefined // only when columns are wider than the viewport allows
+  appliedColWidth: number | undefined // "
+}
+
+// the column sizing shared by the screen layouts and print, which reuses the screen measurements
+export function computeDayGridColumns(
+  colCount: number,
+  clientWidth: number | undefined,
+  dayMinWidth: number | undefined,
+  options: { dayNarrowWidth?: number },
+): DayGridColumns {
+  const [canvasWidth, appliedColWidth] = dayMinWidth
+    ? computeColWidth(colCount, dayMinWidth, clientWidth)
+    : [undefined, undefined]
+  const measuredColWidth = appliedColWidth ?? (clientWidth != null ? clientWidth / colCount : undefined)
+
+  return {
+    canvasWidth,
+    appliedColWidth,
+    ...computeCellDensity(measuredColWidth, options),
+  }
+}
+
 // Positioning
 // -------------------------------------------------------------------------------------------------
 
