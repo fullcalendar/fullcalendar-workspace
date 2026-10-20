@@ -124,19 +124,51 @@ export class TimelineModel {
     await resizeSegment(eventEls[0], edge, () => this.pointForSpot(from), () => this.pointForSpot(to), whileResizing)
   }
 
+  async clickDateTime(spot: TimelineSpot): Promise<void> {
+    await pointer.click(this.pointForSpot(spot))
+    await waitForSettle()
+  }
+
+  /*
+  Selects from `start` to the exclusive `end` by dragging. As spots, an end is a time or the start
+  of a slot (by index), and the pointer goes just inside the slot before it.
+  */
+  async selectRange(start: TimelineSpot, end: TimelineSpot): Promise<void> {
+    await pointer.press(this.pointForSpot(start), async () => {
+      await pointer.move(this.pointForSpotEnd(end))
+      await waitForSettle()
+    })
+    await waitForSettle()
+  }
+
+  /*
+  Just inside the end of the slot that ends at the spot.
+  */
+  pointForSpotEnd(spot: TimelineSpot): Point {
+    if (typeof spot === 'object' && 'slot' in spot) {
+      const slotEl = this.getSlotLanes()[spot.slot - 1]
+      slotEl.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+      return { x: this.xInSlot(slotEl, 1, 'end'), y: this.yForResource(spot.resourceId) }
+    }
+
+    const { date, resourceId } = parseSpot(spot)
+    return { x: this.xForDateTime(date, 'end'), y: this.yForResource(resourceId) }
+  }
+
   private pointForSpot(spot: TimelineSpot): Point {
     return typeof spot === 'object' && 'slot' in spot
       ? this.pointForSlot(spot.slot, spot.resourceId)
       : this.pointForDateTime(spot)
   }
 
-  private xForDateTime(dateTime: string): number {
+  private xForDateTime(dateTime: string, edge: 'start' | 'end' = 'start'): number {
     const slotEls = this.getSlotLanes()
     const slotMs = slotEls.map((el) => parseWallClockMs(el.getAttribute('data-date')!))
     const ms = parseWallClockMs(dateTime)
+    const isEnd = edge === 'end'
     let i = slotMs.length - 1
 
-    while (i > 0 && slotMs[i] > ms) {
+    while (i > 0 && (isEnd ? slotMs[i] >= ms : slotMs[i] > ms)) {
       i--
     }
 
@@ -145,22 +177,26 @@ export class TimelineModel {
       : NaN
     const frac = (ms - slotMs[i]) / slotDurationMs
 
-    if (!(frac >= 0 && frac < 1)) { // also rejects NaN
+    if (!(isEnd ? frac > 0 && frac <= 1 : frac >= 0 && frac < 1)) { // also rejects NaN
       throw new Error(`Time ${dateTime} is outside the rendered slots`)
     }
 
     slotEls[i].scrollIntoView({ block: 'nearest', inline: 'nearest' })
-    return this.xInSlot(slotEls[i], frac)
+    return this.xInSlot(slotEls[i], frac, edge)
   }
 
-  // Just past the time's position in the slot, from the slot's start edge (the right edge in RTL)
-  private xInSlot(slotEl: HTMLElement, frac: number): number {
+  /*
+  Just past the time's position in the slot (or just before it, for an 'end' edge), measured from
+  the slot's start edge (the right edge in RTL).
+  */
+  private xInSlot(slotEl: HTMLElement, frac: number, edge: 'start' | 'end' = 'start'): number {
     const rect = slotEl.getBoundingClientRect()
     const isRtl = getComputedStyle(this.root).direction === 'rtl'
+    const nudge = edge === 'end' ? -2 : 2
 
     return isRtl
-      ? rect.right - rect.width * frac - 2
-      : rect.left + rect.width * frac + 2
+      ? rect.right - rect.width * frac - nudge
+      : rect.left + rect.width * frac + nudge
   }
 
   private yForResource(resourceId: string | undefined): number {

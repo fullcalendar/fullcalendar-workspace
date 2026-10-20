@@ -54,6 +54,40 @@ export class TimeGridModel {
   }
 
   /*
+  A point just above where the time is, in the slot that ends there: where an exclusive end (of a
+  selection, say) is. Midnight counts as the end of the previous day's column.
+  */
+  pointForDateTimeEnd(spot: Spot): Point {
+    const { date: dateTime, resourceId } = parseSpot(spot)
+    let [date, time] = splitDateTime(dateTime)
+
+    if (parseTimeMs(time) === 0) {
+      date = addDays(date, -1)
+      time = '24:00'
+    }
+
+    const y = this.yForTime(time, 'end')
+    const laneRect = this.getDayLane({ date, resourceId }).getBoundingClientRect()
+    return { x: laneRect.left + laneRect.width / 2, y }
+  }
+
+  async clickDateTime(spot: Spot): Promise<void> {
+    await pointer.click(this.pointForDateTime(spot))
+    await waitForSettle()
+  }
+
+  /*
+  Selects from `start` to the exclusive `end` by dragging.
+  */
+  async selectRange(start: Spot, end: Spot): Promise<void> {
+    await pointer.press(this.pointForDateTime(start), async () => {
+      await pointer.move(this.pointForDateTimeEnd(end))
+      await waitForSettle()
+    })
+    await waitForSettle()
+  }
+
+  /*
   The point on the event's segment in `dateTime`'s column, at that time.
   The time must be within the event.
   */
@@ -117,16 +151,18 @@ export class TimeGridModel {
   }
 
   /*
-  Just below the time's position, so the point is unambiguously within the slot (or snap interval)
-  that starts there. Assumes snap intervals are taller than 2px.
+  Just below the time's position (or just above, for an 'end' edge), so the point is unambiguously
+  within the slot (or snap interval) that starts (or ends) there. Assumes snap intervals are taller
+  than 2px.
   */
-  private yForTime(time: string): number {
+  private yForTime(time: string, edge: 'start' | 'end' = 'start'): number {
     const slotEls = this.getSlotLanes()
     const slotMs = getSlotStartMs(slotEls)
     const ms = parseTimeMs(time)
+    const isEnd = edge === 'end'
     let i = slotMs.length - 1
 
-    while (i > 0 && slotMs[i] > ms) {
+    while (i > 0 && (isEnd ? slotMs[i] >= ms : slotMs[i] > ms)) {
       i--
     }
 
@@ -135,14 +171,14 @@ export class TimeGridModel {
       : NaN
     const frac = (ms - slotMs[i]) / slotDurationMs
 
-    if (!(frac >= 0 && frac < 1)) { // also rejects NaN
+    if (!(isEnd ? frac > 0 && frac <= 1 : frac >= 0 && frac < 1)) { // also rejects NaN
       throw new Error(`Time ${time} is outside the rendered slots`)
     }
 
     const slotEl = slotEls[i]
     slotEl.scrollIntoView({ block: 'nearest' })
     const rect = slotEl.getBoundingClientRect()
-    return rect.top + rect.height * frac + 2
+    return rect.top + rect.height * frac + (isEnd ? -2 : 2)
   }
 
   private isInLane(el: HTMLElement): boolean {
@@ -176,6 +212,12 @@ function getSlotStartMs(slotEls: HTMLElement[]): number[] {
   }
 
   return res
+}
+
+function addDays(date: string, n: number): string {
+  const d = new Date(date + 'T00:00:00Z')
+  d.setUTCDate(d.getUTCDate() + n)
+  return d.toISOString().slice(0, 10)
 }
 
 function parseTimeMs(time: string): number {

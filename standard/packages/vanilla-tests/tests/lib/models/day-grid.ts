@@ -86,6 +86,22 @@ export class DayGridModel {
     return { point, eventEl }
   }
 
+  async clickDate(spot: Spot): Promise<void> {
+    await pointer.click(this.pointForDate(spot))
+    await waitForSettle()
+  }
+
+  /*
+  Selects the days from `first` to `last`, inclusive, by dragging.
+  */
+  async selectDates(first: Spot, last: Spot): Promise<void> {
+    await pointer.press(this.pointForDate(first), async () => {
+      await pointer.move(this.pointForDate(last))
+      await waitForSettle()
+    })
+    await waitForSettle()
+  }
+
   /*
   Clicks the cell's "+more" link and returns the popover. Popovers render outside the calendar root.
   */
