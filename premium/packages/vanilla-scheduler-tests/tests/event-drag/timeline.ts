@@ -298,5 +298,35 @@ describe('event dragging in timeline', () => {
 
       expect(event.start!.toISOString()).toBe('2024-11-03T07:00:00.000Z')
     })
+
+    it('gives eventAllow the exact instant of a drop onto the second copy of a repeated time', async () => {
+      const eventAllow = vi.fn(() => true)
+      const { event } = await dragToSlot({ events: [dstEvent], eventAllow }, FALL_BACK_SECOND_0130_SLOT)
+
+      expect(event.startStr).toBe('2024-11-03T01:30:00-05:00')
+      expect(eventAllow.mock.calls.at(-1)![0].startStr).toBe('2024-11-03T01:30:00-05:00')
+    })
+
+    /*
+    Both copies of the repeated hour read the same wall-clock times, but overlap is checked by
+    exact instants.
+    */
+    it.each([
+      ['allows a drop onto the free first copy', 3, '2024-11-03T05:30:00.000Z', 1],
+      ['rejects a drop onto the occupied second copy', FALL_BACK_SECOND_0130_SLOT, '2024-11-03T04:00:00.000Z', 0],
+    ])('with eventOverlap:false, %s of a repeated time', async (_desc, slotIndex, expectedStart, dropCount) => {
+      const eventDrop = vi.fn()
+      const { event } = await dragToSlot({
+        eventOverlap: false,
+        eventDrop,
+        events: [
+          dstEvent,
+          { id: 'est', start: '2024-11-03T01:30:00-05:00', end: '2024-11-03T02:00:00-05:00' },
+        ],
+      }, slotIndex)
+
+      expect(eventDrop).toHaveBeenCalledTimes(dropCount)
+      expect(event.start!.toISOString()).toBe(expectedStart)
+    })
   })
 })
