@@ -136,9 +136,10 @@ sets `dir` on a dragged event to cover that case.
 - [x] A deliberate one-class change in `StandardEvent` shows up in every fixture that renders
   events: 127 of 129 changed, and only the two empty-list fixtures didn't. A full rebuild of all
   packages for that check shifted no other hashed classname.
-- [ ] A baseline is recorded at the phase-1 commit, under both runtimes, and noted here. Not at the
-  phase-0 commit: the fixtures and runner don't exist there, and phase 1 changes no rendered DOM,
-  so the two are equivalent.
+- [x] A baseline is recorded at the phase-1 commit, under both runtimes: label `phase1`, commit
+  `5a78a1142`, 129 fixtures each. Not at the phase-0 commit: the fixtures and runner don't exist
+  there, and phase 1 changes no rendered DOM, so the two are equivalent. Snapshots are git-ignored,
+  so re-record `phase1` from `5a78a1142` if the folder is lost.
 
 ## Findings
 

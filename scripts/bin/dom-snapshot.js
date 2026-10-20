@@ -290,7 +290,7 @@ function listSnapshotDirs() {
   }
 
   return readdirSync(snapshotsDir, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
     .map((entry) => entry.name)
     .sort()
 }
