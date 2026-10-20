@@ -183,10 +183,6 @@ Names are illustrative.
   here. **Gate: no count may go up** (see the roadmap ground rules).
 - GPT-6.1-Sol review of the phase.
 
-## Behavior changes
-
-None expected. Record any here.
-
 ## Lessons for phase 5
 
 - **Stable ref callbacks matter.** An inline ref callback is replaced on every render, so React
