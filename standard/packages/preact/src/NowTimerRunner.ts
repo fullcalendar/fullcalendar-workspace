@@ -54,12 +54,13 @@ export class NowTimerRunner {
       this.todayRange = timing.todayRange
 
       // init listeners
-      this.setTimeout(timing.waitMs)
-      this.nowManager.addResetListener(this.handleRefresh)
+      // SSR check. update() is called during render, and on the server nothing ever calls
+      // destroy(), so a timer would retain the calendar until it fires (up to a day)
+      if (isLiveEnvironment()) {
+        this.setTimeout(timing.waitMs)
+        this.nowManager.addResetListener(this.handleRefresh)
 
-      // fired tab becomes visible after being hidden
-      // SSR check. CalendarDataManager calls top-level sync :(
-      if (typeof document !== 'undefined') {
+        // fired tab becomes visible after being hidden
         document.addEventListener('visibilitychange', this.handleVisibilityChange)
       }
     } else if (
@@ -84,8 +85,10 @@ export class NowTimerRunner {
       this.nowMs = timing.nowMs
       this.todayRange = timing.todayRange
 
-      this.clearTimeout()
-      this.setTimeout(timing.waitMs)
+      if (isLiveEnvironment()) {
+        this.clearTimeout()
+        this.setTimeout(timing.waitMs)
+      }
     }
 
     return {
@@ -101,8 +104,8 @@ export class NowTimerRunner {
       this.clearTimeout()
       this.nowManager.removeResetListener(this.handleRefresh)
 
-      // SSR check. CalendarDataManager calls top-level sync :(
-      if (typeof document !== 'undefined') {
+      // SSR check. see update()
+      if (isLiveEnvironment()) {
         document.removeEventListener('visibilitychange', this.handleVisibilityChange)
       }
     }
@@ -264,6 +267,11 @@ function findNextOffsetTransitionMs(rawMs: number, dateEnv: DateEnv, horizonMs: 
 
 function offsetAt(instantMs: number, dateEnv: DateEnv): number {
   return dateEnv.timestampToMarker(instantMs).valueOf() - instantMs
+}
+
+// false when server-side rendering
+function isLiveEnvironment(): boolean {
+  return typeof document !== 'undefined'
 }
 
 function buildDayRange(date: DateMarker): DateRange { // TODO: make this a general util
