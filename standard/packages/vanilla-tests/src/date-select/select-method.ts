@@ -58,14 +58,34 @@ describe('select method', () => {
       expect(info.endStr).toBe('2014-05-09T06:00:00Z')
     })
 
-    it('highlights nothing for dates outside the view', async () => {
-      const calendar = initCalendar(dayGridOptions)
+    // select() doesn't check what the view can show, so it still fires select. See the v8 notes
+    it('highlights nothing for dates outside the view, but still fires select', async () => {
+      const select = vi.fn()
+      const calendar = initCalendar({ ...dayGridOptions, select })
       await waitForSettle()
 
       calendar.select('2015-05-07', '2015-05-09')
       await waitForSettle()
 
       expect(getHighlightEls(calendar.el)).toHaveLength(0)
+      expect(select).toHaveBeenCalledOnce()
+    })
+
+    it('fires select even when selectAllow rejects the dates, or they\'re outside validRange', async () => {
+      const select = vi.fn()
+      const calendar = initCalendar({
+        ...dayGridOptions,
+        selectAllow: () => false,
+        validRange: { start: '2014-05-01', end: '2014-06-01' },
+        select,
+      })
+      await waitForSettle()
+
+      calendar.select('2014-05-07', '2014-05-09')
+      calendar.select('2014-08-07', '2014-08-09')
+      await waitForSettle()
+
+      expect(select.mock.calls.map(([info]) => info.startStr)).toEqual(['2014-05-07', '2014-08-07'])
     })
   })
 
@@ -106,14 +126,16 @@ describe('select method', () => {
     it.each([
       ['timed dates outside the view', {}, ['2015-05-26T06:00:00', '2015-05-26T07:00:00']],
       ['all-day dates when allDaySlot:false', { allDaySlot: false }, ['2014-05-26', '2014-05-28']],
-    ])('highlights nothing for %s', async (_desc, moreOptions, args) => {
-      const calendar = initCalendar({ ...timeGridOptions, ...moreOptions })
+    ])('highlights nothing for %s, but still fires select', async (_desc, moreOptions, args) => {
+      const select = vi.fn()
+      const calendar = initCalendar({ ...timeGridOptions, ...moreOptions, select })
       await waitForSettle()
 
       calendar.select(...(args as [string, string]))
       await waitForSettle()
 
       expect(getHighlightEls(calendar.el)).toHaveLength(0)
+      expect(select).toHaveBeenCalledOnce()
     })
   })
 

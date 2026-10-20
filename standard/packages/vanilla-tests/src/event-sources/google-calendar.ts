@@ -157,6 +157,28 @@ describe('Google Calendar event source', () => {
     }
   })
 
+  /*
+  KNOWN BUG (`it.fails` until fixed): the plugin's parseMeta recognizes a string source's URL as a
+  calendar ID or Calendar API URL, but never gets the chance. Built-in sources are global plugins,
+  which buildPluginHooks adds after the calendar's own plugins, and later-added source defs take
+  precedence, so the JSON feed source claims every string and fetches it as a relative URL.
+  */
+  it.fails.each([
+    ['a calendar ID', CALENDAR_ID],
+    ['a Calendar API URL', 'https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(CALENDAR_ID) + '/events'],
+  ])('accepts %s as a plain string source', async (_desc, source) => {
+    fetchMock.catch({ body: [] }) // what the JSON feed source requests instead
+    const calendar = initCalendar({
+      ...options,
+      googleCalendarApiKey: API_KEY,
+      eventSources: [source],
+    })
+    await whenLoaded(calendar)
+
+    expect(fetchMock.lastUrl()).toMatch(/^https:\/\/www\.googleapis\.com\/calendar\/v3\/calendars\//)
+    expect(calendar.getEvents()).toHaveLength(3)
+  })
+
   it('accepts the API key on the event source', async () => {
     const calendar = initCalendar({
       ...options,

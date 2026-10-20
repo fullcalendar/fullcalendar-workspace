@@ -40,6 +40,7 @@ describe('changing the timeZone', () => {
     expect(getRenderedTimes(calendar)).toEqual([['11:00', 'e']])
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/5273 (fixed in v6.1.17; also #7635, #7704)
   it('keeps recurrences anchored to the original time zone after navigating', async () => {
     const calendar = initCalendar({ ...options, events: [{ title: 'e', startTime: '12:00', daysOfWeek: [2] }] })
     await waitForSettle()
