@@ -12,7 +12,9 @@ import {
   memoize,
   planPrintDomCandidates,
   sortEventSegs,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { type TimelineDateProfile } from './timeline-date-profile'
 import {
   type TimelineEventSeg,
@@ -21,7 +23,7 @@ import {
 } from './seg-placement-adapter'
 import { resolveTimelineEventProjectionSizing } from './slot-estimate'
 
-interface TimelinePrintLayout {
+export interface TimelinePrintLayout {
   eventBands: PrintEventBand<TimelineSourceSeg>[]
   moreLinkBand: PrintMoreLinkBand<TimelineSourceSeg> | null
 }
@@ -69,7 +71,7 @@ export function buildTimelinePrintLayout(
  * source can change bands when `slotWidth` changes, and a departing wrapper's
  * removal must not clobber the arriving wrapper's live entry.
  */
-class TimelinePrintHeights {
+export class TimelinePrintHeights {
   readonly segHeightRefMap: RefMap<string, number>
   readonly moreLinkHeightRefMap: RefMap<string, number>
 
@@ -141,4 +143,57 @@ export abstract class TimelinePrintRenderer<Props> extends BaseComponent<Props> 
   componentWillUnmount(): void {
     this._isUnmounting = true
   }
+}
+
+/*
+The hook form of TimelinePrintRenderer, for function components: the shared pipeline (sort,
+projection sizing, plan, measured band layout), re-rendering when the measured heights settle
+*/
+export function useTimelinePrintBands(
+  fgEventSegs: TimelineEventSeg[],
+  tDateProfile: TimelineDateProfile,
+  slotWidth: number | undefined,
+): { layout: TimelinePrintLayout, printHeights: TimelinePrintHeights } {
+  const { options, dateEnv } = useViewContext()
+  const [, setRenderCount] = useState(0)
+  const isActiveRef = useRef(false)
+  const [printHeights] = useState(() => new TimelinePrintHeights(() => {
+    if (isActiveRef.current) {
+      setRenderCount(incrementCounter)
+    }
+  }))
+
+  useLayoutEffect(() => {
+    isActiveRef.current = true
+
+    return () => {
+      isActiveRef.current = false
+    }
+  }, [])
+
+  const fgSegs = useMemo(
+    () => sortEventSegs(fgEventSegs, options.eventOrder),
+    [fgEventSegs, options.eventOrder],
+  )
+  const projectionSizing = resolveTimelineEventProjectionSizing(
+    slotWidth,
+    options.eventMinWidth,
+  )
+  const plan = useMemo(
+    () => buildTimelinePrintPlan(
+      fgSegs,
+      dateEnv,
+      tDateProfile,
+      projectionSizing.slotWidth,
+      projectionSizing.eventMinWidth,
+      options.eventOrderStrict,
+    ),
+    [fgSegs, dateEnv, tDateProfile, projectionSizing.slotWidth, projectionSizing.eventMinWidth, options.eventOrderStrict],
+  )
+
+  return { layout: printHeights.buildLayout(plan), printHeights }
+}
+
+function incrementCounter(n: number): number {
+  return n + 1
 }

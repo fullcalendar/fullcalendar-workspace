@@ -1,4 +1,5 @@
-import { MinimalEventProps, BaseComponent, createFormatter, ForegroundEvent, rowEventVariant } from '@fullcalendar/preact/protected-api'
+import { memo } from 'react'
+import { MinimalEventProps, createFormatter, ForegroundEvent, rowEventVariant } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
@@ -11,17 +12,14 @@ const DEFAULT_TIME_FORMAT = createFormatter({
   meridiem: 'narrow',
 })
 
-export class TimelineEvent extends BaseComponent<TimelineEventProps> {
-  render() {
-    let { props } = this
+export const TimelineEvent = memo(function TimelineEvent(props: TimelineEventProps) {
 
-    return (
-      <ForegroundEvent
-        {...props}
-        variant={rowEventVariant}
-        defaultTimeFormat={DEFAULT_TIME_FORMAT}
-        defaultDisplayEventTime={!props.isTimeScale}
-      />
-    )
-  }
-}
+  return (
+    <ForegroundEvent
+      {...props}
+      variant={rowEventVariant}
+      defaultTimeFormat={DEFAULT_TIME_FORMAT}
+      defaultDisplayEventTime={!props.isTimeScale}
+    />
+  )
+})

@@ -1,6 +1,6 @@
-import type { Ref } from 'react'
+import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import { afterSize, DateMarker, DateProfile, DateRange, RefMap, setRef, useLatest, useViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
 import { TimelineHeaderCell } from './TimelineHeaderCell'
@@ -31,119 +31,115 @@ export interface TimelineHeaderRowProps {
     // TODO: rename to slatWidth?
 }
 
-interface TimelineHeaderRowState {
-  innerHeight?: number
-}
+export const TimelineHeaderRow = memo(function TimelineHeaderRow(props: TimelineHeaderRowProps) {
+  const { options } = useViewContext()
+  const [innerHeight, setInnerHeight] = useState<number | null | undefined>(undefined)
+  const isActiveRef = useRef(false)
+  const propsRef = useLatest(props)
 
-export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, TimelineHeaderRowState> {
-  state = {} as TimelineHeaderRowState
+  const [refMaps] = useState(() => {
+    const handleInnerWidths = () => {
+      if (isActiveRef.current) {
+        let max: number | null = null
 
-  // refs
-  private innerWidthRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleInnerWidths)
+        for (const innerWidth of innerWidthRefMap.current.values()) {
+          max = Math.max(max || 0, innerWidth)
+        }
+
+        // TODO: ensure not equal?
+        setRef(propsRef.current.innerWidthRef, max)
+      }
+    }
+
+    const handleInnerHeights = () => {
+      if (isActiveRef.current) {
+        let max: number | null = null
+
+        for (const innerHeight of innerHeightRefMap.current.values()) {
+          max = Math.max(max || 0, innerHeight)
+        }
+
+        // TODO: ensure not equal?
+        setRef(propsRef.current.innerHeighRef, max)
+        setInnerHeight(max)
+      }
+    }
+
+    const innerWidthRefMap = new RefMap<string, number>(() => {
+      afterSize(handleInnerWidths)
+    })
+    const innerHeightRefMap = new RefMap<string, number>(() => {
+      afterSize(handleInnerHeights)
+    })
+
+    return { innerWidthRefMap, innerHeightRefMap }
   })
-  private innerHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleInnerHeights)
-  })
+  const { innerWidthRefMap, innerHeightRefMap } = refMaps
 
-  // internal
-  private _isUnmounting: boolean
+  useLayoutEffect(() => {
+    isActiveRef.current = true
 
-  render() {
-    const { props, innerWidthRefMap, innerHeightRefMap, state, context } = this
-    const { options } = context
-    let { cells, cellStartIndex, cellCount } = props
-
-    cellStartIndex = cellStartIndex || 0
-    if (cellStartIndex || cellCount !== undefined) {
-      cells = cells.slice(cellStartIndex, cellStartIndex + cellCount)
+    return () => {
+      isActiveRef.current = false
+      setRef(propsRef.current.innerWidthRef, null)
+      setRef(propsRef.current.innerHeighRef, null)
     }
+  }, [])
 
-    return (
-      <div
-        className={joinClassNames(
-          props.className,
-          options.slotHeaderRowClass,
-          classNames.flexRow,
-          classNames.borderlessX,
-          classNames.borderlessTop,
-          !props.rowLevel && classNames.borderlessBottom, // last row
-        )}
-        style={{
-          insetInlineStart: props.insetInlineStart,
-          width: props.width,
+  let { cells, cellStartIndex, cellCount } = props
 
-          // we assign height because we allow cells to have distorted heights for visual effect
-          // but we still want to keep the overall extrenal mass
-          height: state.innerHeight,
-        }}
-      >
-        {cells.map((cell, cellI) => {
-          // TODO: make this part of the cell obj?
-          // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
-          // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
-          // TODO: use rowUnit to key the Row itself?
-          const key = cell.key
-
-          return (
-            <TimelineHeaderCell
-              key={key}
-              cell={cell}
-              rowLevel={props.rowLevel}
-              dateProfile={props.dateProfile}
-              tDateProfile={props.tDateProfile}
-              todayRange={props.todayRange}
-              nowDate={props.nowDate}
-              nowMs={props.nowMs}
-              isFirst={cellStartIndex + cellI === 0}
-
-              // refs
-              innerWidthRef={innerWidthRefMap.createRef(key)}
-              innerHeightRef={innerHeightRefMap.createRef(key)}
-
-              // dimensions
-              slotWidth={props.slotWidth}
-            />
-          )
-        })}
-      </div>
-    )
+  cellStartIndex = cellStartIndex || 0
+  if (cellStartIndex || cellCount !== undefined) {
+    cells = cells.slice(cellStartIndex, cellStartIndex + cellCount)
   }
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
+  return (
+    <div
+      className={joinClassNames(
+        props.className,
+        options.slotHeaderRowClass,
+        classNames.flexRow,
+        classNames.borderlessX,
+        classNames.borderlessTop,
+        !props.rowLevel && classNames.borderlessBottom, // last row
+      )}
+      style={{
+        insetInlineStart: props.insetInlineStart,
+        width: props.width,
 
-  handleInnerWidths = () => {
-    if (this._isUnmounting) return
-    const innerWidthMap = this.innerWidthRefMap.current
-    let max: number | null = null
+        // we assign height because we allow cells to have distorted heights for visual effect
+        // but we still want to keep the overall extrenal mass
+        height: innerHeight,
+      }}
+    >
+      {cells.map((cell, cellI) => {
+        // TODO: make this part of the cell obj?
+        // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
+        // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
+        // TODO: use rowUnit to key the Row itself?
+        const key = cell.key
 
-    for (const innerWidth of innerWidthMap.values()) {
-      max = Math.max(max || 0, innerWidth)
-    }
+        return (
+          <TimelineHeaderCell
+            key={key}
+            cell={cell}
+            rowLevel={props.rowLevel}
+            dateProfile={props.dateProfile}
+            tDateProfile={props.tDateProfile}
+            todayRange={props.todayRange}
+            nowDate={props.nowDate}
+            nowMs={props.nowMs}
+            isFirst={cellStartIndex + cellI === 0}
 
-    // TODO: ensure not equal?
-    setRef(this.props.innerWidthRef, max)
-  }
+            // refs
+            innerWidthRef={innerWidthRefMap.createRef(key)}
+            innerHeightRef={innerHeightRefMap.createRef(key)}
 
-  handleInnerHeights = () => {
-    if (this._isUnmounting) return
-    const innerHeightMap = this.innerHeightRefMap.current
-    let max: number | null = null
-
-    for (const innerHeight of innerHeightMap.values()) {
-      max = Math.max(max || 0, innerHeight)
-    }
-
-    // TODO: ensure not equal?
-    setRef(this.props.innerHeighRef, max)
-    this.setState({ innerHeight: max })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    setRef(this.props.innerWidthRef, null)
-    setRef(this.props.innerHeighRef, null)
-  }
-}
+            // dimensions
+            slotWidth={props.slotWidth}
+          />
+        )
+      })}
+    </div>
+  )
+})

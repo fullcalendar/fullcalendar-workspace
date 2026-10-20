@@ -1,5 +1,6 @@
+import { memo } from 'react'
 import {
-  BaseComponent, BgEvent, renderFill,
+  BgEvent, renderFill, useViewContext, DateEnv, ViewOptionsRefined,
   getEventRangeMeta, DateRange, DateMarker, Dictionary, buildEventRangeKey,
   EventRangeProps,
 } from '@fullcalendar/preact/protected-api'
@@ -30,69 +31,71 @@ export interface TimelineBgProps {
   clipEnd?: number
 }
 
-export class TimelineBg extends BaseComponent<TimelineBgProps> {
-  render() {
-    let { props } = this
-    let highlightSeg = [].concat(props.eventResizeSegs || [], props.dateSelectionSegs || [])
+export const TimelineBg = memo(function TimelineBg(props: TimelineBgProps) {
+  const { dateEnv, options } = useViewContext()
+  let highlightSeg = [].concat(props.eventResizeSegs || [], props.dateSelectionSegs || [])
 
-    return (
-      <>
-        {this.renderSegs(props.businessHourSegs || [], 'non-business')}
-        {this.renderSegs(props.bgEventSegs || [], 'bg-event')}
-        {this.renderSegs(highlightSeg, 'highlight')}
-      </>
-    )
-  }
+  return (
+    <>
+      {renderSegs(props, dateEnv, options, props.businessHourSegs || [], 'non-business')}
+      {renderSegs(props, dateEnv, options, props.bgEventSegs || [], 'bg-event')}
+      {renderSegs(props, dateEnv, options, highlightSeg, 'highlight')}
+    </>
+  )
+})
 
-  renderSegs(segs: (TimelineRange & EventRangeProps)[], fillType: string) {
-    const { props, context } = this
-    const { dateEnv, options } = context
-    const { tDateProfile, todayRange, nowDate } = props
-    const clipStart = props.clipStart ?? 0
-    const clipEnd = props.clipEnd ?? Infinity
-    // fills follow the same assumed-then-measured path as events, so the first
-    // paint isn't missing its background while the foreground is present
-    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
+function renderSegs(
+  props: TimelineBgProps,
+  dateEnv: DateEnv,
+  options: ViewOptionsRefined,
+  segs: (TimelineRange & EventRangeProps)[],
+  fillType: string,
+) {
+  const { tDateProfile, todayRange, nowDate } = props
+  const clipStart = props.clipStart ?? 0
+  const clipEnd = props.clipEnd ?? Infinity
+  // fills follow the same assumed-then-measured path as events, so the first
+  // paint isn't missing its background while the foreground is present
+  const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
 
-    return (
-      <>
-        {segs.map((seg) => {
-          const horizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
+  return (
+    <>
+      {segs.map((seg) => {
+        const horizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
 
-          if (horizontal) {
-            let { start, end } = horizontal
-            start = Math.max(start, clipStart)
-            end = Math.min(end, clipEnd)
+        if (horizontal) {
+          let { start, end } = horizontal
+          start = Math.max(start, clipStart)
+          end = Math.min(end, clipEnd)
 
-            if (start < end) {
-              return (
-                <div
-                  key={buildEventRangeKey(seg.eventRange)}
-                  aria-hidden // fills, including bg events, are decorative. hidden from screen readers
-                  className={classNames.fillY}
-                  style={{
-                    insetInlineStart: start - clipStart,
-                    width: end - start,
-                  }}
-                >
-                  {fillType === 'bg-event' ? (
-                    <BgEvent
-                      eventRange={seg.eventRange}
-                      isStart={seg.isStart}
-                      isEnd={seg.isEnd}
-                      isVertical={false}
-                      renderProps={props.renderProps}
-                      {...getEventRangeMeta(seg.eventRange, todayRange, nowDate, props.nowMs)}
-                    />
-                  ) : (
-                    renderFill(fillType, options)
-                  )}
-                </div>
-              )
-            }
+          if (start < end) {
+            return (
+              <div
+                key={buildEventRangeKey(seg.eventRange)}
+                aria-hidden // fills, including bg events, are decorative. hidden from screen readers
+                className={classNames.fillY}
+                style={{
+                  insetInlineStart: start - clipStart,
+                  width: end - start,
+                }}
+              >
+                {fillType === 'bg-event' ? (
+                  <BgEvent
+                    eventRange={seg.eventRange}
+                    isStart={seg.isStart}
+                    isEnd={seg.isEnd}
+                    isVertical={false}
+                    renderProps={props.renderProps}
+                    {...getEventRangeMeta(seg.eventRange, todayRange, nowDate, props.nowMs)}
+                  />
+                ) : (
+                  renderFill(fillType, options)
+                )}
+              </div>
+            )
           }
-        })}
-      </>
-    )
-  }
+        }
+      })}
+    </>
+  )
 }

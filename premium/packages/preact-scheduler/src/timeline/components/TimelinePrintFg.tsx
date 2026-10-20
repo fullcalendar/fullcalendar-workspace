@@ -14,7 +14,8 @@ import {
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type TimelineDateProfile } from '../timeline-date-profile'
 import { type TimelineRange } from '../TimelineLaneSlicer'
-import { TimelinePrintRenderer } from '../print-adapter'
+import { useTimelinePrintBands } from '../print-adapter'
+import { memo } from 'react'
 import { type TimelineSourceSeg } from '../seg-placement-adapter'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
@@ -37,52 +38,49 @@ export interface TimelinePrintFgProps {
   timeCanvasClipStart?: number
 }
 
-export class TimelinePrintFg extends TimelinePrintRenderer<TimelinePrintFgProps> {
-  render() {
-    const { props } = this
-    const { eventBands, moreLinkBand } = this.buildPrintBands(
-      props.fgEventSegs,
-      props.tDateProfile,
-      props.slotWidth,
-    )
+export const TimelinePrintFg = memo(function TimelinePrintFg(props: TimelinePrintFgProps) {
+  const { layout: { eventBands, moreLinkBand }, printHeights } = useTimelinePrintBands(
+    props.fgEventSegs,
+    props.tDateProfile,
+    props.slotWidth,
+  )
 
-    return (
-      <div className={classNames.noShrink}>
-        {eventBands.map((band) => (
-          <TimelinePrintEventBand
-            key={band.levelIndex}
-            band={band}
-            heightRefMap={this.printHeights.segHeightRefMap}
-            dateProfile={props.dateProfile}
-            tDateProfile={props.tDateProfile}
-            nowDate={props.nowDate}
-            nowMs={props.nowMs}
-            todayRange={props.todayRange}
-            eventSelection={props.eventSelection}
-            dateSpanProps={props.dateSpanProps}
-            renderProps={props.renderProps}
-            timeCanvasClipStart={props.timeCanvasClipStart}
-          />
-        ))}
-        {moreLinkBand && (
-          <TimelinePrintMoreLinkBand
-            band={moreLinkBand}
-            heightRefMap={this.printHeights.moreLinkHeightRefMap}
-            dateProfile={props.dateProfile}
-            tDateProfile={props.tDateProfile}
-            nowDate={props.nowDate}
-            nowMs={props.nowMs}
-            todayRange={props.todayRange}
-            eventSelection={props.eventSelection}
-            dateSpanProps={props.dateSpanProps}
-            renderProps={props.renderProps}
-            timeCanvasClipStart={props.timeCanvasClipStart}
-          />
-        )}
-      </div>
-    )
-  }
-}
+  return (
+    <div className={classNames.noShrink}>
+      {eventBands.map((band) => (
+        <TimelinePrintEventBand
+          key={band.levelIndex}
+          band={band}
+          heightRefMap={printHeights.segHeightRefMap}
+          dateProfile={props.dateProfile}
+          tDateProfile={props.tDateProfile}
+          nowDate={props.nowDate}
+          nowMs={props.nowMs}
+          todayRange={props.todayRange}
+          eventSelection={props.eventSelection}
+          dateSpanProps={props.dateSpanProps}
+          renderProps={props.renderProps}
+          timeCanvasClipStart={props.timeCanvasClipStart}
+        />
+      ))}
+      {moreLinkBand && (
+        <TimelinePrintMoreLinkBand
+          band={moreLinkBand}
+          heightRefMap={printHeights.moreLinkHeightRefMap}
+          dateProfile={props.dateProfile}
+          tDateProfile={props.tDateProfile}
+          nowDate={props.nowDate}
+          nowMs={props.nowMs}
+          todayRange={props.todayRange}
+          eventSelection={props.eventSelection}
+          dateSpanProps={props.dateSpanProps}
+          renderProps={props.renderProps}
+          timeCanvasClipStart={props.timeCanvasClipStart}
+        />
+      )}
+    </div>
+  )
+})
 
 interface TimelinePrintBandBaseProps {
   dateProfile: DateProfile

@@ -232,3 +232,21 @@ One P2, reproduced by the reviewer in Chrome and fixed:
     not laid out yet, was clamped from, so the pending check passed too early.
   - Spec: "scroll position across a dayMinWidth change" in the premium
     `misc/print-scroll-pannable.ts`, timeGrid both ways and dayGrid. Fails with the old hook.
+
+## Timeline
+
+Steps:
+
+1. Leaves: `TimelineEvent`, `TimelineNowIndicatorArrow`/`Line`, `TimelineLaneMoreLink`,
+   `TimelineSlats`, `TimelineBg`, `TimelineHeaderRow`, `TimelineFg`, `TimelinePrintFg` (on a new
+   `useTimelinePrintBands`, the hook form of `TimelinePrintRenderer`, which stays for
+   `ResourcePrintRow` until ResourceTimeline converts). (done)
+2. `TimelineLayoutNormal`, `TimelineLayoutPrint`, `TimelineView`.
+
+### Step 1: leaves
+
+- Pure renders became memo functions. **`TimelineHeaderRow`** keeps its inner width and height
+  `RefMap`s with stable handlers, reporting the max up and `null` on unmount.
+- **`TimelineFg`** keeps its slice and more-link height maps (a new `rev` in state re-renders), and
+  reports its settled height after each commit that changes it, and `null` on unmount. A Strict Mode
+  replay now reports the height again (the class lost it).
