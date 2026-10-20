@@ -4,7 +4,7 @@ The deliverable of phase 3 (`phase-3-hook-toolkit-spec.md`). It defines the shar
 primitives that phases 4–7 build on, as **behaviour contracts**. Signatures are illustrative; an
 implementation may split, merge, or reshape them as long as the contracts hold.
 
-Status: reviewed (GPT-6.1-Sol round 1, 7 findings accepted).
+Status: reviewed by GPT-6.1-Sol in two rounds. Round 1: 7 findings accepted. Round 2: 1 finding accepted, nothing blocking phase 4.
 
 ## 1. Ground truth: commit timing
 
@@ -201,8 +201,17 @@ const [ref, size] = useElementSize({ width: true, height: false })
 
 - **Measures the element it's given, and never decides which element.** The DOM stays as it is
   (roadmap ground rule).
-- **Registers in the callback ref,** so registration happens during the commit. In a
-  `flushSyncWithSizeBatching` commit that gives an immediate measurement.
+- **Registers in a layout effect of the measuring component,** not in the callback ref.
+  - The callback ref only records the element.
+  - The layout effect registers the watcher when the element first appears or changes, and its
+    cleanup disconnects. Setup and teardown stay together (section 1, consequence 4).
+  - It's still inside the commit, so a `flushSyncWithSizeBatching` commit still measures immediately.
+  - It runs *after* the component's children's layout effects, so content a child `<CustomContent>`
+    appends (`{ domNodes }`, custom rendering) is already inside the element. A callback ref would
+    measure first in Preact, where all refs run before any layout effect, and print would get
+    undersized bands.
+  - Today's `MeasuredHeightHarness` gets this right by registering in `componentDidMount` (review
+    round 2).
 - When the element detaches, the watcher disconnects, but the size keeps its cached value. This is
   what keeps measurements through an `<Activity>` hide. When it's replaced by a different element, the
   new element's first measurement replaces the value.
