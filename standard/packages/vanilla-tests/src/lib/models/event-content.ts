@@ -1,23 +1,20 @@
 import { getEventEls, isElVisible, queryPart, queryParts } from './events'
 
 /*
-The time text and title of an event element rendered with the default content. The event's inner
-part holds a time element (only when there's time text) followed by a title element.
+The time text and title of an event element rendered with the default content. The time element
+is only rendered when there's time text.
 */
 export function getEventTexts(eventEl: HTMLElement): { time: string, title: string } {
-  const innerEl = queryPart(eventEl, 'eventInner')
+  const timeEl = queryPart(eventEl, 'eventTime')
+  const titleEl = queryPart(eventEl, 'eventTitle')
 
-  if (!innerEl) {
-    throw new Error('Event element has no inner part')
+  if (!titleEl) {
+    throw new Error('Event element has no title part. Is it rendered with custom content?')
   }
-
-  const textEls = Array.from(innerEl.children)
-  const titleEl = textEls[textEls.length - 1]
-  const timeEl = textEls.length > 1 ? textEls[0] : null
 
   return {
     time: timeEl ? timeEl.textContent! : '',
-    title: titleEl ? titleEl.textContent!.trim() : '', // an untitled event renders a non-breaking space
+    title: titleEl.textContent!.trim(), // an untitled event renders a non-breaking space
   }
 }
 

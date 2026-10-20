@@ -51,6 +51,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
   private buildPublicEvent = memoize(
     (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
   )
+  // the default content's parts aren't in the public render props, so the renderer captures them
+  private buildDefaultContent = memoize(
+    (timePart: string | undefined, titlePart: string | undefined) => (
+      (innerProps: EventDisplayInfo) => renderInnerContent(innerProps, timePart, titlePart)
+    )
+  )
 
   // ref
   private el: HTMLElement
@@ -197,7 +203,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         renderProps={renderProps}
         generatorName="eventContent"
         customGenerator={options.eventContent}
-        defaultGenerator={renderInnerContent}
+        defaultGenerator={this.buildDefaultContent(getEventPartAttr('Time'), getEventPartAttr('Title'))}
         classNameGenerator={options.eventClass}
         part={getEventPartAttr('')}
         didMount={options.eventDidMount}
@@ -315,13 +321,13 @@ StandardEvent.addPropsEquality({
   seg: isPropsEqualShallow,
 })
 
-function renderInnerContent(innerProps: EventDisplayInfo) {
+function renderInnerContent(innerProps: EventDisplayInfo, timePart?: string, titlePart?: string) {
   return (
     <>
       {innerProps.timeText && (
-        <div className={innerProps.timeClass}>{innerProps.timeText}</div>
+        <div className={innerProps.timeClass} data-fc-part={timePart}>{innerProps.timeText}</div>
       )}
-      <div className={innerProps.titleClass}>
+      <div className={innerProps.titleClass} data-fc-part={titlePart}>
         {innerProps.event.title || <>&nbsp;</>}
       </div>
     </>

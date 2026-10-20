@@ -234,4 +234,51 @@ describe('event content hooks', () => {
     expect(backgroundEventDidMount.mock.lastCall![0].el).toBe(bgEventEls[0])
     expect(getComputedStyle(bgEventEls[0]).fontSize).toBe('20px')
   })
+
+  /*
+  The default content's time and title elements aren't render-hook containers. Their classes reach
+  the default renderer through the timeClass/titleClass render props, and their parts are marked too.
+  */
+  describe('default content parts', () => {
+    it.each([
+      ['a timed dayGrid event', 'dayGridMonth', '2014-11-12T09:00:00', 'listItemEvent', '9a'],
+      ['an all-day dayGrid event', 'dayGridMonth', '2014-11-12', 'blockEvent rowEvent', ''],
+      ['a timeGrid event', 'timeGridWeek', '2014-11-12T09:00:00', 'blockEvent columnEvent', '9:00'],
+    ])('marks the time and title of %s', async (_desc, initialView, start, variants, timeText) => {
+      const calendar = initCalendar({
+        initialView,
+        initialDate: '2014-11-12',
+        scrollTime: '00:00',
+        events: [{ title: 'my event', start }],
+      })
+      await waitForSettle()
+
+      const eventEl = getVisibleEventEls(calendar.el)[0]
+      const withVariants = (suffix: string) => ['event' + suffix, ...variants.split(' ').map((v) => v + suffix)].join(' ')
+      const timeEl = queryPart(eventEl, 'eventTime')
+      const titleEl = queryPart(eventEl, 'eventTitle')!
+
+      if (timeText) {
+        expect(timeEl!.getAttribute('data-fc-part')).toBe(withVariants('Time'))
+        expect(timeEl!.textContent).toBe(timeText)
+      } else {
+        expect(timeEl).toBeNull()
+      }
+      expect(titleEl.getAttribute('data-fc-part')).toBe(withVariants('Title'))
+      expect(titleEl.textContent).toBe('my event')
+    })
+
+    it('marks the title of a background event', async () => {
+      const calendar = initCalendar({
+        initialView: 'dayGridMonth',
+        initialDate: '2014-11-12',
+        events: [{ title: 'my event', start: '2014-11-12', display: 'background' }],
+      })
+      await waitForSettle()
+
+      const titleEl = queryPart(getBgEventEls(calendar.el)[0], 'backgroundEventTitle')!
+      expect(titleEl.getAttribute('data-fc-part')).toBe('backgroundEventTitle')
+      expect(titleEl.textContent).toBe('my event')
+    })
+  })
 })
