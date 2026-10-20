@@ -13,14 +13,30 @@ import './date-matchers.js'
 
 let optionsStack = null
 let calendarElements = null
+let renderedCalendars: Set<Calendar> = null
+
+// track every rendered calendar, including those tests construct directly,
+// so teardown can destroy them before their elements are removed
+const origRender = Calendar.prototype.render
+Calendar.prototype.render = function (this: Calendar) {
+  if (renderedCalendars) {
+    renderedCalendars.add(this)
+  }
+  return origRender.call(this)
+}
 
 beforeEach(() => {
   optionsStack = []
   calendarElements = []
+  renderedCalendars = new Set()
 })
 
 afterEach(() => {
   optionsStack = null
+  for (let calendar of renderedCalendars) {
+    calendar.destroy()
+  }
+  renderedCalendars = null
   for (let calendarElement of calendarElements) {
     calendarElement.remove()
   }
