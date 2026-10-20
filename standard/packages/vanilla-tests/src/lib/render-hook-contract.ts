@@ -19,7 +19,8 @@ export interface RenderHookArea {
   willUnmountOption?: string
   infoKeys?: string[] // spot-checked in the info object the hooks receive
   contentSlotsPerEl?: number // default 1
-  isContentInSomeEls?: boolean // some of the area's elements have no content slot
+  // some of the area's elements get only the class, without content or mount hooks (slotHeader's minor slots)
+  hasClassOnlyEls?: boolean
   // checks that fail because of a known bug, keyed by check name. they become pending specs
   knownBugs?: Partial<Record<CheckName, string>>
   // for hooks that aren't top-level options, like per-button ones
@@ -63,7 +64,7 @@ export function describeRenderHookContract(area: RenderHookArea): void {
 
     const counts = els.map(countContent)
 
-    if (area.isContentInSomeEls) {
+    if (area.hasClassOnlyEls) {
       expect(counts.some((count) => count === slotsPerEl)).toBe(true)
       expect(counts.every((count) => count === 0 || count === slotsPerEl)).toBe(true)
     } else {
@@ -113,26 +114,34 @@ export function describeRenderHookContract(area: RenderHookArea): void {
       })
 
       check('contentDomNodes', `renders ${area.contentOption} { domNodes }, replacing them when they change`, async () => {
-        let callCnt = 0
+        const buildGenerator = (generation: string) => () => {
+          const node = document.createElement('span')
+          node.className = PROBE_DOM_CLASS
+          node.setAttribute('data-generation', generation)
+          return { domNodes: [node] }
+        }
         const { calendar, els } = await renderArea(area, combineOptions(
           buildProbeOptions(),
-          buildOption(area.contentOption, () => {
-            callCnt += 1
-            const node = document.createElement('span')
-            node.className = PROBE_DOM_CLASS
-            return { domNodes: [node] }
-          }),
+          buildOption(area.contentOption, buildGenerator('a')),
         ))
+        const countNodes = (el: HTMLElement) => el.querySelectorAll(`.${PROBE_DOM_CLASS}`).length
 
-        expectContent(els, (el) => el.querySelectorAll(`.${PROBE_DOM_CLASS}`).length)
+        expectContent(els, countNodes)
+        const oldNodes = Array.from(document.querySelectorAll(`.${PROBE_DOM_CLASS}`))
 
-        // a re-render that calls the content function again returns new nodes, replacing the old
-        const callCntBefore = callCnt
-        calendar.setOption('dragScroll', false)
+        // a different generator returns different nodes, which replace the old ones
+        setOptions(calendar, combineOptions(
+          buildProbeOptions(),
+          buildOption(area.contentOption, buildGenerator('b')),
+        ))
         await waitTimeout()
 
-        if (callCnt > callCntBefore) {
-          expectContent(findAreaEls(area), (el) => el.querySelectorAll(`.${PROBE_DOM_CLASS}`).length)
+        expectContent(findAreaEls(area), countNodes)
+        for (const node of Array.from(document.querySelectorAll(`.${PROBE_DOM_CLASS}`))) {
+          expect(node.getAttribute('data-generation')).toBe('b')
+        }
+        for (const node of oldNodes) {
+          expect(node.isConnected).withContext('old node removed').toBe(false)
         }
       })
 
@@ -173,13 +182,30 @@ export function describeRenderHookContract(area: RenderHookArea): void {
         expect(mounts.length).toBeGreaterThan(0)
         expectInfoKeys(mounts[0].info, area.infoKeys)
 
+        // every rendered element was mounted, exactly once
+        const mountedEls = mounts.map((mount) => mount.info.el)
+        expect(new Set(mountedEls).size).withContext('no element mounted twice').toBe(mountedEls.length)
+
+        if (area.classOption) {
+          const areaEls = findAreaEls(area)
+
+          for (const el of mountedEls) {
+            expect(areaEls.includes(el)).withContext('mounted element is an area element').toBe(true)
+          }
+          if (!area.hasClassOnlyEls) {
+            for (const el of areaEls) {
+              expect(mountedEls.includes(el)).withContext('rendered element was mounted').toBe(true)
+            }
+          }
+        }
+
         for (const mount of mounts) {
           expect(mount.isConnected).toBe(true)
 
           if (area.classOption) {
             expect(mount.hasProbeClass).toBe(true)
           }
-          if (area.contentOption && !area.isContentInSomeEls) {
+          if (area.contentOption) { // mounted elements always have the content slot
             expect(mount.text).toContain(PROBE_TEXT)
           }
         }
@@ -210,8 +236,15 @@ export function describeRenderHookContract(area: RenderHookArea): void {
           }
         }
 
+        // every mounted element was unmounted, exactly once
         if (area.didMountOption) {
           expect(unmountedEls.length).toBe(mountedEls.length)
+
+          for (const el of mountedEls) {
+            expect(unmountedEls.filter((unmountedEl) => unmountedEl === el).length)
+              .withContext('mounted element unmounted once')
+              .toBe(1)
+          }
         }
       })
     }
@@ -236,6 +269,14 @@ function findAreaEls(area: RenderHookArea): HTMLElement[] {
     return []
   }
   return Array.from(document.querySelectorAll<HTMLElement>(`.${PROBE_CLASS}`))
+}
+
+function setOptions(calendar: Calendar, options: CalendarOptions) {
+  calendar.batchRendering(() => {
+    for (const key in options) {
+      calendar.setOption(key as any, options[key])
+    }
+  })
 }
 
 // merges plain objects deeply, so that per-button options combine

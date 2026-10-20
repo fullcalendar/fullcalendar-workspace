@@ -204,7 +204,8 @@ function compare(args) {
 
     for (const [dir, meta] of [[dirA, metaA], [dirB, metaB]]) {
       if (meta.failed) {
-        console.log(`WARNING: the run that recorded ${dir} failed, so some of its fixtures may be missing. Re-record it.`)
+        console.log(`FAILED RECORDING: the run that recorded ${dir} failed, so it can't be trusted. Re-record it.`)
+        hasDiffs = true
       }
     }
 
@@ -276,7 +277,7 @@ function compare(args) {
 }
 
 /*
-Render-hook call counts may go down, never up. Returns true if any went up
+Render-hook call counts may go down, never up. Returns true if any went up, or a scenario is missing
 */
 function compareCounts(dirA, dirB) {
   const countsA = readCounts(dirA)
@@ -290,10 +291,20 @@ function compareCounts(dirA, dirB) {
   const increases = []
   const decreases = []
   const scenarioNames = [...new Set([...Object.keys(countsA), ...Object.keys(countsB)])].sort()
+  // a missing scenario means lost coverage, not fewer calls. a scenario with no calls is recorded as {}
+  const missing = scenarioNames.filter((name) => !(name in countsA) || !(name in countsB))
+
+  for (const scenarioName of missing) {
+    console.log(`MISSING count scenario ${scenarioName} in ${!(scenarioName in countsA) ? dirA : dirB}`)
+  }
 
   for (const scenarioName of scenarioNames) {
-    const scenarioA = countsA[scenarioName] || {}
-    const scenarioB = countsB[scenarioName] || {}
+    if (missing.includes(scenarioName)) {
+      continue
+    }
+
+    const scenarioA = countsA[scenarioName]
+    const scenarioB = countsB[scenarioName]
 
     for (const optionName of new Set([...Object.keys(scenarioA), ...Object.keys(scenarioB)])) {
       const a = scenarioA[optionName] || 0
@@ -316,7 +327,7 @@ function compareCounts(dirA, dirB) {
     console.log('decreased' + line)
   }
 
-  return increases.length > 0
+  return increases.length > 0 || missing.length > 0
 }
 
 function readCounts(dir) {

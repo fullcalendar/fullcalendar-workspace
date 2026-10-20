@@ -150,7 +150,7 @@ const AREAS: RenderHookArea[] = [
     options: { ...BASE_OPTIONS, initialView: 'timeGridDay' },
     classOption: 'slotHeaderClass',
     contentOption: 'slotHeaderContent',
-    isContentInSomeEls: true, // minor slots have no label
+    hasClassOnlyEls: true, // minor slots have no label, content or mount hooks
     hasDefaultContent: true,
     didMountOption: 'slotHeaderDidMount',
     willUnmountOption: 'slotHeaderWillUnmount',
