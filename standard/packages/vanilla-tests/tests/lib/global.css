@@ -1,0 +1,10 @@
+body {
+  margin-top: 40px;
+  font-size: 13px;
+  font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+}
+
+[data-fc-part~="root"] {
+  max-width: 900px;
+  margin: 20px auto;
+}

@@ -6,18 +6,18 @@ import {
 import {
   buildTimelinePrintLayout,
   buildTimelinePrintPlan,
-} from '../../src/timeline/print-adapter'
+} from '../../../preact-scheduler/src/timeline/print-adapter'
 import {
   buildTimelineSegSources,
   type TimelineEventSeg,
-} from '../../src/timeline/seg-placement-adapter'
+} from '../../../preact-scheduler/src/timeline/seg-placement-adapter'
 import {
   type TimelineDateProfile,
-} from '../../src/timeline/timeline-date-profile'
+} from '../../../preact-scheduler/src/timeline/timeline-date-profile'
 import {
   ESTIMATED_SLOT_WIDTH,
   resolveTimelineEventProjectionSizing,
-} from '../../src/timeline/slot-estimate'
+} from '../../../preact-scheduler/src/timeline/slot-estimate'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 const MS_PER_DAY = 24 * MS_PER_HOUR

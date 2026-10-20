@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { getDayGridSegKey } from '../../src/daygrid/TableSeg'
-import { getSliceKey } from '../../src/seg-placement/kernel'
+import { getDayGridSegKey } from '../../../preact/src/daygrid/TableSeg'
+import { getSliceKey } from '../../../preact/src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
@@ -11,7 +11,7 @@ import {
   computeDayGridMoreLinkLevelTax,
   estimateLevelCapacity,
   resolveDayGridPlacementMode,
-} from '../../src/daygrid/seg-placement-adapter'
+} from '../../../preact/src/daygrid/seg-placement-adapter'
 
 describe('DayGrid production placement adapter', () => {
   it('builds integer-column sources with stable production identity and order', () => {

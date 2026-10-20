@@ -4,7 +4,7 @@ import {
   type TimeGridEventSeg,
   type TimeGridSegPlacementResult,
   type TimeGridSegVertical,
-} from '../../src/timegrid/seg-placement-adapter'
+} from '../../../preact/src/timegrid/seg-placement-adapter'
 
 describe('TimeGrid production placement adapter', () => {
   it('projects ordinary overlap into sensible normalized rectangles', () => {

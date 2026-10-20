@@ -1736,9 +1736,6 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
-      vitest:
-        specifier: ^4.0.16
-        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     publishDirectory: ./dist
 
   premium/packages/react-scheduler:
@@ -1835,6 +1832,9 @@ importers:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
+      '@fullcalendar/preact':
+        specifier: workspace:*
+        version: link:../../../standard/packages/preact/dist
       '@types/jasmine':
         specifier: ^3.3.12
         version: 3.10.19
@@ -1844,6 +1844,9 @@ importers:
       '@types/jquery':
         specifier: ^3.3.29
         version: 3.5.33
+      '@vitest/browser-playwright':
+        specifier: ^4.0.18
+        version: 4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
@@ -1859,12 +1862,18 @@ importers:
       fullcalendar-w-react:
         specifier: workspace:*
         version: link:../../../standard/packages/vanilla-w-react/dist
+      playwright:
+        specifier: ^1.58.1
+        version: 1.58.1
       retry-cli:
         specifier: ^0.7.0
         version: 0.7.0
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
 
   premium/packages/vanilla-scheduler-w-react:
     dependencies:
@@ -2246,9 +2255,6 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.1
         version: 1.0.1
-      vitest:
-        specifier: ^4.0.16
-        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     publishDirectory: ./dist
 
   standard/packages/react:
@@ -2386,6 +2392,9 @@ importers:
       '@fullcalendar/icalendar':
         specifier: workspace:*
         version: link:../icalendar/dist
+      '@fullcalendar/preact':
+        specifier: workspace:*
+        version: link:../preact/dist
       '@fullcalendar/rrule':
         specifier: workspace:*
         version: link:../rrule/dist
@@ -2398,6 +2407,9 @@ importers:
       '@types/jquery':
         specifier: ^3.3.29
         version: 3.5.33
+      '@vitest/browser-playwright':
+        specifier: ^4.0.18
+        version: 4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
@@ -2410,6 +2422,9 @@ importers:
       handlebars:
         specifier: ^4.7.7
         version: 4.7.8
+      playwright:
+        specifier: ^1.58.1
+        version: 1.58.1
       retry-cli:
         specifier: ^0.7.0
         version: 0.7.0
@@ -2419,6 +2434,9 @@ importers:
       temporal-utils:
         specifier: ^1.0.1
         version: 1.0.1
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
 
   standard/packages/vanilla-w-react:
     dependencies:
@@ -34950,10 +34968,10 @@ snapshots:
       vite: 7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
       vue: 3.5.27(typescript@6.0.3)
 
-  '@vitest/browser-playwright@4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)':
+  '@vitest/browser-playwright@4.0.18(playwright@1.58.1)(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)':
     dependencies:
-      '@vitest/browser': 4.0.18(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
-      '@vitest/mocker': 4.0.18(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
+      '@vitest/browser': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
+      '@vitest/mocker': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
       playwright: 1.58.1
       tinyrainbow: 3.0.3
       vitest: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
@@ -34977,9 +34995,9 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/browser@4.0.18(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)':
+  '@vitest/browser@4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)':
     dependencies:
-      '@vitest/mocker': 4.0.18(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
+      '@vitest/mocker': 4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))
       '@vitest/utils': 4.0.18
       magic-string: 0.30.21
       pixelmatch: 7.1.0
@@ -35020,6 +35038,15 @@ snapshots:
       '@vitest/utils': 4.0.18
       chai: 6.2.2
       tinyrainbow: 3.0.3
+
+  '@vitest/mocker@4.0.18(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
+    dependencies:
+      '@vitest/spy': 4.0.18
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
+    optional: true
 
   '@vitest/mocker@4.0.18(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))':
     dependencies:
@@ -48167,7 +48194,7 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
       '@types/node': 24.10.9
-      '@vitest/browser-playwright': 4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
+      '@vitest/browser-playwright': 4.0.18(playwright@1.58.1)(vite@7.3.0(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
       jsdom: 27.4.0
     transitivePeerDependencies:
       - jiti

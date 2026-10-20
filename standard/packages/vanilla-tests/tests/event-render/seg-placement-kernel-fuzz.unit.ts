@@ -12,7 +12,7 @@ import {
   groupLaterallyIntersecting,
   isPartialSlice,
   placeExtraSlicesInLevels,
-} from '../../src/seg-placement/kernel'
+} from '../../../preact/src/seg-placement/kernel'
 
 type TestSeg = SourceSeg & { id: string }
 

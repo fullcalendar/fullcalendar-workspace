@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { getSliceKey } from '../../src/seg-placement/kernel'
+import { getSliceKey } from '../../../preact/src/seg-placement/kernel'
 import {
   type DayGridEventSeg,
   type DayGridPlacementColumn,
   buildDayGridLevelPlacements,
   buildDayGridPixelPlacements,
-} from '../../src/daygrid/seg-placement-adapter'
+} from '../../../preact/src/daygrid/seg-placement-adapter'
 
 /*
 Historical hiding fixtures for scored logical slice plans and measured pixel

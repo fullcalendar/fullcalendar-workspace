@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import {
   type DayGridEventSeg,
   buildDayGridPopoverSegs,
-} from '../../src/daygrid/seg-placement-adapter'
+} from '../../../preact/src/daygrid/seg-placement-adapter'
 import {
   buildDayGridPrintColumns,
   buildDayGridPrintPlan,
   getDayGridPrintSliceKey,
-} from '../../src/daygrid/print-adapter'
-import { DEFAULT_PRINT_MAX_LEVELS } from '../../src/seg-placement/print'
+} from '../../../preact/src/daygrid/print-adapter'
+import { DEFAULT_PRINT_MAX_LEVELS } from '../../../preact/src/seg-placement/print'
 
 describe('DayGrid print planning', () => {
   it('plans from every source and rebuilds never-mounted sources as complete hidden slices', () => {

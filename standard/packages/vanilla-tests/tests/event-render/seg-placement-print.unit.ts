@@ -5,13 +5,13 @@ import {
   convertSegsToWholeSlices,
   groupLaterallyIntersecting,
   sortByEventOrder,
-} from '../../src/seg-placement/kernel'
+} from '../../../preact/src/seg-placement/kernel'
 import {
   DEFAULT_PRINT_MAX_LEVELS,
   buildPrintEventBands,
   buildPrintMoreLinkBand,
   planPrintDomCandidates,
-} from '../../src/seg-placement/print'
+} from '../../../preact/src/seg-placement/print'
 
 type TestSeg = SourceSeg & { id: string }
 type UnorderedSeg = Omit<TestSeg, 'orderIndex'>

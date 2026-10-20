@@ -9,10 +9,10 @@ import {
   buildTimelineSegSources,
   type TimelineEventSeg,
   type TimelineSourceSeg,
-} from '../../src/timeline/seg-placement-adapter'
+} from '../../../preact-scheduler/src/timeline/seg-placement-adapter'
 import {
   type TimelineDateProfile,
-} from '../../src/timeline/timeline-date-profile'
+} from '../../../preact-scheduler/src/timeline/timeline-date-profile'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 const MS_PER_DAY = 24 * MS_PER_HOUR

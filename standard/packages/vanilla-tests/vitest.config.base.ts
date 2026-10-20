@@ -1,0 +1,68 @@
+import { defineConfig, type ViteUserConfig } from 'vitest/config'
+import { playwright } from '@vitest/browser-playwright'
+import { fileURLToPath } from 'node:url'
+
+/*
+Shared by this package's vitest.config.ts and the premium test package's.
+*/
+
+// Matches Karma's --window-size. Some tests need the tall window.
+// The Playwright context and Vitest's iframe get the same size so the iframe is never scaled,
+// which keeps page.mouse coordinates equal to getBoundingClientRect coordinates.
+export const VIEWPORT = { width: 1280, height: 1696 }
+
+// Matches CI's TZ. Tests that use the `local` time zone depend on it.
+export const TIME_ZONE = 'America/New_York'
+
+process.env.TZ = TIME_ZONE // for the Node project's workers, which inherit it
+
+export function createTestConfig(options: { setupFile: string }): ViteUserConfig {
+  return defineConfig({
+    test: {
+      onConsoleLog(log) {
+        // the dev-parts plugin's once-per-page warning would otherwise print for every test file
+        if (log.includes('dev-parts plugin is for development only')) {
+          return false
+        }
+      },
+      projects: [
+        {
+          extends: true,
+          test: {
+            name: 'unit',
+            environment: 'node',
+            include: ['tests/**/*.unit.ts'],
+          },
+        },
+        {
+          extends: true,
+          test: {
+            name: 'browser',
+            include: ['tests/**/*.ts'],
+            exclude: ['tests/**/*.unit.ts', 'tests/lib/**'],
+            setupFiles: [options.setupFile],
+            testTimeout: 10000,
+            browser: {
+              enabled: true,
+              headless: true,
+              provider: playwright({
+                contextOptions: {
+                  viewport: VIEWPORT,
+                  timezoneId: TIME_ZONE,
+                },
+              }),
+              viewport: VIEWPORT,
+              instances: [
+                { browser: 'chromium' },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  })
+}
+
+export function resolvePath(relPath: string, baseUrl: string): string {
+  return fileURLToPath(new URL(relPath, baseUrl))
+}

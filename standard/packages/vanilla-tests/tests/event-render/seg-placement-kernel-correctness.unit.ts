@@ -13,7 +13,7 @@ import {
   placeExtraSlicesInLevels,
   resolveLevelCoords,
   sortByEventOrder,
-} from '../../src/seg-placement/kernel'
+} from '../../../preact/src/seg-placement/kernel'
 
 type TestSeg = SourceSeg & { id: string }
 
