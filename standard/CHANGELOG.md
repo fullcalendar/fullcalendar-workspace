@@ -10,6 +10,7 @@
 - FIX: `eventDrop` reports `oldResource`/`newResource` when an event that isn't resource-editable is dragged over another resource, even though its resource doesn't change (#4943)
 - FIX: `event.setDates()` without the `allDay` option cleared the event's `allDay` flag, turning an all-day event into a timed one
 - FIX: TypeScript: `calendar.off()` required a handler, though calling it without one removes all of that name's handlers
+- FIX: TypeScript: an event source function's success callback (or promise) only accepted `EventInput[]`, though any response can be given for `eventSourceSuccess` or the source's `success` to transform
 
 ### Locales
 

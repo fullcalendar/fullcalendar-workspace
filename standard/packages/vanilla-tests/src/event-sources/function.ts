@@ -226,10 +226,9 @@ describe('events as a function', () => {
   })
 
   describe('eventSourceSuccess', () => {
-    // EventSourceFunc types the callback's arg as EventInput[], though a success transform accepts any response
-    const fetchWrapped = ((_info: EventSourceFuncInfo, callback: (response: unknown) => void) => {
+    const fetchWrapped: EventSourceFunc = (_info, callback) => {
       callback({ something: [{ title: 'hi', start: '2014-05-01' }] })
-    }) as EventSourceFunc
+    }
 
     it('transforms the response when set on the calendar', () => {
       const eventSourceSuccess = vi.fn((response) => response.something)

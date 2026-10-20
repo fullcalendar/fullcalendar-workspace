@@ -12,13 +12,17 @@ export type EventSourceFuncInfo = {
   timeZone: string
 }
 
+/*
+Gives the source's events, as EventInput[]. Or gives any response, for eventSourceSuccess or the
+source's `success` option to turn into EventInput[].
+*/
 export type EventSourceFunc =
   ((
     info: EventSourceFuncInfo,
-    successCallback: (eventInputs: EventInput[]) => void,
+    successCallback: (eventInputs: EventInput[] | unknown) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((info: EventSourceFuncInfo) => Promise<EventInput[]>)
+  ((info: EventSourceFuncInfo) => Promise<EventInput[] | unknown>)
 
 let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 
@@ -35,7 +39,8 @@ let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 
     unpromisify(
       func.bind(null, buildRangeApiWithTimeZone(arg.range, dateEnv)),
-      (rawEvents) => successCallback({ rawEvents }),
+      // may be any response, which eventSourceSuccess or the source's `success` turns into EventInput[]
+      (rawEvents) => successCallback({ rawEvents: rawEvents as EventInput[] }),
       errorCallback,
     )
   },
