@@ -218,6 +218,34 @@ describe('event dragging in timeGrid', () => {
       expect(event.allDay).toBe(false)
     })
 
+    it('starts the event on the dropped day, whichever of its days was grabbed', async () => {
+      const eventDrop = vi.fn()
+      const calendar = initCalendar({
+        ...options,
+        scrollTime: 0,
+        events: [{ id: '1', start: '2014-06-10T22:00:00', end: '2014-06-11T03:00:00' }],
+        eventDrop,
+      })
+      await waitForSettle()
+
+      // grab the overnight event's segment on its second day and drop on a later all-day cell
+      const timeGrid = new TimeGridModel(calendar.el)
+      await timeGrid.dragEvent('1', '2014-06-11T01:00', () => timeGrid.allDay.pointForDate('2014-06-13'))
+
+      // the delta is measured from the event's start day, not the grabbed day
+      const info = eventDrop.mock.calls[0][0]
+      expect(info.delta).toEqual(createDuration({ day: 3 }))
+      expect(info.event.startStr).toBe('2014-06-13')
+      expect(info.event.end).toBeNull()
+      expect(info.event.allDay).toBe(true)
+
+      info.revert()
+      const event = calendar.getEventById('1')!
+      expect(event.allDay).toBe(false)
+      expect(event.startStr).toBe('2014-06-10T22:00:00Z')
+      expect(event.endStr).toBe('2014-06-11T03:00:00Z')
+    })
+
     it('applies defaultAllDayEventDuration when forceEventDuration:true', async () => {
       const calendar = initCalendar({
         ...options,
