@@ -103,10 +103,12 @@ function DayGridLayoutBody(props: DayGridLayoutProps) {
     }
   })
 
-  const scrollerRef = useRef<ScrollerInterface | null>(null)
+  const scrollerRef = useRef<ScrollerInterface | null>(null) // the body scroller
+  const xScrollerRef = useRef<ScrollerInterface | null>(null) // pannable's syncer
   const rowHeightRefMapRef = useRef<RefMap<string, number>>(null)
   const scroll = useInitialScroll({
     scrollerRef,
+    resetXScrollerRef: xScrollerRef,
     isEnabled: !props.forPrint,
     createInitial: () => props.dateProfile.currentDate,
     resetKey: props.dateProfile,
@@ -189,7 +191,7 @@ function DayGridLayoutBody(props: DayGridLayoutProps) {
   return (
     <>
       {options.dayMinWidth
-        ? <DayGridLayoutPannable {...screenLayoutProps} />
+        ? <DayGridLayoutPannable {...screenLayoutProps} xScrollerRef={xScrollerRef} />
         : <DayGridLayoutNormal {...screenLayoutProps} />}
       <Ruler widthRef={handleTotalWidth} />
     </>

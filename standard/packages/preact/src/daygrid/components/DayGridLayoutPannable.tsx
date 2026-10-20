@@ -13,7 +13,8 @@ import { FooterScrollbar } from '../../common/FooterScrollbar'
 import { generateClassName } from '../../common/render-hook'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useScrollerSyncer } from '../../hooks/useScrollerSyncer'
-import { memo, useRef, type Ref } from 'react'
+import { memo, useRef, useState, type Ref } from 'react'
+import { setRef } from '../../vdom-util'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
@@ -48,7 +49,8 @@ export interface DayGridLayoutPannableProps {
 
   // refs
   clientWidthRef: Ref<number>
-  scrollerRef: Ref<ScrollerInterface> // gets the syncer of the header, body and footer scrollers
+  scrollerRef: Ref<ScrollerInterface> // gets the body scroller, the only one that scrolls vertically
+  xScrollerRef: Ref<ScrollerInterface> // gets the syncer of the header, body and footer scrollers
   rowHeightRefMap: RefMap<string, number>
 }
 
@@ -63,8 +65,14 @@ export const DayGridLayoutPannable = memo(function DayGridLayoutPannable(props: 
   useScrollerSyncer(
     /* isHorizontal = */ true,
     [headerScrollerRef, bodyScrollerRef, footerScrollerRef],
-    props.scrollerRef,
+    props.xScrollerRef,
   )
+  const scrollerRefRef = useRef(props.scrollerRef) // assigned during render, for the ref callback
+  scrollerRefRef.current = props.scrollerRef
+  const [handleBodyScroller] = useState(() => (scroller: Scroller | null) => {
+    bodyScrollerRef.current = scroller
+    setRef(scrollerRefRef.current, scroller)
+  })
 
   const endScrollbarWidth = (totalWidth != null && clientWidth != null)
     ? totalWidth - clientWidth
@@ -138,7 +146,7 @@ export const DayGridLayoutPannable = memo(function DayGridLayoutPannable(props: 
           classNames.flexCol,
           verticalScrollbars && classNames.liquid,
         )}
-        ref={bodyScrollerRef}
+        ref={handleBodyScroller}
         clientWidthRef={props.clientWidthRef}
       >
         <DayGridRows

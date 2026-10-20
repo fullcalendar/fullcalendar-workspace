@@ -106,3 +106,21 @@ Steps:
   view component as a content generator), each rendering a function body. The body's memoizers are
   `useMemo`s, the slicers, splitter and joiner live in state or a ref, and `ResourceDayGridView`'s
   `isHitComboAllowed` is a `useStableCallback` reading the latest table models.
+
+### DayGrid review (Sol, high effort)
+
+Two P2s, both reproduced by the reviewer in Chrome and fixed:
+
+1. **Pannable recorded the header's y.** The initial scroll's scroller was the horizontal syncer, whose
+   `y` reads the first scroller (the header, always 0) once the scroll ends and the master is cleared.
+   Even with the master, a later horizontal scroll of the footer would make it the master. Now the
+   hook scrolls and listens to the body scroller, the only one that scrolls vertically, and a reset
+   scrolls x to 0 through the syncer (`resetXScrollerRef`).
+2. **A restored position could be clamped for good.** Leaving print remounts the screen rows before
+   their events are measured, so the saved position wasn't reachable yet, and geometry changes
+   skipped pixel targets. Now a position that wasn't reached stays pending, and geometry changes
+   re-apply it until it is (or a user scroll replaces it).
+
+Specs: `vanilla-tests/src/view-render/print-scroll.ts` and
+`vanilla-scheduler-tests/src/misc/print-scroll-pannable.ts` (`dayMinWidth` needs the scrollgrid
+plugin). Both fail with the old hook (0 instead of 80).
