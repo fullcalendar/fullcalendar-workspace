@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
+import { getCoveredDates } from '../lib/models/event-content'
 import { queryParts } from '../lib/models/events'
 import { getSlotLaneEls, getSlotTop } from '../lib/models/slots'
 import { TimeGridModel } from '../lib/models/time-grid'
@@ -78,6 +79,29 @@ describe('businessHours in timeGrid', () => {
     expectNonBusinessHours(calendar.el, '2014-12-08', [['00:00', '09:00'], ['17:00', '24:00']])
     expectNonBusinessHours(calendar.el, '2014-12-13', WHOLE_DAY)
     expect(getAllDayFillDates(calendar.el)).toEqual(['2014-12-07', '2014-12-13'])
+  })
+
+  it.each([
+    { direction: 'ltr' },
+    { direction: 'rtl' },
+  ])('fills around custom hours, joining consecutive all-day days ($direction)', async ({ direction }) => {
+    const calendar = initCalendar({
+      ...options,
+      direction,
+      businessHours: { startTime: '02:00', endTime: '06:00', daysOfWeek: [1, 2, 3, 4] }, // Mon-Thu
+    })
+    await waitForSettle()
+
+    expectNonBusinessHours(calendar.el, '2014-12-07', WHOLE_DAY)
+    for (const date of ['2014-12-08', '2014-12-09', '2014-12-10', '2014-12-11']) {
+      expectNonBusinessHours(calendar.el, date, [['00:00', '02:00'], ['06:00', '24:00']])
+    }
+    expectNonBusinessHours(calendar.el, '2014-12-12', WHOLE_DAY)
+    expectNonBusinessHours(calendar.el, '2014-12-13', WHOLE_DAY)
+
+    // each stretch of whole days is one all-day element
+    const allDayFillEls = queryParts(calendar.el, 'nonBusinessHours').filter((el) => el.closest('[data-fc-part~="dayCell"]'))
+    expect(allDayFillEls.map(getCoveredDates)).toEqual([['2014-12-07'], ['2014-12-12', '2014-12-13']])
   })
 
   it('renders several day-of-week groups', async () => {
