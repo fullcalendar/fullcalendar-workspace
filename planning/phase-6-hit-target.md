@@ -76,6 +76,11 @@ stale if the prop changed. No caller changes it, so nothing visible was broken.
 - The React suite's #8119 test received the component through `settings.component`. It now gets
   the target, and reads `moreLinkHeight` by walking React's fiber from `target.el`.
 
+## Review
+
+GPT-6.1-Sol, one round: no actionable findings. Its throwaway checks of `useHitTarget` passed 10 of
+10 across React 17, 18 and 19 and Preact, including Strict Mode and `<Activity>`.
+
 ## Results
 
 - Preact, the five broad filters:
