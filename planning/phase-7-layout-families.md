@@ -124,3 +124,52 @@ Two P2s, both reproduced by the reviewer in Chrome and fixed:
 Specs: `vanilla-tests/src/view-render/print-scroll.ts` and
 `vanilla-scheduler-tests/src/misc/print-scroll-pannable.ts` (`dayMinWidth` needs the scrollgrid
 plugin). Both fail with the old hook (0 instead of 80).
+
+## TimeGrid
+
+Steps:
+
+1. Bottom-up: `TimeGridCols` (onto `useHitTarget`), `TimeGridCol`, `TimeGridEvent`,
+   `TimeGridMoreLink`, `TimeGridAllDayLane` (onto `useHitTarget`). (done)
+2. The layout shell: `TimeGridLayout`, `TimeGridLayoutNormal`, `TimeGridLayoutPannable`, sharing
+   `useTimeGridAxis`, with the time scroll on `useInitialScroll` (#8112 bug 2).
+3. View data: `TimeGridView` and `ResourceTimeGridView` share a `useTimeGridViewData`.
+
+### Step 1: columns, events, all-day lane
+
+- **`TimeGridCols`** registers with `useHitTarget`. Like the class adapter, it passes only
+  `eventSelection` and `isHitComboAllowed` (it has per-column drag and resize, not `eventDrag`).
+- **`TimeGridAllDayLane`** registers with `useHitTarget` and measures its more-link probe with
+  `useReportedSize`. Its row's root and height come back through plain ref objects (`DayGridRow`'s
+  `useForwardedElRef` and `useReportedSize`).
+- **`TimeGridCol`**, **`TimeGridEvent`**, **`TimeGridMoreLink`**: pure renders, now memo functions,
+  their helpers module functions.
+
+### Step 2: the layout shell
+
+- **`TimeGridLayout`** is a memo shell with no state, so it re-renders `ViewContainer` exactly as the
+  class did. It owns the time scroll:
+  - **`useInitialScroll`** with a logical `Duration` target, projected through the slat height
+    (reported by the layouts, kept in a ref, re-projected after size).
+  - **`_timeScrollRequest`** (`scrollToTime`) replaces the target through `scrollToLogical`.
+  - **A user scroll records only y.** Pannable's time scroller syncs the axis too, which never
+    scrolls in x. A reset scrolls x to 0 through the day syncer (`resetXScrollerRef`), as the class
+    did. Normal has no day syncer, so it skips it, as before.
+  - **Behavior change:** the class projected the time once and kept the pixels, so a later slat
+    height change (resizing with `expandRows`) left the scroll at the old offset. A logical target
+    now re-projects until the user scrolls (changelog).
+  - Leaving print already re-applied the user's position before; now through the hook.
+- **`useTimeGridAxis`** (`timegrid/components/useTimeGridAxis.ts`): what Normal and Pannable share,
+  the axis width (from the all-day, header and slat labels) and the tallest slat label. Normal's
+  single week-number width callback became the per-tier `RefMap` Pannable already had.
+  **`useSlatHeightReport`** reports the slat height after each commit that changes it, and `null`
+  on unmount.
+- **`TimeGridLayoutNormal`** keeps its `requestAnimationFrame` before setting the total width (it
+  avoids a ResizeObserver loop with the all-day row). **`TimeGridLayoutPannable`** syncs its scrollers
+  with two `useScrollerSyncer`s and keeps the header-tier heights with an array-equality guard (the
+  class's `addStateEquality`). Both size their cells with `computeDayGridColumns`.
+- **Specs:** `activity-scroll.ts` gained a timeGrid case (React runtime). `print-scroll.ts` and the
+  premium `print-scroll-pannable.ts` gained timeGrid cases, regression guards for leaving print.
+  - Leaving print gives timeGrid a "ResizeObserver loop" error in Karma, with or without this change,
+    so the standard spec wraps the print toggle in `ignoreResizeObserverLoops`. Follow-up: find the
+    loop.

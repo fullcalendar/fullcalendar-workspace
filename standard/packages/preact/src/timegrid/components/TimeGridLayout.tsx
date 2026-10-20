@@ -1,19 +1,19 @@
 import { Duration, DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { ViewOptions } from '../../options'
-import { BaseComponent } from '../../vdom-util'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { Hit } from '../../interactions/hit'
-import { Scroller } from '../../scrollgrid/Scroller'
+import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { SlicedCoordRange } from '../../coord-range'
 import { ViewContainer } from '../../common/ViewContainer'
 import { afterSize } from '../../component-util/resize-observer'
-import { memoize } from '../../util/memoize'
 import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../common/render-hook'
-import { createRef } from 'react'
+import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useInitialScroll } from '../../hooks/useInitialScroll'
 import classNames from '../../styles.module.css'
 import { buildSlatMetas } from '../time-slat-meta'
 import { TimeGridRange } from '../TimeColsSeg'
@@ -60,11 +60,6 @@ export interface TimeGridLayoutProps {
   eventSelection: string
 }
 
-interface TimeScroll {
-  time?: Duration
-  y?: number
-}
-
 function buildEmptySegCols<T>(segsByCol: T[][]): T[][] {
   return segsByCol.map(() => [])
 }
@@ -75,235 +70,155 @@ function buildEmptyInteractionCols<T>(
   return interactionsByCol.map(() => null as any)
 }
 
-export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
-  // memo
-  private buildSlatMetas = memoize(buildSlatMetas)
+/*
+The shell of the TimeGrid layouts. Chooses between pannable (dayMinWidth) and normal, and owns the
+scroll to a time: the initial scrollTime, scroll requests, and where the user scrolled to
+*/
+export const TimeGridLayout = memo(function TimeGridLayout(props: TimeGridLayoutProps) {
+  const context = useViewContext()
+  const { dateProfile } = props
+  const { options, dateEnv, emitter } = context
+  const { dayMinWidth } = options
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
-  // refs
-  private dayScrollerRef = createRef<Scroller>()
-  private timeScrollerRef = createRef<Scroller>()
-  private slatHeight?: number
-
-  // internal
-  private _isUnmounting: boolean
-  private currentSlatCnt?: number
-  private scrollState: TimeScroll = {} // updated in-place
-
-  render() {
-    const { props, context } = this
-    const { dateProfile } = props
-    const { options, dateEnv } = context
-    const { dayMinWidth } = options
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-
-    const slatMetas = this.buildSlatMetas(
+  const slatMetas = useMemo(
+    () => buildSlatMetas(
       dateProfile.slotMinTime,
       dateProfile.slotMaxTime,
       options.slotHeaderInterval,
       options.slotDuration,
       dateEnv,
-    )
-    this.currentSlatCnt = slatMetas.length
-    const dateSelectionSegs = props.forPrint ? [] : props.dateSelectionSegs
-    const eventDrag = props.forPrint ? null : props.eventDrag
-    const eventResize = props.forPrint ? null : props.eventResize
-    const dateSelectionSegsByCol = props.forPrint ? buildEmptySegCols(props.dateSelectionSegsByCol) : props.dateSelectionSegsByCol
-    const eventDragByCol = props.forPrint ? buildEmptyInteractionCols(props.eventDragByCol) : props.eventDragByCol
-    const eventResizeByCol = props.forPrint ? buildEmptyInteractionCols(props.eventResizeByCol) : props.eventResizeByCol
+    ),
+    [dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotHeaderInterval, options.slotDuration, dateEnv],
+  )
 
-    const commonLayoutProps = {
-      dateProfile: dateProfile,
-      nowDate: props.nowDate,
-      nowMs: props.nowMs,
-      todayRange: props.todayRange,
-      cells: props.cells,
-      slatMetas,
-      forPrint: props.forPrint,
-      isHitComboAllowed: props.isHitComboAllowed,
+  const dayScrollerRef = useRef<ScrollerInterface | null>(null)
+  const timeScrollerRef = useRef<ScrollerInterface | null>(null)
+  const slatHeightRef = useRef<number | null>(null)
+  const scroll = useInitialScroll<Duration>({
+    scrollerRef: timeScrollerRef,
+    resetXScrollerRef: dayScrollerRef, // pannable only
+    isEnabled: !props.forPrint,
+    createInitial: () => options.scrollTime,
+    resetKey: dateProfile,
+    isResetOnChange: options.scrollTimeReset,
+    project(time) {
+      const slatHeight = slatHeightRef.current
 
-      // header content
-      headerTiers: props.headerTiers,
+      if (slatHeight != null) {
+        let y = computeTimeTopFrac(time, dateProfile) * (slatHeight * slatMetas.length)
 
-      // all-day content
-      fgEventSegs: props.fgEventSegs,
-      bgEventSegs: props.bgEventSegs,
-      businessHourSegs: props.businessHourSegs,
-      dateSelectionSegs,
-      eventDrag,
-      eventResize,
-      ...getAllDayMaxEventProps(options),
-
-      // timed content
-      fgEventSegsByCol: props.fgEventSegsByCol,
-      bgEventSegsByCol: props.bgEventSegsByCol,
-      businessHourSegsByCol: props.businessHourSegsByCol,
-      nowIndicatorSegsByCol: props.nowIndicatorSegsByCol,
-      dateSelectionSegsByCol,
-      eventDragByCol,
-      eventResizeByCol,
-
-      // universal content
-      eventSelection: props.eventSelection,
-
-      // refs
-      timeScrollerRef: this.timeScrollerRef,
-      timeScrollState: this.scrollState,
-      slatHeightRef: this.handleSlatHeight,
-
-      borderlessX,
-      borderlessBottom,
-    }
-
-    return (
-      <ViewContainer
-        attrs={{
-          role: 'table',
-          'aria-colcount': props.cells.length,
-          'aria-labelledby': props.labelId,
-          'aria-label': props.labelStr,
-        }}
-        className={joinClassNames(
-          props.className,
-          generateClassName(options.tableClass, {
-            borderlessX,
-            borderlessTop,
-            borderlessBottom,
-            multiMonthColumns: 0,
-          }),
-          // We don't use the repeating-header print treatment here because it works poorly:
-          // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
-          // - Chrome works okay, but abs-positioned events cover the repeated header
-          //   Also, there's weird padding on the last page at bottom of container, which matches
-          //   the height of the repeated header
-          // - Safari was never able to do repeated headers in the first place
-          !props.forPrint && classNames.flexCol,
-          classNames.isolate, // for inner z-index of layout. somehow move to layouts?
-        )}
-        viewSpec={context.viewSpec}
-      >
-        {dayMinWidth ? (
-          <TimeGridLayoutPannable
-            {...commonLayoutProps}
-            dayMinWidth={dayMinWidth}
-            dayScrollerRef={this.dayScrollerRef}
-          />
-        ) : (
-          <TimeGridLayoutNormal {...commonLayoutProps} />
-        )}
-      </ViewContainer>
-    )
-  }
-
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount() {
-    this._isUnmounting = false
-    this.resetScroll()
-    this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
-
-    const timeScroller = this.timeScrollerRef.current
-    if (timeScroller) {
-      timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
-    }
-  }
-
-  componentDidUpdate(prevProps: TimeGridLayoutProps) {
-    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
-      this.resetScroll()
-    } else if (prevProps.forPrint && !this.props.forPrint) {
-      // returning from print
-      // reapply scrolling because scroll-divs were probably restored
-      this.applyTimeScroll()
-    }
-  }
-
-  componentWillUnmount() {
-    this._isUnmounting = true
-    this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
-
-    const timeScroller = this.timeScrollerRef.current
-    if (timeScroller) {
-      timeScroller.removeScrollEndListener(this.handleTimeScrollEnd)
-    }
-  }
-
-  // Sizing
-  // -----------------------------------------------------------------------------------------------
-
-  private handleSlatHeight = (slatHeight: number | null) => {
-    if (this._isUnmounting) return
-    this.slatHeight = slatHeight
+        if (y) {
+          y++ // overcome top border
+        }
+        return { y }
+      }
+    },
+    isUserScroll: (isDevice) => isDevice,
+    // only y. Pannable's time scroller syncs the axis too, which doesn't scroll in x
+    readPosition: (scroller) => ({ y: scroller.y }),
+  })
+  const [handleSlatHeight] = useState(() => (slatHeight: number | null) => {
+    slatHeightRef.current = slatHeight
 
     if (slatHeight != null) {
-      afterSize(this.applyTimeScroll)
+      afterSize(scroll.handleGeometry)
     }
+  })
+
+  useLayoutEffect(() => {
+    emitter.on('_timeScrollRequest', scroll.scrollToLogical)
+
+    return () => {
+      emitter.off('_timeScrollRequest', scroll.scrollToLogical)
+    }
+  }, [emitter])
+
+  const dateSelectionSegs = props.forPrint ? [] : props.dateSelectionSegs
+  const eventDrag = props.forPrint ? null : props.eventDrag
+  const eventResize = props.forPrint ? null : props.eventResize
+  const dateSelectionSegsByCol = props.forPrint ? buildEmptySegCols(props.dateSelectionSegsByCol) : props.dateSelectionSegsByCol
+  const eventDragByCol = props.forPrint ? buildEmptyInteractionCols(props.eventDragByCol) : props.eventDragByCol
+  const eventResizeByCol = props.forPrint ? buildEmptyInteractionCols(props.eventResizeByCol) : props.eventResizeByCol
+
+  const commonLayoutProps = {
+    dateProfile: dateProfile,
+    nowDate: props.nowDate,
+    nowMs: props.nowMs,
+    todayRange: props.todayRange,
+    cells: props.cells,
+    slatMetas,
+    forPrint: props.forPrint,
+    isHitComboAllowed: props.isHitComboAllowed,
+
+    // header content
+    headerTiers: props.headerTiers,
+
+    // all-day content
+    fgEventSegs: props.fgEventSegs,
+    bgEventSegs: props.bgEventSegs,
+    businessHourSegs: props.businessHourSegs,
+    dateSelectionSegs,
+    eventDrag,
+    eventResize,
+    ...getAllDayMaxEventProps(options),
+
+    // timed content
+    fgEventSegsByCol: props.fgEventSegsByCol,
+    bgEventSegsByCol: props.bgEventSegsByCol,
+    businessHourSegsByCol: props.businessHourSegsByCol,
+    nowIndicatorSegsByCol: props.nowIndicatorSegsByCol,
+    dateSelectionSegsByCol,
+    eventDragByCol,
+    eventResizeByCol,
+
+    // universal content
+    eventSelection: props.eventSelection,
+
+    // refs
+    timeScrollerRef,
+    slatHeightRef: handleSlatHeight,
   }
 
-  // Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private resetScroll() {
-    this.handleTimeScrollRequest(this.context.options.scrollTime)
-
-    // also resets day scroll
-    const dayScroller = this.dayScrollerRef.current
-    if (dayScroller) {
-      dayScroller.scrollTo({ x: 0 })
-    }
-  }
-
-  private handleTimeScrollRequest = (scrollTime: Duration) => {
-    this.scrollState.time = scrollTime
-    this.scrollState.y = undefined
-    this.applyTimeScroll()
-  }
-
-  /*
-  Captures current values
-  */
-  private handleTimeScrollEnd = (isDevice: boolean) => {
-    if (isDevice) {
-      const y = this.timeScrollerRef.current.y
-
-      // record, but only if not forPrint, which could give bogus values in the case of
-      // TimeGridLayoutPannable, which kills y-scrolling, but retains x-scrolling,
-      // which reports as a 0 y-scroll.
-      if (!this.props.forPrint) {
-        this.scrollState.y = y
-        this.scrollState.time = undefined
-      }
-    }
-  }
-
-  private applyTimeScroll = () => {
-    const timeScroller = this.timeScrollerRef.current
-    const { slatHeight, scrollState } = this
-    let { y, time } = scrollState
-
-    if (
-      y == null &&
-      time &&
-      slatHeight != null &&
-      // Since applyTimeScroll is called by handleSlatHeight, could be called with null during cleanup,
-      // and the timeScroller might not exist
-      timeScroller
-    ) {
-      y = computeTimeTopFrac(time, this.props.dateProfile)
-        * (slatHeight * this.currentSlatCnt)
-
-      if (y) {
-        y++ // overcome top border
-      }
-
-      scrollState.y = y // HACK: store raw pixel value
-    }
-
-    if (y != null) {
-      timeScroller.scrollTo({ y })
-    }
-  }
-}
+  return (
+    <ViewContainer
+      attrs={{
+        role: 'table',
+        'aria-colcount': props.cells.length,
+        'aria-labelledby': props.labelId,
+        'aria-label': props.labelStr,
+      }}
+      className={joinClassNames(
+        props.className,
+        generateClassName(options.tableClass, {
+          borderlessX,
+          borderlessTop,
+          borderlessBottom,
+          multiMonthColumns: 0,
+        }),
+        // We don't use the repeating-header print treatment here because it works poorly:
+        // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
+        // - Chrome works okay, but abs-positioned events cover the repeated header
+        //   Also, there's weird padding on the last page at bottom of container, which matches
+        //   the height of the repeated header
+        // - Safari was never able to do repeated headers in the first place
+        !props.forPrint && classNames.flexCol,
+        classNames.isolate, // for inner z-index of layout. somehow move to layouts?
+      )}
+      viewSpec={context.viewSpec}
+    >
+      {dayMinWidth ? (
+        <TimeGridLayoutPannable
+          {...commonLayoutProps}
+          dayMinWidth={dayMinWidth}
+          dayScrollerRef={dayScrollerRef}
+        />
+      ) : (
+        <TimeGridLayoutNormal {...commonLayoutProps} />
+      )}
+    </ViewContainer>
+  )
+})
 
 // Utils
 // -----------------------------------------------------------------------------------------------

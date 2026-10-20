@@ -161,6 +161,14 @@ user yet. Originally sketched as follows.
 - Fix the bug where a grid shown again jumps back to its start (#8112 bug 2): the initial scroll runs
   once per instance or date range, not once per mount.
 
+### 7b. Day-table pipeline (not planned in detail, see `day-table-pipeline.md`)
+
+- Replace the split-by-resource, slice, rejoin pipeline (`VResourceSplitter`, the day slicers,
+  `ResourceDayTableJoiner` and friends, the two `datesAboveResources` table models) with one pure
+  column model and one slicing pass.
+- After phase 7, or folded into phase 9's derived data. Must keep segment identity stable, so
+  render-hook counts don't go up.
+
 ### 8. Reducer purity (done, see `phase-8-reducer-purity.md`)
 
 As built, fetching stays in the reducer, to keep server-rendered events. Mount gating handles its

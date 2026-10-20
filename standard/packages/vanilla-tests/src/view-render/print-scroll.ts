@@ -1,4 +1,5 @@
-import { waitTimeout } from '../lib/misc'
+import internalClassNames from 'fullcalendar/protected-styles'
+import { ignoreResizeObserverLoops, waitTimeout } from '../lib/misc'
 
 /*
 Leaving print re-applies where the user had scrolled (the initial-scroll target), not the initial date.
@@ -25,6 +26,14 @@ describe('scroll position across printing', () => {
     await testScrollAcrossPrint(calendar, '.fc-daygrid-body')
   })
 
+  it('keeps where the user scrolled a timeGrid', async () => {
+    let calendar = initCalendar({
+      initialView: 'timeGridWeek',
+      scrollTime: '00:00',
+    })
+    await testScrollAcrossPrint(calendar, `.fc-timegrid-body .${internalClassNames.internalScroller}`)
+  })
+
   async function testScrollAcrossPrint(calendar, scrollerSelector: string) {
     await waitTimeout(100)
     let scrollerEl = calendar.el.querySelector(scrollerSelector) as HTMLElement
@@ -36,10 +45,13 @@ describe('scroll position across printing', () => {
     scrollerEl.dispatchEvent(new Event('scroll'))
     await waitTimeout(600)
 
-    calendar.trigger('_beforeprint')
-    await waitTimeout(100)
-    calendar.trigger('_afterprint')
-    await waitTimeout(200)
+    // leaving print gives timeGrid a ResizeObserver loop, as it did before the hooks
+    await ignoreResizeObserverLoops(async () => {
+      calendar.trigger('_beforeprint')
+      await waitTimeout(100)
+      calendar.trigger('_afterprint')
+      await waitTimeout(200)
+    })
 
     scrollerEl = calendar.el.querySelector(scrollerSelector) as HTMLElement
     expect(scrollerEl.scrollTop).toBe(80)

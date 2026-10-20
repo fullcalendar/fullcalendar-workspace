@@ -1,6 +1,8 @@
 import * as vdom from 'fullcalendar/preact'
 import dayGridPlugin from 'fullcalendar/daygrid'
+import timeGridPlugin from 'fullcalendar/timegrid'
 import classicThemePlugin from 'fullcalendar/themes/classic'
+import internalClassNames from 'fullcalendar/protected-styles'
 import themeForTestsPlugin from '../lib/theme-for-tests'
 import { waitTimeout } from '../lib/misc'
 
@@ -12,6 +14,32 @@ describe('scroll position across a hidden <Activity>', () => {
   const react = vdom as any
 
   it('keeps where the user scrolled a dayGrid', async () => {
+    await testScrollAcrossActivity(
+      {
+        initialView: 'dayGridYear', // tall enough to scroll
+        initialDate: '2024-01-03', // in the first row, so the initial scroll is to the top
+      },
+      (containerEl) => containerEl.querySelector('.fc-daygrid-body') as HTMLElement,
+    )
+  })
+
+  it('keeps where the user scrolled a timeGrid', async () => {
+    await testScrollAcrossActivity(
+      {
+        initialView: 'timeGridWeek',
+        initialDate: '2024-01-03',
+        scrollTime: '00:00', // the initial scroll is to the top
+      },
+      (containerEl) => containerEl.querySelector(
+        `.fc-timegrid-body .${internalClassNames.internalScroller}`,
+      ) as HTMLElement,
+    )
+  })
+
+  async function testScrollAcrossActivity(
+    calendarOptions: object,
+    getScrollerEl: (containerEl: HTMLElement) => HTMLElement,
+  ) {
     if (!react.Activity) {
       pending('React runtime only')
       return
@@ -27,10 +55,9 @@ describe('scroll position across a hidden <Activity>', () => {
         root.render(
           react.createElement(react.Activity, { mode },
             react.createElement(react.FullCalendar, {
-              plugins: [dayGridPlugin, classicThemePlugin, themeForTestsPlugin],
-              initialView: 'dayGridYear', // tall enough to scroll
-              initialDate: '2024-01-03', // in the first row, so the initial scroll is to the top
+              plugins: [dayGridPlugin, timeGridPlugin, classicThemePlugin, themeForTestsPlugin],
               height: 250,
+              ...calendarOptions,
             }),
           ),
         )
@@ -40,7 +67,8 @@ describe('scroll position across a hidden <Activity>', () => {
     try {
       render('visible')
       await waitTimeout(100)
-      let scrollerEl = containerEl.querySelector('.fc-daygrid-body') as HTMLElement
+      let scrollerEl = getScrollerEl(containerEl)
+      expect(scrollerEl.scrollTop).toBe(0) // sanity check: the initial scroll
       expect(scrollerEl.scrollHeight).toBeGreaterThan(scrollerEl.clientHeight + 100) // sanity check
 
       // a user scroll: a wheel event, then a scroll, then the scroll-end wait
@@ -59,5 +87,5 @@ describe('scroll position across a hidden <Activity>', () => {
       root.unmount()
       containerEl.remove()
     }
-  })
+  }
 })

@@ -21,7 +21,9 @@ Opened 2026-09-28. Two bugs in one report.
   The timer re-arms forever and keeps the whole calendar in memory. Fixed when timers start in an
   effect instead of during render. The pre-pass server-side fix (no timers without a `document`)
   does not help here.
-- **Bug 2, fixed for DayGrid in phase 7 (`useInitialScroll`); TimeGrid still to do.** `TimeGridLayout` and `DayGridLayout` call `resetScroll()` in
+- **Bug 2, fixed for DayGrid and TimeGrid in phase 7 (`useInitialScroll`).** The Timelines and
+  MultiMonth get the same hook when they convert, later in phase 7. Spec:
+  `vanilla-tests/src/view-render/activity-scroll.ts` (React runtime). Before: `TimeGridLayout` and `DayGridLayout` call `resetScroll()` in
   `componentDidMount`, and `<Activity>` re-runs mount effects each time the calendar is shown, so a
   scrolled grid jumps back to `scrollTime` / today's row. A mount effect has the same problem. Needs
   the initial scroll to run once per instance (or per date range), not per mount. Worth designing into
