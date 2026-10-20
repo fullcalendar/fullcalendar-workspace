@@ -1,10 +1,12 @@
 import { getRectCenter, pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
-import { assertPointHits, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
+import { assertGrabbable, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
+import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
 
 /*
-Day cells in a dayGrid view, or in a timeGrid view's all-day row.
-Dates are `YYYY-MM-DD` strings, matching the cells' data-date attributes.
+Day cells in a dayGrid view (resource or not), or in a timeGrid view's all-day row.
+Dates are `YYYY-MM-DD` strings, matching the cells' data-date attributes. In resource views, a spot
+can name the resource: `{ date, resourceId }`.
 */
 export class DayGridModel {
   constructor(public root: HTMLElement) {
@@ -14,8 +16,9 @@ export class DayGridModel {
   Disabled cells (outside validRange, or non-current with showNonCurrentDates:false) have no data-date,
   so they're found by stepping from a dated cell in the same row.
   */
-  getDayCell(date: string): HTMLElement {
-    const cell = this.findDatedCell(date)
+  getDayCell(spot: Spot): HTMLElement {
+    const { date, resourceId } = parseSpot(spot)
+    const cell = this.findDatedCell(date, resourceId)
 
     if (cell) {
       return cell
@@ -23,7 +26,7 @@ export class DayGridModel {
 
     for (let dayOffset = 1; dayOffset < 7; dayOffset++) {
       for (const sign of [1, -1]) {
-        let neighbor = this.findDatedCell(addDays(date, sign * dayOffset))
+        let neighbor = this.findDatedCell(addDays(date, sign * dayOffset), resourceId)
 
         for (let i = 0; neighbor && i < dayOffset; i++) {
           neighbor = (sign > 0 ? neighbor.previousElementSibling : neighbor.nextElementSibling) as HTMLElement
@@ -35,7 +38,7 @@ export class DayGridModel {
       }
     }
 
-    throw new Error(`No day cell for ${date}`)
+    throw new Error(`No day cell for ${describeSpot(spot)}`)
   }
 
   getEventEls(eventId?: string): HTMLElement[] {
@@ -47,22 +50,22 @@ export class DayGridModel {
   }
 
   /*
-  The center of the date's cell. Fine for dropping and selecting, even over events: hits are
+  The center of the cell. Fine for dropping and selecting, even over events: hits are
   computed from coordinates. (Not the cell's bottom edge: in a timeGrid all-day row, its bottom
   ~12px doesn't resolve to an all-day hit.)
   */
-  pointForDate(date: string): Point {
-    const cellEl = this.getDayCell(date)
+  pointForDate(spot: Spot): Point {
+    const cellEl = this.getDayCell(spot)
     cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     const rect = cellEl.getBoundingClientRect()
     return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
   }
 
   /*
-  The point on the event's segment that sits over the given date's cell.
+  The point on the event's segment that sits over the cell.
   */
-  pointForEventOnDate(eventId: string, date: string): { point: Point, eventEl: HTMLElement } {
-    const cellEl = this.getDayCell(date)
+  pointForEventOnDate(eventId: string, spot: Spot): { point: Point, eventEl: HTMLElement } {
+    const cellEl = this.getDayCell(spot)
     cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     const cellRect = cellEl.getBoundingClientRect()
     const x = cellRect.left + cellRect.width / 2
@@ -73,23 +76,23 @@ export class DayGridModel {
     })
 
     if (!eventEl) {
-      throw new Error(`Event ${eventId} has no segment over ${date}`)
+      throw new Error(`Event ${eventId} has no segment over ${describeSpot(spot)}`)
     }
 
     const eventRect = eventEl.getBoundingClientRect()
     const point = { x, y: eventRect.top + eventRect.height / 2 }
-    assertPointHits(point, eventEl, `event ${eventId} on ${date}`)
+    assertGrabbable(point, eventEl, `event ${eventId} on ${describeSpot(spot)}`)
     return { point, eventEl }
   }
 
   /*
-  Clicks the date's "+more" link and returns the popover. Popovers render outside the calendar root.
+  Clicks the cell's "+more" link and returns the popover. Popovers render outside the calendar root.
   */
-  async openMorePopover(date: string): Promise<HTMLElement> {
-    const moreLinkEl = queryPart(this.getDayCell(date), 'moreLink')
+  async openMorePopover(spot: Spot): Promise<HTMLElement> {
+    const moreLinkEl = queryPart(this.getDayCell(spot), 'moreLink')
 
     if (!moreLinkEl) {
-      throw new Error(`No more-link on ${date}`)
+      throw new Error(`No more-link on ${describeSpot(spot)}`)
     }
 
     await pointer.click(getRectCenter(moreLinkEl.getBoundingClientRect()))
@@ -98,26 +101,28 @@ export class DayGridModel {
   }
 
   /*
-  Drags the event by its segment over `grab` and drops it on the `drop` date's cell.
-  FullCalendar moves the event by the difference between those dates.
+  Drags the event by its segment over `grab` and drops it on the `drop` cell.
+  FullCalendar moves the event by the difference between those dates (and to the drop's resource).
   For cross-section drags, `drop` can compute a point elsewhere (ex: a time slot, from TimeGridModel).
   It's computed after the press, because locating it can scroll, which would move the grab point.
   */
-  async dragEvent(eventId: string, grab: string, drop: string | (() => Point)): Promise<void> {
+  async dragEvent(eventId: string, grab: Spot, drop: Spot | (() => Point)): Promise<void> {
     const { point: grabPoint } = this.pointForEventOnDate(eventId, grab)
     await pointer.press(grabPoint, async () => {
-      const dropPoint = typeof drop === 'string' ? this.pointForDate(drop) : drop()
+      const dropPoint = typeof drop === 'function' ? drop() : this.pointForDate(drop)
       await pointer.move(dropPoint)
       await waitForSettle()
     })
     await waitForSettle()
   }
 
-  private findDatedCell(date: string): HTMLElement | null {
-    const cells = queryParts(this.root, 'dayCell').filter((el) => el.getAttribute('data-date') === date)
+  private findDatedCell(date: string, resourceId: string | undefined): HTMLElement | null {
+    const cells = queryParts(this.root, 'dayCell').filter((el) => (
+      el.getAttribute('data-date') === date && matchesResource(el, resourceId)
+    ))
 
     if (cells.length > 1) {
-      throw new Error(`Expected one day cell for ${date}, found ${cells.length}`)
+      throw new Error(`Expected one day cell for ${date}, found ${cells.length}. Specify a resource?`)
     }
     return cells[0] || null
   }

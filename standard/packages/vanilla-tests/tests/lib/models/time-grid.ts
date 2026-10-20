@@ -1,12 +1,14 @@
 import { pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
 import { DayGridModel } from './day-grid'
-import { assertPointHits, getEventEls, getMirrorEls, queryParts } from './events'
+import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from './events'
+import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
 
 /*
-A timeGrid view. `allDay` models the all-day row.
+A timeGrid view (resource or not). `allDay` models the all-day row.
 Date-times are `YYYY-MM-DDTHH:mm(:ss)` strings in the calendar's time zone, matching the columns'
-data-date and the slots' data-time attributes.
+data-date and the slots' data-time attributes. In resource views, a spot can name the resource:
+`{ date, resourceId }`.
 */
 export class TimeGridModel {
   allDay: DayGridModel
@@ -15,11 +17,14 @@ export class TimeGridModel {
     this.allDay = new DayGridModel(root)
   }
 
-  getDayLane(date: string): HTMLElement {
-    const lanes = queryParts(this.root, 'dayLane').filter((el) => el.getAttribute('data-date') === date)
+  getDayLane(spot: Spot): HTMLElement {
+    const { date, resourceId } = parseSpot(spot)
+    const lanes = queryParts(this.root, 'dayLane').filter((el) => (
+      el.getAttribute('data-date') === date && matchesResource(el, resourceId)
+    ))
 
     if (lanes.length !== 1) {
-      throw new Error(`Expected one day lane for ${date}, found ${lanes.length}`)
+      throw new Error(`Expected one day lane for ${describeSpot(spot)}, found ${lanes.length}`)
     }
     return lanes[0]
   }
@@ -39,10 +44,11 @@ export class TimeGridModel {
   /*
   A point in the date's column, just below where the time starts. Scrolls the time into view.
   */
-  pointForDateTime(dateTime: string): Point {
+  pointForDateTime(spot: Spot): Point {
+    const { date: dateTime, resourceId } = parseSpot(spot)
     const [date, time] = splitDateTime(dateTime)
     const y = this.yForTime(time)
-    const laneRect = this.getDayLane(date).getBoundingClientRect()
+    const laneRect = this.getDayLane({ date, resourceId }).getBoundingClientRect()
     return { x: laneRect.left + laneRect.width / 2, y }
   }
 
@@ -50,19 +56,20 @@ export class TimeGridModel {
   The point on the event's segment in `dateTime`'s column, at that time.
   The time must be within the event.
   */
-  pointForEventAt(eventId: string, dateTime: string): { point: Point, eventEl: HTMLElement } {
+  pointForEventAt(eventId: string, spot: Spot): { point: Point, eventEl: HTMLElement } {
+    const { date: dateTime, resourceId } = parseSpot(spot)
     const [date, time] = splitDateTime(dateTime)
     const y = this.yForTime(time)
-    const laneEl = this.getDayLane(date)
+    const laneEl = this.getDayLane({ date, resourceId })
     const eventEl = this.getEventEls(eventId).find((el) => laneEl.contains(el))
 
     if (!eventEl) {
-      throw new Error(`Event ${eventId} has no segment on ${date}`)
+      throw new Error(`Event ${eventId} has no segment on ${describeSpot(spot)}`)
     }
 
     const eventRect = eventEl.getBoundingClientRect()
     const point = { x: eventRect.left + eventRect.width / 2, y }
-    assertPointHits(point, eventEl, `event ${eventId} at ${dateTime}`)
+    assertGrabbable(point, eventEl, `event ${eventId} at ${describeSpot(spot)}`)
     return { point, eventEl }
   }
 
@@ -74,10 +81,10 @@ export class TimeGridModel {
   For cross-section drags, `drop` can compute a point elsewhere (ex: an all-day cell).
   It's computed after the press, because locating it can scroll, which would move the grab point.
   */
-  async dragEvent(eventId: string, grab: string, drop: string | (() => Point)): Promise<void> {
+  async dragEvent(eventId: string, grab: Spot, drop: Spot | (() => Point)): Promise<void> {
     const { point: grabPoint } = this.pointForEventAt(eventId, grab)
     await pointer.press(grabPoint, async () => {
-      const dropPoint = typeof drop === 'string' ? this.pointForDateTime(drop) : drop()
+      const dropPoint = typeof drop === 'function' ? drop() : this.pointForDateTime(drop)
       await pointer.move(dropPoint)
       await waitForSettle()
     })

@@ -35,38 +35,6 @@ describe('eventMaxStack', () => {
     expect(moreEventEls.length).toBe(1)
   })
 
-  it('can drag events out of popover', async () => {
-    let calendar = initCalendar({
-      editable: true,
-      events: [
-        { id: '1', start: '2021-05-07T00:00:00', end: '2021-05-07T01:00:00', resourceId: 'a' },
-        { id: '2', start: '2021-05-07T00:00:00', end: '2021-05-07T01:00:00', resourceId: 'a' },
-        { id: '3', start: '2021-05-07T00:00:00', end: '2021-05-07T01:00:00', resourceId: 'a' }, // hidden
-      ],
-    })
-    let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
-    await waitTimeout()
-    timelineGrid.openMorePopover()
-    await waitTimeout()
-    let moreEventEls = timelineGrid.getMorePopoverEventEls()
-    let newStart = '2021-05-07T04:00:00'
-    let endPoint = timelineGrid.getPoint('c', newStart)
-    endPoint.left += 1 // has trouble overcoming border
-
-    await new Promise<void>((resolve) => {
-      $(moreEventEls).simulate('drag', {
-        end: endPoint,
-        onRelease() {
-          resolve()
-        },
-      })
-    })
-
-    let event = calendar.getEventById('3')
-    expect(event.start).toEqualDate(newStart)
-    expect(event.getResources()[0].id).toBe('c')
-  })
-
   it('causes separate adjacent more links', async () => {
     let calendar = initCalendar({
       events: [

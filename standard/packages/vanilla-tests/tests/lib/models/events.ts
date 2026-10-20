@@ -38,6 +38,25 @@ function isMirrorEl(el: HTMLElement): boolean {
 }
 
 /*
+Resize handles inside the event element. A press on one resizes instead of dragging.
+*/
+export function getResizerEls(eventEl: HTMLElement): HTMLElement[] {
+  return Array.from(eventEl.querySelectorAll<HTMLElement>('.' + classNames.internalEventResizer))
+}
+
+/*
+Throws unless the point is on the event element and not on one of its resize handles.
+*/
+export function assertGrabbable(point: Point, eventEl: HTMLElement, what: string): void {
+  assertPointHits(point, eventEl, what)
+
+  const hitEl = document.elementFromPoint(point.x, point.y)!
+  if (hitEl.closest('.' + classNames.internalEventResizer)) {
+    throw new Error(`Point for ${what} is on a resize handle, which would resize instead of drag`)
+  }
+}
+
+/*
 Throws unless the topmost element at the point is (inside) the expected element.
 Raw mouse input has no covered-target check of its own, so models call this before acting.
 */
