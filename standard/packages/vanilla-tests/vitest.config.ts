@@ -9,6 +9,7 @@ export default createTestConfig({
     'moment/locale/es',
     'moment-timezone',
     'fetch-mock',
+    'sortablejs',
     '@fullcalendar/rrule > rrule',
     '@fullcalendar/icalendar > ical.js',
   ],

@@ -1,6 +1,6 @@
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import { AllowFunc, DropInfo, EventReceiveInfo } from 'fullcalendar'
-import { Draggable, ThirdPartyDraggable } from 'fullcalendar/interaction'
+import { Draggable } from 'fullcalendar/interaction'
 import { initCalendar, createCalendarElement } from '../lib/calendar'
 import { createExternalEl, dragExternalEl } from '../lib/external'
 import { DayGridModel } from '../lib/models/day-grid'
@@ -134,26 +134,6 @@ describe('dragging external elements onto the calendar', () => {
       })
     })
 
-    // https://github.com/fullcalendar/fullcalendar/issues/2240
-    it('still accepts drops after a drop and a view change', async () => {
-      const drop = vi.fn()
-      const calendar = initCalendar({ ...options, drop })
-      await waitForSettle()
-
-      const externalEls = [createExternalEl({ class: 'item' }), createExternalEl({ class: 'item' })]
-      const draggable = new ThirdPartyDraggable({ itemSelector: '.item' })
-      onTestFinished(() => draggable.destroy())
-      await dragExternalEl(externalEls[0], () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
-
-      calendar.next()
-      calendar.prev()
-      externalEls[0].remove()
-      await waitForSettle()
-      await dragExternalEl(externalEls[1], () => new DayGridModel(calendar.el).pointForDate('2014-11-14'))
-
-      expect(drop.mock.calls.map(([info]) => info.dateStr)).toEqual(['2014-11-13', '2014-11-14'])
-    })
-
     // https://github.com/fullcalendar/fullcalendar/issues/2433
     it('still accepts drops after another calendar navigates', async () => {
       const drop = vi.fn()
@@ -168,20 +148,6 @@ describe('dragging external elements onto the calendar', () => {
       await dragExternalEl(externalEl, () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
 
       expect(drop).toHaveBeenCalledOnce()
-    })
-
-    it('accepts elements dragged with ThirdPartyDraggable', async () => {
-      const drop = vi.fn()
-      const calendar = initCalendar({ ...options, drop })
-      await waitForSettle()
-
-      const externalEl = createExternalEl({ class: 'item', 'data-event': JSON.stringify({ title: 'hey' }) })
-      const draggable = new ThirdPartyDraggable({ itemSelector: '.item' })
-      onTestFinished(() => draggable.destroy())
-      await dragExternalEl(externalEl, () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
-
-      expect(drop).toHaveBeenCalledOnce()
-      expect(calendar.getEvents()[0].title).toBe('hey')
     })
   })
 

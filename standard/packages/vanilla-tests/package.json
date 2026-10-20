@@ -16,11 +16,15 @@
     "@fullcalendar/icalendar": "workspace:*",
     "@fullcalendar/preact": "workspace:*",
     "@fullcalendar/rrule": "workspace:*",
+    "@types/sortablejs": "^1.15.9",
     "@vitest/browser-playwright": "^4.0.18",
     "fetch-mock": "^9.11.0",
     "fullcalendar": "workspace:*",
     "fullcalendar-w-react": "workspace:*",
+    "jquery": "^4.0.0",
+    "jquery-ui": "^1.14.2",
     "playwright": "^1.58.1",
+    "sortablejs": "^1.15.7",
     "vitest": "^4.0.18"
   },
   "scripts": {
