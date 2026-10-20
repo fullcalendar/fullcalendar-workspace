@@ -3,6 +3,7 @@ import { initCalendar } from '../lib/calendar'
 import { queryParts } from '../lib/models/events'
 import {
   findObscuredEls,
+  findOverlappingEls,
   getContainingDate,
   getEventTexts,
   getEventTimeTexts,
@@ -13,14 +14,19 @@ import { enUsSep } from '../lib/intl'
 import { waitForSettle } from '../lib/settle'
 
 /*
-Expects the event element to be in the date's column, from the top of one slot to the bottom of
-another (slot indexes count from slotMinTime).
+Expects the event element to be in the date's column (horizontally within its day lane), from the top
+of one slot to the bottom of another (slot indexes count from slotMinTime). The segment must be the only
+one in its lane, so it fills most of the lane's width.
 */
 function expectSegInSlots(root: HTMLElement, eventEl: HTMLElement, date: string, startSlot: number, endSlot: number) {
   const span = getSlotSpan(root, startSlot, endSlot)
   const rect = eventEl.getBoundingClientRect()
+  const laneRect = eventEl.closest('[data-fc-part~="dayLane"]')!.getBoundingClientRect()
 
   expect(getContainingDate(eventEl)).toBe(date)
+  expect(rect.width).toBeGreaterThan(laneRect.width / 2)
+  expect(rect.left).toBeGreaterThanOrEqual(laneRect.left - 0.5)
+  expect(rect.right).toBeLessThanOrEqual(laneRect.right + 0.5)
   expect(Math.abs(rect.top - span.top)).toBeLessThan(2)
   expect(Math.abs(rect.bottom - span.bottom)).toBeLessThan(3) // events have a small bottom gap
 }
@@ -165,6 +171,7 @@ describe('timeGrid event rendering', () => {
       const eventEls = getVisibleEventEls(calendar.el)
       expect(eventEls.length).toBe(7)
       expect(findObscuredEls(eventEls)).toBeNull()
+      expect(findOverlappingEls(eventEls)).toBeNull() // slotEventOverlap:false: not even partly covered
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/2758
@@ -195,6 +202,7 @@ describe('timeGrid event rendering', () => {
       const eventEls = getVisibleEventEls(calendar.el)
       expect(eventEls.length).toBe(12)
       expect(findObscuredEls(eventEls)).toBeNull()
+      expect(findOverlappingEls(eventEls)).toBeNull() // slotEventOverlap:false: not even partly covered
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/5004

@@ -26,6 +26,28 @@ describe('multiMonth event rendering', () => {
     expect(getVisibleEventEls(monthEls[1]).length).toBe(0)
   })
 
+  it('splits an event that crosses a month boundary between the two months', async () => {
+    const calendar = initCalendar({
+      initialView: 'multiMonthYear',
+      initialDate: '2024-01-15',
+      eventClass: (data) => [data.isStart && 'test-start', data.isEnd && 'test-end'].filter(Boolean).join(' '),
+      events: [{ id: 'cross', start: '2024-01-31', end: '2024-02-02' }],
+    })
+    await waitForSettle()
+
+    const monthEls = queryParts(calendar.el, 'singleMonth')
+    const segs = [monthEls[0], monthEls[1]].map((monthEl) => getVisibleEventEls(monthEl).map((el) => ({
+      dates: getCoveredDates(el),
+      isStart: el.classList.contains('test-start'),
+      isEnd: el.classList.contains('test-end'),
+    })))
+    expect(segs).toEqual([
+      [{ dates: ['2024-01-31'], isStart: true, isEnd: false }],
+      [{ dates: ['2024-02-01'], isStart: false, isEnd: true }],
+    ])
+    expect(getVisibleEventEls(calendar.el).length).toBe(2)
+  })
+
   // https://github.com/fullcalendar/fullcalendar/issues/7573
   it('doesn\'t wrongly put events under a +more link', async () => {
     const el = createCalendarElement()

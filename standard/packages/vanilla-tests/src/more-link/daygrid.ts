@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { appendTestElement, createCalendarElement, initCalendar } from '../lib/calendar'
-import { queryPart, queryParts } from '../lib/models/events'
+import { DayGridModel } from '../lib/models/day-grid'
+import { getEventIdOfEl, queryPart, queryParts } from '../lib/models/events'
 import {
   findOverlappingEls,
   getCoveredDates,
@@ -12,6 +13,28 @@ import { waitForSettle } from '../lib/settle'
 
 function getMoreLinkTexts(root: HTMLElement): string[] {
   return getMoreLinkEls(root).map((el) => el.textContent!)
+}
+
+/*
+Expects each more-link to sit fully inside (horizontally and vertically) the day cell of its date.
+*/
+function expectMoreLinksInCells(root: HTMLElement, moreLinkEls: HTMLElement[], dates: string[]) {
+  const dayGrid = new DayGridModel(root)
+  expect(moreLinkEls.length).toBe(dates.length)
+
+  moreLinkEls.forEach((moreLinkEl, i) => {
+    const rect = moreLinkEl.getBoundingClientRect()
+    const cellRect = dayGrid.getDayCell(dates[i]).getBoundingClientRect()
+    expect(rect.height).toBeGreaterThan(0)
+    expect(rect.left).toBeGreaterThanOrEqual(cellRect.left - 0.5)
+    expect(rect.right).toBeLessThanOrEqual(cellRect.right + 0.5)
+    expect(rect.top).toBeGreaterThanOrEqual(cellRect.top - 0.5)
+    expect(rect.bottom).toBeLessThanOrEqual(cellRect.bottom + 0.5)
+  })
+}
+
+function getSortedEventIds(eventEls: HTMLElement[]): string[] {
+  return eventEls.map(getEventIdOfEl).sort()
 }
 
 describe('more-links in dayGrid', () => {
@@ -46,6 +69,7 @@ describe('more-links in dayGrid', () => {
       const moreLinkEls = getMoreLinkEls(calendar.el)
       expect(moreLinkEls.map((el) => el.textContent)).toEqual(['+2 more'])
       expect(getCoveredDates(moreLinkEls[0])).toEqual(['2014-07-29'])
+      expectMoreLinksInCells(calendar.el, moreLinkEls, ['2014-07-29'])
     })
 
     it('renders a more-link on each day under hidden multi-day events', async () => {
@@ -58,6 +82,7 @@ describe('more-links in dayGrid', () => {
       const moreLinkEls = getMoreLinkEls(calendar.el)
       expect(moreLinkEls.map((el) => el.textContent)).toEqual(['+2 more', '+2 more'])
       expect(moreLinkEls.map(getCoveredDates)).toEqual([['2014-07-29'], ['2014-07-30']])
+      expectMoreLinksInCells(calendar.el, moreLinkEls, ['2014-07-29', '2014-07-30'])
     })
 
     it('renders a single-day event that fits beside the more-link of other days', async () => {
@@ -76,6 +101,7 @@ describe('more-links in dayGrid', () => {
       const moreLinkEls = getMoreLinkEls(calendar.el)
       expect(moreLinkEls.map((el) => el.textContent)).toEqual(['+2 more'])
       expect(getCoveredDates(moreLinkEls[0])).toEqual(['2014-07-29'])
+      expectMoreLinksInCells(calendar.el, moreLinkEls, ['2014-07-29'])
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/6187
@@ -95,6 +121,7 @@ describe('more-links in dayGrid', () => {
       const moreLinkEls = getMoreLinkEls(calendar.el)
       expect(moreLinkEls.map((el) => el.textContent)).toEqual(['+2 more'])
       expect(getCoveredDates(moreLinkEls[0])).toEqual(['2014-07-29'])
+      expectMoreLinksInCells(calendar.el, moreLinkEls, ['2014-07-29'])
     })
 
     it.each([
@@ -115,6 +142,7 @@ describe('more-links in dayGrid', () => {
       const moreLinkEls = getMoreLinkEls(calendar.el)
       expect(moreLinkEls.map((el) => el.textContent)).toEqual(['+2 more'])
       expect(getCoveredDates(moreLinkEls[0])).toEqual([date])
+      expectMoreLinksInCells(calendar.el, moreLinkEls, [date])
     })
 
     it('limits to one row per week with dayMaxEventRows:1', async () => {
@@ -348,7 +376,7 @@ describe('more-links in dayGrid', () => {
       await waitForSettle()
 
       const eventEls = getVisibleEventEls(calendar.el)
-      expect(eventEls.length).toBeGreaterThan(1)
+      expect(getSortedEventIds(eventEls)).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) // i and j are hidden
       expect(findOverlappingEls(eventEls)).toBeNull()
     })
 
@@ -360,6 +388,7 @@ describe('more-links in dayGrid', () => {
       const rowBottom = queryPart(calendar.el, 'dayRow')!.getBoundingClientRect().bottom
 
       expect(getMoreLinkEls(calendar.el).length).toBeGreaterThan(0) // the limit actually binds
+      expect(getSortedEventIds(eventEls)).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j']) // i is hidden
       expect(findOverlappingEls(eventEls)).toBeNull()
       for (const eventEl of eventEls) {
         expect(eventEl.getBoundingClientRect().bottom).toBeLessThanOrEqual(rowBottom + 1)

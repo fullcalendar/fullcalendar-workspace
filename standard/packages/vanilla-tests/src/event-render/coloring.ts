@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { CalendarOptions, EventInput } from 'fullcalendar'
-import { initCalendar } from '../lib/calendar'
+import { appendTestElement, initCalendar } from '../lib/calendar'
 import { getEventIdOfEl, queryPart } from '../lib/models/events'
 import { getBgEventEls, getVisibleEventEls } from '../lib/models/event-content'
 import { waitForSettle } from '../lib/settle'
@@ -37,6 +37,22 @@ function buildCases(event: EventInput, globalOption: 'eventColor' | 'backgroundE
       isRed: false,
     },
   ] as { desc: string, options: CalendarOptions, isRed: boolean }[]
+}
+
+/*
+The color the browser resolves a CSS color value to, rendered outside any calendar.
+*/
+function resolveColor(cssColor: string): string {
+  const el = appendTestElement(document.createElement('div'))
+  el.style.backgroundColor = cssColor
+  return getComputedStyle(el).backgroundColor
+}
+
+/*
+The classic theme tints a background event with its color (the theme's default is green) at 15% opacity.
+*/
+function getBgTint(color: string): string {
+  return resolveColor(`color-mix(in oklab, ${color} 15%, transparent)`)
 }
 
 function findById(els: HTMLElement[], id: string): HTMLElement {
@@ -80,6 +96,8 @@ describe.each([
     const bgEventEls = getBgEventEls(calendar.el)
     const testColor = getComputedStyle(findById(bgEventEls, 'test')).backgroundColor
     const refColor = getComputedStyle(findById(bgEventEls, 'ref')).backgroundColor
+    expect(refColor).toBe(getBgTint('red'))
+    expect(testColor).toBe(getBgTint(isRed ? 'red' : '#22c55e'))
     expect(testColor === refColor).toBe(isRed)
   })
 

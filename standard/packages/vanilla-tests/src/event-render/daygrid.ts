@@ -384,7 +384,10 @@ describe('dayGrid event rendering', () => {
       },
     })
 
+    // the view renders (empty) while its fetch is pending, then gets the events
     async function resolveFetches(): Promise<void> {
+      await waitForSettle()
+      expect(pendingFetches.length).toBe(1)
       while (pendingFetches.length) {
         pendingFetches.shift()!()
       }

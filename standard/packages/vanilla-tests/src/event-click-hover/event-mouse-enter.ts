@@ -16,6 +16,7 @@ describe('eventMouseEnter and eventMouseLeave', () => {
   it.each([
     { view: 'dayGridMonth' },
     { view: 'timeGridWeek' },
+    { view: 'listWeek' },
   ])('fire when the pointer enters and leaves an event in $view', async ({ view }) => {
     const eventMouseEnter = vi.fn()
     const eventMouseLeave = vi.fn()
@@ -69,6 +70,12 @@ describe('eventMouseEnter and eventMouseLeave', () => {
     expect(eventMouseEnter).toHaveBeenCalledOnce()
     expect(getEventTexts(getVisibleEventEls(calendar.el)[0]).title).toBe('YO') // rerendered
     expect(eventMouseLeave).not.toHaveBeenCalled()
+
+    // leaving the updated event still fires, once
+    await pointer.move(OUTSIDE)
+    expect(eventMouseLeave).toHaveBeenCalledOnce()
+    expect(eventMouseLeave.mock.calls[0][0].event.title).toBe('YO')
+    expect(eventMouseLeave.mock.calls[0][0].el).toBe(getVisibleEventEls(calendar.el)[0])
   })
 
   it('fire for background events', async () => {
