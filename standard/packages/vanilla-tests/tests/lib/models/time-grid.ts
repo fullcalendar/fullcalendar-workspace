@@ -22,7 +22,9 @@ export class TimeGridModel {
   getDayLane(spot: Spot): HTMLElement {
     const { date, resourceId } = parseSpot(spot)
     const lanes = queryParts(this.root, 'dayLane').filter((el) => (
-      el.getAttribute('data-date') === date && matchesResource(el, resourceId)
+      el.getAttribute('data-date') === date &&
+      matchesResource(el, resourceId) &&
+      !el.closest('[data-fc-part~="tableHeader"]') // ex: a placeholder's blank header cell, styled like a lane
     ))
 
     if (lanes.length !== 1) {

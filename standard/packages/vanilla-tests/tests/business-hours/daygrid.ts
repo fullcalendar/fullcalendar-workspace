@@ -32,4 +32,18 @@ describe('businessHours in dayGrid', () => {
 
     expect(getNonBusinessDates(calendar.el)).toEqual(changed ? weekendDates : [])
   })
+
+  // KNOWN BUG (`it.fails` until fixed): a range crossing a week boundary leaves the Sunday unshaded.
+  // dayGridWeek (Sun..Sat) shades both weekend days.
+  it.fails('shades both days of a weekend that crosses a week boundary', async () => {
+    const calendar = initCalendar({
+      initialView: 'dayGridTwoDay',
+      initialDate: '2015-11-21', // a Saturday
+      businessHours: true,
+      views: { dayGridTwoDay: { type: 'dayGrid', duration: { days: 2 } } },
+    })
+    await waitForSettle()
+
+    expect(getNonBusinessDates(calendar.el)).toEqual(['2015-11-21', '2015-11-22'])
+  })
 })
