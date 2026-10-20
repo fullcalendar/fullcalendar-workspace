@@ -1,6 +1,6 @@
 # Phase 5: render-hook rollout and leaf conversions
 
-Status: done (pending review of 5d–5e).
+Status: done.
 
 ## Goal
 
@@ -176,6 +176,25 @@ Sol also explained the eventMaxStack failures:
   one.
 - **Fix:** teardown now destroys every calendar `initCalendar` made. The hidden-element rule (spec
   §4.1) is restored.
+
+### Review of 5d–5e (Sol, round 1)
+
+No actionable findings. Sol's throwaway check of `MorePopover` under Strict Mode and `<Activity>`
+passed, including focus restoration and closing on Escape.
+
+### Results
+
+- Preact:
+  - broad filters: standard 1345 + 1132, scheduler 1100 + 1188. All pass.
+  - `eventMaxStack`: 3 of 3 runs.
+- React suite: 40 of 40.
+- DOM snapshots and the 18 call-count scenarios: unchanged against `phase6.preact` and
+  `phase4fix.react`.
+- Pre-existing failures under the React runtime, failing the same way before phase 5:
+  - `destroy … leaves no handlers attached`, 7 specs. Their listener baseline comes from a Preact
+    root.
+  - `addICalEventSource with day view adds an all day event`, which asserts after a fixed 100ms.
+    It failed 4 of 4 on `ebda01409`.
 
 ## Watch for
 
