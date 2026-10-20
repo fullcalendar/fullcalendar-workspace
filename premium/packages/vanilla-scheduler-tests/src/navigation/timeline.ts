@@ -31,6 +31,7 @@ describe('timeline navLinks', () => {
       ['Go to April 3, 2023', 'Go to April 4, 2023', 'Go to April 5, 2023'],
       [],
     ]],
+    // https://github.com/fullcalendar/fullcalendar/issues/8064#issuecomment-4309593371
     ['an hourly week with custom slotHeaderFormat, on its days', 'resourceTimelineWeek', {
       slotDuration: { hours: 1 },
       slotHeaderFormat: [{ year: 'numeric', month: 'numeric', day: 'numeric' }, { hour: 'numeric' }],
@@ -46,6 +47,7 @@ describe('timeline navLinks', () => {
     expect(getNavLinkLabels(calendar.el)).toEqual(expectedLabels)
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/8064#issuecomment-4309593371
   it('renders navLinks on both header rows of a daily week with custom slotHeaderFormat', async () => {
     const calendar = initCalendar({
       ...options,

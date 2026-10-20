@@ -132,16 +132,29 @@ describe('event resizing in dayGrid', () => {
 
   // https://github.com/fullcalendar/fullcalendar/issues/3118
   it.each([true, false])('resizes with touch after a long press selects the event (eventStartEditable:%s)', async (eventStartEditable) => {
+    const eventResize = vi.fn()
     const calendar = initCalendar({
       ...options,
       longPressDelay: 50,
       eventStartEditable,
       events: [{ id: '1', start: '2014-06-11' }],
+      eventResize,
     })
     await waitForSettle()
 
     await new DayGridModel(calendar.el).resizeEvent('1', 'end', '2014-06-11', '2014-06-16', undefined, { holdMs: 150 })
 
-    expect(calendar.getEventById('1')!.endStr).toBe('2014-06-17')
+    expect(eventResize).toHaveBeenCalledTimes(1)
+    const info = eventResize.mock.calls[0][0]
+    expect(info.endDelta).toEqual(createDuration({ day: 5 }))
+    expect(info.event.startStr).toBe('2014-06-11')
+    expect(info.event.endStr).toBe('2014-06-17')
+
+    info.revert()
+    await waitForSettle()
+
+    const event = calendar.getEventById('1')!
+    expect(event.startStr).toBe('2014-06-11')
+    expect(event.end).toBeNull()
   })
 })

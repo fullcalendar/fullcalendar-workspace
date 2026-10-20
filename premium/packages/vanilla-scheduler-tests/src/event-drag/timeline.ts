@@ -7,7 +7,8 @@ import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
 import { expectElSpansSlots } from '../lib/models/timeline-layout'
 import {
-  DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY, SPRING_FORWARD_0300_SLOT, expectCloseTo,
+  DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_FIRST_0130_SLOT, FALL_BACK_SECOND_0100_SLOT,
+  FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY, SPRING_FORWARD_0300_SLOT, expectCloseTo,
 } from '../lib/dst'
 
 describe('event dragging in timeline', () => {
@@ -323,24 +324,37 @@ describe('event dragging in timeline', () => {
 
     /*
     Both copies of the repeated hour read the same wall-clock times, but overlap is checked by
-    exact instants.
+    exact instants. The rejected drop is made with the same event after the allowed one, so the
+    event already has an exact instant from that drop.
     */
-    it.each([
-      ['allows a drop onto the free first copy', 3, '2024-11-03T05:30:00.000Z', 1],
-      ['rejects a drop onto the occupied second copy', FALL_BACK_SECOND_0130_SLOT, '2024-11-03T04:00:00.000Z', 0],
-    ])('with eventOverlap:false, %s of a repeated time', async (_desc, slotIndex, expectedStart, dropCount) => {
+    it('with eventOverlap:false, allows a drop onto the free first copy of a repeated time but not onto the occupied second', async () => {
       const eventDrop = vi.fn()
-      const { event } = await dragToSlot({
+      const { calendar, event } = await dragToSlot({
         eventOverlap: false,
         eventDrop,
         events: [
           dstEvent,
           { id: 'est', start: '2024-11-03T01:30:00-05:00', end: '2024-11-03T02:00:00-05:00' },
         ],
-      }, slotIndex)
+      }, FALL_BACK_FIRST_0130_SLOT)
+      const timeline = new TimelineModel(calendar.el)
 
-      expect(eventDrop).toHaveBeenCalledTimes(dropCount)
-      expect(event.start!.toISOString()).toBe(expectedStart)
+      expect(eventDrop).toHaveBeenCalledTimes(1)
+      expect(event.start!.toISOString()).toBe('2024-11-03T05:30:00.000Z')
+      expectElSpansSlots(calendar.el, timeline.getEventEls('1')[0], FALL_BACK_FIRST_0130_SLOT, FALL_BACK_SECOND_0100_SLOT)
+
+      // grabbed by its element, since a wall-clock spot can't tell the two copies of 01:30 apart
+      await pointer.press(getRectCenter(timeline.getEventEls('1')[0].getBoundingClientRect()), async () => {
+        await pointer.move(timeline.pointForSlot(FALL_BACK_SECOND_0130_SLOT))
+        await waitForSettle()
+      })
+      await waitForSettle()
+
+      const movedEvent = calendar.getEventById('1')!
+      expect(eventDrop).toHaveBeenCalledTimes(1)
+      expect(movedEvent.start!.toISOString()).toBe('2024-11-03T05:30:00.000Z')
+      expect(movedEvent.end!.toISOString()).toBe('2024-11-03T06:00:00.000Z')
+      expectElSpansSlots(calendar.el, timeline.getEventEls('1')[0], FALL_BACK_FIRST_0130_SLOT, FALL_BACK_SECOND_0100_SLOT)
     })
   })
 })

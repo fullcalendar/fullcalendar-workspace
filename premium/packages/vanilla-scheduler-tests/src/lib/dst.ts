@@ -19,6 +19,8 @@ export const DST_TIMELINE_OPTIONS = {
   slotDuration: '00:30',
 }
 
+export const FALL_BACK_FIRST_0130_SLOT = 3
+export const FALL_BACK_SECOND_0100_SLOT = 4
 export const FALL_BACK_SECOND_0130_SLOT = 5
 export const FALL_BACK_0200_SLOT = 6
 export const SPRING_FORWARD_0300_SLOT = 4
