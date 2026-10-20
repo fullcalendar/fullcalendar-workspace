@@ -1,3 +1,4 @@
+import fetchMock from 'fetch-mock'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import classicThemePlugin from 'fullcalendar/themes/classic' // need both
 import themeForTestsPlugin from '../lib/theme-for-tests' // "
@@ -5,22 +6,51 @@ import dayGridPlugin from 'fullcalendar/daygrid'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper'
 
-// In our CI setup, requests to the google-calendar api were failing for some reason
-// (requests to other services were working however)
-const noGCal = (window as any).__karma__.config.cliArgs.includes('--no-gcal')
-if (noGCal) {
-  console.log('skipping google-calendar') // eslint-disable-line no-console
-}
+const API_KEY = 'test-api-key'
 
-// eslint-disable-next-line
-noGCal ||
 describe('Google Calendar plugin', () => {
-  const API_KEY = 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE'
   const HOLIDAY_CALENDAR_ID = 'en.usa#holiday@group.v.calendar.google.com'
 
-  // Google sometimes stops returning old events. Will need to update this sometimes.
   const DEFAULT_MONTH = '2025-05'
-  const NUM_EVENTS = 3 // number of holidays
+  const HOLIDAYS = [
+    { id: 'mothers-day', summary: 'Mother\'s Day', date: '2025-05-11' },
+    { id: 'armed-forces-day', summary: 'Armed Forces Day', date: '2025-05-17' },
+    { id: 'memorial-day', summary: 'Memorial Day', date: '2025-05-26' },
+  ]
+  const NUM_EVENTS = HOLIDAYS.length
+
+  // mimics the Google Calendar API's events endpoint
+  beforeEach(() => {
+    fetchMock.get(/^https:\/\/www\.googleapis\.com\/calendar\/v3\/calendars\//, (requestUrl) => {
+      let url = new URL(requestUrl)
+      let calendarId = decodeURIComponent(url.pathname.split('/')[4])
+
+      if (url.searchParams.get('key') !== API_KEY) {
+        return {
+          status: 400,
+          body: { error: { code: 400, message: 'API key not valid. Please pass a valid API key.' } },
+        }
+      }
+
+      expect(calendarId).toBe(HOLIDAY_CALENDAR_ID)
+
+      return {
+        body: {
+          items: HOLIDAYS.map((holiday) => ({
+            id: holiday.id,
+            summary: holiday.summary,
+            start: { date: holiday.date },
+            end: { date: addDay(holiday.date) },
+            htmlLink: 'https://www.google.com/calendar/event?eid=' + holiday.id,
+          })),
+        },
+      }
+    })
+  })
+
+  afterEach(() => {
+    fetchMock.restore()
+  })
 
   pushOptions({
     plugins: [googleCalendarPlugin, classicThemePlugin, themeForTestsPlugin, dayGridPlugin],
@@ -43,6 +73,7 @@ describe('Google Calendar plugin', () => {
       for (i = 0; i < events.length; i += 1) {
         expect(events[i].url).not.toMatch('ctz=')
       }
+      expect(lastRequestParams().has('timeZone')).toBe(false)
 
       done()
     })
@@ -63,6 +94,7 @@ describe('Google Calendar plugin', () => {
       for (i = 0; i < events.length; i += 1) {
         expect(events[i].url).toMatch('ctz=UTC')
       }
+      expect(lastRequestParams().get('timeZone')).toBe('UTC')
 
       done()
     })
@@ -85,6 +117,7 @@ describe('Google Calendar plugin', () => {
       for (i = 0; i < events.length; i += 1) {
         expect(events[i].url).toMatch('ctz=America/New_York')
       }
+      expect(lastRequestParams().get('timeZone')).toBe('America/New_York')
 
       expect(eventEls.length).toBe(NUM_EVENTS)
       expect($('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME, eventEls[0]).length).toBe(0) // not editable
@@ -126,7 +159,7 @@ describe('Google Calendar plugin', () => {
 
     afterEventsLoaded(calendar, () => {
       let events = calendar.getEvents()
-      expect(events.length).toBe(NUM_EVENTS) // 5 holidays in November 2016 (and end of Oct)
+      expect(events.length).toBe(NUM_EVENTS)
       done()
     })
   })
@@ -218,7 +251,7 @@ describe('Google Calendar plugin', () => {
         called = true
 
         events = calendar.getEvents()
-        expect(events.length).toBe(NUM_EVENTS) // 5 holidays in November 2016 (and end of Oct)
+        expect(events.length).toBe(NUM_EVENTS)
 
         setTimeout(() => {
           calendar.getEventSources()[0].remove()
@@ -244,7 +277,7 @@ describe('Google Calendar plugin', () => {
         called = true
 
         events = calendar.getEvents()
-        expect(events.length).toBe(NUM_EVENTS) // 5 holidays in November 2016 (and end of Oct)
+        expect(events.length).toBe(NUM_EVENTS)
 
         setTimeout(() => {
           calendar.getEventSources()[0].remove()
@@ -255,6 +288,16 @@ describe('Google Calendar plugin', () => {
       })
     })
   })
+
+  function lastRequestParams(): URLSearchParams {
+    return new URL(fetchMock.lastUrl()).searchParams
+  }
+
+  function addDay(dateStr: string): string {
+    let date = new Date(dateStr + 'T00:00:00Z')
+    date.setUTCDate(date.getUTCDate() + 1)
+    return date.toISOString().slice(0, 10)
+  }
 
   function afterEventsLoaded(calendar, callback: () => void) {
     calendar.on('eventsSet', () => {
