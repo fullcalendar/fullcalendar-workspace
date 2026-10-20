@@ -53,7 +53,7 @@ describe('event rendering in resource columns', () => {
   }
 
   describe.each(['auto', 'background'])('with display:%s', (display) => {
-    it.each([
+    it.each<[string, boolean, 'ltr' | 'rtl', { start: string, end: string }]>([
       ['resourceTimeGridTwoDay', false, 'ltr', { start: TUE + 'T01:00:00', end: TUE + 'T03:00:00' }],
       ['resourceTimeGridTwoDay', true, 'ltr', { start: TUE + 'T01:00:00', end: TUE + 'T03:00:00' }],
       ['resourceDayGridTwoDay', false, 'ltr', { start: TUE, end: WED }],

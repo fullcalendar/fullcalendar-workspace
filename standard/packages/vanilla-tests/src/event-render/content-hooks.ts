@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { EventDisplayInfo } from 'fullcalendar'
 import { createElement } from 'fullcalendar/preact'
 import { initCalendar } from '../lib/calendar'
 import { queryPart } from '../lib/models/events'
@@ -119,7 +120,7 @@ describe('event content hooks', () => {
     { view: 'timeGridWeek', timeText: '9:00' },
   ])('foreground event hooks in $view', ({ view, timeText }) => {
     it('pass event info to eventContent, and the element to eventDidMount', async () => {
-      const eventContent = vi.fn(() => true)
+      const eventContent = vi.fn((_info: EventDisplayInfo) => true)
       const eventDidMount = vi.fn((info: { el: HTMLElement }) => {
         info.el.style.fontSize = '20px'
       })
@@ -208,7 +209,7 @@ describe('event content hooks', () => {
   })
 
   it('pass event info and the element to the background event hooks', async () => {
-    const backgroundEventContent = vi.fn(() => true)
+    const backgroundEventContent = vi.fn((_info: EventDisplayInfo) => true)
     const backgroundEventDidMount = vi.fn((info: { el: HTMLElement }) => {
       info.el.style.fontSize = '20px'
     })

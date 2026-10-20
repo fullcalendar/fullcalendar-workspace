@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { CalendarOptions, DateSpanApi, EventApi, EventInput } from 'fullcalendar'
+import { AllowFunc, CalendarOptions, DateSpanApi, EventApi, EventInput } from 'fullcalendar'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { TimeGridModel } from '@fullcalendar-tests/standard/src/lib/models/time-grid'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
@@ -40,7 +40,7 @@ describe('resource-aware constraints', () => {
   }
 
   it.each([true, false])('consults eventAllow with each resource hovered (returning %s)', async (returnValue) => {
-    const eventAllow = vi.fn(() => returnValue)
+    const eventAllow = vi.fn<AllowFunc>(() => returnValue)
     const { eventDrop, event, resourceIds } = await dragToResource({ eventAllow }, 'a', 'b')
 
     const hoveredResourceIds = eventAllow.mock.calls.map(([dropInfo]) => dropInfo.resource.id)

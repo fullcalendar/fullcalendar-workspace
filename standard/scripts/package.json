@@ -45,7 +45,8 @@
   "bin": {
     "standard-scripts": "./bin/standard-scripts.ts",
     "ss": "./bin/standard-scripts.ts",
-    "eslint": "./node_modules/eslint/bin/eslint.js"
+    "eslint": "./node_modules/eslint/bin/eslint.js",
+    "tsc": "./node_modules/typescript/bin/tsc"
   },
   "scripts": {
     "check": "tsc -b",

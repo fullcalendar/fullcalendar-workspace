@@ -58,11 +58,11 @@ describe('validRange', () => {
     })
 
     it('calls the function with the start of today', async () => {
-      const validRange = vi.fn(() => ({}))
+      const validRange = vi.fn((_nowDate: Date) => ({}))
       initCalendar({ ...options, now: '2017-06-09T10:00:00', validRange })
       await waitForSettle()
 
-      const nowDate = validRange.mock.calls[0][0] as Date
+      const nowDate = validRange.mock.calls[0][0]
       expect(nowDate).toBeInstanceOf(Date)
       expect(nowDate.toISOString()).toBe('2017-06-09T00:00:00.000Z')
     })

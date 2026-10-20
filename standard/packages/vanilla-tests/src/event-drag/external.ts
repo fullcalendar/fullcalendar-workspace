@@ -1,4 +1,5 @@
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
+import { AllowFunc, DropInfo, EventReceiveInfo } from 'fullcalendar'
 import { Draggable, ThirdPartyDraggable } from 'fullcalendar/interaction'
 import { initCalendar, createCalendarElement } from '../lib/calendar'
 import { createExternalEl, dragExternalEl } from '../lib/external'
@@ -22,8 +23,8 @@ describe('dragging external elements onto the calendar', () => {
 
     it('fires drop, then eventReceive for the created event', async () => {
       const calls: string[] = []
-      const drop = vi.fn(() => { calls.push('drop') })
-      const eventReceive = vi.fn(() => { calls.push('eventReceive') })
+      const drop = vi.fn((_info: DropInfo) => { calls.push('drop') })
+      const eventReceive = vi.fn((_info: EventReceiveInfo) => { calls.push('eventReceive') })
       const calendar = initCalendar({ ...options, drop, eventReceive })
       await waitForSettle()
 
@@ -77,7 +78,7 @@ describe('dragging external elements onto the calendar', () => {
 
     // https://github.com/fullcalendar/fullcalendar/issues/4575
     it('gives eventAllow the dragged event, with no start or end', async () => {
-      const eventAllow = vi.fn(() => true)
+      const eventAllow = vi.fn<AllowFunc>(() => true)
       const calendar = initCalendar({ ...options, initialDate: '2019-04-01', eventAllow })
       await waitForSettle()
 

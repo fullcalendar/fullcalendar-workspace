@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { EventChangeInfo, EventDragStartInfo, EventDragStopInfo, EventDropInfo } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import { pointer } from '../lib/pointer'
@@ -18,10 +19,10 @@ describe('event dragging callbacks', () => {
 
   it('calls eventDragStart, eventDragStop, eventDrop, then eventChange, with their arguments', async () => {
     const calls: string[] = []
-    const eventDragStart = vi.fn(() => { calls.push('eventDragStart') })
-    const eventDragStop = vi.fn(() => { calls.push('eventDragStop') })
-    const eventDrop = vi.fn(() => { calls.push('eventDrop') })
-    const eventChange = vi.fn(() => { calls.push('eventChange') })
+    const eventDragStart = vi.fn((_info: EventDragStartInfo) => { calls.push('eventDragStart') })
+    const eventDragStop = vi.fn((_info: EventDragStopInfo) => { calls.push('eventDragStop') })
+    const eventDrop = vi.fn((_info: EventDropInfo) => { calls.push('eventDrop') })
+    const eventChange = vi.fn((_info: EventChangeInfo) => { calls.push('eventChange') })
     const calendar = initCalendar({ ...options, eventDragStart, eventDragStop, eventDrop, eventChange })
     await waitForSettle()
 

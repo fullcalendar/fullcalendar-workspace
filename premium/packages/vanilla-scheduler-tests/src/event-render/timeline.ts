@@ -200,7 +200,7 @@ describe('event rendering in timeline', () => {
   })
 
   describe('background events', () => {
-    it.each([
+    it.each<[string, CalendarOptions, string, string, string, string]>([
       ['time slots', {}, '2015-10-17T02:00:00', '2015-10-17T06:00:00', '2015-10-17T02:00', '2015-10-17T06:00'],
       ['time slots, cropped to the view', {}, '2015-10-16T22:00:00', '2015-10-18T02:00:00', '2015-10-17T00:00', '2015-10-18T00:00'],
       ['day slots', { initialView: 'resourceTimelineWeek', slotDuration: { days: 1 } },

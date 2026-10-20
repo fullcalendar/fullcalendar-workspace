@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { EventInput, EventSourceFuncArg } from 'fullcalendar'
+import { EventInput, EventSourceFunc, EventSourceFuncInfo } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { getEventEls } from '../lib/models/events'
 import { waitForSettle } from '../lib/settle'
@@ -16,7 +16,7 @@ describe('events as a function', () => {
     initialDate: '2014-05-01', // the month shows Apr 27 - Jun 8
   }
 
-  function getFetchArg(events: ReturnType<typeof vi.fn>, callIndex = 0): EventSourceFuncArg {
+  function getFetchArg(events: ReturnType<typeof vi.fn>, callIndex = 0): EventSourceFuncInfo {
     return events.mock.calls[callIndex][0]
   }
 
@@ -188,9 +188,10 @@ describe('events as a function', () => {
   })
 
   describe('eventSourceSuccess', () => {
-    function fetchWrapped(_info: unknown, callback: (response: unknown) => void) {
+    // EventSourceFunc types the callback's arg as EventInput[], though a success transform accepts any response
+    const fetchWrapped = ((_info: EventSourceFuncInfo, callback: (response: unknown) => void) => {
       callback({ something: [{ title: 'hi', start: '2014-05-01' }] })
-    }
+    }) as EventSourceFunc
 
     it('transforms the response when set on the calendar', () => {
       const eventSourceSuccess = vi.fn((response) => response.something)

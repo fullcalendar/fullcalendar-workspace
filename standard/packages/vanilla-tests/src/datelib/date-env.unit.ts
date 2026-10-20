@@ -131,7 +131,7 @@ describe('DateEnv', () => {
       })
     })
 
-    describe.each([
+    describe.each<[string, (m0: Date, m1: Date) => number | null, [string, number, number, number | null][]]>([
       ['diffWholeYears', (m0: Date, m1: Date) => env.diffWholeYears(m0, m1), [
         ['not whole', Date.UTC(2018, 5, 5, 12, 0), Date.UTC(2020, 5, 5, 12, 30), null],
         ['negative', Date.UTC(2020, 5, 5, 12, 0), Date.UTC(2018, 5, 5, 12, 0), -2],
@@ -152,7 +152,7 @@ describe('DateEnv', () => {
         ['negative', Date.UTC(2018, 5, 19), Date.UTC(2018, 5, 5), -14],
         ['positive', Date.UTC(2018, 5, 5), Date.UTC(2018, 5, 19), 14],
       ]],
-    ] as const)('%s', (_name, diff, rows) => {
+    ])('%s', (_name, diff, rows) => {
       it.each(rows)('returns %s', (_desc, ms0, ms1, expected) => {
         expect(diff(env.createMarker(ms0), env.createMarker(ms1))).toBe(expected)
       })

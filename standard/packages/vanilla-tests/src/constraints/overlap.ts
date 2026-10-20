@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { OverlapFunc } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { dragEventStartTo, resizeEventEndTo } from '../lib/event-moves'
 import { DayGridModel } from '../lib/models/day-grid'
@@ -161,7 +162,7 @@ describe('event overlap', () => {
     })
 
     it.each([true, false])('decides an intersecting drag (returning %s), given the still and moving events', async (returnValue) => {
-      const eventOverlap = vi.fn(() => returnValue)
+      const eventOverlap = vi.fn<OverlapFunc>(() => returnValue)
       await testDrag({ desc: '', calendarOptions: { eventOverlap, events: [a, b] }, to: '2014-11-04T06:00', isAllowed: returnValue })
 
       expect(eventOverlap).toHaveBeenCalled()
@@ -243,7 +244,7 @@ describe('selectOverlap', () => {
     })
 
     it.each([true, false])('decides an intersecting selection (returning %s), given the event', async (returnValue) => {
-      const selectOverlap = vi.fn(() => returnValue)
+      const selectOverlap = vi.fn<OverlapFunc>(() => returnValue)
       await testSelect({ selectOverlap, events: [event] }, '2014-11-12T05:00', '2014-11-12T07:00', returnValue, true)
 
       expect(selectOverlap).toHaveBeenCalled()

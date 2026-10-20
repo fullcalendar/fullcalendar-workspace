@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { DateUnselectInfo } from 'fullcalendar'
 import { appendTestElement, initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import { queryParts } from '../lib/models/events'
@@ -24,7 +25,7 @@ describe('unselecting', () => {
       ['on another day', (calendar) => new DayGridModel(calendar.el).pointForDate('2014-12-04')],
     ])('unselects when clicking %s', async (_desc, getClickPoint) => {
       let highlightCntOnUnselect: number | undefined
-      const unselect = vi.fn(() => {
+      const unselect = vi.fn((_info: DateUnselectInfo) => {
         highlightCntOnUnselect = queryParts(calendar.el, 'highlight').length
       })
       const calendar = initCalendar({ ...options, unselectAuto: true, unselect })

@@ -17,13 +17,14 @@ describe('rerender counts', () => {
   } {
     const counts = {} as Record<Name, number>
     const options: CalendarOptions = {}
+    const optionsByName = options as Record<string, unknown>
 
     for (const hookName of hookNames) {
       counts[hookName] = 0
-      options[hookName as keyof CalendarOptions] = (() => {
+      optionsByName[hookName] = () => {
         counts[hookName] += 1
         return hookName.endsWith('Content') ? true : undefined // true: render the default content
-      }) as any
+      }
     }
 
     return {

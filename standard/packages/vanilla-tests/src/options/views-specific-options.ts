@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CalendarOptions } from 'fullcalendar'
+import { CalendarOptions, ViewOptions } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { ToolbarModel } from '../lib/models/toolbar'
 import { waitForSettle } from '../lib/settle'
@@ -69,7 +69,7 @@ describe('view-specific options', () => {
   })
 
   describe('for custom views', () => {
-    it.each<[string, Record<string, CalendarOptions>, CalendarOptions, string]>([
+    it.each<[string, Record<string, ViewOptions>, CalendarOptions, string]>([
       ['use their own options', {
         custom: { type: 'dayGrid', duration: { days: 4 }, titleFormat: () => 'custom' },
       }, {}, 'custom'],

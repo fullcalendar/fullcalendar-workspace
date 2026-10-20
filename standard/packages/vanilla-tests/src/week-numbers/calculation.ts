@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CalendarOptions } from 'fullcalendar'
+import { CalendarOptions, WeekNumberCalculation } from 'fullcalendar'
 import arLocale from 'fullcalendar/locales/ar'
 import { initCalendar } from '../lib/calendar'
 import { queryPart } from '../lib/models/events'
@@ -13,7 +13,7 @@ async function getWeekNumberText(options: CalendarOptions): Promise<string> {
 }
 
 describe('weekNumberCalculation', () => {
-  it.each([
+  it.each<[WeekNumberCalculation, string, string]>([
     ['local', '2013-11-23', 'W 47'], // a Saturday
     ['local', '2013-11-17', 'W 47'], // a Sunday, where local and ISO differ
     ['ISO', '2013-11-17', 'W 46'],

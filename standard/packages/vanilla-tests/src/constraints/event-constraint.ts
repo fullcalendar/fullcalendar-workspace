@@ -25,7 +25,7 @@ describe('event constraint', () => {
     isAllowed: boolean
   }
 
-  async function testDrag({ calendarOptions, to, isAllowed }: DragCase) {
+  async function dragAndCheck({ calendarOptions, to, isAllowed }: DragCase) {
     const eventDragStart = vi.fn()
     const eventDrop = vi.fn()
     const calendar = initCalendar({ ...options, ...calendarOptions, eventDragStart, eventDrop })
@@ -43,6 +43,10 @@ describe('event constraint', () => {
       expect(startStr).toBe(origStartStr)
     }
     return calendar
+  }
+
+  async function testDrag(testCase: DragCase): Promise<void> {
+    await dragAndCheck(testCase)
   }
 
   describe('with a date range', () => {
@@ -113,7 +117,7 @@ describe('event constraint', () => {
 
     describe('in dayGridMonth', () => {
       it('allows a timed event\'s drag to another day within it, keeping the time', async () => {
-        const calendar = await testDrag({
+        const calendar = await dragAndCheck({
           desc: '',
           calendarOptions: {
             initialView: 'dayGridMonth',

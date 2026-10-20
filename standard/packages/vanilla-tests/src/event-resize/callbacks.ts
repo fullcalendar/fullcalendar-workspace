@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { EventChangeInfo, EventResizeDoneInfo, EventResizeStartInfo, EventResizeStopInfo } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import { getResizerEl } from '../lib/models/resize'
@@ -19,10 +20,10 @@ describe('event resizing callbacks', () => {
 
   it('calls eventResizeStart, eventResizeStop, eventResize, then eventChange, with their arguments', async () => {
     const calls: string[] = []
-    const eventResizeStart = vi.fn(() => { calls.push('eventResizeStart') })
-    const eventResizeStop = vi.fn(() => { calls.push('eventResizeStop') })
-    const eventResize = vi.fn(() => { calls.push('eventResize') })
-    const eventChange = vi.fn(() => { calls.push('eventChange') })
+    const eventResizeStart = vi.fn((_info: EventResizeStartInfo) => { calls.push('eventResizeStart') })
+    const eventResizeStop = vi.fn((_info: EventResizeStopInfo) => { calls.push('eventResizeStop') })
+    const eventResize = vi.fn((_info: EventResizeDoneInfo) => { calls.push('eventResize') })
+    const eventChange = vi.fn((_info: EventChangeInfo) => { calls.push('eventChange') })
     const calendar = initCalendar({ ...options, eventResizeStart, eventResizeStop, eventResize, eventChange })
     await waitForSettle()
 

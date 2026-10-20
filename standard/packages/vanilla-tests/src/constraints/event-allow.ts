@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
+import { AllowFunc } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { dragEventStartTo } from '../lib/event-moves'
 import { waitForSettle } from '../lib/settle'
 
 describe('eventAllow', () => {
   it.each([true, false])('decides a drag (returning %s), given the drop location and event', async (returnValue) => {
-    const eventAllow = vi.fn(() => returnValue)
+    const eventAllow = vi.fn<AllowFunc>(() => returnValue)
     const eventDrop = vi.fn()
     const calendar = initCalendar({
       initialView: 'timeGridWeek',

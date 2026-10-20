@@ -26,7 +26,7 @@ describe('Timeline production placement adapter', () => {
       countDurationsBetween(axisStart: Date, date: Date) {
         return (date.valueOf() - axisStart.valueOf()) / MS_PER_DAY
       },
-    } as DateEnv
+    } as Partial<DateEnv> as DateEnv // a stub of the one method used
     const spanning = makeSeg(
       'spanning',
       start,

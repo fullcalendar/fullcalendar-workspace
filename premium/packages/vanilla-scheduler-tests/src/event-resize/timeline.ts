@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { queryParts } from '@fullcalendar-tests/standard/src/lib/models/events'

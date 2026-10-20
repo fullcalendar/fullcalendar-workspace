@@ -81,7 +81,7 @@ describe('businessHours in timeGrid', () => {
     expect(getAllDayFillDates(calendar.el)).toEqual(['2014-12-07', '2014-12-13'])
   })
 
-  it.each([
+  it.each<{ direction: 'ltr' | 'rtl' }>([
     { direction: 'ltr' },
     { direction: 'rtl' },
   ])('fills around custom hours, joining consecutive all-day days ($direction)', async ({ direction }) => {

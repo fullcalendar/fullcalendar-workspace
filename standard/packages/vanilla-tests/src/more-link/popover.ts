@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { EventInput, EventSourceFuncArg } from 'fullcalendar'
+import { CalendarOptions, EventInput, EventSourceFuncInfo } from 'fullcalendar'
 import frLocale from 'fullcalendar/locales/fr'
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '../lib/calendar'
@@ -38,7 +38,7 @@ async function clickEl(el: Element): Promise<void> {
 
 describe('more-link popover', () => {
   describe('position', () => {
-    it.each([
+    it.each<{ view: string, direction: 'ltr' | 'rtl' }>([
       { view: 'dayGridMonth', direction: 'ltr' },
       { view: 'dayGridWeek', direction: 'ltr' },
       { view: 'timeGridWeek', direction: 'ltr' },
@@ -217,7 +217,7 @@ describe('more-link popover', () => {
       let fetchCnt = 0
       const calendar = initCalendar({
         ...options,
-        events(_info: EventSourceFuncArg, success: (events: EventInput[]) => void) {
+        events(_info: EventSourceFuncInfo, success: (events: EventInput[]) => void) {
           fetchCnt += 1
           success(fetchCnt === 1 ? testEvents : [...testEvents.slice(0, -1), { ...testEvents[3], title: 'cool' }])
         },
@@ -234,7 +234,7 @@ describe('more-link popover', () => {
   })
 
   describe('title', () => {
-    it.each([
+    it.each<{ desc: string, extraOptions: CalendarOptions, title: string }>([
       { desc: 'defaults to a long date', extraOptions: {}, title: 'July 29, 2014' },
       { desc: 'uses popoverFormat', extraOptions: { popoverFormat: { month: 'long', day: 'numeric' } }, title: 'July 29' },
       { desc: 'defaults to the locale\'s format', extraOptions: { locale: frLocale }, title: '29 juillet 2014' },

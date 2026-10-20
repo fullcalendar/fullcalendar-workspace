@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { AllowFunc } from 'fullcalendar'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { getRectCenter, pointer, touchPointer } from '@fullcalendar-tests/standard/src/lib/pointer'
 import { getEventEls, queryPart } from '@fullcalendar-tests/standard/src/lib/models/events'
@@ -65,7 +66,7 @@ describe('event dragging in timeline', () => {
   })
 
   it('gives eventAllow the dragged event with its dates', async () => {
-    const eventAllow = vi.fn(() => true)
+    const eventAllow = vi.fn<AllowFunc>(() => true)
     const calendar = initCalendar({ ...options, events: [event], eventAllow })
     await waitForSettle()
 
@@ -300,7 +301,7 @@ describe('event dragging in timeline', () => {
     })
 
     it('gives eventAllow the exact instant of a drop onto the second copy of a repeated time', async () => {
-      const eventAllow = vi.fn(() => true)
+      const eventAllow = vi.fn<AllowFunc>(() => true)
       const { event } = await dragToSlot({ events: [dstEvent], eventAllow }, FALL_BACK_SECOND_0130_SLOT)
 
       expect(event.startStr).toBe('2024-11-03T01:30:00-05:00')

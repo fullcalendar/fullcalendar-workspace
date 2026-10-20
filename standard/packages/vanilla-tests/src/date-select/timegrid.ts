@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { AllowFunc } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { TimeGridModel } from '../lib/models/time-grid'
 import { touchPointer } from '../lib/pointer'
@@ -109,7 +110,7 @@ describe('selecting dates in timeGrid', () => {
       ['selects when it returns true', true],
       ['doesn\'t select when it returns false', false],
     ])('%s', async (_desc, isAllowed) => {
-      const selectAllow = vi.fn(() => isAllowed)
+      const selectAllow = vi.fn<AllowFunc>(() => isAllowed)
       const select = vi.fn()
       const calendar = initCalendar({ ...options, initialDate: '2016-09-04', selectAllow, select })
       await waitForSettle()

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { EventInput, EventSourceFuncArg } from 'fullcalendar'
+import { EventInput, EventSourceFuncInfo } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import {
@@ -379,7 +379,7 @@ describe('dayGrid event rendering', () => {
       initialView: 'dayGridMonth',
       initialDate: '2026-06-17',
       showNonCurrentDates: false,
-      events(_info: EventSourceFuncArg, success: (events: EventInput[]) => void) {
+      events(_info: EventSourceFuncInfo, success: (events: EventInput[]) => void) {
         pendingFetches.push(() => success(events))
       },
     })

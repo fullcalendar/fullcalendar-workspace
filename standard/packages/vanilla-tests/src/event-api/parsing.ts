@@ -82,7 +82,7 @@ describe('event parsing', () => {
   })
 
   describe('defaultAllDay', () => {
-    it.each<[string, CalendarOptions, EventInput, boolean]>([
+    it.each<[string, CalendarOptions & { sourceDefaultAllDay?: boolean }, EventInput, boolean]>([
       ['the calendar\'s, when the event\'s allDay is unset', { defaultAllDay: false }, { start: '2014-05-01' }, false],
       ['the calendar\'s, not when the event\'s allDay is set', { defaultAllDay: false }, { start: '2014-05-01T00:00:00', allDay: true }, true],
       ['the source\'s, when the event\'s allDay is unset', { sourceDefaultAllDay: false }, { start: '2014-05-01' }, false],
@@ -92,7 +92,7 @@ describe('event parsing', () => {
     ])('applies %s', (_desc, { sourceDefaultAllDay, ...options }, eventInput, allDay) => {
       const event = initCalendar({
         ...options,
-        eventSources: [{ defaultAllDay: sourceDefaultAllDay as boolean | undefined, events: [eventInput] }],
+        eventSources: [{ defaultAllDay: sourceDefaultAllDay, events: [eventInput] }],
       }).getEvents()[0]
       expect(event.allDay).toBe(allDay)
     })

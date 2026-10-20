@@ -73,6 +73,13 @@ jobs:
             --filter '@fullcalendar/react' \
             run test
 
+      # Vitest strips types without checking them. Needs the build above (tsconfig references)
+      - name: Typecheck tests
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/*' \
+            run typecheck
+
       # The test packages' suites, which run against the built packages above.
       - name: Install Playwright Chromium
         run: |

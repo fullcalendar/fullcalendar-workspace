@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { DropInfo, EventLeaveInfo, EventReceiveInfo } from 'fullcalendar'
 import { createCalendarElement, initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import { TimeGridModel } from '../lib/models/time-grid'
@@ -22,9 +23,9 @@ describe('dragging events between calendars', () => {
 
   it('fires eventLeave, drop, then eventReceive, and moves the event', async () => {
     const calls: string[] = []
-    const eventLeave = vi.fn(() => { calls.push('eventLeave') })
-    const drop = vi.fn(() => { calls.push('drop') })
-    const eventReceive = vi.fn(() => { calls.push('eventReceive') })
+    const eventLeave = vi.fn((_info: EventLeaveInfo) => { calls.push('eventLeave') })
+    const drop = vi.fn((_info: DropInfo) => { calls.push('drop') })
+    const eventReceive = vi.fn((_info: EventReceiveInfo) => { calls.push('eventReceive') })
     const eventAllow = vi.fn(() => true)
     const [el0, el1] = createSideBySideEls()
     const calendar0 = initCalendar({

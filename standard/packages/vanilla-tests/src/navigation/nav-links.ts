@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { userEvent } from 'vitest/browser'
-import { Calendar } from 'fullcalendar'
+import { Calendar, CalendarOptions } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { queryParts } from '../lib/models/events'
 import { waitForSettle } from '../lib/settle'
@@ -39,7 +39,7 @@ describe('navLinks', () => {
   describe('in month view', () => {
     const monthOptions = { ...options, initialView: 'dayGridMonth' }
 
-    it.each([
+    it.each<[string, CalendarOptions, string]>([
       ['by default, the toolbar\'s day view', {}, 'timeGridDay'],
       ['"day", the toolbar\'s day view', { navLinkDayClick: 'day' }, 'timeGridDay'],
       ['a view name', { navLinkDayClick: 'dayGridDay' }, 'dayGridDay'],

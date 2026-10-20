@@ -5,6 +5,11 @@
     "declaration": false,
     "declarationMap": false,
     "noEmit": true,
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
     "types": [
       "@vitest/browser-playwright"
     ]
@@ -12,5 +17,14 @@
   "include": [
     "./src/**/*",
     "./*.ts"
+  ],
+  // The *.unit.ts specs import library source. These resolve it to the built declarations
+  "references": [
+    {
+      "path": "../headless-calendar"
+    },
+    {
+      "path": "../preact"
+    }
   ]
 }

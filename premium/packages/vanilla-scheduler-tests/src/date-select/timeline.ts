@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { AllowFunc } from 'fullcalendar'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { queryParts } from '@fullcalendar-tests/standard/src/lib/models/events'
 import { pointer, touchPointer } from '@fullcalendar-tests/standard/src/lib/pointer'
@@ -125,7 +126,7 @@ describe('selecting in timeline', () => {
     ['selects when selectAllow returns true', true],
     ['doesn\'t select when selectAllow returns false', false],
   ])('%s, giving it the resource', async (_desc, isAllowed) => {
-    const selectAllow = vi.fn(() => isAllowed)
+    const selectAllow = vi.fn<AllowFunc>(() => isAllowed)
     const select = vi.fn()
     const calendar = initCalendar({ ...options, initialView: 'resourceTimelineWeek', initialDate: '2016-09-04', selectAllow, select })
     await waitForSettle()

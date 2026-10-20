@@ -226,7 +226,7 @@ describe('background events', () => {
       expect(Math.abs(rect.bottom - getSlotTop(root, endTime))).toBeLessThanOrEqual(2)
     }
 
-    it.each([
+    it.each<{ direction: 'ltr' | 'rtl' }>([
       { direction: 'ltr' },
       { direction: 'rtl' },
     ])('cover a time span within a day ($direction)', async ({ direction }) => {
@@ -285,7 +285,7 @@ describe('background events', () => {
     })
 
     describe('when inverse', () => {
-      it.each([
+      it.each<{ direction: 'ltr' | 'rtl' }>([
         { direction: 'ltr' },
         { direction: 'rtl' },
       ])('cover everything but a time span ($direction)', async ({ direction }) => {

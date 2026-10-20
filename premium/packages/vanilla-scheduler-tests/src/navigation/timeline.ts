@@ -26,7 +26,7 @@ describe('timeline navLinks', () => {
       .map((el) => el.getAttribute('aria-label')!))
   }
 
-  it.each([
+  it.each<[string, string, CalendarOptions, string[][]]>([
     ['a multi-day view, on its days', 'timelineThreeDay', {}, [
       ['Go to April 3, 2023', 'Go to April 4, 2023', 'Go to April 5, 2023'],
       [],
