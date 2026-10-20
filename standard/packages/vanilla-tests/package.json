@@ -31,6 +31,6 @@
   "type": "module",
   "exports": {
     "./package.json": "./package.json",
-    "./tests/lib/*": "./tests/lib/*.ts"
+    "./src/lib/*": "./src/lib/*.ts"
   }
 }

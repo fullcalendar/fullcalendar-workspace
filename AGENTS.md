@@ -24,8 +24,8 @@ Run the automated tests yourself to verify changes. They are Vitest tests in `st
 
 ```sh
 cd premium/packages/vanilla-scheduler-tests
-pnpm exec vitest run tests/resource-data/filter-resources-with-events.ts
-pnpm exec vitest run tests/event-drag -t "resource"
+pnpm exec vitest run src/resource-data/filter-resources-with-events.ts
+pnpm exec vitest run src/event-drag -t "resource"
 ```
 
 - **Filter:** pass test files or folders, and/or `-t <pattern>` to match test names (all enclosing `describe` titles plus the `it` title). `--project browser` or `--project unit` limits the run to one kind.
@@ -33,7 +33,7 @@ pnpm exec vitest run tests/event-drag -t "resource"
 - **React:** `FORCE_REACT=1` runs the suites against the React-rendering builds (`fullcalendar-w-react`, ...). CI runs both.
 - **Sandbox:** the browser binds local ports. If the sandbox blocks that (`EPERM`), run the command outside the sandbox.
 - **Output:** report pass/fail counts and failure output as-is. Known library bugs are `it.fails` tests, which pass while the bug exists.
-- **Writing tests:** query elements by their `data-fc-part` attribute and use the models in `tests/lib/models/`, and await `waitForSettle()` (`tests/lib/settle.ts`) instead of sleeping. Use real input through `tests/lib/pointer.ts`, never synthetic events.
+- **Writing tests:** query elements by their `data-fc-part` attribute and use the models in `src/lib/models/`, and await `waitForSettle()` (`src/lib/settle.ts`) instead of sleeping. Use real input through `src/lib/pointer.ts`, never synthetic events.
 - **Gotcha:** an "invalid license key" banner overlays the bottom-left of scheduler calendars with an invalid key. The test setup uses a valid one.
 
 ## Theme Pipeline

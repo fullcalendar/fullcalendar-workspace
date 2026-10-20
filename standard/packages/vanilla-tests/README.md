@@ -5,12 +5,12 @@ Tests for the `fullcalendar` packages, run with Vitest. Most run in headless Chr
 ```sh
 pnpm test                         # everything
 pnpm test:dev                     # watch mode
-pnpm exec vitest run tests/event-drag -t "timed"
+pnpm exec vitest run src/event-drag -t "timed"
 FORCE_REACT=1 pnpm test           # against the React-rendering builds
 ```
 
-- `tests/<feature>/`: tests, one folder per feature
-- `tests/lib/`: shared helpers, also used by the premium test package
+- `src/<feature>/`: tests, one folder per feature
+- `src/lib/`: shared helpers, also used by the premium test package
   - `calendar.ts`: `initCalendar()` and teardown
   - `settle.ts`: `waitForSettle()`, for waiting on the calendar instead of sleeping
   - `pointer.ts`: real mouse and touch input

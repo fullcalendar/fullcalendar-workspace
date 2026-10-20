@@ -40,7 +40,7 @@ export function createTestConfig(options: {
       alias: process.env.FORCE_REACT ? FORCE_REACT_ALIASES : [],
     },
     define: {
-      __FORCE_REACT__: JSON.stringify(Boolean(process.env.FORCE_REACT)), // see tests/lib/env.ts
+      __FORCE_REACT__: JSON.stringify(Boolean(process.env.FORCE_REACT)), // see src/lib/env.ts
     },
     test: {
       onConsoleLog(log) {
@@ -59,15 +59,15 @@ export function createTestConfig(options: {
           test: {
             name: 'unit',
             environment: 'node',
-            include: ['tests/**/*.unit.ts'],
+            include: ['src/**/*.unit.ts'],
           },
         },
         {
           extends: true,
           test: {
             name: 'browser',
-            include: ['tests/**/*.ts'],
-            exclude: ['tests/**/*.unit.ts', 'tests/lib/**'],
+            include: ['src/**/*.ts'],
+            exclude: ['src/**/*.unit.ts', 'src/lib/**'],
             setupFiles: [options.setupFile],
             testTimeout: 10000,
             browser: {

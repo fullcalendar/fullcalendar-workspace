@@ -1,7 +1,7 @@
 import type { BrowserCommand } from 'vitest/node'
 
 /*
-Real browser input, run in Node through Playwright. Tests call these through tests/lib/pointer.ts.
+Real browser input, run in Node through Playwright. Tests call these through src/lib/pointer.ts.
 
 Coordinates are client coordinates within the test iframe (what getBoundingClientRect returns).
 Playwright's page.mouse works in top-page coordinates, so the iframe's offset is added.
