@@ -1,6 +1,7 @@
 import { defineConfig, type ViteUserConfig } from 'vitest/config'
 import { playwright } from '@vitest/browser-playwright'
 import { fileURLToPath } from 'node:url'
+import * as commands from './vitest.commands'
 
 /*
 Shared by this package's vitest.config.ts and the premium test package's.
@@ -52,6 +53,7 @@ export function createTestConfig(options: { setupFile: string }): ViteUserConfig
                 },
               }),
               viewport: VIEWPORT,
+              commands,
               instances: [
                 { browser: 'chromium' },
               ],

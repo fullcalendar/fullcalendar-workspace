@@ -7,3 +7,6 @@
 
 # Monorepo
 .turbo
+
+# Vitest browser-mode failure screenshots
+__screenshots__

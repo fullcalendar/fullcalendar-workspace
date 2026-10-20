@@ -5,6 +5,7 @@ import './global.css'
 import { afterEach, beforeEach } from 'vitest'
 import { config } from 'fullcalendar/protected-api'
 import { cleanupCalendars } from './calendar'
+import { releasePointer } from './pointer'
 
 beforeEach(() => {
   // After a touch interaction, mouse events are ignored for a while. That window is global and could
@@ -12,6 +13,7 @@ beforeEach(() => {
   config.touchMouseIgnoreWait = 0
 })
 
-afterEach(() => {
+afterEach(async () => {
+  await releasePointer()
   cleanupCalendars()
 })

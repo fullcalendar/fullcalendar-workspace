@@ -20,6 +20,7 @@ const defaultPlugins: PluginInput[] = [
 let defaultOptions: CalendarOptions = {
   timeZone: 'UTC',
   eventDisplay: 'auto',
+  dragRevertDuration: 0, // tests about the revert animation set it explicitly
 }
 
 /*
