@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../vdom-util'
+import { memo } from 'react'
 import { MinimalEventProps } from '../../component-util/event-rendering'
 import { createFormatter } from '../../datelib/formatting'
 import { ForegroundEvent, columnEventVariant } from '../../common/events'
@@ -18,24 +18,20 @@ export interface TimeGridEventProps extends MinimalEventProps {
   disableResizing?: boolean // HACK
 }
 
-export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
-  render() {
-    const { props } = this
-
-    return (
-      <ForegroundEvent
-        variant={columnEventVariant}
-        {...props}
-        level={props.level}
-        isNarrow={props.isNarrow}
-        isShort={props.isShort}
-        className={
-          // see note in TimeGridCol on why we use flexbox
-          props.isLiquid ? classNames.liquid : ''
-        }
-        disableLiquid={!props.isLiquid}
-        defaultTimeFormat={DEFAULT_TIME_FORMAT}
-      />
-    )
-  }
-}
+export const TimeGridEvent = memo(function TimeGridEvent(props: TimeGridEventProps) {
+  return (
+    <ForegroundEvent
+      variant={columnEventVariant}
+      {...props}
+      level={props.level}
+      isNarrow={props.isNarrow}
+      isShort={props.isShort}
+      className={
+        // see note in TimeGridCol on why we use flexbox
+        props.isLiquid ? classNames.liquid : ''
+      }
+      disableLiquid={!props.isLiquid}
+      defaultTimeFormat={DEFAULT_TIME_FORMAT}
+    />
+  )
+})

@@ -1,7 +1,7 @@
 import { CssDimValue } from '../../scrollgrid/util'
 import { joinClassNames } from '../../util/html'
 import { MoreLinkContainer } from '../../common/MoreLinkContainer'
-import { BaseComponent } from '../../vdom-util'
+import { memo } from 'react'
 import { Dictionary } from '../../options'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
@@ -28,40 +28,36 @@ export interface TimeGridMoreLinkProps {
   isMicro: boolean
 }
 
-export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
-  render() {
-    let { props } = this
-
-    return (
-      <div // the "harness"
-        role='listitem'
-        className={joinClassNames(
-          classNames.abs,
-          classNames.flexCol,
-          classNames.end0,
-          classNames.z9999,
-        )}
-        style={{
-          top: props.top,
-          height: props.height,
-        }}
-      >
-        <MoreLinkContainer
-          className={classNames.liquid}
-          display='column'
-          allDayDate={null}
-          segs={props.hiddenSegs}
-          hiddenSegs={props.hiddenSegs}
-          dateSpanProps={props.dateSpanProps}
-          renderProps={props.renderProps}
-          dateProfile={props.dateProfile}
-          todayRange={props.todayRange}
-          popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
-          forceTimed={true}
-          isNarrow={props.isNarrow}
-          isMicro={props.isMicro}
-        />
-      </div>
-    )
-  }
-}
+export const TimeGridMoreLink = memo(function TimeGridMoreLink(props: TimeGridMoreLinkProps) {
+  return (
+    <div // the "harness"
+      role='listitem'
+      className={joinClassNames(
+        classNames.abs,
+        classNames.flexCol,
+        classNames.end0,
+        classNames.z9999,
+      )}
+      style={{
+        top: props.top,
+        height: props.height,
+      }}
+    >
+      <MoreLinkContainer
+        className={classNames.liquid}
+        display='column'
+        allDayDate={null}
+        segs={props.hiddenSegs}
+        hiddenSegs={props.hiddenSegs}
+        dateSpanProps={props.dateSpanProps}
+        renderProps={props.renderProps}
+        dateProfile={props.dateProfile}
+        todayRange={props.todayRange}
+        popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
+        forceTimed={true}
+        isNarrow={props.isNarrow}
+        isMicro={props.isMicro}
+      />
+    </div>
+  )
+})

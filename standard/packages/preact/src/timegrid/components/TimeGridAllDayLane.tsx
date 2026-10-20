@@ -1,136 +1,107 @@
 import { DayGridRow, DayGridRowProps } from '../../daygrid/components/DayGridRow'
 import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
 import { addDays } from '@full-ui/headless-calendar'
-import { DateComponent } from '../../component/DateComponent'
 import { Hit } from '../../interactions/hit'
-import { createRef } from 'react'
+import { memo, useRef, useState } from 'react'
+import { useHitTarget } from '../../hooks/useHitTarget'
+import { useReportedSize } from '../../hooks/useReportedSize'
 import { MoreLinkTrigger } from '../../common/MoreLinkContainer'
 import { resolveDayGridPlacementMode } from '../../daygrid/seg-placement-adapter'
-import { watchHeight } from '../../component-util/resize-observer'
 import classNames from '../../styles.module.css'
 
 export interface TimeGridAllDayLaneProps extends DayGridRowProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 }
 
-interface TimeGridAllDayLaneState {
-  moreLinkHeight?: number
-}
+/*
+TimeGrid's all-day row, a DayGridRow registered for hits
+*/
+export const TimeGridAllDayLane = memo(function TimeGridAllDayLane(props: TimeGridAllDayLaneProps) {
+  const [moreLinkHeight, setMoreLinkHeight] = useState<number | undefined>(undefined)
+  const rootElRef = useRef<HTMLElement | null>(null)
+  const heightRef = useRef<number | null>(null)
+  const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
+    props.dayMaxEvents,
+    props.dayMaxEventRows,
+  ) === 'auto'
+  const moreLinkElRef = useReportedSize({
+    watchHeight: true,
+    onSize(_width, height) {
+      setMoreLinkHeight(height)
+    },
+  })
 
-export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps, TimeGridAllDayLaneState> {
-  state: TimeGridAllDayLaneState = {}
+  useHitTarget(rootElRef, {
+    isHitComboAllowed: props.isHitComboAllowed,
+    eventSelection: props.eventSelection,
+    eventDrag: props.eventDrag,
+    eventResize: props.eventResize,
+    queryHit(isRtl, positionLeft, positionTop, elWidth): Hit | null {
+      const colCount = props.cells.length
+      const { col, left, right } = computeColFromPosition(
+        positionLeft,
+        elWidth,
+        props.colWidth,
+        colCount,
+        isRtl
+      )
+      const cell = props.cells[col]
 
-  // ref
-  private rootEl: HTMLElement
-  private heightRef = createRef<number>()
-  private disconnectMoreLinkHeight?: () => void
-  private _isUnmounting: boolean
+      if (cell.isInert) {
+        return null
+      }
 
-  render() {
-    const { props, state } = this
-    const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
-      props.dayMaxEvents,
-      props.dayMaxEventRows,
-    ) === 'auto'
+      const cellStartDate = cell.date
+      const cellEndDate = addDays(cellStartDate, 1)
 
-    return (
-      <>
-        <DayGridRow
-          {...props}
-          moreLinkHeight={state.moreLinkHeight}
-
-          /* BAD: these overwrite the props! caller might want to pass them */
-          rootElRef={this.handleRootEl}
-          heightRef={this.heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
-        />
-        {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
-        {needsMoreLinkProbe && (
-          <MoreLinkTrigger
-            num={1}
-            display='row'
-            isNarrow={props.cellIsNarrow}
-            isMicro={props.cellIsMicro}
-            elRef={this.handleMoreLinkEl}
-            className={classNames.offscreen}
-            attrs={{
-              'aria-hidden': true, // redundant with .offscreen's visibility, but marks it as a probe
-            }}
-          />
-        )}
-      </>
-    )
-  }
-
-  private handleMoreLinkEl = (el: HTMLElement | null) => {
-    this.disconnectMoreLinkHeight?.()
-    this.disconnectMoreLinkHeight = undefined
-
-    if (el) {
-      this.disconnectMoreLinkHeight = watchHeight(el, (height) => {
-        if (this._isUnmounting) return
-        this.setState({ moreLinkHeight: height })
-      })
-    }
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
-
-  handleRootEl = (rootEl: HTMLDivElement) => {
-    this.rootEl = rootEl
-
-    if (rootEl) {
-      this.registerHitTarget({
-        el: rootEl,
-      })
-    } else {
-      this.unregisterHitTarget()
-    }
-  }
-
-  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number): Hit | null {
-    const { props, heightRef } = this
-
-    const colCount = props.cells.length
-    const { col, left, right } = computeColFromPosition(
-      positionLeft,
-      elWidth,
-      props.colWidth,
-      colCount,
-      isRtl
-    )
-    const cell = props.cells[col]
-
-    if (cell.isInert) {
-      return null
-    }
-
-    const cellStartDate = cell.date
-    const cellEndDate = addDays(cellStartDate, 1)
-
-    return {
-      dateProfile: props.dateProfile,
-      dateSpan: {
-        range: {
-          start: cellStartDate,
-          end: cellEndDate,
+      return {
+        dateProfile: props.dateProfile,
+        dateSpan: {
+          range: {
+            start: cellStartDate,
+            end: cellEndDate,
+          },
+          allDay: true,
+          ...cell.dateSpanProps,
         },
-        allDay: true,
-        ...cell.dateSpanProps,
-      },
-      getDayEl: () => getCellEl(this.rootEl, col),
-      rect: {
-        left,
-        right,
-        top: 0,
-        bottom: heightRef.current,
-      },
-      layer: 0,
-    }
-  }
+        getDayEl: () => getCellEl(rootElRef.current, col),
+        rect: {
+          left,
+          right,
+          top: 0,
+          bottom: heightRef.current,
+        },
+        layer: 0,
+      }
+    },
+  })
+
+  return (
+    <>
+      <DayGridRow
+        {...props}
+        moreLinkHeight={moreLinkHeight}
+
+        /* BAD: these overwrite the props! caller might want to pass them */
+        rootElRef={rootElRef}
+        heightRef={heightRef} /* ALSO, BAD because it simply watches natural height of row-root-el */
+      />
+      {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
+      {needsMoreLinkProbe && (
+        <MoreLinkTrigger
+          num={1}
+          display='row'
+          isNarrow={props.cellIsNarrow}
+          isMicro={props.cellIsMicro}
+          elRef={moreLinkElRef}
+          className={classNames.offscreen}
+          attrs={PROBE_ATTRS}
+        />
+      )}
+    </>
+  )
+})
+
+const PROBE_ATTRS = {
+  'aria-hidden': true, // redundant with .offscreen's visibility, but marks it as a probe
 }

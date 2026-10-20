@@ -1,11 +1,13 @@
 import { Duration, DateMarker, DateRange, addDurations, multiplyDuration, wholeDivideDurations } from '@full-ui/headless-calendar'
 import { joinClassNames } from '../../util/html'
-import { DateComponent, EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Hit } from '../../interactions/hit'
-import { memoize } from '../../util/memoize'
+import { memo, useMemo, useRef } from 'react'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useHitTarget } from '../../hooks/useHitTarget'
 import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
 import classNames from '../../styles.module.css'
 import { TimeGridRange } from '../TimeColsSeg'
@@ -40,115 +42,102 @@ export interface TimeGridColsProps {
   cellIsMicro: boolean
 }
 
-export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: rename to TimeGridRow
-  // memo
-  private processSlotOptions = memoize(processSlotOptions)
+export const TimeGridCols = memo(function TimeGridCols(props: TimeGridColsProps) { // TODO: rename to TimeGridRow
+  const { dateEnv, options } = useViewContext()
+  const rootElRef = useRef<HTMLElement | null>(null)
+  const { snapDuration, snapsPerSlot } = useMemo(
+    () => processSlotOptions(options.slotDuration, options.snapDuration),
+    [options.slotDuration, options.snapDuration],
+  )
 
-  // refs
-  private rootEl: HTMLElement
+  useHitTarget(rootElRef, {
+    isHitComboAllowed: props.isHitComboAllowed,
+    eventSelection: props.eventSelection,
+    queryHit(isRtl, positionLeft, positionTop, elWidth): Hit | null {
+      const { dateProfile, cells, colWidth, slatHeight } = props
 
-  render() {
-    const { props } = this
+      const colCount = cells.length
+      const { col, left, right } = computeColFromPosition(positionLeft, elWidth, colWidth, colCount, isRtl)
+      const cell = cells[col]
 
-    return (
-      <div
-        role={props.role as any /* !!! */}
-        className={joinClassNames(props.className, classNames.flexRow)}
-        ref={this.handleRootEl}
-      >
-        {props.cells.map((cell, col) => (
-          <TimeGridCol
-            key={cell.key}
-            dateProfile={props.dateProfile}
-            nowDate={props.nowDate}
-            nowMs={props.nowMs}
-            todayRange={props.todayRange}
-            date={cell.date}
-            isMajor={cell.isMajor}
-            slatCnt={props.slatCnt}
-            renderProps={cell.renderProps}
-            attrs={cell.attrs}
-            dateSpanProps={cell.dateSpanProps}
-            forPrint={props.forPrint}
-            borderStart={Boolean(col)}
-            isNarrow={props.cellIsNarrow}
-            isMicro={props.cellIsMicro}
+      if (cell.isInert) {
+        return null
+      }
 
-            // content
-            fgEventSegs={props.fgEventSegsByCol[col]}
-            bgEventSegs={props.bgEventSegsByCol[col]}
-            businessHourSegs={props.businessHourSegsByCol[col]}
-            nowIndicatorSegs={props.nowIndicatorSegsByCol[col]}
-            dateSelectionSegs={props.dateSelectionSegsByCol[col]}
-            eventDrag={props.eventDragByCol[col]}
-            eventResize={props.eventResizeByCol[col]}
-            eventSelection={props.eventSelection}
+      const slatIndex = Math.floor(positionTop / slatHeight)
+      const slatTop = slatIndex * slatHeight
+      const partial = (positionTop - slatTop) / slatHeight // floating point number between 0 and 1
+      const localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
+      const snapIndex = slatIndex * snapsPerSlot + localSnapIndex
 
-            // dimensions
-            width={props.colWidth}
-            slatHeight={props.slatHeight}
-          />
-        ))}
-      </div>
-    )
-  }
+      const time = addDurations(
+        dateProfile.slotMinTime,
+        multiplyDuration(snapDuration, snapIndex),
+      )
+      const start = dateEnv.add(cell.date, time)
+      const end = dateEnv.add(start, snapDuration)
 
-  handleRootEl = (el: HTMLElement | null) => {
-    this.rootEl = el
+      return {
+        dateProfile,
+        dateSpan: {
+          range: { start, end },
+          allDay: false,
+          ...cell.dateSpanProps,
+        },
+        getDayEl: () => getCellEl(rootElRef.current, col),
+        rect: {
+          left,
+          right,
+          top: slatTop,
+          bottom: slatTop + slatHeight,
+        },
+        layer: 0,
+      }
+    },
+  })
 
-    if (el) {
-      this.registerHitTarget({
-        el,
-      })
-    } else {
-      this.unregisterHitTarget()
-    }
-  }
+  return (
+    <div
+      role={props.role as any /* !!! */}
+      className={joinClassNames(props.className, classNames.flexRow)}
+      ref={rootElRef as any}
+    >
+      {props.cells.map((cell, col) => (
+        <TimeGridCol
+          key={cell.key}
+          dateProfile={props.dateProfile}
+          nowDate={props.nowDate}
+          nowMs={props.nowMs}
+          todayRange={props.todayRange}
+          date={cell.date}
+          isMajor={cell.isMajor}
+          slatCnt={props.slatCnt}
+          renderProps={cell.renderProps}
+          attrs={cell.attrs}
+          dateSpanProps={cell.dateSpanProps}
+          forPrint={props.forPrint}
+          borderStart={Boolean(col)}
+          isNarrow={props.cellIsNarrow}
+          isMicro={props.cellIsMicro}
 
-  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number): Hit | null {
-    const { dateProfile, cells, colWidth, slatHeight } = this.props
-    const { dateEnv, options } = this.context
-    const { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
+          // content
+          fgEventSegs={props.fgEventSegsByCol[col]}
+          bgEventSegs={props.bgEventSegsByCol[col]}
+          businessHourSegs={props.businessHourSegsByCol[col]}
+          nowIndicatorSegs={props.nowIndicatorSegsByCol[col]}
+          dateSelectionSegs={props.dateSelectionSegsByCol[col]}
+          eventDrag={props.eventDragByCol[col]}
+          eventResize={props.eventResizeByCol[col]}
+          eventSelection={props.eventSelection}
 
-    const colCount = cells.length
-    const { col, left, right } = computeColFromPosition(positionLeft, elWidth, colWidth, colCount, isRtl)
-    const cell = cells[col]
-
-    if (cell.isInert) {
-      return null
-    }
-
-    const slatIndex = Math.floor(positionTop / slatHeight)
-    const slatTop = slatIndex * slatHeight
-    const partial = (positionTop - slatTop) / slatHeight // floating point number between 0 and 1
-    const localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
-    const snapIndex = slatIndex * snapsPerSlot + localSnapIndex
-
-    const time = addDurations(
-      dateProfile.slotMinTime,
-      multiplyDuration(snapDuration, snapIndex),
-    )
-    const start = dateEnv.add(cell.date, time)
-    const end = dateEnv.add(start, snapDuration)
-
-    return {
-      dateProfile,
-      dateSpan: {
-        range: { start, end },
-        allDay: false,
-        ...cell.dateSpanProps,
-      },
-      getDayEl: () => getCellEl(this.rootEl, col),
-      rect: {
-        left,
-        right,
-        top: slatTop,
-        bottom: slatTop + slatHeight,
-      },
-      layer: 0,
-    }
-  }
-}
+          // dimensions
+          width={props.colWidth}
+          slatHeight={props.slatHeight}
+        />
+      ))}
+    </div>
+  )
+})
 
 // Utils
 // -------------------------------------------------------------------------------------------------
