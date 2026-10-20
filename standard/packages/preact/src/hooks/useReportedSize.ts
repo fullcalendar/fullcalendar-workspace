@@ -12,6 +12,13 @@ export interface ReportedSizeInput {
   onSize?: (width: number, height: number) => void // after a watched dimension changes. read live
 }
 
+interface Watching {
+  el: HTMLElement
+  watchWidth: boolean
+  watchHeight: boolean
+  disconnect: () => void
+}
+
 interface Dim {
   value: number | undefined // the last measurement, kept across a detach
   target: Ref<number> | undefined // the ref last reported to
@@ -22,9 +29,7 @@ Measures an element and reports its width and/or height to the parent's refs, on
 Returns a stable ref callback for the element. Registers in a layout effect, after the component's
 children have run theirs, so content they append is measured. Reports null on cleanup, and the kept
 value again on re-attach (Strict Mode, a shown <Activity>) and to a new target ref.
-Unlike the spec (§4.1), reports from an element that isn't rendered still go through, as before.
-A hidden <Activity> runs the cleanup first anyway, and ignoring them broke the resource timeline's
-eventMaxStack specs (see planning/phase-5-render-hook-rollout.md).
+Ignores reports while the element isn't rendered (inside a display:none subtree).
 See planning/hook-toolkit-spec.md §4.2
 */
 export function useReportedSize(input: ReportedSizeInput): (el: HTMLElement | null) => void {
@@ -34,32 +39,41 @@ export function useReportedSize(input: ReportedSizeInput): (el: HTMLElement | nu
   })
   const widthRef = useRef<Dim>({ value: undefined, target: undefined })
   const heightRef = useRef<Dim>({ value: undefined, target: undefined })
-  const watchingRef = useRef<{ el: HTMLElement, disconnect: () => void } | null>(null)
+  const watchingRef = useRef<Watching | null>(null)
   const { watchWidth = false, watchHeight = false } = input
   const onSizeRef = useLatest(input.onSize)
 
-  // every commit: follow the target refs and the element
+  // every commit: follow the target refs, the element and what to watch
   useLayoutEffect(() => {
     syncTarget(widthRef.current, input.widthRef)
     syncTarget(heightRef.current, input.heightRef)
 
     const el = elRef.current
+    const watching = watchingRef.current
 
-    if (el !== watchingRef.current?.el) {
-      watchingRef.current?.disconnect()
+    if (
+      el !== watching?.el ||
+      watchWidth !== watching.watchWidth ||
+      watchHeight !== watching.watchHeight
+    ) {
+      watching?.disconnect()
       watchingRef.current = el ? {
         el,
+        watchWidth,
+        watchHeight,
         disconnect: watchSize(el, (width, height) => {
-          let isChanged = false
+          if (el.getClientRects().length) { // ignore an element inside display:none
+            let isChanged = false
 
-          if (watchWidth) {
-            isChanged = reportDim(widthRef.current, width) || isChanged
-          }
-          if (watchHeight) {
-            isChanged = reportDim(heightRef.current, height) || isChanged
-          }
-          if (isChanged) {
-            onSizeRef.current?.(width, height)
+            if (watchWidth) {
+              isChanged = reportDim(widthRef.current, width) || isChanged
+            }
+            if (watchHeight) {
+              isChanged = reportDim(heightRef.current, height) || isChanged
+            }
+            if (isChanged) {
+              onSizeRef.current?.(width, height)
+            }
           }
         }, watchWidth, watchHeight),
       } : null

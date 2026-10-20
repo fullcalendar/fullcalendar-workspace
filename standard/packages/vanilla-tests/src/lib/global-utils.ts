@@ -13,14 +13,21 @@ import './date-matchers.js'
 
 let optionsStack = null
 let calendarElements = null
+let calendars: Calendar[] = null
 
 beforeEach(() => {
   optionsStack = []
   calendarElements = []
+  calendars = []
 })
 
 afterEach(() => {
   optionsStack = null
+  // destroy before removing, so no size observers, timers or popovers outlive the test
+  for (let calendar of calendars) {
+    calendar.destroy() // fine if the test already destroyed it
+  }
+  calendars = null
   for (let calendarElement of calendarElements) {
     calendarElement.remove()
   }
@@ -74,6 +81,7 @@ function initCalendar(moreOptions?: CalendarOptions, el?: HTMLElement) {
   let options = getCurrentOptions()
   let calendar = new Calendar(calendarEl, options)
   calendar.render()
+  calendars.push(calendar)
   return calendar
 }
 

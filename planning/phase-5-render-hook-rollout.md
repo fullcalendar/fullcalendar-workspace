@@ -115,13 +115,7 @@ never go up), the React suite, then a commit. Sol reviews after 5b, 5c and 5e.
   - Unstable render-prop objects memoized, which can only lower `*Content` call counts:
     - `options` in the custom view `content` hook's render props;
     - `options` in `BgEvent`'s render props.
-- **Departures from the spec, both found by specs:**
-  - **Hidden-element rule dropped** (spec §4.1). Ignoring reports from elements with no client rects
-    made `eventMaxStack` in the resource timeline fail. A hidden `<Activity>` runs the cleanup,
-    which disconnects, before any hidden report could arrive, so the rule wasn't needed for it.
-    - Instrumenting showed the ignored reports were all 0×0, from elements no longer in the document
-      (`isConnected` false): the time-header labels and some resource cells. Why the timeline needs
-      them isn't understood yet; it's an open question for review.
+- **Found by specs:**
   - **A memo comparator that ignores some of a prop's fields gives stale props.** Unlike a class,
     a `memo` that skips a render keeps the old props, and a later context-driven render uses them.
     A class's props update even when `shouldComponentUpdate` returns false.
@@ -133,6 +127,26 @@ never go up), the React suite, then a commit. Sol reviews after 5b, 5c and 5e.
       change anyway.
 - **No spec for the stale-watcher fixes.** Every caller passes a stable ref (a `RefMap` entry or
   a class-field handler), so the stale capture isn't reachable through the public API.
+
+### Review of 5a–5c (Sol, round 1)
+
+Two P2 findings, both fixed, both reproduced and pinned by new tests in
+`standard/packages/react/tests/hooks.tsx` that fail without the fix:
+
+- **`useReportedSize` kept the dimensions it watched at registration.** It re-registered only on a
+  new element. Now a change of `watchWidth`/`watchHeight` re-registers too.
+- **A new forwarded `elRef` didn't get the element.** `useRenderHookEl` and `<CustomContent>` (the
+  latter from phase 4) left the old ref holding it. Both now use `useForwardedElRef`, which releases
+  the old ref and fills the new one.
+
+Sol also explained the eventMaxStack failures:
+
+- **Cause:** the spec teardown (`vanilla-tests/src/lib/global-utils.ts`) removed calendar elements
+  without destroying the calendars. Their observers kept running, delivering the 0×0 reports, and
+  their popovers stayed in the document, where the specs' global popover lookup could pick a stale
+  one.
+- **Fix:** teardown now destroys every calendar `initCalendar` made. The hidden-element rule (spec
+  §4.1) is restored.
 
 ## Watch for
 

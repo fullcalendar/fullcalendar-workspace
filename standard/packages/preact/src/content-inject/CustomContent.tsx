@@ -5,7 +5,7 @@ import {
 import { ContentGenerator } from '../common/render-hook'
 import { useViewContext } from '../hooks/useViewContext'
 import { useLatest } from '../hooks/useLatest'
-import { setRef } from '../vdom-util'
+import { useForwardedElRef } from '../hooks/useForwardedElRef'
 import { guid } from '../util/misc'
 import { isArraysEqual } from '../util/array'
 import { isPropsEqualShallow, isPropsEqualWithMap } from '../util/object'
@@ -36,24 +36,15 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
   const { options } = useViewContext()
   useContext(RenderId) // re-runs the generator when the vanilla Calendar or a connector bumps it
 
-  const elRef = useRef<HTMLElement | null>(null)
+  // the ref callback must be stable, or React would detach and re-attach it on every commit
+  const [elRef, handleEl] = useForwardedElRef(props.elRef)
   const committedElRef = useRef<HTMLElement | null>(null) // as of the last commit, for cleanup
   const idRef = useRef<string>(null)
   idRef.current ??= guid()
   const currentDomNodesRef = useRef<Node[]>([])
 
-  // the ref callback must be stable, or React would detach and re-attach it on every commit.
-  // assigned during render, because the ref callback runs during the commit, before layout effects
-  const elRefPropRef = useRef(props.elRef)
-  elRefPropRef.current = props.elRef
-  const handleElRef = useRef<(el: HTMLElement | null) => void>(null)
-  handleElRef.current ??= (el: HTMLElement | null) => {
-    elRef.current = el
-    setRef(elRefPropRef.current, el)
-  }
-
   const { generator, fallback, renderProps } = props
-  const attrs: ElAttrs = { ...props.attrs, ref: handleElRef.current }
+  const attrs: ElAttrs = { ...props.attrs, ref: handleEl }
   let useFallback = false
   let innerContent: ReactNode | undefined
   let queuedDomNodes: Node[] = []

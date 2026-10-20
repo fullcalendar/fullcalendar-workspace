@@ -1,8 +1,8 @@
-import { type Ref, useRef, useState } from 'react'
+import { type Ref } from 'react'
 import {
   ClassNameGenerator, DidMountHandler, WillUnmountHandler, generateClassName,
 } from '../common/render-hook'
-import { setRef } from '../vdom-util'
+import { useForwardedElRef } from './useForwardedElRef'
 import { useMountHooks } from './useMountHooks'
 
 export interface RenderHookElInput<RenderProps> {
@@ -25,16 +25,7 @@ The outer element of a render-hook area: its *Class className, and a ref that ru
 See planning/hook-toolkit-spec.md §6.4
 */
 export function useRenderHookEl<RenderProps>(input: RenderHookElInput<RenderProps>): RenderHookEl {
-  const elRef = useRef<HTMLElement | null>(null)
-
-  // assigned during render, because the ref callback runs during the commit, before layout effects
-  const elRefPropRef = useRef(input.elRef)
-  elRefPropRef.current = input.elRef
-
-  const [ref] = useState(() => (el: HTMLElement | null) => {
-    elRef.current = el
-    setRef(elRefPropRef.current, el)
-  })
+  const [elRef, ref] = useForwardedElRef(input.elRef)
 
   useMountHooks(elRef, input.didMount, input.willUnmount, input.renderProps)
 
