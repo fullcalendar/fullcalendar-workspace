@@ -12,37 +12,60 @@ This is a refactoring aid, not a long-term test:
 - A baseline is recorded from a commit whenever it's needed, and can always be regenerated.
 - Nothing runs it automatically. CI and the normal spec runs don't use it.
 
-## Usage (target)
+## Status
+
+Built. Files:
+
+- `scripts/bin/dom-snapshot.js`: the launcher (record, compare, list).
+- `premium/packages/vanilla-scheduler-tests/src/dom-snapshot/`:
+  - `fixtures.ts`: fixture definitions, free of runner specifics;
+  - `serialize.ts`: the normalising serializer;
+  - `dom-snapshot.ts`: the opt-in spec that records them.
+- `.gitignore`: `/.dom-snapshots`.
+
+The fixtures live in the scheduler test package, because its bundle includes every standard view
+too, so one run covers both packages.
+
+## Usage
 
 ```sh
-node scripts/bin/dom-snapshot.js record <label>        # e.g. baseline, after-phase-4
-node scripts/bin/dom-snapshot.js compare <labelA> <labelB>
+# build the test bundle first (or have `pnpm dev` running). FORCE_REACT=1 for the React runtime
+pnpm --filter "@fullcalendar-tests/premium" run build
+
+node scripts/bin/dom-snapshot.js record <label> [--only <substring>]
+node scripts/bin/dom-snapshot.js compare <labelA> <labelB> [--stat]
+node scripts/bin/dom-snapshot.js list
 ```
 
-- Snapshots go in `.dom-snapshots/<label>/`, which is git-ignored.
-- `record` writes a `meta.json` with the commit SHA and whether the working tree was dirty.
-- `compare` prints a per-fixture summary and a unified diff of the files that changed.
-- To get a baseline, record at the baseline commit (e.g. in a separate worktree), then record again
-  after the change.
+- Like `karma-test.js`, it binds port 9876, so it may need to run outside the sandbox.
+- **Runtime detection:** `record` detects the runtime from the bundle (React leaves `__react*`
+  keys on DOM nodes) and writes to `.dom-snapshots/<label>.<runtime>/`.
+- **`compare`** takes labels with or without the runtime suffix. Without one, it compares every
+  runtime recorded under both labels. It prints a per-fixture summary and unified diffs, and exits 1
+  if anything differs.
+- **`meta.json`** records:
+  - the commit and whether the tree was dirty;
+  - the fixture count;
+  - whether classnames are readable (`pnpm dev` builds, `f-<name>`) or hashed (`pnpm build`,
+    `fc-<hash>`). `compare` warns when the two sides differ;
+  - which fixtures hit ResizeObserver loop errors.
+- **Recording a baseline at another commit:** check that commit out in a separate worktree, build
+  there, and point its `.dom-snapshots` at this one (or copy the folder over).
 
 ## Mechanism
 
-- **Reuse what we have:** the existing Karma config (`standard/scripts/config/karma.js`) and the built
-  test bundles.
-- **Own launcher:** `scripts/bin/dom-snapshot.js`, modelled on `karma-test.js` but separate, because
-  `karma-test.js` replaces `client` wholesale. It sets its own `client.args` and registers an inline
-  reporter plugin.
-- **Opt-in gating at runtime:** `generate-index.js` bundles every spec file, so the fixture file
-  can't be excluded at build time. Its `describe` checks for a client arg (e.g. `--dom-snapshot`) and
-  defines nothing otherwise. Don't use `fdescribe`, which the index generator treats as a filter.
-- **Getting DOM out of the browser:** `__karma__.info({ fixture, html })`, one call per fixture,
-  received by the inline reporter and written to disk. Karma 6 allows 100 MB socket messages, so
-  size isn't a concern. Avoid `console.log`, which goes through `captureConsole` and the dots
-  reporter.
-- **Both runtimes:** `record` takes `--react` and uses the `FORCE_REACT=1` bundle. Labels get a
-  runtime suffix.
-- Keep the fixture definitions separate from the runner, so a later Playwright runner could reuse
-  them.
+- **Reuse:** the existing Karma config (`standard/scripts/config/karma.js`) and the built test
+  bundle.
+- **Own launcher**, because `karma-test.js` replaces `client` wholesale. It sets
+  `client.args = ['--dom-snapshot', '--grep', …]` and registers an inline reporter plugin.
+- **Opt-in at runtime:** `generate-index.js` bundles every spec file, so `dom-snapshot.ts` defines
+  its `describe` only when `__karma__.config.args` includes `--dom-snapshot`. Normal runs see no
+  specs from it.
+- **Transport:** each fixture sends `__karma__.info({ domSnapshot: { name, html } })`. Karma emits
+  `browser_info` for info payloads without `log`/`total`/`dump`, and the reporter's `onBrowserInfo`
+  writes the files.
+- **ResizeObserver loop errors** are swallowed per fixture, as `ignoreResizeObserverLoops` does in
+  the specs, and listed in `meta.json` instead of failing the run.
 
 ## Fixtures
 
@@ -66,12 +89,16 @@ node scripts/bin/dom-snapshot.js compare <labelA> <labelB>
 - `dayMaxEvents` / `eventMaxStack` (more-links, and an opened popover);
 - `weekNumbers`;
 - `nowIndicator` with a fixed now;
-- a selected event and a date selection;
+- a date selection. Not a selected event: event selection is only reachable through a touch
+  long-press;
 - background events;
 - nested and grouped resources, an expanded and a collapsed group, and `datesAboveResources`;
 - render hooks: a `*Content` function returning a string, `{ html }`, `{ domNodes }` and `true`;
   `*Class` functions;
-- a theme fixture (one built-in theme) so class names that themes depend on are covered.
+- themes: every fixture already runs with the classic theme plugin and the test theme
+  (`theme-for-tests*.ts`), which the test globals load, so theme classnames are covered throughout;
+- an empty list view (the `noEvents` area);
+- a drag in progress, in RTL.
 
 **Event data:** one set reused across fixtures:
 
@@ -104,17 +131,24 @@ sets `dir` on a dragged event to cover that case.
 
 ## Done when
 
-- Recording twice at the same commit gives zero diffs, both runs in one session and across two
-  sessions.
-- A deliberate one-class change in `StandardEvent` shows up as a diff in every fixture that renders
-  events.
-- A baseline is recorded at the phase-1 commit, under both runtimes, and noted here. Not at the
+- [x] Recording twice at the same commit gives zero diffs. Two separate Karma launches: 129
+  fixtures, 0 changed.
+- [x] A deliberate one-class change in `StandardEvent` shows up in every fixture that renders
+  events: 127 of 129 changed, and only the two empty-list fixtures didn't. A full rebuild of all
+  packages for that check shifted no other hashed classname.
+- [ ] A baseline is recorded at the phase-1 commit, under both runtimes, and noted here. Not at the
   phase-0 commit: the fixtures and runner don't exist there, and phase 1 changes no rendered DOM,
   so the two are equivalent.
 
-## Open questions
+## Findings
 
-- How long does the full matrix take to record? If it's more than a few minutes, add a filter
-  argument (`--only timeGrid`).
-- Are some measured sizes unstable at sub-pixel level in headless Chrome even after rounding? If so,
-  widen the rounding for those properties only.
+- **Run time:** a full record takes about 20 seconds per runtime (129 fixtures), so `--only` is a
+  convenience, not a necessity.
+- **Sub-pixel noise:** none seen with 0.1px rounding.
+- **Preact vs React:** the two produce identical DOM apart from the hashed module classnames, whose
+  hash includes the package path. Compare within one runtime only, as the tool does.
+- **ResizeObserver loop errors** in 9 fixtures, all resource TimeGrid/DayGrid at a 1100px width:
+  `resourceTimeGridWeek` (default, rtl, print, now-indicator, dates-above-resources),
+  `resourceDayGridMonth` (default, rtl, print) and `resourceDayGridWeek` (print). They happen in
+  both runtimes. Worth a look when phase 7 reaches those layouts, since a loop usually means a
+  measurement feeding back into itself.
