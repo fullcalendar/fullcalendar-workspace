@@ -1,4 +1,5 @@
 import { appendTestElement } from './calendar'
+import { assertPointHits } from './models/events'
 import { getRectCenter, Point, pointer } from './pointer'
 import { waitForSettle } from './settle'
 
@@ -23,7 +24,9 @@ Drags the element and releases at the point computed by `drop` (after the press)
 */
 export async function dragExternalEl(el: HTMLElement, drop: () => Point): Promise<void> {
   el.scrollIntoView({ block: 'nearest' })
-  await pointer.press(getRectCenter(el.getBoundingClientRect()), async () => {
+  const start = getRectCenter(el.getBoundingClientRect())
+  assertPointHits(start, el, 'the external element')
+  await pointer.press(start, async () => {
     await pointer.move(drop())
     await waitForSettle()
   })

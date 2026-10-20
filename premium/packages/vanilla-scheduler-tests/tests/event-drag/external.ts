@@ -20,9 +20,15 @@ describe('dragging external elements onto resource views', () => {
     ],
   }
 
-  function makeDraggable(el: HTMLElement): void {
+  /*
+  Returns a spy for the drag starting, so tests where nothing should drop can prove the drag happened.
+  */
+  function makeDraggable(el: HTMLElement): ReturnType<typeof vi.fn> {
     const draggable = new Draggable(el, { eventData: { title: 'my external event' } })
     onTestFinished(() => draggable.destroy())
+    const dragStart = vi.fn()
+    ;(draggable as any).dragging.emitter.on('dragstart', dragStart)
+    return dragStart
   }
 
   it.each([
@@ -30,7 +36,8 @@ describe('dragging external elements onto resource views', () => {
     ['a resource timeline after switching views', 'resourceTimelineWeek'],
   ])('creates an event on the resource under the pointer in %s', async (_desc, view) => {
     const drop = vi.fn()
-    const calendar = initCalendar({ ...options, initialView: 'resourceTimelineDay', drop })
+    const eventReceive = vi.fn()
+    const calendar = initCalendar({ ...options, initialView: 'resourceTimelineDay', drop, eventReceive })
     if (view !== 'resourceTimelineDay') {
       calendar.changeView(view)
     }
@@ -40,8 +47,11 @@ describe('dragging external elements onto resource views', () => {
     makeDraggable(externalEl)
     await dragExternalEl(externalEl, () => new TimelineModel(calendar.el).pointForDateTime({ date: '2015-11-29T05:00', resourceId: 'b' }))
 
+    expect(drop).toHaveBeenCalledOnce()
     expect(drop.mock.calls[0][0].dateStr).toBe('2015-11-29T05:00:00Z')
-    const event = calendar.getEvents()[0]
+    expect(eventReceive).toHaveBeenCalledOnce()
+    expect(calendar.getEvents()).toHaveLength(1)
+    const event = eventReceive.mock.calls[0][0].event
     expect(event.title).toBe('my external event')
     expect(event.startStr).toBe('2015-11-29T05:00:00Z')
     expect(event.end).toBeNull()
@@ -49,14 +59,16 @@ describe('dragging external elements onto resource views', () => {
   })
 
   it('creates an event on the resource under the pointer in resource timeGrid', async () => {
-    const calendar = initCalendar({ ...options, initialView: 'resourceTimeGridWeek' })
+    const eventReceive = vi.fn()
+    const calendar = initCalendar({ ...options, initialView: 'resourceTimeGridWeek', eventReceive })
     await waitForSettle()
 
     const externalEl = createExternalEl()
     makeDraggable(externalEl)
     await dragExternalEl(externalEl, () => new TimeGridModel(calendar.el).pointForDateTime({ date: '2015-12-01T05:00', resourceId: 'a' }))
 
-    const event = calendar.getEvents()[0]
+    expect(eventReceive).toHaveBeenCalledOnce()
+    const event = eventReceive.mock.calls[0][0].event
     expect(event.startStr).toBe('2015-12-01T05:00:00Z')
     expect(event.getResources().map((resource) => resource.id)).toEqual(['a'])
   })
@@ -86,20 +98,31 @@ describe('dragging external elements onto resource views', () => {
     const wrapEl = appendTestElement(document.createElement('div'))
     wrapEl.style.cssText = 'position:relative;width:900px'
     const calendarEl = wrapEl.appendChild(document.createElement('div'))
-    const externalEl = wrapEl.appendChild(document.createElement('div'))
-    externalEl.textContent = 'external'
-    externalEl.style.cssText = 'position:absolute;left:100%;top:80px;width:100px'
     initCalendar({ ...options, initialView: 'resourceTimelineDay', headerToolbar: false, drop }, calendarEl)
     await waitForSettle()
 
-    makeDraggable(externalEl)
+    // beside the calendar horizontally, level with a resource lane vertically
+    const laneRect = new TimelineModel(calendarEl).getResourceLane('a').getBoundingClientRect()
+    const externalEl = wrapEl.appendChild(document.createElement('div'))
+    externalEl.textContent = 'external'
+    externalEl.style.cssText = 'position:absolute;left:100%;width:100px;height:10px'
+    externalEl.style.top = (laneRect.top - wrapEl.getBoundingClientRect().top + laneRect.height / 2 - 10) + 'px'
+
+    const dragStart = makeDraggable(externalEl)
     const start = getRectCenter(externalEl.getBoundingClientRect())
+    const end = { x: start.x, y: start.y + 10 }
+    const calendarRect = calendarEl.getBoundingClientRect()
+    expect(end.x).toBeGreaterThan(calendarRect.right)
+    expect(end.y).toBeGreaterThan(laneRect.top)
+    expect(end.y).toBeLessThan(laneRect.bottom)
+
     await pointer.press(start, async () => {
-      await pointer.move({ x: start.x, y: start.y + 10 })
+      await pointer.move(end)
       await waitForSettle()
     })
     await waitForSettle()
 
+    expect(dragStart).toHaveBeenCalledOnce()
     expect(drop).not.toHaveBeenCalled()
   })
 
@@ -108,7 +131,7 @@ describe('dragging external elements onto resource views', () => {
     await waitForSettle()
 
     const externalEl = createExternalEl()
-    makeDraggable(externalEl)
+    const dragStart = makeDraggable(externalEl)
     calendar.destroy()
 
     const start = getRectCenter(externalEl.getBoundingClientRect())
@@ -116,6 +139,7 @@ describe('dragging external elements onto resource views', () => {
       await pointer.move({ x: start.x + 100, y: start.y - 100 })
     })
     await waitForSettle()
-    // passes if nothing throws
+
+    expect(dragStart).toHaveBeenCalledOnce() // and nothing threw
   })
 })

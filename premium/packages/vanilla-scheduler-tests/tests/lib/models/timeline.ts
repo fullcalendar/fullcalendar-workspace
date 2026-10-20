@@ -3,6 +3,7 @@ import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from '@fullcalendar-tests/standard/tests/lib/models/events'
 import { describeSpot, parseSpot, Spot } from '@fullcalendar-tests/standard/tests/lib/models/spot'
 import { ResizeEdge, resizeSegment } from '@fullcalendar-tests/standard/tests/lib/models/resize'
+import { scrollIntoViewOnAxis } from '@fullcalendar-tests/standard/tests/lib/models/scroll'
 
 /*
 A spot, or the start of a slot by index (for slots that share a wall-clock time, ex: when DST ends).
@@ -52,7 +53,7 @@ export class TimelineModel {
   */
   pointForSlot(index: number, resourceId?: string): Point {
     const slotEl = this.getSlotLanes()[index]
-    slotEl.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    scrollIntoViewOnAxis(slotEl, 'x')
     return { x: this.xInSlot(slotEl, 0), y: this.yForResource(resourceId) }
   }
 
@@ -147,7 +148,7 @@ export class TimelineModel {
   pointForSpotEnd(spot: TimelineSpot): Point {
     if (typeof spot === 'object' && 'slot' in spot) {
       const slotEl = this.getSlotLanes()[spot.slot - 1]
-      slotEl.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+      scrollIntoViewOnAxis(slotEl, 'x')
       return { x: this.xInSlot(slotEl, 1, 'end'), y: this.yForResource(spot.resourceId) }
     }
 
@@ -172,16 +173,25 @@ export class TimelineModel {
       i--
     }
 
-    const slotDurationMs = slotMs.length > 1
-      ? (i + 1 < slotMs.length ? slotMs[i + 1] : slotMs[i] + (slotMs[i] - slotMs[i - 1])) - slotMs[i]
-      : NaN
+    // The smallest step between slots is the slot duration. Bigger steps are omitted time
+    // (slotMinTime/slotMaxTime, hidden days), which must not count as part of the slot before.
+    let slotDurationMs = NaN
+    for (let j = 1; j < slotMs.length; j++) {
+      const step = slotMs[j] - slotMs[j - 1]
+      if (step > 0 && !(step >= slotDurationMs)) {
+        slotDurationMs = step
+      }
+    }
     const frac = (ms - slotMs[i]) / slotDurationMs
 
     if (!(isEnd ? frac > 0 && frac <= 1 : frac >= 0 && frac < 1)) { // also rejects NaN
-      throw new Error(`Time ${dateTime} is outside the rendered slots`)
+      throw new Error(`Time ${dateTime} isn't within a rendered slot`)
+    }
+    if (slotMs.filter((slotStartMs) => slotStartMs === slotMs[i]).length > 1) {
+      throw new Error(`Time ${dateTime} is in a repeated wall-clock slot (DST). Address it by { slot }`)
     }
 
-    slotEls[i].scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    scrollIntoViewOnAxis(slotEls[i], 'x')
     return this.xInSlot(slotEls[i], frac, edge)
   }
 
@@ -201,7 +211,7 @@ export class TimelineModel {
 
   private yForResource(resourceId: string | undefined): number {
     const el = resourceId != null ? this.getResourceLane(resourceId) : this.getSlotLanes()[0]
-    el.scrollIntoView({ block: 'nearest' })
+    scrollIntoViewOnAxis(el, 'y') // lanes are wider than the scroller
     const rect = el.getBoundingClientRect()
     return rect.top + rect.height / 2
   }

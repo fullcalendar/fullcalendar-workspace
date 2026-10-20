@@ -82,6 +82,23 @@ describe('event dragging in timeline', () => {
     expect(dropInfo.resource.id).toBe('a')
   })
 
+  it('moves an event to a time that has to be scrolled into view', async () => {
+    const calendar = initCalendar({ ...options, events: [event] })
+    await waitForSettle()
+
+    const timeline = new TimelineModel(calendar.el)
+    const scrollerRight = calendar.el.getBoundingClientRect().right
+    expect(timeline.getSlotLanes()[40].getBoundingClientRect().left).toBeGreaterThan(scrollerRight) // 20:00 is off-screen
+
+    await timeline.dragEvent(
+      '1',
+      { date: '2015-11-29T02:00', resourceId: 'b' },
+      { date: '2015-11-29T20:00', resourceId: 'b' },
+    )
+
+    expect(calendar.getEventById('1')!.startStr).toBe('2015-11-29T20:00:00Z')
+  })
+
   it('moves by the dropped time and resource in RTL', async () => {
     const calendar = initCalendar({ ...options, direction: 'rtl', events: [event] })
     await waitForSettle()

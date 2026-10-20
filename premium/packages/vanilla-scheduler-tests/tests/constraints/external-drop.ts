@@ -11,6 +11,7 @@ describe('constraints on external drops in resource timeline', () => {
     ['prevents a drop onto the other event with eventOverlap:false', '2015-11-29T02:00', false],
   ])('%s', async (_desc, dateTime, isAllowed) => {
     const drop = vi.fn()
+    const eventReceive = vi.fn()
     const calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       initialDate: '2015-11-29',
@@ -21,6 +22,7 @@ describe('constraints on external drops in resource timeline', () => {
       resources: [{ id: 'a', title: 'Resource A' }],
       events: [{ start: '2015-11-29T01:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }],
       drop,
+      eventReceive,
     })
     await waitForSettle()
 
@@ -30,5 +32,7 @@ describe('constraints on external drops in resource timeline', () => {
     await dragExternalEl(externalEl, () => new TimelineModel(calendar.el).pointForDateTime({ date: dateTime, resourceId: 'a' }))
 
     expect(drop).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
+    expect(eventReceive).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
+    expect(calendar.getEvents()).toHaveLength(isAllowed ? 2 : 1)
   })
 })

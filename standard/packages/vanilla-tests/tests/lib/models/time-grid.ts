@@ -4,6 +4,7 @@ import { DayGridModel } from './day-grid'
 import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
 import { ResizeEdge, resizeSegment } from './resize'
+import { scrollIntoViewOnAxis } from './scroll'
 
 /*
 A timeGrid view (resource or not). `allDay` models the all-day row.
@@ -49,7 +50,9 @@ export class TimeGridModel {
     const { date: dateTime, resourceId } = parseSpot(spot)
     const [date, time] = splitDateTime(dateTime)
     const y = this.yForTime(time)
-    const laneRect = this.getDayLane({ date, resourceId }).getBoundingClientRect()
+    const laneEl = this.getDayLane({ date, resourceId })
+    scrollIntoViewOnAxis(laneEl, 'x') // lanes are taller than the scroller
+    const laneRect = laneEl.getBoundingClientRect()
     return { x: laneRect.left + laneRect.width / 2, y }
   }
 
@@ -67,7 +70,9 @@ export class TimeGridModel {
     }
 
     const y = this.yForTime(time, 'end')
-    const laneRect = this.getDayLane({ date, resourceId }).getBoundingClientRect()
+    const laneEl = this.getDayLane({ date, resourceId })
+    scrollIntoViewOnAxis(laneEl, 'x') // lanes are taller than the scroller
+    const laneRect = laneEl.getBoundingClientRect()
     return { x: laneRect.left + laneRect.width / 2, y }
   }
 
@@ -176,7 +181,7 @@ export class TimeGridModel {
     }
 
     const slotEl = slotEls[i]
-    slotEl.scrollIntoView({ block: 'nearest' })
+    scrollIntoViewOnAxis(slotEl, 'y') // slots can be wider than the scroller
     const rect = slotEl.getBoundingClientRect()
     return rect.top + rect.height * frac + (isEnd ? -2 : 2)
   }

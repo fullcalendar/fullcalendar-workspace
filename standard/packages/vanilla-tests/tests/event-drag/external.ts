@@ -128,20 +128,23 @@ describe('dragging external elements onto the calendar', () => {
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/2240
-    it('still accepts drops after the view is changed', async () => {
+    it('still accepts drops after a drop and a view change', async () => {
       const drop = vi.fn()
       const calendar = initCalendar({ ...options, drop })
       await waitForSettle()
 
-      const externalEl = createExternalEl()
-      makeDraggable(externalEl)
+      const externalEls = [createExternalEl({ class: 'item' }), createExternalEl({ class: 'item' })]
+      const draggable = new ThirdPartyDraggable({ itemSelector: '.item' })
+      onTestFinished(() => draggable.destroy())
+      await dragExternalEl(externalEls[0], () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
+
       calendar.next()
       calendar.prev()
+      externalEls[0].remove()
       await waitForSettle()
-      await dragExternalEl(externalEl, () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
+      await dragExternalEl(externalEls[1], () => new DayGridModel(calendar.el).pointForDate('2014-11-14'))
 
-      expect(drop).toHaveBeenCalledOnce()
-      expect(drop.mock.calls[0][0].dateStr).toBe('2014-11-13')
+      expect(drop.mock.calls.map(([info]) => info.dateStr)).toEqual(['2014-11-13', '2014-11-14'])
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/2433
@@ -214,10 +217,10 @@ describe('dragging external elements onto the calendar', () => {
     })
 
     it.each([
-      ['defaultTimedEventDuration', { defaultTimedEventDuration: '02:30' }, {}, '2014-11-13T04:30:00Z'],
+      ['defaultTimedEventDuration, with forceEventDuration', { defaultTimedEventDuration: '02:30', forceEventDuration: true }, {}, '2014-11-13T04:30:00Z'],
       ['the event data\'s duration', {}, { duration: '05:00' }, '2014-11-13T07:00:00Z'],
     ])('gives the event its duration from %s', async (_desc, moreOptions, eventData, expectedEnd) => {
-      const calendar = initCalendar({ ...options, ...moreOptions, forceEventDuration: true })
+      const calendar = initCalendar({ ...options, ...moreOptions })
       await waitForSettle()
 
       const externalEl = createExternalEl()
