@@ -1,5 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
+  getPartAttr,
   BaseComponent,
   memoizeObjArg,
   ContentContainer,
@@ -70,6 +71,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           !props.borderBottom && classNames.borderlessBottom,
           classNames.crop,
         )}
+        part={getPartAttr(context.options, 'resourceCell', forPrint && 'resourceRow')}
         style={forPrint ? undefined : {
           minWidth: 0,
           width: props.width,
@@ -114,6 +116,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
                 generateClassName(colSpec.cellInnerClass, renderProps),
                 classNames.z1,
               )}
+              part={getPartAttr(context.options, 'resourceCellInner')}
             />
           </div>
         )}

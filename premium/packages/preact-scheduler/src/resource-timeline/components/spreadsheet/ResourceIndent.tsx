@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { ReactNode } from 'react'
 
@@ -24,6 +24,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
           classNames.alignEnd,
           props.className,
         )}
+        data-fc-part={getPartAttr(context.options, 'resourceIndent')}
         style={{
           ...props.style,
           width: props.indentWidth != null

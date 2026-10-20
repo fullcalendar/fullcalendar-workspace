@@ -2,7 +2,7 @@ import type { EventRenderRange } from '../../component-util/event-rendering'
 import { ViewApi } from '../../api/ViewApi'
 import { joinClassNames } from '../../util/html'
 import { addDays } from '@full-ui/headless-calendar'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { ContentContainer, getPartAttr } from '../../content-inject/ContentContainer'
 import { DateComponent } from '../../component/DateComponent'
 import type { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import type { DateProfile } from '../../DateProfileGenerator'
@@ -96,6 +96,7 @@ export class ListView extends DateComponent<ViewProps> {
         customGenerator={options.noEventsContent}
         defaultGenerator={renderNoEventsInner}
         classNameGenerator={options.noEventsClass}
+        part={getPartAttr(options, 'noEvents')}
         className={classNames.grow}
         didMount={options.noEventsDidMount}
         willUnmount={options.noEventsWillUnmount}
@@ -104,6 +105,7 @@ export class ListView extends DateComponent<ViewProps> {
           <InnerContent
             tag="div"
             className={generateClassName(options.noEventsInnerClass, renderProps)}
+            part={getPartAttr(options, 'noEventsInner')}
           />
         )}
       </ContentContainer>
@@ -123,6 +125,7 @@ export class ListView extends DateComponent<ViewProps> {
           classNames.flexCol,
           joinClassNames(options.listDaysClass),
         )}
+        data-fc-part={getPartAttr(options, 'listDays')}
       >
         <NowTimer unit="day">
           {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {

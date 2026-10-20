@@ -14,6 +14,7 @@ import {
   CalendarInner,
   CalendarMediaRoot,
   computeRootClassName,
+  getPartAttr,
   RenderId,
   guid,
 } from '@fullcalendar/preact/protected-api'
@@ -87,6 +88,7 @@ export class Calendar extends CalendarApiImpl {
 
                   this.setIsRtl(isRtl)
                   this.setClassName(className)
+                  this.setPart(getPartAttr(options, 'root'))
                   this.setHeight(options.height)
                   this.setColorScheme(options.colorScheme || '')
 
@@ -109,6 +111,7 @@ export class Calendar extends CalendarApiImpl {
 
       this.setIsRtl(false)
       this.setClassName('')
+      this.setPart(undefined)
       this.setHeight('')
       this.setColorScheme('')
     }
@@ -170,6 +173,14 @@ export class Calendar extends CalendarApiImpl {
       }
 
       this.currentClassName = className
+    }
+  }
+
+  private setPart(part: string | undefined) {
+    if (part) {
+      this.el.dataset.fcPart = part
+    } else {
+      delete this.el.dataset.fcPart
     }
   }
 

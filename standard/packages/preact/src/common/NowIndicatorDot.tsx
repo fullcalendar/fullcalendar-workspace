@@ -1,5 +1,6 @@
 import { ViewContextType } from '../ViewContext'
 import { joinClassNames } from '../util/html'
+import { getPartAttr } from '../content-inject/ContentContainer'
 
 export interface NowIndicatorDotProps {
   className?: string
@@ -17,6 +18,7 @@ export const NowIndicatorDot = (props: NowIndicatorDotProps) => (
             props.className,
             options.nowIndicatorDotClass,
           )}
+          data-fc-part={getPartAttr(options, 'nowIndicatorDot')}
           style={props.style}
         />
       )

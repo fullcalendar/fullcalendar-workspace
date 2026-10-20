@@ -3,7 +3,7 @@ import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
 import { BgEvent, renderFill } from '../../common/bg-fill'
 import { buildEventRangeKey, EventRangeProps, getEventRangeMeta, sortEventSegs } from '../../component-util/event-rendering'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { DateMarker, DateRange, formatDayString } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { Dictionary } from '../../options'
@@ -106,6 +106,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             generateClassName(options.dayLaneClass, renderProps),
             baseClassName,
           )}
+          data-fc-part={getPartAttr(options, 'dayLane')}
           style={baseStyle}
         />
       )
@@ -133,6 +134,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         renderProps={renderProps}
         generatorName={undefined}
         classNameGenerator={options.dayLaneClass}
+        part={getPartAttr(options, 'dayLane')}
         didMount={options.dayLaneDidMount}
         willUnmount={options.dayLaneWillUnmount}
       >
@@ -145,6 +147,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               // events and more-links are list items
               role={sortedFgSegs.length ? 'list' : undefined}
               className={innerClassName}
+              data-fc-part={getPartAttr(options, 'dayLaneInner')}
             >
               {this.renderFgSegs(
                 sortedFgSegs,
@@ -155,6 +158,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               // but only show it when there are actual mirror events, to avoid blocking clicks
               <div
                 className={innerClassName}
+                data-fc-part={getPartAttr(options, 'dayLaneInner')}
               >
                 {this.renderFgSegs(
                   mirrorSegs,

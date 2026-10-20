@@ -6,7 +6,7 @@ import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/util'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
@@ -178,6 +178,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               tableHeaderSticky && classNames.tableHeaderSticky,
               classNames.z1,
             )}
+            data-fc-part={getPartAttr(options, 'tableHeader')}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
@@ -193,6 +194,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     classNames.borderlessTop,
                     tierNum === props.headerTiers.length - 1 && classNames.borderlessBottom,
                   )}
+                  data-fc-part={getPartAttr(options, 'dayHeaderRow')}
                 >
                   {(options.weekNumbers && rowConfig.isDateRow) ? (
                     <TimeGridWeekNumber
@@ -215,6 +217,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     inTableHeader: true,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
+                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
@@ -232,6 +235,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       classNames.borderlessY,
                       classNames.borderlessEnd,
                     )}
+                    data-fc-part={getPartAttr(options, 'filler')}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -243,6 +247,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
+              data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
             />
           </div>
         )}
@@ -260,6 +265,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             classNames.isolate,
             classNames.z0,
           )}
+          data-fc-part={getPartAttr(options, 'tableBody')}
         >
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
@@ -279,6 +285,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
+                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
                 <TimeGridAllDayLane
                   dateProfile={props.dateProfile}
@@ -308,6 +315,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       classNames.borderlessY,
                       classNames.borderlessEnd,
                     )}
+                    data-fc-part={getPartAttr(options, 'filler')}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -315,6 +323,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               {/* TODO: don't show div if no classname */}
               <div
                 className={joinClassNames(options.allDayDividerClass, classNames.z2)}
+                data-fc-part={getPartAttr(options, 'allDayDivider')}
               />
             </>
           )}
@@ -364,6 +373,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
+                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
                 <TimeGridCols
                   dateProfile={props.dateProfile}
@@ -436,6 +446,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                             inTableHeader: false,
                             options: { dayMinWidth: options.dayMinWidth },
                           })}
+                          data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                           style={{ visibility: 'hidden' }}
                           // ^TODO: className?
                           // invisible because dayLanes show the line
@@ -457,6 +468,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         classNames.borderlessBottom,
                         classNames.liquid,
                       )}
+                      data-fc-part={getPartAttr(options, 'filler')}
                     />
                   )}
 

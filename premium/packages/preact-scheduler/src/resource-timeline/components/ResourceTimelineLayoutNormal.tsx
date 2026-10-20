@@ -21,6 +21,7 @@ import {
   FooterScrollbar,
   ViewContainer,
   generateClassName,
+  getPartAttr,
   debounce,
   computeViewBorderless,
 } from '@fullcalendar/preact/protected-api'
@@ -488,6 +489,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           }),
           classNames.flexCol,
         )}
+        part={getPartAttr(options, 'table')}
       >
         <AriaProxyRows
           cellIdPrefix={cellIdPrefix}
@@ -524,6 +526,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   tableHeaderSticky && classNames.tableHeaderSticky,
                   classNames.z1,
                 )}
+                data-fc-part={getPartAttr(options, 'tableHeader')}
               >
                 <div
                   className={joinClassNames(
@@ -544,6 +547,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         classNames.borderlessX,
                         classNames.borderlessTop,
                       )}
+                      data-fc-part={getPartAttr(options, 'resourceHeaderRow')}
                     >
                       <SuperHeaderCell
                         cellIdPrefix={cellIdPrefix}
@@ -575,6 +579,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           classNames.grow,
                           classNames.borderless,
                         )}
+                        data-fc-part={getPartAttr(options, 'resourceHeaderRow')}
                       >
                         <HeaderCells
                           colSpecs={colSpecs}
@@ -597,6 +602,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     inTableHeader: true,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
+                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
               </div>
 
@@ -618,6 +624,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   allowVerticalScrolling && classNames.liquid,
                   classNames.z0,
                 )}
+                part={getPartAttr(options, 'tableBody')}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
               >
@@ -644,6 +651,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       classNames.borderlessX,
                       classNames.borderlessBottom,
                     )}
+                    data-fc-part={getPartAttr(options, 'filler')}
                     style={{ minHeight: spreadsheetBottomFiller }}
                   />
                 )}
@@ -686,6 +694,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   tableHeaderSticky && classNames.tableHeaderSticky,
                   classNames.z1,
                 )}
+                data-fc-part={getPartAttr(options, 'tableHeader')}
               >
                 <Scroller
                   ref={this.timeHeaderScrollerRef}
@@ -779,6 +788,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         classNames.borderlessY,
                         classNames.borderlessEnd,
                       )}
+                      data-fc-part={getPartAttr(options, 'filler')}
                       style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
@@ -788,6 +798,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
+                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
               </div>
 
@@ -813,6 +824,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   allowVerticalScrolling && classNames.liquid,
                   classNames.z0,
                 )}
+                part={getPartAttr(options, 'tableBody')}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
                 clientHeightRef={
@@ -985,6 +997,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         classNames.borderlessBottom,
                         classNames.fillX,
                       )}
+                      data-fc-part={getPartAttr(options, 'filler')}
                       style={{
                         top: yFillBottom,
                         minHeight: timelineBottomFiller,

@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, ContentContainer, generateClassName, getPartAttr } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ResourceExpanderInfo } from '../../structs'
@@ -33,6 +33,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
           classNames.noMargin,
           props.className,
         )}
+        data-fc-part={getPartAttr(options, 'resourceExpander')}
         onClick={props.onExpanderClick}
         ref={props.elRef}
       >

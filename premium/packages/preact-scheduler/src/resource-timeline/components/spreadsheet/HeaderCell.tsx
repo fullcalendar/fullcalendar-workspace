@@ -1,6 +1,6 @@
 import { createRef, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
 import { ResourceIndent } from './ResourceIndent'
@@ -54,6 +54,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           classNames.rel, // for resizer abs positioning
           // cannot crop because resizer is allowed to bleed out
         )}
+        part={getPartAttr(context.options, 'resourceColumnHeader', forPrint && 'resourceHeaderRow')}
         style={forPrint ? undefined : {
           minWidth: 0,
           width: props.width,
@@ -92,6 +93,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 <InnerContent
                   tag="div"
                   className={generateClassName(colSpec.headerInnerClass, renderProps)}
+                  part={getPartAttr(context.options, 'resourceColumnHeaderInner')}
                 />
               </div>
             </div>
@@ -103,6 +105,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                   classNames.z1,
                   classNames.cursorColResizer,
                 )}
+                data-fc-part={getPartAttr(context.options, 'resourceColumnResizer')}
               />
             )}
           </>

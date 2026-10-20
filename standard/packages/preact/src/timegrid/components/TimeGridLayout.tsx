@@ -12,7 +12,7 @@ import { ViewContainer } from '../../common/ViewContainer'
 import { afterSize } from '../../component-util/resize-observer'
 import { memoize } from '../../util/memoize'
 import { joinClassNames } from '../../util/html'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import classNames from '../../styles.module.css'
 import { buildSlatMetas } from '../time-slat-meta'
@@ -179,6 +179,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           !props.forPrint && classNames.flexCol,
           classNames.isolate, // for inner z-index of layout. somehow move to layouts?
         )}
+        part={getPartAttr(options, 'table')}
         viewSpec={context.viewSpec}
       >
         {dayMinWidth ? (

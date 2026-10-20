@@ -5,6 +5,7 @@ import {
   DateProfile,
   DateRange,
   generateClassName,
+  getPartAttr,
   memoize,
   memoizeObjArg,
   SplittableProps,
@@ -138,6 +139,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
 
         <td
           className={joinClassNames(options.resourceColumnDividerClass)}
+          data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
         />
 
         <ContentContainer
@@ -155,6 +157,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
             classNames.borderlessTop,
             !props.isNotLast && classNames.borderlessBottom,
           )}
+          part={getPartAttr(options, 'resourceLane', 'resourceRow')}
           renderProps={renderProps}
           generatorName={undefined}
           didMount={options.resourceLaneDidMount}
@@ -184,6 +187,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                 generatorName="resourceLaneTopContent"
                 customGenerator={options.resourceLaneTopContent}
                 classNameGenerator={options.resourceLaneTopClass}
+                part={getPartAttr(options, 'resourceLaneTop')}
               />
               {eventBands.map((band) => (
                 <TimelinePrintEventBand
@@ -207,6 +211,7 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
                 generatorName="resourceLaneBottomContent"
                 customGenerator={options.resourceLaneBottomContent}
                 classNameGenerator={options.resourceLaneBottomClass}
+                part={getPartAttr(options, 'resourceLaneBottom')}
               />
             </div>
           )}

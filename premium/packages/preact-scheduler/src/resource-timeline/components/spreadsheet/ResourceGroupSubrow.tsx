@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { ColSpec } from '../../structs'
@@ -48,6 +48,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           classNames.borderlessTop,
           !props.borderBottom && classNames.borderlessBottom,
         )}
+        data-fc-part={getPartAttr(options, 'resourceRow')}
         style={{
           top: props.top,
           height: props.height,

@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, getPartAttr } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
@@ -73,6 +73,7 @@ export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCe
         customGenerator={spec.labelContent}
         defaultGenerator={renderCellInner}
         classNameGenerator={spec.labelClass}
+        part={getPartAttr(context.options, 'resourceGroupHeader')}
         didMount={spec.labelDidMount}
         willUnmount={spec.labelWillUnmount}
       >
@@ -104,6 +105,7 @@ export class ResourceGroupHeaderCell extends BaseComponent<ResourceGroupHeaderCe
                 generateClassName(spec.labelInnerClass, renderProps),
                 classNames.z1,
               )}
+              part={getPartAttr(context.options, 'resourceGroupHeaderInner')}
             />
           </div>
         )}

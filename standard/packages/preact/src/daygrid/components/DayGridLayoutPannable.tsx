@@ -13,7 +13,7 @@ import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { FooterScrollbar } from '../../common/FooterScrollbar'
 import { Ruler } from '../../scrollgrid/Ruler'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { type Ref, createRef } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { computeColWidth, dayMicroWidth } from './util'
@@ -122,7 +122,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             }),
             classNames.flexCol,
             tableHeaderSticky && classNames.tableHeaderSticky,
-          )}>
+          )} data-fc-part={getPartAttr(options, 'tableHeader')}>
             <Scroller
               horizontal
               hideScrollbars
@@ -144,6 +144,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                     classNames.borderlessY,
                     classNames.borderlessEnd,
                   )}
+                  data-fc-part={getPartAttr(options, 'filler')}
                   style={{ minWidth: endScrollbarWidth }}
                 />
               )}
@@ -154,6 +155,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
+              data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
             />
           </div>
         )}
@@ -176,6 +178,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             !props.forPrint && classNames.flexCol,
             verticalScrollbars && classNames.liquid,
           )}
+          part={getPartAttr(options, 'tableBody')}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}
         >

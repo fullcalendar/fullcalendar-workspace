@@ -13,7 +13,7 @@ import { isDimsEqual } from '../../component-util/rendering-misc'
 import { getDateMeta, DateMeta } from '../../component-util/date-rendering'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { memoize, memoizeObjArg } from '../../util/memoize'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { findDayNumberText, findMonthText, findWeekdayText } from '../../util/date-format'
 import classNames from '../../styles.module.css'
 import {
@@ -135,6 +135,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             props.className,
             baseClassName,
           )}
+          data-fc-part={getPartAttr(options, 'dayCell')}
           style={cellStyle}
         >
           {props.fills}
@@ -163,6 +164,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         customGenerator={options.dayCellTopContent /* !!! for top */}
         defaultGenerator={renderTopInner}
         classNameGenerator={options.dayCellClass}
+        part={getPartAttr(options, 'dayCell')}
         didMount={options.dayCellDidMount}
         willUnmount={options.dayCellWillUnmount}
       >
@@ -178,6 +180,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 DAY_GRID_CELL_CONTENT_Z_CLASS,
                 generateClassName(options.dayCellTopClass, renderProps),
               )}
+              data-fc-part={getPartAttr(options, 'dayCellTop')}
               // TODO: prevent margins/padding!?
             >
               {hasA11yDateText && ( // a nav link is already labeled
@@ -197,6 +200,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                       : { 'aria-hidden': true } // screen readers read the srOnly full date above, not this day number
                   }
                   className={generateClassName(options.dayCellTopInnerClass, renderProps)}
+                  part={getPartAttr(options, 'dayCellTopInner')}
                 />
               )}
             </div>
@@ -218,6 +222,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   classNames.rel, // origin for this cell's foreground event wrappers
                   generateClassName(options.dayCellInnerClass, renderProps),
                 )}
+                data-fc-part={getPartAttr(options, 'dayCellInner')}
                 style={{ minHeight: props.fgHeight }}
                 // TODO: prevent margins/padding!?
               >
@@ -252,6 +257,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 DAY_GRID_CELL_CONTENT_Z_CLASS,
                 generateClassName(options.dayCellBottomClass, renderProps),
               )}
+              data-fc-part={getPartAttr(options, 'dayCellBottom')}
             />
           </>
         )}

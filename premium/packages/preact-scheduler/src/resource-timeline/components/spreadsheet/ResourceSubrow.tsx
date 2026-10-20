@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { afterSize, BaseComponent, isArraysEqual, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, afterSize, BaseComponent, isArraysEqual, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import type { Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'
@@ -65,6 +65,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
           classNames.borderlessTop,
           !props.borderBottom && classNames.borderlessBottom,
         )}
+        data-fc-part={getPartAttr(options, 'resourceRow')}
         style={{
           top: props.top,
           height: props.height,

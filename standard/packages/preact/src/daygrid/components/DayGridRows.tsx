@@ -25,6 +25,7 @@ export interface DayGridRowsProps {
   tableMode?: boolean // real table markup, unlike print-rendered TimeGrid all-day rows
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string
+  part?: string // see getPartAttr
 
   dayMaxEvents?: number | boolean
   dayMaxEventRows?: number | boolean
@@ -121,6 +122,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             // https://stackoverflow.com/a/60256345
             !tableMode && !props.forPrint && classNames.flexCol,
           )}
+          data-fc-part={props.part}
           style={tableMode ? undefined : { width: props.width }}
           ref={this.handleRootEl}
         >

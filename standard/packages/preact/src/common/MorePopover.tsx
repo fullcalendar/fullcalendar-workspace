@@ -7,7 +7,7 @@ import { type ReactNode, createRef } from 'react'
 import { createPortal } from 'react-dom'
 import { getDateMeta } from '../component-util/date-rendering'
 import { memoize } from '../util/memoize'
-import { generateClassName } from '../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../content-inject/ContentContainer'
 import { ContentContainer } from '../content-inject/ContentContainer'
 import { DayCellInfo, DayHeaderInfo } from '../api/structs'
 import classNames from '../styles.module.css'
@@ -112,6 +112,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           classNames.borderBoxRoot,
           classNames.internalPopover,
         )}
+        data-fc-part={getPartAttr(options, 'popover')}
         style={{
           // positioning is mutated directly in updateSize, HOWEVER, we don't want popover to start
           // low on screen because might cause unnecessary scrollbars
@@ -138,6 +139,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
               align === 'end' ? classNames.alignEnd :
                 classNames.alignStart,
           )}
+          data-fc-part={getPartAttr(options, 'dayHeader')}
         >
           <div>{/* be similar to DayGridHeaderCell */}
             <ContentContainer
@@ -151,6 +153,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
               customGenerator={options.dayHeaderContent}
               defaultGenerator={renderText}
               classNameGenerator={options.dayHeaderInnerClass}
+              part={getPartAttr(options, 'dayHeaderInner')}
               didMount={options.dayHeaderDidMount}
               willUnmount={options.dayHeaderWillUnmount}
             />
@@ -167,6 +170,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
               classNames.flexRow,
               classNames.cursorPointer,
             )}
+            part={getPartAttr(options, 'popoverClose')}
             renderProps={{}}
             customGenerator={options.popoverCloseContent}
             generatorName='popoverCloseContent'
@@ -178,10 +182,12 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             classNames.flexCol,
             classNames.borderless,
           )}
+          data-fc-part={getPartAttr(options, 'dayCell')}
         >
           <div
             role='list' // children are list items
             className={generateClassName(options.dayCellInnerClass, dayCellRenderProps)}
+            data-fc-part={getPartAttr(options, 'dayCellInner')}
           >
             {props.children}
           </div>

@@ -6,6 +6,7 @@ import {
   DateProfile,
   DateRange,
   generateClassName,
+  getPartAttr,
   SlicedProps,
   ViewContainer,
   watchHeight,
@@ -118,6 +119,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
             classNames.rel,
             classNames.z1,
           )}
+          data-fc-part={getPartAttr(options, 'table')}
         >
           <thead
             ref={this.headerElRef}
@@ -125,6 +127,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
               ...tableDisplayInfo,
               isSticky: false,
             })}
+            data-fc-part={getPartAttr(options, 'tableHeader')}
           >
             <tr>
               <th className={joinClassNames(classNames.noPadding, classNames.borderless, classNames.crop)}>
@@ -156,17 +159,21 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
               </th>
             </tr>
             <tr>
-              <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
+              <th
+                className={joinClassNames(classNames.noPadding, headerDividerClassName)}
+                data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
+              />
             </tr>
           </thead>
           <tbody
             className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
+            data-fc-part={getPartAttr(options, 'tableBody')}
           >
             <tr>
               <td
                 className={joinClassNames(classNames.noPadding, classNames.borderless)}
               >
-                <div className={joinClassNames(options.timelineTopClass)} />
+                <div className={joinClassNames(options.timelineTopClass)} data-fc-part={getPartAttr(options, 'timelineTop')} />
                 <TimelinePrintFg
                   dateProfile={props.dateProfile}
                   tDateProfile={tDateProfile}
@@ -178,7 +185,7 @@ export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps,
                   slotWidth={props.slotWidth}
                   timeCanvasClipStart={props.timeCanvasClipStart}
                 />
-                <div className={joinClassNames(options.timelineBottomClass)} />
+                <div className={joinClassNames(options.timelineBottomClass)} data-fc-part={getPartAttr(options, 'timelineBottom')} />
               </td>
             </tr>
           </tbody>

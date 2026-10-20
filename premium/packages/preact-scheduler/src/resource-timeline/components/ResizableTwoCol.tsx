@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, computeElIsRtl } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent, ElementDragging, PointerDragEvent, setRef, computeElIsRtl } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { DimConfig, resizeDimConfig, serializeDimConfig } from '@full-ui/headless-grid'
@@ -57,6 +57,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
             options.resourceColumnDividerClass,
             classNames.rel, // for hitX
           )}
+          data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
           // TODO: make a className somehow?...
           // TODO: what if not resizable?
           style={{ cursor: 'col-resize' }}

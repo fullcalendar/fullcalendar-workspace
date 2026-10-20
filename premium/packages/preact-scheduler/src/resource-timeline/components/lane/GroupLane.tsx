@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, ContentContainer, generateClassName, getPartAttr, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { Group } from '../../../resource/common/resource-hierarchy'
@@ -63,6 +63,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         generatorName="resourceGroupLaneContent"
         customGenerator={groupSpec.laneContent}
         classNameGenerator={groupSpec.laneClass}
+        part={getPartAttr(context.options, 'resourceGroupLane')}
         didMount={groupSpec.laneDidMount}
         willUnmount={groupSpec.laneWillUnmount}
       >
@@ -75,6 +76,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
               classNames.noShrink,
               classNames.noMargin,
             )}
+            part={getPartAttr(context.options, 'resourceGroupLaneInner')}
           />
         )}
       </ContentContainer>

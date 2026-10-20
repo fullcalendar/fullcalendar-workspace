@@ -126,6 +126,24 @@ export function generateClassName<RenderProps>(
   ) || '' // handles undefined
 }
 
+/*
+Names the render-hook part(s) an element belongs to, as the value of its `data-fc-part` attribute.
+Part names are the `*Class` option names without the `Class` suffix (`dayCellClass` -> `dayCell`).
+
+Returns undefined (no attribute) unless the development-only dev-parts plugin is loaded. That plugin
+registers the `devParts` option; without it, the option is filtered out as unknown.
+*/
+export function getPartAttr(
+  options: object, // the refined options. typed loosely because `devParts` is plugin-defined
+  ...partNames: (string | false | undefined)[]
+): string | undefined {
+  if ((options as { devParts?: boolean }).devParts) {
+    return partNames.filter(Boolean).join(' ') || undefined
+  }
+
+  return undefined
+}
+
 export function renderText(renderProps: { text: string }): ReactNode {
   return renderProps.text
 }

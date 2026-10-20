@@ -2,7 +2,7 @@ import { DateMarker } from '@full-ui/headless-calendar'
 import { ViewContextType } from '../ViewContext'
 import { ViewApi } from '../api/ViewApi'
 import { ElProps } from '../content-inject/ContentInjector'
-import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer'
+import { InnerContainerFunc, ContentContainer, getPartAttr } from '../content-inject/ContentContainer'
 
 export interface NowIndicatorHeaderContainerProps extends Partial<ElProps> {
   date: DateMarker
@@ -34,6 +34,7 @@ export const NowIndicatorHeaderContainer = (props: NowIndicatorHeaderContainerPr
           generatorName="nowIndicatorHeaderContent"
           customGenerator={options.nowIndicatorHeaderContent}
           classNameGenerator={options.nowIndicatorHeaderClass}
+          part={getPartAttr(options, 'nowIndicatorHeader')}
           didMount={options.nowIndicatorHeaderDidMount}
           willUnmount={options.nowIndicatorHeaderWillUnmount}
         >{props.children}</ContentContainer>

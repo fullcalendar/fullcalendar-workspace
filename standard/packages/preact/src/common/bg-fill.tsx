@@ -6,7 +6,7 @@ import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
 import { joinClassNames } from '../util/html'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
 import { Dictionary, ViewOptionsRefined } from '../options'
 import classNames from '../styles.module.css'
 
@@ -102,11 +102,16 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         generatorName="backgroundEventContent"
         customGenerator={options.backgroundEventContent}
         classNameGenerator={options.backgroundEventClass}
+        part={getPartAttr(options, 'backgroundEvent')}
         didMount={options.backgroundEventDidMount}
         willUnmount={options.backgroundEventWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent tag='div' className={innerClassName} />
+          <InnerContent
+            tag='div'
+            className={innerClassName}
+            part={getPartAttr(options, 'backgroundEventInner')}
+          />
         )}
       </ContentContainer>
     )
@@ -144,6 +149,10 @@ export function renderFill(fillType: string, options: ViewOptionsRefined) {
       fillType === 'non-business' ? options.nonBusinessHoursClass :
         fillType === 'highlight' ? options.highlightClass : undefined,
       classNames.fill,
+    )} data-fc-part={getPartAttr(
+      options,
+      fillType === 'non-business' ? 'nonBusinessHours' :
+        fillType === 'highlight' ? 'highlight' : undefined,
     )} />
   )
 }

@@ -98,6 +98,9 @@
       "./list": {
         "format": "module"
       },
+      "./dev-parts": {
+        "format": "module"
+      },
       "./themes/classic": {
         "format": "module",
         "src": "themes/classic/index",

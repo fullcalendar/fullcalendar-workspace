@@ -1,6 +1,6 @@
 import { BaseComponent } from '../../vdom-util'
 import { buildNavLinkAttrs } from '../../common/nav-link'
-import { ContentContainer, renderText } from '../../content-inject/ContentContainer'
+import { ContentContainer, getPartAttr, renderText } from '../../content-inject/ContentContainer'
 import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../../component-util/date-rendering'
@@ -53,6 +53,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
         customGenerator={options.listDayHeaderContent}
         defaultGenerator={renderText}
         classNameGenerator={options.listDayHeaderInnerClass}
+        part={getPartAttr(options, 'listDayHeaderInner')}
       />
     )
   }

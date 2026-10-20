@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createRef, type Ref } from 'react'
 import { ResourceColumnHeaderInfo, ColHeaderRenderHooks } from '../../structs'
@@ -55,6 +55,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           !forPrint && classNames.borderlessBottom,
           !forPrint && classNames.crop,
         )}
+        part={getPartAttr(options, 'resourceColumnHeader', forPrint && 'resourceHeaderRow')}
         renderProps={renderProps}
         generatorName="resourceColumnHeaderContent"
         customGenerator={renderHooks.headerContent}
@@ -81,6 +82,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
             <InnerContent
               tag="div"
               className={generateClassName(renderHooks.headerInnerClass, renderProps)}
+              part={getPartAttr(options, 'resourceColumnHeaderInner')}
             />
           </div>
         )}

@@ -17,6 +17,7 @@ export function buildResourceRowConfigs(
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
   blankClassNameGenerator: CellRenderConfig<any>['classNameGenerator'],
+  blankPartName: string,
   blankRenderProps: Dictionary,
 ): RowConfig<any, DayHeaderInfo | ResourceDayHeaderInfo>[] {
   let { cols, groups, resources } = resourceDayTableModel
@@ -56,6 +57,7 @@ export function buildResourceRowConfigs(
           dateMarker: col.date,
           blank: {
             classNameGenerator: blankClassNameGenerator,
+            partName: blankPartName,
           },
           renderProps: {
             ...getDateMeta(col.date, context.dateEnv, dateProfile, todayRange),
@@ -195,6 +197,7 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
   const { options } = context
 
   return {
+    partName: 'resourceDayHeader',
     generatorName: 'resourceDayHeaderContent',
     customGenerator: options.resourceDayHeaderContent,
     innerClassNameGenerator: options.resourceDayHeaderInnerClass,

@@ -3,7 +3,7 @@ import { mapHash } from '../util/object'
 import { type ComponentType, Component } from 'react'
 import { ViewContext, ViewContextType } from '../ViewContext'
 import { ViewOptions } from '../options'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
 import { Duration } from '@full-ui/headless-calendar'
 import { BaseComponent } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
@@ -87,6 +87,7 @@ function createViewHookComponent(contentGenerator: ContentGenerator<ViewContentI
               generateClassName(viewSpec.optionOverrides.class, renderProps),
               generateClassName(viewSpec.optionOverrides.className, renderProps),
             )}
+            part={getPartAttr(options, 'view')}
             renderProps={renderProps}
             generatorName={undefined}
             customGenerator={contentGenerator}

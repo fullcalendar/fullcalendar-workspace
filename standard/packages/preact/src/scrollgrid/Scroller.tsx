@@ -32,6 +32,7 @@ export interface ScrollerProps {
 
   // el hooks
   className?: string
+  part?: string // see getPartAttr
   style?: Dictionary
 }
 
@@ -67,6 +68,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
           props.hideScrollbars && classNames.noScrollbars,
           classNames.internalScroller,
         )}
+        data-fc-part={props.part}
         style={{
           ...props.style,
           overflowX: (props.horizontal ? 'auto' : fallbackOverflow) as any,

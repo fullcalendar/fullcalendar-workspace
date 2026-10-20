@@ -108,6 +108,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             dayHeaderFormat,
             context,
             options.dayCellClass,
+            'dayCell',
             this.buildBlankRenderProps(Boolean(options.businessHours)),
           )
 

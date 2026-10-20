@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../vdom-util'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { ContentContainer, getPartAttr } from '../../content-inject/ContentContainer'
 import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import type { DateMeta } from '../../component-util/date-rendering'
 import { formatDayString } from '@full-ui/headless-calendar'
@@ -40,6 +40,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
         renderProps={renderProps}
         generatorName={undefined}
         classNameGenerator={options.listDayHeaderClass}
+        part={getPartAttr(options, 'listDayHeader')}
         didMount={options.listDayHeaderDidMount}
         willUnmount={options.listDayHeaderWillUnmount}
       >

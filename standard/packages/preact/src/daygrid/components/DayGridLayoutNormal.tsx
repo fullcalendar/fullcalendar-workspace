@@ -11,7 +11,7 @@ import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/util'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Ruler } from '../../scrollgrid/Ruler'
-import { generateClassName } from '../../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
@@ -116,7 +116,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             }),
             classNames.flexCol,
             tableHeaderSticky && classNames.tableHeaderSticky,
-          )}>
+          )} data-fc-part={getPartAttr(options, 'tableHeader')}>
             <div className={classNames.flexRow}>
               <DayGridHeader
                 headerTiers={props.headerTiers}
@@ -130,6 +130,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                     classNames.borderlessY,
                     classNames.borderlessEnd,
                   )}
+                  data-fc-part={getPartAttr(options, 'filler')}
                   style={{ minWidth: endScrollbarWidth }}
                 />
               )}
@@ -140,6 +141,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
+              data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
             />
           </div>
         )}
@@ -157,6 +159,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             !props.forPrint && classNames.flexCol,
             verticalScrollbars && classNames.liquid,
           )}
+          part={getPartAttr(options, 'tableBody')}
           ref={this.handleScroller}
           clientWidthRef={this.handleClientWidth}
         >

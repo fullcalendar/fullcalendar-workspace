@@ -2,7 +2,7 @@ import { AllDayHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { type ReactNode, type Ref, createRef } from 'react'
 import { BaseComponent, setRef } from '../../vdom-util'
-import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
 import { watchWidth } from '../../component-util/resize-observer'
 import classNames from '../../styles.module.css'
 
@@ -52,6 +52,7 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
         customGenerator={options.allDayHeaderContent}
         defaultGenerator={renderAllDayInner}
         classNameGenerator={options.allDayHeaderClass}
+        part={getPartAttr(options, 'allDayHeader')}
         didMount={options.allDayHeaderDidMount}
         willUnmount={options.allDayHeaderWillUnmount}
       >
@@ -67,6 +68,7 @@ export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProp
             <InnerContent
               tag='div'
               className={generateClassName(options.allDayHeaderInnerClass, renderProps)}
+              part={getPartAttr(options, 'allDayHeaderInner')}
             />
           </div>
         )}

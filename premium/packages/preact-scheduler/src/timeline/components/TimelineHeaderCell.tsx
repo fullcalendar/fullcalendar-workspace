@@ -7,6 +7,7 @@ import {
   DateProfile,
   DateRange,
   generateClassName,
+  getPartAttr,
   getDateMeta,
   memoize,
   setRef,
@@ -141,6 +142,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
         customGenerator={options.slotHeaderContent}
         defaultGenerator={renderInnerContent}
         classNameGenerator={options.slotHeaderClass}
+        part={getPartAttr(options, 'slotHeader')}
         didMount={options.slotHeaderDidMount}
         willUnmount={options.slotHeaderWillUnmount}
       >
@@ -173,6 +175,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
                   : {} // don't bother with aria-hidden because parent already hidden
               }
               className={generateClassName(options.slotHeaderInnerClass, renderProps)}
+              part={getPartAttr(options, 'slotHeaderInner')}
             />
           </div>
         )}

@@ -17,7 +17,7 @@ import { createFormatter } from '../../datelib/formatting'
 import { watchHeight, afterSize } from '../../component-util/resize-observer'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { joinClassNames } from '../../util/html'
-import { renderText, ContentContainer } from '../../content-inject/ContentContainer'
+import { renderText, ContentContainer, getPartAttr } from '../../content-inject/ContentContainer'
 import { StandardEvent } from '../../common/StandardEvent'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
@@ -246,6 +246,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         customGenerator={options.inlineWeekNumberContent}
         defaultGenerator={renderText}
         classNameGenerator={options.inlineWeekNumberClass}
+        part={getPartAttr(options, 'inlineWeekNumber')}
         didMount={options.inlineWeekNumberDidMount}
         willUnmount={options.inlineWeekNumberWillUnmount}
       />
@@ -309,6 +310,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           (!tableMode && !props.borderBottom) && classNames.borderlessBottom,
           classNames.isolate,
         )}
+        data-fc-part={getPartAttr(options, 'dayRow')}
         style={{
           flexBasis: tableMode ? undefined : props.basis,
         }}

@@ -198,6 +198,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
             dayHeaderFormat,
             context,
             options.dayLaneClass,
+            'dayLane',
             this.buildBlankRenderProps(computeTimeGridPrintMode(props.forPrint, options.eventPrintLayout) === 'stack'),
           )
 

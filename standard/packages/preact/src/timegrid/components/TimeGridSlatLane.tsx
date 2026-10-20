@@ -1,7 +1,7 @@
 import { SlotLaneInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent } from '../../vdom-util'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { ContentContainer, getPartAttr } from '../../content-inject/ContentContainer'
 import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
 import classNames from '../../styles.module.css'
@@ -45,6 +45,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         renderProps={renderProps}
         generatorName={undefined}
         classNameGenerator={options.slotLaneClass}
+        part={getPartAttr(options, 'slotLane')}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
       />

@@ -2,6 +2,7 @@ import { SlotLaneInfo, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   ContentContainer,
+  getPartAttr,
   DateMarker,
   DateProfile,
   DateRange, getDateMeta,
@@ -82,6 +83,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         renderProps={renderProps}
         generatorName={undefined}
         classNameGenerator={options.slotLaneClass}
+        part={getPartAttr(options, 'slotLane')}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
       />

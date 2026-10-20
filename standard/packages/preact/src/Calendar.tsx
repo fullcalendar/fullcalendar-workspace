@@ -13,6 +13,7 @@ import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
+import { getPartAttr } from './content-inject/ContentContainer'
 import { CalendarInner } from './CalendarInner'
 import { CalendarData } from './reducers/data-types'
 import { Action } from './reducers/Action'
@@ -66,6 +67,7 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
           <div
             dir={isRtl ? 'rtl' : undefined}
             className={className}
+            data-fc-part={getPartAttr(options, 'root')}
             style={{ height: options.height }}
             data-color-scheme={options.colorScheme || undefined}
           >

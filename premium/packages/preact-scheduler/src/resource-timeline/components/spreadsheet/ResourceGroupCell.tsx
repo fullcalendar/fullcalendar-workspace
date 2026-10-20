@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
+import { getPartAttr, BaseComponent, ContentContainer, generateClassName, setRef, watchHeight } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createRef, type Ref } from 'react'
 import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
@@ -54,6 +54,7 @@ export class ResourceGroupCell extends BaseComponent<ResourceGroupCellProps> {
           !props.borderStart && classNames.borderlessStart,
           !props.borderBottom && classNames.borderlessBottom,
         )}
+        part={getPartAttr(context.options, 'resourceCell', forPrint && 'resourceRow')}
         renderProps={renderProps}
         generatorName="resourceCellContent"
         customGenerator={colSpec.cellContent}
@@ -75,6 +76,7 @@ export class ResourceGroupCell extends BaseComponent<ResourceGroupCellProps> {
             <InnerContent
               tag="div"
               className={generateClassName(colSpec.cellInnerClass, renderProps)}
+              part={getPartAttr(context.options, 'resourceCellInner')}
             />
           </div>
         )}

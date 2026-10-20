@@ -2,7 +2,7 @@ import { BaseComponent } from '../vdom-util'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection'
 import { joinClassNames } from '../util/html'
-import { generateClassName } from '../content-inject/ContentContainer'
+import { generateClassName, getPartAttr } from '../content-inject/ContentContainer'
 import { computeViewBorderless } from '../util/misc'
 
 export interface ToolbarProps extends ToolbarContent {
@@ -26,6 +26,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
           generateClassName(toolbarClassOption, { borderlessX, borderlessTop, borderlessBottom }),
           generateClassName(options.toolbarClass, { borderlessX, borderlessTop, borderlessBottom }),
         )}
+        data-fc-part={getPartAttr(options, props.isHeader ? 'headerToolbar' : 'footerToolbar', 'toolbar')}
       >
         {this.renderSection('start', sectionWidgets.start)}
         {this.renderSection('center', sectionWidgets.center)}

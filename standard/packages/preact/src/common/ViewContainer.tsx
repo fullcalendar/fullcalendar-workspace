@@ -2,7 +2,7 @@ import { ViewSpec } from '../structs/view-spec'
 import type { ReactNode } from 'react'
 import { BaseComponent } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
-import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
 import { ElProps } from '../content-inject/ContentInjector'
 import { memoizeObjArg } from '../util/memoize'
 import { computeViewBorderless } from '../util/misc'
@@ -56,6 +56,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
           generateClassName(viewSpec.optionOverrides.class, renderProps),
           generateClassName(viewSpec.optionOverrides.className, renderProps),
         )}
+        part={joinClassNames(getPartAttr(options, 'view'), props.part) || undefined}
         renderProps={renderProps}
         generatorName={undefined}
         didMount={options.didMount || (options as any).viewDidMount} // TODO: should call both

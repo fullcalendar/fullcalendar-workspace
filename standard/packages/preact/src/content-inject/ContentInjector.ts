@@ -16,6 +16,7 @@ export type ElAttrs = { ref?: ElRef } & Record<string, any>
 export interface ElAttrsProps {
   attrs?: ElAttrs
   className?: string
+  part?: string // value for the `data-fc-part` attribute. see getPartAttr
   style?: CSSProperties & Record<string, any> // React's types don't allow custom props?
   elRef?: ElRef
 }
@@ -196,6 +197,11 @@ export function buildElAttrs(
 
   if (props.style) {
     attrs.style = props.style
+  }
+
+  if (props.part) {
+    // joins with any part given through attrs, like navLink
+    attrs['data-fc-part'] = joinClassNames(props.part, attrs['data-fc-part'])
   }
 
   return attrs
