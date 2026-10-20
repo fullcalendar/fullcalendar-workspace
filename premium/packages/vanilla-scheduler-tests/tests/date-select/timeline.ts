@@ -4,7 +4,7 @@ import { queryParts } from '@fullcalendar-tests/standard/tests/lib/models/events
 import { pointer, touchPointer } from '@fullcalendar-tests/standard/tests/lib/pointer'
 import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
-import { DST_TIMELINE_OPTIONS, expectCloseTo } from '../lib/dst'
+import { DST_TIMELINE_OPTIONS, SPRING_FORWARD_DAY, expectCloseTo } from '../lib/dst'
 
 describe('selecting in timeline', () => {
   const options = {
@@ -156,6 +156,18 @@ describe('selecting in timeline', () => {
       expect(info.end.toISOString()).toBe('2024-11-03T07:00:00.000Z') // 02:00 EST, 2 real hours later
       expect(info.startStr).toBe('2024-11-03T01:00:00-04:00')
       expect(info.endStr).toBe('2024-11-03T02:00:00-05:00')
+    })
+
+    it('spans the spring-forward gap with real instants', async () => {
+      const select = vi.fn()
+      const calendar = initCalendar({ ...DST_TIMELINE_OPTIONS, initialDate: SPRING_FORWARD_DAY, selectable: true, dragScroll: false, select })
+      await waitForSettle()
+
+      await new TimelineModel(calendar.el).selectRange({ slot: 2 }, { slot: 6 }) // 01:00 -> 03:30, across the gap
+
+      const info = select.mock.calls[0][0]
+      expect(info.start.toISOString()).toBe('2024-03-10T06:00:00.000Z') // 01:00 EST
+      expect(info.end.toISOString()).toBe('2024-03-10T08:00:00.000Z') // 03:30 EDT, 2 real hours later
     })
 
     it('highlights exactly the dragged slots, including the second copy', async () => {

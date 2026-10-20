@@ -51,18 +51,23 @@ describe('event resizing callbacks', () => {
     expect(eventChange.mock.calls[0][0].event.endStr).toBe('2014-06-14')
   })
 
-  it('reverts the resize when eventResize calls revert()', async () => {
+  it.each([
+    ['no end', { id: '1', start: '2014-06-11' }, '2014-06-11', null],
+    ['an explicit end', { id: '1', start: '2014-06-10', end: '2014-06-12' }, '2014-06-11', '2014-06-12'],
+  ])('reverts the resize of an event with %s when eventResize calls revert()', async (_desc, event, lastDay, origEndStr) => {
     const eventResize = vi.fn((info) => {
       expect(info.event.endStr).toBe('2014-06-14')
       info.revert()
     })
-    const calendar = initCalendar({ ...options, eventResize })
+    const calendar = initCalendar({ ...options, events: [event], eventResize })
     await waitForSettle()
 
-    await new DayGridModel(calendar.el).resizeEvent('1', 'end', '2014-06-11', '2014-06-13')
+    await new DayGridModel(calendar.el).resizeEvent('1', 'end', lastDay, '2014-06-13')
 
     expect(eventResize).toHaveBeenCalledOnce()
-    expect(calendar.getEventById('1')!.end).toBeNull()
+    const reverted = calendar.getEventById('1')!
+    expect(reverted.startStr).toBe(event.start)
+    expect(reverted.end && reverted.endStr).toBe(origEndStr)
   })
 
   it.each([

@@ -48,6 +48,18 @@ describe('selecting dates in timeGrid', () => {
     expect(info.allDay).toBe(false)
   })
 
+  it('selects at snapDuration granularity', async () => {
+    const select = vi.fn()
+    const calendar = initCalendar({ ...options, slotDuration: '00:30', snapDuration: '00:15', select })
+    await waitForSettle()
+
+    await new TimeGridModel(calendar.el).selectRange('2014-05-28T04:15', '2014-05-28T07:45')
+
+    const info = select.mock.calls[0][0]
+    expect(info.startStr).toBe('2014-05-28T04:15:00Z')
+    expect(info.endStr).toBe('2014-05-28T07:45:00Z')
+  })
+
   it('selects slots in RTL', async () => {
     const select = vi.fn()
     const calendar = initCalendar({ ...options, direction: 'rtl', select })

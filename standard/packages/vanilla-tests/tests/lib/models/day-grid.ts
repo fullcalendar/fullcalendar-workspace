@@ -2,7 +2,7 @@ import { getRectCenter, pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
 import { assertGrabbable, assertNotOnEvent, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
-import { ResizeEdge, resizeSegment } from './resize'
+import { ResizeEdge, resizeSegment, touchResizeSegment } from './resize'
 
 /*
 Day cells in a dayGrid view (resource or not), or in a timeGrid view's all-day row.
@@ -171,9 +171,15 @@ export class DayGridModel {
     from: Spot,
     to: Spot,
     whileResizing?: () => Promise<void>,
+    touch?: { holdMs: number },
   ): Promise<void> {
     const { eventEl } = this.pointForEventOnDate(eventId, from)
-    await resizeSegment(eventEl, edge, () => this.pointForDate(from), () => this.pointForDate(to), whileResizing)
+
+    if (touch) {
+      await touchResizeSegment(eventEl, edge, () => this.pointForDate(from), () => this.pointForDate(to), touch.holdMs)
+    } else {
+      await resizeSegment(eventEl, edge, () => this.pointForDate(from), () => this.pointForDate(to), whileResizing)
+    }
   }
 
   private findDatedCell(date: string, resourceId: string | undefined): HTMLElement | null {

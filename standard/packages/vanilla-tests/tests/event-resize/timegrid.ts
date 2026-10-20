@@ -2,8 +2,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { createDuration, strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '../lib/calendar'
 import { TimeGridModel } from '../lib/models/time-grid'
-import { getResizerEl } from '../lib/models/resize'
-import { getRectCenter, touchPointer } from '../lib/pointer'
 import { waitForSettle } from '../lib/settle'
 
 describe('event resizing in timeGrid', () => {
@@ -132,20 +130,20 @@ describe('event resizing in timeGrid', () => {
     const calendar = initCalendar({ ...options, longPressDelay: 50, events: [timedEvent] })
     await waitForSettle()
 
-    const timeGrid = new TimeGridModel(calendar.el)
-    const { point, eventEl } = timeGrid.pointForEventAt('1', '2014-06-11T06:00')
-    await touchPointer.press(point, 150, async () => {}) // selects the event, revealing its handles
-    await waitForSettle()
-
-    const grabPoint = getRectCenter(getResizerEl(eventEl, 'end')!.getBoundingClientRect())
-    const fromPoint = timeGrid.pointForDateTime('2014-06-11T07:00')
-    const toPoint = timeGrid.pointForDateTime('2014-06-11T09:30')
-    await touchPointer.press(grabPoint, 0, async () => {
-      await touchPointer.move({ x: toPoint.x + grabPoint.x - fromPoint.x, y: toPoint.y + grabPoint.y - fromPoint.y })
-      await waitForSettle()
-    })
-    await waitForSettle()
+    await new TimeGridModel(calendar.el).resizeEvent('1', 'end', '2014-06-11T07:00', '2014-06-11T09:30', undefined, { holdMs: 150 })
 
     expect(calendar.getEventById('1')!.endStr).toBe('2014-06-11T09:30:00Z')
+  })
+
+  it.each([
+    ['to midnight', '2014-06-11T07:00', '2014-06-12T00:00', { id: '1', start: '2014-06-11T05:00:00', end: '2014-06-11T07:00:00' }],
+    ['from midnight', '2014-06-12T00:00', '2014-06-11T22:00', { id: '1', start: '2014-06-11T05:00:00', end: '2014-06-12T00:00:00' }],
+  ])('resizes an end %s', async (_desc, from, to, event) => {
+    const calendar = initCalendar({ ...options, scrollTime: '18:00', events: [event] })
+    await waitForSettle()
+
+    await new TimeGridModel(calendar.el).resizeEvent('1', 'end', from, to)
+
+    expect(calendar.getEventById('1')!.endStr).toBe(to + ':00Z')
   })
 })

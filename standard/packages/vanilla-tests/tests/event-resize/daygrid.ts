@@ -3,7 +3,7 @@ import { createDuration, strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
 import { getResizerEl } from '../lib/models/resize'
-import { getRectCenter, pointer, touchPointer } from '../lib/pointer'
+import { getRectCenter, pointer } from '../lib/pointer'
 import { waitForSettle } from '../lib/settle'
 
 describe('event resizing in dayGrid', () => {
@@ -140,20 +140,7 @@ describe('event resizing in dayGrid', () => {
     })
     await waitForSettle()
 
-    const dayGrid = new DayGridModel(calendar.el)
-    const { point, eventEl } = dayGrid.pointForEventOnDate('1', '2014-06-11')
-    await touchPointer.press(point, 150, async () => {}) // selects the event, revealing its handles
-    await waitForSettle()
-
-    const resizerEl = getResizerEl(eventEl, 'end')!
-    const grabPoint = getRectCenter(resizerEl.getBoundingClientRect())
-    const fromPoint = dayGrid.pointForDate('2014-06-11')
-    const toPoint = dayGrid.pointForDate('2014-06-16')
-    await touchPointer.press(grabPoint, 0, async () => {
-      await touchPointer.move({ x: toPoint.x + grabPoint.x - fromPoint.x, y: toPoint.y + grabPoint.y - fromPoint.y })
-      await waitForSettle()
-    })
-    await waitForSettle()
+    await new DayGridModel(calendar.el).resizeEvent('1', 'end', '2014-06-11', '2014-06-16', undefined, { holdMs: 150 })
 
     expect(calendar.getEventById('1')!.endStr).toBe('2014-06-17')
   })

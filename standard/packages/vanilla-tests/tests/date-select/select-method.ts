@@ -117,6 +117,26 @@ describe('select method', () => {
     })
   })
 
+  it('renders a selectMirror event through the render hooks, even when not selectable', async () => {
+    const eventDidMount = vi.fn()
+    const calendar = initCalendar({
+      initialView: 'timeGridWeek',
+      initialDate: '2014-08-03',
+      scrollTime: '00:00',
+      selectMirror: true,
+      eventDidMount,
+    })
+    await waitForSettle()
+
+    calendar.select('2014-08-04T01:00:00', '2014-08-04T04:00:00')
+    await waitForSettle()
+
+    const timeGrid = new TimeGridModel(calendar.el)
+    expect(timeGrid.getMirrorEls()).toHaveLength(1)
+    expect(eventDidMount).toHaveBeenCalled()
+    expect(eventDidMount.mock.calls.every(([info]) => info.isMirror)).toBe(true)
+  })
+
   it('reports a selection on a calendar that isn\'t rendered', () => {
     const select = vi.fn()
     const calendar = new Calendar(document.createElement('div'), {

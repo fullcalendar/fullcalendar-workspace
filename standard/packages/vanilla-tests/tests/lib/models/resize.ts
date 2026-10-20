@@ -1,5 +1,5 @@
 import classNames from 'fullcalendar/protected-styles'
-import { getRectCenter, Point, pointer } from '../pointer'
+import { getRectCenter, Point, pointer, touchPointer } from '../pointer'
 import { waitForSettle } from '../settle'
 import { assertPointHits } from './events'
 
@@ -31,16 +31,11 @@ export async function resizeSegment(
   whileResizing?: () => Promise<void>,
 ): Promise<void> {
   const fromPoint = fromAnchor()
-  await pointer.move(getRectCenter(eventEl.getBoundingClientRect()), 1)
+  // hover near the edge, which is in view, rather than the event's center, which might not be
+  await pointer.move(pointInRectNear(eventEl.getBoundingClientRect(), fromPoint), 1)
   await waitForSettle()
 
-  const resizerEl = getResizerEl(eventEl, edge)
-  if (!resizerEl) {
-    throw new Error(`The event has no ${edge} resize handle. Is it resizable?`)
-  }
-
-  const grabPoint = getRectCenter(resizerEl.getBoundingClientRect())
-  assertPointHits(grabPoint, resizerEl, `the ${edge} resize handle`)
+  const grabPoint = getHandlePoint(eventEl, edge)
 
   await pointer.press(grabPoint, async () => {
     const toPoint = toAnchor()
@@ -52,4 +47,50 @@ export async function resizeSegment(
     }
   })
   await waitForSettle()
+}
+
+/*
+Like resizeSegment, but with touch: a long press first selects the event (revealing its handles,
+for `holdMs` beyond longPressDelay), then a touch drag moves the handle.
+The target must already be in view: on touch, FullCalendar treats any scroll during the gesture as
+the user scrolling (PointerDragging's wasTouchScroll), which cancels the resize.
+*/
+export async function touchResizeSegment(
+  eventEl: HTMLElement,
+  edge: ResizeEdge,
+  fromAnchor: () => Point,
+  toAnchor: () => Point,
+  holdMs: number,
+): Promise<void> {
+  const fromPoint = fromAnchor()
+  await touchPointer.press(pointInRectNear(eventEl.getBoundingClientRect(), fromPoint), holdMs, async () => {})
+  await waitForSettle()
+
+  const grabPoint = getHandlePoint(eventEl, edge)
+
+  await touchPointer.press(grabPoint, 0, async () => {
+    const toPoint = toAnchor()
+    await touchPointer.move({ x: toPoint.x + grabPoint.x - fromPoint.x, y: toPoint.y + grabPoint.y - fromPoint.y })
+    await waitForSettle()
+  })
+  await waitForSettle()
+}
+
+function getHandlePoint(eventEl: HTMLElement, edge: ResizeEdge): Point {
+  const resizerEl = getResizerEl(eventEl, edge)
+  if (!resizerEl) {
+    throw new Error(`The event has no ${edge} resize handle. Is it resizable?`)
+  }
+
+  const point = getRectCenter(resizerEl.getBoundingClientRect())
+  assertPointHits(point, resizerEl, `the ${edge} resize handle`)
+  return point
+}
+
+// The point inside the rect (3px from its edges) closest to the given point
+function pointInRectNear(rect: DOMRect, point: Point): Point {
+  return {
+    x: Math.min(Math.max(point.x, rect.left + 3), rect.right - 3),
+    y: Math.min(Math.max(point.y, rect.top + 3), rect.bottom - 3),
+  }
 }

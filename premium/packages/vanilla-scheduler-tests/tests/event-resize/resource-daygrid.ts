@@ -16,40 +16,56 @@ describe('event resizing in resource dayGrid', () => {
     events: [{ id: '1', start: '2015-11-30', resourceId: 'b' }],
   }
 
-  it.each([
+  describe.each([
     ['resources above dates', false],
     ['dates above resources', true],
-  ])('extends the end by whole days, keeping the resource (%s)', async (_desc, datesAboveResources) => {
-    const eventResize = vi.fn()
-    const calendar = initCalendar({ ...options, datesAboveResources, eventResize })
-    await waitForSettle()
+  ])('with %s', (_desc, datesAboveResources) => {
+    it('extends the end by whole days, keeping the resource', async () => {
+      const eventResize = vi.fn()
+      const calendar = initCalendar({ ...options, datesAboveResources, eventResize })
+      await waitForSettle()
 
-    await new DayGridModel(calendar.el).resizeEvent(
-      '1',
-      'end',
-      { date: '2015-11-30', resourceId: 'b' },
-      { date: '2015-12-01', resourceId: 'b' },
-    )
+      await new DayGridModel(calendar.el).resizeEvent(
+        '1',
+        'end',
+        { date: '2015-11-30', resourceId: 'b' },
+        { date: '2015-12-01', resourceId: 'b' },
+      )
 
-    const info = eventResize.mock.calls[0][0]
-    expect(info.event.endStr).toBe('2015-12-02')
-    expect(info.event.getResources().map((resource) => resource.id)).toEqual(['b'])
+      const info = eventResize.mock.calls[0][0]
+      expect(info.event.endStr).toBe('2015-12-02')
+      expect(info.event.getResources().map((resource) => resource.id)).toEqual(['b'])
+    })
+
+    it('won\'t resize into another resource\'s column', async () => {
+      const eventResizeStart = vi.fn()
+      const eventResize = vi.fn()
+      const calendar = initCalendar({ ...options, datesAboveResources, eventResizeStart, eventResize })
+      await waitForSettle()
+
+      await new DayGridModel(calendar.el).resizeEvent(
+        '1',
+        'end',
+        { date: '2015-11-30', resourceId: 'b' },
+        { date: '2015-12-01', resourceId: 'a' },
+      )
+
+      expect(eventResizeStart).toHaveBeenCalledOnce()
+      expect(eventResize).not.toHaveBeenCalled()
+      const event = calendar.getEventById('1')!
+      expect(event.end).toBeNull()
+      expect(event.getResources().map((resource) => resource.id)).toEqual(['b'])
+    })
   })
 
-  it('won\'t resize into another resource\'s column', async () => {
-    const eventResizeStart = vi.fn()
-    const eventResize = vi.fn()
-    const calendar = initCalendar({ ...options, eventResizeStart, eventResize })
+  it('resizes an event without resources in the non-resource view dayGridWeek', async () => {
+    const calendar = initCalendar({ ...options, initialView: 'dayGridWeek', events: [{ id: '1', start: '2015-11-30' }] })
     await waitForSettle()
 
-    await new DayGridModel(calendar.el).resizeEvent(
-      '1',
-      'end',
-      { date: '2015-11-30', resourceId: 'b' },
-      { date: '2015-12-01', resourceId: 'a' },
-    )
+    await new DayGridModel(calendar.el).resizeEvent('1', 'end', '2015-11-30', '2015-12-01')
 
-    expect(eventResizeStart).toHaveBeenCalledOnce()
-    expect(eventResize).not.toHaveBeenCalled()
+    const event = calendar.getEventById('1')!
+    expect(event.endStr).toBe('2015-12-02')
+    expect(event.getResources()).toEqual([])
   })
 })

@@ -2,7 +2,7 @@ import { pointer, Point } from '@fullcalendar-tests/standard/tests/lib/pointer'
 import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from '@fullcalendar-tests/standard/tests/lib/models/events'
 import { describeSpot, parseSpot, Spot } from '@fullcalendar-tests/standard/tests/lib/models/spot'
-import { ResizeEdge, resizeSegment } from '@fullcalendar-tests/standard/tests/lib/models/resize'
+import { ResizeEdge, resizeSegment, touchResizeSegment } from '@fullcalendar-tests/standard/tests/lib/models/resize'
 import { scrollIntoViewOnAxis } from '@fullcalendar-tests/standard/tests/lib/models/scroll'
 
 /*
@@ -114,6 +114,7 @@ export class TimelineModel {
     from: TimelineSpot,
     to: TimelineSpot,
     whileResizing?: () => Promise<void>,
+    touch?: { holdMs: number },
   ): Promise<void> {
     const fromResourceId = typeof from === 'object' ? from.resourceId : undefined
     const eventEls = this.getEventEls(eventId, fromResourceId)
@@ -122,7 +123,11 @@ export class TimelineModel {
       throw new Error(`Expected one segment of event ${eventId}, found ${eventEls.length}`)
     }
 
-    await resizeSegment(eventEls[0], edge, () => this.pointForSpot(from), () => this.pointForSpot(to), whileResizing)
+    if (touch) {
+      await touchResizeSegment(eventEls[0], edge, () => this.pointForSpot(from), () => this.pointForSpot(to), touch.holdMs)
+    } else {
+      await resizeSegment(eventEls[0], edge, () => this.pointForSpot(from), () => this.pointForSpot(to), whileResizing)
+    }
   }
 
   async clickDateTime(spot: TimelineSpot): Promise<void> {

@@ -1,9 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '@fullcalendar-tests/standard/tests/lib/calendar'
-import { getResizerEl } from '@fullcalendar-tests/standard/tests/lib/models/resize'
 import { queryParts } from '@fullcalendar-tests/standard/tests/lib/models/events'
-import { getRectCenter, touchPointer } from '@fullcalendar-tests/standard/tests/lib/pointer'
 import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
 import {
@@ -130,19 +128,14 @@ describe('event resizing in timeline', () => {
     const calendar = initCalendar({ ...options, longPressDelay: 50, events: [event] })
     await waitForSettle()
 
-    const timeline = new TimelineModel(calendar.el)
-    const { point, eventEl } = timeline.pointForEventAt('1', { date: '2015-11-28T04:30', resourceId: 'b' })
-    await touchPointer.press(point, 150, async () => {}) // selects the event, revealing its handles
-    await waitForSettle()
-
-    const grabPoint = getRectCenter(getResizerEl(eventEl, 'end')!.getBoundingClientRect())
-    const fromPoint = timeline.pointForDateTime({ date: '2015-11-28T05:00', resourceId: 'b' })
-    const toPoint = timeline.pointForDateTime({ date: '2015-11-28T07:30', resourceId: 'b' })
-    await touchPointer.press(grabPoint, 0, async () => {
-      await touchPointer.move({ x: toPoint.x + grabPoint.x - fromPoint.x, y: toPoint.y + grabPoint.y - fromPoint.y })
-      await waitForSettle()
-    })
-    await waitForSettle()
+    await new TimelineModel(calendar.el).resizeEvent(
+      '1',
+      'end',
+      { date: '2015-11-28T05:00', resourceId: 'b' },
+      { date: '2015-11-28T07:30', resourceId: 'b' },
+      undefined,
+      { holdMs: 150 },
+    )
 
     expect(calendar.getEventById('1')!.endStr).toBe('2015-11-28T07:30:00Z')
     expect(getResourceIds(calendar)).toEqual(['b'])

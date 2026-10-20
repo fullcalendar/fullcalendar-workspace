@@ -3,7 +3,7 @@ import { waitForSettle } from '../settle'
 import { DayGridModel } from './day-grid'
 import { assertGrabbable, assertNotOnEvent, getEventEls, getMirrorEls, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
-import { ResizeEdge, resizeSegment } from './resize'
+import { ResizeEdge, resizeSegment, touchResizeSegment } from './resize'
 import { scrollIntoViewOnAxis } from './scroll'
 
 /*
@@ -137,8 +137,9 @@ export class TimeGridModel {
 
   /*
   Resizes the event's edge from one date-time to another (ex: an end from 07:00 to 09:30).
-  `from` names the segment's day lane and must be where the edge currently is.
-  `whileResizing` runs before release, for checking the mirror.
+  `from` is where the edge currently is. An end at midnight belongs to the previous day's column.
+  `whileResizing` runs before release, for checking the mirror. With `touch`, a long press of
+  `touch.holdMs` first selects the event.
   */
   async resizeEvent(
     eventId: string,
@@ -146,17 +147,34 @@ export class TimeGridModel {
     from: Spot,
     to: Spot,
     whileResizing?: () => Promise<void>,
+    touch?: { holdMs: number },
   ): Promise<void> {
-    const fromSpot = parseSpot(from)
-    const [fromDate] = splitDateTime(fromSpot.date)
-    const laneEl = this.getDayLane({ date: fromDate, resourceId: fromSpot.resourceId })
+    const eventEl = this.getEdgeSegment(eventId, edge, from)
+    // end edges are measured just above the time, start edges just below, like the handles
+    const anchor = (spot: Spot) => edge === 'end' ? this.pointForDateTimeEnd(spot) : this.pointForDateTime(spot)
+
+    if (touch) {
+      await touchResizeSegment(eventEl, edge, () => anchor(from), () => anchor(to), touch.holdMs)
+    } else {
+      await resizeSegment(eventEl, edge, () => anchor(from), () => anchor(to), whileResizing)
+    }
+  }
+
+  private getEdgeSegment(eventId: string, edge: ResizeEdge, spot: Spot): HTMLElement {
+    const { date: dateTime, resourceId } = parseSpot(spot)
+    let [date, time] = splitDateTime(dateTime)
+
+    if (edge === 'end' && parseTimeMs(time) === 0) {
+      date = addDays(date, -1)
+    }
+
+    const laneEl = this.getDayLane({ date, resourceId })
     const eventEl = this.getEventEls(eventId).find((el) => laneEl.contains(el))
 
     if (!eventEl) {
-      throw new Error(`Event ${eventId} has no segment on ${describeSpot(from)}`)
+      throw new Error(`Event ${eventId} has no segment with its ${edge} at ${describeSpot(spot)}`)
     }
-
-    await resizeSegment(eventEl, edge, () => this.pointForDateTime(from), () => this.pointForDateTime(to), whileResizing)
+    return eventEl
   }
 
   /*

@@ -50,6 +50,21 @@ describe('dateClick in resource columns', () => {
     })
   })
 
+  it.each([
+    ['timeGridWeek', (calendar) => new TimeGridModel(calendar.el).clickDateTime('2015-11-30T09:00'), '2015-11-30T09:00:00Z'],
+    ['dayGridWeek', (calendar) => new DayGridModel(calendar.el).clickDate('2015-11-30'), '2015-11-30'],
+  ])('reports no resource in the non-resource view %s', async (view, doClick, expectedDateStr) => {
+    const dateClick = vi.fn()
+    const calendar = initCalendar({ ...options, initialView: view, dateClick })
+    await waitForSettle()
+
+    await doClick(calendar)
+
+    const info = dateClick.mock.calls[0][0]
+    expect(info.dateStr).toBe(expectedDateStr)
+    expect(info.resource).toBeUndefined()
+  })
+
   it('reports the clicked all-day cell\'s resource in resource timeGrid', async () => {
     const dateClick = vi.fn()
     const calendar = initCalendar({ ...options, initialView: 'resourceTimeGridThreeDay', dateClick })
