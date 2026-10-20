@@ -25,6 +25,10 @@ export function createTestConfig(options: { setupFile: string }): ViteUserConfig
         if (log.includes('dev-parts plugin is for development only')) {
           return false
         }
+        // expected and harmless. unlike Karma, Vitest doesn't fail tests on them
+        if (log.includes('ResizeObserver loop completed with undelivered notifications')) {
+          return false
+        }
       },
       projects: [
         {

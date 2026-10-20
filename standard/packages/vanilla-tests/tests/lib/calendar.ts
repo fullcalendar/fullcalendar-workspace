@@ -50,7 +50,13 @@ const calendarEls: HTMLElement[] = []
 const renderedCalendars = new Set<Calendar>()
 
 export function createCalendarElement(): HTMLElement {
-  const el = document.createElement('div')
+  return appendTestElement(document.createElement('div'))
+}
+
+/*
+Appends an element (ex: an external draggable) to the body. Teardown removes it.
+*/
+export function appendTestElement<El extends HTMLElement>(el: El): El {
   document.body.appendChild(el)
   calendarEls.push(el)
   return el

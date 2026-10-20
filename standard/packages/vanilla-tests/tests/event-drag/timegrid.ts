@@ -99,6 +99,21 @@ describe('event dragging in timeGrid', () => {
     expect(event.end).toBeNull()
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/4616
+  it('drags an all-day event added during batchRendering', async () => {
+    const calendar = initCalendar({ ...options, initialDate: '2019-04-23' })
+    calendar.batchRendering(() => {
+      calendar.addEvent({ id: '1', start: '2019-04-23' })
+      calendar.addEvent({ id: '2', start: '2019-04-23' })
+      calendar.addEvent({ id: '3', start: '2019-04-23' })
+    })
+    await waitForSettle()
+
+    await new TimeGridModel(calendar.el).allDay.dragEvent('3', '2019-04-23', '2019-04-24')
+
+    expect(calendar.getEventById('3')!.startStr).toBe('2019-04-24')
+  })
+
   describe('mirror', () => {
     it.each([
       ['with no end, shows only the new start time', null, /^\s*2:30\s*$/],

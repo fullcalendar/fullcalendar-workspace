@@ -1,6 +1,6 @@
-import { pointer, Point } from '../pointer'
+import { getRectCenter, pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
-import { assertPointHits, getEventEls, getMirrorEls, queryParts } from './events'
+import { assertPointHits, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
 
 /*
 Day cells in a dayGrid view, or in a timeGrid view's all-day row.
@@ -80,6 +80,21 @@ export class DayGridModel {
     const point = { x, y: eventRect.top + eventRect.height / 2 }
     assertPointHits(point, eventEl, `event ${eventId} on ${date}`)
     return { point, eventEl }
+  }
+
+  /*
+  Clicks the date's "+more" link and returns the popover. Popovers render outside the calendar root.
+  */
+  async openMorePopover(date: string): Promise<HTMLElement> {
+    const moreLinkEl = queryPart(this.getDayCell(date), 'moreLink')
+
+    if (!moreLinkEl) {
+      throw new Error(`No more-link on ${date}`)
+    }
+
+    await pointer.click(getRectCenter(moreLinkEl.getBoundingClientRect()))
+    await waitForSettle()
+    return queryPart(document, 'popover')!
   }
 
   /*

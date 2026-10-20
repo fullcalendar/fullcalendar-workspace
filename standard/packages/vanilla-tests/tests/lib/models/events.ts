@@ -21,6 +21,14 @@ export function getEventEls(root: ParentNode, eventId?: string): HTMLElement[] {
   })
 }
 
+export function getEventIdOfEl(el: HTMLElement): string {
+  return getElEventRange(el)!.def.publicId
+}
+
+export function isElVisible(el: HTMLElement): boolean {
+  return el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden'
+}
+
 export function getMirrorEls(root: ParentNode): HTMLElement[] {
   return queryParts(root, 'event').filter(isMirrorEl)
 }

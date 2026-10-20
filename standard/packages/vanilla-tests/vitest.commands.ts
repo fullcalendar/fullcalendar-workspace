@@ -56,3 +56,33 @@ export const mouseDown: BrowserCommand<[]> = async (ctx) => {
 export const mouseUp: BrowserCommand<[]> = async (ctx) => {
   await (ctx as any).page.mouse.up()
 }
+
+// Touch, through the Chrome DevTools Protocol. Playwright's touchscreen can only tap.
+
+const cdpSessions = new Map<string, Promise<any>>()
+
+function getCdpSession(ctx: Ctx): Promise<any> {
+  let session = cdpSessions.get(ctx.sessionId)
+
+  if (!session) {
+    const page = (ctx as any).page
+    session = page.context().newCDPSession(page)
+    cdpSessions.set(ctx.sessionId, session)
+  }
+  return session
+}
+
+export const touch: BrowserCommand<[type: 'touchStart' | 'touchMove' | 'touchEnd', x?: number, y?: number]> = async (
+  ctx,
+  type,
+  x = 0,
+  y = 0,
+) => {
+  const session = await getCdpSession(ctx)
+  const point = await toPagePoint(ctx, x, y)
+
+  await session.send('Input.dispatchTouchEvent', {
+    type,
+    touchPoints: type === 'touchEnd' ? [] : [{ x: point.x, y: point.y }],
+  })
+}

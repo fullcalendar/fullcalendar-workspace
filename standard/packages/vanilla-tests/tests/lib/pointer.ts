@@ -5,6 +5,7 @@ declare module 'vitest/browser' {
     mouseMove: (x: number, y: number, steps?: number) => Promise<void>
     mouseDown: () => Promise<void>
     mouseUp: () => Promise<void>
+    touch: (type: 'touchStart' | 'touchMove' | 'touchEnd', x?: number, y?: number) => Promise<void>
   }
 }
 
@@ -14,6 +15,7 @@ export interface Point {
 }
 
 let isPressed = false
+let isTouching = false
 
 /*
 Real mouse input through Playwright. Points are client coordinates, as from getBoundingClientRect.
@@ -58,11 +60,51 @@ export const pointer = {
 }
 
 /*
-For teardown: releases a button left pressed by a test that failed or timed out mid-gesture.
+Real touch input through the Chrome DevTools Protocol. FullCalendar only starts touch drags and
+selections after a long press, so `press` holds still for `holdMs` before running `whilePressed`.
+Tests should set a short longPressDelay/eventLongPressDelay/selectLongPressDelay and hold a bit longer.
+*/
+export const touchPointer = {
+  async move(point: Point, steps = 5): Promise<void> {
+    const { lastPoint } = touchState
+
+    for (let i = 1; i <= steps; i++) {
+      const x = lastPoint.x + (point.x - lastPoint.x) * i / steps
+      const y = lastPoint.y + (point.y - lastPoint.y) * i / steps
+      await commands.touch('touchMove', x, y)
+    }
+    touchState.lastPoint = point
+  },
+
+  async press(from: Point, holdMs: number, whilePressed: () => Promise<void>): Promise<void> {
+    await commands.touch('touchStart', from.x, from.y)
+    isTouching = true
+    touchState.lastPoint = from
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, holdMs)) // the long press itself
+      await whilePressed()
+    } finally {
+      if (isTouching) {
+        isTouching = false
+        await commands.touch('touchEnd')
+      }
+    }
+  },
+}
+
+const touchState = { lastPoint: { x: 0, y: 0 } }
+
+/*
+For teardown: ends a press left active by a test that failed or timed out mid-gesture.
 */
 export async function releasePointer(): Promise<void> {
   if (isPressed) {
     await pointer.up()
+  }
+  if (isTouching) {
+    isTouching = false
+    await commands.touch('touchEnd')
   }
 }
 
