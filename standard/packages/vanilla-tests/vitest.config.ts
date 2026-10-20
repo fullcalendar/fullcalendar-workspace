@@ -2,5 +2,14 @@ import { createTestConfig, resolvePath } from './vitest.config.base'
 
 export default createTestConfig({
   setupFile: resolvePath('./tests/lib/setup.ts', import.meta.url),
-  optimizeDepsInclude: ['luxon', 'moment', 'moment/locale/es', 'moment-timezone'],
+  // prebundled up front, so a cold cache doesn't reload a test file mid-run
+  optimizeDepsInclude: [
+    'luxon',
+    'moment',
+    'moment/locale/es',
+    'moment-timezone',
+    'fetch-mock',
+    '@fullcalendar/rrule > rrule',
+    '@fullcalendar/icalendar > ical.js',
+  ],
 })
