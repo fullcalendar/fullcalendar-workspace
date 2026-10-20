@@ -1,6 +1,6 @@
 # Phase 7: layout families
 
-Status: in progress. DayGrid steps 1 and 2 done.
+Status: in progress. DayGrid steps 1 to 3 done.
 
 One family at a time, in the roadmap's order: DayGrid, TimeGrid, MultiMonth and List, Timeline,
 ResourceTimeline. Each family is split into steps, committed and reviewed separately.
@@ -13,7 +13,7 @@ Steps:
    `DayGridLayoutPrint`, plus `useInitialScroll` and `useScrollerSyncer`. (done)
 2. `DayGridRows` (onto `useHitTarget`) and the header: `DayGridHeader`, `DayGridHeaderRows`,
    `DayGridHeaderRow`, `DayGridMoreLink`. (done)
-3. `DayGridRow` and `DayGridCell`, which TimeGrid's all-day lane and the resource views share.
+3. `DayGridRow` and `DayGridCell`, which TimeGrid's all-day lane and the resource views share. (done)
 4. View data: `DayGridView` and `ResourceDayGridView` share a `useDayGridViewData`.
 
 ### Step 1: the layout shell
@@ -70,3 +70,22 @@ Steps:
   has no layout, so the test stubs `getClientRects` (the hidden-element guard in `useReportedSize`),
   and reads the props through the class instance, since the DOM node's fiber can be a stale
   alternate.
+
+### Step 3: row and cell
+
+- **`DayGridRow`** is a memo function component.
+  - Its row-height, cell-header, cell-main and slice-height `RefMap`s are created once, with stable
+    handlers, so `afterSize` still dedupes one re-render per batch. The handlers read the latest
+    props through `useLatest`, and re-render with a counter in state (the class's `forceUpdate`).
+  - `levelCapacity`, the auto-placement ratchet, is a ref.
+  - The print-height map starts over on leaving print (a layout effect on `forPrint`, the class's
+    `componentDidUpdate`).
+  - The root goes to `rootElRef` through `useForwardedElRef` (TimeGrid's all-day lane attaches its
+    hit target there), and its height to `heightRef` through `useReportedSize`. So a row inside a
+    `display:none` subtree no longer reports 0 heights.
+  - The render helpers are module functions taking the props.
+- **`DayGridCell`** is a memo function component. A local `useBodyHeights` measures the body (header
+  height and main height) in a layout effect, re-registering when the body element or whether it's
+  measured changes, and reporting `null` on cleanup, as the class's ref callback did.
+- **React test (#8119):** with no class instance left, `findComponentProps` walks the root's current
+  fiber tree (from `FiberRoot.current`) instead of up from the element.

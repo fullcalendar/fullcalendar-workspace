@@ -190,7 +190,7 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
     const secondHit = dayGrid.queryHit(false, 150, 150, 700, 600)!
     expect(firstHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-09-27')
     expect(secondHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-10-05')
-    expect(findComponentProps(rowEl, 'moreLinkHeight').moreLinkHeight).toBe(100) // DayGridRow's prop
+    expect(findComponentProps(rowEl, 'moreLinkHeight').moreLinkHeight).toBe(100) // a DayGridRow's prop
 
     unmount()
     expect(elements.has(rowEl)).toBe(false)
@@ -201,17 +201,33 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
   }
 })
 
-// the props of the nearest class component, at or above el, that has the prop. through the instance,
-// because the fiber that el points to can be a stale alternate
+// the props of the first component, in the root's current tree, that has the prop. from the root,
+// because the fiber that an element points to can be a stale alternate
 function findComponentProps(el: HTMLElement, key: string): Record<string, unknown> {
   let fiberKey = Object.keys(el).find((elKey) => elKey.startsWith('__reactFiber$'))!
   let fiber = (el as any)[fiberKey]
 
-  while (!(fiber.stateNode?.props && typeof fiber.type !== 'string' && key in fiber.stateNode.props)) {
+  while (fiber.return) {
     fiber = fiber.return
   }
 
-  return fiber.stateNode.props
+  let stack = [fiber.stateNode.current] // the root's current fiber
+
+  while (stack.length) {
+    fiber = stack.pop()
+
+    if (typeof fiber.type !== 'string' && fiber.memoizedProps && key in fiber.memoizedProps) {
+      return fiber.memoizedProps
+    }
+    if (fiber.sibling) {
+      stack.push(fiber.sibling)
+    }
+    if (fiber.child) {
+      stack.push(fiber.child)
+    }
+  }
+
+  throw new Error(`no component with prop ${key}`)
 }
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/185
