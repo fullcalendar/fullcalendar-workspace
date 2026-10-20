@@ -744,11 +744,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   }
 
   destroyScrollers() {
+    this.dayScroller.destroy()
+    this.timeScroller.destroy()
+
     setRef(this.props.dayScrollerRef, null)
     setRef(this.props.timeScrollerRef, null)
   }
 }
 
-TimeGridLayoutPannable.addPropsEquality({
+TimeGridLayoutPannable.addStateEquality({
   headerTierHeights: isArraysEqual,
 })
