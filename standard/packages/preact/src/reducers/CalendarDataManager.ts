@@ -43,10 +43,12 @@ import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
 import { warn } from '../util/warn'
+import { CalendarController } from '../CalendarController'
 
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
-  onDataChange?: (data: CalendarData, actionsComplete: Action[]) => void
+  // isInCommit: called from inside a React commit (a layout effect), where flushSync isn't allowed
+  onDataChange?: (data: CalendarData, actionsComplete: Action[], isInCommit: boolean) => void
   // only deliver onDataChange while mounted. otherwise it's held until mount().
   // for React, where a render might never commit, or the calendar might be unmounted
   isMountGated?: boolean
@@ -88,7 +90,15 @@ export class CalendarDataManager {
   */
   private effectQueue: (() => void)[] = []
   private isMounted = false
+  private isInCommit = false
   private pendingActions: Action[] = [] // completed while not mounted, for isMountGated
+
+  /*
+  The controller option as of the last commit, and whether unmount() unbound it. Reconciled against
+  committed data only, so a render that never commits can't bind its controller
+  */
+  private committedController: CalendarController | undefined
+  private isControllerDetached = false
 
   private optionOverrides: CalendarOptions = {}
   private config: CalendarDataManagerConfig
@@ -125,13 +135,20 @@ export class CalendarDataManager {
     if (!this.isMounted) {
       this.isMounted = true
       this.nowTimer.start()
+      // binds initially (vanilla), or rebinds after unmount() unless another calendar took it
+      this.syncController(
+        this.config.isMountGated ? this.committedController : this.data.calendarOptions.controller,
+      )
+
+      this.isInCommit = true
       this.flushEffects()
 
       const { pendingActions } = this
       if (pendingActions.length) {
         this.pendingActions = []
-        this.config.onDataChange?.(this.data, pendingActions)
+        this.config.onDataChange?.(this.data, pendingActions, true)
       }
+      this.isInCommit = false
     }
   }
 
@@ -141,8 +158,10 @@ export class CalendarDataManager {
       this.nowTimer.stop()
     }
 
-    // CalendarInner rebinds on mount, for StrictMode remounts and rendering after destroy()
-    this.data.calendarOptions.controller?._unsetApi(this.config.calendarApi)
+    if (this.committedController) {
+      this.committedController._unsetApi(this.config.calendarApi)
+      this.isControllerDetached = true
+    }
   }
 
   destroy() {
@@ -165,11 +184,33 @@ export class CalendarDataManager {
   // runs effects queued by render-time updates. call after each commit
   flushEffects() {
     if (this.effectQueue.length && !this.isDrainingActionQueue) {
+      const wasInCommit = this.isInCommit
+      this.isInCommit = true
       this.drainActionQueue()
+      this.isInCommit = wasInCommit
     }
   }
 
-  queueEffect = (effect: () => void) => {
+  /*
+  Binds the given controller, unbinding the previous one. Called with committed data: by CalendarInner
+  after each commit, before it emits datesSet, and after each reduction when not mount-gated (vanilla)
+  */
+  syncController = (controller: CalendarController | undefined) => {
+    const { calendarApi } = this.config
+
+    if (controller !== this.committedController) {
+      this.committedController?._unsetApi(calendarApi) // only if still bound to this calendar
+      this.committedController = controller
+      this.isControllerDetached = false
+      controller?._setApi(calendarApi)
+    } else if (this.isControllerDetached) {
+      // after unmount(), only take it back if no other calendar has
+      this.isControllerDetached = false
+      controller?._restoreApi(calendarApi)
+    }
+  }
+
+  private queueEffect(effect: () => void) {
     this.effectQueue.push(effect)
   }
 
@@ -210,14 +251,23 @@ export class CalendarDataManager {
 
     this.isDrainingActionQueue = true
 
+    // a mount-gated calendar holds effects while not mounted, e.g. ones a render that never committed
+    // queued, until a later fetch drains here
+    const canRunEffects = !isRendering && (this.isMounted || !this.config.isMountGated)
+
     // effects run after the reduction that queued them, and may dispatch more actions
-    while (actionQueue.length || (!isRendering && this.effectQueue.length)) {
+    while (actionQueue.length || (canRunEffects && this.effectQueue.length)) {
       if (actionQueue.length) {
         const action = actionQueue.shift()
 
         ;({ state, data } = this.reduce(state, data, action))
         this.state = state
         this.data = data
+
+        // outside React, the reduced data is what renders. React's CalendarInner syncs on commit
+        if (!this.config.isMountGated && this.isMounted) {
+          this.syncController(data.calendarOptions.controller)
+        }
 
         if (action.type !== 'IDLE') {
           actionsComplete.push(action)
@@ -245,7 +295,7 @@ export class CalendarDataManager {
     if (isMountGated && !this.isMounted) {
       this.pendingActions.push(...actionsComplete)
     } else if (onDataChange) {
-      onDataChange(this.data, actionsComplete)
+      onDataChange(this.data, actionsComplete, this.isInCommit)
     }
   }
 
@@ -294,15 +344,6 @@ export class CalendarDataManager {
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
-    }
-
-    // === Bind controller ===
-    // later bindings are in the controller option's change handler
-    if (isInit) {
-      const controller = optionsData.calendarOptions.controller
-      if (controller) {
-        this.queueEffect(() => controller._setApi(config.calendarApi))
-      }
     }
 
     // === Update now timer ===
@@ -414,7 +455,7 @@ export class CalendarDataManager {
       nowManager: this.nowManager,
       calendarApi: config.calendarApi,
       dispatch: this.dispatch,
-      queueEffect: this.queueEffect,
+      syncController: this.syncController,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
       toolbarProps,

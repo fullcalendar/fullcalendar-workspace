@@ -32,8 +32,9 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
   const [_revision, setRevision] = useState('')
 
-  function handleDataChange(_data: CalendarData, actions: Action[]) {
-    (needsSyncRender(actions) ? flushSync : runNormal)(() => {
+  function handleDataChange(_data: CalendarData, actions: Action[], isInCommit: boolean) {
+    // inside a commit, React renders the state change synchronously anyway, and forbids flushSync
+    (needsSyncRender(actions) && !isInCommit ? flushSync : runNormal)(() => {
       setRevision(guid())
     })
   }

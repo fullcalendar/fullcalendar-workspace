@@ -14,6 +14,7 @@ import { EventInteractionState } from '../interactions/event-interaction-state'
 import { CalendarOptionsRefined, ViewOptionsRefined, CalendarOptions, CalendarListeners } from '../options'
 import { ToolbarModel } from '../toolbar-struct'
 import { CalendarNowManager } from './CalendarNowManager'
+import { CalendarController } from '../CalendarController'
 
 export interface CalendarDataManagerState {
   dynamicOptionOverrides: CalendarOptions
@@ -68,8 +69,8 @@ export interface CalendarData extends CalendarDataBase {
   viewTitle: string // based on current date
   calendarApi: CalendarApiImpl // TODO: try to remove this
   dispatch: (action: Action) => void
-  // for side effects that users or other objects can observe. see CalendarDataManager
-  queueEffect: (effect: () => void) => void
+  // binds the committed controller option. see CalendarDataManager
+  syncController: (controller: CalendarController | undefined) => void
   emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove
   toolbarProps: CalendarToolbarProps

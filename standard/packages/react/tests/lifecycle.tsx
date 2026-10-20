@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-import React, { Activity, Suspense, StrictMode, act, useState } from 'react'
+import React, { Activity, Suspense, StrictMode, act, createRef, startTransition, useState } from 'react'
 import { render } from '@testing-library/react'
 
 /*
@@ -100,6 +100,117 @@ it('binds a CalendarController after Strict Mode replays the mount, and unbinds 
   unmount()
   expect(controller.view).toBeUndefined()
 })
+
+// a controller from a render React discards was bound by a later fetch, after the calendar unmounted.
+// only committed controllers are bound
+it('never binds a controller from a render that did not commit', async () => {
+  const controllerA = new CalendarController()
+  const controllerB = new CalendarController()
+  const neverResolves = new Promise(() => {})
+  let setState: (state: { controller: CalendarController, isSuspended: boolean }) => void
+
+  function Suspender({ isSuspended }: { isSuspended: boolean }): React.ReactNode {
+    if (isSuspended) {
+      throw neverResolves
+    }
+    return null
+  }
+
+  function App() {
+    const [state, _setState] = useState({ controller: controllerA, isSuspended: false })
+    setState = _setState
+
+    return (
+      <Suspense fallback={<div>loading</div>}>
+        <FullCalendar
+          {...OPTIONS}
+          controller={state.controller}
+          // a new source for the discarded render, which starts a fetch that resolves later
+          events={state.isSuspended ? (_info, successCallback) => {
+            origSetTimeout(() => successCallback([]), 10)
+          } : []}
+        />
+        <Suspender isSuspended={state.isSuspended} />
+      </Suspense>
+    )
+  }
+
+  const { unmount } = render(<App />)
+  expect(controllerA.view?.type).toBe('timeGridWeek')
+
+  // a transition keeps showing the committed UI, and discards the suspended render
+  await act(async () => {
+    startTransition(() => {
+      setState({ controller: controllerB, isSuspended: true })
+    })
+  })
+  expect(controllerA.view?.type).toBe('timeGridWeek')
+  expect(controllerB.view).toBeUndefined()
+
+  unmount()
+  expect(controllerA.view).toBeUndefined()
+  expect(controllerB.view).toBeUndefined()
+
+  await act(() => new Promise((resolve) => origSetTimeout(resolve, 50))) // the fetch resolves
+  expect(controllerA.view).toBeUndefined()
+  expect(controllerB.view).toBeUndefined()
+})
+
+// the replacement must be bound before CalendarInner emits datesSet for the same commit
+it('calls a replacement controller\'s date-change handler for the commit that binds it', () => {
+  const handleDateChangeA = vi.fn()
+  const handleDateChangeB = vi.fn()
+  const controllerA = new CalendarController(handleDateChangeA)
+  const controllerB = new CalendarController(handleDateChangeB)
+
+  const { rerender } = render(<FullCalendar {...OPTIONS} controller={controllerA} />)
+  handleDateChangeA.mockClear()
+
+  rerender(<FullCalendar {...OPTIONS} controller={controllerB} weekends={false} />)
+
+  expect(handleDateChangeA).not.toHaveBeenCalled()
+  expect(handleDateChangeB).toHaveBeenCalled()
+  expect(controllerA.view).toBeUndefined()
+  expect(controllerB.view?.type).toBe('timeGridWeek')
+})
+
+// changes made while hidden are delivered when shown, from a layout effect, where React forbids flushSync
+it('applies an event change made while hidden in <Activity>, without calling flushSync in a lifecycle', () => {
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  const calendarRef = createRef<any>()
+
+  function App({ isShown }: { isShown: boolean }) {
+    return (
+      <Activity mode={isShown ? 'visible' : 'hidden'}>
+        <FullCalendar
+          {...OPTIONS}
+          ref={calendarRef}
+          initialDate="2024-01-15"
+          events={EVENTS}
+        />
+      </Activity>
+    )
+  }
+
+  try {
+    const { rerender, container, unmount } = render(<App isShown />)
+    const calendarApi = calendarRef.current.getApi()
+
+    rerender(<App isShown={false} />)
+    act(() => {
+      calendarApi.getEventById('1').setProp('title', 'changed')
+    })
+    rerender(<App isShown />)
+
+    expect(container.textContent).toContain('changed')
+    expect(consoleErrorSpy.mock.calls.map(String).join('\n')).not.toMatch(/flushSync/)
+    unmount()
+  } finally {
+    consoleErrorSpy.mockRestore()
+  }
+})
+
+const EVENTS = [{ id: '1', title: 'original', start: '2024-01-15T10:00:00' }] // stable
 
 // #8112 bug 1: a hidden <Activity> has already run its cleanups, so a re-render while hidden must not
 // arm timers, because nothing would clear them. Fixed by phase 8: timers only arm on mount

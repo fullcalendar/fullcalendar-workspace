@@ -33,12 +33,7 @@ Who starts and stops it:
 
 ### Effects users can observe wait for the commit
 
-`CalendarDataManager` has an effect queue (`queueEffect`, also on `CalendarData` for option-change
-handlers). It holds:
-
-- the `loading` callback;
-- the initial controller binding;
-- the `controller` option-change handler's bind/unbind.
+`CalendarDataManager` has a private effect queue. It holds the `loading` callback.
 
 How the queue runs:
 
@@ -49,6 +44,30 @@ How the queue runs:
   queued, and `flushEffects()` runs them from a layout effect after every commit.
 - **Render-time drains don't call `onDataChange`.** The render already uses the returned data. This
   removes the render-phase `setRevision` that every option-change dispatch used to cause.
+- **A mount-gated calendar holds effects while not mounted.** Otherwise a fetch started by a render
+  that never committed would run that render's effects when it resolves.
+
+### Controller binding follows committed data
+
+`CalendarDataManager.syncController(controller)` (also on `CalendarData`) binds a controller and
+unbinds the previous one. It remembers the last controller it synced (`committedController`).
+
+- **React:** `CalendarInner` calls it in `componentDidMount` and `componentDidUpdate`, with its own
+  props, before the prop-set handlers emit `datesSet`. A replacement controller therefore gets the
+  `datesSet` of the commit that binds it, and a render that never commits never binds anything.
+- **Vanilla:** it's called after each reduction while mounted, and from `mount()`, because vanilla
+  renders the latest data and controllers are usable before `render()`.
+- **`unmount()`** unbinds the committed controller. The next sync or `mount()` takes it back with
+  `_restoreApi`, i.e. only if no other calendar has bound it since.
+- The `controller` option-change handler is gone.
+
+### No `flushSync` inside a commit
+
+`onDataChange` gets a third argument, `isInCommit`, which is true when called from `mount()` or
+`flushEffects()`, i.e. from React's layout effects. React's `Calendar` then sets state without
+`flushSync`, which React forbids there; React renders a layout-effect state change synchronously
+anyway. This happens when a calendar shown again in `<Activity>` catches up on an event change made
+while hidden.
 
 ### Data changes only while mounted (React)
 
@@ -75,11 +94,15 @@ Revisit this in phase 9 if the store split makes fetching easy to schedule.
 
 ## Results
 
-- **React suite (`@fullcalendar/react`, vitest):** 34 pass.
+- **React suite (`@fullcalendar/react`, vitest):** 37 pass.
   - The 3 `it.fails` cases from phase 2 now pass and are plain `it`: Strict Mode timers, #8112 bug 1,
     and #8092 timers.
   - 2 new cases: a Suspense-discarded fetch updates nothing (#8092), and `loading` can set state.
   - Both were mutation-checked: they fail with mount gating disabled and `loading` emitted inline.
+  - 3 more after review: a controller from a discarded render is never bound (even when its fetch
+    resolves after unmount); a replacement controller gets the commit's `datesSet`; an event changed
+    while hidden in `<Activity>` applies when shown, without the `flushSync` warning. All 3 fail on
+    the first phase-8 commit.
 - **Vanilla Karma, Preact:**
   - Two broad filters covered 952 + 1307 standard specs and 1154 + 969 scheduler specs (overlapping);
     all pass.
@@ -94,6 +117,17 @@ Revisit this in phase 9 if the store split makes fetching easy to schedule.
     `vanilla-w-react` can't render a React root again after `destroy()`.
 
   These are limitations of the React test runtime, unrelated to this phase.
+
+## Review
+
+GPT-6.1-Sol reviewed `c15d6602d` and found three regressions, all fixed in the follow-up commit:
+
+1. A Suspense-discarded render that changed the controller left the old one bound after unmount, and
+   its late fetch bound the new one to the unmounted calendar.
+2. A replacement controller missed the `datesSet` of the commit that bound it, because the binding
+   waited for the parent `Calendar`'s layout effect, which runs after `CalendarInner`'s.
+3. Showing an `<Activity>`-hidden calendar after an event change called `flushSync` from a layout
+   effect.
 
 ## Follow-ups
 
