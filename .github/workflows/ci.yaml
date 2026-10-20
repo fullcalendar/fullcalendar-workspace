@@ -44,7 +44,6 @@ jobs:
           pnpm \
             --filter '!./examples/**' \
             --filter '!@fullcalendar/angular' \
-            --filter '!@fullcalendar-tests/*' \
             install
 
       - name: Lint
@@ -73,3 +72,18 @@ jobs:
           pnpm \
             --filter '@fullcalendar/react' \
             run test
+
+      # The Vitest suites of the test packages, which run against the built packages above.
+      # (Their Karma suites still don't run in CI. They're being migrated to Vitest.)
+      - name: Install Playwright Chromium
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/standard' \
+            exec playwright install --with-deps chromium
+
+      - name: Test with Vitest
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/*' \
+            --workspace-concurrency=1 \
+            run test:vitest
