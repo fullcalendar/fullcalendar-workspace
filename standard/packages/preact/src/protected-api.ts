@@ -128,6 +128,8 @@ export { useHitTarget } from './hooks/useHitTarget'
 export { useViewContext } from './hooks/useViewContext'
 export { useLatest } from './hooks/useLatest'
 export { useStableCallback } from './hooks/useStableCallback'
+export type { NowTimerRunnerOutput as Now } from './NowTimerRunner'
+export { useNow } from './hooks/useNow'
 export { useMountHooks } from './hooks/useMountHooks'
 export type { ReportedSizeInput } from './hooks/useReportedSize'
 export { useReportedSize } from './hooks/useReportedSize'
@@ -252,6 +254,8 @@ export {
 } from './daygrid/header-tier'
 export { createDayHeaderFormatter } from './daygrid/components/util'
 export { DayGridLayout } from './daygrid/components/DayGridLayout'
+export type { DayGridViewData } from './daygrid/components/useDayGridViewData'
+export { useDayGridViewData, useDayHeaderFormatter } from './daygrid/components/useDayGridViewData'
 export {
   buildDayTableModel,
 } from './daygrid/components/util'

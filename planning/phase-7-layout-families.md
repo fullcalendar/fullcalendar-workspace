@@ -1,6 +1,6 @@
 # Phase 7: layout families
 
-Status: in progress. DayGrid steps 1 to 3 done.
+Status: in progress. DayGrid done (steps 1 to 4).
 
 One family at a time, in the roadmap's order: DayGrid, TimeGrid, MultiMonth and List, Timeline,
 ResourceTimeline. Each family is split into steps, committed and reviewed separately.
@@ -14,7 +14,7 @@ Steps:
 2. `DayGridRows` (onto `useHitTarget`) and the header: `DayGridHeader`, `DayGridHeaderRows`,
    `DayGridHeaderRow`, `DayGridMoreLink`. (done)
 3. `DayGridRow` and `DayGridCell`, which TimeGrid's all-day lane and the resource views share. (done)
-4. View data: `DayGridView` and `ResourceDayGridView` share a `useDayGridViewData`.
+4. View data: `DayGridView` and `ResourceDayGridView` share a `useDayGridViewData`. (done)
 
 ### Step 1: the layout shell
 
@@ -89,3 +89,20 @@ Steps:
   measured changes, and reporting `null` on cleanup, as the class's ref callback did.
 - **React test (#8119):** with no class instance left, `findComponentProps` walks the root's current
   fiber tree (from `FiberRoot.current`) instead of up from the element.
+
+### Step 4: view data and `useNow`
+
+- **`useNow(unit, unitValue?)`** (`hooks/useNow.ts`, spec §5.2) wraps `NowTimerRunner`: computes now
+  during render, starts the runner in a layout effect and stops it on cleanup. Phase 8 already made
+  the runner pure until started, so this is the same lifecycle as `NowTimer`'s
+  `componentDidMount`/`componentWillUnmount`.
+  - **Deviation from the spec:** a layout effect, not a passive one, to keep the class's timing.
+    In Preact a passive effect arms after paint, through `requestAnimationFrame` and a timeout, which
+    specs that mock the clock would also have to step through.
+  - `NowTimer` is now a render-prop wrapper around it, for the views not yet converted.
+- **`useDayGridViewData(dateProfile)`** builds the day table and reads today (`useNow('day')`), and
+  **`useDayHeaderFormatter`** memoizes the header format. Both DayGrid views use them.
+- **`DayGridView`** and **`ResourceDayGridView`** stay classes (`parseViewConfig` treats any other
+  view component as a content generator), each rendering a function body. The body's memoizers are
+  `useMemo`s, the slicers, splitter and joiner live in state or a ref, and `ResourceDayGridView`'s
+  `isHitComboAllowed` is a `useStableCallback` reading the latest table models.

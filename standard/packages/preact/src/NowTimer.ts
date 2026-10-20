@@ -1,7 +1,6 @@
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
-import { ViewContext, ViewContextType } from './ViewContext'
-import { type ReactNode, Component } from 'react'
-import { NowTimerRunner } from './NowTimerRunner'
+import { type ReactNode } from 'react'
+import { useNow } from './hooks/useNow'
 
 export interface NowTimerProps {
   unit: string // TODO: add type of unit
@@ -10,38 +9,9 @@ export interface NowTimerProps {
   children?: (now: DateMarker, todayRange: DateRange, nowMs: number) => ReactNode
 }
 
-export class NowTimer extends Component<NowTimerProps> {
-  static contextType: any = ViewContextType
-  context: ViewContext
-  private runner: NowTimerRunner
+// a render-prop form of useNow, for class components
+export function NowTimer(props: NowTimerProps) {
+  const { nowDate, todayRange, nowMs } = useNow(props.unit, props.unitValue)
 
-  constructor(props: NowTimerProps, context: ViewContext) {
-    super(props, context)
-    this.runner = new NowTimerRunner(this.handleChange)
-  }
-
-  render() {
-    const { props, context } = this
-    const { nowDate, nowMs, todayRange } = this.runner.update({
-      nowManager: context.nowManager,
-      unit: props.unit,
-      unitValue: props.unitValue,
-      nowIndicatorSnap: context.options.nowIndicatorSnap,
-      dateEnv: context.dateEnv,
-    })
-    return props.children(nowDate, todayRange, nowMs)
-  }
-
-  // also on remounts from Strict Mode and <Activity>, which call componentWillUnmount first
-  componentDidMount() {
-    this.runner.start()
-  }
-
-  componentWillUnmount() {
-    this.runner.stop()
-  }
-
-  private handleChange = () => {
-    this.forceUpdate()
-  }
+  return props.children(nowDate, todayRange, nowMs) as any
 }

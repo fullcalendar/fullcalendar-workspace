@@ -1,0 +1,41 @@
+import { DateFormatter, DateRange } from '@full-ui/headless-calendar'
+import { useMemo } from 'react'
+import { DateProfile } from '../../DateProfileGenerator'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useNow } from '../../hooks/useNow'
+import { DayTableModel } from '../DayTableModel'
+import { buildDayTableModel, createDayHeaderFormatter } from './util'
+
+export interface DayGridViewData {
+  dayTableModel: DayTableModel
+  datesRepDistinctDays: boolean // one row, so each column is one date
+  todayRange: DateRange
+}
+
+/*
+What the DayGrid views (DayGridView, ResourceDayGridView) derive the same way: the day table, and
+today, which updates at midnight
+*/
+export function useDayGridViewData(dateProfile: DateProfile): DayGridViewData {
+  const { dateProfileGenerator, dateEnv } = useViewContext()
+  const dayTableModel = useMemo(
+    () => buildDayTableModel(dateProfile, dateProfileGenerator, dateEnv),
+    [dateProfile, dateProfileGenerator, dateEnv],
+  )
+  const { todayRange } = useNow('day')
+
+  return {
+    dayTableModel,
+    datesRepDistinctDays: dayTableModel.rowCount === 1,
+    todayRange,
+  }
+}
+
+export function useDayHeaderFormatter(datesRepDistinctDays: boolean, colCount: number): DateFormatter {
+  const { options } = useViewContext()
+
+  return useMemo(
+    () => createDayHeaderFormatter(options.dayHeaderFormat, datesRepDistinctDays, colCount),
+    [options.dayHeaderFormat, datesRepDistinctDays, colCount],
+  )
+}
