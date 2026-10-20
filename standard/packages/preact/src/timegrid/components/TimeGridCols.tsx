@@ -5,7 +5,6 @@ import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Hit } from '../../interactions/hit'
-import { isPropsEqualShallow } from '../../util/object'
 import { memoize } from '../../util/memoize'
 import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
 import classNames from '../../styles.module.css'
@@ -151,10 +150,6 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     }
   }
 }
-
-TimeGridCols.addPropsEquality({
-  style: isPropsEqualShallow,
-})
 
 // Utils
 // -------------------------------------------------------------------------------------------------

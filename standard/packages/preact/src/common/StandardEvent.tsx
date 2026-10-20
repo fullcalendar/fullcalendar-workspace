@@ -10,7 +10,6 @@ import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
 import { joinClassNames } from '../util/html'
 import classNames from '../styles.module.css'
-import { isPropsEqualShallow } from '../util/object'
 import { Dictionary } from '../options'
 
 export interface StandardEventProps {
@@ -297,10 +296,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     }
   }
 }
-
-StandardEvent.addPropsEquality({
-  seg: isPropsEqualShallow,
-})
 
 function renderInnerContent(innerProps: EventDisplayInfo) {
   return (
