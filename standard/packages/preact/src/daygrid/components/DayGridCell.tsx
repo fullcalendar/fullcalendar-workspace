@@ -13,13 +13,16 @@ import { isDimsEqual } from '../../component-util/rendering-misc'
 import { getDateMeta, DateMeta } from '../../component-util/date-rendering'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { memoize, memoizeObjArg } from '../../util/memoize'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { CustomContent } from '../../content-inject/CustomContent'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { generateClassName } from '../../common/render-hook'
 import { findDayNumberText, findMonthText, findWeekdayText } from '../../util/date-format'
 import classNames from '../../styles.module.css'
 import {
   type Ref,
   type ReactNode,
+  createElement,
   createRef,
 } from 'react'
 import { DayGridMoreLink } from './DayGridMoreLink'
@@ -148,7 +151,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const hasA11yDateText = props.showDayNumber && !hasNavLink
 
     return (
-      <ContentContainer
+      <DayGridCellEl
         tag={CellTag}
         elRef={this.rootElRef}
         className={joinClassNames(props.className, baseClassName)}
@@ -160,103 +163,97 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         }}
         style={cellStyle}
         renderProps={renderProps}
-        generatorName="dayCellTopContent" // !!! for top
-        customGenerator={options.dayCellTopContent /* !!! for top */}
-        defaultGenerator={renderTopInner}
-        classNameGenerator={options.dayCellClass}
-        didMount={options.dayCellDidMount}
-        willUnmount={options.dayCellWillUnmount}
       >
-        {(InnerContent) => (
-          <>
-            {props.fills}
-            <div
-              // otherwise VoiceOver finds an empty group when there's no day number (ex: TimeGrid all-day).
-              // children (srOnly date, day number, custom content) stay readable
-              role='presentation'
-              className={joinClassNames(
-                classNames.rel, // puts it above bg-fills, which are positioned on TOP of this component :|
-                DAY_GRID_CELL_CONTENT_Z_CLASS,
-                generateClassName(options.dayCellTopClass, renderProps),
-              )}
-              // TODO: prevent margins/padding!?
-            >
-              {hasA11yDateText && ( // a nav link is already labeled
-                <div className={classNames.srOnly}>{fullDateStr}</div>
-              )}
-              {props.showDayNumber && (
-                <InnerContent // the dayCellTopContent
-                  tag='div'
-                  attrs={
-                    hasNavLink
-                      ? buildNavLinkAttrs(
-                        context,
-                        props.date,
-                        undefined,
-                        fullDateStr,
-                      )
-                      : { 'aria-hidden': true } // screen readers read the srOnly full date above, not this day number
-                  }
-                  className={generateClassName(options.dayCellTopInnerClass, renderProps)}
-                />
-              )}
-            </div>
-            <div
-              className={joinClassNames(
-                !tableMode && classNames.flexCol,
-                !tableMode && (
-                  props.fgLiquidHeight ? classNames.liquid : classNames.grow
-                ),
-                tableMode && classNames.printCellContentMinHeight,
-              )}
-              ref={this.handleBodyEl}
-            >
-              <div
-                // without events of its own, it's still sized (space reserved for multi-day events from
-                // earlier days), and VoiceOver would find an empty group
-                role={props.fgIsList ? 'list' : 'presentation'}
-                className={joinClassNames(
-                  classNames.rel, // origin for this cell's foreground event wrappers
-                  generateClassName(options.dayCellInnerClass, renderProps),
-                )}
-                style={{ minHeight: props.fgHeight }}
-                // TODO: prevent margins/padding!?
-              >
-                {props.fg}
-              </div>
-              <DayGridMoreLink
-                className={classNames.rel} // puts it above bg-fills, which are positioned on TOP of this component :|
-                allDayDate={props.date}
-                segs={props.segs}
-                hiddenSegs={props.hiddenSegs}
-                alignElRef={this.rootElRef}
-                alignParentTop={
-                  props.showDayNumber
-                    ? '[role=row]'
-                    : `.${classNames.internalView}`
-                }
-                dateSpanProps={props.dateSpanProps}
-                renderProps={props.renderProps}
-                dateProfile={props.dateProfile}
-                eventSelection={props.eventSelection}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                todayRange={props.todayRange}
-                isNarrow={props.isNarrow}
-                isMicro={props.isMicro}
-              />
-            </div>
-            <div
-              role='presentation' // otherwise VoiceOver finds an empty group. not aria-hidden, which would hide any content too
-              className={joinClassNames(
-                classNames.rel, // puts it above bg-fills
-                DAY_GRID_CELL_CONTENT_Z_CLASS,
-                generateClassName(options.dayCellBottomClass, renderProps),
-              )}
+        {props.fills}
+        <div
+          // otherwise VoiceOver finds an empty group when there's no day number (ex: TimeGrid all-day).
+          // children (srOnly date, day number, custom content) stay readable
+          role='presentation'
+          className={joinClassNames(
+            classNames.rel, // puts it above bg-fills, which are positioned on TOP of this component :|
+            DAY_GRID_CELL_CONTENT_Z_CLASS,
+            generateClassName(options.dayCellTopClass, renderProps),
+          )}
+          // TODO: prevent margins/padding!?
+        >
+          {hasA11yDateText && ( // a nav link is already labeled
+            <div className={classNames.srOnly}>{fullDateStr}</div>
+          )}
+          {props.showDayNumber && (
+            <CustomContent
+              tag='div'
+              attrs={
+                hasNavLink
+                  ? buildNavLinkAttrs(
+                    context,
+                    props.date,
+                    undefined,
+                    fullDateStr,
+                  )
+                  : { 'aria-hidden': true } // screen readers read the srOnly full date above, not this day number
+              }
+              className={generateClassName(options.dayCellTopInnerClass, renderProps)}
+              renderProps={renderProps}
+              generatorName="dayCellTopContent"
+              generator={options.dayCellTopContent}
+              fallback={renderTopInner}
             />
-          </>
-        )}
-      </ContentContainer>
+          )}
+        </div>
+        <div
+          className={joinClassNames(
+            !tableMode && classNames.flexCol,
+            !tableMode && (
+              props.fgLiquidHeight ? classNames.liquid : classNames.grow
+            ),
+            tableMode && classNames.printCellContentMinHeight,
+          )}
+          ref={this.handleBodyEl}
+        >
+          <div
+            // without events of its own, it's still sized (space reserved for multi-day events from
+            // earlier days), and VoiceOver would find an empty group
+            role={props.fgIsList ? 'list' : 'presentation'}
+            className={joinClassNames(
+              classNames.rel, // origin for this cell's foreground event wrappers
+              generateClassName(options.dayCellInnerClass, renderProps),
+            )}
+            style={{ minHeight: props.fgHeight }}
+            // TODO: prevent margins/padding!?
+          >
+            {props.fg}
+          </div>
+          <DayGridMoreLink
+            className={classNames.rel} // puts it above bg-fills, which are positioned on TOP of this component :|
+            allDayDate={props.date}
+            segs={props.segs}
+            hiddenSegs={props.hiddenSegs}
+            alignElRef={this.rootElRef}
+            alignParentTop={
+              props.showDayNumber
+                ? '[role=row]'
+                : `.${classNames.internalView}`
+            }
+            dateSpanProps={props.dateSpanProps}
+            renderProps={props.renderProps}
+            dateProfile={props.dateProfile}
+            eventSelection={props.eventSelection}
+            eventDrag={props.eventDrag}
+            eventResize={props.eventResize}
+            todayRange={props.todayRange}
+            isNarrow={props.isNarrow}
+            isMicro={props.isMicro}
+          />
+        </div>
+        <div
+          role='presentation' // otherwise VoiceOver finds an empty group. not aria-hidden, which would hide any content too
+          className={joinClassNames(
+            classNames.rel, // puts it above bg-fills
+            DAY_GRID_CELL_CONTENT_Z_CLASS,
+            generateClassName(options.dayCellBottomClass, renderProps),
+          )}
+        />
+      </DayGridCellEl>
     )
   }
 
@@ -313,6 +310,39 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   componentWillUnmount(): void {
     this._isUnmounting = true
   }
+}
+
+interface DayGridCellElProps {
+  tag: 'td' | 'div'
+  elRef: Ref<HTMLElement>
+  className: string
+  attrs: Record<string, any>
+  style: { width?: number | string } | undefined
+  renderProps: DayCellInfo
+  children: ReactNode
+}
+
+// the cell's element, with its dayCell* render hooks. only for enabled days
+function DayGridCellEl({ tag, elRef, className, attrs, style, renderProps, children }: DayGridCellElProps) {
+  const { options } = useViewContext()
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.dayCellClass,
+    didMount: options.dayCellDidMount,
+    willUnmount: options.dayCellWillUnmount,
+    renderProps,
+    elRef,
+  })
+
+  return createElement(
+    tag,
+    {
+      ...attrs,
+      ref: renderHookEl.ref,
+      className: joinClassNames(renderHookEl.className, className, attrs.className),
+      style,
+    },
+    children,
+  )
 }
 
 // Utils

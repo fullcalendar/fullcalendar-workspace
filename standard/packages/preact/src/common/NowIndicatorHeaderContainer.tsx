@@ -1,6 +1,6 @@
 import { DateMarker } from '@full-ui/headless-calendar'
 import { ViewApi } from '../api/ViewApi'
-import { ElProps } from '../content-inject/ContentInjector'
+import { ElProps } from '../content-inject/el-props'
 import { CustomContent } from '../content-inject/CustomContent'
 import { useViewContext } from '../hooks/useViewContext'
 import { useRenderHookEl } from '../hooks/useRenderHookEl'

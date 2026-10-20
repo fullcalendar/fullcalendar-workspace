@@ -99,7 +99,7 @@ Its objections are weighed, not followed blindly.
 | 2 | Render-hook contract specs | `phase-2-render-hook-specs.md` | 1 (count baseline only) |
 | 3 | Hook toolkit spec and review | `phase-3-hook-toolkit-spec.md` | — |
 | 4 | Pilot: composed event components | `phase-4-event-pilot.md` (done) | 1, 2, 3 |
-| 5 | Render-hook rollout and leaf conversions | sketched below | 4 |
+| 5 | Render-hook rollout and leaf conversions | `phase-5-render-hook-rollout.md` (done) | 4 |
 | 6 | `useHitTarget` and interactions | `phase-6-hit-target.md` (done) | 3 |
 | 7 | Layout families | sketched below | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
@@ -111,7 +111,12 @@ Its objections are weighed, not followed blindly.
 - Phase 3 is independent of 1 and 2. Phase 2's specs and React suite are too, but its call-count baseline reuses the phase-1 runner.
 - Phase 8 doesn't touch components, so it can run alongside 4–7.
 
-### 5. Render-hook rollout and leaf conversions
+### 5. Render-hook rollout and leaf conversions (done, see `phase-5-render-hook-rollout.md`)
+
+As built, the big classes that phase 7 rewrites keep their class and render small hook components for
+their render-hook areas. `ListView` stays a class until the List family converts. Originally sketched
+as follows.
+
 
 - Move the remaining 32 files that use `ContentContainer` onto the phase-3 primitives as each
   component converts to hooks.

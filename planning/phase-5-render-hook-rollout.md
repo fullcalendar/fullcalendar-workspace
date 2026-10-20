@@ -1,6 +1,6 @@
 # Phase 5: render-hook rollout and leaf conversions
 
-Status: in progress. 5a–5c done; 5d and 5e to do.
+Status: done (pending review of 5d–5e).
 
 ## Goal
 
@@ -56,7 +56,8 @@ never go up), the React suite, then a commit. Sol reviews after 5b, 5c and 5e.
 - `MoreLinkTrigger` (`display` row/column) and `MoreLinkContainer`.
 - `DayGridHeaderCell`, shared by DayGrid, TimeGrid and the resource views.
 - The areas in `DayGridCell`, `DayGridRow` (inline week number) and `ResourcePrintRow`.
-- `MorePopover` and `ListView`, which also switch to `useHitTarget`.
+- `MorePopover` and `ListView`, which also switch to `useHitTarget`. (As built, `ListView` stays a
+  class; see 5d below.)
 
 ### 5e. Delete
 
@@ -127,6 +128,34 @@ never go up), the React suite, then a commit. Sol reviews after 5b, 5c and 5e.
       change anyway.
 - **No spec for the stale-watcher fixes.** Every caller passes a stable ref (a `RefMap` entry or
   a class-field handler), so the stale capture isn't reachable through the public API.
+
+### 5d–5e (done)
+
+- **Converted to function components:**
+  - `MoreLinkTrigger`. Its `display` row/column only changes class names, not structure, so it
+    needs no shell.
+  - `MoreLinkContainer`, with stable `onClose` and link-element refs for the memoized popover and
+    trigger.
+  - `MorePopover`, the first built-in user of `useHitTarget`. Its listeners, focus and positioning
+    moved from `componentDidMount` to a mount layout effect.
+  - `DayGridHeaderCell`. The non-blank branch is a separate `DayGridHeaderCellLabel`, so a cell
+    turning blank still remounts. Its `buildDayHeaderText` stays a `memoize` instance, because it's
+    called twice per render (spec §3.3).
+- **Areas moved out of big classes:**
+  - `DayGridCellEl`, from `DayGridCell`. The top content slot renders `<CustomContent>` from the
+    class.
+  - `InlineWeekNumber`, from `DayGridRow`.
+  - `ResourcePrintLaneCell`, from `ResourcePrintRow`. Its top and bottom slots are `<CustomContent>`.
+  - `ListNoEvents`, from `ListView`.
+- **`ListView` stays a class.** `parseViewConfig` treats a view `component` that isn't a
+  `BaseComponent` subclass as a content generator, so a function `ListView` would be misread. It
+  converts with the List family in phase 7, and moves to `useHitTarget` then.
+- **Deleted** `ContentContainer` and `ContentInjector`, and the `ContentContainer` export from
+  `protected-api`.
+  - The `El*` prop types moved to `content-inject/el-props.ts`.
+  - `hasCustomRenderingHandler` moved into `CustomContent.tsx`.
+  - The `didMountMisfire` workaround is gone with `ContentContainer`.
+  - `mergeContentInjectors` (an options helper) keeps its name.
 
 ### Review of 5a–5c (Sol, round 1)
 

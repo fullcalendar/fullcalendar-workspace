@@ -2,7 +2,9 @@ import type { EventRenderRange } from '../../component-util/event-rendering'
 import { ViewApi } from '../../api/ViewApi'
 import { joinClassNames } from '../../util/html'
 import { addDays } from '@full-ui/headless-calendar'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { CustomContent } from '../../content-inject/CustomContent'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { DateComponent } from '../../component/DateComponent'
 import type { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import type { DateProfile } from '../../DateProfileGenerator'
@@ -61,7 +63,7 @@ export class ListView extends DateComponent<ViewProps> {
           >
             {this.renderSegList(eventSegs, dayDates)}
           </Scroller>
-        ) : this.renderEmptyMessage()}
+        ) : <ListNoEvents />}
 
       </ViewContainer>
     )
@@ -76,38 +78,6 @@ export class ListView extends DateComponent<ViewProps> {
     } else {
       this.unregisterHitTarget()
     }
-  }
-
-  renderEmptyMessage() {
-    let { options, viewApi } = this.context
-    let renderProps: NoEventsInfo = {
-      text: options.noEventsText,
-      view: viewApi,
-    }
-
-    return (
-      <ContentContainer
-        tag="div"
-        attrs={{
-          role: 'status', // does a polite announcement
-        }}
-        renderProps={renderProps}
-        generatorName="noEventsContent"
-        customGenerator={options.noEventsContent}
-        defaultGenerator={renderNoEventsInner}
-        classNameGenerator={options.noEventsClass}
-        className={classNames.grow}
-        didMount={options.noEventsDidMount}
-        willUnmount={options.noEventsWillUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag="div"
-            className={generateClassName(options.noEventsInnerClass, renderProps)}
-          />
-        )}
-      </ContentContainer>
-    )
   }
 
   renderSegList(allSegs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[]) {
@@ -224,6 +194,38 @@ export class ListView extends DateComponent<ViewProps> {
 
     return segs
   }
+}
+
+// the message when there are no events, with its noEvents* render hooks
+function ListNoEvents() {
+  let { options, viewApi } = useViewContext()
+  let renderProps: NoEventsInfo = {
+    text: options.noEventsText,
+    view: viewApi,
+  }
+  let renderHookEl = useRenderHookEl({
+    classGenerator: options.noEventsClass,
+    didMount: options.noEventsDidMount,
+    willUnmount: options.noEventsWillUnmount,
+    renderProps,
+  })
+
+  return (
+    <div
+      role='status' // does a polite announcement
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, classNames.grow)}
+    >
+      <CustomContent
+        tag="div"
+        className={generateClassName(options.noEventsInnerClass, renderProps)}
+        renderProps={renderProps}
+        generatorName="noEventsContent"
+        generator={options.noEventsContent}
+        fallback={renderNoEventsInner}
+      />
+    </div>
+  )
 }
 
 function renderNoEventsInner(renderProps: NoEventsInfo): ReactNode {

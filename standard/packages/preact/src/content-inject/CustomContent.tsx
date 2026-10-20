@@ -10,9 +10,9 @@ import { guid } from '../util/misc'
 import { isArraysEqual } from '../util/array'
 import { isPropsEqualShallow, isPropsEqualWithMap } from '../util/object'
 import { isNonHandlerPropsEqual } from '../options-manip'
-import { hasCustomRenderingHandler, ElAttrs } from './ContentInjector'
+import { ElAttrs } from './el-props'
 import { RenderId } from './RenderId'
-import { ViewOptionsRefined } from '../options'
+import { ViewOptions, ViewOptionsRefined } from '../options'
 import { joinClassNames } from '../util/html'
 
 export interface CustomContentProps<RenderProps> {
@@ -28,9 +28,9 @@ export interface CustomContentProps<RenderProps> {
 }
 
 /*
-The slot a *Content render hook fills. Owns exactly one element. The function-component replacement
-for ContentInjector, with the same results and the same memoization, which keeps *Content call counts
-down. See planning/hook-toolkit-spec.md §6.3
+The slot a *Content render hook fills. Owns exactly one element. Memoized on its props (renderProps
+shallowly), which keeps *Content call counts down. Pair with useRenderHookEl for the area's *Class
+and mount hooks. See planning/hook-toolkit-spec.md §6.3
 */
 function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) {
   const { options } = useViewContext()
@@ -51,7 +51,7 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
   let generatorMeta: any
 
   if (props.className || attrs.className) {
-    attrs.className = joinClassNames(props.className, attrs.className) // in ContentInjector's order
+    attrs.className = joinClassNames(props.className, attrs.className)
   }
   if (props.style) {
     attrs.style = props.style
@@ -92,7 +92,7 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
   // for the unmount cleanup, which must use the latest committed values, not the first render's
   const latestRef = useLatest({ options, generatorMeta, renderProps, generatorName: props.generatorName })
 
-  // after every commit of this component, like ContentInjector's componentDidMount/DidUpdate
+  // after every commit of this component
   useLayoutEffect(() => {
     const currentDomNodes = currentDomNodesRef.current
 
@@ -121,6 +121,22 @@ function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) 
   }, [])
 
   return createElement(props.tag as any, attrs, innerContent)
+}
+
+/*
+Does UI-framework provide custom way of rendering that does not use Preact VDOM
+AND does the calendar's options define custom rendering?
+AKA. Should we NOT render the default content?
+*/
+export function hasCustomRenderingHandler(
+  generatorName: string | undefined,
+  options: ViewOptions,
+): boolean {
+  return Boolean(
+    options.handleCustomRendering &&
+    generatorName &&
+    options.customRenderingMetaMap?.[generatorName],
+  )
 }
 
 function triggerCustomRendering<RenderProps>(

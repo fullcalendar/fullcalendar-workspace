@@ -211,7 +211,6 @@ export { EventImpl } from './api/EventImpl'
 export { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 export { RenderId } from './content-inject/RenderId'
 
-export { ContentContainer } from './content-inject/ContentContainer'
 export { generateClassName } from './common/render-hook'
 export type { CustomRendering } from './content-inject/CustomRenderingStore'
 export { CustomRenderingStore } from './content-inject/CustomRenderingStore'

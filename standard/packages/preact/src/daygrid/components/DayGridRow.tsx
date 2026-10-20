@@ -17,7 +17,9 @@ import { createFormatter } from '../../datelib/formatting'
 import { watchHeight, afterSize } from '../../component-util/resize-observer'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { joinClassNames } from '../../util/html'
-import { ContentContainer } from '../../content-inject/ContentContainer'
+import { CustomContent } from '../../content-inject/CustomContent'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { renderText } from '../../common/render-hook'
 import { ForegroundEvent, listItemEventVariant, rowEventVariant } from '../../common/events'
 import { memoize } from '../../util/memoize'
@@ -224,8 +226,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     // Table mode gives this theme-positioned node a row-wide canvas hosted by the first cell.
     const weekNumberNode = (props.showWeekNumbers && !props.cellIsMicro) ? (
-      <ContentContainer<InlineWeekNumberInfo>
-        tag="div"
+      <InlineWeekNumber
         attrs={{
           ...(
             hasNavLink
@@ -241,14 +242,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           'role': undefined, // HACK: a 'link' role can't be child of a 'row' role
           'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
         }}
-        className={DAY_GRID_EVENT_Z_CLASS}
         renderProps={weekNumberRenderProps}
-        generatorName="inlineWeekNumberContent"
-        customGenerator={options.inlineWeekNumberContent}
-        defaultGenerator={renderText}
-        classNameGenerator={options.inlineWeekNumberClass}
-        didMount={options.inlineWeekNumberDidMount}
-        willUnmount={options.inlineWeekNumberWillUnmount}
       />
     ) : null
 
@@ -773,6 +767,30 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     return props.dateSelectionSegs
   }
+}
+
+// the inline week number, with its inlineWeekNumber* render hooks
+function InlineWeekNumber(props: { attrs: Record<string, any>, renderProps: InlineWeekNumberInfo }) {
+  const { options } = useViewContext()
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.inlineWeekNumberClass,
+    didMount: options.inlineWeekNumberDidMount,
+    willUnmount: options.inlineWeekNumberWillUnmount,
+    renderProps: props.renderProps,
+  })
+
+  return (
+    <CustomContent<InlineWeekNumberInfo>
+      tag="div"
+      attrs={props.attrs}
+      className={joinClassNames(DAY_GRID_EVENT_Z_CLASS, renderHookEl.className)}
+      elRef={renderHookEl.ref}
+      renderProps={props.renderProps}
+      generatorName="inlineWeekNumberContent"
+      generator={options.inlineWeekNumberContent}
+      fallback={renderText}
+    />
+  )
 }
 
 function buildWeekNumberRenderProps(

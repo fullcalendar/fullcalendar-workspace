@@ -5,7 +5,7 @@ import {
   getEventTagAndAttrs, setElEventRange,
 } from '../component-util/event-rendering'
 import { CustomContent } from '../content-inject/CustomContent'
-import { ElRef } from '../content-inject/ContentInjector'
+import { ElRef } from '../content-inject/el-props'
 import { useViewContext } from '../hooks/useViewContext'
 import { useMountHooks } from '../hooks/useMountHooks'
 import { EventImpl } from '../api/EventImpl'

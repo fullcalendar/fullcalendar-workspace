@@ -1,6 +1,6 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  ContentContainer,
+  CustomContent,
   DateMarker,
   DateProfile,
   DateRange,
@@ -8,7 +8,10 @@ import {
   memoize,
   memoizeObjArg,
   SplittableProps,
+  useRenderHookEl,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
+import { type ReactNode } from 'react'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineBg } from '../../timeline/components/TimelineBg'
 import {
@@ -140,11 +143,8 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
           className={joinClassNames(options.resourceColumnDividerClass)}
         />
 
-        <ContentContainer
-          tag="td"
-          attrs={{
-            'data-resource-id': resource.id,
-          }}
+        <ResourcePrintLaneCell
+          resourceId={resource.id}
           className={joinClassNames(
             resourceLaneClassName,
             options.resourceRowClass,
@@ -156,62 +156,89 @@ export class ResourcePrintRow extends TimelinePrintRenderer<ResourcePrintRowProp
             !props.isNotLast && classNames.borderlessBottom,
           )}
           renderProps={renderProps}
-          generatorName={undefined}
-          didMount={options.resourceLaneDidMount}
-          willUnmount={options.resourceLaneWillUnmount}
         >
-          {() => (
-            <div className={classNames.rel}>
-              <div className={joinClassNames(classNames.fill, classNames.crop)}>
-                <TimelineBg
-                  tDateProfile={props.tDateProfile}
-                  nowDate={props.nowDate}
-                  nowMs={props.nowMs}
-                  todayRange={props.todayRange}
-                  bgEventSegs={slicedProps.bgEventSegs}
-                  businessHourSegs={slicedProps.businessHourSegs}
-                  dateSelectionSegs={null}
-                  eventResizeSegs={null}
-                  renderProps={eventRenderProps}
-                  slotWidth={props.slotWidth}
-                  clipStart={props.timeCanvasClipStart}
-                />
-              </div>
-              <ContentContainer
-                tag="div"
-                className={joinClassNames(classNames.noMargin, classNames.noShrink)}
-                renderProps={renderProps}
-                generatorName="resourceLaneTopContent"
-                customGenerator={options.resourceLaneTopContent}
-                classNameGenerator={options.resourceLaneTopClass}
-              />
-              {eventBands.map((band) => (
-                <TimelinePrintEventBand
-                  {...timelineBandProps}
-                  key={band.levelIndex}
-                  band={band}
-                  heightRefMap={this.printHeights.segHeightRefMap}
-                />
-              ))}
-              {moreLinkBand && (
-                <TimelinePrintMoreLinkBand
-                  {...timelineBandProps}
-                  band={moreLinkBand}
-                  heightRefMap={this.printHeights.moreLinkHeightRefMap}
-                />
-              )}
-              <ContentContainer
-                tag="div"
-                className={joinClassNames(classNames.noMargin, classNames.noShrink)}
-                renderProps={renderProps}
-                generatorName="resourceLaneBottomContent"
-                customGenerator={options.resourceLaneBottomContent}
-                classNameGenerator={options.resourceLaneBottomClass}
+          <div className={classNames.rel}>
+            <div className={joinClassNames(classNames.fill, classNames.crop)}>
+              <TimelineBg
+                tDateProfile={props.tDateProfile}
+                nowDate={props.nowDate}
+                nowMs={props.nowMs}
+                todayRange={props.todayRange}
+                bgEventSegs={slicedProps.bgEventSegs}
+                businessHourSegs={slicedProps.businessHourSegs}
+                dateSelectionSegs={null}
+                eventResizeSegs={null}
+                renderProps={eventRenderProps}
+                slotWidth={props.slotWidth}
+                clipStart={props.timeCanvasClipStart}
               />
             </div>
-          )}
-        </ContentContainer>
+            <CustomContent
+              tag="div"
+              className={joinClassNames(
+                classNames.noMargin,
+                classNames.noShrink,
+                generateClassName(options.resourceLaneTopClass, renderProps),
+              )}
+              renderProps={renderProps}
+              generatorName="resourceLaneTopContent"
+              generator={options.resourceLaneTopContent}
+            />
+            {eventBands.map((band) => (
+              <TimelinePrintEventBand
+                {...timelineBandProps}
+                key={band.levelIndex}
+                band={band}
+                heightRefMap={this.printHeights.segHeightRefMap}
+              />
+            ))}
+            {moreLinkBand && (
+              <TimelinePrintMoreLinkBand
+                {...timelineBandProps}
+                band={moreLinkBand}
+                heightRefMap={this.printHeights.moreLinkHeightRefMap}
+              />
+            )}
+            <CustomContent
+              tag="div"
+              className={joinClassNames(
+                classNames.noMargin,
+                classNames.noShrink,
+                generateClassName(options.resourceLaneBottomClass, renderProps),
+              )}
+              renderProps={renderProps}
+              generatorName="resourceLaneBottomContent"
+              generator={options.resourceLaneBottomContent}
+            />
+          </div>
+        </ResourcePrintLaneCell>
       </tr>
     )
   }
+}
+
+interface ResourcePrintLaneCellProps {
+  resourceId: string
+  className: string
+  renderProps: ReturnType<typeof refineResourceLaneRenderProps>
+  children: ReactNode
+}
+
+// the lane's cell, with its resourceLane* mount hooks. its class is generated by the row
+function ResourcePrintLaneCell({ resourceId, className, renderProps, children }: ResourcePrintLaneCellProps) {
+  const { options } = useViewContext()
+  const renderHookEl = useRenderHookEl({
+    classGenerator: undefined,
+    didMount: options.resourceLaneDidMount,
+    willUnmount: options.resourceLaneWillUnmount,
+    renderProps,
+  })
+
+  return (
+    <td
+      data-resource-id={resourceId}
+      ref={renderHookEl.ref}
+      className={joinClassNames(renderHookEl.className, className)}
+    >{children}</td>
+  )
 }

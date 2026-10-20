@@ -4,15 +4,18 @@ import { DateProfile } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
 
 import { formatWithOrdinals } from '../util/misc'
-import { type ReactNode, type RefObject } from 'react'
+import { memo, useState, type ReactNode, type RefObject } from 'react'
 import { joinClassNames } from '../util/html'
-import { BaseComponent, setRef } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
 import { ViewContext } from '../ViewContext'
 import { MorePopover } from './MorePopover'
-import { ContentContainer } from '../content-inject/ContentContainer'
+import { CustomContent } from '../content-inject/CustomContent'
+import { useViewContext } from '../hooks/useViewContext'
+import { useRenderHookEl } from '../hooks/useRenderHookEl'
+import { useStableCallback } from '../hooks/useStableCallback'
+import { useForwardedElRef } from '../hooks/useForwardedElRef'
 import { generateClassName } from './render-hook'
-import { ElAttrsProps } from '../content-inject/ContentInjector'
+import { ElAttrsProps } from '../content-inject/el-props'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { EventRangeProps } from '../component-util/event-rendering'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range'
@@ -58,157 +61,94 @@ export interface MoreLinkTriggerProps extends Partial<ElAttrsProps> {
   willUnmount?: (renderProps: MoreLinkInfo & { el: HTMLElement }) => void
 }
 
-interface MoreLinkContainerState {
-  isPopoverOpen: boolean
-}
-
 /*
 Renders only the themed, customizable more-link presentation. Interaction,
 popover state, and date-range semantics belong to MoreLinkContainer.
 */
-export class MoreLinkTrigger extends BaseComponent<MoreLinkTriggerProps> {
-  render() {
-    const { props, context } = this
-    const { options } = context
-    const renderProps = buildMoreLinkRenderProps(
-      props.num,
-      props.isNarrow,
-      props.isMicro,
-      props.display,
-      props.renderProps,
-      context,
-    )
+export const MoreLinkTrigger = memo(function MoreLinkTrigger(props: MoreLinkTriggerProps) {
+  const context = useViewContext()
+  const { options } = context
+  const renderProps = buildMoreLinkRenderProps(
+    props.num,
+    props.isNarrow,
+    props.isMicro,
+    props.display,
+    props.renderProps,
+    context,
+  )
+  const renderHookEl = useRenderHookEl({
+    classGenerator: options.moreLinkClass,
+    didMount: props.didMount,
+    willUnmount: props.willUnmount,
+    renderProps,
+    elRef: props.elRef,
+  })
 
-    return (
-      <ContentContainer
+  return (
+    <div
+      {...props.attrs}
+      ref={renderHookEl.ref}
+      className={joinClassNames(
+        renderHookEl.className,
+        generateClassName(
+          props.display === 'row'
+            ? options.rowMoreLinkClass
+            : options.columnMoreLinkClass,
+          renderProps,
+        ),
+        props.className,
+        props.display === 'row'
+          ? classNames.flexRow
+          : classNames.flexCol,
+        classNames.internalMoreLink,
+        classNames.cursorPointer,
+        props.attrs?.className,
+      )}
+      style={props.style}
+    >
+      <CustomContent
         tag='div'
-        elRef={props.elRef}
         className={joinClassNames(
+          generateClassName(options.moreLinkInnerClass, renderProps),
           generateClassName(
             props.display === 'row'
-              ? options.rowMoreLinkClass
-              : options.columnMoreLinkClass,
+              ? options.rowMoreLinkInnerClass
+              : options.columnMoreLinkInnerClass,
             renderProps,
           ),
-          props.className,
           props.display === 'row'
-            ? classNames.flexRow
-            : classNames.flexCol,
-          classNames.internalMoreLink,
-          classNames.cursorPointer,
+            ? classNames.stickyS
+            : classNames.stickyT,
         )}
-        style={props.style}
-        attrs={props.attrs}
         renderProps={renderProps}
         generatorName="moreLinkContent"
-        customGenerator={options.moreLinkContent}
-        defaultGenerator={renderMoreLinkText}
-        classNameGenerator={options.moreLinkClass}
-        didMount={props.didMount}
-        willUnmount={props.willUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            className={joinClassNames(
-              generateClassName(options.moreLinkInnerClass, renderProps),
-              generateClassName(
-                props.display === 'row'
-                  ? options.rowMoreLinkInnerClass
-                  : options.columnMoreLinkInnerClass,
-                renderProps,
-              ),
-              props.display === 'row'
-                ? classNames.stickyS
-                : classNames.stickyT,
-            )}
-          />
-        )}
-      </ContentContainer>
-    )
-  }
-}
+        generator={options.moreLinkContent}
+        fallback={renderMoreLinkText}
+      />
+    </div>
+  )
+})
 
-export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, MoreLinkContainerState> {
-  private linkEl: HTMLElement
+export const MoreLinkContainer = memo(function MoreLinkContainer(props: MoreLinkContainerProps) {
+  const context = useViewContext()
+  const { options, baseId } = context
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [linkElRef, handleLinkEl] = useForwardedElRef(props.elRef)
+  const moreCnt = props.hiddenSegs.length
+  const range = computeRange(props)
+  const popoverId = baseId + 'popover-' + range.start.toISOString()
+  const renderProps = buildMoreLinkRenderProps(
+    moreCnt,
+    props.isNarrow,
+    props.isMicro,
+    props.display,
+    props.renderProps,
+    context,
+  )
+  const hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], renderProps.longText)
 
-  state = {
-    isPopoverOpen: false,
-  }
-
-  render() {
-    const { props, state, context } = this
-    const { options, baseId } = context
-    const moreCnt = props.hiddenSegs.length
-    const range = computeRange(props)
-    const popoverId = baseId + 'popover-' + range.start.toISOString()
-    const renderProps = buildMoreLinkRenderProps(
-      moreCnt,
-      props.isNarrow,
-      props.isMicro,
-      props.display,
-      props.renderProps,
-      context,
-    )
-    const hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], renderProps.longText)
-
-    return (
-      <>
-        {Boolean(moreCnt) && (
-          <MoreLinkTrigger
-            num={moreCnt}
-            display={props.display}
-            isNarrow={props.isNarrow}
-            isMicro={props.isMicro}
-            renderProps={props.renderProps}
-            elRef={this.handleLinkEl}
-            className={props.className}
-            style={props.style}
-            attrs={{
-              ...props.attrs,
-              ...createAriaClickAttrs(this.handleClick),
-              title: hint,
-              'role': 'button',
-              'aria-haspopup': 'dialog',
-              'aria-expanded': state.isPopoverOpen,
-              'aria-controls': state.isPopoverOpen ? popoverId : undefined,
-            }}
-            didMount={options.moreLinkDidMount}
-            willUnmount={options.moreLinkWillUnmount}
-          />
-        )}
-        {state.isPopoverOpen && (
-          <MorePopover
-            id={popoverId}
-            titleId={popoverId + '-title'}
-            startDate={range.start}
-            endDate={range.end}
-            dateProfile={props.dateProfile}
-            todayRange={props.todayRange}
-            dateSpanProps={props.dateSpanProps}
-            renderProps={props.renderProps}
-            alignEl={props.alignElRef ? props.alignElRef.current : this.linkEl}
-            alignParentTop={props.alignParentTop}
-            forceTimed={props.forceTimed}
-            onClose={this.handlePopoverClose}
-            children={props.popoverContent()}
-          />
-        )}
-      </>
-    )
-  }
-
-  handleLinkEl = (linkEl: HTMLElement | null) => {
-    this.linkEl = linkEl
-
-    if (this.props.elRef) {
-      setRef(this.props.elRef, linkEl)
-    }
-  }
-
-  handleClick = (ev: MouseEvent) => {
-    let { props, context } = this
-    let { dateEnv, options } = context
+  const handleClick = (ev: MouseEvent) => {
+    let { dateEnv } = context
     let { moreLinkClick } = options
     let date = computeRange(props).start
 
@@ -238,19 +178,64 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
     }
 
     if (!moreLinkClick || moreLinkClick === 'popover') {
-      this.setState({ isPopoverOpen: true })
+      setIsPopoverOpen(true)
     } else if (typeof moreLinkClick === 'string') { // a view name
       context.calendarApi.zoomTo(date, moreLinkClick)
     }
   }
 
-  handlePopoverClose = () => {
-    if (this.linkEl) { // was null sometimes when initiating drag-n-drop would hide the popover
-      this.linkEl.focus()
+  const handlePopoverClose = useStableCallback(() => {
+    if (linkElRef.current) { // was null sometimes when initiating drag-n-drop would hide the popover
+      linkElRef.current.focus()
     }
-    this.setState({ isPopoverOpen: false })
-  }
-}
+    setIsPopoverOpen(false)
+  })
+
+  return (
+    <>
+      {Boolean(moreCnt) && (
+        <MoreLinkTrigger
+          num={moreCnt}
+          display={props.display}
+          isNarrow={props.isNarrow}
+          isMicro={props.isMicro}
+          renderProps={props.renderProps}
+          elRef={handleLinkEl}
+          className={props.className}
+          style={props.style}
+          attrs={{
+            ...props.attrs,
+            ...createAriaClickAttrs(handleClick),
+            title: hint,
+            'role': 'button',
+            'aria-haspopup': 'dialog',
+            'aria-expanded': isPopoverOpen,
+            'aria-controls': isPopoverOpen ? popoverId : undefined,
+          }}
+          didMount={options.moreLinkDidMount}
+          willUnmount={options.moreLinkWillUnmount}
+        />
+      )}
+      {isPopoverOpen && (
+        <MorePopover
+          id={popoverId}
+          titleId={popoverId + '-title'}
+          startDate={range.start}
+          endDate={range.end}
+          dateProfile={props.dateProfile}
+          todayRange={props.todayRange}
+          dateSpanProps={props.dateSpanProps}
+          renderProps={props.renderProps}
+          alignEl={props.alignElRef ? props.alignElRef.current : linkElRef.current}
+          alignParentTop={props.alignParentTop}
+          forceTimed={props.forceTimed}
+          onClose={handlePopoverClose}
+          children={props.popoverContent()}
+        />
+      )}
+    </>
+  )
+})
 
 function renderMoreLinkText(props: MoreLinkInfo) {
   return props.text
