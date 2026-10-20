@@ -1,23 +1,21 @@
 import { CssDimValue, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
-  BaseComponent,
   DateMarker,
   DateProfile,
   DateRange,
   generateClassName,
-  memoize,
   RefMap,
   SlicedProps,
   SplittableProps,
   ViewContainer,
   computeViewBorderless,
-  watchHeight,
-  watchWidth,
+  useReportedSize,
+  useViewContext,
   warn,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef } from 'react'
+import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createGroupId, GenericNode } from '../../resource/common/resource-hierarchy'
 import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
@@ -70,373 +68,364 @@ export interface ResourceTimelineLayoutPrintProps {
   indentWidth: number | undefined
 }
 
-interface ResourceTimelineLayoutPrintState {
-  headerHeight?: number
-  dividerWidth?: number
-}
+export const ResourceTimelineLayoutPrint = memo(function ResourceTimelineLayoutPrint(props: ResourceTimelineLayoutPrintProps) {
+  const context = useViewContext()
+  const [, setRenderCount] = useState(0)
+  const [headerHeight, setHeaderHeight] = useState<number | undefined>(undefined)
+  const [dividerWidth, setDividerWidth] = useState<number | undefined>(undefined)
+  // true until unmount, not just after mount: children report from their layout effects, which run
+  // before this one
+  const isActiveRef = useRef(true)
 
-export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineLayoutPrintProps, ResourceTimelineLayoutPrintState> {
-  state = {} as ResourceTimelineLayoutPrintState
-
-  // memoized
-  private buildPrintLayouts = memoize(buildPrintLayouts)
-  private buildPrintTableRows = memoize(buildPrintTableRows)
-
-  // handlers
-  private handleHeaderRowHeightChange = () => {
-    if (!this._isUnmounting) {
-      afterSize(this.boundForceUpdate)
+  // the header rows' heights. a change re-renders, after size
+  const [headerRowRefMaps] = useState(() => {
+    const rerender = () => {
+      if (isActiveRef.current) {
+        setRenderCount(incrementCounter)
+      }
     }
+    const handleHeaderRowHeightChange = () => {
+      if (isActiveRef.current) {
+        afterSize(rerender)
+      }
+    }
+    return {
+      timelineHeaderRowInnerHeightMap: new RefMap<number, number>(handleHeaderRowHeightChange),
+      dataGridHeaderRowInnerHeightMap: new RefMap<boolean, number>(handleHeaderRowHeightChange),
+    }
+  })
+  const { timelineHeaderRowInnerHeightMap, dataGridHeaderRowInnerHeightMap } = headerRowRefMaps
+  const handleHeaderEl = useReportedSize({
+    watchHeight: true,
+    onSize(_width, height) {
+      setHeaderHeight(height)
+    },
+  })
+  const handleDividerProbeEl = useReportedSize({
+    watchWidth: true,
+    onSize(width) {
+      setDividerWidth(width)
+    },
+  })
+
+  useLayoutEffect(() => {
+    isActiveRef.current = true
+
+    return () => {
+      isActiveRef.current = false
+    }
+  }, [])
+
+  let { dateProfile } = props
+  let { options, viewSpec } = context
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+
+  const { tDateProfile, todayRange, nowDate, hasNesting } = props
+  const { slotWidth, timeCanvasWidth } = props
+  const { splitProps, bgSlicedProps, timeCanvasClipStart } = props
+  const { superHeaderRendering, groupColCnt, colSpecs } = props
+
+  const { cellRows } = tDateProfile
+  const headerContentHeight = computeResourceTimelineHeaderHeight(
+    dataGridHeaderRowInnerHeightMap.current,
+    timelineHeaderRowInnerHeightMap.current,
+    Boolean(superHeaderRendering),
+    cellRows.length,
+  )
+  const tableDisplayInfo = {
+    borderlessX,
+    borderlessTop,
+    borderlessBottom,
+    multiMonthColumns: 0,
   }
-
-  private boundForceUpdate = () => {
-    if (!this._isUnmounting) {
-      this.forceUpdate()
-    }
-  }
-
-  // refs
-  private headerElRef = createRef<HTMLTableSectionElement>()
-  private dividerProbeElRef = createRef<HTMLDivElement>()
-  private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeaderRowHeightChange)
-  private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeaderRowHeightChange)
-
-  // internal
-  private _isUnmounting: boolean
-  private disconnectHeaderHeight?: () => void
-  private disconnectDividerWidth?: () => void
-
-  render() {
-    let {
-      props,
-      context,
-      dataGridHeaderRowInnerHeightMap,
-      timelineHeaderRowInnerHeightMap,
-    } = this
-    let { dateProfile } = props
-    let { options, viewSpec } = context
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-
-    const { tDateProfile, todayRange, nowDate, hasNesting } = props
-    const { slotWidth, timeCanvasWidth } = props
-    const { splitProps, bgSlicedProps, timeCanvasClipStart } = props
-    const { superHeaderRendering, groupColCnt, colSpecs } = props
-
-    const { cellRows } = tDateProfile
-    const headerContentHeight = computeResourceTimelineHeaderHeight(
-      dataGridHeaderRowInnerHeightMap.current,
-      timelineHeaderRowInnerHeightMap.current,
-      Boolean(superHeaderRendering),
-      cellRows.length,
-    )
-    const tableDisplayInfo = {
-      borderlessX,
-      borderlessTop,
-      borderlessBottom,
-      multiMonthColumns: 0,
-    }
-    const headerDividerClassName = generateClassName(options.slotHeaderDividerClass, {
-      inTableHeader: true,
-      options: { dayMinWidth: options.dayMinWidth },
-    })
-    const { resourceHierarchy } = props
-    let printLayouts = this.buildPrintLayouts(
+  const headerDividerClassName = generateClassName(options.slotHeaderDividerClass, {
+    inTableHeader: true,
+    options: { dayMinWidth: options.dayMinWidth },
+  })
+  const { resourceHierarchy } = props
+  let printLayouts = useMemo(
+    () => buildPrintLayouts(
       resourceHierarchy,
       hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
-    )
+    ),
+    [resourceHierarchy, hasNesting, props.resourceEntityExpansions, options.resourcesInitiallyExpanded],
+  )
 
-    if (printLayouts.length > options.printMaxRows) {
-      printLayouts = printLayouts.slice(0, options.printMaxRows)
-      warn(`Rows truncated for print. Only included the first ${options.printMaxRows} rows.`)
-    }
+  if (printLayouts.length > options.printMaxRows) {
+    printLayouts = printLayouts.slice(0, options.printMaxRows)
+    warn(`Rows truncated for print. Only included the first ${options.printMaxRows} rows.`)
+  }
 
-    const printRows = this.buildPrintTableRows(printLayouts, groupColCnt)
-    const resourceColWidths = computeResourceColWidths(
-      props.spreadsheetWidthConfig,
-      props.spreadsheetColWidths,
-      colSpecs.length,
-    )
-    const dividerWidth = this.state.dividerWidth ?? 0
-    const timelineViewportInsetStart = serializeDimConfig({
-      pixels: props.spreadsheetWidthConfig.pixels + dividerWidth,
-      frac: props.spreadsheetWidthConfig.frac,
-    })
-    const timelineHeaderCell = (
-      <th
-        rowSpan={superHeaderRendering ? 2 : undefined}
-        className={joinClassNames(
-          classNames.noPadding,
-          classNames.borderless,
-          classNames.crop,
-        )}
+  const printRows = useMemo(() => buildPrintTableRows(printLayouts, groupColCnt), [printLayouts, groupColCnt])
+  const resourceColWidths = computeResourceColWidths(
+    props.spreadsheetWidthConfig,
+    props.spreadsheetColWidths,
+    colSpecs.length,
+  )
+  const dividerWidthOr0 = dividerWidth ?? 0
+  const timelineViewportInsetStart = serializeDimConfig({
+    pixels: props.spreadsheetWidthConfig.pixels + dividerWidthOr0,
+    frac: props.spreadsheetWidthConfig.frac,
+  })
+  const timelineHeaderCell = (
+    <th
+      rowSpan={superHeaderRendering ? 2 : undefined}
+      className={joinClassNames(
+        classNames.noPadding,
+        classNames.borderless,
+        classNames.crop,
+      )}
+    >
+      <div
+        className={joinClassNames(classNames.rel, classNames.flexCol)}
+        style={{
+          width: timeCanvasWidth,
+          height: headerContentHeight,
+          insetInlineStart: -timeCanvasClipStart,
+        }}
       >
-        <div
-          className={joinClassNames(classNames.rel, classNames.flexCol)}
-          style={{
-            width: timeCanvasWidth,
-            height: headerContentHeight,
-            insetInlineStart: -timeCanvasClipStart,
-          }}
-        >
-          {cellRows.map((cells, rowIndex) => {
-            const rowLevel = cellRows.length - rowIndex - 1
-            return (
-              <TimelineHeaderRow
-                key={rowLevel}
-                className={classNames.grow}
-                dateProfile={props.dateProfile}
-                tDateProfile={tDateProfile}
-                nowDate={nowDate}
-                nowMs={props.nowMs}
-                todayRange={todayRange}
-                rowLevel={rowLevel}
-                cells={cells}
-                slotWidth={slotWidth}
-                innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
-              />
-            )
-          })}
-        </div>
-      </th>
-    )
-    const headerDividerCell = (
-      <th
-        rowSpan={superHeaderRendering ? 2 : undefined}
-        className={joinClassNames(options.resourceColumnDividerClass)}
+        {cellRows.map((cells, rowIndex) => {
+          const rowLevel = cellRows.length - rowIndex - 1
+          return (
+            <TimelineHeaderRow
+              key={rowLevel}
+              className={classNames.grow}
+              dateProfile={props.dateProfile}
+              tDateProfile={tDateProfile}
+              nowDate={nowDate}
+              nowMs={props.nowMs}
+              todayRange={todayRange}
+              rowLevel={rowLevel}
+              cells={cells}
+              slotWidth={slotWidth}
+              innerHeighRef={timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
+            />
+          )
+        })}
+      </div>
+    </th>
+  )
+  const headerDividerCell = (
+    <th
+      rowSpan={superHeaderRendering ? 2 : undefined}
+      className={joinClassNames(options.resourceColumnDividerClass)}
+    />
+  )
+
+  return (
+    <ViewContainer
+      viewSpec={viewSpec}
+      className={joinClassNames(
+        props.className,
+        classNames.rel,
+        classNames.crop,
+        classNames.isolate,
+      )}
+    >
+      <div
+        ref={handleDividerProbeEl}
+        className={joinClassNames(
+          options.resourceColumnDividerClass,
+          classNames.offscreen,
+        )}
       />
-    )
 
-    return (
-      <ViewContainer
-        viewSpec={viewSpec}
+      <div
         className={joinClassNames(
-          props.className,
-          classNames.rel,
+          classNames.abs,
           classNames.crop,
-          classNames.isolate,
+          classNames.end0,
+          classNames.pointerEventsNone,
+          classNames.z0,
+        )}
+        style={{
+          top: headerHeight ?? 0,
+          // Compensates for Firefox miscomputing absolute height with repeated print headers.
+          bottom: '-5%',
+          insetInlineStart: timelineViewportInsetStart,
+        }}
+      >
+        <TimelineSlats
+          dateProfile={dateProfile}
+          tDateProfile={tDateProfile}
+          nowDate={nowDate}
+          nowMs={props.nowMs}
+          todayRange={todayRange}
+          slotWidth={slotWidth}
+          clipStart={timeCanvasClipStart}
+        />
+        <TimelineBg
+          tDateProfile={tDateProfile}
+          nowDate={nowDate}
+          nowMs={props.nowMs}
+          todayRange={todayRange}
+          bgEventSegs={bgSlicedProps.bgEventSegs}
+          businessHourSegs={props.hasResourceBusinessHours
+            ? null
+            : bgSlicedProps.businessHourSegs}
+          dateSelectionSegs={null}
+          eventResizeSegs={null}
+          slotWidth={slotWidth}
+          clipStart={timeCanvasClipStart}
+        />
+      </div>
+
+      <table
+        className={joinClassNames(
+          generateClassName(options.tableClass, tableDisplayInfo),
+          classNames.printTable,
+          classNames.rel,
+          classNames.z1,
         )}
       >
-        <div
-          ref={this.dividerProbeElRef}
-          className={joinClassNames(
-            options.resourceColumnDividerClass,
-            classNames.offscreen,
-          )}
-        />
-
-        <div
-          className={joinClassNames(
-            classNames.abs,
-            classNames.crop,
-            classNames.end0,
-            classNames.pointerEventsNone,
-            classNames.z0,
-          )}
-          style={{
-            top: this.state.headerHeight ?? 0,
-            // Compensates for Firefox miscomputing absolute height with repeated print headers.
-            bottom: '-5%',
-            insetInlineStart: timelineViewportInsetStart,
-          }}
+        <colgroup>
+          {colSpecs.map((_colSpec, colIndex) => (
+            <col
+              key={colIndex}
+              style={{ width: resourceColWidths?.[colIndex] }}
+            />
+          ))}
+          <col style={{ width: dividerWidth }} />
+          <col />
+        </colgroup>
+        <thead
+          ref={handleHeaderEl}
+          className={generateClassName(options.tableHeaderClass, {
+            ...tableDisplayInfo,
+            isSticky: false,
+          })}
         >
-          <TimelineSlats
-            dateProfile={dateProfile}
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            nowMs={props.nowMs}
-            todayRange={todayRange}
-            slotWidth={slotWidth}
-            clipStart={timeCanvasClipStart}
-          />
-          <TimelineBg
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            nowMs={props.nowMs}
-            todayRange={todayRange}
-            bgEventSegs={bgSlicedProps.bgEventSegs}
-            businessHourSegs={props.hasResourceBusinessHours
-              ? null
-              : bgSlicedProps.businessHourSegs}
-            dateSelectionSegs={null}
-            eventResizeSegs={null}
-            slotWidth={slotWidth}
-            clipStart={timeCanvasClipStart}
-          />
-        </div>
-
-        <table
-          className={joinClassNames(
-            generateClassName(options.tableClass, tableDisplayInfo),
-            classNames.printTable,
-            classNames.rel,
-            classNames.z1,
-          )}
-        >
-          <colgroup>
-            {colSpecs.map((_colSpec, colIndex) => (
-              <col
-                key={colIndex}
-                style={{ width: resourceColWidths?.[colIndex] }}
-              />
-            ))}
-            <col style={{ width: this.state.dividerWidth }} />
-            <col />
-          </colgroup>
-          <thead
-            ref={this.headerElRef}
-            className={generateClassName(options.tableHeaderClass, {
-              ...tableDisplayInfo,
-              isSticky: false,
-            })}
-          >
-            {superHeaderRendering ? (
-              <>
-                <tr>
-                  <SuperHeaderCell
-                    renderHooks={superHeaderRendering}
-                    indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
-                    colSpan={colSpecs.length}
-                    indentWidth={props.indentWidth}
-                    innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
-                    forPrint
-                  />
-                  {headerDividerCell}
-                  {timelineHeaderCell}
-                </tr>
-                <tr>
-                  <HeaderCells
-                    colSpecs={colSpecs}
-                    colWidths={undefined}
-                    indent={hasNesting}
-                    indentWidth={props.indentWidth}
-                    innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
-                    forPrint
-                  />
-                </tr>
-              </>
-            ) : (
+          {superHeaderRendering ? (
+            <>
+              <tr>
+                <SuperHeaderCell
+                  renderHooks={superHeaderRendering}
+                  indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                  colSpan={colSpecs.length}
+                  indentWidth={props.indentWidth}
+                  innerHeightRef={dataGridHeaderRowInnerHeightMap.createRef(true)}
+                  forPrint
+                />
+                {headerDividerCell}
+                {timelineHeaderCell}
+              </tr>
               <tr>
                 <HeaderCells
                   colSpecs={colSpecs}
                   colWidths={undefined}
                   indent={hasNesting}
                   indentWidth={props.indentWidth}
-                  innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
+                  innerHeightRef={dataGridHeaderRowInnerHeightMap.createRef(false)}
                   forPrint
                 />
-                {headerDividerCell}
-                {timelineHeaderCell}
               </tr>
-            )}
-            {/* Header-divider strip, interleaved with the resource-column divider. */}
+            </>
+          ) : (
             <tr>
-              <th
-                colSpan={colSpecs.length}
-                className={joinClassNames(classNames.noPadding, headerDividerClassName)}
+              <HeaderCells
+                colSpecs={colSpecs}
+                colWidths={undefined}
+                indent={hasNesting}
+                indentWidth={props.indentWidth}
+                innerHeightRef={dataGridHeaderRowInnerHeightMap.createRef(false)}
+                forPrint
               />
-              {/* Prevent the divider cell's vertical padding from increasing the header-border row height. */}
-              <th
-                className={joinClassNames(
-                  options.resourceColumnDividerClass,
-                  classNames.noPaddingY,
-                )}
-              />
-              <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
+              {headerDividerCell}
+              {timelineHeaderCell}
             </tr>
-          </thead>{/* Header END */}
-          {/* Body START */}
-          <tbody
-            className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
-          >
-            {/* BODY ROWS */}
-            {printRows.map((printRow, rowIndex0) => { // index is 0-based
-              const isNotLast = rowIndex0 < printRows.length - 1
+          )}
+          {/* Header-divider strip, interleaved with the resource-column divider. */}
+          <tr>
+            <th
+              colSpan={colSpecs.length}
+              className={joinClassNames(classNames.noPadding, headerDividerClassName)}
+            />
+            {/* Prevent the divider cell's vertical padding from increasing the header-border row height. */}
+            <th
+              className={joinClassNames(
+                options.resourceColumnDividerClass,
+                classNames.noPaddingY,
+              )}
+            />
+            <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
+          </tr>
+        </thead>{/* Header END */}
+        {/* Body START */}
+        <tbody
+          className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
+        >
+          {/* BODY ROWS */}
+          {printRows.map((printRow, rowIndex0) => { // index is 0-based
+            const isNotLast = rowIndex0 < printRows.length - 1
 
-              if (printRow.type === 'resource') {
-                const resource = printRow.entity
+            if (printRow.type === 'resource') {
+              const resource = printRow.entity
 
-                return (
-                  <ResourcePrintRow
-                    {...splitProps[resource.id]}
-                    key={resource.id}
-                    layout={printRow}
-                    rowIndex={rowIndex0}
-                    rowCount={printRows.length}
-                    isNotLast={isNotLast}
-                    dateProfile={dateProfile}
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    nowMs={props.nowMs}
-                    todayRange={todayRange}
-                    colSpecs={colSpecs}
-                    groupColCnt={groupColCnt}
-                    timeCanvasClipStart={timeCanvasClipStart}
-                    slotWidth={slotWidth}
+              return (
+                <ResourcePrintRow
+                  {...splitProps[resource.id]}
+                  key={resource.id}
+                  layout={printRow}
+                  rowIndex={rowIndex0}
+                  rowCount={printRows.length}
+                  isNotLast={isNotLast}
+                  dateProfile={dateProfile}
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  nowMs={props.nowMs}
+                  todayRange={todayRange}
+                  colSpecs={colSpecs}
+                  groupColCnt={groupColCnt}
+                  timeCanvasClipStart={timeCanvasClipStart}
+                  slotWidth={slotWidth}
+                  indentWidth={props.indentWidth}
+                  businessHours={props.hasResourceBusinessHours
+                    ? splitProps[resource.id].businessHours
+                    : null}
+                  dateSelection={null}
+                  eventDrag={null}
+                  eventResize={null}
+                />
+              )
+            } else {
+              const group = printRow.entity
+              const groupKey = createGroupId(group)
+
+              return (
+                <tr
+                  key={groupKey}
+                  className={classNames.breakInsideAvoid}
+                >
+                  <ResourceGroupHeaderCell
+                    group={group}
+                    isExpanded={printRow.isExpanded}
+                    colSpan={props.colSpecs.length}
+                    borderBottom={isNotLast}
                     indentWidth={props.indentWidth}
-                    businessHours={props.hasResourceBusinessHours
-                      ? splitProps[resource.id].businessHours
-                      : null}
-                    dateSelection={null}
-                    eventDrag={null}
-                    eventResize={null}
+                    forPrint
                   />
-                )
-              } else {
-                const group = printRow.entity
-                const groupKey = createGroupId(group)
+                  <td
+                    className={joinClassNames(options.resourceColumnDividerClass)}
+                  />
+                  <GroupLane
+                    group={group}
+                    borderBottom={isNotLast}
+                    forPrint
+                  />
+                </tr>
+              )
+            }
+          })}
+        </tbody>
+      </table>
+    </ViewContainer>
+  )
+})
 
-                return (
-                  <tr
-                    key={groupKey}
-                    className={classNames.breakInsideAvoid}
-                  >
-                    <ResourceGroupHeaderCell
-                      group={group}
-                      isExpanded={printRow.isExpanded}
-                      colSpan={props.colSpecs.length}
-                      borderBottom={isNotLast}
-                      indentWidth={props.indentWidth}
-                      forPrint
-                    />
-                    <td
-                      className={joinClassNames(options.resourceColumnDividerClass)}
-                    />
-                    <GroupLane
-                      group={group}
-                      borderBottom={isNotLast}
-                      forPrint
-                    />
-                  </tr>
-                )
-              }
-            })}
-          </tbody>
-        </table>
-      </ViewContainer>
-    )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    this.disconnectHeaderHeight = watchHeight(this.headerElRef.current, (headerHeight) => {
-      if (!this._isUnmounting && headerHeight !== this.state.headerHeight) {
-        this.setState({ headerHeight })
-      }
-    })
-    this.disconnectDividerWidth = watchWidth(this.dividerProbeElRef.current, (dividerWidth) => {
-      if (!this._isUnmounting && dividerWidth !== this.state.dividerWidth) {
-        this.setState({ dividerWidth })
-      }
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectHeaderHeight?.()
-    this.disconnectDividerWidth?.()
-  }
+function incrementCounter(n: number): number {
+  return n + 1
 }
 
 function computeResourceColWidths(

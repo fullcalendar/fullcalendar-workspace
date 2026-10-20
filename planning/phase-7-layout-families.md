@@ -279,3 +279,33 @@ Steps:
 - One React-runtime run of the scheduler suite hung (41 minutes, 317 failures, disconnected). The
   same filter re-run took 2.5 minutes with only the known destroy failures, so it was the
   environment, not the change.
+
+## ResourceTimeline
+
+Plan: `phase-7-resource-timeline-plan.md` (the layout's decomposition).
+
+### Step 1: everything but the layout
+
+- **Spreadsheet:** `BodySection`, `ResourceIndent`, `ResourceGroupSubrow` (pure memo functions),
+  `ResourceSubrow` (`memoWithEquality` with array equality for `colWidths`, as its
+  `addPropsEquality` did; reports its tallest cell after size), `HeaderCells` (one `ElementDragging`
+  per column resizer, from the resizer's ref callback as before).
+- **`ResizableTwoCol`**: the divider's dragging is created in a mount effect and destroyed on cleanup.
+- **Fixed in passing:** both registered a new `dragmove` (and `dragend`) listener on every
+  `dragstart` and never removed them, so each drag added another set. Now each dragging registers
+  its listeners once, and `dragstart` only captures the starting widths.
+- **`ResourceLane`**: its top and bottom content heights come from `useReportedSize`, the events'
+  from `TimelineFg`, summed and reported after size.
+- **`ResourceTimelineLayoutPrint`** and **`ResourcePrintRow`** (on `useTimelinePrintBands`, so
+  `TimelinePrintRenderer` is gone).
+- **`ResourceTimelineView`** stays a class rendering a function body, with `useNow` (the expander
+  probe beside the layout is memo with constant props, so a tick doesn't re-render it).
+- **Lesson: a parent's "mounted" flag set in its layout effect is too late for its children.**
+  Children run their layout effects first, and `TimelineFg` reports its height synchronously from
+  its own. `ResourceLane`'s guard dropped that report, so a re-added resource kept its old row height
+  (caught by "removing and readding all resource/events should not retain old resource height").
+  The class only guarded after unmount (`_isUnmounting` was undefined before mount). Guards that
+  children can reach synchronously now start `true`, only turning false on unmount
+  (`ResourceLane`, `ResourceTimelineLayoutPrint`'s header rows). Guards reached through
+  `afterSize` are fine either way, since it drains after the whole commit.
+

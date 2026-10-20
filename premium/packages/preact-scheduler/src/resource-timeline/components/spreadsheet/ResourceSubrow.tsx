@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { afterSize, BaseComponent, isArraysEqual, RefMap, setRef, ViewContext } from '@fullcalendar/preact/protected-api'
+import { afterSize, isArraysEqual, memoWithEquality, RefMap, setRef, useLatest, useViewContext } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import type { Ref } from 'react'
+import { useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'
 import { ResourceCell } from './ResourceCell'
 import { ColSpec } from '../../structs'
@@ -39,95 +39,93 @@ export interface ResourceSubrowProps {
 /*
 For screen-only
 */
-export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewContext> {
-  // refs
-  private innerHeightRefMap = new RefMap<number, number>(() => {
-    afterSize(this.handleInnerHeights)
-  })
-  private currentInnerHeight: number | null = null
-  private _isUnmounting: boolean
+export const ResourceSubrow = memoWithEquality(function ResourceSubrow(props: ResourceSubrowProps) {
+  const { options } = useViewContext()
+  const { resource, resourceFields, colSpecs } = props
 
-  render() {
-    const { props, innerHeightRefMap } = this
-    const { resource, resourceFields, colSpecs } = props
-    const { options } = this.context
+  // reports the tallest cell's inner height
+  const isActiveRef = useRef(false)
+  const propsRef = useLatest(props)
+  const [innerHeightRefMap] = useState(() => {
+    let currentInnerHeight: number | null = null
 
-    const colWidths = props.colWidths || []
+    const handleInnerHeights = () => {
+      if (isActiveRef.current) {
+        let max: number | null = null
 
-    return (
-      <div
-        role={props.role as any} // !!!
-        className={joinClassNames(
-          options.resourceRowClass,
-          props.className, // what for???
-          classNames.flexRow,
-          classNames.borderlessX,
-          classNames.borderlessTop,
-          !props.borderBottom && classNames.borderlessBottom,
-        )}
-        style={{
-          top: props.top,
-          height: props.height,
-        }}
-      >
-        {mapRange(props.colStartIndex, colSpecs.length, (i) => {
-          const colSpec = colSpecs[i]
-          const fieldValue = colSpec.field ? resourceFields[colSpec.field] :
-            (resource.title || getPublicId(resource.id))
+        for (const innerHeight of innerHeightRefMap.current.values()) {
+          if (max == null || innerHeight > max) {
+            max = innerHeight
+          }
+        }
 
-          return (
-            <ResourceCell
-              key={i} // eslint-disable-line react/no-array-index-key
-              cellIdPrefix={props.cellIdPrefix}
-              cellRowIndex={props.cellRowIndex}
-              inTreeGrid={props.inTreeGrid}
-              cellColIndex={props.cellIdPrefix ? i : undefined}
-              colSpec={colSpec}
-              resource={resource}
-              field={colSpec.field || 'title'}
-              fieldValue={fieldValue}
-              indent={props.indent}
-              hasChildren={props.hasChildren}
-              isExpanded={props.isExpanded}
-              innerHeightRef={innerHeightRefMap.createRef(i)}
-              width={colWidths[i]}
-              indentWidth={props.indentWidth}
-              borderStart={props.borderStart || Boolean(i)}
-            />
-          )
-        })}
-      </div>
-    )
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.currentInnerHeight = null
-  }
-
-  private handleInnerHeights = () => {
-    if (this._isUnmounting) return
-    const innerHeightMap = this.innerHeightRefMap.current
-    let max: number | null = null
-
-    for (const innerHeight of innerHeightMap.values()) {
-      if (max == null || innerHeight > max) {
-        max = innerHeight
+        if (currentInnerHeight !== max) {
+          currentInnerHeight = max
+          setRef(propsRef.current.innerHeightRef, max)
+        }
       }
     }
+    const innerHeightRefMap = new RefMap<number, number>(() => {
+      afterSize(handleInnerHeights)
+    })
+    return innerHeightRefMap
+  })
 
-    if (this.currentInnerHeight !== max) {
-      this.currentInnerHeight = max
-      setRef(this.props.innerHeightRef, max)
+  useLayoutEffect(() => {
+    isActiveRef.current = true
+
+    return () => {
+      isActiveRef.current = false
     }
-  }
-}
+  }, [])
 
-ResourceSubrow.addPropsEquality({
+  const colWidths = props.colWidths || []
+
+  return (
+    <div
+      role={props.role as any} // !!!
+      className={joinClassNames(
+        options.resourceRowClass,
+        props.className, // what for???
+        classNames.flexRow,
+        classNames.borderlessX,
+        classNames.borderlessTop,
+        !props.borderBottom && classNames.borderlessBottom,
+      )}
+      style={{
+        top: props.top,
+        height: props.height,
+      }}
+    >
+      {mapRange(props.colStartIndex, colSpecs.length, (i) => {
+        const colSpec = colSpecs[i]
+        const fieldValue = colSpec.field ? resourceFields[colSpec.field] :
+          (resource.title || getPublicId(resource.id))
+
+        return (
+          <ResourceCell
+            key={i} // eslint-disable-line react/no-array-index-key
+            cellIdPrefix={props.cellIdPrefix}
+            cellRowIndex={props.cellRowIndex}
+            inTreeGrid={props.inTreeGrid}
+            cellColIndex={props.cellIdPrefix ? i : undefined}
+            colSpec={colSpec}
+            resource={resource}
+            field={colSpec.field || 'title'}
+            fieldValue={fieldValue}
+            indent={props.indent}
+            hasChildren={props.hasChildren}
+            isExpanded={props.isExpanded}
+            innerHeightRef={innerHeightRefMap.createRef(i)}
+            width={colWidths[i]}
+            indentWidth={props.indentWidth}
+            borderStart={props.borderStart || Boolean(i)}
+          />
+        )
+      })}
+    </div>
+  )
+}, {
   colWidths: isArraysEqual,
 })
 

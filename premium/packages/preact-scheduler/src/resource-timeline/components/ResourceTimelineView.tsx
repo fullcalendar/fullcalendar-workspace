@@ -1,15 +1,14 @@
 import {
-  DateComponent,
-  DateMarker,
-  DateRange,
+  BaseComponent,
   greatestDurationDenominator,
   isArraysEqual,
-  memoize,
-  NowTimer,
-  watchWidth
+  useLatest,
+  useNow,
+  useReportedSize,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { buildResourceHierarchy, GenericNode, GroupNode, ResourceNode } from '../../resource/common/resource-hierarchy'
 import { filterResourceStore } from '../../resource/common/resource-filtering'
 import { ResourceSplitter } from '../../resource/common/ResourceSplitter'
@@ -23,254 +22,228 @@ import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint'
 import { processColOptions } from '../col-options'
 import { ResourceExpander } from './spreadsheet/ResourceExpander'
 
-interface ResourceTimelineViewState {
-  colWidthOverrides?: SiblingDimConfig[]
-  spreadsheetClientWidth?: number // pixel-width of scroll inner area
-  timeClientWidth?: number
-  slotInnerWidth?: number
-  expanderWidth?: number
-}
-
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
-export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
-  state = {} as ResourceTimelineViewState
-
-  // memoized
-  private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private filterResourceStore = memoize(filterResourceStore)
-  private processColOptions = memoize(processColOptions)
-  private buildResourceHierarchy = memoize(buildResourceHierarchy)
-  private computeSlotWidth = memoize(computeSlotWidth)
-  private computeHasNesting = memoize(computeHasNesting)
-  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
-
-  // ref
-  private scrollRef = createRef<EntityScroll & TimeScroll>()
-  private spreadsheetResizedWidthConfigRef = createRef<DimConfig>()
-
-  // internal
-  private _isUnmounting: boolean
-  private resourceSplitter = new ResourceSplitter()
-  private bgSlicer = new TimelineLaneSlicer()
-  private spreadsheetColWidthConfigs?: SiblingDimConfig[]
-  private spreadsheetColWidths?: number[]
-  private disconnectExpanderWidth?: () => void
-
+// a class, because a view's component must be one (see parseViewConfig)
+export class ResourceTimelineView extends BaseComponent<ResourceViewProps> {
   render() {
-    let { props, state, context } = this
-    let { dateProfile } = props
-    let { options } = context
+    return <ResourceTimelineViewBody {...this.props} />
+  }
+}
 
-    /* date */
+function ResourceTimelineViewBody(props: ResourceViewProps) {
+  const context = useViewContext()
+  const { dateProfile } = props
+  const { options } = context
 
-    let tDateProfile = this.buildTimelineDateProfile(
+  const [colWidthOverrides, setColWidthOverrides] = useState<SiblingDimConfig[] | undefined>(undefined)
+  const [spreadsheetClientWidth, setSpreadsheetClientWidth] = useState<number | undefined>(undefined) // pixel-width of scroll inner area
+  const [timeClientWidth, setTimeClientWidth] = useState<number | undefined>(undefined)
+  const [slotInnerWidth, setSlotInnerWidth] = useState<number | undefined>(undefined)
+  const [expanderWidth, setExpanderWidth] = useState<number | undefined>(undefined)
+
+  // kept here because print replaces the layout. see ResourceTimelineLayoutNormal
+  const scrollRef = useRef<EntityScroll & TimeScroll | null>(null)
+  const spreadsheetResizedWidthConfigRef = useRef<DimConfig | null>(null)
+
+  /* date */
+
+  const tDateProfile = useMemo(
+    () => buildTimelineDateProfile(
       dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator,
-    )
-    let { unit: timerUnit, value: timeUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
+    ),
+    [dateProfile, context.dateEnv, options, context.dateProfileGenerator],
+  )
+  const { unit: timerUnit, value: timeUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
+  const { nowDate, todayRange, nowMs } = useNow(timerUnit, timeUnitValue)
 
-    /* table settings */
+  /* table settings */
 
-    let {
-      groupSpecs,
-      groupRowDepth,
-      orderSpecs,
-      colSpecs,
-      groupColCnt,
-      colWidthConfigs: initialColWidthConfigs,
-      superHeaderRendering,
-    } = this.processColOptions(context.options)
+  const {
+    groupSpecs,
+    groupRowDepth,
+    orderSpecs,
+    colSpecs,
+    groupColCnt,
+    colWidthConfigs: initialColWidthConfigs,
+    superHeaderRendering,
+  } = useMemo(() => processColOptions(options), [options])
 
-    const spreadsheetWidthConfig = this.spreadsheetResizedWidthConfigRef.current ??
-      parseDimConfig(options.resourceColumnsWidth, MIN_RESOURCE_AREA_WIDTH)!
+  const spreadsheetWidthConfig = spreadsheetResizedWidthConfigRef.current ??
+    parseDimConfig(options.resourceColumnsWidth, MIN_RESOURCE_AREA_WIDTH)!
 
-    /* spreadsheet col widths */
+  /* spreadsheet col widths */
 
-    let spreadsheetColWidthConfigs = state.colWidthOverrides || initialColWidthConfigs
-    let [spreadsheetColWidths, spreadsheetCanvasWidth] = state.spreadsheetClientWidth != null
-      ? pixelizeDimConfigs(spreadsheetColWidthConfigs, state.spreadsheetClientWidth)
-      : [undefined, undefined]
+  const spreadsheetColWidthConfigs = colWidthOverrides || initialColWidthConfigs
+  const [spreadsheetColWidths, spreadsheetCanvasWidth] = spreadsheetClientWidth != null
+    ? pixelizeDimConfigs(spreadsheetColWidthConfigs, spreadsheetClientWidth)
+    : [undefined, undefined]
 
-    this.spreadsheetColWidthConfigs = spreadsheetColWidthConfigs
-    this.spreadsheetColWidths = spreadsheetColWidths
+  /* table hierarchy */
 
-    /* table hierarchy */
-
-    let resourceStore = this.filterResourceStore(
+  const resourceStore = useMemo(
+    () => filterResourceStore(
       props.resourceStore,
       options.filterResourcesWithEvents,
       props.rawEventStore,
       dateProfile.activeRange,
-    )
-    let resourceHierarchy = this.buildResourceHierarchy(
+    ),
+    [props.resourceStore, options.filterResourcesWithEvents, props.rawEventStore, dateProfile.activeRange],
+  )
+  const resourceHierarchy = useMemo(
+    () => buildResourceHierarchy(
       resourceStore,
       orderSpecs,
       groupSpecs,
       groupRowDepth,
-    )
-    let hasNesting = this.computeHasNesting(resourceHierarchy)
+    ),
+    [resourceStore, orderSpecs, groupSpecs, groupRowDepth],
+  )
+  const hasNesting = useMemo(() => computeHasNesting(resourceHierarchy), [resourceHierarchy])
 
-    /* table positions */
+  /* table positions */
 
-    let [timeCanvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
+  const [timeCanvasWidth, slotWidth, slotLiquid] = useMemo(
+    () => computeSlotWidth(
       tDateProfile.slotCnt,
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
-      state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
-      state.timeClientWidth
-    )
+      slotInnerWidth, // is ACTUALLY the last-level label width. rename?
+      timeClientWidth,
+    ),
+    [tDateProfile.slotCnt, tDateProfile.slotsPerLabel, options.slotMinWidth, slotInnerWidth, timeClientWidth],
+  )
 
-    /* event display */
+  /* event display */
 
-    let splitProps = this.resourceSplitter.splitProps({ ...props, resourceStore })
-    let bgLaneProps = splitProps['']
-    let bgSlicedProps = this.bgSlicer.sliceProps(
-      bgLaneProps,
-      dateProfile,
-      tDateProfile.isTimeScale ? null : options.nextDayThreshold,
-      context, // wish we didn't need to pass in the rest of these args...
-      dateProfile,
-      context.dateProfileGenerator,
-      tDateProfile,
-      context.dateEnv,
-    )
+  const [resourceSplitter] = useState(() => new ResourceSplitter())
+  const [bgSlicer] = useState(() => new TimelineLaneSlicer())
+  const splitProps = resourceSplitter.splitProps({ ...props, resourceStore })
+  const bgLaneProps = splitProps['']
+  const bgSlicedProps = bgSlicer.sliceProps(
+    bgLaneProps,
+    dateProfile,
+    tDateProfile.isTimeScale ? null : options.nextDayThreshold,
+    context, // wish we didn't need to pass in the rest of these args...
+    dateProfile,
+    context.dateProfileGenerator,
+    tDateProfile,
+    context.dateEnv,
+  )
 
-    /* business hour display */
+  /* business hour display */
 
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceHierarchy)
-    let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
+  const hasResourceBusinessHours = useMemo(
+    () => computeHasResourceBusinessHours(resourceHierarchy),
+    [resourceHierarchy],
+  )
+  const fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
-    return (
-      <>
-        <NowTimer unit={timerUnit} unitValue={timeUnitValue}>
-          {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
-            const baseProps = {
-              className: props.className,
-              tDateProfile,
-              dateProfile,
-              resourceHierarchy,
-              resourceEntityExpansions: props.resourceEntityExpansions,
-              hasNesting,
-              nowDate,
-              nowMs,
-              todayRange,
-              colSpecs,
-              groupColCnt,
-              superHeaderRendering,
-              splitProps,
-              bgSlicedProps,
-              slotWidth,
-              timeCanvasWidth,
-              spreadsheetColWidths,
-            }
+  /* handlers */
 
-            return props.forPrint ? (
-              <ResourceTimelineLayoutPrint
-                {...baseProps}
-                hasResourceBusinessHours={hasResourceBusinessHours}
-                spreadsheetWidthConfig={spreadsheetWidthConfig}
-                timeCanvasClipStart={this.scrollRef.current?.x ?? 0 /* for simulating horizontal scroll */}
-                indentWidth={state.expanderWidth}
-              />
-            ) : (
-              <ResourceTimelineLayoutNormal
-                {...baseProps}
-                labelId={props.labelId}
-                labelStr={props.labelStr}
-                eventSelection={props.eventSelection}
-                hasResourceBusinessHours={hasResourceBusinessHours}
-                fallbackBusinessHours={fallbackBusinessHours}
-                slotLiquid={slotLiquid}
-                timeClientWidthRef={this.handleTimeClientWidth}
-                slotInnerWidthRef={this.handleSlotInnerWidth}
-                initialSpreadsheetWidthConfig={spreadsheetWidthConfig}
-                spreadsheetCanvasWidth={spreadsheetCanvasWidth}
-                initialScroll={this.scrollRef.current /* for reviving after print-view */}
+  const latestRef = useLatest({ spreadsheetColWidthConfigs, spreadsheetColWidths, spreadsheetClientWidth })
+  const [handlers] = useState(() => ({
+    handleColResize(colIndex: number, newWidth: number) {
+      const { spreadsheetColWidthConfigs, spreadsheetColWidths, spreadsheetClientWidth } = latestRef.current
+      const newOverrides = resizeSiblingDimConfig(
+        spreadsheetColWidthConfigs,
+        spreadsheetColWidths,
+        spreadsheetClientWidth,
+        colIndex,
+        newWidth,
+      )
 
-                // refs
-                spreadsheetResizedWidthConfigRef={this.spreadsheetResizedWidthConfigRef}
-                spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
-                scrollRef={this.scrollRef}
+      setColWidthOverrides((prev) => (prev && isArraysEqual(prev, newOverrides)) ? prev : newOverrides)
+    },
+    handleSpreadsheetClientWidth(spreadsheetClientWidth: number | null) {
+      if (spreadsheetClientWidth != null) {
+        setSpreadsheetClientWidth(spreadsheetClientWidth)
+      }
+    },
+    handleTimeClientWidth(timeClientWidth: number | null) {
+      if (timeClientWidth != null) {
+        setTimeClientWidth(timeClientWidth)
+      }
+    },
+    handleSlotInnerWidth(slotInnerWidth: number | null) {
+      if (slotInnerWidth != null) {
+        setSlotInnerWidth(slotInnerWidth)
+      }
+    },
+  }))
+  const handleExpanderEl = useReportedSize({
+    watchWidth: true,
+    onSize(width) {
+      setExpanderWidth(width)
+    },
+  })
 
-                // handlers
-                onColResize={this.handleColResize}
-                indentWidth={state.expanderWidth}
-              />
-            )
-          }}
-        </NowTimer>
-        <ResourceExpander // for probing size
-          isExpanded
-          elRef={this.handleExpanderEl}
-          className={classNames.offscreen}
+  const baseProps = {
+    className: props.className,
+    tDateProfile,
+    dateProfile,
+    resourceHierarchy,
+    resourceEntityExpansions: props.resourceEntityExpansions,
+    hasNesting,
+    nowDate,
+    nowMs,
+    todayRange,
+    colSpecs,
+    groupColCnt,
+    superHeaderRendering,
+    splitProps,
+    bgSlicedProps,
+    slotWidth,
+    timeCanvasWidth,
+    spreadsheetColWidths,
+  }
+
+  return (
+    <>
+      {props.forPrint ? (
+        <ResourceTimelineLayoutPrint
+          {...baseProps}
+          hasResourceBusinessHours={hasResourceBusinessHours}
+          spreadsheetWidthConfig={spreadsheetWidthConfig}
+          timeCanvasClipStart={scrollRef.current?.x ?? 0 /* for simulating horizontal scroll */}
+          indentWidth={expanderWidth}
         />
-      </>
-    )
-  }
+      ) : (
+        <ResourceTimelineLayoutNormal
+          {...baseProps}
+          labelId={props.labelId}
+          labelStr={props.labelStr}
+          eventSelection={props.eventSelection}
+          hasResourceBusinessHours={hasResourceBusinessHours}
+          fallbackBusinessHours={fallbackBusinessHours}
+          slotLiquid={slotLiquid}
+          timeClientWidthRef={handlers.handleTimeClientWidth}
+          slotInnerWidthRef={handlers.handleSlotInnerWidth}
+          initialSpreadsheetWidthConfig={spreadsheetWidthConfig}
+          spreadsheetCanvasWidth={spreadsheetCanvasWidth}
+          initialScroll={scrollRef.current /* for reviving after print-view */}
 
-  handleColResize = (colIndex: number, newWidth: number) => {
-    if (this._isUnmounting) return
-    const colWidthOverrides = resizeSiblingDimConfig(
-      this.spreadsheetColWidthConfigs,
-      this.spreadsheetColWidths,
-      this.state.spreadsheetClientWidth,
-      colIndex,
-      newWidth,
-    )
+          // refs
+          spreadsheetResizedWidthConfigRef={spreadsheetResizedWidthConfigRef}
+          spreadsheetClientWidthRef={handlers.handleSpreadsheetClientWidth} // for pixel value
+          scrollRef={scrollRef}
 
-    this.setState({ colWidthOverrides })
-  }
-
-  handleSpreadsheetClientWidth = (spreadsheetClientWidth: number | null) => {
-    if (this._isUnmounting) return
-    if (spreadsheetClientWidth != null) {
-      this.setState({ spreadsheetClientWidth })
-    }
-  }
-
-  handleTimeClientWidth = (timeClientWidth: number | null) => {
-    if (this._isUnmounting) return
-    if (timeClientWidth != null) {
-      this.setState({ timeClientWidth })
-    }
-  }
-
-  handleSlotInnerWidth = (slotInnerWidth: number | null) => {
-    if (this._isUnmounting) return
-    if (slotInnerWidth != null) {
-      this.setState({ slotInnerWidth })
-    }
-  }
-
-  handleExpanderEl = (expanderEl: HTMLElement | null) => {
-    if (this.disconnectExpanderWidth) {
-      this.disconnectExpanderWidth()
-      this.disconnectExpanderWidth = undefined
-    }
-
-    if (expanderEl) {
-      this.disconnectExpanderWidth = watchWidth(expanderEl, (width) => {
-        if (this._isUnmounting) return
-        this.setState({ expanderWidth: width })
-      })
-    }
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
+          // handlers
+          onColResize={handlers.handleColResize}
+          indentWidth={expanderWidth}
+        />
+      )}
+      <ResourceExpander // for probing size
+        isExpanded
+        elRef={handleExpanderEl}
+        className={classNames.offscreen}
+      />
+    </>
+  )
 }
-
-ResourceTimelineView.addStateEquality({
-  colWidthOverrides: isArraysEqual,
-})
 
 function computeHasResourceBusinessHours(resourceHierarchy: GenericNode[]): boolean {
   for (const node of resourceHierarchy) {
