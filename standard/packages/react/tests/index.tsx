@@ -135,6 +135,8 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
   let dayGrid: HitTarget
   let rowEl: HTMLElement
   let unmount: (() => void) | undefined
+  // jsdom has no layout, so every element would count as not rendered, and its size be ignored
+  const getClientRects = vi.spyOn(Element.prototype, 'getClientRects').mockReturnValue([{}] as any)
 
   vi.resetModules()
   vi.stubGlobal('ResizeObserver', class {
@@ -188,26 +190,28 @@ it('preserves day-grid hit detection when Strict Mode replays mount lifecycles',
     const secondHit = dayGrid.queryHit(false, 150, 150, 700, 600)!
     expect(firstHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-09-27')
     expect(secondHit.dateSpan.range.start.toISOString().slice(0, 10)).toBe('2026-10-05')
-    expect(findComponentState(dayGrid.el, 'moreLinkHeight').moreLinkHeight).toBe(100)
+    expect(findComponentProps(rowEl, 'moreLinkHeight').moreLinkHeight).toBe(100) // DayGridRow's prop
 
     unmount()
     expect(elements.has(rowEl)).toBe(false)
   } finally {
     unmount?.()
+    getClientRects.mockRestore()
     vi.unstubAllGlobals()
   }
 })
 
-// the state of the nearest class component, at or above el, that has the key
-function findComponentState(el: HTMLElement, key: string): Record<string, unknown> {
+// the props of the nearest class component, at or above el, that has the prop. through the instance,
+// because the fiber that el points to can be a stale alternate
+function findComponentProps(el: HTMLElement, key: string): Record<string, unknown> {
   let fiberKey = Object.keys(el).find((elKey) => elKey.startsWith('__reactFiber$'))!
   let fiber = (el as any)[fiberKey]
 
-  while (!(fiber.stateNode?.state && key in fiber.stateNode.state)) {
+  while (!(fiber.stateNode?.props && typeof fiber.type !== 'string' && key in fiber.stateNode.props)) {
     fiber = fiber.return
   }
 
-  return fiber.stateNode.state
+  return fiber.stateNode.props
 }
 
 // https://github.com/fullcalendar/fullcalendar-react/issues/185

@@ -1,6 +1,6 @@
 # Phase 7: layout families
 
-Status: in progress. DayGrid step 1 done.
+Status: in progress. DayGrid steps 1 and 2 done.
 
 One family at a time, in the roadmap's order: DayGrid, TimeGrid, MultiMonth and List, Timeline,
 ResourceTimeline. Each family is split into steps, committed and reviewed separately.
@@ -12,7 +12,7 @@ Steps:
 1. The layout shell: `DayGridLayout`, `DayGridLayoutNormal`, `DayGridLayoutPannable`,
    `DayGridLayoutPrint`, plus `useInitialScroll` and `useScrollerSyncer`. (done)
 2. `DayGridRows` (onto `useHitTarget`) and the header: `DayGridHeader`, `DayGridHeaderRows`,
-   `DayGridHeaderRow`, `DayGridMoreLink`.
+   `DayGridHeaderRow`, `DayGridMoreLink`. (done)
 3. `DayGridRow` and `DayGridCell`, which TimeGrid's all-day lane and the resource views share.
 4. View data: `DayGridView` and `ResourceDayGridView` share a `useDayGridViewData`.
 
@@ -57,3 +57,16 @@ Steps:
   old behavior (0 instead of 80).
   - It needs `fullcalendar-w-react/react` (the test-only React build that `fullcalendar/preact` maps
     to) to also export `Activity`, `createRoot`, `flushSync` and the React `FullCalendar` component.
+
+### Step 2: rows and header
+
+- **`DayGridRows`** is a memo function component. It registers its hit target with `useHitTarget`,
+  measures the more-link probe with `useReportedSize`, and keeps its own row-height `RefMap`, which
+  forwards to the layout's map (through `useLatest`, so the map is stable).
+- **`DayGridHeader`**, **`DayGridHeaderRows`** and **`DayGridMoreLink`** are memo functions.
+- **`DayGridHeaderRow`** keeps its inner-height `RefMap` in state and reports the max after size. On
+  unmount it reports `null`, as the class did.
+- **React test (#8119):** `tests/index.tsx` read `moreLinkHeight` off `DayGridRow`'s fiber. jsdom
+  has no layout, so the test stubs `getClientRects` (the hidden-element guard in `useReportedSize`),
+  and reads the props through the class instance, since the DOM node's fiber can be a stale
+  alternate.

@@ -1,7 +1,10 @@
+import { createElement, memo, useMemo, useRef, useState } from 'react'
 import { joinClassNames } from '../../util/html'
-import { EventSegUiInteractionState, DateComponent } from '../../component/DateComponent'
-import { memoize } from '../../util/memoize'
-import { watchHeight } from '../../component-util/resize-observer'
+import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useLatest } from '../../hooks/useLatest'
+import { useHitTarget } from '../../hooks/useHitTarget'
+import { useReportedSize } from '../../hooks/useReportedSize'
 import { addDays, DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../DateProfileGenerator'
 import { Hit } from '../../interactions/hit'
@@ -50,217 +53,178 @@ export interface DayGridRowsProps {
   rowHeightRefMap?: RefMap<string, number>
 }
 
-interface DayGridRowsState {
-  moreLinkHeight?: number
-}
+export const DayGridRows = memo(function DayGridRows(props: DayGridRowsProps) {
+  let { options } = useViewContext()
+  let { cellRows, tableMode } = props
+  let rowCount = cellRows.length
+  let [moreLinkHeight, setMoreLinkHeight] = useState<number | undefined>(undefined)
+  let rootElRef = useRef<HTMLElement | null>(null)
 
-export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsState> {
-  state: DayGridRowsState = {}
+  // HACKy way of syncing RefMap results with prop
+  let latestRowHeightRefMapRef = useLatest(props.rowHeightRefMap)
+  let [rowHeightRefMap] = useState(() => new RefMap<string, number>((height, key) => {
+    latestRowHeightRefMapRef.current?.handleValue(height, key)
+  }))
 
-  // ref
-  private rootEl: HTMLElement
-  private disconnectMoreLinkHeight?: () => void
+  // Will cause rows to not be reused across months
+  let firstCellKey = cellRows[0]?.[0]?.key || ''
 
-  // memo
-  private splitBusinessHourSegs = memoize(splitSegsByRow)
-  private splitBgEventSegs = memoize(splitAllDaySegsByRow)
-  private splitFgEventSegs = memoize(splitSegsByRow)
-  private splitDateSelectionSegs = memoize(splitSegsByRow)
-  private splitEventDrag = memoize(splitInteractionByRow)
-  private splitEventResize = memoize(splitInteractionByRow)
+  let fgEventSegsByRow = useMemo(() => splitSegsByRow(props.fgEventSegs, rowCount), [props.fgEventSegs, rowCount])
+  let bgEventSegsByRow = useMemo(() => splitAllDaySegsByRow(props.bgEventSegs, rowCount), [props.bgEventSegs, rowCount])
+  let businessHourSegsByRow = useMemo(
+    () => splitSegsByRow(props.businessHourSegs, rowCount),
+    [props.businessHourSegs, rowCount],
+  )
+  let dateSelectionSegsByRow = useMemo(
+    () => splitSegsByRow(props.dateSelectionSegs, rowCount),
+    [props.dateSelectionSegs, rowCount],
+  )
+  let eventDragByRow = useMemo(() => splitInteractionByRow(props.eventDrag, rowCount), [props.eventDrag, rowCount])
+  let eventResizeByRow = useMemo(() => splitInteractionByRow(props.eventResize, rowCount), [props.eventResize, rowCount])
 
-  // internal
-  private _isUnmounting: boolean
-  private rowHeightRefMap = new RefMap<string, number>((height, key) => {
-    // HACKy way of syncing RefMap results with prop
-    const { rowHeightRefMap } = this.props
-    if (rowHeightRefMap) {
-      rowHeightRefMap.handleValue(height, key)
-    }
+  let isHeightAuto = getIsHeightAuto(options)
+  let rowHeightsRedistribute = !props.forPrint && !isHeightAuto
+
+  let rowBasis = computeRowBasis(
+    props.visibleWidth,
+    rowCount,
+    isHeightAuto,
+    options,
+  )
+
+  const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
+    props.dayMaxEvents,
+    props.dayMaxEventRows,
+  ) === 'auto'
+  const moreLinkElRef = useReportedSize({
+    watchHeight: true,
+    onSize(_width, height) {
+      setMoreLinkHeight(height)
+    },
   })
 
-  render() {
-    let { props, state, context, rowHeightRefMap } = this
-    let { options } = context
-    let { cellRows, tableMode } = props
-    let rowCount = cellRows.length
+  useHitTarget(rootElRef, {
+    isHitComboAllowed: props.isHitComboAllowed,
+    eventSelection: props.eventSelection,
+    eventDrag: props.eventDrag,
+    eventResize: props.eventResize,
+    queryHit(isRtl, positionLeft, positionTop, elWidth): Hit | null {
+      const colCount = props.cellRows[0].length
+      const { col, left, right } = computeColFromPosition(
+        positionLeft,
+        elWidth,
+        props.colWidth,
+        colCount,
+        isRtl,
+      )
+      const { row, top, bottom } = computeRowFromPosition(
+        positionTop,
+        props.cellRows,
+        rowHeightRefMap.current,
+      )
+      const cell = props.cellRows[row][col]
 
-    // Will cause rows to not be reused across months
-    let firstCellKey = cellRows[0]?.[0]?.key || ''
+      if (cell.isInert) {
+        return null
+      }
 
-    let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCount)
-    let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCount)
-    let businessHourSegsByRow = this.splitBusinessHourSegs(props.businessHourSegs, rowCount)
-    let dateSelectionSegsByRow = this.splitDateSelectionSegs(props.dateSelectionSegs, rowCount)
-    let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCount)
-    let eventResizeByRow = this.splitEventResize(props.eventResize, rowCount)
+      const cellStartDate = cell.date
+      const cellEndDate = addDays(cellStartDate, 1)
 
-    let isHeightAuto = getIsHeightAuto(options)
-    let rowHeightsRedistribute = !props.forPrint && !isHeightAuto
+      return {
+        dateProfile: props.dateProfile,
+        dateSpan: {
+          range: {
+            start: cellStartDate,
+            end: cellEndDate,
+          },
+          allDay: true,
+          ...cell.dateSpanProps,
+        },
+        getDayEl: () => getCellEl(getRowEl(rootElRef.current, row), col),
+        rect: {
+          left,
+          right,
+          top,
+          bottom,
+        },
+        layer: 0,
+      }
+    },
+  })
 
-    let rowBasis = computeRowBasis(
-      props.visibleWidth,
-      rowCount,
-      isHeightAuto,
-      options,
-    )
-
-    const needsMoreLinkProbe = !props.forPrint && resolveDayGridPlacementMode(
-      props.dayMaxEvents,
-      props.dayMaxEventRows,
-    ) === 'auto'
-    const RowsTag = tableMode ? 'tbody' : 'div'
-
-    return (
-      <>
-        <RowsTag
-          role="rowgroup"
-          className={joinClassNames(
+  return (
+    <>
+      {createElement(
+        tableMode ? 'tbody' : 'div',
+        {
+          role: 'rowgroup',
+          className: joinClassNames(
             props.className,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !tableMode && !props.forPrint && classNames.flexCol,
-          )}
-          style={tableMode ? undefined : { width: props.width }}
-          ref={this.handleRootEl}
-        >
-          {cellRows.map((cells, row) => (
-            <DayGridRow
-              key={firstCellKey + ':' + cells[0].key}
-              role="row"
-              dateProfile={props.dateProfile}
-              todayRange={props.todayRange}
-              cells={cells}
-              cellIsNarrow={props.cellIsNarrow}
-              cellIsMicro={props.cellIsMicro}
-              showDayNumbers={rowCount > 1}
-              showWeekNumbers={rowCount > 1 && options.weekNumbers}
-              forPrint={props.forPrint}
-              tableMode={tableMode}
-              borderBottom={row < rowCount - 1}
-
-              // if not auto-height, distribute height of container somewhat evently to rows
-              className={rowHeightsRedistribute ? classNames.grow : undefined}
-
-              // content
-              fgEventSegs={fgEventSegsByRow[row]}
-              bgEventSegs={bgEventSegsByRow[row]}
-              businessHourSegs={businessHourSegsByRow[row]}
-              dateSelectionSegs={dateSelectionSegsByRow[row]}
-              eventSelection={props.eventSelection}
-              eventDrag={eventDragByRow[row]}
-              eventResize={eventResizeByRow[row]}
-              dayMaxEvents={props.dayMaxEvents}
-              dayMaxEventRows={props.dayMaxEventRows}
-
-              // dimensions
-              colWidth={props.colWidth}
-              basis={rowBasis}
-              moreLinkHeight={state.moreLinkHeight}
-
-              // refs
-              heightRef={rowHeightRefMap.createRef(cells[0].key)}
-            />
-          ))}
-        </RowsTag>
-        {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
-        {needsMoreLinkProbe && (
-          <MoreLinkTrigger
-            num={1}
-            display='row'
-            isNarrow={props.cellIsNarrow}
-            isMicro={props.cellIsMicro}
-            elRef={this.handleMoreLinkEl}
-            className={classNames.offscreen}
-            attrs={{
-              'aria-hidden': true, // redundant with .offscreen's visibility, but marks it as a probe
-            }}
-          />
-        )}
-      </>
-    )
-  }
-
-  private handleMoreLinkEl = (el: HTMLElement | null) => {
-    this.disconnectMoreLinkHeight?.()
-    this.disconnectMoreLinkHeight = undefined
-
-    if (el) {
-      this.disconnectMoreLinkHeight = watchHeight(el, (height) => {
-        if (this._isUnmounting) return
-        this.setState({ moreLinkHeight: height })
-      })
-    }
-  }
-
-  handleRootEl = (rootEl: HTMLElement) => {
-    this.rootEl = rootEl
-
-    if (rootEl) {
-      this.registerHitTarget({
-        el: rootEl,
-      })
-    } else {
-      this.unregisterHitTarget()
-    }
-  }
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-  }
-
-  // Hit System
-  // -----------------------------------------------------------------------------------------------
-
-  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number): Hit | null {
-    const { props } = this
-
-    const colCount = props.cellRows[0].length
-    const { col, left, right } = computeColFromPosition(
-      positionLeft,
-      elWidth,
-      props.colWidth,
-      colCount,
-      isRtl,
-    )
-    const { row, top, bottom } = computeRowFromPosition(
-      positionTop,
-      props.cellRows,
-      this.rowHeightRefMap.current,
-    )
-    const cell = props.cellRows[row][col]
-
-    if (cell.isInert) {
-      return null
-    }
-
-    const cellStartDate = cell.date
-    const cellEndDate = addDays(cellStartDate, 1)
-
-    return {
-      dateProfile: props.dateProfile,
-      dateSpan: {
-        range: {
-          start: cellStartDate,
-          end: cellEndDate,
+          ),
+          style: tableMode ? undefined : { width: props.width },
+          ref: rootElRef,
         },
-        allDay: true,
-        ...cell.dateSpanProps,
-      },
-      getDayEl: () => getCellEl(getRowEl(this.rootEl, row), col),
-      rect: {
-        left,
-        right,
-        top,
-        bottom,
-      },
-      layer: 0,
-    }
-  }
+        cellRows.map((cells, row) => (
+          <DayGridRow
+            key={firstCellKey + ':' + cells[0].key}
+            role="row"
+            dateProfile={props.dateProfile}
+            todayRange={props.todayRange}
+            cells={cells}
+            cellIsNarrow={props.cellIsNarrow}
+            cellIsMicro={props.cellIsMicro}
+            showDayNumbers={rowCount > 1}
+            showWeekNumbers={rowCount > 1 && options.weekNumbers}
+            forPrint={props.forPrint}
+            tableMode={tableMode}
+            borderBottom={row < rowCount - 1}
+
+            // if not auto-height, distribute height of container somewhat evently to rows
+            className={rowHeightsRedistribute ? classNames.grow : undefined}
+
+            // content
+            fgEventSegs={fgEventSegsByRow[row]}
+            bgEventSegs={bgEventSegsByRow[row]}
+            businessHourSegs={businessHourSegsByRow[row]}
+            dateSelectionSegs={dateSelectionSegsByRow[row]}
+            eventSelection={props.eventSelection}
+            eventDrag={eventDragByRow[row]}
+            eventResize={eventResizeByRow[row]}
+            dayMaxEvents={props.dayMaxEvents}
+            dayMaxEventRows={props.dayMaxEventRows}
+
+            // dimensions
+            colWidth={props.colWidth}
+            basis={rowBasis}
+            moreLinkHeight={moreLinkHeight}
+
+            // refs
+            heightRef={rowHeightRefMap.createRef(cells[0].key)}
+          />
+        )),
+      )}
+      {/* Intrinsic width: row more-link height must not depend on text wrapping. */}
+      {needsMoreLinkProbe && (
+        <MoreLinkTrigger
+          num={1}
+          display='row'
+          isNarrow={props.cellIsNarrow}
+          isMicro={props.cellIsMicro}
+          elRef={moreLinkElRef}
+          className={classNames.offscreen}
+          attrs={PROBE_ATTRS}
+        />
+      )}
+    </>
+  )
+})
+
+const PROBE_ATTRS = {
+  'aria-hidden': true, // redundant with .offscreen's visibility, but marks it as a probe
 }
 
 // Utils
