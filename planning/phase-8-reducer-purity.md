@@ -55,6 +55,10 @@ unbinds the previous one. It remembers the last controller it synced (`committed
 - **React:** `CalendarInner` calls it in `componentDidMount` and `componentDidUpdate`, with its own
   props, before the prop-set handlers emit `datesSet`. A replacement controller therefore gets the
   `datesSet` of the commit that binds it, and a render that never commits never binds anything.
+- **Preact:** the same, plus the `Calendar` component's per-commit layout effect. Preact runs every
+  layout effect before any `componentDidMount`, so without it a parent's layout effect would find
+  the controller unbound on mount (e.g. a `controller.gotoDate()` would be lost). In React that
+  extra sync runs after `CalendarInner`'s and does nothing.
 - **Vanilla:** it's called after each reduction while mounted, and from `mount()`, because vanilla
   renders the latest data and controllers are usable before `render()`.
 - **`unmount()`** unbinds the committed controller. The next sync or `mount()` takes it back with
@@ -64,7 +68,8 @@ unbinds the previous one. It remembers the last controller it synced (`committed
 ### No `flushSync` inside a commit
 
 `onDataChange` gets a third argument, `isInCommit`, which is true when called from `mount()` or
-`flushEffects()`, i.e. from React's layout effects. React's `Calendar` then sets state without
+`flushEffects()`, i.e. from React's layout effects. `mount()` sets it before starting the timer,
+because a timer that catches up drains, and runs held effects. React's `Calendar` then sets state without
 `flushSync`, which React forbids there; React renders a layout-effect state change synchronously
 anyway. This happens when a calendar shown again in `<Activity>` catches up on an event change made
 while hidden.
@@ -94,7 +99,7 @@ Revisit this in phase 9 if the store split makes fetching easy to schedule.
 
 ## Results
 
-- **React suite (`@fullcalendar/react`, vitest):** 37 pass.
+- **React suite (`@fullcalendar/react`, vitest):** 38 pass.
   - The 3 `it.fails` cases from phase 2 now pass and are plain `it`: Strict Mode timers, #8112 bug 1,
     and #8092 timers.
   - 2 new cases: a Suspense-discarded fetch updates nothing (#8092), and `loading` can set state.
@@ -120,7 +125,7 @@ Revisit this in phase 9 if the store split makes fetching easy to schedule.
 
 ## Review
 
-GPT-6.1-Sol reviewed `c15d6602d` and found three regressions, all fixed in the follow-up commit:
+GPT-6.1-Sol reviewed `c15d6602d` and found three regressions, all fixed in `afab4ceb1`:
 
 1. A Suspense-discarded render that changed the controller left the old one bound after unmount, and
    its late fetch bound the new one to the unmounted calendar.
@@ -128,6 +133,15 @@ GPT-6.1-Sol reviewed `c15d6602d` and found three regressions, all fixed in the f
    waited for the parent `Calendar`'s layout effect, which runs after `CalendarInner`'s.
 3. Showing an `<Activity>`-hidden calendar after an event change called `flushSync` from a layout
    effect.
+
+Round 2 (`afab4ceb1`) found two more, both fixed:
+
+4. In Preact, the controller was bound in `CalendarInner.componentDidMount`, after a parent's layout
+   effects. Checked with a throwaway Preact test (fails without the fix). There's no Preact
+   component suite to keep it in; worth adding one.
+5. `mount()` set `isInCommit` after starting the timer, so a timer catching up after `<Activity>`
+   showed the calendar could run a held `loading` callback whose event change hit `flushSync`.
+   Covered by a React spec.
 
 ## Follow-ups
 

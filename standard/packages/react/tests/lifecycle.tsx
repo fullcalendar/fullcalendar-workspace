@@ -210,6 +210,55 @@ it('applies an event change made while hidden in <Activity>, without calling flu
   }
 })
 
+// like the previous spec, but the change comes from an effect held while hidden (`loading`), which the
+// now-timer's catch-up runs when shown
+it('runs a held `loading` callback that changes an event, without calling flushSync in a lifecycle', async () => {
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  const calendarRef = createRef<any>()
+  const fetchEvents = (_info, successCallback) => { // stable
+    origSetTimeout(() => successCallback(EVENTS), 10)
+  }
+  // `this` is the calendar API. the ref is detached while <Activity> shows the calendar again
+  const handleLoading = function (this: any, isLoading: boolean) {
+    if (!isLoading) {
+      this.getEventById('1')?.setProp('title', 'changed')
+    }
+  }
+
+  function App({ isShown }: { isShown: boolean }) {
+    return (
+      <Activity mode={isShown ? 'visible' : 'hidden'}>
+        <FullCalendar
+          {...OPTIONS}
+          ref={calendarRef}
+          initialDate="2024-01-15"
+          events={fetchEvents}
+          loading={handleLoading}
+        />
+      </Activity>
+    )
+  }
+
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(new Date('2024-01-15T12:00:00'))
+
+  try {
+    const { rerender, unmount } = render(<App isShown />)
+
+    rerender(<App isShown={false} />)
+    await act(() => new Promise((resolve) => origSetTimeout(resolve, 50))) // the fetch resolves while hidden
+    vi.setSystemTime(new Date('2024-01-16T12:00:00')) // so showing refreshes now
+    rerender(<App isShown />)
+
+    expect(calendarRef.current.getApi().getEventById('1').title).toBe('changed')
+    expect(consoleErrorSpy.mock.calls.map(String).join('\n')).not.toMatch(/flushSync/)
+    unmount()
+  } finally {
+    vi.useRealTimers()
+    consoleErrorSpy.mockRestore()
+  }
+})
+
 const EVENTS = [{ id: '1', title: 'original', start: '2024-01-15T10:00:00' }] // stable
 
 // #8112 bug 1: a hidden <Activity> has already run its cleanups, so a re-render while hidden must not

@@ -57,6 +57,9 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
   // effects queued by the render, like the `loading` callback
   useIsomorphicLayoutEffect(() => {
+    // CalendarInner also syncs, before it emits datesSet. this one is for Preact, which runs all
+    // layout effects, including a parent's that might use the controller, before componentDidMount
+    data.syncController(data.calendarOptions.controller)
     calendarDataManager.flushEffects()
   })
 

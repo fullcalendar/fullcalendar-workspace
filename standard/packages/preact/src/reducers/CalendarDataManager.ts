@@ -134,13 +134,13 @@ export class CalendarDataManager {
   mount() {
     if (!this.isMounted) {
       this.isMounted = true
+      this.isInCommit = true // before anything that might drain, like the timer catching up
       this.nowTimer.start()
       // binds initially (vanilla), or rebinds after unmount() unless another calendar took it
       this.syncController(
         this.config.isMountGated ? this.committedController : this.data.calendarOptions.controller,
       )
 
-      this.isInCommit = true
       this.flushEffects()
 
       const { pendingActions } = this
