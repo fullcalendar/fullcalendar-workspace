@@ -241,7 +241,7 @@ Steps:
    `TimelineSlats`, `TimelineBg`, `TimelineHeaderRow`, `TimelineFg`, `TimelinePrintFg` (on a new
    `useTimelinePrintBands`, the hook form of `TimelinePrintRenderer`, which stays for
    `ResourcePrintRow` until ResourceTimeline converts). (done)
-2. `TimelineLayoutNormal`, `TimelineLayoutPrint`, `TimelineView`.
+2. `TimelineLayoutNormal`, `TimelineLayoutPrint`, `TimelineView`. (done)
 
 ### Step 1: leaves
 
@@ -250,3 +250,32 @@ Steps:
 - **`TimelineFg`** keeps its slice and more-link height maps (a new `rev` in state re-renders), and
   reports its settled height after each commit that changes it, and `null` on unmount. A Strict Mode
   replay now reports the height again (the class lost it).
+
+### Step 2: layouts and view
+
+- **The scroll stays the timeline's own,** not `useInitialScroll` (a deviation from spec §5.3). The
+  view holds the `{ time, x }` target in `scrollRef`, because print replaces the layout: print clips
+  its canvas to `x`, and the layout restores the target from `initialScroll` when it mounts again. So
+  the timelines never had #8112 bug 2. Moving the target into `useInitialScroll` would mean
+  recomputing print's clip from a time, with the #8093 cap duplicated.
+  - **`TimelineLayoutNormal`** ports the class's scroll logic as is: a stable object holding the
+    target (the one `scrollRef` points to), the syncer and the handlers, reading the latest props,
+    context and `maxHScroll` through `useLatest`. Each mount (including `<Activity>` and Strict Mode)
+    creates the syncer, restores `initialScroll` or resets to `scrollTime`, and adds the listeners;
+    cleanup undoes them. Later commits re-apply on a date-range, slot-width or client-width change,
+    as `componentDidUpdate` did.
+  - It registers its body with `useHitTarget`, passing only `queryHit`, as the class adapter
+    effectively did (its props have no `eventSelection`, drag or resize; they're inside
+    `slicedProps`).
+- **`TimelineLayoutPrint`** measures its header with `useReportedSize`.
+- **`TimelineView`** stays a class rendering a function body, with `useNow` for the slot unit.
+- **Spec:** `vanilla-scheduler-tests/src/misc/activity-scroll-timeline.ts`, timeline and resource
+  timeline (React runtime), guards: they pass on the old code too.
+- **Known React-runtime failure, not phase 7:** "CalendarController is not taken back by a destroyed
+  calendar that renders again" fails with "Cannot update an unmounted root". The test-only
+  `vanilla-w-react` `Calendar` creates its React root once, in the constructor, so `render()` after
+  `destroy()` renders into the unmounted root. The spec dates from before phase 6 (`f8b75241f`), and the
+  React-runtime filters hadn't covered it until now. Follow-up: create the root again on render.
+- One React-runtime run of the scheduler suite hung (41 minutes, 317 failures, disconnected). The
+  same filter re-run took 2.5 minutes with only the known destroy failures, so it was the
+  environment, not the change.

@@ -1,6 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  BaseComponent,
   computeViewBorderless,
   DateMarker,
   DateProfile,
@@ -8,10 +7,11 @@ import {
   generateClassName,
   SlicedProps,
   ViewContainer,
-  watchHeight,
+  useReportedSize,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef } from 'react'
+import { memo, useState } from 'react'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineBg } from './TimelineBg'
@@ -32,172 +32,150 @@ export interface TimelineLayoutPrintProps {
   timeCanvasClipStart: number
 }
 
-interface TimelineLayoutPrintState {
-  headerHeight?: number
-}
+export const TimelineLayoutPrint = memo(function TimelineLayoutPrint(props: TimelineLayoutPrintProps) {
+  const context = useViewContext()
+  const [headerHeight, setHeaderHeight] = useState<number | undefined>(undefined)
+  const handleHeaderEl = useReportedSize({
+    watchHeight: true,
+    onSize(_width, height) {
+      setHeaderHeight(height)
+    },
+  })
+  const { options, viewSpec } = context
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
+  const { tDateProfile, nowDate, todayRange, slicedProps } = props
+  const { cellRows } = tDateProfile
 
-export class TimelineLayoutPrint extends BaseComponent<TimelineLayoutPrintProps, TimelineLayoutPrintState> {
-  state = {} as TimelineLayoutPrintState
+  const tableDisplayInfo = {
+    borderlessX,
+    borderlessTop,
+    borderlessBottom,
+    multiMonthColumns: 0,
+  }
+  const headerDividerClassName = generateClassName(options.slotHeaderDividerClass, {
+    inTableHeader: true,
+    options: { dayMinWidth: options.dayMinWidth },
+  })
 
-  // refs
-  private headerElRef = createRef<HTMLTableSectionElement>()
-
-  // internal
-  private _isUnmounting: boolean
-  private disconnectHeaderHeight?: () => void
-
-  render() {
-    const { props, context } = this
-    const { options, viewSpec } = context
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-    const { tDateProfile, nowDate, todayRange, slicedProps } = props
-    const { cellRows } = tDateProfile
-
-    const tableDisplayInfo = {
-      borderlessX,
-      borderlessTop,
-      borderlessBottom,
-      multiMonthColumns: 0,
-    }
-    const headerDividerClassName = generateClassName(options.slotHeaderDividerClass, {
-      inTableHeader: true,
-      options: { dayMinWidth: options.dayMinWidth },
-    })
-
-    return (
-      <ViewContainer
-        viewSpec={viewSpec}
+  return (
+    <ViewContainer
+      viewSpec={viewSpec}
+      className={joinClassNames(
+        props.className,
+        classNames.rel,
+        classNames.crop,
+        classNames.isolate,
+      )}
+    >
+      <div
         className={joinClassNames(
-          props.className,
+          classNames.abs,
+          classNames.start0,
+          classNames.end0,
+          classNames.pointerEventsNone,
+          classNames.z0,
+        )}
+        style={{
+          top: headerHeight ?? 0,
+          // Compensates for Firefox miscomputing absolute height with repeated print headers.
+          bottom: '-5%',
+        }}
+      >
+        <TimelineSlats
+          dateProfile={props.dateProfile}
+          tDateProfile={tDateProfile}
+          nowDate={nowDate}
+          nowMs={props.nowMs}
+          todayRange={todayRange}
+          slotWidth={props.slotWidth}
+          clipStart={props.timeCanvasClipStart}
+        />
+        <TimelineBg
+          tDateProfile={tDateProfile}
+          nowDate={nowDate}
+          nowMs={props.nowMs}
+          todayRange={todayRange}
+          bgEventSegs={slicedProps.bgEventSegs}
+          businessHourSegs={slicedProps.businessHourSegs}
+          dateSelectionSegs={null}
+          eventResizeSegs={null}
+          slotWidth={props.slotWidth}
+          clipStart={props.timeCanvasClipStart}
+        />
+      </div>
+
+      <table
+        className={joinClassNames(
+          generateClassName(options.tableClass, tableDisplayInfo),
+          classNames.printTable,
           classNames.rel,
-          classNames.crop,
-          classNames.isolate,
+          classNames.z1,
         )}
       >
-        <div
-          className={joinClassNames(
-            classNames.abs,
-            classNames.start0,
-            classNames.end0,
-            classNames.pointerEventsNone,
-            classNames.z0,
-          )}
-          style={{
-            top: this.state.headerHeight ?? 0,
-            // Compensates for Firefox miscomputing absolute height with repeated print headers.
-            bottom: '-5%',
-          }}
+        <thead
+          ref={handleHeaderEl}
+          className={generateClassName(options.tableHeaderClass, {
+            ...tableDisplayInfo,
+            isSticky: false,
+          })}
         >
-          <TimelineSlats
-            dateProfile={props.dateProfile}
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            nowMs={props.nowMs}
-            todayRange={todayRange}
-            slotWidth={props.slotWidth}
-            clipStart={props.timeCanvasClipStart}
-          />
-          <TimelineBg
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            nowMs={props.nowMs}
-            todayRange={todayRange}
-            bgEventSegs={slicedProps.bgEventSegs}
-            businessHourSegs={slicedProps.businessHourSegs}
-            dateSelectionSegs={null}
-            eventResizeSegs={null}
-            slotWidth={props.slotWidth}
-            clipStart={props.timeCanvasClipStart}
-          />
-        </div>
-
-        <table
-          className={joinClassNames(
-            generateClassName(options.tableClass, tableDisplayInfo),
-            classNames.printTable,
-            classNames.rel,
-            classNames.z1,
-          )}
-        >
-          <thead
-            ref={this.headerElRef}
-            className={generateClassName(options.tableHeaderClass, {
-              ...tableDisplayInfo,
-              isSticky: false,
-            })}
-          >
-            <tr>
-              <th className={joinClassNames(classNames.noPadding, classNames.borderless, classNames.crop)}>
-                <div
-                  className={classNames.rel}
-                  style={{
-                    width: props.canvasWidth,
-                    insetInlineStart: -props.timeCanvasClipStart,
-                  }}
-                >
-                  {cellRows.map((cells, rowIndex) => {
-                    const rowLevel = cellRows.length - rowIndex - 1
-
-                    return (
-                      <TimelineHeaderRow
-                        key={rowLevel}
-                        dateProfile={props.dateProfile}
-                        tDateProfile={tDateProfile}
-                        nowDate={nowDate}
-                        nowMs={props.nowMs}
-                        todayRange={todayRange}
-                        rowLevel={rowLevel}
-                        cells={cells}
-                        slotWidth={props.slotWidth}
-                      />
-                    )
-                  })}
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
-            </tr>
-          </thead>
-          <tbody
-            className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
-          >
-            <tr>
-              <td
-                className={joinClassNames(classNames.noPadding, classNames.borderless)}
+          <tr>
+            <th className={joinClassNames(classNames.noPadding, classNames.borderless, classNames.crop)}>
+              <div
+                className={classNames.rel}
+                style={{
+                  width: props.canvasWidth,
+                  insetInlineStart: -props.timeCanvasClipStart,
+                }}
               >
-                <div className={joinClassNames(options.timelineTopClass)} />
-                <TimelinePrintFg
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  nowDate={nowDate}
-                  nowMs={props.nowMs}
-                  todayRange={todayRange}
-                  fgEventSegs={slicedProps.fgEventSegs}
-                  eventSelection={slicedProps.eventSelection}
-                  slotWidth={props.slotWidth}
-                  timeCanvasClipStart={props.timeCanvasClipStart}
-                />
-                <div className={joinClassNames(options.timelineBottomClass)} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </ViewContainer>
-    )
-  }
+                {cellRows.map((cells, rowIndex) => {
+                  const rowLevel = cellRows.length - rowIndex - 1
 
-  componentDidMount(): void {
-    this._isUnmounting = false
-    this.disconnectHeaderHeight = watchHeight(this.headerElRef.current, (headerHeight) => {
-      if (!this._isUnmounting && headerHeight !== this.state.headerHeight) {
-        this.setState({ headerHeight })
-      }
-    })
-  }
-
-  componentWillUnmount(): void {
-    this._isUnmounting = true
-    this.disconnectHeaderHeight?.()
-  }
-}
+                  return (
+                    <TimelineHeaderRow
+                      key={rowLevel}
+                      dateProfile={props.dateProfile}
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      nowMs={props.nowMs}
+                      todayRange={todayRange}
+                      rowLevel={rowLevel}
+                      cells={cells}
+                      slotWidth={props.slotWidth}
+                    />
+                  )
+                })}
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
+          </tr>
+        </thead>
+        <tbody
+          className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
+        >
+          <tr>
+            <td
+              className={joinClassNames(classNames.noPadding, classNames.borderless)}
+            >
+              <div className={joinClassNames(options.timelineTopClass)} />
+              <TimelinePrintFg
+                dateProfile={props.dateProfile}
+                tDateProfile={tDateProfile}
+                nowDate={nowDate}
+                nowMs={props.nowMs}
+                todayRange={todayRange}
+                fgEventSegs={slicedProps.fgEventSegs}
+                eventSelection={slicedProps.eventSelection}
+                slotWidth={props.slotWidth}
+                timeCanvasClipStart={props.timeCanvasClipStart}
+              />
+              <div className={joinClassNames(options.timelineBottomClass)} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ViewContainer>
+  )
+})
