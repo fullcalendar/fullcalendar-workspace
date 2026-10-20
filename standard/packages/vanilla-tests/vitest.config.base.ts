@@ -17,8 +17,15 @@ export const TIME_ZONE = 'America/New_York'
 
 process.env.TZ = TIME_ZONE // for the Node project's workers, which inherit it
 
-export function createTestConfig(options: { setupFile: string }): ViteUserConfig {
+export function createTestConfig(options: {
+  setupFile: string
+  // deps that tests import lazily. pre-bundling them avoids a Vite reload mid-run on cold starts
+  optimizeDepsInclude?: string[]
+}): ViteUserConfig {
   return defineConfig({
+    optimizeDeps: {
+      include: options.optimizeDepsInclude || [],
+    },
     test: {
       onConsoleLog(log) {
         // the dev-parts plugin's once-per-page warning would otherwise print for every test file
