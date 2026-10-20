@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
+import { areScrollbarsHidden } from '../lib/env'
 import { queryParts } from '../lib/models/events'
 import { DayGridModel } from '../lib/models/day-grid'
 import { TimeGridModel } from '../lib/models/time-grid'
@@ -8,8 +9,8 @@ import { waitForSettle } from '../lib/settle'
 
 /*
 When the body scrolls vertically, its scrollbar takes width that the header doesn't have. The layout
-compensates so header cells stay aligned with the body's columns. The test browser shows real
-scrollbars (see vitest.config.base.ts).
+compensates so header cells stay aligned with the body's columns. Runs with scrollbars and without
+(the browser and browser-no-scrollbars projects in vitest.config.base.ts).
 */
 describe('header alignment with a vertical scrollbar', () => {
   const DATES = ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05', '2023-01-06', '2023-01-07']
@@ -48,7 +49,7 @@ describe('header alignment with a vertical scrollbar', () => {
       await waitForSettle()
 
       const scrollerEl = getVerticalScroller(getBodyEl(calendar.el, DATES[0]))
-      expect(scrollerEl.offsetWidth - scrollerEl.clientWidth).toBeGreaterThan(0) // has a scrollbar
+      expect(scrollerEl.offsetWidth - scrollerEl.clientWidth > 0).toBe(!areScrollbarsHidden)
 
       for (const date of DATES) {
         expectAligned(getDayHeaderEl(calendar.el, date), getBodyEl(calendar.el, date), date)

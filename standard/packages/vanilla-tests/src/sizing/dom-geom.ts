@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { computeEdges, computeInnerRect } from 'fullcalendar/protected-api'
 import { appendTestElement } from '../lib/calendar'
+import { areScrollbarsHidden } from '../lib/env'
 
 /*
 Internal DOM geometry used for drag auto-scrolling (ElementScrollGeomCache): an element's borders,
-scrollbars and padding, and the rect inside them. The test browser shows real scrollbars (see
-vitest.config.base.ts).
+scrollbars and padding, and the rect inside them. Runs with scrollbars and without (the browser and
+browser-no-scrollbars projects in vitest.config.base.ts).
 */
 
 function createBox(css: Partial<CSSStyleDeclaration>, innerWidth = 100, innerHeight = 100): HTMLElement {
@@ -64,7 +65,7 @@ describe('computeEdges with scrollbars', () => {
     ['rtl', 5, 'scrollbarLeft'],
   ] as const)('in %s with a %ipx border, measures the scrollbars apart from the border', (direction, borderWidth, verticalSide) => {
     const scrollbarWidth = getScrollbarWidth()
-    expect(scrollbarWidth).toBeGreaterThan(0)
+    expect(scrollbarWidth > 0).toBe(!areScrollbarsHidden)
 
     const el = createBox({ direction, overflow: 'scroll', border: `${borderWidth}px solid red` })
 

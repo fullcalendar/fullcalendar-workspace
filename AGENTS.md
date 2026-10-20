@@ -30,7 +30,7 @@ pnpm exec vitest run src/resource-data/filter-resources-with-events.ts
 pnpm exec vitest run src/event-drag -t "resource"
 ```
 
-- **Filter:** pass test files or folders, and/or `-t <pattern>` to match test names (all enclosing `describe` titles plus the `it` title). `--project browser` or `--project unit` limits the run to one kind.
+- **Filter:** pass test files or folders, and/or `-t <pattern>` to match test names (all enclosing `describe` titles plus the `it` title). `--project <name>` limits the run to one project: `unit`, `browser` (scrollbars shown), or `browser-no-scrollbars` (the `src/sizing` tests again, with scrollbars hidden).
 - **Build first:** the tests import the built packages (`fullcalendar`, `fullcalendar-scheduler`, ...), not their source. The developer usually has `pnpm dev` running, which rebuilds them within seconds of a source edit. Before running, confirm the build is current, e.g. grep the package's `dist/` for an identifier you just added. If it isn't updating, ask the developer to start `pnpm dev`. Test edits need no build.
 - **React:** `FORCE_REACT=1` runs the suites against the React-rendering builds (`fullcalendar-w-react`, ...). CI runs both.
 - **Sandbox:** the browser binds local ports. If the sandbox blocks that (`EPERM`), run the command outside the sandbox.

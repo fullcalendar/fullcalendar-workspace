@@ -1,4 +1,4 @@
-import { defineConfig, type ViteUserConfig } from 'vitest/config'
+import { defineConfig, type TestProjectInlineConfiguration, type ViteUserConfig } from 'vitest/config'
 import { playwright } from '@vitest/browser-playwright'
 import { fileURLToPath } from 'node:url'
 import * as commands from './vitest.commands'
@@ -62,39 +62,56 @@ export function createTestConfig(options: {
             include: ['src/**/*.unit.ts'],
           },
         },
-        {
-          extends: true,
-          test: {
-            name: 'browser',
-            include: ['src/**/*.ts'],
-            exclude: ['src/**/*.unit.ts', 'src/lib/**'],
-            setupFiles: [options.setupFile],
-            testTimeout: 10000,
-            browser: {
-              enabled: true,
-              headless: true,
-              provider: playwright({
-                launchOptions: {
-                  // Playwright hides scrollbars by default (they take no space). Show them, as most
-                  // desktop browsers do, so layouts that compensate for scrollbars are tested
-                  ignoreDefaultArgs: ['--hide-scrollbars'],
-                },
-                contextOptions: {
-                  viewport: VIEWPORT,
-                  timezoneId: TIME_ZONE,
-                },
-              }),
-              viewport: VIEWPORT,
-              commands,
-              instances: [
-                { browser: 'chromium' },
-              ],
-            },
-          },
-        },
+        // with scrollbars, as on most desktops
+        createBrowserProject('browser', ['src/**/*.ts'], options.setupFile, false),
+        // without them, as with overlay scrollbars (macOS): only the layout tests
+        createBrowserProject('browser-no-scrollbars', ['src/sizing/**/*.ts'], options.setupFile, true),
       ],
     },
   })
+}
+
+/*
+A project of browser tests. Scrollbars are explicitly shown or hidden, so runs are the same in every
+environment. Tests read the setting with `areScrollbarsHidden` (src/lib/env.ts).
+*/
+function createBrowserProject(
+  name: string,
+  include: string[],
+  setupFile: string,
+  hideScrollbars: boolean,
+): TestProjectInlineConfiguration {
+  return {
+    extends: true,
+    test: {
+      name,
+      include,
+      exclude: ['src/**/*.unit.ts', 'src/lib/**'],
+      setupFiles: [setupFile],
+      provide: { hideScrollbars },
+      testTimeout: 10000,
+      browser: {
+        enabled: true,
+        headless: true,
+        provider: playwright({
+          // Playwright passes --hide-scrollbars by default. Pass it explicitly anyway, or drop it.
+          // (ignoreDefaultArgs would drop it from `args` too, so only one of them is set)
+          launchOptions: hideScrollbars
+            ? { args: ['--hide-scrollbars'] }
+            : { ignoreDefaultArgs: ['--hide-scrollbars'] },
+          contextOptions: {
+            viewport: VIEWPORT,
+            timezoneId: TIME_ZONE,
+          },
+        }),
+        viewport: VIEWPORT,
+        commands,
+        instances: [
+          { browser: 'chromium' },
+        ],
+      },
+    },
+  }
 }
 
 export function resolvePath(relPath: string, baseUrl: string): string {

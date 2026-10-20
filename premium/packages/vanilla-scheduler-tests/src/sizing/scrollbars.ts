@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
+import { areScrollbarsHidden } from '@fullcalendar-tests/standard/src/lib/env'
 import { getVerticalScroller } from '@fullcalendar-tests/standard/src/lib/models/slots'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 import { getSlotEl, getSlotHeaderRows, getTimeAxisEdges } from '../lib/models/timeline-layout'
@@ -7,8 +8,8 @@ import { TimelineModel } from '../lib/models/timeline'
 
 /*
 When the body scrolls vertically, its scrollbar takes width that the header doesn't have. The layout
-compensates so header cells stay aligned with the body's columns. The test browser shows real
-scrollbars (see the standard test package's vitest.config.base.ts).
+compensates so header cells stay aligned with the body's columns. Runs with scrollbars and without
+(the browser and browser-no-scrollbars projects in the standard test package's vitest.config.base.ts).
 */
 describe('header alignment with a vertical scrollbar', () => {
   it.each(['ltr', 'rtl'] as const)('aligns resource timeline\'s slot headers with its slots in %s', async (direction) => {
@@ -24,7 +25,7 @@ describe('header alignment with a vertical scrollbar', () => {
     const timeline = new TimelineModel(calendar.el)
     const slotLaneEls = timeline.getSlotLanes()
     const scrollerEl = getVerticalScroller(timeline.getResourceLane('r0'))
-    expect(scrollerEl.offsetWidth - scrollerEl.clientWidth).toBeGreaterThan(0) // has a scrollbar
+    expect(scrollerEl.offsetWidth - scrollerEl.clientWidth > 0).toBe(!areScrollbarsHidden)
 
     // scroll to the end, where the last slot meets the vertical scrollbar
     expect(scrollerEl.scrollWidth).toBeGreaterThan(scrollerEl.clientWidth)
