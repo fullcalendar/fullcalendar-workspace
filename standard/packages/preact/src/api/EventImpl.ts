@@ -131,7 +131,12 @@ export class EventImpl implements EventApi {
 
   setDates(startInput: DateInput, endInput: DateInput | null, options: { allDay?: boolean, granularity?: string } = {}): void {
     let { dateEnv } = this._context
-    let standardProps = { allDay: options.allDay } as any
+    let standardProps = {} as any
+
+    if (options.allDay != null) { // otherwise, keep the event's allDay
+      standardProps.allDay = options.allDay
+    }
+
     let startMeta = dateEnv.createMarkerMeta(startInput)
     let endMeta = null
 

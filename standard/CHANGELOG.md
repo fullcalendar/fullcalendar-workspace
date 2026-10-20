@@ -8,6 +8,7 @@
 - FIX: React "Maximum update depth exceeded" when `validRange`, `visibleRange` or `hiddenDays` is given as a new-but-equal value each render and `datesSet` sets state (#7069)
 - FIX: When `slotMaxTime` is beyond 24h, the now-indicator disappears after midnight in Timeline views, and its arrow disappears in TimeGrid views (#6394)
 - FIX: `eventDrop` reports `oldResource`/`newResource` when an event that isn't resource-editable is dragged over another resource, even though its resource doesn't change (#4943)
+- FIX: `event.setDates()` without the `allDay` option cleared the event's `allDay` flag, turning an all-day event into a timed one
 
 ### Locales
 

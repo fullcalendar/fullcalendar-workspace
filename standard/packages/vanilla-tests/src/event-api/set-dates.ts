@@ -179,24 +179,21 @@ describe('setting event dates', () => {
 
       calendar.getEventById('1')!.setDates('2018-09-02', '2018-09-06') // start a day earlier, end a day later
 
-      // compares instants. See the skipped test below for the allDay flag
+      // compares instants. See the tests below for the allDay flag
       expect(getInstants(calendar.getEventById('1')!)).toEqual(['2018-09-02T00:00:00.000Z', '2018-09-06T00:00:00.000Z'])
       expect(getInstants(calendar.getEventById('2')!)).toEqual(['2018-09-12T00:00:00.000Z', '2018-09-16T00:00:00.000Z'])
     })
 
-    // KNOWN BUG (`it.fails` until fixed): without the allDay option, setDates sets
-    // the event's allDay to undefined (`standardProps = { allDay: options.allDay }`), so an all-day
-    // event turns into a timed one.
-    it.fails('keeps an all-day event all-day when allDay isn\'t given', () => {
+    // without the allDay option, setDates once set the event's allDay to undefined, so an all-day
+    // event turned into a timed one
+    it('keeps an all-day event all-day when allDay isn\'t given', () => {
       const event = getEvent([{ id: '1', start: '2018-09-03', end: '2018-09-05' }])
       event.setDates('2018-09-02', '2018-09-06')
       expect(getDates(event)).toEqual(['2018-09-02', '2018-09-06'])
       expect(event.allDay).toBe(true)
     })
 
-    // KNOWN BUG (`it.fails` until fixed): the same bug as above. A timed event's allDay becomes
-    // undefined rather than staying false.
-    it.fails('keeps a timed event timed when allDay isn\'t given', () => {
+    it('keeps a timed event timed when allDay isn\'t given', () => {
       const event = getEvent(events)
       expect(event.allDay).toBe(false)
       event.setDates('2018-09-06T01:00:00', '2018-09-06T03:00:00')
