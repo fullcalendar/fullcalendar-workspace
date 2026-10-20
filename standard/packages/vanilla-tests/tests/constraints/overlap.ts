@@ -30,13 +30,15 @@ describe('event overlap', () => {
   }
 
   async function testDrag({ calendarOptions, eventId = 'a', to, isAllowed }: DragCase) {
+    const eventDragStart = vi.fn()
     const eventDrop = vi.fn()
-    const calendar = initCalendar({ ...options, ...calendarOptions, eventDrop })
+    const calendar = initCalendar({ ...options, ...calendarOptions, eventDragStart, eventDrop })
     await waitForSettle()
     const origStartStr = calendar.getEventById(eventId)!.startStr
 
     await dragEventStartTo(calendar, eventId, to)
 
+    expect(eventDragStart).toHaveBeenCalledOnce() // so a disallowed row can't pass by never starting
     expect(eventDrop).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
     const startStr = calendar.getEventById(eventId)!.startStr
     expect(startStr.slice(0, isAllowed ? to.length : undefined)).toBe(isAllowed ? to : origStartStr)
@@ -105,12 +107,14 @@ describe('event overlap', () => {
       ['allows a resize ending where it starts', '2014-11-04T05:00', true],
       ['disallows a resize across its start', '2014-11-04T06:00', false],
     ])('%s', async (_desc, to, isAllowed) => {
+      const eventResizeStart = vi.fn()
       const eventResize = vi.fn()
-      const calendar = initCalendar({ ...options, events, eventResize })
+      const calendar = initCalendar({ ...options, events, eventResizeStart, eventResize })
       await waitForSettle()
 
       await resizeEventEndTo(calendar, 'a', to)
 
+      expect(eventResizeStart).toHaveBeenCalledOnce()
       expect(eventResize).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
       expect(calendar.getEventById('a')!.endStr).toBe(isAllowed ? to + ':00Z' : a.end + 'Z')
     })
@@ -192,7 +196,18 @@ describe('selectOverlap', () => {
       await new DayGridModel(calendar.el).selectDates(start, end) // inclusive days
     }
 
-    expect(select).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
+    if (isAllowed) {
+      expect(select).toHaveBeenCalledOnce()
+      const info = select.mock.calls[0][0]
+      if (start.includes('T')) {
+        expect([info.startStr, info.endStr, info.allDay]).toEqual([start + ':00Z', end + ':00Z', false])
+      } else {
+        const endStr = new Date(new Date(end + 'T00:00:00Z').valueOf() + 86400000).toISOString().slice(0, 10) // end is inclusive
+        expect([info.startStr, info.endStr, info.allDay]).toEqual([start, endStr, true])
+      }
+    } else {
+      expect(select).not.toHaveBeenCalled()
+    }
   }
 
   describe('as false', () => {

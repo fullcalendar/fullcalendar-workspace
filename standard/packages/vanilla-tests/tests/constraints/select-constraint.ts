@@ -71,6 +71,8 @@ describe('selectConstraint', () => {
     { desc: 'allows a selection within a recurring time range', calendarOptions: { selectConstraint: { startTime: '01:00', endTime: '05:00' } }, start: '2014-11-12T02:00', end: '2014-11-12T04:00', isAllowed: true },
     { desc: 'disallows a selection partly outside a recurring time range', calendarOptions: { selectConstraint: { startTime: '01:00', endTime: '05:00' } }, start: '2014-11-12T02:00', end: '2014-11-12T06:00', isAllowed: false },
     { desc: 'disallows a multi-day selection over a recurring time range', calendarOptions: { selectConstraint: { startTime: '01:00', endTime: '05:00' } }, start: '2014-11-12T02:00', end: '2014-11-14T04:00', isAllowed: false },
+    // the same multi-day gesture, allowed, so the row above can't pass just because the gesture failed
+    { desc: 'allows a multi-day selection within a date range', calendarOptions: withRange('2014-11-12T00:00:00', '2014-11-15T00:00:00'), start: '2014-11-12T02:00', end: '2014-11-14T04:00', isAllowed: true },
   ])('$desc', testSelect)
 
   describe('with businessHours', () => {

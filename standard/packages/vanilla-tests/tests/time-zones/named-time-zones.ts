@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
 import { queryPart } from '../lib/models/events'
+import { getSlotTop } from '../lib/models/slots'
 import { waitForSettle } from '../lib/settle'
 
 describe('named time zones', () => {
@@ -22,18 +23,18 @@ describe('named time zones', () => {
     const calendar = initCalendar({
       timeZone: 'America/Chicago',
       initialView: 'timeGridDay',
-      now: '2025-03-20T01:00:00',
+      now: '2025-03-20T01:00:00', // 06:00Z (CDT is UTC-5)
       nowIndicator: true,
       scrollTime: 0,
     })
     await waitForSettle()
 
-    const top0 = queryPart(calendar.el, 'nowIndicatorLine')!.getBoundingClientRect().top
+    const getIndicatorTop = () => queryPart(calendar.el, 'nowIndicatorLine')!.getBoundingClientRect().top
+    expect(Math.abs(getIndicatorTop() - getSlotTop(calendar.el, '01:00:00'))).toBeLessThan(2)
 
-    calendar.setOption('timeZone', 'Europe/London')
+    calendar.setOption('timeZone', 'Europe/London') // GMT on this date
     await waitForSettle()
 
-    const top1 = queryPart(calendar.el, 'nowIndicatorLine')!.getBoundingClientRect().top
-    expect(Math.abs(top1 - top0)).toBeGreaterThan(100)
+    expect(Math.abs(getIndicatorTop() - getSlotTop(calendar.el, '06:00:00'))).toBeLessThan(2)
   })
 })

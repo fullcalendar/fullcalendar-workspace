@@ -27,6 +27,15 @@ function expectNonBusinessHours(root: HTMLElement, date: string, ranges: TimeRan
   })
 }
 
+/*
+The dates of the all-day cells that have a non-business fill.
+*/
+function getAllDayFillDates(root: HTMLElement): string[] {
+  return queryParts(root, 'dayCell')
+    .filter((el) => queryParts(el, 'nonBusinessHours').length)
+    .map((el) => el.getAttribute('data-date')!)
+}
+
 const WHOLE_DAY: TimeRange[] = [['00:00', '24:00']]
 
 describe('businessHours in timeGrid', () => {
@@ -47,9 +56,7 @@ describe('businessHours in timeGrid', () => {
     }
     expectNonBusinessHours(calendar.el, '2014-12-13', WHOLE_DAY)
 
-    // all-day: the weekend days
-    const allDayFillEls = queryParts(calendar.el, 'dayCell').filter((el) => queryParts(el, 'nonBusinessHours').length)
-    expect(allDayFillEls.map((el) => el.getAttribute('data-date'))).toEqual(['2014-12-07', '2014-12-13'])
+    expect(getAllDayFillDates(calendar.el)).toEqual(['2014-12-07', '2014-12-13']) // the weekend
   })
 
   it('renders correctly after starting out in a larger month range', async () => {
@@ -70,6 +77,7 @@ describe('businessHours in timeGrid', () => {
     expectNonBusinessHours(calendar.el, '2014-12-07', WHOLE_DAY)
     expectNonBusinessHours(calendar.el, '2014-12-08', [['00:00', '09:00'], ['17:00', '24:00']])
     expectNonBusinessHours(calendar.el, '2014-12-13', WHOLE_DAY)
+    expect(getAllDayFillDates(calendar.el)).toEqual(['2014-12-07', '2014-12-13'])
   })
 
   it('renders several day-of-week groups', async () => {

@@ -79,6 +79,7 @@ describe('resource-aware constraints', () => {
       ['disallows a drop onto an event that also has the resource', { ...otherDates, resourceIds: ['a', 'b'] }, false],
       ['disallows a drop onto a background event without resources', { ...otherDates, display: 'background' }, false],
     ])('%s', async (_desc, otherEvent, isAllowed) => {
+      const eventDragStart = vi.fn()
       const eventDrop = vi.fn()
       const calendar = initCalendar({
         initialView: view,
@@ -89,6 +90,7 @@ describe('resource-aware constraints', () => {
         eventOverlap: false,
         resources: [{ id: 'a', title: 'Resource A' }, { id: 'b', title: 'Resource B' }],
         events: [dragged, otherEvent],
+        eventDragStart,
         eventDrop,
       })
       await waitForSettle()
@@ -100,6 +102,7 @@ describe('resource-aware constraints', () => {
         { date: '2016-02-14T04:00', resourceId },
       )
 
+      expect(eventDragStart).toHaveBeenCalledOnce()
       expect(eventDrop).toHaveBeenCalledTimes(isAllowed ? 1 : 0)
     })
   })
