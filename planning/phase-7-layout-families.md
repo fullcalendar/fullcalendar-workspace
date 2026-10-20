@@ -132,8 +132,8 @@ Steps:
 1. Bottom-up: `TimeGridCols` (onto `useHitTarget`), `TimeGridCol`, `TimeGridEvent`,
    `TimeGridMoreLink`, `TimeGridAllDayLane` (onto `useHitTarget`). (done)
 2. The layout shell: `TimeGridLayout`, `TimeGridLayoutNormal`, `TimeGridLayoutPannable`, sharing
-   `useTimeGridAxis`, with the time scroll on `useInitialScroll` (#8112 bug 2).
-3. View data: `TimeGridView` and `ResourceTimeGridView` share a `useTimeGridViewData`.
+   `useTimeGridAxis`, with the time scroll on `useInitialScroll` (#8112 bug 2). (done)
+3. View data: `TimeGridView` and `ResourceTimeGridView` share a `useTimeGridViewData`. (done)
 
 ### Step 1: columns, events, all-day lane
 
@@ -173,3 +173,18 @@ Steps:
   - Leaving print gives timeGrid a "ResizeObserver loop" error in Karma, with or without this change,
     so the standard spec wraps the print toggle in `ignoreResizeObserverLoops`. Follow-up: find the
     loop.
+
+### Step 3: view data
+
+- **`useTimeGridViewData(props)`** (`timegrid/components/useTimeGridViewData.ts`): the day series,
+  day columns and ranges, the props split into all-day and timed, and now (`useNow`, by the minute
+  with the now indicator). **`useTimedSegsByCol`** splits the timed segs by column.
+- **`TimeGridView`** and **`ResourceTimeGridView`** stay classes rendering a function body, like the
+  DayGrid views. Their slicers, splitters and joiners live in state or refs, unchanged (see
+  `day-table-pipeline.md` for redesigning them).
+- **The day columns are now stable across renders.** The class passed a new config object to its
+  memoized `buildDayColsFromSeries` on every render, so the columns, and everything derived from them,
+  were rebuilt each time. `useMemo` keys on the date profile instead. Fewer re-renders, never more:
+  the snapshot counts dropped in `timeGridWeek/drag` (event class hooks 111 to 27) and
+  `timeGridWeek/add-event`, with the DOM unchanged (changelog PERF).
+- The now-indicator segs are still rebuilt on every render (`sliceNowDate` doesn't memoize), as before.

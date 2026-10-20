@@ -242,6 +242,8 @@ export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './timeg
 export { DayTimeColsSlicer } from './timegrid/DayTimeColsSlicer'
 export { AllDaySplitter } from './timegrid/AllDaySplitter'
 export { TimeGridLayout } from './timegrid/components/TimeGridLayout'
+export type { TimeGridViewData, TimedSegs, TimedSegsByCol } from './timegrid/components/useTimeGridViewData'
+export { useTimeGridViewData, useTimedSegsByCol } from './timegrid/components/useTimeGridViewData'
 
 export { DayTableSlicer, DaySeriesSlicer } from './daygrid/DayTableSlicer'
 export {
