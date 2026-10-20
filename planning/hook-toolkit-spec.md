@@ -4,7 +4,7 @@ The deliverable of phase 3 (`phase-3-hook-toolkit-spec.md`). It defines the shar
 primitives that phases 4–7 build on, as **behaviour contracts**. Signatures are illustrative; an
 implementation may split, merge, or reshape them as long as the contracts hold.
 
-Status: draft with inventory, awaiting review.
+Status: reviewed (GPT-6.1-Sol round 1, 7 findings accepted).
 
 ## 1. Ground truth: commit timing
 
@@ -21,7 +21,7 @@ Everything below depends on when code runs during a commit. Verified from source
 | `useEffect` | After paint, or synchronously at the end of a sync/`flushSync` render | After paint (`requestAnimationFrame` plus `setTimeout`). **Not** flushed by `flushSync` |
 | `flushSync(fn)` | Commits synchronously, including layout effects | Sets `options.debounceRendering` to capture the queued render, then runs it synchronously. Layout effects run inside, `useEffect` does not |
 | `StrictMode` | Dev builds replay mount: effects cleanup and re-run, refs detach and re-attach, `useState`/`useMemo` initialisers run twice | `preact/compat` exports `Fragment` as `StrictMode`, so no replay |
-| `<Activity mode="hidden">` | Runs effect cleanups and `componentWillUnmount`, keeps state and refs, keeps re-rendering at low priority, and re-runs effects and `componentDidMount` when shown | Not supported |
+| `<Activity mode="hidden">` | Runs layout/passive effect cleanups and `componentWillUnmount`, and **detaches host refs** (callback refs get `null`). Keeps state and `useRef` objects. Keeps re-rendering at low priority. When shown, re-attaches host refs and re-runs effects and `componentDidMount` (React 19.2: `disappearLayoutEffects`/`reappearLayoutEffects`) | Not supported |
 
 **Consequences:**
 
@@ -48,8 +48,18 @@ Everything below depends on when code runs during a commit. Verified from source
    - **Rule:** a subscription's setup and teardown live in the *same* mechanism, both in the
      callback ref or both in one effect. Registering in a ref and disconnecting in an effect cleanup
      would leave a React 18 Strict Mode tree permanently unsubscribed.
-5. **Hidden `<Activity>` subtrees are `display: none`.** ResizeObserver reports 0×0 for them, so
-   measurement hooks must ignore reports from an element that isn't rendered (section 4.1).
+5. **Hidden `<Activity>` subtrees are `display: none`, and their host refs are detached.** From a
+   component's point of view, hiding looks like unmounting, except that `useState`/`useRef` survive.
+   So measurement hooks keep their last values in persistent memory, and re-publish them as soon as
+   the element is re-attached (section 4). They also ignore any ResizeObserver report from an element
+   that isn't rendered.
+6. **Commit-time callbacks see the previous render's published values.** Host refs, and children's
+   layout effects, run before a parent's layout effects. So a stable handler that a parent passes down
+   (published through `useLatest`, section 3.4) still holds the parent's *previous* props when a child
+   calls it during the commit. That includes an immediate print measurement. Rule: handlers called
+   during the commit only record values and schedule work through `afterSize`. Anything that reads
+   props or options runs in the `afterSize` flush, which comes after all of the commit's layout
+   effects, including inside `flushSyncWithSizeBatching`.
 
 ## 2. Conventions
 
@@ -128,6 +138,9 @@ Every other class relies on the shallow default.
 - `useStableCallback` returns a function with a stable identity that calls the latest `fn`.
 - **Contract:** the ref is updated in a layout effect, not during render, so a discarded render
   (Suspense, concurrent) never leaks into callbacks.
+- **Limit:** the guarantee holds only for callbacks that run *after* the owner's layout effect, such
+  as watcher deliveries, emitter events, timers and `afterSize` flushes. Callbacks a child invokes
+  during the same commit see the previous values (section 1, consequence 6).
 
 ## 4. Measurement
 
@@ -156,6 +169,24 @@ this changes no output.
 **`afterSize` dedupes by function identity,** so every handler passed to it must be stable (a
 `useStableCallback` or a ref-held function), or a batch would run the same aggregation repeatedly.
 
+**State publication goes through `afterSize`.** The observer calls watcher callbacks in its entry
+loop, *outside* `flushSync`; only the following `flushAfterSize()` is inside it. So a hook's watcher
+callback stores the new value in a ref and schedules one stable `afterSize` handler, and that handler
+calls the state setter. All size-driven updates from one observer delivery then land in one
+synchronous batch, which matters for React 17's lack of automatic batching. In a
+`flushSyncWithSizeBatching` commit the immediate acquisition still happens at registration, and the
+handler runs in the bracket's single drain.
+
+**Persistent cache across detach.** Every measurement hook keeps its last value in a `useRef` that
+survives `<Activity>` hide/show and Strict Mode replay. On ref detach it disconnects the watcher but
+keeps the cached value. On re-attach it re-publishes the cached value immediately, before the new
+observation arrives, then lets the watcher correct it.
+
+**Exception to preserve:** `TimeGridLayoutNormal` deliberately defers its total-width state update by
+a `requestAnimationFrame` (`TimeGridLayoutNormal.tsx:508`), because changing all-day event widths
+during observer delivery causes ResizeObserver loop warnings. Its consumer keeps that deferral, and
+cancels it on cleanup; the hook doesn't hide it.
+
 ### 4.1 `useElementSize(options)`
 
 **Replaces:** `Ruler`'s internals, `MeasuredHeightHarness`, and direct `watch*` sites. Counts are
@@ -172,15 +203,15 @@ const [ref, size] = useElementSize({ width: true, height: false })
   (roadmap ground rule).
 - **Registers in the callback ref,** so registration happens during the commit. In a
   `flushSyncWithSizeBatching` commit that gives an immediate measurement.
-- When the element detaches or changes, the old watcher disconnects and the size resets to
-  `undefined`.
-- Updates state only when the watched dimension changes (`isDimsEqual`, as today).
+- When the element detaches, the watcher disconnects, but the size keeps its cached value. This is
+  what keeps measurements through an `<Activity>` hide. When it's replaced by a different element, the
+  new element's first measurement replaces the value.
+- Updates state only when the watched dimension changes (`isDimsEqual`, as today), through the
+  `afterSize` path described above.
 - **Hidden elements:** if a report arrives while the element isn't rendered
   (`el.getClientRects().length === 0`, true for `display: none` subtrees such as a hidden
   `<Activity>`), the report is ignored and the last value kept. When the element is shown again,
   ResizeObserver reports the real size.
-- The setState from a watcher callback lands inside the observer's `flushSync` batch, as it does
-  today.
 
 ### 4.2 `useReportedSize(ref, which)`
 
@@ -195,10 +226,14 @@ const elRef = useReportedSize(props.innerHeightRef, 'height')
 
 - Like 4.1, but instead of local state it calls `setRef(targetRef, value)`. The target is read
   through `useLatest`, so a new ref prop is honoured without re-registering.
-- Reports only on change. Reports `null` when the element detaches or the component unmounts, as
-  `Ruler` and `Scroller` do today, so parents can drop the entry.
-- **Ref swap:** when the target ref prop changes, the cached value is re-reported to the new ref,
-  as `MeasuredHeightHarness.componentDidUpdate` does today.
+- Reports only on change. Reports `null` in its layout-effect cleanup, as `Ruler` and `Scroller` do
+  today, so parents can drop the entry.
+- **Re-attach:** when re-attached (an `<Activity>` show, or a Strict Mode replay), it re-reports the
+  cached value in the layout-effect setup. Parents therefore see the entry again in the same commit,
+  before the new observation arrives.
+- **Ref swap:** when the target ref prop changes, it first releases the old target (`setRef(prev,
+  null)`), then reports the cached value to the new one, as `MeasuredHeightHarness.componentDidUpdate`
+  does today. That includes changes to or from an absent target.
 - **Scale:** there are 85 report-up sites: 51 heights, 17 widths, 6 scroller instances, 6 element
   refs, 5 other. The size ones become this hook. Scroller instances come from 4.4. Element refs stay
   plain `setRef`.
@@ -232,7 +267,15 @@ const tiers = useMeasuredMap<string, number>(maxOf)
   mounting N children costs one recomputation.
 - **Stable refs:** `ref(key)` returns the same function for the same key across renders. React
   calls a new callback ref with `null` then the element, which would cause churn.
-- **Detaching:** a key whose reporter reports `null` is removed from the map.
+- **Two retention modes:**
+  - **Live** (default): a key whose reporter reports `null` is removed.
+  - **Retained**: a `null` report keeps the last value, as `ignoreDeletes` does today. That's for the
+    ResourceTimeline entity-height maps, where virtualized rows keep their measured heights while
+    unmounted, and for timeline print event wrappers. Retained entries are cleared only by explicit
+    invalidation, from the consumer, on the events that invalidate them today.
+- **Reporter identity:** each `ref(key)` reporter has a token. A `null` from a reporter that no longer
+  owns the key (a departing wrapper whose replacement has already reported) is ignored in both modes,
+  so it can't erase its replacement's value.
 - **Comparator:** the combined value is compared with a supplied comparator (`isArraysEqual` for
   tier arrays) before `setState`, as the pre-pass fixed for `headerTierHeights`.
 - **Whole-map consumers** (pattern 4) use `combine = identity` plus a revision number, and read the
@@ -308,9 +351,10 @@ The hook unifies these.
   listener and the `visibilitychange` listener. Cleanup clears all three.
   - `useEffect`, not `useLayoutEffect`, because no measurement depends on it.
   - In Preact it arms after paint, and the first render already showed the correct now.
-- **On re-run** (shown again after `<Activity>`, Strict Mode replay, or wake from sleep), the effect
-  recomputes now first. If the unit value changed while it wasn't armed, it updates state right
-  away, then arms.
+- **On every setup, including the first,** the effect recomputes now before arming. If the unit
+  value changed since render (a boundary crossed between render and arming, or time passed while
+  hidden or replayed), it updates state right away, then arms. Passive arming can lag a frame or more
+  in Preact (rAF plus timeout, with a 35ms fallback). The recompute makes that harmless.
 - **Hidden `<Activity>`:** hidden means cleaned up, so no timers. A re-render while hidden arms
   nothing, because render is pure. Removing a hidden subtree leaves nothing behind.
 - **Discarded renders** (Suspense, concurrent) arm nothing.
@@ -336,23 +380,29 @@ The hook unifies these.
 - MultiMonth applies its scroll in a `setTimeout(0)`.
 
 The hook owns the *when*. Each layout supplies the *where*: a function from the target to a
-coordinate, or `undefined` while the needed measurements are missing. The recorded scroll target
-stays per layout.
+coordinate, or `undefined` while the needed measurements are missing.
 
-**Contract:**
+**Contract.** The hook maintains a **scroll target**, either a time/date (plus a resource for
+ResourceTimeline) or a pixel position.
 
-- **Initial scroll:** applied **once per (instance, date range)**, once the measurements it needs
-  are known. The "already scrolled for this date range" marker lives in a `useRef`, which survives
-  Strict Mode replay and `<Activity>` hide/show. Showing a hidden grid again therefore doesn't
-  reset a scroll position the user changed.
-- **Explicit requests:** `calendar.scrollToTime()` (via `_timeScrollRequest`) always apply, and
-  replace any pending initial scroll.
-- **Changing the date range** (navigation) re-applies the initial scroll, as today. So does leaving
-  print, where a layout does that today.
+- **Initialised once per instance** from `scrollTime` / today's date, as today. The target lives in
+  a `useRef`, so Strict Mode replay and `<Activity>` hide/show don't re-initialise it.
+- **On date-range change** it's reset to the initial target only when today's rules say so
+  (`scrollTimeReset`). With `scrollTimeReset: false` navigation keeps the target.
+- **Projected whenever geometry changes** (slat heights, slot/client/canvas widths, row heights),
+  while the target is a time/date. That's today's behaviour: Timeline re-applies on slot/client width
+  changes, ResourceTimeline also on canvas width, TimeGrid after slat-height reports.
+- **User scrolling** replaces a time/date target with the pixel position, recorded on scroll end as
+  each layout does today (TimeGrid only on touch devices and not in print; Timeline and
+  ResourceTimeline always; ResourceTimeline also clears the time on scroll).
+- **Explicit requests** (`_timeScrollRequest`, `_resourceScrollRequest`) set a new target.
+- **Leaving print** re-applies the current target, where a layout does so today.
+- **Re-show after `<Activity>`:** the layout-effect setup re-applies the current target or recorded
+  position once measurements are available again. They're re-published from the measurement caches
+  in the same commit (section 4). It doesn't rely on the browser keeping `scrollTop` through
+  `display: none`.
 - **MultiMonth's `setTimeout(0)`** becomes "apply on the first render where the coordinate is
   defined", like the others.
-- **Waiting for measurements:** if the needed sizes aren't known yet, the scroll waits and applies
-  on the first render where they are. It does not poll.
 
 ### 5.4 `useHitTarget(elRef, source)` (specified now, implemented in phase 6)
 
@@ -500,11 +550,9 @@ return <td ref={mergeRefs(ref, elRef)} className={joinClassNames(className, view
 
 1. *(Resolved by the inventory: no teardowns, `resEquality` only outside components. `useMemo` by
    default, `memoize` instances where 3.3 says.)*
-2. **Hidden-element detection** (`getClientRects().length === 0`): it costs a layout read per
-   report. Alternative: ignore reports where both dimensions are 0. That's cheaper, but a
-   legitimately empty element would be misread.
-3. **`useNow` and Preact's `useEffect`-after-paint:** the first now-update can't be later than one
-   frame. Any reason to arm in a layout effect instead?
+2. *(Resolved in review: use `getClientRects().length === 0`, because legitimate zero sizes must
+   propagate. `<Activity>`'s detached refs are handled separately by the persistent cache.)*
+3. *(Resolved in review: passive arming is fine, given the recompute on every setup in 5.2.)*
 
 ## 9. Call-site inventory (2026-10-20)
 
