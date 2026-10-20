@@ -16,6 +16,8 @@ Unless otherwise noted, work in these directories:
 
 Much of the other code is superfluous or mechanically derived from the above directories.
 
+`standard/packages/vanilla-w-react` and `premium/packages/vanilla-scheduler-w-react` are hand-kept mirrors of the vanilla packages that render with React. Make the same change there whenever you edit `vanilla` or `vanilla-scheduler`.
+
 ## Verifying Fixes By Running Tests
 
 Run the automated tests yourself to verify changes. They are Vitest tests in `standard/packages/vanilla-tests` and `premium/packages/vanilla-scheduler-tests`. Most run in headless Chromium (Vitest browser mode, with real mouse and touch input through Playwright). `*.unit.ts` files run in Node.

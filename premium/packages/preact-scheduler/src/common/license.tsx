@@ -29,6 +29,11 @@ export function buildLicenseWarning(context: CalendarContext) {
     }
 
     if (status !== 'valid') {
+      /*
+      Deliberately styled with `popoverClass` and given no class option or `data-fc-part` of its own.
+      Anyone styling popovers has to style this banner too, so the class system can't be used to
+      hide it without also hiding real popovers.
+      */
       return (
         <div
           className={joinClassNames(

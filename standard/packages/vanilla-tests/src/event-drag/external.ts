@@ -49,7 +49,8 @@ describe('dragging external elements onto the calendar', () => {
     })
 
     it('applies the event data\'s startTime on the dropped day', async () => {
-      const calendar = initCalendar(options)
+      const drop = vi.fn()
+      const calendar = initCalendar({ ...options, drop })
       await waitForSettle()
 
       const externalEl = createExternalEl()
@@ -57,6 +58,11 @@ describe('dragging external elements onto the calendar', () => {
       await dragExternalEl(externalEl, () => new DayGridModel(calendar.el).pointForDate('2014-11-13'))
 
       expect(calendar.getEvents()[0].startStr).toBe('2014-11-13T05:00:00Z')
+
+      // https://github.com/fullcalendar/fullcalendar/issues/2955: drop reports the day, not the startTime
+      expect(drop).toHaveBeenCalledOnce()
+      expect(drop.mock.calls[0][0].dateStr).toBe('2014-11-13')
+      expect(drop.mock.calls[0][0].allDay).toBe(true)
     })
 
     // https://github.com/fullcalendar/fullcalendar/issues/4597
