@@ -1,4 +1,10 @@
 
+## unreleased
+
+- FIX: `CalendarController` stayed bound to its calendar after the calendar was destroyed or the `controller` option was changed or removed, so it kept reporting the old calendar's view and date. Also, constructing it without a callback threw an error, and so did `setOption('controller', undefined)`
+- FIX: Server-side rendering leaked memory on the server: each render left a timer of up to a day running, which kept that render's calendar in memory until it fired
+
+
 ## v7.1.3
 
 ### Bugfixes
