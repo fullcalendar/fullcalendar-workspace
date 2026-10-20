@@ -91,7 +91,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
             multiMonthColumns: 0,
           }),
         )}
-        part={getPartAttr(options, 'table')}
+        part={getPartAttr(options, !props.forPrint && 'table')} // in print, DayGridLayoutPrint's <table> has it
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

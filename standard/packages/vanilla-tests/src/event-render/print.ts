@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
-import { getEventIdOfEl } from '../lib/models/events'
+import { getEventIdOfEl, queryParts } from '../lib/models/events'
 import { getVisibleEventEls } from '../lib/models/event-content'
 import { waitForSettle } from '../lib/settle'
 
@@ -40,5 +40,24 @@ describe('event DOM order for printing', () => {
     await waitForSettle()
 
     expect(getVisibleEventEls(calendar.el).map(getEventIdOfEl)).toEqual(['1', '2'])
+  })
+})
+
+/*
+While printing, dayGrid renders a real <table>, which takes over tableClass and the table part from
+the screen layout's container.
+*/
+describe('dayGrid table while printing', () => {
+  it('has one table part, the printed table, with tableClass', async () => {
+    const calendar = initCalendar({ initialView: 'dayGridMonth', initialDate: '2019-04-08', tableClass: 'my-table' })
+    await waitForSettle()
+
+    calendar.trigger('_beforeprint')
+    await waitForSettle()
+
+    const tableEls = queryParts(calendar.el, 'table')
+    expect(tableEls.map((el) => el.tagName)).toEqual(['TABLE'])
+    expect(tableEls[0].classList).toContain('my-table')
+    expect(calendar.el.querySelectorAll('.my-table')).toHaveLength(1)
   })
 })
