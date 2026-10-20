@@ -3,6 +3,9 @@
 Records and compares DOM snapshots of every view, for catching unintended DOM changes during
 refactors. Opt-in only; snapshots are git-ignored (.dom-snapshots/). See planning/phase-1-dom-snapshot.md
 
+Also records render-hook call counts (counts.json), which may go down but never up; `compare`
+fails if any went up.
+
 Usage:
   node scripts/bin/dom-snapshot.js record <label> [--only <substring>]
   node scripts/bin/dom-snapshot.js compare <labelA> <labelB> [--stat]
@@ -62,6 +65,8 @@ async function record(args) {
 
   const snapshots = new Map() // fixture name -> html
   const resizeObserverLoops = {} // fixture name -> count, for fixtures that had any
+  const callCounts = {} // scenario name -> { optionName: count }
+  const variedCounts = {} // scenario name -> optionNames whose count varied between runs
   let runtime
 
   const require = createRequire(join(scriptsDir, 'package.json'))
@@ -83,6 +88,13 @@ async function record(args) {
         if (info.domSnapshot.resizeObserverLoops) {
           resizeObserverLoops[name] = info.domSnapshot.resizeObserverLoops
         }
+      } else if (info.domSnapshotCounts) {
+        const { name, counts, variedOptions } = info.domSnapshotCounts
+        callCounts[name] = sortKeys(counts)
+
+        if (variedOptions.length) {
+          variedCounts[name] = variedOptions
+        }
       }
     }
   }
@@ -91,6 +103,7 @@ async function record(args) {
   const grep = only
     ? `/^dom-snapshot (reports the runtime|.*${escapeRegExp(only)})/`
     : 'dom-snapshot '
+
 
   const config = await karma.config.parseConfig(null, {
     ...baseConfig,
@@ -122,6 +135,8 @@ async function record(args) {
     writeFileSync(join(outDir, fixtureFileName(name)), html)
   }
 
+  writeFileSync(join(outDir, 'counts.json'), JSON.stringify(sortKeys(callCounts), null, 2) + '\n')
+
   const meta = {
     label,
     runtime,
@@ -130,6 +145,7 @@ async function record(args) {
     date: new Date().toISOString(),
     only: only || null,
     fixtureCount: snapshots.size,
+    countScenarioCount: Object.keys(callCounts).length,
     failed: exitCode !== 0,
     // dev builds (pnpm dev) have readable "f-<name>" classnames, others have hashed "fc-<hash>" ones.
     // the hashes are salted with the package version, so a version bump changes them all
@@ -139,15 +155,22 @@ async function record(args) {
     // not compared. ResizeObserver loop errors are swallowed while recording, but can point to
     // measurement problems, so they're listed here
     resizeObserverLoops,
+    // counts are the max over several runs. these varied between runs, so small changes in them may be noise
+    variedCounts,
   }
   writeFileSync(join(outDir, 'meta.json'), JSON.stringify(meta, null, 2) + '\n')
 
-  console.log(`\nWrote ${snapshots.size} snapshots to ${outDir}`)
+  console.log(`\nWrote ${snapshots.size} snapshots and ${Object.keys(callCounts).length} count scenarios to ${outDir}`)
   console.log(`Commit ${meta.commit}${meta.dirty ? ' (working tree dirty)' : ''}`)
 
   const loopFixtures = Object.keys(resizeObserverLoops)
   if (loopFixtures.length) {
     console.log(`ResizeObserver loop errors (swallowed) in ${loopFixtures.length} fixtures: ${loopFixtures.join(', ')}`)
+  }
+
+  const variedScenarios = Object.keys(variedCounts)
+  if (variedScenarios.length) {
+    console.log(`Counts that varied between runs (max recorded): ${variedScenarios.map((name) => `${name} (${variedCounts[name].join(', ')})`).join('; ')}`)
   }
 
   if (exitCode !== 0) {
@@ -236,9 +259,62 @@ function compare(args) {
     if (changed.length || onlyA.length || onlyB.length) {
       hasDiffs = true
     }
+
+    if (compareCounts(dirA, dirB)) {
+      hasDiffs = true
+    }
   }
 
   process.exit(hasDiffs ? 1 : 0)
+}
+
+/*
+Render-hook call counts may go down, never up. Returns true if any went up
+*/
+function compareCounts(dirA, dirB) {
+  const countsA = readCounts(dirA)
+  const countsB = readCounts(dirB)
+
+  if (!countsA || !countsB) {
+    console.log(`\nCall counts: not recorded in ${!countsA ? dirA : dirB}, skipping`)
+    return false
+  }
+
+  const increases = []
+  const decreases = []
+  const scenarioNames = [...new Set([...Object.keys(countsA), ...Object.keys(countsB)])].sort()
+
+  for (const scenarioName of scenarioNames) {
+    const scenarioA = countsA[scenarioName] || {}
+    const scenarioB = countsB[scenarioName] || {}
+
+    for (const optionName of new Set([...Object.keys(scenarioA), ...Object.keys(scenarioB)])) {
+      const a = scenarioA[optionName] || 0
+      const b = scenarioB[optionName] || 0
+
+      if (b > a) {
+        increases.push(`  ${scenarioName} ${optionName}: ${a} -> ${b}`)
+      } else if (b < a) {
+        decreases.push(`  ${scenarioName} ${optionName}: ${a} -> ${b}`)
+      }
+    }
+  }
+
+  console.log(`\nCall counts: ${increases.length} increased, ${decreases.length} decreased`)
+
+  for (const line of increases) {
+    console.log('INCREASED' + line)
+  }
+  for (const line of decreases) {
+    console.log('decreased' + line)
+  }
+
+  return increases.length > 0
+}
+
+function readCounts(dir) {
+  const countsPath = join(snapshotsDir, dir, 'counts.json')
+  return existsSync(countsPath) ? JSON.parse(readFileSync(countsPath, 'utf8')) : null
 }
 
 function resolveLabelPairs(labelA, labelB) {
@@ -307,6 +383,16 @@ function listSnapshotFiles(dir) {
 // "timeGridWeek/default" -> "timeGridWeek--default.html"
 function fixtureFileName(name) {
   return name.replace(/\//g, '--') + '.html'
+}
+
+function sortKeys(obj) {
+  const sorted = {}
+
+  for (const key of Object.keys(obj).sort()) {
+    sorted[key] = obj[key]
+  }
+
+  return sorted
 }
 
 function escapeRegExp(str) {
