@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Calendar, CalendarOptions } from 'fullcalendar'
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '../lib/calendar'
-import { queryPart } from '../lib/models/events'
+import { getEventEls, queryPart } from '../lib/models/events'
 import { waitForSettle } from '../lib/settle'
 
 /*
@@ -43,6 +43,13 @@ describe('rerender counts', () => {
     return Object.fromEntries(Object.entries(counts).map(([key, n]) => [key, n * strictModeFactor])) as Counts
   }
 
+  // back to the event's dates, so the resize has an event that could rerender
+  async function returnToEvent(calendar: Calendar): Promise<void> {
+    calendar.prev()
+    await waitForSettle()
+    expect(getEventEls(calendar.el)).toHaveLength(1)
+  }
+
   // the anchor for "no rerenders": the view really does get narrower
   async function resizeContainer(calendar: Calendar): Promise<void> {
     const viewEl = queryPart(calendar.el, 'view')!
@@ -52,6 +59,7 @@ describe('rerender counts', () => {
     await waitForSettle()
 
     expect(viewEl.getBoundingClientRect().width).toBe(700)
+    expect(getEventEls(calendar.el)).toHaveLength(1) // still rendered
   }
 
   it('in dayGrid month view', async () => {
@@ -78,6 +86,7 @@ describe('rerender counts', () => {
     await waitForSettle()
     expect(hooks.counts).toEqual(mounted({ dayHeaderContent: 7, dayCellTopContent: 42, eventContent: 0 }))
 
+    await returnToEvent(calendar)
     hooks.reset()
     await resizeContainer(calendar)
     expect(hooks.counts).toEqual({ dayHeaderContent: 0, dayCellTopContent: 0, eventContent: 0 })
@@ -118,6 +127,7 @@ describe('rerender counts', () => {
     await waitForSettle()
     expect(hooks.counts).toEqual(mounted({ ...viewCounts, eventContent: 0 }))
 
+    await returnToEvent(calendar)
     hooks.reset()
     await resizeContainer(calendar)
     expect(hooks.counts).toEqual({
@@ -149,6 +159,7 @@ describe('rerender counts', () => {
     await waitForSettle()
     expect(hooks.counts).toEqual(mounted({ listDayHeaderContent: 0, eventContent: 0, noEventsContent: 1 }))
 
+    await returnToEvent(calendar)
     hooks.reset()
     await resizeContainer(calendar)
     expect(hooks.counts).toEqual({ listDayHeaderContent: 0, eventContent: 0, noEventsContent: 0 })

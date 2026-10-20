@@ -103,14 +103,31 @@ describe.each(['height', 'contentHeight'] as const)('%s', (heightProp) => {
 })
 
 describe('height', () => {
-  it('as "100%", fills the container', async () => {
+  it.each([
+    ['as an init option', false],
+    ['set after init', true],
+  ])('as "100%%", fills the container, %s', async (_desc, asSetOption) => {
     const containerEl = appendTestElement(document.createElement('div'))
     containerEl.style.height = '600px'
     const calendarEl = containerEl.appendChild(document.createElement('div'))
     calendarEl.style.width = '900px'
 
-    const calendar = initCalendar({ initialView: 'dayGridMonth', initialDate: '2014-08-01', height: '100%' }, calendarEl)
-    await waitForSettle()
+    const options = { initialView: 'dayGridMonth', initialDate: '2014-08-01' }
+    let calendar: Calendar
+    if (asSetOption) {
+      calendar = initCalendar(options, calendarEl)
+      await waitForSettle()
+      // sized by aspectRatio at first
+      expect(Math.abs(calendar.el.getBoundingClientRect().height - 600)).toBeGreaterThan(20)
+      const firstCellEl = queryPart(calendar.el, 'dayCell')
+
+      calendar.setOption('height', '100%')
+      await waitForSettle()
+      expect(queryPart(calendar.el, 'dayCell')).toBe(firstCellEl) // resized, not rerendered
+    } else {
+      calendar = initCalendar({ ...options, height: '100%' }, calendarEl)
+      await waitForSettle()
+    }
 
     expect(Math.abs(calendar.el.getBoundingClientRect().height - 600)).toBeLessThan(2)
   })

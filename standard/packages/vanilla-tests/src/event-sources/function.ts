@@ -22,10 +22,10 @@ describe('events as a function', () => {
 
   describe('the fetch info', () => {
     it.each([
-      ['local', '2014-04-27T00:00:00-04:00', '2014-04-27T04:00:00.000Z', '2014-06-08T00:00:00-04:00'],
-      ['UTC', '2014-04-27T00:00:00Z', '2014-04-27T00:00:00.000Z', '2014-06-08T00:00:00Z'],
-      ['America/Chicago', '2014-04-27T00:00:00-05:00', '2014-04-27T05:00:00.000Z', '2014-06-08T00:00:00-05:00'],
-    ])('has the range in the %s time zone', (timeZone, startStr, startIso, endStr) => {
+      ['local', '2014-04-27T00:00:00-04:00', '2014-04-27T04:00:00.000Z', '2014-06-08T00:00:00-04:00', '2014-06-08T04:00:00.000Z'],
+      ['UTC', '2014-04-27T00:00:00Z', '2014-04-27T00:00:00.000Z', '2014-06-08T00:00:00Z', '2014-06-08T00:00:00.000Z'],
+      ['America/Chicago', '2014-04-27T00:00:00-05:00', '2014-04-27T05:00:00.000Z', '2014-06-08T00:00:00-05:00', '2014-06-08T05:00:00.000Z'],
+    ])('has the range in the %s time zone', (timeZone, startStr, startIso, endStr, endIso) => {
       const events = vi.fn((_info, callback: SuccessCallback) => callback([]))
       initCalendar({ ...options, timeZone, events })
 
@@ -35,7 +35,7 @@ describe('events as a function', () => {
       expect(info.startStr).toBe(startStr)
       expect(info.start.toISOString()).toBe(startIso)
       expect(info.endStr).toBe(endStr)
-      expect(info.end).toBeInstanceOf(Date)
+      expect(info.end.toISOString()).toBe(endIso)
       expect(typeof events.mock.calls[0][1]).toBe('function')
     })
 
@@ -109,17 +109,55 @@ describe('events as a function', () => {
     expect(eventEls[0].classList).toContain('customeventclass')
   })
 
-  it('accepts a returned promise', async () => {
-    const deferred = createDeferred<EventInput[]>()
-    const calendar = initCalendar({ ...options, events: () => deferred.promise })
+  /*
+  A minimal non-native thenable: only a then(onFulfilled, onRejected) method.
+  */
+  function createThenable(): { promise: Promise<EventInput[]>, resolve: (events: EventInput[]) => void } {
+    let onFulfilledSaved: ((events: EventInput[]) => void) | null = null
+    const thenable = {
+      then(onFulfilled: (events: EventInput[]) => void, _onRejected: (error: unknown) => void) {
+        onFulfilledSaved = onFulfilled
+      },
+    }
+    return {
+      promise: thenable as unknown as Promise<EventInput[]>,
+      resolve: (events) => onFulfilledSaved!(events),
+    }
+  }
+
+  it.each([
+    ['promise', () => createDeferred<EventInput[]>()],
+    ['non-native thenable', createThenable],
+  ])('accepts a returned %s', async (_desc, createResult) => {
+    const result = createResult()
+    const calendar = initCalendar({ ...options, events: () => result.promise })
     expect(calendar.getEvents()).toHaveLength(0)
 
     const loaded = whenLoaded(calendar)
-    deferred.resolve([{ start: '2014-05-04' }])
+    result.resolve([{ start: '2014-05-04' }])
     await loaded
 
     expect(calendar.getEvents().map((event) => event.startStr)).toEqual(['2014-05-04'])
     expect(getEventEls(calendar.el)).toHaveLength(1)
+  })
+
+  it('calls eventSourceFailure when a returned promise rejects, and finishes loading', async () => {
+    const error = new Error('my error')
+    const deferred = createDeferred<EventInput[]>()
+    const loading = vi.fn()
+    const eventSourceFailure = vi.fn()
+    const calendar = initCalendar({ ...options, loading, eventSourceFailure, events: () => deferred.promise })
+    expect(loading.mock.calls).toEqual([[true]])
+
+    const loaded = whenLoaded(calendar)
+    deferred.reject(error)
+    await loaded
+
+    expect(eventSourceFailure).toHaveBeenCalledTimes(1)
+    expect(eventSourceFailure.mock.calls[0][0]).toBe(error)
+    expect(loading.mock.calls).toEqual([[true], [false]])
+    expect(calendar.getEvents()).toHaveLength(0)
+    expect(getEventEls(calendar.el)).toHaveLength(0)
   })
 
   describe('loading', () => {

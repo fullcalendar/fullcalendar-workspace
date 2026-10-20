@@ -193,6 +193,16 @@ describe('setting event dates', () => {
       expect(getDates(event)).toEqual(['2018-09-02', '2018-09-06'])
       expect(event.allDay).toBe(true)
     })
+
+    // KNOWN BUG (`it.fails` until fixed): the same bug as above. A timed event's allDay becomes
+    // undefined rather than staying false.
+    it.fails('keeps a timed event timed when allDay isn\'t given', () => {
+      const event = getEvent(events)
+      expect(event.allDay).toBe(false)
+      event.setDates('2018-09-06T01:00:00', '2018-09-06T03:00:00')
+      expect(getDates(event)).toEqual(['2018-09-06T01:00:00Z', '2018-09-06T03:00:00Z'])
+      expect(event.allDay).toBe(false)
+    })
   })
 
   /*

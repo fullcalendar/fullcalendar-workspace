@@ -5,6 +5,7 @@ import iCalendarPlugin from '@fullcalendar/icalendar'
 import { initCalendar } from '../lib/calendar'
 import { getEventEls } from '../lib/models/events'
 import { whenLoaded } from '../lib/event-sources'
+import { getEventTitles } from '../lib/models/event-content'
 import allDayEvent from './icalendar-data/all-day-event.ics?raw'
 import meetingWithMungedStart from './icalendar-data/meeting-with-munged-start.ics?raw'
 import multidayEvent from './icalendar-data/multiday-event.ics?raw'
@@ -258,17 +259,30 @@ describe('iCalendar event source', () => {
       ])
     })
 
-    it('requests the feed again on refetchEvents', async () => {
-      const calendar = await loadFeed(oneHourMeeting)
+    it('requests the feed again on refetchEvents, replacing the events with the new data', async () => {
+      const feeds = [oneHourMeeting, allDayEvent] // the feed changes between requests
+      let requestCount = 0
+      fetchMock.get(/my-feed\.ics/, () => ({
+        headers: { 'content-type': 'text/calendar' },
+        body: feeds[requestCount++],
+      }))
+      const calendar = initCalendar({ ...options, events: { url: FEED_URL, format: 'ics' } })
+      await whenLoaded(calendar)
       expect(fetchMock.calls()).toHaveLength(1)
+      expect(getEventSummaries(calendar)).toEqual([
+        ['Hour long meeting', '2019-04-15T09:30:00Z', '2019-04-15T10:30:00Z', false],
+      ])
+      expect(getEventTitles(getEventEls(calendar.el))).toEqual(['Hour long meeting'])
 
       const loaded = whenLoaded(calendar)
       calendar.refetchEvents()
       await loaded
 
       expect(fetchMock.calls()).toHaveLength(2)
-      expect(calendar.getEvents()).toHaveLength(1)
-      expect(getEventEls(calendar.el)).toHaveLength(1)
+      expect(getEventSummaries(calendar)).toEqual([
+        ['First conference', '2019-04-15', null, true],
+      ])
+      expect(getEventTitles(getEventEls(calendar.el))).toEqual(['First conference'])
     })
   })
 })

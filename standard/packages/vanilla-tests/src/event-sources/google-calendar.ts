@@ -22,7 +22,10 @@ describe('Google Calendar event source', () => {
     initialDate: '2025-05-01',
   }
 
+  let extraItems: unknown[] = [] // raw API items a test adds after the holidays
+
   beforeEach(() => {
+    extraItems = []
     fetchMock.get(/^https:\/\/www\.googleapis\.com\/calendar\/v3\/calendars\//, (requestUrl: string) => {
       const url = new URL(requestUrl)
 
@@ -39,13 +42,13 @@ describe('Google Calendar event source', () => {
 
       return {
         body: {
-          items: HOLIDAYS.map((holiday) => ({
+          items: [...HOLIDAYS.map((holiday) => ({
             id: holiday.id,
             summary: holiday.summary,
             start: { date: holiday.date },
             end: { date: holiday.end },
             htmlLink: 'https://www.google.com/calendar/event?eid=' + holiday.id,
-          })),
+          })), ...extraItems],
         },
       }
     })
@@ -80,6 +83,33 @@ describe('Google Calendar event source', () => {
       ['memorial-day', 'Memorial Day', '2025-05-26', '2025-05-27', true],
     ])
     expect(getEventEls(calendar.el)).toHaveLength(3)
+  })
+
+  it.each([
+    ['UTC', '2025-05-14T14:00:00Z', '2025-05-14T15:30:00Z'],
+    ['local', '2025-05-14T10:00:00-04:00', '2025-05-14T11:30:00-04:00'], // the test browser's zone is America/New_York
+  ])('parses an item with offset dateTimes as a timed event, in the %s time zone', async (timeZone, startStr, endStr) => {
+    extraItems = [{
+      id: 'meeting',
+      summary: 'Meeting',
+      start: { dateTime: '2025-05-14T10:00:00-04:00' },
+      end: { dateTime: '2025-05-14T11:30:00-04:00' },
+      htmlLink: 'https://www.google.com/calendar/event?eid=meeting',
+    }]
+    const calendar = initCalendar({
+      ...options,
+      timeZone,
+      googleCalendarApiKey: API_KEY,
+      events: { googleCalendarId: CALENDAR_ID },
+    })
+    await whenLoaded(calendar)
+
+    const event = calendar.getEventById('meeting')!
+    expect([event.title, event.startStr, event.endStr, event.allDay]).toEqual(['Meeting', startStr, endStr, false])
+    expect(event.start!.toISOString()).toBe('2025-05-14T14:00:00.000Z')
+    expect(event.end!.toISOString()).toBe('2025-05-14T15:30:00.000Z')
+    expect(calendar.getEvents()).toHaveLength(4)
+    expect(getEventEls(calendar.el, 'meeting')).toHaveLength(1)
   })
 
   it.each([

@@ -43,13 +43,16 @@ describe('calendar title', () => {
   })
 
   it('is available as view.title, including in viewDidMount', async () => {
-    const viewDidMount = vi.fn()
+    const titlesInViewDidMount: string[] = [] // read during the callback, not afterward
+    const viewDidMount = vi.fn((info) => {
+      titlesInViewDidMount.push(info.view.title)
+    })
     const calendar = initCalendar({ initialView: 'dayGridMonth', initialDate: '2015-01-01', viewDidMount })
     await waitForSettle()
 
     expect(calendar.view.title).toBe('January 2015')
     expect(viewDidMount).toHaveBeenCalledTimes(1)
-    expect(viewDidMount.mock.calls[0][0].view.title).toBe('January 2015')
+    expect(titlesInViewDidMount).toEqual(['January 2015'])
   })
 })
 

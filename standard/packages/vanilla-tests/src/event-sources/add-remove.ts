@@ -118,29 +118,39 @@ describe('event sources', () => {
       scrollTime: '00:00',
     }
 
-    function buildSource(id: string) {
+    // the types only allow string IDs, but numbers are accepted (coerced to strings), as in legacy code
+    function buildSource(id: string | number) {
       return {
-        id,
+        id: id as string,
         events: [{ title: 'event' + id, start: '2014-08-01T02:00:00' }],
       }
     }
 
-    it('removes the events of sources given at init', async () => {
-      const calendar = initCalendar({ ...options, eventSources: [buildSource('1'), buildSource('2')] })
+    it.each<[string, string | number, string | number, string]>([
+      ['string source IDs, a string ID', '1', '1', 'event2'],
+      ['numeric source IDs, a string ID', 1, '1', 'event2'],
+      ['numeric source IDs, a number ID', 1, 1, 'event2'],
+      ['numeric source IDs, ID 0', 0, 0, 'event1'], // https://github.com/fullcalendar/fullcalendar/issues/2082
+      ['numeric source IDs, ID \'0\'', 0, '0', 'event1'],
+    ])('removes the events of sources given at init, with %s', async (_desc, firstId, lookupId, remainingTitle) => {
+      const secondId = typeof firstId === 'number' ? firstId + 1 : String(Number(firstId) + 1)
+      const calendar = initCalendar({ ...options, eventSources: [buildSource(firstId), buildSource(secondId)] })
       await waitForSettle()
-      expect(getRenderedEventTitles(calendar.el)).toEqual(['event1', 'event2'])
+      expect(calendar.getEventSources().map((source) => source.id)).toEqual([String(firstId), String(secondId)]) // stored as strings
+      expect(getRenderedEventTitles(calendar.el)).toEqual(['event' + firstId, 'event' + secondId])
 
-      calendar.getEventSourceById('1')!.remove()
+      calendar.getEventSourceById(lookupId as string)!.remove()
       await waitForSettle()
 
-      expect(calendar.getEvents().map((event) => event.title)).toEqual(['event2'])
-      expect(getRenderedEventTitles(calendar.el)).toEqual(['event2'])
+      expect(calendar.getEventSources().map((source) => source.id)).toEqual([String(secondId)])
+      expect(calendar.getEvents().map((event) => event.title)).toEqual([remainingTitle])
+      expect(getRenderedEventTitles(calendar.el)).toEqual([remainingTitle])
     })
 
     it('removeAllEventSources removes every source\'s events', async () => {
       const calendar = initCalendar({
         ...options,
-        eventSources: [buildSource('1'), buildSource('2'), buildSource('3')],
+        eventSources: [buildSource(1), buildSource(2), buildSource(3)],
       })
       await waitForSettle()
       expect(getEventEls(calendar.el)).toHaveLength(3)

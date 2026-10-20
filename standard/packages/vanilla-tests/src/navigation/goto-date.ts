@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
 import { DayGridModel } from '../lib/models/day-grid'
+import { ToolbarModel } from '../lib/models/toolbar'
+import { enUsSep } from '../lib/intl'
 import { waitForSettle } from '../lib/settle'
 import { getActiveRange, getCurrentRange } from '../lib/view-dates'
 
@@ -24,12 +26,12 @@ describe('initialDate and getDate', () => {
 
 describe('gotoDate', () => {
   it.each([
-    ['dayGridMonth', '2015-04-01', ['2015-03-29', '2015-05-10']],
-    ['dayGridWeek', '2015-04-01', ['2015-03-29', '2015-04-05']],
-    ['timeGridWeek', '2015-04-01T12:00:00', ['2015-03-29', '2015-04-05']],
-    ['timeGridWeek', new Date('2015-04-01T00:00:00Z'), ['2015-03-29', '2015-04-05']],
-    ['dayGridDay', '2015-04-01', ['2015-04-01', '2015-04-02']],
-  ])('in %s, moves to the given date %j', async (initialView, date, expectedRange) => {
+    ['dayGridMonth', '2015-04-01', ['2015-03-29', '2015-05-10'], 'April 2015'],
+    ['dayGridWeek', '2015-04-01', ['2015-03-29', '2015-04-05'], `Mar${enUsSep}Apr 2015`],
+    ['timeGridWeek', '2015-04-01T12:00:00', ['2015-03-29', '2015-04-05'], `Mar${enUsSep}Apr 2015`],
+    ['timeGridWeek', new Date('2015-04-01T00:00:00Z'), ['2015-03-29', '2015-04-05'], `Mar${enUsSep}Apr 2015`],
+    ['dayGridDay', '2015-04-01', ['2015-04-01', '2015-04-02'], 'April 1, 2015'],
+  ])('in %s, moves to the given date %j', async (initialView, date, expectedRange, expectedTitle) => {
     const calendar = initCalendar({ initialView, initialDate: '2014-06-01' })
     await waitForSettle()
 
@@ -37,6 +39,7 @@ describe('gotoDate', () => {
     await waitForSettle()
 
     expect(getActiveRange(calendar)).toEqual(expectedRange)
+    expect(ToolbarModel.header(calendar.el)!.getTitleText()).toBe(expectedTitle)
   })
 
   it('updates the date even when the range doesn\'t change', async () => {

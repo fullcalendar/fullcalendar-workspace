@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarOptions } from 'fullcalendar'
 import { initCalendar } from '../lib/calendar'
 import { queryParts } from '../lib/models/events'
+import { ToolbarModel } from '../lib/models/toolbar'
+import { enUsSep } from '../lib/intl'
 import { waitForSettle } from '../lib/settle'
 import { getActiveRange, getCurrentRange } from '../lib/view-dates'
 
@@ -147,13 +149,13 @@ describe('prev and next', () => {
 
 describe('prevYear and nextYear', () => {
   it.each([
-    ['dayGridMonth', 'prevYear', ['2013-05-26', '2013-07-07']],
-    ['dayGridMonth', 'nextYear', ['2015-05-31', '2015-07-12']],
-    ['dayGridWeek', 'prevYear', ['2013-05-26', '2013-06-02']],
-    ['timeGridWeek', 'nextYear', ['2015-05-31', '2015-06-07']],
-    ['dayGridDay', 'prevYear', ['2013-06-01', '2013-06-02']],
-    ['timeGridDay', 'nextYear', ['2015-06-01', '2015-06-02']],
-  ] as const)('in %s, %s moves by a year', async (initialView, method, expectedRange) => {
+    ['dayGridMonth', 'prevYear', ['2013-05-26', '2013-07-07'], 'June 2013'],
+    ['dayGridMonth', 'nextYear', ['2015-05-31', '2015-07-12'], 'June 2015'],
+    ['dayGridWeek', 'prevYear', ['2013-05-26', '2013-06-02'], `May${enUsSep}Jun 2013`],
+    ['timeGridWeek', 'nextYear', ['2015-05-31', '2015-06-07'], `May${enUsSep}Jun 2015`],
+    ['dayGridDay', 'prevYear', ['2013-06-01', '2013-06-02'], 'June 1, 2013'],
+    ['timeGridDay', 'nextYear', ['2015-06-01', '2015-06-02'], 'June 1, 2015'],
+  ] as const)('in %s, %s moves by a year', async (initialView, method, expectedRange, expectedTitle) => {
     const calendar = initCalendar({ initialView, initialDate: '2014-06-01' })
     await waitForSettle()
 
@@ -161,17 +163,18 @@ describe('prevYear and nextYear', () => {
     await waitForSettle()
 
     expect(getActiveRange(calendar)).toEqual(expectedRange)
+    expect(ToolbarModel.header(calendar.el)!.getTitleText()).toBe(expectedTitle)
   })
 })
 
 describe('incrementDate', () => {
   it.each([
-    ['dayGridMonth', { months: -1 }, ['2014-04-27', '2014-06-08']],
-    ['timeGridWeek', { weeks: -2 }, ['2014-05-18', '2014-05-25']],
-    ['dayGridDay', { days: 2 }, ['2014-06-03', '2014-06-04']],
-    ['timeGridDay', '2.00:00:00', ['2014-06-03', '2014-06-04']],
-    ['timeGridDay', '2.05:30:00', ['2014-06-03', '2014-06-04']], // the time doesn't move the range
-  ])('in %s, moves by %j', async (initialView, delta, expectedRange) => {
+    ['dayGridMonth', { months: -1 }, ['2014-04-27', '2014-06-08'], 'May 2014'],
+    ['timeGridWeek', { weeks: -2 }, ['2014-05-18', '2014-05-25'], 'May 2014'],
+    ['dayGridDay', { days: 2 }, ['2014-06-03', '2014-06-04'], 'June 3, 2014'],
+    ['timeGridDay', '2.00:00:00', ['2014-06-03', '2014-06-04'], 'June 3, 2014'],
+    ['timeGridDay', '2.05:30:00', ['2014-06-03', '2014-06-04'], 'June 3, 2014'], // the time doesn't move the range
+  ])('in %s, moves by %j', async (initialView, delta, expectedRange, expectedTitle) => {
     const calendar = initCalendar({ initialView, initialDate: '2014-06-01' })
     await waitForSettle()
 
@@ -179,5 +182,6 @@ describe('incrementDate', () => {
     await waitForSettle()
 
     expect(getActiveRange(calendar)).toEqual(expectedRange)
+    expect(ToolbarModel.header(calendar.el)!.getTitleText()).toBe(expectedTitle)
   })
 })

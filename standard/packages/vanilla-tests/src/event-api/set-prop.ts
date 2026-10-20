@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { initCalendar } from '../lib/calendar'
 import { waitForSettle } from '../lib/settle'
 import { getRenderedEventTitles } from '../lib/event-sources'
+import { getEventEls } from '../lib/models/events'
+import { getEventTitles } from '../lib/models/event-content'
 
 /*
 EventApi.setProp and setExtendedProp.
@@ -31,11 +33,13 @@ describe('EventApi.setProp', () => {
     })
     await waitForSettle()
     expect(getRenderedEventTitles(calendar.el)).toEqual(['old'])
+    expect(getEventTitles(getEventEls(calendar.el, '1'))).toEqual(['old'])
 
     calendar.getEventById('1')!.setProp('title', 'new')
     await waitForSettle()
 
     expect(getRenderedEventTitles(calendar.el)).toEqual(['new'])
+    expect(getEventTitles(getEventEls(calendar.el, '1'))).toEqual(['new']) // the visible text, not just the event data
     expect(eventChange).toHaveBeenCalledTimes(1)
     expect(eventChange.mock.calls[0][0].oldEvent.title).toBe('old')
     expect(eventChange.mock.calls[0][0].event.title).toBe('new')

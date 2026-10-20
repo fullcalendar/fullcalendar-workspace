@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
 import { waitForSettle } from '../lib/settle'
-import { getActiveRange, getDayHeaderDates } from '../lib/view-dates'
+import { getActiveRange, getDayCellDates, getDayHeaderDates } from '../lib/view-dates'
+import { queryParts } from '../lib/models/events'
+
+function getDayLaneDates(root: ParentNode): string[] {
+  return queryParts(root, 'dayLane').map((el) => el.getAttribute('data-date')!)
+}
 
 describe('dayCount', () => {
   const options = {
@@ -16,22 +21,24 @@ describe('dayCount', () => {
     const calendar = initCalendar({ ...options, ...extraOptions })
     await waitForSettle()
 
+    const expectedDates = ['2017-03-15', '2017-03-16', '2017-03-17', '2017-03-20', '2017-03-21'] // no weekend
     expect(getActiveRange(calendar)).toEqual(['2017-03-15', '2017-03-22'])
-    expect(getDayHeaderDates(calendar.el)).toEqual([
-      '2017-03-15', '2017-03-16', '2017-03-17', '2017-03-20', '2017-03-21',
-    ])
+    expect(getDayHeaderDates(calendar.el)).toEqual(expectedDates)
+    expect(getDayCellDates(calendar.el)).toEqual(expectedDates)
   })
 
   it('can span multiple weeks', async () => {
     const calendar = initCalendar({ ...options, initialView: 'timeGrid', dayCount: 9 })
     await waitForSettle()
 
-    expect(getActiveRange(calendar)).toEqual(['2017-03-15', '2017-03-28'])
-    expect(getDayHeaderDates(calendar.el)).toEqual([
+    const expectedDates = [ // no weekends
       '2017-03-15', '2017-03-16', '2017-03-17',
       '2017-03-20', '2017-03-21', '2017-03-22', '2017-03-23', '2017-03-24',
       '2017-03-27',
-    ])
+    ]
+    expect(getActiveRange(calendar)).toEqual(['2017-03-15', '2017-03-28'])
+    expect(getDayHeaderDates(calendar.el)).toEqual(expectedDates)
+    expect(getDayLaneDates(calendar.el)).toEqual(expectedDates)
   })
 
   it('navigates back over hidden days by a small dateIncrement', async () => {
@@ -55,5 +62,6 @@ describe('dayCount', () => {
 
     expect(getActiveRange(calendar)).toEqual(['2018-06-08', '2018-06-12'])
     expect(getDayHeaderDates(calendar.el)).toEqual(['2018-06-08', '2018-06-11'])
+    expect(getDayLaneDates(calendar.el)).toEqual(['2018-06-08', '2018-06-11'])
   })
 })

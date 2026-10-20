@@ -90,12 +90,18 @@ describe('adding and removing events', () => {
       initialView: 'dayGridMonth',
     }
 
-    function buildEvents(withIds: boolean): EventInput[] {
+    /*
+    IDs are the index, given as a number (incl. 0) or a string, or absent. The types only allow
+    string IDs, but numbers are accepted (coerced to strings), as in legacy code.
+    */
+    function buildEvents(idType: 'none' | 'number' | 'string'): EventInput[] {
       return [
         { title: 'event zero', start: '2014-06-24' },
         { title: 'event one', start: '2014-06-24' },
         { title: 'event two', start: '2014-06-24' },
-      ].map((event, i) => (withIds ? { ...event, id: String(i) } : event))
+      ].map((event, i) => (
+        idType === 'none' ? event : { ...event, id: (idType === 'number' ? i : String(i)) as string }
+      ))
     }
 
     /*
@@ -114,10 +120,10 @@ describe('adding and removing events', () => {
     }
 
     it.each([
-      ['without IDs', false],
-      ['with IDs', true],
-    ])('removeAllEvents removes all events %s', async (_desc, withIds) => {
-      const calendar = initCalendar({ ...options, events: buildEvents(withIds) })
+      ['without IDs', 'none'],
+      ['with numeric IDs', 'number'],
+    ] as const)('removeAllEvents removes all events %s', async (_desc, idType) => {
+      const calendar = initCalendar({ ...options, events: buildEvents(idType) })
       await waitForSettle()
       expect(getEventEls(calendar.el)).toHaveLength(3)
 
@@ -128,10 +134,10 @@ describe('adding and removing events', () => {
     })
 
     it.each([
-      ['without IDs', false],
-      ['with IDs', true],
-    ])('EventApi.remove removes one event %s', async (_desc, withIds) => {
-      const calendar = initCalendar({ ...options, events: buildEvents(withIds) })
+      ['without IDs', 'none'],
+      ['with numeric IDs', 'number'],
+    ] as const)('EventApi.remove removes one event %s', async (_desc, idType) => {
+      const calendar = initCalendar({ ...options, events: buildEvents(idType) })
       await waitForSettle()
 
       calendar.getEvents().find((event) => event.title === 'event one')!.remove()
@@ -140,13 +146,18 @@ describe('adding and removing events', () => {
       await expectRenderedAfterNavigating(calendar, ['event two', 'event zero'])
     })
 
-    it.each<[string, string | number, string]>([
-      ['a string ID', '1', 'event one'],
-      ['a number ID', 1, 'event one'],
-      ['ID 0', 0, 'event zero'], // https://github.com/fullcalendar/fullcalendar/issues/2082
-    ])('removes the event found by getEventById with %s', async (_desc, id, removedTitle) => {
-      const calendar = initCalendar({ ...options, events: buildEvents(true) })
+    it.each<[string, 'number' | 'string', string | number, string]>([
+      ['string input IDs, a string ID', 'string', '1', 'event one'],
+      ['numeric input IDs, a string ID', 'number', '1', 'event one'],
+      ['numeric input IDs, a number ID', 'number', 1, 'event one'],
+      ['string input IDs, ID 0', 'string', 0, 'event zero'],
+      ['numeric input IDs, ID 0', 'number', 0, 'event zero'], // https://github.com/fullcalendar/fullcalendar/issues/2082
+      ['numeric input IDs, ID \'0\'', 'number', '0', 'event zero'],
+    ])('removes the event found by getEventById, with %s', async (_desc, idType, id, removedTitle) => {
+      const calendar = initCalendar({ ...options, events: buildEvents(idType) })
       await waitForSettle()
+      expect(calendar.getEvents().map((event) => event.id)).toEqual(['0', '1', '2']) // stored as strings
+      expect(calendar.getEventById(id as string)!.title).toBe(removedTitle)
 
       calendar.getEventById(id as string)!.remove()
       await waitForSettle()
