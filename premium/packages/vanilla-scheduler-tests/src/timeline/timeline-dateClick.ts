@@ -13,8 +13,8 @@ describe('timeline dateClick', () => {
   })
 
   describeOptions('direction', {
-    LTR: false,
-    RTL: true,
+    LTR: 'ltr',
+    RTL: 'rtl',
   }, () => {
     describeTimeZones((tz) => {
       describe('when time scale', () => {
