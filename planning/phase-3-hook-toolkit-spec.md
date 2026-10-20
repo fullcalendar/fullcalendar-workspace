@@ -55,7 +55,7 @@ hold.
 - **`useEmitterListener(name, handler)`.**
 - **`useNow(unit, value)`:** the timer starts in an effect, not during render. Must stop when hidden
   under `<Activity>` and restart when shown again (#8112 bug 1).
-- **`useTimeScroll`:** 3 near-copies today. Must not reset scroll when an `<Activity>` subtree is shown
+- **`useInitialScroll`** (was `useTimeScroll`): 5 implementations today, in TimeGrid, Timeline, ResourceTimeline, DayGrid and MultiMonth. Must not reset scroll when an `<Activity>` subtree is shown
   again (#8112 bug 2): the initial scroll runs once per instance or date range, not on every mount.
 
 ### Render hooks

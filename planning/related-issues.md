@@ -21,7 +21,7 @@ Opened 2026-09-28. Two bugs in one report.
   `componentDidMount`, and `<Activity>` re-runs mount effects each time the calendar is shown, so a
   scrolled grid jumps back to `scrollTime` / today's row. A mount effect has the same problem. Needs
   the initial scroll to run once per instance (or per date range), not per mount. Worth designing into
-  `useTimeScroll`.
+  `useInitialScroll`.
 
 The report includes a full reproduction (`main.jsx` with a timer counter and Hide / Re-render / Show /
 Unmount buttons). Reuse it to verify.
