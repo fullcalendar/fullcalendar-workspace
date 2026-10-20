@@ -5,7 +5,7 @@ import { getEventEls, queryPart } from '@fullcalendar-tests/standard/tests/lib/m
 import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
 import {
-  DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY, SPRING_FORWARD_0300_SLOT,
+  DST_TIMELINE_OPTIONS, FALL_BACK_0200_SLOT, FALL_BACK_SECOND_0130_SLOT, SPRING_FORWARD_DAY, SPRING_FORWARD_0300_SLOT, expectCloseTo,
 } from '../lib/dst'
 
 describe('event dragging in timeline', () => {
@@ -249,7 +249,7 @@ describe('event dragging in timeline', () => {
       // 6 slots = 3 real hours: 04:00Z -> 07:00Z (02:00 EST)
       expect(event.start!.toISOString()).toBe('2024-11-03T07:00:00.000Z')
       expect(event.end!.toISOString()).toBe('2024-11-03T07:30:00.000Z')
-      expect(eventLeft).toBeCloseTo(slotLeft, 0)
+      expectCloseTo(eventLeft, slotLeft)
     })
 
     it('drops onto the second copy of a repeated wall-clock time and stays there', async () => {
@@ -257,7 +257,7 @@ describe('event dragging in timeline', () => {
 
       expect(event.start!.toISOString()).toBe('2024-11-03T06:30:00.000Z') // the second 01:30 (EST)
       expect(event.startStr).toBe('2024-11-03T01:30:00-05:00')
-      expect(eventLeft).toBeCloseTo(slotLeft, 0)
+      expectCloseTo(eventLeft, slotLeft)
     })
 
     it('moves across the spring-forward gap by elapsed time', async () => {
@@ -268,7 +268,7 @@ describe('event dragging in timeline', () => {
 
       // 4 slots = 2 real hours: 05:00Z -> 07:00Z (03:00 EDT)
       expect(event.start!.toISOString()).toBe('2024-03-10T07:00:00.000Z')
-      expect(eventLeft).toBeCloseTo(slotLeft, 0)
+      expectCloseTo(eventLeft, slotLeft)
     })
 
     // exercises resource timeline's separate hit-testing

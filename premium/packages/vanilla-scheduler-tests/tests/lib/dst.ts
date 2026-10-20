@@ -22,3 +22,12 @@ export const DST_TIMELINE_OPTIONS = {
 export const FALL_BACK_SECOND_0130_SLOT = 5
 export const FALL_BACK_0200_SLOT = 6
 export const SPRING_FORWARD_0300_SLOT = 4
+
+/*
+For comparing a rendered event edge with a slot edge. Sub-pixel layout can differ by a pixel.
+*/
+export function expectCloseTo(actual: number, expected: number, tolerance = 1.5): void {
+  if (Math.abs(actual - expected) > tolerance) {
+    throw new Error(`Expected ${actual} to be within ${tolerance}px of ${expected}`)
+  }
+}

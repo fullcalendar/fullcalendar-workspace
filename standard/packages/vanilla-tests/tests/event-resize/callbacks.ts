@@ -1,0 +1,82 @@
+import { describe, expect, it, vi } from 'vitest'
+import { initCalendar } from '../lib/calendar'
+import { DayGridModel } from '../lib/models/day-grid'
+import { getResizerEl } from '../lib/models/resize'
+import { getRectCenter, pointer } from '../lib/pointer'
+import { waitForSettle } from '../lib/settle'
+
+/*
+Resize behavior that doesn't depend on the view's geometry, tested once on dayGrid.
+*/
+describe('event resizing callbacks', () => {
+  const options = {
+    initialView: 'dayGridMonth',
+    initialDate: '2014-06-11',
+    editable: true,
+    dragScroll: false,
+    events: [{ id: '1', start: '2014-06-11' }],
+  }
+
+  it('calls eventResizeStart, eventResizeStop, eventResize, then eventChange, with their arguments', async () => {
+    const calls: string[] = []
+    const eventResizeStart = vi.fn(() => { calls.push('eventResizeStart') })
+    const eventResizeStop = vi.fn(() => { calls.push('eventResizeStop') })
+    const eventResize = vi.fn(() => { calls.push('eventResize') })
+    const eventChange = vi.fn(() => { calls.push('eventChange') })
+    const calendar = initCalendar({ ...options, eventResizeStart, eventResizeStop, eventResize, eventChange })
+    await waitForSettle()
+
+    const dayGrid = new DayGridModel(calendar.el)
+    const eventEl = dayGrid.getEventEls('1')[0]
+    await dayGrid.resizeEvent('1', 'end', '2014-06-11', '2014-06-13')
+
+    expect(calls).toEqual(['eventResizeStart', 'eventResizeStop', 'eventResize', 'eventChange'])
+
+    for (const spy of [eventResizeStart, eventResizeStop]) {
+      const info = spy.mock.calls[0][0]
+      expect(info.el).toBe(eventEl)
+      expect(info.event.id).toBe('1')
+      expect(info.jsEvent).toBeInstanceOf(MouseEvent)
+      expect(info.view.type).toBe('dayGridMonth')
+    }
+
+    const resizeInfo = eventResize.mock.calls[0][0]
+    expect(resizeInfo.el).toBe(eventEl)
+    expect(resizeInfo.event.endStr).toBe('2014-06-14')
+    expect(resizeInfo.oldEvent.end).toBeNull()
+    expect(resizeInfo.startDelta.days).toBe(0)
+    expect(resizeInfo.relatedEvents).toEqual([])
+    expect(resizeInfo.jsEvent).toBeInstanceOf(MouseEvent)
+
+    expect(eventChange.mock.calls[0][0].event.endStr).toBe('2014-06-14')
+  })
+
+  it('reverts the resize when eventResize calls revert()', async () => {
+    const eventResize = vi.fn((info) => {
+      expect(info.event.endStr).toBe('2014-06-14')
+      info.revert()
+    })
+    const calendar = initCalendar({ ...options, eventResize })
+    await waitForSettle()
+
+    await new DayGridModel(calendar.el).resizeEvent('1', 'end', '2014-06-11', '2014-06-13')
+
+    expect(eventResize).toHaveBeenCalledOnce()
+    expect(calendar.getEventById('1')!.end).toBeNull()
+  })
+
+  it.each([
+    ['editable:false', { editable: false }],
+    ['eventDurationEditable:false', { eventDurationEditable: false }],
+    ['the event\'s durationEditable:false', { events: [{ ...options.events[0], durationEditable: false }] }],
+  ])('offers no resize handle with %s', async (_desc, moreOptions) => {
+    const calendar = initCalendar({ ...options, ...moreOptions })
+    await waitForSettle()
+
+    const eventEl = new DayGridModel(calendar.el).getEventEls('1')[0]
+    await pointer.move(getRectCenter(eventEl.getBoundingClientRect()), 1) // handles appear on hover
+    await waitForSettle()
+
+    expect(getResizerEl(eventEl, 'end')).toBeNull()
+  })
+})

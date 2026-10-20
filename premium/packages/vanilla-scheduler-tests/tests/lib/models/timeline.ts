@@ -2,6 +2,12 @@ import { pointer, Point } from '@fullcalendar-tests/standard/tests/lib/pointer'
 import { waitForSettle } from '@fullcalendar-tests/standard/tests/lib/settle'
 import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from '@fullcalendar-tests/standard/tests/lib/models/events'
 import { describeSpot, parseSpot, Spot } from '@fullcalendar-tests/standard/tests/lib/models/spot'
+import { ResizeEdge, resizeSegment } from '@fullcalendar-tests/standard/tests/lib/models/resize'
+
+/*
+A spot, or the start of a slot by index (for slots that share a wall-clock time, ex: when DST ends).
+*/
+export type TimelineSpot = Spot | { slot: number, resourceId?: string }
 
 /*
 A timeline view (resource or not). Time runs horizontally across slots, whose data-date attributes
@@ -94,6 +100,34 @@ export class TimelineModel {
       await waitForSettle()
     })
     await waitForSettle()
+  }
+
+  /*
+  Resizes the event's edge from one time to another (ex: an end from 05:00 to 07:30). `from` must be
+  where the edge currently is, and also names the segment's resource lane.
+  `whileResizing` runs before release, for checking the mirror.
+  */
+  async resizeEvent(
+    eventId: string,
+    edge: ResizeEdge,
+    from: TimelineSpot,
+    to: TimelineSpot,
+    whileResizing?: () => Promise<void>,
+  ): Promise<void> {
+    const fromResourceId = typeof from === 'object' ? from.resourceId : undefined
+    const eventEls = this.getEventEls(eventId, fromResourceId)
+
+    if (eventEls.length !== 1) {
+      throw new Error(`Expected one segment of event ${eventId}, found ${eventEls.length}`)
+    }
+
+    await resizeSegment(eventEls[0], edge, () => this.pointForSpot(from), () => this.pointForSpot(to), whileResizing)
+  }
+
+  private pointForSpot(spot: TimelineSpot): Point {
+    return typeof spot === 'object' && 'slot' in spot
+      ? this.pointForSlot(spot.slot, spot.resourceId)
+      : this.pointForDateTime(spot)
   }
 
   private xForDateTime(dateTime: string): number {

@@ -2,6 +2,7 @@ import { getRectCenter, pointer, Point } from '../pointer'
 import { waitForSettle } from '../settle'
 import { assertGrabbable, getEventEls, getMirrorEls, queryPart, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
+import { ResizeEdge, resizeSegment } from './resize'
 
 /*
 Day cells in a dayGrid view (resource or not), or in a timeGrid view's all-day row.
@@ -114,6 +115,22 @@ export class DayGridModel {
       await waitForSettle()
     })
     await waitForSettle()
+  }
+
+  /*
+  Resizes the event's edge from the day it's on to another day (both inclusive days, ex: resizing an
+  event's end from Jun 11 to Jun 16 makes it end at the start of Jun 17).
+  `whileResizing` runs before release, for checking the mirror.
+  */
+  async resizeEvent(
+    eventId: string,
+    edge: ResizeEdge,
+    from: Spot,
+    to: Spot,
+    whileResizing?: () => Promise<void>,
+  ): Promise<void> {
+    const { eventEl } = this.pointForEventOnDate(eventId, from)
+    await resizeSegment(eventEl, edge, () => this.pointForDate(from), () => this.pointForDate(to), whileResizing)
   }
 
   private findDatedCell(date: string, resourceId: string | undefined): HTMLElement | null {

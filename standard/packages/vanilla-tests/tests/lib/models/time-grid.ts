@@ -3,6 +3,7 @@ import { waitForSettle } from '../settle'
 import { DayGridModel } from './day-grid'
 import { assertGrabbable, getEventEls, getMirrorEls, queryParts } from './events'
 import { describeSpot, matchesResource, parseSpot, Spot } from './spot'
+import { ResizeEdge, resizeSegment } from './resize'
 
 /*
 A timeGrid view (resource or not). `allDay` models the all-day row.
@@ -89,6 +90,30 @@ export class TimeGridModel {
       await waitForSettle()
     })
     await waitForSettle()
+  }
+
+  /*
+  Resizes the event's edge from one date-time to another (ex: an end from 07:00 to 09:30).
+  `from` names the segment's day lane and must be where the edge currently is.
+  `whileResizing` runs before release, for checking the mirror.
+  */
+  async resizeEvent(
+    eventId: string,
+    edge: ResizeEdge,
+    from: Spot,
+    to: Spot,
+    whileResizing?: () => Promise<void>,
+  ): Promise<void> {
+    const fromSpot = parseSpot(from)
+    const [fromDate] = splitDateTime(fromSpot.date)
+    const laneEl = this.getDayLane({ date: fromDate, resourceId: fromSpot.resourceId })
+    const eventEl = this.getEventEls(eventId).find((el) => laneEl.contains(el))
+
+    if (!eventEl) {
+      throw new Error(`Event ${eventId} has no segment on ${describeSpot(from)}`)
+    }
+
+    await resizeSegment(eventEl, edge, () => this.pointForDateTime(from), () => this.pointForDateTime(to), whileResizing)
   }
 
   /*
