@@ -1,5 +1,6 @@
-import { describe, expect, it, onTestFinished, vi } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { Calendar, CalendarOptions } from 'fullcalendar'
+import { config } from 'fullcalendar/protected-api'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { queryPart } from '@fullcalendar-tests/standard/src/lib/models/events'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
@@ -156,8 +157,7 @@ describe('resource data in resource timeline', () => {
   /*
   A filter change in an app typically removes all resources and re-adds the matching ones.
   Where the rows end up depends on the scroll position recorded when scrolling ends, after the
-  scroll-end debounce (500ms). The library doesn't make that wait configurable, so these tests fake
-  timeouts while it runs out.
+  scroll-end debounce (config.scrollEndWait, 500ms by default). These tests shorten it.
   */
   describe('replacing all resources when virtualized', () => {
     const options: CalendarOptions = {
@@ -185,29 +185,13 @@ describe('resource data in resource timeline', () => {
       return new Promise((resolve) => requestAnimationFrame(() => resolve()))
     }
 
-    function fakeTimeouts(): void {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
-      onTestFinished(() => {
-        vi.useRealTimers()
-      })
-    }
-
-    /*
-    With faked timeouts: lets a frame pass (dispatching scroll events and running frame work), then
-    runs the timeouts due within `ms`. Repeats so work scheduled by that work runs too.
-    */
-    async function passTime(ms: number): Promise<void> {
-      for (let i = 0; i < 3; i++) {
-        await nextFrame()
-        vi.advanceTimersByTime(ms)
-      }
-    }
+    // a scroll ends as soon as no scroll event is pending
+    beforeEach(() => {
+      config.scrollEndWait = 0
+    })
 
     async function scrollAndEnd(scrollerEl: HTMLElement, top: number): Promise<void> {
-      fakeTimeouts()
       scrollerEl.scrollTop = top
-      await passTime(1000) // past the scroll-end debounce
-      vi.useRealTimers()
       await waitForSettle()
     }
 
@@ -297,9 +281,10 @@ describe('resource data in resource timeline', () => {
       await scrollAndEnd(scrollerEl, 300)
       await scrollAndEnd(scrollerEl, 0)
 
-      fakeTimeouts()
+      config.scrollEndWait = 60000 // the scroll can't end
       scrollerEl.scrollTop = 200
-      await passTime(100) // well before the scroll ends
+      await nextFrame() // dispatches the scroll event
+      await nextFrame()
 
       const data = buildResourcesWithEvents(buildIds(3, 90))
       for (let i = 0; i < extraEventCount; i++) {
@@ -311,9 +296,8 @@ describe('resource data in resource timeline', () => {
       // fires after the re-added rows change height
       expect(scrollerEl.scrollTop).toBe(0)
 
+      config.scrollEndWait = 0 // the scroll event that follows ends the scroll
       addAll(calendar, data, false)
-      await passTime(1000) // past the scroll-end debounce
-      vi.useRealTimers()
       await waitForSettle()
 
       expectRowAtTop(calendar, 'r003')

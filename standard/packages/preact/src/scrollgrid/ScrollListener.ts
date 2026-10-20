@@ -1,5 +1,9 @@
 import { Emitter } from "../common/Emitter"
 import { DelayedRunner } from "../util/DelayedRunner"
+import { config } from "../global-config"
+
+// ms without scroll events after which a scroll has ended. Settable for tests
+config.scrollEndWait = 500
 
 /*
 NOTE: detection is complicated (w/ touch and wheel) because ScrollerSyncer needs to know about it,
@@ -28,7 +32,7 @@ export class ScrollListener {
   private isWheel = false
 
   constructor(public el: HTMLElement) {
-    // scroll-end detection waits 500ms and renders nothing, so tests needn't wait on it
+    // scroll-end detection waits a while (config.scrollEndWait) and renders nothing, so tests needn't wait on it
     this.wheelWaiter = new DelayedRunner(this.handleWheelWait, /* isSettleUntracked = */ true)
     this.scrollWaiter = new DelayedRunner(this.handleScrollWait, /* isSettleUntracked = */ true)
 
@@ -97,7 +101,7 @@ export class ScrollListener {
 
     this.startScroll()
     this.emitter.trigger('scroll', this.getIsDevice())
-    this.scrollWaiter.request(500)
+    this.scrollWaiter.request(config.scrollEndWait)
   }
 
   private handleScrollWait = () => {
