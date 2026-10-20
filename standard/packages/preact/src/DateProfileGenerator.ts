@@ -274,14 +274,6 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
       }
     }
 
-    // if the view displays a single day or smaller
-    if (asRoughDays(duration) <= 1) {
-      if (this.isHiddenDay(start)) {
-        start = this.skipHiddenDays(start, direction)
-        start = startOfDay(start)
-      }
-    }
-
     function computeRes() {
       start = dateEnv.startOf(date, dateAlignment)
       end = dateEnv.add(start, duration)
