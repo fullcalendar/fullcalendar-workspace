@@ -223,7 +223,9 @@ It also checks:
 - [x] The React-component suite runs under React 19. React 17 is deferred to phase 9 (see Status).
 - [x] Coverage: every area × applicable check now has a spec from the harness. The survey of prior
   coverage is summarised above.
-- [ ] A baseline, DOM snapshots plus counts, under both runtimes at the phase-2 commit.
+- [x] A baseline, DOM snapshots plus counts, under both runtimes at the phase-2 commit: label
+  `baseline`, commit `ab24bd42a`. Its DOM matches `phase1` exactly (0 of 129 fixtures changed).
+  Re-record from `ab24bd42a` if the folder is lost.
 
 ## What counts as a "render" (decided)
 

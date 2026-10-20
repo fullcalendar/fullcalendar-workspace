@@ -116,6 +116,7 @@ async function record(args) {
     plugins: [...baseConfig.plugins, { 'reporter:dom-snapshot': ['type', SnapshotReporter] }],
     reporters: ['dots', 'dom-snapshot'],
     logLevel: karma.constants.LOG_WARN,
+    browserNoActivityTimeout: 120000, // a headless Chrome stall once disconnected a run at the 30s default
   }, { promiseConfig: true, throwErrors: true })
 
   const exitCode = await new Promise((resolvePromise) => {
@@ -200,6 +201,12 @@ function compare(args) {
 
     const metaA = readMeta(dirA)
     const metaB = readMeta(dirB)
+
+    for (const [dir, meta] of [[dirA, metaA], [dirB, metaB]]) {
+      if (meta.failed) {
+        console.log(`WARNING: the run that recorded ${dir} failed, so some of its fixtures may be missing. Re-record it.`)
+      }
+    }
 
     if (metaA.classNames !== metaB.classNames) {
       console.log(
