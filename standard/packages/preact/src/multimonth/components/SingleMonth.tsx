@@ -337,6 +337,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     if (el) {
       this.disconnectTableHeaderHeight = watchHeight(el, (height) => {
+        if (this._isUnmounting) {
+          return
+        }
         this.setState({ tableHeaderHeight: this.tableHeaderHeight = height })
         afterSize(this.handleHeights)
       })
@@ -346,6 +349,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   componentDidMount(): void {
     this._isUnmounting = false
     this.disconnectTitleHeight = watchHeight(this.titleElRef.current, (height) => {
+      if (this._isUnmounting) {
+        return
+      }
       this.setState({ titleHeight: this.titleHeight = height })
       afterSize(this.handleHeights)
     })
