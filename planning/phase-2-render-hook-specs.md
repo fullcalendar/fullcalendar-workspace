@@ -67,8 +67,8 @@ pnpm --filter @fullcalendar/react test
 
 **Known bugs found by the new specs** (pending, not fixed):
 
-- **`singleMonthDidMount` is never called, and `singleMonthWillUnmount` gets `el: undefined` and no
-  info.** `SingleMonth.handleEl` is never attached as a ref, and `renderProps` is never set. It has
+- **(Fixed in phase 7.) `singleMonthDidMount` is never called, and `singleMonthWillUnmount` gets
+  `el: undefined` and no info.** `SingleMonth.handleEl` is never attached as a ref, and `renderProps` is never set. It has
   been like this since the v7 import (`49dc588dc`).
 - **Per-button options replace the theme's instead of merging.** `buttons` merges with
   `mergeMaybePropsDepth1`, which is shallow per button. A user's `buttons.prev.iconContent` returning

@@ -188,3 +188,33 @@ Steps:
   the snapshot counts dropped in `timeGridWeek/drag` (event class hooks 111 to 27) and
   `timeGridWeek/add-event`, with the DOM unchanged (changelog PERF).
 - The now-indicator segs are still rebuilt on every render (`sliceNowDate` doesn't memoize), as before.
+
+## MultiMonth and List
+
+One step: `MultiMonthView`, `SingleMonth`, `ListView`, `ListEvent`.
+
+- **`MultiMonthView`** stays a class rendering a function body. It reads today with `useNow('day')`,
+  and its scroll is on `useInitialScroll` with a logical date target (the month's top, projected from
+  the DOM once the inner width is known). It re-projects when the inner width or the date range
+  changes, and once more in a `setTimeout(0)` after each mount (the class's workaround for an
+  off-by-a-few-pixels first scroll). A user scroll records y.
+  - **No #8112 bug 2 here before either:** the class kept the user's pixel position in the
+    instance, and it took precedence over the date on remount. The new `<Activity>` case in
+    `activity-scroll.ts` passes on the old code too, so it's a regression guard. So is the new
+    multiMonth case in `print-scroll.ts`.
+- **`SingleMonth`** is a memo function component. Its title and table-header heights come from
+  `useReportedSize`, its width from the `Ruler`.
+  - **Bug fixed: `singleMonthDidMount` was never called, and `singleMonthWillUnmount` got no `el` and
+    no info** (found by phase 2's render-hook contract specs, pending until now). The class's
+    `handleEl` was never attached and its `renderProps` never set. The month element now uses
+    `useRenderHookEl`, like every other render-hook area, so the class name is generated the same way
+    and the DOM is unchanged. The contract specs' `knownBugs` entry is removed, so they run. This is
+    the one place counts go up on purpose: `singleMonthDidMount`/`WillUnmount` from 0 to once per
+    month (changelog).
+  - Dropped `heightsRef` (and `SingleMonthHeights`): nothing passed it.
+- **`ListView`** stays a class rendering a function body, registering with `useHitTarget`
+  (`disableHits`, as before). The day list is its own `ListDays` component holding `useNow('day')`,
+  so the day changing re-renders only the list, as when `NowTimer` wrapped it, not the
+  `ViewContainer`. The event segs' memo now also keys on the active range and `nextDayThreshold`,
+  which the class read but didn't key on.
+- **`ListEvent`**: a memo function.

@@ -1,4 +1,5 @@
-import { BaseComponent } from '../../vdom-util'
+import { memo } from 'react'
+import { useViewContext } from '../../hooks/useViewContext'
 import { createFormatter } from '../../datelib/formatting'
 import type { MinimalEventProps } from '../../component-util/event-rendering'
 import { ForegroundEvent, listItemEventVariant } from '../../common/events'
@@ -12,26 +13,24 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 export interface ListEventProps extends MinimalEventProps {
 }
 
-export class ListEvent extends BaseComponent<ListEventProps> {
-  render() {
-    let { props, context } = this
-    let { eventRange } = props
+export const ListEvent = memo(function ListEvent(props: ListEventProps) {
+  const { options } = useViewContext()
+  const { eventRange } = props
 
-    const { displayEventTime } = context.options
-    let forcedTimeText = (displayEventTime !== false) && (eventRange.def.allDay || (!props.isStart && !props.isEnd))
-      ? context.options.allDayText
-      : undefined
+  const { displayEventTime } = options
+  const forcedTimeText = (displayEventTime !== false) && (eventRange.def.allDay || (!props.isStart && !props.isEnd))
+    ? options.allDayText
+    : undefined
 
-    return (
-      <ForegroundEvent
-        {...props}
-        variant={listItemEventVariant}
-        forcedTimeText={forcedTimeText}
-        defaultTimeFormat={DEFAULT_TIME_FORMAT}
-        disableDragging
-        disableResizing
-        disableZindexes // because conflicts with sticky list headers
-      />
-    )
-  }
-}
+  return (
+    <ForegroundEvent
+      {...props}
+      variant={listItemEventVariant}
+      forcedTimeText={forcedTimeText}
+      defaultTimeFormat={DEFAULT_TIME_FORMAT}
+      disableDragging
+      disableResizing
+      disableZindexes // because conflicts with sticky list headers
+    />
+  )
+})

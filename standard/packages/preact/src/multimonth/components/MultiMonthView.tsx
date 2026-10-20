@@ -1,228 +1,162 @@
 import { CssDimValue } from '../../scrollgrid/util'
 import { joinClassNames } from '../../util/html'
-import { DateComponent } from '../../component/DateComponent'
+import { BaseComponent } from '../../vdom-util'
+import { useViewContext } from '../../hooks/useViewContext'
+import { useNow } from '../../hooks/useNow'
+import { useInitialScroll } from '../../hooks/useInitialScroll'
 import { ViewProps } from '../../component-util/View'
 import { ViewContainer } from '../../common/ViewContainer'
 import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
-import { intersectRanges, DateMarker, DateEnv, createDuration, DateFormatter, formatIsoMonthStr, DateRange } from '@full-ui/headless-calendar'
-import { memoize } from '../../util/memoize'
+import { intersectRanges, DateMarker, DateEnv, createDuration, DateFormatter, formatIsoMonthStr } from '@full-ui/headless-calendar'
 import { createFormatter } from '../../datelib/formatting'
-import { NowTimer } from '../../NowTimer'
 import { getIsHeightAuto } from '../../scrollgrid/util'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { fracToCssDim } from '../../util/html'
 import classNames from '../../styles.module.css'
 import { buildDayTableRenderRange } from '../../daygrid/TableDateProfileGenerator'
-import { createRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { SingleMonth } from './SingleMonth'
 
-interface MultiMonthViewState {
-  innerWidth?: number
-}
-
-interface MultiMonthScrollState {
-  date?: DateMarker
-  top?: number
-}
-
-export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
-  state = {} as MultiMonthViewState
-
-  // memo
-  private splitDateProfileByMonth = memoize(splitDateProfileByMonth)
-  private buildMonthFormat = memoize(buildMonthFormat)
-
-  // ref
-  private scrollerRef = createRef<Scroller>()
-  private tilesElRef = createRef<HTMLDivElement>()
-
-  // internal
-  private _isUnmounting: boolean
-  private scrollState: MultiMonthScrollState = {}
-
+// a class, because a view's component must be one (see parseViewConfig)
+export class MultiMonthView extends BaseComponent<ViewProps> {
   render() {
-    const { context, props, state } = this
-    const { options } = context
-    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
+    return <MultiMonthViewBody {...this.props} />
+  }
+}
 
-    const monthDateProfiles = this.splitDateProfileByMonth(
+function MultiMonthViewBody(props: ViewProps) {
+  const context = useViewContext()
+  const { options } = context
+  const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
+  const { todayRange } = useNow('day')
+  const [innerWidth, setInnerWidth] = useState<number | undefined>(undefined)
+
+  const monthDateProfiles = useMemo(
+    () => splitDateProfileByMonth(
       context.dateProfileGenerator,
       props.dateProfile,
       context.dateEnv,
       options.fixedWeekCount,
       options.showNonCurrentDates,
-    )
+    ),
+    [context.dateProfileGenerator, props.dateProfile, context.dateEnv, options.fixedWeekCount, options.showNonCurrentDates],
+  )
 
-    const monthTitleFormat = this.buildMonthFormat(options.singleMonthTitleFormat, monthDateProfiles)
+  const monthTitleFormat = useMemo(
+    () => buildMonthFormat(options.singleMonthTitleFormat, monthDateProfiles),
+    [options.singleMonthTitleFormat, monthDateProfiles],
+  )
 
-    const { multiMonthMaxColumns, singleMonthMinWidth } = options
-    const { innerWidth } = state
-
-    let cols: number | undefined
-    let cssMonthWidth: CssDimValue | undefined
-    let hasLateralSiblings = false
-
-    if (innerWidth != null) {
-      cols = Math.max(
-        1,
-        Math.min(
-          multiMonthMaxColumns,
-          Math.floor(innerWidth / singleMonthMinWidth),
-        ),
-      )
-
-      if (props.forPrint) {
-        cols = Math.min(cols, 2)
-      }
-
-      cssMonthWidth = fracToCssDim(1 / cols)
-      hasLateralSiblings = cols > 1
-    }
-
-    return (
-      <NowTimer unit="day">
-        {(nowDate: DateMarker, todayRange: DateRange) => (
-          <ViewContainer
-            viewSpec={context.viewSpec}
-            className={joinClassNames(
-              // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
-              // https://stackoverflow.com/a/60256345
-              !props.forPrint && classNames.flexCol,
-              props.className,
-            )}
-          >
-            <Scroller
-              vertical={verticalScrolling}
-              className={verticalScrolling ? classNames.liquid : ''}
-              ref={this.scrollerRef}
-            >
-              <div
-                role='list'
-                ref={this.tilesElRef}
-                aria-labelledby={props.labelId}
-                aria-label={props.labelStr}
-                className={classNames.safeTiles}
-              >
-                {monthDateProfiles.map((monthDateProfile, i) => {
-                  const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
-
-                  return (
-                    <SingleMonth
-                      {...props}
-                      key={monthStr}
-                      todayRange={todayRange}
-                      isoDateStr={monthStr}
-                      titleFormat={monthTitleFormat}
-                      dateProfile={monthDateProfile}
-                      width={cssMonthWidth}
-                      colCount={cols}
-                      isFirst={!i}
-                      isLast={i === monthDateProfiles.length - 1}
-                      hasLateralSiblings={hasLateralSiblings}
-                    />
-                  )
-                })}
-              </div>
-            </Scroller>
-            <Ruler widthRef={this.handleInnerWidth} />
-          </ViewContainer>
-        )}
-      </NowTimer>
-    )
-  }
-
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount(): void {
-    this._isUnmounting = false
-    this.scrollState.date = this.props.dateProfile.currentDate
-    this.scrollerRef.current.addScrollStartListener(this.handleScrollStart)
-    this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
-    // this.applyScroll() // definitely not ready yet b/c doesn't have state.innerWidth
-
-    // workaround for off-by-a-few-pixels on first time when multiMonthMaxColumns=1, not sure why
-    setTimeout(() => {
-      this.applyScroll()
-    }, 0)
-  }
-
-  componentDidUpdate(prevProps: ViewProps, prevState: MultiMonthViewState) {
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      if (this.context.options.scrollTimeReset) {
-        this.resetScroll()
-      } else {
-        this.applyScroll()
-      }
-    } else if (prevState.innerWidth !== this.state.innerWidth) {
-      this.applyScroll()
-    }
-  }
-
-  componentWillUnmount() {
-    this._isUnmounting = true
-    this.scrollerRef.current.removeScrollStartListener(this.handleScrollStart)
-    this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
-  }
-
-  // Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private handleInnerWidth = (innerWidth: number) => {
-    if (this._isUnmounting) return
-    this.setState({ innerWidth })
-  }
-
-  private resetScroll() {
-    this.scrollState.date = this.props.dateProfile.currentDate
-    this.scrollState.top = undefined
-    this.applyScroll()
-  }
-
-  private applyScroll() {
-    const scroller = this.scrollerRef.current
-    const top = this.computeScrollTop()
-
-    if (scroller && top != null) {
-      scroller.scrollTo({ y: top })
-    }
-  }
-
-  private handleScrollStart = () => {
-    this.scrollState.date = undefined
-    this.scrollState.top = undefined
-  }
-
-  private handleScrollEnd = (isDevice: boolean) => {
-    const scroller = this.scrollerRef.current
-
-    if (isDevice && scroller) {
-      this.scrollState.top = scroller.y
-      this.scrollState.date = undefined
-    }
-  }
-
-  private computeScrollTop() {
-    const { scrollState } = this
-
-    if (scrollState.top != null) {
-      return scrollState.top
-    }
-
-    if (scrollState.date != null) {
-      const tilesEl = this.tilesElRef.current
-      const monthEl = tilesEl?.querySelector<HTMLElement>(`[data-date="${formatIsoMonthStr(scrollState.date)}"]`)
+  // scrolls to the current date's month, or where the user scrolled to
+  const scrollerRef = useRef<Scroller | null>(null)
+  const tilesElRef = useRef<HTMLDivElement | null>(null)
+  const scroll = useInitialScroll<DateMarker>({
+    scrollerRef,
+    isEnabled: !props.forPrint,
+    createInitial: () => props.dateProfile.currentDate,
+    resetKey: props.dateProfile,
+    isResetOnChange: options.scrollTimeReset,
+    project(date) {
+      const tilesEl = tilesElRef.current
+      const monthEl = tilesEl?.querySelector<HTMLElement>(`[data-date="${formatIsoMonthStr(date)}"]`)
       const monthWrapEl = monthEl?.parentElement as HTMLElement | null
 
-      if (tilesEl && monthWrapEl) {
+      // not before the months are sized, which needs the inner width
+      if (innerWidth != null && tilesEl && monthWrapEl) {
         // rounding required for proper alignment
         const monthTop = Math.round(monthWrapEl.getBoundingClientRect().top)
         const originTop = Math.round(tilesEl.getBoundingClientRect().top)
-        return monthTop - originTop
+        return { y: monthTop - originTop }
       }
+    },
+    isUserScroll: (isDevice) => isDevice,
+    readPosition: (scroller) => ({ y: scroller.y }),
+  })
+
+  // the months move when the inner width or the date range changes
+  useLayoutEffect(() => {
+    scroll.handleGeometry()
+  }, [innerWidth, props.dateProfile])
+
+  // workaround for off-by-a-few-pixels on first time when multiMonthMaxColumns=1, not sure why
+  useLayoutEffect(() => {
+    const timeoutId = setTimeout(scroll.handleGeometry, 0)
+
+    return () => {
+      clearTimeout(timeoutId)
     }
+  }, [])
+
+  const { multiMonthMaxColumns, singleMonthMinWidth } = options
+
+  let cols: number | undefined
+  let cssMonthWidth: CssDimValue | undefined
+  let hasLateralSiblings = false
+
+  if (innerWidth != null) {
+    cols = Math.max(
+      1,
+      Math.min(
+        multiMonthMaxColumns,
+        Math.floor(innerWidth / singleMonthMinWidth),
+      ),
+    )
+
+    if (props.forPrint) {
+      cols = Math.min(cols, 2)
+    }
+
+    cssMonthWidth = fracToCssDim(1 / cols)
+    hasLateralSiblings = cols > 1
   }
+
+  return (
+    <ViewContainer
+      viewSpec={context.viewSpec}
+      className={joinClassNames(
+        // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
+        // https://stackoverflow.com/a/60256345
+        !props.forPrint && classNames.flexCol,
+        props.className,
+      )}
+    >
+      <Scroller
+        vertical={verticalScrolling}
+        className={verticalScrolling ? classNames.liquid : ''}
+        ref={scrollerRef}
+      >
+        <div
+          role='list'
+          ref={tilesElRef}
+          aria-labelledby={props.labelId}
+          aria-label={props.labelStr}
+          className={classNames.safeTiles}
+        >
+          {monthDateProfiles.map((monthDateProfile, i) => {
+            const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
+
+            return (
+              <SingleMonth
+                {...props}
+                key={monthStr}
+                todayRange={todayRange}
+                isoDateStr={monthStr}
+                titleFormat={monthTitleFormat}
+                dateProfile={monthDateProfile}
+                width={cssMonthWidth}
+                colCount={cols}
+                isFirst={!i}
+                isLast={i === monthDateProfiles.length - 1}
+                hasLateralSiblings={hasLateralSiblings}
+              />
+            )
+          })}
+        </div>
+      </Scroller>
+      <Ruler widthRef={setInnerWidth} />
+    </ViewContainer>
+  )
 }
 
 // date profile

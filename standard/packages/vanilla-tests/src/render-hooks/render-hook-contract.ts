@@ -189,11 +189,6 @@ const AREAS: RenderHookArea[] = [
     didMountOption: 'singleMonthDidMount',
     willUnmountOption: 'singleMonthWillUnmount',
     infoKeys: ['multiMonthColumns', 'isFirst', 'isLast'],
-    knownBugs: {
-      // SingleMonth.handleEl is never attached as a ref, and renderProps is never set
-      didMount: 'singleMonthDidMount is never called',
-      willUnmount: 'singleMonthWillUnmount receives no el and no info',
-    },
   },
   {
     name: 'view',

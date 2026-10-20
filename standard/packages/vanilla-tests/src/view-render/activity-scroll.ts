@@ -1,6 +1,7 @@
 import * as vdom from 'fullcalendar/preact'
 import dayGridPlugin from 'fullcalendar/daygrid'
 import timeGridPlugin from 'fullcalendar/timegrid'
+import multiMonthPlugin from 'fullcalendar/multimonth'
 import classicThemePlugin from 'fullcalendar/themes/classic'
 import internalClassNames from 'fullcalendar/protected-styles'
 import themeForTestsPlugin from '../lib/theme-for-tests'
@@ -36,6 +37,17 @@ describe('scroll position across a hidden <Activity>', () => {
     )
   })
 
+  it('keeps where the user scrolled a multiMonth', async () => {
+    await testScrollAcrossActivity(
+      {
+        initialView: 'multiMonthYear',
+        initialDate: '2024-01-03', // in the first month, so the initial scroll is to the top
+        multiMonthMaxColumns: 1, // tall enough to scroll
+      },
+      (containerEl) => containerEl.querySelector(`.${internalClassNames.internalScroller}`) as HTMLElement,
+    )
+  })
+
   async function testScrollAcrossActivity(
     calendarOptions: object,
     getScrollerEl: (containerEl: HTMLElement) => HTMLElement,
@@ -55,7 +67,7 @@ describe('scroll position across a hidden <Activity>', () => {
         root.render(
           react.createElement(react.Activity, { mode },
             react.createElement(react.FullCalendar, {
-              plugins: [dayGridPlugin, timeGridPlugin, classicThemePlugin, themeForTestsPlugin],
+              plugins: [dayGridPlugin, timeGridPlugin, multiMonthPlugin, classicThemePlugin, themeForTestsPlugin],
               height: 250,
               ...calendarOptions,
             }),

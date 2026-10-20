@@ -34,6 +34,14 @@ describe('scroll position across printing', () => {
     await testScrollAcrossPrint(calendar, `.fc-timegrid-body .${internalClassNames.internalScroller}`)
   })
 
+  it('keeps where the user scrolled a multiMonth', async () => {
+    let calendar = initCalendar({
+      initialView: 'multiMonthYear',
+      multiMonthMaxColumns: 1, // tall enough to scroll
+    })
+    await testScrollAcrossPrint(calendar, `.${internalClassNames.internalScroller}`)
+  })
+
   async function testScrollAcrossPrint(calendar, scrollerSelector: string) {
     await waitTimeout(100)
     let scrollerEl = calendar.el.querySelector(scrollerSelector) as HTMLElement

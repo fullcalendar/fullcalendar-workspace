@@ -5,25 +5,23 @@ import { addDays } from '@full-ui/headless-calendar'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
-import { DateComponent } from '../../component/DateComponent'
+import { BaseComponent } from '../../vdom-util'
+import { useHitTarget } from '../../hooks/useHitTarget'
+import { useNow } from '../../hooks/useNow'
 import type { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import type { DateProfile } from '../../DateProfileGenerator'
 import type { EventRangeProps } from '../../component-util/event-rendering'
-import type { EventStore } from '../../structs/event-store'
-import type { EventUiHash } from '../../component-util/event-ui'
 import { formatDayString } from '@full-ui/headless-calendar'
 import { generateClassName } from '../../common/render-hook'
 import { getIsHeightAuto } from '../../scrollgrid/util'
 import { intersectRanges } from '@full-ui/headless-calendar'
-import { memoize } from '../../util/memoize'
-import { NowTimer } from '../../NowTimer'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { sliceEventStore } from '../../component-util/event-rendering'
 import { startOfDay } from '@full-ui/headless-calendar'
 import { ViewContainer } from '../../common/ViewContainer'
 import type { ViewProps } from '../../component-util/View'
 import classNames from '../../styles.module.css'
-import { type ReactNode, type ReactElement } from 'react'
+import { useMemo, useRef, type ReactNode, type ReactElement } from 'react'
 import { ListDay, ListSeg } from './ListDay'
 
 export interface NoEventsInfo {
@@ -31,169 +29,162 @@ export interface NoEventsInfo {
   view: ViewApi
 }
 
+// a class, because a view's component must be one (see parseViewConfig)
+export class ListView extends BaseComponent<ViewProps> {
+  render() {
+    return <ListViewBody {...this.props} />
+  }
+}
+
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".
 */
-export class ListView extends DateComponent<ViewProps> {
-  // memo
-  private computeDateVars = memoize(computeDateVars)
-  private eventStoreToSegs = memoize(this._eventStoreToSegs)
+function ListViewBody(props: ViewProps) {
+  const context = useViewContext()
+  const { options } = context
+  const rootElRef = useRef<HTMLElement | null>(null)
 
-  render() {
-    let { props, context } = this
-    let { options } = context
+  useHitTarget(rootElRef, {
+    disableHits: true, // HACK to not do date-clicking/selecting
+    eventSelection: props.eventSelection,
+    eventDrag: props.eventDrag,
+    eventResize: props.eventResize,
+  })
 
-    let { dayDates, dayRanges } = this.computeDateVars(props.dateProfile)
-    let eventSegs = this.eventStoreToSegs(props.eventStore, props.eventUiBases, dayRanges)
-    let verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
-
-    return (
-      <ViewContainer
-        viewSpec={context.viewSpec}
-        className={joinClassNames(props.className, classNames.flexCol)}
-        elRef={this.setRootEl}
-      >
-        {eventSegs.length ? (
-          <Scroller // TODO: don't need heavyweight component
-            vertical={verticalScrolling}
-            className={joinClassNames(
-              classNames.flexCol,
-              verticalScrolling ? classNames.liquid : '',
-            )}
-          >
-            {this.renderSegList(eventSegs, dayDates)}
-          </Scroller>
-        ) : <ListNoEvents />}
-
-      </ViewContainer>
-    )
-  }
-
-  setRootEl = (rootEl: HTMLElement | null) => {
-    if (rootEl) {
-      this.registerHitTarget({
-        el: rootEl,
-        disableHits: true, // HACK to not do date-clicking/selecting
-      })
-    } else {
-      this.unregisterHitTarget()
-    }
-  }
-
-  renderSegList(allSegs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[]) {
-    let { options } = this.context
-    let segsByDay = groupSegsByDay(allSegs) // sparse array
-
-    return (
-      <div
-        role="list"
-        aria-labelledby={this.props.labelId}
-        aria-label={this.props.labelStr}
-        className={joinClassNames(
-          classNames.flexCol,
-          joinClassNames(options.listDaysClass),
-        )}
-      >
-        <NowTimer unit="day">
-          {(nowDate: DateMarker, todayRange: DateRange, nowMs: number) => {
-            const dayNodes: ReactElement[] = []
-            const populatedDayCount = segsByDay.reduce(
-              (count, daySegs) => count + (daySegs ? 1 : 0),
-              0,
-            )
-            let populatedDayIndex = 0
-
-            for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
-              let daySegs = segsByDay[dayIndex]
-
-              if (daySegs) { // sparse array, so might be undefined
-                const dayDate = dayDates[dayIndex]
-                const key = formatDayString(dayDate)
-                const isFirst = populatedDayIndex === 0
-                const isLast = populatedDayIndex === populatedDayCount - 1
-
-                dayNodes.push(
-                  <ListDay
-                    key={key}
-                    dayDate={dayDate}
-                    nowDate={nowDate}
-                    nowMs={nowMs}
-                    todayRange={todayRange}
-                    segs={daySegs}
-                    isFirst={isFirst}
-                    isLast={isLast}
-                    forPrint={this.props.forPrint}
-                  />,
-                )
-
-                populatedDayIndex += 1
-              }
-            }
-
-            return (
-              <>{dayNodes}</>
-            )
-          }}
-        </NowTimer>
-      </div>
-    )
-  }
-
-  _eventStoreToSegs(
-    eventStore: EventStore,
-    eventUiBases: EventUiHash,
-    dayRanges: DateRange[],
-  ): (ListSeg & EventRangeProps)[] {
-    return this.eventRangesToSegs(
+  const { dayDates, dayRanges } = useMemo(() => computeDateVars(props.dateProfile), [props.dateProfile])
+  const { activeRange } = props.dateProfile
+  const eventSegs = useMemo(
+    () => eventRangesToSegs(
       sliceEventStore(
-        eventStore,
-        eventUiBases,
-        // HACKY to reference internal state...
-        this.props.dateProfile.activeRange,
-        this.context.options.nextDayThreshold, // activates all-day slicing
+        props.eventStore,
+        props.eventUiBases,
+        activeRange,
+        options.nextDayThreshold, // activates all-day slicing
       ).fg,
       dayRanges,
-    )
-  }
+    ),
+    [props.eventStore, props.eventUiBases, dayRanges, activeRange, options.nextDayThreshold],
+  )
+  const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
-  eventRangesToSegs(
-    fullDayEventRanges: EventRenderRange[],
-    dayRanges: DateRange[],
-  ): (ListSeg & EventRangeProps)[] {
-    let segs: (ListSeg & EventRangeProps)[] = []
+  return (
+    <ViewContainer
+      viewSpec={context.viewSpec}
+      className={joinClassNames(props.className, classNames.flexCol)}
+      elRef={rootElRef}
+    >
+      {eventSegs.length ? (
+        <Scroller // TODO: don't need heavyweight component
+          vertical={verticalScrolling}
+          className={joinClassNames(
+            classNames.flexCol,
+            verticalScrolling ? classNames.liquid : '',
+          )}
+        >
+          <div
+            role="list"
+            aria-labelledby={props.labelId}
+            aria-label={props.labelStr}
+            className={joinClassNames(
+              classNames.flexCol,
+              joinClassNames(options.listDaysClass),
+            )}
+          >
+            <ListDays
+              segs={eventSegs}
+              dayDates={dayDates}
+              forPrint={props.forPrint}
+            />
+          </div>
+        </Scroller>
+      ) : <ListNoEvents />}
 
-    for (let fullDayEventRange of fullDayEventRanges) {
-      segs.push(...this.eventRangeToSegs(fullDayEventRange, dayRanges))
+    </ViewContainer>
+  )
+}
+
+/*
+The days with events. Its own component so that only it re-renders when the day changes
+*/
+function ListDays(props: { segs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[], forPrint: boolean }) {
+  const { nowDate, nowMs, todayRange } = useNow('day')
+  const segsByDay = groupSegsByDay(props.segs) // sparse array
+  const dayNodes: ReactElement[] = []
+  const populatedDayCount = segsByDay.reduce(
+    (count, daySegs) => count + (daySegs ? 1 : 0),
+    0,
+  )
+  let populatedDayIndex = 0
+
+  for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
+    let daySegs = segsByDay[dayIndex]
+
+    if (daySegs) { // sparse array, so might be undefined
+      const dayDate = props.dayDates[dayIndex]
+      const key = formatDayString(dayDate)
+      const isFirst = populatedDayIndex === 0
+      const isLast = populatedDayIndex === populatedDayCount - 1
+
+      dayNodes.push(
+        <ListDay
+          key={key}
+          dayDate={dayDate}
+          nowDate={nowDate}
+          nowMs={nowMs}
+          todayRange={todayRange}
+          segs={daySegs}
+          isFirst={isFirst}
+          isLast={isLast}
+          forPrint={props.forPrint}
+        />,
+      )
+
+      populatedDayIndex += 1
     }
-
-    return segs
   }
 
-  eventRangeToSegs(
-    fullDayEventRange: EventRenderRange,
-    dayRanges: DateRange[],
-  ): (ListSeg & EventRangeProps)[] {
-    let fullDayRange = fullDayEventRange.range
-    let dayIndex: number
-    let segs: (ListSeg & EventRangeProps)[] = []
+  return (
+    <>{dayNodes}</>
+  )
+}
 
-    for (dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1) {
-      const slicedFullDayRange = intersectRanges(fullDayRange, dayRanges[dayIndex])
+function eventRangesToSegs(
+  fullDayEventRanges: EventRenderRange[],
+  dayRanges: DateRange[],
+): (ListSeg & EventRangeProps)[] {
+  let segs: (ListSeg & EventRangeProps)[] = []
 
-      if (slicedFullDayRange) {
-        segs.push({
-          eventRange: fullDayEventRange,
-          slicedStart: slicedFullDayRange.start,
-          slicedEnd: slicedFullDayRange.end,
-          isStart: fullDayEventRange.isStart && fullDayRange.start.valueOf() === slicedFullDayRange.start.valueOf(),
-          isEnd: fullDayEventRange.isEnd && fullDayRange.end.valueOf() === slicedFullDayRange.end.valueOf(),
-          dayIndex,
-        })
-      }
+  for (let fullDayEventRange of fullDayEventRanges) {
+    segs.push(...eventRangeToSegs(fullDayEventRange, dayRanges))
+  }
+
+  return segs
+}
+
+function eventRangeToSegs(
+  fullDayEventRange: EventRenderRange,
+  dayRanges: DateRange[],
+): (ListSeg & EventRangeProps)[] {
+  let fullDayRange = fullDayEventRange.range
+  let dayIndex: number
+  let segs: (ListSeg & EventRangeProps)[] = []
+
+  for (dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1) {
+    const slicedFullDayRange = intersectRanges(fullDayRange, dayRanges[dayIndex])
+
+    if (slicedFullDayRange) {
+      segs.push({
+        eventRange: fullDayEventRange,
+        slicedStart: slicedFullDayRange.start,
+        slicedEnd: slicedFullDayRange.end,
+        isStart: fullDayEventRange.isStart && fullDayRange.start.valueOf() === slicedFullDayRange.start.valueOf(),
+        isEnd: fullDayEventRange.isEnd && fullDayRange.end.valueOf() === slicedFullDayRange.end.valueOf(),
+        dayIndex,
+      })
     }
-
-    return segs
   }
+
+  return segs
 }
 
 // the message when there are no events, with its noEvents* render hooks
