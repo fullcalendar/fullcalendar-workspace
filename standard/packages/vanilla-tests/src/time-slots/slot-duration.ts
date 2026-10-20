@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '../lib/calendar'
+import { queryParts } from '../lib/models/events'
 import { getSlotLabelTexts, getSlotLaneEls } from '../lib/models/slots'
 import { waitForSettle } from '../lib/settle'
 
@@ -50,6 +51,15 @@ describe('slotDuration', () => {
       await waitForSettle()
 
       expect(getSlotLabelTexts(calendar.el)).toEqual(labels)
+    })
+
+    it('gives every slot header its time, labeled or not, matching its lane', async () => {
+      const calendar = initCalendar({ ...options, slotDuration: '00:30', slotMinTime: '00:00', slotMaxTime: '02:00' })
+      await waitForSettle()
+
+      const times = ['00:00:00', '00:30:00', '01:00:00', '01:30:00']
+      expect(queryParts(calendar.el, 'slotHeader').map((el) => el.getAttribute('data-time'))).toEqual(times)
+      expect(getSlotLaneEls(calendar.el).map((el) => el.getAttribute('data-time'))).toEqual(times)
     })
   })
 })

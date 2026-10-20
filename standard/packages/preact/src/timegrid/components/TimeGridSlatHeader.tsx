@@ -83,6 +83,7 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
             className,
           )}
           data-fc-part={getPartAttr(options, 'slotHeader')}
+          data-time={props.isoTimeStr}
           style={{
             height: props.height,
           }}
