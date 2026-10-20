@@ -76,4 +76,37 @@ describe('event styling from resources', () => {
       expect(getResourceClasses(eventEls[0])).toEqual(['re1', 're2', 're3'])
     })
   })
+
+  /*
+  Per the docs (resource-parsing), a resource's eventColor takes precedence over the calendar's
+  eventColor and the event source's color, but not over the event's own color.
+  */
+  describe('color precedence', () => {
+    function getColor(initialView: string, eventProps: object): string {
+      const calendar = initCalendar({
+        ...options,
+        initialView,
+        eventColor: BLUE,
+        eventSources: [{ color: GREEN, events: [{ id: '1', start: '2016-02-14T01:00:00', resourceId: 'a', ...eventProps }] }],
+      })
+      return getComputedStyle(getEventEls(calendar.el, '1')[0]).backgroundColor
+    }
+
+    it.each(['timeGridWeek', 'resourceTimeGridDay', 'resourceTimelineDay'])('in %s, the event\'s own color wins', (initialView) => {
+      expect(getColor(initialView, { color: BLUE })).toBe(BLUE)
+    })
+
+    it('in a view without resources, the resource\'s color beats the source\'s and the calendar\'s', () => {
+      expect(getColor('timeGridWeek', {})).toBe(RED)
+    })
+
+    /*
+    KNOWN BUG (`it.fails` until fixed): in resource views, the source's color beats the resource's.
+    Resource views rank the settings calendar < resource < source < event, while views without
+    resources (through ResourceEventConfigAdder) rank them calendar < source < resource < event.
+    */
+    it.fails.each(['resourceTimeGridDay', 'resourceTimelineDay'])('in %s, the resource\'s color beats the source\'s and the calendar\'s', (initialView) => {
+      expect(getColor(initialView, {})).toBe(RED)
+    })
+  })
 })
