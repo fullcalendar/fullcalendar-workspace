@@ -153,7 +153,9 @@ export const TimeGridLayoutPannable = memo(function TimeGridLayoutPannable(props
   )
   useScrollerSyncer(
     /* isHorizontal = */ false,
-    [axisScrollerRef, mainScrollerRef],
+    // main first: once a scroll ends, the syncer's y reads its first scroller, and only main is sure
+    // to be scrollable (the shell checks whether a restored position was reached)
+    [mainScrollerRef, axisScrollerRef],
     props.timeScrollerRef,
   )
 

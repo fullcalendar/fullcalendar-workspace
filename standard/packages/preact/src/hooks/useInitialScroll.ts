@@ -35,7 +35,7 @@ mount. So a remount from Strict Mode or a shown <Activity> re-applies the curren
 position the user scrolled to, instead of jumping back to the initial one (#8112 bug 2).
 Applying a logical target first also scrolls x to 0, as the layouts did on reset.
 A position the scroller can't reach yet (content still measuring, e.g. after print) is re-applied on
-geometry changes until it's reached.
+geometry changes until it's reached. A new scroller (the layout swapped it) gets the target too.
 See planning/hook-toolkit-spec.md §5.3
 */
 export function useInitialScroll<Logical>(input: InitialScrollInput<Logical>): InitialScroll<Logical> {
@@ -80,23 +80,28 @@ export function useInitialScroll<Logical>(input: InitialScrollInput<Logical>): I
     isPositionPendingRef.current = false
   }
 
-  function syncListener() {
+  // returns whether the scroller changed
+  function syncListener(): boolean {
     const { scrollerRef, isEnabled } = latestRef.current
     const scroller = isEnabled ? scrollerRef.current : null
 
-    if (scroller !== attachedRef.current?.scroller) {
-      detachListener()
-
-      if (scroller) {
-        const handleScrollEnd = (isDevice: boolean) => {
-          if (latestRef.current.isUserScroll(isDevice)) {
-            setTarget({ position: readPosition(scroller) })
-          }
-        }
-        scroller.addScrollEndListener(handleScrollEnd)
-        attachedRef.current = { scroller, handleScrollEnd }
-      }
+    if (scroller === attachedRef.current?.scroller) {
+      return false
     }
+
+    detachListener()
+
+    if (scroller) {
+      const handleScrollEnd = (isDevice: boolean) => {
+        if (latestRef.current.isUserScroll(isDevice)) {
+          setTarget({ position: readPosition(scroller) })
+        }
+      }
+      scroller.addScrollEndListener(handleScrollEnd)
+      attachedRef.current = { scroller, handleScrollEnd }
+    }
+
+    return true
   }
 
   function detachListener() {
@@ -134,7 +139,10 @@ export function useInitialScroll<Logical>(input: InitialScrollInput<Logical>): I
     }
     wasEnabledRef.current = isEnabled
 
-    syncListener()
+    // a new scroller (e.g. the layout changed with dayMinWidth) starts at 0, so re-apply
+    if (syncListener() && attachedRef.current) {
+      shouldApply = true
+    }
 
     if (shouldApply) {
       applyTarget(false)

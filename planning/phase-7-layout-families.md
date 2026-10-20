@@ -218,3 +218,17 @@ One step: `MultiMonthView`, `SingleMonth`, `ListView`, `ListEvent`.
   `ViewContainer`. The event segs' memo now also keys on the active range and `nextDayThreshold`,
   which the class read but didn't key on.
 - **`ListEvent`**: a memo function.
+
+### TimeGrid review (Sol, high effort)
+
+One P2, reproduced by the reviewer in Chrome and fixed:
+
+- **Toggling `dayMinWidth` lost the scroll position.** The layout swap replaces the scroller, and
+  `useInitialScroll` attached to the new one without applying the target, while geometry changes
+  only retry a position that's pending. The class restored it, through its slat-height callback.
+  Now a new scroller gets the current target (and a clamped position stays pending, as after print).
+  - **Also: Pannable's time syncer lists the main scroller first.** Once a scroll ends, the syncer's
+    `y` reads its first scroller. The axis came first and could reach a position the main scroller,
+    not laid out yet, was clamped from, so the pending check passed too early.
+  - Spec: "scroll position across a dayMinWidth change" in the premium
+    `misc/print-scroll-pannable.ts`, timeGrid both ways and dayGrid. Fails with the old hook.

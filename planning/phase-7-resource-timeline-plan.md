@@ -47,10 +47,12 @@ callbacks with `useLatest`, not written onto an instance.
 2. **`useEntityGeometry`**: the four height `RefMap`s, header height, `computeHeights` and tops, and
    the slack. Re-renders after size. Returns the layouts' heights and tops, and a latest ref for
    callbacks.
-3. **`useTimelineTimeScroll`** (`timeline/`, shared with `TimelineLayoutNormal`): the `{ time, x }`
-   target reported to the view's `scrollRef`, reset and request, the `maxHScroll` cap, applying
-   through the time syncer. ResourceTimeline adds its every-scroll recording and debounced
-   virtualizer updates through options.
+3. **`useTimelineTimeScroll`**: the `{ time, x }` target reported to the view's `scrollRef`, reset
+   and request, the `maxHScroll` cap, applying through the time syncer. Shared with
+   `TimelineLayoutNormal` only if the two can keep their rules, which differ today: Timeline lets x
+   win over time and clears the target on a device scroll start, recording x at a device scroll end.
+   ResourceTimeline lets time win, records x on every scroll (programmatic too, for virtualization),
+   and moves the slot and header virtualizers, debounced. Otherwise each keeps its own.
 4. **`useEntityScroll`**: the `{ entityId, fromBottom }` target, `_resourceScrollRequest` with the
    queue, scroll start, scroll and end handlers, the slack consumption (a pending post-commit scroll
    in place of `forceUpdate(callback)`), and the clear for `prepareHits`.
