@@ -18,7 +18,7 @@ import { watchHeight, afterSize } from '../../component-util/resize-observer'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { joinClassNames } from '../../util/html'
 import { renderText, ContentContainer } from '../../content-inject/ContentContainer'
-import { StandardEvent } from '../../common/StandardEvent'
+import { ListItemEvent, RowEvent } from '../../common/events'
 import { memoize } from '../../util/memoize'
 import { ViewContext } from '../../ViewContext'
 import { type ReactElement, type Ref } from 'react'
@@ -521,9 +521,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     // the range's starting cell supplies extra render props
     const cellRenderProps = props.cells[range.start]?.renderProps
 
+    const EventComponent = isListItem ? ListItemEvent : RowEvent
+
     return (
-      <StandardEvent
-        display={isListItem ? 'list-item' : 'row'}
+      <EventComponent
         eventRange={eventRange}
         isStart={range.isStart}
         isEnd={range.isEnd}

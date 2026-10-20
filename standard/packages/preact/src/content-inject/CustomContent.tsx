@@ -1,0 +1,161 @@
+import {
+  createElement, isValidElement, memo, useContext, useLayoutEffect, useRef,
+  type ReactNode, type CSSProperties, type Ref,
+} from 'react'
+import { ContentGenerator } from '../common/render-hook'
+import { useViewContext } from '../hooks/useViewContext'
+import { useLatest } from '../hooks/useLatest'
+import { setRef } from '../vdom-util'
+import { guid } from '../util/misc'
+import { isArraysEqual } from '../util/array'
+import { isPropsEqualShallow, isPropsEqualWithMap } from '../util/object'
+import { isNonHandlerPropsEqual } from '../options-manip'
+import { hasCustomRenderingHandler, ElAttrs } from './ContentInjector'
+import { RenderId } from './RenderId'
+
+export interface CustomContentProps<RenderProps> {
+  tag: string
+  className?: string
+  style?: CSSProperties & Record<string, any>
+  attrs?: ElAttrs
+  elRef?: Ref<HTMLElement>
+  renderProps: RenderProps
+  generatorName: string | undefined // for Vue/Angular, if `generator` is undefined
+  generator?: ContentGenerator<RenderProps>
+  fallback?: (renderProps: RenderProps) => ReactNode
+}
+
+/*
+The slot a *Content render hook fills. Owns exactly one element. The function-component replacement
+for ContentInjector, with the same results and the same memoization, which keeps *Content call counts
+down. See planning/hook-toolkit-spec.md §6.3
+*/
+function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) {
+  const { options } = useViewContext()
+  useContext(RenderId) // re-runs the generator when the vanilla Calendar or a connector bumps it
+
+  const elRef = useRef<HTMLElement | null>(null)
+  const committedElRef = useRef<HTMLElement | null>(null) // as of the last commit, for cleanup
+  const idRef = useRef<string>(null)
+  idRef.current ??= guid()
+  const currentDomNodesRef = useRef<Node[]>([])
+
+  // the ref callback must be stable, or React would detach and re-attach it on every commit.
+  // assigned during render, because the ref callback runs during the commit, before layout effects
+  const elRefPropRef = useRef(props.elRef)
+  elRefPropRef.current = props.elRef
+  const handleElRef = useRef<(el: HTMLElement | null) => void>(null)
+  handleElRef.current ??= (el: HTMLElement | null) => {
+    elRef.current = el
+    setRef(elRefPropRef.current, el)
+  }
+
+  const { generator, fallback, renderProps } = props
+  const attrs: ElAttrs = { ...props.attrs, ref: handleElRef.current }
+  let useFallback = false
+  let innerContent: ReactNode | undefined
+  let queuedDomNodes: Node[] = []
+  let generatorMeta: any
+
+  if (props.className) {
+    attrs.className = props.className
+  }
+  if (props.style) {
+    attrs.style = props.style
+  }
+
+  if (generator != null) {
+    const res = typeof generator === 'function' ?
+      (generator as (renderProps: RenderProps) => any)(renderProps) :
+      generator
+
+    if (res === true) {
+      useFallback = true
+    } else {
+      const isObject = res && typeof res === 'object' // non-null
+
+      if (isObject && ('html' in res)) {
+        attrs.dangerouslySetInnerHTML = { __html: res.html }
+      } else if (isObject && ('domNodes' in res)) {
+        queuedDomNodes = Array.prototype.slice.call(res.domNodes)
+      } else if (
+        isObject
+          ? isValidElement(res) // vdom node
+          : typeof res !== 'function' // primitive value (like string or number)
+      ) {
+        innerContent = res as ReactNode
+      } else {
+        generatorMeta = res // an exotic object for handleCustomRendering (Vue/Angular)
+      }
+    }
+  } else {
+    useFallback = !hasCustomRenderingHandler(props.generatorName, options)
+  }
+
+  if (useFallback && fallback) {
+    innerContent = fallback(renderProps)
+  }
+
+  // for the unmount cleanup, which runs after other effects
+  const latestRef = useLatest({ generatorMeta, renderProps, generatorName: props.generatorName })
+
+  function triggerCustomRendering(
+    isActive: boolean,
+    containerEl: HTMLElement,
+    meta: any,
+    renderPropsForMeta: RenderProps,
+    name: string | undefined,
+  ) {
+    const { handleCustomRendering, customRenderingMetaMap } = options
+
+    if (handleCustomRendering) {
+      const resolvedMeta = meta ?? customRenderingMetaMap?.[name]
+
+      if (resolvedMeta) {
+        handleCustomRendering({
+          id: idRef.current,
+          isActive,
+          containerEl,
+          generatorMeta: resolvedMeta,
+          renderProps: renderPropsForMeta,
+        })
+      }
+    }
+  }
+
+  // after every commit of this component, like ContentInjector's componentDidMount/DidUpdate
+  useLayoutEffect(() => {
+    const currentDomNodes = currentDomNodesRef.current
+
+    if (!isArraysEqual(queuedDomNodes, currentDomNodes)) {
+      for (const domNode of currentDomNodes) {
+        (domNode as Element).remove()
+      }
+      for (const domNode of queuedDomNodes) {
+        elRef.current.appendChild(domNode)
+      }
+      currentDomNodesRef.current = queuedDomNodes
+    }
+
+    committedElRef.current = elRef.current
+    triggerCustomRendering(true, elRef.current, generatorMeta, renderProps, props.generatorName)
+  })
+
+  useLayoutEffect(() => () => {
+    const latest = latestRef.current
+    triggerCustomRendering(false, committedElRef.current, latest.generatorMeta, latest.renderProps, latest.generatorName)
+  }, [])
+
+  return createElement(props.tag as any, attrs, innerContent)
+}
+
+const CUSTOM_CONTENT_PROP_EQUALITY = {
+  renderProps: isPropsEqualShallow,
+  attrs: isNonHandlerPropsEqual,
+  style: isPropsEqualShallow,
+}
+
+export const CustomContent = memo(
+  CustomContentImpl,
+  (prevProps, nextProps) => isPropsEqualWithMap(prevProps, nextProps, CUSTOM_CONTENT_PROP_EQUALITY),
+) as unknown as typeof CustomContentImpl // keeps the generic RenderProps parameter

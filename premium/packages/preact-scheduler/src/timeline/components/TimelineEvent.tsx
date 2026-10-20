@@ -1,4 +1,4 @@
-import { MinimalEventProps, BaseComponent, createFormatter, StandardEvent } from '@fullcalendar/preact/protected-api'
+import { MinimalEventProps, BaseComponent, createFormatter, RowEvent } from '@fullcalendar/preact/protected-api'
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
@@ -16,9 +16,8 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     let { props } = this
 
     return (
-      <StandardEvent
+      <RowEvent
         {...props}
-        display='row'
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}
       />

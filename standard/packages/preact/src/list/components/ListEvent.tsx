@@ -1,7 +1,7 @@
 import { BaseComponent } from '../../vdom-util'
 import { createFormatter } from '../../datelib/formatting'
 import type { MinimalEventProps } from '../../component-util/event-rendering'
-import { StandardEvent } from '../../common/StandardEvent'
+import { ListItemEvent } from '../../common/events'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -23,14 +23,13 @@ export class ListEvent extends BaseComponent<ListEventProps> {
       : undefined
 
     return (
-      <StandardEvent
+      <ListItemEvent
         {...props}
         forcedTimeText={forcedTimeText}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         disableDragging
         disableResizing
         disableZindexes // because conflicts with sticky list headers
-        display='list-item'
       />
     )
   }

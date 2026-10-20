@@ -98,7 +98,7 @@ Its objections are weighed, not followed blindly.
 | 1 | DOM snapshot tool | `phase-1-dom-snapshot.md` | — |
 | 2 | Render-hook contract specs | `phase-2-render-hook-specs.md` | 1 (count baseline only) |
 | 3 | Hook toolkit spec and review | `phase-3-hook-toolkit-spec.md` | — |
-| 4 | Pilot: composed event components | `phase-4-event-pilot.md` | 1, 2, 3 |
+| 4 | Pilot: composed event components | `phase-4-event-pilot.md` (done) | 1, 2, 3 |
 | 5 | Render-hook rollout and leaf conversions | sketched below | 4 |
 | 6 | `useHitTarget` and interactions | sketched below | 3 |
 | 7 | Layout families | sketched below | 5, 6 |
