@@ -188,7 +188,12 @@ Inside today's `CalendarDataManager`, before any store split:
 - Expected to fix #8112 bug 1, #8092 and #7070 (see `related-issues.md`).
 - The existing specs are the safety net.
 
-### 9. Store slices, actions, API facade
+### 9. Store slices, actions, API facade (planned, see `phase-9-store.md`)
+
+Re-scoped after its spec review: a behavior-identical restructuring (slices, reducers that describe
+effects which the store runs at today's points, the store, `resetOptions` as an action, the actions
+facade). `useSyncExternalStore` with render-time purity moved to phase 11, and the API wrapper cache to
+phase 12, with the review's findings as their requirements. Originally sketched as follows.
 
 - **Raw state:** typed slices with synchronous `get`/`set` and `subscribe`, read through
   `useSyncExternalStore`. Covers current date, view type, option overrides, event sources, event
@@ -222,3 +227,33 @@ Inside today's `CalendarDataManager`, before any store split:
 - `useViewContext()` stays as a facade that combines them, so unconverted code keeps working.
 - Converted code uses the narrow hooks.
 - Later, `ViewOptions` may become store selectors, e.g. `useOption('dayMaxEvents')`.
+- **From phase 9 (moved here):** components read the store through `useSyncExternalStore`, and the
+  reduction becomes replayable during render. Requirements, from phase 9's spec review round 1:
+  - **Replay:** user code runs during normalization (`eventSourceSuccess`, `success`,
+    `eventDataTransform`, refiners, `validRange`/`visibleRange` functions), parsing allocates ids, the
+    clock is read, rrule mutates its cache. Decide what may replay during a render and what runs once
+    per committed transaction; frozen clock and id inputs for a render.
+  - **Isolation:** two renders may preview different inputs. Single-entry memoizers can't hold both;
+    commit the exact transaction a render used (base revision, inputs, state, derived data, effects).
+  - **Publication order:** `CalendarInner`'s children fire `datesSet`/`eventsSet` in their commit,
+    before a parent layout effect. Publish before child callbacks, in both runtimes.
+  - **Render-time readers** (`ViewImpl` getters, premium `transformIsDraggable`, validation) must read
+    the render's snapshot, not the committed one.
+  - **Server rendering:** `getServerSnapshot` and hydration consistency, React 17 (shim), 18, 19.
+  - **Synchronous sources** must still render on the server and in the first client render.
+
+
+### 12. Grid abstraction, hooks-first React API (future)
+
+- **From phase 9 (moved here): stable API wrappers.** `EventApi`, `EventSourceApi` and `ResourceApi`
+  objects with stable identity, reading the calendar's context lazily, for a hooks API whose users
+  memoize on them. Requirements, from phase 9's spec review round 1:
+  - **Live vs snapshot:** `eventChange`'s `oldEvent`, `resourceChange`'s old resource, drag previews and
+    validation build historical or hypothetical wrappers. They must not come from the live cache.
+  - **Content invalidation:** render hooks get a new `event` object when the event changes today, and
+    `CustomContent` shallow-compares render props. A stable wrapper needs record versions in the memo
+    keys, so a title-only change still regenerates content.
+  - **Context versions:** a wrapper reading the current zone must not reinterpret markers stored under
+    the old one.
+  - **Keys:** internal `instanceId`/`defId` (and resource ids), with pruning, removal, revert and
+    re-adding defined; recurring definitions vs occurrences; the raw vs renderable store while loading.
