@@ -1,15 +1,12 @@
 import { CalendarInteraction } from '../plugins/plugin-types'
 import { ViewProps } from '../views/view-props'
 import { Toolbar } from '../toolbar/Toolbar'
-import { EventClicking } from '../interactions/EventClicking'
-import { EventHovering } from '../interactions/EventHovering'
-import { Interaction, InteractionClass } from '../interactions/interaction'
-import { HitTarget, hitTargetStore } from '../interactions/hit-target'
+import { HitTargetRegistry } from '../interactions/HitTargetRegistry'
 import classNames from '../styles.module.css'
 import { ViewPropsTransformerClass } from '../plugins/plugin-types'
 import { type ReactElement, Fragment, useRef, useState } from 'react'
 import { CalendarData, CalendarToolbarProps } from '../store/data-types'
-import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util'
+import { CssDimValue, getIsHeightAuto } from '../scrollgrid/layout-options'
 
 import { joinClassNames } from '../util/html'
 import { memoize } from '../util/memoize'
@@ -39,7 +36,7 @@ export interface CalendarContentProps extends CalendarData {
 
 /*
 The calendar's content: the toolbars and the view, inside the view contexts it provides. Memoized on its
-props (shallowly). Its memos, interactions and hit-target registry live on one
+props (shallowly). Its memos, the calendar-level interactions and the hit-target registry live on one
 CalendarInnerState, made once
 */
 export const CalendarInner = memoWithEquality(function CalendarInner(props: CalendarInnerProps) {
@@ -76,7 +73,7 @@ class CalendarInnerState {
   private buildCalendarCore = memoize(buildCalendarCore)
   private buildViewSpecContextValue = memoize(buildViewSpecContextValue)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
-  private interactionsStore: { [componentUid: string]: Interaction[] } = {}
+  private hitTargets = new HitTargetRegistry(() => this.props.pluginHooks.componentInteractions)
   private calendarInteractions: CalendarInteraction[] = []
 
   private get viewTitleId() {
@@ -115,8 +112,8 @@ class CalendarInnerState {
       props.emitter,
       props.calendarApi,
       props.baseId,
-      this.registerHitTarget,
-      this.unregisterHitTarget,
+      this.hitTargets.register,
+      this.hitTargets.unregister,
     )
     let calendarCore = this.buildCalendarCore(
       props.calendarApi,
@@ -125,8 +122,8 @@ class CalendarInnerState {
       props.getCurrentData,
       props.nowManager,
       props.baseId,
-      this.registerHitTarget,
-      this.unregisterHitTarget,
+      this.hitTargets.register,
+      this.hitTargets.unregister,
     )
     let viewSpecContextValue = this.buildViewSpecContextValue(
       props.viewSpec,
@@ -295,38 +292,6 @@ class CalendarInnerState {
 
     // will likely undo what was done by contextInit
     props.emitter.trigger('_unmount')
-  }
-
-  private registerHitTarget = (target: HitTarget) => {
-    this.unregisterHitTarget(target.uid) // in case it registers again without unregistering
-
-    let DEFAULT_INTERACTIONS: InteractionClass[] = [
-      EventClicking,
-      EventHovering,
-    ]
-
-    let interactionClasses = DEFAULT_INTERACTIONS
-    if (!target.disableHits) {
-      interactionClasses = interactionClasses.concat(this.props.pluginHooks.componentInteractions)
-    }
-
-    let interactions = interactionClasses.map((TheInteractionClass) => new TheInteractionClass(target))
-
-    this.interactionsStore[target.uid] = interactions
-    hitTargetStore[target.uid] = target
-  }
-
-  private unregisterHitTarget = (uid: string) => {
-    let listeners = this.interactionsStore[uid]
-
-    if (listeners) {
-      for (let listener of listeners) {
-        listener.destroy()
-      }
-      delete this.interactionsStore[uid]
-    }
-
-    delete hitTargetStore[uid]
   }
 }
 

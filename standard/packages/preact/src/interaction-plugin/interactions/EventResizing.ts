@@ -12,7 +12,7 @@ import { getRangeInstantStartMs, getRangeInstantEndMs } from '../../events/event
 import type { PointerDragEvent } from '../../interactions/pointer-types'
 import type { EventStore } from '../../events/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../events/event-store'
-import { enableCursor, disableCursor } from '../../util/misc'
+import { enableCursor, disableCursor } from '../../util/dom-manip'
 import { getElEventRange } from '../../events/components/el-event-range'
 import { createDuration } from '@full-ui/headless-calendar'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'

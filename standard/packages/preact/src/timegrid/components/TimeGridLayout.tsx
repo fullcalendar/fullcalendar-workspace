@@ -19,9 +19,9 @@ import { buildSlatMetas } from '../time-slat-meta'
 import { TimeGridRange } from '../../day-table/time-grid-range'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal'
-import { computeTimeTopFrac } from './util'
+import { computeTimeTopFrac } from './time-geometry'
 import { RowConfig } from '../../daygrid/header-tier'
-import { computeViewBorderless } from '../../util/misc'
+import { computeViewBorderless } from '../../views/view-borderless'
 
 export interface TimeGridLayoutProps {
   labelId: string | undefined

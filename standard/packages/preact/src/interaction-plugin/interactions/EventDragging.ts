@@ -12,7 +12,7 @@ import { startOfDay } from '@full-ui/headless-calendar'
 import type { EventStore } from '../../events/event-store'
 import { getRelevantEvents, createEmptyEventStore } from '../../events/event-store'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
-import { enableCursor, disableCursor } from '../../util/misc'
+import { enableCursor, disableCursor } from '../../util/dom-manip'
 import { getElEventRange } from '../../events/components/el-event-range'
 import { Interaction } from '../../interactions/interaction'
 import { HitTarget, hitTargetStore, isValidSegDownEl } from '../../interactions/hit-target'
@@ -24,7 +24,7 @@ import { getAppendableRoot } from '../../util/dom-manip'
 import classNames from '../../styles.module.css'
 import { HitDragging, isHitsEqual } from './HitDragging'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
-import { buildDatePointApiWithContext } from '../utils'
+import { buildDatePointApiWithContext } from '../callback-info'
 
 export type EventDragStopInfo = EventDragInfo
 export type EventDragStartInfo = EventDragInfo

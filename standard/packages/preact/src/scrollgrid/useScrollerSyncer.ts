@@ -1,7 +1,7 @@
 import { type Ref, type RefObject, useLayoutEffect, useRef } from 'react'
 import { ScrollerInterface } from './scroller-types'
 import { ScrollerSyncerInterface } from './scroller-types'
-import { getScrollerSyncerClass } from './util'
+import { getScrollerSyncerClass } from './layout-options'
 import { setRef } from '../util/vdom'
 import { useLatest } from '../hooks/useLatest'
 import { useViewContext } from '../context/useViewContext'

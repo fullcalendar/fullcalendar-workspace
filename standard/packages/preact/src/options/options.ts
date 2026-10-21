@@ -61,7 +61,7 @@ import { refineClassName, refineClassNameGenerator } from '../render-hook/render
 import { CalendarDisplayInfo } from '../calendar/CalendarMediaRoot'
 import { createDuration, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
-import { parseFieldSpecs } from '../util/misc'
+import { parseFieldSpecs } from '../util/field-specs'
 import { createFalsableFormatter, Identity, identity } from './refine'
 import { ListDayInfo, ListDayEventsInfo, ListDayHeaderInfo, ListDayHeaderInnerInfo } from '../list/info-types'
 import { NoEventsInfo } from '../list/components/ListView'
@@ -70,7 +70,7 @@ import { DateClickInfo } from '../interaction-plugin/interactions/DateClicking'
 import { EventDragStartInfo, EventDragStopInfo } from '../interaction-plugin/interactions/EventDragging'
 import { EventDropInfo } from '../events/event-crud'
 import { EventResizeStartInfo, EventResizeStopInfo, EventResizeDoneInfo } from '../interaction-plugin/interactions/EventResizing'
-import { DropInfo, EventReceiveInfo, EventLeaveInfo } from '../interaction-plugin/utils'
+import { DropInfo, EventReceiveInfo, EventLeaveInfo } from '../interaction-plugin/callback-info'
 import { ViewContentInfo } from '../views/view-props'
 
 // base options

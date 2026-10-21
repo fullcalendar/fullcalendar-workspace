@@ -1,4 +1,4 @@
-import { CssDimValue } from '../../scrollgrid/util'
+import { CssDimValue } from '../../scrollgrid/layout-options'
 import { joinClassNames } from '../../util/html'
 import { MoreLinkContainer } from '../../more-link/MoreLinkContainer'
 import { memo } from 'react'

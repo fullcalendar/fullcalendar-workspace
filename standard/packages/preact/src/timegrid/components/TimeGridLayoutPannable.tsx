@@ -12,7 +12,7 @@ import { ScrollerInterface } from '../../scrollgrid/scroller-types'
 import { SlicedCoordRange } from '../../event-segs/coord-range'
 import { FooterScrollbar } from '../../scrollgrid/FooterScrollbar'
 import { afterSize } from '../../layout/resize-observer'
-import { getIsHeightAuto, getFooterScrollbarSticky, getTableHeaderSticky } from '../../scrollgrid/util'
+import { getIsHeightAuto, getFooterScrollbarSticky, getTableHeaderSticky } from '../../scrollgrid/layout-options'
 import { isArraysEqual } from '../../util/array'
 import { generateClassName } from '../../render-hook/render-hook-types'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
@@ -22,7 +22,7 @@ import { useMeasuredState } from '../../layout/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { RowConfig } from '../../daygrid/header-tier'
-import { computeDayGridColumns } from '../../daygrid/components/util'
+import { computeDayGridColumns } from '../../daygrid/components/column-sizing'
 import { TimeSlatMeta } from "../time-slat-meta"
 import { TimeGridRange } from "../../day-table/time-grid-range"
 import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader"
@@ -31,9 +31,9 @@ import { TimeGridCols } from "./TimeGridCols"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow"
 import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
 import { TimeGridSlatLane } from "./TimeGridSlatLane"
-import { computeSlatHeight, computeNowIndicatorDayDate } from './util'
+import { computeSlatHeight, computeNowIndicatorDayDate } from './time-geometry'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
-import { computeViewBorderless } from '../../util/misc'
+import { computeViewBorderless } from '../../views/view-borderless'
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"
 import { computeTimeGridPrintMode } from '../print-mode'
 import { useSlatHeightReport, useTimeGridAxis } from './useTimeGridAxis'

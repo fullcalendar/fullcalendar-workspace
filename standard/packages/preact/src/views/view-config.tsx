@@ -7,9 +7,9 @@ import { useViewContext } from '../context/useViewContext'
 import { useRenderHookEl } from '../render-hook/useRenderHookEl'
 import { Duration } from '@full-ui/headless-calendar'
 import { memoWithEquality } from '../util/vdom'
-import { computeViewBorderless } from '../util/misc'
+import { computeViewBorderless } from './view-borderless'
 import { ContentGenerator, generateClassName } from '../render-hook/render-hook-types'
-import { getIsHeightAuto } from '../scrollgrid/util'
+import { getIsHeightAuto } from '../scrollgrid/layout-options'
 import { joinClassNames } from '../public-api'
 
 /*

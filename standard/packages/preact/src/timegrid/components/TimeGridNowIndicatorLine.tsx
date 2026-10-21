@@ -4,7 +4,7 @@ import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { NowIndicatorDot } from '../../now-indicator/NowIndicatorDot'
 import { NowIndicatorLineContainer } from '../../now-indicator/NowIndicatorLineContainer'
 import classNames from '../../styles.module.css'
-import { computeDateTopFrac } from './util'
+import { computeDateTopFrac } from './time-geometry'
 
 export interface TimeGridNowIndicatorLineProps {
   nowDate: DateMarker

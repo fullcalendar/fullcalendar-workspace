@@ -5,7 +5,7 @@ import { DayTableCell } from '../../day-table/day-grid-range'
 import { EventRangeProps } from '../../event-segs/event-ranges'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { generateClassName } from '../../render-hook/render-hook-types'
-import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/util'
+import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/layout-options'
 import { Hit } from '../../interactions/hit'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { Scroller } from '../../scrollgrid/Scroller'
@@ -16,7 +16,7 @@ import { useViewOptions } from '../../context/useGranularContexts'
 import { useMeasuredState } from '../../layout/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
-import { computeDayGridColumns } from '../../daygrid/components/util'
+import { computeDayGridColumns } from '../../daygrid/components/column-sizing'
 import { RowConfig } from '../../daygrid/header-tier'
 import { TimeSlatMeta } from "../time-slat-meta"
 import { TimeGridRange } from "../../day-table/time-grid-range"
@@ -28,9 +28,9 @@ import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow"
 import { TimeGridSlatHeader } from "./TimeGridSlatHeader"
 import { TimeGridSlatLane } from "./TimeGridSlatLane"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber"
-import { computeSlatHeight, computeNowIndicatorDayDate } from './util'
+import { computeSlatHeight, computeNowIndicatorDayDate } from './time-geometry'
 import { computeTimeGridPrintMode } from '../print-mode'
-import { computeViewBorderless } from '../../util/misc'
+import { computeViewBorderless } from '../../views/view-borderless'
 import { useSlatHeightReport, useTimeGridAxis } from './useTimeGridAxis'
 
 export interface TimeGridLayoutNormalProps {

@@ -6,7 +6,7 @@ import { EventSegUiInteractionState } from '../../interactions/event-interaction
 import { Hit } from '../../interactions/hit'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/scroller-types'
-import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/util'
+import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/layout-options'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../event-segs/event-ranges'
 import { generateClassName } from '../../render-hook/render-hook-types'
@@ -16,7 +16,7 @@ import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
-import { computeViewBorderless } from '../../util/misc'
+import { computeViewBorderless } from '../../views/view-borderless'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile

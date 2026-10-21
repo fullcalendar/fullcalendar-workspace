@@ -9,14 +9,10 @@ export { buildValidInstanceRange, getRangeInstantStartMs, getRangeInstantEndMs }
 export type { EventRefined } from './events/event-parse'
 export { parseBusinessHours } from './events/business-hours'
 
-export type { OrderSpec } from './util/misc'
-export {
-  parseFieldSpecs,
-  compareByFieldSpecs,
-  flexibleCompare,
-  guid,
-  computeViewBorderless,
-} from './util/misc'
+export type { OrderSpec } from './util/field-specs'
+export { parseFieldSpecs, compareByFieldSpecs, flexibleCompare } from './util/field-specs'
+export { guid } from './util/misc'
+export { computeViewBorderless } from './views/view-borderless'
 export { warn } from './util/warn'
 
 export {
@@ -205,7 +201,7 @@ export {
   getFooterScrollbarSticky,
   getTableHeaderSticky,
   getIsHeightAuto,
-} from './scrollgrid/util'
+} from './scrollgrid/layout-options'
 
 // new
 export { ScrollerSyncerInterface } from './scrollgrid/scroller-types'
@@ -279,7 +275,7 @@ export {
   buildDateRenderConfig,
   buildDateDataConfigs,
 } from './daygrid/header-tier'
-export { createDayHeaderFormatter } from './daygrid/components/util'
+export { createDayHeaderFormatter } from './daygrid/components/day-header-format'
 export { DayGridLayout } from './daygrid/components/DayGridLayout'
 export type { DayGridViewData } from './daygrid/components/useDayGridViewData'
 export { useDayGridViewData, useDayHeaderFormatter } from './daygrid/components/useDayGridViewData'

@@ -1,4 +1,5 @@
-import { compareNumbers, enableCursor, disableCursor } from '../../util/misc'
+import { compareNumbers } from '../../util/field-specs'
+import { enableCursor, disableCursor } from '../../util/dom-manip'
 import type { DateSelectionJoinTransformer } from '../../plugins/plugin-types'
 import type { Hit } from '../../interactions/hit'
 import type { DateSpan } from '../../events/date-span'

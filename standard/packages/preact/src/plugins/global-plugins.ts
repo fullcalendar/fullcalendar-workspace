@@ -1,12 +1,9 @@
-import { handleDateProfile } from '../date-profile/dates-set'
-import { handleEventStore } from '../events/event-crud'
 import { arrayEventSourcePlugin } from '../event-sources/array-event-source'
 import { funcEventSourcePlugin } from '../event-sources/func-event-source'
 import { jsonFeedEventSourcePlugin } from '../event-sources/json-feed-event-source'
 import { changeHandlerPlugin } from '../event-sources/option-change-handlers'
 import { PluginInput } from './plugin-types'
-import { CalendarDataManagerState } from '../store/data-types'
-import { computeEventSourcesLoading } from '../store/reducers/event-sources'
+import { corePlugin } from './core-plugin'
 import { simpleRecurringEventsPlugin } from '../events/recurring-event-simple'
 
 /*
@@ -19,14 +16,5 @@ export const globalPlugins: PluginInput[] = [
   jsonFeedEventSourcePlugin,
   simpleRecurringEventsPlugin,
   changeHandlerPlugin,
-  {
-    name: 'misc',
-    isLoadingFuncs: [
-      (state: CalendarDataManagerState) => computeEventSourcesLoading(state.eventSources),
-    ],
-    propSetHandlers: {
-      dateProfile: handleDateProfile,
-      eventStore: handleEventStore,
-    },
-  } as PluginInput,
+  corePlugin,
 ]

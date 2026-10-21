@@ -2,7 +2,7 @@ import { joinClassNames } from '../../util/html'
 import { DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { NowIndicatorHeaderContainer } from '../../now-indicator/NowIndicatorHeaderContainer'
-import { computeDateTopFrac } from './util'
+import { computeDateTopFrac } from './time-geometry'
 import classNames from '../../styles.module.css'
 
 export interface TimeGridNowIndicatorArrowProps {

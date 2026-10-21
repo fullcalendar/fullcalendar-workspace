@@ -1,3 +1,5 @@
+import { preventDefault } from './dom-event'
+import classNames from '../styles.module.css'
 import { Dictionary } from './object'
 
 export function getAppendableRoot(el: HTMLElement): Node {
@@ -43,4 +45,44 @@ export function getEventTargetViaRoot(ev: Event) {
   return ev.composedPath?.()[0] ?? ev.target
 }
 
+// Cursor, selection, context menu (during drags)
+// ----------------------------------------------------------------------------------------------------------------
 
+// Make the mouse cursor express that an event is not allowed in the current area
+export function disableCursor() {
+  document.body.classList.add(classNames.notAllowed)
+}
+
+// Returns the mouse cursor to its original look
+export function enableCursor() {
+  document.body.classList.remove(classNames.notAllowed)
+}
+
+/* Selection
+----------------------------------------------------------------------------------------------------------------------*/
+
+export function preventSelection(el: HTMLElement) {
+  el.style.userSelect = 'none'
+  el.style.webkitUserSelect = 'none'
+  el.addEventListener('selectstart', preventDefault)
+}
+
+export function allowSelection(el: HTMLElement) {
+  el.style.userSelect = ''
+  el.style.webkitUserSelect = ''
+  el.removeEventListener('selectstart', preventDefault)
+}
+
+/* Context Menu
+----------------------------------------------------------------------------------------------------------------------*/
+
+export function preventContextMenu(el: HTMLElement) {
+  el.addEventListener('contextmenu', preventDefault)
+}
+
+export function allowContextMenu(el: HTMLElement) {
+  el.removeEventListener('contextmenu', preventDefault)
+}
+
+/* Object Ordering by Field
+----------------------------------------------------------------------------------------------------------------------*/

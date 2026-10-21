@@ -19,10 +19,11 @@ import { memo, useRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
 import { DayGridLayoutPrint } from './DayGridLayoutPrint'
-import { computeDayGridColumns, computeTopFromDate } from './util'
+import { computeDayGridColumns } from './column-sizing'
+import { computeTopFromDate } from './grid-positions'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
-import { computeViewBorderless } from '../../util/misc'
+import { computeViewBorderless } from '../../views/view-borderless'
 
 export interface DayGridLayoutProps {
   labelId: string | undefined

@@ -14,7 +14,7 @@ import type { DateSpan } from '../../events/date-span'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
 import type { DragMetaInput, DragMeta } from '../../interactions/drag-meta'
 import { parseDragMeta } from '../../interactions/drag-meta'
-import { enableCursor, disableCursor } from '../../util/misc'
+import { enableCursor, disableCursor } from '../../util/dom-manip'
 import { isInteractionValid } from '../../validation/validation'
 import type { ElementDragging } from '../../interactions/ElementDragging'
 import type { CalendarContext } from '../../context/CalendarContext'
@@ -23,7 +23,7 @@ import { refineEventDef } from '../../events/event-parse'
 import { EventImpl } from '../../api/EventImpl'
 import classNames from '../../styles.module.css'
 import { HitDragging } from '../interactions/HitDragging'
-import { buildDatePointApiWithContext } from '../utils'
+import { buildDatePointApiWithContext } from '../callback-info'
 
 export type DragMetaGenerator = DragMetaInput | ((el: HTMLElement) => DragMetaInput)
 

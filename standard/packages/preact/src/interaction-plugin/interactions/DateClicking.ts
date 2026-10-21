@@ -5,7 +5,7 @@ import { Interaction } from '../../interactions/interaction'
 import { HitTarget, hitTargetToStore, isValidDateDownEl } from '../../interactions/hit-target'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 import { HitDragging, isHitsEqual } from './HitDragging'
-import { buildDatePointApiWithContext } from '../utils'
+import { buildDatePointApiWithContext } from '../callback-info'
 
 export interface DateClickInfo extends DatePointApi {
   dayEl: HTMLElement

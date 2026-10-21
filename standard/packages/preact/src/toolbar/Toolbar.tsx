@@ -3,7 +3,7 @@ import { ToolbarModel, ToolbarWidget } from './toolbar-types'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection'
 import { joinClassNames } from '../util/html'
 import { generateClassName } from '../render-hook/render-hook-types'
-import { computeViewBorderless } from '../util/misc'
+import { computeViewBorderless } from '../views/view-borderless'
 import { useViewOptions } from '../context/useGranularContexts'
 
 export interface ToolbarProps extends ToolbarContent {

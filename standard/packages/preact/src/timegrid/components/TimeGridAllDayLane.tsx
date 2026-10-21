@@ -1,5 +1,5 @@
 import { DayGridRow, DayGridRowProps } from '../../daygrid/components/DayGridRow'
-import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
+import { computeColFromPosition, getCellEl } from '../../daygrid/components/grid-positions'
 import { addDays } from '@full-ui/headless-calendar'
 import { Hit } from '../../interactions/hit'
 import { memo, useRef, useState } from 'react'

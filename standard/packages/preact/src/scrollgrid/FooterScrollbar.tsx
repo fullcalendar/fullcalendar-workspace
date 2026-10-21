@@ -1,4 +1,4 @@
-import { CssDimValue } from './util'
+import { CssDimValue } from './layout-options'
 import { memo, type Ref } from 'react'
 import { Scroller } from './Scroller'
 import { useReportedSize } from '../layout/useReportedSize'

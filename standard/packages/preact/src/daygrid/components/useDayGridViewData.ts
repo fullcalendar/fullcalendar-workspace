@@ -5,7 +5,7 @@ import { useViewOptions } from '../../context/useGranularContexts'
 import { useNow } from '../../now/useNow'
 import { DayTableModel } from '../../day-table/model'
 import { useDayGridModel } from '../../day-table/useDayTableModel'
-import { createDayHeaderFormatter } from './util'
+import { createDayHeaderFormatter } from './day-header-format'
 
 export interface DayGridViewData {
   dayTableModel: DayTableModel

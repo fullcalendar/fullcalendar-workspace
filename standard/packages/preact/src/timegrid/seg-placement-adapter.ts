@@ -11,7 +11,7 @@ import {
 } from '../seg-placement/kernel'
 import { findIntersections } from '../seg-placement/span-math'
 import { flatArray } from '../util/array'
-import { computeDateTopFrac } from './components/util'
+import { computeDateTopFrac } from './components/time-geometry'
 import { type TimeGridRange } from '../day-table/time-grid-range'
 
 export type TimeGridEventSeg = TimeGridRange & EventRangeProps

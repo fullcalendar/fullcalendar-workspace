@@ -8,7 +8,7 @@ import {
   intersectRanges,
   Duration,
 } from '@full-ui/headless-calendar'
-import { compareByFieldSpecs, OrderSpec } from '../util/misc'
+import { compareByFieldSpecs, OrderSpec } from '../util/field-specs'
 import { computeVisibleDayRange } from '../util/date'
 import { EventImpl } from '../api/EventImpl'
 import { EventUi, EventUiHash, combineEventUis } from '../events/event-ui'
