@@ -302,7 +302,9 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   isomorphic layout effects. One timing change, Preact only: `CalendarInner`'s mount and update work
   (controller sync, `datesSet` and the other prop-set handlers, `contextInit`) now runs before the
   driver's layout effect, as in React; before, Preact ran every hook layout effect before any
-  `componentDidMount`.
+  `componentDidMount`. Sol's reviews (rounds 1-3): fixed a direct `views` component under React, the
+  `Scroller` ref's attachment timing and a callback ref's cleanup; two Preact timing changes visible only
+  to third-party `protected-api` code are logged in `questions-for-adam.md`.
 - **Render-time side effects** left in React's render-time update, if phase 11 doesn't remove them:
   the emitter's option binding (stage 2 checkpoint) and the now timer re-arming.
 - **Per-button options don't combine with the theme's** (done, 2026-10-21; found by phase 2, never

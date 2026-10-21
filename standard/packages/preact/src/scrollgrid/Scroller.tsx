@@ -101,6 +101,7 @@ class ScrollerState implements ScrollerHandle {
   props: ScrollerProps
   forwardedRef: Ref<ScrollerHandle> | undefined
   private attachedRef: Ref<ScrollerHandle> | undefined // the forwarded ref that has this
+  private attachedRefCleanup: (() => void) | undefined // what a callback ref returned (React 19)
 
   // ref
   private el?: HTMLDivElement
@@ -135,14 +136,30 @@ class ScrollerState implements ScrollerHandle {
   syncForwardedRef() {
     if (this.el && this.attachedRef !== this.forwardedRef) {
       this.detachForwardedRef()
-      this.attachedRef = this.forwardedRef
-      setRef(this.attachedRef, this)
+
+      let ref = this.attachedRef = this.forwardedRef
+
+      if (typeof ref === 'function') {
+        // a callback ref may return its cleanup, called instead of the ref with null (React 19)
+        let cleanup = (ref as (handle: ScrollerHandle | null) => unknown)(this)
+        this.attachedRefCleanup = typeof cleanup === 'function' ? cleanup as () => void : undefined
+      } else {
+        setRef(ref, this)
+      }
     }
   }
 
   private detachForwardedRef() {
     if (this.attachedRef) {
-      setRef(this.attachedRef, null)
+      let cleanup = this.attachedRefCleanup
+
+      if (cleanup) {
+        this.attachedRefCleanup = undefined
+        cleanup()
+      } else {
+        setRef(this.attachedRef, null)
+      }
+
       this.attachedRef = undefined
     }
   }

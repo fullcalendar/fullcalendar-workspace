@@ -41,4 +41,37 @@ describe('view components', () => {
     expect(calendar.el.querySelectorAll('.probe-body').length).toBe(1)
     expect(rootRefSawScroller).toEqual([true])
   })
+
+  // a callback ref's returned cleanup runs instead of the ref being called with null (React 19's
+  // contract, honored in both runtimes)
+  it('runs a Scroller callback ref\'s cleanup on unmount', async () => {
+    let calls: string[] = []
+
+    function CleanupBody() {
+      return createElement('div', { style: { height: '100px' } },
+        createElement(Scroller, {
+          vertical: true,
+          ref: (handle) => {
+            calls.push(handle ? 'attach' : 'null')
+            return () => {
+              calls.push('cleanup')
+            }
+          },
+        }),
+      )
+    }
+
+    let calendar = initCalendar({
+      plugins: DEFAULT_PLUGINS,
+      views: { probe: createViewComponent(CleanupBody) as any },
+      initialView: 'probe',
+    })
+    await waitTimeout()
+    calendar.destroy()
+    await waitTimeout()
+
+    expect(calls[0]).toBe('attach')
+    expect(calls).not.toContain('null')
+    expect(calls[calls.length - 1]).toBe('cleanup')
+  })
 })

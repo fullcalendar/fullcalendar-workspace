@@ -137,3 +137,23 @@ Creating a calendar whose visible range has no valid date throws a TypeError (re
 yesterday, `validRange: (now) => ({ start: now })`. Pre-existing; Sol found it reviewing the midnight change,
 which now avoids it (a midnight rebuild with no active range keeps the old profile). Supporting a null
 active range everywhere (title, views, event slicing) is a separate fix; not done.
+
+## Loose ends: Preact timing changes for protected-api users, from converting the last class components
+
+No class component is left in the tree (the view shells, `CalendarInner`, `CalendarMediaRoot`, `Scroller`),
+and the built-ins behave as before (DOM, counts and every suite unchanged). Sol found what third-party code
+on `protected-api` can notice, in Preact only (Preact applies class refs during diff and runs every hook
+layout effect before any `componentDidMount`):
+
+- **`CalendarInner`'s mount/update work runs earlier:** `datesSet`, the other prop-set handlers and
+  `contextInit` now run before a third-party class view's `componentDidMount`/`componentDidUpdate` (they
+  ran after). A custom class view that sets something up in `componentDidMount` and reads it in `datesSet`
+  would see it missing on the first render. React was already in the new order.
+- **A `Scroller` ref replaced while mounted** reaches the new ref in the layout phase, after enclosing DOM
+  ref callbacks (the first attachment is as early as before; fixed in review).
+- Fixed in review: a direct `views: { x: createViewComponent(...) }` under React; a callback ref's returned
+  cleanup (React 19) on `Scroller`.
+
+`protected-api` may break, so I kept the conversions. If you'd rather not move these timings, the
+alternative is keeping `CalendarInner` and `Scroller` as classes (the view shells and `CalendarMediaRoot`
+have no such effect).
