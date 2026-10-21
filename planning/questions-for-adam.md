@@ -23,3 +23,11 @@ requirements. Same call as phase 9's re-scope: the conservative one.
 Also: a custom `dateProfileGeneratorClass` keeps every override working (one implementation over an
 operations table the class itself implements), though the option is marked internal. Only a plugin's view
 can set it anyway: the `views` option's value is ignored today (locked by a spec).
+
+## A pre-existing crash, not fixed in phase 10
+
+Phase 10's randomized oracle found that switching to a dayGrid view whose week-aligned range is entirely
+hidden days throws (`Cannot destructure property 'start' of 'currentRange' as it is null`, in
+`buildDayTableRenderRange`), e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. Phase 10
+is behavior-identical, so it's locked as-is and scheduled with the loose ends. It's an odd configuration;
+no issue filed that I know of.

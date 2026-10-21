@@ -291,6 +291,10 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   `destroy()` fails ("CalendarController is not taken back…"); the React-runtime "destroy … leaves no
   handlers attached / unbinds all handlers" failures; the flaky "addICalEventSource with day view";
   TimeGrid's "ResizeObserver loop" when leaving print. Fixing these shrinks the known-failure list.
+- **A crash found by phase 10's oracle:** switching to a dayGrid view whose week-aligned range is all
+  hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`), e.g. `dateAlignment:
+  'week'` with `dayGridDay` and weekends hidden. Locked as-is by the oracle; fix it here (the oracle's
+  `EXPECTED_CRASH` then goes).
 - **Issues:** verify #8112, #8092 and #7070 with their reproductions (closing them on GitHub is Adam's).
 - **Landing:** decide how the branch merges (per phase or whole).
 

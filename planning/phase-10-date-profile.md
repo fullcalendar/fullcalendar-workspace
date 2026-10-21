@@ -164,8 +164,9 @@ function, and `nowDate.valueOf()` (the day-snapped now, a civil-day value, revie
 `dateAnchor.nowDay`, stage 4 rebuilds `buildDateProfile(ops, config, anchor.date, nowDate,
 anchor.direction)` and records the new `nowDay`. A DST wake or a same-day timer wake has the same
 `nowDate` value, so nothing happens. Effects: the profile, `validRange` and the toolbar's buttons follow
-the new day; the function is called once more, plus the toolbar's three builds (its memo misses on the
-new profile), at midnight only. Changelog FIX entry. Applies to custom classes too (same rule, through
+the new day; the function is called once more, at midnight only. (The toolbar's three builds already
+run at every timer wake today, midnight and DST wakes included: the timer's new `nowDate` object misses
+its memo. Locked; unchanged.) Changelog FIX entry. Applies to custom classes too (same rule, through
 their ops).
 
 `getState()` gains `dateAnchor` (protected API). Nothing else about the profile's identity changes.
@@ -257,3 +258,23 @@ Four P1s and three P2s on revision 1; revision 2 answers them:
   a plugin's view is used, but from the `views` option it's ignored (the store reads option defaults).
 - Found while writing them: in the local time zone, `gotoDate(date)` drops the date's milliseconds
   (`createMarker`), and `today()` uses the advancing now. Neither changes here.
+
+### Step 0, extended per review round 1 #5 (done)
+
+- **Oracle:** random sequences now also change options mid-sequence (`weekends`, `hiddenDays`,
+  `dateIncrement`, `timeZone`; an option that compares equal makes no new generator, so no rebuild, as
+  the store) and `changeView` with a date; a rejected `PREV`/`NEXT` must keep the very profile object; the
+  user range functions' calls (order, `this`, argument) are traced while the calendar acts and checked
+  against digests recorded from today's code (90 cases).
+- **A pre-existing crash** the random sequences found: switching to a table view (dayGrid) whose
+  week-aligned range is all hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`),
+  e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. Behavior-identical phase, so not
+  fixed; the oracle requires the calendar (not only the frozen generator) to crash alike and ends the
+  sequence. Logged for Adam; on the loose-ends list.
+- **Locks:** rejected `prev` keeps the profile object and builds as before (4 calls: the discarded
+  candidate and the toolbar's three); a non-navigating action keeps it; the direction reset (forward to
+  Monday after hiding Fridays); `changeView` with a date (`getDate()` keeps June 8, the profile's
+  `currentDate` is June 20), a range and neither; an initial date's time; the civil marker across a time
+  zone change; initialization from the precise now with `validRange` given the day-snapped now; DST wakes
+  (spring and fall 2024, New York) keep the profile object, with the toolbar's three builds.
+- Both runtimes: 108 specs, about 1.5 s.

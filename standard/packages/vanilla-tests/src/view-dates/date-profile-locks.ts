@@ -200,10 +200,152 @@ describe('date profile behavior locks', () => {
     })
   })
 
+  describe('transitions', () => {
+    // a three-day view aligned to weeks: prev clamps to validRange's start, then aligns before it
+    it('keep the very profile object on a rejected prev, building as before', () => {
+      let callCnt = 0
+      let calendar = buildCalendar({
+        initialView: 'threeDayWeekAligned',
+        views: { threeDayWeekAligned: { type: 'timeGrid', duration: { days: 3 }, dateAlignment: 'week' } },
+        initialDate: '2017-06-11',
+        validRange(nowDate) {
+          callCnt++
+          return { start: '2017-06-08' }
+        },
+      })
+      let profile = calendar.getCurrentData().dateProfile
+
+      callCnt = 0
+      calendar.prev()
+      expect(calendar.getCurrentData().dateProfile).toBe(profile)
+      expect(callCnt).toBe(EXPECTED.rejectedPrevCalls)
+      calendar.destroy()
+    })
+
+    it('keep the very profile object for an action that doesn\'t navigate', () => {
+      let calendar = buildCalendar({ initialView: 'dayGridMonth' })
+      let profile = calendar.getCurrentData().dateProfile
+      calendar.dispatch({ type: 'UNSELECT_EVENT' })
+      calendar.unselect()
+      expect(calendar.getCurrentData().dateProfile).toBe(profile)
+      calendar.destroy()
+    })
+
+    // an option change rebuilds without the last navigation's direction
+    it('reset the hidden-day direction on an option change', () => {
+      let calendar = buildCalendar({ initialView: 'timeGridDay', weekends: false, initialDate: '2018-06-11' }) // Monday
+      calendar.prev()
+      expect(day(calendar.getCurrentData().dateProfile.currentRange.start)).toBe('2018-06-08') // Friday
+      calendar.setOption('hiddenDays', [5]) // hide Fridays too
+      expect(day(calendar.getCurrentData().dateProfile.currentRange.start)).toBe(EXPECTED.afterHidingFriday)
+      expect(day(calendar.getDate())).toBe(EXPECTED.afterHidingFridayDate)
+      calendar.destroy()
+    })
+
+    it('change the view with a date, a range or neither', () => {
+      let calendar = buildCalendar({ initialView: 'timeGridWeek', initialDate: '2018-06-08' })
+
+      calendar.changeView('dayGridMonth', '2018-06-20')
+      let data = calendar.getCurrentData()
+      expect(JSON.stringify([day(calendar.getDate()), day(data.dateProfile.currentDate), day(data.dateProfile.currentRange.start)]))
+        .toBe(JSON.stringify(EXPECTED.changeViewWithDate))
+
+      calendar.changeView('timeGrid', { start: '2018-07-02', end: '2018-07-05' })
+      data = calendar.getCurrentData()
+      expect(JSON.stringify([day(calendar.getDate()), day(data.dateProfile.currentRange.start), day(data.dateProfile.currentRange.end)]))
+        .toBe(JSON.stringify(EXPECTED.changeViewWithRange))
+
+      calendar.changeView('timeGridDay')
+      data = calendar.getCurrentData()
+      expect(JSON.stringify([day(calendar.getDate()), day(data.dateProfile.currentRange.start)])).toBe(JSON.stringify(EXPECTED.changeViewWithNeither))
+      calendar.destroy()
+    })
+
+    it('keep an initial date\'s time', () => {
+      let calendar = buildCalendar({ initialView: 'timeGridWeek', initialDate: '2024-03-08T15:30:00' })
+      expect(calendar.getDate().toISOString()).toBe(EXPECTED.initialDateWithTime)
+      calendar.destroy()
+    })
+
+    it('keep the civil current date across a time zone change', () => {
+      let calendar = buildCalendar({ initialView: 'timeGridWeek', initialDate: '2024-03-08T15:30:00' })
+      calendar.setOption('timeZone', 'America/New_York')
+      let data = calendar.getCurrentData()
+      expect(JSON.stringify([data.currentDate.toISOString(), day(data.dateProfile.currentRange.start)])).toBe(JSON.stringify(EXPECTED.afterTimeZoneChange))
+      calendar.destroy()
+    })
+  })
+
+  describe('with a frozen clock', () => {
+    afterEach(() => {
+      jasmine.clock().uninstall()
+    })
+
+    // the initial date is the now manager's precise now; validRange gets the day-snapped now
+    it('starts at now without an initialDate', () => {
+      jasmine.clock().install()
+      jasmine.clock().mockDate(new Date('2024-03-08T10:20:30Z'))
+      let validRangeNows = []
+      let calendar = buildCalendar({
+        initialDate: undefined,
+        now: undefined,
+        initialView: 'timeGridWeek',
+        validRange(nowDate) {
+          validRangeNows.push(nowDate.toISOString())
+          return {}
+        },
+      })
+      expect(calendar.getDate().toISOString()).toBe(EXPECTED.initialFromNow)
+      expect(validRangeNows[0]).toBe(EXPECTED.validRangeNowInitially)
+      calendar.destroy()
+    })
+
+    // the timer also wakes at offset transitions, on the same day: nothing to rebuild
+    for (const [name, instant] of [['spring forward', '2024-03-10T05:30:00Z'], ['fall back', '2024-11-03T04:30:00Z']]) {
+      it(`doesn't rebuild the profile on a ${name} wake`, () => {
+        jasmine.clock().install()
+        jasmine.clock().mockDate(new Date(instant)) // 00:30 or 01:30 in New York, before the transition
+        let callCnt = 0
+        let calendar = buildCalendar({
+          now: undefined,
+          initialDate: undefined,
+          timeZone: 'America/New_York',
+          initialView: 'dayGridMonth',
+          validRange(nowDate) {
+            callCnt++
+            return { start: nowDate }
+          },
+        })
+        let profile = calendar.getCurrentData().dateProfile
+
+        callCnt = 0
+        jasmine.clock().tick(3 * 60 * 60 * 1000) // past the transition, before midnight
+        expect(calendar.getCurrentData().dateProfile).toBe(profile)
+        expect(callCnt).toBe(EXPECTED.dstWakeCalls)
+        calendar.destroy()
+      })
+    }
+  })
+
   // recorded from the pre-phase-10 code (commit 0258f6fdd)
   // (the profile's build plus the toolbar's three; one more for a view change, which rebuilds first)
   const EXPECTED_VALID_RANGE_CALLS = { init: 4, next: 4, gotoDate: 4, changeView: 5, setOption: 4, 'other action': 0 }
   const EXPECTED_VISIBLE_RANGE_CALLS = { init: 4, next: 4 }
   const EXPECTED_DAY_COUNT_PREV_START = '2024-03-07'
+  const EXPECTED = {
+    rejectedPrevCalls: 4, // the discarded candidate's build, and the toolbar's three
+    afterHidingFriday: '2018-06-11', // forward from Friday, not back to Thursday
+    afterHidingFridayDate: '2018-06-11',
+    // getDate() keeps the old date (inside the new range); the profile's currentDate is the given one
+    changeViewWithDate: ['2018-06-08', '2018-06-20', '2018-06-01'],
+    changeViewWithRange: ['2018-07-02', '2018-07-02', '2018-07-05'],
+    changeViewWithNeither: ['2018-07-02', '2018-07-02'],
+    initialDateWithTime: '2024-03-08T15:30:00.000Z',
+    afterTimeZoneChange: ['2024-03-08T15:30:00.000Z', '2024-03-03'], // the civil marker is kept
+    initialFromNow: '2024-03-08T10:20:30.000Z',
+    validRangeNowInitially: '2024-03-08T00:00:00.000Z', // day-snapped
+    // the profile is kept, but the timer's new nowDate object misses the toolbar's memo: its three builds
+    dstWakeCalls: 3,
+  }
   const EXPECTED_VALID_START_AFTER_NEW_DAY = '2024-03-08' // stale: phase 10 step 3 makes it '2024-03-09'
 })
