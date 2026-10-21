@@ -104,8 +104,14 @@ export class DateProfileGenerator { // also used for isHiddenDay
   // Builds a structure holding dates/ranges for rendering around the given date.
   // Optional direction param indicates whether the date is being incremented/decremented
   // from its previous value. decremented = -1, incremented = 1 (default).
-  build(currentDate: DateMarker, nowDate: DateMarker, direction?, forceToValid = true): DateProfile {
-    return dp.build(this, currentDate, nowDate, direction, forceToValid)
+  build(
+    currentDate: DateMarker,
+    nowDate: DateMarker,
+    direction?,
+    forceToValid = true,
+    untrimmedValidRange?: OpenDateRange, // buildValidRange's result, already computed
+  ): DateProfile {
+    return dp.build(this, currentDate, nowDate, direction, forceToValid, untrimmedValidRange)
   }
 
   // Builds an object with optional start/end properties.

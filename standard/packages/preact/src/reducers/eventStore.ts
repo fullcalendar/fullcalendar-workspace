@@ -65,6 +65,7 @@ export function reduceEventStore(
     case 'NEXT':
     case 'CHANGE_DATE':
     case 'CHANGE_VIEW_TYPE':
+    case 'REFRESH_DATE_PROFILE':
       if (dateProfile) {
         return expandRecurring(eventStore, dateProfile.activeRange, context)
       }

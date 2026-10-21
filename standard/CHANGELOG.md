@@ -12,6 +12,7 @@
 - FIX: TimeGrid, when the slot height changed before the user scrolled (resizing with `expandRows`, for example), the scroll stayed at its old offset instead of following `scrollTime`
 - FIX: React Strict Mode (development only), the now-indicator and the switch to a new day stopped updating after mount
 - FIX: Resource TimeGrid views spanning more than one day, a selection or event resize in the all-day row could span two resources, unlike in the time slots
+- FIX: A `validRange` function that depends on the current date (`validRange: (nowDate) => ({ start: nowDate })`, for example) wasn't applied again when the day changed: until the next navigation, the calendar kept yesterday's range. Now, at a new day, the function is called once and, if the range changed, the view updates as if navigated, fetching events and calling `datesSet`
 - FIX: A one-day view (DayGrid, TimeGrid or List) with `dateAlignment: 'week'` and the week's first day hidden (`weekends: false`, for example) threw an error. It now shows the week's first visible day
 - FIX: MultiMonth, `singleMonthDidMount` was never called, and `singleMonthWillUnmount` received no `el` and no month info
 - FIX: TimeGrid, a week-number header label taller than it is wide (a custom `weekNumberHeaderContent`, for example) widened the time axis to the label's height

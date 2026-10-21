@@ -27,6 +27,23 @@ import type { DateProfile, DateProfileGenerator } from '../DateProfileGenerator'
 
 /* Date Range Computation
 ------------------------------------------------------------------------------------------------------------------*/
+
+/*
+What each built profile was built from, so a new day can rebuild it the same way when a now-dependent
+validRange changes (the store's stage 4). Kept beside the profile, not on it, so profiles keep their shape
+*/
+export interface DateProfileAnchor {
+  date: DateMarker
+  direction: number | undefined
+  forceToValid: boolean
+}
+
+const dateProfileAnchors = new WeakMap<DateProfile, DateProfileAnchor>()
+
+export function getDateProfileAnchor(dateProfile: DateProfile): DateProfileAnchor | undefined {
+  return dateProfileAnchors.get(dateProfile)
+}
+
 // Builds a structure with info about what the dates/ranges will be for the "prev" view.
 export function buildPrev(gen: DateProfileGenerator, currentDateProfile: DateProfile, currentDate: DateMarker, nowDate: DateMarker, forceToValid?: boolean): DateProfile {
   let { dateEnv } = gen.props
@@ -54,8 +71,17 @@ export function buildNext(gen: DateProfileGenerator, currentDateProfile: DatePro
 // Builds a structure holding dates/ranges for rendering around the given date.
 // Optional direction param indicates whether the date is being incremented/decremented
 // from its previous value. decremented = -1, incremented = 1 (default).
-export function build(gen: DateProfileGenerator, currentDate: DateMarker, nowDate: DateMarker, direction?, forceToValid = true): DateProfile {
+// `untrimmedValidRange`: buildValidRange's result, already computed (the store's new-day probe)
+export function build(
+  gen: DateProfileGenerator,
+  currentDate: DateMarker,
+  nowDate: DateMarker,
+  direction?,
+  forceToValid = true,
+  untrimmedValidRange?: OpenDateRange,
+): DateProfile {
   let { props } = gen
+  let anchor: DateProfileAnchor = { date: currentDate, direction, forceToValid }
   let validRange: DateRange
   let currentInfo
   let isRangeAllDay
@@ -63,7 +89,7 @@ export function build(gen: DateProfileGenerator, currentDate: DateMarker, nowDat
   let activeRange: DateRange
   let isValid
 
-  validRange = gen.buildValidRange(nowDate)
+  validRange = untrimmedValidRange !== undefined ? untrimmedValidRange : gen.buildValidRange(nowDate)
   validRange = gen.trimHiddenDays(validRange)
 
   if (forceToValid) {
@@ -96,7 +122,7 @@ export function build(gen: DateProfileGenerator, currentDate: DateMarker, nowDat
     currentDate = renderRange.start
   }
 
-  return {
+  let dateProfile: DateProfile = {
     currentDate,
 
     // constraint for where prev/next operations can go and where events can be dragged/resized to.
@@ -132,6 +158,10 @@ export function build(gen: DateProfileGenerator, currentDate: DateMarker, nowDat
     dateIncrement: gen.buildDateIncrement(currentInfo.duration),
     // pass a fallback (might be null) ^
   }
+
+  dateProfileAnchors.set(dateProfile, anchor)
+
+  return dateProfile
 }
 
 // Builds an object with optional start/end properties.

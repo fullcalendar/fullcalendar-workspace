@@ -47,6 +47,7 @@ export function reduceEventSources(
     case 'NEXT':
     case 'CHANGE_DATE':
     case 'CHANGE_VIEW_TYPE':
+    case 'REFRESH_DATE_PROFILE':
       if (dateProfile) {
         return fetchDirtySources(eventSources, activeRange, context, effects)
       }

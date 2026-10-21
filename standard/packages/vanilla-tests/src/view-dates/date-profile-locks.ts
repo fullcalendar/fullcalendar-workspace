@@ -135,8 +135,8 @@ describe('date profile behavior locks', () => {
     })
   })
 
-  // the phase 10 change: today a new day doesn't rebuild the profile, so a now-dependent validRange stays
-  // as of the old day until the next navigation. The loose ends' midnight fix flips this (moved from phase 10)
+  // the loose ends' midnight change (moved from phase 10): a new day probes a now-dependent validRange
+  // (one call) and rebuilds the profile, as navigation would, only if the range changed by value
   describe('a new day with a now-dependent validRange', () => {
     beforeEach(() => {
       jasmine.clock().install()
@@ -147,19 +147,93 @@ describe('date profile behavior locks', () => {
       jasmine.clock().uninstall()
     })
 
-    it('keeps the profile as of the old day', () => {
+    function buildCounted(options) {
+      let counts = { validRange: 0, datesSet: 0 }
       let calendar = buildCalendar({
         now: undefined, // the real (mocked) clock
         initialView: 'dayGridMonth',
-        validRange(nowDate) {
-          return { start: nowDate }
+        datesSet() {
+          counts.datesSet += 1
         },
+        ...options,
+        validRange(nowDate) {
+          counts.validRange += 1
+          return options.validRange(nowDate)
+        },
+      })
+      calendar.render() // datesSet fires in the commit
+      counts.validRange = 0
+      counts.datesSet = 0
+      return { calendar, counts }
+    }
+
+    it('rebuilds the profile when the range moved', () => {
+      let { calendar, counts } = buildCounted({
+        validRange: (nowDate) => ({ start: nowDate }),
       })
       expect(day(calendar.getCurrentData().dateProfile.validRange.start)).toBe('2024-03-08')
 
       jasmine.clock().tick(24 * 60 * 60 * 1000) // the timer moves now to the next day
       expect(day(calendar.getCurrentData().nowDate)).toBe('2024-03-09')
-      expect(day(calendar.getCurrentData().dateProfile.validRange.start)).toBe(EXPECTED_VALID_START_AFTER_NEW_DAY)
+      expect(day(calendar.getCurrentData().dateProfile.validRange.start)).toBe('2024-03-09')
+      expect(day(calendar.getCurrentData().dateProfile.activeRange.start)).toBe('2024-03-09')
+      expect(counts.datesSet).toBe(1)
+      // the probe; the toolbar's prev/next/today checks for the new now (as any new day, with or without
+      // the fix); then the rebuild, which reuses the probe's result, and the toolbar's checks again
+      expect(counts.validRange).toBe(1 + 2 * TOOLBAR_CHECK_CALLS)
+      calendar.destroy()
+    })
+
+    it('keeps the profile, probing the function once, when the range is the same', () => {
+      let { calendar, counts } = buildCounted({
+        validRange: () => ({ start: '2024-03-01' }),
+      })
+      let dateProfile = calendar.getCurrentData().dateProfile
+
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      expect(calendar.getCurrentData().dateProfile).toBe(dateProfile)
+      expect(counts.datesSet).toBe(0)
+      expect(counts.validRange).toBe(1 + TOOLBAR_CHECK_CALLS) // the probe, and the toolbar as before
+      calendar.destroy()
+    })
+
+    // rebuilt like CHANGE_DATE to the date it was built for: a date that was out of range shows once in
+    it('moves to the requested date once it\'s in range, and fetches its events', () => {
+      let fetchedStarts = []
+      let { calendar } = buildCounted({
+        initialView: 'dayGridDay',
+        validRange: (nowDate) => ({ end: new Date(nowDate.valueOf() + 864e5) }), // through today
+        events(info, successCallback) {
+          fetchedStarts.push(day(info.start))
+          successCallback([])
+        },
+      })
+      calendar.gotoDate('2024-03-09') // tomorrow, constrained to today
+      expect(day(calendar.getCurrentData().dateProfile.activeRange.start)).toBe('2024-03-08')
+      fetchedStarts = []
+
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      expect(day(calendar.getCurrentData().dateProfile.validRange.end)).toBe('2024-03-10')
+      expect(day(calendar.getCurrentData().dateProfile.activeRange.start)).toBe('2024-03-09')
+      expect(fetchedStarts).toEqual(['2024-03-09'])
+      calendar.destroy()
+    })
+
+    it('leaves a custom dateProfileGeneratorClass\'s profile alone', () => {
+      class Custom extends DateProfileGenerator {}
+      let { calendar, counts } = buildCounted({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'custom-view',
+          views: { custom: { type: 'dayGrid', duration: { days: 7 }, dateProfileGeneratorClass: Custom } },
+        }],
+        initialView: 'custom',
+        validRange: (nowDate) => ({ start: nowDate }),
+      })
+      let dateProfile = calendar.getCurrentData().dateProfile
+
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      expect(calendar.getCurrentData().dateProfile).toBe(dateProfile)
+      expect(counts.datesSet).toBe(0)
       calendar.destroy()
     })
   })
@@ -347,5 +421,5 @@ describe('date profile behavior locks', () => {
     // the profile is kept, but the timer's new nowDate object misses the toolbar's memo: its three builds
     dstWakeCalls: 3,
   }
-  const EXPECTED_VALID_START_AFTER_NEW_DAY = '2024-03-08' // stale: the midnight fix makes it '2024-03-09'
+  const TOOLBAR_CHECK_CALLS = 3 // a new now misses the toolbar's memo: its prev, next and today builds
 })

@@ -1,10 +1,11 @@
 import { memoize, memoizeObjArg } from '../util/memoize'
 import { Action } from './Action'
-import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
+import { DateEnv, DateMarker, OpenDateRange } from '@full-ui/headless-calendar'
 import { CalendarApiImpl } from '../api/CalendarApiImpl'
 import { EventSourceHash } from '../structs/event-source'
 import { ViewSpec } from '../structs/view-spec'
 import { mapHash, isPropsEqualShallow } from '../util/object'
+import { getDateProfileAnchor } from '../structs/date-profile'
 import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps, RenderRangeBuilder } from '../DateProfileGenerator'
 import { reduceViewType } from './view-type'
 import { getInitialDate, reduceCurrentDate } from './current-date'
@@ -510,6 +511,11 @@ export class CalendarStore {
         dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
       }
       dateProfile = reduceDateProfile(dateProfile, action, currentDate, nowDate, currentViewData.dateProfileGenerator)
+
+      // a new day, and nothing rebuilt the profile: a now-dependent validRange may have moved
+      if (dateProfile === prevState.dateProfile && nowDate.valueOf() !== prevState.nowDate.valueOf()) {
+        this.probeNewDayValidRange(dateProfile, currentViewData.dateProfileGenerator, nowDate)
+      }
     }
 
     // Adjust currentDate if out of range
@@ -521,6 +527,28 @@ export class CalendarStore {
     }
 
     return { currentDate, dateProfile }
+  }
+
+  /*
+  Calls only the validRange function (once), and rebuilds the profile, through REFRESH_DATE_PROFILE, only if
+  the range changed by value: then the events and datesSet follow, as for navigation, and the rebuild reuses
+  this result instead of calling the function again. Built-in generators only: a custom class has no
+  rebuild protocol yet. See planning/phase-10-date-profile.md §4
+  */
+  private probeNewDayValidRange(dateProfile: DateProfile, generator: DateProfileGenerator, nowDate: DateMarker) {
+    let { props } = generator
+
+    if (
+      !props.dateProfileGeneratorClass &&
+      typeof props.validRangeInput === 'function' &&
+      getDateProfileAnchor(dateProfile)
+    ) {
+      let untrimmedValidRange = generator.buildValidRange(nowDate)
+
+      if (!isOpenRangeEqual(generator.trimHiddenDays(untrimmedValidRange), dateProfile.validRange)) {
+        this.dispatch({ type: 'REFRESH_DATE_PROFILE', untrimmedValidRange })
+      }
+    }
   }
 
   private reduceEvents(
@@ -751,6 +779,20 @@ export class CalendarStore {
 
     return { viewSpec, options: refinedOptions, dateProfileGenerator, viewApi }
   }
+}
+
+// open ranges (null for an open end), by value
+function isOpenRangeEqual(range0: OpenDateRange | null, range1: OpenDateRange | null): boolean {
+  if (!range0 || !range1) {
+    return range0 === range1
+  }
+
+  return markerValue(range0.start) === markerValue(range1.start) &&
+    markerValue(range0.end) === markerValue(range1.end)
+}
+
+function markerValue(marker: DateMarker | null | undefined): number | null {
+  return marker ? marker.valueOf() : null
 }
 
 function buildDateProfileGenerator(props: DateProfileGeneratorProps): DateProfileGenerator {

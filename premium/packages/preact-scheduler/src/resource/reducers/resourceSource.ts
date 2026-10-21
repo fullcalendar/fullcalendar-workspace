@@ -30,6 +30,7 @@ export function reduceResourceSource(
     case 'NEXT':
     case 'CHANGE_DATE':
     case 'CHANGE_VIEW_TYPE':
+    case 'REFRESH_DATE_PROFILE':
       return handleRangeChange(source, dateProfile.activeRange, options.refetchResourcesOnNavigate, context, effects)
 
     case 'RECEIVE_RESOURCES':

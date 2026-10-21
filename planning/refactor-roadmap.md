@@ -305,11 +305,16 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   `destroy()` fails ("CalendarController is not taken back…"); the React-runtime "destroy … leaves no
   handlers attached / unbinds all handlers" failures; the flaky "addICalEventSource with day view";
   TimeGrid's "ResizeObserver loop" when leaving print. Fixing these shrinks the known-failure list.
-- **The midnight date-profile change** (moved from phase 10, its review round 2; the roadmap's one
-  intended behavior change for phase 10): a now-dependent `validRange` stays as of the old day until the
-  next navigation. Design in `phase-10-date-profile.md` §4: at a new civil day, evaluate only
-  `validRange`, compare by value, and if it changed dispatch an action that stage 4, the event sources
-  and the event store treat as navigation. Changelog FIX entry.
+- **The midnight date-profile change** (done, 2026-10-21; moved from phase 10, its review round 2; the
+  roadmap's one intended behavior change for phase 10): a now-dependent `validRange` stays as of the old
+  day until the next navigation. Design in `phase-10-date-profile.md` §4: at a new civil day, evaluate
+  only `validRange`, compare by value, and if it changed dispatch an action that stage 4, the event
+  sources and the event store treat as navigation. Changelog FIX entry. As built: `REFRESH_DATE_PROFILE`
+  (event sources, event store and premium's resource source handle it as navigation); each built
+  profile's anchor (date, direction, forceToValid) is kept beside it in a `WeakMap`
+  (`structs/date-profile.ts`), and the rebuild reuses the probe's result. A real change costs the toolbar's
+  three checks twice (once for the new now, once for the rebuilt profile); an unchanged range, only the
+  probe on top of today's three.
 - **A crash found by phase 10's oracle** (done, 2026-10-21): switching to a dayGrid view whose
   week-aligned range is all hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`),
   e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. TimeGrid and List day views threw

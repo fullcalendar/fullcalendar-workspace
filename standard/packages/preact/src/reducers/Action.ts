@@ -1,5 +1,5 @@
 import { EventInput } from '../structs/event-parse'
-import { DateRange, DateMarker } from '@full-ui/headless-calendar'
+import { DateRange, DateMarker, OpenDateRange } from '@full-ui/headless-calendar'
 import { EventStore } from '../structs/event-store'
 import { EventSource } from '../structs/event-source'
 import { EventInteractionState } from '../interactions/event-interaction-state'
@@ -16,6 +16,8 @@ export type Action =
   { type: 'NEXT' } |
   { type: 'CHANGE_DATE', dateMarker: DateMarker } |
   { type: 'CHANGE_VIEW_TYPE', viewType: string, dateMarker?: DateMarker } |
+  // a new day changed a now-dependent validRange: rebuild the profile as it was built. internal
+  { type: 'REFRESH_DATE_PROFILE', untrimmedValidRange: OpenDateRange } |
 
   { type: 'SELECT_DATES', selection: DateSpan } |
   { type: 'UNSELECT_DATES' } |
