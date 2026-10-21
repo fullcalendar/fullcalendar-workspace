@@ -20,18 +20,39 @@ sanctioned yet.
    and a view type's and its super type's `views` options are merged with the same rules as theme-vs-user
    layers, so class options join, content options fall back to the earlier layer's, and lifecycle
    callbacks both run. Applies to every class, content and lifecycle option. Buttons are the exception
-   since the per-button fix (`mergeUserOptions` in `options-manip.ts` keeps them replacing); the same
+   since the per-button fix (`mergeUserOptions` in `options/merge.ts` keeps them replacing); the same
    split for the top-level options would be the fix.
 3. **A calendar whose visible range has no valid date throws when created** (reading `start` of a null
    `activeRange`, first in `buildTitle`), e.g. `initialView: 'timeGrid'`, a `visibleRange` ending
    yesterday, `validRange: (now) => ({ start: now })`. Supporting a null active range everywhere (the
    title, the views, event slicing) is the fix. The midnight `validRange` refresh avoids it (a rebuilt
    profile with no active range isn't installed).
+4. **Premium lint fails: 40 errors**, all style (`comma-dangle`, `jsx-quotes`, an extra semicolon) except
+   one: the license warning's `target="_blank"` link has no `rel="noreferrer"`. `eslint --fix` would fix
+   them all, but adding `rel` changes the warning's DOM, so it's left for a deliberate change.
 
 Behavior locked as-is by the step-0 specs of phase 7b, odd but not clearly bugs (see
 `questions-for-adam.md`, "Phase 7b"): selecting an event needs a touch long-press; drags into DayGrid
 or the all-day row show a highlight, never a mirror; an event input with `resourceId: undefined` becomes
 the resource id `'undefined'`.
+
+## Test infrastructure
+
+- **Under the full verify's parallel load, one spec flaked once:** `day-table identity timeGridWeek an
+  unrelated option change` on Preact counted the view body's hooks twice (`dayCellClass` 14 against a
+  recorded 7). It passed 3 of 3 runs alone, and in every other full run. In the same run, the DOM
+  snapshot recordings timed out on 10 fixtures and wrote neighbouring fixtures' DOM; re-recorded one
+  runtime at a time, they matched the baseline exactly. If either recurs, the verify should run the
+  snapshot recordings after the Karma lanes rather than alongside them.
+
+## protected-api
+
+`@fullcalendar/*/protected-api` is internal and was allowed to break. The layout pass after phase 11
+changed three of its exports: `BaseComponent` and `DateComponent` are gone (no class components are
+left), and `EventSegUiInteractionState` is `SlicedEventInteraction`. Other renames in that pass
+(`computeDefaultEventEnd`, the PascalCase plugin-hook types, `PureComponent`, `PositionCache`,
+`TaskRunner` and `renderInner` going away) touched only names protected-api doesn't export. Source
+paths moved throughout (see `src-layout.md`), which matters only to deep imports.
 
 ## For later (Adam's)
 
