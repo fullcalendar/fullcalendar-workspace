@@ -230,6 +230,23 @@ suite), with a Sol review per step.
   with a settled async source (`loading` transitions); `now`/time zone changes re-arming the timer.
 - The existing suites in both runtimes, DOM snapshots and counts, and the React suite, after each step.
 
+## Step 0: behavior locks (done)
+
+Characterization tests of today's behavior, written before any restructuring:
+
+- `standard/packages/react/tests/ssr.tsx`: `renderToString` renders array events and a synchronous
+  function source's events.
+- `standard/packages/vanilla-tests/src/event-source/data-layer-order.ts`:
+  - a synchronous function source gives the first `eventsSet` its events, and reads the previous date
+    through the API when called during navigation;
+  - `loading` reports `[true, false]` for an array source (it resolves within the drain, but both
+    transitions are reported), `[true, false]` for an async source, and only `[false]` for a settled
+    async source refetching after a `timeZone` change (the refetch is marked after the transition was
+    captured, as round 2 predicted);
+  - `resetOptions(sameObject, ['events'])` after a nested mutation refines the events again (Vue);
+  - a `resetOptions` made by a source mid-dispatch applies to the events already received.
+- Already covered elsewhere: `rerenderDelay` (`legacy/rerenderDelay.ts`), `batchRendering`.
+
 ## Review round 1 (Sol, spec, high effort)
 
 The first revision planned a pure render-time preview for React (`preview`/`commitPreview` with
