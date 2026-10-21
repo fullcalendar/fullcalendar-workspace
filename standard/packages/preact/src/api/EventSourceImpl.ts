@@ -1,5 +1,5 @@
-import { EventSource } from '../structs/event-source'
-import { CalendarContext } from '../CalendarContext'
+import { EventSource } from '../event-sources/event-source'
+import { CalendarContext } from '../context/CalendarContext'
 import { EventSourceApi } from './EventSourceApi'
 
 export class EventSourceImpl implements EventSourceApi {

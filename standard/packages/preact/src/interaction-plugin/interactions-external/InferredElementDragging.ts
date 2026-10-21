@@ -1,4 +1,4 @@
-import type { PointerDragEvent } from '../../interactions/pointer'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import { ElementDragging } from '../../interactions/ElementDragging'
 import { PointerDragging } from '../dnd/PointerDragging'
 

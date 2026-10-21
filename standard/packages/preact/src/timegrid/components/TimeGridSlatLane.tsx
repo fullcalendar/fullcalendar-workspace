@@ -1,9 +1,9 @@
 import { memo, useMemo } from 'react'
-import { SlotLaneInfo } from '../../render-hook-misc'
+import { SlotLaneInfo } from '../info-types'
 import { joinClassNames } from '../../util/html'
-import { getDateMeta } from '../../component-util/date-rendering'
-import { useViewContext } from '../../hooks/useViewContext'
-import { useRenderHookEl } from '../../hooks/useRenderHookEl'
+import { getDateMeta } from '../../date-profile/date-meta'
+import { useViewContext } from '../../context/useViewContext'
+import { useRenderHookEl } from '../../render-hook/useRenderHookEl'
 import classNames from '../../styles.module.css'
 import { TimeSlatMeta } from '../time-slat-meta'
 

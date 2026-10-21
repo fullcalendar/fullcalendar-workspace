@@ -1,5 +1,5 @@
 import type { Rect } from '../util/geom'
-import { ScrollController } from '../common/scroll-controller'
+import { ScrollController } from './scroll-controller'
 
 /*
 Is a cache for a given element's scroll information (all the info that ScrollController stores)

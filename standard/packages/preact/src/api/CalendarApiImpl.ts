@@ -1,10 +1,10 @@
 import { FormatterInput, createFormatter } from '../datelib/formatting'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { PointerDragEvent } from '../interactions/pointer'
-import type { CalendarStore } from '../reducers/store'
-import { Action } from '../reducers/Action'
+import { PointerDragEvent } from '../interactions/pointer-types'
+import type { CalendarStore } from '../store/CalendarStore'
+import { Action } from '../store/actions'
 import { buildEventApis, EventImpl } from './EventImpl'
-import { CalendarData } from '../reducers/data-types'
+import { CalendarData } from '../store/data-types'
 import { CalendarApi } from './CalendarApi'
 import { ViewImpl } from './ViewImpl'
 import { EventSourceImpl } from './EventSourceImpl'
@@ -17,10 +17,10 @@ import {
   DateRangeInput,
   EventSourceInput,
   EventInput,
-} from './structs'
-import { NavButtonState, ButtonStateMap } from '../structs/button-state'
+} from './public-types'
+import { NavButtonState, ButtonStateMap } from '../toolbar/button-state'
 import { formatWithOrdinals } from '../util/misc'
-import { CalendarOptionsRefined } from '../options'
+import { CalendarOptionsRefined } from '../options/options'
 
 export class CalendarApiImpl implements CalendarApi {
   store?: CalendarStore // set by the store, which is created together with this

@@ -1,6 +1,6 @@
-import { PluginInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugins/plugin-types'
 import { DayGridView } from './components/DayGridView'
-import { tableRenderRange } from './table-render-range'
+import { tableRenderRange } from '../day-table/render-range'
 
 export default {
   name: 'daygrid',

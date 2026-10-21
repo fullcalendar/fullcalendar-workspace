@@ -1,6 +1,6 @@
-import { EventStore } from '../structs/event-store'
-import { EventInstanceHash } from '../structs/event-instance'
-import { EventRangeProps } from '../component-util/event-rendering'
+import { EventStore } from '../events/event-store'
+import { EventInstanceHash } from '../events/event-instance'
+import { EventRangeProps } from '../event-segs/event-rendering'
 
 // a drag or resize in progress, as the store holds it: the events it affects, and those events mutated
 export interface EventInteractionState {

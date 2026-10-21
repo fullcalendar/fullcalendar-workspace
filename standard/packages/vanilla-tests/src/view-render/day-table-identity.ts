@@ -56,7 +56,7 @@ Recorded per hook from today's code. A value may be one number, or one per runti
 */
 const RECORDED: { [viewType: string]: { [probe: string]: Recorded } } = {
   dayGridMonth: {
-    // nothing in the view re-executes: CalendarInner is a PureComponent and the props are the
+    // nothing in the view re-executes: CalendarInner is memoized on its props and the props are the
     // same. only eventContent re-runs, through the RenderId bump that CustomContent subscribes to
     render: {
       eventClass: 0, eventInnerClass: 0, rowEventClass: 0, columnEventClass: 0, eventContent: 17,
@@ -152,7 +152,7 @@ describe('day-table identity', () => {
 
     /*
     Vanilla's render() re-renders the root with the same data. Today that never re-executes the
-    view body (CalendarInner is a PureComponent with equal props), so no cell hook can prove the
+    view body (CalendarInner is memoized on its props, which are equal), so no cell hook can prove the
     probe reached it; what it does reach is CustomContent's RenderId subscription, so the proof is
     eventContent re-running. Locked as a no-remount, no-class-hook probe
     */

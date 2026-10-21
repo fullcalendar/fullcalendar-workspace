@@ -1,5 +1,5 @@
 import { DateEnv } from '@full-ui/headless-calendar'
-import { CalendarData } from '../reducers/data-types'
+import { CalendarData } from '../store/data-types'
 import { CalendarApi } from './CalendarApi'
 import { ViewApi } from './ViewApi'
 

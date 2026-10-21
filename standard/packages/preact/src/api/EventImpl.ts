@@ -1,19 +1,19 @@
-import { EventDef } from '../structs/event-def'
-import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse'
+import { EventDef } from '../events/event-def'
+import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../events/event-parse'
 import {
   buildRangeEdgeOutput, canonicalRangeEndMarker, EventInstance,
   getRangeInstantStartMs, getRangeInstantEndMs,
-} from '../structs/event-instance'
-import { EVENT_UI_REFINERS } from '../component-util/event-ui'
-import { EventMutation } from '../structs/event-mutation'
+} from '../events/event-instance'
+import { EVENT_UI_REFINERS } from '../events/event-ui'
+import { EventMutation } from '../events/event-mutation'
 import { diffDates, computeAlignedDayRange } from '../util/date'
 import {
   createDuration, durationsEqual, DateMarkerMeta, joinDateTimeFormatParts,
 } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
-import { CalendarContext } from '../CalendarContext'
-import { EventStore } from '../structs/event-store'
-import { Dictionary } from '../options'
+import { CalendarContext } from '../context/CalendarContext'
+import { EventStore } from '../events/event-store'
+import { Dictionary } from '../options/options'
 import { warn } from '../util/warn'
 import { EventApi } from './EventApi'
 import { EventSourceImpl } from './EventSourceImpl'
@@ -21,7 +21,7 @@ import {
   DateInput,
   DurationInput,
   FormatterInput,
-} from './structs'
+} from './public-types'
 
 export class EventImpl implements EventApi {
   _context: CalendarContext

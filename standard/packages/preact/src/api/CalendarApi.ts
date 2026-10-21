@@ -10,7 +10,7 @@ import {
   EventSourceInput,
   EventInput,
   FormatterInput,
-} from './structs'
+} from './public-types'
 
 export interface CalendarApi {
   view: ViewApi

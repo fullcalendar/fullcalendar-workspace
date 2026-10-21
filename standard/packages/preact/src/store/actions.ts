@@ -1,0 +1,62 @@
+import { EventInput } from '../events/event-parse'
+import { DateRange, DateMarker } from '@full-ui/headless-calendar'
+import { EventStore } from '../events/event-store'
+import { EventSource } from '../event-sources/event-source'
+import { EventInteractionState } from '../interactions/event-interaction-state'
+import { DateSpan } from '../events/date-span'
+import type { DateProfile, DateProfileGenerator } from '../date-profile/DateProfileGenerator'
+
+export type Action =
+  { type: 'IDLE' } | // hack
+  { type: 'UPDATE_NOW' } |
+
+  { type: 'SET_OPTION', optionName: string, rawOptionValue: any } | // TODO: how to link this to CalendarOptions?
+  { type: 'RESET_OPTIONS' } |
+
+  { type: 'PREV' } |
+  { type: 'NEXT' } |
+  { type: 'CHANGE_DATE', dateMarker: DateMarker } |
+  { type: 'CHANGE_VIEW_TYPE', viewType: string, dateMarker?: DateMarker } |
+  // a new day changed a now-dependent validRange: the profile rebuilt as it was built. internal.
+  // `probedDateProfile` is the one it replaces: if another action replaced it first, it's dropped.
+  // `dateProfileGenerator` built it: if the options changed since, the current generator's profile stays
+  {
+    type: 'REFRESH_DATE_PROFILE'
+    dateProfile: DateProfile
+    probedDateProfile: DateProfile
+    dateProfileGenerator: DateProfileGenerator
+  } |
+
+  { type: 'SELECT_DATES', selection: DateSpan } |
+  { type: 'UNSELECT_DATES' } |
+
+  { type: 'SELECT_EVENT', eventInstanceId: string } |
+  { type: 'UNSELECT_EVENT' } |
+
+  { type: 'SET_EVENT_DRAG', state: EventInteractionState } |
+  { type: 'UNSET_EVENT_DRAG' } |
+
+  { type: 'SET_EVENT_RESIZE', state: EventInteractionState } |
+  { type: 'UNSET_EVENT_RESIZE' } |
+
+  { type: 'ADD_EVENT_SOURCES', sources: EventSource<any>[] } |
+  { type: 'REMOVE_EVENT_SOURCE', sourceId: string } |
+  { type: 'REMOVE_ALL_EVENT_SOURCES' } |
+
+  { type: 'FETCH_EVENT_SOURCES', sourceIds?: string[], isRefetch?: boolean } | // if no sourceIds, fetch all
+
+  { type: 'RECEIVE_EVENTS', sourceId: string, fetchId: string, fetchRange: DateRange | null, rawEvents: EventInput[] } |
+  {
+    type: 'RECEIVE_EVENT_ERROR'
+    sourceId: string
+    fetchId: string
+    fetchRange: DateRange | null
+    error: Error
+  } | // need all these?
+
+  { type: 'ADD_EVENTS', eventStore: EventStore } |
+  { type: 'RESET_EVENTS', eventStore: EventStore } |
+  { type: 'RESET_RAW_EVENTS', rawEvents: EventInput[], sourceId: string } |
+  { type: 'MERGE_EVENTS', eventStore: EventStore } |
+  { type: 'REMOVE_EVENTS', eventStore: EventStore } |
+  { type: 'REMOVE_ALL_EVENTS' }

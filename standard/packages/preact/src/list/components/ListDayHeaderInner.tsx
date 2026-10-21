@@ -1,13 +1,13 @@
 import { memo } from 'react'
-import { buildNavLinkAttrs } from '../../common/nav-link'
-import { CustomContent } from '../../content-inject/CustomContent'
-import { generateClassName, renderText } from '../../common/render-hook'
-import { useViewContext } from '../../hooks/useViewContext'
+import { buildNavLinkAttrs } from '../../views/nav-link'
+import { CustomContent } from '../../render-hook/CustomContent'
+import { generateClassName, renderText } from '../../render-hook/render-hook-types'
+import { useViewContext } from '../../context/useViewContext'
 import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import type { DateMeta } from '../../component-util/date-rendering'
+import type { DateMeta } from '../../date-profile/date-meta'
 import { findDayNumberText, findWeekdayText } from '../../util/date-format'
-import { ListDayHeaderInnerInfo } from '../structs'
+import { ListDayHeaderInnerInfo } from '../info-types'
 
 export interface ListDayHeaderInnerProps {
   dayDate: DateMarker

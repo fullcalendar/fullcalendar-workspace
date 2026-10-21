@@ -1,7 +1,7 @@
-import { DayHeaderInfo } from '../../render-hook-misc'
+import { DayHeaderInfo } from '../../day-table/info-types'
 import { createFormatter } from '../../datelib/formatting'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
-import { DayTableCell } from '../DayTableModel'
+import { DayTableCell } from '../../day-table/day-grid-range'
 import type { ReactNode } from 'react'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {

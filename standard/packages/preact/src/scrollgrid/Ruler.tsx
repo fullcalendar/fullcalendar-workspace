@@ -1,5 +1,5 @@
 import { memo, type Ref } from 'react'
-import { useReportedSize } from '../hooks/useReportedSize'
+import { useReportedSize } from '../layout/useReportedSize'
 
 export interface RulerProps {
   widthRef: Ref<number>

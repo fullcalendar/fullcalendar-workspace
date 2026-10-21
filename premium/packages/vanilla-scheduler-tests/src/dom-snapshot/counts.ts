@@ -8,7 +8,7 @@ component rebuilt its JSX. See planning/phase-2-render-hook-specs.md
 
 /*
 Every render-hook option that takes a function: the *Class options typed ClassNameGenerator, and all
-*Content, *DidMount and *WillUnmount options. Taken from standard/packages/preact/src/options.ts and
+*Content, *DidMount and *WillUnmount options. Taken from standard/packages/preact/src/options/options.ts and
 premium/packages/preact-scheduler/src/common/options.ts. String-only *Class options can't count calls.
 */
 export const COUNTED_OPTION_NAMES = [

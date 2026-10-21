@@ -1,7 +1,7 @@
 import { type Ref, useLayoutEffect, useRef, useState } from 'react'
-import { afterSize } from '../../component-util/resize-observer'
+import { afterSize } from '../../layout/resize-observer'
 import { RefMap } from '../../util/RefMap'
-import { setRef } from '../../vdom-util'
+import { setRef } from '../../util/vdom'
 import { useLatest } from '../../hooks/useLatest'
 
 export interface TimeGridAxis {

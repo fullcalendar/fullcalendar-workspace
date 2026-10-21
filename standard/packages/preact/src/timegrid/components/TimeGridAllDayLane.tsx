@@ -3,9 +3,9 @@ import { computeColFromPosition, getCellEl } from '../../daygrid/components/util
 import { addDays } from '@full-ui/headless-calendar'
 import { Hit } from '../../interactions/hit'
 import { memo, useRef, useState } from 'react'
-import { useHitTarget } from '../../hooks/useHitTarget'
-import { useReportedSize } from '../../hooks/useReportedSize'
-import { MoreLinkTrigger } from '../../common/MoreLinkContainer'
+import { useHitTarget } from '../../interactions/useHitTarget'
+import { useReportedSize } from '../../layout/useReportedSize'
+import { MoreLinkTrigger } from '../../more-link/MoreLinkContainer'
 import { resolveDayGridPlacementMode } from '../../daygrid/seg-placement-adapter'
 import classNames from '../../styles.module.css'
 

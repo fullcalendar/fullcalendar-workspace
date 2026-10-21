@@ -1,5 +1,5 @@
-import { tableRenderRange } from '../daygrid/table-render-range'
-import { PluginInput } from '../plugin-system-struct'
+import { tableRenderRange } from '../day-table/render-range'
+import { PluginInput } from '../plugins/plugin-types'
 import { MultiMonthView } from './components/MultiMonthView'
 
 export default {

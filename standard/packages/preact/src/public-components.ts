@@ -1,3 +1,3 @@
 
-export { Calendar } from './Calendar'
-export type { CalendarRef } from './Calendar'
+export { Calendar } from './calendar/Calendar'
+export type { CalendarRef } from './calendar/Calendar'

@@ -1,4 +1,4 @@
-import type { PointerDragEvent } from '../../interactions/pointer'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import { preventSelection, allowSelection, preventContextMenu, allowContextMenu } from '../../util/misc'
 import { ElementDragging } from '../../interactions/ElementDragging'
 import { PointerDragging } from './PointerDragging'

@@ -1,21 +1,21 @@
 import { createDuration } from '@full-ui/headless-calendar'
-import { parseDateSpan } from '../structs/date-span'
-import { parseEventSource } from '../structs/event-source-parse'
-import { parseEvent } from '../structs/event-parse'
-import { eventTupleToStore, getRelevantEvents } from '../structs/event-store'
-import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
-import { EventUiHash } from '../component-util/event-ui'
-import { ViewSpec } from '../structs/view-spec'
-import { PointerDragEvent } from '../interactions/pointer'
-import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils'
+import { parseDateSpan } from '../events/date-span'
+import { parseEventSource } from '../event-sources/event-source-parse'
+import { parseEvent } from '../events/event-parse'
+import { eventTupleToStore, getRelevantEvents } from '../events/event-store'
+import { EventMutation, applyMutationToEventStore } from '../events/event-mutation'
+import { EventUiHash } from '../events/event-ui'
+import { ViewSpec } from '../views/view-spec'
+import { PointerDragEvent } from '../interactions/pointer-types'
+import { triggerDateSelect, triggerDateUnselect } from '../interactions/date-callbacks'
 import { hashValuesToArray } from '../util/object'
-import { EventSource } from '../structs/event-source'
+import { EventSource } from '../event-sources/event-source'
 import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl'
 import { EventSourceImpl } from './EventSourceImpl'
 import { warn } from '../util/warn'
 import type { CalendarApiImpl } from './CalendarApiImpl'
-import type { CalendarStore } from '../reducers/store'
-import type { Dictionary } from '../options'
+import type { CalendarStore } from '../store/CalendarStore'
+import type { Dictionary } from '../options/options'
 import {
   CalendarOptions,
   DateInput,
@@ -24,7 +24,7 @@ import {
   DateRangeInput,
   EventSourceInput,
   EventInput,
-} from './structs'
+} from './public-types'
 
 /*
 What changes a calendar: navigation, options, selection, events and event sources. Built once per store

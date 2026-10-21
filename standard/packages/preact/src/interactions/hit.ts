@@ -1,9 +1,9 @@
 import { createDuration, DateMarker, Duration } from '@full-ui/headless-calendar'
-import { DateProfile } from '../DateProfileGenerator'
-import { DateSpan } from '../structs/date-span'
+import { DateProfile } from '../date-profile/DateProfileGenerator'
+import { DateSpan } from '../events/date-span'
 import { diffDates } from '../util/date'
 import { Rect } from '../util/geom'
-import { ViewContext } from '../ViewContext'
+import { ViewContext } from '../context/ViewContext'
 
 export interface Hit {
   componentId?: string // will be set by HitDragging

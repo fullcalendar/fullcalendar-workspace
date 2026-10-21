@@ -13,7 +13,7 @@ import {
   type DayRowEventRange,
   type DayRowEventRangePart,
   getDayGridSegKey,
-} from './TableSeg'
+} from './day-row-range'
 
 export type DayGridEventSeg = DayRowEventRange
 

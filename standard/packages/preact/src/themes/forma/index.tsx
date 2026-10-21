@@ -1,6 +1,6 @@
-import { PluginInput } from '../../plugin-system-struct'
-import { CalendarOptions } from '../../options'
-import { DayCellInfo } from '../../render-hook-misc'
+import { PluginInput } from '../../plugins/plugin-types'
+import { CalendarOptions } from '../../options/options'
+import { DayCellInfo } from '../../day-table/info-types'
 import { joinClassNames } from '../../util/html'
 
 // will get stripped during tsc transpile

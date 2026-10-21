@@ -1,10 +1,10 @@
 import { DateFormatter, DateRange } from '@full-ui/headless-calendar'
 import { useMemo } from 'react'
-import { DateProfile } from '../../DateProfileGenerator'
-import { useViewOptions } from '../../hooks/useGranularContexts'
-import { useNow } from '../../hooks/useNow'
-import { DayTableModel } from '../../common/day-table/model'
-import { useDayGridModel } from '../../common/day-table/useDayTableModel'
+import { DateProfile } from '../../date-profile/DateProfileGenerator'
+import { useViewOptions } from '../../context/useGranularContexts'
+import { useNow } from '../../now/useNow'
+import { DayTableModel } from '../../day-table/model'
+import { useDayGridModel } from '../../day-table/useDayTableModel'
 import { createDayHeaderFormatter } from './util'
 
 export interface DayGridViewData {

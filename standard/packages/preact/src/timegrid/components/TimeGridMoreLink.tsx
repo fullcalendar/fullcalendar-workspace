@@ -1,15 +1,15 @@
 import { CssDimValue } from '../../scrollgrid/util'
 import { joinClassNames } from '../../util/html'
-import { MoreLinkContainer } from '../../common/MoreLinkContainer'
+import { MoreLinkContainer } from '../../more-link/MoreLinkContainer'
 import { memo } from 'react'
-import { Dictionary } from '../../options'
-import { DateProfile } from '../../DateProfileGenerator'
+import { Dictionary } from '../../options/options'
+import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
-import { EventRangeProps } from '../../component-util/event-rendering'
+import { EventRangeProps } from '../../event-segs/event-rendering'
 import classNames from '../../styles.module.css'
 import { renderPlainFgSegs } from './TimeGridCol' // BAD
-import { TimeGridRange } from '../TimeColsSeg'
+import { TimeGridRange } from '../../day-table/time-grid-range'
 
 export interface TimeGridMoreLinkProps {
   hiddenSegs: (TimeGridRange & EventRangeProps)[]

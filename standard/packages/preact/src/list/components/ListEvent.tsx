@@ -1,8 +1,8 @@
 import { memo } from 'react'
-import { useViewOptions } from '../../hooks/useGranularContexts'
+import { useViewOptions } from '../../context/useGranularContexts'
 import { createFormatter } from '../../datelib/formatting'
-import type { MinimalEventProps } from '../../component-util/event-rendering'
-import { ForegroundEvent, listItemEventVariant } from '../../common/events'
+import type { MinimalEventProps } from '../../event-segs/event-rendering'
+import { ForegroundEvent, listItemEventVariant } from '../../events/components/ForegroundEvent'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',

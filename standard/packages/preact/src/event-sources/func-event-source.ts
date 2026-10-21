@@ -1,7 +1,7 @@
-import { PluginInput } from '../plugin-system-struct'
-import { buildRangeApiWithTimeZone } from '../structs/date-span'
-import { EventInput } from '../structs/event-parse'
-import { EventSourceDef } from '../structs/event-source-def'
+import { PluginInput } from '../plugins/plugin-types'
+import { buildRangeApiWithTimeZone } from '../events/date-span'
+import { EventInput } from '../events/event-parse'
+import { EventSourceDef } from './event-source-def'
 import { unpromisify } from '../util/promise'
 
 export type EventSourceFuncInfo = {

@@ -1,6 +1,6 @@
 import { ViewApi } from '../../api/ViewApi'
-import type { DatePointApi } from '../../structs/date-span'
-import type { PointerDragEvent } from '../../interactions/pointer'
+import type { DatePointApi } from '../../events/date-span'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import { Interaction } from '../../interactions/interaction'
 import { HitTarget, hitTargetToStore, isValidDateDownEl } from '../../interactions/hit-target'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'

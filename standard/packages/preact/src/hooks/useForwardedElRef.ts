@@ -1,5 +1,5 @@
 import { type Ref, type RefObject, useLayoutEffect, useRef, useState } from 'react'
-import { setRef } from '../vdom-util'
+import { setRef } from '../util/vdom'
 
 /*
 A stable ref callback for an element, which also hands the element to `forwardRef`. When

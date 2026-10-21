@@ -1,5 +1,5 @@
 import dayGridPlugin from '../daygrid/index'
-import { PluginInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugins/plugin-types'
 import { TimeGridView } from './components/TimeGridView'
 
 export default {

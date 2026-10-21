@@ -1,4 +1,4 @@
-import { Emitter } from "../common/Emitter"
+import { Emitter } from "../util/Emitter"
 import { DelayedRunner } from "../util/DelayedRunner"
 
 /*

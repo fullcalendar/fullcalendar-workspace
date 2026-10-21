@@ -1,4 +1,4 @@
-import { PluginInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugins/plugin-types'
 import { DateClicking } from './interactions/DateClicking'
 import { DateSelecting } from './interactions/DateSelecting'
 import { EventDragging } from './interactions/EventDragging'

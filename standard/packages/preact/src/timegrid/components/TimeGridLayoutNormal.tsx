@@ -1,25 +1,25 @@
 import { joinClassNames } from '../../util/html'
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
-import { DateProfile } from '../../DateProfileGenerator'
-import { DayTableCell } from '../../daygrid/DayTableModel'
-import { EventRangeProps } from '../../component-util/event-rendering'
+import { DateProfile } from '../../date-profile/DateProfileGenerator'
+import { DayTableCell } from '../../day-table/day-grid-range'
+import { EventRangeProps } from '../../event-segs/event-rendering'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
-import { generateClassName } from '../../common/render-hook'
+import { generateClassName } from '../../render-hook/render-hook-types'
 import { getIsHeightAuto, getTableHeaderSticky } from '../../scrollgrid/util'
 import { Hit } from '../../interactions/hit'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { Scroller } from '../../scrollgrid/Scroller'
-import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
-import { SlicedCoordRange } from '../../coord-range'
+import { ScrollerInterface } from '../../scrollgrid/scroller-types'
+import { SlicedCoordRange } from '../../event-segs/coord-range'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { useViewOptions } from '../../hooks/useGranularContexts'
-import { useMeasuredState } from '../../hooks/useMeasuredState'
+import { useViewOptions } from '../../context/useGranularContexts'
+import { useMeasuredState } from '../../layout/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { computeDayGridColumns } from '../../daygrid/components/util'
 import { RowConfig } from '../../daygrid/header-tier'
 import { TimeSlatMeta } from "../time-slat-meta"
-import { TimeGridRange } from "../TimeColsSeg"
+import { TimeGridRange } from "../../day-table/time-grid-range"
 import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane"
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty"

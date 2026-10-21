@@ -1,9 +1,9 @@
 import { requestJson } from '../util/requestJson'
-import { CalendarContext } from '../CalendarContext'
-import { EventSourceDef } from '../structs/event-source-def'
+import { CalendarContext } from '../context/CalendarContext'
+import { EventSourceDef } from './event-source-def'
 import { DateRange } from '@full-ui/headless-calendar'
 import { JSON_FEED_EVENT_SOURCE_REFINERS } from './json-feed-event-source-refiners'
-import { EventInput, PluginInput } from '../api/structs'
+import { EventInput, PluginInput } from '../api/public-types'
 
 interface JsonFeedMeta {
   url: string

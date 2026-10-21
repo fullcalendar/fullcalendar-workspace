@@ -1,14 +1,14 @@
 import { memo } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
-import { useRenderHookEl } from '../../hooks/useRenderHookEl'
+import { useViewContext } from '../../context/useViewContext'
+import { useRenderHookEl } from '../../render-hook/useRenderHookEl'
 import { joinClassNames } from '../../util/html'
 import type { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
-import type { DateMeta } from '../../component-util/date-rendering'
+import type { DateMeta } from '../../date-profile/date-meta'
 import { formatDayString } from '@full-ui/headless-calendar'
-import type { ViewSpec } from '../../structs/view-spec'
+import type { ViewSpec } from '../../views/view-spec'
 import { WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from '../../util/date-format'
 import classNames from '../../styles.module.css'
-import { ListDayHeaderInfo } from '../structs'
+import { ListDayHeaderInfo } from '../info-types'
 import { ListDayHeaderInner } from "./ListDayHeaderInner"
 
 export interface ListDayHeaderProps {

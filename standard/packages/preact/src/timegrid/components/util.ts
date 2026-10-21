@@ -1,5 +1,5 @@
 import { Duration, asRoughMs, createDuration, DateMarker, startOfDay } from '@full-ui/headless-calendar'
-import { DateProfile } from '../../DateProfileGenerator'
+import { DateProfile } from '../../date-profile/DateProfileGenerator'
 
 export function computeSlatHeight(
   expandRows: boolean,

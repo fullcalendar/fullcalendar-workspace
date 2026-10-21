@@ -1,11 +1,11 @@
-import { AllDayHeaderInfo } from '../../render-hook-misc'
+import { AllDayHeaderInfo } from '../info-types'
 import { joinClassNames } from '../../util/html'
 import { memo, type ReactNode, type Ref } from 'react'
-import { CustomContent } from '../../content-inject/CustomContent'
-import { generateClassName } from '../../common/render-hook'
-import { useViewContext } from '../../hooks/useViewContext'
-import { useRenderHookEl } from '../../hooks/useRenderHookEl'
-import { useReportedSize } from '../../hooks/useReportedSize'
+import { CustomContent } from '../../render-hook/CustomContent'
+import { generateClassName } from '../../render-hook/render-hook-types'
+import { useViewContext } from '../../context/useViewContext'
+import { useRenderHookEl } from '../../render-hook/useRenderHookEl'
+import { useReportedSize } from '../../layout/useReportedSize'
 import classNames from '../../styles.module.css'
 
 export interface TimeGridAllDayHeaderProps {

@@ -1,5 +1,5 @@
-import { PluginInput } from '../../plugin-system-struct'
-import { type CalendarOptions } from '../../options'
+import { PluginInput } from '../../plugins/plugin-types'
+import { type CalendarOptions } from '../../options/options'
 import { joinClassNames } from '../../util/html'
 
 // will get stripped during tsc transpile

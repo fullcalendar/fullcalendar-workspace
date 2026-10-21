@@ -1,5 +1,5 @@
 import type { Rect } from '../util/geom'
-import { WindowScrollController } from '../common/scroll-controller'
+import { WindowScrollController } from './scroll-controller'
 import { ScrollGeomCache } from './ScrollGeomCache'
 
 export class WindowScrollGeomCache extends ScrollGeomCache {

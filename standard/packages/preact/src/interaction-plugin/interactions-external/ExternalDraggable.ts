@@ -1,5 +1,5 @@
-import { BASE_OPTION_DEFAULTS } from '../../options'
-import type { PointerDragEvent } from '../../interactions/pointer'
+import { BASE_OPTION_DEFAULTS } from '../../options/options'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import classNames from '../../styles.module.css'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 import { ExternalElementDragging, DragMetaGenerator } from './ExternalElementDragging'

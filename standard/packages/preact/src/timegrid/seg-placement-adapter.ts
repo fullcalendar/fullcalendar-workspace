@@ -1,6 +1,6 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { type EventRangeProps } from '../component-util/event-rendering'
-import { DateProfile } from '../DateProfileGenerator'
+import { type EventRangeProps } from '../event-segs/event-rendering'
+import { DateProfile } from '../date-profile/DateProfileGenerator'
 import {
   type HiddenSliceGroup,
   type SourceSeg,
@@ -12,7 +12,7 @@ import {
 import { findIntersections } from '../seg-placement/span-math'
 import { flatArray } from '../util/array'
 import { computeDateTopFrac } from './components/util'
-import { type TimeGridRange } from './TimeColsSeg'
+import { type TimeGridRange } from '../day-table/time-grid-range'
 
 export type TimeGridEventSeg = TimeGridRange & EventRangeProps
 

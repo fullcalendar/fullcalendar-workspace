@@ -1,25 +1,25 @@
 import { ViewApi } from '../../api/ViewApi'
-import type { DatePointApi } from '../../structs/date-span'
+import type { DatePointApi } from '../../events/date-span'
 import type { Hit } from '../../interactions/hit'
 import { hitTargetStore } from '../../interactions/hit-target'
-import type { PointerDragEvent } from '../../interactions/pointer'
-import { parseEventDef } from '../../structs/event-parse'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
+import { parseEventDef } from '../../events/event-parse'
 import {
   addDurationToEdge, buildEventInstanceRange, createEventInstance, EventRangeEdge,
-} from '../../structs/event-instance'
-import type { EventTuple } from '../../structs/event-parse'
-import { createEmptyEventStore, eventTupleToStore } from '../../structs/event-store'
-import { config } from '../../global-config'
-import type { DateSpan } from '../../structs/date-span'
+} from '../../events/event-instance'
+import type { EventTuple } from '../../events/event-parse'
+import { createEmptyEventStore, eventTupleToStore } from '../../events/event-store'
+import { config } from '../../plugins/global-config'
+import type { DateSpan } from '../../events/date-span'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
-import type { DragMetaInput, DragMeta } from '../../structs/drag-meta'
-import { parseDragMeta } from '../../structs/drag-meta'
+import type { DragMetaInput, DragMeta } from '../../interactions/drag-meta'
+import { parseDragMeta } from '../../interactions/drag-meta'
 import { enableCursor, disableCursor } from '../../util/misc'
-import { isInteractionValid } from '../../validation'
+import { isInteractionValid } from '../../validation/validation'
 import type { ElementDragging } from '../../interactions/ElementDragging'
-import type { CalendarContext } from '../../CalendarContext'
-import { getDefaultEventEndEdge } from '../../calendar-utils'
-import { refineEventDef } from '../../structs/event-parse'
+import type { CalendarContext } from '../../context/CalendarContext'
+import { computeDefaultEventEndEdge } from '../../events/default-event-end'
+import { refineEventDef } from '../../events/event-parse'
 import { EventImpl } from '../../api/EventImpl'
 import classNames from '../../styles.module.css'
 import { HitDragging } from '../interactions/HitDragging'
@@ -252,7 +252,7 @@ function computeEventForDateSpan(dateSpan: DateSpan, dragMeta: DragMeta, context
   // an exact start yields an exact derived end (real elapsed duration)
   let endEdge = dragMeta.duration ?
     addDurationToEdge(startEdge, dragMeta.duration, context.dateEnv) :
-    getDefaultEventEndEdge(dateSpan.allDay, startEdge, context)
+    computeDefaultEventEndEdge(dateSpan.allDay, startEdge, context)
 
   let instance = createEventInstance(def.defId, buildEventInstanceRange(
     startEdge.marker, endEdge.marker, startEdge.instantMs, endEdge.instantMs,

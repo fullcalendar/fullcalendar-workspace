@@ -1,13 +1,13 @@
-import { ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook'
-import { DayHeaderInfo } from '../render-hook-misc'
-import { buildDateStr, buildNavLinkAttrs } from '../common/nav-link'
-import { computeMajorUnit, isMajorUnit } from '../DateProfileGenerator'
+import { ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler } from '../render-hook/render-hook-types'
+import { DayHeaderInfo } from '../day-table/info-types'
+import { buildDateStr, buildNavLinkAttrs } from '../views/nav-link'
+import { computeMajorUnit, isMajorUnit } from '../date-profile/DateProfileGenerator'
 import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { DateMeta, getDateMeta } from '../component-util/date-rendering'
-import { DateProfile } from '../DateProfileGenerator'
-import { Dictionary } from '../options'
+import { DateMeta, getDateMeta } from '../date-profile/date-meta'
+import { DateProfile } from '../date-profile/DateProfileGenerator'
+import { Dictionary } from '../options/options'
 import { WEEKDAY_ONLY_FORMAT } from '../util/date-format'
-import { ViewContext } from '../ViewContext'
+import { ViewContext } from '../context/ViewContext'
 
 /*
 Just for the HEADER

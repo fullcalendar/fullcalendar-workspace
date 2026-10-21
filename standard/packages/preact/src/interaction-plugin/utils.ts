@@ -1,9 +1,9 @@
 import { ViewApi } from '../api/ViewApi'
 import { EventApi } from '../api/EventApi'
-import type { DatePointApi } from '../structs/date-span'
-import type { DateSpan } from '../structs/date-span'
-import { buildRangeEdgeOutput } from '../structs/event-instance'
-import type { CalendarContext } from '../CalendarContext'
+import type { DatePointApi } from '../events/date-span'
+import type { DateSpan } from '../events/date-span'
+import { buildRangeEdgeOutput } from '../events/event-instance'
+import type { CalendarContext } from '../context/CalendarContext'
 import type { DateEnv } from '@full-ui/headless-calendar'
 
 export interface DropInfo extends DatePointApi {

@@ -1,5 +1,5 @@
 import { Hit } from './hit'
-import { ViewContext } from '../ViewContext'
+import { ViewContext } from '../context/ViewContext'
 import classNames from '../styles.module.css'
 
 /*

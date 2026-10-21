@@ -1,14 +1,14 @@
 import { compareNumbers, enableCursor, disableCursor } from '../../util/misc'
+import type { DateSelectionJoinTransformer } from '../../plugins/plugin-types'
 import type { Hit } from '../../interactions/hit'
-import type { DateSpan } from '../../structs/date-span'
-import { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from '../../structs/date-span'
-import { buildValidInstanceRange } from '../../structs/event-instance'
-import type { PointerDragEvent } from '../../interactions/pointer'
-import type { dateSelectionJoinTransformer } from '../../interactions/date-selecting'
+import type { DateSpan } from '../../events/date-span'
+import { getDateSpanInstantStartMs, getDateSpanInstantEndMs } from '../../events/date-span'
+import { buildValidInstanceRange } from '../../events/event-instance'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import { Interaction } from '../../interactions/interaction'
 import { HitTarget, hitTargetToStore, isValidDateDownEl } from '../../interactions/hit-target'
-import { triggerDateSelect } from '../../calendar-utils'
-import { isDateSelectionValid } from '../../validation'
+import { triggerDateSelect } from '../../interactions/date-callbacks'
+import { isDateSelectionValid } from '../../validation/validation'
 import { HitDragging } from './HitDragging'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging'
 
@@ -125,7 +125,7 @@ function getTouchDelay(target: HitTarget): number {
   return delay
 }
 
-function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan | null {
+function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: DateSelectionJoinTransformer[]): DateSpan | null {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan
 

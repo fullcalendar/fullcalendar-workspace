@@ -1,6 +1,6 @@
 import { preventDefault } from './dom-event'
 import classNames from '../styles.module.css'
-import { CalendarOptions } from '../options'
+import { CalendarOptions } from '../options/options'
 
 export type GenericHash = { [key: string]: any } // already did this somewhere
 

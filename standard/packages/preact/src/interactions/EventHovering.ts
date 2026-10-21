@@ -1,6 +1,6 @@
 import { listenToHoverBySelector } from '../util/dom-event'
 import { EventImpl } from '../api/EventImpl'
-import { getElEventRange } from '../component-util/event-rendering'
+import { getElEventRange } from '../event-segs/event-rendering'
 import { Interaction } from './interaction'
 import { HitTarget, isValidSegDownEl } from './hit-target'
 import { ViewApi } from '../api/ViewApi'

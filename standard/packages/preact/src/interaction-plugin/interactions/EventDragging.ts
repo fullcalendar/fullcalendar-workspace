@@ -1,25 +1,24 @@
 import { EventApi } from '../../api/EventApi'
+import type { EventDragMutationMassager, EventDropTransformer } from '../../plugins/plugin-types'
 import { ViewApi } from '../../api/ViewApi'
-import type { EventChangeInfo, EventAddInfo, EventRemoveInfo } from '../../event-crud'
-import type { EventRenderRange } from '../../component-util/event-rendering'
-import type { PointerDragEvent } from '../../interactions/pointer'
+import type { EventChangeInfo, EventAddInfo, EventRemoveInfo } from '../../events/event-crud'
+import type { EventRenderRange } from '../../event-segs/event-rendering'
+import type { PointerDragEvent } from '../../interactions/pointer-types'
 import type { Hit } from '../../interactions/hit'
 import { computeHitDelta } from '../../interactions/hit'
-import type { EventMutation } from '../../structs/event-mutation'
-import { applyMutationToEventStore } from '../../structs/event-mutation'
+import type { EventMutation } from '../../events/event-mutation'
+import { applyMutationToEventStore } from '../../events/event-mutation'
 import { startOfDay } from '@full-ui/headless-calendar'
-import type { EventStore } from '../../structs/event-store'
-import { getRelevantEvents, createEmptyEventStore } from '../../structs/event-store'
+import type { EventStore } from '../../events/event-store'
+import { getRelevantEvents, createEmptyEventStore } from '../../events/event-store'
 import type { EventInteractionState } from '../../interactions/event-interaction-state'
 import { enableCursor, disableCursor } from '../../util/misc'
-import { getElEventRange } from '../../component-util/event-rendering'
-import type { eventDragMutationMassager } from '../../interactions/event-dragging'
+import { getElEventRange } from '../../event-segs/event-rendering'
 import { Interaction } from '../../interactions/interaction'
 import { HitTarget, hitTargetStore, isValidSegDownEl } from '../../interactions/hit-target'
-import type { EventDropTransformers } from '../../interactions/event-dragging'
-import type { CalendarContext } from '../../CalendarContext'
+import type { CalendarContext } from '../../context/CalendarContext'
 import { buildEventApis } from '../../api/EventImpl'
-import { isInteractionValid } from '../../validation'
+import { isInteractionValid } from '../../validation/validation'
 import { EventImpl } from '../../api/EventImpl'
 import { getAppendableRoot } from '../../util/dom-manip'
 import classNames from '../../styles.module.css'
@@ -283,7 +282,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             },
           }
 
-          let transformed: ReturnType<EventDropTransformers> = {}
+          let transformed: ReturnType<EventDropTransformer> = {}
           for (let transformer of initialContext.getCurrentData().pluginHooks.eventDropTransformers) {
             Object.assign(transformed, transformer(validMutation, initialContext, eventDef))
           }
@@ -433,7 +432,7 @@ function computeEventMutation(
   hit0: Hit,
   hit1: Hit,
   eventInstanceStart: Date,
-  massagers: eventDragMutationMassager[],
+  massagers: EventDragMutationMassager[],
 ): EventMutation {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan

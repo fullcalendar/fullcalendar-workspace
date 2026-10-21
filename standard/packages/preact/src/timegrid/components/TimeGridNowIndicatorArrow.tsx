@@ -1,7 +1,7 @@
 import { joinClassNames } from '../../util/html'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { DateProfile } from '../../DateProfileGenerator'
-import { NowIndicatorHeaderContainer } from '../../common/NowIndicatorHeaderContainer'
+import { DateProfile } from '../../date-profile/DateProfileGenerator'
+import { NowIndicatorHeaderContainer } from '../../now-indicator/NowIndicatorHeaderContainer'
 import { computeDateTopFrac } from './util'
 import classNames from '../../styles.module.css'
 

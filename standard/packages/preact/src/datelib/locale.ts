@@ -1,6 +1,6 @@
-import { globalLocales } from '../global-locales'; // weird to be importing this
-import { CalendarOptions } from '../options'
-import { mergeCalendarOptions } from '../options-manip'
+import { globalLocales } from './global-locales'; // weird to be importing this
+import { CalendarOptions } from '../options/options'
+import { mergeCalendarOptions } from '../options/merge'
 
 import { LocaleCodeArg, Locale } from '@full-ui/headless-calendar'
 

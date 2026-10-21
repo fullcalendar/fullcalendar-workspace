@@ -1,4 +1,4 @@
-import { PluginInput } from '../plugin-system-struct'
+import { PluginInput } from '../plugins/plugin-types'
 import { ListView } from './components/ListView'
 
 export default {

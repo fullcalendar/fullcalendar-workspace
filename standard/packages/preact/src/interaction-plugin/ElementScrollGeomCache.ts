@@ -1,5 +1,5 @@
 import { computeInnerRect } from '../util/dom-geom'
-import { ElementScrollController } from '../common/scroll-controller'
+import { ElementScrollController } from './scroll-controller'
 import { ScrollGeomCache } from './ScrollGeomCache'
 
 export class ElementScrollGeomCache extends ScrollGeomCache {
