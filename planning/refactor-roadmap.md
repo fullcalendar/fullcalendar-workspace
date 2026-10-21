@@ -106,7 +106,7 @@ Its objections are weighed, not followed blindly.
 | 7 | Layout families | `phase-7-layout-families.md` (done) | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
 | 9 | Store slices, actions, API facade | `phase-9-store.md` (done) | 8 |
-| 10 | Date profile | sketched below | 9 |
+| 10 | Date profile | `phase-10-date-profile.md` (done) | 9 |
 | 11 | Granular contexts | sketched below | 9 |
 | 12 | Grid abstraction, hooks-first React API | tabled (medium-term future) | 7, 9 |
 
@@ -227,7 +227,14 @@ with the reviews' findings as their requirements. Originally sketched as follows
   option change, so a cached wrapper holding it would go stale.
 - **Vanilla:** the store is created in the constructor, so API calls before `render()` keep working.
 
-### 10. Date profile
+### 10. Date profile (done, see `phase-10-date-profile.md`)
+
+As built, behavior-identical: the profile's steps are module functions with open recursion through the
+generator (custom `dateProfileGeneratorClass` overrides keep working), `TableDateProfileGenerator` became
+a view-supplied render-range function, the generator exposes `hiddenDays`. The profile stays stored
+state (deriving it from an anchor moved to phase 11); the midnight change moved to the loose ends; an
+oracle checks every navigation against the frozen old generator. Originally sketched as follows.
+
 
 - **Hidden days:** a small value object with `isHidden`, `skip` and `trim`.
 - **Config:** a plain config object, plus a view-supplied render-range function in place of

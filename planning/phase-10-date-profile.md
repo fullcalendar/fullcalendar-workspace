@@ -1,6 +1,6 @@
 # Phase 10: date profile
 
-Status: plan, revision 3 (2026-10-21), after Sol's spec review rounds 1 and 2. Re-scoped twice: the
+Status: done (2026-10-21). Plan revision 3, after Sol's spec review rounds 1 and 2. Re-scoped twice: the
 profile stays stored state (round 1), and the midnight change moved to the loose ends (round 2), so
 phase 10 is behavior-identical.
 
@@ -274,3 +274,13 @@ unrelated option change and new for a related one. 114 date-profile specs in bot
   building through the module's `build`, each fail a custom-class spec.
 - Verified: full suites in both runtimes; snapshots and counts unchanged; the oracle's 90 recorded
   callback traces unchanged.
+
+## Review of step 1 (Sol, implementation, high effort)
+
+No P1s. No regression found in sibling dispatch, explicit-`undefined` defaults, constructor dispatch,
+custom props plumbing or the shared table generator's identity; the new view option merges last-wins (no
+function composition); no references to `TableDateProfileGenerator` remain. One P2, fixed:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P2: the flipped lock's four-day range is the same with or without the table range, so it doesn't prove a custom class doesn't receive `renderRange` | specs with a distinguishable (padding) render range: a base-class view gets it, a custom class on the same view doesn't (and its constructor props have no `renderRange` key); views differing only in their render range get different generators. Mutation-checked: dropping the store's custom-class guard fails it |

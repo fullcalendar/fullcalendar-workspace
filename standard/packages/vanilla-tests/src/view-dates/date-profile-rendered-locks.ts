@@ -203,6 +203,37 @@ describe('date profile rendered locks', () => {
       expect([day(renderRange.start), day(renderRange.end)]).toEqual(['2024-03-08', '2024-03-12'])
     })
 
+    // a view's dateProfileRenderRange reaches only the base class: a custom class gets today's props
+    // (no renderRange key), and its own buildRenderRange (here, the base's identity) applies
+    it('doesn\'t receive the view\'s render range', () => {
+      let constructorProps = []
+      class RecordingGenerator extends DateProfileGenerator {
+        constructor(props) {
+          super(props)
+          constructorProps.push(props)
+        }
+      }
+      let pad = (range) => ({ start: addDays(range.start, -1), end: addDays(range.end, 1) })
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'custom-padded-view',
+          views: {
+            padded: { type: 'timeGrid', duration: { days: 4 }, dateProfileRenderRange: pad },
+            customPadded: { type: 'timeGrid', duration: { days: 4 }, dateProfileRenderRange: pad, dateProfileGeneratorClass: RecordingGenerator },
+          },
+        }],
+        initialView: 'padded',
+      })
+      let range = calendar.getCurrentData().dateProfile.renderRange
+      expect([day(range.start), day(range.end)]).toEqual(['2024-03-07', '2024-03-13']) // padded
+
+      calendar.changeView('customPadded')
+      range = calendar.getCurrentData().dateProfile.renderRange
+      expect([day(range.start), day(range.end)]).toEqual(['2024-03-08', '2024-03-12']) // not padded
+      expect(constructorProps.length).toBeGreaterThan(0)
+      expect(constructorProps.every((props) => !('renderRange' in props))).toBe(true)
+    })
+
     // isHiddenDay is what the hidden-day consumers call; skipping reads the hash, so it isn't affected
     class HideThursdaysForConsumers extends DateProfileGenerator {
       isHiddenDay(dayOrDate) {
@@ -241,6 +272,27 @@ describe('date profile rendered locks', () => {
       calendar.changeView('multiMonthYear')
       expect(calendar.getCurrentData().dateProfileGenerator === generator).toBe(EXPECTED_YEAR_VIEWS_SHARE_GENERATOR)
       expect(callCnt).toBe(EXPECTED_YEAR_VIEW_SWITCH_CALLS)
+    })
+
+    // the render range is part of the generator's inputs: views differing only in it don't share one
+    it('is new for a view with a different render range', () => {
+      let padA = (range) => ({ start: addDays(range.start, -1), end: range.end })
+      let padB = (range) => ({ start: range.start, end: addDays(range.end, 1) })
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'two-render-ranges',
+          views: {
+            a: { type: 'timeGrid', duration: { days: 4 }, dateProfileRenderRange: padA },
+            b: { type: 'timeGrid', duration: { days: 4 }, dateProfileRenderRange: padB },
+          },
+        }],
+        initialView: 'a',
+      })
+      let generator = calendar.getCurrentData().dateProfileGenerator
+      calendar.changeView('b')
+      expect(calendar.getCurrentData().dateProfileGenerator).not.toBe(generator)
+      let range = calendar.getCurrentData().dateProfile.renderRange
+      expect([day(range.start), day(range.end)]).toEqual(['2024-03-08', '2024-03-13'])
     })
 
     it('is kept across an unrelated option change, and new for a related one', () => {
