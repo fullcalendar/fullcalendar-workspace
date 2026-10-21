@@ -1,82 +1,25 @@
 import { EventApi } from '@fullcalendar/preact/public-api'
 import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/preact/protected-api'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource'
+import { getResourceActions } from './resource-actions'
 
 export class ResourceApi {
   constructor(
-    private _context: CalendarContext,
+    public _context: CalendarContext,
     public _resource: Resource,
   ) {
   }
 
   setProp(name: string, value: any) {
-    let oldResource = this._resource
-
-    this._context.dispatch({
-      type: 'SET_RESOURCE_PROP',
-      resourceId: oldResource.id,
-      propName: name,
-      propValue: value,
-    })
-
-    this.sync(oldResource)
+    getResourceActions(this._context.calendarApi).setResourceProp(this, name, value)
   }
 
   setExtendedProp(name: string, value: any) {
-    let oldResource = this._resource
-
-    this._context.dispatch({
-      type: 'SET_RESOURCE_EXTENDED_PROP',
-      resourceId: oldResource.id,
-      propName: name,
-      propValue: value,
-    })
-
-    this.sync(oldResource)
-  }
-
-  private sync(oldResource: Resource) {
-    let context = this._context
-    let resourceId = oldResource.id
-
-    // TODO: what if dispatch didn't complete synchronously?
-    this._resource = context.getCurrentData().resourceStore[resourceId]
-
-    context.emitter.trigger('resourceChange', {
-      oldResource: new ResourceApi(context, oldResource),
-      resource: this,
-      revert() {
-        context.dispatch({
-          type: 'ADD_RESOURCE', // function as a merge. TODO: rename
-          resourceHash: {
-            [resourceId]: oldResource,
-          },
-        })
-      },
-    })
+    getResourceActions(this._context.calendarApi).setResourceExtendedProp(this, name, value)
   }
 
   remove() {
-    let context = this._context
-    let internalResource = this._resource
-    let resourceId = internalResource.id
-
-    context.dispatch({
-      type: 'REMOVE_RESOURCE',
-      resourceId,
-    })
-
-    context.emitter.trigger('resourceRemove', {
-      resource: this,
-      revert() {
-        context.dispatch({
-          type: 'ADD_RESOURCE', // function as a merge. TODO: rename
-          resourceHash: {
-            [resourceId]: internalResource,
-          },
-        })
-      },
-    })
+    getResourceActions(this._context.calendarApi).removeResource(this)
   }
 
   getParent(): ResourceApi | null {

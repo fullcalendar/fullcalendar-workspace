@@ -48,6 +48,11 @@ export class OptionsRefinerCache {
   private optionsForRefining: string[] = []
   private optionsForHandling: string[] = []
 
+  // the last refinement's plugin hooks, mid-dispatch too. undefined before the first
+  get currentPluginHooks(): PluginHooks | undefined {
+    return this.stableCalendarOptionsData && this.stableCalendarOptionsData.pluginHooks
+  }
+
   // at call time, as resetOptions always has
   invalidate(optionNames: string[]) {
     this.optionsForRefining.push(...optionNames)

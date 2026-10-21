@@ -4,6 +4,7 @@ import { ResourceDataAdder, transformIsDraggable } from './View'
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
 import { reduceResources, ResourceState } from './reducers/resources'
 import { runResourceSourceFetch } from './reducers/resourceSource'
+import { createResourceActions } from './api/resource-actions'
 import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
@@ -18,6 +19,7 @@ export default {
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   reducers: [reduceResources],
+  calendarActions: createResourceActions,
   effectRunners: {
     fetchResourceSource: runResourceSourceFetch,
   },

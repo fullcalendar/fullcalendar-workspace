@@ -15,6 +15,7 @@ import { EventSourceImpl } from './EventSourceImpl'
 import { warn } from '../util/warn'
 import type { CalendarApiImpl } from './CalendarApiImpl'
 import type { CalendarStore } from '../reducers/store'
+import type { Dictionary } from '../options'
 import {
   CalendarOptions,
   DateInput,
@@ -69,6 +70,9 @@ export interface CalendarActions {
   // scroll
   scrollToTime(timeInput: DurationInput): void
 }
+
+// a plugin's actions (the calendarActions hook), merged over the core's
+export type CalendarActionsCreator = (store: CalendarStore, calendarApi: CalendarApiImpl) => Dictionary
 
 export function createCalendarActions(store: CalendarStore, calendarApi: CalendarApiImpl): CalendarActions {
   const { dispatch } = store

@@ -467,3 +467,21 @@ bodies: refining the mutation with the wrapper's own context, updating the wrapp
 `EventImpl` setter goes through `mutate`, so premium's `setResources` and `setProp` patches too. The
 wrappers' context, dispatch, emitter and `getCurrentData` all were the store's, so nothing else moved.
 Specs added to `store-actions.ts`. Verified: full suites, both runtimes; snapshots and counts unchanged.
+
+## Step 3c: plugin actions (done)
+
+- **Core:** a `calendarActions` plugin hook, a creator `(store, calendarApi) => actions` (concatenated per
+  plugin set). `store.actions` is a getter: the core's actions, with each plugin's merged over them, built
+  once per plugin set (memoized by `pluginHooks.calendarActions`) from the options refiner's latest plugin
+  hooks (`currentPluginHooks`), so an API call mid-dispatch already sees them. The same object while the
+  plugins don't change. `protected-api`: `CalendarActionsCreator`.
+- **Premium:** `resource/api/resource-actions.ts`, `createResourceActions` (registered by the resource
+  plugin): `addResource`, `refetchResources`, `setResourceProp`, `setResourceExtendedProp`,
+  `removeResource`, with the `CalendarApiImpl` patches' and `ResourceApi`'s bodies. The patches and
+  `ResourceApi` delegate through `getResourceActions(calendarApi)`, which builds the same actions
+  unregistered for a calendar without the resource plugin: the patches exist whenever the scheduler
+  bundle is imported and have always run there. `ResourceApi._context` is public now (the actions read it,
+  as `EventImpl._context`).
+- **Spec:** premium `misc/resource-actions.ts` (registered, and what the API and `ResourceApi` run;
+  `setProp` updates the wrapper, `resourceChange` reverts; still works without the resource plugin).
+- Verified: full suites, both runtimes; snapshots and counts unchanged.

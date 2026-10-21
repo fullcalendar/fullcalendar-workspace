@@ -1,6 +1,7 @@
 import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
-import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
+import { ResourceInput } from '../structs/resource'
+import { getResourceActions } from './resource-actions'
 import { ResourceAction } from '../reducers/resource-action'
 
 declare module '@fullcalendar/preact/public-api' {
@@ -30,41 +31,7 @@ CalendarApiImpl.prototype.addResource = function ( // eslint-disable-line func-n
   input: ResourceInput | ResourceApi,
   scrollTo = true,
 ) {
-  let currentState = this.getCurrentData()
-  let resourceHash: ResourceHash
-  let resource: Resource
-
-  if (input instanceof ResourceApi) {
-    resource = input._resource
-    resourceHash = { [resource.id]: resource }
-  } else {
-    resourceHash = {}
-    resource = parseResource(input, '', resourceHash, currentState)
-  }
-
-  this.dispatch({
-    type: 'ADD_RESOURCE',
-    resourceHash,
-  })
-
-  if (scrollTo) {
-    // TODO: wait til dispatch completes somehow
-    this.trigger('_resourceScrollRequest', resource.id)
-  }
-
-  let resourceApi = new ResourceApi(currentState, resource)
-
-  currentState.emitter.trigger('resourceAdd', {
-    resource: resourceApi,
-    revert: () => {
-      this.dispatch({
-        type: 'REMOVE_RESOURCE',
-        resourceId: resource.id,
-      })
-    },
-  })
-
-  return resourceApi
+  return getResourceActions(this).addResource(input, scrollTo)
 }
 
 CalendarApiImpl.prototype.getResourceById = function (this: CalendarApiImpl, id: string) { // eslint-disable-line func-names
@@ -117,9 +84,7 @@ CalendarApiImpl.prototype.getTopLevelResources = function (this: CalendarApiImpl
 }
 
 CalendarApiImpl.prototype.refetchResources = function (this: CalendarApiImpl) { // eslint-disable-line func-names
-  this.dispatch({
-    type: 'REFETCH_RESOURCES',
-  })
+  getResourceActions(this).refetchResources()
 }
 
 export function transformDatePoint(dateSpan: DateSpan, context: CalendarContext) {

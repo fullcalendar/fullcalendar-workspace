@@ -34,7 +34,7 @@ import { OptionsRefinerCache } from './options-refiner'
 import { createReduceEffects, EffectRunnerMap, ReduceEffects } from './effects'
 import { runEventSourceFetch } from './event-source-fetch'
 import { OptionChangeEffect, runOptionChange } from './option-change'
-import { CalendarActions, createCalendarActions } from '../api/calendar-actions'
+import { CalendarActions, CalendarActionsCreator, createCalendarActions } from '../api/calendar-actions'
 
 const CORE_EFFECT_RUNNERS: EffectRunnerMap = {
   fetchEventSource: runEventSourceFetch,
@@ -111,8 +111,27 @@ export class CalendarStore {
   private config: CalendarStoreConfig
   private listeners: CalendarStoreListener[] = []
 
-  // what changes the calendar. the API's methods, the wrappers and plugins call these
-  public actions: CalendarActions
+  private coreActions: CalendarActions
+  private buildActions = memoize((creators: CalendarActionsCreator[]) => {
+    let actions = { ...this.coreActions }
+
+    for (let creator of creators) {
+      Object.assign(actions, creator(this, this.config.calendarApi))
+    }
+
+    return actions
+  })
+
+  /*
+  What changes the calendar. The API's methods, the wrappers and plugins call these. The core's, and
+  the plugins' (calendarActions), as of the latest options, so mid-dispatch too. The same object
+  while the plugins don't change
+  */
+  get actions(): CalendarActions & Dictionary {
+    const pluginHooks = this.optionsRefiner.currentPluginHooks
+
+    return pluginHooks ? this.buildActions(pluginHooks.calendarActions) : this.coreActions
+  }
   private state: CalendarDataManagerState // internal state
   private data: CalendarData // internal state + computed
 
@@ -131,7 +150,7 @@ export class CalendarStore {
   constructor(config: CalendarStoreConfig) {
     this.config = config
     config.calendarApi.store = this
-    this.actions = createCalendarActions(this, config.calendarApi)
+    this.coreActions = createCalendarActions(this, config.calendarApi)
     this.nowManager = new CalendarNowManager()
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
   }
