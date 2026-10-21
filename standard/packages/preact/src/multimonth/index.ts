@@ -1,4 +1,4 @@
-import { TableDateProfileGenerator } from '../daygrid/TableDateProfileGenerator'
+import { tableRenderRange } from '../daygrid/table-render-range'
 import { PluginInput } from '../plugin-system-struct'
 import { MultiMonthView } from './components/MultiMonthView'
 
@@ -8,7 +8,7 @@ export default {
   views: {
     multiMonth: {
       component: MultiMonthView,
-      dateProfileGeneratorClass: TableDateProfileGenerator,
+      dateProfileRenderRange: tableRenderRange,
       multiMonthMaxColumns: 3,
       singleMonthMinWidth: 350,
     },

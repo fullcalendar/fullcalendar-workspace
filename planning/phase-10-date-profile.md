@@ -255,3 +255,22 @@ overriding `initHiddenDays` (constructor-time, seen by the rendered header), `bu
 `buildNext` (no super) with receiver checks and the toolbar's use, `buildCurrentRangeInfo` and
 `buildValidRange`, and `isHiddenDay` (seen by the hidden-day consumers); the generator kept across an
 unrelated option change and new for a related one. 114 date-profile specs in both runtimes.
+
+## Step 1: module functions, one class, the table render range (done)
+
+- `structs/date-profile.ts`: each step of the old class as a function of the generator (`gen`), sibling
+  steps called through it (`gen.build`, `gen.skipHiddenDays`, …). `DateProfileGenerator`'s methods
+  delegate (`dp.step(this, …)`), its `props` now public, the constructor still calling
+  `this.initHiddenDays()`, and a `hiddenDays` getter (`structs/hidden-days.ts`'s `HiddenDays`, through the
+  generator's methods, so overrides apply) for 7b and phase 11.
+- `daygrid/table-render-range.ts` (moved from `TableDateProfileGenerator.ts`): `tableRenderRange`, one
+  function object, set by the daygrid and multimonth plugins as `dateProfileRenderRange`; the store passes
+  it as `props.renderRange` to the base class only, so a custom class's props and the memo key are as
+  before. `buildDayTableRenderRange` unchanged (MultiMonthView's per-month ranges).
+- The one behavior change: a custom class on a dayGrid/multiMonth view no longer crashes ("not a
+  constructor"); it works, without the table range (a single-row view; one spanning weeks needs the table
+  range's whole weeks). Lock flipped.
+- Mutation-checked: trimming through the module's `skipHiddenDays` instead of `gen`'s, and `buildPrev`
+  building through the module's `build`, each fail a custom-class spec.
+- Verified: full suites in both runtimes; snapshots and counts unchanged; the oracle's 90 recorded
+  callback traces unchanged.

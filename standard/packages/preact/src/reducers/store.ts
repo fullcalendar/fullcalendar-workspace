@@ -5,7 +5,7 @@ import { CalendarApiImpl } from '../api/CalendarApiImpl'
 import { EventSourceHash } from '../structs/event-source'
 import { ViewSpec } from '../structs/view-spec'
 import { mapHash, isPropsEqualShallow } from '../util/object'
-import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps } from '../DateProfileGenerator'
+import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps, RenderRangeBuilder } from '../DateProfileGenerator'
 import { reduceViewType } from './view-type'
 import { getInitialDate, reduceCurrentDate } from './current-date'
 import { reduceDynamicOptionOverrides } from './options'
@@ -718,7 +718,7 @@ export class CalendarStore {
 
     this.nowManager.handleInput(optionsData.dateEnv, refinedOptions.now)
 
-    let dateProfileGenerator = this.buildDateProfileGenerator({
+    let generatorProps: DateProfileGeneratorProps = {
       dateProfileGeneratorClass: viewSpec.optionDefaults.dateProfileGeneratorClass as any,
       duration: viewSpec.duration,
       durationUnit: viewSpec.durationUnit,
@@ -736,7 +736,16 @@ export class CalendarStore {
       validRangeInput: refinedOptions.validRange,
       visibleRangeInput: refinedOptions.visibleRange,
       fixedWeekCount: refinedOptions.fixedWeekCount,
-    })
+    }
+
+    // the view's render range (the table views'), for the base class only: a custom class keeps today's
+    // props exactly (no new key), which are also the memo key
+    let renderRange = viewSpec.optionDefaults.dateProfileRenderRange as RenderRangeBuilder | undefined
+    if (renderRange && !generatorProps.dateProfileGeneratorClass) {
+      generatorProps.renderRange = renderRange
+    }
+
+    let dateProfileGenerator = this.buildDateProfileGenerator(generatorProps)
 
     let viewApi = this.buildViewApi(viewType, this.getCurrentData, optionsData.dateEnv)
 

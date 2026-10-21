@@ -187,18 +187,20 @@ describe('date profile rendered locks', () => {
       expect(receivers['skipHiddenDays'].length).toBeGreaterThan(0)
     })
 
-    // a custom class on a view whose type already sets one (dayGrid's table generator) crashes today: the
-    // view configs' merge combines the two classes into a function wrapper, which isn't a constructor
-    it('on a table view crashes, as before', () => {
-      expect(() => {
-        initCalendar({
-          plugins: [...DEFAULT_PLUGINS, {
-            name: 'custom-table-view',
-            views: { customMonth: { type: 'dayGrid', duration: { months: 1 }, dateProfileGeneratorClass: DateProfileGenerator } },
-          }],
-          initialView: 'customMonth',
-        })
-      }).toThrowError(/is not a constructor/)
+    // a custom class on a table view (dayGrid) replaces the table range. (Before phase 10 it crashed: dayGrid
+    // set a class too, and the view configs' merge combined the two into a function wrapper, which isn't a
+    // constructor. dayGrid now sets a render-range function instead.) A single row: a dayGrid spanning weeks
+    // needs whole weeks, which only the table range gives
+    it('on a table view replaces the table range', () => {
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'custom-table-view',
+          views: { customDays: { type: 'dayGrid', duration: { days: 4 }, dateProfileGeneratorClass: DateProfileGenerator } },
+        }],
+        initialView: 'customDays',
+      })
+      let { renderRange } = calendar.getCurrentData().dateProfile
+      expect([day(renderRange.start), day(renderRange.end)]).toEqual(['2024-03-08', '2024-03-12'])
     })
 
     // isHiddenDay is what the hidden-day consumers call; skipping reads the hash, so it isn't affected

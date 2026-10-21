@@ -1,19 +1,18 @@
-import { DateProfileGenerator } from '../DateProfileGenerator'
+import { RenderRangeBuilder } from '../DateProfileGenerator'
 import { DateRange, DateEnv, addWeeks, diffWeeks, addDays } from '@full-ui/headless-calendar'
 
-export class TableDateProfileGenerator extends DateProfileGenerator {
-  // Computes the date range that will be rendered
-  buildRenderRange(currentRange, currentRangeUnit, isRangeAllDay): DateRange {
-    let renderRange = super.buildRenderRange(currentRange, currentRangeUnit, isRangeAllDay)
-    let { props } = this
-
-    return buildDayTableRenderRange({
-      currentRange: renderRange, // ???
-      snapToWeek: /^(year|month)$/.test(currentRangeUnit),
-      fixedWeekCount: props.fixedWeekCount,
-      dateEnv: props.dateEnv,
-    })
-  }
+/*
+The table views' render range (the daygrid and multimonth plugins' dateProfileRenderRange view option):
+year and month ranges snapped to whole weeks, and six weeks with fixedWeekCount. One function object for
+both plugins, so their views with equal inputs share a generator (was TableDateProfileGenerator)
+*/
+export const tableRenderRange: RenderRangeBuilder = (currentRange, currentRangeUnit, isRangeAllDay, props) => {
+  return buildDayTableRenderRange({
+    currentRange,
+    snapToWeek: /^(year|month)$/.test(currentRangeUnit),
+    fixedWeekCount: props.fixedWeekCount,
+    dateEnv: props.dateEnv,
+  })
 }
 
 export function buildDayTableRenderRange(props: {

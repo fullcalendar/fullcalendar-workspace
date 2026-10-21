@@ -1,6 +1,6 @@
 import { PluginInput } from '../plugin-system-struct'
 import { DayGridView } from './components/DayGridView'
-import { TableDateProfileGenerator } from './TableDateProfileGenerator'
+import { tableRenderRange } from './table-render-range'
 
 export default {
   name: 'daygrid',
@@ -8,7 +8,7 @@ export default {
   views: {
     dayGrid: {
       component: DayGridView,
-      dateProfileGeneratorClass: TableDateProfileGenerator,
+      dateProfileRenderRange: tableRenderRange,
     },
     dayGridDay: {
       type: 'dayGrid',
