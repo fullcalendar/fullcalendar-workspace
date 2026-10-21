@@ -880,24 +880,40 @@ Premium, `column/vresource-identity.ts` (identity locks, Karma, both runtimes),
 `resourceTimeGridWeek` and `resourceDayGridWeek`, 20 events across 4 resources, `selectMirror: true`,
 `nowIndicator: true`, one all-day and one timed selection:
 
-- **Re-render probes that must re-execute the view body:** (a) `calendar.render()` (vanilla
-  re-renders the root with the same props; `view-render/rerender.ts` does this) and (b) a now tick
-  (jasmine mock clock advanced one minute). Prove the probe reaches the view body in the spec itself
-  (e.g. `dayLaneClass`/`dayCellClass` counters move, or a probe `viewClass` count), then assert every
-  event hook's count after the probe `toBeLessThanOrEqual(recorded)`, lifecycle hooks included (no
-  `eventDidMount`/`eventWillUnmount` at all on a probe).
+- **Re-render probes that must re-execute the view body**, each proven in the spec itself (a counter
+  that must move: `dayLaneClass`/`dayCellClass`, or a probe `viewClass` count) before its assertions:
+  (a) `calendar.render()` (vanilla re-renders the root with the same props; `view-render/rerender.ts`
+  does this), for every view; (b) a **minute tick** (jasmine mock clock advanced one minute) for the
+  **TimeGrid views only**: they subscribe to `useNow('minute')` with `nowIndicator`
+  (`useTimeGridViewData.ts:48`), while the DayGrid views subscribe to `useNow('day')`
+  (`useDayGridViewData.ts:25`) and would not re-render; (c) a **day tick** for the DayGrid views: the
+  clock set just before midnight and advanced past it, which re-renders the body with a new
+  `todayRange` (proven by `dayCellClass` moving for the two days whose `isToday` flips) while every
+  stage-1 and stage-2 input is unchanged. After each probe assert every event hook's count
+  `toBeLessThanOrEqual(recorded)`, lifecycle hooks included (no `eventDidMount`/`eventWillUnmount` at
+  all on a probe).
 - **Resource title update with a selection mirror:** `calendar.getResourceById('b').setProp('title',
   'B2')` while a timed selection mirror is shown in `b`: **zero** `eventWillUnmount`/`eventDidMount`
-  (the mirror keeps its fabricated instance id), no `eventContent` for untouched events; `eventClass`
-  counts `<=` recorded (today's joiner re-renders them with new seg objects; the plan keeps that
-  boundary, so equal). Also the all-day row's mirror in `resourceTimeGridWeek` and the dayGrid mirror.
-- **Another resource's UI change with a selection mirror:** `getResourceById('a').setProp('eventColor',
-  'red')` while `b`'s mirror is shown: zero lifecycle calls for the mirror; `eventClass`/`eventContent`
-  only for `a`'s events (`<=` recorded per hook). Also a `businessHours` change on `a`.
-- **Fallback transition:** with `filterResourcesWithEvents` and a timed selection in `b`, add an event
-  that makes a resource column reappear (leaving the fallback) and remove it again (entering): counts
-  `<=` recorded; the selection mirror's lifecycle calls equal today's (the key set empties, so today
-  the fabricated instance is lost: record and lock whatever that is).
+  (the mirror keeps its fabricated instance id); every other hook `<=` its recorded per-hook baseline
+  (the rebuilt model's fresh `ResourceApi` render props may rerun class and content hooks of untouched
+  events today, §2.6; no resource-local expectation). Also the all-day row's mirror in
+  `resourceTimeGridWeek` and the dayGrid mirror.
+- **Another resource's parsed UI replaced, with a selection mirror:** `setProp('eventColor', …)` is
+  **not** a UI change: `setResourceProp` assigns the raw property (`resourceStore.ts:81`) and never
+  re-parses `ui`/`businessHours` (`resource.ts:61`), so it cannot be the probe. Use a controlled
+  replacement that re-parses only A: `calendar.addResource({ id: 'a', title: 'A', eventColor: 'red' })`
+  with A's existing id (`addResource` spreads the additions over the store, `resourceStore.ts:60`, so
+  B's `Resource` object is kept by reference), with an explicit `resourceOrder` so the column order
+  doesn't move. Assert the precondition first: A's internal `ui` reference changed and A's events now
+  render red; B's internal `Resource` (hence `ui`, `businessHours`) is the same reference. Then: zero
+  lifecycle calls for B's mirror; every hook `<=` recorded per hook. Same with A re-added with a
+  `businessHours` input (B's reference preserved; A's non-business fills change).
+- **Fallback transition** (spec 11(b)'s precondition: `hiddenDays: [3]`, Wednesday-only events,
+  non-empty view-wide `resources`): with a timed selection in `b`, add a Thursday event for `a` (a
+  resource column appears, leaving the fallback) and remove it again (entering): every hook `<=`
+  recorded per hook, lifecycle included. This probe locks counts only: the key set empties and refills
+  today too, so the mirror unmounts and mounts either way, and it cannot tell an evicted entry from a
+  retained one (the `KeyedCache` unit locks do, §4.2 pure-function specs).
 - **Drag:** counts after a drag of one event (`$.simulate('drag')`) `<=` recorded; `eventDidMount`
   only for the mirror(s).
 - **Add event:** counts `<=` recorded.
@@ -925,8 +941,9 @@ Standard, `view-render/day-table-slicing.ts`:
 9. Timed bg segs are dropped by the all-day row (`DayGridRows.tsx:237`).
 
 Standard, `view-render/day-table-identity.ts`: the same probes as the premium identity spec for
-`dayGridMonth` and `timeGridWeek` (`calendar.render()`, now tick, drag, add event, unrelated option),
-per hook, `<=` recorded.
+`dayGridMonth` (`calendar.render()`, the day tick) and `timeGridWeek` (`calendar.render()`, the
+minute tick), each proven to reach the view body, plus drag, add event and unrelated option, per
+hook, `<=` recorded.
 
 Pure-function unit specs (Karma, importing from `fullcalendar/protected-api`), written in step 1/2
 against the new functions, not characterization: `buildDayGridRanges` and `daySeries.sliceRange`
@@ -936,7 +953,16 @@ resourceless, a missing middle column, a participating key with no columns, mult
 week crossings, hidden days, both orderings); `buildEventUiForKey`/`splitIndividualUi` precedence and membership
 (calendar base, resource ui, individual, def ui; a def not in the key; lanes); `projectInteraction`
 metadata membership (keyed vs keyless); `sliceDayTableEvents` order (instance order within a key,
-inverse complements last) against `sliceEventStore` on a subset store as the oracle.
+inverse complements last) against `sliceEventStore` on a subset store as the oracle; and **direct
+`KeyedCache` locks** (the only place that can tell cache behavior apart from rendering): (i) with
+keys `a`, `b`, `c` and only `b`'s args changed, `compute` receives exactly `['b']` and `a`'s/`c`'s
+results are the same objects as before; (ii) unchanged args for every key → `compute` not called,
+every entry identical; (iii) a key leaving `keys` is evicted and, on re-entry, recomputed (fresh
+entry, `compute` receives it) even with equal args; (iv) two cache instances (the selection and the
+events caches of one lane, today's separate `memoize` fields, `slicing-utils.ts:34-38`) are
+independent: invalidating one leaves the other's entries identical; (v) arg comparison is
+element-wise identity (`isArraysEqual`), so an equal-by-value but new array misses, as `memoize`
+does.
 
 ### 4.3 Mutation checks (run once per step, by hand, not committed)
 
@@ -944,14 +970,20 @@ Each should make a lock fail; if it doesn't, the lock is too weak:
 
 - In `useDayTableSegs`, drop `eventStore` from the stage-1 fg memo deps → `add-event`; drop `eventDrag`
   → mid-drag assertions.
-- Make any stage-1 entry's args include `model`, `keying`, `resources` or the `Resource` object → the
-  resource-title-update lock (a new fabricated selection instance remounts the mirror:
-  `eventDidMount` > 0).
-- Replace the per-key `KeyedCache` with one aggregate memo over all keys' bases → the "another
-  resource's UI change" lock (B's mirror remounts when A's `eventColor` changes).
+- Make the **selection** cache's per-key args include `model`, `keying`, `resources` or the
+  `Resource` object → the resource-title-update lock (a new fabricated selection instance remounts
+  the mirror: `eventDidMount` > 0). Doing the same to the fg/bg cache only does *not* regenerate
+  selection instances (the caches are separate, as today's `memoize` fields are), so for fg/bg the
+  detector is the `KeyedCache` unit lock (i) and the rename probe's `eventClass` counts, not the
+  lifecycle counts.
+- Replace the per-key bases `memoize` map with one aggregate memo over all keys' bases → the
+  "another resource's parsed UI replaced" lock (B's mirror remounts when A is re-added with a new
+  `eventColor`) and `KeyedCache` lock (i).
 - Build the keying from the view's `resources` instead of `model.participants` → spec 11(b) (an
   interaction targeting a resource activates during the fallback; resource BH expand; header gains a
-  resource row).
+  resource row). The fallback-transition probe does not detect this (mirrors remount either way).
+- Evict nothing from the `KeyedCache` (keep stale keys) → `KeyedCache` lock (iii); retain-on-reentry
+  → lock (iii) too (the fallback-transition probe cannot).
 - Make a stage-1 memo depend on `props` (recomputes every render) → identity probes (`render()`, now
   tick) go up.
 - Use `model.colCount` as the stage-1 divisor → premium 9 (second week) and the `resourceDayGridMonth`
@@ -990,11 +1022,15 @@ Add in step 0:
   `a`); `mid-drag-to-allday` (`timeGridWeek` and `resourceTimeGridWeek`, a timed event dragged into
   the all-day row); `mid-drag-grouped` (premium 12's pair).
 - `filtered-fallback`: `resourceTimeGridWeek` and `resourceDayGridWeek` with
-  `filterResourcesWithEvents: true`, `weekends: false`, and every resource's events on Saturdays only
-  (the all-filtered fallback: plain date header, inert columns, calendar business hours, no resource
-  BH), plus a timed selection in `b` (no highlight).
+  `filterResourcesWithEvents: true`, `hiddenDays: [3]` (an **interior** hidden day; hidden weekends
+  are trimmed off the range and would empty `resources` view-wide instead, the other branch), and
+  every resource's events on Wednesdays only (the all-filtered fallback: plain date header, inert
+  columns, calendar business hours, no resource BH), plus a timed selection in `b` (no highlight).
+  Also a `filtered-empty` twin with `weekends: false` and Saturday-only events for the
+  empty-resources branch (`resource-table-model.ts:21`), so both branches are snapshotted.
 - `select-mirror-after-rename` and `select-mirror-after-other-ui-change`: `resourceTimeGridWeek`,
-  `selectMirror: true`, a timed selection in `b`, then `setProp('title')` on `b` / `setProp('eventColor')`
+  `selectMirror: true`, a timed selection in `b`, then `setProp('title')` on `b` / `addResource` of `a`
+  with the same id and a new `eventColor` (a real re-parse; `setProp('eventColor')` isn't one)
   on `a` in `setup` (DOM identical to `select-mirror`; the identity spec covers the lifecycle counts).
 - `filtered-per-date`: `resourceTimeGridWeek` and `resourceDayGridWeek` with
   `filterResourcesWithEvents: true`, both orderings.
@@ -1111,3 +1147,16 @@ sound."
 | Q14 | "Rebuilding every per-key base is count-neutral" is wrong for selections and interactions. | Corrected (§5 #14): per-key bases rebuild on a store change as today's `splitIndividualUi` does, which re-fabricates selections on `addEvent` today too; identical, not neutral; a finer partition is a loose end. |
 | Q15 | Passing only `model` is fine if stage 1 uses its stable coordinate fields; it doesn't fix finding 1. | Adopted (§5 #15): one model, stage 1 lists `model.daySeries`/`model.dayCols` as args, never the model; finding 1 is answered by the per-key caches, not by this. |
 | — | Phase 10 is done; `context.dateProfileGenerator.hiddenDays` exists. | §2.9 rewritten against the landed getter (cached per generator, delegating through `isHiddenDay`, so overrides apply and the method/hash caveat is gone); question 10 settled. |
+
+## 9. Review round 3 (Sol, spec, high effort)
+
+"No P1s. The architecture is sound; the four round-2 findings are resolved at the design level. Not
+ready unchanged: four P2s remain in the verification instructions. Fix them, then ready to implement."
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P2: the other-resource UI-change probe used `setProp('eventColor')`, which writes the raw property without re-parsing `ui`/`businessHours` (`resourceStore.ts:81`, `resource.ts:61`), so the invalidation never happened and the aggregate-cache mutation could survive. | Fixed. The probe is a controlled re-parse of A only: `addResource` with A's existing id and a new `eventColor` (the store spreads the additions, `resourceStore.ts:60`, so B's `Resource` is kept by reference), with an explicit `resourceOrder`; the spec asserts the precondition (A's internal `ui` reference and rendered colour changed, B's `Resource` reference unchanged) before the lifecycle counts; same for a `businessHours` input. §4.2, §4.3, §4.4 updated; the `setProp` quirk is noted. |
+| 2 | P2: the rename/UI locks demanded "no `eventContent` for untouched events" / "only A's events", but the rebuilt model's fresh `ResourceApi` render props (`AbstractResourceDayTableModel.ts:217` → `events.tsx:210` → `CustomContent.tsx:168`) can rerun class/content hooks elsewhere, today and after. | Fixed. Those locks assert zero mirror mounts/unmounts and per-hook counts `<=` recorded baselines only; §2.6's trace now states what the retained model boundary does not buy. |
+| 3 | P2: the fallback fixture (`weekends: false`, Saturday-only events) hits the empty-resources branch (`resource-table-model.ts:21`): hidden weekends are trimmed off the range (`date-profile.ts:80`), so the events fail view-wide filtering first. | Fixed. Fixture, spec 11(b) and the fallback-transition probe use an interior hidden day (`hiddenDays: [3]`, Wednesday-only events) and assert the precondition (non-empty view-wide `resources`, empty `model.participants`); a `filtered-empty` twin fixture snapshots the other branch. |
+| 4 | P2: a one-minute tick cannot prove DayGrid view-body execution (`useNow('day')`, `useDayGridViewData.ts:25`). | Fixed. The minute tick is a TimeGrid-only probe; DayGrid uses `calendar.render()` and a day tick (clock advanced past midnight, proven by `dayCellClass` moving for the two days whose `isToday` flips), §4.2 premium and standard identity specs. |
+| 5 | P3: mutation checks overclaimed (adding `model` to the fg/bg cache args doesn't regenerate selection instances; fallback lifecycle counts can't distinguish evicted from retained entries). | Fixed. Direct `KeyedCache` unit locks added (stale-key subsets, unchanged-entry identity, eviction and re-entry, independent instances per category, identity-based arg comparison); the lifecycle mutation claim is narrowed to the selection cache, the fg/bg detector is the cache lock plus the rename probe's class counts, and the eviction mutations point at the cache locks, not the transition probe. |
