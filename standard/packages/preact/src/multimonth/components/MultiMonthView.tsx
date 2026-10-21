@@ -22,7 +22,7 @@ import { SingleMonth } from './SingleMonth'
 // a class, because a view's component must be one (see parseViewConfig)
 export class MultiMonthView extends BaseComponent<ViewProps> {
   // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = undefined
+  static contextType = null
 
   render() {
     return <MultiMonthViewBody {...this.props} />

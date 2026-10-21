@@ -101,7 +101,8 @@ context).
 
 The eight built-in view shells (`DayGridView`, `TimeGridView`, `ListView`, `MultiMonthView`,
 `ResourceDayGridView`, `ResourceTimeGridView`, `TimelineView`, `ResourceTimelineView`) and `Scroller` opt
-out explicitly (`static contextType = undefined` on each), because the declarations are inherited from
+out explicitly (`static contextType = null` on each; `undefined` makes React 17 and 18 warn of an invalid
+contextType in development, which the React 17 smoke run caught), because the declarations are inherited from
 `PureComponent`/`BaseComponent`, which keep them: `DateComponent`'s hit-target methods and other
 subclasses read `this.context` (round 1 #3). `CalendarInner` (the provider, which doesn't read it) opts out
 too. Protected-API note: a third-party subclass of an opted-out built-in can declare it again.
@@ -145,7 +146,8 @@ does).
   `Pannable` (options), `TimelineFg` (its `renderMirrorSegs` takes `eventMinWidth` and `dateEnv`),
   `NowIndicatorDot` (`ViewOptionsContext.Consumer`) and `useNow` (core's `nowManager`, dateEnv,
   options). Everything that reads more, or passes the context on, stays on the facade.
-- **Opted out of `contextType`:** the eight view shells, `Scroller` and `CalendarInner`. Specs: each
+- **Opted out of `contextType`:** the eight view shells, `Scroller` and `CalendarInner` (`null`; first
+  `undefined`, which React 17 and 18 warn about in development, fixed after the smoke run). Specs: each
   built-in view (standard and premium) still updates on an option change.
 - **Mutation checks:** un-memoizing the view-spec value or the core, or giving a narrow context the
   facade, each fail the identity spec. (Note for later mutation runs: rebuild with the
