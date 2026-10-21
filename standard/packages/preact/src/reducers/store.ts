@@ -34,6 +34,7 @@ import { OptionsRefinerCache } from './options-refiner'
 import { createReduceEffects, EffectRunnerMap, ReduceEffects } from './effects'
 import { runEventSourceFetch } from './event-source-fetch'
 import { OptionChangeEffect, runOptionChange } from './option-change'
+import { CalendarActions, createCalendarActions } from '../api/calendar-actions'
 
 const CORE_EFFECT_RUNNERS: EffectRunnerMap = {
   fetchEventSource: runEventSourceFetch,
@@ -109,6 +110,9 @@ export class CalendarStore {
   private optionOverrides: CalendarOptions = {}
   private config: CalendarStoreConfig
   private listeners: CalendarStoreListener[] = []
+
+  // what changes the calendar. the API's methods, the wrappers and plugins call these
+  public actions: CalendarActions
   private state: CalendarDataManagerState // internal state
   private data: CalendarData // internal state + computed
 
@@ -127,6 +131,7 @@ export class CalendarStore {
   constructor(config: CalendarStoreConfig) {
     this.config = config
     config.calendarApi.store = this
+    this.actions = createCalendarActions(this, config.calendarApi)
     this.nowManager = new CalendarNowManager()
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
   }

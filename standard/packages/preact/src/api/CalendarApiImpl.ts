@@ -1,18 +1,9 @@
 import { FormatterInput, createFormatter } from '../datelib/formatting'
-import { createDuration } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { parseDateSpan } from '../structs/date-span'
-import { parseEventSource } from '../structs/event-source-parse'
-import { parseEvent } from '../structs/event-parse'
-import { eventTupleToStore } from '../structs/event-store'
-import { ViewSpec } from '../structs/view-spec'
 import { PointerDragEvent } from '../interactions/pointer'
-import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils'
-import { hashValuesToArray } from '../util/object'
-import { CalendarStore } from '../reducers/store'
+import type { CalendarStore } from '../reducers/store'
 import { Action } from '../reducers/Action'
-import { EventSource } from '../structs/event-source'
-import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl'
+import { buildEventApis, EventImpl } from './EventImpl'
 import { CalendarData } from '../reducers/data-types'
 import { CalendarApi } from './CalendarApi'
 import { ViewImpl } from './ViewImpl'
@@ -23,7 +14,6 @@ import {
   CalendarListeners,
   DateInput,
   DurationInput,
-  DateSpanInput,
   DateRangeInput,
   EventSourceInput,
   EventInput,
@@ -53,11 +43,7 @@ export class CalendarApiImpl implements CalendarApi {
   // -----------------------------------------------------------------------------------------------------------------
 
   setOption<OptionName extends keyof CalendarOptions>(name: OptionName, val: CalendarOptions[OptionName]): void {
-    this.dispatch({
-      type: 'SET_OPTION',
-      optionName: name,
-      rawOptionValue: val,
-    })
+    this.store!.actions.setOption(name, val)
   }
 
   getOption<OptionName extends keyof CalendarOptions>(name: OptionName): CalendarOptions[OptionName] {
@@ -94,154 +80,44 @@ export class CalendarApiImpl implements CalendarApi {
   // -----------------------------------------------------------------------------------------------------------------
 
   changeView(viewType: string, dateOrRange?: DateRangeInput | DateInput): void {
-    this.batchRendering(() => {
-      this.unselect()
-
-      if (dateOrRange) {
-        if ((dateOrRange as DateRangeInput).start && (dateOrRange as DateRangeInput).end) { // a range
-          this.dispatch({
-            type: 'CHANGE_VIEW_TYPE',
-            viewType,
-          })
-          this.dispatch({ // not very efficient to do two dispatches
-            type: 'SET_OPTION',
-            optionName: 'visibleRange',
-            rawOptionValue: dateOrRange,
-          })
-        } else {
-          let { dateEnv } = this.getCurrentData()
-
-          this.dispatch({
-            type: 'CHANGE_VIEW_TYPE',
-            viewType,
-            dateMarker: dateEnv.createMarker(dateOrRange as DateInput),
-          })
-        }
-      } else {
-        this.dispatch({
-          type: 'CHANGE_VIEW_TYPE',
-          viewType,
-        })
-      }
-    })
+    this.store!.actions.changeView(viewType, dateOrRange)
   }
 
   // Forces navigation to a view for the given date.
   // `viewType` can be a specific view name or a generic one like "week" or "day".
-  // needs to change
   zoomTo(dateMarker: Date, viewType?: string): void {
-    let state = this.getCurrentData()
-    let spec
-
-    viewType = viewType || 'day' // day is default zoom
-    spec = state.viewSpecs[viewType] || this.getUnitViewSpec(viewType)
-
-    this.unselect()
-
-    if (spec) {
-      this.dispatch({
-        type: 'CHANGE_VIEW_TYPE',
-        viewType: spec.type,
-        dateMarker,
-      })
-    } else {
-      this.dispatch({
-        type: 'CHANGE_DATE',
-        dateMarker,
-      })
-    }
-  }
-
-  // Given a duration singular unit, like "week" or "day", finds a matching view spec.
-  // Preference is given to views that have corresponding buttons.
-  private getUnitViewSpec(unit: string): ViewSpec | null {
-    let { viewSpecs, toolbarConfig } = this.getCurrentData()
-    let viewTypes = [].concat(
-      toolbarConfig.header ? toolbarConfig.header.viewsWithButtons : [],
-      toolbarConfig.footer ? toolbarConfig.footer.viewsWithButtons : [],
-    )
-    let i
-    let spec
-
-    for (let viewType in viewSpecs) {
-      viewTypes.push(viewType)
-    }
-
-    for (i = 0; i < viewTypes.length; i += 1) {
-      spec = viewSpecs[viewTypes[i]]
-      if (spec) {
-        if (spec.singleUnit === unit) {
-          return spec
-        }
-      }
-    }
-
-    return null
+    this.store!.actions.zoomTo(dateMarker, viewType)
   }
 
   // Current Date
   // -----------------------------------------------------------------------------------------------------------------
 
   prev(): void {
-    this.unselect()
-    this.dispatch({ type: 'PREV' })
+    this.store!.actions.prev()
   }
 
   next(): void {
-    this.unselect()
-    this.dispatch({ type: 'NEXT' })
+    this.store!.actions.next()
   }
 
   prevYear(): void {
-    let state = this.getCurrentData()
-    this.unselect()
-    this.dispatch({
-      type: 'CHANGE_DATE',
-      dateMarker: state.dateEnv.addYears(state.currentDate, -1),
-    })
+    this.store!.actions.prevYear()
   }
 
   nextYear(): void {
-    let state = this.getCurrentData()
-
-    this.unselect()
-    this.dispatch({
-      type: 'CHANGE_DATE',
-      dateMarker: state.dateEnv.addYears(state.currentDate, 1),
-    })
+    this.store!.actions.nextYear()
   }
 
   today(): void {
-    let state = this.getCurrentData()
-
-    this.unselect()
-    this.dispatch({
-      type: 'CHANGE_DATE',
-      dateMarker: state.nowManager.getDateMarker(),
-    })
+    this.store!.actions.today()
   }
 
   gotoDate(zonedDateInput: DateInput): void {
-    let state = this.getCurrentData()
-
-    this.unselect()
-    this.dispatch({
-      type: 'CHANGE_DATE',
-      dateMarker: state.dateEnv.createMarker(zonedDateInput),
-    })
+    this.store!.actions.gotoDate(zonedDateInput)
   }
 
   incrementDate(deltaInput: DurationInput): void {
-    let state = this.getCurrentData()
-    let delta = createDuration(deltaInput)
-
-    if (delta) { // else, warn about invalid input?
-      this.unselect()
-      this.dispatch({
-        type: 'CHANGE_DATE',
-        dateMarker: state.dateEnv.add(state.currentDate, delta),
-      })
-    }
+    this.store!.actions.incrementDate(deltaInput)
   }
 
   getDate(): Date {
@@ -295,119 +171,18 @@ export class CalendarApiImpl implements CalendarApi {
   // -----------------------------------------------------------------------------------------------------------------
 
   select(dateOrObj: DateInput | any, endDate?: DateInput): void {
-    let selectionInput: DateSpanInput
-
-    if (endDate == null) {
-      if (dateOrObj.start != null) {
-        selectionInput = dateOrObj as DateSpanInput
-      } else {
-        selectionInput = {
-          start: dateOrObj,
-          end: null,
-        }
-      }
-    } else {
-      selectionInput = {
-        start: dateOrObj,
-        end: endDate,
-      } as DateSpanInput
-    }
-
-    let state = this.getCurrentData()
-    let selection = parseDateSpan(
-      selectionInput,
-      state.dateEnv,
-      createDuration({ days: 1 }), // TODO: cache this?
-    )
-
-    if (selection) { // throw parse error otherwise?
-      this.dispatch({ type: 'SELECT_DATES', selection })
-      triggerDateSelect(selection, null, state)
-    }
+    this.store!.actions.select(dateOrObj, endDate)
   }
 
   unselect(pev?: PointerDragEvent): void {
-    let state = this.getCurrentData()
-
-    if (state.dateSelection) {
-      this.dispatch({ type: 'UNSELECT_DATES' })
-      triggerDateUnselect(pev, state)
-    }
+    this.store!.actions.unselect(pev)
   }
 
   // Public Events API
   // -----------------------------------------------------------------------------------------------------------------
 
   addEvent(eventInput: EventInput, sourceInput?: EventSourceImpl | string | boolean): EventImpl | null {
-    if (eventInput instanceof EventImpl) {
-      let def = eventInput._def
-      let instance = eventInput._instance
-      let currentData = this.getCurrentData()
-
-      // not already present? don't want to add an old snapshot
-      if (!currentData.eventStore.defs[def.defId]) {
-        this.dispatch({
-          type: 'ADD_EVENTS',
-          eventStore: eventTupleToStore({ def, instance }), // TODO: better util for two args?
-        })
-        this.triggerEventAdd(eventInput)
-      }
-
-      return eventInput
-    }
-
-    let state = this.getCurrentData()
-    let eventSource: EventSource<any>
-
-    if (sourceInput instanceof EventSourceImpl) {
-      eventSource = sourceInput.internalEventSource
-    } else if (typeof sourceInput === 'boolean') {
-      if (sourceInput) { // true. part of the first event source
-        [eventSource] = hashValuesToArray(state.eventSources)
-      }
-    } else if (sourceInput != null) { // an ID. accepts a number too
-      let sourceApi = this.getEventSourceById(sourceInput) // TODO: use an internal function
-
-      if (!sourceApi) {
-        warn(`Unknown event source ID \`${sourceInput}\`.`) // TODO: test
-        return null
-      }
-      eventSource = sourceApi.internalEventSource
-    }
-
-    let tuple = parseEvent(eventInput, eventSource, state, false)
-
-    if (tuple) {
-      let newEventApi = new EventImpl(
-        state,
-        tuple.def,
-        tuple.def.recurringDef ? null : tuple.instance,
-      )
-      this.dispatch({
-        type: 'ADD_EVENTS',
-        eventStore: eventTupleToStore(tuple),
-      })
-      this.triggerEventAdd(newEventApi)
-
-      return newEventApi
-    }
-
-    return null
-  }
-
-  private triggerEventAdd(eventApi: EventImpl): void {
-    let { emitter } = this.getCurrentData()
-
-    emitter.trigger('eventAdd', {
-      event: eventApi,
-      relatedEvents: [],
-      revert: () => {
-        this.dispatch({
-          type: 'REMOVE_EVENTS',
-          eventStore: eventApiToStore(eventApi),
-        })
-      },
-    })
+    return this.store!.actions.addEvent(eventInput, sourceInput)
   }
 
   // TODO: optimize
@@ -444,7 +219,7 @@ export class CalendarApiImpl implements CalendarApi {
   }
 
   removeAllEvents(): void {
-    this.dispatch({ type: 'REMOVE_ALL_EVENTS' })
+    this.store!.actions.removeAllEvents()
   }
 
   // Public Event Sources API
@@ -477,48 +252,22 @@ export class CalendarApiImpl implements CalendarApi {
   }
 
   addEventSource(sourceInput: EventSourceInput): EventSourceImpl {
-    let state = this.getCurrentData()
-
-    if (sourceInput instanceof EventSourceImpl) {
-      // not already present? don't want to add an old snapshot
-      if (!state.eventSources[sourceInput.internalEventSource.sourceId]) {
-        this.dispatch({
-          type: 'ADD_EVENT_SOURCES',
-          sources: [sourceInput.internalEventSource],
-        })
-      }
-
-      return sourceInput
-    }
-
-    let eventSource = parseEventSource(sourceInput, state)
-
-    if (eventSource) { // TODO: error otherwise?
-      this.dispatch({ type: 'ADD_EVENT_SOURCES', sources: [eventSource] })
-
-      return new EventSourceImpl(state, eventSource)
-    }
-
-    return null
+    return this.store!.actions.addEventSource(sourceInput)
   }
 
   removeAllEventSources(): void {
-    this.dispatch({ type: 'REMOVE_ALL_EVENT_SOURCES' })
+    this.store!.actions.removeAllEventSources()
   }
 
   refetchEvents(): void {
-    this.dispatch({ type: 'FETCH_EVENT_SOURCES', isRefetch: true })
+    this.store!.actions.refetchEvents()
   }
 
   // Scroll
   // -----------------------------------------------------------------------------------------------------------------
 
   scrollToTime(timeInput: DurationInput): void {
-    let time = createDuration(timeInput)
-
-    if (time) {
-      this.trigger('_timeScrollRequest', time)
-    }
+    this.store!.actions.scrollToTime(timeInput)
   }
 
   // Button State

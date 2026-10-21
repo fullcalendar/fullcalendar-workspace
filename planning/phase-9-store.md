@@ -443,3 +443,17 @@ Three commits, each verified:
   `refetchResources` and the resource mutations; its `CalendarApiImpl.prototype` patches delegate, and
   keep today's behavior when the resource plugin isn't loaded (the patches exist whenever the premium
   bundle is imported).
+
+## Step 3a: core actions (done)
+
+`api/calendar-actions.ts`: `createCalendarActions(store, calendarApi)`, built in the store's constructor
+(`store.actions`), with `CalendarApiImpl`'s former bodies for navigation, options (`setOption`,
+`resetOptions`), selection, events, sources and `scrollToTime`. The API methods delegate one-to-one;
+`changeView` still calls the driver's `batchRendering` through the API, and `addEvent` its
+`getEventSourceById`. Vanilla's `resetOptions` calls the action. `protected-api`: `CalendarActions`.
+Spec: `vanilla-tests/src/event-source/store-actions.ts` (the API runs the actions; they change the
+calendar as the API did; `changeView` goes through the driver's `batchRendering`).
+
+Verified with the full suites from here on (Adam's call, 2026-10-20): both packages unfiltered in both
+runtimes, two Karma lanes in parallel (`FC_TEST_BUNDLE`, `FC_KARMA_PORT`), about 6 minutes. Preact: all
+pass. React runtime: only the known failures. Snapshots and counts unchanged in both runtimes.

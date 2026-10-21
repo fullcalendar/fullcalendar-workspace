@@ -138,7 +138,7 @@ export class Calendar extends CalendarApiImpl {
   }
 
   resetOptions(optionOverrides, changedOptionNames?: string[]) {
-    this.store.resetOptions(optionOverrides, changedOptionNames)
+    this.store.actions.resetOptions(optionOverrides, changedOptionNames)
   }
 
   private setClassName(className: string) {

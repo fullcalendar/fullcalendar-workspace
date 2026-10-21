@@ -90,6 +90,7 @@ export { DateComponent } from './component/DateComponent'
 export type { CalendarData } from './reducers/data-types'
 export { createCalendarStore, CalendarStore } from './reducers/store'
 export type { CalendarStoreConfig, CalendarStoreChange, CalendarStoreListener } from './reducers/store'
+export type { CalendarActions } from './api/calendar-actions'
 export type { ViewProps } from './component-util/View'
 
 export type { DateProfile } from './DateProfileGenerator'
