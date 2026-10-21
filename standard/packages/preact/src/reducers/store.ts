@@ -564,7 +564,12 @@ export class CalendarStore {
         )
 
         if (refreshed.activeRange) {
-          this.dispatch({ type: 'REFRESH_DATE_PROFILE', dateProfile: refreshed, probedDateProfile: dateProfile })
+          this.dispatch({
+            type: 'REFRESH_DATE_PROFILE',
+            dateProfile: refreshed,
+            probedDateProfile: dateProfile,
+            dateProfileGenerator: generator,
+          })
         }
       }
     }

@@ -54,9 +54,10 @@ export function parseViewConfigs(inputs: ViewConfigInputHash): ViewConfigHash {
 }
 
 function parseViewConfig(input: ViewConfigInput): ViewConfig {
-  let rawOptions: ViewOptions = typeof input === 'function' ?
-    { component: input } :
-    input
+  // a component: a function (class or function component), or a view component (React's memo() is an object)
+  let rawOptions: ViewOptions = (typeof input === 'function' || viewComponents.has(input as object)) ?
+    { component: input as ViewComponentType } :
+    input as ViewOptions
 
   let { component } = rawOptions
 

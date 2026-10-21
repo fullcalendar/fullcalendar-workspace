@@ -4,7 +4,7 @@ import { EventStore } from '../structs/event-store'
 import { EventSource } from '../structs/event-source'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { DateSpan } from '../structs/date-span'
-import type { DateProfile } from '../DateProfileGenerator'
+import type { DateProfile, DateProfileGenerator } from '../DateProfileGenerator'
 
 export type Action =
   { type: 'IDLE' } | // hack
@@ -18,8 +18,14 @@ export type Action =
   { type: 'CHANGE_DATE', dateMarker: DateMarker } |
   { type: 'CHANGE_VIEW_TYPE', viewType: string, dateMarker?: DateMarker } |
   // a new day changed a now-dependent validRange: the profile rebuilt as it was built. internal.
-  // `probedDateProfile` is the one it replaces: if another action replaced it first, it's dropped
-  { type: 'REFRESH_DATE_PROFILE', dateProfile: DateProfile, probedDateProfile: DateProfile } |
+  // `probedDateProfile` is the one it replaces: if another action replaced it first, it's dropped.
+  // `dateProfileGenerator` built it: if the options changed since, the current generator's profile stays
+  {
+    type: 'REFRESH_DATE_PROFILE'
+    dateProfile: DateProfile
+    probedDateProfile: DateProfile
+    dateProfileGenerator: DateProfileGenerator
+  } |
 
   { type: 'SELECT_DATES', selection: DateSpan } |
   { type: 'UNSELECT_DATES' } |

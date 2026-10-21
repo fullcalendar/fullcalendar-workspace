@@ -238,6 +238,26 @@ describe('date profile behavior locks', () => {
       calendar.destroy()
     })
 
+    // an option reset the validRange function makes during the refresh's own toolbar checks applies to
+    // the overrides at once (its action queues behind the refresh): the new generator's profile stays
+    it('keeps the profile of options changed while the refresh was queued', () => {
+      let callsOnNewDay = 0
+      let { calendar } = buildCounted({
+        validRange(nowDate) {
+          if (nowDate.toISOString().startsWith('2024-03-09') && ++callsOnNewDay === 2) { // a toolbar check
+            this.resetOptions({ weekends: false }, ['weekends'])
+          }
+          return { start: nowDate }
+        },
+      })
+
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      let data = calendar.getCurrentData()
+      expect(data.dateProfileGenerator.props.weekends).toBe(false)
+      expect(data.dateProfileGenerator.isHiddenDay(data.dateProfile.renderRange.start)).toBe(false)
+      calendar.destroy()
+    })
+
     // a fixed visibleRange that the new day's validRange leaves no date of: the views can't render a
     // profile with no active range (creating the calendar that day throws, a pre-existing crash), so the
     // old profile stays, as before the midnight change

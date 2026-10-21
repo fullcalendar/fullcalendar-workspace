@@ -19,7 +19,9 @@ export function reduceDateProfile(
       return dateProfileGenerator.build(action.dateMarker, nowDate)
 
     case 'REFRESH_DATE_PROFILE':
-      return action.dateProfile // built by the store's new-day probe
+      // built by the store's new-day probe, unless options changed the generator since (an option
+      // reset queued before this, but applied to the overrides already, during the probe's callbacks)
+      return action.dateProfileGenerator === dateProfileGenerator ? action.dateProfile : currentDateProfile
 
     case 'PREV':
       dp = dateProfileGenerator.buildPrev(currentDateProfile, currentDate, nowDate)

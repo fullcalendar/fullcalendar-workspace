@@ -2,7 +2,8 @@ import { computeElIsRtl } from '../util/dom-manip'
 import { memoWithEquality, setRef } from '../vdom-util'
 import { watchHeight, watchWidth } from '../component-util/resize-observer'
 import { Dictionary } from '../options'
-import { forwardRef, useImperativeHandle, useState, type ComponentType, type ReactNode, type Ref } from 'react'
+import { forwardRef, useState, type ComponentType, type ReactNode, type Ref } from 'react'
+import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { joinClassNames } from '../util/html'
 import { ScrollerInterface } from './ScrollerInterface'
 import { ScrollListener } from './ScrollListener'
@@ -54,8 +55,14 @@ export const Scroller: ComponentType<ScrollerProps & { ref?: Ref<ScrollerHandle>
 
     // as a class instance's this.props: the ref callbacks of this render's commit read this render's
     scroller.props = props
+    scroller.forwardedRef = ref
 
-    useImperativeHandle(ref, () => scroller, [])
+    // the parent's ref gets the scroller when its element attaches (handleEl), as early as a class
+    // instance's ref did: before any enclosing element's ref callback, in both runtimes. A new ref prop
+    // while mounted moves it
+    useIsomorphicLayoutEffect(() => {
+      scroller.syncForwardedRef()
+    }, [ref])
 
     // if there's only one axis that needs scrolling, the other axis will unintentionally have
     // scrollbars too if we don't force to 'hidden'
@@ -92,6 +99,8 @@ export const Scroller: ComponentType<ScrollerProps & { ref?: Ref<ScrollerHandle>
 
 class ScrollerState implements ScrollerHandle {
   props: ScrollerProps
+  forwardedRef: Ref<ScrollerHandle> | undefined
+  private attachedRef: Ref<ScrollerHandle> | undefined // the forwarded ref that has this
 
   // ref
   private el?: HTMLDivElement
@@ -112,12 +121,29 @@ class ScrollerState implements ScrollerHandle {
       this.el = null
       this._isUnmounting = true
       this.listener.destroy()
+      this.detachForwardedRef()
     }
 
     if (el) {
       this.el = el
       this._isUnmounting = false
       this.listener = new ScrollListener(el)
+      this.syncForwardedRef()
+    }
+  }
+
+  syncForwardedRef() {
+    if (this.el && this.attachedRef !== this.forwardedRef) {
+      this.detachForwardedRef()
+      this.attachedRef = this.forwardedRef
+      setRef(this.attachedRef, this)
+    }
+  }
+
+  private detachForwardedRef() {
+    if (this.attachedRef) {
+      setRef(this.attachedRef, null)
+      this.attachedRef = undefined
     }
   }
 
