@@ -171,6 +171,11 @@ sketched as follows.
 
 ### 7b. Day-table pipeline (plan in progress: `phase-7b-day-table-plan.md`, background in `day-table-pipeline.md`)
 
+Scheduled (Adam, 2026-10-21): implemented after phase 10 and before phase 11, pending its reviewed
+plan. After 10, because its column model consumes hidden days and the date profile, which phase 10
+makes pure; before 11, so phase 11 converts one pure column model and slicing pass instead of the
+splitter, slicer and joiner chain.
+
 - Replace the split-by-resource, slice, rejoin pipeline (`VResourceSplitter`, the day slicers,
   `ResourceDayTableJoiner` and friends, the two `datesAboveResources` table models) with one pure
   column model and one slicing pass.
@@ -263,9 +268,9 @@ with the reviews' findings as their requirements. Originally sketched as follows
     invalidation caches. Define what replays when a creator (`calendarActions`) runs again.
 
 
-### After 10 and 11: loose ends (scheduled)
+### After 10, 7b and 11: loose ends (scheduled)
 
-Adam's call (2026-10-21): right after phases 10 and 11, before merging.
+Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), before merging.
 
 - **React 17 smoke run** (deferred from phase 2; needs phase 11's `useSyncExternalStore` shim).
 - **The remaining class components:** the eight view shells (`parseViewConfig`), `CalendarInner`,
