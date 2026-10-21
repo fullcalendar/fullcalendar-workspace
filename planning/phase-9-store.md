@@ -402,3 +402,44 @@ passed because the layout happened to re-render after its scroll object was firs
 - **Spec:** `vanilla-tests/src/event-source/store-subscribe.ts` (one notification per drain with its
   actions, a synchronous source's receive included; urgency; unsubscribing).
 - Verified: both runtimes' suites (React runtime: only the known failures), DOM snapshots 0 changed and counts unchanged in both runtimes, the React suite 42/42.
+
+## Review of step 2 (Sol, implementation, high effort)
+
+No P1s; step 1's responses resolve its findings; no blocker for steps 3 and 4. Notification checkpoints,
+the urgency rule, the paired API/store construction, the subscription's lifetime, the vanilla copies and
+the init identities confirmed. Two P2s, both coverage:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | The suppressions (initialization, `IDLE`-only, render-time) and mount-held delivery weren't locked; `MERGE_EVENTS` urgency untested | `store-subscribe.ts`: a mount-gated `createCalendarStore` subscribed before its first update (a synchronous source so initialization completes actions; an `events` change during a render-time update, whose handler dispatches); changes held while unmounted and delivered together on `mount()` with `isInCommit`, again after `unmount()`; all five urgent actions. Mutation-checked: dropping the initialization or the render-time suppression fails it |
+| 2 | Timeline: no vertical restoration, no date change while hidden, no Strict Mode or print round trip | `activity-scroll-timeline.ts`: Strict Mode, a 20-resource constrained-height case (vertical), navigation while hidden with `scrollTimeReset` on (back to `scrollTime`) and off (kept); new `misc/print-scroll-timeline.ts` (after print, a new layout starts from the view's target). Mutation-checked: `initialScroll` on remount fails the plain and Strict Mode cases, ignoring `initialScroll` fails both print cases |
+
+Noted: dropping `applyEntityScroll()` on remount still passes the vertical case, because Chrome keeps an
+element's scroll offsets across `display: none`. Under `<Activity>` the risk is the layout itself
+scrolling elsewhere on a remount (as the time reset did); the vertical case guards that. The re-apply
+stays, for the print-like case where offsets were lost.
+
+## Step 3 design (implementation notes)
+
+Three commits, each verified:
+
+- **3a, core actions.** `api/calendar-actions.ts`: `createCalendarActions(store, calendarApi)`, built once
+  in the store's constructor (`store.actions`), with today's `CalendarApiImpl` bodies: navigation (`prev`,
+  `next`, `prevYear`, `nextYear`, `today`, `gotoDate`, `incrementDate`, `changeView`, `zoomTo`), options
+  (`setOption`, `resetOptions`), selection (`select`, `unselect`), events (`addEvent`, `removeAllEvents`),
+  sources (`addEventSource`, `removeAllEventSources`, `refetchEvents`), `scrollToTime`. They read
+  `store.getData()` and `store.dispatch`. **Overridable driver methods stay virtual:** `changeView` calls
+  `calendarApi.batchRendering` (vanilla overrides it to pause its render runner); vanilla's
+  `resetOptions` keeps its own method and calls the action. The API methods delegate one-to-one; their
+  public signatures and return values (new wrappers per call) don't change. `CalendarController` keeps
+  calling the API (its public surface), so nothing changes there.
+- **3b, wrappers.** `EventImpl`'s mutations (`setProp`, `setExtendedProp`, `setStart`, `setEnd`,
+  `setDates`, `moveStart`, `moveEnd`, `moveDates`, `setAllDay`, `formatRange` excluded, `remove`) and
+  `EventSourceImpl`'s (`remove`, `refetch`) call actions (`mutateEvent`, `removeEvent`,
+  `removeEventSource`, `refetchEventSource`) with today's bodies, so the `eventChange`/`eventRemove`
+  callbacks and their `revert`s are unchanged. The wrappers keep their snapshot context (phase 12).
+- **3c, plugin actions.** A `calendarActions` plugin hook: `(store, calendarApi) => actions`, merged over
+  the core's per plugin set (memoized by `pluginHooks`). Premium registers `addResource`,
+  `refetchResources` and the resource mutations; its `CalendarApiImpl.prototype` patches delegate, and
+  keep today's behavior when the resource plugin isn't loaded (the patches exist whenever the premium
+  bundle is imported).

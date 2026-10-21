@@ -13,6 +13,10 @@ The timelines already kept it (their view holds the scroll, for print), so these
 */
 describe('timeline scroll position across a hidden <Activity>', () => {
   const react = vdom as any
+  const manyResources = []
+  for (let i = 0; i < 20; i++) {
+    manyResources.push({ id: String(i), title: `Resource ${i}` })
+  }
 
   it('keeps where the user scrolled a timeline', async () => {
     await testScrollAcrossActivity({
@@ -27,7 +31,40 @@ describe('timeline scroll position across a hidden <Activity>', () => {
     })
   })
 
-  async function testScrollAcrossActivity(calendarOptions: object) {
+  // a Strict Mode replay is a remount of the same instance too
+  it('keeps where the user scrolled a timeline, in Strict Mode', async () => {
+    await testScrollAcrossActivity({
+      initialView: 'timelineDay',
+    }, { isStrict: true })
+  })
+
+  it('keeps the resource the user scrolled to', async () => {
+    await testScrollAcrossActivity({
+      initialView: 'resourceTimelineDay',
+      height: 200,
+      resources: manyResources,
+    }, { scrollTop: 100 })
+  })
+
+  it('resets to scrollTime for a date change while hidden', async () => {
+    await testScrollAcrossActivity({
+      initialView: 'timelineDay',
+    }, { navigateWhileHidden: true, expectedScrollLeft: 0 })
+  })
+
+  it('keeps where the user scrolled for a date change while hidden, without scrollTimeReset', async () => {
+    await testScrollAcrossActivity({
+      initialView: 'timelineDay',
+      scrollTimeReset: false,
+    }, { navigateWhileHidden: true })
+  })
+
+  async function testScrollAcrossActivity(calendarOptions: object, {
+    isStrict = false,
+    scrollTop = 0,
+    navigateWhileHidden = false,
+    expectedScrollLeft = 80,
+  } = {}) {
     if (!react.Activity) {
       pending('React runtime only')
       return
@@ -37,49 +74,65 @@ describe('timeline scroll position across a hidden <Activity>', () => {
     containerEl.style.width = '600px'
     document.body.appendChild(containerEl)
     let root = react.createRoot(containerEl)
+    let calendarRef = { current: null }
 
     function render(mode: 'visible' | 'hidden') {
+      let calendarEl = react.createElement(react.FullCalendar, {
+        ref: calendarRef,
+        plugins: [
+          timelinePlugin,
+          resourceTimelinePlugin,
+          classicThemePlugin,
+          themeForTestsPlugin,
+          themeForTestsPremiumPlugin,
+        ],
+        initialDate: '2024-01-03',
+        scrollTime: '00:00', // the initial scroll is to the start
+        ...calendarOptions,
+      })
+
       react.flushSync(() => {
         root.render(
           react.createElement(react.Activity, { mode },
-            react.createElement(react.FullCalendar, {
-              plugins: [
-                timelinePlugin,
-                resourceTimelinePlugin,
-                classicThemePlugin,
-                themeForTestsPlugin,
-                themeForTestsPremiumPlugin,
-              ],
-              initialDate: '2024-01-03',
-              scrollTime: '00:00', // the initial scroll is to the start
-              ...calendarOptions,
-            }),
+            isStrict ? react.createElement(react.StrictMode, {}, calendarEl) : calendarEl,
           ),
         )
       })
     }
 
     try {
-      render('visible')
-      await waitTimeout(100)
-      // the last: in a resource timeline, the spreadsheet's body has the class too
-      let scrollerEls = containerEl.querySelectorAll('.fc-timeline-body')
-      let scrollerEl = scrollerEls[scrollerEls.length - 1] as HTMLElement
-      expect(scrollerEl.scrollLeft).toBe(0) // sanity check: the initial scroll
-      expect(scrollerEl.scrollWidth).toBeGreaterThan(scrollerEl.clientWidth + 100) // sanity check
+      await ignoreResizeObserverLoops(async () => {
+        render('visible')
+        await waitTimeout(100)
+        // the last: in a resource timeline, the spreadsheet's body has the class too
+        let scrollerEls = containerEl.querySelectorAll('.fc-timeline-body')
+        let scrollerEl = scrollerEls[scrollerEls.length - 1] as HTMLElement
+        expect(scrollerEl.scrollLeft).toBe(0) // sanity check: the initial scroll
+        expect(scrollerEl.scrollWidth).toBeGreaterThan(scrollerEl.clientWidth + 100) // sanity check
 
-      // a user scroll: a wheel event, then a scroll, then the scroll-end wait
-      scrollerEl.dispatchEvent(new Event('wheel'))
-      scrollerEl.scrollLeft = 80
-      scrollerEl.dispatchEvent(new Event('scroll'))
-      await waitTimeout(600)
+        // a user scroll: a wheel event, then a scroll, then the scroll-end wait
+        scrollerEl.dispatchEvent(new Event('wheel'))
+        scrollerEl.scrollLeft = 80
+        scrollerEl.scrollTop = scrollTop
+        scrollerEl.dispatchEvent(new Event('scroll'))
+        await waitTimeout(600)
+        expect(scrollerEl.scrollTop).toBe(scrollTop) // sanity check: it can scroll that far
 
-      render('hidden')
-      await waitTimeout(100)
-      render('visible')
-      await waitTimeout(100)
+        let calendarApi = calendarRef.current.getApi() // a hidden <Activity> detaches refs
+        render('hidden')
+        await waitTimeout(100)
 
-      expect(scrollerEl.scrollLeft).toBe(80)
+        if (navigateWhileHidden) {
+          calendarApi.next()
+          await waitTimeout(100)
+        }
+
+        render('visible')
+        await waitTimeout(100)
+
+        expect(scrollerEl.scrollLeft).toBe(expectedScrollLeft)
+        expect(Math.abs(scrollerEl.scrollTop - scrollTop)).toBeLessThanOrEqual(1)
+      })
     } finally {
       root.unmount()
       containerEl.remove()
