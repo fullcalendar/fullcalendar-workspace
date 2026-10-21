@@ -136,7 +136,7 @@ describe('date profile behavior locks', () => {
   })
 
   // the phase 10 change: today a new day doesn't rebuild the profile, so a now-dependent validRange stays
-  // as of the old day until the next navigation. Phase 10 step 3 flips this
+  // as of the old day until the next navigation. The loose ends' midnight fix flips this (moved from phase 10)
   describe('a new day with a now-dependent validRange', () => {
     beforeEach(() => {
       jasmine.clock().install()
@@ -347,5 +347,5 @@ describe('date profile behavior locks', () => {
     // the profile is kept, but the timer's new nowDate object misses the toolbar's memo: its three builds
     dstWakeCalls: 3,
   }
-  const EXPECTED_VALID_START_AFTER_NEW_DAY = '2024-03-08' // stale: phase 10 step 3 makes it '2024-03-09'
+  const EXPECTED_VALID_START_AFTER_NEW_DAY = '2024-03-08' // stale: the midnight fix makes it '2024-03-09'
 })

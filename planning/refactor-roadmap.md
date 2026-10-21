@@ -291,6 +291,11 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   `destroy()` fails ("CalendarController is not taken back…"); the React-runtime "destroy … leaves no
   handlers attached / unbinds all handlers" failures; the flaky "addICalEventSource with day view";
   TimeGrid's "ResizeObserver loop" when leaving print. Fixing these shrinks the known-failure list.
+- **The midnight date-profile change** (moved from phase 10, its review round 2; the roadmap's one
+  intended behavior change for phase 10): a now-dependent `validRange` stays as of the old day until the
+  next navigation. Design in `phase-10-date-profile.md` §4: at a new civil day, evaluate only
+  `validRange`, compare by value, and if it changed dispatch an action that stage 4, the event sources
+  and the event store treat as navigation. Changelog FIX entry.
 - **A crash found by phase 10's oracle:** switching to a dayGrid view whose week-aligned range is all
   hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`), e.g. `dateAlignment:
   'week'` with `dayGridDay` and weekends hidden. Locked as-is by the oracle; fix it here (the oracle's

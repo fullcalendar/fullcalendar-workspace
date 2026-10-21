@@ -31,3 +31,12 @@ hidden days throws (`Cannot destructure property 'start' of 'currentRange' as it
 `buildDayTableRenderRange`), e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. Phase 10
 is behavior-identical, so it's locked as-is and scheduled with the loose ends. It's an odd configuration;
 no issue filed that I know of.
+
+## Phase 10's midnight change moved to the loose ends
+
+The roadmap's one sanctioned behavior change for phase 10 (a now-dependent `validRange` recomputing at
+midnight) turned out to need more than a rebuild: Sol's round 2 showed it would fire `datesSet` even when
+nothing changed, leave the new day without its events (no fetch or recurring expansion on a timer tick),
+and couldn't replay a custom generator's navigation. So phase 10 is purely behavior-identical, and the
+fix is on the loose-ends list with a design that answers those (compare first, then dispatch a real
+navigation-like action). It's a small, rare bug; nothing regresses by waiting.
