@@ -84,3 +84,22 @@ model's participants, the resourceless interaction metadata merged in, and resou
 the timed lane's event selection). Each only affects things that render nowhere, so there's no
 user-visible risk today, but nothing would flag a regression if a later change made them visible.
 A scheduler `protected-api` for tests would close it.
+
+## Phase 11: the React 17/18 smoke run's findings
+
+- **CI doesn't run the new smoke packages.** `@fullcalendar-tests/react17` and `react18` run with
+  `standard-scripts test --other` or `pnpm --filter @fullcalendar-tests/react17 test`, but CI installs with
+  `--filter '!@fullcalendar-tests/*'` and tests only `@fullcalendar/react`. Adding them is two filters in
+  `.github/workflows/ci.yaml` (install and test); I left CI alone for you to decide.
+- **React 17 and 18 log a server-rendering warning per `useLayoutEffect`** ("useLayoutEffect does nothing
+  on the server", hundreds per `renderToString`). Pre-existing; React 19 dropped the warning. The usual fix
+  is an isomorphic layout effect (`useEffect` on the server). The smoke specs tolerate exactly that
+  warning, and fail on any other `console.error`. Worth fixing? It's dev-only console noise for SSR users
+  on 17/18.
+- **Caught and fixed:** phase 11a's `static contextType = undefined` made React 17 and 18 warn of an
+  invalid contextType in development. It's `null` now.
+- **Tooling note:** in this worktree, `pnpm install` without `--store-dir` wants to delete and rebuild
+  `node_modules`: it was installed against the main checkout's store
+  (`/Users/adam/Code/fullcalendar-workspace/.pnpm-store/v10`), and no `store-dir` is configured here. I
+  passed that store explicitly, offline. The committed lockfile change is only the two new importers
+  (a filtered install also reshuffled some Angular peer variants; I didn't keep that).
