@@ -1,12 +1,10 @@
 import { memoize, memoizeObjArg } from '../util/memoize'
 import { Action } from './actions'
-import { DateEnv, DateMarker, OpenDateRange } from '@full-ui/headless-calendar'
+import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
 import { CalendarApiImpl } from '../api/CalendarApiImpl'
-import { EventSourceHash } from '../event-sources/event-source'
-import { ViewSpec } from '../views/view-spec'
-import { mapHash, isPropsEqualShallow } from '../util/object'
+import { isPropsEqualShallow } from '../util/object'
 import { getDateProfileAnchor } from '../date-profile/steps'
-import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps, RenderRangeBuilder } from '../date-profile/DateProfileGenerator'
+import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps, RenderRangeBuilder, buildDateProfileGenerator } from '../date-profile/DateProfileGenerator'
 import { reduceViewType } from './reducers/view-type'
 import { getInitialDate, reduceCurrentDate } from './reducers/current-date'
 import { reduceDynamicOptionOverrides } from './reducers/dynamic-options'
@@ -18,16 +16,16 @@ import { reduceSelectedEvent } from './reducers/selected-event'
 import { reduceEventDrag } from './reducers/event-drag'
 import { reduceEventResize } from './reducers/event-resize'
 import { Emitter } from '../util/Emitter'
-import { EventUiHash, EventUi, createEventUi } from '../events/event-ui'
-import { EventDefHash } from '../events/event-def'
 import { CalendarOptions, CalendarListeners, Dictionary } from '../options/options'
 import { rangeContainsMarker } from '@full-ui/headless-calendar'
 import { ViewImpl } from '../api/ViewImpl'
-import { parseBusinessHours } from '../events/business-hours'
 import { createEmptyEventStore } from '../events/event-store'
 import { CalendarContext } from '../context/CalendarContext'
 import { CalendarDataManagerState, CalendarDerivedData, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types'
 import { buildTitle } from './title'
+import { buildToolbarProps } from '../toolbar/toolbar-props'
+import { buildEventUiBases, buildEventUiBySource, buildViewUiProps, computeIsLoading, parseContextBusinessHours } from './derived-data'
+import { isOpenRangeEqual } from '../util/date'
 import { CalendarNowManager } from '../now/CalendarNowManager'
 import { NowTimerRunner } from '../now/NowTimerRunner'
 import { CalendarController } from '../calendar/CalendarController'
@@ -79,12 +77,6 @@ export function createCalendarStore(config: CalendarStoreConfig): CalendarStore 
   return new CalendarStore(config)
 }
 
-export type ReducerFunc = (
-  currentState: Dictionary | undefined,
-  action: Action | undefined,
-  context: CalendarContext & CalendarDataManagerState & CalendarDerivedData, // more than just context
-  effects: ReduceEffects, // for the side effects it describes (a fetch), instead of performing them
-) => Dictionary
 
 export class CalendarStore {
   private computeCurrentViewData = memoize(this._computeCurrentViewData)
@@ -178,6 +170,9 @@ export class CalendarStore {
     this.nowManager = new CalendarNowManager()
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
   }
+
+  // Mounting, rendering, options
+  // -------------------------------------------------------------------------------------------------
 
   /*
   Starts timers, runs effects queued by render-time updates, and delivers data changes held while
@@ -301,6 +296,9 @@ export class CalendarStore {
 
   getCurrentData = () => this.data
 
+  // Dispatching, draining the queue, notifying
+  // -------------------------------------------------------------------------------------------------
+
   private handleNowChange = () => {
     this.dispatch({ type: 'UPDATE_NOW' })
   }
@@ -379,6 +377,9 @@ export class CalendarStore {
       listener(change)
     }
   }
+
+  // The reduce pipeline: one action through the stages
+  // -------------------------------------------------------------------------------------------------
 
   /*
   One action through the pipeline's stages, in their dependency order, which is also the order of their
@@ -817,85 +818,8 @@ export class CalendarStore {
   }
 }
 
-// open ranges (null for an open end), by value
-function isOpenRangeEqual(range0: OpenDateRange | null, range1: OpenDateRange | null): boolean {
-  if (!range0 || !range1) {
-    return range0 === range1
-  }
-
-  return markerValue(range0.start) === markerValue(range1.start) &&
-    markerValue(range0.end) === markerValue(range1.end)
-}
-
-function markerValue(marker: DateMarker | null | undefined): number | null {
-  return marker ? marker.valueOf() : null
-}
-
-function buildDateProfileGenerator(props: DateProfileGeneratorProps): DateProfileGenerator {
-  let DateProfileGeneratorClass = props.dateProfileGeneratorClass || DateProfileGenerator
-
-  return new DateProfileGeneratorClass(props)
-}
-
 function buildViewApi(type: string, getCurrentData: () => CalendarData, dateEnv: DateEnv) {
   return new ViewImpl(type, getCurrentData, dateEnv)
-}
-
-function buildEventUiBySource(eventSources: EventSourceHash): EventUiHash {
-  return mapHash(eventSources, (eventSource) => eventSource.ui)
-}
-
-/*
-The result of this is processed by compileEventUi
-*/
-function buildEventUiBases(
-  eventDefs: EventDefHash,
-  eventUiSingleBase: EventUi,
-  eventUiBySource: EventUiHash,
-) {
-  let eventUiBases: EventUiHash = {
-    '': eventUiSingleBase, // fallback
-  }
-
-  for (let defId in eventDefs) {
-    let def = eventDefs[defId]
-
-    if (def.sourceId && eventUiBySource[def.sourceId]) {
-      eventUiBases[defId] = eventUiBySource[def.sourceId]
-    }
-  }
-
-  return eventUiBases
-}
-
-function buildViewUiProps(calendarContext: CalendarContext) {
-  const { options } = calendarContext
-
-  return {
-    eventUiSingleBase: createEventUi(
-      {
-        display: options.eventDisplay,
-        editable: options.editable, // without "event" at start
-        startEditable: options.eventStartEditable,
-        durationEditable: options.eventDurationEditable,
-        constraint: options.eventConstraint,
-        overlap: typeof options.eventOverlap === 'boolean' ? options.eventOverlap : undefined,
-        allow: options.eventAllow,
-        // color: options.eventColor, // event components/BgEvent will handle this
-        // contrastColor: options.eventContrastColor, // event components/BgEvent will handle this
-        // className: options.eventClass // render hook will handle this
-      },
-      calendarContext,
-    ),
-    selectionConfig: createEventUi(
-      {
-        constraint: options.selectConstraint,
-        overlap: typeof options.selectOverlap === 'boolean' ? options.selectOverlap : undefined,
-        allow: options.selectAllow,
-      },
-      calendarContext,
-    ),
-  }
 }
 
 // drags and resizes render synchronously, without rerenderDelay
@@ -913,50 +837,4 @@ function computeIsUrgent(actions: Action[]): boolean {
     }
   }
   return false
-}
-
-function computeIsLoading(state: CalendarDataManagerState, context: CalendarContext) {
-  for (let isLoadingFunc of context.pluginHooks.isLoadingFuncs) {
-    if (isLoadingFunc(state)) {
-      return true
-    }
-  }
-
-  return false
-}
-
-function parseContextBusinessHours(calendarContext: CalendarContext) {
-  return parseBusinessHours(calendarContext.options.businessHours, calendarContext)
-}
-
-export interface CalendarToolbarProps {
-  title: string
-  selectedButton: string
-  navUnit: string
-  isTodayEnabled: boolean
-  isPrevEnabled: boolean
-  isNextEnabled: boolean
-}
-
-function buildToolbarProps(
-  viewSpec: ViewSpec,
-  dateProfile: DateProfile,
-  dateProfileGenerator: DateProfileGenerator,
-  currentDate: DateMarker,
-  nowDate: DateMarker,
-  title: string,
-): CalendarToolbarProps {
-  // don't force any date-profiles to valid date profiles (the `false`) so that we can tell if it's invalid
-  let todayInfo = dateProfileGenerator.build(nowDate, nowDate, undefined, /* forceToValid = */ false)
-  let prevInfo = dateProfileGenerator.buildPrev(dateProfile, currentDate, nowDate, /* forceToValid = */ false)
-  let nextInfo = dateProfileGenerator.buildNext(dateProfile, currentDate, nowDate, /* forceToValid = */ false)
-
-  return {
-    title,
-    selectedButton: viewSpec.type,
-    navUnit: viewSpec.singleUnit,
-    isTodayEnabled: todayInfo.isValid && !rangeContainsMarker(dateProfile.currentRange, nowDate),
-    isPrevEnabled: prevInfo.isValid,
-    isNextEnabled: nextInfo.isValid,
-  }
 }

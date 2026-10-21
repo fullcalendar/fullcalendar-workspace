@@ -1,4 +1,6 @@
-import { ReducerFunc } from '../store/CalendarStore'
+import { Action } from '../store/actions'
+import { ReduceEffects } from '../store/effects'
+import { CalendarDataManagerState, CalendarDerivedData } from '../store/data-types'
 import { EffectRunnerMap } from '../store/effects'
 import type { CalendarActionsCreator } from '../api/calendar-actions'
 import { EventDefMemberAdder } from '../events/event-parse'
@@ -137,3 +139,11 @@ export type EventDragMutationMassager = (mutation: EventMutation, hit0: Hit, hit
 export type EventDropTransformer = (mutation: EventMutation, context: CalendarContext, eventDef: EventDef) => Dictionary
 export type EventIsDraggableTransformer = (val: boolean, eventDef: EventDef, eventUi: EventUi, context: CalendarContext) => boolean
 export type ExternalDefTransform = (dateSpan: DateSpan, dragMeta: DragMeta) => any
+
+// a plugin's slice of the store's state: reduced after the core's, with the same snapshot
+export type ReducerFunc = (
+  currentState: Dictionary | undefined,
+  action: Action | undefined,
+  context: CalendarContext & CalendarDataManagerState & CalendarDerivedData, // more than just context
+  effects: ReduceEffects, // for the side effects it describes (a fetch), instead of performing them
+) => Dictionary

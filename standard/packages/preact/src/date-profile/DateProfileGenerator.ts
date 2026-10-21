@@ -247,3 +247,10 @@ export function isMajorUnit(dateMarker: DateMarker, majorUnit: string, dateEnv: 
 
   return false
 }
+
+// the view's generator: its custom class if it has one
+export function buildDateProfileGenerator(props: DateProfileGeneratorProps): DateProfileGenerator {
+  let DateProfileGeneratorClass = props.dateProfileGeneratorClass || DateProfileGenerator
+
+  return new DateProfileGeneratorClass(props)
+}

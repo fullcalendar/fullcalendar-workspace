@@ -66,3 +66,17 @@ export function diffDates(date0: DateMarker, date1: DateMarker, dateEnv: DateEnv
 
   return diffDayAndTime(date0, date1) // returns a duration
 }
+
+// open ranges (null for an open end), by value
+export function isOpenRangeEqual(range0: OpenDateRange | null, range1: OpenDateRange | null): boolean {
+  if (!range0 || !range1) {
+    return range0 === range1
+  }
+
+  return markerValue(range0.start) === markerValue(range1.start) &&
+    markerValue(range0.end) === markerValue(range1.end)
+}
+
+function markerValue(marker: DateMarker | null | undefined): number | null {
+  return marker ? marker.valueOf() : null
+}
