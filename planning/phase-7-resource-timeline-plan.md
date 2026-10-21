@@ -1,7 +1,8 @@
 # Phase 7: ResourceTimeline plan
 
-Status: planned (2026-10-20). Adam chose the full decomposition of `ResourceTimelineLayoutNormal`
-within phase 7, over keeping it a class or a faithful one-object port.
+Status: done (2026-10-20); see the ResourceTimeline section of `phase-7-layout-families.md`. Adam
+chose the full decomposition of `ResourceTimelineLayoutNormal` within phase 7, over keeping it a
+class or a faithful one-object port.
 
 ## What's there
 

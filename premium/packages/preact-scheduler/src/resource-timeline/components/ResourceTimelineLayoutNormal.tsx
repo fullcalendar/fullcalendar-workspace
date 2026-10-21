@@ -1,7 +1,6 @@
-import { Duration, joinClassNames } from '@fullcalendar/preact/public-api'
+import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   afterSize,
-  DateComponent,
   DateMarker,
   DateProfile,
   DateRange,
@@ -10,24 +9,24 @@ import {
   getFooterScrollbarSticky,
   getTableHeaderSticky,
   Hit,
-  memoize,
   RefMap,
   Ruler,
   Scroller,
-  ScrollerSyncerInterface,
   setRef,
   SlicedProps,
   SplittableProps,
   FooterScrollbar,
   ViewContainer,
   generateClassName,
-  debounce,
   computeViewBorderless,
+  useHitTarget,
+  useLatest,
+  useMeasuredState,
+  useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { createRef, type Ref } from 'react'
-import { createEntityId, createGroupId, GenericNode, Group, isEntityGroup } from '../../resource/common/resource-hierarchy'
-import { Resource } from '../../resource/structs/resource'
+import { memo, useLayoutEffect, useMemo, useRef, useState, type Ref } from 'react'
+import { createEntityId, createGroupId, GenericNode, isEntityGroup } from '../../resource/common/resource-hierarchy'
 import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
 import { getTimelineSlotEl } from '../../timeline/components/util'
@@ -38,12 +37,11 @@ import { TimelineNowIndicatorArrow } from '../../timeline/components/TimelineNow
 import { TimelineNowIndicatorLine } from '../../timeline/components/TimelineNowIndicatorLine'
 import { TimelineRange } from '../../timeline/TimelineLaneSlicer'
 import { TimelineSlats } from '../../timeline/components/TimelineSlats'
-import { computeTimelineHitData, timeToCoord } from '../../timeline/timeline-positioning'
+import { computeTimelineHitData } from '../../timeline/timeline-positioning'
 import { ESTIMATED_SLOT_WIDTH } from '../../timeline/slot-estimate'
 import { computeHeights, computeTopsFromHeights, DimConfig, findEntityByCoord } from '@full-ui/headless-grid'
 import {
   buildResourceLayouts,
-  GenericLayout,
   GroupCellLayout,
   GroupRowLayout,
   ResourceRowLayout,
@@ -57,6 +55,16 @@ import { BodySection } from './spreadsheet/BodySection'
 import { HeaderCells } from './spreadsheet/HeaderCells'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
+import { syncVirtualizerList } from '../virtual/virtualizer-lists'
+import { useWindowScrollTracking } from '../useWindowScrollTracking'
+import {
+  type EntityScroll,
+  type ResourceTimelineGeometry,
+  type ResourceTimelineSyncers,
+  type ResourceTimelineVirtualizers,
+  type TimeScroll,
+  useResourceTimelineScroll,
+} from '../useResourceTimelineScroll'
 import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs, getAriaTableRole } from '../aria'
 import { computeResourceTimelineHeaderHeight } from '../header-height'
 
@@ -105,732 +113,796 @@ interface ResourceTimelineLayoutNormalProps {
   spreadsheetResizedWidthConfigRef?: Ref<DimConfig>
 
   // scroll
-  initialScroll?: TimeScroll & EntityScroll
+  initialScroll?: (TimeScroll & EntityScroll) | null
   scrollRef?: Ref<TimeScroll & EntityScroll>
 }
 
-export interface EntityScroll {
-  entityId?: string
-  fromBottom?: number
-}
+export type { EntityScroll, TimeScroll } from '../useResourceTimelineScroll'
 
-export interface TimeScroll {
-  time?: Duration
-  x?: number
-}
+const DEFAULT_OWN_CELL_HEIGHT = 40 // also in useResourceTimelineScroll
 
-interface ResourceTimelineViewState {
-  spreadsheetBottomScrollbarWidth?: number
+/*
+The ResourceTimeline layout: a spreadsheet and a time area side by side, each with header, body and
+footer scrollers, rows virtualized. Composes:
+- useScrollerSyncers-like effects for its three syncers (below)
+- useWindowScrollTracking, for height:auto
+- useResourceTimelineScroll, the time and entity (resource) scroll, with the scroll slack
+- the Virtualizer render-time caches (rows, slots, group columns, header rows)
+See planning/phase-7-resource-timeline-plan.md
+*/
+export const ResourceTimelineLayoutNormal = memo(function ResourceTimelineLayoutNormal(props: ResourceTimelineLayoutNormalProps) {
+  const context = useViewContext()
 
-  timeTotalWidth?: number
-  timeClientHeight?: number
-  timeClientWidth?: number
-  timeEndScrollbarWidth?: number
-  timeBottomScrollbarWidth?: number
-}
+  // true until unmount: children report sizes from their layout effects, which run before this one's
+  const isActiveRef = useRef(true)
+  const [, setRenderCount] = useState(0)
+  const [rerender] = useState(() => () => {
+    if (isActiveRef.current) {
+      setRenderCount(incrementCounter)
+    }
+  })
 
-const defaultOwnCellHeight = 40
+  // measurements
+  // (useMeasuredState: see it for why null and repeats are ignored)
+  const [spreadsheetBottomScrollbarWidth, setSpreadsheetBottomScrollbarWidth] = useMeasuredState()
+  const [timeTotalWidth, setTimeTotalWidth] = useMeasuredState()
+  const [timeClientHeight, setTimeClientHeight] = useMeasuredState()
+  const [timeClientWidth, setTimeClientWidth] = useMeasuredState()
+  const [timeBottomScrollbarWidth, setTimeBottomScrollbarWidth] = useMeasuredState()
 
-export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
-  state = {} as ResourceTimelineViewState
+  // refs
+  const bodyElRef = useRef<HTMLDivElement | null>(null)
+  const spreadsheetHeaderScrollerRef = useRef<Scroller | null>(null)
+  const spreadsheetBodyScrollerRef = useRef<Scroller | null>(null)
+  const spreadsheetFooterScrollerRef = useRef<Scroller | null>(null)
+  const timeHeaderScrollerRef = useRef<Scroller | null>(null)
+  const timeBodyScrollerRef = useRef<Scroller | null>(null)
+  const timeFooterScrollerRef = useRef<Scroller | null>(null)
 
-  // memoized
-  private buildResourceLayouts = memoize(buildResourceLayouts)
+  // the latest render's geometry, for the handlers and the virtualizers. see ResourceTimelineGeometry
+  const geometryRef = useRef<ResourceTimelineGeometry>({
+    props,
+    bodyLayouts: [],
+    bodyTops: new Map(),
+    bodyHeights: new Map(),
+    maxVScroll: undefined,
+    maxHScroll: undefined,
+    headerHeight: undefined,
+  })
+  geometryRef.current = { ...geometryRef.current, props }
 
-  // amount of extra space that should be temporarily added to vertical rows
-  // after setting, must call forceUpdate
-  // only supported for bodyScroller (aka getIsHeightAuto()===false)
-  private scrollSlack = 0
+  // virtualizers
+  const [virtualizerKit] = useState(() => {
+    const getEntityTop = (key: string) => geometryRef.current.bodyTops.get(key)
+    const getEntityHeight = (key: string) => geometryRef.current.bodyHeights.get(key)
+    const getSlotWidth = () => geometryRef.current.props.slotWidth ?? ESTIMATED_SLOT_WIDTH
+    const virtualizers: ResourceTimelineVirtualizers = {
+      row: new Virtualizer<RowLayout>(
+        (rowLayout) => createEntityId(rowLayout.entity),
+        getEntityTop,
+        getEntityHeight,
+        rerender,
+      ),
+      slot: new Virtualizer<string>(
+        (slotKey) => slotKey,
+        (_key, index) => index * getSlotWidth(),
+        getSlotWidth,
+        rerender,
+        /* overscan = */ 3,
+      ),
+      groupCols: [],
+      timeHeaders: [],
+    }
+    const setVirtualizerViewportSize = (height: number) => {
+      virtualizers.row.handleViewportSize(height)
 
-  private queuedEntityScroll = false
+      for (const groupColVirtualizer of virtualizers.groupCols) {
+        groupColVirtualizer.handleViewportSize(height)
+      }
+    }
+    return { virtualizers, getEntityTop, getEntityHeight, setVirtualizerViewportSize }
+  })
+  const { virtualizers, getEntityTop, getEntityHeight, setVirtualizerViewportSize } = virtualizerKit
 
-  private _isUnmounting: boolean
+  // the three syncers, created first on each mount, so the scroll finds them
+  const [syncers] = useState<ResourceTimelineSyncers>(() => ({ time: null, body: null, spreadsheet: null }))
+  useLayoutEffect(() => {
+    syncers.time = new ScrollerSyncer(true) // horizontal=true
+    syncers.body = new ScrollerSyncer() // horizontal=false
+    syncers.spreadsheet = new ScrollerSyncer(true) // horizontal=true
 
-  // This is a means to recompute row positioning when *HeightMaps change
-  handleBodyRowHeightChange = (val: any, key: any, oldVal: any) => {
-    if (this._isUnmounting) return
+    return () => {
+      syncers.time.destroy()
+      syncers.body.destroy()
+      syncers.spreadsheet.destroy()
+    }
+  }, [])
+  useLayoutEffect(() => { // every commit
+    syncers.time.handleChildren([
+      timeHeaderScrollerRef.current,
+      timeBodyScrollerRef.current,
+      timeFooterScrollerRef.current,
+    ])
+    syncers.body.handleChildren([
+      spreadsheetBodyScrollerRef.current,
+      timeBodyScrollerRef.current,
+    ])
+    syncers.spreadsheet.handleChildren([
+      spreadsheetHeaderScrollerRef.current,
+      spreadsheetBodyScrollerRef.current,
+      spreadsheetFooterScrollerRef.current,
+    ])
+  })
 
-    if (this.isScrolling) {
-      if (val != null) {
-        const scrollSlackDelta = (oldVal ?? defaultOwnCellHeight) - val
-        if (scrollSlackDelta) {
-          const topCoord = this.bodyTops.get(key)
-          // Live scroll position, because currentEntityScroll lags when the browser clamps the
-          // scroll after content shrinks, and its scroll event hasn't fired yet
-          if (topCoord != null && topCoord < this.bodyScroller.y) {
-            if (!getIsHeightAuto(this.context.options)) {
-              // console.log('DELTA', key, oldVal ?? defaultOwnCellHeight, '->', val)
-              this.scrollSlack += scrollSlackDelta
-            }
+  const windowTracker = useWindowScrollTracking(
+    getIsHeightAuto(context.options),
+    bodyElRef,
+    (entityScroll) => scroll.handleAnyEntityScroll(entityScroll), // `scroll` is defined below
+    setVirtualizerViewportSize,
+  )
+
+  const scroll = useResourceTimelineScroll({
+    geometryRef,
+    syncers,
+    virtualizers,
+    windowTracker,
+    rerender,
+    initialScroll: props.initialScroll,
+    scrollRef: props.scrollRef,
+    context,
+    timeScrollKeys: [props.dateProfile, props.slotWidth, props.timeCanvasWidth, timeClientWidth],
+  })
+
+  // sizing
+  const propsRef = useLatest(props)
+  const [handlers] = useState(() => {
+    let slotInnerWidth: number | undefined
+
+    const handlers = {
+      handleSpreadsheetClientWidth(spreadsheetClientWidth: number) {
+        if (isActiveRef.current) {
+          setRef(propsRef.current.spreadsheetClientWidthRef, spreadsheetClientWidth)
+        }
+      },
+      handleSpreadsheetBottomScrollbarWidth(spreadsheetBottomScrollbarWidth: number) {
+        setSpreadsheetBottomScrollbarWidth(spreadsheetBottomScrollbarWidth)
+      },
+      handleTimeTotalWidth(timeTotalWidth: number) {
+        if (isActiveRef.current) {
+          setTimeTotalWidth(timeTotalWidth)
+        }
+      },
+      handleTimeClientWidth(timeClientWidth: number) {
+        if (isActiveRef.current) {
+          setRef(propsRef.current.timeClientWidthRef, timeClientWidth)
+          setTimeClientWidth(timeClientWidth)
+
+          virtualizers.slot.handleViewportSize(timeClientWidth)
+          for (const timeHeaderVirtualizer of virtualizers.timeHeaders) {
+            timeHeaderVirtualizer.handleViewportSize(timeClientWidth)
+            // TODO: what about difference in scrollbar width?
+          }
+        }
+      },
+      handleTimeClientHeight(timeClientHeight: number) {
+        if (isActiveRef.current) {
+          setTimeClientHeight(timeClientHeight)
+
+          if (!getIsHeightAuto(context.options)) {
+            setVirtualizerViewportSize(timeClientHeight)
+          }
+        }
+      },
+      handleTimeBottomScrollbarWidth(timeBottomScrollbarWidth: number) {
+        if (isActiveRef.current) {
+          setTimeBottomScrollbarWidth(timeBottomScrollbarWidth)
+        }
+      },
+      handleSlotInnerWidths() {
+        if (isActiveRef.current) {
+          const props = propsRef.current
+          const headerSlotInnerWidth = headerRowInnerWidthMap.current.get(props.tDateProfile.cellRows.length - 1)
+
+          if (headerSlotInnerWidth != null && headerSlotInnerWidth !== slotInnerWidth) {
+            slotInnerWidth = headerSlotInnerWidth
+            setRef(props.slotInnerWidthRef, headerSlotInnerWidth)
+          }
+        }
+      },
+      clearSlotInnerWidth() {
+        slotInnerWidth = undefined
+      },
+    }
+    const headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
+      afterSize(handlers.handleSlotInnerWidths)
+    })
+    return { ...handlers, headerRowInnerWidthMap }
+  })
+  const { headerRowInnerWidthMap } = handlers
+
+  // the header rows' and the rows' heights
+  const [heightRefMaps] = useState(() => {
+    // re-renders only when the header's height changes. a header row reporting its height again (after
+    // an <Activity> hide and show, which reports null first) re-adds it with the same height
+    const handleHeaderHeights = () => {
+      if (isActiveRef.current) {
+        const { superHeaderRendering, tDateProfile } = propsRef.current
+        const headerHeight = computeResourceTimelineHeaderHeight(
+          heightRefMaps.dataGridHeaderRowInnerHeightMap.current,
+          heightRefMaps.timelineHeaderRowInnerHeightMap.current,
+          Boolean(superHeaderRendering),
+          tDateProfile.cellRows.length,
+        )
+
+        if (headerHeight !== geometryRef.current.headerHeight) {
+          rerender()
+        }
+      }
+    }
+    const handleHeaderRowHeightChange = () => {
+      if (isActiveRef.current) {
+        afterSize(handleHeaderHeights)
+      }
+    }
+    const heightRefMaps = {
+      timelineHeaderRowInnerHeightMap: new RefMap<number, number>(handleHeaderRowHeightChange),
+      dataGridHeaderRowInnerHeightMap: new RefMap<boolean, number>(handleHeaderRowHeightChange),
+
+    // keyed by createEntityId
+    // NOTE: ignoring deletes can cause memory issues if resources constantly change and have new keys
+    // refactor in future. FWIW, TanStack Virtual doesn't garbage collect unnused dimensions either
+    dataGridEntityInnerHeightMap: new RefMap<string, number>(scroll.handleBodyRowHeightChange, /* ignoreDeletes = */ true),
+    timeEntityInnerHeightMap: new RefMap<string, number>(scroll.handleBodyRowHeightChange, /* ignoreDeletes = */ true),
+    }
+    return heightRefMaps
+  })
+  const {
+    timelineHeaderRowInnerHeightMap,
+    dataGridHeaderRowInnerHeightMap,
+    dataGridEntityInnerHeightMap,
+    timeEntityInnerHeightMap,
+  } = heightRefMaps
+
+  useLayoutEffect(() => {
+    isActiveRef.current = true
+
+    return () => {
+      isActiveRef.current = false
+      handlers.clearSlotInnerWidth()
+    }
+  }, [])
+
+  // hits
+  useHitTarget(bodyElRef, {
+    eventSelection: props.eventSelection,
+    prepareHits: scroll.prepareHits,
+    queryHit(isRtl, positionLeft, positionTop): Hit | null {
+      const { bodyLayouts, bodyTops, bodyHeights } = geometryRef.current
+      const { dateProfile, tDateProfile, timeCanvasWidth } = props
+      const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
+      const { dateEnv } = context
+
+      let coordRes = findEntityByCoord(
+        bodyLayouts,
+        bodyTops,
+        bodyHeights,
+        positionTop,
+        createEntityId,
+      )
+
+      if (coordRes) {
+        let [entityAtTop, top, height] = coordRes
+
+        if (!isEntityGroup(entityAtTop)) {
+          let resource = entityAtTop
+          let bottom = top + height
+
+          const hitData = computeTimelineHitData(positionLeft, timeCanvasWidth, slotWidth, isRtl, tDateProfile, dateEnv)
+
+          if (!hitData) { // in the dead tail of a DST-truncated slot
+            return null
+          }
+
+          return {
+            dateProfile,
+            dateSpan: {
+              ...hitData.dateSpan,
+              resourceId: resource.id,
+            },
+            rect: {
+              ...hitData.rect,
+              top,
+              bottom,
+            },
+            getDayEl: () => getTimelineSlotEl(bodyElRef.current, hitData.slatIndex),
+            layer: 0,
           }
         }
       }
-    } else {
-      this.queuedEntityScroll = true
-    }
 
-    afterSize(this.boundForceUpdate)
-  }
-
-  handleHeaderRowHeightChange = () => {
-    if (this._isUnmounting) return
-    afterSize(this.boundForceUpdate)
-  }
-
-  boundForceUpdate = () => {
-    if (this._isUnmounting) return
-    this.forceUpdate()
-  }
-
-  // refs
-  private bodyEl: HTMLElement
-  private spreadsheetHeaderScrollerRef = createRef<Scroller>()
-  private spreadsheetBodyScrollerRef = createRef<Scroller>()
-  private spreadsheetFooterScrollerRef = createRef<Scroller>()
-  private timeHeaderScrollerRef = createRef<Scroller>()
-  private timeBodyScrollerRef = createRef<Scroller>()
-  private timeFooterScrollerRef = createRef<Scroller>()
-  private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
-    afterSize(this.handleSlotInnerWidths)
+      return null
+    },
   })
 
-  // TODO: give simpler handlers to this???
-  private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeaderRowHeightChange)
-  private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeaderRowHeightChange)
+  let { dateProfile, hasNesting } = props
+  let { options, viewSpec } = context
+  const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
-  // keyed by createEntityId
-  // NOTE: ignoring deletes can cause memory issues if resources constantly change and have new keys
-  // refactor in future. FWIW, TanStack Virtual doesn't garbage collect unnused dimensions either
-  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleBodyRowHeightChange, /* ignoreDeletes = */ true)
-  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleBodyRowHeightChange, /* ignoreDeletes = */ true)
+  /* date */
 
-  private bodyLayouts: GenericLayout<Resource | Group>[]
-  private bodyTops?: Map<string, number> // keyed by createEntityId
-  private bodyHeights?: Map<string, number> // keyed by createEntityId
+  const { tDateProfile } = props
+  let { cellRows } = tDateProfile
 
-  // internal
-  private slotInnerWidth?: number
-  private timeScroller: ScrollerSyncerInterface
-  private bodyScroller: ScrollerSyncerInterface
-  private spreadsheetScroller: ScrollerSyncerInterface
-  private maxVScroll: number | undefined
-  private maxHScroll: number | undefined
+  /* table settings */
 
-  // updated in-place
-  // .time takes precedence
-  // to operate on pixel value (.x), clear time
-  private scroll: EntityScroll & TimeScroll = {}
+  let allowVerticalScrolling = !getIsHeightAuto(options)
+  let tableHeaderSticky = getTableHeaderSticky(options)
+  let footerScrollbarSticky = getFooterScrollbarSticky(options)
 
-  // virtualizers
-  private getEntityTop = (key) => this.bodyTops.get(key)
-  private getEntityHeight = (key) => this.bodyHeights.get(key)
-  private rowVirtualizer = new Virtualizer<RowLayout>(
-    (rowLayout) => createEntityId(rowLayout.entity),
-    this.getEntityTop,
-    this.getEntityHeight,
-    this.boundForceUpdate,
-  )
-  private groupColVirtualizers: Virtualizer<GroupCellLayout>[] = []
-  private slotVirtualizer = new Virtualizer<string>(
-    (slotKey) => slotKey,
-    (_key, index) => index * (this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH),
-    () => this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH,
-    this.boundForceUpdate,
-    /* overscan = */ 3,
-  )
-  private timeHeaderVirtualizers: Virtualizer<TimelineHeaderCellData>[] = []
+  const { colSpecs, groupColCnt, superHeaderRendering } = props
 
-  render() {
-    let { props, state, context } = this
-    let { dateProfile, hasNesting } = props
-    let { options, viewSpec } = context
-    const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
-    let { spreadsheetBottomScrollbarWidth, timeTotalWidth, timeClientWidth, timeClientHeight, timeBottomScrollbarWidth } = state
+  /* table hierarchy */
 
-    /* date */
+  const { resourceHierarchy } = props
 
-    const { tDateProfile } = props
-    let { cellRows } = tDateProfile
+  const superHeaderRowSpan = superHeaderRendering ? 1 : 0
+  const totalHeaderRowSpan = superHeaderRowSpan + 1
 
-    /* table settings */
+  /* table display */
 
-    let allowVerticalScrolling = !getIsHeightAuto(options)
-    let tableHeaderSticky = getTableHeaderSticky(options)
-    let footerScrollbarSticky = getFooterScrollbarSticky(options)
-
-    const { colSpecs, groupColCnt, superHeaderRendering } = props
-
-    /* table hierarchy */
-
-    const { resourceHierarchy } = props
-
-    const superHeaderRowSpan = superHeaderRendering ? 1 : 0
-    const totalHeaderRowSpan = superHeaderRowSpan + 1
-
-    /* table display */
-
-    let {
-      layouts: bodyLayouts,
-      flatRowLayouts,
-      flatGroupColLayouts,
-      totalCnt,
-    } = this.buildResourceLayouts(
+  let {
+    layouts: bodyLayouts,
+    flatRowLayouts,
+    flatGroupColLayouts,
+    totalCnt,
+  } = useMemo(
+    () => buildResourceLayouts(
       resourceHierarchy,
       hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
-    )
-    this.bodyLayouts = bodyLayouts
+    ),
+    [resourceHierarchy, hasNesting, props.resourceEntityExpansions, options.resourcesInitiallyExpanded],
+  )
 
-    // update groupColVirtualizers
-    let groupColVirtualizers = this.groupColVirtualizers
-    let oldLen = groupColVirtualizers.length
-    let newLen = flatGroupColLayouts.length
-    if (newLen > oldLen) {
-      for (let i = oldLen; i < newLen; i++) {
-        groupColVirtualizers[i] = new Virtualizer<GroupCellLayout>(
-          (groupCellLayout) => createGroupId(groupCellLayout.entity),
-          this.getEntityTop,
-          this.getEntityHeight,
-          this.boundForceUpdate,
-        )
-      }
-    } else if (newLen < oldLen) {
-      groupColVirtualizers = groupColVirtualizers.slice(0, newLen)
-    }
-    this.groupColVirtualizers = groupColVirtualizers
+  // the virtualizer lists follow the group columns and header rows (render-time caches, like the
+  // virtualizers themselves)
+  virtualizers.groupCols = syncVirtualizerList(
+    virtualizers.groupCols,
+    flatGroupColLayouts.length,
+    () => new Virtualizer<GroupCellLayout>(
+      (groupCellLayout) => createGroupId(groupCellLayout.entity),
+      getEntityTop,
+      getEntityHeight,
+      rerender,
+    ),
+    /* isTrimmed = */ true,
+  )
+  virtualizers.timeHeaders = syncVirtualizerList(
+    virtualizers.timeHeaders,
+    cellRows.length,
+    () => new Virtualizer<TimelineHeaderCellData>(
+      (cell) => cell.key,
+      undefined, // getItemStart (let Virtualizer compute it)
+      (key, index, cell) => cell.colspan * (geometryRef.current.props.slotWidth ?? ESTIMATED_SLOT_WIDTH),
+      rerender,
+    ),
+    /* isTrimmed = */ false,
+    // HACK to prepopulate
+    (timeHeaderVirtualizer, first) => {
+      timeHeaderVirtualizer.viewportSize = first.viewportSize
+      timeHeaderVirtualizer.scroll = first.scroll
+    },
+  )
+  const { groupCols: groupColVirtualizers, timeHeaders: timeHeaderVirtualizers } = virtualizers
 
-    // update timeHeaderVirtualizers
-    let timeHeaderVirtualizers = this.timeHeaderVirtualizers
-    oldLen = timeHeaderVirtualizers.length
-    newLen = cellRows.length
-    if (newLen > oldLen) {
-      for (let i = oldLen; i < newLen; i++) {
-        timeHeaderVirtualizers[i] = new Virtualizer<TimelineHeaderCellData>(
-          (cell) => cell.key,
-          undefined, // getItemStart (let Virtualizer compute it)
-          (key, index, cell) => cell.colspan * (this.props.slotWidth ?? ESTIMATED_SLOT_WIDTH),
-          this.boundForceUpdate,
-        )
-        // HACK to prepopulate
-        timeHeaderVirtualizers[i].viewportSize = timeHeaderVirtualizers[0].viewportSize
-        timeHeaderVirtualizers[i].scroll = timeHeaderVirtualizers[0].scroll
-      }
-    }
-    this.timeHeaderVirtualizers = timeHeaderVirtualizers
+  // Expansion-filtered rows, including those outside the virtualized viewport.
+  // `totalCnt` also includes collapsed descendants; `rowPositions` below is the mounted subset.
+  const displayedRowCnt = flatRowLayouts.length
 
-    // Expansion-filtered rows, including those outside the virtualized viewport.
-    // `totalCnt` also includes collapsed descendants; `rowPositions` below is the mounted subset.
-    const displayedRowCnt = flatRowLayouts.length
+  /* table positions */
 
-    /* table positions */
+  // does not include bottom border between header and body
+  const headerHeight = computeResourceTimelineHeaderHeight(
+    dataGridHeaderRowInnerHeightMap.current,
+    timelineHeaderRowInnerHeightMap.current,
+    Boolean(superHeaderRendering),
+    tDateProfile.cellRows.length,
+  )
+  geometryRef.current = { ...geometryRef.current, headerHeight }
 
-    // does not include bottom border between header and body
-    const headerHeight = computeResourceTimelineHeaderHeight(
-      this.dataGridHeaderRowInnerHeightMap.current,
-      this.timelineHeaderRowInnerHeightMap.current,
-      Boolean(superHeaderRendering),
-      tDateProfile.cellRows.length,
-    )
+  let endScrollbarWidth = (timeTotalWidth != null && timeClientWidth != null)
+    ? timeTotalWidth - timeClientWidth
+    : undefined
 
-    let endScrollbarWidth = (timeTotalWidth != null && timeClientWidth != null)
-      ? timeTotalWidth - timeClientWidth
-      : undefined
+  // totalBodyHeight is the height WITHIN the scrollers
+  let [bodyHeights, totalBodyHeight] = computeHeights( // TODO: memoize?
+    bodyLayouts,
+    createEntityId,
+    (entityKey) => { // makes memoization impossible!
+      const entitySpreadsheetHeight = dataGridEntityInnerHeightMap.current.get(entityKey) ?? DEFAULT_OWN_CELL_HEIGHT
 
-    // totalBodyHeight is the height WITHIN the scrollers
-    let [bodyHeights, totalBodyHeight] = computeHeights( // TODO: memoize?
-      bodyLayouts,
-      createEntityId,
-      (entityKey) => { // makes memoization impossible!
-        const entitySpreadsheetHeight = this.dataGridEntityInnerHeightMap.current.get(entityKey) ?? defaultOwnCellHeight
+      // map doesn't contain group-column-cell heights, thus ||0
+      // TODO: better use defaultOwnCellHeight
+      const entityTimeHeight = timeEntityInnerHeightMap.current.get(entityKey) || 0
 
-        // map doesn't contain group-column-cell heights, thus ||0
-        // TODO: better use defaultOwnCellHeight
-        const entityTimeHeight = this.timeEntityInnerHeightMap.current.get(entityKey) || 0
+      return Math.max(entitySpreadsheetHeight, entityTimeHeight)
+    },
+    /* minHeight = */ (allowVerticalScrolling && options.expandRows)
+      ? timeClientHeight
+      : undefined,
+  )
 
-        return Math.max(entitySpreadsheetHeight, entityTimeHeight)
-      },
-      /* minHeight = */ (allowVerticalScrolling && options.expandRows)
-        ? timeClientHeight
-        : undefined,
-    )
-    this.bodyHeights = bodyHeights
+  let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights, scroll.scrollSlack)
+  const prevMaxVScroll = geometryRef.current.maxVScroll
+  geometryRef.current = { ...geometryRef.current, bodyLayouts, bodyTops, bodyHeights }
 
-    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights, this.scrollSlack)
-    this.bodyTops = bodyTops
+  /* virtualize */
 
-    /* virtualize */
+  const virtualizationDisabled = !options.virtualization
 
-    const virtualizationDisabled = !options.virtualization
+  // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
+  // (with the previous render's maxVScroll, as the class did)
+  const forcedEntityScroll = scroll.computeEntityScroll({ bodyTops, bodyHeights, maxVScroll: prevMaxVScroll })
 
-    // ensure in-range items are computed with most recent scroll, even tho maybe not applied yet
-    const forcedEntityScroll = this.computeEntityScroll()
+  const rowPositions = virtualizers.row.computePositions(flatRowLayouts, virtualizationDisabled, forcedEntityScroll)
 
-    const rowPositions = this.rowVirtualizer.computePositions(flatRowLayouts, virtualizationDisabled, forcedEntityScroll)
+  // Keep render loops component-type-specific for future row recycling.
+  const groupRowPositions: ItemPosition<GroupRowLayout>[] = []
+  const resourceRowPositions: ItemPosition<ResourceRowLayout>[] = []
 
-    // Keep render loops component-type-specific for future row recycling.
-    const groupRowPositions: ItemPosition<GroupRowLayout>[] = []
-    const resourceRowPositions: ItemPosition<ResourceRowLayout>[] = []
-
-    for (const rowPosition of rowPositions) {
-      if ('resourceFields' in rowPosition.item) {
-        resourceRowPositions.push(rowPosition as ItemPosition<ResourceRowLayout>)
-      } else {
-        groupRowPositions.push(rowPosition as ItemPosition<GroupRowLayout>)
-      }
-    }
-
-    const groupColPositions = this.groupColVirtualizers.map((groupColVirtualizer, i) => {
-      return groupColVirtualizer.computePositions(flatGroupColLayouts[i], virtualizationDisabled, forcedEntityScroll)
-    })
-
-    // Scope deterministic row/column cell IDs to this calendar instance.
-    const cellIdPrefix = `${context.baseId}rt`
-    const ariaBodyRows = buildAriaBodyRows(
-      flatRowLayouts,
-      groupColPositions,
-      rowPositions,
-      groupColCnt,
-      colSpecs.length,
-    )
-
-    // Only paint vertical fills/lines that are in view
-    // Big performance impact for very tall virtualized lists
-    // NOTE: could be zero rows and groups!
-    const rowPositionShift = computeShift(rowPositions)
-    const yFillTop = rowPositionShift?.[0] ?? 0
-    const yFillBottom = rowPositionShift?.[1] ?? 0
-
-    let yFillHeight: number
-
-    if (allowVerticalScrolling) {
-      yFillHeight = timeClientHeight != null
-        ? Math.max(yFillBottom, timeClientHeight) - yFillTop
-        : undefined
+  for (const rowPosition of rowPositions) {
+    if ('resourceFields' in rowPosition.item) {
+      resourceRowPositions.push(rowPosition as ItemPosition<ResourceRowLayout>)
     } else {
-      yFillHeight = yFillBottom - yFillTop
+      groupRowPositions.push(rowPosition as ItemPosition<GroupRowLayout>)
     }
+  }
 
-    // Uses the same slot geometry as slotVirtualizer, which is estimated until measured.
-    // When the canvas fits without scrolling, scrollTo() is a no-op that fires no scroll event,
-    // so an uncapped time-based scroll would linger and the virtualizer would skip the leading
-    // slots (#8093)
-    this.maxHScroll = timeClientWidth != null
-      ? Math.max(0, tDateProfile.slotCnt * (props.slotWidth ?? ESTIMATED_SLOT_WIDTH) - timeClientWidth)
+  const groupColPositions = groupColVirtualizers.map((groupColVirtualizer, i) => {
+    return groupColVirtualizer.computePositions(flatGroupColLayouts[i], virtualizationDisabled, forcedEntityScroll)
+  })
+
+  // Scope deterministic row/column cell IDs to this calendar instance.
+  const cellIdPrefix = `${context.baseId}rt`
+  const ariaBodyRows = buildAriaBodyRows(
+    flatRowLayouts,
+    groupColPositions,
+    rowPositions,
+    groupColCnt,
+    colSpecs.length,
+  )
+
+  // Only paint vertical fills/lines that are in view
+  // Big performance impact for very tall virtualized lists
+  // NOTE: could be zero rows and groups!
+  const rowPositionShift = computeShift(rowPositions)
+  const yFillTop = rowPositionShift?.[0] ?? 0
+  const yFillBottom = rowPositionShift?.[1] ?? 0
+
+  let yFillHeight: number
+
+  if (allowVerticalScrolling) {
+    yFillHeight = timeClientHeight != null
+      ? Math.max(yFillBottom, timeClientHeight) - yFillTop
       : undefined
+  } else {
+    yFillHeight = yFillBottom - yFillTop
+  }
 
-    const forcedTimeScroll = this.computeTimeScroll()
-    const slotDatePositions = this.slotVirtualizer.computePositions(tDateProfile.slotKeys, virtualizationDisabled, forcedTimeScroll)
-    const slotDateShift = computeShift(slotDatePositions)
+  // Uses the same slot geometry as slotVirtualizer, which is estimated until measured.
+  // When the canvas fits without scrolling, scrollTo() is a no-op that fires no scroll event,
+  // so an uncapped time-based scroll would linger and the virtualizer would skip the leading
+  // slots (#8093)
+  const maxHScroll = timeClientWidth != null
+    ? Math.max(0, tDateProfile.slotCnt * (props.slotWidth ?? ESTIMATED_SLOT_WIDTH) - timeClientWidth)
+    : undefined
 
-    /* */
+  geometryRef.current = { ...geometryRef.current, maxHScroll }
+  const forcedTimeScroll = scroll.computeTimeScroll(geometryRef.current)
+  const slotDatePositions = virtualizers.slot.computePositions(tDateProfile.slotKeys, virtualizationDisabled, forcedTimeScroll)
+  const slotDateShift = computeShift(slotDatePositions)
 
-    const { timeCanvasWidth } = props
-    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
+  /* */
 
-    const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
+  const { timeCanvasWidth } = props
+  const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
 
-    /* event display */
+  const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
 
-    const { splitProps, bgSlicedProps } = props
+  /* event display */
 
-    /* business hour display */
+  const { splitProps, bgSlicedProps } = props
 
-    const { hasResourceBusinessHours, fallbackBusinessHours } = props
+  /* business hour display */
 
-    const enableNowIndicator = // TODO: DRY
-      options.nowIndicator &&
-      isNowInTimelineRange(props.nowDate, props.dateProfile, props.tDateProfile)
+  const { hasResourceBusinessHours, fallbackBusinessHours } = props
 
-    /* filler */
+  const enableNowIndicator = // TODO: DRY
+    options.nowIndicator &&
+    isNowInTimelineRange(props.nowDate, props.dateProfile, props.tDateProfile)
 
-    const spreadsheetBottomFiller = Math.max(
-      0,
-      (timeBottomScrollbarWidth || 0) -
-        (spreadsheetBottomScrollbarWidth || 0),
-    )
+  /* filler */
 
-    const timelineBottomFiller = Math.max(
-      0,
-      (spreadsheetBottomScrollbarWidth || 0) -
-        (timeBottomScrollbarWidth || 0),
-    )
+  const spreadsheetBottomFiller = Math.max(
+    0,
+    (timeBottomScrollbarWidth || 0) -
+      (spreadsheetBottomScrollbarWidth || 0),
+  )
 
-    const maxVScroll = this.maxVScroll =
-      (allowVerticalScrolling && timeClientHeight != null)
-        ? Math.max(0, totalBodyHeight - timeClientHeight)
-        : 0
+  const timelineBottomFiller = Math.max(
+    0,
+    (spreadsheetBottomScrollbarWidth || 0) -
+      (timeBottomScrollbarWidth || 0),
+  )
 
-    const allowBottomFiller =
-      !options.expandRows && // if rows expand, then we never need filler
-      !maxVScroll // no scrolling possible
+  const maxVScroll =
+    (allowVerticalScrolling && timeClientHeight != null)
+      ? Math.max(0, totalBodyHeight - timeClientHeight)
+      : 0
+  geometryRef.current = { ...geometryRef.current, maxVScroll }
 
-    const spreadsheetNeedsBottomFiller = allowBottomFiller || Boolean(spreadsheetBottomFiller)
-    const timelineNeedsBottomFiller = allowBottomFiller || Boolean(timelineBottomFiller)
+  const allowBottomFiller =
+    !options.expandRows && // if rows expand, then we never need filler
+    !maxVScroll // no scrolling possible
 
-    return (
-      <ViewContainer
-        viewSpec={viewSpec}
-        attrs={{
-          role: getAriaTableRole(hasNesting),
-          'aria-rowcount': totalHeaderRowSpan + totalCnt,
-          'aria-colcount': colSpecs.length + 1,
-          'aria-label': props.labelStr,
-          'aria-labelledby': props.labelId,
-        }}
-        className={joinClassNames(
-          props.className,
-          generateClassName(options.tableClass, {
-            borderlessX,
-            borderlessTop,
-            borderlessBottom,
-            multiMonthColumns: 0,
-          }),
-          classNames.flexCol,
-        )}
-      >
-        <AriaProxyRows
-          cellIdPrefix={cellIdPrefix}
-          bodyRows={ariaBodyRows}
-          resourceColCnt={colSpecs.length}
-          superHeaderRowSpan={superHeaderRowSpan}
-          hasNesting={hasNesting}
-        />
-        <ResizableTwoCol
-          initialStartWidthConfig={props.initialSpreadsheetWidthConfig}
-          resizedWidthConfigRef={props.spreadsheetResizedWidthConfigRef}
-          className={allowVerticalScrolling ? classNames.liquid : ''}
+  const spreadsheetNeedsBottomFiller = allowBottomFiller || Boolean(spreadsheetBottomFiller)
+  const timelineNeedsBottomFiller = allowBottomFiller || Boolean(timelineBottomFiller)
 
-          /* spreadsheet
-          --------------------------------------------------------------------------------- */
+  return (
+    <ViewContainer
+      viewSpec={viewSpec}
+      attrs={{
+        role: getAriaTableRole(hasNesting),
+        'aria-rowcount': totalHeaderRowSpan + totalCnt,
+        'aria-colcount': colSpecs.length + 1,
+        'aria-label': props.labelStr,
+        'aria-labelledby': props.labelId,
+      }}
+      className={joinClassNames(
+        props.className,
+        generateClassName(options.tableClass, {
+          borderlessX,
+          borderlessTop,
+          borderlessBottom,
+          multiMonthColumns: 0,
+        }),
+        classNames.flexCol,
+      )}
+    >
+      <AriaProxyRows
+        cellIdPrefix={cellIdPrefix}
+        bodyRows={ariaBodyRows}
+        resourceColCnt={colSpecs.length}
+        superHeaderRowSpan={superHeaderRowSpan}
+        hasNesting={hasNesting}
+      />
+      <ResizableTwoCol
+        initialStartWidthConfig={props.initialSpreadsheetWidthConfig}
+        resizedWidthConfigRef={props.spreadsheetResizedWidthConfigRef}
+        className={allowVerticalScrolling ? classNames.liquid : ''}
 
-          startClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
-          startContent={
-            <>
+        /* spreadsheet
+        --------------------------------------------------------------------------------- */
 
-              {/* spreadsheet HEADER
-              ---------------------------------------------------------------------------- */}
+        startClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
+        startContent={
+          <>
+
+            {/* spreadsheet HEADER
+            ---------------------------------------------------------------------------- */}
+            <div
+              role="presentation"
+              className={joinClassNames(
+                generateClassName(options.tableHeaderClass, {
+                  isSticky: tableHeaderSticky,
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  multiMonthColumns: 0,
+                }),
+                classNames.flexCol,
+                tableHeaderSticky && classNames.tableHeaderSticky,
+                classNames.z1,
+              )}
+            >
               <div
-                role="presentation"
                 className={joinClassNames(
-                  generateClassName(options.tableHeaderClass, {
-                    isSticky: tableHeaderSticky,
-                    borderlessX,
-                    borderlessTop,
-                    borderlessBottom,
-                    multiMonthColumns: 0,
-                  }),
                   classNames.flexCol,
-                  tableHeaderSticky && classNames.tableHeaderSticky,
-                  classNames.z1,
+                  classNames.contentBox,
                 )}
+                style={{
+                  height: headerHeight,
+                }}
               >
-                <div
-                  className={joinClassNames(
-                    classNames.flexCol,
-                    classNames.contentBox,
-                  )}
-                  style={{
-                    height: headerHeight,
-                  }}
+                {Boolean(superHeaderRendering) && (
+                  <div
+                    role="presentation"
+                    className={joinClassNames(
+                      options.resourceHeaderRowClass,
+                      classNames.flexRow,
+                      classNames.grow,
+                      classNames.borderlessX,
+                      classNames.borderlessTop,
+                    )}
+                  >
+                    <SuperHeaderCell
+                      cellIdPrefix={cellIdPrefix}
+                      cellRowIndex={1}
+                      cellColIndex={0}
+                      renderHooks={superHeaderRendering}
+                      indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                      innerHeightRef={dataGridHeaderRowInnerHeightMap.createRef(true)}
+                      colSpan={colSpecs.length}
+                      indentWidth={props.indentWidth}
+                    />
+                  </div>
+                )}
+                <Scroller
+                  horizontal
+                  hideScrollbars
+                  className={joinClassNames(classNames.flexCol, classNames.grow)}
+                  ref={spreadsheetHeaderScrollerRef}
                 >
-                  {Boolean(superHeaderRendering) && (
+                  <div
+                    className={joinClassNames(classNames.flexCol, classNames.grow)}
+                    style={{ minWidth: spreadsheetCanvasWidth }}
+                  >
                     <div
                       role="presentation"
                       className={joinClassNames(
                         options.resourceHeaderRowClass,
                         classNames.flexRow,
                         classNames.grow,
-                        classNames.borderlessX,
-                        classNames.borderlessTop,
+                        classNames.borderless,
                       )}
                     >
-                      <SuperHeaderCell
-                        cellIdPrefix={cellIdPrefix}
-                        cellRowIndex={1}
-                        cellColIndex={0}
-                        renderHooks={superHeaderRendering}
-                        indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
-                        innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
-                        colSpan={colSpecs.length}
+                      <HeaderCells
+                        colSpecs={colSpecs}
+                        colWidths={spreadsheetColWidths}
+                        indent={hasNesting}
                         indentWidth={props.indentWidth}
+                        rowIndex={superHeaderRowSpan}
+                        cellIdPrefix={cellIdPrefix}
+
+                        // refs
+                        innerHeightRef={dataGridHeaderRowInnerHeightMap.createRef(false)}
+                        onColResize={props.onColResize}
                       />
                     </div>
-                  )}
-                  <Scroller
-                    horizontal
-                    hideScrollbars
-                    className={joinClassNames(classNames.flexCol, classNames.grow)}
-                    ref={this.spreadsheetHeaderScrollerRef}
-                  >
-                    <div
-                      className={joinClassNames(classNames.flexCol, classNames.grow)}
-                      style={{ minWidth: spreadsheetCanvasWidth }}
-                    >
-                      <div
-                        role="presentation"
-                        className={joinClassNames(
-                          options.resourceHeaderRowClass,
-                          classNames.flexRow,
-                          classNames.grow,
-                          classNames.borderless,
-                        )}
-                      >
-                        <HeaderCells
-                          colSpecs={colSpecs}
-                          colWidths={spreadsheetColWidths}
-                          indent={hasNesting}
-                          indentWidth={props.indentWidth}
-                          rowIndex={superHeaderRowSpan}
-                          cellIdPrefix={cellIdPrefix}
-
-                          // refs
-                          innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
-                          onColResize={props.onColResize}
-                        />
-                      </div>
-                    </div>
-                  </Scroller>
-                </div>
-                <div
-                  className={generateClassName(options.slotHeaderDividerClass, {
-                    inTableHeader: true,
-                    options: { dayMinWidth: options.dayMinWidth },
-                  })}
-                />
+                  </div>
+                </Scroller>
               </div>
+              <div
+                className={generateClassName(options.slotHeaderDividerClass, {
+                  inTableHeader: true,
+                  options: { dayMinWidth: options.dayMinWidth },
+                })}
+              />
+            </div>
 
-              {/* spreadsheet BODY
-              ---------------------------------------------------------------------------- */}
+            {/* spreadsheet BODY
+            ---------------------------------------------------------------------------- */}
+            <Scroller
+              vertical={allowVerticalScrolling}
+              horizontal
+              hideScrollbars
+              className={joinClassNames(
+                generateClassName(options.tableBodyClass, {
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  multiMonthColumns: 0,
+                }),
+                classNames.flexCol,
+                classNames.rel, // for Ruler.fillStart
+                allowVerticalScrolling && classNames.liquid,
+                classNames.z0,
+              )}
+              ref={spreadsheetBodyScrollerRef}
+              clientWidthRef={handlers.handleSpreadsheetClientWidth}
+            >
+              <BodySection
+                cellIdPrefix={cellIdPrefix}
+                inTreeGrid={hasNesting}
+                groupRowPositions={groupRowPositions}
+                resourceRowPositions={resourceRowPositions}
+                groupColPositions={groupColPositions}
+                displayedRowCnt={displayedRowCnt}
+                groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
+                colWidths={spreadsheetColWidths}
+                colSpecs={colSpecs}
+                rowInnerHeightRefMap={dataGridEntityInnerHeightMap}
+                headerRowSpan={totalHeaderRowSpan}
+                indentWidth={props.indentWidth}
+                canvasWidth={spreadsheetCanvasWidth}
+                canvasHeight={totalBodyHeight}
+              />
+              {spreadsheetNeedsBottomFiller && (
+                <div
+                  className={joinClassNames(
+                    generateClassName(options.fillerClass, { inTableHeader: false }),
+                    classNames.borderlessX,
+                    classNames.borderlessBottom,
+                  )}
+                  style={{ minHeight: spreadsheetBottomFiller }}
+                />
+              )}
+            </Scroller>
+
+            {/* spreadsheet FOOTER scrollbar
+            ----------------------------------------------------------------------------
+            Not just for footerScrollbarSticky:true,
+            also just for normal horizontal scrolling,
+            because we need to hide the vertical scrollbar, but can't solely show the horizontal one
+            */}
+            <FooterScrollbar
+              isSticky={footerScrollbarSticky}
+              canvasWidth={spreadsheetCanvasWidth}
+              scrollerRef={spreadsheetFooterScrollerRef}
+              scrollbarWidthRef={handlers.handleSpreadsheetBottomScrollbarWidth}
+            />
+          </>
+        }
+
+        /* time-area (TODO: try to make this DRY-er with TimelineView???)
+        --------------------------------------------------------------------------------- */
+
+        endClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
+        endContent={
+          <>
+
+            {/* time-area HEADER
+            ---------------------------------------------------------------------------- */}
+            <div
+              className={joinClassNames(
+                generateClassName(options.tableHeaderClass, {
+                  isSticky: tableHeaderSticky,
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  multiMonthColumns: 0,
+                }),
+                classNames.flexCol,
+                tableHeaderSticky && classNames.tableHeaderSticky,
+                classNames.z1,
+              )}
+            >
               <Scroller
-                vertical={allowVerticalScrolling}
+                ref={timeHeaderScrollerRef}
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  generateClassName(options.tableBodyClass, {
-                    borderlessX,
-                    borderlessTop,
-                    borderlessBottom,
-                    multiMonthColumns: 0,
-                  }),
-                  classNames.flexCol,
-                  classNames.rel, // for Ruler.fillStart
-                  allowVerticalScrolling && classNames.liquid,
-                  classNames.z0,
+                  classNames.flexRow,
+                  classNames.contentBox,
                 )}
-                ref={this.spreadsheetBodyScrollerRef}
-                clientWidthRef={this.handleSpreadsheetClientWidth}
+                style={{
+                  height: headerHeight,
+                }}
               >
-                <BodySection
-                  cellIdPrefix={cellIdPrefix}
-                  inTreeGrid={hasNesting}
-                  groupRowPositions={groupRowPositions}
-                  resourceRowPositions={resourceRowPositions}
-                  groupColPositions={groupColPositions}
-                  displayedRowCnt={displayedRowCnt}
-                  groupCellCnts={flatGroupColLayouts.map((flatGroupCellLayouts) => flatGroupCellLayouts.length)}
-                  colWidths={spreadsheetColWidths}
-                  colSpecs={colSpecs}
-                  rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
-                  headerRowSpan={totalHeaderRowSpan}
-                  indentWidth={props.indentWidth}
-                  canvasWidth={spreadsheetCanvasWidth}
-                  canvasHeight={totalBodyHeight}
-                />
-                {spreadsheetNeedsBottomFiller && (
+                {/* for screen reader users. zero-height */}
+                <div role="presentation">
                   <div
-                    className={joinClassNames(
-                      generateClassName(options.fillerClass, { inTableHeader: false }),
-                      classNames.borderlessX,
-                      classNames.borderlessBottom,
-                    )}
-                    style={{ minHeight: spreadsheetBottomFiller }}
-                  />
-                )}
-              </Scroller>
-
-              {/* spreadsheet FOOTER scrollbar
-              ----------------------------------------------------------------------------
-              Not just for footerScrollbarSticky:true,
-              also just for normal horizontal scrolling,
-              because we need to hide the vertical scrollbar, but can't solely show the horizontal one
-              */}
-              <FooterScrollbar
-                isSticky={footerScrollbarSticky}
-                canvasWidth={spreadsheetCanvasWidth}
-                scrollerRef={this.spreadsheetFooterScrollerRef}
-                scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
-              />
-            </>
-          }
-
-          /* time-area (TODO: try to make this DRY-er with TimelineView???)
-          --------------------------------------------------------------------------------- */
-
-          endClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
-          endContent={
-            <>
-
-              {/* time-area HEADER
-              ---------------------------------------------------------------------------- */}
-              <div
-                className={joinClassNames(
-                  generateClassName(options.tableHeaderClass, {
-                    isSticky: tableHeaderSticky,
-                    borderlessX,
-                    borderlessTop,
-                    borderlessBottom,
-                    multiMonthColumns: 0,
-                  }),
-                  classNames.flexCol,
-                  tableHeaderSticky && classNames.tableHeaderSticky,
-                  classNames.z1,
-                )}
-              >
-                <Scroller
-                  ref={this.timeHeaderScrollerRef}
-                  horizontal
-                  hideScrollbars
-                  className={joinClassNames(
-                    classNames.flexRow,
-                    classNames.contentBox,
-                  )}
-                  style={{
-                    height: headerHeight,
-                  }}
-                >
-                  {/* for screen reader users. zero-height */}
-                  <div role="presentation">
-                    <div
-                      {...buildAriaCellAttrs({
-                        cellIdPrefix,
-                        cellRowIndex: 1,
-                        cellColIndex: colSpecs.length,
-                      })}
-                      role="columnheader"
-                      aria-rowspan={totalHeaderRowSpan}
-                      className={classNames.srOnly}
-                    >
-                      {options.eventsHint}
-                    </div>
-                  </div>
-
-                  {/* for sighted users */}
-                  <div // the canvas
-                    aria-hidden
-                    className={joinClassNames( // TODO: DRY
-                      classNames.rel, // origin for now-indicator
-                      classNames.flexCol,
-                      timeCanvasWidth == null && classNames.liquid,
-
-                      // slotLiquid:true implies that slots are expanding bigger than their min,
-                      // and that there are NOT any horizontal scrollbars. if so, then no worries
-                      // about sticky-event-titles. if so, we're able to apply cropping to prevent
-                      // event hover-resizers and whatnot from bleeding out of the canvas and causing
-                      // horizontal scrollbars when there normally wouldn't be any
-                      props.slotLiquid && classNames.crop,
-                    )}
-                    style={{ minWidth: timeCanvasWidth }}
-                  >
-                    {cellRows.map((cells, rowIndex) => {
-                      const rowLevel = cellRows.length - rowIndex - 1
-
-                      const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
-                      const shift = computeShift(headerCellPositions)
-                      if (shift) {
-                        timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
-                      }
-
-                      return (
-                        <TimelineHeaderRow
-                          key={rowIndex}
-                          className={joinClassNames(classNames.rel, classNames.grow)}
-                          dateProfile={props.dateProfile}
-                          tDateProfile={tDateProfile}
-                          nowDate={props.nowDate}
-                          nowMs={props.nowMs}
-                          todayRange={props.todayRange}
-                          rowLevel={rowLevel}
-                          cells={cells}
-                          slotWidth={slotWidth}
-                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowIndex)}
-                          innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
-                          insetInlineStart={shift && shift[0]}
-                          width={shift ? (shift[1] - shift[0]) : undefined}
-                          cellStartIndex={shift && shift[2]}
-                          cellCount={headerCellPositions.length}
-                        />
-                      )
+                    {...buildAriaCellAttrs({
+                      cellIdPrefix,
+                      cellRowIndex: 1,
+                      cellColIndex: colSpecs.length,
                     })}
-                    {enableNowIndicator && (
-                      // TODO: make this positioned WITHIN padding
-                      <TimelineNowIndicatorArrow
-                        tDateProfile={tDateProfile}
-                        nowMs={props.nowMs}
-                        slotWidth={slotWidth}
-                      />
-                    )}
+                    role="columnheader"
+                    aria-rowspan={totalHeaderRowSpan}
+                    className={classNames.srOnly}
+                  >
+                    {options.eventsHint}
                   </div>
+                </div>
 
-                  {Boolean(endScrollbarWidth) && (
-                    <div
-                      className={joinClassNames(
-                        generateClassName(options.fillerClass, { inTableHeader: true }),
-                        classNames.borderlessY,
-                        classNames.borderlessEnd,
-                      )}
-                      style={{ minWidth: endScrollbarWidth }}
-                    />
-                  )}
-                </Scroller>
-                <div
-                  className={generateClassName(options.slotHeaderDividerClass, {
-                    inTableHeader: false,
-                    options: { dayMinWidth: options.dayMinWidth },
-                  })}
-                />
-              </div>
-
-              {/* time-area BODY (w/ events)
-              ---------------------------------------------------------------------------- */}
-              <Scroller
-                vertical={
-                  allowVerticalScrolling &&
-                  // infer whether scrolling would happen. prevents clientHeight thrashing due to horizontal scrollbars
-                  (totalBodyHeight != null && timeClientHeight != null && totalBodyHeight > timeClientHeight)
-                }
-                horizontal
-                hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
-                className={joinClassNames(
-                  generateClassName(options.tableBodyClass, {
-                    borderlessX,
-                    borderlessTop,
-                    borderlessBottom,
-                    multiMonthColumns: 0,
-                  }),
-                  classNames.flexCol,
-                  classNames.rel, // for Ruler.fillStart
-                  allowVerticalScrolling && classNames.liquid,
-                  classNames.z0,
-                )}
-                ref={this.timeBodyScrollerRef}
-                clientWidthRef={this.handleTimeClientWidth}
-                clientHeightRef={
-                  allowVerticalScrolling
-                    ? this.handleTimeClientHeight
-                    : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
-                }
-                bottomScrollbarWidthRef={
-                  allowVerticalScrolling
-                    ? this.handleTimeBottomScrollbarWidth
-                    : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
-                }
-              >
-                <div // canvas that expands to height of scroller (at least)
-                  className={joinClassNames(
-                    classNames.rel, // origin for canvas?
-                    classNames.grow,
+                {/* for sighted users */}
+                <div // the canvas
+                  aria-hidden
+                  className={joinClassNames( // TODO: DRY
+                    classNames.rel, // origin for now-indicator
                     classNames.flexCol,
+                    timeCanvasWidth == null && classNames.liquid,
 
                     // slotLiquid:true implies that slots are expanding bigger than their min,
                     // and that there are NOT any horizontal scrollbars. if so, then no worries
@@ -839,673 +911,289 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     // horizontal scrollbars when there normally wouldn't be any
                     props.slotLiquid && classNames.crop,
                   )}
-                  style={{
-                    minWidth: timeCanvasWidth,
-                    minHeight: totalBodyHeight,
-                  }}
-                  ref={this.handleBodyEl}
+                  style={{ minWidth: timeCanvasWidth }}
                 >
-                  <div
-                    // roving-origin for anything that fills y-axis,
-                    // like slots or non-resource bg events
-                    // is ZERO-width, but has defined top/bottom
-                    className={classNames.abs}
-                    style={{
-                      top: yFillTop,
-                      height: yFillHeight,
-                      bottom: yFillHeight == null ? 0 : undefined,
-                      insetInlineStart: slotDateShift?.[0],
-                    }}
-                  >
-                    <TimelineSlats
-                      dateProfile={dateProfile}
-                      tDateProfile={tDateProfile}
-                      nowDate={props.nowDate}
-                      nowMs={props.nowMs}
-                      todayRange={props.todayRange}
-                      slatStartIndex={slotDateShift?.[2]}
-                      slatCount={slotDatePositions.length}
-                      slotWidth={slotWidth}
-                    />
-                    <TimelineBg
-                      tDateProfile={tDateProfile}
-                      nowDate={props.nowDate}
-                      nowMs={props.nowMs}
-                      todayRange={props.todayRange}
+                  {cellRows.map((cells, rowIndex) => {
+                    const rowLevel = cellRows.length - rowIndex - 1
 
-                      // content
-                      bgEventSegs={bgSlicedProps.bgEventSegs}
-                      businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                      dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                      eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
+                    const headerCellPositions = timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
+                    const shift = computeShift(headerCellPositions)
+                    if (shift) {
+                      timeHeaderVirtualizers[rowIndex].computePositions(cells, virtualizationDisabled, forcedTimeScroll)
+                    }
 
-                      // dimensions
-                      slotWidth={props.slotWidth}
-
-                      // virtualization
-                      clipStart={slotDateShift?.[0]}
-                      clipEnd={slotDateShift?.[1]}
-                    />
-                    {enableNowIndicator && (
-                      <TimelineNowIndicatorLine
+                    return (
+                      <TimelineHeaderRow
+                        key={rowIndex}
+                        className={joinClassNames(classNames.rel, classNames.grow)}
+                        dateProfile={props.dateProfile}
                         tDateProfile={tDateProfile}
+                        nowDate={props.nowDate}
                         nowMs={props.nowMs}
+                        todayRange={props.todayRange}
+                        rowLevel={rowLevel}
+                        cells={cells}
                         slotWidth={slotWidth}
-                        clipStart={slotDateShift?.[0]}
+                        innerWidthRef={headerRowInnerWidthMap.createRef(rowIndex)}
+                        innerHeighRef={timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
+                        insetInlineStart={shift && shift[0]}
+                        width={shift ? (shift[1] - shift[0]) : undefined}
+                        cellStartIndex={shift && shift[2]}
+                        cellCount={headerCellPositions.length}
                       />
-                    )}
-                  </div>
-                  <div
-                    // roving-origin for all types of resource(-group)-rows
-                    // is ZERO-height, always fixed to top, but has definet x-coordinate and width
-                    role="presentation"
-                    className={classNames.abs}
-                    style={{
-                      top: 0,
-                      insetInlineStart: slotDateShift?.[0],
-                      width: slotDateShift ? (slotDateShift[1] - slotDateShift[0]) : undefined,
-                    }}
-                  >
-                    {groupRowPositions.map((rowPosition) => {
-                      const rowLayout = rowPosition.item
-                      const group = rowLayout.entity
-                      const groupKey = rowPosition.key
-
-                      return (
-                        <div
-                          key={groupKey}
-                          role="presentation"
-                          className={joinClassNames(
-                            classNames.fillX,
-                            classNames.flexRow,
-                          )}
-                          style={{
-                            top: rowPosition.start,
-                          }}
-                        >
-                          <GroupLane
-                            cellIdPrefix={cellIdPrefix}
-                            inTreeGrid={hasNesting}
-                            cellRowIndex={1 + totalHeaderRowSpan + rowLayout.rowIndex}
-                            cellColIndex={colSpecs.length}
-                            group={group}
-                            borderBottom={rowLayout.visibleIndex < displayedRowCnt - 1}
-                            innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                            height={rowPosition.size}
-                          />
-                        </div>
-                      )
-                    })}
-
-                    {resourceRowPositions.map((rowPosition) => {
-                      const resourceLayout = rowPosition.item
-                      const resource = resourceLayout.entity
-
-                      return (
-                        <ResourceLane
-                          {...splitProps[resource.id]}
-                          key={resource.id /* TODO: use rowPosition.key? */}
-                          role="presentation"
-                          cellIdPrefix={cellIdPrefix}
-                          inTreeGrid={hasNesting}
-                          cellRowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
-                          cellColIndex={colSpecs.length}
-                          className={classNames.fillX}
-                          resource={resource}
-                          dateProfile={dateProfile}
-                          tDateProfile={tDateProfile}
-                          nowDate={props.nowDate}
-                          nowMs={props.nowMs}
-                          todayRange={props.todayRange}
-                          businessHours={resource.businessHours || fallbackBusinessHours}
-                          borderBottom={resourceLayout.visibleIndex < displayedRowCnt - 1}
-
-                          // ref
-                          heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
-
-                          // dimensions
-                          slotWidth={props.slotWidth}
-
-                          // position
-                          top={rowPosition.start}
-                          height={rowPosition.size}
-
-                          // virtualization
-                          clipStart={slotDateShift?.[0]}
-                          clipEnd={slotDateShift?.[1]}
-                        />
-                      )
-                    })}
-                  </div>
-                  {timelineNeedsBottomFiller && (
-                    <div
-                      className={joinClassNames(
-                        generateClassName(options.fillerClass, { inTableHeader: false }),
-                        classNames.borderlessX,
-                        classNames.borderlessBottom,
-                        classNames.fillX,
-                      )}
-                      style={{
-                        top: yFillBottom,
-                        minHeight: timelineBottomFiller,
-                      }}
+                    )
+                  })}
+                  {enableNowIndicator && (
+                    // TODO: make this positioned WITHIN padding
+                    <TimelineNowIndicatorArrow
+                      tDateProfile={tDateProfile}
+                      nowMs={props.nowMs}
+                      slotWidth={slotWidth}
                     />
                   )}
                 </div>
+
+                {Boolean(endScrollbarWidth) && (
+                  <div
+                    className={joinClassNames(
+                      generateClassName(options.fillerClass, { inTableHeader: true }),
+                      classNames.borderlessY,
+                      classNames.borderlessEnd,
+                    )}
+                    style={{ minWidth: endScrollbarWidth }}
+                  />
+                )}
               </Scroller>
+              <div
+                className={generateClassName(options.slotHeaderDividerClass, {
+                  inTableHeader: false,
+                  options: { dayMinWidth: options.dayMinWidth },
+                })}
+              />
+            </div>
 
-              {/* time-area FOOTER
-              ---------------------------------------------------------------------------- */}
-              {Boolean(footerScrollbarSticky) && (
-                <FooterScrollbar
-                  isSticky
-                  canvasWidth={timeCanvasWidth}
-                  scrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
-                  scrollerRef={this.timeFooterScrollerRef}
-                />
+            {/* time-area BODY (w/ events)
+            ---------------------------------------------------------------------------- */}
+            <Scroller
+              vertical={
+                allowVerticalScrolling &&
+                // infer whether scrolling would happen. prevents clientHeight thrashing due to horizontal scrollbars
+                (totalBodyHeight != null && timeClientHeight != null && totalBodyHeight > timeClientHeight)
+              }
+              horizontal
+              hideScrollbars={footerScrollbarSticky /* FYI, this view is never print */}
+              className={joinClassNames(
+                generateClassName(options.tableBodyClass, {
+                  borderlessX,
+                  borderlessTop,
+                  borderlessBottom,
+                  multiMonthColumns: 0,
+                }),
+                classNames.flexCol,
+                classNames.rel, // for Ruler.fillStart
+                allowVerticalScrolling && classNames.liquid,
+                classNames.z0,
               )}
-
-              <Ruler widthRef={this.handleTimeTotalWidth} />
-            </>
-          }
-        />
-      </ViewContainer>
-    )
-  }
-
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount() {
-    const { props, context } = this
-    this._isUnmounting = false
-
-    this.timeScroller = new ScrollerSyncer(true) // horizontal=true
-    this.bodyScroller = new ScrollerSyncer() // horizontal=false
-    this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true
-
-    this.updateScrollersSyncers()
-    this.updateWindowScrolling()
-
-    if (props.initialScroll) {
-      this.scroll = { ...props.initialScroll } // copy
-      this.applyEntityScroll()
-      this.applyTimeScroll()
-    } else {
-      this.resetTimeScroll()
-    }
-
-    this.timeScroller.addScrollListener(this.handleTimeScroll)
-    this.timeScroller.addScrollEndListener(this.handleTimeScrollEnd)
-
-    this.bodyScroller.addScrollStartListener(this.handleEntityScrollStart)
-    this.bodyScroller.addScrollListener(this.handleEntityScroll)
-    this.bodyScroller.addScrollEndListener(this.handleEntityScrollEnd)
-
-    context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
-    context.emitter.on('_resourceScrollRequest', this.handleResourceScrollRequest)
-  }
-
-  componentDidUpdate(prevProps: ResourceTimelineLayoutNormalProps, prevState: ResourceTimelineViewState) {
-    const { props, state } = this
-    const { options } = this.context
-
-    this.updateScrollersSyncers()
-    this.updateWindowScrolling()
-
-    const dateProfileChange = prevProps.dateProfile !== props.dateProfile
-    const slotWidthChange = prevProps.slotWidth !== props.slotWidth
-    const timeCanvasWidthChange = prevProps.timeCanvasWidth !== props.timeCanvasWidth
-    const timeClientWidthChange = prevState.timeClientWidth !== state.timeClientWidth
-
-    if (dateProfileChange || slotWidthChange || timeCanvasWidthChange || timeClientWidthChange) {
-      if (dateProfileChange && options.scrollTimeReset) {
-        this.resetTimeScroll()
-      } else {
-        this.applyTimeScroll()
-      }
-    }
-
-    /*
-    Unfortunately this will execute after auto-scroll finished but before scrollEnd can record
-    the updated scroll positioning, causing a scroll-jump to the last recorded entityScroll.
-    */
-    if (this.queuedEntityScroll) {
-      // console.log('queuedEntityScroll!')
-      this.queuedEntityScroll = false
-      this.applyEntityScroll()
-    }
-  }
-
-  componentWillUnmount() {
-    this._isUnmounting = true
-    this.slotInnerWidth = undefined
-    this.timeScroller.destroy()
-    this.bodyScroller.destroy()
-    this.spreadsheetScroller.destroy()
-    this.destroyWindowScrolling()
-
-    this.bodyScroller.removeScrollEndListener(this.handleEntityScrollEnd)
-    this.bodyScroller.removeScrollListener(this.handleEntityScroll)
-
-    this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
-    this.context.emitter.off('_resourceScrollRequest', this.handleResourceScrollRequest)
-  }
-
-  // Sizing
-  // -----------------------------------------------------------------------------------------------
-
-  private handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
-    if (this._isUnmounting) return
-    setRef(this.props.spreadsheetClientWidthRef, spreadsheetClientWidth)
-  }
-
-  private handleSpreadsheetBottomScrollbarWidth = (spreadsheetBottomScrollbarWidth: number) => {
-    this.setState({
-      spreadsheetBottomScrollbarWidth,
-    })
-  }
-
-  private handleTimeTotalWidth = (timeTotalWidth: number) => {
-    if (this._isUnmounting) return
-    this.setState({
-      timeTotalWidth,
-    })
-  }
-
-  private handleTimeClientWidth = (timeClientWidth: number) => {
-    if (this._isUnmounting) return
-    setRef(this.props.timeClientWidthRef, timeClientWidth)
-
-    this.setState({
-      timeClientWidth,
-    })
-
-    this.slotVirtualizer.handleViewportSize(timeClientWidth)
-    for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
-      timeHeaderVirtualizer.handleViewportSize(timeClientWidth)
-      // TODO: what about difference in scrollbar width?
-    }
-  }
-
-  private handleTimeClientHeight = (timeClientHeight: number) => {
-    if (this._isUnmounting) return
-    this.setState({
-      timeClientHeight,
-    })
-    if (!getIsHeightAuto(this.context.options)) {
-      this.setVirtualizerViewportSize(timeClientHeight)
-    }
-  }
-
-  private handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
-    if (this._isUnmounting) return
-    this.setState({
-      timeBottomScrollbarWidth,
-    })
-  }
-
-  private handleSlotInnerWidths = () => {
-    if (this._isUnmounting) return
-    const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.props.tDateProfile.cellRows.length - 1)
-
-    if (headerSlotInnerWidth != null && headerSlotInnerWidth !== this.slotInnerWidth) {
-      this.slotInnerWidth = headerSlotInnerWidth
-      setRef(this.props.slotInnerWidthRef, headerSlotInnerWidth)
-    }
-  }
-
-  // Virtualizer Utils
-  // -----------------------------------------------------------------------------------------------
-
-  private setVirtualizerViewportSize(height: number) {
-    this.rowVirtualizer.handleViewportSize(height)
-
-    for (const groupColVirtualizer of this.groupColVirtualizers) {
-      groupColVirtualizer.handleViewportSize(height)
-    }
-  }
-
-  // # of pixels
-  private currentEntityScroll: number
-
-  private handleAnyEntityScroll(scroll: number) {
-    this.currentEntityScroll = scroll
-    this.updateVirtualizerScroll()
-  }
-
-  private updateVirtualizerScroll = debounce(() => {
-    const scroll = this.currentEntityScroll
-
-    this.rowVirtualizer.handleScroll(scroll)
-
-    for (const groupColVirtualizer of this.groupColVirtualizers) {
-      groupColVirtualizer.handleScroll(scroll)
-    }
-  }, 10)[0]
-
-  // Window Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private isTrackingWindowScroll = false
-  private bodyOffset = 0
-  private lastOffsetQuery = 0
-  private handleWindowResize: () => void
-  private cancelWindowResize: () => void
-
-  private updateWindowScrolling() {
-    if (getIsHeightAuto(this.context.options)) {
-      if (!this.isTrackingWindowScroll) {
-        this.isTrackingWindowScroll = true
-        this.setVirtualizerViewportSize(window.innerHeight)
-        ;([this.handleWindowResize, this.cancelWindowResize] = debounce(() => {
-          this.setVirtualizerViewportSize(window.innerHeight)
-        }, 200))
-        window.addEventListener('resize', this.handleWindowResize)
-        window.addEventListener('scroll', this.handleWindowScroll, { passive: true })
-      }
-    } else {
-      this.destroyWindowScrolling()
-    }
-  }
-
-  private destroyWindowScrolling() {
-    if (this.isTrackingWindowScroll) {
-      this.isTrackingWindowScroll = false
-      this.cancelWindowResize()
-      window.removeEventListener('resize', this.handleWindowResize)
-      window.removeEventListener('scroll', this.handleWindowScroll, { passive: true } as any)
-    }
-  }
-
-  private handleWindowScroll = () => {
-    const scrollY = window.scrollY
-    const now = Date.now()
-
-    if (now - this.lastOffsetQuery > 200) {
-      this.lastOffsetQuery = now
-      this.bodyOffset = this.bodyEl.getBoundingClientRect().top + scrollY
-    }
-
-    this.handleAnyEntityScroll(scrollY - this.bodyOffset)
-  }
-
-  // Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private updateScrollersSyncers() {
-    this.timeScroller.handleChildren([
-      this.timeHeaderScrollerRef.current,
-      this.timeBodyScrollerRef.current,
-      this.timeFooterScrollerRef.current,
-    ])
-
-    this.bodyScroller.handleChildren([
-      this.spreadsheetBodyScrollerRef.current,
-      this.timeBodyScrollerRef.current,
-    ])
-
-    this.spreadsheetScroller.handleChildren([
-      this.spreadsheetHeaderScrollerRef.current,
-      this.spreadsheetBodyScrollerRef.current,
-      this.spreadsheetFooterScrollerRef.current,
-    ])
-  }
-
-  // TIME Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private resetTimeScroll(): void {
-    this.handleTimeScrollRequest(this.context.options.scrollTime)
-  }
-
-  private handleTimeScrollRequest = (timeScroll: Duration) => {
-    this.scroll.time = timeScroll
-    this.applyTimeScroll()
-  }
-
-  // HACKY
-  // can't use isDevice because we want programmatic .scrollLeft assignments to work with scroll-virtualization too.
-  // the main reason we use a isDevice gate is to prevent the initial-scroll assignment from triggering handleTimeScroll,
-  // but the debounce luckily helps us in this case
-  private handleTimeScroll = (_isDevice: boolean, scroll: number) => {
-    this.scroll.x = scroll
-    this._handleTimeScroll()
-  }
-  private _handleTimeScroll = debounce(() => {
-    this.scroll.time = undefined // prevents computeTimeScroll from computing based on time
-    const scrollX = this.scroll.x
-
-    this.slotVirtualizer.handleScroll(scrollX)
-    for (const timeHeaderVirtualizer of this.timeHeaderVirtualizers) {
-      timeHeaderVirtualizer.handleScroll(scrollX)
-    }
-  }, 10)[0]
-
-  private handleTimeScrollEnd = () => {
-    setRef(this.props.scrollRef, this.scroll)
-  }
-
-  private applyTimeScroll() {
-    const x = this.computeTimeScroll()
-
-    if (x !== undefined) {
-      this.timeScroller.scrollTo({ x })
-
-      if (this.scroll.x !== x) {
-        this.scroll.x = x
-        setRef(this.props.scrollRef, this.scroll)
-      }
-    }
-  }
-
-  // used by render() for virtualization too
-  private computeTimeScroll(): number | undefined {
-    const { props, context, scroll } = this
-    const { tDateProfile } = props
-    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
-    let { x, time } = scroll
-
-    if (time) {
-      x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
-
-      if (x) {
-        x += 1 // overcome border. TODO: DRY this up
-      }
-    }
-
-    if (x !== undefined && this.maxHScroll !== undefined) {
-      x = Math.min(this.maxHScroll, x)
-    }
-
-    return x
-  }
-
-  // ENTITY (RESOURCE) Scrolling
-  // -----------------------------------------------------------------------------------------------
-
-  private isScrolling = false
-
-  // REQUESTED scroll by external systems
-  // (for bodyScroller only, NOT window)
-  private handleResourceScrollRequest = (resourceId: string) => {
-    this.scroll.entityId = resourceId
-    this.scroll.fromBottom = undefined
-
-    // The resource might not be rendered yet, such as when added within batchRendering. Otherwise
-    // render() would virtualize rows around the requested scroll without ever applying it
-    if (!this.applyEntityScroll()) {
-      this.queuedEntityScroll = true
-    }
-  }
-
-  // START vertical scroll
-  // (for bodyScroller only, NOT window)
-  private handleEntityScrollStart = () => {
-    this.isScrolling = true
-    this.scroll.entityId = undefined
-    this.scroll.fromBottom = undefined
-  }
-
-  // DURING verical scroll
-  // (for bodyScroller only, NOT window)
-  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
-    if (!getIsHeightAuto(this.context.options)) {
-      this.handleAnyEntityScroll(scroll)
-
-      // natural handler for vertical scroll, for either div or window scroll
-      // if scrolls into slack area, move scroll to zero ASAP
-      if (scroll < this.scrollSlack) {
-        // console.log('ABORT', this.scrollSlack)
-        this.scrollSlack = 0
-        this.forceUpdate(() => {
-          this.bodyScroller.scrollTo({ y: 0 })
-        })
-      }
-    }
-  }
-
-  // END vertical scroll
-  // (for bodyScroller only, NOT window)
-  private handleEntityScrollEnd = () => {
-    this.isScrolling = false
-
-    if (!this.isTrackingWindowScroll) {
-      const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
-      const y = this.bodyScroller.y
-
-      if (!y) {
-        // If already at top, keep at top. Anchoring to the first row would hide any rows that are
-        // later inserted above it
-        scroll.entityId = undefined
-        scroll.fromBottom = undefined
-      } else {
-        const coordRes = findEntityByCoord(
-          bodyLayouts,
-          bodyTops,
-          bodyHeights,
-          y,
-          createEntityId,
-        )
-
-        if (coordRes) {
-          const [entity, elTop, elHeight] = coordRes
-
-          scroll.entityId = createEntityId(entity)
-          scroll.fromBottom = elTop + elHeight - y
+              ref={timeBodyScrollerRef}
+              clientWidthRef={handlers.handleTimeClientWidth}
+              clientHeightRef={
+                allowVerticalScrolling
+                  ? handlers.handleTimeClientHeight
+                  : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
+              }
+              bottomScrollbarWidthRef={
+                allowVerticalScrolling
+                  ? handlers.handleTimeBottomScrollbarWidth
+                  : undefined // for when height:auto, which will have dynamic height and needlessly fire ResizeObserver
+              }
+            >
+              <div // canvas that expands to height of scroller (at least)
+                className={joinClassNames(
+                  classNames.rel, // origin for canvas?
+                  classNames.grow,
+                  classNames.flexCol,
+
+                  // slotLiquid:true implies that slots are expanding bigger than their min,
+                  // and that there are NOT any horizontal scrollbars. if so, then no worries
+                  // about sticky-event-titles. if so, we're able to apply cropping to prevent
+                  // event hover-resizers and whatnot from bleeding out of the canvas and causing
+                  // horizontal scrollbars when there normally wouldn't be any
+                  props.slotLiquid && classNames.crop,
+                )}
+                style={{
+                  minWidth: timeCanvasWidth,
+                  minHeight: totalBodyHeight,
+                }}
+                ref={bodyElRef}
+              >
+                <div
+                  // roving-origin for anything that fills y-axis,
+                  // like slots or non-resource bg events
+                  // is ZERO-width, but has defined top/bottom
+                  className={classNames.abs}
+                  style={{
+                    top: yFillTop,
+                    height: yFillHeight,
+                    bottom: yFillHeight == null ? 0 : undefined,
+                    insetInlineStart: slotDateShift?.[0],
+                  }}
+                >
+                  <TimelineSlats
+                    dateProfile={dateProfile}
+                    tDateProfile={tDateProfile}
+                    nowDate={props.nowDate}
+                    nowMs={props.nowMs}
+                    todayRange={props.todayRange}
+                    slatStartIndex={slotDateShift?.[2]}
+                    slatCount={slotDatePositions.length}
+                    slotWidth={slotWidth}
+                  />
+                  <TimelineBg
+                    tDateProfile={tDateProfile}
+                    nowDate={props.nowDate}
+                    nowMs={props.nowMs}
+                    todayRange={props.todayRange}
+
+                    // content
+                    bgEventSegs={bgSlicedProps.bgEventSegs}
+                    businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                    dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                    eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
+
+                    // dimensions
+                    slotWidth={props.slotWidth}
+
+                    // virtualization
+                    clipStart={slotDateShift?.[0]}
+                    clipEnd={slotDateShift?.[1]}
+                  />
+                  {enableNowIndicator && (
+                    <TimelineNowIndicatorLine
+                      tDateProfile={tDateProfile}
+                      nowMs={props.nowMs}
+                      slotWidth={slotWidth}
+                      clipStart={slotDateShift?.[0]}
+                    />
+                  )}
+                </div>
+                <div
+                  // roving-origin for all types of resource(-group)-rows
+                  // is ZERO-height, always fixed to top, but has definet x-coordinate and width
+                  role="presentation"
+                  className={classNames.abs}
+                  style={{
+                    top: 0,
+                    insetInlineStart: slotDateShift?.[0],
+                    width: slotDateShift ? (slotDateShift[1] - slotDateShift[0]) : undefined,
+                  }}
+                >
+                  {groupRowPositions.map((rowPosition) => {
+                    const rowLayout = rowPosition.item
+                    const group = rowLayout.entity
+                    const groupKey = rowPosition.key
+
+                    return (
+                      <div
+                        key={groupKey}
+                        role="presentation"
+                        className={joinClassNames(
+                          classNames.fillX,
+                          classNames.flexRow,
+                        )}
+                        style={{
+                          top: rowPosition.start,
+                        }}
+                      >
+                        <GroupLane
+                          cellIdPrefix={cellIdPrefix}
+                          inTreeGrid={hasNesting}
+                          cellRowIndex={1 + totalHeaderRowSpan + rowLayout.rowIndex}
+                          cellColIndex={colSpecs.length}
+                          group={group}
+                          borderBottom={rowLayout.visibleIndex < displayedRowCnt - 1}
+                          innerHeightRef={timeEntityInnerHeightMap.createRef(groupKey)}
+                          height={rowPosition.size}
+                        />
+                      </div>
+                    )
+                  })}
+
+                  {resourceRowPositions.map((rowPosition) => {
+                    const resourceLayout = rowPosition.item
+                    const resource = resourceLayout.entity
+
+                    return (
+                      <ResourceLane
+                        {...splitProps[resource.id]}
+                        key={resource.id /* TODO: use rowPosition.key? */}
+                        role="presentation"
+                        cellIdPrefix={cellIdPrefix}
+                        inTreeGrid={hasNesting}
+                        cellRowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
+                        cellColIndex={colSpecs.length}
+                        className={classNames.fillX}
+                        resource={resource}
+                        dateProfile={dateProfile}
+                        tDateProfile={tDateProfile}
+                        nowDate={props.nowDate}
+                        nowMs={props.nowMs}
+                        todayRange={props.todayRange}
+                        businessHours={resource.businessHours || fallbackBusinessHours}
+                        borderBottom={resourceLayout.visibleIndex < displayedRowCnt - 1}
+
+                        // ref
+                        heightRef={timeEntityInnerHeightMap.createRef(resource.id)}
+
+                        // dimensions
+                        slotWidth={props.slotWidth}
+
+                        // position
+                        top={rowPosition.start}
+                        height={rowPosition.size}
+
+                        // virtualization
+                        clipStart={slotDateShift?.[0]}
+                        clipEnd={slotDateShift?.[1]}
+                      />
+                    )
+                  })}
+                </div>
+                {timelineNeedsBottomFiller && (
+                  <div
+                    className={joinClassNames(
+                      generateClassName(options.fillerClass, { inTableHeader: false }),
+                      classNames.borderlessX,
+                      classNames.borderlessBottom,
+                      classNames.fillX,
+                    )}
+                    style={{
+                      top: yFillBottom,
+                      minHeight: timelineBottomFiller,
+                    }}
+                  />
+                )}
+              </div>
+            </Scroller>
+
+            {/* time-area FOOTER
+            ---------------------------------------------------------------------------- */}
+            {Boolean(footerScrollbarSticky) && (
+              <FooterScrollbar
+                isSticky
+                canvasWidth={timeCanvasWidth}
+                scrollbarWidthRef={handlers.handleTimeBottomScrollbarWidth}
+                scrollerRef={timeFooterScrollerRef}
+              />
+            )}
+
+            <Ruler widthRef={handlers.handleTimeTotalWidth} />
+          </>
         }
-      }
+      />
+    </ViewContainer>
+  )
+})
 
-      // At scrolling end, convert scrollSlack into real scroll and zero out
-      // TODO: have below be in closure as well?
-      const { scrollSlack } = this
-      if (scrollSlack) {
-        // console.log('CONSUMING', scrollSlack)
-        this.scrollSlack = 0
-        this.forceUpdate(() => {
-          this.bodyScroller.scrollTo({ y: y - scrollSlack })
-        })
-      }
-    }
-  }
-
-  // returns whether applied
-  private applyEntityScroll(): boolean {
-    const scrollTop = this.computeEntityScroll()
-    if (scrollTop !== undefined) {
-      this.bodyScroller.scrollTo({ y: scrollTop })
-      return true
-    }
-    return false
-  }
-
-  private computeEntityScroll(): number | undefined {
-    const { bodyTops, bodyHeights, scroll } = this
-    const { entityId, fromBottom } = scroll
-
-    if (entityId) {
-      const top = bodyTops.get(entityId)
-      const height = bodyHeights.get(entityId)
-
-      if (top != null) {
-        const bottom = top + height
-        const requestedScrollTop =
-          fromBottom != null ?
-            bottom - fromBottom : // pixels from bottom edge
-            top + // just use top edge
-              (top ? 1 : 0) // overcome top border
-
-        return Math.min(this.maxVScroll, requestedScrollTop)
-      }
-    }
-  }
-
-  // Hit System
-  // -----------------------------------------------------------------------------------------------
-
-  handleBodyEl = (el: HTMLElement | null) => {
-    this.bodyEl = el
-
-    if (el) {
-      this.registerHitTarget({ el })
-    } else {
-      this.unregisterHitTarget()
-    }
-  }
-
-  prepareHits(): void {
-    /*
-    HACK for queuedHeightChange usage in componentDidUpdate
-    This executes when a drag/resize starts and clears the last recorded entity scroll
-    */
-    this.scroll.entityId = undefined
-    this.scroll.fromBottom = undefined
-  }
-
-  queryHit(isRtl: boolean, positionLeft: number, positionTop: number): Hit {
-    let { props, context, bodyLayouts, bodyTops, bodyHeights } = this
-    const { dateProfile, tDateProfile, timeCanvasWidth } = props
-    const slotWidth = props.slotWidth ?? ESTIMATED_SLOT_WIDTH
-    const { dateEnv } = context
-
-    let coordRes = findEntityByCoord(
-      bodyLayouts,
-      bodyTops,
-      bodyHeights,
-      positionTop,
-      createEntityId,
-    )
-
-    if (coordRes) {
-      let [entityAtTop, top, height] = coordRes
-
-      if (!isEntityGroup(entityAtTop)) {
-        let resource = entityAtTop
-        let bottom = top + height
-
-        const hitData = computeTimelineHitData(positionLeft, timeCanvasWidth, slotWidth, isRtl, tDateProfile, dateEnv)
-
-        if (!hitData) { // in the dead tail of a DST-truncated slot
-          return null
-        }
-
-        return {
-          dateProfile,
-          dateSpan: {
-            ...hitData.dateSpan,
-            resourceId: resource.id,
-          },
-          rect: {
-            ...hitData.rect,
-            top,
-            bottom,
-          },
-          getDayEl: () => getTimelineSlotEl(this.bodyEl, hitData.slatIndex),
-          layer: 0,
-        }
-      }
-    }
-
-    return null
-  }
+function incrementCounter(n: number): number {
+  return n + 1
 }

@@ -94,7 +94,7 @@ standard/packages/vanilla-tests/src/view-render/activity-rerender.ts)
 describe('timeline render hooks across a hidden <Activity>', () => {
   const react = vdom as any
 
-  for (const initialView of ['timelineDay']) {
+  for (const initialView of ['timelineDay', 'resourceTimelineDay']) {
     it(`calls tableClass no more in ${initialView}`, async () => {
       if (!react.Activity) {
         pending('React runtime only')

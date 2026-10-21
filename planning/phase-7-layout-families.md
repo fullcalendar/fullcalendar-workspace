@@ -1,6 +1,6 @@
 # Phase 7: layout families
 
-Status: in progress. DayGrid done (steps 1 to 4).
+Status: done (pending the final Sol review of ResourceTimeline).
 
 One family at a time, in the roadmap's order: DayGrid, TimeGrid, MultiMonth and List, Timeline,
 ResourceTimeline. Each family is split into steps, committed and reviewed separately.
@@ -330,3 +330,38 @@ One P2, reproduced by the reviewer with React 19, and fixed across the families:
   runtime: hiding and showing may cost no more `tableClass` calls than a plain re-render with the same
   props does. Not zero, because the calendar's data currently re-renders the standard views once on a
   plain re-render (new event segs from upstream of the layouts). Follow-up: find why.
+
+### Step 2: the layout (`ResourceTimelineLayoutNormal`)
+
+The decomposition in `phase-7-resource-timeline-plan.md`, in one commit: the hooks only make sense
+together, with the layout.
+
+- **`useResourceTimelineScroll`** (`resource-timeline/useResourceTimelineScroll.ts`): the class's time
+  and entity scroll, one `{ time, x, entityId, fromBottom }` target updated in place and reported to
+  the view's `scrollRef`, the scroll slack, the queued resource scroll, the debounced virtualizer
+  scroll updates (now cancelled on unmount; the class let them fire), `prepareHits`. Its mount effect
+  restores `initialScroll` or resets to `scrollTime`, then adds the syncer and emitter listeners. A
+  later commit re-applies the time scroll when the date range, slot width, canvas width or client
+  width changes, then runs a queued entity scroll. The class's `forceUpdate(callback)` for the slack
+  became `rerender()` plus an `afterRender` scroll that the every-commit effect runs.
+- **`useWindowScrollTracking`** (`resource-timeline/useWindowScrollTracking.ts`): window scroll and
+  debounced resize while height is auto, following the option after every commit, stopped on
+  unmount.
+- **Virtualizers:** the `Virtualizer` class is unchanged. The row and slot ones are created once;
+  the group-column and header-row lists follow their counts through `syncVirtualizerList`.
+- **The three syncers** are created by the layout's first layout effect, attached after every commit,
+  and destroyed on cleanup, before the scroll hook's effects run.
+- **One deliberate render-phase write:** the latest render's geometry (`geometryRef`: row layouts,
+  tops, heights, max scrolls, and the props the slot virtualizer reads) is written during render, as
+  the class kept it on the instance. The virtualizers are render-time caches that read it while
+  rendering, and the row-height handlers read it while children commit, before any layout effect of
+  the layout could update a ref. A render that never commits could leave it ahead of the DOM until
+  the next render, as in the class.
+- **Hits:** `useHitTarget` with `eventSelection` (as the class adapter read it), `prepareHits` and a
+  `queryHit` reading `geometryRef`.
+- **Header heights re-render only on a change.** A header row reporting its height again (after an
+  `<Activity>` hide and show, which reports `null` first and deletes its entry) re-adds it with the
+  same height. The class re-rendered for it anyway. Now the handler computes the header height and
+  re-renders only if it differs from the one last rendered. With the Timeline review fix, an
+  `<Activity>` hide and show re-renders `resourceTimelineDay` 0 times (the class: 4). Spec: the
+  resourceTimelineDay case in the premium `activity-scroll-timeline.ts`.

@@ -4,7 +4,7 @@ Check each one once the refactor lands, then close it with a changelog entry. No
 pre-pass (see `pre-pass-changelog.md`).
 
 **Status after phase 8 (2026-10-20):** #8092 and #7070 are fixed; close them with the changelog
-entries. #8112 bug 1 is fixed, but bug 2 waits for phase 7, so keep #8112 open. Each fix has a spec in
+entries. #8112 bug 1 is fixed. Bug 2 is fixed in phase 7, so #8112 can close too. Each fix has a spec in
 `standard/packages/react/tests/lifecycle.tsx`.
 
 The shared root cause is side effects during render: `CalendarDataManager` runs its reducer from
@@ -21,9 +21,10 @@ Opened 2026-09-28. Two bugs in one report.
   The timer re-arms forever and keeps the whole calendar in memory. Fixed when timers start in an
   effect instead of during render. The pre-pass server-side fix (no timers without a `document`)
   does not help here.
-- **Bug 2, fixed for DayGrid and TimeGrid in phase 7 (`useInitialScroll`).** The Timelines and
-  MultiMonth get the same hook when they convert, later in phase 7. Spec:
-  `vanilla-tests/src/view-render/activity-scroll.ts` (React runtime). Before: `TimeGridLayout` and `DayGridLayout` call `resetScroll()` in
+- **Bug 2, fixed for DayGrid and TimeGrid in phase 7 (`useInitialScroll`).** MultiMonth (on
+  the hook too) and the timelines (their view-held scroll) never had it; guard specs cover them. So
+  #8112 can close with the changelog entries. Specs: `vanilla-tests/src/view-render/activity-scroll.ts`
+  and the premium `misc/activity-scroll-timeline.ts` (React runtime). Before: `TimeGridLayout` and `DayGridLayout` call `resetScroll()` in
   `componentDidMount`, and `<Activity>` re-runs mount effects each time the calendar is shown, so a
   scrolled grid jumps back to `scrollTime` / today's row. A mount effect has the same problem. Needs
   the initial scroll to run once per instance (or per date range), not per mount. Worth designing into

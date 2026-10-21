@@ -101,7 +101,7 @@ Its objections are weighed, not followed blindly.
 | 4 | Pilot: composed event components | `phase-4-event-pilot.md` (done) | 1, 2, 3 |
 | 5 | Render-hook rollout and leaf conversions | `phase-5-render-hook-rollout.md` (done) | 4 |
 | 6 | `useHitTarget` and interactions | `phase-6-hit-target.md` (done) | 3 |
-| 7 | Layout families | sketched below | 5, 6 |
+| 7 | Layout families | `phase-7-layout-families.md` (done) | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
 | 9 | Store slices, actions, API facade | sketched below | 8 |
 | 10 | Date profile | sketched below | 9 |
@@ -147,7 +147,13 @@ user yet. Originally sketched as follows.
   `ResourceTimelineLayoutNormal`, mostly the layouts phase 7 rewrites, so converting them now would
   convert them twice. Each switches to `useHitTarget` when its family converts (phase 5 or 7).
 
-### 7. Layout families
+### 7. Layout families (done, see `phase-7-layout-families.md`)
+
+As built: every layout family converted (DayGrid, TimeGrid, MultiMonth and List, Timeline,
+ResourceTimeline, with `phase-7-resource-timeline-plan.md` for its layout). The views stay class
+shells around function bodies (`parseViewConfig`). `useInitialScroll` fixes #8112 bug 2 for DayGrid
+and TimeGrid; the timelines keep their view-held scroll, which already survived remounts. Originally
+sketched as follows.
 
 - Add compound hooks: `useDayGridLayout`, `useTimeGridLayout`, and the Timeline and ResourceTimeline
   equivalents.
