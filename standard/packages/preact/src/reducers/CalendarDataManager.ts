@@ -33,9 +33,11 @@ import { CalendarController } from '../CalendarController'
 import { OptionsRefinerCache } from './options-refiner'
 import { createReduceEffects, EffectRunnerMap, ReduceEffects } from './effects'
 import { runEventSourceFetch } from './event-source-fetch'
+import { OptionChangeEffect, runOptionChange } from './option-change'
 
 const CORE_EFFECT_RUNNERS: EffectRunnerMap = {
   fetchEventSource: runEventSourceFetch,
+  optionChange: runOptionChange,
 }
 
 export interface CalendarDataManagerConfig {
@@ -595,7 +597,12 @@ export class CalendarDataManager {
           optionsForHandling.indexOf(optionName) !== -1 ||
           prevCalendarOptions[optionName] !== newCalendarOptions[optionName]
         ) {
-          changeHandlers[optionName](newCalendarOptions[optionName], newData)
+          effects.run({
+            type: 'optionChange',
+            optionName,
+            optionValue: newCalendarOptions[optionName],
+            data: newData,
+          } as OptionChangeEffect)
         }
       }
     }

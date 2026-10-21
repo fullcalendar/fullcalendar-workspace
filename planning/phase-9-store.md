@@ -332,7 +332,9 @@ None intended. Any found during implementation get listed here and in the change
   refinement (its memos, `computeOptionsData`, `processRawCalendarOptions`, `processRawViewOptions`,
   `buildDateEnv`, the unknown-option warning), unchanged. `invalidate(names)` is `resetOptions`'s
   call-time invalidation; `takeOptionsForHandling()` hands the late stage the names whose handlers must
-  run, and clears them at the point the manager used to. The manager keeps `currentCalendarOptionsInput`
+  run, and clears them. That's before the handlers run, where the manager cleared them after; no
+  difference, since a handler can't start a reduction (dispatches queue) and a reentrant `resetOptions`
+  only adds names to refine. The manager keeps `currentCalendarOptionsInput`
   and `currentCalendarOptionsRefiners` as getters for `CalendarApiImpl` (`getOption`, `on`).
 - **`reduce()` is the pipeline,** its stages private methods in §2's order: `reduceOptions`, the view
   stage (with the emitter checkpoint after it), `reduceNowDate`, `reduceDates`, `reduceEvents` (the fetch
@@ -347,3 +349,15 @@ None intended. Any found during implementation get listed here and in the change
 - Step 2 turns these methods into the store's pipeline.
 - Verified: both runtimes' suites (React runtime: only the known failures; one run disconnected, clean
   on re-run), DOM snapshots 0 changed and counts unchanged in both runtimes, the React suite 42/42.
+
+## Review of step 1 (Sol, implementation, high effort)
+
+No P1s; no blocker for step 2. Memo boundaries, literal evaluation order, the loading capture, the shared
+plugin snapshot, icalendar's cache, runner registration and the wiring move confirmed. Fixed:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P2: option change handlers still ran directly, outside the effects | `reducers/option-change.ts`: an `optionChange` effect per handler, run at the same checkpoint by a core default runner (`runOptionChange`) |
+| 2 | P2: the specs counted fetches but didn't lock the per-source order (copy before fetching, batching), clean-source exclusion, time-zone refetches or resource navigation | `fetch-effects.ts` now records and passes effects on to the core runner (`runEventSourceFetch`, now in `protected-api`): the fetch gets the source as it was and the copy is marked after; one source at a time (an event a source adds while fetched gets an id between the two fetch ids); clean sources skipped; a time zone change refetches only non-static sources, as refetches; option handlers only through the runner. `resource-fetch-effects.ts`: navigation with and without `refetchResourcesOnNavigate`, the source as it was. Mutation-checked: copying first, batching, a direct handler call, and copying the resource source each fail their spec |
+
+Noted: `optionsForHandling` is cleared before the handlers now, not after (no difference, see step 1b).
