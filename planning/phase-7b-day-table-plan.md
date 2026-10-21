@@ -1,7 +1,7 @@
 # Phase 7b: the day-table pipeline
 
-Status: plan, revision 4 (2026-10-21, after spec review rounds 1-3 by Sol, §7-9; round 3: "ready to
-implement" once its four verification P2s are fixed, which this revision does). Not started.
+Status: done (2026-10-21), steps 0-2b, each reviewed by Sol (see each step's "Done" note). The plan
+is revision 4 (after spec review rounds 1-3 by Sol, §7-9).
 
 Sequencing: lands after phase 10 (date profile, done: `phase-10-date-profile.md`, step 1 added the
 `DateProfileGenerator.hiddenDays` getter) and before phase 11 (granular contexts,

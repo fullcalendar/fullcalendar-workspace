@@ -169,7 +169,14 @@ sketched as follows.
 - Fix the bug where a grid shown again jumps back to its start (#8112 bug 2): the initial scroll runs
   once per instance or date range, not once per mount.
 
-### 7b. Day-table pipeline (plan in progress: `phase-7b-day-table-plan.md`, background in `day-table-pipeline.md`)
+### 7b. Day-table pipeline (done, see `phase-7b-day-table-plan.md`; background in `day-table-pipeline.md`)
+
+As built (2026-10-21), behavior-identical: one pure column model and a two-stage slicing pipeline
+(per-key slicing in date coordinates, projection onto view columns) for DayGrid, TimeGrid, MultiMonth
+and both resource day views. The resource splitter/joiner and the old models are deleted. DOM
+snapshots unchanged; render-hook counts only went down (the now indicator's segs are memoized). Each
+step's notes are in the plan.
+
 
 Scheduled (Adam, 2026-10-21): implemented after phase 10 and before phase 11, pending its reviewed
 plan. After 10, because its column model consumes hidden days and the date profile, which phase 10
