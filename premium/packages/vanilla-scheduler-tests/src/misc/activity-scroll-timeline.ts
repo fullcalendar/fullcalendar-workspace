@@ -3,7 +3,7 @@ import classicThemePlugin from 'fullcalendar/themes/classic'
 import timelinePlugin from 'fullcalendar-scheduler/timeline'
 import resourceTimelinePlugin from 'fullcalendar-scheduler/resource-timeline'
 import themeForTestsPlugin from '@fullcalendar-tests/standard/lib/theme-for-tests'
-import { waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
+import { ignoreResizeObserverLoops, waitTimeout } from '@fullcalendar-tests/standard/lib/misc'
 import themeForTestsPremiumPlugin from '../lib/theme-for-tests-premium'
 
 /*
@@ -149,4 +149,76 @@ describe('timeline render hooks across a hidden <Activity>', () => {
       }
     })
   }
+})
+
+/*
+With height:auto, the window's height sizes the virtualized rows. It's read again when an <Activity>
+is shown, and the rows re-rendered for it
+*/
+describe('timeline virtualization across a hidden <Activity>', () => {
+  const react = vdom as any
+
+  it('renders rows for a window that grew while hidden', async () => {
+    if (!react.Activity) {
+      pending('React runtime only')
+      return
+    }
+
+    let containerEl = document.createElement('div')
+    containerEl.style.width = '600px'
+    document.body.appendChild(containerEl)
+    let root = react.createRoot(containerEl)
+    let resources = []
+
+    for (let i = 0; i < 100; i++) {
+      resources.push({ id: `r${String(i).padStart(3, '0')}`, title: `Resource ${i}` })
+    }
+
+    let fullCalendarProps = { // the same object every render
+      plugins: [timelinePlugin, resourceTimelinePlugin, classicThemePlugin, themeForTestsPlugin, themeForTestsPremiumPlugin],
+      initialView: 'resourceTimelineDay',
+      initialDate: '2024-01-03',
+      height: 'auto',
+      virtualization: true,
+      resources,
+    }
+
+    function render(mode: 'visible' | 'hidden') {
+      react.flushSync(() => {
+        root.render(
+          react.createElement(react.Activity, { mode },
+            react.createElement(react.FullCalendar, fullCalendarProps),
+          ),
+        )
+      })
+    }
+
+    let innerHeightDescriptor = Object.getOwnPropertyDescriptor(window, 'innerHeight')
+
+    try {
+      await ignoreResizeObserverLoops(async () => {
+        render('visible')
+        await waitTimeout(200)
+
+        render('hidden')
+        await waitTimeout(100)
+        Object.defineProperty(window, 'innerHeight', { value: 3000, configurable: true }) // grew while hidden
+        render('visible')
+        await waitTimeout(300)
+      })
+
+      // the rows rendered reach down at least the window's height from the top of the rows
+      let bodyEls = containerEl.querySelectorAll('.fc-timeline-body')
+      let dataGridBodyEl = bodyEls[0] as HTMLElement // the spreadsheet's (it has the class too)
+      let cellEls = Array.from(dataGridBodyEl.querySelectorAll('[data-resource-id]'))
+      let rowsTop = dataGridBodyEl.getBoundingClientRect().top
+      let lowestBottom = Math.max(...cellEls.map((cellEl) => cellEl.getBoundingClientRect().bottom))
+
+      expect(lowestBottom - rowsTop).toBeGreaterThanOrEqual(3000)
+    } finally {
+      Object.defineProperty(window, 'innerHeight', innerHeightDescriptor)
+      root.unmount()
+      containerEl.remove()
+    }
+  })
 })

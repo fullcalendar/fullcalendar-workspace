@@ -142,6 +142,21 @@ export const ResourceTimelineLayoutNormal = memo(function ResourceTimelineLayout
     }
   })
 
+  // first of this component's effects, so a remount (a shown <Activity>) re-enables re-rendering
+  // before the others run, like the window tracking, which re-renders when it updates the virtualizers
+  useLayoutEffect(() => {
+    isActiveRef.current = true
+
+    return () => {
+      isActiveRef.current = false
+    }
+  }, [])
+
+  // the latest render's context, for the stable handlers. assigned during render, because children
+  // report sizes from their commits, before any effect of this component could update a ref
+  const contextRef = useRef(context)
+  contextRef.current = context
+
   // measurements
   // (useMeasuredState: see it for why null and repeats are ignored)
   const [spreadsheetBottomScrollbarWidth, setSpreadsheetBottomScrollbarWidth] = useMeasuredState()
@@ -288,7 +303,7 @@ export const ResourceTimelineLayoutNormal = memo(function ResourceTimelineLayout
         if (isActiveRef.current) {
           setTimeClientHeight(timeClientHeight)
 
-          if (!getIsHeightAuto(context.options)) {
+          if (!getIsHeightAuto(contextRef.current.options)) {
             setVirtualizerViewportSize(timeClientHeight)
           }
         }
@@ -363,13 +378,8 @@ export const ResourceTimelineLayoutNormal = memo(function ResourceTimelineLayout
     timeEntityInnerHeightMap,
   } = heightRefMaps
 
-  useLayoutEffect(() => {
-    isActiveRef.current = true
-
-    return () => {
-      isActiveRef.current = false
-      handlers.clearSlotInnerWidth()
-    }
+  useLayoutEffect(() => () => {
+    handlers.clearSlotInnerWidth()
   }, [])
 
   // hits

@@ -1,6 +1,6 @@
 # Phase 7: layout families
 
-Status: done (pending the final Sol review of ResourceTimeline).
+Status: done.
 
 One family at a time, in the roadmap's order: DayGrid, TimeGrid, MultiMonth and List, Timeline,
 ResourceTimeline. Each family is split into steps, committed and reviewed separately.
@@ -365,3 +365,22 @@ together, with the layout.
   re-renders only if it differs from the one last rendered. With the Timeline review fix, an
   `<Activity>` hide and show re-renders `resourceTimelineDay` 0 times (the class: 4). Spec: the
   resourceTimelineDay case in the premium `activity-scroll-timeline.ts`.
+
+### ResourceTimeline review (Sol, high effort)
+
+Two P2s, both reproduced by the reviewer and fixed:
+
+1. **A height change from auto to a number left blank space under virtualized rows.** A stable
+   handler read the first render's `context.options`, so it kept treating the height as auto and
+   never sized the row virtualizer to the body. It now reads the context through a ref assigned
+   during render (children report sizes from their commits, before any of the layout's effects).
+   Spec: `vanilla-scheduler-tests/src/timeline/timeline-virtualization-height.ts`.
+2. **Showing an `<Activity>` dropped a re-render the window size needed** (height auto). Window
+   tracking restarts on show and updates the virtualizers, which ask for a re-render, but the
+   layout's "active" flag was reset by a later effect, so the request was dropped. The flag's effect
+   now comes first, as the class's `componentDidMount` reset `_isUnmounting` before anything else.
+   Spec: "timeline virtualization across a hidden <Activity>" in the premium
+   `activity-scroll-timeline.ts` (React runtime; it grows `window.innerHeight` while hidden).
+
+Both specs fail on the unfixed hooks. The first wraps its calendar in `ignoreResizeObserverLoops`:
+a height:auto timeline with many rows gives a ResizeObserver loop, with the old class layout too.
