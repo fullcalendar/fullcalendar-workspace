@@ -103,7 +103,7 @@ Its objections are weighed, not followed blindly.
 | 6 | `useHitTarget` and interactions | `phase-6-hit-target.md` (done) | 3 |
 | 7 | Layout families | `phase-7-layout-families.md` (done) | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
-| 9 | Store slices, actions, API facade | sketched below | 8 |
+| 9 | Store slices, actions, API facade | `phase-9-store.md` (planned) | 8 |
 | 10 | Date profile | sketched below | 9 |
 | 11 | Granular contexts | sketched below | 9 |
 | 12 | Grid abstraction, hooks-first React API | future | 7, 9 |
