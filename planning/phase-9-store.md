@@ -1,5 +1,7 @@
 # Phase 9: store slices, actions, API facade
 
+Status: done (2026-10-21). Steps 0–4 below, each reviewed by Sol; the last review found no P1s or P2s.
+
 Status: plan, revision 4 (after spec review round 3, no P1s), 2026-10-20. Step 0 (behavior locks) done.
 
 **Re-scoped after review round 1** (below): phase 9 is a behavior-identical restructuring of the data
@@ -514,3 +516,14 @@ unchanged.
 - Spec: `vanilla-tests/src/event-source/store-derived.ts` (in the data, not the state; identities kept
   while inputs don't change; given to plugin reducers).
 - Verified: full suites, both runtimes; snapshots and counts unchanged.
+
+## Review of step 4 and phase 9 (Sol, implementation, high effort)
+
+No P1s or P2s. Step 3's five responses resolve its findings; step 4 keeps computation order, memo
+identities, plugin precedence, the shared pre-plugin snapshot and per-action loading. One P3:
+
+- **§4's invalidation generation isn't implemented:** `resetOptions`' invalidation is still the
+  refiner's mutable name lists (`invalidate`, `takeOptionsForHandling`), consumed by the next
+  refinement. Behavior-identical, and right while reductions are sequential, so deferred to phase 11,
+  where speculative reductions need it (recorded in the roadmap's phase 11 requirements, with the
+  review's note on isolating `currentPluginHooks`, the actions' construction and the refiner caches).

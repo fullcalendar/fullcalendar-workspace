@@ -82,7 +82,9 @@ Its objections are weighed, not followed blindly.
 **Tests.**
 
 - Targeted Karma specs during work.
-- Ask before running full package suites.
+- At each step boundary (from phase 9 on, Adam's call): both packages' full suites, unfiltered, in both
+  runtimes, two Karma processes in parallel (`FC_TEST_BUNDLE`, `FC_KARMA_PORT` in `scripts/bin/`), about
+  6 minutes.
 - A DOM snapshot comparison and a call-count comparison at the end of each phase from phase 4 on.
 - **Both runtimes.** The Karma bundles use the Preact build unless `FORCE_REACT=1`
   (`vanilla-tests/build.config.js`). Snapshots and count baselines are recorded under both, since
@@ -103,7 +105,7 @@ Its objections are weighed, not followed blindly.
 | 6 | `useHitTarget` and interactions | `phase-6-hit-target.md` (done) | 3 |
 | 7 | Layout families | `phase-7-layout-families.md` (done) | 5, 6 |
 | 8 | Reducer purity | `phase-8-reducer-purity.md` (done) | — |
-| 9 | Store slices, actions, API facade | `phase-9-store.md` (planned) | 8 |
+| 9 | Store slices, actions, API facade | `phase-9-store.md` (done) | 8 |
 | 10 | Date profile | sketched below | 9 |
 | 11 | Granular contexts | sketched below | 9 |
 | 12 | Grid abstraction, hooks-first React API | future | 7, 9 |
@@ -188,12 +190,24 @@ Inside today's `CalendarDataManager`, before any store split:
 - Expected to fix #8112 bug 1, #8092 and #7070 (see `related-issues.md`).
 - The existing specs are the safety net.
 
-### 9. Store slices, actions, API facade (planned, see `phase-9-store.md`)
+### 9. Store slices, actions, API facade (done, see `phase-9-store.md`)
 
-Re-scoped after its spec review: a behavior-identical restructuring (slices, reducers that describe
-effects which the store runs at today's points, the store, `resetOptions` as an action, the actions
-facade). `useSyncExternalStore` with render-time purity moved to phase 11, and the API wrapper cache to
-phase 12, with the review's findings as their requirements. Originally sketched as follows.
+As built, a behavior-identical restructuring, re-scoped after its spec review:
+
+- **Effects:** reducers describe fetches and option change handlers as effects, which runners
+  (`effectRunners`, core defaults) perform at today's points.
+- **Pipeline:** `reduce()` is a staged pipeline in today's order, with the options refiner as an
+  explicit cache (`OptionsRefinerCache`).
+- **Store:** `createCalendarStore` replaces `CalendarDataManager`, and the drivers subscribe with
+  `{ completedActions, isUrgent, isInCommit }`.
+- **Actions:** `store.actions`, which `CalendarApiImpl`, the event and source wrappers and premium's
+  resource API delegate to. Plugins add theirs (`calendarActions`).
+- **Derived data:** UI bases, selection config and business hours are derived data, not state.
+- **Extra re-render found:** the first update after the initial render re-rendered the view (PERF
+  changelog entry).
+
+`useSyncExternalStore` with render-time purity moved to phase 11, and the API wrapper cache to phase 12,
+with the reviews' findings as their requirements. Originally sketched as follows.
 
 - **Raw state:** typed slices with synchronous `get`/`set` and `subscribe`, read through
   `useSyncExternalStore`. Covers current date, view type, option overrides, event sources, event
@@ -241,6 +255,12 @@ phase 12, with the review's findings as their requirements. Originally sketched 
     the render's snapshot, not the committed one.
   - **Server rendering:** `getServerSnapshot` and hydration consistency, React 17 (shim), 18, 19.
   - **Synchronous sources** must still render on the server and in the first client render.
+  - **Invalidation generations** (deferred from phase 9 §4): `resetOptions`' invalidation is still the
+    refiner's mutable name lists, consumed by the next refinement, which is right only while reductions
+    are sequential. A speculative reduction must retain or consume its own.
+  - **Transaction isolation of phase 9's caches** (phase 9's last review): the refiner's
+    `currentPluginHooks`, `store.actions`' construction (memoized per plugin set) and the refiner and
+    invalidation caches. Define what replays when a creator (`calendarActions`) runs again.
 
 
 ### 12. Grid abstraction, hooks-first React API (future)
@@ -257,3 +277,5 @@ phase 12, with the review's findings as their requirements. Originally sketched 
     the old one.
   - **Keys:** internal `instanceId`/`defId` (and resource ids), with pruning, removal, revert and
     re-adding defined; recurring definitions vs occurrences; the raw vs renderable store while loading.
+  - **Actions vs wrapper context** (phase 9): a wrapper's mutations resolve the calendar's *current*
+    actions, while refining with the wrapper's own (historical) context. Keep that distinction.
