@@ -1,6 +1,7 @@
 # Phase 7b: the day-table pipeline
 
-Status: plan, revision 3 (2026-10-21, after spec review rounds 1 and 2 by Sol, §7-8). Not started.
+Status: plan, revision 4 (2026-10-21, after spec review rounds 1-3 by Sol, §7-9; round 3: "ready to
+implement" once its four verification P2s are fixed, which this revision does). Not started.
 
 Sequencing: lands after phase 10 (date profile, done: `phase-10-date-profile.md`, step 1 added the
 `DateProfileGenerator.hiddenDays` getter) and before phase 11 (granular contexts,
@@ -515,9 +516,15 @@ Why identity is at least as stable as today:
   entry misses only on those or on the selection itself. So:
   - a **rename of B** (new `Resource`, same `ui`/`businessHours` references; new `resources`, model,
     keying): every stage-1 entry holds; stage 2 reruns (new seg objects, same `eventRange`s, same
-    fabricated selection instance id, no mirror remount), as the joiner did;
-  - **A's `eventColor` changes** (A's `ui` reference changes, B's doesn't): A's bases and A's entries
-    recompute; B's selection mirror and B's events keep their objects and ids, as today;
+    fabricated selection instance id, no mirror remount), as the joiner did. Note what this does
+    *not* buy, today or after: the rebuilt model creates fresh `ResourceApi` render props for every
+    resource column (`AbstractResourceDayTableModel.ts:217`), which reach the events' render props
+    (`events.tsx:210`) and fail `CustomContent`'s shallow compare, so class and content hooks of
+    untouched events may rerun. The locks therefore assert zero mirror mounts/unmounts and per-hook
+    counts `<=` recorded, never "no calls for untouched events";
+  - **A's parsed `ui` is replaced** (A's `ui` reference changes, B's doesn't): A's bases and A's
+    entries recompute; B's selection mirror and B's segs keep their objects and ids, as today (the
+    model rebuild caveat above applies to render props here too);
   - the **fallback** empties `keying.keys`: every key's entries are evicted (today: the splitter's
     key set empties); `''` stays.
   Stage 2 depends on the model and keying, as the joiner did on the model and the sets.
@@ -838,12 +845,17 @@ Premium, `column/vresource-slicing-rules.ts` (resourceTimeGrid and resourceDayGr
     only event on an interior hidden day) with another resource that does: an interaction targeting
     it activates the state (non-null) with no segs; its business hours and bg events project to
     nothing; `calendar.select` with its `resourceId` highlights nothing and throws nothing (DOM);
-    (b) the **all-filtered fallback** (every resource's events on interior hidden days, so
-    `buildResourceTableModel` falls back to resourceless, `resource-table-model.ts:34`): the
-    participating keys are empty, so an interaction targeting any resource is `null`, resource
-    business hours don't expand, the header is the plain date row, and `isEventInteracting`
-    (`useHitTarget.ts:86-88`) is false during such a drag from another calendar (DOM/state). `resources:
-    []` alone doesn't exercise (b).
+    (b) the **all-filtered fallback** (`resource-table-model.ts:34`, not the empty-resources branch at
+    `:21`): the hidden day must be **interior**, e.g. `hiddenDays: [3]` with every resource's events on
+    Wednesdays only. Hidden weekends (`weekends: false`) are trimmed off the active range's edges
+    (`date-profile.ts:80`), so Saturday-only events fail *view-wide* filtering
+    (`resource-filtering.ts:48`) and `resources` is already empty, which is the other branch. Assert
+    the precondition in the spec: the view-wide filtered `resources` is non-empty (e.g. through
+    `calendar.getResources()` after filtering is observable, or by checking that `filterResourceStore`
+    keeps them) and `model.participants` is empty (the header is the plain date row, every column
+    inert). Then: an interaction targeting any resource is `null`, resource business hours don't
+    expand, and `isEventInteracting` (`useHitTarget.ts:86-88`) is false during such a drag from
+    another calendar (DOM/state). `resources: []` alone doesn't exercise (b).
 12. Mixed keyed and keyless grouped drag: event A (`resourceId: 'a'`) and event B (no resource) share
     a `groupId`; dragging A mutates both. **DOM:** B's mirror appears in every resource column and
     A's in the target column; B has no original copies (keyless fg renders nowhere, so nothing on the

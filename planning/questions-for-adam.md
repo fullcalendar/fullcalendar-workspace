@@ -48,3 +48,13 @@ today ("not a constructor": the view configs' merge combines its class with the 
 wrapper). Phase 10 replaces the table class with a render-range function, so the combination stops
 happening and the custom class just works (without the table's week-snapped range). It's an internal
 option (typed public), so no changelog entry. Locked first as a crash; flipped in step 1.
+
+## Phase 11: `useSyncExternalStore` and render-time purity become a feasibility study first
+
+Sol's spec review showed that switching the React driver to `useSyncExternalStore` while keeping today's
+render-time reduction has two real problems (urgent drag updates must still flush synchronously; mount
+ordering) and buys little on its own: the reduction would still mutate the store during render. So phase
+11 does the granular contexts (11a) and a React 17 smoke-test package now, and writes a feasibility study
+for render-time purity (with `useSyncExternalStore` as part of it) before implementing anything there. If
+purity can't be made behavior-identical, that's your call: keep today's render-time reduction as the end
+state, or accept named behavior changes.

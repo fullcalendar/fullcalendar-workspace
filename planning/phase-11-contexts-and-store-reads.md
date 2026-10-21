@@ -1,6 +1,7 @@
 # Phase 11: granular contexts and store reads
 
-Status: plan, revision 1 (2026-10-21), for Sol's spec review. The consumer inventory it relies on is
+Status: plan, revision 2 (2026-10-21), after Sol's spec review round 1: 11a ready with corrections; 11b
+and 11c merged into a feasibility study before any implementation; the React 17 smoke run its own step. The consumer inventory it relies on is
 `phase-11-context-inventory.md` (an Explore agent's read-only survey, 2026-10-21).
 
 Roadmap §11: five narrow contexts with `useViewContext()` as a facade; components reading the store
@@ -41,6 +42,23 @@ From the inventory (`phase-11-context-inventory.md`):
   store's state, with effects held for `flushEffects`); a `subscribe` listener bumps a revision state
   (with `flushSync` when urgent and not in a commit).
 
+## Revision 2: what changed (review round 1)
+
+Sol found 11a sound (the five contexts' identities are subsets of the facade's when each provider memoizes
+on the exact existing inputs) and 11b not ready: two P1s (an urgent change must still flush before the
+listener returns, which a `useSyncExternalStore` update doesn't guarantee, and drag queries the DOM right
+after dispatching; the store's `subscribe`/`getData` are unbound methods), and P2s on the subscription vs
+`store.mount()` order, the concurrency argument (React's consistency check restarts a render but can't undo
+the render-time reduction's mutations, consumed invalidations, user calls or queued effects), the shim and
+hydration contract, and the React 17 harness. It also recommended assessing render-time purity's
+feasibility before landing 11b.
+
+So: **11a proceeds** (corrections below). **11b and 11c merge into one feasibility study** (below), with
+no implementation until it concludes; if render-time purity isn't achievable behavior-identically,
+adopting `useSyncExternalStore` alone (keeping the render-time reduction) buys little for its risks, and
+the decision goes to Adam. **The React 17 smoke run** becomes its own step on a separate workspace test
+package with ordinary React 17 dependencies (it tests today's driver on React 17, useful regardless).
+
 ## 11a: granular contexts
 
 ### Design
@@ -70,14 +88,23 @@ inventory:
 - the 4 options+dateEnv → both hooks;
 - `useNow` → `useCalendarCore().nowManager`, `useDateEnv()`, `useViewOptions()`.
 
+Exceptions (round 1 #8): `ForegroundEvent`'s and `TimeGridCols`' own reads convert, but they keep a
+facade subscription through `useEventDisplay` and `useHitTarget`; `TimelineFg`'s `renderMirrorSegs` takes
+`options` and `dateEnv` instead of the context (it reads only those), an explicit exception to the rule
+below.
+
 Everything that passes `context` onward (to `EventImpl`, `ResourceApi`, `Slicer.sliceProps`, header-tier
 builders, `buildNavLinkAttrs`, interactions through `useHitTarget`) stays on the facade in this phase:
 those utilities' signatures take a `ViewContext`/`CalendarContext`, and the interactions compare context
 identities. Their conversion is later work (and partly phase 12's: `EventImpl`/`ResourceApi` hold a
 context).
 
-The class views and `Scroller` drop `static contextType` (they never read it); their function bodies
-already subscribe themselves.
+The eight built-in view shells (`DayGridView`, `TimeGridView`, `ListView`, `MultiMonthView`,
+`ResourceDayGridView`, `ResourceTimeGridView`, `TimelineView`, `ResourceTimelineView`) and `Scroller` opt
+out explicitly (`static contextType = undefined` on each), because the declarations are inherited from
+`PureComponent`/`BaseComponent`, which keep them: `DateComponent`'s hit-target methods and other
+subclasses read `this.context` (round 1 #3). `CalendarInner` (the provider, which doesn't read it) opts out
+too. Protected-API note: a third-party subclass of an opted-out built-in can declare it again.
 
 ### Behavior
 
@@ -88,6 +115,8 @@ snapshot counts compare; decreases are expected and listed.
 
 ### Risks
 
+- **Memo keys:** each narrow value is a direct input (`options`, `dateEnv`, `pluginHooks`) or memoized on
+  all of its constituent references, including the practically constant ones (round 1).
 - **A narrow value changing when the facade doesn't** would add renders. Each narrow value is memoized
   on a subset of the facade's inputs, so it can't (the facade's inputs are a superset). A spec asserts
   each context's identity across navigation, now ticks, an unrelated option change and a view switch.
@@ -95,71 +124,47 @@ snapshot counts compare; decreases are expected and listed.
   regardless of `memo`. Same behavior as the facade.
 - **`contextType` removal** changes nothing a class reads; a spec asserts the views still update on an
   option change (their bodies subscribe).
+- **Identity spec cases (round 1):** navigation, a now tick, an unrelated option change, a view switch, a
+  simultaneous `options`+`dateEnv` change (a locale change), and a memoized descendant consumer.
 
-## 11b: store reads through `useSyncExternalStore`
+## 11b + 11c: feasibility study (store reads and render-time purity)
 
-### Design
+No implementation. A document (`phase-11b-feasibility.md`) answering, with evidence and prototypes on a
+branch if useful:
 
-- The React driver reads the store with `useSyncExternalStore(store.subscribe, store.getData,
-  store.getData)` (the third is `getServerSnapshot`: on the server the data is what the render-time
-  update produced, the same as today) instead of the revision state. `store.subscribe` keeps its change
-  metadata for vanilla; the hook's listener ignores it.
-- **Urgency:** `useSyncExternalStore` updates always render synchronously (blocking lane), which covers
-  today's `flushSync` for urgent changes; non-urgent changes, today's default-lane revision bump, also
-  become synchronous. That's a timing change (non-urgent data changes render sooner, in the same task
-  or the next microtask rather than a later scheduler task): tolerated by the ground rules ("subtle
-  lifecycle/timing"), listed, and checked against the specs that wait for renders.
-- **The render-time update stays** (`store.update(props, true)` during render): 11b is about how async
-  changes reach React, not render-time purity (11c). The snapshot read after the update is the update's
-  data; React's consistency check compares `getData()` at render and at commit, which differ only when an
-  async change landed in between, and then React re-renders synchronously, which is correct.
-- **React 17:** `useSyncExternalStore` arrived in React 18. A small internal shim (the same algorithm as
-  `use-sync-external-store/shim`: `useState` + `useLayoutEffect` + `useEffect`, checking the snapshot
-  after subscribing) used when `React.useSyncExternalStore` is absent, in
-  `standard/packages/preact/src/hooks/useSyncExternalStoreCompat.ts`. No new dependency (decision logged:
-  the published shim would be a new runtime dependency of `@fullcalendar/react`). Preact uses
-  `preact/compat`'s.
-- **The React 17 smoke run:** the React package's vitest suite gains a React 17 project (react-dom's
-  legacy `render`), covering mount, update, unmount, Strict Mode, async data arriving after mount, and
-  server rendering. It needs `react@17`/`react-dom@17` as dev dependencies under aliases (lockfile change;
-  logged).
-
-### Risks
-
-- **Timing:** specs that rely on a non-urgent change rendering a task later. The full suites in both
-  runtimes and the React suite decide; any timing-dependent spec gets a note, not a weakened assertion.
-- **Tearing checks in development:** React warns if `getSnapshot` returns a new value on each call;
-  `getData()` returns the stored object.
-- **Mount gating** (phase 8): subscriptions made in the `useSyncExternalStore` hook happen at commit,
-  after `store.mount()`? Both run in layout/passive effects; the order must keep "subscribe before
-  mount() delivers held changes", or held changes must be visible through `getData()` at subscription
-  time (React's post-subscribe snapshot check re-renders if they differ). To verify against
-  `store-subscribe.ts` and the React suite.
-
-## 11c: render-time purity (separate plan, later)
-
-The requirements recorded in the roadmap (phase 9's spec review round 1, phase 9's last review, phase 10's
-reviews): replay of user code during normalization and id allocation; isolation of speculative
-reductions (single-entry memoizers, the refiner's `currentPluginHooks`, `store.actions`' construction,
-invalidation generations); publication order before child callbacks; render-time readers bound to the
-render's snapshot; server snapshots and hydration; synchronous sources rendering on the server and in the
-first client render; the date profile derived from an anchor with a committed-profile cache and candidate
-promotion. Its own plan document once 11a and 11b land. The question it must answer first: whether a
-behavior-identical render-time-pure reduction is achievable at all, or whether the remaining render-time
-mutation (an idempotent reduction of the render's props, mount-gated effects) is the end state, to be
-decided by Adam.
+- Can the reduction run during render without mutating the store (a speculative transaction the commit
+  adopts), meeting the roadmap's §11 requirements (replay of user code and ids, isolation of speculative
+  reductions including the options refiner's caches and invalidation generations, publication before child
+  callbacks, render-time readers bound to the render's snapshot, server snapshots and hydration,
+  synchronous sources, the date profile from an anchor with a committed-profile cache)?
+- If so, how `useSyncExternalStore` fits: a stable receiver-safe snapshot getter (`getCurrentData`) and
+  one urgency-aware subscription adapter per store (urgent changes still `flushSync` when not in a commit,
+  round 1 #1, #2), the subscription vs `store.mount()` order (native subscription is passive; mount is a
+  layout effect), React 17 (the published shim preferred, round 1), hydration (a server snapshot equal to
+  the server's initial data).
+- Acceptance tests it would need: committed A → transition to B → suspend/discard → a source completing
+  or an API dispatch → resume/cancel, comparing render-hook counts, user-function calls, callbacks,
+  controllers and DOM with today; driver-level locks for a child's mount callback dispatching, held
+  `loading`, async results before subscription, Strict Mode, `<Activity>`; real server-to-client
+  hydration.
+- **The decision for Adam** if purity isn't achievable behavior-identically: keep today's render-time
+  reduction (idempotent in practice, mount-gated effects) as the end state, or accept named behavior
+  changes.
 
 ## Steps
 
 1. **11a step 1:** the five contexts, their hooks, `CalendarInner` providing them; identity spec. No
    consumer converted.
-2. **11a step 2:** convert the narrow consumers (list above) and drop `contextType` from the class views;
-   counts compared (decreases listed).
-3. **11b step 1:** the compat hook, the driver on `useSyncExternalStore`; timing notes.
-4. **11b step 2:** the React 17 smoke project.
-5. **11c:** planning only.
+2. **11a step 2:** convert the narrow consumers (with the exceptions above), opt the view shells,
+   `Scroller` and `CalendarInner` out of `contextType`; counts compared (decreases listed).
+3. **React 17 smoke run:** a separate workspace test package (`@fullcalendar-tests/react17`) with React 17
+   dependencies and a legacy-render harness (`react-dom/test-utils`, one React instance shared with the
+   built calendar), covering mount, update, unmount, Strict Mode, async data after mount, server rendering
+   and hydration; React 18 alongside for the effect-remount behavior React 17's Strict Mode lacks.
+4. **11b + 11c feasibility study** (documents only), then Adam's decision if needed.
 
-Each step: full suites in both runtimes, snapshots and counts, the React suite, a Sol review.
+Each implementation step: full suites in both runtimes, snapshots and counts, the React suite, a Sol
+review.
 
 ## Open questions (my recommendation)
 
@@ -169,3 +174,19 @@ Each step: full suites in both runtimes, snapshots and counts, the React suite, 
 2. Vendor the `useSyncExternalStore` shim (recommended) or depend on `use-sync-external-store`?
 3. Accept non-urgent changes rendering synchronously (recommended), or keep the default lane by
    scheduling the store's notifications (`startTransition`-like) to preserve today's timing exactly?
+
+## Review round 1 (Sol, spec, high effort)
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P1: a `useSyncExternalStore` update doesn't flush before dispatch returns; urgent changes need today's `flushSync` (drag queries the DOM right after) | 11b deferred into the feasibility study, which must keep an urgency-aware adapter |
+| 2 | P1: `store.subscribe`/`getData` are unbound | same; the study specifies receiver-safe functions |
+| 3 | P2: `contextType` is inherited; opt the built-ins out explicitly, keep the bases | 11a's opt-out paragraph |
+| 4 | P2: subscription vs `store.mount()` order unresolved | the study |
+| 5 | P2: the consistency check doesn't make render-time mutation safe | the study; acceptance tests listed |
+| 6 | P2: shim and hydration contract underspecified | the study (published shim preferred); real hydration tests |
+| 7 | P2: React 17 needs its own harness, in the step that needs it | step 3: a separate React 17 test package, now independent of the hook |
+| 8 | P3: `ForegroundEvent`, `TimeGridCols`, `TimelineFg` exceptions | 11a's exceptions paragraph |
+
+Open questions answered: 1 yes (direct reads; indirect facade subscriptions stay); 2 the published shim
+(if 11b happens); 3 accept native blocking priority while keeping urgent `flushSync` (if 11b happens).
