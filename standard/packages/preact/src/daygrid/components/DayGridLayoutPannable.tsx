@@ -17,7 +17,7 @@ import { memo, useRef, useState, type Ref } from 'react'
 import { setRef } from '../../util/vdom'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
-import { RowConfig } from '../header-tier'
+import { RowConfig } from '../../day-table/header-tier'
 import classNames from '../../styles.module.css'
 import { computeViewBorderless } from '../../views/view-borderless'
 

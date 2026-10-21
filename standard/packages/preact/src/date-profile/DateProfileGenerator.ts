@@ -66,7 +66,7 @@ export type DateProfileGeneratorClass = {
 /*
 Builds a view's date profile. Its methods are steps that a custom class (the internal
 dateProfileGeneratorClass view option, set by a plugin's view) may override; each delegates to
-structs/date-profile.ts with `this`, which calls the other steps through it, so overrides apply.
+steps.ts with `this`, which calls the other steps through it, so overrides apply.
 Views supply their render range with the dateProfileRenderRange view option (see the daygrid's table
 range), which reaches the base class as `props.renderRange`.
 */

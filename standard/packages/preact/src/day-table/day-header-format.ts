@@ -1,4 +1,4 @@
-import { createFormatter } from '../../datelib/formatting'
+import { createFormatter } from '../datelib/formatting'
 import { DateFormatter } from '@full-ui/headless-calendar'
 
 /*

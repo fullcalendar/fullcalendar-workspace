@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { RowConfig } from '../header-tier'
+import { RowConfig } from '../../day-table/header-tier'
 import { DayGridHeaderRow } from './DayGridHeaderRow'
 
 export interface DayGridHeaderRowsProps {

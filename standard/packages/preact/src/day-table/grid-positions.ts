@@ -1,5 +1,5 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { DayTableCell } from '../../day-table/day-grid-range'
+import { DayTableCell } from './day-grid-range'
 
 /*
 DayGrid's positions: a date's top, the column and row under a point, and the row and cell elements

@@ -20,7 +20,7 @@ import { TimeGridRange } from '../../day-table/time-grid-range'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal'
 import { computeTimeTopFrac } from './time-geometry'
-import { RowConfig } from '../../daygrid/header-tier'
+import { RowConfig } from '../../day-table/header-tier'
 import { computeViewBorderless } from '../../views/view-borderless'
 
 export interface TimeGridLayoutProps {

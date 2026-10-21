@@ -14,7 +14,7 @@ import { useViewOptions } from '../../context/useGranularContexts'
 import { memo, type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
-import { RowConfig } from '../header-tier'
+import { RowConfig } from '../../day-table/header-tier'
 import classNames from '../../styles.module.css'
 import { computeViewBorderless } from '../../views/view-borderless'
 

@@ -29,8 +29,8 @@ import { DayTableLane, isDefInLane } from './keying'
 
 /*
 Stage 1 of the day-table pipeline: slicing per key, in the PLAIN date coordinates (the model's
-daySeries and dayCols, never its view columns). Stage 2 (project.ts) puts the results onto the
-view columns. Each function mirrors a Slicer method (common/slicing-utils.ts) and produces the
+daySeries and dayCols, never its view columns). Stage 2 (project-segs.ts) puts the results onto the
+view columns. Each function mirrors a Slicer method (event-segs/Slicer.ts) and produces the
 same segs; the hook caches them per key.
 */
 

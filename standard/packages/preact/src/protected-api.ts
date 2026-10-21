@@ -274,8 +274,8 @@ export {
   buildDateRowConfig,
   buildDateRenderConfig,
   buildDateDataConfigs,
-} from './daygrid/header-tier'
-export { createDayHeaderFormatter } from './daygrid/components/day-header-format'
+} from './day-table/header-tier'
+export { createDayHeaderFormatter } from './day-table/day-header-format'
 export { DayGridLayout } from './daygrid/components/DayGridLayout'
 export type { DayGridViewData } from './daygrid/components/useDayGridViewData'
 export { useDayGridViewData, useDayHeaderFormatter } from './daygrid/components/useDayGridViewData'

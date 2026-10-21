@@ -21,8 +21,8 @@ import { useScrollerSyncer } from '../../scrollgrid/useScrollerSyncer'
 import { useMeasuredState } from '../../layout/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
-import { RowConfig } from '../../daygrid/header-tier'
-import { computeDayGridColumns } from '../../daygrid/components/column-sizing'
+import { RowConfig } from '../../day-table/header-tier'
+import { computeDayGridColumns } from '../../day-table/column-sizing'
 import { TimeSlatMeta } from "../time-slat-meta"
 import { TimeGridRange } from "../../day-table/time-grid-range"
 import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader"

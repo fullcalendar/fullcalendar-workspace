@@ -71,7 +71,7 @@ export type CallCounts = { [optionName: string]: number }
 /*
 Option values that count calls without changing output. Options from themes and plugins merge with
 these: classnames are joined, `true` content falls back to the theme's or the default content, and
-lifecycle callbacks all run (see options-manip.ts).
+lifecycle callbacks all run (see options/merge.ts in @fullcalendar/preact).
 */
 export function buildCountingOptions(counts: CallCounts): CalendarOptions {
   const options: CalendarOptions = {}

@@ -5,7 +5,7 @@ import { RefMap } from '../../util/RefMap'
 import { createElement, memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { useViewOptions } from '../../context/useGranularContexts'
 import { useLatest } from '../../hooks/useLatest'
-import { RowConfig } from '../header-tier'
+import { RowConfig } from '../../day-table/header-tier'
 import { DayGridHeaderCell } from './DayGridHeaderCell'
 import classNames from '../../styles.module.css'
 

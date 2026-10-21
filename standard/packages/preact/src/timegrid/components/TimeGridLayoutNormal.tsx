@@ -16,8 +16,8 @@ import { useViewOptions } from '../../context/useGranularContexts'
 import { useMeasuredState } from '../../layout/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
-import { computeDayGridColumns } from '../../daygrid/components/column-sizing'
-import { RowConfig } from '../../daygrid/header-tier'
+import { computeDayGridColumns } from '../../day-table/column-sizing'
+import { RowConfig } from '../../day-table/header-tier'
 import { TimeSlatMeta } from "../time-slat-meta"
 import { TimeGridRange } from "../../day-table/time-grid-range"
 import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader"

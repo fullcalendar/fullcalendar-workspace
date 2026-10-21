@@ -41,7 +41,7 @@ the review draft the restructure started from.
 | `events/` | The event data model (defs, instances, store, parsing, recurrence, mutation, UI); `components/` holds the shared event components (`ForegroundEvent`, `BgEvent`, their display computation) |
 | `event-sources/` | Source types, parsing, the array/func/json-feed sources |
 | `event-segs/` | Event ranges, and splitting and slicing them into segs (`Splitter`, `Slicer`) |
-| `day-table/` | The day-table pipeline that dayGrid, timeGrid and the resource views share: model, keying, seg caches, ranges, the render-hook info types |
+| `day-table/` | What dayGrid, timeGrid, multiMonth and the resource views share: the day-table pipeline (model, keying, seg caches, ranges), the header tier and its formatting, column sizing, cell positions, the render-hook info types |
 | `seg-placement/` | The placement kernel and its print variant |
 | `render-hook/` | Applying user class, content and mount hooks (`CustomContent`, `useMountHooks`, `RenderId`) |
 | `more-link/`, `layout/`, `scrollgrid/` | Shared view UI: the more-link and popover; measurement (resize observer, `useMeasuredState`); scrolling (`Scroller`, syncing, initial scroll) |

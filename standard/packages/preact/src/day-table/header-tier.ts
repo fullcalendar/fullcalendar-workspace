@@ -1,5 +1,5 @@
 import { ClassNameGenerator, ContentGenerator, DidMountHandler, WillUnmountHandler } from '../render-hook/render-hook-types'
-import { DayHeaderInfo } from '../day-table/info-types'
+import { DayHeaderInfo } from './info-types'
 import { buildDateStr, buildNavLinkAttrs } from '../views/nav-link'
 import { computeMajorUnit, isMajorUnit } from '../date-profile/DateProfileGenerator'
 import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'

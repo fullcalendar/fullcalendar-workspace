@@ -5,7 +5,7 @@ import { useViewContext } from '../../context/useViewContext'
 import { PLAIN_KEYING, DAY_GRID_LANE } from '../../day-table/keying'
 import { useDayTableSegs } from '../../day-table/useDayTableSegs'
 import { DayGridRange } from '../../day-table/day-grid-range'
-import { buildDateRowConfigs } from '../header-tier'
+import { buildDateRowConfigs } from '../../day-table/header-tier'
 import { DayGridLayout } from './DayGridLayout'
 import { useDayGridViewData, useDayHeaderFormatter } from './useDayGridViewData'
 
