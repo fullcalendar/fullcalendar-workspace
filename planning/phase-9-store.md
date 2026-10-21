@@ -485,3 +485,19 @@ Specs added to `store-actions.ts`. Verified: full suites, both runtimes; snapsho
 - **Spec:** premium `misc/resource-actions.ts` (registered, and what the API and `ResourceApi` run;
   `setProp` updates the wrapper, `resourceChange` reverts; still works without the resource plugin).
 - Verified: full suites, both runtimes; snapshots and counts unchanged.
+
+## Review of step 3 (Sol, implementation, high effort)
+
+Step 2's responses resolve its findings (the vertical-scroll caveat agreed). One P1 and four P2s, all fixed:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P1: navigation called the closed-over core `actions.unselect()`, bypassing an override of `calendar.unselect` and a plugin's `unselect` action (was `this.unselect()`) | the nine call sites call `calendarApi.unselect()` again; specs for both overrides |
+| 2 | P2: a creator wrapping an existing action by reading `store.actions` recursed into the build | creators get `baseActions` (what's composed so far), and `store.actions` returns the in-progress object while building; spec wraps `next` and reads `store.actions` during the build |
+| 3 | P2: the resource fallback was all-or-nothing on `addResource` | `getResourceActions` resolves each action: the registered one, else the unregistered one; spec with a plugin registering only `refetchResources` |
+| 4 | P2: a new plugin's option refiner saw the previous plugin set's actions (hooks published only after refinement) | `currentPluginHooks` is set as soon as the hooks are built; spec |
+| 5 | P2: no lifecycle coverage | specs: identity while plugins don't change, rebuilt (and an action dropped) after `resetOptions` changes them; `resetOptions` runs the action; a creator's error propagates to the API call, and the build retries after; a `ResourceApi` from before a plugin change runs the current actions |
+
+Mutation-checked: the closed-over `unselect`, no reentrancy guard, late hook publication and the
+all-or-nothing fallback each fail their spec. Verified: full suites, both runtimes; snapshots and counts
+unchanged.

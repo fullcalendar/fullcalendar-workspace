@@ -137,16 +137,29 @@ export function createResourceActions(store: CalendarStore, _calendarApi: Calend
   }
 }
 
+const RESOURCE_ACTION_NAMES: (keyof ResourceActions)[] = [
+  'addResource', 'refetchResources', 'setResourceProp', 'setResourceExtendedProp', 'removeResource',
+]
+
 /*
 The calendar's resource actions. The API patches and ResourceApi exist whenever this bundle is imported,
-even for a calendar without the resource plugin, where they've always still run: so without the plugin's
-actions, the same ones, unregistered
+even for a calendar without the resource plugin, where they've always still run. So each action is the
+registered one (the resource plugin's, or a plugin's that replaces it), or else the same one, unregistered
 */
 export function getResourceActions(calendarApi: CalendarApiImpl): ResourceActions {
   const { store } = calendarApi
-  const actions = store!.actions as Partial<ResourceActions>
+  const registered = store!.actions as Partial<ResourceActions>
+  let fallback: ResourceActions | undefined
+  let actions = {} as ResourceActions
 
-  return actions.addResource
-    ? actions as ResourceActions
-    : createResourceActions(store!, calendarApi)
+  for (const name of RESOURCE_ACTION_NAMES) {
+    if (registered[name]) {
+      actions[name] = registered[name] as any
+    } else {
+      fallback = fallback || createResourceActions(store!, calendarApi)
+      actions[name] = fallback[name] as any
+    }
+  }
+
+  return actions
 }

@@ -1,3 +1,5 @@
+import { DEFAULT_PLUGINS } from '../lib/global-plugins'
+
 /*
 The store's actions are what changes a calendar; the API's methods delegate to them, and a driver's
 overridable methods (batchRendering) are still called through the API (planning/phase-9-store.md)
@@ -107,5 +109,137 @@ describe('calendar store actions', () => {
 
     changeArgs[0].revert()
     expect(calendar.getEventById('e').title).toBe('a')
+  })
+
+  describe('overrides', () => {
+    it('of the API\'s unselect still apply to navigation', () => {
+      let calendar = initCalendar()
+      let unselectSpy = spyOn(calendar, 'unselect').and.callThrough()
+
+      calendar.next()
+      calendar.today()
+      calendar.changeView('dayGridWeek')
+      expect(unselectSpy).toHaveBeenCalledTimes(3)
+    })
+
+    it('by a plugin\'s action apply to the API and to navigation', () => {
+      let unselectCnt = 0
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'override-unselect',
+          calendarActions: () => ({
+            unselect() {
+              unselectCnt++
+            },
+          }),
+        }],
+      })
+
+      calendar.unselect()
+      calendar.next()
+      expect(unselectCnt).toBe(2)
+    })
+
+    it('can wrap the action they replace', () => {
+      let log = []
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'wrap-next',
+          calendarActions: (store, _calendarApi, baseActions) => {
+            let actionsDuringBuild = store.actions // reading them while they're built doesn't recurse
+            expect(actionsDuringBuild).toBeTruthy()
+            return {
+              next() {
+                log.push('plugin')
+                baseActions.next()
+              },
+            }
+          },
+        }],
+      })
+
+      calendar.next()
+      expect(log).toEqual(['plugin'])
+      expect(calendar.getDate().toISOString().slice(0, 10)).toBe('2024-02-01')
+    })
+  })
+
+  describe('lifecycle', () => {
+    let extraPlugin = {
+      name: 'extra-action',
+      calendarActions: () => ({
+        extra() {
+          return 'extra'
+        },
+      }),
+    }
+
+    it('are the same object while the plugins don\'t change, and rebuilt when they do', () => {
+      let calendar = initCalendar({ plugins: [...DEFAULT_PLUGINS, extraPlugin] })
+      let actions = calendar.store.actions
+      expect(calendar.store.actions).toBe(actions)
+      expect((actions as any).extra()).toBe('extra')
+
+      calendar.next()
+      expect(calendar.store.actions).toBe(actions)
+
+      calendar.resetOptions({
+        plugins: DEFAULT_PLUGINS,
+        initialView: 'dayGridMonth',
+        initialDate: '2024-01-10',
+      })
+      expect(calendar.store.actions).not.toBe(actions)
+      expect((calendar.store.actions as any).extra).toBeUndefined()
+    })
+
+    it('are what resetOptions runs', () => {
+      let calendar = initCalendar()
+      let resetSpy = spyOn(calendar.store.actions, 'resetOptions').and.callThrough()
+
+      calendar.resetOptions({ weekends: false }, ['weekends'])
+      expect(resetSpy).toHaveBeenCalledTimes(1)
+      expect(calendar.getOption('weekends')).toBe(false)
+    })
+
+    it('of new plugins are visible to their own option refiners', () => {
+      let seenExtra
+      let calendar = initCalendar()
+
+      calendar.resetOptions({
+        plugins: [...DEFAULT_PLUGINS, {
+          ...extraPlugin,
+          optionRefiners: {
+            extraOption(input) {
+              seenExtra = (calendar.store.actions as any).extra
+              return input
+            },
+          },
+        }],
+        initialView: 'dayGridMonth',
+        initialDate: '2024-01-10',
+        extraOption: true,
+      } as any)
+      expect(typeof seenExtra).toBe('function')
+    })
+
+    it('propagate a creator\'s error to the API call, and build again after', () => {
+      let shouldThrow = true
+      let calendar = initCalendar({
+        plugins: [...DEFAULT_PLUGINS, {
+          name: 'throwing-creator',
+          calendarActions: () => {
+            if (shouldThrow) {
+              throw new Error('creator failed')
+            }
+            return {}
+          },
+        }],
+      })
+
+      expect(() => calendar.next()).toThrowError('creator failed')
+      shouldThrow = false
+      calendar.next()
+      expect(calendar.getDate().toISOString().slice(0, 10)).toBe('2024-02-01')
+    })
   })
 })

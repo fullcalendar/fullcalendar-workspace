@@ -112,11 +112,18 @@ export class CalendarStore {
   private listeners: CalendarStoreListener[] = []
 
   private coreActions: CalendarActions
+  private actionsInProgress: (CalendarActions & Dictionary) | undefined
   private buildActions = memoize((creators: CalendarActionsCreator[]) => {
-    let actions = { ...this.coreActions }
+    let actions: CalendarActions & Dictionary = { ...this.coreActions }
+    this.actionsInProgress = actions
 
-    for (let creator of creators) {
-      Object.assign(actions, creator(this, this.config.calendarApi))
+    try {
+      for (let creator of creators) {
+        // each gets what's composed so far, a copy, so it can wrap what it replaces
+        Object.assign(actions, creator(this, this.config.calendarApi, { ...actions }))
+      }
+    } finally {
+      this.actionsInProgress = undefined
     }
 
     return actions
@@ -128,6 +135,10 @@ export class CalendarStore {
   while the plugins don't change
   */
   get actions(): CalendarActions & Dictionary {
+    if (this.actionsInProgress) { // a creator reading store.actions
+      return this.actionsInProgress
+    }
+
     const pluginHooks = this.optionsRefiner.currentPluginHooks
 
     return pluginHooks ? this.buildActions(pluginHooks.calendarActions) : this.coreActions

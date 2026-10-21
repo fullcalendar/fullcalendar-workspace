@@ -66,4 +66,51 @@ describe('resource actions', () => {
     expect(resource.id).toBe('b')
     expect(() => calendar.refetchResources()).not.toThrow()
   })
+
+  // without the resource plugin, each action is a registered one if there is one, else the unregistered one
+  it('resolve per action when a plugin registers only some', () => {
+    let refetchCnt = 0
+    let calendar = initCalendar({
+      plugins: [dayGridPlugin, {
+        name: 'partial-resource-actions',
+        calendarActions: () => ({
+          refetchResources() {
+            refetchCnt++
+          },
+        }),
+      }],
+      initialView: 'dayGridMonth',
+    })
+
+    calendar.refetchResources()
+    expect(refetchCnt).toBe(1)
+    expect(calendar.addResource({ id: 'b', title: 'B' }).id).toBe('b')
+  })
+
+  it('are the current ones for a ResourceApi from before the plugins changed', () => {
+    let calendar = initCalendar({
+      resources: [{ id: 'a', title: 'A' }],
+    })
+    let resource = calendar.getResourceById('a')
+    let setPropCnt = 0
+
+    calendar.resetOptions({
+      initialView: 'resourceTimelineDay',
+      initialDate: '2024-01-10',
+      resources: [{ id: 'a', title: 'A' }],
+      plugins: [...calendar.getCurrentData().calendarOptions.plugins, {
+        name: 'count-set-resource-prop',
+        calendarActions: (_store, _calendarApi, baseActions) => ({
+          setResourceProp(...args) {
+            setPropCnt++
+            baseActions.setResourceProp(...args)
+          },
+        }),
+      }],
+    })
+
+    resource.setProp('title', 'A2')
+    expect(setPropCnt).toBe(1)
+    expect(calendar.getResourceById('a').title).toBe('A2')
+  })
 })

@@ -48,10 +48,9 @@ export class OptionsRefinerCache {
   private optionsForRefining: string[] = []
   private optionsForHandling: string[] = []
 
-  // the last refinement's plugin hooks, mid-dispatch too. undefined before the first
-  get currentPluginHooks(): PluginHooks | undefined {
-    return this.stableCalendarOptionsData && this.stableCalendarOptionsData.pluginHooks
-  }
+  // the latest refinement's plugin hooks, from the moment they're built, so its option refiners already
+  // see them. undefined before the first
+  public currentPluginHooks: PluginHooks | undefined
 
   // at call time, as resetOptions always has
   invalidate(optionNames: string[]) {
@@ -119,7 +118,7 @@ export class OptionsRefinerCache {
     let availableLocaleData = this.organizeRawLocales(locales)
     let availableRawLocales = availableLocaleData.map
     let localeDefaults = this.buildLocale(locale || availableLocaleData.defaultCode, availableRawLocales).options
-    let pluginHooks = this.buildPluginHooks(optionOverrides.plugins || [], globalPlugins)
+    let pluginHooks = this.currentPluginHooks = this.buildPluginHooks(optionOverrides.plugins || [], globalPlugins)
 
     let refiners = this.currentCalendarOptionsRefiners = {
       ...BASE_OPTION_REFINERS,

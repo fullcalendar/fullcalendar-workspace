@@ -29,8 +29,9 @@ import {
 /*
 What changes a calendar: navigation, options, selection, events and event sources. Built once per store
 (store.actions), with what were CalendarApiImpl's method bodies, which now delegate here. They read the
-store's data and dispatch to it. Methods a driver may override (batchRendering) are still called
-through the API. The event and event source wrappers' mutations run here too. See
+store's data and dispatch to it. API methods that may be overridden (a driver's batchRendering, unselect,
+getEventSourceById) are still called through the API, so the override, or a plugin's action behind the
+API's method, still applies. The event and event source wrappers' mutations run here too. See
 planning/phase-9-store.md
 */
 export interface CalendarActions {
@@ -71,8 +72,13 @@ export interface CalendarActions {
   scrollToTime(timeInput: DurationInput): void
 }
 
-// a plugin's actions (the calendarActions hook), merged over the core's
-export type CalendarActionsCreator = (store: CalendarStore, calendarApi: CalendarApiImpl) => Dictionary
+// a plugin's actions (the calendarActions hook), merged over the core's and earlier plugins'.
+// baseActions are those, for an action that wraps the one it replaces (store.actions is still being built)
+export type CalendarActionsCreator = (
+  store: CalendarStore,
+  calendarApi: CalendarApiImpl,
+  baseActions: CalendarActions & Dictionary,
+) => Dictionary
 
 export function createCalendarActions(store: CalendarStore, calendarApi: CalendarApiImpl): CalendarActions {
   const { dispatch } = store
@@ -81,7 +87,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
   const actions: CalendarActions = {
     changeView(viewType, dateOrRange) {
       calendarApi.batchRendering(() => {
-        actions.unselect()
+        calendarApi.unselect()
 
         if (dateOrRange) {
           if ((dateOrRange as DateRangeInput).start && (dateOrRange as DateRangeInput).end) { // a range
@@ -122,7 +128,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
       viewType = viewType || 'day' // day is default zoom
       spec = state.viewSpecs[viewType] || getUnitViewSpec(store, viewType)
 
-      actions.unselect()
+      calendarApi.unselect()
 
       if (spec) {
         dispatch({
@@ -139,18 +145,18 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
     },
 
     prev() {
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({ type: 'PREV' })
     },
 
     next() {
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({ type: 'NEXT' })
     },
 
     prevYear() {
       let state = getCurrentData()
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({
         type: 'CHANGE_DATE',
         dateMarker: state.dateEnv.addYears(state.currentDate, -1),
@@ -160,7 +166,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
     nextYear() {
       let state = getCurrentData()
 
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({
         type: 'CHANGE_DATE',
         dateMarker: state.dateEnv.addYears(state.currentDate, 1),
@@ -170,7 +176,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
     today() {
       let state = getCurrentData()
 
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({
         type: 'CHANGE_DATE',
         dateMarker: state.nowManager.getDateMarker(),
@@ -180,7 +186,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
     gotoDate(zonedDateInput) {
       let state = getCurrentData()
 
-      actions.unselect()
+      calendarApi.unselect()
       dispatch({
         type: 'CHANGE_DATE',
         dateMarker: state.dateEnv.createMarker(zonedDateInput),
@@ -192,7 +198,7 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
       let delta = createDuration(deltaInput)
 
       if (delta) { // else, warn about invalid input?
-        actions.unselect()
+        calendarApi.unselect()
         dispatch({
           type: 'CHANGE_DATE',
           dateMarker: state.dateEnv.add(state.currentDate, delta),
