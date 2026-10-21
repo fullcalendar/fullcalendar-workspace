@@ -1,6 +1,8 @@
 # Phase 11: granular contexts and store reads
 
-Status: 11a done (2026-10-21, see its Done note). Plan revision 2, after Sol's spec review round 1: 11a ready with corrections; 11b
+Status: done (2026-10-21). 11a implemented (see its Done note) and the React 17 smoke run added; 11b and
+11c closed after the feasibility study (`phase-11b-feasibility.md`): Adam chose option A, keeping today's
+render-time reduction. Plan revision 2, after Sol's spec review round 1: 11a ready with corrections; 11b
 and 11c merged into a feasibility study before any implementation; the React 17 smoke run its own step. The consumer inventory it relies on is
 `phase-11-context-inventory.md` (an Explore agent's read-only survey, 2026-10-21).
 

@@ -62,6 +62,18 @@ export type CalendarStoreListener = (change: CalendarStoreChange) => void
 The calendar's state, and the pipeline that reduces actions into it. One per calendar, created together
 with its API object (in React, in one useState initializer, so a discarded Strict Mode replay discards
 both). See planning/phase-9-store.md
+
+React reduces during render (the driver's update(props, true)), by design: render-time purity can't keep
+today's behavior (planning/phase-11b-feasibility.md, option A). What that guarantees:
+- replays on a surviving store are idempotent: the same props reduce IDLE, with memo hits, no reparse, no
+  new ids, no refetch. Not React 18 Strict Mode's initial double invocation, which makes a second store
+- subscribers hear of changes only while mounted, and the controller binds from committed props only
+- callbacks a render-time drain queues (`loading`) run at the next drain that may run effects: a
+  flushEffects after a commit, or an API dispatch or fetch completion while mounted
+- user code runs during render: fetch functions, success callbacks, transforms, range functions. So do
+  the emitter's option binding and the now timer's re-arming
+- a render that never commits still advanced the store: later API reads see its state, its fetches are
+  adopted, its held callbacks run at the next eligible drain
 */
 export function createCalendarStore(config: CalendarStoreConfig): CalendarStore {
   return new CalendarStore(config)

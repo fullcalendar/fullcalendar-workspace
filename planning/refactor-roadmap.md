@@ -254,7 +254,14 @@ oracle checks every navigation against the frozen old generator. Originally sket
   now.
 - Check here whether the hidden-day skip removed in the pre-pass was meant to happen.
 
-### 11. Granular contexts
+### 11. Granular contexts (done, see `phase-11-contexts-and-store-reads.md` and `phase-11b-feasibility.md`)
+
+As built (2026-10-21): the five contexts and narrow hooks (11a), the React 17/18 smoke packages. The store
+reads through `useSyncExternalStore` and render-time purity (below) are **closed, not implemented**: the
+feasibility study found purity can't keep today's behavior (a render React discards still advances the
+store), and Adam chose to keep today's render-time reduction as the end state (option A), its guarantees
+documented in `reducers/store.ts`. The original plan follows.
+
 
 - Split into five contexts: `CalendarCore`, `PluginHooks`, `DateEnv`, `ViewSpec` and `ViewOptions`.
 - `useViewContext()` stays as a facade that combines them, so unconverted code keeps working.
@@ -306,7 +313,9 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   `Scroller` ref's attachment timing and a callback ref's cleanup; two Preact timing changes visible only
   to third-party `protected-api` code are logged in `questions-for-adam.md`.
 - **Render-time side effects** left in React's render-time update, if phase 11 doesn't remove them:
-  the emitter's option binding (stage 2 checkpoint) and the now timer re-arming.
+  the emitter's option binding (stage 2 checkpoint) and the now timer re-arming. (Closed with option A,
+  2026-10-21: they stay, documented with the store's guarantees; moving them would be the small behavior
+  and timing changes of `phase-11b-feasibility.md` §3 (c)-(d).)
 - **Per-button options don't combine with the theme's** (done, 2026-10-21; found by phase 2, never
   scheduled). As built: a button's options merge per option like top-level ones (classes join,
   `iconContent` falls back, lifecycle callbacks chain) between plugin layers and the user's, while the
@@ -348,7 +357,8 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   <Activity>…`, `#8092: a render discarded by Suspense…` twice) and the Karma `<Activity>` scroll specs
   (`view-render/activity-scroll.ts`, premium `misc/activity-scroll-timeline.ts`); #7070 by a new React 17
   (and 18) smoke spec, an event fetch settling after unmount, failing on any `console.error`.
-- **Landing:** decide how the branch merges (per phase or whole).
+- **Landing:** decide how the branch merges (per phase or whole). Tracked, with closing the verified
+  issues and the pre-existing problems found, in `follow-ups.md`.
 
 ### 12. Grid abstraction, hooks-first React API (tabled)
 

@@ -87,6 +87,8 @@ A scheduler `protected-api` for tests would close it.
 
 ## Phase 11: the React 17/18 smoke run's findings
 
+**Answered (2026-10-21): CI left as is.** The SSR warning, and what's left for later, are in `follow-ups.md`.
+
 - **CI doesn't run the new smoke packages.** `@fullcalendar-tests/react17` and `react18` run with
   `standard-scripts test --other` or `pnpm --filter @fullcalendar-tests/react17 test`, but CI installs with
   `--filter '!@fullcalendar-tests/*'` and tests only `@fullcalendar/react`. Adding them is two filters in
@@ -106,6 +108,8 @@ A scheduler `protected-api` for tests would close it.
 
 ## Loose ends: a top-level option quirk found while fixing per-button options
 
+**Catalogued in `follow-ups.md`** (pre-existing problems).
+
 `setOption('eventClass', 'b')` on a calendar created with `eventClass: 'a'` gives events both classes:
 the user's own option layers (initial options, `setOption`, a view type's and its super type's
 `views` options) are merged with the same rules as theme-vs-user layers, so class options join and
@@ -116,6 +120,8 @@ top-level options would be a behavior change (a separate merge for the user's la
 have); your call.
 
 ## Phase 11: render-time purity (11c) needs your decision
+
+**Answered (2026-10-21): option A.** Recorded in `phase-11b-feasibility.md`, the roadmap's §11 and `reducers/store.ts`'s header; the render-time side effects stay too.
 
 `planning/phase-11b-feasibility.md` (reviewed by Sol): strict render-time purity can't preserve every
 behavior of today's. A render that never commits (Suspense, transitions, `<Activity>`) advances the store
@@ -132,6 +138,8 @@ timing changes. Under option A I'd leave them as they are (documented); say if y
 
 ## Loose ends: a pre-existing crash when no date of the visible range is valid
 
+**Catalogued in `follow-ups.md`** (pre-existing problems).
+
 Creating a calendar whose visible range has no valid date throws a TypeError (reading `start` of a null
 `activeRange`, first in the title builder): for example `initialView: 'timeGrid'`, `visibleRange` ending
 yesterday, `validRange: (now) => ({ start: now })`. Pre-existing; Sol found it reviewing the midnight change,
@@ -139,6 +147,8 @@ which now avoids it (a midnight rebuild with no active range keeps the old profi
 active range everywhere (title, views, event slicing) is a separate fix; not done.
 
 ## Loose ends: Preact timing changes for protected-api users, from converting the last class components
+
+**Answered (2026-10-21): fine as is.**
 
 No class component is left in the tree (the view shells, `CalendarInner`, `CalendarMediaRoot`, `Scroller`),
 and the built-ins behave as before (DOM, counts and every suite unchanged). Sol found what third-party code

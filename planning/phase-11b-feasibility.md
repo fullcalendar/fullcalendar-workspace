@@ -1,6 +1,8 @@
 # Phase 11b + 11c: feasibility of store reads through `useSyncExternalStore` and render-time purity
 
-Status: study, revision 2 (2026-10-21, after Sol's review round 1, §7). No implementation. Asked for by
+Status: **decided, option A** (Adam, 2026-10-21): today's render-time reduction is the end state; §6's
+guarantees are documented in `reducers/store.ts`'s header; 11b and 11c are closed, not implemented.
+Study revision 2 (2026-10-21, after Sol's review round 1, §7). Asked for by
 `phase-11-contexts-and-store-reads.md` (revision 2) after Sol's spec review round 1. Paths are under
 `standard/packages/preact/src/` unless noted.
 
