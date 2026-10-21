@@ -56,7 +56,8 @@ async function record(args) {
     process.exit(1)
   }
 
-  const distPath = join(pkgDir, 'dist/index.js')
+  // FC_TEST_BUNDLE and FC_KARMA_PORT as in karma-test.js, for running alongside other runs
+  const distPath = join(pkgDir, 'dist', process.env.FC_TEST_BUNDLE || 'index.js')
 
   if (!existsSync(distPath)) {
     console.error(`record: ${distPath} doesn't exist. Build the test package first.`)
@@ -108,6 +109,7 @@ async function record(args) {
   const config = await karma.config.parseConfig(null, {
     ...baseConfig,
     basePath: resolve(pkgDir), // must be absolute, or karma doubles it up
+    port: process.env.FC_KARMA_PORT ? Number(process.env.FC_KARMA_PORT) : baseConfig.port,
     client: {
       ...baseConfig.client,
       args: ['--dom-snapshot', '--grep', grep],
