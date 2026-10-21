@@ -130,7 +130,10 @@ const BASE_OPTIONS: CalendarOptions = {
   events: BUSY_EVENTS,
 }
 
-const VIEWS = ['dayGridMonth', 'timeGridWeek', 'resourceTimelineWeek']
+const VIEWS = [
+  'dayGridMonth', 'timeGridWeek', 'resourceTimelineWeek',
+  'resourceTimeGridWeek', 'resourceDayGridWeek', // phase 7b (the day-table pipeline)
+]
 
 const ACTIONS: { name: string, action?: CountScenario['action'] }[] = [
   { name: 'initial' },
@@ -147,7 +150,7 @@ const ACTIONS: { name: string, action?: CountScenario['action'] }[] = [
     name: 'drag',
     action: (calendar) => new Promise<void>((resolve) => {
       const eventEl = calendar.el.querySelector('.fc-event:not(.fc-bg-event)')
-      const isVertical = calendar.view.type.startsWith('timeGrid')
+      const isVertical = /^(resource)?timeGrid/i.test(calendar.view.type)
 
       $(eventEl).simulate('drag', {
         dx: isVertical ? 0 : 140,
@@ -175,6 +178,26 @@ for (const viewType of VIEWS) {
     })
   }
 }
+
+// phase 7b: dates above resources, and a selection mirror kept across a resource rename
+for (const viewType of ['resourceTimeGridWeek', 'resourceDayGridWeek']) {
+  for (const { name, action } of ACTIONS) {
+    COUNT_SCENARIOS.push({
+      name: `${viewType}/dates-above-resources/${name}`,
+      options: { ...BASE_OPTIONS, initialView: viewType, datesAboveResources: true },
+      action,
+    })
+  }
+}
+
+COUNT_SCENARIOS.push({
+  name: 'resourceTimeGridWeek/select-mirror-resource-rename',
+  options: { ...BASE_OPTIONS, initialView: 'resourceTimeGridWeek', selectable: true, selectMirror: true },
+  action: (calendar) => {
+    calendar.select({ start: `${DATE}T13:00:00`, end: `${DATE}T15:00:00`, resourceId: 'b' } as any)
+    calendar.getResourceById('b').setProp('title', 'Room B2')
+  },
+})
 
 function buildBusyEvents() {
   const events = []

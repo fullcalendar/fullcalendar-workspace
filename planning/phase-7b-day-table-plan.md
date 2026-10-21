@@ -657,6 +657,49 @@ landing gate**, since `protected-api` types change in every step. Sol reviews ea
 - Record `baseline` snapshots and counts in both runtimes after phase 10 lands (the baseline must be
   from the commit 7b starts on).
 
+**Done (2026-10-21).** Specs: standard `view-render/day-table-slicing.ts` (33) and
+`day-table-identity.ts` (10); premium `column/vresource-slicing-rules.ts` (78) and
+`vresource-identity.ts` (18); all pass in both runtimes. Fixtures and count scenarios per §4.4.
+Baseline label `p7b0`. What the specs found, against the plan's §4.2 (each adaptation is commented
+in its spec):
+
+- **Hidden weekends don't exercise the series clamp** (standard 1): they are trimmed off the active
+  range, so the clip there is the active range's. An interior `hiddenDays: [4]` block locks the
+  clamp (end/start on the hidden day, an event only on it dropped); the `weekends: false` cases stay.
+- **The now indicator's "civil" clip equals the column clip in standard views** (standard 7):
+  `adjustActiveRange` already widens `dateProfile.activeRange` by the slot times, so with
+  `slotMaxTime: '26:00'` the line renders at 01:00 the next day (as `legacy/nowIndicator.ts`
+  expects). The specs lock present/absent at both edges. So §4.3's "drop the civil clipping" mutation
+  can't fail a standard spec; the implementation keeps the clip anyway (same code path as today).
+- **DayGrid and the all-day row show a dragged event as a highlight, not a mirror**
+  (`DayGridRow.getMirrorSegs` returns resize segs only), so the cross-lane source-style half of
+  standard 8 and premium 13 isn't observable for timed → all-day. Locked instead: the observable
+  half (original hidden, one highlight), and the reverse direction (an all-day event from a red
+  source dragged into the timed columns: the mirror has the calendar's `eventColor`, not red). Its
+  mirror's `isDragging` is false: the affected def is all-day, so the timed lane's interaction has
+  segs and empty `affectedInstances` (the per-lane metadata split, §1.3).
+- **TimeGrid never sends timed bg defs to the all-day lane** (standard 9): `DayGridRows.tsx:237`'s
+  filter is exercised by `dayGridMonth` (no splitter), locked there, including a timed
+  `inverse-background` def's complement.
+- **`calendar.render()` doesn't reach the view body** (identity probes): `CalendarInner` is pure with
+  unchanged props; only `CustomContent`'s render-id subscription runs, so `eventContent` reruns for
+  every event and no class or lifecycle hook does. Locked as such (proof: `eventContent > 0`). The
+  minute and day ticks do reach the body and are proven by lane/cell class counts.
+- **Today's selection mirror remounts on `addEvent` and on an unrelated `setOption`** (TimeGrid):
+  the selection memo's inputs include `context` and the event UI bases. Recorded as is; the rewrite
+  keeps those inputs, so the counts must stay `<=`.
+- **Event selection is touch-only** (a mouse interaction unselects): the specs long-press.
+- **Premium 11/12's state-level characterization (today's splitter/joiner vs the new projector) is
+  not written**: premium has no `protected-api` entry, so `VResourceSplitter`/`VResourceJoiner` are
+  unreachable from the tests. The DOM halves are in (11(a), 11(b) with its precondition, 12 drag and
+  resize). Substitute: step 2a's unit specs drive the new projector over hand-built models against
+  §1.3's rules table directly (premium exports nothing new for that either: the projector is
+  standard's, `protected-api`), logged in `questions-for-adam.md`.
+- Premium 10's resource-bucket order isn't observable (different resources, different columns): only
+  the instance-order tie is locked. With dates above resources a span breaks per date in multi-row
+  month too. A background event on a visible date earns its resource a column under per-date
+  filtering. An event input with `resourceId: undefined` refines to the string `'undefined'`.
+
 ### Step 1: the standard pipeline (DayGrid, TimeGrid, SingleMonth)
 
 Changes:

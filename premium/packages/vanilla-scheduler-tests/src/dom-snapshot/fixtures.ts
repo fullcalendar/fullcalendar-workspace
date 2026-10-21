@@ -149,12 +149,15 @@ const VARIANTS: Variant[] = [
   { name: 'pannable', views: GRID_VIEWS, options: { dayMinWidth: 220 } },
   {
     name: 'more-links',
-    views: [...DAYGRID_VIEWS, ...TIMEGRID_VIEWS, 'multiMonthYear', ...TIMELINE_VIEWS, ...RESOURCE_TIMELINE_VIEWS],
+    views: [
+      ...DAYGRID_VIEWS, ...TIMEGRID_VIEWS, 'multiMonthYear', ...TIMELINE_VIEWS, ...RESOURCE_TIMELINE_VIEWS,
+      'resourceTimeGridWeek', 'resourceDayGridWeek', // phase 7b
+    ],
     options: { dayMaxEvents: 2, eventMaxStack: 1 },
   },
   {
     name: 'popover',
-    views: ['dayGridMonth', 'timeGridWeek', 'resourceTimelineDay'],
+    views: ['dayGridMonth', 'timeGridWeek', 'resourceTimelineDay', 'resourceTimeGridWeek', 'resourceDayGridWeek'],
     options: { dayMaxEvents: 2, eventMaxStack: 1 },
     setup: async (calendar) => {
       const moreLinkEl = calendar.el.querySelector('[aria-haspopup="dialog"]') as HTMLElement
@@ -169,20 +172,23 @@ const VARIANTS: Variant[] = [
   { name: 'now-indicator', views: TIME_AXIS_VIEWS, options: { nowIndicator: true } },
   {
     name: 'selection',
-    views: ['dayGridMonth', 'timeGridWeek', 'resourceTimelineDay', 'resourceTimeGridDay'],
+    views: ['dayGridMonth', 'timeGridWeek', 'resourceTimelineDay', 'resourceTimeGridDay', 'resourceDayGridWeek'],
     options: { selectable: true },
     setup: (calendar) => {
       calendar.select({
         start: `${DATE}T13:00:00`,
         end: `${DATE}T15:00:00`,
-        allDay: calendar.view.type === 'dayGridMonth' ? true : undefined,
+        allDay: /dayGrid/i.test(calendar.view.type) ? true : undefined,
         resourceId: calendar.view.type.startsWith('resource') ? 'b' : undefined,
       } as any)
     },
   },
   {
     name: 'hidden-days',
-    views: ['dayGridMonth', 'timeGridWeek', 'timelineWeek', 'resourceTimelineWeek', 'listWeek'],
+    views: [
+      'dayGridMonth', 'timeGridWeek', 'timelineWeek', 'resourceTimelineWeek', 'listWeek',
+      'resourceDayGridWeek', 'resourceTimeGridWeek', 'resourceDayGridMonth', // phase 7b
+    ],
     options: { weekends: false },
   },
   {
@@ -197,7 +203,7 @@ const VARIANTS: Variant[] = [
   },
   {
     name: 'dates-above-resources',
-    views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+    views: ['resourceTimeGridWeek', 'resourceDayGridWeek', 'resourceDayGridMonth', 'resourceTimeGridDay'],
     options: { datesAboveResources: true },
   },
   {
@@ -251,6 +257,9 @@ const VARIANTS: Variant[] = [
       $(document).simulate('mouseup', {})
     },
   },
+
+  // phase 7b (planning/phase-7b-day-table-plan.md §4.4): the day-table pipeline's cases
+  ...PHASE_7B_VARIANTS(),
 ]
 
 export const DOM_FIXTURES: DomFixture[] = []
@@ -264,6 +273,253 @@ for (const variant of VARIANTS) {
       teardown: variant.teardown,
     })
   }
+}
+
+function PHASE_7B_VARIANTS(): Variant[] {
+  const WED = '2024-01-17'
+  const wednesdayEvents = ['a', 'b', 'c1', 'c2', 'd'].map((resourceId) => ({
+    title: `Wed ${resourceId}`, start: `${WED}T09:00:00`, end: `${WED}T10:00:00`, resourceId,
+  }))
+  const saturdayEvents = ['a', 'b', 'c1', 'c2', 'd'].map((resourceId) => ({
+    title: `Sat ${resourceId}`, start: '2024-01-20T09:00:00', end: '2024-01-20T10:00:00', resourceId,
+  }))
+  const selectTimedInB = (calendar: Calendar) => {
+    calendar.select({ start: `${WED}T13:00:00`, end: `${WED}T15:00:00`, resourceId: 'b' } as any)
+  }
+
+  return [
+    {
+      name: 'selection-no-resource',
+      views: ['resourceTimeGridDay', 'resourceDayGridWeek'],
+      options: { selectable: true },
+      setup: (calendar) => {
+        calendar.select({
+          start: `${WED}T13:00:00`,
+          end: `${WED}T15:00:00`,
+          allDay: /dayGrid/i.test(calendar.view.type) ? true : undefined,
+        } as any)
+      },
+    },
+    {
+      name: 'select-mirror',
+      views: ['resourceTimeGridWeek', 'timeGridWeek'],
+      options: { selectable: true, selectMirror: true },
+      setup: (calendar) => {
+        calendar.select({
+          start: `${WED}T13:00:00`,
+          end: `${WED}T15:00:00`,
+          resourceId: calendar.view.type.startsWith('resource') ? 'b' : undefined,
+        } as any)
+      },
+    },
+    {
+      name: 'select-mirror-after-rename',
+      views: ['resourceTimeGridWeek'],
+      options: { selectable: true, selectMirror: true },
+      setup: (calendar) => {
+        selectTimedInB(calendar)
+        calendar.getResourceById('b').setProp('title', 'Room B2')
+      },
+    },
+    {
+      // a real re-parse of a's ui (setProp('eventColor') isn't one): addResource with a's id
+      name: 'select-mirror-after-other-ui-change',
+      views: ['resourceTimeGridWeek'],
+      options: { selectable: true, selectMirror: true },
+      setup: (calendar) => {
+        selectTimedInB(calendar)
+        calendar.addResource({ id: 'a', title: 'Room A', building: 'North', eventColor: '#c0c' }, false)
+      },
+    },
+    {
+      name: 'mid-drag',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { editable: true },
+      setup: (calendar) => startDrag(calendar, 'Timed 1', 1, 0),
+      teardown: endDrag,
+    },
+    {
+      name: 'mid-drag-rtl-resources',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { editable: true, direction: 'rtl' },
+      setup: (calendar) => startDrag(calendar, 'Timed 1', -1, 0),
+      teardown: endDrag,
+    },
+    {
+      name: 'mid-drag-multi',
+      views: ['resourceTimeGridWeek'],
+      options: { editable: true },
+      setup: (calendar) => startDrag(calendar, 'Multi-day timed', -1, 0),
+      teardown: endDrag,
+    },
+    {
+      name: 'mid-drag-to-allday',
+      views: ['timeGridWeek', 'resourceTimeGridWeek'],
+      options: { editable: true },
+      setup: (calendar) => {
+        const eventEl = findEventEl(calendar, 'Timed 1')
+        const allDayHeaderEl = calendar.el.querySelector('.fc-timegrid-allday-header') as HTMLElement
+        const rect = eventEl.getBoundingClientRect()
+        const start = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 }
+        const targetY = allDayHeaderEl.getBoundingClientRect().top + allDayHeaderEl.getBoundingClientRect().height / 2
+
+        $(eventEl).simulate('mousedown', start)
+        for (let i = 1; i <= 5; i += 1) {
+          $(document).simulate('mousemove', { clientX: start.clientX, clientY: start.clientY + (targetY - start.clientY) * i / 5 })
+        }
+      },
+      teardown: endDrag,
+    },
+    {
+      // a keyed and a keyless event sharing a groupId: dragging one moves both
+      name: 'mid-drag-grouped',
+      views: ['resourceTimeGridWeek'],
+      options: {
+        editable: true,
+        events: [
+          ...EVENTS,
+          { id: 'grouped-a', groupId: 'pair', title: 'Grouped A', start: `${WED}T15:00:00`, end: `${WED}T16:00:00`, resourceId: 'a' },
+          { id: 'grouped-none', groupId: 'pair', title: 'Grouped none', start: `${WED}T15:00:00`, end: `${WED}T16:00:00` },
+        ],
+      },
+      setup: (calendar) => startDrag(calendar, 'Grouped A', 1, 0),
+      teardown: endDrag,
+    },
+    {
+      // every resource's events on an interior hidden day: resources survive view-wide filtering but
+      // none earns a column, so the model falls back to resourceless
+      name: 'filtered-fallback',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { filterResourcesWithEvents: true, hiddenDays: [3], events: wednesdayEvents, selectable: true, businessHours: true },
+      setup: selectTimedInB,
+    },
+    {
+      // the other branch: hidden weekends are trimmed off the range, so view-wide filtering empties resources
+      name: 'filtered-empty',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { filterResourcesWithEvents: true, weekends: false, events: saturdayEvents },
+    },
+    {
+      name: 'filtered-per-date',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { filterResourcesWithEvents: true },
+    },
+    {
+      name: 'filtered-per-date-dates-above',
+      views: ['resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: { filterResourcesWithEvents: true, datesAboveResources: true },
+    },
+    {
+      name: 'resourceless',
+      views: ['resourceTimeGridDay', 'resourceDayGridWeek'],
+      options: { resources: [] },
+    },
+    {
+      name: 'business-hours',
+      views: ['resourceTimeGridDay', 'resourceDayGridWeek'],
+      options: {
+        businessHours: true,
+        resources: RESOURCES.map((resource) => (
+          resource.id === 'b'
+            ? { ...resource, businessHours: { startTime: '12:00', endTime: '20:00', daysOfWeek: [1, 2, 3, 4, 5] } }
+            : resource
+        )),
+      },
+    },
+    {
+      name: 'multi-resource-ties',
+      views: ['resourceTimeGridDay'],
+      options: {
+        events: [
+          // a recurring def before a single event with the same title and times: instance order wins
+          { title: 'Tie', daysOfWeek: [3], startTime: '13:00', endTime: '14:00', resourceId: 'a' },
+          { title: 'Tie', start: `${WED}T13:00:00`, end: `${WED}T14:00:00`, resourceId: 'a' },
+          { title: 'Same', start: `${WED}T15:00:00`, end: `${WED}T16:00:00`, resourceId: 'a' },
+          { title: 'Same', start: `${WED}T15:00:00`, end: `${WED}T16:00:00`, resourceId: 'b' },
+          { title: 'Same', start: `${WED}T15:00:00`, end: `${WED}T16:00:00`, resourceIds: ['a', 'b'] },
+        ],
+      },
+    },
+    {
+      // individual eventUiBases entries exist only for events from sources
+      name: 'source-styles',
+      views: ['resourceTimeGridDay', 'resourceTimeGridWeek', 'resourceDayGridWeek'],
+      options: {
+        events: undefined,
+        eventSources: [
+          { color: '#a5f', events: [
+            { title: 'Source 1', start: `${WED}T09:00:00`, end: `${WED}T10:00:00`, resourceId: 'a' },
+            { title: 'Source 2', start: `${WED}T11:00:00`, end: `${WED}T12:00:00`, resourceIds: ['b', 'd'] },
+          ] },
+          { events: EVENTS },
+        ],
+      },
+    },
+    {
+      name: 'inverse-bg-shared',
+      views: ['resourceTimeGridDay', 'resourceDayGridWeek'],
+      options: {
+        events: [
+          { groupId: 'g', display: 'inverse-background', start: `${WED}T09:00:00`, end: `${WED}T12:00:00`, resourceId: 'a' },
+          { groupId: 'g', display: 'inverse-background', start: `${WED}T14:00:00`, end: `${WED}T16:00:00`, resourceIds: ['a', 'b'] },
+          // no instance in range: still initializes its group
+          { groupId: 'g2', display: 'inverse-background', start: '2024-03-01T09:00:00', end: '2024-03-01T10:00:00', resourceId: 'b' },
+          { title: 'Fg', start: `${WED}T10:00:00`, end: `${WED}T11:00:00`, resourceId: 'a' },
+        ],
+      },
+    },
+    // standard views
+    {
+      name: 'list-item-multiday',
+      views: ['dayGridMonth'],
+      options: { eventDisplay: 'list-item' },
+    },
+    {
+      name: 'inverse-bg',
+      views: ['timeGridWeek', 'dayGridMonth'],
+      options: {
+        events: [
+          { groupId: 'g', display: 'inverse-background', start: `${WED}T09:00:00`, end: `${WED}T12:00:00` },
+          { groupId: 'g', display: 'inverse-background', start: '2024-03-01T09:00:00', end: '2024-03-01T10:00:00' }, // no in-range instance
+          { title: 'Fg', start: `${WED}T10:00:00`, end: `${WED}T11:00:00` },
+        ],
+      },
+    },
+    {
+      // an all-day background event renders in both lanes; a source-level background display only in the all-day row
+      name: 'source-bg-allday',
+      views: ['timeGridWeek'],
+      options: {
+        events: undefined,
+        eventSources: [
+          { display: 'background', events: [{ start: '2024-01-16', allDay: true }] },
+          { events: [{ start: '2024-01-18', allDay: true, display: 'background' }] },
+        ],
+      },
+    },
+    {
+      // slots past midnight with now after midnight: the line isn't drawn in the previous day's column
+      name: 'now-indicator-extended',
+      views: ['timeGridDay'],
+      options: { nowIndicator: true, slotMaxTime: '26:00', now: '2024-01-18T01:00:00' },
+    },
+  ]
+}
+
+function startDrag(calendar: Calendar, title: string, xSign: number, ySign: number) {
+  const eventEl = findEventEl(calendar, title)
+  const rect = eventEl.getBoundingClientRect()
+  const start = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 }
+
+  $(eventEl).simulate('mousedown', start)
+
+  for (let i = 1; i <= 5; i += 1) {
+    $(document).simulate('mousemove', { clientX: start.clientX + xSign * i * 20, clientY: start.clientY + ySign * i * 20 })
+  }
+}
+
+function endDrag() {
+  $(document).simulate('mouseup', {})
 }
 
 // .fc-event comes from the theme-for-tests plugin

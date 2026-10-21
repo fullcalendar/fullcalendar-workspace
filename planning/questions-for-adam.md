@@ -58,3 +58,22 @@ ordering) and buys little on its own: the reduction would still mutate the store
 for render-time purity (with `useSyncExternalStore` as part of it) before implementing anything there. If
 purity can't be made behavior-identical, that's your call: keep today's render-time reduction as the end
 state, or accept named behavior changes.
+
+## Phase 7b: one planned characterization couldn't be written as specified
+
+The plan wanted a state-level comparison of today's resource splitter/joiner against the new
+projection (the exact `affectedInstances` during a drag mixing resource and resourceless events, and
+during the all-filtered fallback). The scheduler package has no `protected-api` entry, so the tests
+can't reach those internals. The DOM-level halves are written and pass. The new projection gets unit
+specs over hand-built models checked against the plan's rules table instead. If you'd rather the
+scheduler grow a `protected-api` for tests, that's a small follow-up.
+
+Smaller things the step-0 specs found (no action needed; all locked as today's behavior):
+
+- Selecting an event needs a touch long-press: a mouse interaction unselects.
+- Dragging into DayGrid or the all-day row shows a highlight, never a mirror. So an event's source
+  colour can't visibly change on a timed → all-day drag, but it does change on the reverse.
+- An all-day event dragged into the timed columns gets a mirror whose `isDragging` is false.
+- TimeGrid's selection mirror remounts on `addEvent` and on any unrelated `setOption`. That's a count
+  quirk, not visible.
+- An event input with `resourceId: undefined` becomes the resource id `'undefined'`.
