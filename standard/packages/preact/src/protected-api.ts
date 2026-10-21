@@ -244,6 +244,7 @@ export {
   formatDayString,
   parseMarker,
   padStart, isInt,
+  asRoughDays, constrainMarkerToRange, parseRange, addWeeks, diffWeeks, // for the date-profile oracle's frozen copy
 } from '@full-ui/headless-calendar'
 
 export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './timegrid/TimeColsSeg'

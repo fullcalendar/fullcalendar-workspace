@@ -203,3 +203,21 @@ back, `dayCount` with hidden days).
    the contexts; then `ViewContext` can carry `hiddenDays` and the config instead.
 3. Memo key for now: only for a function `validRange` (recommended), or always (simpler, but the profile
    object would change daily for everyone, re-rendering views at midnight).
+
+## Step 0: behavior locks and the oracle (done)
+
+- `vanilla-tests/src/lib/legacy-date-profile.ts`: the frozen pre-phase-10 generator (test-only).
+  `protected-api` gained `asRoughDays`, `constrainMarkerToRange`, `parseRange`, `addWeeks`, `diffWeeks`
+  for it.
+- `view-dates/date-profile-oracle.ts`: 18 option mixes × 5 seeds × 60 random navigations, unrendered
+  calendars, each transition checked against the frozen generator with stage 4's rules (profile by value,
+  current date, the toolbar's three flags), on a frozen clock (`now` otherwise advances between the
+  expected and actual reads). About a second. Mutation-checked: ignoring the direction in
+  `buildRangeFromDayCount` fails six cases.
+- `view-dates/date-profile-locks.ts`: `validRange`/`visibleRange` functions' `this` and argument, and
+  their call counts (4 per navigation: the profile's build and the toolbar's three; 5 for a view change,
+  which rebuilds first); single-day views on hidden days, forward and back, and `dayCount` backward;
+  a new day leaves a now-dependent `validRange` stale (step 3 flips it); `dateProfileGeneratorClass` from
+  a plugin's view is used, but from the `views` option it's ignored (the store reads option defaults).
+- Found while writing them: in the local time zone, `gotoDate(date)` drops the date's milliseconds
+  (`createMarker`), and `today()` uses the advancing now. Neither changes here.
