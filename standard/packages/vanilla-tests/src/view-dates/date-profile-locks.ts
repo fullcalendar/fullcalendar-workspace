@@ -158,7 +158,7 @@ describe('date profile behavior locks', () => {
         ...options,
         validRange(nowDate) {
           counts.validRange += 1
-          return options.validRange(nowDate)
+          return options.validRange.call(this, nowDate)
         },
       })
       calendar.render() // datesSet fires in the commit
@@ -216,6 +216,41 @@ describe('date profile behavior locks', () => {
       expect(day(calendar.getCurrentData().dateProfile.validRange.end)).toBe('2024-03-10')
       expect(day(calendar.getCurrentData().dateProfile.activeRange.start)).toBe('2024-03-09')
       expect(fetchedStarts).toEqual(['2024-03-09'])
+      calendar.destroy()
+    })
+
+    // the probe's own setOption replaced the profile before the refresh ran: the refresh is dropped
+    it('drops a refresh whose probed profile another action replaced', () => {
+      let isProbing = false
+      let { calendar } = buildCounted({
+        validRange(nowDate) {
+          if (isProbing && nowDate.toISOString().startsWith('2024-03-09')) {
+            isProbing = false
+            this.setOption('validRange', { start: '2024-03-20' })
+          }
+          return { start: nowDate }
+        },
+      })
+
+      isProbing = true
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      expect(day(calendar.getCurrentData().dateProfile.validRange.start)).toBe('2024-03-20')
+      calendar.destroy()
+    })
+
+    // a fixed visibleRange that the new day's validRange leaves no date of: the views can't render a
+    // profile with no active range (creating the calendar that day throws, a pre-existing crash), so the
+    // old profile stays, as before the midnight change
+    it('keeps the profile when the rebuilt one would have no valid date', () => {
+      let { calendar } = buildCounted({
+        initialView: 'timeGrid',
+        visibleRange: { start: '2024-03-04', end: '2024-03-09' },
+        validRange: (nowDate) => ({ start: nowDate }),
+      })
+      let dateProfile = calendar.getCurrentData().dateProfile
+
+      jasmine.clock().tick(24 * 60 * 60 * 1000)
+      expect(calendar.getCurrentData().dateProfile).toBe(dateProfile)
       calendar.destroy()
     })
 

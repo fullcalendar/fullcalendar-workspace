@@ -27,7 +27,7 @@ during render:
 | The options refiner's caches: `current*`/`stable*` fields, single-entry memoizers, and `optionsForRefining`/`optionsForHandling` (consumed by `takeOptionsForHandling`, `store.ts:671`) | `reducers/options-refiner.ts:30-66` | the next refinement; `resetOptions`' invalidation is consumed once |
 | The store's single-entry memoizers (`computeCurrentViewData`, `buildDateProfileGenerator`, `buildViewApi`, `buildViewUiProps`, `buildEventUiBases`, `buildToolbarProps`, `buildTitle`, `store.actions`' `buildActions`) | `store.ts:77-85`, `:116` | object identities in later reductions (memo hits) |
 | `emitter.setThisContext` / `setOptions` (the view's handlers) | `store.ts:396-397`, `common/Emitter.ts:12-18` | every callback fired afterwards, including ones fired before the render commits |
-| `nowManager.handleInput`: on a new date environment (a time zone change, say), the `now` input is re-read and reset listeners fire. A `now` change alone, with the same date environment, does nothing | `store.ts:719`, `reducers/CalendarNowManager.ts:15-42` | mounted, started `useNow` runners, re-armed during render |
+| `nowManager.handleInput`: on a new date environment (a time zone change, say), the manager adopts it (and a `now` function), and reset listeners fire; a literal `now` is kept from the first environment. A `now` change alone, with the same date environment, does nothing | `store.ts:719`, `reducers/CalendarNowManager.ts:15-42` | mounted, started `useNow` runners, re-armed during render |
 | The store's day timer re-arms | `store.ts:481-489` | timer callbacks |
 | New ids: `defId`, `instanceId`, `sourceId`, `fetchId` (`guid()`) | `structs/event-parse.ts:145`, `structs/event-instance.ts:233`, `structs/event-source-parse.ts:76`, `reducers/eventSources.ts:189` | identities of defs without `id`, `RECEIVE_EVENTS` matching |
 | Fetches run inline, during render and before the first mount too: `effects.run` calls the runner, which calls `sourceDef.fetch` right then; a result calls `eventSourceSuccess`/`success` | `reducers/effects.ts:22-33`, `reducers/event-source-fetch.ts:17-40` | user fetch functions and success callbacks, network requests |
@@ -189,3 +189,5 @@ server-to-client hydration on React 17 (shim), 18 and 19, and Preact.
 | 6 | P2: hydration through React 17's shim and Preact compat (no `getServerSnapshot`) unanswered; Preact's synchronous `startTransition` | §4's hydration and Preact paragraphs; §5 |
 | 7 | P3: a `now` change alone doesn't fire reset listeners (the date environment gates it) | §1's table, §3 (d) |
 | 8 | P3: most retained `EventImpl` getters read captured data; only `source` reads the store | §1's table, §2 point 5 |
+
+Round 2: 11a's fix confirmed; the study's responses adequate; one P3 (a new date environment doesn't re-read a literal `now`), fixed in §1's table.

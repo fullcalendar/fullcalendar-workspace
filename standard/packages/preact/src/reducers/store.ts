@@ -379,6 +379,12 @@ export class CalendarStore {
     prevData: CalendarData | undefined,
     action: Action,
   ): { state: CalendarDataManagerState; data: CalendarData; calendarContext: CalendarContext } {
+    // a refresh probed a profile that another action (one the validRange function dispatched, say)
+    // has replaced since: its probe is stale, and the new profile was built with the current inputs
+    if (action.type === 'REFRESH_DATE_PROFILE' && (!prevState || prevState.dateProfile !== action.probedDateProfile)) {
+      action = { type: 'IDLE' }
+    }
+
     // 1. options
     let { dynamicOptionOverrides, optionsData } = this.reduceOptions(prevState, action)
 
@@ -530,10 +536,12 @@ export class CalendarStore {
   }
 
   /*
-  Calls only the validRange function (once), and rebuilds the profile, through REFRESH_DATE_PROFILE, only if
-  the range changed by value: then the events and datesSet follow, as for navigation, and the rebuild reuses
-  this result instead of calling the function again. Built-in generators only: a custom class has no
-  rebuild protocol yet. See planning/phase-10-date-profile.md §4
+  Calls only the validRange function (once), and only if the range changed by value, rebuilds the profile
+  as it was built (reusing this result instead of calling the function again) and installs it through
+  REFRESH_DATE_PROFILE: then the events and datesSet follow, as for navigation. A rebuilt profile with no
+  valid date (no active range) isn't installed: the views can't render one (the same TypeError as creating
+  the calendar that day), so the old profile stays, as before this. Built-in generators only: a custom class
+  has no rebuild protocol yet. See planning/phase-10-date-profile.md §4
   */
   private probeNewDayValidRange(dateProfile: DateProfile, generator: DateProfileGenerator, nowDate: DateMarker) {
     let { props } = generator
@@ -546,7 +554,18 @@ export class CalendarStore {
       let untrimmedValidRange = generator.buildValidRange(nowDate)
 
       if (!isOpenRangeEqual(generator.trimHiddenDays(untrimmedValidRange), dateProfile.validRange)) {
-        this.dispatch({ type: 'REFRESH_DATE_PROFILE', untrimmedValidRange })
+        let anchor = getDateProfileAnchor(dateProfile)
+        let refreshed = generator.build(
+          anchor.date,
+          nowDate,
+          anchor.direction,
+          anchor.forceToValid,
+          untrimmedValidRange,
+        )
+
+        if (refreshed.activeRange) {
+          this.dispatch({ type: 'REFRESH_DATE_PROFILE', dateProfile: refreshed, probedDateProfile: dateProfile })
+        }
       }
     }
   }

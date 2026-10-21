@@ -330,7 +330,10 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   profile's anchor (date, direction, forceToValid) is kept beside it in a `WeakMap`
   (`structs/date-profile.ts`), and the rebuild reuses the probe's result. A real change costs the toolbar's
   three checks twice (once for the new now, once for the rebuilt profile); an unchanged range, only the
-  probe on top of today's three.
+  probe on top of today's three. After Sol's review: the probe builds the refreshed profile itself, and
+  the action carries it with the profile it replaces, so a refresh whose probed profile another action
+  replaced first (the validRange function calling setOption) is dropped; a refreshed profile with no
+  active range isn't installed (the old one stays, as before), since views can't render one.
 - **A crash found by phase 10's oracle** (done, 2026-10-21): switching to a dayGrid view whose
   week-aligned range is all hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`),
   e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. TimeGrid and List day views threw

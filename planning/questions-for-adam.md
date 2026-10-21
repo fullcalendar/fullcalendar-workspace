@@ -129,3 +129,11 @@ costed in its §5-6. Until you decide, 11b/11c stays unimplemented.
 Tied to it: the loose end "render-time side effects" (the emitter's option binding, the now timer
 re-arming during render). Moving them to the commit is §3 (c) and (d) of the study: small behavior and
 timing changes. Under option A I'd leave them as they are (documented); say if you want them moved anyway.
+
+## Loose ends: a pre-existing crash when no date of the visible range is valid
+
+Creating a calendar whose visible range has no valid date throws a TypeError (reading `start` of a null
+`activeRange`, first in the title builder): for example `initialView: 'timeGrid'`, `visibleRange` ending
+yesterday, `validRange: (now) => ({ start: now })`. Pre-existing; Sol found it reviewing the midnight change,
+which now avoids it (a midnight rebuild with no active range keeps the old profile). Supporting a null
+active range everywhere (title, views, event slicing) is a separate fix; not done.
