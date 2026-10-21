@@ -9,7 +9,7 @@ export * from './api/public-types'
 export { FormatDateOptions, FormatRangeOptions } from './datelib/format-api'
 export { formatDate, formatRange } from './datelib/format-api'
 export { sliceEvents } from './views/view-props'
-export { EventRenderRange } from './event-segs/event-rendering' // for sliceEvents
+export { EventRenderRange } from './event-segs/event-ranges' // for sliceEvents
 export { JsonRequestError } from './util/requestJson'
 export { joinClassNames } from './util/html'
 

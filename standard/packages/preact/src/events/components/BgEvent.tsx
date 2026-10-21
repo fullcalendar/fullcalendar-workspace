@@ -1,5 +1,7 @@
 import { memo, useLayoutEffect, useMemo, useRef } from 'react'
-import { EventDisplayInfo, EventTextInfo, EventRenderRange, setElEventRange } from '../../event-segs/event-rendering'
+import { EventDisplayInfo, EventTextInfo } from './event-display-info'
+import { EventRenderRange } from '../../event-segs/event-ranges'
+import { setElEventRange } from './el-event-range'
 import { EventImpl } from '../../api/EventImpl'
 import { joinClassNames } from '../../util/html'
 import { CustomContent } from '../../render-hook/CustomContent'

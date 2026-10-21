@@ -4,7 +4,7 @@ import {
   EventInstanceRange, resolveEdgeInstantMs,
 } from './event-instance'
 import { parseEventDef, refineEventDef } from './event-parse'
-import { EventRenderRange, compileEventUi } from '../event-segs/event-rendering'
+import { EventRenderRange, compileEventUi } from '../event-segs/event-ranges'
 import { EventUiHash } from './event-ui'
 import { CalendarContext } from '../context/CalendarContext'
 import { refineProps, identity, Identity } from '../options/refine'

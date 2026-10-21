@@ -1,6 +1,6 @@
 import { createFormatter } from '../datelib/formatting'
 import { DateFormatter } from '@full-ui/headless-calendar'
-import { EventRenderRange } from '../event-segs/event-rendering'
+import { EventRenderRange } from '../event-segs/event-ranges'
 import { SlicedCoordRange } from '../event-segs/coord-range'
 
 export const DEFAULT_TABLE_EVENT_TIME_FORMAT: DateFormatter = createFormatter({

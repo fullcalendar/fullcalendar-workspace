@@ -1,7 +1,7 @@
 import { DateRange, intersectRanges, Duration, DateMarker, addMs, addDays } from '@full-ui/headless-calendar'
 import { EventStore } from '../events/event-store'
 import { EventUiHash } from '../events/event-ui'
-import { sliceEventStore, EventRenderRange, EventRangeProps } from './event-rendering'
+import { sliceEventStore, EventRenderRange, EventRangeProps } from './event-ranges'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 import { DateSpan, fabricateEventRange } from '../events/date-span'

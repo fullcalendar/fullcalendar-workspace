@@ -1,5 +1,5 @@
 import { DayGridRange } from '../day-table/day-grid-range'
-import { EventRangeProps } from '../event-segs/event-rendering'
+import { EventRangeProps } from '../event-segs/event-ranges'
 import { SlicedCoordRange } from '../event-segs/coord-range'
 import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 

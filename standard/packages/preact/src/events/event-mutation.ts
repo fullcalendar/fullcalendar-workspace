@@ -7,7 +7,7 @@ import {
 } from './event-instance'
 import { computeAlignedDayRange } from '../util/date'
 import { EventUiHash, EventUi } from './event-ui'
-import { compileEventUis } from '../event-segs/event-rendering'
+import { compileEventUis } from '../event-segs/event-ranges'
 import { CalendarContext } from '../context/CalendarContext'
 import { computeDefaultEventEndEdge } from './default-event-end'
 

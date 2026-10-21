@@ -1,9 +1,14 @@
 import { memo, useLayoutEffect, useMemo, useRef, type ComponentType, type ReactNode } from 'react'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
 import {
-  buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayInfo, EventTextInfo, EventRenderRange,
-  getEventTagAndAttrs, setElEventRange,
-} from '../../event-segs/event-rendering'
+  buildEventRangeTimeText,
+  computeEventRangeDraggable,
+  EventDisplayInfo,
+  EventTextInfo,
+  getEventTagAndAttrs,
+} from './event-display-info'
+import { EventRenderRange } from '../../event-segs/event-ranges'
+import { setElEventRange } from './el-event-range'
 import { CustomContent } from '../../render-hook/CustomContent'
 import { ElRef } from '../../render-hook/el-props'
 import { useViewContext } from '../../context/useViewContext'

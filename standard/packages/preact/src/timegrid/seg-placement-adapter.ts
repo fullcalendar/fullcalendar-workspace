@@ -1,5 +1,5 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { type EventRangeProps } from '../event-segs/event-rendering'
+import { type EventRangeProps } from '../event-segs/event-ranges'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import {
   type HiddenSliceGroup,

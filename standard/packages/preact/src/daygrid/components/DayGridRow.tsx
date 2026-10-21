@@ -1,12 +1,8 @@
 import { InlineWeekNumberInfo } from '../../day-table/info-types'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import {
-  buildEventRangeKey,
-  getEventRangeMeta,
-  sortEventSegs,
-  EventRangeProps,
-} from '../../event-segs/event-rendering'
+import { buildEventRangeKey, sortEventSegs, EventRangeProps } from '../../event-segs/event-ranges'
+import { getEventRangeMeta } from '../../events/components/event-display-info'
 import { SlicedCoordRange } from '../../event-segs/coord-range'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { BgEvent, renderFill } from '../../events/components/BgEvent'

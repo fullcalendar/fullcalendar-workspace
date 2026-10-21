@@ -1,6 +1,6 @@
 import { DateRange } from '@full-ui/headless-calendar'
 import { memo, type CSSProperties, type Ref } from 'react'
-import { EventRangeProps } from '../../event-segs/event-rendering'
+import { EventRangeProps } from '../../event-segs/event-ranges'
 import { generateClassName } from '../../render-hook/render-hook-types'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { RefMap } from '../../util/RefMap'

@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { MinimalEventProps } from '../../event-segs/event-rendering'
+import { MinimalEventProps } from '../../events/components/event-display-info'
 import { createFormatter } from '../../datelib/formatting'
 import { ForegroundEvent, columnEventVariant } from '../../events/components/ForegroundEvent'
 import classNames from '../../styles.module.css'

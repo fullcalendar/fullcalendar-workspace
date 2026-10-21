@@ -151,13 +151,8 @@ export type { CalendarContentProps } from './calendar/CalendarInner'
 export { CalendarInner } from './calendar/CalendarInner'
 
 export type { EventInteractionState } from './interactions/event-interaction-state'
-export {
-  sortEventSegs,
-  getEventRangeMeta, buildEventRangeKey,
-  sliceEventStore, // for the day-table pipeline's specs (an oracle)
-  EventRangeProps,
-  MinimalEventProps,
-} from './event-segs/event-rendering'
+export { sortEventSegs, buildEventRangeKey, sliceEventStore, EventRangeProps } from './event-segs/event-ranges' // sliceEventStore: for the day-table specs' oracle
+export { getEventRangeMeta, MinimalEventProps } from './events/components/event-display-info'
 
 export type { DayTableCell, DayGridRange } from './day-table/day-grid-range'
 export { buildDayGridRanges } from './day-table/day-grid-range'

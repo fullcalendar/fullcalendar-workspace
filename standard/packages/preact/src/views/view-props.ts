@@ -1,7 +1,7 @@
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import { EventStore } from '../events/event-store'
 import { EventUiHash } from '../events/event-ui'
-import { sliceEventStore, EventRenderRange } from '../event-segs/event-rendering'
+import { sliceEventStore, EventRenderRange } from '../event-segs/event-ranges'
 import { DateSpan } from '../events/date-span'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { Duration } from '@full-ui/headless-calendar'

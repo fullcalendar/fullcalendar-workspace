@@ -2,7 +2,7 @@ import { EventDef } from '../events/event-def'
 import { EventStore } from '../events/event-store'
 import { DateSpan } from '../events/date-span'
 import { EventUi } from '../events/event-ui'
-import { hasBgRendering } from '../event-segs/event-rendering'
+import { hasBgRendering } from '../event-segs/event-ranges'
 
 /*
 Which entity keys (premium: resource ids) a def or span belongs to, each key's own UI and business

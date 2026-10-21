@@ -6,7 +6,7 @@ import { Dictionary } from '../../util/object'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
-import { EventRangeProps } from '../../event-segs/event-rendering'
+import { EventRangeProps } from '../../event-segs/event-ranges'
 import classNames from '../../styles.module.css'
 import { renderPlainFgSegs } from './TimeGridCol' // BAD
 import { TimeGridRange } from '../../day-table/time-grid-range'

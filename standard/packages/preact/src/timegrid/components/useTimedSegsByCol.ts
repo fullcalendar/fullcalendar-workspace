@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
-import { EventRangeProps } from '../../event-segs/event-rendering'
+import { EventRangeProps } from '../../event-segs/event-ranges'
 import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from '../../day-table/time-grid-range'
 
 export interface TimedSegs {

@@ -15,7 +15,7 @@ import {
   initEventSliceDef,
   sliceEventInstance,
   sliceEventStore,
-} from '../event-segs/event-rendering'
+} from '../event-segs/event-ranges'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 import { DateProfile } from '../date-profile/DateProfileGenerator'

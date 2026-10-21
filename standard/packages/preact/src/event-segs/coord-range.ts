@@ -1,4 +1,4 @@
-import { EventRangeProps } from './event-rendering'
+import { EventRangeProps } from './event-ranges'
 import { DateMarker } from '@full-ui/headless-calendar'
 
 /*
