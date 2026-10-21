@@ -2,13 +2,15 @@ import { createDuration } from '@full-ui/headless-calendar'
 import { parseDateSpan } from '../structs/date-span'
 import { parseEventSource } from '../structs/event-source-parse'
 import { parseEvent } from '../structs/event-parse'
-import { eventTupleToStore } from '../structs/event-store'
+import { eventTupleToStore, getRelevantEvents } from '../structs/event-store'
+import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
+import { EventUiHash } from '../component-util/event-ui'
 import { ViewSpec } from '../structs/view-spec'
 import { PointerDragEvent } from '../interactions/pointer'
 import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils'
 import { hashValuesToArray } from '../util/object'
 import { EventSource } from '../structs/event-source'
-import { eventApiToStore, EventImpl } from './EventImpl'
+import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl'
 import { EventSourceImpl } from './EventSourceImpl'
 import { warn } from '../util/warn'
 import type { CalendarApiImpl } from './CalendarApiImpl'
@@ -27,7 +29,8 @@ import {
 What changes a calendar: navigation, options, selection, events and event sources. Built once per store
 (store.actions), with what were CalendarApiImpl's method bodies, which now delegate here. They read the
 store's data and dispatch to it. Methods a driver may override (batchRendering) are still called
-through the API. See planning/phase-9-store.md
+through the API. The event and event source wrappers' mutations run here too. See
+planning/phase-9-store.md
 */
 export interface CalendarActions {
   // navigation
@@ -52,11 +55,16 @@ export interface CalendarActions {
   // events
   addEvent(eventInput: EventInput, sourceInput?: EventSourceImpl | string | boolean): EventImpl | null
   removeAllEvents(): void
+  // EventImpl's mutations. updates the given wrapper to the mutated event, as EventImpl.mutate did
+  mutateEvent(event: EventImpl, mutation: EventMutation): void
+  removeEvent(event: EventImpl): void
 
   // event sources
   addEventSource(sourceInput: EventSourceInput): EventSourceImpl
   removeAllEventSources(): void
   refetchEvents(): void
+  removeEventSource(sourceId: string): void
+  refetchEventSource(sourceId: string): void
 
   // scroll
   scrollToTime(timeInput: DurationInput): void
@@ -303,6 +311,73 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
       dispatch({ type: 'REMOVE_ALL_EVENTS' })
     },
 
+    mutateEvent(event, mutation) {
+      let instance = event._instance
+
+      if (instance) {
+        let def = event._def
+        let context = event._context // the wrapper's, for refining the mutation, as before
+        let { eventStore } = getCurrentData()
+        let relevantEvents = getRelevantEvents(eventStore, instance.instanceId)
+        let eventConfigBase = {
+          '': { // HACK. always allow API to mutate events
+            display: '',
+            startEditable: true,
+            durationEditable: true,
+            constraints: [],
+            overlap: null,
+            allows: [],
+            color: '',
+            contrastColor: '',
+            className: '',
+          },
+        } as EventUiHash
+
+        relevantEvents = applyMutationToEventStore(relevantEvents, eventConfigBase, mutation, context)
+
+        let oldEvent = new EventImpl(context, def, instance) // snapshot
+        event._def = relevantEvents.defs[def.defId]
+        event._instance = relevantEvents.instances[instance.instanceId]
+
+        dispatch({
+          type: 'MERGE_EVENTS',
+          eventStore: relevantEvents,
+        })
+
+        store.emitter.trigger('eventChange', {
+          oldEvent,
+          event,
+          relatedEvents: buildEventApis(relevantEvents, context, instance),
+          revert() {
+            dispatch({
+              type: 'RESET_EVENTS',
+              eventStore, // the ORIGINAL store
+            })
+          },
+        })
+      }
+    },
+
+    removeEvent(event) {
+      let asStore = eventApiToStore(event)
+
+      dispatch({
+        type: 'REMOVE_EVENTS',
+        eventStore: asStore,
+      })
+
+      store.emitter.trigger('eventRemove', {
+        event,
+        relatedEvents: [],
+        revert() {
+          dispatch({
+            type: 'MERGE_EVENTS',
+            eventStore: asStore,
+          })
+        },
+      })
+    },
+
     addEventSource(sourceInput) {
       let state = getCurrentData()
 
@@ -335,6 +410,21 @@ export function createCalendarActions(store: CalendarStore, calendarApi: Calenda
 
     refetchEvents() {
       dispatch({ type: 'FETCH_EVENT_SOURCES', isRefetch: true })
+    },
+
+    removeEventSource(sourceId) {
+      dispatch({
+        type: 'REMOVE_EVENT_SOURCE',
+        sourceId,
+      })
+    },
+
+    refetchEventSource(sourceId) {
+      dispatch({
+        type: 'FETCH_EVENT_SOURCES',
+        sourceIds: [sourceId],
+        isRefetch: true,
+      })
     },
 
     scrollToTime(timeInput) {

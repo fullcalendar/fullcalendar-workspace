@@ -64,4 +64,48 @@ describe('calendar store actions', () => {
     expect(batchRenderingSpy).toHaveBeenCalledTimes(1)
     expect(calendar.view.type).toBe('dayGridWeek')
   })
+
+  it('are what the event and event source wrappers run', () => {
+    let calendar = initCalendar({
+      eventSources: [{ id: 's', events: [{ id: 'e', title: 'a', start: '2024-01-10' }] }],
+    })
+    let actions = calendar.store.actions as any
+    let names = ['mutateEvent', 'removeEvent', 'removeEventSource', 'refetchEventSource']
+
+    for (let name of names) {
+      spyOn(actions, name).and.callThrough()
+    }
+
+    let event = calendar.getEventById('e')
+    let source = calendar.getEventSourceById('s')
+    event.setProp('title', 'b')
+    event.remove()
+    source.refetch()
+    source.remove()
+
+    for (let name of names) {
+      expect(actions[name]).toHaveBeenCalledTimes(1)
+    }
+  })
+
+  it('mutate an event as EventImpl did: the wrapper updates, and eventChange can revert', () => {
+    let changeArgs = []
+    let calendar = initCalendar({
+      events: [{ id: 'e', title: 'a', start: '2024-01-10' }],
+      eventChange(arg) {
+        changeArgs.push(arg)
+      },
+    })
+    let event = calendar.getEventById('e')
+
+    event.setProp('title', 'b')
+    expect(event.title).toBe('b')
+    expect(calendar.getEventById('e').title).toBe('b')
+    expect(changeArgs.length).toBe(1)
+    expect(changeArgs[0].oldEvent.title).toBe('a')
+    expect(changeArgs[0].event).toBe(event)
+
+    changeArgs[0].revert()
+    expect(calendar.getEventById('e').title).toBe('a')
+  })
 })

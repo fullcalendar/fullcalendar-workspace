@@ -4,15 +4,15 @@ import {
   buildRangeEdgeOutput, canonicalRangeEndMarker, EventInstance,
   getRangeInstantStartMs, getRangeInstantEndMs,
 } from '../structs/event-instance'
-import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui'
-import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation'
+import { EVENT_UI_REFINERS } from '../component-util/event-ui'
+import { EventMutation } from '../structs/event-mutation'
 import { diffDates, computeAlignedDayRange } from '../util/date'
 import {
   createDuration, durationsEqual, DateMarkerMeta, joinDateTimeFormatParts,
 } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
 import { CalendarContext } from '../CalendarContext'
-import { getRelevantEvents, EventStore } from '../structs/event-store'
+import { EventStore } from '../structs/event-store'
 import { Dictionary } from '../options'
 import { warn } from '../util/warn'
 import { EventApi } from './EventApi'
@@ -248,71 +248,11 @@ export class EventImpl implements EventApi {
   }
 
   mutate(mutation: EventMutation): void { // meant to be private. but plugins need access
-    let instance = this._instance
-
-    if (instance) {
-      let def = this._def
-      let context = this._context
-      let { eventStore } = context.getCurrentData()
-      let relevantEvents = getRelevantEvents(eventStore, instance.instanceId)
-      let eventConfigBase = {
-        '': { // HACK. always allow API to mutate events
-          display: '',
-          startEditable: true,
-          durationEditable: true,
-          constraints: [],
-          overlap: null,
-          allows: [],
-          color: '',
-          contrastColor: '',
-          className: '',
-        },
-      } as EventUiHash
-
-      relevantEvents = applyMutationToEventStore(relevantEvents, eventConfigBase, mutation, context)
-
-      let oldEvent = new EventImpl(context, def, instance) // snapshot
-      this._def = relevantEvents.defs[def.defId]
-      this._instance = relevantEvents.instances[instance.instanceId]
-
-      context.dispatch({
-        type: 'MERGE_EVENTS',
-        eventStore: relevantEvents,
-      })
-
-      context.emitter.trigger('eventChange', {
-        oldEvent,
-        event: this,
-        relatedEvents: buildEventApis(relevantEvents, context, instance),
-        revert() {
-          context.dispatch({
-            type: 'RESET_EVENTS',
-            eventStore, // the ORIGINAL store
-          })
-        },
-      })
-    }
+    this._context.calendarApi.store!.actions.mutateEvent(this, mutation)
   }
 
   remove(): void {
-    let context = this._context
-    let asStore = eventApiToStore(this)
-
-    context.dispatch({
-      type: 'REMOVE_EVENTS',
-      eventStore: asStore,
-    })
-
-    context.emitter.trigger('eventRemove', {
-      event: this,
-      relatedEvents: [],
-      revert() {
-        context.dispatch({
-          type: 'MERGE_EVENTS',
-          eventStore: asStore,
-        })
-      },
-    })
+    this._context.calendarApi.store!.actions.removeEvent(this)
   }
 
   get source(): EventSourceImpl | null {

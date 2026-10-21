@@ -457,3 +457,13 @@ calendar as the API did; `changeView` goes through the driver's `batchRendering`
 Verified with the full suites from here on (Adam's call, 2026-10-20): both packages unfiltered in both
 runtimes, two Karma lanes in parallel (`FC_TEST_BUNDLE`, `FC_KARMA_PORT`), about 6 minutes. Preact: all
 pass. React runtime: only the known failures. Snapshots and counts unchanged in both runtimes.
+
+## Step 3b: the wrappers' mutations (done)
+
+Actions `mutateEvent(event, mutation)` and `removeEvent(event)` (`EventImpl.mutate`'s and `remove`'s
+bodies: refining the mutation with the wrapper's own context, updating the wrapper, `eventChange` /
+`eventRemove` and their `revert`s), `removeEventSource(sourceId)` and `refetchEventSource(sourceId)`
+(`EventSourceImpl`'s). The wrappers delegate through `context.calendarApi.store.actions`; every
+`EventImpl` setter goes through `mutate`, so premium's `setResources` and `setProp` patches too. The
+wrappers' context, dispatch, emitter and `getCurrentData` all were the store's, so nothing else moved.
+Specs added to `store-actions.ts`. Verified: full suites, both runtimes; snapshots and counts unchanged.

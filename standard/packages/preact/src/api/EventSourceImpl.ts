@@ -10,18 +10,11 @@ export class EventSourceImpl implements EventSourceApi {
   }
 
   remove(): void {
-    this.context.dispatch({
-      type: 'REMOVE_EVENT_SOURCE',
-      sourceId: this.internalEventSource.sourceId,
-    })
+    this.context.calendarApi.store!.actions.removeEventSource(this.internalEventSource.sourceId)
   }
 
   refetch(): void {
-    this.context.dispatch({
-      type: 'FETCH_EVENT_SOURCES',
-      sourceIds: [this.internalEventSource.sourceId],
-      isRefetch: true,
-    })
+    this.context.calendarApi.store!.actions.refetchEventSource(this.internalEventSource.sourceId)
   }
 
   get id(): string {
