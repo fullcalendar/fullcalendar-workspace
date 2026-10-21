@@ -130,6 +130,15 @@ export class HitDragging {
       ev.pageY + this.coordAdjust!.top,
     )
 
+    if (this.useSubjectCenter) {
+      let pointerHit = this.queryHitForOffset(ev.pageX, ev.pageY)
+
+      // Centering rounds movement within slots, but must not shift the all-day/timed boundary.
+      if (pointerHit && (!hit || pointerHit.dateSpan.allDay !== hit.dateSpan.allDay)) {
+        hit = pointerHit
+      }
+    }
+
     if (forceHandle || !isHitsEqual(this.movingHit, hit)) {
       this.movingHit = hit
       this.emitter.trigger('hitupdate', hit, false, ev)

@@ -52,8 +52,7 @@ export class DayGridModel {
 
   /*
   The center of the cell. Fine for dropping and selecting, even over events: hits are
-  computed from coordinates. (Not the cell's bottom edge: in a timeGrid all-day row, its bottom
-  ~12px doesn't resolve to an all-day hit.)
+  computed from coordinates.
   */
   pointForDate(spot: Spot): Point {
     const cellEl = this.getDayCell(spot)
