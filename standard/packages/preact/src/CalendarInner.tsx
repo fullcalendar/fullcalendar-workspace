@@ -14,6 +14,15 @@ import { CssDimValue, getIsHeightAuto } from './scrollgrid/util'
 import { joinClassNames } from './util/html'
 import { memoize } from './util/memoize'
 import { buildViewContext, ViewContextType } from './ViewContext'
+import {
+  CalendarCoreContext,
+  DateEnvContext,
+  PluginHooksContext,
+  ViewOptionsContext,
+  ViewSpecContext,
+  buildCalendarCore,
+  buildViewSpecContextValue,
+} from './granular-contexts'
 import { PureComponent } from './vdom-util'
 
 export interface CalendarInnerProps extends CalendarData {
@@ -29,6 +38,8 @@ export interface CalendarContentProps extends CalendarData {
 
 export class CalendarInner extends PureComponent<CalendarInnerProps> {
   private buildViewContext = memoize(buildViewContext)
+  private buildCalendarCore = memoize(buildCalendarCore)
+  private buildViewSpecContextValue = memoize(buildViewSpecContextValue)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[] = []
@@ -72,8 +83,30 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
       this.registerHitTarget,
       this.unregisterHitTarget,
     )
+    let calendarCore = this.buildCalendarCore(
+      props.calendarApi,
+      props.dispatch,
+      props.emitter,
+      props.getCurrentData,
+      props.nowManager,
+      props.baseId,
+      this.registerHitTarget,
+      this.unregisterHitTarget,
+    )
+    let viewSpecContextValue = this.buildViewSpecContextValue(
+      props.viewSpec,
+      props.viewApi,
+      props.dateProfileGenerator,
+    )
+
+    // the facade, then its parts (granular-contexts.ts)
     return (
       <ViewContextType.Provider value={viewContext}>
+        <CalendarCoreContext.Provider value={calendarCore}>
+        <PluginHooksContext.Provider value={props.pluginHooks}>
+        <DateEnvContext.Provider value={props.dateEnv}>
+        <ViewSpecContext.Provider value={viewSpecContextValue}>
+        <ViewOptionsContext.Provider value={props.options}>
         {toolbarConfig.header && (
           <Toolbar
             model={toolbarConfig.header}
@@ -120,6 +153,11 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
             {...props.toolbarProps}
           />
         )}
+        </ViewOptionsContext.Provider>
+        </ViewSpecContext.Provider>
+        </DateEnvContext.Provider>
+        </PluginHooksContext.Provider>
+        </CalendarCoreContext.Provider>
       </ViewContextType.Provider>
     )
   }

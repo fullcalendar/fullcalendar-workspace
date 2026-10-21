@@ -1,4 +1,4 @@
-export { createElement } from 'react'
+export { createElement, Component } from 'react'
 
 // for specs that only run in the React runtime, such as <Activity> ones
 export { Activity, StrictMode } from 'react'
