@@ -1,6 +1,6 @@
 import { ClassNameInput, ContentGenerator, refineClassName } from './common/render-hook'
 import { joinClassNames } from './util/html'
-import { getUnequalProps, mergeMaybePropsDepth1 } from './util/object'
+import { getUnequalProps, isPropsEqualWithFunc, mergeMaybePropsDepth1, mergePropsWithFunc } from './util/object'
 import { CalendarOptions, ViewOptions } from './options'
 
 type FuncishClassNameInput = ((info: any) => ClassNameInput) | ClassNameInput
@@ -13,7 +13,78 @@ const handlerRe = /^on[A-Z]/
 // Somewhat tracks COMPLEX_OPTION_COMPARATORS
 // Unfortunately always need 'maybe' to handle undefined inital value, because of the options refiner (OptionsRefinerCache)
 const customMergeFuncs = {
+  buttons: mergeMaybeButtonInputs,
+}
+
+/*
+Between the user's own layers (the initial options, a view type's and its super type's, setOption), a
+button's options are replaced as a whole, as before: each layer is the user's later say
+*/
+const userLayerMergeFuncs = {
   buttons: mergeMaybePropsDepth1,
+}
+
+/*
+A button's options combine like the calendar's top-level ones: classes join, content falls back (`true`),
+lifecycle callbacks both run. The rest (text, hint, click, iconClass...) are last-wins
+*/
+const BUTTON_MERGE_FUNCS = {
+  class: joinFuncishClassNames,
+  className: joinFuncishClassNames,
+  iconContent: mergeContentInjectors,
+  didMount: mergeLifecycleCallbacks,
+  willUnmount: mergeLifecycleCallbacks,
+}
+
+// the `buttons` option: per button, per option
+export function mergeMaybeButtonInputs(buttons0: any, buttons1: any): any {
+  if (!buttons0) {
+    return buttons1
+  }
+
+  return mergePropsWithFunc(buttons0, buttons1, mergeButtonInput)
+}
+
+function mergeButtonInput(button0: any, button1: any): any {
+  if (!button0 || !button1) {
+    return button1 || button0
+  }
+
+  const dest = { ...button0 }
+
+  for (const key in button1) {
+    const mergeFunc = BUTTON_MERGE_FUNCS[key]
+
+    dest[key] = (mergeFunc && key in button0)
+      ? mergeFunc(button0[key], button1[key], key)
+      : button1[key]
+  }
+
+  return dest
+}
+
+/*
+The `buttons` option's comparator: per button, per option, a combined function equals one combined from
+the same parts (merging makes a new one each time)
+*/
+export function isMaybeButtonInputsEqual(buttons0: any, buttons1: any): boolean {
+  if (isNonNullObject(buttons0) && isNonNullObject(buttons1)) {
+    return isPropsEqualWithFunc(buttons0, buttons1, isButtonInputEqual)
+  }
+
+  return buttons0 === buttons1
+}
+
+function isButtonInputEqual(button0: any, button1: any): boolean {
+  if (isNonNullObject(button0) && isNonNullObject(button1)) {
+    return isPropsEqualWithFunc(button0, button1, (val0, val1) => val0 === val1 || isMergedPropsEqual(val0, val1))
+  }
+
+  return button0 === button1
+}
+
+function isNonNullObject(val: any): boolean {
+  return typeof val === 'object' && val !== null
 }
 
 export function mergeViewOptionsMap(
@@ -41,12 +112,21 @@ Merges an array of RAW options objects into a single object.
 The second argument allows for an array of property names who's object values will be merged together.
 */
 export function mergeCalendarOptions(...optionSets: CalendarOptions[]): any {
+  return mergeOptionSets(optionSets, customMergeFuncs)
+}
+
+// the user's own option layers (see userLayerMergeFuncs)
+export function mergeUserOptions(...optionSets: CalendarOptions[]): any {
+  return mergeOptionSets(optionSets, userLayerMergeFuncs)
+}
+
+function mergeOptionSets(optionSets: CalendarOptions[], customFuncs: { [name: string]: Function }): any {
   let dest = {}
 
   for (const options of optionSets) {
     for (let name in options) {
       if (name in dest) {
-        const mergeFunc = customMergeFuncs[name] || (
+        const mergeFunc = customFuncs[name] || (
           classNamesRe.test(name) ? joinFuncishClassNames :
           contentRe.test(name) ? mergeContentInjectors :
           lifecycleRe.test(name) ? mergeLifecycleCallbacks : undefined

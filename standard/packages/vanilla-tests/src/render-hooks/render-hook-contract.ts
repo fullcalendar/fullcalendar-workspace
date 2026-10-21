@@ -238,11 +238,6 @@ const AREAS: RenderHookArea[] = [
     contentOption: 'iconContent',
     hasDefaultContent: true,
     buildOption: (name, value) => ({ buttons: { prev: { [name]: value } } }),
-    knownBugs: {
-      // per-button options merge shallowly with the theme's (mergeMaybePropsDepth1), so a user's
-      // iconContent replaces the theme's instead of falling back to it
-      contentTrue: 'returning true renders no icon instead of the theme\'s',
-    },
   },
 ]
 

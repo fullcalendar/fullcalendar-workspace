@@ -103,3 +103,14 @@ A scheduler `protected-api` for tests would close it.
   (`/Users/adam/Code/fullcalendar-workspace/.pnpm-store/v10`), and no `store-dir` is configured here. I
   passed that store explicitly, offline. The committed lockfile change is only the two new importers
   (a filtered install also reshuffled some Angular peer variants; I didn't keep that).
+
+## Loose ends: a top-level option quirk found while fixing per-button options
+
+`setOption('eventClass', 'b')` on a calendar created with `eventClass: 'a'` gives events both classes:
+the user's own option layers (initial options, `setOption`, a view type's and its super type's
+`views` options) are merged with the same rules as theme-vs-user layers, so class options join and
+content options fall back to the earlier layer's, instead of the later one replacing it. Pre-existing,
+and it applies to every class, content and lifecycle option. The per-button fix deliberately keeps the
+user's layers replacing per button (the old behavior), so buttons don't gain this quirk. Fixing it for
+top-level options would be a behavior change (a separate merge for the user's layers, as buttons now
+have); your call.

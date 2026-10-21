@@ -296,7 +296,11 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   `CalendarMediaRoot`, `Scroller`.
 - **Render-time side effects** left in React's render-time update, if phase 11 doesn't remove them:
   the emitter's option binding (stage 2 checkpoint) and the now timer re-arming.
-- **Per-button options don't combine with the theme's** (found by phase 2, never scheduled): `buttons`
+- **Per-button options don't combine with the theme's** (done, 2026-10-21; found by phase 2, never
+  scheduled). As built: a button's options merge per option like top-level ones (classes join,
+  `iconContent` falls back, lifecycle callbacks chain) between plugin layers and the user's, while the
+  user's own layers (initial options, view-type inheritance, `setOption`) still replace per button as
+  before; the `buttons` comparator compares combined functions by their parts. Original note: `buttons`
   merges each button's options shallowly (`mergeMaybePropsDepth1`), so a user's `iconContent`
   returning `true` renders no icon instead of the theme's, and a user's per-button `class`/`didMount`
   likely drop the theme's. Top-level content options combine (`.parts`); per-button ones should too.

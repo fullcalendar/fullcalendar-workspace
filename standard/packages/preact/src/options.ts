@@ -62,7 +62,8 @@ import { CalendarDisplayInfo } from './calendar-root'
 import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from './datelib/formatting'
 import { parseFieldSpecs } from './util/misc'
-import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1, isMaybeDateRangeInputsEqual } from './util/object'
+import { isMaybePropsEqualShallow, isMaybeDateRangeInputsEqual } from './util/object'
+import { isMaybeButtonInputsEqual } from './options-manip'
 import { isMaybeArraysEqual } from './util/array'
 import { ListDayInfo, ListDayEventsInfo, ListDayHeaderInfo, ListDayHeaderInnerInfo } from './list/structs'
 import { NoEventsInfo } from './list/components/ListView'
@@ -666,7 +667,7 @@ export const COMPLEX_OPTION_COMPARATORS: {
   dateIncrement: isMaybePropsEqualShallow,
   headerToolbar: isMaybePropsEqualShallow,
   footerToolbar: isMaybePropsEqualShallow,
-  buttons: isMaybePropsEqualDepth1,
+  buttons: isMaybeButtonInputsEqual, // combined per-button functions compare by their parts
   plugins: isMaybeArraysEqual,
   events: isMaybeArraysEqual,
   eventSources: isMaybeArraysEqual,

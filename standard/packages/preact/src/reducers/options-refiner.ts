@@ -14,7 +14,7 @@ import {
   BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
   CALENDAR_LISTENER_REFINERS,
 } from '../options'
-import { isMergedPropsEqual, mergeCalendarOptions } from '../options-manip'
+import { isMergedPropsEqual, mergeCalendarOptions, mergeUserOptions } from '../options-manip'
 import { globalPlugins } from '../global-plugins'
 import { warn } from '../util/warn'
 import { CalendarOptionsData } from './data-types'
@@ -132,7 +132,7 @@ export class OptionsRefinerCache {
       ...pluginHooks.optionDefaults,
       localeDefaults,
       filterKnownOptions(
-        mergeCalendarOptions(
+        mergeUserOptions(
           optionOverrides,
           dynamicOptionOverrides,
         ),
@@ -203,7 +203,7 @@ export class OptionsRefinerCache {
       viewSpec.optionDefaults,
       localeDefaults,
       filterKnownOptions(
-        mergeCalendarOptions(
+        mergeUserOptions(
           optionOverrides,
           viewSpec.optionOverrides,
           dynamicOptionOverrides,
