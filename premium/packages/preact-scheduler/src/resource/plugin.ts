@@ -3,6 +3,7 @@ import premiumCommonPlugin from '../common/plugin'
 import { ResourceDataAdder, transformIsDraggable } from './View'
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
 import { reduceResources, ResourceState } from './reducers/resources'
+import { runResourceSourceFetch } from './reducers/resourceSource'
 import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
@@ -17,6 +18,9 @@ export default {
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   reducers: [reduceResources],
+  effectRunners: {
+    fetchResourceSource: runResourceSourceFetch,
+  },
   isLoadingFuncs: [
     (state: ResourceState) => state.resourceSource && state.resourceSource.isFetching,
   ],

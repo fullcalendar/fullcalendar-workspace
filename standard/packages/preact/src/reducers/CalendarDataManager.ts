@@ -44,6 +44,12 @@ import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
 import { warn } from '../util/warn'
 import { CalendarController } from '../CalendarController'
+import { createReduceEffects, EffectRunnerMap, ReduceEffects } from './effects'
+import { runEventSourceFetch } from './event-source-fetch'
+
+const CORE_EFFECT_RUNNERS: EffectRunnerMap = {
+  fetchEventSource: runEventSourceFetch,
+}
 
 export interface CalendarDataManagerConfig {
   calendarApi: CalendarApiImpl
@@ -57,7 +63,8 @@ export interface CalendarDataManagerConfig {
 export type ReducerFunc = (
   currentState: Dictionary | undefined,
   action: Action | undefined,
-  context: CalendarContext & CalendarDataManagerState // more than just context
+  context: CalendarContext & CalendarDataManagerState, // more than just context
+  effects: ReduceEffects, // for the side effects it describes (a fetch), instead of performing them
 ) => Dictionary
 
 export class CalendarDataManager {
@@ -334,6 +341,13 @@ export class CalendarDataManager {
     this.emitter.setThisContext(config.calendarApi)
     this.emitter.setOptions(currentViewData.options)
 
+    // the reducers describe their side effects (fetches); runners perform them, at the point the reducer
+    // asks, so the order is today's. the core's are defaults, which plugins may replace
+    let effects = createReduceEffects({
+      ...CORE_EFFECT_RUNNERS,
+      ...optionsData.pluginHooks.effectRunners,
+    })
+
     // === Build calendarContext ===
     let calendarContext: CalendarContext = {
       nowManager: this.nowManager,
@@ -383,8 +397,8 @@ export class CalendarDataManager {
 
     // === Compute eventSources, eventStore ===
     let eventSources = isInit
-      ? initEventSources(optionsData.calendarOptions, dateProfile, calendarContext)
-      : reduceEventSources(prevState.eventSources, action, dateProfile, calendarContext)
+      ? initEventSources(optionsData.calendarOptions, dateProfile, calendarContext, effects)
+      : reduceEventSources(prevState.eventSources, action, dateProfile, calendarContext, effects)
 
     let eventStore = isInit
       ? createEmptyEventStore()
@@ -427,7 +441,7 @@ export class CalendarDataManager {
     // === Plugin reducers ===
     let contextAndState = { ...calendarContext, ...newState }
     for (let reducer of optionsData.pluginHooks.reducers) {
-      Object.assign(newState, reducer(prevState, action, contextAndState))
+      Object.assign(newState, reducer(prevState, action, contextAndState, effects))
     }
 
     // === Loading state emission ===
@@ -472,7 +486,7 @@ export class CalendarDataManager {
     if (prevCalendarOptions && prevCalendarOptions !== newCalendarOptions) {
       if (prevCalendarOptions.timeZone !== newCalendarOptions.timeZone) {
         // HACK
-        newState.eventSources = newData.eventSources = reduceEventSourcesNewTimeZone(newData.eventSources, dateProfile, newData)
+        newState.eventSources = newData.eventSources = reduceEventSourcesNewTimeZone(newData.eventSources, dateProfile, newData, effects)
         newState.eventStore = newData.eventStore = rezoneEventStoreDates(newData.eventStore, prevData!.dateEnv, newData.dateEnv)
         newState.renderableEventStore = newData.renderableEventStore = rezoneEventStoreDates(newData.renderableEventStore, prevData!.dateEnv, newData.dateEnv)
       }

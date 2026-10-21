@@ -1,4 +1,5 @@
 import { ReducerFunc } from './reducers/CalendarDataManager'
+import { EffectRunnerMap } from './reducers/effects'
 import { EventDefMemberAdder } from './structs/event-parse'
 import { eventDefMutationApplier } from './structs/event-mutation'
 import { DatePointTransform, DateSpanTransform, CalendarInteractionClass, OptionChangeHandlerMap } from './calendar-utils'
@@ -31,6 +32,7 @@ export interface PluginInput {
   premiumReleaseDate?: string
   deps?: PluginInput[]
   reducers?: ReducerFunc[]
+  effectRunners?: EffectRunnerMap // performs the effects reducers describe, by effect type
   isLoadingFuncs?: ((state: Dictionary) => boolean)[]
   contextInit?: (context: CalendarContext) => void
   eventRefiners?: GenericRefiners // why not an array like others?
@@ -69,6 +71,7 @@ export interface PluginInput {
 export interface PluginHooks {
   premiumReleaseDate: Date | undefined
   reducers: ReducerFunc[]
+  effectRunners: EffectRunnerMap
   isLoadingFuncs: ((state: Dictionary) => boolean)[]
   contextInit: ((context: CalendarContext) => void)[]
   eventRefiners: GenericRefiners

@@ -5,11 +5,17 @@ import { DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../DateProfileGenerator'
 import { Action } from './Action'
 import { guid } from '../util/misc'
-import { warn } from '../util/warn'
 import { CalendarContext } from '../CalendarContext'
 import { CalendarOptions } from '../options'
+import { ReduceEffects } from './effects'
+import { FetchEventSourceEffect } from './event-source-fetch'
 
-export function initEventSources(calendarOptions, dateProfile: DateProfile, context: CalendarContext) {
+export function initEventSources(
+  calendarOptions,
+  dateProfile: DateProfile,
+  context: CalendarContext,
+  effects: ReduceEffects,
+) {
   let activeRange = dateProfile ? dateProfile.activeRange : null
 
   return addSources(
@@ -17,6 +23,7 @@ export function initEventSources(calendarOptions, dateProfile: DateProfile, cont
     parseInitialSources(calendarOptions, context),
     activeRange,
     context,
+    effects,
   )
 }
 
@@ -25,12 +32,13 @@ export function reduceEventSources(
   action: Action,
   dateProfile: DateProfile,
   context: CalendarContext,
+  effects: ReduceEffects,
 ): EventSourceHash {
   let activeRange = dateProfile ? dateProfile.activeRange : null // need this check?
 
   switch (action.type) {
     case 'ADD_EVENT_SOURCES': // already parsed
-      return addSources(eventSources, action.sources, activeRange, context)
+      return addSources(eventSources, action.sources, activeRange, context, effects)
 
     case 'REMOVE_EVENT_SOURCE':
       return removeSource(eventSources, action.sourceId)
@@ -40,7 +48,7 @@ export function reduceEventSources(
     case 'CHANGE_DATE':
     case 'CHANGE_VIEW_TYPE':
       if (dateProfile) {
-        return fetchDirtySources(eventSources, activeRange, context)
+        return fetchDirtySources(eventSources, activeRange, context, effects)
       }
       return eventSources
 
@@ -53,6 +61,7 @@ export function reduceEventSources(
         activeRange,
         action.isRefetch || false,
         context,
+        effects,
       )
 
     case 'RECEIVE_EVENTS':
@@ -67,7 +76,12 @@ export function reduceEventSources(
   }
 }
 
-export function reduceEventSourcesNewTimeZone(eventSources: EventSourceHash, dateProfile: DateProfile, context: CalendarContext) {
+export function reduceEventSourcesNewTimeZone(
+  eventSources: EventSourceHash,
+  dateProfile: DateProfile,
+  context: CalendarContext,
+  effects: ReduceEffects,
+) {
   let activeRange = dateProfile ? dateProfile.activeRange : null // need this check?
 
   return fetchSourcesByIds(
@@ -76,6 +90,7 @@ export function reduceEventSourcesNewTimeZone(eventSources: EventSourceHash, dat
     activeRange,
     true,
     context,
+    effects,
   )
 }
 
@@ -94,6 +109,7 @@ function addSources(
   sources: EventSource<any>[],
   fetchRange: DateRange | null,
   context: CalendarContext,
+  effects: ReduceEffects,
 ): EventSourceHash {
   let hash: EventSourceHash = {}
 
@@ -102,7 +118,7 @@ function addSources(
   }
 
   if (fetchRange) {
-    hash = fetchDirtySources(hash, fetchRange, context)
+    hash = fetchDirtySources(hash, fetchRange, context, effects)
   }
 
   return { ...eventSourceHash, ...hash }
@@ -112,13 +128,19 @@ function removeSource(eventSourceHash: EventSourceHash, sourceId: string): Event
   return filterHash(eventSourceHash, (eventSource: EventSource<any>) => eventSource.sourceId !== sourceId)
 }
 
-function fetchDirtySources(sourceHash: EventSourceHash, fetchRange: DateRange, context: CalendarContext): EventSourceHash {
+function fetchDirtySources(
+  sourceHash: EventSourceHash,
+  fetchRange: DateRange,
+  context: CalendarContext,
+  effects: ReduceEffects,
+): EventSourceHash {
   return fetchSourcesByIds(
     sourceHash,
     filterHash(sourceHash, (eventSource) => isSourceDirty(eventSource, fetchRange, context)),
     fetchRange,
     false,
     context,
+    effects,
   )
 }
 
@@ -139,6 +161,7 @@ function fetchSourcesByIds(
   fetchRange: DateRange,
   isRefetch: boolean,
   context: CalendarContext,
+  effects: ReduceEffects,
 ): EventSourceHash {
   let nextSources: EventSourceHash = {}
 
@@ -146,7 +169,7 @@ function fetchSourcesByIds(
     let source = prevSources[sourceId]
 
     if (sourceIdHash[sourceId]) {
-      nextSources[sourceId] = fetchSource(source, fetchRange, isRefetch, context)
+      nextSources[sourceId] = fetchSource(source, fetchRange, isRefetch, context, effects)
     } else {
       nextSources[sourceId] = source
     }
@@ -155,63 +178,24 @@ function fetchSourcesByIds(
   return nextSources
 }
 
-function fetchSource(eventSource: EventSource<any>, fetchRange: DateRange, isRefetch: boolean, context: CalendarContext) {
-  let { options, calendarApi } = context
-  let sourceDef = context.pluginHooks.eventSourceDefs[eventSource.sourceDefId]
+// one source at a time: allocate the fetch id, fetch (synchronous results queue right here), then mark it
+function fetchSource(
+  eventSource: EventSource<any>,
+  fetchRange: DateRange,
+  isRefetch: boolean,
+  context: CalendarContext,
+  effects: ReduceEffects,
+) {
   let fetchId = guid()
 
-  sourceDef.fetch(
-    {
-      eventSource,
-      range: fetchRange,
-      isRefetch,
-      context,
-    },
-    (res) => {
-      let { rawEvents } = res
-
-      if (options.eventSourceSuccess) {
-        rawEvents = options.eventSourceSuccess.call(calendarApi, rawEvents, res.response) || rawEvents
-      }
-
-      if (eventSource.success) {
-        rawEvents = eventSource.success.call(calendarApi, rawEvents, res.response) || rawEvents
-      }
-
-      context.dispatch({
-        type: 'RECEIVE_EVENTS',
-        sourceId: eventSource.sourceId,
-        fetchId,
-        fetchRange,
-        rawEvents,
-      })
-    },
-    (error) => {
-      let errorHandled = false
-
-      if (options.eventSourceFailure) {
-        options.eventSourceFailure.call(calendarApi, error)
-        errorHandled = true
-      }
-
-      if (eventSource.failure) {
-        eventSource.failure(error)
-        errorHandled = true
-      }
-
-      if (!errorHandled) {
-        warn(`Unhandled event source error: ${error.message}`, error)
-      }
-
-      context.dispatch({
-        type: 'RECEIVE_EVENT_ERROR',
-        sourceId: eventSource.sourceId,
-        fetchId,
-        fetchRange,
-        error,
-      })
-    },
-  )
+  effects.run({
+    type: 'fetchEventSource',
+    eventSource,
+    fetchId,
+    range: fetchRange,
+    isRefetch,
+    context,
+  } as FetchEventSourceEffect)
 
   return {
     ...eventSource,

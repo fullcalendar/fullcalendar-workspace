@@ -303,3 +303,25 @@ snapshot, loading captured before the time-zone stage, option handlers getting n
 ## Behavior changes (anticipated)
 
 None intended. Any found during implementation get listed here and in the changelog.
+
+## Step 1a: fetching through effect runners (done)
+
+- **`reducers/effects.ts`:** `Effect`, `ReduceEffects` (`run(effect)`), `EffectRunnerMap`. A reduction
+  gets an `effects` object and describes its side effects through it; a runner for the effect's type
+  performs it right then, so the order is today's.
+- **Event sources:** `fetchSource` allocates the fetch id, runs `{ type: 'fetchEventSource', eventSource,
+  fetchId, range, isRefetch, context }`, then copies the source with its fetching fields, one source at a
+  time. The runner (`reducers/event-source-fetch.ts`, `runEventSourceFetch`) is today's fetch call and
+  its callbacks (`eventSourceSuccess`, `success`, `RECEIVE_EVENTS`, failure handling), unchanged.
+  `initEventSources`, `reduceEventSources` and `reduceEventSourcesNewTimeZone` take `effects`.
+- **Premium resources, in the same step:** `reduceResources` and `reduceResourceSource` take
+  `effects`, and fetch through `{ type: 'fetchResourceSource', … }`, with the resource plugin
+  registering `runResourceSourceFetch`.
+- **Runners:** a new `effectRunners` plugin hook (merged by type). The core's runners are defaults in
+  the manager (`CORE_EFFECT_RUNNERS`), which plugins may replace: global plugins merge last, so a core
+  runner registered as a global plugin would always win. Plugin reducers (`ReducerFunc`) get `effects`
+  as a fourth argument (`protected-api`).
+- **Specs:** `vanilla-tests/src/event-source/fetch-effects.ts` and the premium
+  `misc/resource-fetch-effects.ts`: a test plugin's runners record the effects without running them, and
+  the sources' functions are never called, so the reducers never fetch on their own; one fetch effect per
+  dirty source on navigation, and on `refetchResources`.

@@ -1,4 +1,4 @@
-import { CalendarContext, DateProfile } from '@fullcalendar/preact/protected-api'
+import { CalendarContext, DateProfile, ReduceEffects } from '@fullcalendar/preact/protected-api'
 import { ResourceSource } from '../structs/resource-source'
 import { ResourceHash } from '../structs/resource'
 import { reduceResourceSource } from './resourceSource'
@@ -16,8 +16,9 @@ export function reduceResources(
   state: ResourceState | undefined,
   action: ResourceAction | undefined,
   context: CalendarContext & { dateProfile: DateProfile },
+  effects: ReduceEffects,
 ) {
-  let resourceSource = reduceResourceSource(state && state.resourceSource, action, context)
+  let resourceSource = reduceResourceSource(state && state.resourceSource, action, context, effects)
   let resourceStore = reduceResourceStore(state && state.resourceStore, action, resourceSource, context)
   let resourceEntityExpansions = reduceResourceEntityExpansions(state && state.resourceEntityExpansions, action)
 

@@ -9,6 +9,7 @@ function refinePluginDef(input: PluginInput): PluginDef {
     name: input.name,
     premiumReleaseDate: input.premiumReleaseDate ? new Date(input.premiumReleaseDate): undefined,
     reducers: input.reducers || [],
+    effectRunners: input.effectRunners || {},
     isLoadingFuncs: input.isLoadingFuncs || [],
     contextInit: [].concat(input.contextInit || []),
     eventRefiners: input.eventRefiners || {},
@@ -47,6 +48,7 @@ function buildPluginHooks(pluginDefs: PluginInput[], globalDefs: PluginInput[]):
   let hooks: PluginHooks = {
     premiumReleaseDate: undefined,
     reducers: [],
+    effectRunners: {},
     isLoadingFuncs: [],
     contextInit: [],
     eventRefiners: {},
@@ -128,6 +130,7 @@ function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
   return {
     premiumReleaseDate: compareOptionalDates(hooks0.premiumReleaseDate, hooks1.premiumReleaseDate),
     reducers: hooks0.reducers.concat(hooks1.reducers),
+    effectRunners: { ...hooks0.effectRunners, ...hooks1.effectRunners },
     isLoadingFuncs: hooks0.isLoadingFuncs.concat(hooks1.isLoadingFuncs),
     contextInit: hooks0.contextInit.concat(hooks1.contextInit),
     eventRefiners: { ...hooks0.eventRefiners, ...hooks1.eventRefiners },
