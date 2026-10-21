@@ -224,3 +224,13 @@ work now.
   zone change; initialization from the precise now with `validRange` given the day-snapped now; DST wakes
   (spring and fall 2024, New York) keep the profile object, with the toolbar's three builds.
 - Both runtimes: 108 specs, about 1.5 s.
+
+### Step 0, round 2 additions (done)
+
+`view-dates/date-profile-rendered-locks.ts` (rendered): `datesSet`'s calls over a navigation sequence
+(receiver, view, range; a `gotoDate` within the same week calls it again, since the rebuilt profile is a
+new object; an unrelated option doesn't); a custom `dateProfileGeneratorClass` from a plugin's view
+overriding `initHiddenDays` (constructor-time, seen by the rendered header), `buildPrev` (super twice) and
+`buildNext` (no super) with receiver checks and the toolbar's use, `buildCurrentRangeInfo` and
+`buildValidRange`, and `isHiddenDay` (seen by the hidden-day consumers); the generator kept across an
+unrelated option change and new for a related one. 114 date-profile specs in both runtimes.
