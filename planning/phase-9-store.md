@@ -1,6 +1,6 @@
 # Phase 9: store slices, actions, API facade
 
-Status: plan, revision 3 (after spec review round 2), 2026-10-20. Nothing implemented yet.
+Status: plan, revision 4 (after spec review round 3, no P1s), 2026-10-20. Step 0 (behavior locks) done.
 
 **Re-scoped after review round 1** (below): phase 9 is a behavior-identical restructuring of the data
 layer. Render-time purity with `useSyncExternalStore` moves to phase 11, and stable API wrapper
@@ -110,20 +110,23 @@ that today's code performs at that point run. The order is today's `reduce()`, w
 | # | Stage | Checkpoint after it (today's line) |
 |---|---|---|
 | 1 | dynamic option overrides, options data (refiner cache) | — |
-| 2 | view type, view data | `nowManager.handleInput(view now)` (`:633`, may fire reset listeners, which may dispatch `UPDATE_NOW` and re-arm timers); `emitter.setThisContext`/`setOptions(view options)` (`:334`) |
+| 2 | view type; view data in today's order and memo boundary: refine view options, **then** `nowManager.handleInput(view now)` (`:633`; may fire reset listeners, which may dispatch `UPDATE_NOW` and re-arm timers), **then** build the date-profile generator and the view API | `emitter.setThisContext`/`setOptions(view options)` (`:334`) |
 | 3 | calendar now (`nowTimer.update`) | the runner's own re-arming when inputs changed (`NowTimerRunner.update`) |
 | 4 | current date, date profile (rebuilt on a generator change, then the action, then clamping) | — |
-| 5 | event sources | **fetch effects** for the sources this stage marked fetching, in source order (`eventSources.ts:158`); synchronous callbacks queue `RECEIVE_*` here, as today |
+| 5 | event sources, **one source at a time** as today (`eventSources.ts:145`): allocate its fetch id, run its fetch with the *original* source object (synchronous callbacks queue `RECEIVE_*` right there), then copy the source with its fetching fields, then the next source | the fetches are the checkpoints, run through an executor the store passes in; queued results stay unreduced until this pipeline returns |
 | 6 | event store, renderable event store | — |
 | 7 | UI bases, business hours, selection, drag, resize | — |
-| 8 | plugin slices, each given one `{ ...context, ...newState }` snapshot taken before the first (`:428`); premium: resource source (**its fetch effects** at a checkpoint right after it), resource store, expansions | — |
+| 8 | plugin slices, each given one `{ ...context, ...newState }` snapshot taken before the first (`:428`); premium: resource source (its fetch per source, as in stage 5), resource store, expansions | — |
 | 9 | loading transition, captured for this action (was vs is, `:434`) | queue the deferred `loading` effect |
 | 10 | title, toolbar props, `CalendarData` | — |
-| 11 | late stage: time zone change (refetch marking with **fetch effects**, rezoning both stores) and option change handlers (`:472`), in today's order, with today's mix of the passed new data and `getCurrentData()` reads of the previous data | the handlers run here, as effects at this checkpoint |
+| 11 | late stage: time zone change (refetches per source, as in stage 5; rezoning both stores) and option change handlers (`:472`), in today's order, with today's mix of the passed new data and `getCurrentData()` reads of the previous data | the handlers run here, as effects at this checkpoint |
 
 Then the reduction returns, and the store installs the new state and data (only now do API reads see
-it). Stage reducers return `{ state, effects }` and do none of the reducer-owned side effects
-themselves (fetching, emitting, dispatching, timer arming); the checkpoints run them. **User callbacks
+it). **Exception, kept:** `getOption()` reads the raw options (`CalendarApiImpl.ts:63`), which advance
+during refinement (stage 1), so a callback mid-dispatch sees a new option while `getDate()` still sees
+the previous date. The refiner cache keeps exposing its current raw input for this. Stage reducers do none of the reducer-owned side effects themselves (fetching, emitting, dispatching,
+timer arming): they return them, or, where today's order interleaves them with the stage's own work
+(per-source fetching), call the executor the store passes in, which is the checkpoint. **User callbacks
 are the exception:** refiners, transforms, `validRange` functions and the like run inside stages as
 today, and can call the API.
 
@@ -284,6 +287,18 @@ rrule, google-calendar and vue3 don't import it).
 | 3 | `resetOptions` updates overrides at call time; FIFO would change reentrant resets | §4: call-time update kept; behavior lock added |
 | 4 | Timer effects (`nowManager.handleInput`, `nowTimer.update`) and user callbacks that call the API | §2 checkpoints 2 and 3; the contract test scoped to reducer-owned effects |
 | 5 | Missing dependencies (`now` from view options, `renderableEventStore`'s inputs) and action guards | §1 table; §2 keeps action guards |
+
+## Review round 3 (Sol, spec, high effort)
+
+No P1s. Sol confirmed the remaining order (view data before context and timer, the shared pre-plugin
+snapshot, loading captured before the time-zone stage, option handlers getting new data while
+`getCurrentData()` returns the previous) and §3's drain. Folded in:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P2: `handleInput` runs between view-option refinement and building the generator and view API | §2 stage 2 split, keeping the memo boundary |
+| 2 | P3: fetching is per source (id, fetch with the original source, then copy), also for time-zone refetches and resources | §2 stages 5, 8, 11 |
+| 3 | P3: `getOption()` sees new raw options mid-dispatch | §2 exception kept; lock added to `data-layer-order.ts` |
 
 ## Behavior changes (anticipated)
 

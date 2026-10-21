@@ -40,6 +40,25 @@ describe('data layer ordering', () => {
       calendar.next()
       expect(datesRead).toEqual(['init', '2024-01-10'])
     })
+
+    it('reads the new option, but the previous date, when called during an option change', () => {
+      let reads: string[] = []
+      let calendar
+      calendar = initCalendar({
+        timeZone: 'UTC',
+        events(_info, successCallback) {
+          if (calendar) {
+            reads.push(`${calendar.getOption('timeZone')} ${calendar.getDate().toISOString().slice(0, 10)}`)
+          }
+          successCallback([])
+        },
+      })
+
+      calendar.gotoDate('2024-03-10') // a range not yet fetched, so the option change refetches
+      reads = []
+      calendar.setOption('timeZone', 'America/New_York')
+      expect(reads).toEqual(['America/New_York 2024-03-10'])
+    })
   })
 
   describe('loading', () => {
