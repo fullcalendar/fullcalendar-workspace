@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { CustomContent, generateClassName, useLatest, useRenderHookEl, useReportedSize, useViewContext, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
+import { CustomContent, generateClassName, useLatest, useRenderHookEl, useReportedSize, useViewContext, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
@@ -244,7 +244,7 @@ interface ResourceLaneCellProps {
 
 // the lane's cell element, with its resourceLane* render hooks
 function ResourceLaneCell({ attrs, className, style, renderProps, children }: ResourceLaneCellProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const renderHookEl = useRenderHookEl({
     classGenerator: options.resourceLaneClass,
     didMount: options.resourceLaneDidMount,

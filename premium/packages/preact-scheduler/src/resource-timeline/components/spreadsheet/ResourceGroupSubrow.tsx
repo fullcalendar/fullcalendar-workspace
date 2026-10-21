@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { useViewContext } from '@fullcalendar/preact/protected-api'
+import { useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, type Ref } from 'react'
 import { ColSpec } from '../../structs'
@@ -31,7 +31,7 @@ export interface ResourceGroupSubrowProps extends AriaCellInput {
 Screen-only row wrapper for a vertically spanning resource-group cell.
 */
 export const ResourceGroupSubrow = memo(function ResourceGroupSubrow(props: ResourceGroupSubrowProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
 
   // a grouped cell. no data that is specific to this specific resource
   // `colSpec` is for the group. a GroupSpec :(

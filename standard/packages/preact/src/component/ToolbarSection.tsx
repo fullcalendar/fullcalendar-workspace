@@ -3,7 +3,7 @@ import { ToolbarWidget, ButtonInfo, ButtonGroupInfo } from '../toolbar-struct'
 import { joinClassNames } from '../util/html'
 import { generateClassName } from '../common/render-hook'
 import { CustomContent } from '../content-inject/CustomContent'
-import { useViewContext } from '../hooks/useViewContext'
+import { useViewOptions } from '../hooks/useGranularContexts'
 import { useRenderHookEl } from '../hooks/useRenderHookEl'
 import { ViewOptionsRefined } from '../options'
 import { ButtonIcon } from './ButtonIcon'
@@ -28,7 +28,7 @@ const CUSTOM_ELEMENT_STYLE = { display: 'contents' }
 const CUSTOM_ELEMENT_RENDER_PROPS = {}
 
 export const ToolbarSection = memo(function ToolbarSection(props: ToolbarSectionProps): any {
-  let { options } = useViewContext()
+  let options = useViewOptions()
   let children = props.widgetGroups.map((widgetGroup) => renderWidgetGroup(widgetGroup, props, options))
 
   return createElement(

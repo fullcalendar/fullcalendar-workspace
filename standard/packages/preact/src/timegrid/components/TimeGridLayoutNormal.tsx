@@ -12,7 +12,7 @@ import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/ScrollerInterface'
 import { SlicedCoordRange } from '../../coord-range'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useMeasuredState } from '../../hooks/useMeasuredState'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
@@ -77,7 +77,7 @@ export interface TimeGridLayoutNormalProps {
 The TimeGrid layout without dayMinWidth: one vertical scroller, with the axis inside it
 */
 export const TimeGridLayoutNormal = memo(function TimeGridLayoutNormal(props: TimeGridLayoutNormalProps) {
-  const context = useViewContext()
+  const options = useViewOptions()
   const {
     axisWidth,
     slatInnerHeight,
@@ -113,10 +113,9 @@ export const TimeGridLayoutNormal = memo(function TimeGridLayoutNormal(props: Ti
   }, [])
 
   const { nowDate, forPrint } = props
-  const nowIndicatorDayDate = (!forPrint && context.options.nowIndicator)
+  const nowIndicatorDayDate = (!forPrint && options.nowIndicator)
     ? computeNowIndicatorDayDate(nowDate, props.nowIndicatorSegsByCol, props.cells)
     : undefined
-  const { options } = context
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
   const endScrollbarWidth = (totalWidth != null && clientWidth != null && !forPrint)

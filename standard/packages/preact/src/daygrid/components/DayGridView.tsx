@@ -11,6 +11,9 @@ import { useDayGridViewData, useDayHeaderFormatter } from './useDayGridViewData'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class DayGridView extends BaseComponent<ViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <DayGridViewBody {...this.props} />
   }

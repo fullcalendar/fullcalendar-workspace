@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { useViewContext, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/protected-api'
+import { useDateEnv, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { dateToCoord, msToCoord } from '../timeline-positioning'
@@ -17,9 +17,9 @@ export interface TimelineNowIndicatorLineProps {
 }
 
 export const TimelineNowIndicatorLine = memo(function TimelineNowIndicatorLine(props: TimelineNowIndicatorLineProps) {
-  const context = useViewContext()
+  const dateEnv = useDateEnv()
   const clipStart = props.clipStart ?? 0
-  const nowDate = context.dateEnv.timestampToMarker(props.nowMs)
+  const nowDate = dateEnv.timestampToMarker(props.nowMs)
 
   const xStyle: { insetInlineStart?: number } =
     props.slotWidth == null
@@ -28,7 +28,7 @@ export const TimelineNowIndicatorLine = memo(function TimelineNowIndicatorLine(p
           insetInlineStart: (
             props.tDateProfile.timeAxis
               ? msToCoord(props.nowMs, props.tDateProfile, props.slotWidth)
-              : dateToCoord(nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+              : dateToCoord(nowDate, dateEnv, props.tDateProfile, props.slotWidth)
           ) - clipStart
         }
 

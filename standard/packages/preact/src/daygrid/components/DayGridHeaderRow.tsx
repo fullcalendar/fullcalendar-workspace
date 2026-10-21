@@ -3,7 +3,7 @@ import { setRef } from '../../vdom-util'
 import { joinClassNames } from '../../util/html'
 import { RefMap } from '../../util/RefMap'
 import { createElement, memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useLatest } from '../../hooks/useLatest'
 import { RowConfig } from '../header-tier'
 import { DayGridHeaderCell } from './DayGridHeaderCell'
@@ -29,7 +29,7 @@ function DayGridHeaderRowImpl<
   RenderProps extends { text: string, isDisabled: boolean },
 >(props: DayGridHeaderRowProps<BaseRenderProps, RenderProps>) {
   const { tableMode } = props
-  const { options } = useViewContext()
+  const options = useViewOptions()
 
   // reports the tallest cell's inner height to props.innerHeightRef
   const isActiveRef = useRef(false)

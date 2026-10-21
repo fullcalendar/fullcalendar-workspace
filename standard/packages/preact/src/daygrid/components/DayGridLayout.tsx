@@ -12,6 +12,7 @@ import { EventRangeProps } from '../../component-util/event-rendering'
 import { joinClassNames } from '../../util/html'
 import { generateClassName } from '../../common/render-hook'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useInitialScroll } from '../../hooks/useInitialScroll'
 import { useMeasuredState } from '../../hooks/useMeasuredState'
 import { memo, useRef } from 'react'
@@ -86,7 +87,7 @@ export const DayGridLayout = memo(function DayGridLayout(props: DayGridLayoutPro
 Inside the ViewContainer, so measurements re-render only this, as when the layouts held them
 */
 function DayGridLayoutBody(props: DayGridLayoutProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
   // measured on screen. kept while printing, which doesn't measure. print uses totalWidth for row

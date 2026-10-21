@@ -6,7 +6,7 @@ import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { Hit } from '../../interactions/hit'
 import { memo, useMemo, useRef } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useDateEnv, useViewOptions } from '../../hooks/useGranularContexts'
 import { useHitTarget } from '../../hooks/useHitTarget'
 import { computeColFromPosition, getCellEl } from '../../daygrid/components/util'
 import classNames from '../../styles.module.css'
@@ -43,7 +43,8 @@ export interface TimeGridColsProps {
 }
 
 export const TimeGridCols = memo(function TimeGridCols(props: TimeGridColsProps) { // TODO: rename to TimeGridRow
-  const { dateEnv, options } = useViewContext()
+  const dateEnv = useDateEnv()
+  const options = useViewOptions()
   const rootElRef = useRef<HTMLElement | null>(null)
   const { snapDuration, snapsPerSlot } = useMemo(
     () => processSlotOptions(options.slotDuration, options.snapDuration),

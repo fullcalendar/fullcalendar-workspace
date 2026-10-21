@@ -32,6 +32,9 @@ import { Resource } from '../../resource/structs/resource'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceTimeGridView extends BaseComponent<ResourceViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <ResourceTimeGridViewBody {...this.props} />
   }

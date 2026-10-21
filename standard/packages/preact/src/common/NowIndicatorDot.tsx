@@ -1,4 +1,4 @@
-import { ViewContextType } from '../ViewContext'
+import { ViewOptionsContext } from '../granular-contexts'
 import { joinClassNames } from '../util/html'
 
 export interface NowIndicatorDotProps {
@@ -7,10 +7,8 @@ export interface NowIndicatorDotProps {
 }
 
 export const NowIndicatorDot = (props: NowIndicatorDotProps) => (
-  <ViewContextType.Consumer
-    children={(context) => {
-      let { options } = context
-
+  <ViewOptionsContext.Consumer
+    children={(options) => {
       return (
         <div
           className={joinClassNames(

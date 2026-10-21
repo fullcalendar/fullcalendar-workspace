@@ -166,3 +166,24 @@ async function settleWithMockClock() {
     jasmine.clock().tick(10)
   }
 }
+
+// the built-in view classes read no context (no contextType): their bodies subscribe instead
+describe('built-in views without a contextType', () => {
+  for (const initialView of ['dayGridMonth', 'timeGridWeek', 'listWeek', 'multiMonthYear']) {
+    it(`update on an option change in ${initialView}`, async () => {
+      let calendar = initCalendar({
+        initialView,
+        initialDate: '2024-01-04',
+        events: [{ title: 'event', start: '2024-01-04T10:00:00' }],
+      })
+
+      await waitTimeout()
+      expect(calendar.el.querySelectorAll('.probe-class').length).toBe(0)
+
+      calendar.setOption('eventClass', () => 'probe-class')
+      await waitTimeout()
+
+      expect(calendar.el.querySelectorAll('.probe-class').length).toBeGreaterThan(0)
+    })
+  }
+})

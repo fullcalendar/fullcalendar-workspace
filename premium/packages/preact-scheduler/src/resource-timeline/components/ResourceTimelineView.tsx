@@ -27,6 +27,9 @@ const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceTimelineView extends BaseComponent<ResourceViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <ResourceTimelineViewBody {...this.props} />
   }

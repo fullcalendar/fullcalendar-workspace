@@ -1,7 +1,7 @@
 import { joinClassNames } from '../../util/html'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { renderText, generateClassName } from '../../common/render-hook'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useDateEnv } from '../../hooks/useGranularContexts'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { useReportedSize } from '../../hooks/useReportedSize'
 import { memoize } from '../../util/memoize'
@@ -112,7 +112,7 @@ function DayGridHeaderCellLabel<
   BaseRenderProps extends { isDisabled: boolean },
   RenderProps extends { text: string, isDisabled: boolean },
 >(props: DayGridHeaderCellLabelProps<BaseRenderProps, RenderProps>) {
-  const context = useViewContext()
+  const dateEnv = useDateEnv()
   const { renderConfig, dataConfig, tableMode, colSpan, totalColWidth } = props
   const [innerWidth, setInnerWidth] = useState<number | undefined>(undefined)
   // called twice per render when micro, so a memoize instance rather than useMemo
@@ -130,7 +130,7 @@ function DayGridHeaderCellLabel<
         dataConfig.dateMarker,
         renderConfig.dayHeaderFormat,
         Boolean(renderConfig.datesRepDistinctDays),
-        context.dateEnv,
+        dateEnv,
       ) as unknown as RenderProps
     : {
         ...(dataConfig.renderProps as any),

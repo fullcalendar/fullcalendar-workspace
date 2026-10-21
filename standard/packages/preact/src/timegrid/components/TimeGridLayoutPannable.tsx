@@ -16,7 +16,7 @@ import { getIsHeightAuto, getFooterScrollbarSticky, getTableHeaderSticky } from 
 import { isArraysEqual } from '../../util/array'
 import { generateClassName } from '../../common/render-hook'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useScrollerSyncer } from '../../hooks/useScrollerSyncer'
 import { useMeasuredState } from '../../hooks/useMeasuredState'
 import classNames from '../../styles.module.css'
@@ -87,7 +87,7 @@ The TimeGrid layout with dayMinWidth: the days scroll horizontally, in header, a
 scrollers kept in sync, and the axis scrolls vertically with the body
 */
 export const TimeGridLayoutPannable = memo(function TimeGridLayoutPannable(props: TimeGridLayoutPannableProps) {
-  const context = useViewContext()
+  const options = useViewOptions()
   const {
     axisWidth,
     slatInnerHeight,
@@ -161,10 +161,9 @@ export const TimeGridLayoutPannable = memo(function TimeGridLayoutPannable(props
   )
 
   const { nowDate, headerTiers, forPrint } = props
-  const nowIndicatorDayDate = (!forPrint && context.options.nowIndicator)
+  const nowIndicatorDayDate = (!forPrint && options.nowIndicator)
     ? computeNowIndicatorDayDate(nowDate, props.nowIndicatorSegsByCol, props.cells)
     : undefined
-  const { options } = context
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
 
   const endScrollbarWidth = (totalWidth != null && clientWidth != null && axisWidth != null)

@@ -15,6 +15,9 @@ import { TimelineLayoutNormal, TimelineScroll } from './TimelineLayoutNormal'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class TimelineView extends BaseComponent<ViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <TimelineViewBody {...this.props} />
   }

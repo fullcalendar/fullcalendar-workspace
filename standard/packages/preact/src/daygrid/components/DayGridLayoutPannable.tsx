@@ -11,7 +11,7 @@ import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { FooterScrollbar } from '../../common/FooterScrollbar'
 import { generateClassName } from '../../common/render-hook'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useScrollerSyncer } from '../../hooks/useScrollerSyncer'
 import { memo, useRef, useState, type Ref } from 'react'
 import { setRef } from '../../vdom-util'
@@ -55,7 +55,7 @@ export interface DayGridLayoutPannableProps {
 }
 
 export const DayGridLayoutPannable = memo(function DayGridLayoutPannable(props: DayGridLayoutPannableProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
   const { totalWidth, clientWidth, canvasWidth, appliedColWidth, cellIsNarrow, cellIsMicro } = props
 

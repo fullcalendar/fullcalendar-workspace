@@ -1,6 +1,6 @@
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { afterSize, DateMarker, DateProfile, DateRange, RefMap, setRef, useLatest, useViewContext } from '@fullcalendar/preact/protected-api'
+import { afterSize, DateMarker, DateProfile, DateRange, RefMap, setRef, useLatest, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
 import { TimelineHeaderCell } from './TimelineHeaderCell'
@@ -32,7 +32,7 @@ export interface TimelineHeaderRowProps {
 }
 
 export const TimelineHeaderRow = memo(function TimelineHeaderRow(props: TimelineHeaderRowProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const [innerHeight, setInnerHeight] = useState<number | null | undefined>(undefined)
   const isActiveRef = useRef(false)
   const propsRef = useLatest(props)

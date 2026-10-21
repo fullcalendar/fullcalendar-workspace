@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { useViewContext, NowIndicatorHeaderContainer } from '@fullcalendar/preact/protected-api'
+import { useDateEnv, NowIndicatorHeaderContainer } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile } from '../timeline-date-profile'
 import { dateToCoord, msToCoord } from '../timeline-positioning'
@@ -17,8 +17,8 @@ export interface TimelineNowIndicatorArrowProps {
 TODO: DRY with other NowIndicator components
 */
 export const TimelineNowIndicatorArrow = memo(function TimelineNowIndicatorArrow(props: TimelineNowIndicatorArrowProps) {
-  const context = useViewContext()
-  const nowDate = context.dateEnv.timestampToMarker(props.nowMs)
+  const dateEnv = useDateEnv()
+  const nowDate = dateEnv.timestampToMarker(props.nowMs)
 
   const xStyle: { insetInlineStart?: number } =
     props.slotWidth == null
@@ -26,7 +26,7 @@ export const TimelineNowIndicatorArrow = memo(function TimelineNowIndicatorArrow
       : {
           insetInlineStart: props.tDateProfile.timeAxis
             ? msToCoord(props.nowMs, props.tDateProfile, props.slotWidth)
-            : dateToCoord(nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+            : dateToCoord(nowDate, dateEnv, props.tDateProfile, props.slotWidth)
         }
 
   return (

@@ -1,8 +1,17 @@
 import { memo } from 'react'
 import {
-  BgEvent, renderFill, useViewContext, DateEnv, ViewOptionsRefined,
-  getEventRangeMeta, DateRange, DateMarker, Dictionary, buildEventRangeKey,
+  BgEvent,
+  renderFill,
+  DateEnv,
+  ViewOptionsRefined,
+  getEventRangeMeta,
+  DateRange,
+  DateMarker,
+  Dictionary,
+  buildEventRangeKey,
   EventRangeProps,
+  useDateEnv,
+  useViewOptions,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { computeSegHorizontals } from '../timeline-positioning'
@@ -32,7 +41,8 @@ export interface TimelineBgProps {
 }
 
 export const TimelineBg = memo(function TimelineBg(props: TimelineBgProps) {
-  const { dateEnv, options } = useViewContext()
+  const dateEnv = useDateEnv()
+  const options = useViewOptions()
   let highlightSeg = [].concat(props.eventResizeSegs || [], props.dateSelectionSegs || [])
 
   return (

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 import { NowTimerRunner, NowTimerRunnerOutput } from '../NowTimerRunner'
-import { useViewContext } from './useViewContext'
+import { useCalendarCore, useDateEnv, useViewOptions } from './useGranularContexts'
 
 /*
 Now, snapped to `unit`, and today's range. Re-renders when they change. The timer runs only while
@@ -9,7 +9,9 @@ replay or a render that never commits leaves none behind. On a remount, a change
 unmounted is reported right away. See planning/hook-toolkit-spec.md §5.2
 */
 export function useNow(unit: string, unitValue?: number): NowTimerRunnerOutput {
-  const { nowManager, options, dateEnv } = useViewContext()
+  const { nowManager } = useCalendarCore()
+  const dateEnv = useDateEnv()
+  const options = useViewOptions()
   const [, setRenderCount] = useState(0)
   const [runner] = useState(() => new NowTimerRunner(() => {
     setRenderCount(incrementCounter)

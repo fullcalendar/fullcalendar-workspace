@@ -1,7 +1,7 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
 import {
-  useLatest, useViewContext, type ViewContext,
-  getEventRangeMeta, DateMarker, DateRange, DateProfile, Dictionary, sortEventSegs,
+  useLatest, useDateEnv, useViewOptions,
+  getEventRangeMeta, DateEnv, DateMarker, DateRange, DateProfile, Dictionary, sortEventSegs,
   RefMap,
   afterSize,
   EventRangeProps,
@@ -56,8 +56,8 @@ export interface TimelineFgProps {
 }
 
 export const TimelineFg = memo(function TimelineFg(props: TimelineFgProps) {
-  const context = useViewContext()
-  const { options } = context
+  const dateEnv = useDateEnv()
+  const options = useViewOptions()
   const { tDateProfile } = props
 
   // measurements. a new rev re-renders
@@ -100,14 +100,14 @@ export const TimelineFg = memo(function TimelineFg(props: TimelineFgProps) {
     () => buildTimelineSegSources(
       fgSegs,
       projectionSizing.eventMinWidth,
-      context.dateEnv,
+      dateEnv,
       tDateProfile,
       projectionSizing.slotWidth,
       props.clipStart,
       props.clipEnd,
     ),
     [
-      fgSegs, projectionSizing.eventMinWidth, context.dateEnv, tDateProfile, projectionSizing.slotWidth,
+      fgSegs, projectionSizing.eventMinWidth, dateEnv, tDateProfile, projectionSizing.slotWidth,
       props.clipStart, props.clipEnd,
     ],
   )
@@ -179,7 +179,7 @@ export const TimelineFg = memo(function TimelineFg(props: TimelineFgProps) {
         placementResult.sliceCoords,
         sliceHeightRefMap,
       )}
-      {renderMirrorSegs(props, context, mirrorSegs, placementResult.sliceCoords)}
+      {renderMirrorSegs(props, options.eventMinWidth, dateEnv, mirrorSegs, placementResult.sliceCoords)}
       {renderMoreLinks(props, placementResult.moreLinks, moreLinkHeightRefMap)}
     </div>
   )
@@ -243,13 +243,14 @@ function renderEventSlices(
 // Mirrors bypass normal-event admission so limits cannot hide them or create more links.
 function renderMirrorSegs(
   props: TimelineFgProps,
-  context: ViewContext,
+  eventMinWidth: number,
+  dateEnv: DateEnv,
   segs: (TimelineRange & EventRangeProps)[],
   fgSegTops: ReadonlyMap<string, number>,
 ) {
   const projectionSizing = resolveTimelineEventProjectionSizing(
     props.slotWidth,
-    context.options.eventMinWidth,
+    eventMinWidth,
   )
 
   return segs.map((seg) => {
@@ -258,7 +259,7 @@ function renderMirrorSegs(
     const horizontal = computeSegHorizontals(
       seg,
       projectionSizing.eventMinWidth,
-      context.dateEnv,
+      dateEnv,
       props.tDateProfile,
       projectionSizing.slotWidth,
       props.clipStart,

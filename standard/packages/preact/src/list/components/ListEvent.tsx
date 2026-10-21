@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { createFormatter } from '../../datelib/formatting'
 import type { MinimalEventProps } from '../../component-util/event-rendering'
 import { ForegroundEvent, listItemEventVariant } from '../../common/events'
@@ -14,7 +14,7 @@ export interface ListEventProps extends MinimalEventProps {
 }
 
 export const ListEvent = memo(function ListEvent(props: ListEventProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { eventRange } = props
 
   const { displayEventTime } = options

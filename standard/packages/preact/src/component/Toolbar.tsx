@@ -4,7 +4,7 @@ import { ToolbarSection, ToolbarContent } from './ToolbarSection'
 import { joinClassNames } from '../util/html'
 import { generateClassName } from '../common/render-hook'
 import { computeViewBorderless } from '../util/misc'
-import { useViewContext } from '../hooks/useViewContext'
+import { useViewOptions } from '../hooks/useGranularContexts'
 
 export interface ToolbarProps extends ToolbarContent {
   model: ToolbarModel
@@ -13,7 +13,7 @@ export interface ToolbarProps extends ToolbarContent {
 }
 
 export const Toolbar = memo(function Toolbar(props: ToolbarProps) {
-  let { options } = useViewContext()
+  let options = useViewOptions()
   let { sectionWidgets } = props.model
 
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)

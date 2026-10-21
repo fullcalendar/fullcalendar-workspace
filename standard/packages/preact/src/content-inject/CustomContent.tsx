@@ -3,7 +3,7 @@ import {
   type ReactNode, type CSSProperties, type Ref,
 } from 'react'
 import { ContentGenerator } from '../common/render-hook'
-import { useViewContext } from '../hooks/useViewContext'
+import { useViewOptions } from '../hooks/useGranularContexts'
 import { useLatest } from '../hooks/useLatest'
 import { useForwardedElRef } from '../hooks/useForwardedElRef'
 import { guid } from '../util/misc'
@@ -33,7 +33,7 @@ shallowly), which keeps *Content call counts down. Pair with useRenderHookEl for
 and mount hooks. See planning/hook-toolkit-spec.md §6.3
 */
 function CustomContentImpl<RenderProps>(props: CustomContentProps<RenderProps>) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   useContext(RenderId) // re-runs the generator when the vanilla Calendar or a connector bumps it
 
   // the ref callback must be stable, or React would detach and re-attach it on every commit

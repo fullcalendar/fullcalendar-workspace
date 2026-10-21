@@ -10,7 +10,7 @@ import { getTableHeaderSticky, getIsHeightAuto } from '../../scrollgrid/util'
 import { RefMap } from '../../util/RefMap'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { generateClassName } from '../../common/render-hook'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { memo, type Ref } from 'react'
 import { DayGridRows } from './DayGridRows'
 import { DayGridHeader } from './DayGridHeader'
@@ -49,7 +49,7 @@ export interface DayGridLayoutNormalProps {
 }
 
 export const DayGridLayoutNormal = memo(function DayGridLayoutNormal(props: DayGridLayoutNormalProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
   const { totalWidth, clientWidth } = props
   const { cellIsNarrow, cellIsMicro } = props

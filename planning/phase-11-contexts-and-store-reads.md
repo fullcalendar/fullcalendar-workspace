@@ -1,6 +1,6 @@
 # Phase 11: granular contexts and store reads
 
-Status: plan, revision 2 (2026-10-21), after Sol's spec review round 1: 11a ready with corrections; 11b
+Status: 11a done (2026-10-21, see its Done note). Plan revision 2, after Sol's spec review round 1: 11a ready with corrections; 11b
 and 11c merged into a feasibility study before any implementation; the React 17 smoke run its own step. The consumer inventory it relies on is
 `phase-11-context-inventory.md` (an Explore agent's read-only survey, 2026-10-21).
 
@@ -126,6 +126,31 @@ snapshot counts compare; decreases are expected and listed.
   option change (their bodies subscribe).
 - **Identity spec cases (round 1):** navigation, a now tick, an unrelated option change, a view switch, a
   simultaneous `options`+`dateEnv` change (a locale change), and a memoized descendant consumer.
+
+### Done (2026-10-21): steps 1 and 2
+
+Commits: step 1 (contexts, providers, hooks, identity spec) and step 2 (conversions, opt-outs).
+Verified together (`p11a2` vs `p7b2b`, the end of 7b): 176 fixtures unchanged, counts 0 up and 0 down
+(no count scenario changes an option or a view, so the opt-outs' savings don't show there), suites
+green apart from the known React failures. Step 1's own run (`p11a1`) was green except the React
+standard lane, which a test-only gap stopped (the React test entry didn't export `Component`; now it
+does).
+
+- **Converted:** 30 options/dateEnv-only destructures (the inventory's list: the `events.tsx` parts
+  `ForegroundEvent`, the row variant's body, `EventEl`, `EventInner`, `EventEdge`; the toolbars;
+  `CustomContent`; the DayGrid layouts, rows, header row and cell element; `useDayHeaderFormatter`;
+  `ListEvent`; TimeGrid's column lane, columns and slat label; the premium spreadsheet parts, lane
+  and print-lane cells, `TimelineBg`, `TimelineHeaderRow`, `useTimelinePrintBands`), plus by hand
+  `DayGridHeaderCellLabel`, `TimelineNowIndicatorArrow`/`Line` (dateEnv), `TimeGridLayoutNormal`/
+  `Pannable` (options), `TimelineFg` (its `renderMirrorSegs` takes `eventMinWidth` and `dateEnv`),
+  `NowIndicatorDot` (`ViewOptionsContext.Consumer`) and `useNow` (core's `nowManager`, dateEnv,
+  options). Everything that reads more, or passes the context on, stays on the facade.
+- **Opted out of `contextType`:** the eight view shells, `Scroller` and `CalendarInner`. Specs: each
+  built-in view (standard and premium) still updates on an option change.
+- **Mutation checks:** un-memoizing the view-spec value or the core, or giving a narrow context the
+  facade, each fail the identity spec. (Note for later mutation runs: rebuild with the
+  `@fullcalendar-tests/standard...` filter; building `@fullcalendar/preact` alone leaves the vanilla
+  bundle the tests consume stale.)
 
 ## 11b + 11c: feasibility study (store reads and render-time purity)
 

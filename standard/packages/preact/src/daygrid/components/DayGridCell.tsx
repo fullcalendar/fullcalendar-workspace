@@ -14,6 +14,7 @@ import { getDateMeta, DateMeta } from '../../component-util/date-rendering'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { generateClassName } from '../../common/render-hook'
 import { findDayNumberText, findMonthText, findWeekdayText } from '../../util/date-format'
@@ -355,7 +356,7 @@ interface DayGridCellElProps {
 
 // the cell's element, with its dayCell* render hooks. only for enabled days
 function DayGridCellEl({ tag, elRef, className, attrs, style, renderProps, children }: DayGridCellElProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const renderHookEl = useRenderHookEl({
     classGenerator: options.dayCellClass,
     didMount: options.dayCellDidMount,

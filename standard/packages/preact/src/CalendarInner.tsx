@@ -37,6 +37,9 @@ export interface CalendarContentProps extends CalendarData {
 }
 
 export class CalendarInner extends PureComponent<CalendarInnerProps> {
+  // the provider, reading no context
+  static contextType = undefined
+
   private buildViewContext = memoize(buildViewContext)
   private buildCalendarCore = memoize(buildCalendarCore)
   private buildViewSpecContextValue = memoize(buildViewSpecContextValue)

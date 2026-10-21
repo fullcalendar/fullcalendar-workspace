@@ -1,7 +1,7 @@
 import { DateFormatter, DateRange } from '@full-ui/headless-calendar'
 import { useMemo } from 'react'
 import { DateProfile } from '../../DateProfileGenerator'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useNow } from '../../hooks/useNow'
 import { DayTableModel } from '../../common/day-table/model'
 import { useDayGridModel } from '../../common/day-table/useDayTableModel'
@@ -29,7 +29,7 @@ export function useDayGridViewData(dateProfile: DateProfile): DayGridViewData {
 }
 
 export function useDayHeaderFormatter(datesRepDistinctDays: boolean, colCount: number): DateFormatter {
-  const { options } = useViewContext()
+  const options = useViewOptions()
 
   return useMemo(
     () => createDayHeaderFormatter(options.dayHeaderFormat, datesRepDistinctDays, colCount),

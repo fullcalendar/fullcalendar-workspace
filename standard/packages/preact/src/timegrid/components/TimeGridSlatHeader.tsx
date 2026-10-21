@@ -4,6 +4,7 @@ import { joinClassNames } from '../../util/html'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { generateClassName } from '../../common/render-hook'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { useReportedSize } from '../../hooks/useReportedSize'
 import { createFormatter } from '../../datelib/formatting'
@@ -98,7 +99,7 @@ interface TimeGridSlatHeaderLabelProps {
 
 // a labeled slat header. only these have slotHeader* mount hooks and measure their label
 function TimeGridSlatHeaderLabel(props: TimeGridSlatHeaderLabelProps) {
-  let { options } = useViewContext()
+  let options = useViewOptions()
   let { renderProps } = props
   let renderHookEl = useRenderHookEl({
     classGenerator: options.slotHeaderClass,

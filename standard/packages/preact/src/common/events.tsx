@@ -7,6 +7,7 @@ import {
 import { CustomContent } from '../content-inject/CustomContent'
 import { ElRef } from '../content-inject/el-props'
 import { useViewContext } from '../hooks/useViewContext'
+import { useViewOptions } from '../hooks/useGranularContexts'
 import { useMountHooks } from '../hooks/useMountHooks'
 import { EventImpl } from '../api/EventImpl'
 import { ContentGenerator, generateClassName } from './render-hook'
@@ -74,7 +75,7 @@ export interface EventVariant {
 }
 
 export const ForegroundEvent = memo((props: ForegroundEventProps) => {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { variant } = props
   const { Body } = variant
   const display = useEventDisplay(props, variant.layers, {
@@ -94,7 +95,7 @@ export const rowEventVariant: EventVariant = {
   className: classNames.flexRow,
   getTitleClassName: (options) => options.rowEventTitleSticky ? classNames.stickyS : undefined,
   Body: function RowEventBody({ props, display }: EventPartProps) {
-    const { options } = useViewContext()
+    const options = useViewOptions()
 
     return (
       <>
@@ -271,7 +272,7 @@ function EventEl({ props, display, className, children }: EventPartProps & {
   className: string
   children: ReactNode
 }) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { eventRange } = props
   const { renderProps, isDraggable } = display
   const elRef = useRef<HTMLElement | null>(null)
@@ -333,7 +334,7 @@ function EventEl({ props, display, className, children }: EventPartProps & {
 
 // The slot eventContent fills. Defaults to the time and title
 function EventInner({ props, display }: EventPartProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
 
   return (
     <CustomContent<EventDisplayInfo>
@@ -357,7 +358,7 @@ function EventEdge({ edge, axis, props, display, content }: EventPartProps & {
   axis: 'x' | 'y'
   content?: ContentGenerator<EventDisplayInfo>
 }) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { renderProps } = display
   const isStart = edge === 'start'
   const className = buildLayerClassName(

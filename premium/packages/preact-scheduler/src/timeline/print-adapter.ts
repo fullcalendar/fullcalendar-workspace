@@ -10,7 +10,8 @@ import {
   groupLaterallyIntersecting,
   planPrintDomCandidates,
   sortEventSegs,
-  useViewContext,
+  useDateEnv,
+  useViewOptions,
 } from '@fullcalendar/preact/protected-api'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { type TimelineDateProfile } from './timeline-date-profile'
@@ -100,7 +101,8 @@ export function useTimelinePrintBands(
   tDateProfile: TimelineDateProfile,
   slotWidth: number | undefined,
 ): { layout: TimelinePrintLayout, printHeights: TimelinePrintHeights } {
-  const { options, dateEnv } = useViewContext()
+  const dateEnv = useDateEnv()
+  const options = useViewOptions()
   const [, setRenderCount] = useState(0)
   const isActiveRef = useRef(false)
   const [printHeights] = useState(() => new TimelinePrintHeights(() => {

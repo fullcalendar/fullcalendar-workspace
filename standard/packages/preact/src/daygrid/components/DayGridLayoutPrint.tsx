@@ -5,7 +5,7 @@ import { generateClassName } from '../../common/render-hook'
 import { DateProfile } from '../../DateProfileGenerator'
 import { RefMap } from '../../util/RefMap'
 import { joinClassNames } from '../../util/html'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { DayGridRange, DayTableCell } from '../DayTableModel'
 import { RowConfig } from '../header-tier'
 import classNames from '../../styles.module.css'
@@ -44,7 +44,7 @@ export interface DayGridLayoutPrintProps {
 }
 
 export const DayGridLayoutPrint = memo(function DayGridLayoutPrint(props: DayGridLayoutPrintProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const tableDisplayInfo = {
     borderlessX: props.borderlessX,
     borderlessTop: props.borderlessTop,

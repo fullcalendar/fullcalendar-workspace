@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { afterSize, isArraysEqual, memoWithEquality, RefMap, setRef, useLatest, useViewContext } from '@fullcalendar/preact/protected-api'
+import { afterSize, isArraysEqual, memoWithEquality, RefMap, setRef, useLatest, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { useLayoutEffect, useRef, useState, type Ref } from 'react'
 import { Resource, getPublicId } from '../../../resource/structs/resource'
@@ -40,7 +40,7 @@ export interface ResourceSubrowProps {
 For screen-only
 */
 export const ResourceSubrow = memoWithEquality(function ResourceSubrow(props: ResourceSubrowProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const { resource, resourceFields, colSpecs } = props
 
   // reports the tallest cell's inner height

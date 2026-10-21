@@ -25,6 +25,9 @@ import { buildResourceRowConfigs } from '../resource-header-tier'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceDayGridView extends BaseComponent<ResourceViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <ResourceDayGridViewBody {...this.props} />
   }

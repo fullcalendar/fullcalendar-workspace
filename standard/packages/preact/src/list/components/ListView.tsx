@@ -31,6 +31,9 @@ export interface NoEventsInfo {
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ListView extends BaseComponent<ViewProps> {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   render() {
     return <ListViewBody {...this.props} />
   }

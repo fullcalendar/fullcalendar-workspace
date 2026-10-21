@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { useViewContext } from '@fullcalendar/preact/protected-api'
+import { useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, type ReactNode } from 'react'
 
@@ -12,7 +12,7 @@ export interface ResourceIndentProps {
 }
 
 export const ResourceIndent = memo(function ResourceIndent(props: ResourceIndentProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
 
   return (
     <div

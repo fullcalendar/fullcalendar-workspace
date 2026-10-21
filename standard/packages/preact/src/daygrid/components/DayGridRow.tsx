@@ -18,6 +18,7 @@ import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { joinClassNames } from '../../util/html'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { renderText } from '../../common/render-hook'
 import { ForegroundEvent, listItemEventVariant, rowEventVariant } from '../../common/events'
@@ -801,7 +802,7 @@ function getHighlightSegs(props: DayGridRowProps): (SlicedCoordRange & EventRang
 
 // the inline week number, with its inlineWeekNumber* render hooks
 function InlineWeekNumber(props: { attrs: Record<string, any>, renderProps: InlineWeekNumberInfo }) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const renderHookEl = useRenderHookEl({
     classGenerator: options.inlineWeekNumberClass,
     didMount: options.inlineWeekNumberDidMount,

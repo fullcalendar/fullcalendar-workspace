@@ -36,6 +36,9 @@ export interface ScrollerProps {
 }
 
 export class Scroller extends DateComponent<ScrollerProps> implements ScrollerInterface {
+  // reads no context, so an inherited contextType would only re-render it on every context change
+  static contextType = undefined
+
   // ref
   private el?: HTMLDivElement
 

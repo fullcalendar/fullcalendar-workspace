@@ -1,7 +1,7 @@
 import { createElement, memo, useMemo, useRef, useState } from 'react'
 import { joinClassNames } from '../../util/html'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
-import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useLatest } from '../../hooks/useLatest'
 import { useHitTarget } from '../../hooks/useHitTarget'
 import { useReportedSize } from '../../hooks/useReportedSize'
@@ -54,7 +54,7 @@ export interface DayGridRowsProps {
 }
 
 export const DayGridRows = memo(function DayGridRows(props: DayGridRowsProps) {
-  let { options } = useViewContext()
+  let options = useViewOptions()
   let { cellRows, tableMode } = props
   let rowCount = cellRows.length
   let [moreLinkHeight, setMoreLinkHeight] = useState<number | undefined>(undefined)

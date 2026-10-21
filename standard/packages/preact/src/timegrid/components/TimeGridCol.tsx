@@ -4,6 +4,7 @@ import { BgEvent, renderFill } from '../../common/bg-fill'
 import { buildEventRangeKey, EventRangeProps, getEventRangeMeta, sortEventSegs } from '../../component-util/event-rendering'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useViewOptions } from '../../hooks/useGranularContexts'
 import { memo, useMemo, type ReactNode } from 'react'
 import { generateClassName } from '../../common/render-hook'
 import { DateMarker, DateRange, formatDayString } from '@full-ui/headless-calendar'
@@ -451,7 +452,7 @@ interface TimeGridColLaneProps {
 
 // the day lane's element, with its dayLane* render hooks. only for enabled days
 function TimeGridColLane({ attrs, className, style, renderProps, children }: TimeGridColLaneProps) {
-  const { options } = useViewContext()
+  const options = useViewOptions()
   const renderHookEl = useRenderHookEl({
     classGenerator: options.dayLaneClass,
     didMount: options.dayLaneDidMount,
