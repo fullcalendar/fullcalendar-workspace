@@ -221,7 +221,8 @@ export {
   refineClassName,
   refineClassNameGenerator,
 } from './render-hook/render-hook-types'
-export { ForegroundEvent, rowEventVariant, columnEventVariant, listItemEventVariant } from './events/components/ForegroundEvent'
+export { ForegroundEvent } from './events/components/ForegroundEvent'
+export { rowEventVariant, columnEventVariant, listItemEventVariant } from './events/components/event-variants'
 export type { EventProps, ForegroundEventProps, EventVariant } from './events/components/ForegroundEvent'
 export { NowIndicatorHeaderContainer } from './now-indicator/NowIndicatorHeaderContainer'
 export { NowIndicatorLineContainer } from './now-indicator/NowIndicatorLineContainer'

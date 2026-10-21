@@ -1,7 +1,8 @@
 import { memo } from 'react'
 import { MinimalEventProps } from '../../events/components/event-display-info'
 import { createFormatter } from '../../datelib/formatting'
-import { ForegroundEvent, columnEventVariant } from '../../events/components/ForegroundEvent'
+import { ForegroundEvent } from '../../events/components/ForegroundEvent'
+import { columnEventVariant } from '../../events/components/event-variants'
 import classNames from '../../styles.module.css'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
