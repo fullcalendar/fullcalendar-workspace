@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "@fullcalendar-tests/react17",
+  "version": "0.0.0",
+  "description": "Smoke tests of @fullcalendar/react on React 17 (its oldest supported major)",
+  "type": "module",
+  "devDependencies": {
+    "@fullcalendar/react": "workspace:*",
+    "jsdom": "^27.4.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "temporal-polyfill": "^1.0.1",
+    "vitest": "^4.0.16"
+  },
+  "scripts": {
+    "test": "vitest run"
+  }
+}

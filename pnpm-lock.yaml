@@ -2298,6 +2298,48 @@ importers:
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     publishDirectory: ./dist
 
+  standard/packages/react17-tests:
+    devDependencies:
+      '@fullcalendar/react':
+        specifier: workspace:*
+        version: link:../react/dist
+      jsdom:
+        specifier: ^27.4.0
+        version: 27.4.0
+      react:
+        specifier: 17.0.2
+        version: 17.0.2
+      react-dom:
+        specifier: 17.0.2
+        version: 17.0.2(react@17.0.2)
+      temporal-polyfill:
+        specifier: ^1.0.1
+        version: 1.0.1
+      vitest:
+        specifier: ^4.0.16
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
+
+  standard/packages/react18-tests:
+    devDependencies:
+      '@fullcalendar/react':
+        specifier: workspace:*
+        version: link:../react/dist
+      jsdom:
+        specifier: ^27.4.0
+        version: 27.4.0
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      temporal-polyfill:
+        specifier: ^1.0.1
+        version: 1.0.1
+      vitest:
+        specifier: ^4.0.16
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
+
   standard/packages/rrule:
     dependencies:
       '@full-ui/headless-calendar':

@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "@fullcalendar-tests/react18",
+  "version": "0.0.0",
+  "description": "The React 17 smoke tests on React 18: the concurrent root, Strict Mode's effect replay",
+  "type": "module",
+  "devDependencies": {
+    "@fullcalendar/react": "workspace:*",
+    "jsdom": "^27.4.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "temporal-polyfill": "^1.0.1",
+    "vitest": "^4.0.16"
+  },
+  "scripts": {
+    "test": "vitest run"
+  }
+}
