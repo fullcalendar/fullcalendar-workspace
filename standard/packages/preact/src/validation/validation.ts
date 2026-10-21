@@ -1,10 +1,6 @@
-import { EventStore, filterEventStoreDefs } from '../events/event-store'
 import { DateSpan } from '../events/date-span'
-import {
-  buildEventInstanceRange, EventInstanceRange,
-  instanceRangesIntersect, instanceRangeContainsRange,
-} from '../events/event-instance'
-import { rangeContainsRange, OpenDateRange } from '@full-ui/headless-calendar'
+import { buildEventInstanceRange, instanceRangesIntersect } from '../events/event-instance'
+import { rangeContainsRange } from '@full-ui/headless-calendar'
 import { EventImpl } from '../api/EventImpl'
 import { compileEventUis } from '../event-segs/event-rendering'
 import { excludeInstances } from '../store/reducers/event-store'
@@ -13,8 +9,7 @@ import { SplittableProps } from '../event-segs/Splitter'
 import { mapHash } from '../util/object'
 import { CalendarContext } from '../context/CalendarContext'
 import { buildDateSpanApiWithContext } from '../interactions/date-callbacks'
-import { Constraint } from './constraint'
-import { expandRecurring } from '../events/recurring-event'
+import { allConstraintsPass } from './constraint'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 
 // high-level segmenting-aware tester functions
@@ -238,82 +233,4 @@ function isDateSelectionPropsValid(state: SplittableProps, context: CalendarCont
   }
 
   return true
-}
-
-// Constraint Utils
-// ------------------------------------------------------------------------------------------------------------------------
-
-function allConstraintsPass(
-  constraints: Constraint[],
-  subjectRange: EventInstanceRange,
-  otherEventStore: EventStore,
-  businessHoursUnexpanded: EventStore,
-  context: CalendarContext,
-): boolean {
-  for (let constraint of constraints) {
-    if (!anyRangesContainRange(
-      constraintToRanges(constraint, subjectRange, otherEventStore, businessHoursUnexpanded, context),
-      subjectRange,
-      context,
-    )) {
-      return false
-    }
-  }
-
-  return true
-}
-
-function constraintToRanges(
-  constraint: Constraint,
-  subjectRange: EventInstanceRange, // for expanding a recurring constraint, or expanding business hours
-  otherEventStore: EventStore, // for if constraint is an even group ID
-  businessHoursUnexpanded: EventStore, // for if constraint is 'businessHours'
-  context: CalendarContext, // for expanding businesshours
-): OpenDateRange[] {
-  if (constraint === 'businessHours') {
-    return eventStoreToRanges(
-      expandRecurring(businessHoursUnexpanded, subjectRange, context),
-    )
-  }
-
-  if (typeof constraint === 'string') { // an group ID
-    return eventStoreToRanges(
-      filterEventStoreDefs(otherEventStore, (eventDef) => eventDef.groupId === constraint),
-    )
-  }
-
-  if (typeof constraint === 'object' && constraint) { // non-null object
-    return eventStoreToRanges(
-      expandRecurring(constraint, subjectRange, context),
-    )
-  }
-
-  return [] // if it's false
-}
-
-// TODO: move to event-store file?
-function eventStoreToRanges(eventStore: EventStore): EventInstanceRange[] {
-  let { instances } = eventStore
-  let ranges: EventInstanceRange[] = []
-
-  for (let instanceId in instances) {
-    ranges.push(instances[instanceId].range)
-  }
-
-  return ranges
-}
-
-// TODO: move to geom file?
-function anyRangesContainRange(
-  outerRanges: OpenDateRange[],
-  innerRange: EventInstanceRange,
-  context: CalendarContext,
-): boolean {
-  for (let outerRange of outerRanges) {
-    if (instanceRangeContainsRange(outerRange, innerRange, context.dateEnv)) {
-      return true
-    }
-  }
-
-  return false
 }

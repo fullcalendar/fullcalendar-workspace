@@ -235,3 +235,18 @@ export function createEventInstance(
     range,
   }
 }
+
+// whether any of the ranges contains the instance range
+export function anyRangesContainRange(
+  outerRanges: OpenDateRange[],
+  innerRange: EventInstanceRange,
+  dateEnv: DateEnv,
+): boolean {
+  for (let outerRange of outerRanges) {
+    if (instanceRangeContainsRange(outerRange, innerRange, dateEnv)) {
+      return true
+    }
+  }
+
+  return false
+}

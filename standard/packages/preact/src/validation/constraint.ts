@@ -1,4 +1,7 @@
-import { EventStore, parseEvents } from '../events/event-store'
+import { EventStore, eventStoreToRanges, filterEventStoreDefs, parseEvents } from '../events/event-store'
+import { anyRangesContainRange, EventInstanceRange } from '../events/event-instance'
+import { expandRecurring } from '../events/recurring-event'
+import { OpenDateRange } from '@full-ui/headless-calendar'
 import { EventInput } from '../events/event-parse'
 import { DateSpanApi } from '../events/date-span'
 import { EventImpl } from '../api/EventImpl'
@@ -21,4 +24,53 @@ export function normalizeConstraint(input: ConstraintInput, context: CalendarCon
     return String(input)
   }
   return null
+}
+
+// whether the range satisfies every constraint: each must have a range containing it
+export function allConstraintsPass(
+  constraints: Constraint[],
+  subjectRange: EventInstanceRange,
+  otherEventStore: EventStore,
+  businessHoursUnexpanded: EventStore,
+  context: CalendarContext,
+): boolean {
+  for (let constraint of constraints) {
+    if (!anyRangesContainRange(
+      constraintToRanges(constraint, subjectRange, otherEventStore, businessHoursUnexpanded, context),
+      subjectRange,
+      context.dateEnv,
+    )) {
+      return false
+    }
+  }
+
+  return true
+}
+
+function constraintToRanges(
+  constraint: Constraint,
+  subjectRange: EventInstanceRange, // for expanding a recurring constraint, or expanding business hours
+  otherEventStore: EventStore, // for if constraint is an even group ID
+  businessHoursUnexpanded: EventStore, // for if constraint is 'businessHours'
+  context: CalendarContext, // for expanding businesshours
+): OpenDateRange[] {
+  if (constraint === 'businessHours') {
+    return eventStoreToRanges(
+      expandRecurring(businessHoursUnexpanded, subjectRange, context),
+    )
+  }
+
+  if (typeof constraint === 'string') { // an group ID
+    return eventStoreToRanges(
+      filterEventStoreDefs(otherEventStore, (eventDef) => eventDef.groupId === constraint),
+    )
+  }
+
+  if (typeof constraint === 'object' && constraint) { // non-null object
+    return eventStoreToRanges(
+      expandRecurring(constraint, subjectRange, context),
+    )
+  }
+
+  return [] // if it's false
 }

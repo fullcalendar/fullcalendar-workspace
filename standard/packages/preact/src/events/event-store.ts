@@ -1,5 +1,5 @@
 import { EventDef, EventDefHash } from './event-def'
-import { EventInstance, EventInstanceHash } from './event-instance'
+import { EventInstanceRange, EventInstance, EventInstanceHash } from './event-instance'
 import { EventInput, parseEvent, EventTuple, buildEventRefiners } from './event-parse'
 import { filterHash } from '../util/object'
 import { CalendarContext } from '../context/CalendarContext'
@@ -119,4 +119,16 @@ export function excludeSubEventStore(master: EventStore, sub: EventStore): Event
     defs: filteredDefs,
     instances: filteredInstances,
   }
+}
+
+// every instance's range
+export function eventStoreToRanges(eventStore: EventStore): EventInstanceRange[] {
+  let { instances } = eventStore
+  let ranges: EventInstanceRange[] = []
+
+  for (let instanceId in instances) {
+    ranges.push(instances[instanceId].range)
+  }
+
+  return ranges
 }
