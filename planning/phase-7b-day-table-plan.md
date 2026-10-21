@@ -1,11 +1,12 @@
 # Phase 7b: the day-table pipeline
 
-Status: plan, revision 2 (2026-10-21, after spec review round 1 by Sol, §7). Not started.
+Status: plan, revision 3 (2026-10-21, after spec review rounds 1 and 2 by Sol, §7-8). Not started.
 
-Sequencing: lands right after phase 10 (date profile, `phase-10-date-profile.md` revision 3) and
-before phase 11 (granular contexts, `useSyncExternalStore`, render-time purity). The design consumes
-phase 10's `DateProfileGenerator.hiddenDays` (§2.9) and makes every new piece a pure function of
-explicit inputs, with the impure helpers it still calls listed for phase 11 (§2.10).
+Sequencing: lands after phase 10 (date profile, done: `phase-10-date-profile.md`, step 1 added the
+`DateProfileGenerator.hiddenDays` getter) and before phase 11 (granular contexts,
+`useSyncExternalStore`, render-time purity). The design consumes that getter (§2.9) and makes every
+new piece a pure function of explicit inputs, with the impure helpers it still calls listed for phase
+11 (§2.10).
 
 Background: `day-table-pipeline.md` (the problem), `refactor-roadmap.md` §7b (ground rules),
 `phase-7-layout-families.md` (the hooks the views already use), `phase-9-store.md` (derived data).
@@ -84,9 +85,15 @@ Premium (`premium/packages/preact-scheduler/src`):
 
 ### 1.3 The split and join rules (must be reproduced exactly)
 
-**Participating keys** are every resource in `resources` (view-wide filtered and flattened), in order,
-plus `''`. A resource with no surviving column (per-date filtering, resources above dates) still
-participates. For a seg sliced under key K or `''`, where "keyed columns" are columns that belong to
+**Participating keys** are the **model's** `resources` (`VResourceSplitter.getKeyInfo` reads
+`resourceDayTableModel.resourceIndex`, `VResourceJoiner.joinProps` reads `resourceIndex.ids`), in
+order, plus `''`. That list is the view-wide filtered, flattened `resources` for the two resource
+orderings, where a resource with no surviving column (per-date filtering, resources above dates)
+still participates; but it is **`[]` when `buildResourceTableModel` fell back to the resourceless
+model** because per-date filtering left no resource column at all (`resource-table-model.ts:34-35`,
+`ResourcelessDayTableModel.ts:16`): then nothing participates, every key-targeted event, business
+hours and interaction is dropped, and the header is the plain date row (`resource-header-tier.ts:24`,
+`resources.length === 0`). For a seg sliced under key K or `''`, where "keyed columns" are columns that belong to
 a resource and "placeholder columns" are the inert ones (`resourceI = -1`; in the resourceless model,
 *every* column):
 
@@ -132,8 +139,9 @@ column, and an interaction renders whenever it exists.
 
 ### 1.4 Where identity is created and preserved, and which hooks depend on it
 
-- **`EventRenderRange` objects** are created inside `sliceEventStore`, called from `Slicer._sliceEventStore` (memoized on `(eventStore, eventUiBases, dateProfile, nextDayThreshold, ...extraArgs)`), `_sliceInteraction` (on `(interaction, eventUiBases, dateProfile, nextDayThreshold, ...extra)`) and `_sliceBusinessHours` (on `(businessHours, dateProfile, nextDayThreshold, context, ...extra)`); `_sliceDateSpan` (on `(dateSelection, dateProfile, nextDayThreshold, eventUiBases, context, ...extra)`) fabricates a def and instance with **fresh ids** on each run. In the resource views the per-key `eventStore`/`eventUiBases` come from the splitter's memoized fields; the subsets rebuild when the whole store changes, and the per-key bases rebuild when the store or the bases change (`defKeys` is recomputed per store). So the **effective granularity is "per view, per category"**: fg segs and their `eventRange`s are the same objects across renders until the event store, the UI bases, the date profile, `nextDayThreshold` or the plain date coordinates (`daySeries`/`dayRanges`/`dayTableModel`) change.
-- **Two identity boundaries in the resource views.** The slicer memos (ranges and date coordinates) do **not** depend on the resource table model; only the joiner memos (`(model, ...sets)`) do. A model-only change (a resource renamed: new `Resource` object with the same `ui`/`businessHours` references, new `resources` array, new model; the store, bases and date ranges unchanged) reruns the joiner, which allocates new seg objects but **spreads the same `eventRange`**. In particular a fabricated selection keeps its instance id, so a `selectMirror` keyed by `instanceId` (`TimeGridCol.tsx:264`) is not remounted. The new design must keep these two boundaries (§2.5).
+- **`EventRenderRange` objects** are created inside `sliceEventStore`, called from `Slicer._sliceEventStore` (memoized on `(eventStore, eventUiBases, dateProfile, nextDayThreshold, ...extraArgs)`), `_sliceInteraction` (on `(interaction, eventUiBases, dateProfile, nextDayThreshold, ...extra)`) and `_sliceBusinessHours` (on `(businessHours, dateProfile, nextDayThreshold, context, ...extra)`); `_sliceDateSpan` (on `(dateSelection, dateProfile, nextDayThreshold, eventUiBases, context, ...extra)`) fabricates a def and instance with **fresh ids** on each run.
+- **The resource views' caches are per key and per category, and compare values, not the resource list.** Each key has its own `Slicer` instance (the ref map, `ResourceTimeGridView.tsx:78-92`), so each key's five memos hold or miss independently. Their inputs per key: the key's `eventStore` subset (`_splitEventStore`, rebuilt for every key when the whole store changes), the key's `eventUiBases` (`eventUiBuilders[key]`, `event-splitting.ts:44-55`: a per-key `memoize` on `(eventUiBases[''], resource.ui, individualUi[key])`, where `individualUi` is rebuilt with the store's `defKeys`), the key's `businessHours` (`resource.businessHours || props.businessHours`, a reference), the key's `dateSelection` (the same span object), the key's interaction split state (new per interaction). **Nothing compares the `Resource` object or the `resources` array**: a resource rename (new `Resource`, same `ui` and `businessHours` references, new `resources` list, new table model) leaves every per-key base and every per-key slicer memo intact; a change to resource A's `ui` (`eventColor`) rebuilds A's bases and A's fg/bg/selection/interaction segs only, never B's. So the **effective granularity is "per key, per category"**, with the whole store as a shared input: fg segs and their `eventRange`s for key K are the same objects across renders until the event store, K's bases, the date profile, `nextDayThreshold` or the plain date coordinates (`daySeries`/`dayRanges`/`dayTableModel`) change; K's fabricated selection instance (and its id) survives anything but those and the selection itself.
+- **Two identity boundaries in the resource views.** The per-key slicer memos (ranges and date coordinates) do **not** depend on the resource table model, the `Resource` objects or the `resources` list; only the joiner memos (`(model, ...sets)`) do. A model-only change (a rename, above) reruns the joiner, which allocates new seg objects but **spreads the same `eventRange`**. In particular a fabricated selection keeps its instance id, so a `selectMirror` keyed by `instanceId` (`TimeGridCol.tsx:264`) is not remounted. The new design must keep both boundaries *and* the per-key granularity beneath the aggregate (§2.3-2.6): any aggregate memo whose deps include the keying or the resource list would re-fabricate B's selection on A's change or on a rename.
 - **Seg arrays** come out of the slicer memos (standard) or the joiner memos (premium).
 - **Who depends on it:**
   - `DayGridRows.tsx:72-83`: `useMemo` over `splitSegsByRow`/`splitInteractionByRow` keyed on the arrays. `DayGridRow` is `memo`; its `sortEventSegs` `useMemo` (`:187`) keys on `props.fgEventSegs`. `DayGridCell` is `memo` but its `fills`/`segs`/`fg` props are rebuilt every row render, so a row render re-renders its cells regardless.
@@ -167,8 +175,10 @@ column, and an interaction renders whenever it exists.
   function). For plain views stage 2 is the identity and returns stage 1's arrays unchanged.
 - The resource dimension enters through a small **keying** object (which keys a def or span belongs
   to, per-key UI and business hours, the `''` rules of §1.3).
-- **Pure functions, memoized at the call site** with `useMemo` on the same inputs today's `memoize`
-  fields compare, so identity granularity is unchanged (same or fewer rebuilds, never more).
+- **Pure functions, memoized at the same granularity as today:** stage 1 through **per-key,
+  per-category caches** comparing the same per-key values today's per-key slicers and UI builders
+  compare (never the `Resource` objects, the `resources` list or the keying), stage 2 through
+  `useMemo` on the model (today's joiner boundary). Same or fewer rebuilds, never more.
 - Seg shapes stay: `DayGridRange & EventRangeProps` and `TimeGridRange & EventRangeProps`, with the
   same `isStart`/`isEnd` semantics, the same order and the same key strings. The layouts, rows,
   columns, cells, more-links, popovers and hit code don't change.
@@ -210,13 +220,18 @@ export interface DayTableModel {
   keylessCols: number[]        // columns with entityKey '' (all of them in plain and resourceless models)
   dateFirstCols: number[]      // first view column per dateI (now indicator's showDot)
   isInert: boolean             // every column inert (premium resourceless); plain views: false
+  participants: unknown[]      // the entities the model was built FOR, in order (today's model.resources):
+                               // plain: EMPTY. premium: the `resources` array itself, or EMPTY after the
+                               // all-filtered fallback. the keying (§2.3) and the header derive from this,
+                               // never from the view's `resources`, so the fallback empties both (§1.3)
 }
 ```
 
-The ordered list of **participating** keys is not on the model but on the keying (§2.3), because it
-is the splitter's notion (every resource), not the column index's (resources owning columns).
-`colLookup(model, dateI, key) → colI | -1` is a module function (a `Map` keyed `dateI:key` built
-alongside; internal).
+`participants` is distinct from column ownership (`colsByEntityKey`): a participant may own no
+column (per-date filtering, resources above dates), and the fallback empties the participants while
+the view's `resources` is non-empty. Its identity is the input array (or a module `EMPTY`), so a
+`useMemo` on it changes exactly when `resources` does. `colLookup(model, dateI, key) → colI | -1` is
+a module function (a `Map` keyed `dateI:key` built alongside; internal).
 
 Builders:
 
@@ -287,31 +302,41 @@ export interface KeylessRules {
 }
 
 export const PLAIN_KEYING: DayTableKeying  // a module constant: stable identity for memo deps
-// premium: buildResourceKeying(resources: Resource[]): DayTableKeying, useMemo on `resources`
+// premium: buildResourceKeying(participants: Resource[]): DayTableKeying, useMemo on `model.participants`
+//          (NOT on the view's `resources`: the fallback model has no participants, §1.3)
 ```
 
-A def or span that names keys outside `keys` (a resource not in the view) is dropped from those keys,
-as today (`event-splitting.ts:46-48`: only `keyInfos` keys are produced).
+A def or span that names keys outside `keys` (a resource not in the view, or any resource after the
+fallback) is dropped from those keys, as today (`event-splitting.ts:46-48`: only `keyInfos` keys are
+produced).
 
-**Per-key, per-lane UI bases** (`event-ui-bases.ts`), reproducing `_splitIndividualUi` +
-`buildEventUiForKey` and the lane partition:
+**The keying's identity is never a stage-1 memo input.** A rename changes `resources`, the model and
+the keying; stage 1 compares only the per-key *values* the keying carries (`uiByKey[K]`,
+`businessHoursByKey[K]`, both references preserved by a rename) and the pure functions
+`keysForEventDef`/`keyForDateSpan` (which depend on nothing but the def/span). Stage 2 and the
+selection resolver may depend on the keying.
+
+**Per-key, per-lane UI bases** (`event-ui-bases.ts`), reproducing `_getKeysForEventDefs` +
+`_splitIndividualUi` + `eventUiBuilders[key]` (`event-splitting.ts:44-55`, `:79`, `:110`) and the lane
+partition, as three layers with today's cache boundaries:
 
 ```ts
-export function buildEventUiBasesByKey(
-  eventUiBases: EventUiHash,
-  currentDefs: EventDefHash,     // props.eventStore.defs: membership is decided by the current, unmutated defs
-  keying: DayTableKeying,
-  lane: DayTableLane,            // TimeGrid: a def's individual base is included only in the lanes the current def belongs to
-): { [key: string]: EventUiHash }
+// 1. per store: which keys and lanes each current def belongs to
+export function buildDefKeys(defs: EventDefHash, keysForEventDef): { [defId: string]: string[] }        // memo on (defs)
+// 2. per (eventUiBases, defKeys, lane): the individual bases partitioned by key
+export function splitIndividualUi(eventUiBases, defKeys, defs, lane): { [key: string]: EventUiHash }  // memo on (eventUiBases, defKeys, lane)
+// 3. per key: the key's full bases, a per-key memoize on (eventUiBases[''], uiByKey[key], individualUi[key])
+export function buildEventUiForKey(allUi: EventUi | null, keyUi: EventUi | undefined, individual: EventUiHash | undefined): EventUiHash
 ```
 
-For each participating key and `''`: `{ '': combineEventUis([eventUiBases[''], uiByKey[key]]),
-...individual bases of defs whose keysForEventDef(currentDef) include key and whose lane
-classification (§1.3) includes lane }`. The `''` entry for `PLAIN_KEYING` and a DayGrid lane is the
-input hash itself (same object: `DayGridView` has no splitter today). For `PLAIN_KEYING` and a
-TimeGrid lane it is the lane partition `AllDaySplitter` makes. Memoized on `(eventUiBases,
-currentDefs, keying, lane)`, which is today's granularity (`splitIndividualUi` on `(eventUiBases,
-defKeys)`, `defKeys` on the store).
+Layer 3 is a **per-key `memoize` map** held by the hook (today's `eventUiBuilders` pattern, which the
+hook-toolkit spec §3.3 explicitly keeps as a `memoize` instance: "the per-key memoize map at
+`event-splitting.ts:44`"), keyed by the key string, entries kept while the key participates and
+dropped when it stops (as `mapHash(keyInfos, …)` does). So key K's bases object is the same across
+renders until the calendar base, K's `ui` reference or the store's individual partition for K changes,
+and B's bases never change because A's `ui` did. The `''` entry for `PLAIN_KEYING` and a DayGrid lane
+is the input hash itself (same object: `DayGridView` has no splitter today). For `PLAIN_KEYING` and a
+TimeGrid lane it is the lane partition `AllDaySplitter` makes.
 
 ### 2.4 Stage 1: slicing ranges per key, in date coordinates
 
@@ -326,31 +351,52 @@ export interface DayTableLane {
 
 export interface KeyedRanges<R> { [key: string]: R[] }   // one bucket per participating key and ''
 
-export function sliceDayTableEvents(      // fg + bg, one pass over the store
+export function sliceDayTableEvents(      // fg + bg, one pass over the store, for the keys asked for
   eventStore: EventStore,
+  keys: string[],                          // the keys to (re)compute this time: the stale ones (see the cache below)
   eventUiBasesByKey: { [key: string]: EventUiHash },
-  keying: DayTableKeying,
-  daySeries: DaySeries, dayCols: DayCol[],   // the PLAIN date coordinates (model.daySeries / model.dayCols of the plain model)
+  keysForEventDef: (def: EventDef) => string[],
+  laneForDef: (def: EventDef) => Lanes,    // from the lane constant
+  daySeries: DaySeries, dayCols: DayCol[],   // the PLAIN date coordinates (model.daySeries / model.dayCols)
   lane: DayTableLane,
   dateProfile: DateProfile,
   nextDayThreshold: Duration | null,
-): { fg: KeyedRanges<Seg>, bg: KeyedRanges<Seg> }
+): { fg: KeyedRanges<Seg>, bg: KeyedRanges<Seg> }   // buckets for `keys` only
 
-export function sliceDayTableBusinessHours(businessHours, keying, daySeries, dayCols, lane, dateProfile, nextDayThreshold, context): KeyedRanges<Seg>
-export function sliceDayTableDateSelection(dateSelection, eventUiBasesByKey, keying, daySeries, dayCols, lane, dateProfile, nextDayThreshold, context): KeyedRanges<Seg>
-export function sliceDayTableInteraction(interaction, eventUiBasesByKey, keying, daySeries, dayCols, lane, dateProfile, nextDayThreshold): KeyedInteraction<Seg> | null
-  // KeyedInteraction: { segsByKey: KeyedRanges<Seg>, affectedInstancesByKey: { [key]: EventInstanceHash }, isEventByKey: { [key]: boolean } }
-export function resolveDayTableEventSelection(eventSelection, eventStore, keying, lane): string
+export function sliceDayTableBusinessHoursForKey(businessHours: EventStore | null, daySeries, dayCols, lane, dateProfile, nextDayThreshold, context): Seg[]
+export function sliceDayTableDateSelectionForKey(dateSelection: DateSpan | null, basesForKey, daySeries, dayCols, lane, dateProfile, nextDayThreshold, context): Seg[]
+export function sliceDayTableInteractionForKey(interaction, key, basesForKey, keysForEventDef, laneForDef, daySeries, dayCols, lane, dateProfile, nextDayThreshold): KeyedInteractionEntry<Seg> | null
+  // KeyedInteractionEntry: { segs: Seg[], affectedInstances: EventInstanceHash, isEvent: boolean } — null when the key has neither an affected nor a mutated def (today's "no split state")
+export function resolveDayTableEventSelection(eventSelection, eventStore, keys, keysForEventDef, lane): string
 ```
 
 where `Seg` is `DayGridRange & EventRangeProps` (column-in-row coordinates, divisor
 `dayCols.length`) for the `dayGrid` lane and `TimeGridRange & EventRangeProps` (`col = dateI`) for
 `timeGrid`.
 
+**The per-key cache (`keyed-cache.ts`)**, the hook-side owner of today's per-key slicer instances:
+
+```ts
+export interface KeyedCache<Args extends any[], Res> {
+  // for each key: compare `argsFor(key)` to the key's stored args (isArraysEqual, as memoize does);
+  // stale keys are recomputed, the rest return their stored result (same array, same eventRanges).
+  // keys no longer present are evicted. returns { [key]: Res } with per-key stable entries
+  get(keys: string[], argsFor: (key: string) => Args, compute: (staleKeys: string[]) => { [key: string]: Res }): { [key: string]: Res }
+}
+```
+
+One `KeyedCache` per category per lane, created once per view instance (`useState(() =>
+createKeyedCache())`), like today's `slicersRef` map. `compute` receives all stale keys at once, so
+fg/bg still run **one pass over the store** for however many keys are stale (all of them on a store
+change, as today; one of them when only that key's bases changed; none on a rename). The per-key
+args are exactly today's per-key slicer args (§2.6). The aggregate `{ [key]: Res }` is a new object
+per render; stage 2 compares its entries shallowly (`memoizeObjArg`/`isPropsEqualShallow`), so an
+unchanged set of buckets doesn't re-project.
+
 How `sliceDayTableEvents` reproduces `sliceEventStore` per key without subsets, in `sliceEventStore`'s
 **three stages** over the whole store:
 
-1. **Defs:** for each def in store order: `keys = keysForEventDef(def)` filtered to the participating
+1. **Defs:** for each def in store order: `keys = keysForEventDef(def)` filtered to the requested
    keys (or `''`); apply the lane filter (timed def → timed lane; all-day def with def-level
    `hasBgRendering(def)` → both; other all-day → all-day lane). For each surviving key: compile
    `ui = compileEventUi(def, eventUiBasesByKey[key])` into a per-key `uiByDefId` and, if `display ===
@@ -374,16 +420,20 @@ How `sliceDayTableEvents` reproduces `sliceEventStore` per key without subsets, 
      `{ col: dateI, startDate, endDate, isStart, isEnd }` (`DayTimeColsSlicer.ts`).
    For plain views these are exactly today's segs, same objects per render as long as the memo holds.
 
-`sliceDayTableBusinessHours` (per participating key: `businessHoursByKey[key] || businessHours`,
-expanded with `expandRecurring` into the civil active range as `_sliceBusinessHours`; `''`: the
-calendar's), `sliceDayTableDateSelection` (`keyForDateSpan`, `intersectDateSpan`'s instant stripping,
-`fabricateEventRange` with that key's bases) and `sliceDayTableInteraction` mirror the `Slicer`
-methods. Interaction, per key: segs from `interaction.mutatedEvents` instances whose *mutated* def
+The per-key functions mirror the `Slicer` methods, each run through the key's `KeyedCache` entry:
+`sliceDayTableBusinessHoursForKey` (input `businessHoursByKey[key] || businessHours`, a reference;
+`''`: the calendar's; expanded with `expandRecurring` into the civil active range as
+`_sliceBusinessHours`), `sliceDayTableDateSelectionForKey` (input: the span if `keyForDateSpan(span)
+=== key` else `null`, as `_splitDateSpan` gives each key the same span object or nothing;
+`intersectDateSpan`'s instant stripping; `fabricateEventRange` with that key's bases, so the
+fabricated instance id lives as long as the key's cache entry holds), and
+`sliceDayTableInteractionForKey`: segs from `interaction.mutatedEvents` instances whose *mutated* def
 has the key (sliced with `sliceEventStore`'s rules, fg only, as `_sliceInteraction`);
-`affectedInstancesByKey[key]` = instances of `interaction.affectedEvents` whose *affected* def has the
-key and the lane; `isEventByKey[key] = interaction.isEvent` for keys with either subset non-empty.
-Stage 2 decides what to merge (§2.5). `resolveDayTableEventSelection`: `''` unless the instance exists
-in the store and its def belongs to a participating key or to `''`, and (TimeGrid) to the lane.
+`affectedInstances` = instances of `interaction.affectedEvents` whose *affected* def has the key and
+the lane; `isEvent = interaction.isEvent`; `null` when the key has neither (today's missing split
+state). Stage 2 decides what to merge (§2.5). `resolveDayTableEventSelection`: `''` unless the
+instance exists in the store and its def belongs to one of `keys` or to `''`, and (TimeGrid) to the
+lane; with `keys = []` after the fallback only `''`-keyed defs qualify, as today.
 
 ### 2.5 Stage 2: projection onto view columns
 
@@ -409,9 +459,10 @@ export function projectInteraction<S>(keyed: KeyedInteraction<S> | null, model, 
 - **Plain models** (`PLAIN_KEYING`, one bucket `''`, every column keyless, `rules` all-columns): the
   projection returns the stage-1 array **itself** (no copy), so identity is exactly today's.
 - **Interaction metadata:** `affectedInstances` = `Object.assign({}, ...keys.map(k =>
-  affectedInstancesByKey[k]))` in key order (resource rules: `''` excluded; plain: the `''` entry is
-  the whole lane subset); `isEvent` OR-ed over the included keys; the result is `null` when no
-  included key has a state (`anyInteractions`), or, for plain, when the interaction is null.
+  entries[k]?.affectedInstances))` in key order (resource rules: `''` excluded; plain: the `''` entry
+  is the whole lane subset); `isEvent` OR-ed over the included keys' entries; the result is `null`
+  when no included key has an entry (`anyInteractions`; after the fallback `keys` is empty, so always
+  `null`), or, for plain, when the interaction is null.
 
 ### 2.6 The hook
 
@@ -419,9 +470,8 @@ export function projectInteraction<S>(keyed: KeyedInteraction<S> | null, model, 
 // useDayTableSegs.ts
 export function useDayTableSegs<L extends DayTableLane>(
   props: SliceableProps,          // the view's eventStore, eventUiBases, businessHours, dateSelection, eventDrag, eventResize, eventSelection
-  keying: DayTableKeying,
-  plainModel: DayTableModel,      // stage-1 coordinates
-  model: DayTableModel,           // stage-2 columns (the same object for plain views)
+  keying: DayTableKeying,         // PLAIN_KEYING, or buildResourceKeying(model.participants)
+  model: DayTableModel,           // stage 1 reads its daySeries/dayCols (stable while the date inputs are), stage 2 the rest
   lane: L,
   dateProfile: DateProfile,
   nextDayThreshold: Duration | null,
@@ -429,33 +479,48 @@ export function useDayTableSegs<L extends DayTableLane>(
 ): SlicedProps<SegFor<L>>
 ```
 
-Memo table (the two boundaries of §1.4, with today's dependency sets):
+Memo table. Stage 1 is **per key** (a `KeyedCache` per row, `keys = keying.keys` plus `''`); the
+per-key args are today's per-key slicer args. Stage 2 is one `useMemo` per row with a shallow
+compare of the bucket map. `coords` = `(model.daySeries, model.dayCols)`, two fields whose identity
+follows the date inputs only (the resource model copies them from the plain model).
 
-| Output | stage-1 memo deps (ranges, date coordinates) | stage-2 memo deps (projection) |
+| Output | per-key stage-1 args (compared per key with `isArraysEqual`) | stage-2 deps |
 |---|---|---|
-| `eventUiBasesByKey` | `eventUiBases, eventStore.defs, keying, lane` | — |
-| `fg`, `bg` buckets (one memo, as `_sliceEventStore`) | `eventStore, eventUiBasesByKey, plainModel, lane, dateProfile, nextDayThreshold` | `buckets, model, keying` |
-| `businessHours` buckets | `businessHours, keying, plainModel, lane, dateProfile, nextDayThreshold, context` | `buckets, model, keying` |
-| `dateSelection` buckets | `dateSelection, eventUiBasesByKey, plainModel, lane, dateProfile, nextDayThreshold, context` | `buckets, model, keying` |
-| `eventDrag`, `eventResize` keyed states | `interaction, eventUiBasesByKey, plainModel, lane, dateProfile, nextDayThreshold` | `keyed, model, keying` |
-| `eventSelection` | `eventSelection, eventStore, keying, lane` | — |
+| `defKeys` | `(eventStore.defs)` (one memo, not per key) | — |
+| `individualUi` | `(eventUiBases, defKeys, lane)` (one memo, not per key) | — |
+| `basesByKey[K]` | `(eventUiBases[''], keying.uiByKey[K], individualUi[K])` (today's `eventUiBuilders[key]`) | — |
+| `fg`/`bg` buckets | `(eventStore, basesByKey[K], coords, lane, dateProfile, nextDayThreshold)`; stale keys computed in one pass | `(buckets shallow, model, keying)` |
+| `businessHours` buckets | `(keying.businessHoursByKey[K] ?? businessHours, coords, lane, dateProfile, nextDayThreshold, context)` | `(buckets shallow, model, keying)` |
+| `dateSelection` buckets | `(keyForDateSpan(dateSelection) === K ? dateSelection : null, basesByKey[K], coords, lane, dateProfile, nextDayThreshold, context)` | `(buckets shallow, model, keying)` |
+| `eventDrag`, `eventResize` entries | `(interaction, basesByKey[K], coords, lane, dateProfile, nextDayThreshold)` | `(entries shallow, model, keying)` |
+| `eventSelection` | `(eventSelection, eventStore, keying.keys, lane)` | — |
 
 `lane` is a module constant per view (`DAY_GRID_LANE`, `TIME_GRID_ALL_DAY_LANE`, `TIME_GRID_TIMED_LANE`);
-`keying` is `PLAIN_KEYING` or a `useMemo` on `resources`; `plainModel` is `useMemo`'d on
+`keying` is `PLAIN_KEYING` or a `useMemo` on `model.participants`; the plain model is `useMemo`'d on
 `(dateProfile, hiddenDays, dateEnv, config)`, today's deps of `dayTableModel`/`daySeries`/`dayCols`.
 The returned `SlicedProps` object is new each render, as today's is; consumers take its fields.
 
+**Invariant, enforced by review and the mutation checks:** no stage-1 arg is the keying, the
+`resources` list, a `Resource` object or the model itself. Only per-key values with the same
+identity behavior as today's inputs.
+
 Why identity is at least as stable as today:
 
-- **Standard views:** stage 1's deps are today's slicer memo args (the plain model standing in for
-  `dayTableModel`/`daySeries`/`dayRanges`, built from the same inputs); stage 2 is the identity. Same
-  granularity, same objects.
-- **Resource views:** stage 1 depends on the store, the per-key bases (which rebuild on `(eventUiBases,
-  defs, keying)`, today's `(eventUiBases, defKeys)` plus the resource list, which the splitter also
-  rebuilt its `keyInfos` from), the date profile and the plain coordinates; **not** on the resource
-  model. Stage 2 depends on the model and keying, as the joiner did on the model and the sets. A
-  resource rename reruns stage 2 only: new seg objects, same `eventRange`s, same fabricated selection
-  instance id, no mirror remount. Same two boundaries.
+- **Standard views:** one key (`''`); stage 1's args are today's slicer memo args (`coords` standing
+  in for `dayTableModel`/`daySeries`/`dayRanges`, built from the same inputs); stage 2 is the identity.
+  Same granularity, same objects.
+- **Resource views, per key:** K's fg/bg entry misses when the store, K's bases, the date inputs or
+  the profile change, exactly today's per-key slicer; K's bases miss when the calendar base, K's `ui`
+  reference or K's individual partition changes, exactly today's `eventUiBuilders[K]`; K's selection
+  entry misses only on those or on the selection itself. So:
+  - a **rename of B** (new `Resource`, same `ui`/`businessHours` references; new `resources`, model,
+    keying): every stage-1 entry holds; stage 2 reruns (new seg objects, same `eventRange`s, same
+    fabricated selection instance id, no mirror remount), as the joiner did;
+  - **A's `eventColor` changes** (A's `ui` reference changes, B's doesn't): A's bases and A's entries
+    recompute; B's selection mirror and B's events keep their objects and ids, as today;
+  - the **fallback** empties `keying.keys`: every key's entries are evicted (today: the splitter's
+    key set empties); `''` stays.
+  Stage 2 depends on the model and keying, as the joiner did on the model and the sets.
 - A **drag**: `eventDrag` changes each move → only the interaction memos recompute; fg/bg/BH/selection
   arrays and their `eventRange`s are untouched. Unaffected `ForegroundEvent`s skip through `memo`.
 - **Measurement re-renders** don't reach the view body. **Now ticks** re-render the body with the same
@@ -468,13 +533,13 @@ Why identity is at least as stable as today:
 ```tsx
 // DayGridView body
 const model = useDayGridModel(dateProfile)                     // plain; replaces useDayGridViewData's dayTableModel (same memo deps, hiddenDays from the generator)
-const segs = useDayTableSegs(props, PLAIN_KEYING, model, model, DAY_GRID_LANE, dateProfile, options.nextDayThreshold, context)
+const segs = useDayTableSegs(props, PLAIN_KEYING, model, DAY_GRID_LANE, dateProfile, options.nextDayThreshold, context)
 <DayGridLayout cellRows={model.cellRows} headerTiers={...} {...segs} />
 
 // TimeGridView body
 const model = useTimeGridModel(dateProfile)                     // slot ranges, no major unit
-const allDay = useDayTableSegs(props, PLAIN_KEYING, model, model, TIME_GRID_ALL_DAY_LANE, ...)
-const timed = useDayTableSegs(props, PLAIN_KEYING, model, model, TIME_GRID_TIMED_LANE, ..., null)
+const allDay = useDayTableSegs(props, PLAIN_KEYING, model, TIME_GRID_ALL_DAY_LANE, ...)
+const timed = useDayTableSegs(props, PLAIN_KEYING, model, TIME_GRID_TIMED_LANE, ..., null)
 const timedByCol = useTimedSegsByCol(timed, model.colCount)
 const nowSegsByCol = useNowIndicatorSegsByCol(nowDate, model, dateProfile, options.nextDayThreshold, datesAboveResources = false, enabled)   // §2.8
 <TimeGridLayout cells={model.cols} ... eventSelection={allDay.eventSelection || timed.eventSelection} />
@@ -484,17 +549,19 @@ const plainModel = useTimeGridModel(dateProfile)
 const resources = ...(unchanged filtering and ordering)
 const hasEventsByDate = ...(unchanged, reads plainModel.dayCols)
 const model = useMemo(() => buildResourceDayTableModel(plainModel, resources, options.datesAboveResources, hasEventsByDate, context), [...])
-const keying = useMemo(() => buildResourceKeying(resources), [resources])
-const allDay = useDayTableSegs(props, keying, plainModel, model, TIME_GRID_ALL_DAY_LANE, ...)
-const timed = useDayTableSegs(props, keying, plainModel, model, TIME_GRID_TIMED_LANE, ..., null)
+// from the model's participants, not `resources`: after the all-filtered fallback the model has none (§1.3)
+const keying = useMemo(() => buildResourceKeying(model.participants as Resource[]), [model.participants])
+const allDay = useDayTableSegs(props, keying, model, TIME_GRID_ALL_DAY_LANE, ...)   // stage 1 reads model.daySeries/dayCols, copied from plainModel
+const timed = useDayTableSegs(props, keying, model, TIME_GRID_TIMED_LANE, ..., null)
 ...
-isHitComboAllowed={useStableCallback((h0, h1) => isResourceHitComboAllowed(h0, h1, plainModel.dayCols.length === 1))}
+headerTiers={useMemo(() => buildResourceRowConfigs(toResourceHeaderInput(model, options.datesAboveResources), ...), [...])}  // resourceCount = model.participants.length
+isHitComboAllowed={useStableCallback((h0, h1) => isResourceHitComboAllowed(h0, h1, model.dayCols.length === 1))}
 ```
 
 `AllDaySplitter` goes away: `useTimeGridViewData` no longer returns `splitProps`; the lane filter does
-the same def-level classification inside stage 1, the bases partition in `buildEventUiBasesByKey`, the
-interaction partition in `sliceDayTableInteraction` (affected and mutated separately), and business
-hours stay whole in both lanes. `eventSelection` for the timed lane (`splitProps.timed.eventSelection`
+the same def-level classification inside stage 1, the bases partition in `splitIndividualUi`, the
+interaction partition in `sliceDayTableInteractionForKey` (affected and mutated separately), and
+business hours stay whole in both lanes. `eventSelection` for the timed lane (`splitProps.timed.eventSelection`
 = "the instance is in the timed subset") is `resolveDayTableEventSelection` with the lane.
 
 The header builders keep their shapes. `buildDateRowConfigs` takes `model.headerDates` as before;
@@ -517,27 +584,24 @@ enabled)`. The seg carries no usable `eventRange` today (`{}` bases); keep it ab
 when the now indicator is on and anything else re-renders the view; snapshots unchanged. Locked by
 §4.2's clipping specs (negative `slotMinTime`, extended `slotMaxTime`, now at the active-range edges).
 
-### 2.9 Where 7b touches phase 10's output (revision 3)
+### 2.9 Where 7b touches phase 10's output (landed)
 
-Phase 10 keeps `DateProfileGenerator` as the one class (methods delegating to module functions with
-open recursion), the store keeps building instances, consumers' types don't change, and the generator
-exposes `hiddenDays: HiddenDays` (`isHidden`, `skip`, `trim`, `structs/hidden-days.ts`), built from the
-generator's hash so a custom subclass's `initHiddenDays` override is honoured. 7b:
+Phase 10 kept `DateProfileGenerator` as the one class (methods delegating to module functions with
+open recursion), the store keeps building instances, consumers' types didn't change, and the generator
+has a cached `hiddenDays` getter (`DateProfileGenerator.ts:83-89`) returning a `HiddenDays`
+(`isHidden`, `skip`, `trim`, `structs/hidden-days.ts`) whose methods **delegate through the generator's
+own `isHiddenDay`/`skipHiddenDays`/`trimHiddenDays`**, so a custom subclass's overrides apply and the
+object's identity follows the generator's (memoized by the store per view props). 7b:
 
 - `common/DaySeriesModel.ts:35` (`dateProfileGenerator.isHiddenDay(date)`) becomes
   `buildDaySeries(range: DateRange, hiddenDays: HiddenDays): DaySeries` in
   `common/day-table/day-series.ts` (a plain object `{ dates, cnt, sliceRange }`; `sliceRange` as is),
-  calling `hiddenDays.isHidden(date)`. **Never rebuilt from raw options**: the hooks read
-  `context.dateProfileGenerator.hiddenDays` and pass it down, so a custom generator class's override
-  applies. Phase 10 notes today's distinction that overriding `isHiddenDay` (the method) doesn't
-  change `skipHiddenDays` (the hash); `DaySeriesModel` calls the *method*, so if phase 10's
-  `hiddenDays` object does not reflect an `isHiddenDay` override, 7b must keep calling
-  `generator.isHiddenDay` instead. Decide against phase 10's final code (§5, question 10); the pure
-  function takes an `isHidden: (date: DateMarker) => boolean` either way.
+  calling `hiddenDays.isHidden(date)`, which is the generator's `isHiddenDay` (override-safe, no
+  method/hash distinction to worry about). **Never rebuilt from raw options**: the hooks read
+  `context.dateProfileGenerator.hiddenDays` and pass it down.
 - `buildDayTableModel(dateProfile, hiddenDays, dateEnv, config)` takes it through; memo deps
-  `(dateProfile, hiddenDays (or the generator), dateEnv)`, replacing today's `(dateProfile,
-  dateProfileGenerator, dateEnv)`, which is the same identity (the store memoizes the generator by its
-  props).
+  `(dateProfile, hiddenDays, dateEnv)`, replacing today's `(dateProfile, dateProfileGenerator,
+  dateEnv)`, the same identity since the getter caches per generator.
 - `SingleMonth.tsx:46` and `useTimeGridViewData.ts:33` are the other two generator readers in this
   pipeline; both go through the new builders.
 - `computeMajorUnit(dateProfile, dateEnv)` / `isMajorUnit` stay as they are; 7b keeps calling them for
@@ -599,17 +663,22 @@ Changes:
   stays exported from `protected-api` as a deprecated alias of the plain object's type until step 2b.
 - `DayGridView`, `TimeGridView`, `SingleMonth` switch to the hooks.
 - **Explicit compatibility for premium, which still runs the old path until step 2:** the `DayTableModel`
-  class is deleted here, and every premium-facing boundary is retyped to structural interfaces in the
-  same change (the class has private members, so the new plain object is not assignable to it):
-  `DayTableSlicer`'s extra arg becomes `Pick<DayTableModel, 'daySeries' | 'dayCols'>` (it reads
-  `daySeries.sliceRange` and the dates-per-row count, `DayTableSlicer.ts:10`);
-  `buildResourceTableModel`'s and `AbstractResourceDayTableModel`'s `dayTableModel` parameter becomes
-  `Pick<DayTableModel, 'rowCount' | 'cellRows'> | null` (`buildResourceCells` reads those,
-  `AbstractResourceDayTableModel.ts:154-156`); `ResourceDayGridView` reads `rowCount`, `colCount`,
-  `cellRows` (unchanged names). `useDayGridViewData` returns the new model under the old `dayTableModel`
-  name; `useTimeGridViewData` keeps returning `daySeries`, `dayCols`, `dayRanges` and `splitProps` (the
-  `AllDaySplitter` instance survives only there) for premium. The premium package must compile and its
-  suite must pass in this step without source changes beyond those retypings.
+  class is deleted here and **the new full `DayTableModel` interface is the one type propagated through
+  the whole retained chain**, no `Pick<>`s (the class has private members, so the new plain object is
+  not assignable to it, and a narrowed type would not flow through the chain either). Retyped to
+  `DayTableModel` (the interface) in this step: `DayTableSlicer`'s extra arg (`DayTableSlicer.ts:6-10`,
+  reads `daySeries.sliceRange` and `colCount`, which is the plain table's dates per row);
+  `buildResourceTableModel`'s parameter (`resource-table-model.ts:14`); the three factories'
+  parameters (`DayResourceTableModel.ts:10`, `ResourceDayTableModel.ts:10`,
+  `ResourcelessDayTableModel.ts:8`); `AbstractResourceDayTableModel`'s constructor parameter and
+  public field (`:41`) and `buildResourceCells` (`:148`, reads `rowCount`, `cellRows`);
+  `ResourceDayGridView`'s `DayTableModel` import and `buildDayGridCols` (`:173`, reads `cellRows[0]`).
+  All read only fields the new interface has (`rowCount`, `colCount`, `cellRows`, `headerDates`,
+  `daySeries`). `useDayGridViewData` returns the new model under the old `dayTableModel` name;
+  `useTimeGridViewData` keeps returning `daySeries`, `dayCols`, `dayRanges` and `splitProps` (the
+  `AllDaySplitter` instance survives only there) for premium. The premium package must compile
+  (`pnpm build`, the landing gate) and its suite must pass in this step with no source changes beyond
+  those retypings.
 - Kept and still exported: `DayTableSlicer`, `DaySeriesSlicer`, `DayTimeColsSlicer`, `AllDaySplitter`.
 
 Verification focus: `dayGridMonth`/`dayGridWeek`/`dayGridDay`/`timeGridWeek`/`timeGridDay`/
@@ -627,7 +696,10 @@ granularity per month); `eventSelection` for the timed lane.
 Changes:
 
 - `resource/common/resource-day-table.ts`: `buildResourceDayTableModel` (§2.2),
-  `buildResourceKeying` (§2.3), `isResourceHitComboAllowed` (§2.8), `RESOURCE_KEYLESS_RULES`.
+  `buildResourceKeying` (§2.3, from `model.participants`), `isResourceHitComboAllowed` (§2.8),
+  `RESOURCE_KEYLESS_RULES`. The builder sets `participants` to the `resources` array it was given, or
+  `EMPTY` on the all-filtered fallback (today's `model.resources`); `toResourceHeaderInput` takes
+  `resourceCount` from it.
 - **Header seam:** `buildResourceRowConfigs` takes `ResourceHeaderInput { groups: { date?, resource?,
   cols: { key, date, isMajor, resource }[] }[], resourceCount, dateCount, datesAboveResources }`.
   `ResourceTimeGridView` builds it from the new model (`toResourceHeaderInput(model, datesAboveResources)`),
@@ -655,7 +727,8 @@ order (§2.5); per-key bases during cross-resource drags; `eventSelection` acros
 Changes:
 
 - `ResourceDayGridView` onto the shared path (one `dayGrid` lane). Multi-row models: the resource
-  model's `cellRows` built from the plain model's rows; stage-1 divisor is `plainModel.dayCols.length`.
+  model's `cellRows` built from the plain model's rows; stage-1 divisor is `model.dayCols.length`
+  (the date columns, copied from the plain model).
 - `buildResourceRowConfigs`'s old-model adapter removed.
 - Delete: `VResourceSplitter.ts`, `VResourceJoiner.ts`, `ResourceDayTableJoiner.ts`,
   `AbstractResourceDayTableModel.ts`, `DayResourceTableModel.ts`, `ResourceDayTableModel.ts`,
@@ -757,18 +830,26 @@ Premium, `column/vresource-slicing-rules.ts` (resourceTimeGrid and resourceDayGr
     resource order; a single event parsed before a recurring def with the same title/start/duration
     renders before the recurring instance (instance order, `event-rendering.ts:74`), in resource and
     plain views.
-11. A resource that survives view-wide filtering but owns no column (per-date filtering, resources
-    above dates, its only event on an interior hidden day) still participates: a drag of its event
-    (reachable from the popover? no: it has no column; use `calendar.select` with its `resourceId`,
-    which must produce no highlight and no error, and an `eventDrag` state from another calendar
-    whose mutated def targets it, asserted through the hit-target's `isEventInteracting`) — if nothing
-    observable differs, lock it at the state level with a unit characterization of `joinInteractions`
-    (today) vs `projectInteraction` (new) over a synthetic model.
+11. Participation vs columns, two cases, both locked at the **state level** (a unit characterization
+    running today's `VResourceSplitter` + `joinInteractions`/`joinSegs` and the new
+    `sliceDayTableInteractionForKey` + `projectInteraction`/projections on the same synthetic inputs,
+    for drag and resize, asserting `null`-ness, `affectedInstances`, `isEvent` and the segs):
+    (a) a resource that survives view-wide filtering but owns no column (resources above dates, its
+    only event on an interior hidden day) with another resource that does: an interaction targeting
+    it activates the state (non-null) with no segs; its business hours and bg events project to
+    nothing; `calendar.select` with its `resourceId` highlights nothing and throws nothing (DOM);
+    (b) the **all-filtered fallback** (every resource's events on interior hidden days, so
+    `buildResourceTableModel` falls back to resourceless, `resource-table-model.ts:34`): the
+    participating keys are empty, so an interaction targeting any resource is `null`, resource
+    business hours don't expand, the header is the plain date row, and `isEventInteracting`
+    (`useHitTarget.ts:86-88`) is false during such a drag from another calendar (DOM/state). `resources:
+    []` alone doesn't exercise (b).
 12. Mixed keyed and keyless grouped drag: event A (`resourceId: 'a'`) and event B (no resource) share
-    a `groupId`; dragging A mutates both; B's mirror appears in every resource column and A's in the
-    target; B's original instance is **not** in `affectedInstances` (`VResourceJoiner.ts:159`): assert
-    through `eventClass`/`eventContent` args (`isDragging` false for B's copies) and the mirror DOM.
-    Same for resize.
+    a `groupId`; dragging A mutates both. **DOM:** B's mirror appears in every resource column and
+    A's in the target column; B has no original copies (keyless fg renders nowhere, so nothing on the
+    DOM can show its exclusion). **State:** B's instance is **not** in the joined `affectedInstances`
+    (`VResourceJoiner.ts:159`), asserted by the unit characterization of 11 (today's `joinInteractions`
+    vs the new projector, same inputs), for drag and resize.
 13. Source styles during cross-resource and cross-lane drags: an event from a source with
     `color: red` in resource A dragged into B: the mirror in B has no source colour (B's bases lack the
     def's source base, §1.3); a timed event of that source dragged into the all-day row likewise.
@@ -794,9 +875,17 @@ Premium, `column/vresource-identity.ts` (identity locks, Karma, both runtimes),
   event hook's count after the probe `toBeLessThanOrEqual(recorded)`, lifecycle hooks included (no
   `eventDidMount`/`eventWillUnmount` at all on a probe).
 - **Resource title update with a selection mirror:** `calendar.getResourceById('b').setProp('title',
-  'B2')` while a timed selection mirror is shown in `b`: no `eventWillUnmount`/`eventDidMount` for
-  the mirror, no `eventContent` for untouched events; `eventClass` counts `<=` recorded (today's joiner
-  re-renders them with new seg objects; the plan keeps that boundary, so equal).
+  'B2')` while a timed selection mirror is shown in `b`: **zero** `eventWillUnmount`/`eventDidMount`
+  (the mirror keeps its fabricated instance id), no `eventContent` for untouched events; `eventClass`
+  counts `<=` recorded (today's joiner re-renders them with new seg objects; the plan keeps that
+  boundary, so equal). Also the all-day row's mirror in `resourceTimeGridWeek` and the dayGrid mirror.
+- **Another resource's UI change with a selection mirror:** `getResourceById('a').setProp('eventColor',
+  'red')` while `b`'s mirror is shown: zero lifecycle calls for the mirror; `eventClass`/`eventContent`
+  only for `a`'s events (`<=` recorded per hook). Also a `businessHours` change on `a`.
+- **Fallback transition:** with `filterResourcesWithEvents` and a timed selection in `b`, add an event
+  that makes a resource column reappear (leaving the fallback) and remove it again (entering): counts
+  `<=` recorded; the selection mirror's lifecycle calls equal today's (the key set empties, so today
+  the fabricated instance is lost: record and lock whatever that is).
 - **Drag:** counts after a drag of one event (`$.simulate('drag')`) `<=` recorded; `eventDidMount`
   only for the mirror(s).
 - **Add event:** counts `<=` recorded.
@@ -832,7 +921,7 @@ against the new functions, not characterization: `buildDayGridRanges` and `daySe
 tables (including the hidden-day clamp cases from `DaySeriesModel.ts:5-9`); `projectDayGridSegs`
 over a hand-built model for every ordering (plain, resources above dates, dates above resources,
 resourceless, a missing middle column, a participating key with no columns, multi-row second week,
-week crossings, hidden days, both orderings); `buildEventUiBasesByKey` precedence and membership
+week crossings, hidden days, both orderings); `buildEventUiForKey`/`splitIndividualUi` precedence and membership
 (calendar base, resource ui, individual, def ui; a def not in the key; lanes); `projectInteraction`
 metadata membership (keyed vs keyless); `sliceDayTableEvents` order (instance order within a key,
 inverse complements last) against `sliceEventStore` on a subset store as the oracle.
@@ -843,8 +932,14 @@ Each should make a lock fail; if it doesn't, the lock is too weak:
 
 - In `useDayTableSegs`, drop `eventStore` from the stage-1 fg memo deps → `add-event`; drop `eventDrag`
   → mid-drag assertions.
-- Make the stage-1 fg memo depend on `model` → the resource-title-update lock (new seg objects are
-  fine, but a new fabricated selection instance remounts the mirror: `eventDidMount` > 0).
+- Make any stage-1 entry's args include `model`, `keying`, `resources` or the `Resource` object → the
+  resource-title-update lock (a new fabricated selection instance remounts the mirror:
+  `eventDidMount` > 0).
+- Replace the per-key `KeyedCache` with one aggregate memo over all keys' bases → the "another
+  resource's UI change" lock (B's mirror remounts when A's `eventColor` changes).
+- Build the keying from the view's `resources` instead of `model.participants` → spec 11(b) (an
+  interaction targeting a resource activates during the fallback; resource BH expand; header gains a
+  resource row).
 - Make a stage-1 memo depend on `props` (recomputes every render) → identity probes (`render()`, now
   tick) go up.
 - Use `model.colCount` as the stage-1 divisor → premium 9 (second week) and the `resourceDayGridMonth`
@@ -882,6 +977,13 @@ Add in step 0:
   `b`'s column), LTR and RTL; `mid-drag-multi` (the `multitimed` event in `[c1, d]` dragged toward
   `a`); `mid-drag-to-allday` (`timeGridWeek` and `resourceTimeGridWeek`, a timed event dragged into
   the all-day row); `mid-drag-grouped` (premium 12's pair).
+- `filtered-fallback`: `resourceTimeGridWeek` and `resourceDayGridWeek` with
+  `filterResourcesWithEvents: true`, `weekends: false`, and every resource's events on Saturdays only
+  (the all-filtered fallback: plain date header, inert columns, calendar business hours, no resource
+  BH), plus a timed selection in `b` (no highlight).
+- `select-mirror-after-rename` and `select-mirror-after-other-ui-change`: `resourceTimeGridWeek`,
+  `selectMirror: true`, a timed selection in `b`, then `setProp('title')` on `b` / `setProp('eventColor')`
+  on `a` in `setup` (DOM identical to `select-mirror`; the identity spec covers the lifecycle counts).
 - `filtered-per-date`: `resourceTimeGridWeek` and `resourceDayGridWeek` with
   `filterResourcesWithEvents: true`, both orderings.
 - `resourceless`: `resourceTimeGridDay`, `resourceDayGridWeek` with `resources: []`.
@@ -933,10 +1035,9 @@ Record the baseline with all of these before step 1, in both runtimes.
 9. **`sliceEventStore` restructuring**: three stages with an explicit state object, not a per-def
    helper (§2.4); the single-key driver keeps the signature; list/timeline fixtures and specs
    (`event-class-cascade-timeline.ts`, `timeline/*`) are regression coverage during 7b. Sol agrees.
-10. **Hidden days**: consume `context.dateProfileGenerator.hiddenDays`; if phase 10's object cannot
-    reflect an `isHiddenDay` method override (phase 10 keeps the method/hash distinction), pass
-    `generator.isHiddenDay` as the predicate instead. Never rebuild from raw options. Decide against
-    phase 10's landed code.
+10. **Hidden days**: consume `context.dateProfileGenerator.hiddenDays`, landed in phase 10 step 1 as
+    a cached getter whose `isHidden` delegates to the generator's `isHiddenDay` (override-safe). Never
+    rebuild from raw options. Settled.
 11. **`DayTableCell` vs `DayTableColumn`**: keep both; fresh resource fields per multi-row cell, shared
     single-row columns, as today. Sol agrees.
 12. **Hosting**: standard hooks and pure code through `protected-api`; premium owns the resource model
@@ -944,15 +1045,21 @@ Record the baseline with all of these before step 1, in both runtimes.
 13. **Timeline follow-up** (`ResourceSplitter`, `TimelineLaneSlicer`, `isPropsValidWithResources` keep
     `Splitter`/`Slicer`): record in the roadmap's loose ends; the shared `sliceEventStore` driver is
     covered by the timeline suites during 7b. Sol agrees.
-14. **New:** `buildEventUiBasesByKey` depends on `eventStore.defs`, so per-key bases rebuild on every
-    store change (today too: `defKeys` is per store). Fine for identity (fg rebuilds then anyway) but
-    worth noting as a count-neutral cost; a `defs`-keyed memo is cheap.
-15. **New:** the hook signature takes both `plainModel` and `model`. For plain views they are the
-    same object; for resource views the plain model's `cellRows`/`cols` are never rendered, only its
-    `daySeries`/`dayCols`. Alternative: stage 1 takes `(daySeries, dayCols)` and the resource model
-    carries them (it does). Recommendation: pass the resource model only and read
-    `model.daySeries`/`model.dayCols` in stage 1, whose memo deps list those two fields, not the model.
-    Either way the dependency sets of §2.6 hold.
+14. **Per-key bases and the store.** `individualUi` is keyed on `(eventUiBases, defKeys, lane)` with
+    `defKeys` per `eventStore.defs`, so every key's bases rebuild on a store change, as today's
+    `splitIndividualUi(eventUiBases, defKeys)` does, and with them every key's selection and
+    interaction entries (a fabricated selection instance is re-created on `addEvent` today too; the
+    `add-event` identity lock records that). Not count-neutral in general (Sol, round 2), but identical
+    to today; a finer `individualUi` (per key, comparing the key's partition by value) would lower
+    counts and is a loose end, not 7b.
+15. **One model in the hook signature** (adopted): `useDayTableSegs` takes the model only; stage 1
+    reads `model.daySeries`/`model.dayCols`, whose identities follow the date inputs (the resource
+    builder copies them from the plain model), and lists those two fields, never the model, as args.
+    This is independent of finding 1, which the per-key caches answer.
+16. **New: the `KeyedCache`'s eviction.** Entries are evicted when their key leaves `keying.keys`
+    (a removed resource, the fallback) and created on return, as today's `mapHash` over `keyInfos`
+    rebuilds the slicer map (`ResourceTimeGridView.tsx:89-92` keeps instances by id, so a resource that
+    leaves and returns gets a fresh slicer: same here). Lock: the fallback-transition identity probe.
 
 ## 6. Behavior changes (to keep updated during implementation)
 
@@ -976,3 +1083,19 @@ the snapshot compare blocks the step.
 | 11 | P2: coverage missed the inputs that distinguish the old caches and expansion semantics; four counters and `updateSize()` were weak probes. | Fixed. Added premium 11-15 and standard 3-9 (title-update remount, source-style crossover, instance-vs-def order, mixed metadata, zero-column participant, shared inverse groups and empty-instance defs, def-level bg classification, BH in both lanes, timed bg dropped by the all-day row, RTL and all-day↔timed mid-drag fixtures, popover drag already in `basic-event-dnd.ts:58`); identity specs compare every hook separately, lifecycle included, and use `calendar.render()` and a now tick with an in-spec proof that the probe reaches the view body (§4.2-4.4). |
 | 12 | P2: §2.9 should adopt phase 10 revision 3 (generator stays, exposes `hiddenDays`, honours overrides). | Fixed. §2.9 consumes `context.dateProfileGenerator.hiddenDays` (or the generator's `isHiddenDay` where an override must apply), never rebuilds from options, notes the all-hidden-week crash as an untouched loose end, and lists phase 10's remaining `isHiddenDay` consumers outside 7b. |
 | Q1-13 | Sol's answers to the open questions. | Adopted in full (§5): preserve and lock 1-3, exact order 4, context dependency plus narrower stage-1 caches 5, drop step 3 (6), now-indicator after clipping 7, `AllDaySplitter` removal with the four preserved partitions 8, three-stage `sliceEventStore` 9, generator's `hiddenDays` 10, two cell/column types 11, hosting 12, timeline follow-up with regression coverage 13. No pushback. |
+
+## 8. Review round 2 (Sol, spec, high effort)
+
+Round-1 disposition per Sol: #1, #4, #5, #6, #10, #12 resolved; #2, #7, #8, #9, #11 partly (the
+remainders are findings 1-4 below); #3 not resolved (= finding 1). "The two-stage architecture is
+sound."
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P1: resource changes still invalidated stage 1. An aggregate `eventUiBasesByKey` memo keyed on the keying (built from `resources`) rebuilt on a rename and on another resource's UI change, re-fabricating the selection instance and remounting the mirror; "a rename reruns stage 2 only" was false. | Fixed. Stage 1 is now **per key, per category**, through a `KeyedCache` per row (today's per-key slicer instances), with per-key args that are today's values: the bases through three layers (`defKeys` per store, `individualUi` per `(eventUiBases, defKeys, lane)`, a per-key `memoize` on `(eventUiBases[''], uiByKey[K], individualUi[K])`, today's `eventUiBuilders[key]`); fg/bg per `(eventStore, basesByKey[K], coords, …)` with stale keys computed in one pass; selection and interactions per key likewise (§2.3-2.6). An explicit invariant: no stage-1 arg is the keying, the resource list, a `Resource` object or the model. A rename and another resource's UI change are traced in §2.6 and locked by the identity spec (zero lifecycle calls for `b`'s mirror on `b`'s rename and on `a`'s `eventColor`/`businessHours` change), plus two mutation checks (aggregate memo; model/keying in stage-1 args). |
+| 2 | P2: participating keys needed the all-filtered fallback exception: today the resourceless fallback model has `resources = []`, emptying the splitter/joiner's keys, while `buildResourceKeying(resources)` kept them (interaction activation, resource BH, header). | Fixed. The model carries `participants` (the `resources` array it was built for, or `EMPTY` after the fallback: today's `model.resources`), distinct from column ownership; the keying is built from `model.participants`, the header's `resourceCount` too (§1.3, §2.2, §2.3, §2.7, step 2a). Spec 11 gained case (b), the fallback, with state-level locks for activation, BH, header and `isEventInteracting`, plus a `filtered-fallback` fixture and a fallback-transition identity probe; mutation check added. |
+| 3 | P2: step 1's `Pick<>` retypings left the narrowed value flowing through the three factories and `buildResourceCells`, still typed as the full class. | Fixed. Step 1 propagates the one new full `DayTableModel` interface through the whole retained chain (`DayTableSlicer`, `buildResourceTableModel`, the three factories, `AbstractResourceDayTableModel`'s constructor and field, `buildResourceCells`, `ResourceDayGridView`'s import and `buildDayGridCols`), each listed with the fields it reads; `pnpm build` is the landing gate. |
+| 4 | P2: premium 12 asked for an impossible observation (B's original copies don't render, so no hook args can show its exclusion from `affectedInstances`). | Fixed. Premium 12 keeps the DOM mirror assertions and moves the exclusion to a state-level unit characterization (today's `VResourceSplitter` + `joinInteractions` vs the new per-key slicer + `projectInteraction` on the same inputs, drag and resize), shared with spec 11. |
+| Q14 | "Rebuilding every per-key base is count-neutral" is wrong for selections and interactions. | Corrected (§5 #14): per-key bases rebuild on a store change as today's `splitIndividualUi` does, which re-fabricates selections on `addEvent` today too; identical, not neutral; a finer partition is a loose end. |
+| Q15 | Passing only `model` is fine if stage 1 uses its stable coordinate fields; it doesn't fix finding 1. | Adopted (§5 #15): one model, stage 1 lists `model.daySeries`/`model.dayCols` as args, never the model; finding 1 is answered by the per-key caches, not by this. |
+| — | Phase 10 is done; `context.dateProfileGenerator.hiddenDays` exists. | §2.9 rewritten against the landed getter (cached per generator, delegating through `isHiddenDay`, so overrides apply and the method/hash caveat is gone); question 10 settled. |
