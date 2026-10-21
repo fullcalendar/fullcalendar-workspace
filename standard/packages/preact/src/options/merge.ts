@@ -10,7 +10,7 @@ const contentRe = /Content$/
 const lifecycleRe = /(DidMount|WillUnmount)$/
 const handlerRe = /^on[A-Z]/
 
-// Somewhat tracks COMPLEX_OPTION_COMPARATORS
+// Somewhat tracks COMPLEX_OPTION_COMPARATORS (refiner.ts)
 // Unfortunately always need 'maybe' to handle undefined inital value, because of the options refiner (OptionsRefinerCache)
 const customMergeFuncs = {
   buttons: mergeMaybeButtonInputs,

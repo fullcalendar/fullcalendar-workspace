@@ -1,4 +1,4 @@
-import { Dictionary } from '../options/options'
+import { Dictionary } from './object'
 
 export class JsonRequestError extends Error {
   constructor(

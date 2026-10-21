@@ -1,5 +1,5 @@
 import { DateMarker } from '@full-ui/headless-calendar'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 import { SlicedCoordRange } from '../event-segs/coord-range'
 
 export interface DayGridRange extends SlicedCoordRange {

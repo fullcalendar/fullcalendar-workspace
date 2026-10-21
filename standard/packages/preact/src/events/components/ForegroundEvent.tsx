@@ -14,7 +14,8 @@ import { ContentGenerator, generateClassName } from '../../render-hook/render-ho
 import { joinClassNames } from '../../util/html'
 import { setRef } from '../../util/vdom'
 import classNames from '../../styles.module.css'
-import { Dictionary, ViewOptionsRefined } from '../../options/options'
+import { Dictionary } from '../../util/object'
+import { ViewOptionsRefined } from '../../options/options'
 
 /*
 Foreground events, as composed components. Each variant declares its class layers, geometry and

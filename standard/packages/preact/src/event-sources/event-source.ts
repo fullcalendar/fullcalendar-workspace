@@ -3,7 +3,7 @@ import { DateRange } from '@full-ui/headless-calendar'
 import { EventUi } from '../events/event-ui'
 import { CalendarContext } from '../context/CalendarContext'
 import { CalendarApiImpl } from '../api/CalendarApiImpl'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 
 /*
 TODO: "EventSource" is the same name as a built-in type in TypeScript. Rethink.

@@ -1,4 +1,4 @@
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 import { EventSourceApi } from './EventSourceApi'
 import {
   DateInput,

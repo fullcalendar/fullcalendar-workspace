@@ -7,7 +7,7 @@ import { parseEventDef, refineEventDef } from './event-parse'
 import { EventRenderRange, compileEventUi } from '../event-segs/event-rendering'
 import { EventUiHash } from './event-ui'
 import { CalendarContext } from '../context/CalendarContext'
-import { refineProps, identity, Identity } from '../options/options'
+import { refineProps, identity, Identity } from '../options/refine'
 
 /*
 A data-structure for a date-range that will be visually displayed.

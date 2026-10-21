@@ -9,7 +9,8 @@ import {
   createEventInstance, EventInstance, EventInstanceRange,
 } from './event-instance'
 import { EventSource } from '../event-sources/event-source'
-import { identity, Identity, Dictionary, refineProps, GenericRefiners } from '../options/options'
+import { identity, Identity, refineProps, GenericRefiners } from '../options/refine'
+import { Dictionary } from '../util/object'
 import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from './event-ui'
 import { EventDefIdMap, EventInstanceIdMap } from '../store/reducers/event-store'
 

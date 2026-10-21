@@ -26,7 +26,7 @@ import { mapHash } from '../util/object'
 import { ViewContext } from '../context/ViewContext'
 import { ViewApi } from '../api/ViewApi'
 import { createAriaKeyboardAttrs } from '../util/dom-event'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 
 export interface EventRenderRange extends EventTuple {
   ui: EventUi

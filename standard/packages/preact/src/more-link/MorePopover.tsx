@@ -1,7 +1,7 @@
 import { DateRange, DateMarker, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import { Hit } from '../interactions/hit'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 import { type ReactNode, memo, useLayoutEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { getDateMeta } from '../date-profile/date-meta'

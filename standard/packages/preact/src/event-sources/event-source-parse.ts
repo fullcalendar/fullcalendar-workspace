@@ -6,7 +6,7 @@ import { JSON_FEED_EVENT_SOURCE_REFINERS } from './json-feed-event-source-refine
 import { CalendarContext } from '../context/CalendarContext'
 import { guid } from '../util/misc'
 import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../events/event-ui'
-import { identity, Identity, refineProps } from '../options/options'
+import { identity, Identity, refineProps } from '../options/refine'
 
 const EVENT_SOURCE_REFINERS = { // does NOT include EVENT_UI_REFINERS
   id: String,

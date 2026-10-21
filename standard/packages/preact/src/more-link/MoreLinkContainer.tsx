@@ -1,7 +1,7 @@
 import { EventImpl } from '../api/EventImpl'
 import { DateRange, addDays, DateMarker } from '@full-ui/headless-calendar'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 
 import { formatWithOrdinals } from '../util/misc'
 import { memo, useState, type ReactNode, type RefObject } from 'react'

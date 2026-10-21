@@ -7,16 +7,22 @@ import { CalendarApiImpl } from '../api/CalendarApiImpl'
 import { buildViewSpecs, ViewSpec } from '../views/view-spec'
 import { parseToolbars } from '../toolbar/parse'
 import {
-  CalendarOptionsRefined, CalendarOptions,
-  CALENDAR_ONLY_OPTION_REFINERS, COMPLEX_OPTION_COMPARATORS,
-  ViewOptions, ViewOptionsRefined,
+  CalendarOptionsRefined,
+  CalendarOptions,
+  CALENDAR_ONLY_OPTION_REFINERS,
+  ViewOptions,
+  ViewOptionsRefined,
   BASE_OPTION_DEFAULTS,
-  BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
+  BASE_OPTION_REFINERS,
+  VIEW_ONLY_OPTION_REFINERS,
   CALENDAR_LISTENER_REFINERS,
 } from './options'
 import { isMergedPropsEqual, mergeCalendarOptions, mergeUserOptions } from './merge'
 import { globalPlugins } from '../plugins/global-plugins'
 import { warn } from '../util/warn'
+import { isMaybePropsEqualShallow, isMaybeDateRangeInputsEqual } from '../util/object'
+import { isMaybeArraysEqual } from '../util/array'
+import { isMaybeButtonInputsEqual } from './merge'
 import { CalendarOptionsData } from '../store/data-types'
 
 /*
@@ -292,4 +298,26 @@ function filterKnownOptions(options: any, optionRefiners: any): any {
   }
 
   return knownOptions
+}
+
+/*
+Options whose raw values compare by more than identity, so an equal-but-new value (a React re-render's)
+isn't a change. Somewhat tracks merge.ts's customMergeFuncs
+*/
+const COMPLEX_OPTION_COMPARATORS: {
+  [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
+} = {
+  // Unfortunately always need 'maybe' to handle undefined inital value, because of the options refiner (OptionsRefinerCache)
+  dateIncrement: isMaybePropsEqualShallow,
+  headerToolbar: isMaybePropsEqualShallow,
+  footerToolbar: isMaybePropsEqualShallow,
+  buttons: isMaybeButtonInputsEqual, // combined per-button functions compare by their parts
+  plugins: isMaybeArraysEqual,
+  events: isMaybeArraysEqual,
+  eventSources: isMaybeArraysEqual,
+  ['resources' as any]: isMaybeArraysEqual,
+  // otherwise, an equal-but-new value, like from a React rerender, rebuilds the date profile (#7069)
+  validRange: isMaybeDateRangeInputsEqual,
+  visibleRange: isMaybeDateRangeInputsEqual,
+  hiddenDays: isMaybeArraysEqual,
 }

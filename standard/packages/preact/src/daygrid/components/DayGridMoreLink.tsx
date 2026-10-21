@@ -1,6 +1,6 @@
 import { MoreLinkContainer } from '../../more-link/MoreLinkContainer'
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
-import { Dictionary } from '../../options/options'
+import { Dictionary } from '../../util/object'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { getEventRangeMeta } from '../../event-segs/event-rendering'

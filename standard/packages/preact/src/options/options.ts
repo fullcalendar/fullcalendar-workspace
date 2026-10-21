@@ -59,12 +59,10 @@ import {
 import { TableDisplayInfo, TableHeaderInfo, TableBodyInfo } from '../views/table-info-types'
 import { refineClassName, refineClassNameGenerator } from '../render-hook/render-hook-types'
 import { CalendarDisplayInfo } from '../calendar/CalendarMediaRoot'
-import { createDuration, DateFormatter, Duration } from '@full-ui/headless-calendar'
+import { createDuration, Duration } from '@full-ui/headless-calendar'
 import { createFormatter } from '../datelib/formatting'
 import { parseFieldSpecs } from '../util/misc'
-import { isMaybePropsEqualShallow, isMaybeDateRangeInputsEqual } from '../util/object'
-import { isMaybeButtonInputsEqual } from './merge'
-import { isMaybeArraysEqual } from '../util/array'
+import { createFalsableFormatter, Identity, identity } from './refine'
 import { ListDayInfo, ListDayEventsInfo, ListDayHeaderInfo, ListDayHeaderInnerInfo } from '../list/info-types'
 import { NoEventsInfo } from '../list/components/ListView'
 import { SingleMonthInfo, SingleMonthHeaderInfo } from '../multimonth/info-types'
@@ -659,79 +657,3 @@ export type CalendarOptionsRefined =
   BaseOptionsRefined &
   CalendarListenersRefined &
   CalendarOnlyOptionsRefined
-
-export const COMPLEX_OPTION_COMPARATORS: {
-  [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
-} = {
-  // Unfortunately always need 'maybe' to handle undefined inital value, because of the options refiner (OptionsRefinerCache)
-  dateIncrement: isMaybePropsEqualShallow,
-  headerToolbar: isMaybePropsEqualShallow,
-  footerToolbar: isMaybePropsEqualShallow,
-  buttons: isMaybeButtonInputsEqual, // combined per-button functions compare by their parts
-  plugins: isMaybeArraysEqual,
-  events: isMaybeArraysEqual,
-  eventSources: isMaybeArraysEqual,
-  ['resources' as any]: isMaybeArraysEqual,
-  // otherwise, an equal-but-new value, like from a React rerender, rebuilds the date profile (#7069)
-  validRange: isMaybeDateRangeInputsEqual,
-  visibleRange: isMaybeDateRangeInputsEqual,
-  hiddenDays: isMaybeArraysEqual,
-}
-
-// util funcs
-// ----------------------------------------------------------------------------------------------------
-
-export function refineProps<Refiners extends GenericRefiners, Raw extends RawOptionsFromRefiners<Refiners>>(
-  input: Raw,
-  refiners: Refiners,
-): {
-  refined: RefinedOptionsFromRefiners<Refiners>,
-  extra: Dictionary,
-} {
-  let refined = {} as any
-  let extra = {} as any
-
-  for (let propName in refiners) {
-    if (propName in input) {
-      refined[propName] = refiners[propName](input[propName], propName)
-    }
-  }
-
-  for (let propName in input) {
-    if (!(propName in refiners)) {
-      extra[propName] = input[propName]
-    }
-  }
-
-  return { refined, extra }
-}
-
-// definition utils
-// ----------------------------------------------------------------------------------------------------
-
-export type GenericRefiners = {
-  [propName: string]: (input: any, propName: string) => any
-}
-
-export type GenericListenerRefiners = {
-  [listenerName: string]: Identity<(this: CalendarApi, ...args: any[]) => void>
-}
-
-export type DefaultedRefinedOptions<RefinedOptions extends Dictionary, DefaultKey extends keyof RefinedOptions> =
-  Required<Pick<RefinedOptions, DefaultKey>> &
-  Partial<Omit<RefinedOptions, DefaultKey>>
-
-// lang utils
-// ----------------------------------------------------------------------------------------------------
-
-export type Dictionary = Record<string, any>
-
-export type Identity<T = any> = (raw: T) => T
-
-export function identity<T>(raw: T): T {
-  return raw
-}
-
-function createFalsableFormatter(input: FormatterInput | false): DateFormatter {
-  return input === false ? null : createFormatter(input)
-}

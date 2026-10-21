@@ -15,7 +15,7 @@ import { EventSourceImpl } from './EventSourceImpl'
 import { warn } from '../util/warn'
 import type { CalendarApiImpl } from './CalendarApiImpl'
 import type { CalendarStore } from '../store/CalendarStore'
-import type { Dictionary } from '../options/options'
+import type { Dictionary } from '../util/object'
 import {
   CalendarOptions,
   DateInput,

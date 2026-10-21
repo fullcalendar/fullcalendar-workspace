@@ -6,7 +6,8 @@ import { CustomContent } from '../../render-hook/CustomContent'
 import { useViewContext } from '../../context/useViewContext'
 import { useRenderHookEl } from '../../render-hook/useRenderHookEl'
 import { generateClassName } from '../../render-hook/render-hook-types'
-import { Dictionary, ViewOptionsRefined } from '../../options/options'
+import { Dictionary } from '../../util/object'
+import { ViewOptionsRefined } from '../../options/options'
 import classNames from '../../styles.module.css'
 
 export interface BgEventProps {

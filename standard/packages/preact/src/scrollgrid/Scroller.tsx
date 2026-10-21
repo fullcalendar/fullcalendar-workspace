@@ -1,7 +1,7 @@
 import { computeElIsRtl } from '../util/dom-manip'
 import { memoWithEquality, setRef } from '../util/vdom'
 import { watchHeight, watchWidth } from '../layout/resize-observer'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 import { forwardRef, useState, type ComponentType, type ReactNode, type Ref } from 'react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { joinClassNames } from '../util/html'

@@ -1,6 +1,6 @@
 import { type Ref, type ReactNode } from 'react'
 import { useReportedSize } from './useReportedSize'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 
 export interface MeasuredHeightHarnessProps {
   style: any // TODO

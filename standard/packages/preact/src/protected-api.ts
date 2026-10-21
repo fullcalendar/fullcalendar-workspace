@@ -1,13 +1,7 @@
 
-export {
-  CalendarListeners,
-  CalendarListenersRefined,
-  ViewOptionsRefined,
-  Identity,
-  Dictionary,
-  identity,
-  refineProps,
-} from './options/options'
+export { CalendarListeners, CalendarListenersRefined, ViewOptionsRefined } from './options/options'
+export { Identity, identity, refineProps } from './options/refine'
+export { Dictionary } from './util/object'
 
 export type { EventDef, EventDefHash } from './events/event-def'
 export type { EventInstanceHash, EventInstanceRange, EventRangeEdge } from './events/event-instance'

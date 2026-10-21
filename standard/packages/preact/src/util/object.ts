@@ -1,3 +1,5 @@
+export type Dictionary = Record<string, any>
+
 import { valuesIdentical } from './misc'
 import { isArraysEqual } from './array'
 

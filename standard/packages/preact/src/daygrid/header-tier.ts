@@ -5,7 +5,7 @@ import { computeMajorUnit, isMajorUnit } from '../date-profile/DateProfileGenera
 import { DateFormatter, DateMarker, DateRange, addDays, formatDayString, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DateMeta, getDateMeta } from '../date-profile/date-meta'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 import { WEEKDAY_ONLY_FORMAT } from '../util/date-format'
 import { ViewContext } from '../context/ViewContext'
 

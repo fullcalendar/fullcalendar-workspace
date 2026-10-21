@@ -1,6 +1,7 @@
 import { createDuration, Duration } from '@full-ui/headless-calendar'
 import { RawOptionsFromRefiners } from '@fullcalendar/core/protected-api'
-import { refineProps, Dictionary } from '../options/options'
+import { refineProps } from '../options/refine'
+import { Dictionary } from '../util/object'
 
 /*
 Information about what will happen when an external element is dragged-and-dropped

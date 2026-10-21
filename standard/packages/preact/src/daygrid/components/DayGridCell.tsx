@@ -5,7 +5,7 @@ import { DateMarker, DateRange, DateEnv, addMs, DateFormatter, formatDayString }
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
-import { Dictionary } from '../../options/options'
+import { Dictionary } from '../../util/object'
 import { setRef } from '../../util/vdom'
 import { SlicedCoordRange } from '../../event-segs/coord-range'
 import { watchSize } from '../../layout/resize-observer'

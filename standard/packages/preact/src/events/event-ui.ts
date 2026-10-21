@@ -2,7 +2,7 @@ import { RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalenda
 import { Constraint, AllowFunc, normalizeConstraint } from '../validation/constraint'
 import { joinClassNames } from '../util/html'
 import { CalendarContext } from '../context/CalendarContext'
-import { identity, Identity } from '../options/options'
+import { identity, Identity } from '../options/refine'
 import { refineClassName } from '../render-hook/render-hook-types'
 
 // TODO: better called "EventSettings" or "EventConfig"

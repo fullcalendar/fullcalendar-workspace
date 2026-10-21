@@ -4,7 +4,7 @@ import { SlicedCoordRange } from '../event-segs/coord-range'
 import { HiddenDays } from '../date-profile/hidden-days'
 import { DayTableCell } from './day-grid-range'
 import { DaySeries, buildDaySeries } from './day-series'
-import { Dictionary } from '../options/options'
+import { Dictionary } from '../util/object'
 
 /*
 The column model shared by every day-table view (DayGrid, TimeGrid, MultiMonth's months and the
