@@ -1,6 +1,6 @@
 # Phase 9: store slices, actions, API facade
 
-Status: plan, revision 2, for spec review round 2 (2026-10-20). Nothing implemented yet.
+Status: plan, revision 3 (after spec review round 2), 2026-10-20. Nothing implemented yet.
 
 **Re-scoped after review round 1** (below): phase 9 is a behavior-identical restructuring of the data
 layer. Render-time purity with `useSyncExternalStore` moves to phase 11, and stable API wrapper
@@ -87,10 +87,10 @@ identity and lazy context (phase 12); the date profile (phase 10); the day-table
 |---|---|---|
 | `options` (`optionOverrides`, `dynamicOptionOverrides`, invalidation generation) | — | `RESET_OPTIONS`, `SET_OPTION` |
 | `viewType` | `options` (initial view) | `CHANGE_VIEW_TYPE` |
-| `now` | `options` (`now`), `DateEnv` | `UPDATE_NOW` (timer) |
+| `now` | view-refined options (`now`), `DateEnv` | `UPDATE_NOW` (timer) |
 | `currentDate`, `dateProfile` | `options`, view data, `now` | navigation actions, generator changes |
 | `eventSources` | `options`, `dateProfile`, context | source actions, navigation (dirty fetches), `RECEIVE_*` |
-| `eventStore`, `renderableEventStore` | `eventSources`, `dateProfile`, context | event actions, `RECEIVE_EVENTS`, navigation (recurring expansion) |
+| `eventStore`, `renderableEventStore` | `eventSources`, `dateProfile`, context; the renderable one also view-refined `progressiveEventRendering` and its own previous value | event actions, `RECEIVE_EVENTS`, navigation (recurring expansion) |
 | `selection` (`dateSelection`, `eventSelection`, `eventDrag`, `eventResize`) | — | selection/drag/resize actions |
 | plugin slices (`resourceSource`, then `resourceStore`, `resourceEntityExpansions`) | core state, context | resource actions |
 
@@ -99,56 +99,69 @@ identity and lazy context (phase 12); the date profile (phase 10); the day-table
 - `eventUiBases`, `selectionConfig` and `businessHours` move from state to derived data (they're pure
   functions of options and the stores), memoized exactly as today, so identities don't change.
 
-### 2. Slice reducers and effects
+### 2. The staged pipeline (revision 3)
 
-```ts
-interface SliceReducer<S> {
-  name: string
-  deps: string[]                 // slices whose new values it reads
-  reduce(prev: S | undefined, action: Action, input: SliceInput): S | { state: S, effects: Effect[] }
-}
-```
+Behavior identity needs more than "effects in the same drain": today's `reduce()` performs side effects
+at specific points *inside* the reduction, and the data the API reads stays the previous data until the
+reduction returns (`CalendarDataManager.ts:263`). So the store runs one action through a fixed
+pipeline of **stages**, each a slice reducer, with **checkpoints** between stages where the effects
+that today's code performs at that point run. The order is today's `reduce()`, written down:
 
-Effect descriptions, and where the store runs them:
-
-| Effect | Today | Phase 9 |
+| # | Stage | Checkpoint after it (today's line) |
 |---|---|---|
-| `fetchEventSource(sourceId, range, isRefetch)` | `sourceDef.fetch()` inside `reduceEventSources` | the reducer marks the source fetching (with its `latestFetchId`) and returns the effect; the store runs it **right after this reduction, before the next queued action**, so a synchronous callback's `RECEIVE_EVENTS` lands in the queue exactly where it does today |
-| `fetchResourceSource(…)` | inside `reduceResourceSource` | same |
-| option change follow-ups | handlers at the end of `reduce()` | the handlers become effects run right after the reduction, at the same point (they dispatch or call `addEventSource`, as today) |
-| time zone change | the hack at the end of `reduce()` | rezoning is reduction; the refetches are fetch effects |
-| `loading` | phase 8's effect queue | unchanged (an effect, held while gated) |
+| 1 | dynamic option overrides, options data (refiner cache) | — |
+| 2 | view type, view data | `nowManager.handleInput(view now)` (`:633`, may fire reset listeners, which may dispatch `UPDATE_NOW` and re-arm timers); `emitter.setThisContext`/`setOptions(view options)` (`:334`) |
+| 3 | calendar now (`nowTimer.update`) | the runner's own re-arming when inputs changed (`NowTimerRunner.update`) |
+| 4 | current date, date profile (rebuilt on a generator change, then the action, then clamping) | — |
+| 5 | event sources | **fetch effects** for the sources this stage marked fetching, in source order (`eventSources.ts:158`); synchronous callbacks queue `RECEIVE_*` here, as today |
+| 6 | event store, renderable event store | — |
+| 7 | UI bases, business hours, selection, drag, resize | — |
+| 8 | plugin slices, each given one `{ ...context, ...newState }` snapshot taken before the first (`:428`); premium: resource source (**its fetch effects** at a checkpoint right after it), resource store, expansions | — |
+| 9 | loading transition, captured for this action (was vs is, `:434`) | queue the deferred `loading` effect |
+| 10 | title, toolbar props, `CalendarData` | — |
+| 11 | late stage: time zone change (refetch marking with **fetch effects**, rezoning both stores) and option change handlers (`:472`), in today's order, with today's mix of the passed new data and `getCurrentData()` reads of the previous data | the handlers run here, as effects at this checkpoint |
 
-Wiring (`emitter.setThisContext`/`setOptions`) moves out of the reducer into the drain, right after
-each reduction (same timing). `currentDataManager` goes away (the facade holds the store, §4).
+Then the reduction returns, and the store installs the new state and data (only now do API reads see
+it). Stage reducers return `{ state, effects }` and do none of the reducer-owned side effects
+themselves (fetching, emitting, dispatching, timer arming); the checkpoints run them. **User callbacks
+are the exception:** refiners, transforms, `validRange` functions and the like run inside stages as
+today, and can call the API.
 
-A test asserts the contract: while a reducer runs, `fetch`, the emitter and `dispatch` are never called.
+Each stage keeps today's **action guards**: a stage only fetches, expands recurring events, or rebuilds
+for the actions it does today, even when an input changed (§1's dependencies don't trigger work by
+themselves).
 
 ### 3. The store
 
 `createCalendarStore(config)` (`reducers/store.ts`, replacing `CalendarDataManager`):
 
-- **`dispatch(action)`:** queue; if not draining, drain. The drain is today's loop: reduce an action
-  (slices in dependency order), run that reduction's immediate effects (fetches, option follow-ups,
-  wiring), queue its deferred effects (`loading`), repeat until both queues are empty, then publish.
-- **`getState()`** (raw slices) and **`getData()`** (`CalendarData`, derived and memoized, the same
-  shape `CalendarInner` and the views get today).
-- **`subscribe(listener)`**, called **once per drain, after it settles**, with
-  `{ completedActions, isUrgent, isInCommit }`. `isUrgent` is today's drag/resize/`MERGE_EVENTS` rule,
-  computed once, so the vanilla `DelayedRunner` and the React `flushSync` keep their scheduling.
-- **`update(optionOverrides, isRendering)`** stays for React's render (a `RESET_OPTIONS` replace with the
-  new props, effects held, no publication), as phase 8 left it.
-- **`mount()`/`unmount()`** and mount gating, unchanged from phase 8.
+- **`dispatch(action)`:** queue; if not draining, drain. **The drain is today's loop, priorities
+  included:** while actions are queued, run the next through the pipeline; only when the action queue
+  is empty, run all queued deferred effects as one batch (`:259`), which may queue more actions; repeat;
+  then publish once. So static sources can queue both of their loading transitions before either
+  callback runs, as today.
+- **`getState()`** (raw slices) and **`getData()`** (`CalendarData`, the shape `CalendarInner` and the
+  views get), both the last installed values.
+- **`subscribe(listener)`**, called once per drain, after it settles, with
+  `{ completedActions, isUrgent, isInCommit }`. `isUrgent` is today's drag/resize/`MERGE_EVENTS` rule.
+  Today's suppressions stay: nothing on initialization, `IDLE`-only drains and render-time drains, and
+  mount-held actions are delivered on `mount()`. Drivers subscribe before they `mount()`.
+- **`update(optionOverrides, isRendering)`** stays for React's render, as phase 8 left it, and must keep
+  refined identities (no refinement of unchanged options).
+- **`mount()`/`unmount()`**, mount gating, `flushEffects()` and `syncController` placement
+  (`CalendarInner` before callbacks, Preact's parent layout effect), unchanged.
 
 ### 4. Options
 
 - The incremental refiner becomes an explicit `OptionsRefinerCache` object owned by the store, with
   today's comparisons (`COMPLEX_OPTION_COMPARATORS`, `isMergedPropsEqual`), so refined identities
   don't change.
-- **`resetOptions(options, changedNames?)`** dispatches `RESET_OPTIONS { optionOverrides, changedNames,
-  mode }` (`replace` without names, `merge` with them, as today) and bumps an invalidation generation.
-  Named options are refined again and their change handlers run even when the raw object is the same
-  one (Vue's nested mutation), as `optionsForRefining`/`optionsForHandling` do today.
+- **`resetOptions(options, changedNames?)`** updates the overrides and the invalidation (the names to
+  refine and handle again) **when it's called**, as today (`:220`), then dispatches `RESET_OPTIONS`. So
+  a reset made inside a drain (a synchronous source's callback calling `resetOptions`) affects the
+  actions already queued, as today. Named options are refined again and their handlers run even when the
+  raw object is the same one (Vue's nested mutation). The invalidation is a generation the options stage
+  consumes, replacing `optionsForRefining`/`optionsForHandling`.
 
 ### 5. Actions and the facade
 
@@ -198,17 +211,23 @@ suite), with a Sol review per step.
    it; `resetOptions` becomes the action. Hunt the extra re-render.
 3. **Actions and facades.** The `actions` object; `CalendarApiImpl`, the wrappers' mutations,
    `CalendarController` and the premium patches delegate; plugins register actions.
-4. **Derived data.** `eventUiBases`, `selectionConfig`, `businessHours`, title, toolbar props and
-   loading as memoized derivations of the slices (`CalendarData` unchanged).
+4. **Derived data.** `eventUiBases`, `selectionConfig`, `businessHours`, title and toolbar props as
+   memoized derivations of the slices (`CalendarData` unchanged). `loading` stays a per-action
+   transition captured in the pipeline (stage 9), not a comparison of settled snapshots.
 
 ## Tests
 
-- **Effect contract (new, unit):** reducers call no `fetch`, emit nothing, dispatch nothing; each dirty
-  I/O source yields exactly one fetch effect; synchronous sources resolve within the same `dispatch`.
+- **Effect contract (new, unit):** stage reducers perform no reducer-owned side effects (no `fetch`, no
+  emitting, no dispatching, no timer arming of their own), with user callbacks excluded (a test
+  callback that calls the API is allowed); each dirty source yields exactly one fetch effect at its
+  checkpoint; synchronous sources resolve within the same `dispatch`.
 - **Behavior locks (new, before step 1):** `renderToString` with array `events`, array `resources` and a
   synchronous function source (events present); the initial `eventsSet` argument for a synchronous
   source; `loading` transitions for static and async sources; Vue-style repeated
-  `resetOptions(sameObject, ['events'])` after a nested mutation; `rerenderDelay` and `batchRendering`.
+  `resetOptions(sameObject, ['events'])` after a nested mutation; `rerenderDelay` and `batchRendering`;
+  a reentrant `resetOptions` from a synchronous source's callback (round 2 #3); a synchronous source's
+  callback reading `calendar.getDate()` during navigation (sees the previous date); a `timeZone` change
+  with a settled async source (`loading` transitions); `now`/time zone changes re-arming the timer.
 - The existing suites in both runtimes, DOM snapshots and counts, and the React suite, after each step.
 
 ## Review round 1 (Sol, spec, high effort)
@@ -236,6 +255,18 @@ Open questions round 1 answered: keep driver-specific `syncController` placement
 unchanged); plugin slices as ordered reducers returning effects, with typed action creators later and
 raw `dispatch` internally; `CalendarDataManager` replaced in step 2 (verify actual importers first:
 rrule, google-calendar and vue3 don't import it).
+
+## Review round 2 (Sol, spec, high effort)
+
+3 P1s and 2 P2s on revision 2, all about ordering; revision 3 answers them:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | "After this reduction" doesn't keep today's checkpoints: fetching is mid-reduction, API-readable data advances only when the reduction returns, wiring is early | §2: the staged pipeline with checkpoints at today's points; data installed after the reduction |
+| 2 | Loading capture and the time-zone hack need intermediate-state semantics; deferred effects run in batches only when the action queue is empty | §2 stages 9 and 11; §3's drain keeps action-first priority and batched effects; step 4 keeps loading per action |
+| 3 | `resetOptions` updates overrides at call time; FIFO would change reentrant resets | §4: call-time update kept; behavior lock added |
+| 4 | Timer effects (`nowManager.handleInput`, `nowTimer.update`) and user callbacks that call the API | §2 checkpoints 2 and 3; the contract test scoped to reducer-owned effects |
+| 5 | Missing dependencies (`now` from view options, `renderableEventStore`'s inputs) and action guards | §1 table; §2 keeps action guards |
 
 ## Behavior changes (anticipated)
 
