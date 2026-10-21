@@ -25,7 +25,7 @@ import { ViewImpl } from '../api/ViewImpl'
 import { parseBusinessHours } from '../structs/business-hours'
 import { createEmptyEventStore } from '../structs/event-store'
 import { CalendarContext } from '../CalendarContext'
-import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types'
+import { CalendarDataManagerState, CalendarDerivedData, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types'
 import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
@@ -69,7 +69,7 @@ export function createCalendarStore(config: CalendarStoreConfig): CalendarStore 
 export type ReducerFunc = (
   currentState: Dictionary | undefined,
   action: Action | undefined,
-  context: CalendarContext & CalendarDataManagerState, // more than just context
+  context: CalendarContext & CalendarDataManagerState & CalendarDerivedData, // more than just context
   effects: ReduceEffects, // for the side effects it describes (a fetch), instead of performing them
 ) => Dictionary
 
@@ -413,8 +413,8 @@ export class CalendarStore {
       prevState, action, optionsData, currentViewData, dateProfile, calendarContext, effects,
     )
 
-    // 7. UI bases, business hours, selection, drag, resize
-    let newState = this.reduceUiAndSelection(
+    // 7. derived: UI bases, business hours. selection, drag, resize
+    let { newState, derived } = this.reduceUiAndSelection(
       prevState, action, calendarContext, {
         dynamicOptionOverrides,
         currentViewType,
@@ -428,13 +428,13 @@ export class CalendarStore {
     )
 
     // 8. plugin slices
-    this.reducePluginSlices(prevState, action, optionsData, calendarContext, effects, newState)
+    this.reducePluginSlices(prevState, action, optionsData, calendarContext, effects, newState, derived)
 
     // 9. loading transition (checkpoint: queues the deferred `loading` callback)
     this.captureLoading(prevState, newState, calendarContext)
 
     // 10. CalendarData
-    let newData = this.buildData(optionsData, currentViewData, newState, currentDate, dateProfile, nowDate)
+    let newData = this.buildData(optionsData, currentViewData, derived, newState, currentDate, dateProfile, nowDate)
 
     // 11. late stage: time zone change, option change handlers (checkpoint: runs the handlers)
     this.reduceLate(prevData, optionsData, dateProfile, newState, newData, effects)
@@ -558,13 +558,19 @@ export class CalendarStore {
     reduced: Pick<CalendarDataManagerState,
       'dynamicOptionOverrides' | 'currentViewType' | 'currentDate' | 'dateProfile' |
       'eventSources' | 'eventStore' | 'renderableEventStore' | 'nowDate'>,
-  ): CalendarDataManagerState {
+  ): { newState: CalendarDataManagerState, derived: CalendarDerivedData } {
+    // derived (memoized), in the order they were computed when they were state
     let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext)
     let eventUiBySource = this.buildEventUiBySource(reduced.eventSources)
     // initially too, so the next reduction gets the same object back from the memo
     let eventUiBases = this.buildEventUiBases(reduced.renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
+    let derived: CalendarDerivedData = {
+      selectionConfig,
+      eventUiBases,
+      businessHours: this.parseContextBusinessHours(calendarContext),
+    }
 
-    return {
+    let newState: CalendarDataManagerState = {
       dynamicOptionOverrides: reduced.dynamicOptionOverrides,
       currentViewType: reduced.currentViewType,
       currentDate: reduced.currentDate,
@@ -572,15 +578,14 @@ export class CalendarStore {
       eventSources: reduced.eventSources,
       eventStore: reduced.eventStore,
       renderableEventStore: reduced.renderableEventStore,
-      selectionConfig,
-      eventUiBases,
-      businessHours: this.parseContextBusinessHours(calendarContext),
       dateSelection: prevState ? reduceDateSelection(prevState.dateSelection, action) : null,
       eventSelection: prevState ? reduceSelectedEvent(prevState.eventSelection, action) : '',
       eventDrag: prevState ? reduceEventDrag(prevState.eventDrag, action) : null,
       eventResize: prevState ? reduceEventResize(prevState.eventResize, action) : null,
       nowDate: reduced.nowDate,
     }
+
+    return { newState, derived }
   }
 
   // each plugin reducer gets the same snapshot, taken before the first, and its result is merged in
@@ -591,8 +596,9 @@ export class CalendarStore {
     calendarContext: CalendarContext,
     effects: ReduceEffects,
     newState: CalendarDataManagerState,
+    derived: CalendarDerivedData,
   ) {
-    let contextAndState = { ...calendarContext, ...newState }
+    let contextAndState = { ...calendarContext, ...derived, ...newState }
     for (let reducer of optionsData.pluginHooks.reducers) {
       Object.assign(newState, reducer(prevState, action, contextAndState, effects))
     }
@@ -615,6 +621,7 @@ export class CalendarStore {
   private buildData(
     optionsData: CalendarOptionsData,
     currentViewData: CalendarCurrentViewData,
+    derived: CalendarDerivedData,
     newState: CalendarDataManagerState,
     currentDate: DateMarker, // the core's, even if a plugin slice returned its own
     dateProfile: DateProfile,
@@ -642,6 +649,7 @@ export class CalendarStore {
       toolbarProps,
       ...optionsData,
       ...currentViewData,
+      ...derived, // before the slices, which a plugin slice's same-named key overrode when these were state
       ...newState,
     }
   }

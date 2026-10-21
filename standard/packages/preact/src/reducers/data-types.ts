@@ -16,22 +16,27 @@ import { ToolbarModel } from '../toolbar-struct'
 import { CalendarNowManager } from './CalendarNowManager'
 import { CalendarController } from '../CalendarController'
 
+// the slices (store.getState()). plugins' slices are merged in
 export interface CalendarDataManagerState {
   dynamicOptionOverrides: CalendarOptions
   currentViewType: string
   currentDate: DateMarker
   dateProfile: DateProfile
-  businessHours: EventStore
   eventSources: EventSourceHash
-  eventUiBases: EventUiHash
   eventStore: EventStore
   renderableEventStore: EventStore
   dateSelection: DateSpan | null
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  selectionConfig: EventUi
   nowDate: DateMarker // whole-day
+}
+
+// memoized derivations of the options and the slices, in CalendarData (and given to plugin reducers)
+export interface CalendarDerivedData {
+  businessHours: EventStore
+  eventUiBases: EventUiHash
+  selectionConfig: EventUi
 }
 
 export interface CalendarToolbarProps {
@@ -60,7 +65,7 @@ export interface CalendarCurrentViewData {
   dateProfileGenerator: DateProfileGenerator
 }
 
-type CalendarDataBase = CalendarOptionsData & CalendarCurrentViewData & CalendarDataManagerState
+type CalendarDataBase = CalendarOptionsData & CalendarCurrentViewData & CalendarDataManagerState & CalendarDerivedData
 
 // needs to be an interface so we can ambient-extend
 // is a superset of CalendarContext

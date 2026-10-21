@@ -501,3 +501,16 @@ Step 2's responses resolve its findings (the vertical-scroll caveat agreed). One
 Mutation-checked: the closed-over `unselect`, no reentrancy guard, late hook publication and the
 all-or-nothing fallback each fail their spec. Verified: full suites, both runtimes; snapshots and counts
 unchanged.
+
+## Step 4: derived data (done)
+
+- `eventUiBases`, `selectionConfig` and `businessHours` leave the state (`CalendarDataManagerState`, now
+  only the slices) for `CalendarDerivedData`, still computed at stage 7, by the same memos, in the same
+  order, before the selection reducers. `CalendarData` spreads them before the slices, and the plugin
+  reducers' snapshot has them, both so a plugin slice's same-named key wins as it did. `getState()` no
+  longer has them (protected API).
+- Title and toolbar props were already memoized derivations in `buildData`; `loading` stays a per-action
+  transition (stage 9), comparing states, whose `isLoadingFuncs` read only slices.
+- Spec: `vanilla-tests/src/event-source/store-derived.ts` (in the data, not the state; identities kept
+  while inputs don't change; given to plugin reducers).
+- Verified: full suites, both runtimes; snapshots and counts unchanged.
