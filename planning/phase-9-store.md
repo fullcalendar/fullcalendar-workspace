@@ -377,3 +377,28 @@ with no render in between restored the initial scroll, not where the user scroll
 `<Activity>` spec caught it). A remount of the same instance now keeps its own target; only a new
 instance (after print) starts from `initialScroll`. Same in `useResourceTimelineScroll`, which only
 passed because the layout happened to re-render after its scroll object was first reported.
+
+## Step 2, part 2: the store (done)
+
+- **`reducers/store.ts`** (moved from `CalendarDataManager.ts`, history kept): `createCalendarStore(config)`
+  returns a `CalendarStore`. Still a class behind the factory, the same pipeline and drain.
+  `CalendarStoreConfig` is `{ calendarApi, isMountGated? }`; `onDataChange` is gone.
+- **`subscribe(listener)`** (returns an unsubscribe): called once per drain that completed actions, after
+  it settles, with `{ completedActions, isUrgent, isInCommit }`; the data is `getData()`. Today's
+  suppressions are unchanged (initialization, `IDLE`-only and render-time drains; mount-gated changes held
+  until `mount()`, then delivered together with `isInCommit`). `isUrgent` is the drag/resize/`MERGE_EVENTS`
+  rule both drivers had (`computeIsUrgent`).
+- **`getState()`, `getData()`**; `getCurrentData` stays (contexts and plugins use it).
+- **Wiring:** the store attaches itself in its constructor (`calendarApi.store`, was
+  `currentDataManager`, set before each reduction since step 1b). React's `Calendar` creates the API
+  object and the store in one `useState` initializer, so a Strict Mode replay discards both together.
+  Vanilla's `Calendar` (and `vanilla-w-react`) creates it in its constructor, subscribes, then updates and
+  mounts as before.
+- **Drivers subscribe** before `mount()`: React bumps its revision (`flushSync` when urgent and not in a
+  commit), vanilla requests a render (no `rerenderDelay` when urgent).
+- `resetOptions` keeps its call-time update (§4) on the store; step 3's `actions` object exposes it.
+- `protected-api`: `createCalendarStore`, `CalendarStore`, `CalendarStoreConfig`, `CalendarStoreChange`,
+  `CalendarStoreListener`; `CalendarDataManager` removed.
+- **Spec:** `vanilla-tests/src/event-source/store-subscribe.ts` (one notification per drain with its
+  actions, a synchronous source's receive included; urgency; unsubscribing).
+- Verified: both runtimes' suites (React runtime: only the known failures), DOM snapshots 0 changed and counts unchanged in both runtimes, the React suite 42/42.

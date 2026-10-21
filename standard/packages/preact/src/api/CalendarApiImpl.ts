@@ -9,7 +9,7 @@ import { ViewSpec } from '../structs/view-spec'
 import { PointerDragEvent } from '../interactions/pointer'
 import { triggerDateSelect, triggerDateUnselect } from '../calendar-utils'
 import { hashValuesToArray } from '../util/object'
-import { CalendarDataManager } from '../reducers/CalendarDataManager'
+import { CalendarStore } from '../reducers/store'
 import { Action } from '../reducers/Action'
 import { EventSource } from '../structs/event-source'
 import { eventApiToStore, buildEventApis, EventImpl } from './EventImpl'
@@ -33,14 +33,14 @@ import { formatWithOrdinals } from '../util/misc'
 import { CalendarOptionsRefined } from '../options'
 
 export class CalendarApiImpl implements CalendarApi {
-  currentDataManager?: CalendarDataManager // will be set by CalendarDataManager
+  store?: CalendarStore // set by the store, which is created together with this
 
   getCurrentData(): CalendarData {
-    return this.currentDataManager!.getCurrentData()
+    return this.store!.getData()
   }
 
   dispatch(action: Action): void {
-    this.currentDataManager!.dispatch(action)
+    this.store!.dispatch(action)
   }
 
   get view(): ViewImpl { return this.getCurrentData().viewApi }
@@ -61,7 +61,7 @@ export class CalendarApiImpl implements CalendarApi {
   }
 
   getOption<OptionName extends keyof CalendarOptions>(name: OptionName): CalendarOptions[OptionName] {
-    return this.currentDataManager!.currentCalendarOptionsInput[name]
+    return this.store!.currentCalendarOptionsInput[name]
   }
 
   getAvailableLocaleCodes(): string[] {
@@ -72,22 +72,22 @@ export class CalendarApiImpl implements CalendarApi {
   // -----------------------------------------------------------------------------------------------------------------
 
   on<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void {
-    let { currentDataManager } = this
+    let { store } = this
 
-    if (currentDataManager.currentCalendarOptionsRefiners[handlerName]) {
-      currentDataManager.emitter.on(handlerName, handler)
+    if (store.currentCalendarOptionsRefiners[handlerName]) {
+      store.emitter.on(handlerName, handler)
     } else {
       warn(`Unknown listener \`${handlerName}\`.`)
     }
   }
 
   off<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, handler: Required<CalendarListeners>[ListenerName]): void {
-    this.currentDataManager!.emitter.off(handlerName, handler)
+    this.store!.emitter.off(handlerName, handler)
   }
 
   // not meant for public use
   trigger<ListenerName extends keyof CalendarListeners>(handlerName: ListenerName, ...args: Parameters<Required<CalendarListeners>[ListenerName]>): void {
-    this.currentDataManager!.emitter.trigger(handlerName, ...args)
+    this.store!.emitter.trigger(handlerName, ...args)
   }
 
   // View

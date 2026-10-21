@@ -5,8 +5,8 @@ import {
   CalendarOptions,
 } from '@fullcalendar/preact/public-api'
 import {
-  Action,
-  CalendarDataManager,
+  CalendarStoreChange,
+  createCalendarStore,
   CalendarData,
   DelayedRunner,
   applyStyleProp,
@@ -25,7 +25,6 @@ Vanilla JS API
 export class Calendar extends CalendarApiImpl {
   el: HTMLElement
   private baseId = `fc:${guid()}:`
-  private dataManager: CalendarDataManager
   private currentData: CalendarData
   private renderRunner: DelayedRunner
   private vdomRoot: { render: (vdomNode: any) => any, unmount: () => void } // TODO types
@@ -42,35 +41,18 @@ export class Calendar extends CalendarApiImpl {
     this.vdomRoot = createRoot(el)
     this.renderRunner = new DelayedRunner(this.handleRenderRequest)
 
-    this.dataManager = new CalendarDataManager({
-      calendarApi: this,
-      onDataChange: this.handleDataChange,
-    })
-    this.currentData = this.dataManager.update(optionOverrides)
+    createCalendarStore({ calendarApi: this }) // attaches itself as this.store
+    this.store.subscribe(this.handleStoreChange)
+    this.currentData = this.store.update(optionOverrides)
 
     // starts the now-timer. vanilla calendars are usable before render(), and always have been
-    this.dataManager.mount()
+    this.store.mount()
   }
 
-  private handleDataChange = (data: CalendarData, actions: Action[]) => {
-    this.currentData = data
+  private handleStoreChange = ({ isUrgent }: CalendarStoreChange) => {
+    let data = this.currentData = this.store.getData()
 
-    let renderImmediate = false
-    for (const action of actions) {
-      if (
-        action.type === 'SET_EVENT_DRAG' ||
-        action.type === 'UNSET_EVENT_DRAG' ||
-        action.type === 'SET_EVENT_RESIZE' ||
-        action.type === 'UNSET_EVENT_RESIZE' ||
-        // could happen as a result of a drag or resize and must be part of same sync pipeline
-        action.type === 'MERGE_EVENTS'
-      ) {
-        renderImmediate = true
-        break
-      }
-    }
-
-    this.renderRunner.request(renderImmediate ? undefined : data.calendarOptions.rerenderDelay)
+    this.renderRunner.request(isUrgent ? undefined : data.calendarOptions.rerenderDelay)
   }
 
   private handleRenderRequest = () => {
@@ -121,7 +103,7 @@ export class Calendar extends CalendarApiImpl {
     let wasRendering = this.isRendering
 
     // again after destroy()
-    this.dataManager.mount()
+    this.store.mount()
 
     if (!wasRendering) {
       this.isRendering = true
@@ -138,7 +120,7 @@ export class Calendar extends CalendarApiImpl {
       this.renderRunner.request()
     }
 
-    this.dataManager.destroy()
+    this.store.destroy()
   }
 
   batchRendering(func): void {
@@ -156,7 +138,7 @@ export class Calendar extends CalendarApiImpl {
   }
 
   resetOptions(optionOverrides, changedOptionNames?: string[]) {
-    this.currentDataManager.resetOptions(optionOverrides, changedOptionNames)
+    this.store.resetOptions(optionOverrides, changedOptionNames)
   }
 
   private setClassName(className: string) {

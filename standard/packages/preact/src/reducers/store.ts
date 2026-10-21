@@ -40,13 +40,29 @@ const CORE_EFFECT_RUNNERS: EffectRunnerMap = {
   optionChange: runOptionChange,
 }
 
-export interface CalendarDataManagerConfig {
-  calendarApi: CalendarApiImpl
-  // isInCommit: called from inside a React commit (a layout effect), where flushSync isn't allowed
-  onDataChange?: (data: CalendarData, actionsComplete: Action[], isInCommit: boolean) => void
-  // only deliver onDataChange while mounted. otherwise it's held until mount().
+export interface CalendarStoreConfig {
+  calendarApi: CalendarApiImpl // the store attaches itself (calendarApi.store)
+  // only notify subscribers while mounted. otherwise changes are held until mount().
   // for React, where a render might never commit, or the calendar might be unmounted
   isMountGated?: boolean
+}
+
+// what a drain completed. the new data is store.getData()
+export interface CalendarStoreChange {
+  completedActions: Action[] // non-idle
+  isUrgent: boolean // a drag or resize: render synchronously, without rerenderDelay
+  isInCommit: boolean // from inside a React commit (a layout effect), where flushSync isn't allowed
+}
+
+export type CalendarStoreListener = (change: CalendarStoreChange) => void
+
+/*
+The calendar's state, and the pipeline that reduces actions into it. One per calendar, created together
+with its API object (in React, in one useState initializer, so a discarded Strict Mode replay discards
+both). See planning/phase-9-store.md
+*/
+export function createCalendarStore(config: CalendarStoreConfig): CalendarStore {
+  return new CalendarStore(config)
 }
 
 export type ReducerFunc = (
@@ -56,7 +72,7 @@ export type ReducerFunc = (
   effects: ReduceEffects, // for the side effects it describes (a fetch), instead of performing them
 ) => Dictionary
 
-export class CalendarDataManager {
+export class CalendarStore {
   private computeCurrentViewData = memoize(this._computeCurrentViewData)
   private buildDateProfileGenerator = memoizeObjArg(buildDateProfileGenerator)
   private buildViewApi = memoize(buildViewApi)
@@ -91,7 +107,8 @@ export class CalendarDataManager {
   private isControllerDetached = false
 
   private optionOverrides: CalendarOptions = {}
-  private config: CalendarDataManagerConfig
+  private config: CalendarStoreConfig
+  private listeners: CalendarStoreListener[] = []
   private state: CalendarDataManagerState // internal state
   private data: CalendarData // internal state + computed
 
@@ -107,8 +124,9 @@ export class CalendarDataManager {
     return this.optionsRefiner.currentCalendarOptionsInput
   }
 
-  constructor(config: CalendarDataManagerConfig) {
+  constructor(config: CalendarStoreConfig) {
     this.config = config
+    config.calendarApi.store = this
     this.nowManager = new CalendarNowManager()
     this.nowTimer = new NowTimerRunner(this.handleNowChange)
   }
@@ -133,7 +151,7 @@ export class CalendarDataManager {
       const { pendingActions } = this
       if (pendingActions.length) {
         this.pendingActions = []
-        this.config.onDataChange?.(this.data, pendingActions, true)
+        this.notify(pendingActions, true)
       }
       this.isInCommit = false
     }
@@ -156,8 +174,8 @@ export class CalendarDataManager {
   }
 
   /*
-  Will NOT trigger onDataChange unless there were other actions in the queue.
-  With isRendering, called during a render: effects wait for flushEffects(), and onDataChange isn't
+  Will NOT notify subscribers unless there were other actions in the queue.
+  With isRendering, called during a render: effects wait for flushEffects(), and subscribers aren't
   called, because the render uses the returned data
   */
   update(optionOverrides: CalendarOptions, isRendering = false): CalendarData {
@@ -202,7 +220,7 @@ export class CalendarDataManager {
   }
 
   /*
-  WILL trigger onDataChange
+  WILL notify subscribers
   */
   resetOptions(optionOverrides: CalendarOptions, changedOptionNames?: string[]) {
     if (changedOptionNames === undefined) {
@@ -213,6 +231,24 @@ export class CalendarDataManager {
     }
 
     this.dispatch({ type: 'RESET_OPTIONS' })
+  }
+
+  // subscribers are called once per drain that completed actions, after it settles. not on
+  // initialization, idle-only drains or render-time drains, and, mount-gated, only while mounted
+  subscribe(listener: CalendarStoreListener): () => void {
+    this.listeners.push(listener)
+
+    return () => {
+      this.listeners = this.listeners.filter((otherListener) => otherListener !== listener)
+    }
+  }
+
+  getState(): CalendarDataManagerState {
+    return this.state
+  }
+
+  getData(): CalendarData {
+    return this.data
   }
 
   getCurrentData = () => this.data
@@ -247,7 +283,6 @@ export class CalendarDataManager {
       if (actionQueue.length) {
         const action = actionQueue.shift()
 
-        this.config.calendarApi.currentDataManager = this
         ;({ state, data } = this.reduce(state, data, action))
         this.state = state
         this.data = data
@@ -278,12 +313,22 @@ export class CalendarDataManager {
   }
 
   private deliverDataChange(actionsComplete: Action[]) {
-    const { onDataChange, isMountGated } = this.config
-
-    if (isMountGated && !this.isMounted) {
+    if (this.config.isMountGated && !this.isMounted) {
       this.pendingActions.push(...actionsComplete)
-    } else if (onDataChange) {
-      onDataChange(this.data, actionsComplete, this.isInCommit)
+    } else {
+      this.notify(actionsComplete, this.isInCommit)
+    }
+  }
+
+  private notify(completedActions: Action[], isInCommit: boolean) {
+    const change: CalendarStoreChange = {
+      completedActions,
+      isUrgent: computeIsUrgent(completedActions),
+      isInCommit,
+    }
+
+    for (const listener of this.listeners) {
+      listener(change)
     }
   }
 
@@ -721,6 +766,23 @@ function buildViewUiProps(calendarContext: CalendarContext) {
       calendarContext,
     ),
   }
+}
+
+// drags and resizes render synchronously, without rerenderDelay
+function computeIsUrgent(actions: Action[]): boolean {
+  for (const action of actions) {
+    if (
+      action.type === 'SET_EVENT_DRAG' ||
+      action.type === 'UNSET_EVENT_DRAG' ||
+      action.type === 'SET_EVENT_RESIZE' ||
+      action.type === 'UNSET_EVENT_RESIZE' ||
+      // could happen as a result of a drag or resize and must be part of same sync pipeline
+      action.type === 'MERGE_EVENTS'
+    ) {
+      return true
+    }
+  }
+  return false
 }
 
 function computeIsLoading(state: CalendarDataManagerState, context: CalendarContext) {

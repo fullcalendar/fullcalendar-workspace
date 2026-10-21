@@ -69,7 +69,7 @@ export interface CalendarData extends CalendarDataBase {
   viewTitle: string // based on current date
   calendarApi: CalendarApiImpl // TODO: try to remove this
   dispatch: (action: Action) => void
-  // binds the committed controller option. see CalendarDataManager
+  // binds the committed controller option. see CalendarStore
   syncController: (controller: CalendarController | undefined) => void
   emitter: Emitter<Required<CalendarListeners>>
   getCurrentData(): CalendarData // TODO: try to remove

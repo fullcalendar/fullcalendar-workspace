@@ -1,4 +1,4 @@
-import { ReducerFunc } from './reducers/CalendarDataManager'
+import { ReducerFunc } from './reducers/store'
 import { EffectRunnerMap } from './reducers/effects'
 import { EventDefMemberAdder } from './structs/event-parse'
 import { eventDefMutationApplier } from './structs/event-mutation'

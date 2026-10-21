@@ -11,7 +11,7 @@ const lifecycleRe = /(DidMount|WillUnmount)$/
 const handlerRe = /^on[A-Z]/
 
 // Somewhat tracks COMPLEX_OPTION_COMPARATORS
-// Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
+// Unfortunately always need 'maybe' to handle undefined inital value, because of the options refiner (OptionsRefinerCache)
 const customMergeFuncs = {
   buttons: mergeMaybePropsDepth1,
 }
@@ -90,7 +90,7 @@ export function joinFuncishClassNames(
         refineClassName(isFunc1 ? input1(info) : input1, optionName),
       )
     }
-    (combinedFunc as any).parts = [input0, input1] // see CalendarDataManager::processRawCalendarOptions
+    (combinedFunc as any).parts = [input0, input1] // see OptionsRefinerCache::processRawCalendarOptions
     return combinedFunc
   }
 
@@ -116,7 +116,7 @@ export function mergeContentInjectors(
       }
       return res
     }
-    (combinedFunc as any).parts = [contentGenerator0, contentGenerator1] // see CalendarDataManager::processRawCalendarOptions
+    (combinedFunc as any).parts = [contentGenerator0, contentGenerator1] // see OptionsRefinerCache::processRawCalendarOptions
     return combinedFunc
   }
 
@@ -137,7 +137,7 @@ export function mergeLifecycleCallbacks(
       fn0(...args)
       fn1(...args)
     }
-    (combinedFunc as any).parts = [fn0, fn1] // see CalendarDataManager::processRawCalendarOptions
+    (combinedFunc as any).parts = [fn0, fn1] // see OptionsRefinerCache::processRawCalendarOptions
     return combinedFunc
   }
   return fn0 || fn1

@@ -9,14 +9,12 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { flushSync } from 'react-dom'
-import { CalendarDataManager } from './reducers/CalendarDataManager'
+import { createCalendarStore } from './reducers/store'
 import { CalendarOptions } from './options'
 import { CalendarApiImpl } from './api/CalendarApiImpl'
 import { CalendarApi } from './api/CalendarApi'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
-import { CalendarData } from './reducers/data-types'
-import { Action } from './reducers/Action'
 import { guid } from './util/misc'
 import { warn } from './util/warn'
 
@@ -32,26 +30,31 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
   const [_revision, setRevision] = useState('')
 
-  function handleDataChange(_data: CalendarData, actions: Action[], isInCommit: boolean) {
-    // inside a commit, React renders the state change synchronously anyway, and forbids flushSync
-    (needsSyncRender(actions) && !isInCommit ? flushSync : runNormal)(() => {
-      setRevision(guid())
+  // created together, so a Strict Mode replay of this initializer discards both
+  const [{ calendarApi, store }] = useState(() => {
+    const calendarApi = new CalendarApiImpl()
+    const store = createCalendarStore({
+      calendarApi,
+      isMountGated: true, // a render might never commit
     })
-  }
 
-  const [calendarApi] = useState(() => new CalendarApiImpl())
-  const [calendarDataManager] = useState(() => new CalendarDataManager({
-    calendarApi,
-    onDataChange: handleDataChange,
-    isMountGated: true, // a render might never commit
-  }))
+    // before mount(), which may deliver changes held while not mounted
+    store.subscribe(({ isUrgent, isInCommit }) => {
+      // inside a commit, React renders the state change synchronously anyway, and forbids flushSync
+      (isUrgent && !isInCommit ? flushSync : runNormal)(() => {
+        setRevision(guid())
+      })
+    })
+
+    return { calendarApi, store }
+  })
 
   // timers, and data changes from async work (fetches), only while mounted.
   // runs again for remounts from Strict Mode and <Activity>
   useIsomorphicLayoutEffect(() => {
-    calendarDataManager.mount()
+    store.mount()
     return () => {
-      calendarDataManager.unmount()
+      store.unmount()
     }
   }, [])
 
@@ -60,14 +63,14 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
     // CalendarInner also syncs, before it emits datesSet. this one is for Preact, which runs all
     // layout effects, including a parent's that might use the controller, before componentDidMount
     data.syncController(data.calendarOptions.controller)
-    calendarDataManager.flushEffects()
+    store.flushEffects()
   })
 
   useImperativeHandle(ref, () => ({
     getApi: () => calendarApi
   }), [])
 
-  const data = calendarDataManager.update(props, /* isRendering = */ true)
+  const data = store.update(props, /* isRendering = */ true)
 
   return (
     <CalendarMediaRoot emitter={data.emitter}>
@@ -93,22 +96,6 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
 // avoids React 17/18's warning about layout effects when server-side rendering
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
-
-function needsSyncRender(actions: Action[]): boolean {
-  for (const action of actions) {
-    if (
-      action.type === 'SET_EVENT_DRAG' ||
-      action.type === 'UNSET_EVENT_DRAG' ||
-      action.type === 'SET_EVENT_RESIZE' ||
-      action.type === 'UNSET_EVENT_RESIZE' ||
-      // could happen as a result of a drag or resize and must be part of same sync pipeline
-      action.type === 'MERGE_EVENTS'
-    ) {
-      return true
-    }
-  }
-  return false
-}
 
 function runNormal(f: () => void) {
   f()
