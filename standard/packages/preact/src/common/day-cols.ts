@@ -1,7 +1,7 @@
 import { DateEnv, DateMarker, DateRange, Duration, addDays, rangeContainsMarker } from '@full-ui/headless-calendar'
 import { DateProfile, DateProfileGenerator, isMajorUnit } from '../DateProfileGenerator'
 import { Dictionary } from '../options'
-import { DaySeriesModel } from './DaySeriesModel'
+import { DaySeries, buildDaySeries } from './day-table/day-series'
 
 export interface DayCol {
   key: string
@@ -35,7 +35,7 @@ export function buildDayCols(
   majorUnit = '', // timegrid passes none, keeping all columns non-major
 ): DayCol[] {
   return buildDayColsFromSeries(
-    new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator),
+    buildDaySeries(dateProfile.renderRange, dateProfileGenerator.hiddenDays),
     dateEnv,
     {
       slotRange,
@@ -46,7 +46,7 @@ export function buildDayCols(
 }
 
 export function buildDayColsFromSeries(
-  daySeries: DaySeriesModel,
+  daySeries: DaySeries,
   dateEnv: DateEnv,
   config: BuildDayColsConfig = {},
 ): DayCol[] {

@@ -1,34 +1,11 @@
 import { DayHeaderInfo } from '../../render-hook-misc'
-import { computeMajorUnit } from '../../DateProfileGenerator'
 import { createFormatter } from '../../datelib/formatting'
-import { DateEnv, DateFormatter, DateMarker } from '@full-ui/headless-calendar'
-import { DateProfile, DateProfileGenerator } from '../../DateProfileGenerator'
-import { DaySeriesModel } from '../../common/DaySeriesModel'
-import { DayTableCell, DayTableModel } from '../DayTableModel'
+import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
+import { DayTableCell } from '../DayTableModel'
 import type { ReactNode } from 'react'
 
 export function renderInner(renderProps: DayHeaderInfo): ReactNode {
   return renderProps.text
-}
-
-export function buildDayTableModel(
-  dateProfile: DateProfile,
-  dateProfileGenerator: DateProfileGenerator,
-  dateEnv: DateEnv,
-) {
-  const daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
-  const breakOnWeeks = /year|month|week/.test(dateProfile.currentRangeUnit)
-  const majorUnit = !breakOnWeeks && computeMajorUnit(dateProfile, dateEnv)
-
-  // Exclude 'day': when cells are themselves days, all would match and the boundary
-  // distinction is meaningless (unlike timeline slots which can be sub-day).
-  return new DayTableModel(
-    daySeries,
-    breakOnWeeks,
-    dateEnv,
-    majorUnit !== 'day' ? majorUnit : undefined,
-    dateProfile.activeRange,
-  )
 }
 
 export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [

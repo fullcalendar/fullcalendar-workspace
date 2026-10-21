@@ -1,7 +1,8 @@
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { useMemo, useState } from 'react'
-import { DaySeriesModel } from '../../common/DaySeriesModel'
-import { DayCol, buildDayColsFromSeries } from '../../common/day-cols'
+import { DaySeries } from '../../common/day-table/day-series'
+import { DayCol } from '../../common/day-cols'
+import { useTimeGridModel } from '../../common/day-table/useDayTableModel'
 import { EventSegUiInteractionState } from '../../component/DateComponent'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { ViewProps } from '../../component-util/View'
@@ -12,7 +13,7 @@ import { AllDaySplitter } from '../AllDaySplitter'
 import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from '../TimeColsSeg'
 
 export interface TimeGridViewData {
-  daySeries: DaySeriesModel
+  daySeries: DaySeries
   dayCols: DayCol[]
   dayRanges: DateRange[]
   splitProps: { [key: string]: SplittableProps } // the view's props, by allDay and timed
@@ -22,24 +23,12 @@ export interface TimeGridViewData {
 }
 
 /*
-What the TimeGrid views (TimeGridView, ResourceTimeGridView) derive the same way: the day columns,
-the props split into all-day and timed, and now
+What ResourceTimeGridView derives: the day columns, the props split into all-day and timed, and now.
+TimeGridView is on the day-table pipeline (useTimeGridModel, useDayTableSegs) instead
 */
 export function useTimeGridViewData(props: ViewProps): TimeGridViewData {
-  const { options, dateEnv, dateProfileGenerator } = useViewContext()
-  const { dateProfile } = props
-
-  const daySeries = useMemo(
-    () => new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator),
-    [dateProfile, dateProfileGenerator],
-  )
-  const dayCols = useMemo(
-    () => buildDayColsFromSeries(daySeries, dateEnv, {
-      slotRange: dateProfile,
-      activeRange: dateProfile.activeRange,
-    }),
-    [daySeries, dateEnv, dateProfile],
-  )
+  const { options } = useViewContext()
+  const { daySeries, dayCols } = useTimeGridModel(props.dateProfile)
   const dayRanges = useMemo(() => dayCols.map((dayCol) => dayCol.range), [dayCols])
 
   const [allDaySplitter] = useState(() => new AllDaySplitter())

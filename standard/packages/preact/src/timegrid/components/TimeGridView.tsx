@@ -1,14 +1,17 @@
 import { BaseComponent } from '../../vdom-util'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ViewProps } from '../../component-util/View'
 import { useViewContext } from '../../hooks/useViewContext'
+import { useNow } from '../../hooks/useNow'
 import { buildDateRowConfigs } from '../../daygrid/header-tier'
 import { useDayHeaderFormatter } from '../../daygrid/components/useDayGridViewData'
-import { DaySeriesSlicer } from '../../daygrid/DayTableSlicer'
-import { DayTimeColsSlicer } from '../DayTimeColsSlicer'
-import { organizeSegsByCol } from '../TimeColsSeg'
+import { DayGridRange } from '../../daygrid/DayTableModel'
+import { PLAIN_KEYING, TIME_GRID_ALL_DAY_LANE, TIME_GRID_TIMED_LANE } from '../../common/day-table/keying'
+import { useTimeGridModel } from '../../common/day-table/useDayTableModel'
+import { useDayTableSegs, useNowIndicatorSegsByCol } from '../../common/day-table/useDayTableSegs'
+import { TimeGridRange } from '../TimeColsSeg'
 import { TimeGridLayout } from './TimeGridLayout'
-import { useTimedSegsByCol, useTimeGridViewData } from './useTimeGridViewData'
+import { useTimedSegsByCol } from './useTimeGridViewData'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class TimeGridView extends BaseComponent<ViewProps> {
@@ -21,33 +24,38 @@ function TimeGridViewBody(props: ViewProps) {
   const context = useViewContext()
   const { options } = context
   const { dateProfile } = props
-  const { daySeries, dayCols, dayRanges, splitProps, nowDate, nowMs, todayRange } = useTimeGridViewData(props)
-  const colDates = useMemo(() => dayCols.map((col) => col.date), [dayCols])
-  const colCount = dayCols.length
+  const model = useTimeGridModel(dateProfile)
+  const { nowDate, nowMs, todayRange } = useNow(options.nowIndicator ? 'minute' : 'day' /* hacky */)
+  const colDates = model.headerDates
+  const { colCount } = model
 
-  const [daySeriesSlicer] = useState(() => new DaySeriesSlicer())
-  const [dayTimeColsSlicer] = useState(() => new DayTimeColsSlicer())
-  const allDayProps = daySeriesSlicer.sliceProps(
-    splitProps.allDay,
+  const allDayProps = useDayTableSegs<DayGridRange>(
+    props,
+    PLAIN_KEYING,
+    model,
+    TIME_GRID_ALL_DAY_LANE,
     dateProfile,
     options.nextDayThreshold,
     context,
-    daySeries,
   )
-  const timedProps = dayTimeColsSlicer.sliceProps(
-    splitProps.timed,
+  const timedProps = useDayTableSegs<TimeGridRange>(
+    props,
+    PLAIN_KEYING,
+    model,
+    TIME_GRID_TIMED_LANE,
     dateProfile,
     null,
     context,
-    dayRanges,
   )
   const timedSegsByCol = useTimedSegsByCol(timedProps, colCount)
-
-  const nowIndicatorSeg = !props.forPrint && options.nowIndicator &&
-    dayTimeColsSlicer.sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges)
-  const nowIndicatorSegsByCol = useMemo(
-    () => organizeSegsByCol(nowIndicatorSeg || null, colCount),
-    [nowIndicatorSeg, colCount],
+  const nowIndicatorSegsByCol = useNowIndicatorSegsByCol(
+    nowDate,
+    model,
+    PLAIN_KEYING,
+    dateProfile,
+    options.nextDayThreshold,
+    false, // datesAboveResources
+    !props.forPrint && Boolean(options.nowIndicator),
   )
 
   const dayHeaderFormat = useDayHeaderFormatter(true /* datesRepDistinctDays */, colCount)
@@ -72,7 +80,7 @@ function TimeGridViewBody(props: ViewProps) {
       nowDate={nowDate}
       nowMs={nowMs}
       todayRange={todayRange}
-      cells={dayCols}
+      cells={model.cols}
       forPrint={props.forPrint}
       className={props.className}
 

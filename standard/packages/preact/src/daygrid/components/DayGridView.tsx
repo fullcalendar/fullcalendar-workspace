@@ -1,8 +1,10 @@
 import { BaseComponent } from '../../vdom-util'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ViewProps } from '../../component-util/View'
 import { useViewContext } from '../../hooks/useViewContext'
-import { DayTableSlicer } from '../DayTableSlicer'
+import { PLAIN_KEYING, DAY_GRID_LANE } from '../../common/day-table/keying'
+import { useDayTableSegs } from '../../common/day-table/useDayTableSegs'
+import { DayGridRange } from '../DayTableModel'
 import { buildDateRowConfigs } from '../header-tier'
 import { DayGridLayout } from './DayGridLayout'
 import { useDayGridViewData, useDayHeaderFormatter } from './useDayGridViewData'
@@ -20,8 +22,15 @@ function DayGridViewBody(props: ViewProps) {
   const { dateProfile } = props
   const { dayTableModel, datesRepDistinctDays, todayRange } = useDayGridViewData(dateProfile)
   const dayHeaderFormat = useDayHeaderFormatter(datesRepDistinctDays, dayTableModel.colCount)
-  const [slicer] = useState(() => new DayTableSlicer())
-  const slicedProps = slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
+  const slicedProps = useDayTableSegs<DayGridRange>(
+    props,
+    PLAIN_KEYING,
+    dayTableModel,
+    DAY_GRID_LANE,
+    dateProfile,
+    options.nextDayThreshold,
+    context,
+  )
   const headerTiers = useMemo(
     () => buildDateRowConfigs(
       dayTableModel.headerDates,

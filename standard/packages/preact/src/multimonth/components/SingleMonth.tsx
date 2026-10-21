@@ -13,9 +13,12 @@ import { useRenderHookEl } from '../../hooks/useRenderHookEl'
 import { useReportedSize } from '../../hooks/useReportedSize'
 import { useMeasuredState } from '../../hooks/useMeasuredState'
 import { buildDateRowConfig } from '../../daygrid/header-tier'
-import { buildDayTableModel, computeDayGridColumns, createDayHeaderFormatter } from '../../daygrid/components/util'
+import { computeDayGridColumns, createDayHeaderFormatter } from '../../daygrid/components/util'
 import { DayGridRows } from '../../daygrid/components/DayGridRows'
-import { DayTableSlicer } from '../../daygrid/DayTableSlicer'
+import { DayGridRange } from '../../daygrid/DayTableModel'
+import { PLAIN_KEYING, DAY_GRID_LANE } from '../../common/day-table/keying'
+import { useDayGridModel } from '../../common/day-table/useDayTableModel'
+import { useDayTableSegs } from '../../common/day-table/useDayTableSegs'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
 import { computeViewBorderless } from '../../util/misc'
 import { SingleMonthInfo, SingleMonthHeaderInfo } from '../structs'
@@ -42,12 +45,16 @@ export const SingleMonth = memo(function SingleMonth(props: SingleMonthProps) {
   const { borderlessX, borderlessTop, borderlessBottom } = computeViewBorderless(options)
   const titleId = context.baseId + 'month-' + props.isoDateStr
 
-  const dayTableModel = useMemo(
-    () => buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv),
-    [dateProfile, context.dateProfileGenerator, dateEnv],
+  const dayTableModel = useDayGridModel(dateProfile)
+  const slicedProps = useDayTableSegs<DayGridRange>(
+    props,
+    PLAIN_KEYING,
+    dayTableModel,
+    DAY_GRID_LANE,
+    dateProfile,
+    options.nextDayThreshold,
+    context,
   )
-  const [slicer] = useState(() => new DayTableSlicer())
-  const slicedProps = slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 
   const dayHeaderFormat = useMemo(
     () => createDayHeaderFormatter(

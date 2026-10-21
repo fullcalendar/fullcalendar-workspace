@@ -3,8 +3,9 @@ import { useMemo } from 'react'
 import { DateProfile } from '../../DateProfileGenerator'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useNow } from '../../hooks/useNow'
-import { DayTableModel } from '../DayTableModel'
-import { buildDayTableModel, createDayHeaderFormatter } from './util'
+import { DayTableModel } from '../../common/day-table/model'
+import { useDayGridModel } from '../../common/day-table/useDayTableModel'
+import { createDayHeaderFormatter } from './util'
 
 export interface DayGridViewData {
   dayTableModel: DayTableModel
@@ -17,11 +18,7 @@ What the DayGrid views (DayGridView, ResourceDayGridView) derive the same way: t
 today, which updates at midnight
 */
 export function useDayGridViewData(dateProfile: DateProfile): DayGridViewData {
-  const { dateProfileGenerator, dateEnv } = useViewContext()
-  const dayTableModel = useMemo(
-    () => buildDayTableModel(dateProfile, dateProfileGenerator, dateEnv),
-    [dateProfile, dateProfileGenerator, dateEnv],
-  )
+  const dayTableModel = useDayGridModel(dateProfile)
   const { todayRange } = useNow('day')
 
   return {

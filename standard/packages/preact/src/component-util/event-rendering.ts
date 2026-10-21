@@ -1,6 +1,6 @@
 import { EventDef, EventDefHash } from '../structs/event-def'
 import {
-  buildEventInstanceRange, buildRangeEdgeOutput, EventInstanceRange,
+  buildEventInstanceRange, buildRangeEdgeOutput, EventInstance, EventInstanceRange,
 } from '../structs/event-instance'
 import { EventTuple } from '../structs/event-parse'
 import { EventStore } from '../structs/event-store'
@@ -47,71 +47,112 @@ export interface EventRangeProps {
 Specifying nextDayThreshold signals that all-day ranges should be sliced.
 */
 export function sliceEventStore(eventStore: EventStore, eventUiBases: EventUiHash, framingRange: DateRange, nextDayThreshold?: Duration) {
-  let inverseBgByGroupId: { [groupId: string]: DateRange[] } = {}
-  let inverseBgByDefId: { [defId: string]: DateRange[] } = {}
-  let defByGroupId: { [groupId: string]: EventDef } = {}
-  let bgRanges: EventRenderRange[] = []
-  let fgRanges: EventRenderRange[] = []
-  let eventUis = compileEventUis(eventStore.defs, eventUiBases)
+  let { defs, instances } = eventStore
+  let state = createEventSliceState()
 
-  for (let defId in eventStore.defs) {
-    let def = eventStore.defs[defId]
-    let ui = eventUis[def.defId]
+  for (let defId in defs) {
+    initEventSliceDef(defs[defId], compileEventUi(defs[defId], eventUiBases), state)
+  }
 
+  for (let instanceId in instances) {
+    let instance = instances[instanceId]
+
+    sliceEventInstance(defs[instance.defId], instance, framingRange, nextDayThreshold, state)
+  }
+
+  emitInverseComplements(state, framingRange, defs)
+
+  return { bg: state.bg, fg: state.fg }
+}
+
+/*
+sliceEventStore's three stages, over an explicit state, so one pass over a store can fill several
+states (the day-table pipeline keeps one per key): every def first (its UI, and the
+inverse-background groups), then the instances in store order, then the inverse complements, by
+group then by def. Ranges come out in instance order, complements last
+*/
+export interface EventSliceState {
+  uiByDefId: { [defId: string]: EventUi }
+  inverseBgByGroupId: { [groupId: string]: DateRange[] }
+  inverseBgByDefId: { [defId: string]: DateRange[] }
+  defByGroupId: { [groupId: string]: EventDef }
+  bg: EventRenderRange[]
+  fg: EventRenderRange[]
+}
+
+export function createEventSliceState(): EventSliceState {
+  return {
+    uiByDefId: {},
+    inverseBgByGroupId: {},
+    inverseBgByDefId: {},
+    defByGroupId: {},
+    bg: [],
+    fg: [],
+  }
+}
+
+export function initEventSliceDef(def: EventDef, ui: EventUi, state: EventSliceState): void {
+  state.uiByDefId[def.defId] = ui
+
+  if (ui.display === 'inverse-background') {
+    if (def.groupId) {
+      state.inverseBgByGroupId[def.groupId] = []
+
+      if (!state.defByGroupId[def.groupId]) {
+        state.defByGroupId[def.groupId] = def
+      }
+    } else {
+      state.inverseBgByDefId[def.defId] = []
+    }
+  }
+}
+
+export function sliceEventInstance(
+  def: EventDef,
+  instance: EventInstance,
+  framingRange: DateRange,
+  nextDayThreshold: Duration | null | undefined,
+  state: EventSliceState,
+): void {
+  let ui = state.uiByDefId[def.defId]
+  let origRange = instance.range
+
+  let normalRange = (!def.allDay && nextDayThreshold) ?
+    computeVisibleDayRange(origRange, nextDayThreshold) :
+    origRange
+
+  let slicedRange = intersectRanges(normalRange, framingRange)
+
+  if (slicedRange) {
     if (ui.display === 'inverse-background') {
       if (def.groupId) {
-        inverseBgByGroupId[def.groupId] = []
-
-        if (!defByGroupId[def.groupId]) {
-          defByGroupId[def.groupId] = def
-        }
+        state.inverseBgByGroupId[def.groupId].push(slicedRange)
       } else {
-        inverseBgByDefId[defId] = []
+        state.inverseBgByDefId[instance.defId].push(slicedRange)
       }
+    } else if (ui.display !== 'none') {
+      (ui.display === 'background' ? state.bg : state.fg).push({
+        def,
+        ui,
+        instance,
+        range: buildSlicedEventRange(origRange, normalRange, slicedRange),
+        isStart: normalRange.start && normalRange.start.valueOf() === slicedRange.start.valueOf(),
+        isEnd: normalRange.end && normalRange.end.valueOf() === slicedRange.end.valueOf(),
+      })
     }
   }
+}
 
-  for (let instanceId in eventStore.instances) {
-    let instance = eventStore.instances[instanceId]
-    let def = eventStore.defs[instance.defId]
-    let ui = eventUis[def.defId]
-    let origRange = instance.range
-
-    let normalRange = (!def.allDay && nextDayThreshold) ?
-      computeVisibleDayRange(origRange, nextDayThreshold) :
-      origRange
-
-    let slicedRange = intersectRanges(normalRange, framingRange)
-
-    if (slicedRange) {
-      if (ui.display === 'inverse-background') {
-        if (def.groupId) {
-          inverseBgByGroupId[def.groupId].push(slicedRange)
-        } else {
-          inverseBgByDefId[instance.defId].push(slicedRange)
-        }
-      } else if (ui.display !== 'none') {
-        (ui.display === 'background' ? bgRanges : fgRanges).push({
-          def,
-          ui,
-          instance,
-          range: buildSlicedEventRange(origRange, normalRange, slicedRange),
-          isStart: normalRange.start && normalRange.start.valueOf() === slicedRange.start.valueOf(),
-          isEnd: normalRange.end && normalRange.end.valueOf() === slicedRange.end.valueOf(),
-        })
-      }
-    }
-  }
-
-  for (let groupId in inverseBgByGroupId) { // BY GROUP
-    let ranges = inverseBgByGroupId[groupId]
+export function emitInverseComplements(state: EventSliceState, framingRange: DateRange, defs: EventDefHash): void {
+  for (let groupId in state.inverseBgByGroupId) { // BY GROUP
+    let ranges = state.inverseBgByGroupId[groupId]
     let invertedRanges = invertRanges(ranges, framingRange)
 
     for (let invertedRange of invertedRanges) {
-      let def = defByGroupId[groupId]
-      let ui = eventUis[def.defId]
+      let def = state.defByGroupId[groupId]
+      let ui = state.uiByDefId[def.defId]
 
-      bgRanges.push({
+      state.bg.push({
         def,
         ui,
         instance: null,
@@ -122,14 +163,14 @@ export function sliceEventStore(eventStore: EventStore, eventUiBases: EventUiHas
     }
   }
 
-  for (let defId in inverseBgByDefId) {
-    let ranges = inverseBgByDefId[defId]
+  for (let defId in state.inverseBgByDefId) {
+    let ranges = state.inverseBgByDefId[defId]
     let invertedRanges = invertRanges(ranges, framingRange)
 
     for (let invertedRange of invertedRanges) {
-      bgRanges.push({
-        def: eventStore.defs[defId],
-        ui: eventUis[defId],
+      state.bg.push({
+        def: defs[defId],
+        ui: state.uiByDefId[defId],
         instance: null,
         range: invertedRange,
         isStart: false,
@@ -137,8 +178,6 @@ export function sliceEventStore(eventStore: EventStore, eventUiBases: EventUiHas
       })
     }
   }
-
-  return { bg: bgRanges, fg: fgRanges }
 }
 
 /*

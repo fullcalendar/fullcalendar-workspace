@@ -159,15 +159,44 @@ export type { EventInteractionState } from './interactions/event-interaction-sta
 export {
   sortEventSegs,
   getEventRangeMeta, buildEventRangeKey,
+  sliceEventStore, // for the day-table pipeline's specs (an oracle)
   EventRangeProps,
   MinimalEventProps,
 } from './component-util/event-rendering'
 
 export type { DayTableCell, DayGridRange } from './daygrid/DayTableModel'
-export { DayTableModel } from './daygrid/DayTableModel'
-export { DaySeriesModel } from './common/DaySeriesModel'
+export { buildDayGridRanges } from './daygrid/DayTableModel'
 export type { DayCol, DayColSlotRange } from './common/day-cols'
 export { buildDayCols, buildDayColsFromSeries } from './common/day-cols'
+
+// the day-table pipeline (DayGrid, TimeGrid, MultiMonth, the resource views)
+export type { DaySeries } from './common/day-table/day-series'
+export type { DaySeries as DaySeriesModel } from './common/day-table/day-series' // deprecated alias, until premium moves over
+export { buildDaySeries } from './common/day-table/day-series'
+export type {
+  DayTableModel, DayTableColumn, DayTableColumnGroup, DayTableModelConfig,
+} from './common/day-table/model'
+export {
+  buildDayTableModel, buildModelFromCols, lookUpDayTableCol, computeDayTableColRanges, NO_PARTICIPANTS,
+} from './common/day-table/model'
+export type { DayTableKeying, KeylessRules, DayTableLane } from './common/day-table/keying'
+export {
+  PLAIN_KEYING, PLAIN_KEYLESS_RULES, DAY_GRID_LANE, TIME_GRID_ALL_DAY_LANE, TIME_GRID_TIMED_LANE,
+  isDefInLane, isSpanInLane,
+} from './common/day-table/keying'
+export { buildDefKeys, splitIndividualUi, buildEventUiForKey } from './common/day-table/event-ui-bases'
+export type { KeyedCache } from './common/day-table/keyed-cache'
+export { createKeyedCache } from './common/day-table/keyed-cache'
+export type { DayTableRange, DayTableSeg, DayTableEventSegs } from './common/day-table/slice-ranges'
+export {
+  sliceDayTableEvents, sliceDayTableBusinessHours, sliceDayTableDateSelection, sliceDayTableInteraction,
+  resolveDayTableEventSelection, sliceRangeToCoords,
+} from './common/day-table/slice-ranges'
+export type { DayTableSegCategory } from './common/day-table/project'
+export { projectDayTableSegs, projectDayTableInteraction, getDayTableSegTransform } from './common/day-table/project'
+export { sliceDayTableNowIndicator } from './common/day-table/now-indicator'
+export { useDayTableSegs, useNowIndicatorSegsByCol } from './common/day-table/useDayTableSegs'
+export { useDayGridModel, useTimeGridModel, buildDayGridModel } from './common/day-table/useDayTableModel'
 
 export { Scroller } from './scrollgrid/Scroller'
 
@@ -267,8 +296,5 @@ export { createDayHeaderFormatter } from './daygrid/components/util'
 export { DayGridLayout } from './daygrid/components/DayGridLayout'
 export type { DayGridViewData } from './daygrid/components/useDayGridViewData'
 export { useDayGridViewData, useDayHeaderFormatter } from './daygrid/components/useDayGridViewData'
-export {
-  buildDayTableModel,
-} from './daygrid/components/util'
 
 export { computeTimeGridPrintMode } from './timegrid/print-mode'
