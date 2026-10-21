@@ -11,7 +11,7 @@ import { memoize } from '../../util/memoize'
 import { SliceableProps, SlicedProps } from '../slicing-utils'
 import { DayTableModel } from './model'
 import { DayTableKeying, DayTableLane, isPassthroughLane, isSpanInLane } from './keying'
-import { buildDefKeys, buildEventUiForKey, splitIndividualUi } from './event-ui-bases'
+import { buildDefKeys, buildEventUiForKey, buildLaneKeysWithDefs, splitIndividualUi } from './event-ui-bases'
 import { KeyedCache, createKeyedCache } from './keyed-cache'
 import {
   DayTableEventSegs,
@@ -49,11 +49,16 @@ export function useDayTableSegs<R extends DayTableRange>(
   const { eventStore, eventUiBases } = props
   const keys = keying.keys.concat([''])
   const isPassthrough = isPassthroughLane(keying, lane)
-  const basesByKey = getBasesByKey(caches, keys, keying, lane, eventStore.defs, eventUiBases, isPassthrough)
+  const defKeys = isPassthrough ? null : caches.buildDefKeys(eventStore.defs, keying.keysForEventDef)
+  const basesByKey = getBasesByKey(caches, keys, keying, lane, eventStore.defs, defKeys, eventUiBases)
+  // a key without defs in the lane holds onto its (empty) segs while the store changes elsewhere,
+  // as the Splitter's constant empty store did
+  const keysWithDefs = defKeys && caches.buildLaneKeysWithDefs(eventStore.defs, defKeys, lane)
+  const eventStoreFor = (key: string) => (!keysWithDefs || keysWithDefs[key] ? eventStore : null)
 
   const eventSegs = caches.events.get(
     keys,
-    (key) => [eventStore, basesByKey[key], daySeries, dayCols, lane, dateProfile, nextDayThreshold],
+    (key) => [eventStoreFor(key), basesByKey[key], daySeries, dayCols, lane, dateProfile, nextDayThreshold],
     (staleKeys) => sliceDayTableEvents(
       eventStore,
       staleKeys,
@@ -168,6 +173,7 @@ type ProjectInteractionMemo = (
 
 interface DayTableSegCaches {
   buildDefKeys: typeof buildDefKeys
+  buildLaneKeysWithDefs: typeof buildLaneKeysWithDefs
   splitIndividualUi: typeof splitIndividualUi
   basesBuilders: { [key: string]: typeof buildEventUiForKey } // one per key: a key's bases hold while its inputs do
   events: KeyedCache<any[], DayTableEventSegs>
@@ -187,6 +193,7 @@ interface DayTableSegCaches {
 function createDayTableSegCaches(): DayTableSegCaches {
   return {
     buildDefKeys: memoize(buildDefKeys),
+    buildLaneKeysWithDefs: memoize(buildLaneKeysWithDefs),
     splitIndividualUi: memoize(splitIndividualUi),
     basesBuilders: {},
     events: createKeyedCache(),
@@ -210,14 +217,13 @@ function getBasesByKey(
   keying: DayTableKeying,
   lane: DayTableLane,
   defs: EventDefHash,
+  defKeys: { [defId: string]: string[] } | null, // null: a passthrough lane
   eventUiBases: EventUiHash,
-  isPassthrough: boolean,
 ): { [key: string]: EventUiHash } {
-  if (isPassthrough) {
+  if (!defKeys) {
     return { '': eventUiBases }
   }
 
-  const defKeys = caches.buildDefKeys(defs, keying.keysForEventDef)
   const individualUi = caches.splitIndividualUi(eventUiBases, defKeys, defs, lane)
   const prevBuilders = caches.basesBuilders
   const builders: { [key: string]: typeof buildEventUiForKey } = {}

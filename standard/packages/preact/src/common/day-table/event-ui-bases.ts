@@ -25,6 +25,25 @@ export function buildDefKeys(
   return defKeys
 }
 
+// the keys with at least one def in the lane
+export function buildLaneKeysWithDefs(
+  defs: EventDefHash,
+  defKeys: { [defId: string]: string[] },
+  lane: DayTableLane,
+): { [key: string]: true } {
+  let keysWithDefs: { [key: string]: true } = {}
+
+  for (let defId in defs) {
+    if (isDefInLane(defs[defId], lane)) {
+      for (let key of defKeys[defId]) {
+        keysWithDefs[key] = true
+      }
+    }
+  }
+
+  return keysWithDefs
+}
+
 export function splitIndividualUi(
   eventUiBases: EventUiHash,
   defKeys: { [defId: string]: string[] },

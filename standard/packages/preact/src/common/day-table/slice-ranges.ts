@@ -292,6 +292,20 @@ function filterEventStore(eventStore: EventStore, testDef: (def: EventDef) => bo
 }
 
 /*
+The selected instance, if it belongs to the lane (whatever its keys)
+*/
+export function resolveDayTableLaneEventSelection(
+  eventSelection: string,
+  eventStore: EventStore,
+  lane: DayTableLane,
+): string {
+  let instance = eventSelection && eventStore.instances[eventSelection]
+  let def = instance && eventStore.defs[instance.defId]
+
+  return def && isDefInLane(def, lane) ? eventSelection : ''
+}
+
+/*
 The selected instance, if it belongs to the lane and to a participating key or none
 */
 export function resolveDayTableEventSelection(

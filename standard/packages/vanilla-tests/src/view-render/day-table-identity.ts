@@ -294,6 +294,43 @@ describe('day-table identity', () => {
       expectCountsWithin(counts, recorded.option)
     })
   })
+
+  /*
+  A lane without events keeps its (empty) segs while the store changes in the other lane, so its
+  cells don't re-render: the Splitter gave such a lane a constant empty store. 0 is the count with
+  the Splitter as well (no other input of the lane changes)
+  */
+  describe('timeGridWeek, a lane without events', () => {
+    const noSelect = () => {}
+
+    it('adding a timed event leaves an empty all-day lane alone', async () => {
+      const { calendar, counts } = await initCounted({
+        ...BASE_OPTIONS,
+        initialView: 'timeGridWeek',
+        events: EVENTS.filter((event) => event.start.indexOf('T') !== -1),
+      }, noSelect)
+
+      calendar.addEvent({ title: 'Added', start: '2024-01-18T16:00:00', end: '2024-01-18T17:00:00' })
+      await waitTimeout(200)
+
+      expect(counts.eventDidMount || 0).withContext('probe added the event').toBe(1)
+      expect(counts.dayCellClass || 0).withContext('dayCellClass').toBe(0)
+    })
+
+    it('adding an all-day event leaves an empty timed lane alone', async () => {
+      const { calendar, counts } = await initCounted({
+        ...BASE_OPTIONS,
+        initialView: 'timeGridWeek',
+        events: EVENTS.filter((event) => event.start.indexOf('T') === -1 && !event.display),
+      }, noSelect)
+
+      calendar.addEvent({ title: 'Added', start: '2024-01-18', allDay: true })
+      await waitTimeout(200)
+
+      expect(counts.eventDidMount || 0).withContext('probe added the event').toBe(1)
+      expect(counts.dayLaneClass || 0).withContext('dayLaneClass').toBe(0)
+    })
+  })
 })
 
 // Utils

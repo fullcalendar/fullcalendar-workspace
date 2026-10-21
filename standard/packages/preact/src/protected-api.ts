@@ -190,7 +190,7 @@ export { createKeyedCache } from './common/day-table/keyed-cache'
 export type { DayTableRange, DayTableSeg, DayTableEventSegs } from './common/day-table/slice-ranges'
 export {
   sliceDayTableEvents, sliceDayTableBusinessHours, sliceDayTableDateSelection, sliceDayTableInteraction,
-  resolveDayTableEventSelection, sliceRangeToCoords,
+  resolveDayTableEventSelection, resolveDayTableLaneEventSelection, sliceRangeToCoords,
 } from './common/day-table/slice-ranges'
 export type { DayTableSegCategory } from './common/day-table/project'
 export { projectDayTableSegs, projectDayTableInteraction, getDayTableSegTransform } from './common/day-table/project'
