@@ -1,7 +1,9 @@
 import { guid } from "./misc"
 
 /*
-TODO: make API where createRefMap() called
+Values reported through ref callbacks, by key (a measured height per seg, say): `createRef(key)` gives
+the same callback for the key each time, a value of null deletes the key (unless ignoreDeletes), and
+`rev` changes with every change, so a component can re-render on it
 */
 export class RefMap<K, V> {
   public rev: string = ''

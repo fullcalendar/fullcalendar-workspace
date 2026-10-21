@@ -2,32 +2,26 @@ import { DateMarker, Duration } from '@full-ui/headless-calendar'
 import { useMemo, useState } from 'react'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import { CalendarContext } from '../context/CalendarContext'
-import { EventDefHash } from '../events/event-def'
-import { EventUi, EventUiHash } from '../events/event-ui'
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { TimeGridRange, organizeSegsByCol } from './time-grid-range'
-import { memoize } from '../util/memoize'
 import { SliceableProps, SlicedProps } from '../event-segs/Slicer'
 import { DayTableModel } from './model'
 import { DayTableKeying, DayTableLane, isPassthroughLane, isSpanInLane } from './keying'
-import { buildDefKeys, buildEventUiForKey, buildLaneKeysWithDefs, splitIndividualUi } from './event-ui-bases'
-import { KeyedCache, createKeyedCache } from './keyed-cache'
+import { KeyedCache } from './keyed-cache'
 import {
-  DayTableEventSegs,
   DayTableRange,
   DayTableSeg,
-  resolveDayTableEventSelection,
   sliceDayTableBusinessHours,
   sliceDayTableDateSelection,
   sliceDayTableEvents,
   sliceDayTableInteraction,
 } from './slice-ranges'
-import { DayTableSegCategory, getDayTableSegTransform, projectDayTableInteraction, projectDayTableSegs } from './project-segs'
+import { DayTableSegCategory } from './project-segs'
 import { sliceDayTableNowIndicator } from './now-indicator'
 
-type InteractionEntry = EventSegUiInteractionState<DayTableRange> | null
-
+import {
+  InteractionEntry, ProjectSegsMemo, createDayTableSegCaches, getBasesByKey, mapKeys,
+} from './seg-caches'
 /*
 A day-table lane's segs (DayGrid's table, or one of TimeGrid's two lanes), in the model's view
 columns. Stage 1 slices per key in date coordinates through per-key caches whose args are per-key
@@ -45,6 +39,8 @@ export function useDayTableSegs<R extends DayTableRange>(
   context: CalendarContext,
 ): SlicedProps<R> {
   const [caches] = useState(createDayTableSegCaches)
+
+  // stage 1: per key, in date coordinates
   const { daySeries, dayCols } = model
   const { eventStore, eventUiBases } = props
   const keys = keying.keys.concat([''])
@@ -114,6 +110,7 @@ export function useDayTableSegs<R extends DayTableRange>(
     ? props.eventSelection
     : caches.resolveEventSelection(props.eventSelection, eventStore, keying.keys, keying.keysForEventDef, lane)
 
+  // stage 2: onto the model's view columns
   const project = (memo: ProjectSegsMemo, category: DayTableSegCategory, buckets: DayTableSeg[][]) => (
     memo(model, keying, lane, category, ...buckets)
   )
@@ -151,139 +148,4 @@ export function useNowIndicatorSegsByCol(
     ),
     [isEnabled, nowDate, model, keying, dateProfile, nextDayThreshold, datesAboveResources],
   )
-}
-
-// caches
-// -------------------------------------------------------------------------------------------------
-
-type ProjectSegsMemo = (
-  model: DayTableModel,
-  keying: DayTableKeying,
-  lane: DayTableLane,
-  category: DayTableSegCategory,
-  ...buckets: DayTableSeg[][]
-) => DayTableSeg[]
-
-type ProjectInteractionMemo = (
-  model: DayTableModel,
-  keying: DayTableKeying,
-  lane: DayTableLane,
-  ...entries: InteractionEntry[]
-) => EventSegUiInteractionState<DayTableRange> | null
-
-interface DayTableSegCaches {
-  buildDefKeys: typeof buildDefKeys
-  buildLaneKeysWithDefs: typeof buildLaneKeysWithDefs
-  splitIndividualUi: typeof splitIndividualUi
-  basesBuilders: { [key: string]: typeof buildEventUiForKey } // one per key: a key's bases hold while its inputs do
-  events: KeyedCache<any[], DayTableEventSegs>
-  businessHours: KeyedCache<any[], DayTableSeg[]>
-  dateSelection: KeyedCache<any[], DayTableSeg[]>
-  eventDrag: KeyedCache<any[], InteractionEntry>
-  eventResize: KeyedCache<any[], InteractionEntry>
-  resolveEventSelection: typeof resolveDayTableEventSelection
-  projectFg: ProjectSegsMemo
-  projectBg: ProjectSegsMemo
-  projectBusinessHours: ProjectSegsMemo
-  projectDateSelection: ProjectSegsMemo
-  projectEventDrag: ProjectInteractionMemo
-  projectEventResize: ProjectInteractionMemo
-}
-
-function createDayTableSegCaches(): DayTableSegCaches {
-  return {
-    buildDefKeys: memoize(buildDefKeys),
-    buildLaneKeysWithDefs: memoize(buildLaneKeysWithDefs),
-    splitIndividualUi: memoize(splitIndividualUi),
-    basesBuilders: {},
-    events: createKeyedCache(),
-    businessHours: createKeyedCache(),
-    dateSelection: createKeyedCache(),
-    eventDrag: createKeyedCache(),
-    eventResize: createKeyedCache(),
-    resolveEventSelection: memoize(resolveDayTableEventSelection),
-    projectFg: memoize(projectSegsByKeys),
-    projectBg: memoize(projectSegsByKeys),
-    projectBusinessHours: memoize(projectSegsByKeys),
-    projectDateSelection: memoize(projectSegsByKeys),
-    projectEventDrag: memoize(projectInteractionByKeys),
-    projectEventResize: memoize(projectInteractionByKeys),
-  }
-}
-
-function getBasesByKey(
-  caches: DayTableSegCaches,
-  keys: string[],
-  keying: DayTableKeying,
-  lane: DayTableLane,
-  defs: EventDefHash,
-  defKeys: { [defId: string]: string[] } | null, // null: a passthrough lane
-  eventUiBases: EventUiHash,
-): { [key: string]: EventUiHash } {
-  if (!defKeys) {
-    return { '': eventUiBases }
-  }
-
-  const individualUi = caches.splitIndividualUi(eventUiBases, defKeys, defs, lane)
-  const prevBuilders = caches.basesBuilders
-  const builders: { [key: string]: typeof buildEventUiForKey } = {}
-  const basesByKey: { [key: string]: EventUiHash } = {}
-
-  for (let key of keys) {
-    let builder = builders[key] = prevBuilders[key] || memoize(buildEventUiForKey)
-    let keyUi: EventUi | undefined = keying.uiByKey[key]
-
-    basesByKey[key] = builder(eventUiBases[''], keyUi, individualUi[key])
-  }
-
-  caches.basesBuilders = builders // keys no longer present are dropped
-
-  return basesByKey
-}
-
-// the stage-1 results, given in key order (keying.keys then ''), as a hash
-function projectSegsByKeys(
-  model: DayTableModel,
-  keying: DayTableKeying,
-  lane: DayTableLane,
-  category: DayTableSegCategory,
-  ...buckets: DayTableSeg[][]
-): DayTableSeg[] {
-  return projectDayTableSegs(
-    zipKeys(keying, buckets),
-    model,
-    keying,
-    category,
-    getDayTableSegTransform(lane),
-  )
-}
-
-function projectInteractionByKeys(
-  model: DayTableModel,
-  keying: DayTableKeying,
-  lane: DayTableLane,
-  ...entries: InteractionEntry[]
-): EventSegUiInteractionState<DayTableRange> | null {
-  return projectDayTableInteraction(zipKeys(keying, entries), model, keying, getDayTableSegTransform(lane))
-}
-
-function zipKeys<T>(keying: DayTableKeying, values: T[]): { [key: string]: T } {
-  let hash: { [key: string]: T } = {}
-
-  keying.keys.forEach((key, i) => {
-    hash[key] = values[i]
-  })
-  hash[''] = values[keying.keys.length]
-
-  return hash
-}
-
-function mapKeys<T>(keys: string[], func: (key: string) => T): { [key: string]: T } {
-  let hash: { [key: string]: T } = {}
-
-  for (let key of keys) {
-    hash[key] = func(key)
-  }
-
-  return hash
 }

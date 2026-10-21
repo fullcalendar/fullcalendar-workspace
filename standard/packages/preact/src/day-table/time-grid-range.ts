@@ -1,6 +1,6 @@
 import { CoordRange } from '../event-segs/coord-range'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../interactions/event-interaction-state'
 
 // JUST A DATA STRUCTURE, not a component
 
@@ -41,10 +41,10 @@ TODO: more DRY with daygrid?
 can be given null/undefined!
 */
 export function splitInteractionByCol(
-  ui: EventSegUiInteractionState<TimeGridRange> | null,
+  ui: SlicedEventInteraction<TimeGridRange> | null,
   colCount: number,
-): EventSegUiInteractionState<TimeGridRange>[] {
-  let byRow: EventSegUiInteractionState<TimeGridRange>[] = []
+): SlicedEventInteraction<TimeGridRange>[] {
+  let byRow: SlicedEventInteraction<TimeGridRange>[] = []
 
   if (!ui) {
     for (let i = 0; i < colCount; i += 1) {

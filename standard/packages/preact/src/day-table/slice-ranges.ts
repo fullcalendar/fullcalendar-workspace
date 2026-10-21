@@ -17,7 +17,7 @@ import {
   sliceEventStore,
 } from '../event-segs/event-ranges'
 import { EventInteractionState } from '../interactions/event-interaction-state'
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../interactions/event-interaction-state'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
 import { CalendarContext } from '../context/CalendarContext'
 import { DayGridRange, buildDayGridRanges } from './day-grid-range'
@@ -226,7 +226,7 @@ export function sliceDayTableInteraction(
   lane: DayTableLane,
   dateProfile: DateProfile,
   nextDayThreshold: Duration | null,
-): EventSegUiInteractionState<DayTableRange> | null {
+): SlicedEventInteraction<DayTableRange> | null {
   if (!interaction) {
     return null
   }

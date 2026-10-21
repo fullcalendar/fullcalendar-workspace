@@ -2,7 +2,7 @@ import { joinClassNames } from '../../util/html'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DateRange } from '@full-ui/headless-calendar'
 import { DayTableCell, DayGridRange } from '../../day-table/day-grid-range'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { Hit } from '../../interactions/hit'
 import { Scroller } from '../../scrollgrid/Scroller'
 import { ScrollerInterface } from '../../scrollgrid/scroller-types'
@@ -32,8 +32,8 @@ export interface DayGridLayoutNormalProps {
   bgEventSegs: (DayGridRange & EventRangeProps)[]
   businessHourSegs: (DayGridRange & EventRangeProps)[]
   dateSelectionSegs: (DayGridRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<DayGridRange> | null
-  eventResize: EventSegUiInteractionState<DayGridRange> | null
+  eventDrag: SlicedEventInteraction<DayGridRange> | null
+  eventResize: SlicedEventInteraction<DayGridRange> | null
   eventSelection: string
 
   // dimensions, measured by DayGridLayout (see DayGridColumns)

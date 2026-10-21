@@ -1,4 +1,4 @@
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../interactions/event-interaction-state'
 import { DayGridRange } from './day-grid-range'
 import { TimeGridRange } from './time-grid-range'
 import { DayTableModel, computeDayTableColRanges, lookUpDayTableCol } from './model'
@@ -74,11 +74,11 @@ export function projectDayTableSegs(
 }
 
 export function projectDayTableInteraction(
-  entries: { [key: string]: EventSegUiInteractionState<any> | null },
+  entries: { [key: string]: SlicedEventInteraction<any> | null },
   model: DayTableModel,
   keying: DayTableKeying,
   transform: SegTransform,
-): EventSegUiInteractionState<any> | null {
+): SlicedEventInteraction<any> | null {
   if (keying === PLAIN_KEYING) {
     return entries['']
   }

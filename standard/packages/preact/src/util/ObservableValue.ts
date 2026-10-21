@@ -1,5 +1,8 @@
 
-export class Store<Value> {
+/*
+A value that subscribers hear about: when it's set, and once on subscribing if it has one
+*/
+export class ObservableValue<Value> {
   private handlers: ((value: Value) => void)[] = []
   private currentValue: Value | undefined
 

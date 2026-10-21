@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import {
-  DateMarker, DateProfile, DateRange, Dictionary, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
+  DateMarker, DateProfile, DateRange, Dictionary, EventRangeProps, SlicedEventInteraction, getEventRangeMeta, MoreLinkContainer
 } from '@fullcalendar/preact/protected-api'
 import { TimelineRange } from '../TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
@@ -14,8 +14,8 @@ export interface TimelineLaneMoreLinkProps {
 
   // content
   hiddenSegs: (TimelineRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<TimelineRange> | null
-  eventResize: EventSegUiInteractionState<TimelineRange> | null
+  eventDrag: SlicedEventInteraction<TimelineRange> | null
+  eventResize: SlicedEventInteraction<TimelineRange> | null
   eventSelection: string
   dateSpanProps?: Dictionary // so can include a resource
   renderProps?: Dictionary // so can include a resource

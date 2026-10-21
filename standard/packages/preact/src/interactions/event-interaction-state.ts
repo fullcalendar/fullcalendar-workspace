@@ -9,8 +9,8 @@ export interface EventInteractionState {
   isEvent: boolean
 }
 
-// the same, sliced for a view: the affected instances (hidden while it lasts) and the mutated ones' segs
-export interface EventSegUiInteractionState<S> {
+// the same, sliced for a view: the affected instances (hidden while it lasts) and the mutated events' segs
+export interface SlicedEventInteraction<S> {
   affectedInstances: EventInstanceHash
   segs: (S & EventRangeProps)[]
   isEvent: boolean

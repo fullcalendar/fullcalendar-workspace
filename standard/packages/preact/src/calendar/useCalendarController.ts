@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react'
 import { CalendarController } from './CalendarController'
 
+/*
+A CalendarController for a component that renders a calendar beside its own toolbar: the same
+controller across renders, and a re-render of the component whenever the calendar's dates change
+*/
 export function useCalendarController(): CalendarController {
   const handleDateChange = useCallback(() => {
     // controllerWrap.controller will ALWAYS contain the first and only CalendarController

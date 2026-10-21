@@ -1,5 +1,5 @@
 import { InlineWeekNumberInfo } from '../../day-table/info-types'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { buildEventRangeKey, sortEventSegs, EventRangeProps } from '../../event-segs/event-ranges'
 import { getEventRangeMeta } from '../../events/components/event-display-info'
@@ -80,8 +80,8 @@ export interface DayGridRowProps {
   bgEventSegs: (SlicedCoordRange & EventRangeProps)[]
   businessHourSegs: (SlicedCoordRange & EventRangeProps)[]
   dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
-  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventDrag: SlicedEventInteraction<SlicedCoordRange> | null
+  eventResize: SlicedEventInteraction<SlicedCoordRange> | null
   eventSelection: string
   dayMaxEvents: boolean | number
   dayMaxEventRows: boolean | number

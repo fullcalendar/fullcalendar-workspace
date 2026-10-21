@@ -5,7 +5,7 @@ import { memo } from 'react'
 import { Dictionary } from '../../util/object'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DateRange, DateMarker } from '@full-ui/headless-calendar'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { EventRangeProps } from '../../event-segs/event-ranges'
 import classNames from '../../styles.module.css'
 import { renderPlainFgSegs } from './TimeGridCol' // BAD
@@ -22,8 +22,8 @@ export interface TimeGridMoreLinkProps {
   nowDate: DateMarker
   nowMs?: number
   eventSelection: string
-  eventDrag: EventSegUiInteractionState<TimeGridRange>
-  eventResize: EventSegUiInteractionState<TimeGridRange>
+  eventDrag: SlicedEventInteraction<TimeGridRange>
+  eventResize: SlicedEventInteraction<TimeGridRange>
   isNarrow: boolean
   isMicro: boolean
 }

@@ -2,7 +2,7 @@ import { MoreLinkContainer } from '../../more-link/MoreLinkContainer'
 import { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { Dictionary } from '../../util/object'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { getEventRangeMeta } from '../../events/components/event-display-info'
 import { SlicedCoordRange } from '../../event-segs/coord-range'
 import { ForegroundEvent } from '../../events/components/ForegroundEvent'
@@ -25,8 +25,8 @@ export interface DayGridMoreLinkProps {
   dateProfile: DateProfile
   todayRange: DateRange
   eventSelection: string
-  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
-  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventDrag: SlicedEventInteraction<SlicedCoordRange> | null
+  eventResize: SlicedEventInteraction<SlicedCoordRange> | null
   isNarrow: boolean
   isMicro: boolean
 }

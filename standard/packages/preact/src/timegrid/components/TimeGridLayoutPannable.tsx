@@ -3,7 +3,7 @@ import { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DayTableCell } from '../../day-table/day-grid-range'
 import { EventRangeProps } from '../../event-segs/event-ranges'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
 import { Ruler } from '../../scrollgrid/Ruler'
@@ -56,8 +56,8 @@ export interface TimeGridLayoutPannableProps {
   bgEventSegs: (SlicedCoordRange & EventRangeProps)[]
   businessHourSegs: (SlicedCoordRange & EventRangeProps)[]
   dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
-  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventDrag: SlicedEventInteraction<SlicedCoordRange> | null
+  eventResize: SlicedEventInteraction<SlicedCoordRange> | null
   dayMaxEvents: boolean | number
   dayMaxEventRows: boolean | number
 
@@ -67,8 +67,8 @@ export interface TimeGridLayoutPannableProps {
   businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
   nowIndicatorSegsByCol: TimeGridRange[][]
   dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
-  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
-  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventDragByCol: SlicedEventInteraction<TimeGridRange>[]
+  eventResizeByCol: SlicedEventInteraction<TimeGridRange>[]
 
   // universal content
   eventSelection: string

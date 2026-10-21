@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { EventRangeProps } from '../../event-segs/event-ranges'
 import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from '../../day-table/time-grid-range'
 
@@ -8,8 +8,8 @@ export interface TimedSegs {
   bgEventSegs: (TimeGridRange & EventRangeProps)[]
   businessHourSegs: (TimeGridRange & EventRangeProps)[]
   dateSelectionSegs: (TimeGridRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<TimeGridRange> | null
-  eventResize: EventSegUiInteractionState<TimeGridRange> | null
+  eventDrag: SlicedEventInteraction<TimeGridRange> | null
+  eventResize: SlicedEventInteraction<TimeGridRange> | null
 }
 
 export interface TimedSegsByCol {
@@ -17,8 +17,8 @@ export interface TimedSegsByCol {
   bgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
   businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
   dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
-  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
-  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventDragByCol: SlicedEventInteraction<TimeGridRange>[]
+  eventResizeByCol: SlicedEventInteraction<TimeGridRange>[]
 }
 
 // the timed segs, by column

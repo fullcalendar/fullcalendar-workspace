@@ -75,7 +75,7 @@ export { unpromisify } from './util/promise'
 
 export { Emitter } from './util/Emitter'
 export type { ViewContext } from './context/ViewContext'
-export type { EventSegUiInteractionState } from './interactions/event-interaction-state'
+export type { SlicedEventInteraction } from './interactions/event-interaction-state'
 export type { CalendarData } from './store/data-types'
 export { createCalendarStore, CalendarStore } from './store/CalendarStore'
 export type { CalendarStoreConfig, CalendarStoreChange, CalendarStoreListener } from './store/CalendarStore'

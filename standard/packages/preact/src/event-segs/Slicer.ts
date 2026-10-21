@@ -3,7 +3,7 @@ import { EventStore } from '../events/event-store'
 import { EventUiHash } from '../events/event-ui'
 import { sliceEventStore, EventRenderRange, EventRangeProps } from './event-ranges'
 import { DateProfile } from '../date-profile/DateProfileGenerator'
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../interactions/event-interaction-state'
 import { DateSpan, fabricateEventRange } from '../events/date-span'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { memoize } from '../util/memoize'
@@ -25,8 +25,8 @@ export interface SlicedProps<R> {
   bgEventSegs: (R & EventRangeProps)[]
   businessHourSegs: (R & EventRangeProps)[]
   dateSelectionSegs: (R & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<R> | null
-  eventResize: EventSegUiInteractionState<R> | null
+  eventDrag: SlicedEventInteraction<R> | null
+  eventResize: SlicedEventInteraction<R> | null
   eventSelection: string
 }
 
@@ -156,7 +156,7 @@ export abstract class Slicer<R, ExtraArgs extends any[] = []> {
     dateProfile: DateProfile,
     nextDayThreshold: Duration | null,
     ...extraArgs: ExtraArgs
-  ): EventSegUiInteractionState<R> {
+  ): SlicedEventInteraction<R> {
     if (!interaction) {
       return null
     }

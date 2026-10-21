@@ -3,7 +3,7 @@ import { DayCellInfo } from '../../day-table/info-types'
 import { joinClassNames } from '../../util/html'
 import { DateMarker, DateRange, DateEnv, addMs, DateFormatter, formatDayString } from '@full-ui/headless-calendar'
 import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { Dictionary } from '../../util/object'
 import { setRef } from '../../util/vdom'
@@ -55,8 +55,8 @@ export interface DayGridCellProps {
   fgLiquidHeight: boolean
   fg: ReactNode
   fgIsList?: boolean // whether fg contains list items
-  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
-  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventDrag: SlicedEventInteraction<SlicedCoordRange> | null
+  eventResize: SlicedEventInteraction<SlicedCoordRange> | null
   eventSelection: string
 
   // render hooks

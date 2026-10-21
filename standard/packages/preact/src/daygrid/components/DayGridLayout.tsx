@@ -2,7 +2,7 @@ import { afterSize } from '../../layout/resize-observer'
 import { DateRange } from '@full-ui/headless-calendar'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DayTableCell, DayGridRange } from '../../day-table/day-grid-range'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { Hit } from '../../interactions/hit'
 import { RefMap } from '../../util/RefMap'
 import { ScrollerInterface } from '../../scrollgrid/scroller-types'
@@ -44,8 +44,8 @@ export interface DayGridLayoutProps {
   bgEventSegs: (DayGridRange & EventRangeProps)[]
   businessHourSegs: (DayGridRange & EventRangeProps)[]
   dateSelectionSegs: (DayGridRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<DayGridRange> | null
-  eventResize: EventSegUiInteractionState<DayGridRange> | null
+  eventDrag: SlicedEventInteraction<DayGridRange> | null
+  eventResize: SlicedEventInteraction<DayGridRange> | null
   eventSelection: string
 }
 

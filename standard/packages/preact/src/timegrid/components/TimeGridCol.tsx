@@ -12,7 +12,7 @@ import { DateMarker, DateRange, formatDayString } from '@full-ui/headless-calend
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { Dictionary } from '../../util/object'
 import { ViewOptionsRefined } from '../../options/options'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { fracToCssDim } from '../../util/html'
 import { getDateMeta } from '../../date-profile/date-meta'
 import classNames from '../../styles.module.css'
@@ -52,8 +52,8 @@ export interface TimeGridColProps {
   businessHourSegs: (TimeGridRange & EventRangeProps)[]
   nowIndicatorSegs: TimeGridRange[]
   dateSelectionSegs: (TimeGridRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<TimeGridRange> | null
-  eventResize: EventSegUiInteractionState<TimeGridRange> | null
+  eventDrag: SlicedEventInteraction<TimeGridRange> | null
+  eventResize: SlicedEventInteraction<TimeGridRange> | null
   eventSelection: string
 
   // dimensions
@@ -479,8 +479,8 @@ export function renderPlainFgSegs(
     nowDate: DateMarker
     nowMs?: number
     eventSelection: string
-    eventDrag: EventSegUiInteractionState<TimeGridRange> | null
-    eventResize: EventSegUiInteractionState<TimeGridRange> | null
+    eventDrag: SlicedEventInteraction<TimeGridRange> | null
+    eventResize: SlicedEventInteraction<TimeGridRange> | null
     renderProps?: Dictionary
   },
   isMirror: boolean,

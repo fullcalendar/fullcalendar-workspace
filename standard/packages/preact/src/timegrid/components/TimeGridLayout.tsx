@@ -3,7 +3,7 @@ import { ViewOptions } from '../../options/options'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DayTableCell } from '../../day-table/day-grid-range'
 import { EventRangeProps } from '../../event-segs/event-ranges'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { Hit } from '../../interactions/hit'
 import { ScrollerInterface } from '../../scrollgrid/scroller-types'
 import { SlicedCoordRange } from '../../event-segs/coord-range'
@@ -44,8 +44,8 @@ export interface TimeGridLayoutProps {
   bgEventSegs: (SlicedCoordRange & EventRangeProps)[],
   businessHourSegs: (SlicedCoordRange & EventRangeProps)[],
   dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[],
-  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null,
-  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null,
+  eventDrag: SlicedEventInteraction<SlicedCoordRange> | null,
+  eventResize: SlicedEventInteraction<SlicedCoordRange> | null,
 
   // timed content
   fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
@@ -53,8 +53,8 @@ export interface TimeGridLayoutProps {
   businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
   nowIndicatorSegsByCol: TimeGridRange[][]
   dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
-  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
-  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventDragByCol: SlicedEventInteraction<TimeGridRange>[]
+  eventResizeByCol: SlicedEventInteraction<TimeGridRange>[]
 
   // universal content
   eventSelection: string
@@ -65,8 +65,8 @@ function buildEmptySegCols<T>(segsByCol: T[][]): T[][] {
 }
 
 function buildEmptyInteractionCols<T>(
-  interactionsByCol: EventSegUiInteractionState<T>[],
-): EventSegUiInteractionState<T>[] {
+  interactionsByCol: SlicedEventInteraction<T>[],
+): SlicedEventInteraction<T>[] {
   return interactionsByCol.map(() => null as any)
 }
 

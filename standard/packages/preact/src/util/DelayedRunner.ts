@@ -1,3 +1,8 @@
+/*
+Runs `drained` once per burst of requests: right away, or after a delay (the latest request's), and
+again while requests keep coming in during the run. Pausing (per scope, nestable) holds the run until
+every scope resumes
+*/
 export class DelayedRunner {
   private isRunning = false
   private isDirty = false

@@ -6,7 +6,7 @@ import {
   afterSize,
   EventRangeProps,
   setRef,
-  EventSegUiInteractionState,
+  SlicedEventInteraction,
   MeasuredHeightHarness,
   type Slice,
   getSliceKey,
@@ -35,8 +35,8 @@ export interface TimelineFgProps {
 
   // content
   fgEventSegs: (TimelineRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<TimelineRange> | null
-  eventResize: EventSegUiInteractionState<TimelineRange> | null
+  eventDrag: SlicedEventInteraction<TimelineRange> | null
+  eventResize: SlicedEventInteraction<TimelineRange> | null
   eventSelection: string
   dateSpanProps?: Dictionary // so can include a resource
   renderProps?: Dictionary // so can include a resource

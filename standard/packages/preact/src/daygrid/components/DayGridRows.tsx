@@ -1,6 +1,6 @@
 import { createElement, memo, useMemo, useRef, useState } from 'react'
 import { joinClassNames } from '../../util/html'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { useViewOptions } from '../../context/useGranularContexts'
 import { useLatest } from '../../hooks/useLatest'
 import { useHitTarget } from '../../interactions/useHitTarget'
@@ -38,8 +38,8 @@ export interface DayGridRowsProps {
   bgEventSegs: (DayGridRange & EventRangeProps)[]
   businessHourSegs: (DayGridRange & EventRangeProps)[]
   dateSelectionSegs: (DayGridRange & EventRangeProps)[]
-  eventDrag: EventSegUiInteractionState<DayGridRange> | null
-  eventResize: EventSegUiInteractionState<DayGridRange> | null
+  eventDrag: SlicedEventInteraction<DayGridRange> | null
+  eventResize: SlicedEventInteraction<DayGridRange> | null
   eventSelection: string
 
   // dimensions

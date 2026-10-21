@@ -1,6 +1,6 @@
 import { Duration, DateMarker, DateRange, addDurations, multiplyDuration, wholeDivideDurations } from '@full-ui/headless-calendar'
 import { joinClassNames } from '../../util/html'
-import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../../interactions/event-interaction-state'
 import { DateProfile } from '../../date-profile/DateProfileGenerator'
 import { DayTableCell } from '../../day-table/day-grid-range'
 import { EventRangeProps } from '../../event-segs/event-ranges'
@@ -31,8 +31,8 @@ export interface TimeGridColsProps {
   businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
   nowIndicatorSegsByCol: TimeGridRange[][]
   dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
-  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
-  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventDragByCol: SlicedEventInteraction<TimeGridRange>[]
+  eventResizeByCol: SlicedEventInteraction<TimeGridRange>[]
   eventSelection: string
 
   // dimensions

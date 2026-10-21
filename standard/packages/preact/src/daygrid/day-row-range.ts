@@ -1,7 +1,7 @@
 import { DayGridRange } from '../day-table/day-grid-range'
 import { EventRangeProps } from '../event-segs/event-ranges'
 import { SlicedCoordRange } from '../event-segs/coord-range'
-import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
+import { SlicedEventInteraction } from '../interactions/event-interaction-state'
 
 // TODO: use these types elsewhere
 
@@ -34,10 +34,10 @@ export function splitSegsByRow<S extends DayGridRange>(segs: S[], rowCount: numb
 }
 
 export function splitInteractionByRow(
-  ui: EventSegUiInteractionState<DayGridRange> | null,
+  ui: SlicedEventInteraction<DayGridRange> | null,
   rowCount: number,
-): EventSegUiInteractionState<DayGridRange>[] {
-  const byRow: EventSegUiInteractionState<DayGridRange>[] = []
+): SlicedEventInteraction<DayGridRange>[] {
+  const byRow: SlicedEventInteraction<DayGridRange>[] = []
 
   if (!ui) {
     for (let row = 0; row < rowCount; row++) {

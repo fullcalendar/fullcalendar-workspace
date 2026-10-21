@@ -1,4 +1,4 @@
-import { Store } from '../util/Store'
+import { ObservableValue } from '../util/ObservableValue'
 
 export type CustomRenderingHandler<RenderProps> = (customRender: CustomRendering<RenderProps>) => void
 
@@ -11,11 +11,11 @@ export interface CustomRendering<RenderProps> {
 }
 
 /*
-Subscribers will get a LIST of CustomRenderings
+The content areas a connector (React, Vue, Angular) renders itself: subscribers get the active ones by
+id, in a Map for a consistent order, whenever one starts, changes or stops
 */
-export class CustomRenderingStore<RenderProps> extends Store<Map<string, CustomRendering<RenderProps>>> {
+export class CustomRenderingStore<RenderProps> extends ObservableValue<Map<string, CustomRendering<RenderProps>>> {
   private map = new Map<string, CustomRendering<RenderProps>>()
-  // for consistent order
 
   handle(customRendering: CustomRendering<RenderProps>): void {
     const { map } = this
