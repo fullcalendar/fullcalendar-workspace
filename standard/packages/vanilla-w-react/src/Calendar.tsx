@@ -27,7 +27,7 @@ export class Calendar extends CalendarApiImpl {
   private baseId = `fc:${guid()}:`
   private currentData: CalendarData
   private renderRunner: DelayedRunner
-  private vdomRoot: { render: (vdomNode: any) => any, unmount: () => void } // TODO types
+  private vdomRoot: { render: (vdomNode: any) => any, unmount: () => void } | null = null // TODO types
   private isRendering = false
   private isRendered = false
   private customContentRenderId = 0
@@ -38,7 +38,6 @@ export class Calendar extends CalendarApiImpl {
     super()
 
     this.el = el
-    this.vdomRoot = createRoot(el)
     this.renderRunner = new DelayedRunner(this.handleRenderRequest)
 
     createCalendarStore({ calendarApi: this }) // attaches itself as this.store
@@ -60,8 +59,14 @@ export class Calendar extends CalendarApiImpl {
       let { currentData } = this
       this.isRendered = true
 
+      // created on render, so a calendar can render again after destroy() unmounted its root
+      if (!this.vdomRoot) {
+        this.vdomRoot = createRoot(this.el)
+      }
+      let { vdomRoot } = this
+
       flushSync(() => {
-        this.vdomRoot.render(
+        vdomRoot.render(
           <StrictMode>
             <RenderId.Provider value={this.customContentRenderId}>
               <CalendarMediaRoot emitter={currentData.emitter}>
@@ -91,6 +96,7 @@ export class Calendar extends CalendarApiImpl {
     } else if (this.isRendered) {
       this.isRendered = false
       this.vdomRoot.unmount()
+      this.vdomRoot = null
 
       this.setIsRtl(false)
       this.setClassName('')

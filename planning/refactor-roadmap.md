@@ -305,7 +305,10 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   returning `true` renders no icon instead of the theme's, and a user's per-button `class`/`didMount`
   likely drop the theme's. Top-level content options combine (`.parts`); per-button ones should too.
   The contract spec works around it (`render-hooks/render-hook-contract.ts`).
-- **Test harness:** `vanilla-w-react`'s `Calendar` creates its React root once, so `render()` after
+- **Test harness** (done, 2026-10-21: the React lanes' known failures are gone. `vanilla-w-react`
+  creates its root on render and drops it on unmount; the listener baseline uses the runtime under test,
+  so React's container listeners count; a top-level `beforeAll` ignores "ResizeObserver loop" errors for
+  every spec, as Vitest does). Original note: `vanilla-w-react`'s `Calendar` creates its React root once, so `render()` after
   `destroy()` fails ("CalendarController is not taken back…"); the React-runtime "destroy … leaves no
   handlers attached / unbinds all handlers" failures; the flaky "addICalEventSource with day view";
   TimeGrid's "ResizeObserver loop" when leaving print. Fixing these shrinks the known-failure list.
