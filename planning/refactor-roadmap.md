@@ -263,6 +263,11 @@ with the reviews' findings as their requirements. Originally sketched as follows
   - **Invalidation generations** (deferred from phase 9 §4): `resetOptions`' invalidation is still the
     refiner's mutable name lists, consumed by the next refinement, which is right only while reductions
     are sequential. A speculative reduction must retain or consume its own.
+  - **The date profile derived from the anchor** (moved from phase 10, its review round 1): phase 10
+    keeps the profile as stored state, with `dateAnchor` beside it. Deriving it needs a committed
+    profile cache with candidate promotion (rejected `PREV`/`NEXT` keep the exact object without
+    rebuilding) and today's build schedule, including discarded builds (user `validRange`/`visibleRange`
+    call counts).
   - **Transaction isolation of phase 9's caches** (phase 9's last review): the refiner's
     `currentPluginHooks`, `store.actions`' construction (memoized per plugin set) and the refiner and
     invalidation caches. Define what replays when a creator (`calendarActions`) runs again.

@@ -1,6 +1,7 @@
 # Phase 10: date profile
 
-Status: plan, revision 1 (2026-10-21), for Sol's spec review.
+Status: plan, revision 2 (2026-10-21), after Sol's spec review round 1 (re-scoped: the profile stays
+stored state; see "Review round 1").
 
 Roadmap §10: hidden days as a small value object, a plain config plus a view-supplied render-range
 function instead of `TableDateProfileGenerator`, pure `buildDateProfile` / prev / next, the store keeping
@@ -46,7 +47,8 @@ question.
 
 1. Pure functions of explicit inputs for the profile and hidden days, testable without a calendar.
 2. No class hierarchy for the render range: a view supplies a function.
-3. The store keeps the navigation anchor, and derives the profile.
+3. The store records the navigation anchor beside the stored profile, enough to rebuild it at midnight
+   (deriving the profile from the anchor moved to phase 11, review round 1).
 4. Behavior-identical except the sanctioned change. Same DOM, render-hook counts never up, same callback
    arguments (`datesSet`, `validRange`/`visibleRange` functions' `this` and argument).
 
@@ -67,7 +69,7 @@ Same semantics and errors as today (`invalid hiddenDays` when all are hidden; a 
 the user's array, #7069). Memoized by its two inputs where the store builds it, so identity follows
 them.
 
-### 2. The config and the pure functions (`structs/date-profile.ts`)
+### 2. The config, the operations and the pure functions (`structs/date-profile.ts`)
 
 ```ts
 export interface DateProfileConfig {
@@ -88,68 +90,87 @@ export interface DateProfileConfig {
   visibleRangeInput?: DateRangeInput | ((this: CalendarApiImpl, nowDate: Date) => DateRangeInput)
   buildRenderRange?: RenderRangeBuilder // view-supplied (the daygrid/multimonth table range)
 }
-
-export type RenderRangeBuilder = (currentRange: DateRange, currentRangeUnit: string, isRangeAllDay: boolean, config: DateProfileConfig) => DateRange
-
-export function buildDateProfile(config, date, nowDate, direction?: 1 | -1, forceToValid = true): DateProfile
-export function prevAnchor(config, profile: DateProfile, currentDate: DateMarker): DateMarker
-export function nextAnchor(config, profile: DateProfile, currentDate: DateMarker): DateMarker
 ```
 
-`buildDateProfile` is today's `build`, with the helpers as module functions taking the config;
-`prevAnchor`/`nextAnchor` are today's `buildPrev`/`buildNext` date math (`startOf(currentDate, unit) ∓
-dateIncrement`), so `buildPrev(...)` ≡ `buildDateProfile(config, prevAnchor(...), now, -1, force)`.
-`buildDayTableRenderRange` stays as it is, and the daygrid and multimonth plugins set a new internal view
-option `dateProfileRenderRange: tableRenderRange` (a `RenderRangeBuilder` wrapping it) instead of
-`dateProfileGeneratorClass`.
-
-### 3. The compatibility facade
-
-`DateProfileGenerator` stays, in `protected-api` and in `ViewContext`/`CalendarData`, as a thin class
-over a config: `build`, `buildPrev`, `buildNext`, `isHiddenDay`, `skipHiddenDays`, `trimHiddenDays`
-delegate to the pure functions, and it exposes `config` and `hiddenDays`. Its own `buildRenderRange`
-calls `config.buildRenderRange` or returns the range, and the pure build calls the facade's method when a
-facade is involved, so a subclass from a custom `dateProfileGeneratorClass` still overrides it. The
-store keeps accepting `dateProfileGeneratorClass`: with one, the store builds that class (today's path);
-the core views don't set it anymore. (Decision logged in `questions-for-adam.md`: kept because it's typed
-public, though marked internal.)
-
-Internal callers move off the facade: `DaySeriesModel`, `MultiMonthView` and the timeline's
-`isValidDate` take `HiddenDays` (`context.dateProfileGenerator.hiddenDays` until phase 11's contexts);
-`buildToolbarProps` and the store use the pure functions.
-
-### 4. State: the anchor
-
-Today's state keeps the profile itself. Replace `dateProfile` with an anchor slice:
+Today's class decomposes `build` into overridable steps (`buildValidRange`, `buildCurrentRangeInfo`,
+`buildRangeFromDuration`, `buildRangeFromDayCount`, `buildCustomVisibleRange`, `getFallbackDuration`,
+`buildRenderRange`, `adjustActiveRange`, `buildDateIncrement`, `refineRange`, the hidden-day methods), and a
+custom subclass may override any of them (review round 1 #1). So the pure functions are written against
+an **operations table** with those steps, not against the config directly:
 
 ```ts
-dateAnchor: { date: DateMarker, direction?: 1 | -1 } // what the profile is built from
+export interface DateProfileOps { // each step of today's class, same names and signatures
+  buildValidRange(nowDate): OpenDateRange
+  buildCurrentRangeInfo(date, direction): { duration, unit, range }
+  buildRangeFromDuration(date, direction, duration, unit): DateRange
+  // ... every method of today's class
+  isHiddenDay(day): boolean
+  skipHiddenDays(date, inc?, isExclusive?): DateMarker
+  trimHiddenDays(range): DateRange | null
+}
+export function buildDateProfile(ops: DateProfileOps, config, date, nowDate, direction?, forceToValid = true): DateProfile
+export function buildPrevDateProfile(ops, config, profile, currentDate, nowDate, forceToValid?): DateProfile
+export function buildNextDateProfile(ops, config, profile, currentDate, nowDate, forceToValid?): DateProfile
+export function createDateProfileOps(config): DateProfileOps // the built-in steps, as plain functions
 ```
 
-and derive `dateProfile = buildDateProfile(config, anchor.date, nowKey, anchor.direction)`, memoized by
-`(config, anchor, nowKey)`, where `nowKey` is `nowDate` only when `validRangeInput` is a function (the
-only use of now in a build), else a constant. Stage 4 becomes:
+Each step's default is a module function of `(ops, config, ...)` (today's method body, with `this.x(...)`
+becoming `ops.x(...)`), so one implementation serves both:
 
-- initially: anchor `{ date: currentDate }`;
-- generator config changed: anchor `{ date: currentDate }` (today's rebuild);
-- `CHANGE_VIEW_TYPE`: `{ date: action.dateMarker || currentDate }`; `CHANGE_DATE`:
-  `{ date: action.dateMarker }`;
-- `PREV`/`NEXT`: `{ date: prevAnchor/nextAnchor(...), direction: ∓1 }` if that profile is valid, else
-  unchanged;
-- then the `currentDate` adjustment, unchanged.
+- **Built-in views:** `createDateProfileOps(config)`, a plain object of those functions closed over the
+  config. The daygrid and multimonth plugins supply the table range as the internal view option
+  `dateProfileRenderRange` instead of `dateProfileGeneratorClass`.
+- **A custom `dateProfileGeneratorClass`** (from a plugin's view; the `views` option never reached it,
+  see step 0's lock): `DateProfileGenerator` stays a class whose methods call the same module functions
+  with `this` as the ops, so any override, of any step, applies everywhere the store, the toolbar and
+  the hidden-day consumers use it, as today. **Precedence:** a custom class wins; a view with a custom
+  class doesn't get the inherited `dateProfileRenderRange` (a custom class that replaced the table range
+  keeps having replaced it).
 
-The derived profile goes into `CalendarData` as `dateProfile` (unchanged shape), and to plugin reducers
-in their snapshot, as phase 9's derived data. `getState()` gets `dateAnchor` instead of `dateProfile`
-(protected API).
+The store holds a `DateProfileOps` (either kind) where it holds the generator today, memoized by the same
+props. `DateProfileGenerator` and `ViewContext.dateProfileGenerator` stay, typed as the ops (the class
+implements it), so plugins and the protected API keep working.
 
-**Identity:** a reduction that doesn't move the anchor, change the config or (for a now-dependent
-`validRange`) the day returns the same profile object, as the previous-state profile did. The memo must
-hold the final profile of each reduction (the base profile computed for `PREV`/`NEXT` on a config change
-goes through the same memo first, so the final call is last). Counts and snapshots verify.
+### 3. Hidden-day consumers stay put in this phase
 
-**The sanctioned change:** with a function `validRange`, crossing midnight (`UPDATE_NOW` with a new
-day) rebuilds the profile with the new now. Today the profile keeps the old day's `validRange` until the
-next navigation. Changelog FIX entry. Nothing else uses now in a build.
+`DaySeriesModel`, `day-cols`, `buildDayTableModel`, `useDayGridViewData`, `useTimeGridViewData`,
+`SingleMonth`/`MultiMonthView`, and premium's `buildTimelineDateProfile`, `TimelineLaneSlicer`/
+`sliceInstantSpan`, `isValidDate` and the timeline's lanes and print rows keep calling
+`dateProfileGenerator.isHiddenDay`/`skipHiddenDays` through the ops, unchanged (review round 1 #7: a
+signature change there needs that whole chain in one step). The ops also expose `hiddenDays`
+(`HiddenDays`, built from the ops' own methods for a custom class, so overrides apply), for 7b and phase
+11 to migrate those consumers to.
+
+### 4. State: the profile stays stored; an anchor beside it
+
+Revision 1 derived the profile from an anchor. Review round 1 (#2, #3) showed that can't keep today's
+build schedule: a rejected `PREV`/`NEXT` candidate, a config change plus an action (two builds, the first
+discarded), would change `validRange`/`visibleRange` callback counts and profile identity unless the
+cache special-cased each. So the profile stays in state, built at exactly today's points by stage 4
+(unchanged control flow, now through the ops). Beside it, a new slice records what the stored profile was
+built from:
+
+```ts
+dateAnchor: { date: DateMarker, direction?: 1 | -1, nowDay: number } // nowDay: the day-snapped now's value
+```
+
+set wherever stage 4 builds the profile that's kept: initially and on a config change `{ date:
+currentDate }` (direction reset, as today's rebuild, review round 1 #6), `CHANGE_VIEW_TYPE` `{ date:
+action.dateMarker || currentDate }`, `CHANGE_DATE` `{ date: action.dateMarker }`, an accepted `PREV`/`NEXT`
+`{ date: the prev/next date, direction: ∓1 }`; a rejected one leaves it.
+
+**The sanctioned change:** when no build happened this reduction, the view's `validRangeInput` is a
+function, and `nowDate.valueOf()` (the day-snapped now, a civil-day value, review round 1 #4) differs from
+`dateAnchor.nowDay`, stage 4 rebuilds `buildDateProfile(ops, config, anchor.date, nowDate,
+anchor.direction)` and records the new `nowDay`. A DST wake or a same-day timer wake has the same
+`nowDate` value, so nothing happens. Effects: the profile, `validRange` and the toolbar's buttons follow
+the new day; the function is called once more, plus the toolbar's three builds (its memo misses on the
+new profile), at midnight only. Changelog FIX entry. Applies to custom classes too (same rule, through
+their ops).
+
+`getState()` gains `dateAnchor` (protected API). Nothing else about the profile's identity changes.
+"Keep only an anchor and derive the profile" (the roadmap's sketch) moves to phase 11's requirements,
+where render-time derivation is the subject.
 
 ### 5. The pre-pass's hidden-day question
 
@@ -161,48 +182,63 @@ back, `dayCount` with hidden days).
 
 ## Steps
 
-0. **Behavior locks and the oracle (before any change).**
-   - Copy today's `DateProfileGenerator`/`TableDateProfileGenerator` into
-     `vanilla-tests/src/lib/legacy-date-profile.ts` (test-only), with `buildDayTableRenderRange`.
-   - Oracle spec: seeded random sequences (`PREV`, `NEXT`, `gotoDate`, `changeView`, `incrementDate`,
-     `today`) over option mixes (`hiddenDays`, `weekends`, `dateIncrement`, `dateAlignment`, `dayCount`,
-     `duration`, `validRange` value and function, `visibleRange`, `showNonCurrentDates`, `fixedWeekCount`,
-     `slotMinTime`/`slotMaxTime` with `usesMinMaxTime` views, time zones), driving a real calendar and
-     replaying the same sequence on the legacy generator with today's stage-4 rules, comparing every
-     profile field by value and the toolbar's enabled states. Runs in both runtimes.
-   - Locks: the hidden-day cases of §5; `validRange`/`visibleRange` functions' `this` and argument and
-     call counts per navigation; `datesSet` arguments; the midnight behavior today (to be flipped in
-     step 3).
-1. **Hidden days and pure functions.** `structs/hidden-days.ts`, `structs/date-profile.ts`; the class
-   becomes the facade; `dateProfileRenderRange` for daygrid/multimonth; internal callers take
-   `HiddenDays`. The oracle now also compares the pure functions directly.
-2. **Toolbar and store on the pure functions,** still with `dateProfile` in state.
-3. **The anchor:** `dateAnchor` replaces `dateProfile` in state, the profile derived and memoized; the
-   midnight change with its changelog entry.
-4. **Sol review rounds** per step; verification per step: full suites in both runtimes, DOM snapshots
-   and counts.
+0. **Behavior locks and the oracle** (done, below), extended per review round 1 #5 before step 1:
+   - **Callback traces:** every oracle case records the `validRange`/`visibleRange` calls (count, order,
+     arguments by value) as a digest, compared with digests recorded from today's code, so counts and
+     orders can't drift, including builds whose results are discarded.
+   - **More operations in the random sequences:** option changes mid-sequence (`hiddenDays`, `weekends`,
+     `dateIncrement`, `timeZone`), so config changes combine with later actions, and `changeView` with a
+     date.
+   - **Deterministic cases:** rejected `PREV`/`NEXT` keeps the profile object (identity) and builds as
+     today; a no-op action keeps it; same-date navigation; `changeView` with a date, a range and none; the
+     direction reset (day view, weekends hidden, `prev` from Monday to Friday, then hide Fridays: today it
+     goes forward to Monday); initial dates with times; initialization without `initialDate` (the
+     now-manager's precise marker vs the day-snapped now given to `validRange`); a time zone change
+     mid-sequence (the civil `currentDate` kept); DST: timer wakes at both 2024 New York transitions don't
+     rebuild; toolbar builds (`forceToValid: false`) only on its memo misses.
+   - Pure-function comparisons run once (they're runtime-independent); the real-calendar oracle and locks
+     run in both runtimes.
+1. **Hidden days, the ops and the pure functions.** `structs/hidden-days.ts`, `structs/date-profile.ts`;
+   `DateProfileGenerator` becomes the class over the module functions; built-in views get
+   `createDateProfileOps`, daygrid/multimonth `dateProfileRenderRange`; the store and toolbar call the ops.
+   Consumers unchanged (§3). Specs: a custom class from a plugin's view overriding `build`,
+   `buildCurrentRangeInfo`, `buildValidRange` and `isHiddenDay` (each override observed in the initial
+   profile, navigation, the toolbar and a hidden-day consumer); a custom class on a table view doesn't get
+   the table range. The oracle compares the pure functions directly too.
+2. **The anchor and the midnight rebuild.** `dateAnchor`; the rebuild rule; the step-0 midnight lock
+   flipped; DST and same-day wakes locked as no-ops; changelog entry.
+3. **Sol review rounds** per step; verification per step: full suites in both runtimes, snapshots and
+   counts.
 
 ## Risks
 
-- **Identity of the derived profile** (step 3): a miss re-renders every view. Single-entry memo with the
-  final call last; counts catch it.
-- **`validRange`/`visibleRange` call counts**: user functions are called on every build today, including
-  the toolbar's three builds per reduction. The derived profile must not call them more often (memo hits
-  don't call them; the toolbar's builds stay as today).
-- **Direction:** the anchor must keep the navigation direction, or a re-derivation (now change, config
-  change) would skip hidden days the other way.
-- **Custom `dateProfileGeneratorClass`:** kept through the facade; a spec with a subclass overriding
-  `buildRenderRange`.
-- **Phase 7b** consumes `HiddenDays` and the table render range afterwards; keep both pure and
-  explicit-input.
+- **Every override path of a custom class** must stay virtual: the module functions call `ops.x`, never
+  a sibling module function directly. A spec overrides several steps.
+- **The ops' identity** follows today's generator memo (same props), so contexts and memos keyed on it
+  keep their identity.
+- **Midnight:** only where `validRange` is a function, only on a civil-day change, never on a reduction
+  that already built.
+- **Phase 7b** consumes `hiddenDays` and the table render range; both stay pure and explicit-input.
 
-## Open questions (my recommendation)
+## Open questions (answered, review round 1)
 
-1. Keep `dateProfileGeneratorClass` working? Recommend yes (typed public), via the facade.
-2. Keep `DateProfileGenerator` in `protected-api` and `ViewContext`? Recommend yes until phase 11 splits
-   the contexts; then `ViewContext` can carry `hiddenDays` and the config instead.
-3. Memo key for now: only for a function `validRange` (recommended), or always (simpler, but the profile
-   object would change daily for everyone, re-rendering views at midnight).
+1. Keep `dateProfileGeneratorClass` working: yes, with every override (the ops design).
+2. Keep `DateProfileGenerator` in `protected-api` and `ViewContext`: yes, through phase 10.
+3. Midnight key: the day-snapped now's value, only for a function `validRange`.
+
+## Review round 1 (Sol, spec, high effort)
+
+Four P1s and three P2s on revision 1; revision 2 answers them:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P1: the render-range-only bridge loses a custom class's other overrides (`build`, `buildPrev`/`Next`, `buildCurrentRangeInfo`, helpers, hidden days) | §2: one implementation over an ops table; the class is its own ops, so every override applies; precedence of a custom class over `dateProfileRenderRange` |
+| 2 | P1: a derived profile's memo can't retain the exact object on a rejected `PREV`/`NEXT` without rebuilding | §4: the profile stays stored state, built where it's built today |
+| 3 | P1: callback counts include discarded builds (config change + action) | §4: today's build schedule kept; step 0 adds callback-trace digests |
+| 4 | P1: a `Date` isn't a civil-day key; DST and timer wakes make new objects | §4: the day-snapped now's value |
+| 5 | P2: the oracle needs traces, identity and more deterministic cases | step 0's extension |
+| 6 | P2: direction must reset on a config change | §4; a lock |
+| 7 | P2: migrating hidden-day consumers needs the whole chain in one step | §3: consumers stay; 7b and 11 migrate them |
 
 ## Step 0: behavior locks and the oracle (done)
 
