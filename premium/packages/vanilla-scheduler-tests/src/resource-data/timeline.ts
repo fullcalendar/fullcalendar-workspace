@@ -30,7 +30,40 @@ function buildResources(count: number, titleSuffix = '') {
   return Array.from({ length: count }, (_, i) => ({ id: `r${i}`, title: `resource ${i}${titleSuffix}` }))
 }
 
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => resolve()))
+}
+
 describe('resource data in resource timeline', () => {
+  it.each([
+    [0, 'ltr'],
+    [1, 'ltr'],
+    [0, 'rtl'],
+    [1, 'rtl'],
+  ] as const)('settles with %s resources at midnight in %s', async (resourceCount, direction) => {
+    const calendar = initCalendar({
+      initialView: 'resourceTimelineDay',
+      initialDate: '2015-08-07',
+      virtualization: true,
+      scrollTime: '00:00',
+      direction,
+      resources: buildResources(resourceCount),
+    })
+    await waitForSettle()
+
+    const mutations: MutationRecord[] = []
+    const observer = new MutationObserver((records) => mutations.push(...records))
+    observer.observe(calendar.el, { attributes: true, childList: true, characterData: true, subtree: true })
+    try {
+      for (let i = 0; i < 5; i++) {
+        await nextFrame()
+      }
+      expect([...mutations, ...observer.takeRecords()]).toEqual([])
+    } finally {
+      observer.disconnect()
+    }
+  })
+
   describe('adding and removing resources', () => {
     const options: CalendarOptions = {
       initialView: 'resourceTimelineDay',
@@ -179,10 +212,6 @@ describe('resource data in resource timeline', () => {
         { resourceId: id, start: '2016-05-31T01:00:00', end: '2016-05-31T05:00:00' }
       )))
       return { resources, events }
-    }
-
-    function nextFrame(): Promise<void> {
-      return new Promise((resolve) => requestAnimationFrame(() => resolve()))
     }
 
     function fakeTimeouts(): void {
@@ -345,9 +374,7 @@ describe('resource data in resource timeline', () => {
 
     it.each([
       ['', {}],
-      // LIBRARY QUIRK: virtualized with scrollTime 00:00, it re-renders every frame and never settles.
-      // See planning/agent-notes/timeline.md
-      [' when virtualized', { virtualization: true, scrollTime: '01:00' }],
+      [' when virtualized', { virtualization: true }],
     ])('keeps the scroll position%s', async (_desc, moreOptions) => {
       const resourceFetch = createHeldFetch(() => buildResources(26))
       const calendar = initCalendar({ ...options, ...moreOptions, resources: resourceFetch.fetch, events })

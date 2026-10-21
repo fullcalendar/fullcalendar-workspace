@@ -48,6 +48,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
 
   // internal
   private _isUnmounting: boolean
+  private cachedInnerWidths = new Map<string, number>()
 
   render() {
     const { props, innerWidthRefMap, innerHeightRefMap, state, context } = this
@@ -115,14 +116,24 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
     this._isUnmounting = false
   }
 
+  // Retain widths of virtualized-away cells so resizing slots cannot unmount the widest label
+  // and shrink them again. Only retain cells still in the full row, and prefer fresh measurements.
   handleInnerWidths = () => {
-    if (this._isUnmounting) return
+    if (this._isUnmounting) {
+      return
+    }
     const innerWidthMap = this.innerWidthRefMap.current
+    const cachedInnerWidths = new Map<string, number>()
     let max: number | null = null
 
-    for (const innerWidth of innerWidthMap.values()) {
-      max = Math.max(max || 0, innerWidth)
+    for (const cell of this.props.cells) {
+      const innerWidth = innerWidthMap.get(cell.key) ?? this.cachedInnerWidths.get(cell.key)
+      if (innerWidth != null) {
+        cachedInnerWidths.set(cell.key, innerWidth)
+        max = Math.max(max || 0, innerWidth)
+      }
     }
+    this.cachedInnerWidths = cachedInnerWidths
 
     // TODO: ensure not equal?
     setRef(this.props.innerWidthRef, max)
