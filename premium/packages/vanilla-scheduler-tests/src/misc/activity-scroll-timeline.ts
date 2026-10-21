@@ -88,7 +88,7 @@ describe('timeline scroll position across a hidden <Activity>', () => {
 })
 
 /*
-Hiding and showing must not re-render the layouts more than a plain re-render does (see
+Neither a plain re-render nor hiding and showing may re-render the layouts (see
 standard/packages/vanilla-tests/src/view-render/activity-rerender.ts)
 */
 describe('timeline render hooks across a hidden <Activity>', () => {
@@ -134,7 +134,7 @@ describe('timeline render hooks across a hidden <Activity>', () => {
         let settledCallCnt = callCnt
         render('visible')
         await waitTimeout(200)
-        let rerenderCallCnt = callCnt - settledCallCnt
+        expect(callCnt - settledCallCnt).toBe(0)
 
         settledCallCnt = callCnt
         render('hidden')
@@ -142,7 +142,7 @@ describe('timeline render hooks across a hidden <Activity>', () => {
         render('visible')
         await waitTimeout(200)
 
-        expect(callCnt - settledCallCnt).toBeLessThanOrEqual(rerenderCallCnt)
+        expect(callCnt - settledCallCnt).toBe(0)
       } finally {
         root.unmount()
         containerEl.remove()

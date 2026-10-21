@@ -8,9 +8,9 @@ import themeForTestsPlugin from '../lib/theme-for-tests'
 import { waitTimeout } from '../lib/misc'
 
 /*
-Hiding and showing a calendar in <Activity> must not re-render its layouts more than a plain
-re-render does: measurements reported as null while hidden would otherwise be cleared and measured
-again, calling render hooks like tableClass again.
+Neither a plain re-render with the same props nor hiding and showing a calendar in <Activity> may
+re-render its layouts: measurements reported as null while hidden would otherwise be cleared and
+measured again, calling render hooks like tableClass again.
 React 19 only, so these run in the React runtime (FORCE_REACT=1) and are pending in Preact
 */
 describe('render hooks across a hidden <Activity>', () => {
@@ -59,12 +59,11 @@ describe('render hooks across a hidden <Activity>', () => {
       render('visible')
       await waitTimeout(200)
 
-      // what a plain re-render with the same props costs. the calendar's data, upstream of the layouts,
-      // currently re-renders the view once (see planning/phase-7-layout-families.md)
+      // a plain re-render with the same props
       let settledCallCnt = callCnt
       render('visible')
       await waitTimeout(200)
-      let rerenderCallCnt = callCnt - settledCallCnt
+      expect(callCnt - settledCallCnt).toBe(0)
 
       settledCallCnt = callCnt
       render('hidden')
@@ -72,7 +71,7 @@ describe('render hooks across a hidden <Activity>', () => {
       render('visible')
       await waitTimeout(200)
 
-      expect(callCnt - settledCallCnt).toBeLessThanOrEqual(rerenderCallCnt)
+      expect(callCnt - settledCallCnt).toBe(0)
     } finally {
       root.unmount()
       containerEl.remove()

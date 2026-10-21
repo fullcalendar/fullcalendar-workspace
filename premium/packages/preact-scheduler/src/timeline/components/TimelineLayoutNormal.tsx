@@ -119,8 +119,9 @@ export const TimelineLayoutNormal = memo(function TimelineLayoutNormal(props: Ti
   // Scrolling
   // -----------------------------------------------------------------------------------------------
   // The scroll target ({ time } or { x }) is per instance, and also reported to the view's scrollRef,
-  // which survives print, where this layout unmounts: print clips to its x, and a remount restores it
-  // through initialScroll. So <Activity> and Strict Mode remounts restore it too
+  // which survives print, where this layout unmounts: print clips to its x, and the new instance after
+  // print starts from it, through initialScroll. A remount of this instance (<Activity>, a Strict Mode
+  // replay) keeps its own target instead, which a render-time initialScroll might predate
 
   const latestRef = useLatest({ props, context, maxHScroll })
   const [scroll] = useState(() => {
@@ -190,13 +191,19 @@ export const TimelineLayoutNormal = memo(function TimelineLayoutNormal(props: Ti
   })
 
   // each mount, including a shown <Activity> and a Strict Mode replay
+  const hasMountedRef = useRef(false)
   useLayoutEffect(() => {
     const { props, context } = latestRef.current
     const syncer = new ScrollerSyncer(true) // horizontal=true
     scroll.syncer = syncer
     syncer.handleChildren(getScrollers())
 
-    if (props.initialScroll) {
+    const isRemount = hasMountedRef.current
+    hasMountedRef.current = true
+
+    if (isRemount) {
+      scroll.applyTimeScroll()
+    } else if (props.initialScroll) {
       scroll.state = { ...props.initialScroll }
       scroll.applyTimeScroll()
     } else {

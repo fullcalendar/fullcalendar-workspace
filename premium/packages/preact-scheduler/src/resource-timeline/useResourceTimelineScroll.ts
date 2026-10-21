@@ -78,8 +78,9 @@ const DEFAULT_OWN_CELL_HEIGHT = 40
 
 /*
 ResourceTimeline's scroll: one target, `{ time, x }` and `{ entityId, fromBottom }`, updated in place
-and reported to the view's scrollRef, which survives print (print clips to x, and the layout restores
-the target from initialScroll on each mount, <Activity> and Strict Mode included).
+and reported to the view's scrollRef, which survives print (print clips to x, and the new layout after
+print starts from it, through initialScroll). A remount of the same layout (<Activity>, a Strict Mode
+replay) keeps its own target instead, which a render-time initialScroll might predate.
 
 Time: time wins over x. Every scroll (programmatic too) records x and moves the slot and time-header
 virtualizers, debounced. Entity: the resource at the scroll position, recorded when a body scroll
@@ -356,11 +357,18 @@ export function useResourceTimelineScroll(input: ResourceTimelineScrollInput) {
   })
 
   // each mount, including a shown <Activity> and a Strict Mode replay. after the syncers are created
+  const hasMountedRef = useRef(false)
   useLayoutEffect(() => {
     const { syncers, context, initialScroll } = inputRef.current
     isActiveRef.current = true
 
-    if (initialScroll) {
+    const isRemount = hasMountedRef.current
+    hasMountedRef.current = true
+
+    if (isRemount) {
+      ctrl.applyEntityScroll()
+      ctrl.applyTimeScroll()
+    } else if (initialScroll) {
       ctrl.scroll = { ...initialScroll } // copy
       ctrl.applyEntityScroll()
       ctrl.applyTimeScroll()

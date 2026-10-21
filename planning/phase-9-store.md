@@ -361,3 +361,19 @@ plugin snapshot, icalendar's cache, runner registration and the wiring move conf
 | 2 | P2: the specs counted fetches but didn't lock the per-source order (copy before fetching, batching), clean-source exclusion, time-zone refetches or resource navigation | `fetch-effects.ts` now records and passes effects on to the core runner (`runEventSourceFetch`, now in `protected-api`): the fetch gets the source as it was and the copy is marked after; one source at a time (an event a source adds while fetched gets an id between the two fetch ids); clean sources skipped; a time zone change refetches only non-static sources, as refetches; option handlers only through the runner. `resource-fetch-effects.ts`: navigation with and without `refetchResourcesOnNavigate`, the source as it was. Mutation-checked: copying first, batching, a direct handler call, and copying the resource source each fail their spec |
 
 Noted: `optionsForHandling` is cleared before the handlers now, not after (no difference, see step 1b).
+
+## Step 2, part 1: the extra re-render (done)
+
+§7's extra data-layer re-render: the first reduction built `renderableEventStore` as a second empty
+store (not `eventStore`) and `eventUiBases` as a literal `{}` (not through its memo), so the next
+reduction, a plain React re-render's `IDLE` included, swapped in equal new objects and `CalendarInner`
+(a `PureComponent`) re-rendered the view. Both now start as what the next reduction keeps. The
+`<Activity>` specs (`view-render/activity-rerender.ts`, premium `misc/activity-scroll-timeline.ts`) now
+expect no render hook calls for a plain re-render or a hide and show. PERF changelog entry.
+
+That exposed a latent bug the re-render had masked: `TimelineLayoutNormal` restored its scroll on a
+remount from `initialScroll`, which the view reads at render (`scrollRef.current`), so a hide and show
+with no render in between restored the initial scroll, not where the user scrolled (the timeline
+`<Activity>` spec caught it). A remount of the same instance now keeps its own target; only a new
+instance (after print) starts from `initialScroll`. Same in `useResourceTimelineScroll`, which only
+passed because the layout happened to re-render after its scroll object was first reported.

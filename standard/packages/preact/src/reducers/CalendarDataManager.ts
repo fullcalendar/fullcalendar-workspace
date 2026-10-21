@@ -461,8 +461,9 @@ export class CalendarDataManager {
       : createEmptyEventStore()
 
     let isEventsLoading = computeEventSourcesLoading(eventSources)
+    // initially the same empty store, which the next reduction keeps instead of swapping in an equal one
     let renderableEventStore = !prevState
-      ? createEmptyEventStore()
+      ? eventStore
       : (isEventsLoading && !currentViewData.options.progressiveEventRendering)
         ? (prevState.renderableEventStore || eventStore)
         : eventStore
@@ -480,9 +481,8 @@ export class CalendarDataManager {
   ): CalendarDataManagerState {
     let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext)
     let eventUiBySource = this.buildEventUiBySource(reduced.eventSources)
-    let eventUiBases = prevState
-      ? this.buildEventUiBases(reduced.renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
-      : {}
+    // initially too, so the next reduction gets the same object back from the memo
+    let eventUiBases = this.buildEventUiBases(reduced.renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
 
     return {
       dynamicOptionOverrides: reduced.dynamicOptionOverrides,
