@@ -108,7 +108,7 @@ Its objections are weighed, not followed blindly.
 | 9 | Store slices, actions, API facade | `phase-9-store.md` (done) | 8 |
 | 10 | Date profile | sketched below | 9 |
 | 11 | Granular contexts | sketched below | 9 |
-| 12 | Grid abstraction, hooks-first React API | future | 7, 9 |
+| 12 | Grid abstraction, hooks-first React API | tabled (medium-term future) | 7, 9 |
 
 - Phase 3 is independent of 1 and 2. Phase 2's specs and React suite are too, but its call-count baseline reuses the phase-1 runner.
 - Phase 8 doesn't touch components, so it can run alongside 4–7.
@@ -169,7 +169,7 @@ sketched as follows.
 - Fix the bug where a grid shown again jumps back to its start (#8112 bug 2): the initial scroll runs
   once per instance or date range, not once per mount.
 
-### 7b. Day-table pipeline (not planned in detail, see `day-table-pipeline.md`)
+### 7b. Day-table pipeline (plan in progress: `phase-7b-day-table-plan.md`, background in `day-table-pipeline.md`)
 
 - Replace the split-by-resource, slice, rejoin pipeline (`VResourceSplitter`, the day slicers,
   `ResourceDayTableJoiner` and friends, the two `datesAboveResources` table models) with one pure
@@ -263,7 +263,32 @@ with the reviews' findings as their requirements. Originally sketched as follows
     invalidation caches. Define what replays when a creator (`calendarActions`) runs again.
 
 
-### 12. Grid abstraction, hooks-first React API (future)
+### After 10 and 11: loose ends (scheduled)
+
+Adam's call (2026-10-21): right after phases 10 and 11, before merging.
+
+- **React 17 smoke run** (deferred from phase 2; needs phase 11's `useSyncExternalStore` shim).
+- **The remaining class components:** the eight view shells (`parseViewConfig`), `CalendarInner`,
+  `CalendarMediaRoot`, `Scroller`.
+- **Render-time side effects** left in React's render-time update, if phase 11 doesn't remove them:
+  the emitter's option binding (stage 2 checkpoint) and the now timer re-arming.
+- **Per-button options don't combine with the theme's** (found by phase 2, never scheduled): `buttons`
+  merges each button's options shallowly (`mergeMaybePropsDepth1`), so a user's `iconContent`
+  returning `true` renders no icon instead of the theme's, and a user's per-button `class`/`didMount`
+  likely drop the theme's. Top-level content options combine (`.parts`); per-button ones should too.
+  The contract spec works around it (`render-hooks/render-hook-contract.ts`).
+- **Test harness:** `vanilla-w-react`'s `Calendar` creates its React root once, so `render()` after
+  `destroy()` fails ("CalendarController is not taken back…"); the React-runtime "destroy … leaves no
+  handlers attached / unbinds all handlers" failures; the flaky "addICalEventSource with day view";
+  TimeGrid's "ResizeObserver loop" when leaving print. Fixing these shrinks the known-failure list.
+- **Issues:** verify #8112, #8092 and #7070 with their reproductions (closing them on GitHub is Adam's).
+- **Landing:** decide how the branch merges (per phase or whole).
+
+### 12. Grid abstraction, hooks-first React API (tabled)
+
+Tabled by Adam (2026-10-21): out of scope for this refactor, for the medium-term future. Its
+requirements stay recorded here.
+
 
 - **From phase 9 (moved here): stable API wrappers.** `EventApi`, `EventSourceApi` and `ResourceApi`
   objects with stable identity, reading the calendar's context lazily, for a hooks API whose users
