@@ -1,7 +1,7 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
-import premiumCommonPlugin from '../common/plugin'
+import premiumCommonPlugin from '../premium-common/plugin'
 import timelinePlugin from '../timeline'
-import resourcePlugin from '../resource'
+import resourcePlugin from '../resource/plugin'
 import { ResourceTimelineView } from './components/ResourceTimelineView'
 
 export default {

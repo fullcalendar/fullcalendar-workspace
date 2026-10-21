@@ -5,11 +5,12 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, type Ref, createElement } from 'react'
-import { Group, createGroupId, isGroupsEqual } from '../../../resource/common/resource-hierarchy'
+import { Group, createGroupId, isGroupsEqual } from '../../../resource/resource-hierarchy'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
-import { ResourceGroupHeaderInfo, GroupSpec } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { ResourceGroupHeaderInfo } from '../../info-types'
+import { GroupSpec } from '../../col-options'
+import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 
 export interface ResourceGroupHeaderCellProps extends AriaCellInput {
   group: Group

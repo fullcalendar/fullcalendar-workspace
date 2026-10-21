@@ -4,8 +4,9 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createElement, memo, type Ref } from 'react'
-import { ColSpec, ResourceGroupHeaderInfo } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { ColSpec } from '../../col-options'
+import { ResourceGroupHeaderInfo } from '../../info-types'
+import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 
 export interface ResourceGroupCellProps extends AriaCellInput {
   colSpec: ColSpec

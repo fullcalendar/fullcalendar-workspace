@@ -16,8 +16,8 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { createGroupId, GenericNode } from '../../resource/common/resource-hierarchy'
-import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
+import { createGroupId, GenericNode } from '../../resource/resource-hierarchy'
+import { ResourceEntityExpansions } from '../../resource/store/reducers/resource-entity-expansions'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineHeaderRow } from '../../timeline/components/TimelineHeaderRow'
 import { TimelineBg } from '../../timeline/components/TimelineBg'
@@ -27,13 +27,13 @@ import { DimConfig, serializeDimConfig } from '@full-ui/headless-grid'
 import {
   buildPrintLayouts,
   buildPrintTableRows,
-} from '../resource-layout-print'
+} from '../print-row-layout'
 import { GroupLane } from './lane/GroupLane'
 import { ResourcePrintRow } from './ResourcePrintRow'
 import { ResourceGroupHeaderCell } from './spreadsheet/ResourceGroupHeaderCell'
 import { HeaderCells } from './spreadsheet/HeaderCells'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
-import { ColSpec } from '../structs'
+import { ColSpec } from '../col-options'
 import { computeResourceTimelineHeaderHeight } from '../header-height'
 
 export interface ResourceTimelineLayoutPrintProps {

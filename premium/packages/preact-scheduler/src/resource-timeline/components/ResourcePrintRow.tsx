@@ -20,9 +20,9 @@ import {
 import { useTimelinePrintBands } from '../../timeline/print-adapter'
 import { TimelineDateProfile } from '../../timeline/timeline-date-profile'
 import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
-import { getPublicId } from '../../resource/structs/resource'
-import { ResourcePrintTableRow } from '../resource-layout-print'
-import { ColSpec } from '../structs'
+import { getPublicId } from '../../resource/resource'
+import { ResourcePrintTableRow } from '../print-row-layout'
+import { ColSpec } from '../col-options'
 import {
   buildResourceDateSpanProps,
   buildResourceEventRenderProps,

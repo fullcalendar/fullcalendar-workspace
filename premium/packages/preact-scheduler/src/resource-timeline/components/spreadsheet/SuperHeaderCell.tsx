@@ -4,9 +4,10 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createElement, memo, type Ref } from 'react'
-import { ResourceColumnHeaderInfo, ColHeaderRenderHooks } from '../../structs'
+import { ResourceColumnHeaderInfo } from '../../info-types'
+import { ColHeaderRenderHooks } from '../../col-options'
 import { ResourceIndent } from './ResourceIndent'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 
 export interface SuperHeaderCellProps extends AriaCellInput {
   renderHooks: ColHeaderRenderHooks

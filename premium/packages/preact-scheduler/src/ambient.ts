@@ -4,13 +4,13 @@ import {
   PremiumListenersRefined,
   PremiumOptions,
   PremiumOptionsRefined,
-} from './common/options'
+} from './premium-common/options'
 import { ResourceApi } from './resource/api/ResourceApi'
-import { ResourceSource } from './resource/structs/resource-source'
-import { ResourceHash } from './resource/structs/resource'
-import { ResourceEntityExpansions } from './resource/reducers/resourceEntityExpansions'
-import { ResourceAction } from './resource/reducers/resource-action'
-import { EVENT_REFINERS } from './resource/structs/event-parse'
+import { ResourceSource } from './resource/resource-sources/resource-source'
+import { ResourceHash } from './resource/resource'
+import { ResourceEntityExpansions } from './resource/store/reducers/resource-entity-expansions'
+import { ResourceAction } from './resource/store/actions'
+import { EVENT_REFINERS } from './resource/event-resource-parse'
 
 type ExtraEventRefiners = typeof EVENT_REFINERS
 

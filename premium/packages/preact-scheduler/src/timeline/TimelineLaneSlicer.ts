@@ -8,7 +8,7 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import { getTimelineAxisStartMs, getTimelineAxisEndMs } from './timeline-time-axis'
-import { computeDateSnapCoverage, computeMsSlotCoverage } from './TimelineCoords'
+import { computeDateSnapCoverage, computeMsSlotCoverage } from './slot-coverage'
 
 export interface TimelineRange {
   // the point of this range is because it might be different than seg.eventRange.range

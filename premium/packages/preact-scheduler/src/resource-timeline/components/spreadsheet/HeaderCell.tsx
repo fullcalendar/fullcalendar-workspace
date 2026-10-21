@@ -4,9 +4,10 @@ import {
   CustomContent, generateClassName, useRenderHookEl, useReportedSize, useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
-import { ColSpec, ResourceColumnHeaderInfo } from '../../structs'
+import { ColSpec } from '../../col-options'
+import { ResourceColumnHeaderInfo } from '../../info-types'
 import { ResourceIndent } from './ResourceIndent'
-import { type AriaCellInput, buildAriaCellAttrs } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs } from '../aria'
 
 export interface HeaderCellProps extends AriaCellInput {
   colSpec: ColSpec

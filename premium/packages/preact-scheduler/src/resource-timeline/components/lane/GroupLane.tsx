@@ -4,9 +4,10 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { createElement, memo, type Ref } from 'react'
-import { Group } from '../../../resource/common/resource-hierarchy'
-import { GroupSpec, ResourceGroupLaneInfo } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
+import { Group } from '../../../resource/resource-hierarchy'
+import { GroupSpec } from '../../col-options'
+import { ResourceGroupLaneInfo } from '../../info-types'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../aria'
 
 export interface GroupLaneProps extends AriaCellInput {
   group: Group

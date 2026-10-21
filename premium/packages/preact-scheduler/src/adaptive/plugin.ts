@@ -1,6 +1,6 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
-import premiumCommonPlugin from '../common/plugin'
-import { contextInit } from './global-handlers'
+import premiumCommonPlugin from '../premium-common/plugin'
+import { contextInit } from './print-listeners'
 
 export default {
   name: 'adaptive',

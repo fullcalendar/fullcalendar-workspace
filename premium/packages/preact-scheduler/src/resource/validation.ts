@@ -1,5 +1,5 @@
 import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, CalendarContext } from '@fullcalendar/preact/protected-api'
-import { ResourceSplitter } from './common/ResourceSplitter'
+import { ResourceSplitter } from './ResourceSplitter'
 
 export function isPropsValidWithResources(combinedProps: SplittableProps, context: CalendarContext): boolean {
   let splitter = new ResourceSplitter()

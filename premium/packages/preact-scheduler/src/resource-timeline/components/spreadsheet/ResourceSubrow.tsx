@@ -2,9 +2,9 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { afterSize, isArraysEqual, memoWithEquality, RefMap, setRef, useLatest, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { Resource, getPublicId } from '../../../resource/structs/resource'
+import { Resource, getPublicId } from '../../../resource/resource'
 import { ResourceCell } from './ResourceCell'
-import { ColSpec } from '../../structs'
+import { ColSpec } from '../../col-options'
 
 export interface ResourceSubrowProps {
   resource: Resource

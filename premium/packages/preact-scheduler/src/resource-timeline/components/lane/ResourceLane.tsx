@@ -2,14 +2,14 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { CustomContent, generateClassName, useLatest, useRenderHookEl, useReportedSize, useViewContext, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react'
-import { Resource } from '../../../resource/structs/resource'
+import { Resource } from '../../../resource/resource'
 import { TimelineDateProfile } from '../../../timeline/timeline-date-profile'
 import { TimelineFg } from '../../../timeline/components/TimelineFg'
 import { TimelineBg } from '../../../timeline/components/TimelineBg'
 import { TimelineLaneSlicer } from '../../../timeline/TimelineLaneSlicer'
-import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../structs'
+import { ResourceLaneContentArgInput, ResourceLaneInfo } from '../../info-types'
 import { ResourceApi } from '../../../resource/public-api'
-import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../aria'
 
 export interface ResourceLaneProps extends AriaCellInput {
   dateProfile: DateProfile

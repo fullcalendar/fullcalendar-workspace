@@ -1,5 +1,5 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
-import premiumCommonPlugin from '../common/plugin'
+import premiumCommonPlugin from '../premium-common/plugin'
 import resourcePlugin from '../resource/plugin'
 import dayGridPlugin from '@fullcalendar/preact/daygrid'
 import { ResourceDayGridView } from './components/ResourceDayGridView'

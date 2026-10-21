@@ -11,11 +11,12 @@ import {
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type ReactNode, createElement, memo, useMemo, type Ref } from 'react'
 import { ResourceApi } from '../../../resource/api/ResourceApi'
-import { Resource } from '../../../resource/structs/resource'
+import { Resource } from '../../../resource/resource'
 import { ResourceIndent } from './ResourceIndent'
 import { ResourceExpander } from './ResourceExpander'
-import { ResourceCellInfo, ColSpec } from '../../structs'
-import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../../aria'
+import { ResourceCellInfo } from '../../info-types'
+import { ColSpec } from '../../col-options'
+import { type AriaCellInput, buildAriaCellAttrs, getAriaCellRole } from '../aria'
 
 export interface ResourceCellProps extends AriaCellInput {
   colSpec: ColSpec

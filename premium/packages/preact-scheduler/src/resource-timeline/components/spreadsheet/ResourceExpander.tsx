@@ -2,7 +2,7 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { CustomContent, generateClassName, useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, type Ref } from 'react'
-import { ResourceExpanderInfo } from '../../structs'
+import { ResourceExpanderInfo } from '../../info-types'
 
 export interface ResourceExpanderProps {
   isExpanded: boolean

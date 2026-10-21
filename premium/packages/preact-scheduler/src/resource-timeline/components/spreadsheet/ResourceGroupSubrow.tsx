@@ -2,8 +2,8 @@ import { joinClassNames } from '@fullcalendar/preact/public-api'
 import { useViewOptions } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, type Ref } from 'react'
-import { ColSpec } from '../../structs'
-import { type AriaCellInput } from '../../aria'
+import { ColSpec } from '../../col-options'
+import { type AriaCellInput } from '../aria'
 import { ResourceGroupCell } from './ResourceGroupCell'
 
 export interface ResourceGroupSubrowProps extends AriaCellInput {

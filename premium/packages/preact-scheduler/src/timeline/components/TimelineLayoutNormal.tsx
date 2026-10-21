@@ -35,7 +35,7 @@ import { TimelineHeaderRow } from './TimelineHeaderRow'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow'
 import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine'
 import { TimelineSlats } from './TimelineSlats'
-import { getTimelineSlotEl } from './util'
+import { getTimelineSlotEl } from './timeline-slot-el'
 
 export interface TimelineScroll {
   time?: Duration

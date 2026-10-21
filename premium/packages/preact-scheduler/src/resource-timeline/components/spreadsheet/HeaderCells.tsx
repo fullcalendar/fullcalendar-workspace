@@ -1,6 +1,6 @@
 import { afterSize, computeElIsRtl, ElementDragging, type PointerDragEvent, RefMap, setRef, useLatest, useViewContext } from '@fullcalendar/preact/protected-api'
 import { memo, useLayoutEffect, useRef, useState, type Ref } from 'react'
-import { ColSpec } from '../../structs'
+import { ColSpec } from '../../col-options'
 import { HeaderCell } from './HeaderCell'
 
 export interface HeaderCellsProps {

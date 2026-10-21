@@ -1,18 +1,17 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
-import premiumCommonPlugin from '../common/plugin'
-import { ResourceDataAdder, transformIsDraggable } from './View'
-import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
-import { reduceResources, ResourceState } from './reducers/resources'
-import { runResourceSourceFetch } from './reducers/resourceSource'
+import premiumCommonPlugin from '../premium-common/plugin'
+import { ResourceDataAdder, ResourceEventConfigAdder } from './view-props'
+import { reduceResources, ResourceState } from './store/resource-state'
+import { runResourceSourceFetch } from './store/run-fetch-resource-source'
 import { createResourceActions } from './api/resource-actions'
-import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
-import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
-import { transformDateSelectionJoin } from './DateSelecting'
-import { transformDatePoint, transformDateSpan } from './api/CalendarApi'
+import { generateEventDefResourceMembers, EVENT_REFINERS } from './event-resource-parse'
+import { massageEventDragMutation, applyEventDefMutation, transformEventDrop, transformIsDraggable } from './interactions/event-dragging'
+import { transformDateSelectionJoin } from './interactions/date-selecting'
+import { transformDateSpan } from './date-span'
 import { isPropsValidWithResources } from './validation'
-import { transformExternalDef } from './ExternalElementDragging'
+import { transformExternalDef } from './interactions/external-element-dragging'
 import { optionChangeHandlers } from './option-change-handlers'
-import { handleResourceStore } from './resources-crud'
+import { handleResourceStore } from './resource-crud'
 
 export default {
   name: 'resource',
@@ -32,7 +31,7 @@ export default {
   eventDragMutationMassagers: [massageEventDragMutation],
   eventDefMutationAppliers: [applyEventDefMutation],
   dateSelectionTransformers: [transformDateSelectionJoin],
-  datePointTransforms: [transformDatePoint],
+  datePointTransforms: [transformDateSpan],
   dateSpanTransforms: [transformDateSpan],
   viewPropsTransformers: [ResourceDataAdder, ResourceEventConfigAdder],
   isPropsValid: isPropsValidWithResources,

@@ -1,6 +1,6 @@
 import { CalendarApiImpl, CalendarStore } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
-import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
+import { ResourceInput, parseResource, ResourceHash, Resource } from '../resource'
 
 /*
 The resource plugin's actions, merged into store.actions (the calendarActions hook), with what were the

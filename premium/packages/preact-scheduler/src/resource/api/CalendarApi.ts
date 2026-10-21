@@ -1,8 +1,8 @@
-import { CalendarApiImpl, DateSpan, CalendarContext } from '@fullcalendar/preact/protected-api'
+import { CalendarApiImpl } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
-import { ResourceInput } from '../structs/resource'
+import { ResourceInput } from '../resource'
 import { getResourceActions } from './resource-actions'
-import { ResourceAction } from '../reducers/resource-action'
+import { ResourceAction } from '../store/actions'
 
 declare module '@fullcalendar/preact/public-api' {
   interface CalendarApi {
@@ -85,16 +85,4 @@ CalendarApiImpl.prototype.getTopLevelResources = function (this: CalendarApiImpl
 
 CalendarApiImpl.prototype.refetchResources = function (this: CalendarApiImpl) { // eslint-disable-line func-names
   getResourceActions(this).refetchResources()
-}
-
-export function transformDatePoint(dateSpan: DateSpan, context: CalendarContext) {
-  return dateSpan.resourceId ?
-    { resource: context.calendarApi.getResourceById(dateSpan.resourceId) } :
-    {}
-}
-
-export function transformDateSpan(dateSpan: DateSpan, context: CalendarContext) {
-  return dateSpan.resourceId ?
-    { resource: context.calendarApi.getResourceById(dateSpan.resourceId) } :
-    {}
 }

@@ -1,6 +1,6 @@
 import { EventImpl, warn } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from './ResourceApi'
-import { EVENT_REFINERS } from '../structs/event-parse'
+import { EVENT_REFINERS } from '../event-resource-parse'
 
 declare module '@fullcalendar/preact/public-api' {
   interface EventApi {

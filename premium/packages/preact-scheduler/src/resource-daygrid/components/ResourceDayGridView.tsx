@@ -10,18 +10,18 @@ import {
   useViewContext,
 } from '@fullcalendar/preact/protected-api'
 import { useMemo } from 'react'
-import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
-import { ResourceViewProps } from '../../resource/View'
-import { computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
+import { DEFAULT_RESOURCE_ORDER } from '../../resource/resource-hierarchy'
+import { ResourceViewProps } from '../../resource/view-props'
+import { computeHasEventsByDate, filterResourceStore } from '../../resource/resource-filtering'
 import {
   buildResourceDayTable,
   buildResourceKeying,
   isResourceHitComboAllowed,
   toResourceHeaderInput,
-} from '../../resource/common/resource-day-table'
-import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { Resource } from '../../resource/structs/resource'
-import { buildResourceRowConfigs } from '../resource-header-tier'
+} from '../../resource-day-table/model'
+import { flattenResources } from '../../resource/resource-hierarchy'
+import { Resource } from '../../resource/resource'
+import { buildResourceRowConfigs } from '../../resource-day-table/header-tier'
 
 // memoized on its props, and marked as a view (see createViewComponent)
 export const ResourceDayGridView = createViewComponent(ResourceDayGridViewBody)

@@ -1,6 +1,6 @@
 import { PluginInput } from '@fullcalendar/preact/public-api'
 import timeGridPlugin from '@fullcalendar/preact/timegrid'
-import premiumCommonPlugin from '../common/plugin'
+import premiumCommonPlugin from '../premium-common/plugin'
 import resourcePlugin from '../resource/plugin'
 import resourceDayGridPlugin from '../resource-daygrid/plugin'
 import { ResourceTimeGridView } from './components/ResourceTimeGridView'

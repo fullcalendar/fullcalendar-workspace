@@ -26,10 +26,10 @@ import {
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { memo, useLayoutEffect, useMemo, useRef, useState, type Ref } from 'react'
-import { createEntityId, createGroupId, GenericNode, isEntityGroup } from '../../resource/common/resource-hierarchy'
-import { ResourceEntityExpansions } from '../../resource/reducers/resourceEntityExpansions'
+import { createEntityId, createGroupId, GenericNode, isEntityGroup } from '../../resource/resource-hierarchy'
+import { ResourceEntityExpansions } from '../../resource/store/reducers/resource-entity-expansions'
 import { ScrollerSyncer } from '../../scrollgrid/ScrollerSyncer'
-import { getTimelineSlotEl } from '../../timeline/components/util'
+import { getTimelineSlotEl } from '../../timeline/components/timeline-slot-el'
 import { TimelineDateProfile, TimelineHeaderCellData, isNowInTimelineRange } from '../../timeline/timeline-date-profile'
 import { TimelineHeaderRow } from '../../timeline/components/TimelineHeaderRow'
 import { TimelineBg } from '../../timeline/components/TimelineBg'
@@ -46,8 +46,8 @@ import {
   GroupRowLayout,
   ResourceRowLayout,
   RowLayout,
-} from '../resource-layout'
-import { ColSpec } from '../structs'
+} from '../row-layout'
+import { ColSpec } from '../col-options'
 import { GroupLane } from './lane/GroupLane'
 import { ResourceLane } from './lane/ResourceLane'
 import { ResizableTwoCol } from './ResizableTwoCol'
@@ -56,7 +56,7 @@ import { HeaderCells } from './spreadsheet/HeaderCells'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell'
 import { computeShift, type ItemPosition, Virtualizer } from '../virtual/virtualizer'
 import { syncVirtualizerList } from '../virtual/virtualizer-lists'
-import { useWindowScrollTracking } from '../useWindowScrollTracking'
+import { useWindowScrollTracking } from './useWindowScrollTracking'
 import {
   type EntityScroll,
   type ResourceTimelineGeometry,
@@ -64,8 +64,8 @@ import {
   type ResourceTimelineVirtualizers,
   type TimeScroll,
   useResourceTimelineScroll,
-} from '../useResourceTimelineScroll'
-import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs, getAriaTableRole } from '../aria'
+} from './useResourceTimelineScroll'
+import { AriaProxyRows, buildAriaBodyRows, buildAriaCellAttrs, getAriaTableRole } from './aria'
 import { computeResourceTimelineHeaderHeight } from '../header-height'
 
 interface ResourceTimelineLayoutNormalProps {
@@ -117,7 +117,7 @@ interface ResourceTimelineLayoutNormalProps {
   scrollRef?: Ref<TimeScroll & EntityScroll>
 }
 
-export type { EntityScroll, TimeScroll } from '../useResourceTimelineScroll'
+export type { EntityScroll, TimeScroll } from './useResourceTimelineScroll'
 
 const DEFAULT_OWN_CELL_HEIGHT = 40 // also in useResourceTimelineScroll
 
