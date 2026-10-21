@@ -1,5 +1,5 @@
 import { InlineWeekNumberInfo } from '../../common/WeekNumberContainer'
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DateRange, DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import {
   buildEventRangeKey,

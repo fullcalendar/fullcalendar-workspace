@@ -46,7 +46,7 @@ export interface ScrollerHandle extends ScrollerInterface {
 export type Scroller = ScrollerHandle
 
 /*
-A scroll container. Memoized on its props, as the class it was (a PureComponent). Its state, ref
+A scroll container. Memoized on its props (shallowly). Its state, ref
 callbacks and API live on one ScrollerState object, made once
 */
 export const Scroller: ComponentType<ScrollerProps & { ref?: Ref<ScrollerHandle> }> = memoWithEquality(

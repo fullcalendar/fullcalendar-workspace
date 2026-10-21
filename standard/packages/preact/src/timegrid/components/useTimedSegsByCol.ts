@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from '../TimeColsSeg'
 

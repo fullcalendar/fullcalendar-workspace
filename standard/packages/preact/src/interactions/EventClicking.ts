@@ -14,7 +14,7 @@ export interface EventClickInfo {
 }
 
 /*
-Detects when the user clicks on an event within a DateComponent
+Detects when the user clicks on an event within a hit target
 */
 export class EventClicking extends Interaction {
   constructor(target: HitTarget) {

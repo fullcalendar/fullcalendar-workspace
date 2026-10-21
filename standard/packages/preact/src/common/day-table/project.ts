@@ -1,4 +1,4 @@
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DayGridRange } from '../../daygrid/DayTableModel'
 import { TimeGridRange } from '../../timegrid/TimeColsSeg'
 import { DayTableModel, computeDayTableColRanges, lookUpDayTableCol } from './model'

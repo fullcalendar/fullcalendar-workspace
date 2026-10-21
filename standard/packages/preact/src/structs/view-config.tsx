@@ -6,7 +6,7 @@ import { CustomContent } from '../content-inject/CustomContent'
 import { useViewContext } from '../hooks/useViewContext'
 import { useRenderHookEl } from '../hooks/useRenderHookEl'
 import { Duration } from '@full-ui/headless-calendar'
-import { BaseComponent, memoWithEquality } from '../vdom-util'
+import { memoWithEquality } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 import { ContentGenerator, generateClassName } from '../common/render-hook'
 import { getIsHeightAuto } from '../scrollgrid/util'
@@ -35,9 +35,8 @@ export type ViewConfigHash = { [viewType: string]: ViewConfig }
 const viewComponents = new WeakSet<object>()
 
 /*
-A view's component from its body: memoized on its props (as the class views were, PureComponent), and
-marked, so parseViewConfig takes it as a view rather than as `content` given as `component`. A class
-extending BaseComponent is a view too
+A view's component from its body: memoized on its props (shallowly), and marked, so parseViewConfig
+takes it as a view rather than as `content` given as `component`
 */
 export function createViewComponent<Props extends ViewProps>(body: FunctionComponent<Props>): ComponentType<Props> {
   const component = memoWithEquality(body, {})
@@ -46,7 +45,7 @@ export function createViewComponent<Props extends ViewProps>(body: FunctionCompo
 }
 
 function isViewComponent(component: any): boolean {
-  return (component.prototype instanceof BaseComponent) || viewComponents.has(component)
+  return viewComponents.has(component)
 }
 
 export function parseViewConfigs(inputs: ViewConfigInputHash): ViewConfigHash {
@@ -54,7 +53,7 @@ export function parseViewConfigs(inputs: ViewConfigInputHash): ViewConfigHash {
 }
 
 function parseViewConfig(input: ViewConfigInput): ViewConfig {
-  // a component: a function (class or function component), or a view component (React's memo() is an object)
+  // a component: a function, or a view component (React's memo() is an object)
   let rawOptions: ViewOptions = (typeof input === 'function' || viewComponents.has(input as object)) ?
     { component: input as ViewComponentType } :
     input as ViewOptions

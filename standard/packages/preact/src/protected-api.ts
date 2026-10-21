@@ -85,8 +85,7 @@ export { unpromisify } from './util/promise'
 
 export { Emitter } from './common/Emitter'
 export type { ViewContext } from './ViewContext'
-export type { EventSegUiInteractionState } from './component/DateComponent'
-export { DateComponent } from './component/DateComponent'
+export type { EventSegUiInteractionState } from './interactions/event-interaction-state'
 export type { CalendarData } from './reducers/data-types'
 export { createCalendarStore, CalendarStore } from './reducers/store'
 export type { CalendarStoreConfig, CalendarStoreChange, CalendarStoreListener } from './reducers/store'
@@ -209,7 +208,7 @@ export { isPropsValid } from './validation'
 
 export { requestJson } from './util/requestJson'
 
-export { BaseComponent, setRef, memoWithEquality } from './vdom-util'
+export { setRef, memoWithEquality } from './vdom-util'
 export { createViewComponent } from './structs/view-config' // a view's component from its body
 export { DelayedRunner } from './util/DelayedRunner'
 

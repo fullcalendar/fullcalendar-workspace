@@ -12,7 +12,7 @@ import { OffsetTracker } from '../OffsetTracker'
 
 /*
 Tracks movement over multiple droppable areas (aka "hits")
-that exist in one or more DateComponents.
+that exist in one or more hit targets.
 Relies on an existing draggable.
 
 emits:

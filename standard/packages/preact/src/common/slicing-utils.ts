@@ -3,7 +3,7 @@ import { EventStore } from '../structs/event-store'
 import { EventUiHash } from '../component-util/event-ui'
 import { sliceEventStore, EventRenderRange, EventRangeProps } from '../component-util/event-rendering'
 import { DateProfile } from '../DateProfileGenerator'
-import { EventSegUiInteractionState } from '../component/DateComponent' // TODO: rename EventSegUiInteractionState, move here
+import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 import { DateSpan, fabricateEventRange } from '../structs/date-span'
 import { EventInteractionState } from '../interactions/event-interaction-state'
 import { memoize } from '../util/memoize'

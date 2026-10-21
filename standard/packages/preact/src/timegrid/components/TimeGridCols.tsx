@@ -1,6 +1,6 @@
 import { Duration, DateMarker, DateRange, addDurations, multiplyDuration, wholeDivideDurations } from '@full-ui/headless-calendar'
 import { joinClassNames } from '../../util/html'
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DateProfile } from '../../DateProfileGenerator'
 import { DayTableCell } from '../../daygrid/DayTableModel'
 import { EventRangeProps } from '../../component-util/event-rendering'

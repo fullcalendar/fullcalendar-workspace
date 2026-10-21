@@ -1,6 +1,6 @@
 import { CoordRange } from '../coord-range'
 import { DateMarker } from '@full-ui/headless-calendar'
-import { EventSegUiInteractionState } from '../component/DateComponent'
+import { EventSegUiInteractionState } from '../interactions/event-interaction-state'
 
 // JUST A DATA STRUCTURE, not a component
 

@@ -1,6 +1,6 @@
 import { createElement, memo, useMemo, useRef, useState } from 'react'
 import { joinClassNames } from '../../util/html'
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { useViewOptions } from '../../hooks/useGranularContexts'
 import { useLatest } from '../../hooks/useLatest'
 import { useHitTarget } from '../../hooks/useHitTarget'

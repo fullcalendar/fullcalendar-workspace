@@ -39,7 +39,7 @@ export interface CalendarContentProps extends CalendarData {
 
 /*
 The calendar's content: the toolbars and the view, inside the view contexts it provides. Memoized on its
-props, as the class it was (a PureComponent). Its memos, interactions and hit-target registry live on one
+props (shallowly). Its memos, interactions and hit-target registry live on one
 CalendarInnerState, made once
 */
 export const CalendarInner = memoWithEquality(function CalendarInner(props: CalendarInnerProps) {

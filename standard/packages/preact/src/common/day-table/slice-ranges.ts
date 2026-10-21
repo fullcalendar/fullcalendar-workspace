@@ -17,7 +17,7 @@ import {
   sliceEventStore,
 } from '../../component-util/event-rendering'
 import { EventInteractionState } from '../../interactions/event-interaction-state'
-import { EventSegUiInteractionState } from '../../component/DateComponent'
+import { EventSegUiInteractionState } from '../../interactions/event-interaction-state'
 import { DateProfile } from '../../DateProfileGenerator'
 import { CalendarContext } from '../../CalendarContext'
 import { DayGridRange, buildDayGridRanges } from '../../daygrid/DayTableModel'
