@@ -91,9 +91,15 @@ any of them (round 1 #1). So:
 - **`TableDateProfileGenerator` goes:** the base class's `buildRenderRange` returns
   `props.renderRange?.(range, unit, isRangeAllDay, props) ?? range`, and the daygrid and multimonth plugins
   supply that function as the internal view option `dateProfileRenderRange` (`buildDayTableRenderRange`
-  stays a pure function, also used by `MultiMonthView`). A custom `dateProfileGeneratorClass` wins, and
-  doesn't receive the inherited `dateProfileRenderRange` (a custom class that replaced the table range
-  keeps having replaced it).
+  stays a pure function, also used by `MultiMonthView`). **Plumbing (round 3 #1):** one shared function
+  object (`tableRenderRange`, exported by daygrid, imported by multimonth), so `dayGridYear` and
+  `multiMonthYear` keep sharing a generator (locked); the store adds `renderRange` to the props only for
+  the base class, and only when the view has one, before memoizing, so the memo key and a custom class's
+  constructor props stay exactly today's (no new key). A custom `dateProfileGeneratorClass` gets no
+  `renderRange`. (On a view whose type already sets a class, dayGrid or multiMonth, a custom class crashes
+  today: the view configs' merge combines the two classes into a non-constructor wrapper, locked. With
+  table views no longer setting a class, that combination stops happening: the custom class works,
+  without the table range. A crash becoming working behavior on an internal option; logged.)
 - **The store** still builds a generator per view (`dateProfileGeneratorClass` or the base class),
   memoized by the same props (`memoizeObjArg`), so its identity, `ViewContext.dateProfileGenerator`'s
   type and every consumer's signature stay as they are (round 2 #4: no type migration needed). The store,
@@ -120,6 +126,11 @@ round:
   event store (recurring expansion) treat as navigation, so the new range has its events; `datesSet` then
   fires because the dates changed.
 - Custom generator classes excluded until they define a rebuild protocol.
+- (Round 3, for whoever implements it) the profile's anchor and direction aren't stored today:
+  `DateProfile.currentDate` can be constrained or replaced, and navigation adjusts the store's current
+  date, so the fix must record its provenance (the build's date and direction) where stage 4 keeps a
+  built profile. And reuse the probed `validRange` result for the rebuild rather than calling the user
+  function again (a stateful callback could answer differently).
 
 ### 5. The pre-pass's hidden-day question
 
@@ -186,6 +197,16 @@ Three P1s and two P2s on revision 2, the P1s all in the midnight rebuild; revisi
 Round 1's dispositions per Sol: #2, #4, #6 resolved; #1 resolved by open recursion (its midnight part
 moved out); #3 resolved for existing build points; #5 completed by round 2's additions; #7 needs no type
 work now.
+
+## Review round 3 (Sol, spec, high effort)
+
+No P1s; ready to implement after step 0 and two P2 details, both done:
+
+| # | Finding | Response |
+|---|---|---|
+| 1 | P2: `dateProfileRenderRange` plumbing and memoization: one shared adapter, stripped before the memo key for custom classes, no new constructor key | §2's plumbing paragraph; locks: `dayGridYear` → `multiMonthYear` shares the generator (4 calls) |
+| 2 | P2: locks around the extraction seams: `build` overridden with inherited prev/next and the toolbar; `skipHiddenDays` overridden with the inherited trim; a custom class on a table view; full `datesSet` arguments | `date-profile-rendered-locks.ts`: all four (the table-view case locks today's crash) |
+| 3 | P3: the loose-ends midnight design needs anchor provenance and must reuse the probed `validRange` | §4's note |
 
 ## Step 0: behavior locks and the oracle (done)
 

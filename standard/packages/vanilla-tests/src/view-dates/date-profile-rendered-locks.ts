@@ -25,7 +25,15 @@ describe('date profile rendered locks', () => {
       initialView: 'timeGridWeek',
       datesSet(arg) {
         // the first call is during initCalendar, before it returns the calendar: compare the API it was given
-        calls.push(`${this === arg.view.calendar ? 'api' : 'other'} ${arg.view.type} ${day(arg.start)} ${day(arg.end)}`)
+        calls.push([
+          this === arg.view.calendar ? 'api' : 'other',
+          arg.view.type,
+          arg.start.toISOString(),
+          arg.end.toISOString(),
+          arg.startStr,
+          arg.endStr,
+          arg.timeZone,
+        ].join(' '))
       },
     })
 
@@ -140,6 +148,59 @@ describe('date profile rendered locks', () => {
       expect(receivers['buildValidRange'].length).toBeGreaterThan(0)
     })
 
+    // build overridden: the inherited buildPrev/buildNext (and the toolbar's) go through it
+    class ShiftedBuild extends DateProfileGenerator {
+      build(currentDate, nowDate, direction?, forceToValid?) {
+        record(this, 'build')
+        return super.build(addDays(currentDate, 1), nowDate, direction, forceToValid)
+      }
+    }
+
+    it('navigates through its build with the inherited buildPrev and buildNext', () => {
+      let calendar = buildCalendar(ShiftedBuild)
+      let generator = calendar.getCurrentData().dateProfileGenerator
+      let starts = [day(calendar.getCurrentData().dateProfile.currentRange.start)]
+      let buildCnt = receivers['build'].length
+
+      calendar.next()
+      starts.push(day(calendar.getCurrentData().dateProfile.currentRange.start))
+      calendar.prev()
+      starts.push(day(calendar.getCurrentData().dateProfile.currentRange.start))
+
+      expect(JSON.stringify(starts)).toBe(JSON.stringify(EXPECTED_SHIFTED_STARTS))
+      expect(receivers['build'].length - buildCnt).toBe(EXPECTED_SHIFTED_BUILD_CALLS) // navigation and toolbar
+      expect(receivers['build'].every((self) => self === generator)).toBe(true)
+    })
+
+    // skipHiddenDays overridden: the inherited trimHiddenDays goes through it (today's this.skipHiddenDays)
+    class NoEndTrim extends DateProfileGenerator {
+      skipHiddenDays(date, inc = 1, isExclusive = false) {
+        record(this, 'skipHiddenDays')
+        return isExclusive ? date : super.skipHiddenDays(date, inc, isExclusive) // never trims ends
+      }
+    }
+
+    it('trims through its skipHiddenDays', () => {
+      let calendar = buildCalendar(NoEndTrim, { weekends: false, initialDate: '2024-03-04' }) // a Monday
+      let { renderRange } = calendar.getCurrentData().dateProfile
+      expect(JSON.stringify([day(renderRange.start), day(renderRange.end)])).toBe(JSON.stringify(EXPECTED_NO_END_TRIM_RANGE))
+      expect(receivers['skipHiddenDays'].length).toBeGreaterThan(0)
+    })
+
+    // a custom class on a view whose type already sets one (dayGrid's table generator) crashes today: the
+    // view configs' merge combines the two classes into a function wrapper, which isn't a constructor
+    it('on a table view crashes, as before', () => {
+      expect(() => {
+        initCalendar({
+          plugins: [...DEFAULT_PLUGINS, {
+            name: 'custom-table-view',
+            views: { customMonth: { type: 'dayGrid', duration: { months: 1 }, dateProfileGeneratorClass: DateProfileGenerator } },
+          }],
+          initialView: 'customMonth',
+        })
+      }).toThrowError(/is not a constructor/)
+    })
+
     // isHiddenDay is what the hidden-day consumers call; skipping reads the hash, so it isn't affected
     class HideThursdaysForConsumers extends DateProfileGenerator {
       isHiddenDay(dayOrDate) {
@@ -159,6 +220,27 @@ describe('date profile rendered locks', () => {
   })
 
   describe('the generator', () => {
+    // dayGridYear and multiMonthYear have the same generator inputs (table range, fixedWeekCount,
+    // showNonCurrentDates), so switching between them keeps the generator and builds once
+    it('is shared by views with the same inputs', () => {
+      let callCnt = 0
+      let calendar = initCalendar({
+        initialView: 'dayGridYear',
+        fixedWeekCount: true,
+        showNonCurrentDates: false,
+        validRange() {
+          callCnt++
+          return {}
+        },
+      })
+      let generator = calendar.getCurrentData().dateProfileGenerator
+
+      callCnt = 0
+      calendar.changeView('multiMonthYear')
+      expect(calendar.getCurrentData().dateProfileGenerator === generator).toBe(EXPECTED_YEAR_VIEWS_SHARE_GENERATOR)
+      expect(callCnt).toBe(EXPECTED_YEAR_VIEW_SWITCH_CALLS)
+    })
+
     it('is kept across an unrelated option change, and new for a related one', () => {
       let calendar = initCalendar({ initialView: 'timeGridWeek' })
       let generator = calendar.getCurrentData().dateProfileGenerator
@@ -175,15 +257,20 @@ describe('date profile rendered locks', () => {
   // recorded from the pre-phase-10 code
   // (a gotoDate within the same week rebuilds the profile, so it's called again; an unrelated option isn't)
   const EXPECTED_DATES_SET_CALLS = [
-    'api timeGridWeek 2024-03-03 2024-03-10',
-    'api timeGridWeek 2024-03-10 2024-03-17',
-    'api timeGridWeek 2024-03-03 2024-03-10',
-    'api timeGridWeek 2024-03-03 2024-03-10',
-    'api dayGridMonth 2024-02-25 2024-04-07',
-    'api dayGridMonth 2024-02-26 2024-04-06',
-    'api dayGridMonth 2024-04-29 2024-06-08',
-    'api dayGridMonth 2024-02-26 2024-04-06',
+    'api timeGridWeek 2024-03-03T00:00:00.000Z 2024-03-10T00:00:00.000Z 2024-03-03T00:00:00Z 2024-03-10T00:00:00Z UTC',
+    'api timeGridWeek 2024-03-10T00:00:00.000Z 2024-03-17T00:00:00.000Z 2024-03-10T00:00:00Z 2024-03-17T00:00:00Z UTC',
+    'api timeGridWeek 2024-03-03T00:00:00.000Z 2024-03-10T00:00:00.000Z 2024-03-03T00:00:00Z 2024-03-10T00:00:00Z UTC',
+    'api timeGridWeek 2024-03-03T00:00:00.000Z 2024-03-10T00:00:00.000Z 2024-03-03T00:00:00Z 2024-03-10T00:00:00Z UTC',
+    'api dayGridMonth 2024-02-25T00:00:00.000Z 2024-04-07T00:00:00.000Z 2024-02-25T00:00:00Z 2024-04-07T00:00:00Z UTC',
+    'api dayGridMonth 2024-02-26T00:00:00.000Z 2024-04-06T00:00:00.000Z 2024-02-26T00:00:00Z 2024-04-06T00:00:00Z UTC',
+    'api dayGridMonth 2024-04-29T00:00:00.000Z 2024-06-08T00:00:00.000Z 2024-04-29T00:00:00Z 2024-06-08T00:00:00Z UTC',
+    'api dayGridMonth 2024-02-26T00:00:00.000Z 2024-04-06T00:00:00.000Z 2024-02-26T00:00:00Z 2024-04-06T00:00:00Z UTC',
   ]
+  const EXPECTED_SHIFTED_STARTS = ['2024-03-09', '2024-03-17', '2024-03-11'] // each build a day later
+  const EXPECTED_SHIFTED_BUILD_CALLS = 8 // two navigations, each its build and the toolbar's three
+  const EXPECTED_NO_END_TRIM_RANGE = ['2024-03-04', '2024-03-11'] // the end isn't trimmed back from the weekend
+  const EXPECTED_YEAR_VIEWS_SHARE_GENERATOR = true
+  const EXPECTED_YEAR_VIEW_SWITCH_CALLS = 4 // no rebuild for a new generator: the view change's build and the toolbar's three
   const EXPECTED_PREV_ENABLED_AFTER = false // two more weeks back is before validRange
   const EXPECTED_THURSDAY_HEADER_DATES = ['2024-03-08', '2024-03-09', '2024-03-10', '2024-03-11', '2024-03-12', '2024-03-13']
 })

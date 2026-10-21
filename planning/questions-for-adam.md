@@ -40,3 +40,11 @@ nothing changed, leave the new day without its events (no fetch or recurring exp
 and couldn't replay a custom generator's navigation. So phase 10 is purely behavior-identical, and the
 fix is on the loose-ends list with a design that answers those (compare first, then dispatch a real
 navigation-like action). It's a small, rare bug; nothing regresses by waiting.
+
+## Phase 10: a custom generator class on a dayGrid view stops crashing
+
+A plugin view of type `dayGrid` (or `multiMonth`) that sets its own `dateProfileGeneratorClass` crashes
+today ("not a constructor": the view configs' merge combines its class with the table one into a function
+wrapper). Phase 10 replaces the table class with a render-range function, so the combination stops
+happening and the custom class just works (without the table's week-snapped range). It's an internal
+option (typed public), so no changelog entry. Locked first as a crash; flipped in step 1.
