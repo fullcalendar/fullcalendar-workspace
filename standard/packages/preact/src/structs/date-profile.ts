@@ -240,6 +240,14 @@ export function buildRangeFromDuration(gen: DateProfileGenerator, date: DateMark
   if (!gen.trimHiddenDays(res)) {
     date = gen.skipHiddenDays(date, direction)
     computeRes()
+
+    // aligning can snap back onto the same hidden days (a day view with dateAlignment 'week' and
+    // weekends hidden), so start at the aligned period's first visible day instead
+    if (!gen.trimHiddenDays(res)) {
+      start = gen.skipHiddenDays(start)
+      end = dateEnv.add(start, duration)
+      res = { start, end }
+    }
   }
 
   return res

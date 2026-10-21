@@ -310,10 +310,13 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   next navigation. Design in `phase-10-date-profile.md` §4: at a new civil day, evaluate only
   `validRange`, compare by value, and if it changed dispatch an action that stage 4, the event sources
   and the event store treat as navigation. Changelog FIX entry.
-- **A crash found by phase 10's oracle:** switching to a dayGrid view whose week-aligned range is all
-  hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`), e.g. `dateAlignment:
-  'week'` with `dayGridDay` and weekends hidden. Locked as-is by the oracle; fix it here (the oracle's
-  `EXPECTED_CRASH` then goes).
+- **A crash found by phase 10's oracle** (done, 2026-10-21): switching to a dayGrid view whose
+  week-aligned range is all hidden days throws in `buildDayTableRenderRange` (`currentRange` is `null`),
+  e.g. `dateAlignment: 'week'` with `dayGridDay` and weekends hidden. TimeGrid and List day views threw
+  too. Fixed in `buildRangeFromDuration`: the range starts at the aligned period's first visible day
+  (as `dayCount` already did). The oracle's frozen generator still throws there, so the oracle now
+  expects only the frozen side to crash and checks the calendar's range instead; the crashing step's
+  own user-function calls left the trace digest (re-recorded on the unfixed code first).
 - **Issues:** verify #8112, #8092 and #7070 with their reproductions (closing them on GitHub is Adam's).
 - **Landing:** decide how the branch merges (per phase or whole).
 

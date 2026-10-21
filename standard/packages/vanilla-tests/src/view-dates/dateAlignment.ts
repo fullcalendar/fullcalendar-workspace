@@ -35,6 +35,30 @@ describe('dateAlignment', () => {
     })
   })
 
+  // a one-day view aligned to the week starts on Sunday, a hidden day: it used to throw. it starts
+  // on the week's first visible day instead (dayCount's behavior just above)
+  describe('when week alignment of a one-day view with weekends hidden', () => {
+    pushOptions({
+      dateAlignment: 'week',
+      weekends: false,
+      initialDate: '2017-06-15', // a Thursday
+    })
+
+    for (const initialView of ['dayGridDay', 'timeGridDay', 'listDay']) {
+      it(`starts on the first visible day of the week in ${initialView}, and navigates by weeks`, () => {
+        let calendar = initCalendar({ initialView })
+        expectActiveRange(calendar, '2017-06-12', '2017-06-13')
+
+        calendar.next()
+        expectActiveRange(calendar, '2017-06-19', '2017-06-20')
+
+        calendar.prev()
+        calendar.prev()
+        expectActiveRange(calendar, '2017-06-05', '2017-06-06')
+      })
+    }
+  })
+
   // test in Safari!
   // https://github.com/fullcalendar/fullcalendar/issues/4363
   describe('when year alignment', () => {

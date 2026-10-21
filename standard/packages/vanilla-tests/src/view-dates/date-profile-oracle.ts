@@ -122,12 +122,13 @@ describe('date profile oracle', () => {
         const before = calendar.getCurrentData()
         const op = pick(['prev', 'next', 'gotoDate', 'changeView', 'changeViewDate', 'incrementDate', 'today', 'setOption'])
         let expected
+        const traceLength = trace.length
         trace.push(`#${step} ${op}`)
         isTracing = true
 
-        // some option mixes crash today (a table view whose aligned range is all hidden days: see
-        // planning/questions-for-adam.md). The calendar and the frozen generator must crash alike; the
-        // calendar is unusable after, so the sequence ends
+        // some option mixes crashed before phase 10's loose ends (a day view whose aligned range is all
+        // hidden days). The frozen generator still throws there; the calendar must start at the aligned
+        // period's first visible day instead. The frozen generator can't follow, so the sequence ends
         let crash: string | null = null
         let stage = 'calendar' // which side threw
         try {
@@ -198,9 +199,12 @@ describe('date profile oracle', () => {
 
         if (crash) {
           isTracing = false
-          trace.push(`crash ${crash}`)
+          // the crashing step's own calls aren't part of the lock: they depend on where it threw
+          trace.length = traceLength
+          trace.push(`#${step} ${op} crash`)
           expect(crash).withContext(`${config.name}, seed ${seed}, step ${step} (${op}) crash`).toMatch(EXPECTED_CRASH)
-          expect(crash.startsWith('calendar:')).withContext('the calendar crashed, not just the frozen generator').toBe(true)
+          expect(crash.startsWith('oracle:')).withContext('only the frozen generator crashed, not the calendar').toBe(true)
+          expectFirstVisibleDayRange(calendar.getCurrentData())
           break
         }
 
@@ -352,16 +356,26 @@ describe('date profile oracle', () => {
     }
   }
 
-  // the only crash today (and the frozen generator's, which the expectation computes after the calendar's)
-  const EXPECTED_CRASH = /Cannot destructure property 'start' of 'currentRange' as it is null/
+  // the frozen generator's only crash, which the calendar fixed (see the crash handling above)
+  const EXPECTED_CRASH = /Cannot destructure property 'start' of '(currentRange|range)' as it is null/
+
+  // the fix: a one-unit range starting at the aligned period's first visible day
+  function expectFirstVisibleDayRange(data) {
+    const { currentRange } = data.dateProfile
+    const gen = data.dateProfileGenerator
+
+    expect(currentRange).withContext('currentRange').toBeTruthy()
+    expect(gen.trimHiddenDays(currentRange)).withContext('a visible day in the range').toBeTruthy()
+    expect(gen.isHiddenDay(currentRange.start)).withContext('starts on a visible day').toBe(false)
+  }
 
   // recorded from the pre-phase-10 code: the user range functions' calls (count, order, `this`, argument)
   const EXPECTED_TRACE_DIGESTS: { [key: string]: string } = {
-    "dateAlignment#1": '9aab8836',
-    "dateAlignment#2": 'd584f35a',
+    "dateAlignment#1": '20cc699f',
+    "dateAlignment#2": '55d93d23',
     "dateAlignment#3": 'c29d4884',
     "dateAlignment#4": '95c6b9ad',
-    "dateAlignment#5": '95bbf685',
+    "dateAlignment#5": 'f91645d6',
     "dateIncrement and hiddenDays#1": '6170f237',
     "dateIncrement and hiddenDays#2": 'ef3bef03',
     "dateIncrement and hiddenDays#3": 'c29d4884',
