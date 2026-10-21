@@ -114,3 +114,18 @@ and it applies to every class, content and lifecycle option. The per-button fix 
 user's layers replacing per button (the old behavior), so buttons don't gain this quirk. Fixing it for
 top-level options would be a behavior change (a separate merge for the user's layers, as buttons now
 have); your call.
+
+## Phase 11: render-time purity (11c) needs your decision
+
+`planning/phase-11b-feasibility.md` (reviewed by Sol): strict render-time purity can't preserve every
+behavior of today's. A render that never commits (Suspense, transitions, `<Activity>`) advances the store
+today, so later API reads see its state; a pure store can't keep that. Other differences (refetching,
+reparsing, held callbacks) are avoidable only with cross-transaction caches, and the outlined design
+would raise render counts. My recommendation is **option A**: keep today's render-time reduction as the
+end state, document its guarantees in the store and the roadmap, and close §11's purity item. Options
+B (a transactional store, accepting named changes) and C (`useSyncExternalStore` without purity) are
+costed in its §5-6. Until you decide, 11b/11c stays unimplemented.
+
+Tied to it: the loose end "render-time side effects" (the emitter's option binding, the now timer
+re-arming during render). Moving them to the commit is §3 (c) and (d) of the study: small behavior and
+timing changes. Under option A I'd leave them as they are (documented); say if you want them moved anyway.
