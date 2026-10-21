@@ -2,8 +2,8 @@ import {
   createKeyedCache, buildDaySeries, buildDayGridRanges, buildDayGridModel, buildModelFromCols,
   sliceDayTableEvents, sliceEventStore, sliceRangeToCoords, buildEventUiForKey, splitIndividualUi,
   buildDefKeys, projectDayTableSegs, projectDayTableInteraction, getDayTableSegTransform,
-  computeDayTableColRanges, PLAIN_KEYING, DAY_GRID_LANE, TIME_GRID_ALL_DAY_LANE, TIME_GRID_TIMED_LANE,
-  createDuration,
+  computeDayTableColRanges, sliceDayTableNowIndicator, PLAIN_KEYING, DAY_GRID_LANE, TIME_GRID_ALL_DAY_LANE,
+  TIME_GRID_TIMED_LANE, createDuration,
 } from 'fullcalendar/protected-api'
 
 /*
@@ -428,6 +428,83 @@ describe('day-table units', () => {
       expect(Object.keys(res.affectedInstances)).toEqual(['c']) // active through c, which owns no column
       expect(res.isEvent).toBe(false)
       expect(summarize(res.segs)).toEqual([['K', 3, 4, true, true]]) // keyless segs in keyed columns only
+    })
+
+    /*
+    The same three dates, dates above resources: a and b under every date.
+    Column order: a0 b0 | a1 b1 | a2 b2
+    */
+    function buildDatesAboveModel() {
+      let { daySeries, dayCols } = buildModel()
+      let groups = dayCols.map((dayCol, dateI) => ({
+        key: String(dateI),
+        cols: ['a', 'b'].map((entityKey) => ({ ...dayCol, key: entityKey + dateI, entityKey, groupI: dateI })),
+      }))
+      return buildModelFromCols(daySeries, dayCols, 1, groups as any, null, ['a', 'b'], false)
+    }
+
+    // no resources: every column a placeholder, nothing participates
+    function buildResourcelessModel() {
+      let { daySeries, dayCols } = buildModel()
+      let groups = [{ key: '', cols: dayCols.map((dayCol) => ({ ...dayCol, entityKey: '', groupI: 0 })) }]
+      return buildModelFromCols(daySeries, dayCols, 1, groups as any, null, [], true)
+    }
+
+    it('breaks a span at every date when dates are above resources', () => {
+      let model = buildDatesAboveModel()
+      let keying = { ...KEYING, keys: ['a', 'b'] }
+      let transform = getDayTableSegTransform(DAY_GRID_LANE)
+      let buckets = { a: [dayGridSeg('A', 0, 3)], b: [], '': [dayGridSeg('K', 1, 3)] }
+
+      expect(summarize(projectDayTableSegs(buckets, model, keying as any, 'fg', transform))).toEqual([
+        ['A', 0, 1, true, false], ['A', 2, 3, false, false], ['A', 4, 5, false, true],
+      ])
+      expect(summarize(projectDayTableSegs(buckets, model, keying as any, 'bg', transform))).toEqual([
+        ['A', 0, 1, true, false], ['A', 2, 3, false, false], ['A', 4, 5, false, true],
+        ['K', 2, 3, true, false], ['K', 4, 5, false, true],
+        ['K', 3, 4, true, false], ['K', 5, 6, false, true],
+      ])
+    })
+
+    it('renders keyless fg nowhere and keyless bg and business hours in every column of a resourceless model', () => {
+      let model = buildResourcelessModel()
+      let keying = { ...KEYING, keys: [] }
+      let transform = getDayTableSegTransform(DAY_GRID_LANE)
+      let buckets = { '': [dayGridSeg('K', 0, 3)] }
+
+      expect(projectDayTableSegs(buckets, model, keying as any, 'fg', transform)).toEqual([])
+      expect(summarize(projectDayTableSegs(buckets, model, keying as any, 'bg', transform))).toEqual([
+        ['K', 0, 3, true, true],
+      ])
+      expect(summarize(projectDayTableSegs(buckets, model, keying as any, 'businessHours', transform))).toEqual([
+        ['K', 0, 3, true, true],
+      ])
+    })
+
+    describe('now indicator', () => {
+      const DATE_PROFILE = { activeRange: { start: utc('2024-01-01'), end: utc('2024-01-04') } }
+      const NOW = new Date('2024-01-02T10:00:00Z')
+
+      function summarizeNow(segs) {
+        return segs.map((seg) => [seg.col, Boolean(seg.showDot)])
+      }
+
+      it('puts the line in every column of the date, dotting only the date\'s first with dates above resources', () => {
+        let segs = sliceDayTableNowIndicator(
+          NOW, buildDatesAboveModel(), { ...KEYING, keys: ['a', 'b'] } as any, DATE_PROFILE as any, createDuration(0), true,
+        )
+        expect(summarizeNow(segs)).toEqual([[2, true], [3, false]])
+      })
+
+      it('dots every column with resources above several dates, placeholders included', () => {
+        let segs = sliceDayTableNowIndicator(NOW, buildModel(), KEYING as any, DATE_PROFILE as any, createDuration(0), false)
+        expect(summarizeNow(segs)).toEqual([[3, true], [5, true]])
+      })
+
+      it('gives the plain keying the date columns\' segs as they are', () => {
+        let segs = sliceDayTableNowIndicator(NOW, buildModel(), PLAIN_KEYING, DATE_PROFILE as any, createDuration(0), false)
+        expect(segs.map((seg) => [seg.col, seg.showDot])).toEqual([[1, undefined]])
+      })
     })
 
     it('returns stage 1\'s arrays as they are for the plain keying', () => {

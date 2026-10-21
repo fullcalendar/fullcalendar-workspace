@@ -77,3 +77,10 @@ Smaller things the step-0 specs found (no action needed; all locked as today's b
 - TimeGrid's selection mirror remounts on `addEvent` and on any unrelated `setOption`. That's a count
   quirk, not visible.
 - An event input with `resourceId: undefined` becomes the resource id `'undefined'`.
+
+Step 2a's mutation checks confirmed the cost of that gap: three deliberate breakages go uncaught
+because nothing in the DOM shows them (the keying built from the view's resources instead of the
+model's participants, the resourceless interaction metadata merged in, and resource membership for
+the timed lane's event selection). Each only affects things that render nowhere, so there's no
+user-visible risk today, but nothing would flag a regression if a later change made them visible.
+A scheduler `protected-api` for tests would close it.

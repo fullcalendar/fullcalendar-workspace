@@ -627,6 +627,69 @@ describe('vresource slicing rules', () => {
     })
   })
 
+  // 12, continued. where the resourceless partner's mirror doesn't go
+  // -----------------------------------------------------------------------------------------------
+
+  describe('mirrors mid-drag of a grouped pair, the resourceless partner', () => {
+    pushOptions({
+      editable: true,
+      initialView: 'resourceTimeGridThreeDay',
+      resources: [
+        { id: 'a', title: 'Resource A' },
+        { id: 'b', title: 'Resource B' },
+      ],
+    })
+
+    // a lane's interaction needs a resource's part to render: dragging the all-day partner leaves
+    // the timed lane with only the resourceless one
+    it('renders no mirror in a lane where no resource event is dragged', async () => {
+      let calendar = initCalendar({
+        events: [
+          { title: 'A', className: 'event-a', start: DAY_1, resourceId: 'a', groupId: 'g' },
+          { title: 'B', className: 'event-b', start: DAY_1 + 'T05:00:00', end: DAY_1 + 'T06:00:00', groupId: 'g' },
+        ],
+      })
+
+      await waitTimeout()
+      await simulateElDrag(
+        calendar.el.querySelector('.event-a') as HTMLElement,
+        getElCenter(getDayCellEl(calendar, 'b', DAY_2)),
+        () => {
+          expect(findElements(getDayCellEl(calendar, 'b', DAY_2), '.fc-highlight').length)
+            .withContext('the drag is over the all-day cell').toBe(1)
+          expect(getMirrorEls(calendar.el, '.event-b').length).toBe(0)
+        },
+      )
+    })
+
+    // per-date filtering leaves DAY_2 to a placeholder (dates above resources: a date no resource
+    // keeps has one): the partner's mirror there goes nowhere
+    it('renders no mirror in a placeholder column', async () => {
+      let calendar = initCalendar({
+        filterResourcesWithEvents: true,
+        datesAboveResources: true,
+        events: [
+          { title: 'A', className: 'event-a', start: DAY_1 + 'T02:00:00', end: DAY_1 + 'T03:00:00', resourceId: 'a', groupId: 'g' },
+          { title: 'C', start: DAY_1 + 'T08:00:00', end: DAY_1 + 'T09:00:00', resourceId: 'b' },
+          { title: 'B', className: 'event-b', start: DAY_2 + 'T05:00:00', end: DAY_2 + 'T06:00:00', groupId: 'g' },
+        ],
+      })
+      let timeGrid = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
+      await waitTimeout()
+      expect(getLaneEl(calendar, null, DAY_2)).withContext('DAY_2 is a placeholder').toBeTruthy()
+
+      await simulateElDrag(
+        calendar.el.querySelector('.event-a') as HTMLElement,
+        timeGrid.getPoint('b', DAY_1 + 'T04:00:00'),
+        () => {
+          expect(getMirrorEls(getLaneEl(calendar, 'b', DAY_1), '.event-a').length).toBe(1)
+          expect(getMirrorEls(calendar.el, '.event-b').length).toBe(0)
+        },
+      )
+    })
+  })
+
   // 6. event selection is instance-wide
   // -----------------------------------------------------------------------------------------------
 

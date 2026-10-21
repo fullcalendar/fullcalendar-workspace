@@ -2,6 +2,7 @@ import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, get
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
 import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
+import { ResourceHeaderInput } from '../resource/common/resource-day-table'
 import { Resource } from '../resource/structs/resource'
 import { ResourceDayHeaderInfo } from './structs'
 
@@ -10,7 +11,7 @@ import { ResourceDayHeaderInfo } from './structs'
 type DayHeaderInfo = any
 
 export function buildResourceRowConfigs(
-  resourceDayTableModel: AbstractResourceDayTableModel,
+  resourceDayTableModel: ResourceHeaderInput,
   datesRepDistinctDays: boolean,
   dateProfile: DateProfile,
   todayRange: DateRange,
@@ -19,9 +20,9 @@ export function buildResourceRowConfigs(
   blankClassNameGenerator: CellRenderConfig<any>['classNameGenerator'],
   blankRenderProps: Dictionary,
 ): RowConfig<any, DayHeaderInfo | ResourceDayHeaderInfo>[] {
-  let { cols, groups, resources } = resourceDayTableModel
+  let { cols, groups } = resourceDayTableModel
 
-  if (!resources.length) {
+  if (!resourceDayTableModel.resourceCount) {
     return [
       buildDateRowConfig(
         cols.map((col) => col.date),
@@ -34,7 +35,7 @@ export function buildResourceRowConfigs(
     ]
   }
 
-  if (resourceDayTableModel.dayCols.length === 1) {
+  if (resourceDayTableModel.dateCount === 1) {
     return [
       buildResourceRowConfig(
         cols.map((col) => col.resource as Resource),
@@ -91,7 +92,7 @@ export function buildResourceRowConfigs(
       /* colSpan = */ 1,
       /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
       // Keep navigation based on the full date range.
-      /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
+      /* totalDateCnt = */ resourceDayTableModel.dateCount,
     )
 
     for (let i = 0; i < groups.length; i += 1) {
@@ -132,7 +133,7 @@ export function buildResourceRowConfigs(
         },
         /* className = */ undefined, // TODO: remove
         /* isMajorMod = */ group.cols.length,
-        /* totalDateCnt = */ resourceDayTableModel.dayCols.length,
+        /* totalDateCnt = */ resourceDayTableModel.dateCount,
       )
     })
     const resourceDataConfigs = groups.map((group) => {
@@ -244,4 +245,15 @@ function buildResourceDataConfigs(
       className: '', // TODO: remove this prop
     }
   })
+}
+
+// the old model's header input, for ResourceDayGridView until it moves to the day-table pipeline
+export function fromAbstractModel(model: AbstractResourceDayTableModel): ResourceHeaderInput {
+  return {
+    cols: model.cols,
+    groups: model.groups,
+    resourceCount: model.resources.length,
+    dateCount: model.dayCols.length,
+    datesAboveResources: model.datesAboveResources,
+  }
 }

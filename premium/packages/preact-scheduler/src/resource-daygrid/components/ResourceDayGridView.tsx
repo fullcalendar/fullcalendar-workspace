@@ -21,7 +21,7 @@ import { buildResourceTableModel } from '../../resource/common/resource-table-mo
 import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
 import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner'
-import { buildResourceRowConfigs } from '../resource-header-tier'
+import { buildResourceRowConfigs, fromAbstractModel } from '../resource-header-tier'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceDayGridView extends BaseComponent<ResourceViewProps> {
@@ -107,7 +107,7 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
   const blankRenderProps = useMemo(() => buildBlankDayCellProps(businessHours), [businessHours])
   const headerTiers = useMemo(
     () => buildResourceRowConfigs(
-      resourceDayTableModel,
+      fromAbstractModel(resourceDayTableModel),
       datesRepDistinctDays,
       dateProfile,
       todayRange,

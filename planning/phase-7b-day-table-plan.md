@@ -741,6 +741,18 @@ the three-stage restructuring of `sliceEventStore` (instance order, inverse grou
 clipping and `showDot`; `forceDayIfListItem`; `SingleMonth`'s per-month hook call (same memo
 granularity per month); `eventSelection` for the timed lane.
 
+**Done (2026-10-21).** Commits `ff276a36f` and the review fix after it. Verify `p7b1fix` vs `p7b0`:
+176 fixtures unchanged, counts 0 up and 4 down (`timeGridWeek/drag`'s lane and now-indicator hooks:
+the now indicator's segs are memoized now). Sol's round 1 found two things, both fixed: a key or lane
+with no defs must hold its stage-1 entry while the store changes elsewhere (the Splitter's constant
+empty store; locked by two new `day-table-identity` probes, which fail with the fix reverted), and
+the timed lane needs a lane-only `eventSelection` policy (`resolveDayTableLaneEventSelection`, used
+by step 2a). Round 2: no findings. Mutation checks (§4.3): dropping the interaction from its cache's
+args, making stage 1 depend on `props`, and putting every individual base in every key each fail
+locks. Dropping `eventStore` from the events cache's args is masked in the day-table locks (a def
+change also replaces the per-key bases, which re-slices) and is caught by the full suite
+(`timegrid all-day slot allows dragging after dynamic event adding`).
+
 ### Step 2a: premium column model and ResourceTimeGridView
 
 Changes:
@@ -771,6 +783,21 @@ now-indicator, selection, grouped, dates-above-resources, the new ones), premium
 
 Risks: the rules table (§1.3) for `''` segs and metadata; BH precedence; the activation rule; seg
 order (§2.5); per-key bases during cross-resource drags; `eventSelection` across lanes; `showDot`.
+
+**Done (2026-10-21).** Verify `p7b2a` vs `p7b0`: 176 fixtures unchanged, counts 0 up and 12 down
+(the `drag` scenarios of `timeGridWeek`, `resourceTimeGridWeek` and its dates-above variant: lane and
+now-indicator hooks). Unit specs added to standard `day-table-units.ts` over hand-built models: a span
+breaking at every date with dates above resources, the resourceless model's keyless fg/bg/business
+hours, and the now indicator's columns and `showDot`. Two premium specs added (the resourceless
+partner of a grouped drag renders no mirror in a lane without a resource part, nor in a placeholder
+column), both passing on the pre-2a code. Mutation checks: the selection cache depending on the
+keying, `fg: 'all'`, `interactionActivation: 'any'`, `interactionSegs: 'all'`, and hits allowed
+across resources each fail locks. Not observable in the DOM, so uncaught: building the keying from
+the view's resources instead of `model.participants` (they differ only in the all-filtered fallback,
+where no resource owns a column), `interactionMetadata: 'included'` (the resourceless originals
+never render), and resource membership for the timed lane's selection (a non-participating
+resource's event renders nowhere). These are the state-level locks §4.2 couldn't write (logged in
+`questions-for-adam.md`).
 
 ### Step 2b: ResourceDayGridView and deletions
 

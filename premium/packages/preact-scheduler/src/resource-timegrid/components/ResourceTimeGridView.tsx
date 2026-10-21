@@ -1,27 +1,34 @@
 import {
   BaseComponent,
-  DaySeriesSlicer,
-  DayTimeColsSlicer,
+  DayGridRange,
+  TIME_GRID_ALL_DAY_LANE,
+  TIME_GRID_TIMED_LANE,
   TimeGridLayout,
+  TimeGridRange,
   computeTimeGridPrintMode,
-  mapHash,
-  organizeSegsByCol,
+  resolveDayTableLaneEventSelection,
   useDayHeaderFormatter,
+  useDayTableSegs,
+  useNow,
+  useNowIndicatorSegsByCol,
   useStableCallback,
   useTimedSegsByCol,
-  useTimeGridViewData,
+  useTimeGridModel,
   useViewContext,
 } from '@fullcalendar/preact/protected-api'
-import { useMemo, useRef, useState } from 'react'
-import { ResourceDayTableJoiner } from '../../resource-daygrid/ResourceDayTableJoiner'
+import { useMemo } from 'react'
 import { buildResourceRowConfigs } from '../../resource-daygrid/resource-header-tier'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
 import { ResourceViewProps } from '../../resource/View'
 import { computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
-import { buildResourceTableModel } from '../../resource/common/resource-table-model'
-import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
+import {
+  buildResourceDayTable,
+  buildResourceKeying,
+  isResourceHitComboAllowed,
+  toResourceHeaderInput,
+} from '../../resource/common/resource-day-table'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner'
+import { Resource } from '../../resource/structs/resource'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceTimeGridView extends BaseComponent<ResourceViewProps> {
@@ -34,7 +41,9 @@ function ResourceTimeGridViewBody(props: ResourceViewProps) {
   const context = useViewContext()
   const { options } = context
   const { dateProfile } = props
-  const { daySeries, dayCols, dayRanges, splitProps, nowDate, nowMs, todayRange } = useTimeGridViewData(props)
+  const plainModel = useTimeGridModel(dateProfile)
+  const { dayCols } = plainModel
+  const { nowDate, nowMs, todayRange } = useNow(options.nowIndicator ? 'minute' : 'day' /* hacky */)
 
   const resourceStore = useMemo(
     () => filterResourceStore(
@@ -60,103 +69,50 @@ function ResourceTimeGridViewBody(props: ResourceViewProps) {
     [isFilteredByDate, props.rawEventStore, resourceStore, dayCols],
   )
 
-  const resourceDayTableModel = useMemo(
-    () => buildResourceTableModel(
-      null,
-      dayCols,
-      resources,
-      options.datesAboveResources,
-      hasEventsByDate,
-      context,
-    ),
-    [dayCols, resources, options.datesAboveResources, hasEventsByDate, context],
+  const { datesAboveResources } = options
+  const model = useMemo(
+    () => buildResourceDayTable(plainModel, resources, datesAboveResources, hasEventsByDate, context),
+    [plainModel, resources, datesAboveResources, hasEventsByDate, context],
   )
+  const keying = useMemo(() => buildResourceKeying(model.participants as Resource[]), [model.participants])
+  const { colCount } = model
 
-  // split the all-day segs by resource
-  const [allDayResourceSplitter] = useState(() => new VResourceSplitter())
-  const [allDayResourceJoiner] = useState(() => new ResourceDayTableJoiner())
-  const allDayResourceSlicersRef = useRef<{ [resourceId: string]: DaySeriesSlicer }>({})
-  const allDayResourceSplitProps = allDayResourceSplitter.splitProps({
-    businessHours: splitProps.allDay.businessHours,
-    dateSelection: splitProps.allDay.dateSelection,
-    eventStore: splitProps.allDay.eventStore,
-    eventUiBases: splitProps.allDay.eventUiBases,
-    eventSelection: splitProps.allDay.eventSelection,
-    eventDrag: splitProps.allDay.eventDrag,
-    eventResize: splitProps.allDay.eventResize,
-    resourceDayTableModel,
-  })
-  const allDayResourceSlicers = allDayResourceSlicersRef.current = mapHash(
-    allDayResourceSplitProps,
-    (split, resourceId) => allDayResourceSlicersRef.current[resourceId] || new DaySeriesSlicer(),
-  )
-  const allDayResourceSlicedProps = mapHash(allDayResourceSlicers, (slicer, resourceId) => slicer.sliceProps(
-    allDayResourceSplitProps[resourceId],
+  const allDayProps = useDayTableSegs<DayGridRange>(
+    props,
+    keying,
+    model,
+    TIME_GRID_ALL_DAY_LANE,
     dateProfile,
     options.nextDayThreshold,
     context,
-    daySeries,
-  ))
-  const allDayResourceJoinedProps = allDayResourceJoiner.joinProps(
-    allDayResourceSlicedProps,
-    resourceDayTableModel,
   )
-
-  // split the timed segs by resource
-  const [timedResourceSplitter] = useState(() => new VResourceSplitter())
-  const [timedResourceJoiner] = useState(() => new ResourceDayTimeColsJoiner())
-  const timedResourceSlicersRef = useRef<{ [resourceId: string]: DayTimeColsSlicer }>({})
-  const timedResourceSplitProps = timedResourceSplitter.splitProps({
-    businessHours: splitProps.timed.businessHours,
-    dateSelection: splitProps.timed.dateSelection,
-    eventStore: splitProps.timed.eventStore,
-    eventUiBases: splitProps.timed.eventUiBases,
-    eventSelection: splitProps.timed.eventSelection, // result not used
-    eventDrag: splitProps.timed.eventDrag,
-    eventResize: splitProps.timed.eventResize,
-    resourceDayTableModel,
-  })
-  const timedResourceSlicers = timedResourceSlicersRef.current = mapHash(
-    timedResourceSplitProps,
-    (split, resourceId) => timedResourceSlicersRef.current[resourceId] || new DayTimeColsSlicer(),
-  )
-  const timedResourceSlicedProps = mapHash(timedResourceSlicers, (slicer, resourceId) => slicer.sliceProps(
-    timedResourceSplitProps[resourceId],
+  const timedProps = useDayTableSegs<TimeGridRange>(
+    props,
+    keying,
+    model,
+    TIME_GRID_TIMED_LANE,
     dateProfile,
     null,
     context,
-    dayRanges,
-  ))
-  const timedResourceJoinedProps = timedResourceJoiner.joinProps(
-    timedResourceSlicedProps,
-    resourceDayTableModel,
   )
-
-  // timed-only column splitting
-  const colCount = resourceDayTableModel.colCount
-  const timedSegsByCol = useTimedSegsByCol(timedResourceJoinedProps, colCount)
-
-  // was buildNowIndicatorSegs. new each render, as sliceNowDate doesn't memoize
-  const nonResourceNowSegs = !props.forPrint && options.nowIndicator
-    ? timedResourceSlicers[''].sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges)
-    : []
-  const nowIndicatorSegsByCol = organizeSegsByCol(
-    timedResourceJoiner.expandSegs(resourceDayTableModel, nonResourceNowSegs).map((seg) => ({
-      ...seg,
-      showDot: !options.datesAboveResources && dayCols.length > 1
-        ? true
-        : resourceDayTableModel.dateFirstCols[resourceDayTableModel.cols[seg.col].dateI] === seg.col,
-    })),
-    colCount,
+  const timedSegsByCol = useTimedSegsByCol(timedProps, colCount)
+  const nowIndicatorSegsByCol = useNowIndicatorSegsByCol(
+    nowDate,
+    model,
+    keying,
+    dateProfile,
+    options.nextDayThreshold,
+    datesAboveResources,
+    !props.forPrint && Boolean(options.nowIndicator),
   )
 
   const datesRepDistinctDays = true
-  const dayHeaderFormat = useDayHeaderFormatter(datesRepDistinctDays, resourceDayTableModel.colCount)
+  const dayHeaderFormat = useDayHeaderFormatter(datesRepDistinctDays, colCount)
   const isStack = computeTimeGridPrintMode(props.forPrint, options.eventPrintLayout) === 'stack'
   const blankRenderProps = useMemo(() => buildBlankDayLaneProps(isStack), [isStack])
   const headerTiers = useMemo(
     () => buildResourceRowConfigs(
-      resourceDayTableModel,
+      toResourceHeaderInput(model, datesAboveResources),
       datesRepDistinctDays,
       dateProfile,
       todayRange,
@@ -166,15 +122,18 @@ function ResourceTimeGridViewBody(props: ResourceViewProps) {
       blankRenderProps,
     ),
     [
-      resourceDayTableModel, datesRepDistinctDays, dateProfile, todayRange, dayHeaderFormat, context,
+      model, datesAboveResources, datesRepDistinctDays, dateProfile, todayRange, dayHeaderFormat, context,
       options.dayLaneClass, blankRenderProps,
     ],
   )
 
-  const isHitComboAllowed = useStableCallback((hit0, hit1) => {
-    const allowAcrossResources = dayRanges.length === 1
-    return resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
-  })
+  const isHitComboAllowed = useStableCallback((hit0, hit1) => (
+    isResourceHitComboAllowed(hit0, hit1, model.dayCols.length === 1)
+  ))
+
+  // the all-day lane's needs a participating resource (or none). the timed lane's only the lane
+  const eventSelection = allDayProps.eventSelection ||
+    resolveDayTableLaneEventSelection(props.eventSelection, props.eventStore, TIME_GRID_TIMED_LANE)
 
   return (
     <TimeGridLayout
@@ -185,7 +144,7 @@ function ResourceTimeGridViewBody(props: ResourceViewProps) {
       nowDate={nowDate}
       nowMs={nowMs}
       todayRange={todayRange}
-      cells={resourceDayTableModel.cols}
+      cells={model.cols}
       forPrint={props.forPrint}
       isHitComboAllowed={isHitComboAllowed}
       className={props.className}
@@ -194,19 +153,19 @@ function ResourceTimeGridViewBody(props: ResourceViewProps) {
       headerTiers={headerTiers}
 
       // all-day content
-      fgEventSegs={allDayResourceJoinedProps.fgEventSegs}
-      bgEventSegs={allDayResourceJoinedProps.bgEventSegs}
-      businessHourSegs={allDayResourceJoinedProps.businessHourSegs}
-      dateSelectionSegs={allDayResourceJoinedProps.dateSelectionSegs}
-      eventDrag={allDayResourceJoinedProps.eventDrag}
-      eventResize={allDayResourceJoinedProps.eventResize}
+      fgEventSegs={allDayProps.fgEventSegs}
+      bgEventSegs={allDayProps.bgEventSegs}
+      businessHourSegs={allDayProps.businessHourSegs}
+      dateSelectionSegs={allDayProps.dateSelectionSegs}
+      eventDrag={allDayProps.eventDrag}
+      eventResize={allDayProps.eventResize}
 
       // timed content
       {...timedSegsByCol}
       nowIndicatorSegsByCol={nowIndicatorSegsByCol}
 
       // universal content
-      eventSelection={allDayResourceJoinedProps.eventSelection || splitProps.timed.eventSelection}
+      eventSelection={eventSelection}
     />
   )
 }
