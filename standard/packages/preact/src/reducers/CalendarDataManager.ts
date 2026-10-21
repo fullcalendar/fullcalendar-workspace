@@ -1,12 +1,9 @@
-import { buildLocale, RawLocaleInfo, organizeRawLocales, LocaleSingularArg } from '../datelib/locale'
 import { memoize, memoizeObjArg } from '../util/memoize'
 import { Action } from './Action'
-import { buildBuildPluginHooks } from '../plugin-system'
-import { PluginHooks } from '../plugin-system-struct'
 import { DateEnv, DateMarker } from '@full-ui/headless-calendar'
 import { CalendarApiImpl } from '../api/CalendarApiImpl'
 import { EventSourceHash } from '../structs/event-source'
-import { buildViewSpecs, ViewSpec } from '../structs/view-spec'
+import { ViewSpec } from '../structs/view-spec'
 import { mapHash, isPropsEqualShallow } from '../util/object'
 import { DateProfile, DateProfileGenerator, DateProfileGeneratorProps } from '../DateProfileGenerator'
 import { reduceViewType } from './view-type'
@@ -22,28 +19,18 @@ import { reduceEventResize } from './event-resize'
 import { Emitter } from '../common/Emitter'
 import { EventUiHash, EventUi, createEventUi } from '../component-util/event-ui'
 import { EventDefHash } from '../structs/event-def'
-import { parseToolbars } from '../toolbar-parse'
-import {
-  CalendarOptionsRefined, CalendarOptions,
-  CALENDAR_ONLY_OPTION_REFINERS, COMPLEX_OPTION_COMPARATORS,
-  ViewOptions, ViewOptionsRefined,
-  BASE_OPTION_DEFAULTS,
-  BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
-  CalendarListeners, CALENDAR_LISTENER_REFINERS, Dictionary,
-} from '../options'
-import { isMergedPropsEqual, mergeCalendarOptions } from '../options-manip'
+import { CalendarOptions, CalendarListeners, Dictionary } from '../options'
 import { rangeContainsMarker } from '@full-ui/headless-calendar'
 import { ViewImpl } from '../api/ViewImpl'
 import { parseBusinessHours } from '../structs/business-hours'
-import { globalPlugins } from '../global-plugins'
 import { createEmptyEventStore } from '../structs/event-store'
 import { CalendarContext } from '../CalendarContext'
 import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types'
 import { buildTitle } from './title-formatting'
 import { CalendarNowManager } from './CalendarNowManager'
 import { NowTimerRunner } from '../NowTimerRunner'
-import { warn } from '../util/warn'
 import { CalendarController } from '../CalendarController'
+import { OptionsRefinerCache } from './options-refiner'
 import { createReduceEffects, EffectRunnerMap, ReduceEffects } from './effects'
 import { runEventSourceFetch } from './event-source-fetch'
 
@@ -69,12 +56,6 @@ export type ReducerFunc = (
 
 export class CalendarDataManager {
   private computeCurrentViewData = memoize(this._computeCurrentViewData)
-  private organizeRawLocales = memoize(organizeRawLocales)
-  private buildLocale = memoize(buildLocale)
-  private buildPluginHooks = buildBuildPluginHooks()
-  private buildDateEnv = memoize(buildDateEnv)
-  private parseToolbars = memoize(parseToolbars)
-  private buildViewSpecs = memoize(buildViewSpecs)
   private buildDateProfileGenerator = memoizeObjArg(buildDateProfileGenerator)
   private buildViewApi = memoize(buildViewApi)
   private buildViewUiProps = memoizeObjArg(buildViewUiProps)
@@ -114,18 +95,15 @@ export class CalendarDataManager {
 
   // used by CalendarApiImpl
   public emitter = new Emitter<Required<CalendarListeners>>()
-  public currentCalendarOptionsRefiners: any = {}
-  public currentCalendarOptionsInput: CalendarOptions = {}
+  private optionsRefiner = new OptionsRefinerCache()
 
-  private currentCalendarOptionsRefined: CalendarOptionsRefined = ({} as any)
-  private currentViewOptionsInput: ViewOptions = {}
-  private currentViewOptionsRefined: ViewOptionsRefined = ({} as any)
+  get currentCalendarOptionsRefiners() {
+    return this.optionsRefiner.currentCalendarOptionsRefiners
+  }
 
-  private stableOptionOverrides: CalendarOptions
-  private stableDynamicOptionOverrides: CalendarOptions
-  private stableCalendarOptionsData: CalendarOptionsData
-  private optionsForRefining: string[] = []
-  private optionsForHandling: string[] = []
+  get currentCalendarOptionsInput(): CalendarOptions {
+    return this.optionsRefiner.currentCalendarOptionsInput
+  }
 
   constructor(config: CalendarDataManagerConfig) {
     this.config = config
@@ -229,7 +207,7 @@ export class CalendarDataManager {
       this.optionOverrides = optionOverrides
     } else {
       this.optionOverrides = { ...this.optionOverrides, ...optionOverrides }
-      this.optionsForRefining.push(...changedOptionNames)
+      this.optionsRefiner.invalidate(changedOptionNames)
     }
 
     this.dispatch({ type: 'RESET_OPTIONS' })
@@ -267,6 +245,7 @@ export class CalendarDataManager {
       if (actionQueue.length) {
         const action = actionQueue.shift()
 
+        this.config.calendarApi.currentDataManager = this
         ;({ state, data } = this.reduce(state, data, action))
         this.state = state
         this.data = data
@@ -306,29 +285,24 @@ export class CalendarDataManager {
     }
   }
 
+  /*
+  One action through the pipeline's stages, in their dependency order, which is also the order of their
+  side effects. Between stages are checkpoints, where those side effects run, at the same points as
+  before the split. API reads see the previous data until this returns and the drain installs the new.
+  See planning/phase-9-store.md (the staged pipeline)
+  */
   private reduce(
     prevState: CalendarDataManagerState | undefined,
     prevData: CalendarData | undefined,
     action: Action,
   ): { state: CalendarDataManagerState; data: CalendarData; calendarContext: CalendarContext } {
-    let { config } = this
-    let isInit = !prevState
+    // 1. options
+    let { dynamicOptionOverrides, optionsData } = this.reduceOptions(prevState, action)
 
-    // === Compute options and view data ===
-    let dynamicOptionOverrides = isInit
-      ? {}
-      : reduceDynamicOptionOverrides(prevState.dynamicOptionOverrides, action)
-
-    let optionsData = this.computeOptionsData(
-      this.optionOverrides,
-      dynamicOptionOverrides,
-      config.calendarApi,
-    )
-
-    let currentViewType = isInit
-      ? (optionsData.calendarOptions.initialView || optionsData.pluginHooks.initialView)
-      : reduceViewType(prevState.currentViewType, action)
-
+    // 2. view type and view data (refines the view's options, then gives `now` to the now manager)
+    let currentViewType = prevState
+      ? reduceViewType(prevState.currentViewType, action)
+      : (optionsData.calendarOptions.initialView || optionsData.pluginHooks.initialView)
     let currentViewData = this.computeCurrentViewData(
       currentViewType,
       optionsData,
@@ -336,47 +310,116 @@ export class CalendarDataManager {
       dynamicOptionOverrides,
     )
 
-    // === Wire things up ===
-    config.calendarApi.currentDataManager = this
-    this.emitter.setThisContext(config.calendarApi)
+    // checkpoint: the emitter calls the view's handlers from here on
+    this.emitter.setThisContext(this.config.calendarApi)
     this.emitter.setOptions(currentViewData.options)
 
-    // the reducers describe their side effects (fetches); runners perform them, at the point the reducer
-    // asks, so the order is today's. the core's are defaults, which plugins may replace
-    let effects = createReduceEffects({
-      ...CORE_EFFECT_RUNNERS,
-      ...optionsData.pluginHooks.effectRunners,
-    })
+    let calendarContext = this.buildCalendarContext(optionsData)
+    let effects = this.buildReduceEffects(optionsData)
 
-    // === Build calendarContext ===
-    let calendarContext: CalendarContext = {
+    // 3. now (the timer re-arms itself if its inputs changed)
+    let nowDate = this.reduceNowDate(optionsData)
+
+    // 4. current date, date profile
+    let { currentDate, dateProfile } = this.reduceDates(
+      prevState, prevData, action, optionsData, currentViewData, nowDate,
+    )
+
+    // 5. event sources (checkpoints: each dirty source's fetch, through the effects)
+    // 6. event stores
+    let { eventSources, eventStore, renderableEventStore } = this.reduceEvents(
+      prevState, action, optionsData, currentViewData, dateProfile, calendarContext, effects,
+    )
+
+    // 7. UI bases, business hours, selection, drag, resize
+    let newState = this.reduceUiAndSelection(
+      prevState, action, calendarContext, {
+        dynamicOptionOverrides,
+        currentViewType,
+        currentDate,
+        dateProfile,
+        eventSources,
+        eventStore,
+        renderableEventStore,
+        nowDate,
+      },
+    )
+
+    // 8. plugin slices
+    this.reducePluginSlices(prevState, action, optionsData, calendarContext, effects, newState)
+
+    // 9. loading transition (checkpoint: queues the deferred `loading` callback)
+    this.captureLoading(prevState, newState, calendarContext)
+
+    // 10. CalendarData
+    let newData = this.buildData(optionsData, currentViewData, newState, currentDate, dateProfile, nowDate)
+
+    // 11. late stage: time zone change, option change handlers (checkpoint: runs the handlers)
+    this.reduceLate(prevData, optionsData, dateProfile, newState, newData, effects)
+
+    return { state: newState, data: newData, calendarContext }
+  }
+
+  private reduceOptions(prevState: CalendarDataManagerState | undefined, action: Action) {
+    let dynamicOptionOverrides = prevState
+      ? reduceDynamicOptionOverrides(prevState.dynamicOptionOverrides, action)
+      : {}
+
+    let optionsData = this.optionsRefiner.computeOptionsData(
+      this.optionOverrides,
+      dynamicOptionOverrides,
+      this.config.calendarApi,
+    )
+
+    return { dynamicOptionOverrides, optionsData }
+  }
+
+  private buildCalendarContext(optionsData: CalendarOptionsData): CalendarContext {
+    return {
       nowManager: this.nowManager,
       dateEnv: optionsData.dateEnv,
       options: optionsData.calendarOptions,
       pluginHooks: optionsData.pluginHooks,
-      calendarApi: config.calendarApi,
+      calendarApi: this.config.calendarApi,
       dispatch: this.dispatch,
       emitter: this.emitter,
       getCurrentData: this.getCurrentData,
     }
+  }
 
-    // === Update now timer ===
-    let { nowDate } = this.nowTimer.update({
+  // the reducers describe their side effects (fetches); runners perform them, at the point the reducer
+  // asks, so the order is today's. the core's are defaults, which plugins may replace
+  private buildReduceEffects(optionsData: CalendarOptionsData): ReduceEffects {
+    return createReduceEffects({
+      ...CORE_EFFECT_RUNNERS,
+      ...optionsData.pluginHooks.effectRunners,
+    })
+  }
+
+  private reduceNowDate(optionsData: CalendarOptionsData): DateMarker {
+    return this.nowTimer.update({
       unit: 'day',
       unitValue: 1,
       nowIndicatorSnap: 'auto',
       nowManager: this.nowManager,
       dateEnv: optionsData.dateEnv,
-    })
+    }).nowDate
+  }
 
-    // === Compute currentDate ===
-    let currentDate = isInit
-      ? getInitialDate(optionsData.calendarOptions, optionsData.dateEnv, this.nowManager)
-      : reduceCurrentDate(prevState.currentDate, action)
+  private reduceDates(
+    prevState: CalendarDataManagerState | undefined,
+    prevData: CalendarData | undefined,
+    action: Action,
+    optionsData: CalendarOptionsData,
+    currentViewData: CalendarCurrentViewData,
+    nowDate: DateMarker,
+  ) {
+    let currentDate = prevState
+      ? reduceCurrentDate(prevState.currentDate, action)
+      : getInitialDate(optionsData.calendarOptions, optionsData.dateEnv, this.nowManager)
 
-    // === Compute dateProfile ===
     let dateProfile: DateProfile
-    if (isInit) {
+    if (!prevState) {
       dateProfile = currentViewData.dateProfileGenerator.build(currentDate, nowDate)
     } else {
       dateProfile = prevState.dateProfile
@@ -387,7 +430,7 @@ export class CalendarDataManager {
       dateProfile = reduceDateProfile(dateProfile, action, currentDate, nowDate, currentViewData.dateProfileGenerator)
     }
 
-    // === Adjust currentDate if out of range ===
+    // Adjust currentDate if out of range
     if (
       (action && (action.type === 'PREV' || action.type === 'NEXT')) ||
       !rangeContainsMarker(dateProfile.activeRange, currentDate)
@@ -395,64 +438,106 @@ export class CalendarDataManager {
       currentDate = dateProfile.currentRange.start
     }
 
-    // === Compute eventSources, eventStore ===
-    let eventSources = isInit
-      ? initEventSources(optionsData.calendarOptions, dateProfile, calendarContext, effects)
-      : reduceEventSources(prevState.eventSources, action, dateProfile, calendarContext, effects)
+    return { currentDate, dateProfile }
+  }
 
-    let eventStore = isInit
-      ? createEmptyEventStore()
-      : reduceEventStore(prevState.eventStore, action, eventSources, dateProfile, calendarContext)
+  private reduceEvents(
+    prevState: CalendarDataManagerState | undefined,
+    action: Action,
+    optionsData: CalendarOptionsData,
+    currentViewData: CalendarCurrentViewData,
+    dateProfile: DateProfile,
+    calendarContext: CalendarContext,
+    effects: ReduceEffects,
+  ) {
+    let eventSources = prevState
+      ? reduceEventSources(prevState.eventSources, action, dateProfile, calendarContext, effects)
+      : initEventSources(optionsData.calendarOptions, dateProfile, calendarContext, effects)
 
-    // === Compute renderableEventStore ===
+    let eventStore = prevState
+      ? reduceEventStore(prevState.eventStore, action, eventSources, dateProfile, calendarContext)
+      : createEmptyEventStore()
+
     let isEventsLoading = computeEventSourcesLoading(eventSources)
-    let renderableEventStore = isInit
+    let renderableEventStore = !prevState
       ? createEmptyEventStore()
       : (isEventsLoading && !currentViewData.options.progressiveEventRendering)
         ? (prevState.renderableEventStore || eventStore)
         : eventStore
 
-    // === UI computation ===
-    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext)
-    let eventUiBySource = this.buildEventUiBySource(eventSources)
-    let eventUiBases = isInit
-      ? {}
-      : this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
+    return { eventSources, eventStore, renderableEventStore }
+  }
 
-    // === Build new state ===
-    let newState: CalendarDataManagerState = {
-      dynamicOptionOverrides,
-      currentViewType,
-      currentDate,
-      dateProfile,
-      eventSources,
-      eventStore,
-      renderableEventStore,
+  private reduceUiAndSelection(
+    prevState: CalendarDataManagerState | undefined,
+    action: Action,
+    calendarContext: CalendarContext,
+    reduced: Pick<CalendarDataManagerState,
+      'dynamicOptionOverrides' | 'currentViewType' | 'currentDate' | 'dateProfile' |
+      'eventSources' | 'eventStore' | 'renderableEventStore' | 'nowDate'>,
+  ): CalendarDataManagerState {
+    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext)
+    let eventUiBySource = this.buildEventUiBySource(reduced.eventSources)
+    let eventUiBases = prevState
+      ? this.buildEventUiBases(reduced.renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
+      : {}
+
+    return {
+      dynamicOptionOverrides: reduced.dynamicOptionOverrides,
+      currentViewType: reduced.currentViewType,
+      currentDate: reduced.currentDate,
+      dateProfile: reduced.dateProfile,
+      eventSources: reduced.eventSources,
+      eventStore: reduced.eventStore,
+      renderableEventStore: reduced.renderableEventStore,
       selectionConfig,
       eventUiBases,
       businessHours: this.parseContextBusinessHours(calendarContext),
-      dateSelection: isInit ? null : reduceDateSelection(prevState.dateSelection, action),
-      eventSelection: isInit ? '' : reduceSelectedEvent(prevState.eventSelection, action),
-      eventDrag: isInit ? null : reduceEventDrag(prevState.eventDrag, action),
-      eventResize: isInit ? null : reduceEventResize(prevState.eventResize, action),
-      nowDate,
+      dateSelection: prevState ? reduceDateSelection(prevState.dateSelection, action) : null,
+      eventSelection: prevState ? reduceSelectedEvent(prevState.eventSelection, action) : '',
+      eventDrag: prevState ? reduceEventDrag(prevState.eventDrag, action) : null,
+      eventResize: prevState ? reduceEventResize(prevState.eventResize, action) : null,
+      nowDate: reduced.nowDate,
     }
+  }
 
-    // === Plugin reducers ===
+  // each plugin reducer gets the same snapshot, taken before the first, and its result is merged in
+  private reducePluginSlices(
+    prevState: CalendarDataManagerState | undefined,
+    action: Action,
+    optionsData: CalendarOptionsData,
+    calendarContext: CalendarContext,
+    effects: ReduceEffects,
+    newState: CalendarDataManagerState,
+  ) {
     let contextAndState = { ...calendarContext, ...newState }
     for (let reducer of optionsData.pluginHooks.reducers) {
       Object.assign(newState, reducer(prevState, action, contextAndState, effects))
     }
+  }
 
-    // === Loading state emission ===
+  // per action, comparing this action's input and output (not settled snapshots)
+  private captureLoading(
+    prevState: CalendarDataManagerState | undefined,
+    newState: CalendarDataManagerState,
+    calendarContext: CalendarContext,
+  ) {
     let wasLoading = prevState ? computeIsLoading(prevState, calendarContext) : false
     let isLoading = computeIsLoading(newState, calendarContext)
 
     if (wasLoading !== isLoading) {
       this.queueEffect(() => this.emitter.trigger('loading', isLoading))
     }
+  }
 
-    // === Build CalendarData ===
+  private buildData(
+    optionsData: CalendarOptionsData,
+    currentViewData: CalendarCurrentViewData,
+    newState: CalendarDataManagerState,
+    currentDate: DateMarker, // the core's, even if a plugin slice returned its own
+    dateProfile: DateProfile,
+    nowDate: DateMarker,
+  ): CalendarData {
     let viewTitle = this.buildTitle(dateProfile, currentViewData.options, optionsData.dateEnv)
 
     let toolbarProps = this.buildToolbarProps(
@@ -464,10 +549,10 @@ export class CalendarDataManager {
       viewTitle,
     )
 
-    let newData: CalendarData = {
+    return {
       viewTitle,
       nowManager: this.nowManager,
-      calendarApi: config.calendarApi,
+      calendarApi: this.config.calendarApi,
       dispatch: this.dispatch,
       syncController: this.syncController,
       emitter: this.emitter,
@@ -477,9 +562,23 @@ export class CalendarDataManager {
       ...currentViewData,
       ...newState,
     }
+  }
 
-    // === Handle option changes ===
+  /*
+  After the data is built: a time zone change refetches (per source, as in stage 5) and rezones both
+  stores, writing into the new state and data, then the option change handlers run with the new data
+  (getCurrentData() still returns the previous)
+  */
+  private reduceLate(
+    prevData: CalendarData | undefined,
+    optionsData: CalendarOptionsData,
+    dateProfile: DateProfile,
+    newState: CalendarDataManagerState,
+    newData: CalendarData,
+    effects: ReduceEffects,
+  ) {
     let changeHandlers = optionsData.pluginHooks.optionChangeHandlers
+    let optionsForHandling = this.optionsRefiner.takeOptionsForHandling()
     let prevCalendarOptions = prevData && prevData.calendarOptions
     let newCalendarOptions = optionsData.calendarOptions
 
@@ -493,134 +592,12 @@ export class CalendarDataManager {
 
       for (let optionName in changeHandlers) {
         if (
-          this.optionsForHandling.indexOf(optionName) !== -1 ||
+          optionsForHandling.indexOf(optionName) !== -1 ||
           prevCalendarOptions[optionName] !== newCalendarOptions[optionName]
         ) {
           changeHandlers[optionName](newCalendarOptions[optionName], newData)
         }
       }
-    }
-
-    this.optionsForHandling = []
-
-    return { state: newState, data: newData, calendarContext }
-  }
-
-  private computeOptionsData(
-    optionOverrides: CalendarOptions,
-    dynamicOptionOverrides: CalendarOptions,
-    calendarApi: CalendarApiImpl,
-  ): CalendarOptionsData {
-    // TODO: blacklist options that are handled by optionChangeHandlers
-
-    if (
-      !this.optionsForRefining.length &&
-      optionOverrides === this.stableOptionOverrides &&
-      dynamicOptionOverrides === this.stableDynamicOptionOverrides
-    ) {
-      return this.stableCalendarOptionsData
-    }
-
-    let {
-      refinedOptions, pluginHooks, localeDefaults, availableLocaleData,
-    } = this.processRawCalendarOptions(optionOverrides, dynamicOptionOverrides)
-
-    let dateEnv = this.buildDateEnv(
-      refinedOptions.timeZone,
-      refinedOptions.locale,
-      refinedOptions.weekNumberCalculation,
-      refinedOptions.firstDay,
-      refinedOptions.weekTextLong,
-      refinedOptions.weekTextShort,
-      pluginHooks,
-      availableLocaleData,
-    )
-
-    let viewSpecs = this.buildViewSpecs(pluginHooks.views, this.stableOptionOverrides, this.stableDynamicOptionOverrides)
-    let toolbarConfig = this.parseToolbars(refinedOptions, viewSpecs, calendarApi)
-
-    return this.stableCalendarOptionsData = {
-      calendarOptions: refinedOptions,
-      pluginHooks,
-      dateEnv,
-      viewSpecs,
-      toolbarConfig,
-      localeDefaults,
-      availableRawLocales: availableLocaleData.map,
-    }
-  }
-
-  // always called from behind a memoizer
-  private processRawCalendarOptions(optionOverrides: CalendarOptions, dynamicOptionOverrides: CalendarOptions) {
-    let { locales, locale } = mergeCalendarOptions(
-      BASE_OPTION_DEFAULTS as any,
-      optionOverrides,
-      dynamicOptionOverrides,
-    )
-    let availableLocaleData = this.organizeRawLocales(locales)
-    let availableRawLocales = availableLocaleData.map
-    let localeDefaults = this.buildLocale(locale || availableLocaleData.defaultCode, availableRawLocales).options
-    let pluginHooks = this.buildPluginHooks(optionOverrides.plugins || [], globalPlugins)
-
-    let refiners = this.currentCalendarOptionsRefiners = {
-      ...BASE_OPTION_REFINERS,
-      ...CALENDAR_LISTENER_REFINERS,
-      ...CALENDAR_ONLY_OPTION_REFINERS,
-      ...pluginHooks.listenerRefiners,
-      ...pluginHooks.optionRefiners,
-    }
-    let raw = mergeCalendarOptions(
-      BASE_OPTION_DEFAULTS as any,
-      ...pluginHooks.optionDefaults,
-      localeDefaults,
-      filterKnownOptions(
-        mergeCalendarOptions(
-          optionOverrides,
-          dynamicOptionOverrides,
-        ),
-        refiners,
-      )
-    )
-
-    let refined: Partial<CalendarOptionsRefined> = {}
-    let currentRaw = this.currentCalendarOptionsInput
-    let currentRefined = this.currentCalendarOptionsRefined
-    let anyChanges = false
-
-    for (let optionName in raw) {
-      if (
-        this.optionsForRefining.indexOf(optionName) === -1 && (
-          raw[optionName] === currentRaw[optionName] || (
-            COMPLEX_OPTION_COMPARATORS[optionName] &&
-            (optionName in currentRaw) &&
-            COMPLEX_OPTION_COMPARATORS[optionName](currentRaw[optionName], raw[optionName])
-          ) || isMergedPropsEqual(currentRaw[optionName], raw[optionName])
-        )
-      ) {
-        refined[optionName] = currentRefined[optionName]
-      } else if (refiners[optionName]) {
-        refined[optionName] = refiners[optionName](raw[optionName], optionName)
-        anyChanges = true
-      }
-    }
-
-    if (anyChanges) {
-      this.currentCalendarOptionsInput = raw
-      this.currentCalendarOptionsRefined = refined as CalendarOptionsRefined
-
-      this.stableOptionOverrides = optionOverrides
-      this.stableDynamicOptionOverrides = dynamicOptionOverrides
-    }
-
-    this.optionsForHandling.push(...this.optionsForRefining)
-    this.optionsForRefining = []
-
-    return {
-      rawOptions: this.currentCalendarOptionsInput,
-      refinedOptions: this.currentCalendarOptionsRefined,
-      pluginHooks,
-      availableLocaleData,
-      localeDefaults,
     }
   }
 
@@ -636,7 +613,7 @@ export class CalendarDataManager {
       throw new Error(`viewType "${viewType}" is not available. Please make sure you've loaded all neccessary plugins`)
     }
 
-    let { refinedOptions } = this.processRawViewOptions(
+    let { refinedOptions } = this.optionsRefiner.processRawViewOptions(
       viewSpec,
       optionsData.pluginHooks,
       optionsData.localeDefaults,
@@ -670,100 +647,6 @@ export class CalendarDataManager {
 
     return { viewSpec, options: refinedOptions, dateProfileGenerator, viewApi }
   }
-
-  private processRawViewOptions(
-    viewSpec: ViewSpec,
-    pluginHooks: PluginHooks,
-    localeDefaults: CalendarOptions,
-    optionOverrides: CalendarOptions,
-    dynamicOptionOverrides: CalendarOptions,
-  ) {
-    let refiners = {
-      ...BASE_OPTION_REFINERS,
-      ...CALENDAR_LISTENER_REFINERS,
-      ...CALENDAR_ONLY_OPTION_REFINERS,
-      ...VIEW_ONLY_OPTION_REFINERS,
-      ...pluginHooks.listenerRefiners,
-      ...pluginHooks.optionRefiners,
-    }
-    let raw = mergeCalendarOptions(
-      BASE_OPTION_DEFAULTS as any,
-      ...pluginHooks.optionDefaults,
-      viewSpec.optionDefaults,
-      localeDefaults,
-      filterKnownOptions(
-        mergeCalendarOptions(
-          optionOverrides,
-          viewSpec.optionOverrides,
-          dynamicOptionOverrides,
-        ),
-        refiners,
-      ),
-    )
-    let refined: Partial<ViewOptionsRefined> = {}
-    let currentRaw = this.currentViewOptionsInput
-    let currentRefined = this.currentViewOptionsRefined
-    let anyChanges = false
-
-    for (let optionName in raw) {
-      if (
-        raw[optionName] === currentRaw[optionName] || (
-          COMPLEX_OPTION_COMPARATORS[optionName] &&
-          COMPLEX_OPTION_COMPARATORS[optionName](raw[optionName], currentRaw[optionName])
-        ) || isMergedPropsEqual(currentRaw[optionName], raw[optionName])
-      ) {
-        refined[optionName] = currentRefined[optionName]
-      } else {
-        if (
-          raw[optionName] === this.currentCalendarOptionsInput[optionName] ||
-          (COMPLEX_OPTION_COMPARATORS[optionName] &&
-            COMPLEX_OPTION_COMPARATORS[optionName](raw[optionName], this.currentCalendarOptionsInput[optionName]))
-        ) {
-          if (optionName in this.currentCalendarOptionsRefined) { // might be an "extra" prop
-            refined[optionName] = this.currentCalendarOptionsRefined[optionName]
-          }
-        } else if (refiners[optionName]) {
-          refined[optionName] = refiners[optionName](raw[optionName], optionName)
-        }
-
-        anyChanges = true
-      }
-    }
-
-    if (anyChanges) {
-      this.currentViewOptionsInput = raw
-      this.currentViewOptionsRefined = refined as ViewOptionsRefined
-    }
-
-    return {
-      rawOptions: this.currentViewOptionsInput,
-      refinedOptions: this.currentViewOptionsRefined,
-    }
-  }
-}
-
-function buildDateEnv(
-  timeZone: string,
-  explicitLocale: LocaleSingularArg,
-  weekNumberCalculation,
-  firstDay: number | undefined,
-  weekTextLong,
-  weekTextShort,
-  pluginHooks: PluginHooks,
-  availableLocaleData: RawLocaleInfo,
-) {
-  let locale = buildLocale(explicitLocale || availableLocaleData.defaultCode, availableLocaleData.map)
-
-  return new DateEnv({
-    calendarSystem: 'gregory', // TODO: make this a setting
-    timeZone,
-    locale,
-    weekNumberCalculation,
-    firstDay,
-    weekTextLong,
-    weekTextShort,
-    cmdFormatter: pluginHooks.cmdFormatter,
-  })
 }
 
 function buildDateProfileGenerator(props: DateProfileGeneratorProps): DateProfileGenerator {
@@ -845,23 +728,6 @@ function computeIsLoading(state: CalendarDataManagerState, context: CalendarCont
 
 function parseContextBusinessHours(calendarContext: CalendarContext) {
   return parseBusinessHours(calendarContext.options.businessHours, calendarContext)
-}
-
-const warnedUnknownOptions: { [optionName: string]: true } = {}
-
-function filterKnownOptions(options: any, optionRefiners: any): any {
-  const knownOptions: any = {}
-
-  for (const optionName in options) {
-    if (optionRefiners[optionName]) {
-      knownOptions[optionName] = options[optionName]
-    } else if (!warnedUnknownOptions[optionName]) {
-      warn(`Unknown option \`${optionName}\`.`)
-      warnedUnknownOptions[optionName] = true
-    }
-  }
-
-  return knownOptions
 }
 
 export interface CalendarToolbarProps {

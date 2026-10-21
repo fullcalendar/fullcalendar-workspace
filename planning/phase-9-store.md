@@ -325,3 +325,25 @@ None intended. Any found during implementation get listed here and in the change
   `misc/resource-fetch-effects.ts`: a test plugin's runners record the effects without running them, and
   the sources' functions are never called, so the reducers never fetch on their own; one fetch effect per
   dirty source on navigation, and on `refetchResources`.
+
+## Step 1b: the refiner cache and the stages (done)
+
+- **`reducers/options-refiner.ts`:** `OptionsRefinerCache` holds what was the manager's incremental
+  refinement (its memos, `computeOptionsData`, `processRawCalendarOptions`, `processRawViewOptions`,
+  `buildDateEnv`, the unknown-option warning), unchanged. `invalidate(names)` is `resetOptions`'s
+  call-time invalidation; `takeOptionsForHandling()` hands the late stage the names whose handlers must
+  run, and clears them at the point the manager used to. The manager keeps `currentCalendarOptionsInput`
+  and `currentCalendarOptionsRefiners` as getters for `CalendarApiImpl` (`getOption`, `on`).
+- **`reduce()` is the pipeline,** its stages private methods in §2's order: `reduceOptions`, the view
+  stage (with the emitter checkpoint after it), `reduceNowDate`, `reduceDates`, `reduceEvents` (the fetch
+  checkpoints run through `effects`), `reduceUiAndSelection`, `reducePluginSlices`, `captureLoading`
+  (queues `loading`), `buildData`, `reduceLate` (time zone, then the option change handlers). Stages 10
+  and 11 get the core's date values explicitly, not from the state the plugin slices merged into, as
+  before.
+- **Wiring:** `calendarApi.currentDataManager = this` moved from inside the reduction to the drain, just
+  before each reduction. Not the constructor: React's Strict Mode runs `useState` initializers twice, and
+  the discarded manager would have claimed the API. The only observable difference: an option refiner
+  calling `getOption()` during the very first reduction now works instead of throwing.
+- Step 2 turns these methods into the store's pipeline.
+- Verified: both runtimes' suites (React runtime: only the known failures; one run disconnected, clean
+  on re-run), DOM snapshots 0 changed and counts unchanged in both runtimes, the React suite 42/42.
