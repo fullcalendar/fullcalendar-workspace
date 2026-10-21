@@ -11,7 +11,7 @@ import { useTimeGridModel } from '../../common/day-table/useDayTableModel'
 import { useDayTableSegs, useNowIndicatorSegsByCol } from '../../common/day-table/useDayTableSegs'
 import { TimeGridRange } from '../TimeColsSeg'
 import { TimeGridLayout } from './TimeGridLayout'
-import { useTimedSegsByCol } from './useTimeGridViewData'
+import { useTimedSegsByCol } from './useTimedSegsByCol'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class TimeGridView extends BaseComponent<ViewProps> {

@@ -1,7 +1,5 @@
-import { DateEnv, DateMarker, DateRange, Duration, addDays, rangeContainsMarker } from '@full-ui/headless-calendar'
-import { DateProfile, DateProfileGenerator, isMajorUnit } from '../DateProfileGenerator'
+import { DateMarker, DateRange, Duration } from '@full-ui/headless-calendar'
 import { Dictionary } from '../options'
-import { DaySeries, buildDaySeries } from './day-table/day-series'
 
 export interface DayCol {
   key: string
@@ -19,54 +17,4 @@ export interface DayCol {
 export interface DayColSlotRange {
   slotMinTime: Duration
   slotMaxTime: Duration
-}
-
-interface BuildDayColsConfig {
-  slotRange?: DayColSlotRange
-  majorUnit?: string
-  activeRange?: DateRange | null
-}
-
-export function buildDayCols(
-  dateProfile: DateProfile,
-  dateProfileGenerator: DateProfileGenerator,
-  dateEnv: DateEnv,
-  slotRange?: DayColSlotRange,
-  majorUnit = '', // timegrid passes none, keeping all columns non-major
-): DayCol[] {
-  return buildDayColsFromSeries(
-    buildDaySeries(dateProfile.renderRange, dateProfileGenerator.hiddenDays),
-    dateEnv,
-    {
-      slotRange,
-      majorUnit,
-      activeRange: dateProfile.activeRange,
-    },
-  )
-}
-
-export function buildDayColsFromSeries(
-  daySeries: DaySeries,
-  dateEnv: DateEnv,
-  config: BuildDayColsConfig = {},
-): DayCol[] {
-  const { slotRange, majorUnit = '', activeRange } = config
-
-  return daySeries.dates.map((date) => ({
-    key: date.toISOString(),
-    date,
-    range: slotRange
-      ? {
-          start: dateEnv.add(date, slotRange.slotMinTime),
-          end: dateEnv.add(date, slotRange.slotMaxTime),
-        }
-      : {
-          start: date,
-          end: addDays(date, 1),
-        },
-    isMajor: majorUnit ? isMajorUnit(date, majorUnit, dateEnv) : false,
-    isDisabled: activeRange === null || (
-      activeRange !== undefined && !rangeContainsMarker(activeRange, date)
-    ),
-  }))
 }

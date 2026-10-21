@@ -690,6 +690,35 @@ describe('vresource slicing rules', () => {
     })
   })
 
+  // 7, continued. each date is a group of its own, even when only one resource is under it: that
+  // resource's columns are adjacent, yet a span breaks at every date
+  // -----------------------------------------------------------------------------------------------
+
+  describe('with dates above a single resource', () => {
+    pushOptions({
+      datesAboveResources: true,
+      resources: [{ id: 'a', title: 'Resource A' }],
+      events: [
+        { title: 'span', start: DAY_1, end: DAY_4, resourceId: 'a' }, // three days
+      ],
+    })
+
+    describeOptions('initialView', {
+      'in resource dayGrid': 'resourceDayGridThreeDay',
+      'in resource timeGrid': 'resourceTimeGridThreeDay',
+    }, () => {
+      it('renders a multi-day event as one seg per date', () => {
+        let calendar = initCalendar()
+        let eventEls = getFgEventEls(calendar.el)
+
+        expect(eventEls.length).toBe(3)
+        expectSegFlags(eventEls[0], true, false)
+        expectSegFlags(eventEls[1], false, false)
+        expectSegFlags(eventEls[2], false, true)
+      })
+    })
+  })
+
   // 6. event selection is instance-wide
   // -----------------------------------------------------------------------------------------------
 

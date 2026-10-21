@@ -832,6 +832,20 @@ divisor (dates per row, not view columns: §7 #1); hidden days in resource daygr
 clamp is in date space, the expansion in view space); `+more` popover drag to another resource
 (`basic-event-dnd.ts:58`).
 
+**Done (2026-10-21).** Verify `p7b2b` vs `p7b0`: 176 fixtures unchanged, counts 0 up and the same
+12 down as step 2a (the `resourceDayGrid*` counts are unchanged). The Preact lanes of that run
+disconnected mid-suite (another session's Karma on the same port, judging by a foreign spec count);
+rerun alone, both pass in full, and the React lanes passed in the run itself. Deleted: the premium
+splitter/joiner/model files listed above, standard's `DayTableSlicer`, `DayTimeColsSlicer`,
+`AllDaySplitter`, the `DaySeriesModel` alias, `day-cols.ts`'s builders (its types stay) and
+`useTimeGridViewData` (`useTimedSegsByCol` keeps its own file). Mutation checks: view columns as
+the stage-1 date columns and the column range's `isStart` alone each fail locks. Merging across
+groups failed nothing at first: every dates-above fixture has several resources, so one resource's
+columns are never adjacent. Now locked by a unit spec and a premium spec for dates above a single
+resource (one seg per date, in resource dayGrid and timeGrid; the old `computeColRanges` broke at
+groups the same way), both of which fail under the mutation. Also added: a unit spec for a
+multi-row seg keeping its row.
+
 ### Step 3: not in 7b
 
 Finer per-instance seg identity across store changes is dropped from 7b (§7 #6 and question 6): its

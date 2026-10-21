@@ -167,11 +167,9 @@ export {
 export type { DayTableCell, DayGridRange } from './daygrid/DayTableModel'
 export { buildDayGridRanges } from './daygrid/DayTableModel'
 export type { DayCol, DayColSlotRange } from './common/day-cols'
-export { buildDayCols, buildDayColsFromSeries } from './common/day-cols'
 
 // the day-table pipeline (DayGrid, TimeGrid, MultiMonth, the resource views)
 export type { DaySeries } from './common/day-table/day-series'
-export type { DaySeries as DaySeriesModel } from './common/day-table/day-series' // deprecated alias, until premium moves over
 export { buildDaySeries } from './common/day-table/day-series'
 export type {
   DayTableModel, DayTableColumn, DayTableColumnGroup, DayTableModelConfig,
@@ -277,13 +275,10 @@ export {
 } from '@full-ui/headless-calendar'
 
 export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './timegrid/TimeColsSeg'
-export { DayTimeColsSlicer } from './timegrid/DayTimeColsSlicer'
-export { AllDaySplitter } from './timegrid/AllDaySplitter'
 export { TimeGridLayout } from './timegrid/components/TimeGridLayout'
-export type { TimeGridViewData, TimedSegs, TimedSegsByCol } from './timegrid/components/useTimeGridViewData'
-export { useTimeGridViewData, useTimedSegsByCol } from './timegrid/components/useTimeGridViewData'
+export type { TimedSegs, TimedSegsByCol } from './timegrid/components/useTimedSegsByCol'
+export { useTimedSegsByCol } from './timegrid/components/useTimedSegsByCol'
 
-export { DayTableSlicer, DaySeriesSlicer } from './daygrid/DayTableSlicer'
 export {
   CellRenderConfig,
   CellDataConfig,

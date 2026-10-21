@@ -1,7 +1,6 @@
 import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, Dictionary, ViewContext } from '@fullcalendar/preact/protected-api'
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/preact/protected-api'
 import { ResourceApi } from '../resource/api/ResourceApi'
-import { AbstractResourceDayTableModel } from '../resource/common/AbstractResourceDayTableModel'
 import { ResourceHeaderInput } from '../resource/common/resource-day-table'
 import { Resource } from '../resource/structs/resource'
 import { ResourceDayHeaderInfo } from './structs'
@@ -245,15 +244,4 @@ function buildResourceDataConfigs(
       className: '', // TODO: remove this prop
     }
   })
-}
-
-// the old model's header input, for ResourceDayGridView until it moves to the day-table pipeline
-export function fromAbstractModel(model: AbstractResourceDayTableModel): ResourceHeaderInput {
-  return {
-    cols: model.cols,
-    groups: model.groups,
-    resourceCount: model.resources.length,
-    dateCount: model.dayCols.length,
-    datesAboveResources: model.datesAboveResources,
-  }
 }

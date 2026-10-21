@@ -23,7 +23,7 @@ column as the accepted cost and leave the rule alone.
 Per-date (computeHasEventsByDate): the same intersection test asked once per rendered
 column, so multi-day vertical views can give a (date, resource) pair its own column. Being
 per-column makes it strictly finer than the view-wide pass, so a resource can survive
-view-wide and match no column at all; buildResourceTableModel falls back to day-only columns
+view-wide and match no column at all; buildResourceDayTable falls back to day-only columns
 when that happens for every resource.
 
 KNOWN LIMITATION, predating this code and intentionally left alone: an event counts via its

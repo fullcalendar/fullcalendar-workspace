@@ -466,6 +466,24 @@ describe('day-table units', () => {
       ])
     })
 
+    // one resource under each date: its columns are adjacent, but each date is its own group
+    it('breaks a span at every date when dates are above a single resource', () => {
+      let { daySeries, dayCols } = buildModel()
+      let groups = dayCols.map((dayCol, dateI) => ({
+        key: String(dateI),
+        cols: [{ ...dayCol, key: 'a' + dateI, dateI, entityKey: 'a', groupI: dateI }],
+      }))
+      let model = buildModelFromCols(daySeries, dayCols, 1, groups as any, null, ['a'], false)
+      let keying = { ...KEYING, keys: ['a'] }
+      let segs = projectDayTableSegs(
+        { a: [dayGridSeg('A', 0, 3)], '': [] }, model, keying as any, 'fg', getDayTableSegTransform(DAY_GRID_LANE),
+      )
+
+      expect(summarize(segs)).toEqual([
+        ['A', 0, 1, true, false], ['A', 1, 2, false, false], ['A', 2, 3, false, true],
+      ])
+    })
+
     it('renders keyless fg nowhere and keyless bg and business hours in every column of a resourceless model', () => {
       let model = buildResourcelessModel()
       let keying = { ...KEYING, keys: [] }
@@ -479,6 +497,21 @@ describe('day-table units', () => {
       expect(summarize(projectDayTableSegs(buckets, model, keying as any, 'businessHours', transform))).toEqual([
         ['K', 0, 3, true, true],
       ])
+    })
+
+    // two week rows of the three dates' weekdays, resources above dates: a0 a1 a2 | b0 b1 b2
+    it('keeps a multi-row seg\'s row, spreading it over the resource\'s columns', () => {
+      let { daySeries, dayCols } = buildModel()
+      let groups = ['a', 'b'].map((entityKey, groupI) => ({
+        key: entityKey,
+        cols: dayCols.map((dayCol, dateI) => ({ ...dayCol, key: entityKey + dateI, dateI, entityKey, groupI })),
+      }))
+      let model = buildModelFromCols(daySeries, dayCols, 2, groups as any, [[], []], ['a', 'b'], false)
+      let keying = { ...KEYING, keys: ['a', 'b'] }
+      let seg = { ...dayGridSeg('B', 0, 2), row: 1 }
+      let segs = projectDayTableSegs({ a: [], b: [seg], '': [] }, model, keying as any, 'fg', getDayTableSegTransform(DAY_GRID_LANE))
+
+      expect(segs.map((s: any) => [s.row, s.start, s.end, s.isStart, s.isEnd])).toEqual([[1, 3, 5, true, true]])
     })
 
     describe('now indicator', () => {

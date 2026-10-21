@@ -1,27 +1,27 @@
 import {
   BaseComponent,
-  DayCol,
-  DayTableModel,
-  addDays,
-  mapHash,
+  DAY_GRID_LANE,
+  DayGridLayout,
+  DayGridRange,
+  useDayGridViewData,
+  useDayHeaderFormatter,
+  useDayTableSegs,
   useStableCallback,
   useViewContext,
 } from '@fullcalendar/preact/protected-api'
-import {
-  DayGridLayout,
-  DayTableSlicer,
-  useDayGridViewData,
-  useDayHeaderFormatter,
-} from '@fullcalendar/preact/protected-api'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
 import { DEFAULT_RESOURCE_ORDER } from '../../resource/resources-crud'
 import { ResourceViewProps } from '../../resource/View'
 import { computeHasEventsByDate, filterResourceStore } from '../../resource/common/resource-filtering'
-import { buildResourceTableModel } from '../../resource/common/resource-table-model'
-import { VResourceSplitter } from '../../resource/common/VResourceSplitter'
+import {
+  buildResourceDayTable,
+  buildResourceKeying,
+  isResourceHitComboAllowed,
+  toResourceHeaderInput,
+} from '../../resource/common/resource-day-table'
 import { flattenResources } from '../../resource/common/resource-hierarchy'
-import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner'
-import { buildResourceRowConfigs, fromAbstractModel } from '../resource-header-tier'
+import { Resource } from '../../resource/structs/resource'
+import { buildResourceRowConfigs } from '../resource-header-tier'
 
 // a class, because a view's component must be one (see parseViewConfig)
 export class ResourceDayGridView extends BaseComponent<ResourceViewProps> {
@@ -49,13 +49,13 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
     () => flattenResources(resourceStore, resourceOrderSpecs),
     [resourceStore, resourceOrderSpecs],
   )
-  const { dayTableModel: dayTable, datesRepDistinctDays, todayRange } = useDayGridViewData(dateProfile)
-  const dayCols = useMemo(() => buildDayGridCols(dayTable), [dayTable])
+  const { dayTableModel: plainModel, datesRepDistinctDays, todayRange } = useDayGridViewData(dateProfile)
+  const { dayCols } = plainModel // the first row's dates, as whole days
 
   // a multi-row column represents one weekday across many dates, so it has no single date
   // to filter by — those views keep view-wide filtering only. nextDayThreshold matches how
   // the renderer decides which day a timed event's tail belongs to
-  const isFilteredByDate = options.filterResourcesWithEvents && dayTable.colCount > 1 && dayTable.rowCount === 1
+  const isFilteredByDate = options.filterResourcesWithEvents && dayCols.length > 1 && plainModel.rowCount === 1
   const hasEventsByDate = useMemo(
     () => isFilteredByDate
       ? computeHasEventsByDate(props.rawEventStore, resourceStore, dayCols, options.nextDayThreshold)
@@ -63,51 +63,29 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
     [isFilteredByDate, props.rawEventStore, resourceStore, dayCols, options.nextDayThreshold],
   )
 
-  const resourceDayTableModel = useMemo(
-    () => buildResourceTableModel(
-      dayTable,
-      dayCols,
-      resources,
-      options.datesAboveResources,
-      hasEventsByDate,
-      context,
-    ),
-    [dayTable, dayCols, resources, options.datesAboveResources, hasEventsByDate, context],
+  const { datesAboveResources } = options
+  const model = useMemo(
+    () => buildResourceDayTable(plainModel, resources, datesAboveResources, hasEventsByDate, context),
+    [plainModel, resources, datesAboveResources, hasEventsByDate, context],
   )
+  const keying = useMemo(() => buildResourceKeying(model.participants as Resource[]), [model.participants])
 
-  const [splitter] = useState(() => new VResourceSplitter())
-  const [joiner] = useState(() => new ResourceDayTableJoiner())
-  const slicersRef = useRef<{ [resourceId: string]: DayTableSlicer }>({})
-
-  const splitProps = splitter.splitProps({
-    resourceDayTableModel,
-    businessHours: props.businessHours,
-    dateSelection: props.dateSelection,
-    eventStore: props.eventStore,
-    eventUiBases: props.eventUiBases,
-    eventSelection: props.eventSelection,
-    eventDrag: props.eventDrag,
-    eventResize: props.eventResize,
-  })
-  const slicers = slicersRef.current = mapHash(
-    splitProps,
-    (split, resourceId) => slicersRef.current[resourceId] || new DayTableSlicer(),
-  )
-  const slicedProps = mapHash(slicers, (slicer, resourceId) => slicer.sliceProps(
-    splitProps[resourceId],
+  const slicedProps = useDayTableSegs<DayGridRange>(
+    props,
+    keying,
+    model,
+    DAY_GRID_LANE,
     dateProfile,
     options.nextDayThreshold,
     context,
-    dayTable,
-  ))
-  const joinedSlicedProps = joiner.joinProps(slicedProps, resourceDayTableModel)
+  )
 
-  const dayHeaderFormat = useDayHeaderFormatter(datesRepDistinctDays, resourceDayTableModel.colCount)
+  const dayHeaderFormat = useDayHeaderFormatter(datesRepDistinctDays, model.colCount)
   const businessHours = Boolean(options.businessHours)
   const blankRenderProps = useMemo(() => buildBlankDayCellProps(businessHours), [businessHours])
   const headerTiers = useMemo(
     () => buildResourceRowConfigs(
-      fromAbstractModel(resourceDayTableModel),
+      toResourceHeaderInput(model, datesAboveResources),
       datesRepDistinctDays,
       dateProfile,
       todayRange,
@@ -117,15 +95,14 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
       blankRenderProps,
     ),
     [
-      resourceDayTableModel, datesRepDistinctDays, dateProfile, todayRange, dayHeaderFormat, context,
+      model, datesAboveResources, datesRepDistinctDays, dateProfile, todayRange, dayHeaderFormat, context,
       options.dayCellClass, blankRenderProps,
     ],
   )
 
-  const isHitComboAllowed = useStableCallback((hit0, hit1) => {
-    const allowAcrossResources = dayTable.colCount === 1
-    return resourceDayTableModel.isHitComboAllowed(hit0, hit1, allowAcrossResources)
-  })
+  const isHitComboAllowed = useStableCallback((hit0, hit1) => (
+    isResourceHitComboAllowed(hit0, hit1, model.dayCols.length === 1)
+  ))
 
   return (
     <DayGridLayout
@@ -134,7 +111,7 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
 
       dateProfile={dateProfile}
       todayRange={todayRange}
-      cellRows={resourceDayTableModel.cells}
+      cellRows={model.cellRows}
       forPrint={props.forPrint}
       isHitComboAllowed={isHitComboAllowed}
       className={props.className}
@@ -143,13 +120,13 @@ function ResourceDayGridViewBody(props: ResourceViewProps) {
       headerTiers={headerTiers}
 
       // body content
-      fgEventSegs={joinedSlicedProps.fgEventSegs}
-      bgEventSegs={joinedSlicedProps.bgEventSegs}
-      businessHourSegs={joinedSlicedProps.businessHourSegs}
-      dateSelectionSegs={joinedSlicedProps.dateSelectionSegs}
-      eventDrag={joinedSlicedProps.eventDrag}
-      eventResize={joinedSlicedProps.eventResize}
-      eventSelection={joinedSlicedProps.eventSelection}
+      fgEventSegs={slicedProps.fgEventSegs}
+      bgEventSegs={slicedProps.bgEventSegs}
+      businessHourSegs={slicedProps.businessHourSegs}
+      dateSelectionSegs={slicedProps.dateSelectionSegs}
+      eventDrag={slicedProps.eventDrag}
+      eventResize={slicedProps.eventResize}
+      eventSelection={slicedProps.eventSelection}
     />
   )
 }
@@ -167,15 +144,4 @@ function buildBlankDayCellProps(businessHours: boolean) {
     monthText: '',
     options: { businessHours },
   }
-}
-
-// Resource daygrid columns repeat across rows, so their date-level descriptors use the first row.
-function buildDayGridCols(dayTable: DayTableModel): DayCol[] {
-  return dayTable.cellRows[0].map((cell) => ({
-    ...cell,
-    range: {
-      start: cell.date,
-      end: addDays(cell.date, 1),
-    },
-  }))
 }
