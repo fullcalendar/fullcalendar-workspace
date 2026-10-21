@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../vdom-util'
+import { createViewComponent } from '../../structs/view-config'
 import { useMemo } from 'react'
 import { ViewProps } from '../../component-util/View'
 import { useViewContext } from '../../hooks/useViewContext'
@@ -13,15 +13,8 @@ import { TimeGridRange } from '../TimeColsSeg'
 import { TimeGridLayout } from './TimeGridLayout'
 import { useTimedSegsByCol } from './useTimedSegsByCol'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class TimeGridView extends BaseComponent<ViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <TimeGridViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const TimeGridView = createViewComponent(TimeGridViewBody)
 
 function TimeGridViewBody(props: ViewProps) {
   const context = useViewContext()

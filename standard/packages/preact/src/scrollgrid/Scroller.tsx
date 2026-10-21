@@ -1,9 +1,8 @@
-import { DateComponent } from '../component/DateComponent'
 import { computeElIsRtl } from '../util/dom-manip'
-import { setRef } from '../vdom-util'
+import { memoWithEquality, setRef } from '../vdom-util'
 import { watchHeight, watchWidth } from '../component-util/resize-observer'
 import { Dictionary } from '../options'
-import type { ReactNode, Ref } from 'react'
+import { forwardRef, useImperativeHandle, useState, type ComponentType, type ReactNode, type Ref } from 'react'
 import { joinClassNames } from '../util/html'
 import { ScrollerInterface } from './ScrollerInterface'
 import { ScrollListener } from './ScrollListener'
@@ -35,26 +34,28 @@ export interface ScrollerProps {
   style?: Dictionary
 }
 
-export class Scroller extends DateComponent<ScrollerProps> implements ScrollerInterface {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
+/*
+What the parent's ref gets, the same object for the scroller's lifetime
+*/
+export interface ScrollerHandle extends ScrollerInterface {
+  listener: ScrollListener // for ScrollerSyncer
+  endScroll(): void
+}
 
-  // ref
-  private el?: HTMLDivElement
+export type Scroller = ScrollerHandle
 
-  // internal
-  private _isUnmounting: boolean
-  public listener: ScrollListener // public for ScrollerSyncer
-  private disconnectHRuler?: () => void
-  private disconnectVRuler?: () => void
+/*
+A scroll container. Memoized on its props, as the class it was (a PureComponent). Its state, ref
+callbacks and API live on one ScrollerState object, made once
+*/
+export const Scroller: ComponentType<ScrollerProps & { ref?: Ref<ScrollerHandle> }> = memoWithEquality(
+  forwardRef<ScrollerHandle, ScrollerProps>(function Scroller(props, ref) {
+    const [scroller] = useState(() => new ScrollerState())
 
-  // current values
-  private clientWidth?: number
-  private clientHeight?: number
-  private bottomScrollbarWidth?: number
+    // as a class instance's this.props: the ref callbacks of this render's commit read this render's
+    scroller.props = props
 
-  render() {
-    const { props } = this
+    useImperativeHandle(ref, () => scroller, [])
 
     // if there's only one axis that needs scrolling, the other axis will unintentionally have
     // scrollbars too if we don't force to 'hidden'
@@ -62,7 +63,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     return (
       <div
-        ref={this.handleEl}
+        ref={scroller.handleEl}
         className={joinClassNames(
           props.className,
           classNames.noPadding,
@@ -78,14 +79,33 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       >
         {props.children}
         {Boolean(props.clientWidthRef) && (
-          <div ref={this.handleHRuler} className={classNames.fillTop} />
+          <div ref={scroller.handleHRuler} className={classNames.fillTop} />
         )}
         {Boolean(props.clientHeightRef || props.bottomScrollbarWidthRef) && (
-          <div ref={this.handleVRuler} className={classNames.fillStart} />
+          <div ref={scroller.handleVRuler} className={classNames.fillStart} />
         )}
       </div>
     )
-  }
+  }),
+  {},
+)
+
+class ScrollerState implements ScrollerHandle {
+  props: ScrollerProps
+
+  // ref
+  private el?: HTMLDivElement
+
+  // internal
+  private _isUnmounting: boolean
+  public listener: ScrollListener // public for ScrollerSyncer
+  private disconnectHRuler?: () => void
+  private disconnectVRuler?: () => void
+
+  // current values
+  private clientWidth?: number
+  private clientHeight?: number
+  private bottomScrollbarWidth?: number
 
   handleEl = (el: HTMLDivElement | null) => {
     if (this.el) {

@@ -1,5 +1,5 @@
 import {
-  BaseComponent,
+  createViewComponent,
   DAY_GRID_LANE,
   DayGridLayout,
   DayGridRange,
@@ -23,15 +23,8 @@ import { flattenResources } from '../../resource/common/resource-hierarchy'
 import { Resource } from '../../resource/structs/resource'
 import { buildResourceRowConfigs } from '../resource-header-tier'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class ResourceDayGridView extends BaseComponent<ResourceViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <ResourceDayGridViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const ResourceDayGridView = createViewComponent(ResourceDayGridViewBody)
 
 function ResourceDayGridViewBody(props: ResourceViewProps) {
   const context = useViewContext()

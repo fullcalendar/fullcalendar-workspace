@@ -7,12 +7,13 @@ import { Interaction, InteractionClass } from './interactions/interaction'
 import { HitTarget, hitTargetStore } from './interactions/hit-target'
 import classNames from './styles.module.css'
 import { ViewPropsTransformerClass } from './plugin-system-struct'
-import { type ReactElement, Fragment } from 'react'
+import { type ReactElement, Fragment, useRef, useState } from 'react'
 import { CalendarData, CalendarToolbarProps } from './reducers/data-types'
 import { CssDimValue, getIsHeightAuto } from './scrollgrid/util'
 
 import { joinClassNames } from './util/html'
 import { memoize } from './util/memoize'
+import { useIsomorphicLayoutEffect } from './hooks/useIsomorphicLayoutEffect'
 import { buildViewContext, ViewContextType } from './ViewContext'
 import {
   CalendarCoreContext,
@@ -23,7 +24,7 @@ import {
   buildCalendarCore,
   buildViewSpecContextValue,
 } from './granular-contexts'
-import { PureComponent } from './vdom-util'
+import { memoWithEquality } from './vdom-util'
 
 export interface CalendarInnerProps extends CalendarData {
   forPrint: boolean
@@ -36,9 +37,40 @@ export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
 }
 
-export class CalendarInner extends PureComponent<CalendarInnerProps> {
-  // the provider, reading no context
-  static contextType = null
+/*
+The calendar's content: the toolbars and the view, inside the view contexts it provides. Memoized on its
+props, as the class it was (a PureComponent). Its memos, interactions and hit-target registry live on one
+CalendarInnerState, made once
+*/
+export const CalendarInner = memoWithEquality(function CalendarInner(props: CalendarInnerProps) {
+  const [inner] = useState(() => new CalendarInnerState())
+  const prevPropsRef = useRef<CalendarInnerProps | null>(null)
+
+  // as a class instance's this.props: hit targets the children register in this render's commit read it
+  inner.props = props
+
+  // layout timing, like the componentDidMount/DidUpdate it replaces
+  useIsomorphicLayoutEffect(() => {
+    const prevProps = prevPropsRef.current
+    prevPropsRef.current = props
+
+    if (prevProps) {
+      inner.didUpdate(prevProps)
+    } else {
+      inner.didMount()
+    }
+  })
+
+  useIsomorphicLayoutEffect(() => () => {
+    inner.willUnmount()
+    prevPropsRef.current = null // a remount (Strict Mode, <Activity>) mounts again
+  }, [])
+
+  return inner.render()
+}, {})
+
+class CalendarInnerState {
+  props: CalendarInnerProps
 
   private buildViewContext = memoize(buildViewContext)
   private buildCalendarCore = memoize(buildCalendarCore)
@@ -217,7 +249,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
   }
 
   // BE AWARE React StrictMode might execute this twice
-  componentDidMount() {
+  didMount() {
     const { props } = this
 
     this.calendarInteractions = props.pluginHooks.calendarInteractions
@@ -238,7 +270,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<CalendarData>): void {
+  didUpdate(prevProps: Readonly<CalendarData>): void {
     const { props } = this
 
     // before callbacks like datesSet, so a replacement controller receives them
@@ -253,7 +285,7 @@ export class CalendarInner extends PureComponent<CalendarInnerProps> {
   }
 
   // BE AWARE React StrictMode might execute this twice
-  componentWillUnmount() {
+  willUnmount() {
     const { props } = this
 
     for (let interaction of this.calendarInteractions) {

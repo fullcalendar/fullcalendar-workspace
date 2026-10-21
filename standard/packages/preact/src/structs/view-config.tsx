@@ -1,12 +1,12 @@
 import { ViewContentInfo, ViewProps } from '../component-util/View'
 import { mapHash } from '../util/object'
-import { type ComponentType, Component, useMemo } from 'react'
+import { type ComponentType, type FunctionComponent, Component, useMemo } from 'react'
 import { ViewOptions } from '../options'
 import { CustomContent } from '../content-inject/CustomContent'
 import { useViewContext } from '../hooks/useViewContext'
 import { useRenderHookEl } from '../hooks/useRenderHookEl'
 import { Duration } from '@full-ui/headless-calendar'
-import { BaseComponent } from '../vdom-util'
+import { BaseComponent, memoWithEquality } from '../vdom-util'
 import { computeViewBorderless } from '../util/misc'
 import { ContentGenerator, generateClassName } from '../common/render-hook'
 import { getIsHeightAuto } from '../scrollgrid/util'
@@ -32,6 +32,23 @@ export interface ViewConfig {
 
 export type ViewConfigHash = { [viewType: string]: ViewConfig }
 
+const viewComponents = new WeakSet<object>()
+
+/*
+A view's component from its body: memoized on its props (as the class views were, PureComponent), and
+marked, so parseViewConfig takes it as a view rather than as `content` given as `component`. A class
+extending BaseComponent is a view too
+*/
+export function createViewComponent<Props extends ViewProps>(body: FunctionComponent<Props>): ComponentType<Props> {
+  const component = memoWithEquality(body, {})
+  viewComponents.add(component)
+  return component as ComponentType<Props>
+}
+
+function isViewComponent(component: any): boolean {
+  return (component.prototype instanceof BaseComponent) || viewComponents.has(component)
+}
+
 export function parseViewConfigs(inputs: ViewConfigInputHash): ViewConfigHash {
   return mapHash(inputs, parseViewConfig)
 }
@@ -45,7 +62,7 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
 
   if (rawOptions.content) {
     component = createViewHookComponent(rawOptions.content)
-  } else if (component && !((component as any).prototype instanceof BaseComponent)) {
+  } else if (component && !isViewComponent(component)) {
     // WHY?: people were using `component` property for `content`
     // TODO: converge on one setting name
     component = createViewHookComponent(component as any)

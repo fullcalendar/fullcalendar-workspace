@@ -5,7 +5,7 @@ import { addDays } from '@full-ui/headless-calendar'
 import { CustomContent } from '../../content-inject/CustomContent'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useRenderHookEl } from '../../hooks/useRenderHookEl'
-import { BaseComponent } from '../../vdom-util'
+import { createViewComponent } from '../../structs/view-config'
 import { useHitTarget } from '../../hooks/useHitTarget'
 import { useNow } from '../../hooks/useNow'
 import type { DateMarker, DateRange } from '@full-ui/headless-calendar'
@@ -29,15 +29,8 @@ export interface NoEventsInfo {
   view: ViewApi
 }
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class ListView extends BaseComponent<ViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <ListViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const ListView = createViewComponent(ListViewBody)
 
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".

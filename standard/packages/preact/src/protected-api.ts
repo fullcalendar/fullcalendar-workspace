@@ -210,6 +210,7 @@ export { isPropsValid } from './validation'
 export { requestJson } from './util/requestJson'
 
 export { BaseComponent, setRef, memoWithEquality } from './vdom-util'
+export { createViewComponent } from './structs/view-config' // a view's component from its body
 export { DelayedRunner } from './util/DelayedRunner'
 
 export {

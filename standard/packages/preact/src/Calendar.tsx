@@ -4,8 +4,6 @@ import React, {
   FunctionComponent,
   forwardRef,
   useState,
-  useEffect,
-  useLayoutEffect,
   useImperativeHandle,
 } from 'react'
 import { flushSync } from 'react-dom'
@@ -16,6 +14,7 @@ import { CalendarApi } from './api/CalendarApi'
 import { CalendarMediaRoot, computeRootClassName } from './calendar-root'
 import { CalendarInner } from './CalendarInner'
 import { guid } from './util/misc'
+import { useIsomorphicLayoutEffect } from './hooks/useIsomorphicLayoutEffect'
 import { warn } from './util/warn'
 
 export interface CalendarRef {
@@ -60,8 +59,8 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
 
   // effects queued by the render, like the `loading` callback
   useIsomorphicLayoutEffect(() => {
-    // CalendarInner also syncs, before it emits datesSet. this one is for Preact, which runs all
-    // layout effects, including a parent's that might use the controller, before componentDidMount
+    // CalendarInner syncs first, before it emits datesSet (its layout effect runs before this, its
+    // parent's, in both runtimes), so this is a no-op unless something rebound the controller between
     data.syncController(data.calendarOptions.controller)
     store.flushEffects()
   })
@@ -93,9 +92,6 @@ export const Calendar: FunctionComponent<CalendarProps> = forwardRef<CalendarRef
     </CalendarMediaRoot>
   )
 })
-
-// avoids React 17/18's warning about layout effects when server-side rendering
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 function runNormal(f: () => void) {
   f()

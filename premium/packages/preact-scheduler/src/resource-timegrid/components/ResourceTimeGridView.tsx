@@ -1,5 +1,5 @@
 import {
-  BaseComponent,
+  createViewComponent,
   DayGridRange,
   TIME_GRID_ALL_DAY_LANE,
   TIME_GRID_TIMED_LANE,
@@ -30,15 +30,8 @@ import {
 import { flattenResources } from '../../resource/common/resource-hierarchy'
 import { Resource } from '../../resource/structs/resource'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class ResourceTimeGridView extends BaseComponent<ResourceViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <ResourceTimeGridViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const ResourceTimeGridView = createViewComponent(ResourceTimeGridViewBody)
 
 function ResourceTimeGridViewBody(props: ResourceViewProps) {
   const context = useViewContext()

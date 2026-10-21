@@ -1,6 +1,6 @@
 import {
   ViewProps,
-  BaseComponent,
+  createViewComponent,
   greatestDurationDenominator,
   useMeasuredState,
   useNow,
@@ -13,15 +13,8 @@ import { TimelineLaneSlicer } from '../TimelineLaneSlicer'
 import { TimelineLayoutPrint } from './TimelineLayoutPrint'
 import { TimelineLayoutNormal, TimelineScroll } from './TimelineLayoutNormal'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class TimelineView extends BaseComponent<ViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <TimelineViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const TimelineView = createViewComponent(TimelineViewBody)
 
 function TimelineViewBody(props: ViewProps) {
   const context = useViewContext()

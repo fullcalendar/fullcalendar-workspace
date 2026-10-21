@@ -292,8 +292,17 @@ oracle checks every navigation against the frozen old generator. Originally sket
 Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), before merging.
 
 - **React 17 smoke run** (deferred from phase 2; needs phase 11's `useSyncExternalStore` shim).
-- **The remaining class components:** the eight view shells (`parseViewConfig`), `CalendarInner`,
-  `CalendarMediaRoot`, `Scroller`.
+- **The remaining class components** (done, 2026-10-21): the eight view shells (`parseViewConfig`),
+  `CalendarInner`, `CalendarMediaRoot`, `Scroller`. As built: no class component is left in the tree. View
+  shells are `createViewComponent(body)` (memoized like the `PureComponent`s, marked in a `WeakSet` that
+  `parseViewConfig` checks beside `prototype instanceof BaseComponent`, which third-party class views keep
+  using). `Scroller` and `CalendarInner` keep their instance state on an object made once, with `props`
+  set during render as a class instance's are (ref callbacks and hit-target registration in the same
+  commit read them); `Scroller` exposes that object through `useImperativeHandle`. Lifecycles are
+  isomorphic layout effects. One timing change, Preact only: `CalendarInner`'s mount and update work
+  (controller sync, `datesSet` and the other prop-set handlers, `contextInit`) now runs before the
+  driver's layout effect, as in React; before, Preact ran every hook layout effect before any
+  `componentDidMount`.
 - **Render-time side effects** left in React's render-time update, if phase 11 doesn't remove them:
   the emitter's option binding (stage 2 checkpoint) and the now timer re-arming.
 - **Per-button options don't combine with the theme's** (done, 2026-10-21; found by phase 2, never
@@ -329,7 +338,11 @@ Adam's call (2026-10-21): right after phases 10, 7b and 11 (in that order), befo
   (as `dayCount` already did). The oracle's frozen generator still throws there, so the oracle now
   expects only the frozen side to crash and checks the calendar's range instead; the crashing step's
   own user-function calls left the trace digest (re-recorded on the unfixed code first).
-- **Issues:** verify #8112, #8092 and #7070 with their reproductions (closing them on GitHub is Adam's).
+- **Issues** (verified, 2026-10-21; closing them on GitHub is Adam's): #8112 and #8092 by the React 19
+  lifecycle specs that reproduce them (`standard/packages/react/tests/lifecycle.tsx`: `#8112: hiding in
+  <Activity>…`, `#8092: a render discarded by Suspense…` twice) and the Karma `<Activity>` scroll specs
+  (`view-render/activity-scroll.ts`, premium `misc/activity-scroll-timeline.ts`); #7070 by a new React 17
+  (and 18) smoke spec, an event fetch settling after unmount, failing on any `console.error`.
 - **Landing:** decide how the branch merges (per phase or whole).
 
 ### 12. Grid abstraction, hooks-first React API (tabled)

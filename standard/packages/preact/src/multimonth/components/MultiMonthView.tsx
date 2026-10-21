@@ -1,6 +1,6 @@
 import { CssDimValue } from '../../scrollgrid/util'
 import { joinClassNames } from '../../util/html'
-import { BaseComponent } from '../../vdom-util'
+import { createViewComponent } from '../../structs/view-config'
 import { useViewContext } from '../../hooks/useViewContext'
 import { useNow } from '../../hooks/useNow'
 import { useInitialScroll } from '../../hooks/useInitialScroll'
@@ -19,15 +19,8 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { Ruler } from '../../scrollgrid/Ruler'
 import { SingleMonth } from './SingleMonth'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class MultiMonthView extends BaseComponent<ViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <MultiMonthViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const MultiMonthView = createViewComponent(MultiMonthViewBody)
 
 function MultiMonthViewBody(props: ViewProps) {
   const context = useViewContext()

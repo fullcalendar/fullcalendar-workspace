@@ -1,5 +1,5 @@
 import {
-  BaseComponent,
+  createViewComponent,
   greatestDurationDenominator,
   isArraysEqual,
   useLatest,
@@ -25,15 +25,8 @@ import { ResourceExpander } from './spreadsheet/ResourceExpander'
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class ResourceTimelineView extends BaseComponent<ResourceViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <ResourceTimelineViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const ResourceTimelineView = createViewComponent(ResourceTimelineViewBody)
 
 function ResourceTimelineViewBody(props: ResourceViewProps) {
   const context = useViewContext()

@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../vdom-util'
+import { createViewComponent } from '../../structs/view-config'
 import { useMemo } from 'react'
 import { ViewProps } from '../../component-util/View'
 import { useViewContext } from '../../hooks/useViewContext'
@@ -9,15 +9,8 @@ import { buildDateRowConfigs } from '../header-tier'
 import { DayGridLayout } from './DayGridLayout'
 import { useDayGridViewData, useDayHeaderFormatter } from './useDayGridViewData'
 
-// a class, because a view's component must be one (see parseViewConfig)
-export class DayGridView extends BaseComponent<ViewProps> {
-  // reads no context, so an inherited contextType would only re-render it on every context change
-  static contextType = null
-
-  render() {
-    return <DayGridViewBody {...this.props} />
-  }
-}
+// memoized on its props, and marked as a view (see createViewComponent)
+export const DayGridView = createViewComponent(DayGridViewBody)
 
 function DayGridViewBody(props: ViewProps) {
   const context = useViewContext()

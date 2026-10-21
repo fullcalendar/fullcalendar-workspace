@@ -158,6 +158,30 @@ it('renders events that arrive after mount', async () => {
   harness.unmount()
 })
 
+// #7070: an event fetch (a promise-returning function) that settles after the calendar unmounted updated
+// it, and React 17 warned "Can't perform a React state update on an unmounted component" (the console
+// guard in afterEach fails the spec on it)
+it('#7070: an event fetch that settles after unmount updates nothing', async () => {
+  let resolveFetch: (events: any[]) => void
+
+  harness.render(
+    <FullCalendar
+      {...OPTIONS}
+      events={() => new Promise((resolve) => {
+        resolveFetch = resolve
+      })}
+    />,
+  )
+  harness.unmount()
+
+  await act(async () => {
+    resolveFetch([{ title: 'late', start: '2024-01-10' }])
+    await new Promise((resolve) => setTimeout(resolve, 10))
+  })
+
+  expect(container.innerHTML).toBe('')
+})
+
 it('renders on the server, and hydrates', () => {
   let el = <FullCalendar {...OPTIONS} events={[{ title: 'server', start: '2024-01-10' }]} />
   let html = renderToString(el)

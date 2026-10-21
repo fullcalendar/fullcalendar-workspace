@@ -1,10 +1,11 @@
 import { Emitter } from './common/Emitter'
 import classNames from './styles.module.css'
 import { CalendarListeners, CalendarOptions } from './options'
-import { Component, type ReactElement } from 'react'
+import { useState, type ReactElement } from 'react'
 import { joinClassNames } from './util/html'
 import { flushSyncWithSizeBatching } from './component-util/resize-observer'
 import { generateClassName } from './common/render-hook'
+import { useIsomorphicLayoutEffect } from './hooks/useIsomorphicLayoutEffect'
 
 export interface CalendarDisplayInfo {
   borderlessX: boolean
@@ -17,51 +18,40 @@ export interface CalendarMediaRootProps {
   children?: (forPrint: boolean) => ReactElement
 }
 
-interface CalendarMediaRootState {
-  forPrint: boolean
-}
+// whether the calendar renders for print, between the window's beforeprint and afterprint
+export function CalendarMediaRoot(props: CalendarMediaRootProps) {
+  const { emitter } = props
+  const [forPrint, setForPrint] = useState(false)
 
-export class CalendarMediaRoot extends Component<CalendarMediaRootProps, CalendarMediaRootState> {
-  state: CalendarMediaRootState = {
-    forPrint: false,
-  }
+  // layout timing, like the componentDidMount it replaces
+  useIsomorphicLayoutEffect(() => {
+    const handleBeforePrint = () => {
+      // The synchronous commit mounts print-only DOM during this beforeprint
+      // task. Watchers registering during the bracket measure immediately, and
+      // their layout recomputations settle in one batched drain before the
+      // native event returns.
+      flushSyncWithSizeBatching(() => {
+        setForPrint(true)
+      })
+    }
 
-  render() {
-    return this.props?.children(this.state.forPrint)
-  }
+    const handleAfterPrint = () => {
+      // No synchronous commit needed: nothing else listens to _afterprint, and
+      // the ordinary microtask-batched re-render restores the screen DOM before
+      // the next paint. Screen watchers keep their async-first measurement.
+      setForPrint(false)
+    }
 
-  componentDidMount() {
-    const { props } = this
-    const { emitter } = props
+    emitter.on('_beforeprint', handleBeforePrint)
+    emitter.on('_afterprint', handleAfterPrint)
 
-    emitter.on('_beforeprint', this.handleBeforePrint)
-    emitter.on('_afterprint', this.handleAfterPrint)
-  }
+    return () => {
+      emitter.off('_beforeprint', handleBeforePrint)
+      emitter.off('_afterprint', handleAfterPrint)
+    }
+  }, [emitter])
 
-  componentWillUnmount() {
-    const { props } = this
-    const { emitter } = props
-
-    emitter.off('_beforeprint', this.handleBeforePrint)
-    emitter.off('_afterprint', this.handleAfterPrint)
-  }
-
-  private handleBeforePrint = () => {
-    // The synchronous commit mounts print-only DOM during this beforeprint
-    // task. Watchers registering during the bracket measure immediately, and
-    // their layout recomputations settle in one batched drain before the
-    // native event returns.
-    flushSyncWithSizeBatching(() => {
-      this.setState({ forPrint: true })
-    })
-  }
-
-  private handleAfterPrint = () => {
-    // No synchronous commit needed: nothing else listens to _afterprint, and
-    // the ordinary microtask-batched re-render restores the screen DOM before
-    // the next paint. Screen watchers keep their async-first measurement.
-    this.setState({ forPrint: false })
-  }
+  return props.children ? props.children(forPrint) : null
 }
 
 export function computeRootClassName(options: CalendarOptions, forPrint: boolean): string {
