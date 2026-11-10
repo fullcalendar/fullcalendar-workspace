@@ -1,4 +1,11 @@
 
+## v7.1.5
+
+- FIX: `event.setDates()` without the `allDay` option cleared the event's `allDay` flag, turning an all-day event into a timed one
+- FIX: TypeScript: `calendar.off()` required a handler, though calling it without one removes all of that name's handlers
+- FIX: TypeScript: an event source function's success callback (or promise) only accepted `EventInput[]`, though any response can be given for `eventSourceSuccess` or the source's `success` to transform
+
+
 ## v7.1.4
 
 - FIX: Resource Timeline with `virtualization`:
@@ -17,9 +24,6 @@
 - FIX: React "Maximum update depth exceeded" when `validRange`, `visibleRange` or `hiddenDays` is given as a new-but-equal value each render and `datesSet` sets state (#7069)
 - FIX: When `slotMaxTime` is beyond 24h, the now-indicator disappears after midnight in Timeline views, and its arrow disappears in TimeGrid views (#6394)
 - FIX: `eventDrop` reports `oldResource`/`newResource` when an event that isn't resource-editable is dragged over another resource, even though its resource doesn't change (#4943)
-- FIX: `event.setDates()` without the `allDay` option cleared the event's `allDay` flag, turning an all-day event into a timed one
-- FIX: TypeScript: `calendar.off()` required a handler, though calling it without one removes all of that name's handlers
-- FIX: TypeScript: an event source function's success callback (or promise) only accepted `EventInput[]`, though any response can be given for `eventSourceSuccess` or the source's `success` to transform
 
 ### Locales
 
