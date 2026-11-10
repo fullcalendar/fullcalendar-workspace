@@ -329,9 +329,7 @@ describe('resource data in resource timeline', () => {
 
     it.each([
       ['', {}],
-      // LIBRARY QUIRK: virtualized with scrollTime 00:00, it re-renders every frame and never settles.
-      // See planning/agent-notes/timeline.md
-      [' when virtualized', { virtualization: true, scrollTime: '01:00' }],
+      [' when virtualized', { virtualization: true }],
     ])('keeps the scroll position%s', async (_desc, moreOptions) => {
       const resourceFetch = createHeldFetch(() => buildResources(26))
       const calendar = initCalendar({ ...options, ...moreOptions, resources: resourceFetch.fetch, events })

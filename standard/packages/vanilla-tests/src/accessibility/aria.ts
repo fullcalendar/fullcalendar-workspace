@@ -161,17 +161,26 @@ describe('view semantics', () => {
       expect(queryPart(calendar.el, 'dayLane')!.closest('[aria-hidden="true"]')).toBeNull()
     })
 
-    // the row header column counts too: every row has it, plus a cell per day
-    // KNOWN BUG (it.fails until fixed): aria-colcount is the day count (7), without the row header column
-    it.fails('counts the row header column in aria-colcount', async () => {
-      const calendar = initCalendar(options)
+    // https://github.com/fullcalendar/fullcalendar/issues/8124
+    // every row has the row header column (or the corner cell above it), plus a column per day
+    it.each([
+      ['', {}, 8],
+      [' in timeGridDay', { initialView: 'timeGridDay' }, 2],
+      [' without weekends', { weekends: false }, 6],
+      [' with only the timed row', { dayHeaders: false, allDaySlot: false }, 8],
+      [' with the week number in the corner, in RTL', { weekNumbers: true, direction: 'rtl' as const }, 8],
+    ])('counts the row header column in aria-colcount%s', async (_desc, moreOptions, colCount) => {
+      const calendar = initCalendar({ ...options, ...moreOptions })
       await waitForSettle()
       const tableEl = queryPart(calendar.el, 'view')!
 
-      const [, allDayRowEl] = queryRole(tableEl, 'row')
-      const allDayColCount = queryRole(allDayRowEl, 'rowheader').length + queryRole(allDayRowEl, 'cell').length
-      expect(allDayColCount).toBe(8)
-      expect(tableEl.getAttribute('aria-colcount')).toBe(String(allDayColCount))
+      expect(tableEl.getAttribute('aria-colcount')).toBe(String(colCount))
+      const rowEls = queryRole(tableEl, 'row')
+      expect(rowEls.length).toBeGreaterThan(0)
+      for (const rowEl of rowEls) {
+        const cellEls = [...queryRole(rowEl, 'rowheader'), ...queryRole(rowEl, 'columnheader'), ...queryRole(rowEl, 'cell')]
+        expect(cellEls.reduce((total, el) => total + Number(el.getAttribute('aria-colspan') || 1), 0)).toBe(colCount)
+      }
     })
 
     it('marks days outside validRange as disabled cells', async () => {
