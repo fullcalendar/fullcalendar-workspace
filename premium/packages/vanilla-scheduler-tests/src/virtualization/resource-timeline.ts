@@ -4,7 +4,7 @@ import { config } from 'fullcalendar/protected-api'
 import { createCalendarElement, initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 import { TimelineModel } from '../lib/models/timeline'
-import { getResourceAreaRows, getTimeScroller } from '../lib/models/timeline-layout'
+import { getResourceAreaRows, getSlotHeaderDates, getSlotLanes, getTimeScroller } from '../lib/models/timeline-layout'
 
 /*
 With virtualization, a resource timeline renders only the slots and rows near the viewport, and
@@ -15,10 +15,6 @@ const options: CalendarOptions = {
   initialView: 'resourceTimelineDay',
   initialDate: '2026-10-05',
   virtualization: true,
-}
-
-function nextFrame(): Promise<void> {
-  return new Promise((resolve) => requestAnimationFrame(() => resolve()))
 }
 
 describe('virtualized slot labels', () => {
@@ -45,13 +41,29 @@ describe('virtualized slot labels', () => {
     }, el)
     await waitForSettle() // a render loop would never settle, failing the test with a timeout
 
-    const observer = new MutationObserver(() => {})
-    observer.observe(calendar.el, { attributes: true, childList: true, characterData: true, subtree: true })
-    for (let i = 0; i < 5; i++) {
-      await nextFrame()
-    }
-    expect(observer.takeRecords()).toEqual([])
-    observer.disconnect()
+    // the scenario still holds: the widest label is virtualized away at the slot width it causes
+    const headerDates = getSlotHeaderDates(calendar.el)
+    expect(headerDates).toContain('2026-10-05T00:00:00')
+    expect(headerDates).not.toContain('2026-10-05T12:00:00')
+  })
+
+  // labels of prior date ranges are remembered too (the header row is reused), but don't count
+  it('forgets the label widths of prior date ranges', async () => {
+    const calendar = initCalendar({
+      ...options,
+      scrollTime: '00:00',
+      resources: [],
+      slotHeaderContent: (arg) => ({
+        html: `<div style="width:${arg.date.getUTCDate() === 5 ? 80 : LABEL_WIDTH}px"></div>`,
+      }),
+    })
+    await waitForSettle()
+    const getSlotWidth = () => getSlotLanes(calendar.el)[0].getBoundingClientRect().width
+    const wideSlotWidth = getSlotWidth()
+
+    calendar.next()
+    await waitForSettle()
+    expect(getSlotWidth()).toBeLessThan(wideSlotWidth)
   })
 })
 
@@ -164,7 +176,7 @@ describe('virtualized fast scrolling', () => {
 
   // https://github.com/fullcalendar/fullcalendar/issues/8135
   it('doesn\'t correct the scroll for empty lanes shorter than their row', async () => {
-    // with the cell's 16px of padding, the row is exactly the initial estimate, so there's nothing to correct
+    // the lane (12px, empty) is shorter than the row (40px, with the cell's 16px of padding)
     const calendar = initManyRowCalendar({ resourceCellContent: { html: '<div style="height:24px"></div>' } })
     await waitForSettle()
 
@@ -216,7 +228,7 @@ describe('virtualized fast scrolling', () => {
     })
     await waitForSettle()
 
-    // most rows keep the initial estimate of 40px, plus a 1px border
-    expect(getTimeScroller(calendar.el).scrollHeight).toBeLessThan(resources.length * 41 * 1.5)
+    // unmeasured rows keep the initial estimate, well under the 60px of content in the measured ones
+    expect(getTimeScroller(calendar.el).scrollHeight).toBeLessThan(resources.length * 60)
   })
 })
