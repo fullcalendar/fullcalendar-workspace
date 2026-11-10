@@ -177,7 +177,8 @@ export class Calendar extends CalendarApiImpl {
     }
   }
 
-  // only removes a part it set, leaving any data-fc-part the app put on the element
+  // without the dev-parts plugin there's no part, and an app's own data-fc-part is left alone.
+  // with it, the calendar's part replaces the app's, and is removed on destroy
   private setPart(part: string | undefined) {
     if (part !== this.currentPart) {
       if (part) {
