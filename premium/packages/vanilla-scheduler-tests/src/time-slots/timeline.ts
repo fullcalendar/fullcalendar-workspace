@@ -51,6 +51,35 @@ describe('timeline time slots', () => {
       expect([...levels].sort()).toEqual([0, 1])
     })
 
+    it('gives slotHeaderContent the parts of its text, and getters for day-level parts', async () => {
+      const slotHeaderContent = vi.fn()
+      initCalendar({
+        initialView: 'timelineWeek',
+        initialDate: '2017-10-27',
+        slotHeaderFormat: [
+          { weekday: 'short', month: 'short', day: 'numeric' },
+          { hour: 'numeric', minute: 'numeric' },
+        ],
+        slotHeaderContent,
+      })
+      await waitForSettle()
+
+      const infos = slotHeaderContent.mock.calls.map(([info]) => info)
+      const dayInfo = infos.find((info) => !info.isTime && info.text === 'Fri, Oct 27')!
+      const timeInfo = infos.find((info) => info.isTime)!
+
+      expect(dayInfo.textParts.map((part) => part.value).join('')).toBe(dayInfo.text)
+      expect(dayInfo.weekdayText).toBe('Fri')
+      expect(dayInfo.dayNumberText).toBe('27')
+      expect(dayInfo.monthText).toBe('Oct')
+
+      expect(timeInfo.textParts.map((part) => part.value).join('')).toBe(timeInfo.text)
+      expect(timeInfo.textParts.some((part) => part.type === 'hour')).toBe(true)
+      expect(timeInfo.weekdayText).toBe('')
+      expect(timeInfo.dayNumberText).toBe('')
+      expect(timeInfo.monthText).toBe('')
+    })
+
     it.each([
       ['day', 'timelineWeek', { days: 1 }, 7, '2017-10-22T00:00:00.000Z'],
       ['hour', 'timelineDay', { hours: 1 }, 24, '2017-10-27T00:00:00.000Z'],

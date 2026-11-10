@@ -1,4 +1,4 @@
-import { joinDateTimeFormatParts } from '@full-ui/headless-calendar'
+import { DateTimeFormatPartWithWeek, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { BaseOptionsRefined } from '@fullcalendar/core/protected-api'
 import { Duration } from '@fullcalendar/preact/public-api'
 import {
@@ -46,6 +46,7 @@ export interface TimelineHeaderCellData {
   startMs: number | null // exact instant for timed-axis cells
   isMajor: boolean
   text: string
+  textParts: DateTimeFormatPartWithWeek[]
   rowUnit: string
   colspan: number
 }
@@ -649,9 +650,9 @@ function buildCellRows(
       const key = rowUnit + ':' + (timeSlot?.key ?? tDateProfile.slotKeys[i])
 
       if (isSuperRow) {
-        let text = formatCell(date, startMs, format, dateEnv)
-        if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(key, date, startMs, isMajor, text, rowUnit)
+        let textParts = formatCell(date, startMs, format, dateEnv)
+        if (!leadingCell || (leadingCell.text !== joinDateTimeFormatParts(textParts))) {
+          newCell = buildCellObject(key, date, startMs, isMajor, textParts, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -663,8 +664,8 @@ function buildCellRows(
           tDateProfile.labelInterval,
         ))
       ) {
-        let text = formatCell(date, startMs, format, dateEnv)
-        newCell = buildCellObject(key, date, startMs, isMajor, text, rowUnit)
+        let textParts = formatCell(date, startMs, format, dateEnv)
+        newCell = buildCellObject(key, date, startMs, isMajor, textParts, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
@@ -684,10 +685,15 @@ where cells are civil dates without an exact instant. Timed-axis cells always ca
 keeping their labels fold-correct during DST. Passing undefined lets DateEnv resolve the
 marker first-occurrence — the occurrence choice can't affect a date-only label.
 */
-function formatCell(date: DateMarker, startMs: number | null, format: any, dateEnv: DateEnv): string {
-  return joinDateTimeFormatParts(dateEnv.formatToParts(date, format, {
+function formatCell(
+  date: DateMarker,
+  startMs: number | null,
+  format: any,
+  dateEnv: DateEnv,
+): DateTimeFormatPartWithWeek[] {
+  return dateEnv.formatToParts(date, format, {
     instantMs: startMs ?? undefined,
-  }))
+  })
 }
 
 function buildCellObject(
@@ -695,8 +701,9 @@ function buildCellObject(
   date: DateMarker,
   startMs: number | null,
   isMajor: boolean,
-  text: string,
+  textParts: DateTimeFormatPartWithWeek[],
   rowUnit: string,
 ): TimelineHeaderCellData {
-  return { key, date, startMs, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
+  const text = joinDateTimeFormatParts(textParts)
+  return { key, date, startMs, isMajor, text, textParts, rowUnit, colspan: 1 } // colspan mutated later
 }

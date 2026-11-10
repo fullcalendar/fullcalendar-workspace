@@ -2,6 +2,9 @@ import { SlotHeaderInfo, joinClassNames } from '@fullcalendar/preact/public-api'
 import {
   BaseComponent,
   buildNavLinkAttrs,
+  findDayNumberText,
+  findMonthText,
+  findWeekdayText,
   ContentContainer,
   DateMarker,
   DateProfile,
@@ -72,7 +75,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     let hasNavLink = options.navLinks && !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
     let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
 
-    let renderProps = {
+    let { textParts } = cell
+    let renderProps: SlotHeaderInfo = {
       ...dateMeta,
       level: props.rowLevel,
       isMajor: cell.isMajor,
@@ -81,6 +85,10 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
       isTime,
       hasNavLink,
       text: cell.text,
+      textParts,
+      get weekdayText() { return findWeekdayText(textParts) },
+      get dayNumberText() { return findDayNumberText(textParts) },
+      get monthText() { return findMonthText(textParts) },
       isFirst: props.isFirst,
       view: context.viewApi,
     }
