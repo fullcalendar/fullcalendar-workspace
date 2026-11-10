@@ -17,6 +17,9 @@ export const DST_TIMELINE_OPTIONS = {
   initialDate: FALL_BACK_DAY,
   scrollTime: '00:00',
   slotDuration: '00:30',
+  // wider than eventMinWidth (30px), so a one-slot event spans exactly its slot. Otherwise slots size
+  // to their labels, which on Linux's fonts makes them 27px, and stretches those events
+  slotMinWidth: 40,
 }
 
 export const FALL_BACK_FIRST_0130_SLOT = 3
