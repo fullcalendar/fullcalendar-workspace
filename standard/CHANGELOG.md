@@ -6,6 +6,7 @@
 - FIX: TypeScript: an event source function's success callback (or promise) only accepted `EventInput[]`, though any response can be given for `eventSourceSuccess` or the source's `success` to transform
 - FIX: `resource.toPlainObject()` left out the resource's `eventColor`
 - FIX: `event.getResources()` returned `null` for each resource that doesn't exist or hasn't been fetched yet. It now leaves them out (#7300)
+- FIX: Accessibility: a view button alone in its toolbar group had `role="tab"` with no tablist around it. It's now a toggle button with `aria-pressed`, like a view button grouped with other buttons
 
 
 ## v7.1.4

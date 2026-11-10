@@ -343,7 +343,8 @@ describe('toolbar semantics', () => {
   })
 
   /*
-  Only view buttons have a pressed or selected state. Prev, next and today aren't toggles.
+  Only view buttons have a pressed or selected state. Prev, next and today aren't toggles, alone or
+  grouped with view buttons. https://github.com/fullcalendar/fullcalendar/issues/8042
   KNOWN BUG (it.fails until fixed): ToolbarSection.tsx gives every button outside a tablist
   aria-pressed, so screen readers announce these as toggle buttons that aren't pressed.
   */
@@ -360,9 +361,8 @@ describe('toolbar semantics', () => {
     expect(buttonEls.map((el) => el.hasAttribute('aria-pressed'))).toEqual([false, false, false, false])
   })
 
-  // a tab must be owned by a tablist
-  // KNOWN BUG (it.fails until fixed): a view button alone in its group gets role=tab with no tablist around it
-  it.fails('doesn\'t render a lone view button as a tab outside a tablist', async () => {
+  // a tab must be owned by a tablist, so a view button alone in its group is a toggle button instead
+  it('marks a lone view button as pressed, not as a tab', async () => {
     const calendar = initCalendar({
       ...options,
       headerToolbar: { left: 'prev,next', right: 'dayGridMonth' },
@@ -370,9 +370,10 @@ describe('toolbar semantics', () => {
     await waitForSettle()
 
     const buttonEl = ToolbarModel.header(calendar.el)!.getButton('Month view')
-    const isTab = buttonEl.getAttribute('role') === 'tab'
-    const isInTablist = buttonEl.closest('[role="tablist"]') !== null
-    expect({ isTab, isInTablist }).not.toEqual({ isTab: true, isInTablist: false })
+    expect(buttonEl.hasAttribute('role')).toBe(false)
+    expect(buttonEl.hasAttribute('aria-selected')).toBe(false)
+    expect(buttonEl.getAttribute('aria-pressed')).toBe('true')
+    expect(calendar.el.querySelector('[role="tablist"]')).toBeNull()
   })
 
   it('labels icon buttons with their hint, hiding the icon', async () => {
