@@ -215,7 +215,7 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
                 tag='div'
                 attrs={dataConfig.innerAttrs}
                 className={generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps)}
-                part={getPartAttr(context.options, renderConfig.partName + 'Inner')}
+                part={getPartAttr(context.options, renderConfig.partName && renderConfig.partName + 'Inner')}
               />
             </div>
           </>
