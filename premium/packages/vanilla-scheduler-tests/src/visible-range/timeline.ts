@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Calendar } from 'fullcalendar'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
+import { getEventEls } from '@fullcalendar-tests/standard/src/lib/models/events'
 import { getSlotDates, getSlotHeaderDates } from '../lib/models/timeline-layout'
 
 describe('timeline visible range', () => {
@@ -37,6 +38,31 @@ describe('timeline visible range', () => {
       await waitForSettle()
 
       expect(getSlotHeaderDates(calendar.el, 0).slice(0, 2)).toEqual(['2018-01-22', '2018-01-29'])
+    })
+
+    /*
+    KNOWN BUG (`it.fails` until fixed): the slots are week-aligned, but the active range isn't. The
+    slots cover Jan 22 – Jul 23, while the active range stays Jan 24 – Jul 26. Events are fetched for
+    the active range only, so an event on Jan 22 doesn't render though its slot does, and Jul 23-25 has
+    no slot. normalizeRange in timeline-date-profile.ts aligns the slots' range, not the date profile's.
+    Whether the fix extends the end to whole weeks (Jul 30) or keeps 26 slots is open: either way the
+    active range should be the slots' range.
+    */
+    it.fails.each([
+      ['slotDuration', { slotDuration: { weeks: 1 } }],
+      ['slotHeaderInterval', { slotHeaderInterval: { weeks: 1 } }],
+    ])('makes the active range the slots\' range with a %s in weeks', async (_desc, moreOptions) => {
+      const calendar = initCalendar({
+        ...options,
+        ...moreOptions,
+        events: [{ id: 'first-slot', start: '2018-01-22', end: '2018-01-23' }],
+      })
+      await waitForSettle()
+
+      const slotDates = getSlotDates(calendar.el)
+      const slotsEnd = new Date(Date.parse(slotDates.at(-1)!) + 7 * 24 * 60 * 60 * 1000)
+      expect(getActiveRange(calendar)).toEqual([new Date(slotDates[0]).toISOString(), slotsEnd.toISOString()])
+      expect(getEventEls(calendar.el, 'first-slot')).toHaveLength(1)
     })
 
     /*

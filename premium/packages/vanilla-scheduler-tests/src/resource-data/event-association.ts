@@ -86,12 +86,31 @@ describe('associating events with resources', () => {
     })
     await waitForSettle()
 
-    // (before the resources arrive, getResources gives null for each unknown resource id)
     expect(new TimelineModel(calendar.el).getEventEls()).toHaveLength(0)
 
     await heldFetch.releaseAll()
 
     expect(summarize(calendar)).toEqual(EXPECTED)
+  })
+
+  /*
+  https://github.com/fullcalendar/fullcalendar/issues/7300
+  KNOWN BUG (`it.fails` until fixed): getResources maps the event's resource ids through getResourceById
+  without filtering, so an unknown id, or one whose resources haven't arrived, gives null, though the
+  return type is ResourceApi[]. #7300 also suggests typing it (ResourceApi | null)[] instead.
+  */
+  it.fails.each([
+    ['an unknown resource', () => resources],
+    ['resources that haven\'t arrived yet', () => createHeldFetch(() => resources).fetch],
+  ])('leaves %s out of getResources', async (_desc, buildResources) => {
+    const calendar = initCalendar({
+      ...options,
+      resources: buildResources(),
+      events: [{ id: '1', resourceIds: ['a', 'z'], start: '2015-07-11T09:00:00' }],
+    })
+    await waitForSettle()
+
+    expect(calendar.getEventById('1')!.getResources()).not.toContain(null)
   })
 
   describe('EventApi::setResources', () => {

@@ -525,6 +525,28 @@ describe('event rendering in timeline', () => {
       expectEventSpansSlots(calendar.el, '1', startSlot, endSlot)
     })
 
+    /*
+    KNOWN BUG (`it.fails` until fixed): a nonexistent wall-clock time resolves forward (02:30 -> 03:30 EDT)
+    for start/end, but startStr/endStr format the unresolved time with the new offset:
+    '2024-03-10T02:30:00-04:00' is 06:30Z, an hour before start. Fed back into addEvent, it moves the event.
+    buildRangeEdgeOutput in standard/packages/preact/src/structs/event-instance.ts, since v7.1.0.
+    */
+    it.fails('gives a nonexistent time\'s string the same instant as its Date', async () => {
+      const calendar = await renderDstEvents({
+        initialDate: SPRING_FORWARD_DAY,
+        events: [
+          { id: 'starts', start: '2024-03-10T02:30:00', end: '2024-03-10T04:00:00' },
+          { id: 'ends', start: '2024-03-10T01:00:00', end: '2024-03-10T02:30:00' },
+        ],
+      })
+
+      for (const event of calendar.getEvents()) {
+        const plain = event.toPlainObject()
+        expect([event.startStr, event.endStr, plain.start, plain.end].map((str) => new Date(str).toISOString()), event.id)
+          .toEqual([event.start, event.end, event.start, event.end].map((date) => date!.toISOString()))
+      }
+    })
+
     it('renders events with explicit offsets over the matching copy of the repeated hour', async () => {
       const calendar = await renderDstEvents({
         events: [

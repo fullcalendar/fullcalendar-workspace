@@ -342,6 +342,24 @@ describe('toolbar semantics', () => {
     expect([monthEl, weekEl].map((el) => el.hasAttribute('aria-selected'))).toEqual([false, false])
   })
 
+  /*
+  Only view buttons have a pressed or selected state. Prev, next and today aren't toggles.
+  KNOWN BUG (it.fails until fixed): ToolbarSection.tsx gives every button outside a tablist
+  aria-pressed, so screen readers announce these as toggle buttons that aren't pressed.
+  */
+  it.fails('doesn\'t mark prev, next and today as toggle buttons', async () => {
+    const calendar = initCalendar({
+      ...options,
+      headerToolbar: { left: 'prev,next today', right: 'today,dayGridMonth' },
+    })
+    await waitForSettle()
+
+    const buttonEls = ToolbarModel.header(calendar.el)!.getButtons()
+      .filter((el) => !el.textContent!.includes('Month'))
+    expect(buttonEls).toHaveLength(4)
+    expect(buttonEls.map((el) => el.hasAttribute('aria-pressed'))).toEqual([false, false, false, false])
+  })
+
   // a tab must be owned by a tablist
   // KNOWN BUG (it.fails until fixed): a view button alone in its group gets role=tab with no tablist around it
   it.fails('doesn\'t render a lone view button as a tab outside a tablist', async () => {
