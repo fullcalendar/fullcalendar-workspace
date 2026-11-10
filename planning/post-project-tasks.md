@@ -1,6 +1,6 @@
 # Post-Project Tasks
 
-The backlog for after the test revamp lands: decisions first, then bugs to fix, then GitHub housekeeping.
+The backlog for after the test revamp lands: decisions first, then bugs to fix, then GitHub housekeeping. Every known bug has an `it.fails` test, except the all-day drop gap, whose patch brings its own tests.
 
 ## Decisions
 
@@ -26,49 +26,19 @@ Each is an `it.fails` test with a `KNOWN BUG` comment explaining it. It passes w
 grep -rn "it\.fails" standard/packages/vanilla-tests/src premium/packages/vanilla-scheduler-tests/src
 ```
 
-- **Timeline weeks given in days don't align to `firstDay`.** `{ days: 7 }` or `{ days: 14 }` as slots or header intervals isn't week-aligned, though `{ weeks: 1 }` is: only a slotDuration whose greatest unit is week/month/year sets `largeUnit`, and slotHeaderInterval is never considered (`visible-range/timeline.ts`). Fix with the `activeStart` bug below.
+- **A week-aligned timeline's active range isn't its slots' range.** With `duration: { days: 183 }`, `slotDuration` or `slotHeaderInterval` of `{ weeks: 1 }`, `firstDay: 1` and a Wednesday initial date (Jan 24), the slots cover Jan 22 – Jul 23, but `activeStart`/`activeEnd` stay Jan 24 – Jul 26. Events are fetched for the active range only, so an event on Jan 22 doesn't render though its slot does, and Jul 23–25 has no slot. Likely cause: `normalizeRange` in `timeline-date-profile.ts` aligns the slots' range to `largeUnit`, but not the date profile's. Open detail for the fix: extend the end to whole weeks (Jul 30, as dayGrid does) or keep 26 slots. The test asserts only that the active range is the slots' range (`visible-range/timeline.ts`). Fix with the next one.
+- **Timeline weeks given in days don't align to `firstDay`.** `{ days: 7 }` or `{ days: 14 }` as slots or header intervals isn't week-aligned, though `{ weeks: 1 }` is: only a slotDuration whose greatest unit is week/month/year sets `largeUnit`, and slotHeaderInterval is never considered (`visible-range/timeline.ts`).
 - **#4937:** timelineYear with `slotHeaderInterval: { months: 1 }` and `slotDuration: { days: 1 }` warns and renders 12 month slots (`visible-range/timeline.ts`).
 - **Timeline `next()` moves backwards** when `dateIncrement` is smaller than the duration (`visible-range/scheduler-views.ts`).
 - **`ResourceApi`:** `toPlainObject()` never outputs `eventColor`, and `setProp()` drops event-styling props (`resource-data/crud.ts`).
+- **#7300: `EventApi.getResources()` returns `null` entries** for an unknown resource id, or before async `resources` arrive, though the type is `ResourceApi[]` (it maps ids through `getResourceById` without filtering). The test expects them left out; #7300 also suggests typing it `(ResourceApi | null)[]` instead (`resource-data/event-association.ts`).
+- **`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`.** `'2024-03-10T02:30:00'` in America/New_York resolves to 03:30 EDT (07:30Z) for `start` and the rendering, but `startStr` is `'2024-03-10T02:30:00-04:00'` (06:30Z), and fed back into `addEvent` it moves the event an hour earlier. Same for `endStr` and `toPlainObject()`. Not a breaking fix: it only changes output for wall-clock times that don't exist. In `buildRangeEdgeOutput` (`standard/packages/preact/src/structs/event-instance.ts`, since v7.1.0), the no-instant branch takes `date` from `dateEnv.toDate(marker)`, which resolves the gap, but formats `dateStr` from the unresolved marker; derive both from `dateEnv.toDate(marker).valueOf()`, as the instant branch does (`event-render/timeline.ts`). No GitHub issue; #3887 (closed) is the closest.
 - **Resource views rank a source's `color` above a resource's `eventColor`,** against the docs and views without resources (`resource-data/event-styling.ts`). The fix changes colors for apps that set both, so it could wait for v8; see the precedence section of `postpone-till-next-major.md`.
 - **dayGrid business hours:** a range crossing a week boundary leaves the Sunday unshaded (`business-hours/daygrid.ts`).
 - **A lone view button is `role=tab` with no `tablist`** (`accessibility/aria.ts`).
+- **Prev, next and today are announced as toggle buttons:** they get `aria-pressed="false"`, because `ToolbarSection.tsx` gives every non-tab button `'aria-pressed': isSelected`. Only view buttons should have a pressed or selected state (`accessibility/aria.ts`). Adam: fix this at the end of the project.
 - **Under React, `moreLinkClick`'s `jsEvent` is a SyntheticEvent,** not the native event (`more-link/click.ts`).
 - **A Google Calendar ID or API URL given as a plain string source is fetched as a JSON feed,** because global plugins (the built-in JSON feed source) are added after the calendar's plugins and win (`event-sources/google-calendar.ts`). Same in v6; no GitHub issue found.
-
-## Bugs without a test yet
-
-Write the test with the fix, or as an `it.fails` first.
-
-### A week-aligned timeline's `activeStart` is after its first slot (verify first)
-
-Adam (2026-10-20): sounds like a real bug; verify it, and leave it untested for now.
-
-```js
-{ initialView: 'timeline', initialDate: '2018-01-24' /* Wed */, duration: { days: 183 },
-  slotDuration: { weeks: 1 }, firstDay: 1 /* Mon */ }
-```
-
-The slots start on Monday Jan 22, but `view.activeStart` is Wednesday Jan 24, so the first slot starts before the active range. Same with `slotHeaderInterval: { weeks: 1 }`. In dayGridMonth, `activeStart` is the first rendered cell. Expected: the range starts on the first slot (Jan 22 – Jul 24). Likely cause: `normalizeRange` in `timeline-date-profile.ts` aligns the slots' range to `largeUnit`, but not the date profile's active range.
-
-### `startStr` of an event at a nonexistent (spring-forward) time disagrees with `start`
-
-```js
-initCalendar({ timeZone: 'America/New_York', initialView: 'timelineDay', initialDate: '2024-03-10',
-  events: [{ id: '1', start: '2024-03-10T02:30:00', end: '2024-03-10T04:00:00' }] })
-e.start.toISOString() // '2024-03-10T07:30:00.000Z' (03:30 EDT, where it renders)
-e.startStr            // '2024-03-10T02:30:00-04:00' (= 06:30Z: a different instant, and a nonexistent wall-clock time)
-```
-
-Feeding `startStr` back into `addEvent` places the event an hour before where it rendered. Not a breaking fix: it only changes output for times that don't exist on the wall clock. In `buildRangeEdgeOutput` (`standard/packages/preact/src/structs/event-instance.ts`, since v7.1.0), the no-instant branch takes `date` from `dateEnv.toDate(marker)`, which resolves the gap forward, but formats `dateStr` from the unresolved marker. Derive both from `dateEnv.toDate(marker).valueOf()`, as the instant branch does; check `endStr`, `toPlainObject` and the repeated-hour case too. The test today asserts only `start` (`premium/.../src/event-render/timeline.ts`). No GitHub issue; #3887 (closed) is the closest.
-
-### `EventApi.getResources()` returns `null` entries
-
-It maps `resourceIds` through `getResourceById` without filtering, so an event whose resources haven't loaded (async `resources`) or don't exist returns `[null]`, though the type is `ResourceApi[]`. Likely #7300 (open), "The described return type of `EventApi::getResources` is incorrect".
-
-### Ordinary toolbar buttons are announced as toggles
-
-Prev, next and today (any button not in a group of only view buttons) get `aria-pressed="false"`, so screen readers announce them as toggle buttons. Checked in both renderers. `ToolbarSection.tsx` gives every non-tab button `'aria-pressed': isSelected`. Only view buttons should carry a pressed or selected state: as tabs in a view-only group, or `aria-pressed` in a mixed group. Adam: fix this at the end of the project.
 
 ## GitHub housekeeping
 
