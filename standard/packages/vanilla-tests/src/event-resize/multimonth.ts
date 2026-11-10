@@ -27,6 +27,7 @@ describe('event resizing in multiMonth', () => {
   })
 
   /*
+  https://github.com/fullcalendar/fullcalendar/issues/7183 (about selection; resizing has the same cause)
   KNOWN BUG (it.fails until fixed): a resize can't cross from one month's grid into another's.
   Each month is its own component, and EventResizing only hit-tests its own component, so the edge
   can't land on the other month's days: the resize is cancelled and `eventResize` doesn't fire.

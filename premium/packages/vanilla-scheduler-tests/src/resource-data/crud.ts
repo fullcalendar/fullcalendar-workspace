@@ -219,7 +219,7 @@ describe('resource CRUD', () => {
     })
 
     // KNOWN BUG (`it.fails` until fixed): setProp writes the raw prop name onto the internal resource, but event-styling props
-    // live in its `ui` (eventColor -> ui.color), so the change is lost. See planning/archive/agent-notes/scheduler-misc.md
+    // live in its `ui` (eventColor -> ui.color), so the change is lost. See planning/bugs/resource-set-prop-event-styling.md
     it.fails('changes an event-styling prop', () => {
       const calendar = initCalendar({ ...options, resources: [{ id: 'a', title: 'room a', eventColor: 'red' }] })
       const resource = calendar.getResourceById('a')!

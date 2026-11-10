@@ -58,7 +58,8 @@ describe('select method', () => {
       expect(info.endStr).toBe('2014-05-09T06:00:00Z')
     })
 
-    // select() doesn't check what the view can show, so it still fires select. See the v8 notes
+    // select() doesn't check what the view can show, so it still fires select.
+    // See planning/behaviors/select-method-no-checks.md
     it('highlights nothing for dates outside the view, but still fires select', async () => {
       const select = vi.fn()
       const calendar = initCalendar({ ...dayGridOptions, select })
@@ -71,6 +72,7 @@ describe('select method', () => {
       expect(select).toHaveBeenCalledOnce()
     })
 
+    // https://github.com/fullcalendar/fullcalendar/issues/4150 (selectOverlap isn't checked either)
     it('fires select even when selectAllow rejects the dates, or they\'re outside validRange', async () => {
       const select = vi.fn()
       const calendar = initCalendar({

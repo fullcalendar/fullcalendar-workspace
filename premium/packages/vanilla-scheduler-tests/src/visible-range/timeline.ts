@@ -66,6 +66,7 @@ describe('timeline visible range', () => {
     })
 
     /*
+    https://github.com/fullcalendar/fullcalendar/issues/7026
     KNOWN BUG (`it.fails` until fixed): a whole number of weeks given in days isn't treated as weeks.
     Only a slotDuration whose greatest unit is week/month/year sets largeUnit
     (timeline-date-profile.ts), so these start on the initial Wednesday.

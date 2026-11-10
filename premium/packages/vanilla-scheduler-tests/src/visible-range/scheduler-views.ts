@@ -50,8 +50,9 @@ describe('visible range in scheduler views', () => {
       expect(getActiveRange(calendar)).toEqual(['2018-04-01', '2018-05-01'])
     })
 
+    // https://github.com/fullcalendar/fullcalendar/issues/4678
     // KNOWN BUG (`it.fails` until fixed): next() goes from the start of the duration's unit (Apr 1) plus 7 days, landing on
-    // Apr 8, before the initial Apr 12. See planning/archive/agent-notes/scheduler-misc.md
+    // Apr 8, before the initial Apr 12
     it.fails('moves forward by a dateIncrement smaller than the duration', () => {
       const calendar = initCalendar({ ...options, dateIncrement: { days: 7 } })
 

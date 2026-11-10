@@ -15,7 +15,8 @@ that the library's drag produces. Each library is tested two ways: dragging an e
 calendar ("draggable"), and dragging an item out of a sortable list.
 
 SortableJS needs `forceFallback: true`. By default it uses native HTML5 drag-and-drop, during which
-the browser sends no mouse events, so ThirdPartyDraggable can't follow it.
+the browser sends no mouse events, so ThirdPartyDraggable can't follow it:
+https://github.com/fullcalendar/fullcalendar/issues/7492
 */
 
 let jQuery: any

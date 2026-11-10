@@ -30,6 +30,7 @@ describe('selecting dates in multiMonth', () => {
   })
 
   /*
+  https://github.com/fullcalendar/fullcalendar/issues/7183
   KNOWN BUG (it.fails until fixed): a selection can't cross from one month's grid into another's.
   Each month is its own component, and DateSelecting only hit-tests its own component, so once the
   pointer enters the next month's grid there's no hit: nothing is selected, and `select` doesn't fire.
