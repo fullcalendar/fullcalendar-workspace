@@ -8,6 +8,7 @@
 - FIX: `event.getResources()` returned `null` for each resource that doesn't exist or hasn't been fetched yet. It now leaves them out (#7300)
 - FIX: Accessibility: a view button alone in its toolbar group had `role="tab"` with no tablist around it. It's now a toggle button with `aria-pressed`, like a view button grouped with other buttons
 - FIX: Accessibility: prev, next, today and custom toolbar buttons had `aria-pressed="false"`, so screen readers announced them as toggle buttons. Only view buttons have it now (#8042)
+- FIX: An event at a wall-clock time skipped by a daylight-saving change (given without an offset) resolves to the time after the change, but `startStr`/`endStr` named the skipped time, an hour before `start`/`end`. Fed back into `addEvent`, the string moved the event
 
 
 ## v7.1.4

@@ -526,20 +526,27 @@ describe('event rendering in timeline', () => {
     })
 
     /*
-    KNOWN BUG (`it.fails` until fixed): a nonexistent wall-clock time resolves forward (02:30 -> 03:30 EDT)
-    for start/end, but startStr/endStr format the unresolved time with the new offset:
-    '2024-03-10T02:30:00-04:00' is 06:30Z, an hour before start. Fed back into addEvent, it moves the event.
-    buildRangeEdgeOutput in standard/packages/preact/src/structs/event-instance.ts, since v7.1.0.
+    Without an offset, a nonexistent wall-clock time resolves forward (02:30 -> 03:30 EDT), and its
+    string names that same instant, so feeding it back into addEvent doesn't move the event. A
+    repeated wall-clock time means its first occurrence, in EDT.
     */
-    it.fails('gives a nonexistent time\'s string the same instant as its Date', async () => {
+    it('gives an event\'s strings the instants of its Dates, around DST changes', async () => {
       const calendar = await renderDstEvents({
         initialDate: SPRING_FORWARD_DAY,
         events: [
-          { id: 'starts', start: '2024-03-10T02:30:00', end: '2024-03-10T04:00:00' },
-          { id: 'ends', start: '2024-03-10T01:00:00', end: '2024-03-10T02:30:00' },
+          { id: 'starts-in-gap', start: '2024-03-10T02:30:00', end: '2024-03-10T04:00:00' },
+          { id: 'ends-in-gap', start: '2024-03-10T01:00:00', end: '2024-03-10T02:30:00' },
+          { id: 'repeated', start: '2024-11-03T01:30:00', end: '2024-11-03T02:00:00' },
+          { id: 'ordinary', start: '2024-03-11T09:00:00', end: '2024-03-11T10:00:00' },
         ],
       })
 
+      expect(calendar.getEvents().map((event) => [event.id, event.startStr, event.endStr])).toEqual([
+        ['starts-in-gap', '2024-03-10T03:30:00-04:00', '2024-03-10T04:00:00-04:00'],
+        ['ends-in-gap', '2024-03-10T01:00:00-05:00', '2024-03-10T03:30:00-04:00'],
+        ['repeated', '2024-11-03T01:30:00-04:00', '2024-11-03T02:00:00-05:00'],
+        ['ordinary', '2024-03-11T09:00:00-04:00', '2024-03-11T10:00:00-04:00'],
+      ])
       for (const event of calendar.getEvents()) {
         const plain = event.toPlainObject()
         expect([event.startStr, event.endStr, plain.start, plain.end].map((str) => new Date(str).toISOString()), event.id)

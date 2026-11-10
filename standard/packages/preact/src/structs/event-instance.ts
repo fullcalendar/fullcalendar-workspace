@@ -76,24 +76,33 @@ export function buildRangeEdgeOutput(
   omitTime?: boolean,
 ): RangeEdgeOutput {
   const canonicalMarker = instantMs != null ? dateEnv.timestampToMarker(instantMs) : marker
-  const timeZoneOffset = instantMs != null
-    ? Math.round((canonicalMarker.valueOf() - instantMs) / 60000)
-    : dateEnv.offsetForMarker(marker)
 
   if (!omitTime && instantMs != null) {
     return {
       marker: canonicalMarker,
       date: new Date(instantMs),
-      dateStr: buildIsoString(canonicalMarker, timeZoneOffset),
+      dateStr: buildIsoString(canonicalMarker, Math.round((canonicalMarker.valueOf() - instantMs) / 60000)),
     }
   }
 
+  const date = dateEnv.toDate(marker)
+
+  if (omitTime) {
+    return {
+      marker: canonicalMarker,
+      date,
+      dateStr: dateEnv.formatIso(marker, { omitTime }),
+    }
+  }
+
+  // The string names the instant `date` resolved to. A nonexistent wall-clock time (in a DST gap)
+  // resolves forward, so formatting the marker as given would name a different instant
+  const resolvedMarker = dateEnv.timestampToMarker(date.valueOf())
+
   return {
     marker: canonicalMarker,
-    date: dateEnv.toDate(marker),
-    dateStr: omitTime
-      ? dateEnv.formatIso(marker, { omitTime })
-      : buildIsoString(marker, timeZoneOffset),
+    date,
+    dateStr: buildIsoString(resolvedMarker, Math.round((resolvedMarker.valueOf() - date.valueOf()) / 60000)),
   }
 }
 
