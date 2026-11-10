@@ -36,6 +36,7 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | [`ResourceApi.toPlainObject()` never outputs `eventColor`](bugs/resource-to-plain-object-event-color.md) | fixed | `resource-data/crud.ts` |  |
 | [Scrolling to a re-added resource stops short in a virtualized timeline, under React](bugs/virtualized-scroll-to-resource-stops-short.md) | fixed | `resource-data/timeline.ts` |  |
 | [`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`](bugs/nonexistent-time-start-str.md) | fixed | `event-render/timeline.ts` | [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related) |
+| [Tests couldn't load scripts from the root `node_modules` in a fresh checkout](bugs/vite-workspace-root-in-ci.md) | fixed | `event-drag/third-party.ts` |  |
 
 ## Features
 

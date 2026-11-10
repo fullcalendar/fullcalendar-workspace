@@ -27,6 +27,14 @@ const FORCE_REACT_ALIASES = [
   { find: /^fullcalendar-scheduler(\/.*)?$/, replacement: 'fullcalendar-scheduler-w-react$1' },
 ]
 
+/*
+The monorepo's root, where pnpm installs every package (node_modules/.pnpm). Vite only serves files
+under the nearest workspace root, which in a fresh checkout is standard/ (its pnpm-workspace.yaml,
+which `meta:hide` hides locally). Scripts loaded from the root's node_modules, like jQuery, would be
+refused without this.
+*/
+const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
+
 export function createTestConfig(options: {
   setupFile: string
   // deps that tests import lazily. pre-bundling them avoids a Vite reload mid-run on cold starts
@@ -36,6 +44,11 @@ export function createTestConfig(options: {
     optimizeDeps: {
       include: options.optimizeDepsInclude || [],
     },
+    server: {
+      fs: {
+        allow: [REPO_ROOT],
+      },
+    },
     resolve: {
       alias: process.env.FORCE_REACT ? FORCE_REACT_ALIASES : [],
     },
@@ -44,10 +57,6 @@ export function createTestConfig(options: {
     },
     test: {
       onConsoleLog(log) {
-        // the dev-parts plugin's once-per-page warning would otherwise print for every test file
-        if (log.includes('dev-parts plugin is for development only')) {
-          return false
-        }
         // expected and harmless. unlike Karma, Vitest doesn't fail tests on them
         if (log.includes('ResizeObserver loop completed with undelivered notifications')) {
           return false
