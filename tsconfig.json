@@ -29,12 +29,6 @@
       "path": "premium/packages/vanilla-scheduler-w-react"
     },
     {
-      "path": "standard/packages/vanilla-tests"
-    },
-    {
-      "path": "premium/packages/vanilla-scheduler-tests"
-    },
-    {
       "path": "standard/packages/web-component"
     },
     {

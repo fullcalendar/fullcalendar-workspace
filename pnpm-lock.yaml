@@ -10,9 +10,6 @@ patchedDependencies:
   '@angular/build@18.2.21':
     hash: 9e1598f4338a9028bdfa94651c3b3138487a8ff976bc9845afaef498e5cf5293
     path: scripts/patches/@angular__build@18.patch
-  jasmine-jquery@2.1.1:
-    hash: 67897d46cf39c5f967a51ffdefb9218080e44eded878a866b057bd84e8703db7
-    path: standard/scripts/patches/jasmine-jquery@2.1.1.patch
 
 importers:
 
@@ -72,6 +69,9 @@ importers:
       zone.js:
         specifier: ~0.13.0
         version: 0.13.3
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
@@ -106,9 +106,6 @@ importers:
       typescript:
         specifier: ~5.0.2
         version: 5.0.4
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular17:
     dependencies:
@@ -154,6 +151,9 @@ importers:
       zone.js:
         specifier: ~0.14.2
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.0.3
@@ -188,9 +188,6 @@ importers:
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular18:
     dependencies:
@@ -236,6 +233,9 @@ importers:
       zone.js:
         specifier: ~0.14.3
         version: 0.14.10
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
@@ -270,9 +270,6 @@ importers:
       typescript:
         specifier: ~5.4.2
         version: 5.4.5
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular19:
     dependencies:
@@ -318,6 +315,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^19.0.2
@@ -352,9 +352,6 @@ importers:
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular20:
     dependencies:
@@ -394,6 +391,9 @@ importers:
       zone.js:
         specifier: ~0.15.0
         version: 0.15.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^20.0.4
@@ -428,9 +428,6 @@ importers:
       typescript:
         specifier: ~5.8.2
         version: 5.8.3
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular21:
     dependencies:
@@ -467,6 +464,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -486,9 +486,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.1)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular21-scheduler:
     dependencies:
@@ -531,6 +528,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^21.0.4
@@ -550,9 +550,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/angular22:
     dependencies:
@@ -589,6 +586,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    dependenciesMeta:
+      '@fullcalendar/angular':
+        injected: true
     devDependencies:
       '@angular/build':
         specifier: ^22.0.2
@@ -608,9 +608,6 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/angular':
-        injected: true
 
   examples/mui-event-calendar:
     dependencies:
@@ -638,6 +635,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -645,9 +645,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/mui-scheduler:
     dependencies:
@@ -678,6 +675,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -685,9 +685,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/next13:
     dependencies:
@@ -796,6 +793,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/preact':
+        injected: true
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
@@ -806,9 +806,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/preact':
-        injected: true
 
   examples/preact-scheduler:
     dependencies:
@@ -824,6 +821,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/preact':
+        injected: true
+      '@fullcalendar/preact-scheduler':
+        injected: true
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.8.0
@@ -834,11 +836,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/preact':
-        injected: true
-      '@fullcalendar/preact-scheduler':
-        injected: true
 
   examples/react17:
     dependencies:
@@ -854,6 +851,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -861,9 +861,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18:
     dependencies:
@@ -879,6 +876,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^18.3.3
@@ -895,9 +895,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-debug:
     dependencies:
@@ -913,6 +910,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -920,9 +920,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-issue-7619:
     dependencies:
@@ -947,6 +944,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -954,11 +956,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/react18-lazy:
     dependencies:
@@ -974,6 +971,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -981,9 +981,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-mobx-typescript:
     dependencies:
@@ -1005,6 +1002,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^18.3.3
@@ -1021,9 +1021,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react18-redux:
     dependencies:
@@ -1051,6 +1048,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -1058,9 +1058,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react19:
     dependencies:
@@ -1076,6 +1073,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -1092,9 +1092,6 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.4.21(@types/node@24.10.9)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/react19-scheduler:
     dependencies:
@@ -1113,6 +1110,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -1129,11 +1131,6 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.4.21(@types/node@24.10.9)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/remix:
     dependencies:
@@ -1161,6 +1158,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
     devDependencies:
       '@remix-run/dev':
         specifier: ^2.17.4
@@ -1177,9 +1177,6 @@ importers:
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
 
   examples/rollup:
     dependencies:
@@ -1397,6 +1394,11 @@ importers:
       zod:
         specifier: ^3.21.4
         version: 3.25.76
+    dependenciesMeta:
+      '@fullcalendar/react':
+        injected: true
+      '@fullcalendar/react-scheduler':
+        injected: true
     devDependencies:
       '@fullcalendar/react':
         specifier: ^7.1.4
@@ -1431,11 +1433,6 @@ importers:
       typescript:
         specifier: ^5.0.2
         version: 5.9.3
-    dependenciesMeta:
-      '@fullcalendar/react':
-        injected: true
-      '@fullcalendar/react-scheduler':
-        injected: true
 
   examples/typescript:
     dependencies:
@@ -1445,6 +1442,9 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      fullcalendar:
+        injected: true
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -1452,9 +1452,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      fullcalendar:
-        injected: true
 
   examples/typescript-scheduler:
     dependencies:
@@ -1467,6 +1464,11 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
+    dependenciesMeta:
+      fullcalendar:
+        injected: true
+      fullcalendar-scheduler:
+        injected: true
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -1474,11 +1476,6 @@ importers:
       vite:
         specifier: ^6.0.11
         version: 6.4.1(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
-    dependenciesMeta:
-      fullcalendar:
-        injected: true
-      fullcalendar-scheduler:
-        injected: true
 
   examples/vue3:
     dependencies:
@@ -1494,6 +1491,11 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.5.27(typescript@4.9.5)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
+      '@fullcalendar/vue3-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
@@ -1507,11 +1509,6 @@ importers:
       vue-tsc:
         specifier: ^1.0.11
         version: 1.8.27(typescript@4.9.5)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
-      '@fullcalendar/vue3-scheduler':
-        injected: true
 
   examples/vue3-primevue:
     dependencies:
@@ -1533,6 +1530,9 @@ importers:
       vue:
         specifier: ^3.5.24
         version: 3.5.27(typescript@5.9.3)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
     devDependencies:
       '@types/node':
         specifier: ^24.10.1
@@ -1552,9 +1552,6 @@ importers:
       vue-tsc:
         specifier: ^3.1.4
         version: 3.2.4(typescript@5.9.3)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
 
   examples/vue3-scheduler:
     dependencies:
@@ -1570,6 +1567,11 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.5.27(typescript@4.9.5)
+    dependenciesMeta:
+      '@fullcalendar/vue3':
+        injected: true
+      '@fullcalendar/vue3-scheduler':
+        injected: true
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
@@ -1583,11 +1585,6 @@ importers:
       vue-tsc:
         specifier: ^1.0.11
         version: 1.8.27(typescript@4.9.5)
-    dependenciesMeta:
-      '@fullcalendar/vue3':
-        injected: true
-      '@fullcalendar/vue3-scheduler':
-        injected: true
 
   premium/packages/angular-scheduler:
     devDependencies:
@@ -1736,9 +1733,6 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
-      vitest:
-        specifier: ^4.0.16
-        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     publishDirectory: ./dist
 
   premium/packages/react-scheduler:
@@ -1828,22 +1822,16 @@ importers:
       '@fullcalendar-tests/standard':
         specifier: workspace:*
         version: link:../../../standard/packages/vanilla-tests
-      xhr-mock:
-        specifier: ^2.5.1
-        version: 2.5.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
-      '@types/jasmine':
-        specifier: ^3.3.12
-        version: 3.10.19
-      '@types/jasmine-jquery':
-        specifier: ^1.5.33
-        version: 1.5.37
-      '@types/jquery':
-        specifier: ^3.3.29
-        version: 3.5.33
+      '@fullcalendar/preact':
+        specifier: workspace:*
+        version: link:../../../standard/packages/preact/dist
+      '@vitest/browser-playwright':
+        specifier: ^4.0.18
+        version: 4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
@@ -1859,12 +1847,12 @@ importers:
       fullcalendar-w-react:
         specifier: workspace:*
         version: link:../../../standard/packages/vanilla-w-react/dist
-      retry-cli:
-        specifier: ^0.7.0
-        version: 0.7.0
-      temporal-polyfill:
-        specifier: ^1.0.7
-        version: 1.0.7
+      playwright:
+        specifier: ^1.58.1
+        version: 1.58.1
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
 
   premium/packages/vanilla-scheduler-w-react:
     dependencies:
@@ -2246,9 +2234,6 @@ importers:
       temporal-polyfill:
         specifier: ^1.0.7
         version: 1.0.7
-      vitest:
-        specifier: ^4.0.16
-        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
     publishDirectory: ./dist
 
   standard/packages/react:
@@ -2367,9 +2352,6 @@ importers:
       preact:
         specifier: ^10.29.8
         version: 10.29.8
-      xhr-mock:
-        specifier: ^2.5.1
-        version: 2.5.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
@@ -2386,18 +2368,18 @@ importers:
       '@fullcalendar/icalendar':
         specifier: workspace:*
         version: link:../icalendar/dist
+      '@fullcalendar/preact':
+        specifier: workspace:*
+        version: link:../preact/dist
       '@fullcalendar/rrule':
         specifier: workspace:*
         version: link:../rrule/dist
-      '@types/jasmine':
-        specifier: ^3.3.12
-        version: 3.10.19
-      '@types/jasmine-jquery':
-        specifier: ^1.5.33
-        version: 1.5.37
-      '@types/jquery':
-        specifier: ^3.3.29
-        version: 3.5.33
+      '@types/sortablejs':
+        specifier: ^1.15.9
+        version: 1.15.9
+      '@vitest/browser-playwright':
+        specifier: ^4.0.18
+        version: 4.0.18(playwright@1.58.1)(vite@7.3.2(@types/node@24.10.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3))(vitest@4.0.18)
       fetch-mock:
         specifier: ^9.11.0
         version: 9.11.0(node-fetch@2.7.0(encoding@0.1.13))
@@ -2407,18 +2389,21 @@ importers:
       fullcalendar-w-react:
         specifier: workspace:*
         version: link:../vanilla-w-react/dist
-      handlebars:
-        specifier: ^4.7.7
-        version: 4.7.8
-      retry-cli:
-        specifier: ^0.7.0
-        version: 0.7.0
-      temporal-polyfill:
-        specifier: ^1.0.7
-        version: 1.0.7
-      temporal-utils:
-        specifier: ^1.0.4
-        version: 1.0.4
+      jquery:
+        specifier: ^4.0.0
+        version: 4.0.0
+      jquery-ui:
+        specifier: ^1.14.2
+        version: 1.14.2
+      playwright:
+        specifier: ^1.58.1
+        version: 1.58.1
+      sortablejs:
+        specifier: ^1.15.7
+        version: 1.15.7
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.1)(@types/node@24.10.9)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.62.0)(terser@5.46.0)(yaml@2.8.3)
 
   standard/packages/vanilla-w-react:
     dependencies:
@@ -2558,12 +2543,6 @@ importers:
       '@rollup/plugin-commonjs':
         specifier: ^12.0.0
         version: 12.0.0(rollup@2.79.2)
-      '@rollup/plugin-inject':
-        specifier: ^5.0.5
-        version: 5.0.5(rollup@2.79.2)
-      '@rollup/plugin-json':
-        specifier: ^4.0.3
-        version: 4.1.0(rollup@2.79.2)
       '@rollup/plugin-node-resolve':
         specifier: ^14.0.1
         version: 14.1.0(rollup@2.79.2)
@@ -2579,9 +2558,6 @@ importers:
       '@types/js-yaml':
         specifier: ^4.0.5
         version: 4.0.9
-      '@types/karma':
-        specifier: ^6.3.3
-        version: 6.3.9
       '@types/node':
         specifier: ^16.11.7
         version: 16.18.126
@@ -2606,9 +2582,6 @@ importers:
       cleye:
         specifier: ^1.2.1
         version: 1.3.4
-      components-jqueryui:
-        specifier: ^1.12.1
-        version: 1.12.1
       cross-spawn:
         specifier: ^7.0.3
         version: 7.0.6
@@ -2630,33 +2603,9 @@ importers:
       handlebars:
         specifier: ^4.1.2
         version: 4.7.8
-      jasmine-jquery:
-        specifier: ^2.1.1
-        version: 2.1.1(patch_hash=67897d46cf39c5f967a51ffdefb9218080e44eded878a866b057bd84e8703db7)
-      jquery:
-        specifier: ^3.4.0
-        version: 3.7.1
-      jquery-simulate:
-        specifier: ^1.0.2
-        version: 1.0.2
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
-      karma:
-        specifier: ^6.3.2
-        version: 6.4.4
-      karma-chrome-launcher:
-        specifier: ^3.1.0
-        version: 3.2.0
-      karma-jasmine:
-        specifier: ^4.0.1
-        version: 4.0.2(karma@6.4.4)
-      karma-sourcemap-loader:
-        specifier: ^0.3.8
-        version: 0.3.8
-      karma-verbose-reporter:
-        specifier: 0.0.6
-        version: 0.0.6(karma@6.4.4)
       postcss:
         specifier: ^8.4.20
         version: 8.5.6
@@ -11034,11 +10983,6 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-json@4.1.0':
-    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
-    peerDependencies:
-      rollup: ^1.20.0 || ^2.0.0
-
   '@rollup/plugin-json@6.1.0':
     resolution: {integrity: sha512-EGI2te5ENk1coGeADSIwZ7G2Q8CJS2sF120T7jLw4xFw9n7wIOXHo+kIYRAoVpJAN+kmqZSoO3Fp4JtoNF4ReA==}
     engines: {node: '>=14.0.0'}
@@ -12255,20 +12199,11 @@ packages:
   '@types/istanbul-reports@3.0.4':
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
 
-  '@types/jasmine-jquery@1.5.37':
-    resolution: {integrity: sha512-8SMS6sDRxtIAyVdrgfJTm5DqURR0eQf3jHi4whIuhTAlllVeFixrCYlkW4LxNhC/CY5QfQb94qHVBXBE1VGocA==}
-
-  '@types/jasmine@3.10.19':
-    resolution: {integrity: sha512-Bz6P2XoeIN13AhvVe0nS7+m2RfxVllETDjFQ/s6lyEwEfIVpPCc1Q8vPdFopFAOU5mzrU1zypXJ1xGDl5EVU9Q==}
-
   '@types/jasmine@4.3.6':
     resolution: {integrity: sha512-3N0FpQTeiWjm+Oo1WUYWguUS7E6JLceiGTriFrG8k5PU7zRLJCzLcWURU3wjMbZGS//a2/LgjsnO3QxIlwxt9g==}
 
   '@types/jasmine@5.1.15':
     resolution: {integrity: sha512-ZAC8KjmV2MJxbNTrwXFN+HKeajpXQZp6KpPiR6Aa4XvaEnjP6qh23lL/Rqb7AYzlp3h/rcwDrQ7Gg7q28cQTQg==}
-
-  '@types/jquery@3.5.33':
-    resolution: {integrity: sha512-SeyVJXlCZpEki5F0ghuYe+L+PprQta6nRZqhONt9F13dWBtR/ftoaIbdRQ7cis7womE+X2LKhsDdDtkkDhJS6g==}
 
   '@types/js-yaml@4.0.9':
     resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
@@ -12278,9 +12213,6 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-
-  '@types/karma@6.3.9':
-    resolution: {integrity: sha512-sjE/MHnoAZAQYAKRXAbjTOiBKyGGErEM725bruRcmDdMa2vp1bjWPhApI7/i564PTyHlzc3vIGXLL6TFIpAxFg==}
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
@@ -12415,11 +12347,11 @@ packages:
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
 
-  '@types/sizzle@2.3.10':
-    resolution: {integrity: sha512-TC0dmN0K8YcWEAEfiPi5gJP14eJe30TTGjkvek3iM/1NdHHsdCA/Td6GvNndMOo/iSnIsZ4HuuhrYPDAmbxzww==}
-
   '@types/sockjs@0.3.36':
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
+
+  '@types/sortablejs@1.15.9':
+    resolution: {integrity: sha512-7HP+rZGE2p886PKV9c9OJzLBI6BBJu1O7lJGYnPyG3fS4/duUCcngkNCjsLwIMV+WMqANe3tt4irrXHSIe68OQ==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -14027,10 +13959,6 @@ packages:
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
 
-  colors@1.4.0:
-    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
-    engines: {node: '>=0.1.90'}
-
   combined-stream@1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
@@ -14068,9 +13996,6 @@ packages:
 
   component-emitter@1.3.1:
     resolution: {integrity: sha512-T0+barUSQRTUQASh8bx02dl+DhF54GtIDY13Y3m9oWTklKbb3Wv974meRpeZ3lp1JpLVECWWNHC4vaG2XHXouQ==}
-
-  components-jqueryui@1.12.1:
-    resolution: {integrity: sha512-efkkM1OzVyxMiyZRB+eu3fhweE3T2fGs2Syia8A6l38sfB0Y8MRvYENhVS3UO21Gel93nt2HZiv+zsV8/4y83w==}
 
   composed-offset-position@0.0.6:
     resolution: {integrity: sha512-Q7dLompI6lUwd7LWyIcP66r4WcS9u7AL2h8HaeipiRfCRPLMWqRx8fYsjb4OHi6UQFifO7XtNC2IlEJ1ozIFxw==}
@@ -14770,9 +14695,6 @@ packages:
 
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
-
-  dom-walk@0.1.2:
-    resolution: {integrity: sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==}
 
   domelementtype@1.3.1:
     resolution: {integrity: sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==}
@@ -16012,9 +15934,6 @@ packages:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
     engines: {node: '>=18'}
 
-  global@4.4.0:
-    resolution: {integrity: sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==}
-
   globals@13.24.0:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
     engines: {node: '>=8'}
@@ -17062,9 +16981,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  jasmine-core@3.99.1:
-    resolution: {integrity: sha512-Hu1dmuoGcZ7AfyynN3LsfruwMbxMALMka+YtZeGoLuDEySVmVAPaonkNoBRIw/ectu8b9tVQCJNgp4a4knp+tg==}
-
   jasmine-core@4.6.1:
     resolution: {integrity: sha512-VYz/BjjmC3klLJlLwA4Kw8ytk0zDSmbbDLNs794VnWmkcCB7I9aAL/D48VNQtmITyPvea2C3jdUMfc3kAoy0PQ==}
 
@@ -17076,9 +16992,6 @@ packages:
 
   jasmine-core@5.7.1:
     resolution: {integrity: sha512-QnurrtpKsPoixxG2R3d1xP0St/2kcX5oTZyDyQJMY+Vzi/HUlu1kGm+2V8Tz+9lV991leB1l0xcsyz40s9xOOw==}
-
-  jasmine-jquery@2.1.1:
-    resolution: {integrity: sha512-13d18zXTGeiNAjd4sAhoUGQbCEXTMbUyjrnQ9JFQM/atyyFubHejL5RCE5iyW7jOh1cwjoqVefAAsSA4SFtooQ==}
 
   javascript-stringify@2.1.0:
     resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
@@ -17102,11 +17015,11 @@ packages:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
 
-  jquery-simulate@1.0.2:
-    resolution: {integrity: sha512-Bq610fSrwTwvH5d06z5oskYaX/79s0BNrKiJZjZOiXRib3iL4ZkSn/wvLwzhf3P9KeXCEpk9wlIaGui/1arOpQ==}
+  jquery-ui@1.14.2:
+    resolution: {integrity: sha512-1gSl7PUjyipa2adSr780Ujk16faicrV7PjPPzPtvWk7tTqBnsqp67NNV9jZK2+BIxUPXWSnIUU/LBCgwgGZE+Q==}
 
-  jquery@3.7.1:
-    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
+  jquery@4.0.0:
+    resolution: {integrity: sha512-TXCHVR3Lb6TZdtw1l3RTLf8RBWVGexdxL6AC8/e0xZKEpBflBsjh9/8LXw+dkNFuOyW9B7iB3O1sP7hS0Kiacg==}
 
   js-beautify@1.15.4:
     resolution: {integrity: sha512-9/KXeZUKKJwqCXUdBxFJ3vPh467OCckSBmYDwSK/EtV090K+iMJ7zx2S3HLVDIWFQdqMIsZWbnaGiba18aWhaA==}
@@ -17273,12 +17186,6 @@ packages:
       karma: ^6.0.0
       karma-jasmine: ^5.0.0
 
-  karma-jasmine@4.0.2:
-    resolution: {integrity: sha512-ggi84RMNQffSDmWSyyt4zxzh2CQGwsxvYYsprgyR1j8ikzIduEdOlcLvXjZGwXG/0j41KUXOWsUCBfbEHPWP9g==}
-    engines: {node: '>= 10'}
-    peerDependencies:
-      karma: '*'
-
   karma-jasmine@5.1.0:
     resolution: {integrity: sha512-i/zQLFrfEpRyQoJF9fsCdTMOF5c2dK7C7OmsuKg2D0YSsuZSfQDiLuaiktbuio6F2wiCsZSnSnieIQ0ant/uzQ==}
     engines: {node: '>=12'}
@@ -17287,14 +17194,6 @@ packages:
 
   karma-source-map-support@1.4.0:
     resolution: {integrity: sha512-RsBECncGO17KAoJCYXjv+ckIz+Ii9NCi+9enk+rq6XC81ezYkb4/RHE6CTXdA7IOJqoF3wcaLfVG0CPmE5ca6A==}
-
-  karma-sourcemap-loader@0.3.8:
-    resolution: {integrity: sha512-zorxyAakYZuBcHRJE+vbrK2o2JXLFWK8VVjiT/6P+ltLBUGUvqTEkUiQ119MGdOrK7mrmxXHZF1/pfT6GgIZ6g==}
-
-  karma-verbose-reporter@0.0.6:
-    resolution: {integrity: sha512-xBkQTj7JUByofR1sounBEL0sVKTCBeoiPEMtNBU8Dr/Gtqt6W6XUq2hj36r+EKYHQPPJch7moINsYUWO8moWXQ==}
-    peerDependencies:
-      karma: '>=0.12'
 
   karma@6.4.4:
     resolution: {integrity: sha512-LrtUxbdvt1gOpo3gxG+VAJlJAEMhbWlM4YrFQgql98FwF7+K8K12LYO4hnDdUkNjeztYrOXEMqgTajSWgmtI/w==}
@@ -18046,9 +17945,6 @@ packages:
     resolution: {integrity: sha512-e5ISH9xMYU0DzrT+jl8q2ze9D6eWBto+I8CNpe+VI+K2J/F/k3PdkdTdz4wvGVH4NTpo+NRYTVIuMQEMMcsLqg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  min-document@2.19.2:
-    resolution: {integrity: sha512-8S5I8db/uZN8r9HSLFVWPdJCvYOejMcEC82VIzNUc6Zkklf/d1gg2psfE79/vyhWOj4+J8MtwmoOz3TmvaGu5A==}
-
   mini-css-extract-plugin@2.7.6:
     resolution: {integrity: sha512-Qk7HcgaPkGG6eD77mLvZS1nmxlao3j+9PkrT9Uc7HAE1id3F41+DdBRYRYkbyfNRGzm8/YWtzhw7nVPmwhqTQw==}
     engines: {node: '>= 12.13.0'}
@@ -18474,10 +18370,6 @@ packages:
   node-forge@1.3.3:
     resolution: {integrity: sha512-rLvcdSyRCyouf6jcOIPe/BgwG/d7hKjzMKOas33/pHEr6gbq18IK9zV7DiPvzsz0oBJPme6qr6H6kGZuI9/DZg==}
     engines: {node: '>= 6.13.0'}
-
-  node-getopt@0.3.2:
-    resolution: {integrity: sha512-yqkmYrMbK1wPrfz7mgeYvA4tBperLg9FQ4S3Sau3nSAkpOA0x0zC8nQ1siBwozy1f4SE8vq2n1WKv99r+PCa1Q==}
-    engines: {node: '>= 0.6.0'}
 
   node-gyp-build-optional-packages@5.2.2:
     resolution: {integrity: sha512-s+w+rBWnpTMwSFbaE0UXsRlg7hU4FjekKU4eyAih5T8nJuNZT1nNsskXpxmeqSK9UzkBl6UgRlnKc8hz8IEqOw==}
@@ -20689,10 +20581,6 @@ packages:
     resolution: {integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==}
     engines: {node: '>=0.12'}
 
-  retry-cli@0.7.0:
-    resolution: {integrity: sha512-VSWsAZFV4AxAsxH2/r+TDQGTS4cTory266mmpI5KiZUZB/8VjqksCZ/kOGMLQ7XZFVNwzVdQ54pEJu6jnLbSVw==}
-    hasBin: true
-
   retry@0.12.0:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
@@ -21350,6 +21238,9 @@ packages:
   sort-keys@4.2.0:
     resolution: {integrity: sha512-aUYIEU/UviqPgc8mHR6IW1EGxkAXpeRETYcrzg8cLAvUPZcpAlleSXHV2mY7G12GphSH6Gzv+4MMVSSkbdteHg==}
     engines: {node: '>=8'}
+
+  sortablejs@1.15.7:
+    resolution: {integrity: sha512-Kk8wLQPlS+yi1ZEf48a4+fzHa4yxjC30M/Sr2AnQu+f/MPwvvX9XjZ6OWejiz8crBsLwSq8GHqaxaET7u6ux0A==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -22504,10 +22395,6 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
-  url@0.11.4:
-    resolution: {integrity: sha512-oCwdVC7mTuWiPyjLUz/COz5TLk6wgp0RCsN+wHZ2Ekneac9w8uuV0njcbbie2ME+Vs+d6duwmYuR3HgQXs1fOg==}
-    engines: {node: '>= 0.4'}
-
   use-callback-ref@1.3.3:
     resolution: {integrity: sha512-jQL3lRnocaFtu3V00JToYz/4QkNWswxijDaCVNZRiRTO3HQDLsdu1ZtmIUvV4yPp+rvWm5j0y0TG/S61cuijTg==}
     engines: {node: '>=10'}
@@ -23439,9 +23326,6 @@ packages:
   wsl-utils@0.1.0:
     resolution: {integrity: sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==}
     engines: {node: '>=18'}
-
-  xhr-mock@2.5.1:
-    resolution: {integrity: sha512-UKOjItqjFgPUwQGPmRAzNBn8eTfIhcGjBVGvKYAWxUQPQsXNGD6KEckGTiHwyaAUp9C9igQlnN1Mp79KWCg7CQ==}
 
   xml-name-validator@3.0.0:
     resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}
@@ -32645,14 +32529,6 @@ snapshots:
     optionalDependencies:
       rollup: 4.60.2
 
-  '@rollup/plugin-inject@5.0.5(rollup@2.79.2)':
-    dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@2.79.2)
-      estree-walker: 2.0.2
-      magic-string: 0.30.21
-    optionalDependencies:
-      rollup: 2.79.2
-
   '@rollup/plugin-inject@5.0.5(rollup@4.60.2)':
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.2)
@@ -32660,11 +32536,6 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       rollup: 4.60.2
-
-  '@rollup/plugin-json@4.1.0(rollup@2.79.2)':
-    dependencies:
-      '@rollup/pluginutils': 3.1.0(rollup@2.79.2)
-      rollup: 2.79.2
 
   '@rollup/plugin-json@6.1.0(rollup@3.29.5)':
     dependencies:
@@ -34240,33 +34111,15 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-  '@types/jasmine-jquery@1.5.37':
-    dependencies:
-      '@types/jasmine': 5.1.15
-      '@types/jquery': 3.5.33
-
-  '@types/jasmine@3.10.19': {}
-
   '@types/jasmine@4.3.6': {}
 
   '@types/jasmine@5.1.15': {}
-
-  '@types/jquery@3.5.33':
-    dependencies:
-      '@types/sizzle': 2.3.10
 
   '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
-
-  '@types/karma@6.3.9':
-    dependencies:
-      '@types/node': 24.10.9
-      log4js: 6.9.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@types/keyv@3.1.4':
     dependencies:
@@ -34419,11 +34272,11 @@ snapshots:
 
   '@types/shimmer@1.2.0': {}
 
-  '@types/sizzle@2.3.10': {}
-
   '@types/sockjs@0.3.36':
     dependencies:
       '@types/node': 24.10.9
+
+  '@types/sortablejs@1.15.9': {}
 
   '@types/trusted-types@2.0.7': {}
 
@@ -36717,8 +36570,6 @@ snapshots:
 
   colorette@2.0.20: {}
 
-  colors@1.4.0: {}
-
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
@@ -36743,8 +36594,6 @@ snapshots:
   compatx@0.2.0: {}
 
   component-emitter@1.3.1: {}
-
-  components-jqueryui@1.12.1: {}
 
   composed-offset-position@0.0.6(@floating-ui/utils@0.2.10):
     dependencies:
@@ -37573,8 +37422,6 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
       entities: 4.5.0
-
-  dom-walk@0.1.2: {}
 
   domelementtype@1.3.1: {}
 
@@ -39390,11 +39237,6 @@ snapshots:
     dependencies:
       ini: 4.1.1
 
-  global@4.4.0:
-    dependencies:
-      min-document: 2.19.2
-      process: 0.11.10
-
   globals@13.24.0:
     dependencies:
       type-fest: 0.20.2
@@ -40646,8 +40488,6 @@ snapshots:
       filelist: 1.0.6
       picocolors: 1.1.1
 
-  jasmine-core@3.99.1: {}
-
   jasmine-core@4.6.1: {}
 
   jasmine-core@5.1.2: {}
@@ -40655,8 +40495,6 @@ snapshots:
   jasmine-core@5.4.0: {}
 
   jasmine-core@5.7.1: {}
-
-  jasmine-jquery@2.1.1(patch_hash=67897d46cf39c5f967a51ffdefb9218080e44eded878a866b057bd84e8703db7): {}
 
   javascript-stringify@2.1.0: {}
 
@@ -40674,9 +40512,11 @@ snapshots:
 
   joycon@3.1.1: {}
 
-  jquery-simulate@1.0.2: {}
+  jquery-ui@1.14.2:
+    dependencies:
+      jquery: 4.0.0
 
-  jquery@3.7.1: {}
+  jquery@4.0.0: {}
 
   js-beautify@1.15.4:
     dependencies:
@@ -40904,11 +40744,6 @@ snapshots:
       karma: 6.4.4
       karma-jasmine: 5.1.0(karma@6.4.4)
 
-  karma-jasmine@4.0.2(karma@6.4.4):
-    dependencies:
-      jasmine-core: 3.99.1
-      karma: 6.4.4
-
   karma-jasmine@5.1.0(karma@6.4.4):
     dependencies:
       jasmine-core: 4.6.1
@@ -40917,15 +40752,6 @@ snapshots:
   karma-source-map-support@1.4.0:
     dependencies:
       source-map-support: 0.5.21
-
-  karma-sourcemap-loader@0.3.8:
-    dependencies:
-      graceful-fs: 4.2.11
-
-  karma-verbose-reporter@0.0.6(karma@6.4.4):
-    dependencies:
-      colors: 1.4.0
-      karma: 6.4.4
 
   karma@6.4.4:
     dependencies:
@@ -42104,10 +41930,6 @@ snapshots:
 
   mimic-response@4.0.0: {}
 
-  min-document@2.19.2:
-    dependencies:
-      dom-walk: 0.1.2
-
   mini-css-extract-plugin@2.7.6(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
       schema-utils: 4.3.3
@@ -42712,8 +42534,6 @@ snapshots:
       encoding: 0.1.13
 
   node-forge@1.3.3: {}
-
-  node-getopt@0.3.2: {}
 
   node-gyp-build-optional-packages@5.2.2:
     dependencies:
@@ -45478,12 +45298,6 @@ snapshots:
 
   ret@0.1.15: {}
 
-  retry-cli@0.7.0:
-    dependencies:
-      cross-spawn: 7.0.6
-      node-getopt: 0.3.2
-      retry: 0.13.1
-
   retry@0.12.0: {}
 
   retry@0.13.1: {}
@@ -46410,6 +46224,8 @@ snapshots:
   sort-keys@4.2.0:
     dependencies:
       is-plain-obj: 2.1.0
+
+  sortablejs@1.15.7: {}
 
   source-map-js@1.2.1: {}
 
@@ -47709,11 +47525,6 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  url@0.11.4:
-    dependencies:
-      punycode: 1.4.1
-      qs: 6.14.1
-
   use-callback-ref@1.3.3(@types/react@19.2.10)(react@19.2.4):
     dependencies:
       react: 19.2.4
@@ -49008,11 +48819,6 @@ snapshots:
   wsl-utils@0.1.0:
     dependencies:
       is-wsl: 3.1.1
-
-  xhr-mock@2.5.1:
-    dependencies:
-      global: 4.4.0
-      url: 0.11.4
 
   xml-name-validator@3.0.0: {}
 

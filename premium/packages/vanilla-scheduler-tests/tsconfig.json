@@ -1,26 +1,36 @@
 {
   "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
   "compilerOptions": {
-    "types": [
-      "jasmine",
-      "jasmine-jquery",
-      "jquery"
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
     ],
-    "rootDir": "./src",
-    "outDir": "./dist/.tsout"
+    "types": [
+      "@vitest/browser-playwright"
+    ]
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./*.ts"
   ],
+  // The *.unit.ts specs import library source. These resolve it to the built declarations
   "references": [
     {
-      "path": "../vanilla-scheduler"
+      "path": "../../../standard/packages/headless-calendar"
     },
     {
-      "path": "../../../standard/packages/vanilla"
+      "path": "../../../standard/packages/preact"
     },
     {
-      "path": "../../../standard/packages/vanilla-tests"
+      "path": "../headless-grid"
+    },
+    {
+      "path": "../preact-scheduler"
     }
   ]
 }

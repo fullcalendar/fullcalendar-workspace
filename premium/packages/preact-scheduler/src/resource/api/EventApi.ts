@@ -20,7 +20,10 @@ declare module '@fullcalendar/preact/protected-api' {
 EventImpl.prototype.getResources = function (this: EventImpl): ResourceApi[] { // eslint-disable-line func-names
   let { calendarApi } = this._context
 
-  return this._def.resourceIds.map((resourceId) => calendarApi.getResourceById(resourceId))
+  // leaves out ids of resources that don't exist, or haven't been fetched yet
+  return this._def.resourceIds
+    .map((resourceId) => calendarApi.getResourceById(resourceId))
+    .filter(Boolean)
 }
 
 EventImpl.prototype.setResources = function ( // eslint-disable-line func-names

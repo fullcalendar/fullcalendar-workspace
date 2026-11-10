@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - t3/revamp-test-infrastructure # until merged into main
   pull_request:
     branches:
       - main
@@ -13,7 +14,8 @@ env:
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-latest
+    # Playwright's Chromium install supports 24.04, not 26.04 (ubuntu-latest since 2026)
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
@@ -44,7 +46,6 @@ jobs:
           pnpm \
             --filter '!./examples/**' \
             --filter '!@fullcalendar/angular' \
-            --filter '!@fullcalendar-tests/*' \
             install
 
       - name: Lint
@@ -68,8 +69,39 @@ jobs:
       # execute only connector-package tests, as "smoke" tests. they're fast
       # Vue disabled for now. giving playwright errors:
       #   --filter '@fullcalendar/vue3' \
-      - name: Test
+      - name: Test connectors
         run: |
           pnpm \
             --filter '@fullcalendar/react' \
+            run test
+
+      # Vitest strips types without checking them. Needs the build above (tsconfig references)
+      - name: Typecheck tests
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/*' \
+            run typecheck
+
+      # The test packages' suites, which run against the built packages above.
+      - name: Install Playwright Chromium
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/standard' \
+            exec playwright install --with-deps chromium
+
+      - name: Test
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/*' \
+            --workspace-concurrency=1 \
+            run test
+
+      # Again, with the React-rendering builds swapped in (see vitest.config.base.ts)
+      - name: Test with React
+        env:
+          FORCE_REACT: '1'
+        run: |
+          pnpm \
+            --filter '@fullcalendar-tests/*' \
+            --workspace-concurrency=1 \
             run test

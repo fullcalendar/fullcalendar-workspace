@@ -17,15 +17,12 @@
     "@fullcalendar/preact": "workspace:7.1.4",
     "@fullcalendar-scripts/standard": "workspace:*",
     "preact": "^10.29.8",
-    "temporal-polyfill": "^1.0.7",
-    "vitest": "^4.0.16"
+    "temporal-polyfill": "^1.0.7"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
     "clean": "standard-scripts pkg:clean",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:dev": "vitest"
+    "lint": "eslint ."
   },
   "type": "module",
   "buildConfig": {

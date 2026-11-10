@@ -9,7 +9,6 @@ mkdir -p premium/packages/headless-grid/dist
 mkdir -p premium/packages/preact-scheduler/dist
 mkdir -p premium/packages/react-scheduler/dist
 mkdir -p premium/packages/vanilla-scheduler/dist
-mkdir -p premium/packages/vanilla-scheduler-tests/dist
 mkdir -p premium/packages/vanilla-scheduler-w-react/dist
 mkdir -p premium/packages/vue3-scheduler/dist
 mkdir -p premium/packages/web-component-scheduler/dist
@@ -25,7 +24,6 @@ mkdir -p standard/packages/preact/dist
 mkdir -p standard/packages/react/dist
 mkdir -p standard/packages/rrule/dist
 mkdir -p standard/packages/vanilla/dist
-mkdir -p standard/packages/vanilla-tests/dist
 mkdir -p standard/packages/vanilla-w-react/dist
 mkdir -p standard/packages/vue3/dist
 mkdir -p standard/packages/web-component/dist

@@ -343,7 +343,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   classNames.noPaddingY,
                 )}
               />
-              <th className={joinClassNames(classNames.noPadding, headerDividerClassName)} />
+              <th
+                className={joinClassNames(classNames.noPadding, headerDividerClassName)}
+              />
             </tr>
           </thead>{/* Header END */}
           {/* Body START */}
