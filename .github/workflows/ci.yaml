@@ -14,7 +14,8 @@ env:
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-latest
+    # Playwright's Chromium install supports 24.04, not 26.04 (ubuntu-latest since 2026)
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
