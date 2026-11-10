@@ -1,6 +1,10 @@
-# Postponed Fix: Bottom Strip of a timeGrid All-Day Cell Isn't a Drop Target
+# Dragging into the bottom strip of a timeGrid all-day cell misses it
 
-Status: diagnosed and patched by a Sol subagent (GPT-Sol-6.1, high effort) on 2026-10-20. **Not applied:** it waits until the test revamp is merged to main, and the approach needs a decision (see "Open decision").
+**Status:** open
+**Release:** next
+**Issues:** none found
+
+Found during the test revamp. Pre-existing. A confirmed bug, filed as an idea because the fix needs a design decision (see "Open decision"). Diagnosed and patched by a Sol subagent (GPT-Sol-6.1, high effort) on 2026-10-20. **Not applied:** apply only after the test revamp is merged to main. No test in the suite yet: the patch brings its own, and the test models aim at the cell's center.
 
 ## Symptom
 
@@ -45,7 +49,7 @@ My review (Claude):
 
 ## Applying
 
-The patch was made against `71ba1c4f5`. Save the block below to a file and run `git apply` from the repo root (rework it first if the rule is generalized). Then rebuild, run the tests above, add a changelog line, and close out its entry in `../post-project-tasks.md`.
+The patch was made against `71ba1c4f5`. Save the block below to a file and run `git apply` from the repo root (rework it first if the rule is generalized). Then rebuild, run the tests above, add a changelog line, and move this file to `bugs/` as `fixed`.
 
 ```diff
 diff --git a/premium/packages/vanilla-scheduler-tests/src/event-drag/resource-timegrid.ts b/premium/packages/vanilla-scheduler-tests/src/event-drag/resource-timegrid.ts
