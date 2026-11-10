@@ -1,8 +1,9 @@
 # `startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`
 
-**Status:** confirmed
+**Status:** fixed
 **Test:** `premium/.../src/event-render/timeline.ts`
 **Issues:** none found; [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related: events across a DST change get shorter or longer)
+**Fixed:** `b524829b7`, in the v7.1.5 changelog. Its test is a plain `it` now.
 
 Found during the test revamp. Pre-existing, since v7.1.0.
 

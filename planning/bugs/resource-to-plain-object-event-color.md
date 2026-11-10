@@ -1,8 +1,9 @@
 # `ResourceApi.toPlainObject()` never outputs `eventColor`
 
-**Status:** confirmed
+**Status:** fixed
 **Test:** `premium/.../src/resource-data/crud.ts`
 **Issues:** none found
+**Fixed:** `5ff213f76`, in the v7.1.5 changelog. Its test is a plain `it` now.
 
 Found during the test revamp. Pre-existing.
 

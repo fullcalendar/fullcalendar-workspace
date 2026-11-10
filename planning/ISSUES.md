@@ -22,20 +22,19 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | Item | Status | Test | Issues |
 |---|---|---|---|
 | [A Google Calendar ID or API URL given as a plain string source is fetched as a JSON feed](bugs/google-calendar-string-source.md) | confirmed | `event-sources/google-calendar.ts` |  |
-| [A view button alone in its group is `role=tab` with no `tablist`](bugs/lone-view-button-tab.md) | confirmed | `accessibility/aria.ts` | [#6522](https://github.com/fullcalendar/fullcalendar/issues/6522) (related) |
 | [A week-aligned timeline's active range isn't its slots' range](bugs/timeline-week-aligned-active-range.md) | confirmed | `visible-range/timeline.ts` | [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, related) |
 | [dayGrid business hours leave the Sunday unshaded across a week boundary](bugs/daygrid-business-hours-week-boundary.md) | confirmed | `business-hours/daygrid.ts` |  |
-| [`EventApi.getResources()` returns `null` entries](bugs/event-get-resources-nulls.md) | confirmed | `resource-data/event-association.ts` | [#7300](https://github.com/fullcalendar/fullcalendar/issues/7300) |
 | [In resource views, an event source's `color` beats a resource's `eventColor`](bugs/resource-view-color-precedence.md) | confirmed | `resource-data/event-styling.ts` | [#5743](https://github.com/fullcalendar/fullcalendar/issues/5743) (related) |
 | [multiMonth selection and resizing can't cross months](bugs/multimonth-cross-month-interaction.md) | confirmed | `date-select/multimonth.ts`, `event-resize/multimonth.ts` | [#7183](https://github.com/fullcalendar/fullcalendar/issues/7183), [#7201](https://github.com/fullcalendar/fullcalendar/issues/7201) (closed) |
-| [Prev, next and today are announced as toggle buttons](bugs/toolbar-buttons-aria-pressed.md) | confirmed | `accessibility/aria.ts` | [#8042](https://github.com/fullcalendar/fullcalendar/issues/8042), [#6521](https://github.com/fullcalendar/fullcalendar/issues/6521) (closed, related) |
 | [`ResourceApi.setProp()` drops event-styling props](bugs/resource-set-prop-event-styling.md) | confirmed | `resource-data/crud.ts` | [#6468](https://github.com/fullcalendar/fullcalendar/issues/6468) (related) |
-| [`ResourceApi.toPlainObject()` never outputs `eventColor`](bugs/resource-to-plain-object-event-color.md) | confirmed | `resource-data/crud.ts` |  |
-| [`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`](bugs/nonexistent-time-start-str.md) | confirmed | `event-render/timeline.ts` | [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related) |
 | [Timeline `next()` moves backwards when `dateIncrement` is smaller than the duration](bugs/timeline-next-with-short-date-increment.md) | confirmed | `visible-range/scheduler-views.ts` | [#4678](https://github.com/fullcalendar/fullcalendar/issues/4678) (closed), [#5319](https://github.com/fullcalendar/fullcalendar/issues/5319) (closed) |
 | [Timeline weeks given in days don't align to `firstDay`](bugs/timeline-weeks-in-days-first-day.md) | confirmed | `visible-range/timeline.ts` | [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed) |
 | [timelineYear with month header intervals and day slots renders month slots](bugs/timeline-year-month-headers-day-slots.md) | confirmed | `visible-range/timeline.ts` | [#4937](https://github.com/fullcalendar/fullcalendar/issues/4937) |
-| [Under React, `moreLinkClick`'s `jsEvent` is a SyntheticEvent](bugs/react-more-link-click-js-event.md) | confirmed | `more-link/click.ts` |  |
+| [A view button alone in its group is `role=tab` with no `tablist`](bugs/lone-view-button-tab.md) | fixed | `accessibility/aria.ts` | [#6522](https://github.com/fullcalendar/fullcalendar/issues/6522) (related) |
+| [`EventApi.getResources()` returns `null` entries](bugs/event-get-resources-nulls.md) | fixed | `resource-data/event-association.ts` | [#7300](https://github.com/fullcalendar/fullcalendar/issues/7300) |
+| [Prev, next and today are announced as toggle buttons](bugs/toolbar-buttons-aria-pressed.md) | fixed | `accessibility/aria.ts` | [#8042](https://github.com/fullcalendar/fullcalendar/issues/8042), [#6521](https://github.com/fullcalendar/fullcalendar/issues/6521) (closed, related) |
+| [`ResourceApi.toPlainObject()` never outputs `eventColor`](bugs/resource-to-plain-object-event-color.md) | fixed | `resource-data/crud.ts` |  |
+| [`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`](bugs/nonexistent-time-start-str.md) | fixed | `event-render/timeline.ts` | [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related) |
 
 ## Features
 
@@ -55,6 +54,7 @@ None yet.
 |---|---|---|---|
 | [Dragging into the bottom strip of a timeGrid all-day cell misses it](ideas/all-day-drop-gap.md) | open |  |  |
 | [Keyboard focus after activating a nav link](ideas/nav-link-keyboard-focus.md) | open |  | [#6524](https://github.com/fullcalendar/fullcalendar/issues/6524) (closed, related) |
+| [Pass native events to callbacks under React](ideas/react-native-js-events.md) | open | `more-link/click.ts` |  |
 | [The today button's accessible name doesn't contain its visible text](ideas/today-button-accessible-name.md) | open |  |  |
 
 ## Behaviors
