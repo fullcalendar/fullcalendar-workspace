@@ -126,7 +126,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
               ...(
                 isTablist
                   ? { 'role': 'tab', 'aria-selected': isSelected }
-                  : { 'aria-pressed': isSelected }
+                  : widget.isView
+                    ? { 'aria-pressed': isSelected }
+                    : {} // not a toggle: prev, next, today and custom buttons
               ),
               'aria-label': typeof buttonHint === 'function'
                 ? buttonHint(props.navUnit)

@@ -345,10 +345,8 @@ describe('toolbar semantics', () => {
   /*
   Only view buttons have a pressed or selected state. Prev, next and today aren't toggles, alone or
   grouped with view buttons. https://github.com/fullcalendar/fullcalendar/issues/8042
-  KNOWN BUG (it.fails until fixed): ToolbarSection.tsx gives every button outside a tablist
-  aria-pressed, so screen readers announce these as toggle buttons that aren't pressed.
   */
-  it.fails('doesn\'t mark prev, next and today as toggle buttons', async () => {
+  it('doesn\'t mark prev, next and today as toggle buttons', async () => {
     const calendar = initCalendar({
       ...options,
       headerToolbar: { left: 'prev,next today', right: 'today,dayGridMonth' },
