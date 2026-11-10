@@ -45,7 +45,7 @@ My review (Claude):
 
 ## Applying
 
-The patch was made against `71ba1c4f5`. Save the block below to a file and run `git apply` from the repo root (rework it first if the rule is generalized). Then rebuild, run the tests above, add a changelog line, and close out the entry in `../needed-test-coverage.md`.
+The patch was made against `71ba1c4f5`. Save the block below to a file and run `git apply` from the repo root (rework it first if the rule is generalized). Then rebuild, run the tests above, add a changelog line, and close out its entry in `../post-project-tasks.md`.
 
 ```diff
 diff --git a/premium/packages/vanilla-scheduler-tests/src/event-drag/resource-timegrid.ts b/premium/packages/vanilla-scheduler-tests/src/event-drag/resource-timegrid.ts

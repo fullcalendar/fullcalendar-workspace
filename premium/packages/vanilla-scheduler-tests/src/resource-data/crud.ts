@@ -219,7 +219,7 @@ describe('resource CRUD', () => {
     })
 
     // KNOWN BUG (`it.fails` until fixed): setProp writes the raw prop name onto the internal resource, but event-styling props
-    // live in its `ui` (eventColor -> ui.color), so the change is lost. See planning/agent-notes/scheduler-misc.md
+    // live in its `ui` (eventColor -> ui.color), so the change is lost. See planning/archive/agent-notes/scheduler-misc.md
     it.fails('changes an event-styling prop', () => {
       const calendar = initCalendar({ ...options, resources: [{ id: 'a', title: 'room a', eventColor: 'red' }] })
       const resource = calendar.getResourceById('a')!
@@ -342,7 +342,7 @@ describe('resource CRUD', () => {
     })
 
     // KNOWN BUG (`it.fails` until fixed): toPlainObject writes eventContrastColor twice and never writes eventColor
-    // (premium/packages/preact-scheduler/src/resource/api/ResourceApi.ts). See planning/agent-notes/scheduler-misc.md
+    // (premium/packages/preact-scheduler/src/resource/api/ResourceApi.ts). See planning/archive/agent-notes/scheduler-misc.md
     it.fails('includes eventColor', () => {
       const calendar = initCalendar({ ...options, resources: [{ id: 'a', eventColor: 'red' }] })
 

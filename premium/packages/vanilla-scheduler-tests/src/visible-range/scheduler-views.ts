@@ -51,7 +51,7 @@ describe('visible range in scheduler views', () => {
     })
 
     // KNOWN BUG (`it.fails` until fixed): next() goes from the start of the duration's unit (Apr 1) plus 7 days, landing on
-    // Apr 8, before the initial Apr 12. See planning/agent-notes/scheduler-misc.md
+    // Apr 8, before the initial Apr 12. See planning/archive/agent-notes/scheduler-misc.md
     it.fails('moves forward by a dateIncrement smaller than the duration', () => {
       const calendar = initCalendar({ ...options, dateIncrement: { days: 7 } })
 
