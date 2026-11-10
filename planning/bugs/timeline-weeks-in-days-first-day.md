@@ -2,7 +2,7 @@
 
 **Status:** confirmed
 **Test:** `premium/.../src/visible-range/timeline.ts`
-**Issues:** [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, not fixed, likely the same bug)
+**Issues:** [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, not fixed: the same bug)
 
 Found during the test revamp. Pre-existing.
 
@@ -10,7 +10,7 @@ A slot duration or header interval of whole weeks aligns to `firstDay` when give
 
 Adam's rule (2026-10-20): slots or header intervals that are a whole number of weeks align to `firstDay`; others don't.
 
-#7026 (2022): with `slotDuration: { days: 7 }` and `firstDay: 1`, an event shows in the wrong week. acerix confirmed it (workaround: `firstDay: 0`). Its reporter closed it in 2025-11 without a comment or fix; Odoo commits reference it, so they likely patched their copy. Not checked against #7026's own repro.
+#7026 (2022): with `slotDuration: { days: 7 }` and `firstDay: 1`, an event shows in the wrong week. acerix confirmed it (workaround: `firstDay: 0`). Its reporter closed it in 2025-11 without a comment or fix; Odoo commits reference it, so they likely patched their copy. It's this bug: on 2026-11-10, acerix's repro (https://codepen.io/acerix/pen/BaVqdpG, a one-month `resourceTimeline` from 2023-01-01) rendered the same in 5.11.3 and 7.1.4. The 7-day slots start on Sunday Jan 1, not Monday, so with `firstDay: 1` the first slot is labeled "W 52", and the Jan 5 event looks like it's in week 52. Reopen #7026 (or reply there) when this is fixed.
 
 ## Cause
 
