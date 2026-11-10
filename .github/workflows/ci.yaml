@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - t3/revamp-test-infrastructure # until merged into main
   pull_request:
     branches:
       - main
