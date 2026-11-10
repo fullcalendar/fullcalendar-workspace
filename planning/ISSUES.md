@@ -1,6 +1,6 @@
 # Issues
 
-Bugs, features, ideas and behaviors in FullCalendar itself, found during the test revamp. One file per item, sorted into a folder by kind. Each file opens with its title and a **Status**, **Release**, **Test** and **Issues** line. This index is generated: after adding or changing a file, run `python3 planning/build-issues.py`.
+Bugs, features, ideas and behaviors in FullCalendar itself, found during the test revamp. One file per item, sorted into a folder by kind. Each file opens with its title and its **Status**, **Release** (once triaged), **Test** and **Issues** lines. This index is generated: after adding or changing a file, run `python3 planning/build-issues.py`.
 
 | Folder | Holds | Statuses |
 |---|---|---|
@@ -9,7 +9,7 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | `ideas/` | A real need whose design or fix isn't settled yet. | `open`, `parked` |
 | `behaviors/` | Intended or arguable behavior: document it, change it in a major version, or promote it to a bug. | `arguable`, `intended` |
 
-**Release** is `next` (non-breaking, after the test revamp merges) or `v8` (breaking, for the next major version).
+**Release** is `next` (non-breaking, after the test revamp merges) or `v8` (breaking, for the next major version). Adam sets it when triaging: a file without one hasn't been triaged yet.
 
 **Test** is where the suites cover it. For a bug it's an `it.fails` test, which passes while the bug exists and fails once it's fixed: then change it to `it`. For a behavior, the test asserts what happens today. `standard/.../` is `standard/packages/vanilla-tests/`, `premium/.../` is `premium/packages/vanilla-scheduler-tests/`.
 
@@ -17,7 +17,7 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 
 ## Bugs
 
-### Next v7 release
+### Not triaged
 
 | Item | Status | Test | Issues |
 |---|---|---|---|
@@ -32,8 +32,8 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | [`ResourceApi.setProp()` drops event-styling props](bugs/resource-set-prop-event-styling.md) | confirmed | `resource-data/crud.ts` | [#6468](https://github.com/fullcalendar/fullcalendar/issues/6468) (related) |
 | [`ResourceApi.toPlainObject()` never outputs `eventColor`](bugs/resource-to-plain-object-event-color.md) | confirmed | `resource-data/crud.ts` |  |
 | [`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`](bugs/nonexistent-time-start-str.md) | confirmed | `event-render/timeline.ts` | [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related) |
-| [Timeline `next()` moves backwards when `dateIncrement` is smaller than the duration](bugs/timeline-next-with-short-date-increment.md) | confirmed | `visible-range/scheduler-views.ts` | [#5319](https://github.com/fullcalendar/fullcalendar/issues/5319) (closed, related), [#4678](https://github.com/fullcalendar/fullcalendar/issues/4678) (closed, related) |
-| [Timeline weeks given in days don't align to `firstDay`](bugs/timeline-weeks-in-days-first-day.md) | confirmed | `visible-range/timeline.ts` | [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, related) |
+| [Timeline `next()` moves backwards when `dateIncrement` is smaller than the duration](bugs/timeline-next-with-short-date-increment.md) | confirmed | `visible-range/scheduler-views.ts` | [#4678](https://github.com/fullcalendar/fullcalendar/issues/4678) (closed), [#5319](https://github.com/fullcalendar/fullcalendar/issues/5319) (closed) |
+| [Timeline weeks given in days don't align to `firstDay`](bugs/timeline-weeks-in-days-first-day.md) | confirmed | `visible-range/timeline.ts` | [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed) |
 | [timelineYear with month header intervals and day slots renders month slots](bugs/timeline-year-month-headers-day-slots.md) | confirmed | `visible-range/timeline.ts` | [#4937](https://github.com/fullcalendar/fullcalendar/issues/4937) |
 | [Under React, `moreLinkClick`'s `jsEvent` is a SyntheticEvent](bugs/react-more-link-click-js-event.md) | confirmed | `more-link/click.ts` |  |
 
@@ -43,19 +43,19 @@ None yet.
 
 ## Ideas
 
-### Next v7 release
+### v8
+
+| Item | Status | Test | Issues |
+|---|---|---|---|
+| [Overhaul `ThirdPartyDraggable`](ideas/third-party-draggable-api.md) | open | `event-drag/third-party.ts` | [#7492](https://github.com/fullcalendar/fullcalendar/issues/7492), [#7593](https://github.com/fullcalendar/fullcalendar/issues/7593) (closed), [#7514](https://github.com/fullcalendar/fullcalendar/issues/7514) (closed) |
+
+### Not triaged
 
 | Item | Status | Test | Issues |
 |---|---|---|---|
 | [Dragging into the bottom strip of a timeGrid all-day cell misses it](ideas/all-day-drop-gap.md) | open |  |  |
 | [Keyboard focus after activating a nav link](ideas/nav-link-keyboard-focus.md) | open |  | [#6524](https://github.com/fullcalendar/fullcalendar/issues/6524) (closed, related) |
 | [The today button's accessible name doesn't contain its visible text](ideas/today-button-accessible-name.md) | open |  |  |
-
-### v8
-
-| Item | Status | Test | Issues |
-|---|---|---|---|
-| [Overhaul `ThirdPartyDraggable`](ideas/third-party-draggable-api.md) | open | `event-drag/third-party.ts` | [#7492](https://github.com/fullcalendar/fullcalendar/issues/7492), [#7593](https://github.com/fullcalendar/fullcalendar/issues/7593) (closed), [#7514](https://github.com/fullcalendar/fullcalendar/issues/7514) (closed) |
 
 ## Behaviors
 

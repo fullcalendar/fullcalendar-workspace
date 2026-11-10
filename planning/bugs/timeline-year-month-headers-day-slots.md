@@ -1,7 +1,6 @@
 # timelineYear with month header intervals and day slots renders month slots
 
 **Status:** confirmed
-**Release:** next
 **Test:** `premium/.../src/visible-range/timeline.ts`
 **Issues:** [#4937](https://github.com/fullcalendar/fullcalendar/issues/4937) (open)
 

@@ -1,7 +1,6 @@
 # A Google Calendar ID or API URL given as a plain string source is fetched as a JSON feed
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/event-sources/google-calendar.ts`
 **Issues:** none found
 

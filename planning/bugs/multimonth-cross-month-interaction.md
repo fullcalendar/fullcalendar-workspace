@@ -1,7 +1,6 @@
 # multiMonth selection and resizing can't cross months
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/date-select/multimonth.ts`, `standard/.../src/event-resize/multimonth.ts`
 **Issues:** [#7183](https://github.com/fullcalendar/fullcalendar/issues/7183) (open), [#7201](https://github.com/fullcalendar/fullcalendar/issues/7201) (closed)
 

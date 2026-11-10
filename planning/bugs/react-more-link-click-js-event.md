@@ -1,7 +1,6 @@
 # Under React, `moreLinkClick`'s `jsEvent` is a SyntheticEvent
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/more-link/click.ts` (`it.fails` under `FORCE_REACT=1` only)
 **Issues:** none found
 

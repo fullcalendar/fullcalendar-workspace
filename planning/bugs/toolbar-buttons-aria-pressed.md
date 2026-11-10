@@ -1,7 +1,6 @@
 # Prev, next and today are announced as toggle buttons
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/accessibility/aria.ts`
 **Issues:** [#8042](https://github.com/fullcalendar/fullcalendar/issues/8042) (open), [#6521](https://github.com/fullcalendar/fullcalendar/issues/6521) (closed, related: where `aria-pressed` was introduced)
 

@@ -1,9 +1,8 @@
 # A week-aligned timeline's active range isn't its slots' range
 
 **Status:** confirmed
-**Release:** next
 **Test:** `premium/.../src/visible-range/timeline.ts`
-**Issues:** [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, related: 7-day slots with `firstDay: 1` put an event in the wrong week)
+**Issues:** [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed, not fixed, related)
 
 Found during the test revamp. Pre-existing.
 

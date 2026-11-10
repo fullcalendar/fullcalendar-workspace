@@ -24,13 +24,13 @@ RELEASES = [
 
 INTRO = """# Issues
 
-Bugs, features, ideas and behaviors in FullCalendar itself, found during the test revamp. One file per item, sorted into a folder by kind. Each file opens with its title and a **Status**, **Release**, **Test** and **Issues** line. This index is generated: after adding or changing a file, run `python3 planning/build-issues.py`.
+Bugs, features, ideas and behaviors in FullCalendar itself, found during the test revamp. One file per item, sorted into a folder by kind. Each file opens with its title and its **Status**, **Release** (once triaged), **Test** and **Issues** lines. This index is generated: after adding or changing a file, run `python3 planning/build-issues.py`.
 
 | Folder | Holds | Statuses |
 |---|---|---|
 {folders}
 
-**Release** is {releases}.
+**Release** is {releases}. Adam sets it when triaging: a file without one hasn't been triaged yet.
 
 **Test** is where the suites cover it. For a bug it's an `it.fails` test, which passes while the bug exists and fails once it's fixed: then change it to `it`. For a behavior, the test asserts what happens today. `standard/.../` is `standard/packages/vanilla-tests/`, `premium/.../` is `premium/packages/vanilla-scheduler-tests/`.
 

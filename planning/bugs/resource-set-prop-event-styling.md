@@ -1,7 +1,6 @@
 # `ResourceApi.setProp()` drops event-styling props
 
 **Status:** confirmed
-**Release:** next
 **Test:** `premium/.../src/resource-data/crud.ts`
 **Issues:** [#6468](https://github.com/fullcalendar/fullcalendar/issues/6468) (open, related: per-resource `businessHours` disappear after `setProp`)
 

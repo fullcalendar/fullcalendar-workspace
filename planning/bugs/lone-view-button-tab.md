@@ -1,7 +1,6 @@
 # A view button alone in its group is `role=tab` with no `tablist`
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/accessibility/aria.ts`
 **Issues:** [#6522](https://github.com/fullcalendar/fullcalendar/issues/6522) (open, related: view-button groups as a tablist)
 

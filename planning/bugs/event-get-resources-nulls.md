@@ -1,7 +1,6 @@
 # `EventApi.getResources()` returns `null` entries
 
 **Status:** confirmed
-**Release:** next
 **Test:** `premium/.../src/resource-data/event-association.ts`
 **Issues:** [#7300](https://github.com/fullcalendar/fullcalendar/issues/7300) (open)
 

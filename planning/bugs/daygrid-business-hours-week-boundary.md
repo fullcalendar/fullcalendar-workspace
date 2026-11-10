@@ -1,7 +1,6 @@
 # dayGrid business hours leave the Sunday unshaded across a week boundary
 
 **Status:** confirmed
-**Release:** next
 **Test:** `standard/.../src/business-hours/daygrid.ts`
 **Issues:** none found
 

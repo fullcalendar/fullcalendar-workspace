@@ -1,7 +1,6 @@
 # The today button's accessible name doesn't contain its visible text
 
 **Status:** open
-**Release:** next
 **Issues:** none found
 
 Found during the test revamp. Pre-existing. Not tested either way.

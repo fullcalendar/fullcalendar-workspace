@@ -1,7 +1,6 @@
 # Dragging into the bottom strip of a timeGrid all-day cell misses it
 
 **Status:** open
-**Release:** next
 **Issues:** none found
 
 Found during the test revamp. Pre-existing. A confirmed bug, filed as an idea because the fix needs a design decision (see "Open decision"). Diagnosed and patched by a Sol subagent (GPT-Sol-6.1, high effort) on 2026-10-20. **Not applied:** apply only after the test revamp is merged to main. No test in the suite yet: the patch brings its own, and the test models aim at the cell's center.
