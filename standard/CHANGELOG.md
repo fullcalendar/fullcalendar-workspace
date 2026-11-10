@@ -1,4 +1,13 @@
 
+## v7.1.4
+
+- FIX: Resource Timeline with `virtualization`:
+  - Stacked events overflowed onto the rows below when some of the row's events were scrolled out of view. Row heights now fit the events on screen, changing during horizontal scrolling (#8127)
+  - Scrollbar jumped back after fast vertical scrolling and lagged behind the pointer during a drag (#8135)
+  - Possible repeated rerendering when the widest slot label fell out of view
+- FIX: TimeGrid's `aria-colcount` was one too low, leaving out the time-axis column (#8124), thx @ac1982
+
+
 ## v7.1.3
 
 ### Bugfixes
