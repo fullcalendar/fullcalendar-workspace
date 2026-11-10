@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, memoize, memoizeObjArg, ContentContainer, getPartAttr, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, memoize, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
@@ -124,7 +124,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           renderProps={renderProps}
           generatorName={undefined}
           classNameGenerator={options.resourceLaneClass}
-          part={getPartAttr(options, 'resourceLane')}
           didMount={options.resourceLaneDidMount}
           willUnmount={options.resourceLaneWillUnmount}
         >
@@ -161,7 +160,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 generatorName='resourceLaneTopContent'
                 customGenerator={options.resourceLaneTopContent}
                 classNameGenerator={options.resourceLaneTopClass}
-                part={getPartAttr(options, 'resourceLaneTop')}
               />
               <TimelineFg
                 dateProfile={props.dateProfile}
@@ -199,7 +197,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 generatorName='resourceLaneBottomContent'
                 customGenerator={options.resourceLaneBottomContent}
                 classNameGenerator={options.resourceLaneBottomClass}
-                part={getPartAttr(options, 'resourceLaneBottom')}
               />
             </>
           )}

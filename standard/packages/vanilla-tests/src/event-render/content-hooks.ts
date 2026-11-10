@@ -5,6 +5,7 @@ import { initCalendar } from '../lib/calendar'
 import { queryPart } from '../lib/models/events'
 import { getBgEventEls, getEventTexts, getVisibleEventEls } from '../lib/models/event-content'
 import { waitForSettle } from '../lib/settle'
+import { getParts } from '../lib/parts'
 
 describe('event content hooks', () => {
   describe('eventContent', () => {
@@ -254,17 +255,17 @@ describe('event content hooks', () => {
       await waitForSettle()
 
       const eventEl = getVisibleEventEls(calendar.el)[0]
-      const withVariants = (suffix: string) => ['event' + suffix, ...variants.split(' ').map((v) => v + suffix)].join(' ')
+      const withVariants = (suffix: string) => ['event' + suffix, ...variants.split(' ').map((v) => v + suffix)].sort()
       const timeEl = queryPart(eventEl, 'eventTime')
       const titleEl = queryPart(eventEl, 'eventTitle')!
 
       if (timeText) {
-        expect(timeEl!.getAttribute('data-fc-part')).toBe(withVariants('Time'))
+        expect(getParts(timeEl!).sort()).toEqual(withVariants('Time'))
         expect(timeEl!.textContent).toBe(timeText)
       } else {
         expect(timeEl).toBeNull()
       }
-      expect(titleEl.getAttribute('data-fc-part')).toBe(withVariants('Title'))
+      expect(getParts(titleEl).sort()).toEqual(withVariants('Title'))
       expect(titleEl.textContent).toBe('my event')
     })
 
@@ -277,7 +278,7 @@ describe('event content hooks', () => {
       await waitForSettle()
 
       const titleEl = queryPart(getBgEventEls(calendar.el)[0], 'backgroundEventTitle')!
-      expect(titleEl.getAttribute('data-fc-part')).toBe('backgroundEventTitle')
+      expect(getParts(titleEl)).toEqual(['backgroundEventTitle'])
       expect(titleEl.textContent).toBe('my event')
     })
   })

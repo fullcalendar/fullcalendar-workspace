@@ -5,7 +5,7 @@ import { buildNavLinkAttrs } from '../../common/nav-link'
 import { DateComponent } from '../../component/DateComponent'
 import { DateFormatter, DateRange, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { DayTableCell } from '../../daygrid/DayTableModel'
-import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { memoize } from '../../util/memoize'
 import { RefMap } from '../../util/RefMap'
 import { setRef } from '../../vdom-util'
@@ -158,7 +158,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}
-          data-fc-part={getPartAttr(options, 'singleMonth')}
         >
           <Ruler widthRef={this.handleGridWidth} />
           <div
@@ -170,7 +169,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               isTitleAndHeaderSticky && classNames.z3,
               classNames.flexCol,
             )}
-            data-fc-part={getPartAttr(options, 'singleMonthHeader')}
             style={{
               // HACK to keep zIndex above table-header,
               // because in Chrome, something about position:sticky on this title div
@@ -185,7 +183,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 generateClassName(options.singleMonthHeaderInnerClass, headerRenderProps),
                 navLinkAttrs.className,
               )}
-              data-fc-part={joinClassNames(getPartAttr(options, 'singleMonthHeaderInner'), navLinkAttrs['data-fc-part']) || undefined}
             >
               {joinDateTimeFormatParts(dateEnv.formatToParts(monthStartDate, props.titleFormat))}
             </div>
@@ -226,7 +223,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 }),
                 classNames.flexCol,
               )}
-              data-fc-part={getPartAttr(options, 'table')}
               style={{
                 marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined,
               }}
@@ -245,7 +241,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   isTitleAndHeaderSticky && classNames.sticky,
                   isTitleAndHeaderSticky && classNames.z2,
                 )}
-                data-fc-part={getPartAttr(options, 'tableHeader')}
                 style={{
                   top: isTitleAndHeaderSticky ? state.titleHeight : 0,
                   marginBottom: headerStickyBottom,
@@ -265,7 +260,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                     multiMonthColumns: props.colCount || 0,
                     options: { allDaySlot: Boolean(options.allDaySlot) },
                   })}
-                  data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
                 />
               </div>
               <div
@@ -280,7 +274,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   isAspectRatio && classNames.rel,
                   isTitleAndHeaderSticky && classNames.z1,
                 )}
-                data-fc-part={getPartAttr(options, 'tableBody')}
                 style={{
                   marginTop: headerStickyBottom != null ? -headerStickyBottom : undefined,
                   aspectRatio: isAspectRatio ? String(options.aspectRatio) : undefined,

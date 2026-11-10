@@ -49,7 +49,7 @@ The dates of the day cells an element (an event segment, a more-link, a backgrou
 horizontally, within its own row of days. Works in either direction: dates come out in date order.
 */
 export function getCoveredDates(el: HTMLElement): string[] {
-  const rowEl = el.closest<HTMLElement>('[data-fc-part~="dayRow"]')
+  const rowEl = el.closest<HTMLElement>('.test-part-dayRow')
 
   if (!rowEl) {
     throw new Error('Element isn\'t in a row of days')
@@ -70,7 +70,7 @@ export function getCoveredDates(el: HTMLElement): string[] {
 The date of the day cell (dayGrid) or day lane (timeGrid) that contains the element.
 */
 export function getContainingDate(el: HTMLElement): string {
-  const dayEl = el.closest('[data-fc-part~="dayCell"], [data-fc-part~="dayLane"]')
+  const dayEl = el.closest('.test-part-dayCell, .test-part-dayLane')
   const date = dayEl && dayEl.getAttribute('data-date')
 
   if (!date) {

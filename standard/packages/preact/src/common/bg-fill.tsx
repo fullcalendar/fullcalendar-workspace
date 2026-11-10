@@ -6,7 +6,7 @@ import { EventInstance } from '../structs/event-instance'
 import { EventImpl } from '../api/EventImpl'
 import { ViewContext } from '../ViewContext'
 import { joinClassNames } from '../util/html'
-import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { Dictionary, ViewOptionsRefined } from '../options'
 import classNames from '../styles.module.css'
 
@@ -27,12 +27,6 @@ export class BgEvent extends BaseComponent<BgEventProps> {
   // memo
   private buildPublicEvent = memoize(
     (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
-  )
-  // the default content's part isn't in the public render props, so the renderer captures it
-  private buildDefaultContent = memoize(
-    (titlePart: string | undefined) => (
-      (innerProps: EventDisplayInfo) => renderInnerContent(innerProps, titlePart)
-    )
   )
 
   // ref
@@ -102,22 +96,17 @@ export class BgEvent extends BaseComponent<BgEventProps> {
           '--fc-event-color': renderProps.color,
           '--fc-event-contrast-color': renderProps.contrastColor,
         }}
-        defaultGenerator={this.buildDefaultContent(getPartAttr(options, 'backgroundEventTitle'))}
+        defaultGenerator={renderInnerContent}
         elRef={this.handleEl}
         renderProps={renderProps}
         generatorName="backgroundEventContent"
         customGenerator={options.backgroundEventContent}
         classNameGenerator={options.backgroundEventClass}
-        part={getPartAttr(options, 'backgroundEvent')}
         didMount={options.backgroundEventDidMount}
         willUnmount={options.backgroundEventWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            className={innerClassName}
-            part={getPartAttr(options, 'backgroundEventInner')}
-          />
+          <InnerContent tag='div' className={innerClassName} />
         )}
       </ContentContainer>
     )
@@ -138,11 +127,11 @@ export class BgEvent extends BaseComponent<BgEventProps> {
   }
 }
 
-function renderInnerContent(props: EventDisplayInfo, titlePart?: string) {
+function renderInnerContent(props: EventDisplayInfo) {
   let { title } = props.event
 
   return title && (
-    <div className={props.titleClass} data-fc-part={titlePart}>{props.event.title}</div>
+    <div className={props.titleClass}>{props.event.title}</div>
   )
 }
 
@@ -155,10 +144,6 @@ export function renderFill(fillType: string, options: ViewOptionsRefined) {
       fillType === 'non-business' ? options.nonBusinessHoursClass :
         fillType === 'highlight' ? options.highlightClass : undefined,
       classNames.fill,
-    )} data-fc-part={getPartAttr(
-      options,
-      fillType === 'non-business' ? 'nonBusinessHours' :
-        fillType === 'highlight' ? 'highlight' : undefined,
     )} />
   )
 }

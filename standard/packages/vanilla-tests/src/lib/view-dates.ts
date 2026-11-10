@@ -1,5 +1,6 @@
 import { Calendar } from 'fullcalendar'
 import { queryParts } from './models/events'
+import { partSelector } from './parts'
 
 /*
 The view's active range (the dates that can hold events and be interacted with), as
@@ -30,7 +31,9 @@ The dates of the rendered day-header columns, in DOM order. Includes disabled da
 validRange), which still get a column. Not for month views, whose headers are days-of-week.
 */
 export function getDayHeaderDates(root: ParentNode): string[] {
-  return queryParts(root, 'dayHeader').map((el) => el.getAttribute('data-date')!)
+  // a disabled day's header gets no dayHeaderClass, so no part. it's still a dated cell of the header row
+  const selector = `${partSelector('dayHeader')}, ${partSelector('dayHeaderRow')} > [data-date]`
+  return Array.from(root.querySelectorAll(selector)).map((el) => el.getAttribute('data-date')!)
 }
 
 /*

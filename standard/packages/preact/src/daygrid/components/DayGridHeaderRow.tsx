@@ -1,7 +1,6 @@
 import { afterSize } from '../../component-util/resize-observer'
 import { BaseComponent, setRef } from '../../vdom-util'
 import { joinClassNames } from '../../util/html'
-import { getPartAttr } from '../../content-inject/ContentContainer'
 import { RefMap } from '../../util/RefMap'
 import type { Ref } from 'react'
 import { RowConfig } from '../header-tier'
@@ -43,7 +42,6 @@ export class DayGridHeaderRow<BaseRenderProps extends { isDisabled: boolean }, R
       <RowTag
         role={props.role as any /* !!! */}
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
-        data-fc-part={getPartAttr(options, 'dayHeaderRow')}
         className={joinClassNames(
           options.dayHeaderRowClass,
           props.className,

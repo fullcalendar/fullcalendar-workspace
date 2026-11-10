@@ -10,7 +10,7 @@ import { Scroller } from '../../scrollgrid/Scroller'
 import { ViewContainer } from '../../common/ViewContainer'
 import { EventRangeProps } from '../../component-util/event-rendering'
 import { joinClassNames } from '../../util/html'
-import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { createRef } from 'react'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable'
@@ -91,7 +91,6 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
             multiMonthColumns: 0,
           }),
         )}
-        part={getPartAttr(options, !props.forPrint && 'table')} // in print, DayGridLayoutPrint's <table> has it
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

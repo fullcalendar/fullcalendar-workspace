@@ -5,6 +5,7 @@ import { initCalendar } from '../lib/calendar'
 import { getEventEls, getEventIdOfEl, queryParts } from '../lib/models/events'
 import { ToolbarModel } from '../lib/models/toolbar'
 import { waitForSettle } from '../lib/settle'
+import { hasPart } from '../lib/parts'
 
 describe('constructor', () => {
   it.each([
@@ -34,7 +35,7 @@ describe('constructor', () => {
     const calendar = initCalendar({ initialView: 'dayGridMonth' })
     await waitForSettle()
 
-    expect(calendar.el.getAttribute('data-fc-part')).toBe('root')
+    expect(hasPart(calendar.el, 'root')).toBe(true)
     expect(ToolbarModel.header(calendar.el)).toBeTruthy()
     expect(queryParts(calendar.el, 'view')).toHaveLength(1)
     expect(queryParts(calendar.el, 'dayCell')).toHaveLength(42)

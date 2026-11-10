@@ -13,7 +13,7 @@ describe('render', () => {
 
   it('shows no license warning with the test suite\'s preset key', () => {
     const calendar = initCalendar(options)
-    expect(calendar.el.querySelector('[data-fc-part~="resourceRow"]')).not.toBeNull()
+    expect(calendar.el.querySelector('.test-part-resourceRow')).not.toBeNull()
     expect(calendar.el.textContent).not.toContain('license key')
   })
 

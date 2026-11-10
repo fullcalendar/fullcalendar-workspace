@@ -1,7 +1,7 @@
 import { DateRange } from '@full-ui/headless-calendar'
 import { type CSSProperties, type Ref } from 'react'
 import { EventRangeProps } from '../../component-util/event-rendering'
-import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { DateProfile } from '../../DateProfileGenerator'
 import { RefMap } from '../../util/RefMap'
 import { joinClassNames } from '../../util/html'
@@ -61,7 +61,6 @@ export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
           generateClassName(options.tableClass, tableDisplayInfo),
           classNames.printTable,
         )}
-        data-fc-part={getPartAttr(options, 'table')}
         style={props.style}
       >
         <colgroup>
@@ -75,7 +74,6 @@ export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
               ...tableDisplayInfo,
               isSticky: false,
             })}
-            data-fc-part={getPartAttr(options, 'tableHeader')}
           >
             <DayGridHeaderRows
               tableMode
@@ -95,7 +93,6 @@ export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
                     options: { allDaySlot: Boolean(options.allDaySlot) },
                   }),
                 )}
-                data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
               />
             </tr>
           </thead>
@@ -107,7 +104,6 @@ export class DayGridLayoutPrint extends BaseComponent<DayGridLayoutPrintProps> {
           forPrint
           tableMode
           className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
-          part={getPartAttr(options, 'tableBody')}
           dayMaxEvents={undefined}
           dayMaxEventRows={props.dayMaxEventRows}
 

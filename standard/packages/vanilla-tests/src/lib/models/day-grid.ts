@@ -33,7 +33,7 @@ export class DayGridModel {
           neighbor = (sign > 0 ? neighbor.previousElementSibling : neighbor.nextElementSibling) as HTMLElement
         }
 
-        if (neighbor && neighbor.matches('[data-fc-part~="dayCell"]')) {
+        if (neighbor && neighbor.matches('.test-part-dayCell')) {
           return neighbor
         }
       }
@@ -102,7 +102,7 @@ export class DayGridModel {
 
     for (const y of candidates) {
       const hitEl = document.elementFromPoint(center.x, y)
-      if (hitEl && this.getDayCell(spot).contains(hitEl) && !hitEl.closest('[data-fc-part~="event"]')) {
+      if (hitEl && this.getDayCell(spot).contains(hitEl) && !hitEl.closest('.test-part-event')) {
         return { x: center.x, y }
       }
     }
@@ -194,7 +194,7 @@ export class DayGridModel {
   }
 
   private isInDayGrid(el: HTMLElement): boolean {
-    return Boolean(el.closest('[data-fc-part~="dayCell"]'))
+    return Boolean(el.closest('.test-part-dayCell'))
   }
 }
 

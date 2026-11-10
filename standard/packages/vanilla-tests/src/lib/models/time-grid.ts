@@ -24,7 +24,7 @@ export class TimeGridModel {
     const lanes = queryParts(this.root, 'dayLane').filter((el) => (
       el.getAttribute('data-date') === date &&
       matchesResource(el, resourceId) &&
-      !el.closest('[data-fc-part~="tableHeader"]') // ex: a placeholder's blank header cell, styled like a lane
+      !el.closest('.test-part-tableHeader') // ex: a placeholder's blank header cell, styled like a lane
     ))
 
     if (lanes.length !== 1) {
@@ -211,7 +211,7 @@ export class TimeGridModel {
   }
 
   private isInLane(el: HTMLElement): boolean {
-    return Boolean(el.closest('[data-fc-part~="dayLane"]'))
+    return Boolean(el.closest('.test-part-dayLane'))
   }
 }
 

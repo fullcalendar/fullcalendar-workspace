@@ -7,6 +7,7 @@ import { getMoreLinkEls } from '../lib/models/event-content'
 import { ToolbarModel } from '../lib/models/toolbar'
 import { waitForSettle } from '../lib/settle'
 import { getActiveRange } from '../lib/view-dates'
+import { getParts } from '../lib/parts'
 
 /*
 Keyboard access. Interactive things that aren't natively focusable (events with eventClick, nav links,
@@ -197,7 +198,7 @@ describe('keyboard access to nav links', () => {
     ['a timeGridWeek day header', 'timeGridWeek', {}, '[data-date="2023-04-12"]', 'timeGridDay', ['2023-04-12', '2023-04-13']],
     ['a listWeek day header', 'listWeek', { events: [{ start: '2023-04-12T10:00:00' }] }, '[data-date="2023-04-12"]', 'timeGridDay', ['2023-04-12', '2023-04-13']],
     // (in a week view, the week number isn't a nav link)
-    ['a timeGridDay week number', 'timeGridDay', { weekNumbers: true }, '[data-fc-part~="weekNumberHeader"]', 'timeGridWeek', ['2023-04-09', '2023-04-16']],
+    ['a timeGridDay week number', 'timeGridDay', { weekNumbers: true }, '.test-part-weekNumberHeader', 'timeGridWeek', ['2023-04-09', '2023-04-16']],
   ])('%s is a focusable link that navigates on Enter', async (_desc, initialView, extraOptions, closestSelector, expectedView, expectedRange) => {
     const calendar = initCalendar({ ...options, ...extraOptions, initialView })
     await waitForSettle()
@@ -258,7 +259,7 @@ describe('keyboard access to nav links', () => {
     const weekNumberEl = queryParts(calendar.el, 'inlineWeekNumber')[0]
     const dayNavLinkEl = getNavLink(calendar, '[data-date="2023-04-12"]')
     expect(dayNavLinkEl.tabIndex).toBe(0) // day nav links in the same view are tabbable
-    expect(weekNumberEl.getAttribute('data-fc-part')).toContain('navLink')
+    expect(getParts(weekNumberEl)).toContain('navLink')
     expect(weekNumberEl.tabIndex).toBe(-1)
     expect(weekNumberEl.getAttribute('role')).toBeNull()
     expect(weekNumberEl.getAttribute('aria-hidden')).toBe('true')

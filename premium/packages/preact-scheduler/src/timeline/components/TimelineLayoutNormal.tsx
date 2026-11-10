@@ -8,7 +8,6 @@ import {
   DateRange,
   FooterScrollbar,
   generateClassName,
-  getPartAttr,
   getFooterScrollbarSticky,
   getIsHeightAuto,
   getTableHeaderSticky,
@@ -118,7 +117,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
           }),
           classNames.isolate,
         )}
-        part={getPartAttr(options, 'table')}
       >
         <div
           className={joinClassNames(
@@ -133,7 +131,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
             tableHeaderSticky && classNames.tableHeaderSticky,
             classNames.z1,
           )}
-          data-fc-part={getPartAttr(options, 'tableHeader')}
         >
           <Scroller
             horizontal
@@ -181,7 +178,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
                   classNames.borderlessY,
                   classNames.borderlessEnd,
                 )}
-                data-fc-part={getPartAttr(options, 'filler')}
                 style={{ minWidth: endScrollbarWidth }}
               />
             )}
@@ -191,7 +187,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
               inTableHeader: true,
               options: { dayMinWidth: options.dayMinWidth },
             })}
-            data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
           />
         </div>
 
@@ -210,7 +205,6 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
             verticalScrolling && classNames.liquid,
             classNames.z0,
           )}
-          part={getPartAttr(options, 'tableBody')}
           ref={this.bodyScrollerRef}
           clientWidthRef={props.clientWidthRef}
         >
@@ -238,7 +232,7 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
               eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
               slotWidth={slotWidth}
             />
-            <div className={joinClassNames(options.timelineTopClass)} data-fc-part={getPartAttr(options, 'timelineTop')} />
+            <div className={joinClassNames(options.timelineTopClass)} />
             <TimelineFg
               dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
@@ -252,7 +246,7 @@ export class TimelineLayoutNormal extends DateComponent<TimelineLayoutNormalProp
               label={options.eventsHint}
               slotWidth={slotWidth}
             />
-            <div className={joinClassNames(options.timelineBottomClass)} data-fc-part={getPartAttr(options, 'timelineBottom')} />
+            <div className={joinClassNames(options.timelineBottomClass)} />
             {enableNowIndicator && (
               <TimelineNowIndicatorLine
                 tDateProfile={tDateProfile}

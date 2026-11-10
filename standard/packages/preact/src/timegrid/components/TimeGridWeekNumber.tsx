@@ -1,7 +1,7 @@
 import { WeekNumberHeaderInfo } from '../../common/WeekNumberContainer'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
-import { ContentContainer, renderText, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { ContentContainer, renderText, generateClassName } from '../../content-inject/ContentContainer'
 import { DateProfile } from '../../DateProfileGenerator'
 import { buildDateStr, buildNavLinkAttrs } from '../../common/nav-link'
 import { createFormatter } from '../../datelib/formatting'
@@ -83,7 +83,6 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         customGenerator={options.weekNumberHeaderContent}
         defaultGenerator={renderText}
         classNameGenerator={options.weekNumberHeaderClass}
-        part={getPartAttr(options, 'weekNumberHeader')}
         didMount={options.weekNumberHeaderDidMount}
         willUnmount={options.weekNumberHeaderWillUnmount}
       >
@@ -115,7 +114,6 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                   )
                   : undefined}
                 className={generateClassName(options.weekNumberHeaderInnerClass, weekNumberRenderProps)}
-                part={getPartAttr(options, 'weekNumberHeaderInner')}
               />
             </div>
           </>

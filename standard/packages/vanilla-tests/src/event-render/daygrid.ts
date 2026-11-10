@@ -242,11 +242,11 @@ describe('dayGrid event rendering', () => {
     }
 
     function isListItem(el: HTMLElement): boolean {
-      return el.matches('[data-fc-part~="listItemEvent"]')
+      return el.matches('.test-part-listItemEvent')
     }
 
     function isBlock(el: HTMLElement): boolean {
-      return el.matches('[data-fc-part~="blockEvent"]')
+      return el.matches('.test-part-blockEvent')
     }
 
     it('renders a single-day timed event as a list item, by default', async () => {

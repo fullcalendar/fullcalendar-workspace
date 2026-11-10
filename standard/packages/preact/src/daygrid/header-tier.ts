@@ -13,7 +13,6 @@ import { ViewContext } from '../ViewContext'
 Just for the HEADER
 */
 export interface CellRenderConfig<BaseRenderProps, RenderProps = BaseRenderProps> {
-  partName?: string // for getPartAttr. the inner element's part gets an `Inner` suffix
   generatorName: string
   customGenerator: ContentGenerator<RenderProps>
   innerClassNameGenerator: ClassNameGenerator<RenderProps>
@@ -27,7 +26,7 @@ export interface CellRenderConfig<BaseRenderProps, RenderProps = BaseRenderProps
 }
 
 export interface CellDataConfig<RenderProps> {
-  blank?: { classNameGenerator: ClassNameGenerator<RenderProps>, partName?: string }
+  blank?: { classNameGenerator: ClassNameGenerator<RenderProps> }
   key: string
   dateMarker: DateMarker
   renderProps: RenderProps
@@ -143,7 +142,6 @@ export function buildDateRenderConfig(
   const { options } = context
 
   return {
-    partName: 'dayHeader',
     generatorName: 'dayHeaderContent',
     customGenerator: options.dayHeaderContent,
     classNameGenerator: options.dayHeaderClass,

@@ -6,7 +6,6 @@ import {
   DateProfile,
   DateRange,
   generateClassName,
-  getPartAttr,
   memoize,
   RefMap,
   SlicedProps,
@@ -206,7 +205,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       <th
         rowSpan={superHeaderRendering ? 2 : undefined}
         className={joinClassNames(options.resourceColumnDividerClass)}
-        data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
       />
     )
 
@@ -226,7 +224,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             options.resourceColumnDividerClass,
             classNames.offscreen,
           )}
-          data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
         />
 
         <div
@@ -276,7 +273,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             classNames.rel,
             classNames.z1,
           )}
-          data-fc-part={getPartAttr(options, 'table')}
         >
           <colgroup>
             {colSpecs.map((_colSpec, colIndex) => (
@@ -294,7 +290,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               ...tableDisplayInfo,
               isSticky: false,
             })}
-            data-fc-part={getPartAttr(options, 'tableHeader')}
           >
             {superHeaderRendering ? (
               <>
@@ -340,7 +335,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               <th
                 colSpan={colSpecs.length}
                 className={joinClassNames(classNames.noPadding, headerDividerClassName)}
-                data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
               />
               {/* Prevent the divider cell's vertical padding from increasing the header-border row height. */}
               <th
@@ -348,18 +342,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   options.resourceColumnDividerClass,
                   classNames.noPaddingY,
                 )}
-                data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
               />
               <th
                 className={joinClassNames(classNames.noPadding, headerDividerClassName)}
-                data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
               />
             </tr>
           </thead>{/* Header END */}
           {/* Body START */}
           <tbody
             className={generateClassName(options.tableBodyClass, tableDisplayInfo)}
-            data-fc-part={getPartAttr(options, 'tableBody')}
           >
             {/* BODY ROWS */}
             {printRows.map((printRow, rowIndex0) => { // index is 0-based
@@ -413,7 +404,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     />
                     <td
                       className={joinClassNames(options.resourceColumnDividerClass)}
-                      data-fc-part={getPartAttr(options, 'resourceColumnDivider')}
                     />
                     <GroupLane
                       group={group}

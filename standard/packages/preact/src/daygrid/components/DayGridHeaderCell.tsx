@@ -1,5 +1,5 @@
 import { joinClassNames } from '../../util/html'
-import { ContentContainer, renderText, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { ContentContainer, renderText, generateClassName } from '../../content-inject/ContentContainer'
 import { setRef } from '../../vdom-util'
 import { BaseComponent } from '../../vdom-util'
 import { watchSize } from '../../component-util/resize-observer'
@@ -92,7 +92,6 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
               isNarrow: props.cellIsNarrow,
             }),
           )}
-          data-fc-part={getPartAttr(context.options, dataConfig.blank.partName)}
           style={style}
         />
       )
@@ -186,7 +185,6 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
           // TODO: make DRY with DayCellContainer
           isDisabled ? undefined : renderConfig.classNameGenerator
         }
-        part={getPartAttr(context.options, renderConfig.partName)}
         didMount={renderConfig.didMount}
         willUnmount={renderConfig.willUnmount}
       >
@@ -215,7 +213,6 @@ export class DayGridHeaderCell<BaseRenderProps extends { isDisabled: boolean }, 
                 tag='div'
                 attrs={dataConfig.innerAttrs}
                 className={generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps)}
-                part={getPartAttr(context.options, renderConfig.partName && renderConfig.partName + 'Inner')}
               />
             </div>
           </>

@@ -1,6 +1,5 @@
 import { DateMarker, joinDateTimeFormatParts } from '@full-ui/headless-calendar'
 import { joinClassNames } from '../util/html'
-import { getPartAttr } from '../content-inject/ContentContainer'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { formatWithOrdinals } from '../util/misc'
 import { ViewContext } from '../ViewContext'
@@ -60,7 +59,6 @@ export function buildNavLinkAttrs(
       classNames.cursorPointer,
       classNames.internalNavLink,
     ),
-    'data-fc-part': getPartAttr(options, 'navLink'),
     ...(isTabbable
       ? createAriaClickAttrs(handleInteraction)
       : { onClick: handleInteraction }

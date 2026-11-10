@@ -22,6 +22,7 @@ import { getButtonLabel, ToolbarModel } from '../lib/models/toolbar'
 import { enUsSep } from '../lib/intl'
 import { waitForSettle } from '../lib/settle'
 import testPlugin from '../lib/test-plugin'
+import { hasPart } from '../lib/parts'
 
 /*
 A smoke render of each non-classic theme shipped by the `fullcalendar` package: its plugin, theme.css
@@ -81,8 +82,8 @@ function resolveColor(parentEl: HTMLElement, value: string): string {
 The day an event element is rendered in: a dayGrid day cell, a timeGrid day lane, or a list day.
 */
 function getDayContainer(eventEl: HTMLElement): { el: HTMLElement, date: string } {
-  const el = eventEl.closest<HTMLElement>('[data-fc-part~="dayCell"], [data-fc-part~="dayLane"], [data-fc-part~="listDay"]')!
-  const dateEl = el.matches('[data-fc-part~="listDay"]') ? queryPart(el, 'listDayHeader')! : el
+  const el = eventEl.closest<HTMLElement>('.test-part-dayCell, .test-part-dayLane, .test-part-listDay')!
+  const dateEl = el.matches('.test-part-listDay') ? queryPart(el, 'listDayHeader')! : el
   return { el, date: dateEl.getAttribute('data-date')! }
 }
 
@@ -105,7 +106,7 @@ describe('themes', () => {
     await waitForSettle()
 
     const rootEl = calendar.el
-    expect(rootEl.getAttribute('data-fc-part')).toBe('root')
+    expect(hasPart(rootEl, 'root')).toBe(true)
 
     // the toolbar, title and buttons render
     const toolbar = ToolbarModel.header(rootEl)!

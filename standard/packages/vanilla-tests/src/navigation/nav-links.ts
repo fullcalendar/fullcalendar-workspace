@@ -146,7 +146,7 @@ describe('navLinks', () => {
       const calendar = initCalendar({ ...dayOptions, weekNumbers: true, dateClick })
       await waitForSettle()
 
-      const navLinkEls = queryParts(calendar.el, 'navLink').filter((el) => el.closest('[data-fc-part~="weekNumberHeader"]'))
+      const navLinkEls = queryParts(calendar.el, 'navLink').filter((el) => el.closest('.test-part-weekNumberHeader'))
       expect(navLinkEls).toHaveLength(1)
       await clickEl(navLinkEls[0])
 

@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { getPartAttr, afterSize, BaseComponent, DateMarker, DateProfile, DateRange, RefMap, setRef } from '@fullcalendar/preact/protected-api'
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, RefMap, setRef } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile'
 import { TimelineHeaderCell } from './TimelineHeaderCell'
@@ -75,7 +75,6 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
           classNames.borderlessTop,
           !props.rowLevel && classNames.borderlessBottom, // last row
         )}
-        data-fc-part={getPartAttr(options, 'slotHeaderRow')}
         style={{
           insetInlineStart: props.insetInlineStart,
           width: props.width,

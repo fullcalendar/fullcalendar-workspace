@@ -1,13 +1,13 @@
 import { PluginInput } from 'fullcalendar'
-import devPartsPlugin from 'fullcalendar/dev-parts'
+import { standardPartsPlugin } from './parts'
 
 /*
-Option defaults every test calendar gets, on top of the classic theme.
-Unlike the Karma suite's theme-for-tests plugin, this adds no class names: tests query `data-fc-part`.
+Option defaults every test calendar gets, on top of the classic theme, and the parts plugin that marks
+elements for tests to find (see parts.ts).
 */
 export default {
   name: 'tests',
-  deps: [devPartsPlugin],
+  deps: [standardPartsPlugin],
   optionDefaults: {
     headerToolbar: {
       start: 'title',

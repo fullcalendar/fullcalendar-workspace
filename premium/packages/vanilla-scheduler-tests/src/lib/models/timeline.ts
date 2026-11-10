@@ -34,7 +34,7 @@ export class TimelineModel {
 
   getEventEls(eventId?: string, resourceId?: string): HTMLElement[] {
     return getEventEls(this.root, eventId).filter((el) => (
-      resourceId == null || el.closest('[data-fc-part~="resourceLane"]')?.getAttribute('data-resource-id') === resourceId
+      resourceId == null || el.closest('.test-part-resourceLane')?.getAttribute('data-resource-id') === resourceId
     ))
   }
 

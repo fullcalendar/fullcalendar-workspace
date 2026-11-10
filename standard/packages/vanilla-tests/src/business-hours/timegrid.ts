@@ -100,7 +100,7 @@ describe('businessHours in timeGrid', () => {
     expectNonBusinessHours(calendar.el, '2014-12-13', WHOLE_DAY)
 
     // each stretch of whole days is one all-day element
-    const allDayFillEls = queryParts(calendar.el, 'nonBusinessHours').filter((el) => el.closest('[data-fc-part~="dayCell"]'))
+    const allDayFillEls = queryParts(calendar.el, 'nonBusinessHours').filter((el) => el.closest('.test-part-dayCell'))
     expect(allDayFillEls.map(getCoveredDates)).toEqual([['2014-12-07'], ['2014-12-12', '2014-12-13']])
   })
 

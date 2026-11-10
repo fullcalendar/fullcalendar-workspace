@@ -14,7 +14,6 @@ import {
   CalendarInner,
   CalendarMediaRoot,
   computeRootClassName,
-  getPartAttr,
   RenderId,
   guid,
 } from '@fullcalendar/preact/protected-api'
@@ -34,7 +33,6 @@ export class Calendar extends CalendarApiImpl {
   private isRendered = false
   private customContentRenderId = 0
   private currentClassName = ''
-  private currentPart: string | undefined
   private currentColorScheme = ''
 
   constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
@@ -89,7 +87,6 @@ export class Calendar extends CalendarApiImpl {
 
                   this.setIsRtl(isRtl)
                   this.setClassName(className)
-                  this.setPart(getPartAttr(options, 'root'))
                   this.setHeight(options.height)
                   this.setColorScheme(options.colorScheme || '')
 
@@ -112,7 +109,6 @@ export class Calendar extends CalendarApiImpl {
 
       this.setIsRtl(false)
       this.setClassName('')
-      this.setPart(undefined)
       this.setHeight('')
       this.setColorScheme('')
     }
@@ -174,20 +170,6 @@ export class Calendar extends CalendarApiImpl {
       }
 
       this.currentClassName = className
-    }
-  }
-
-  // without the dev-parts plugin there's no part, and an app's own data-fc-part is left alone.
-  // with it, the calendar's part replaces the app's, and is removed on destroy
-  private setPart(part: string | undefined) {
-    if (part !== this.currentPart) {
-      if (part) {
-        this.el.dataset.fcPart = part
-      } else {
-        delete this.el.dataset.fcPart
-      }
-
-      this.currentPart = part
     }
   }
 

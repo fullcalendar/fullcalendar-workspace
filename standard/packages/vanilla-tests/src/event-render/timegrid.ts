@@ -21,7 +21,7 @@ one in its lane, so it fills most of the lane's width.
 function expectSegInSlots(root: HTMLElement, eventEl: HTMLElement, date: string, startSlot: number, endSlot: number) {
   const span = getSlotSpan(root, startSlot, endSlot)
   const rect = eventEl.getBoundingClientRect()
-  const laneRect = eventEl.closest('[data-fc-part~="dayLane"]')!.getBoundingClientRect()
+  const laneRect = eventEl.closest('.test-part-dayLane')!.getBoundingClientRect()
 
   expect(getContainingDate(eventEl)).toBe(date)
   expect(rect.width).toBeGreaterThan(laneRect.width / 2)

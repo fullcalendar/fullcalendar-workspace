@@ -2,7 +2,7 @@ import { Duration, DateFormatter, DateMarker, joinDateTimeFormatParts } from '@f
 import { SlotHeaderInfo } from '../../render-hook-misc'
 import { joinClassNames } from '../../util/html'
 import { BaseComponent, setRef } from '../../vdom-util'
-import { ContentContainer, generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../../content-inject/ContentContainer'
 import { createFormatter } from '../../datelib/formatting'
 import { getDateMeta } from '../../component-util/date-rendering'
 import { memoize } from '../../util/memoize'
@@ -82,7 +82,6 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
             generateClassName(options.slotHeaderClass, renderProps),
             className,
           )}
-          data-fc-part={getPartAttr(options, 'slotHeader')}
           data-time={props.isoTimeStr}
           style={{
             height: props.height,
@@ -106,7 +105,6 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
         customGenerator={options.slotHeaderContent}
         defaultGenerator={renderInnerContent}
         classNameGenerator={options.slotHeaderClass}
-        part={getPartAttr(options, 'slotHeader')}
         didMount={options.slotHeaderDidMount}
         willUnmount={options.slotHeaderWillUnmount}
       >
@@ -122,7 +120,6 @@ export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
             <InnerContent
               tag="div"
               className={generateClassName(options.slotHeaderInnerClass, renderProps)}
-              part={getPartAttr(options, 'slotHeaderInner')}
             />
           </div>
         )}

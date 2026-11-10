@@ -46,7 +46,7 @@ describe('event rendering in resource columns', () => {
     const headerRect = headerCellEl.getBoundingClientRect()
     const rect = el.getBoundingClientRect()
 
-    const columnEl = el.closest('[data-fc-part~="dayLane"], [data-fc-part~="dayCell"]')!
+    const columnEl = el.closest('.test-part-dayLane, .test-part-dayCell')!
     expect([columnEl.getAttribute('data-date'), columnEl.getAttribute('data-resource-id')]).toEqual([date, resourceId])
     expect(rect.width).toBeGreaterThan(headerRect.width / 2) // not collapsed
     expect(rect.left).toBeGreaterThanOrEqual(headerRect.left - 1)

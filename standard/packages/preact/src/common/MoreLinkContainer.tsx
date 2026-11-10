@@ -10,7 +10,7 @@ import { BaseComponent, setRef } from '../vdom-util'
 import { ViewApi } from '../api/ViewApi'
 import { ViewContext } from '../ViewContext'
 import { MorePopover } from './MorePopover'
-import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ElAttrsProps } from '../content-inject/ContentInjector'
 import { createAriaClickAttrs } from '../util/dom-event'
 import { EventRangeProps } from '../component-util/event-rendering'
@@ -103,7 +103,6 @@ export class MoreLinkTrigger extends BaseComponent<MoreLinkTriggerProps> {
         customGenerator={options.moreLinkContent}
         defaultGenerator={renderMoreLinkText}
         classNameGenerator={options.moreLinkClass}
-        part={getPartAttr(options, 'moreLink', props.display === 'row' ? 'rowMoreLink' : 'columnMoreLink')}
         didMount={props.didMount}
         willUnmount={props.willUnmount}
       >
@@ -122,7 +121,6 @@ export class MoreLinkTrigger extends BaseComponent<MoreLinkTriggerProps> {
                 ? classNames.stickyS
                 : classNames.stickyT,
             )}
-            part={getPartAttr(options, 'moreLinkInner', props.display === 'row' ? 'rowMoreLinkInner' : 'columnMoreLinkInner')}
           />
         )}
       </ContentContainer>

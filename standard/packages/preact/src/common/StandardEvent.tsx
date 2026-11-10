@@ -1,7 +1,7 @@
 import { BaseComponent, setRef } from '../vdom-util'
 import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayInfo, EventTextInfo, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering'
 import { DateFormatter, DateMarker } from '@full-ui/headless-calendar'
-import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ElRef } from '../content-inject/ContentInjector'
 import { memoize } from '../util/memoize'
 import { EventDef } from '../structs/event-def'
@@ -50,12 +50,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
   // memo
   private buildPublicEvent = memoize(
     (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
-  )
-  // the default content's parts aren't in the public render props, so the renderer captures them
-  private buildDefaultContent = memoize(
-    (timePart: string | undefined, titlePart: string | undefined) => (
-      (innerProps: EventDisplayInfo) => renderInnerContent(innerProps, timePart, titlePart)
-    )
   )
 
   // ref
@@ -173,15 +167,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       !props.disableLiquid && classNames.liquid, // timegrid hack
     )
 
-    const getEventPartAttr = (suffix: string) => getPartAttr(
-      options,
-      'event' + suffix,
-      isBlock && 'blockEvent' + suffix,
-      props.display === 'row' && 'rowEvent' + suffix,
-      props.display === 'column' && 'columnEvent' + suffix,
-      props.display === 'list-item' && 'listItemEvent' + suffix,
-    )
-
     const beforeContent = props.display === 'row' && options.rowEventBeforeContent
     const afterContent = props.display === 'row' && options.rowEventAfterContent
 
@@ -203,9 +188,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         renderProps={renderProps}
         generatorName="eventContent"
         customGenerator={options.eventContent}
-        defaultGenerator={this.buildDefaultContent(getEventPartAttr('Time'), getEventPartAttr('Title'))}
+        defaultGenerator={renderInnerContent}
         classNameGenerator={options.eventClass}
-        part={getEventPartAttr('')}
         didMount={options.eventDidMount}
         willUnmount={options.eventWillUnmount}
       >
@@ -236,7 +220,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                     classNames.internalEventResizerStart,
                   )
                 )}
-                data-fc-part={getEventPartAttr('Before')}
               >
                 {beforeContent && (
                   <ContentContainer<EventDisplayInfo>
@@ -260,7 +243,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 innerClassName,
                 !props.disableZindexes && classNames.z0,
               )}
-              part={getEventPartAttr('Inner')}
             />
             {/* "after" element (resizer or left-arrow) */}
             {(afterClassName || afterContent) && (
@@ -277,7 +259,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                     classNames.internalEventResizerEnd,
                   )
                 )}
-                data-fc-part={getEventPartAttr('After')}
               >
                 {afterContent && (
                   <ContentContainer<EventDisplayInfo>
@@ -321,13 +302,13 @@ StandardEvent.addPropsEquality({
   seg: isPropsEqualShallow,
 })
 
-function renderInnerContent(innerProps: EventDisplayInfo, timePart?: string, titlePart?: string) {
+function renderInnerContent(innerProps: EventDisplayInfo) {
   return (
     <>
       {innerProps.timeText && (
-        <div className={innerProps.timeClass} data-fc-part={timePart}>{innerProps.timeText}</div>
+        <div className={innerProps.timeClass}>{innerProps.timeText}</div>
       )}
-      <div className={innerProps.titleClass} data-fc-part={titlePart}>
+      <div className={innerProps.titleClass}>
         {innerProps.event.title || <>&nbsp;</>}
       </div>
     </>

@@ -16,7 +16,7 @@ import { FooterScrollbar } from '../../common/FooterScrollbar'
 import { afterSize } from '../../component-util/resize-observer'
 import { getIsHeightAuto, getScrollerSyncerClass, getFooterScrollbarSticky, getTableHeaderSticky } from '../../scrollgrid/util'
 import { isArraysEqual } from '../../util/array'
-import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { type Ref, createRef } from 'react'
 import classNames from '../../styles.module.css'
 import { DayGridHeaderRow } from '../../daygrid/components/DayGridHeaderRow'
@@ -212,7 +212,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               tableHeaderSticky && classNames.tableHeaderSticky,
               classNames.z1,
             )}
-            data-fc-part={getPartAttr(options, 'tableHeader')}
           >
             <div className={classNames.flexRow}>
               {/* HEADER / labels
@@ -235,7 +234,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       classNames.borderlessTop,
                       tierNum === props.headerTiers.length - 1 && classNames.borderlessBottom,
                     )}
-                    data-fc-part={getPartAttr(options, 'dayHeaderRow')}
                     style={{
                       height: state.headerTierHeights[tierNum]
                     }}
@@ -263,7 +261,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   inTableHeader: true,
                   options: { dayMinWidth: options.dayMinWidth },
                 })}
-                data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
               />
               {/* HEADER / main (horizontal scroller)
               -------------------------------------------------------------------------------------*/}
@@ -303,7 +300,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       classNames.borderlessY,
                       classNames.borderlessEnd,
                     )}
-                    data-fc-part={getPartAttr(options, 'filler')}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -315,7 +311,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 multiMonthColumns: 0,
                 options: { allDaySlot: Boolean(options.allDaySlot) },
               })}
-              data-fc-part={getPartAttr(options, 'dayHeaderDivider')}
             />
           </div>
         )}
@@ -333,7 +328,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             classNames.isolate,
             classNames.z0,
           )}
-          data-fc-part={getPartAttr(options, 'tableBody')}
         >
           {options.allDaySlot && (
             <>
@@ -354,7 +348,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     inTableHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
-                  data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
                 />
                 {/* ALL-DAY / main (horizontal scroller)
                 -----------------------------------------------------------------------------------*/}
@@ -402,7 +395,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         classNames.borderlessY,
                         classNames.borderlessEnd,
                       )}
-                      data-fc-part={getPartAttr(options, 'filler')}
                       style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
@@ -411,7 +403,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               {/* TODO: don't show div if no classname */}
               <div
                 className={joinClassNames(options.allDayDividerClass, classNames.z2)}
-                data-fc-part={getPartAttr(options, 'allDayDivider')}
               />
             </>
           )}
@@ -488,7 +479,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           classNames.borderlessBottom,
                           rowsNotExpanding && classNames.liquid,
                         )}
-                        data-fc-part={getPartAttr(options, 'filler')}
                         style={{
                           minHeight: bottomScrollbarWidth
                         }}
@@ -503,7 +493,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 inTableHeader: false,
                 options: { dayMinWidth: options.dayMinWidth },
               })}
-              data-fc-part={getPartAttr(options, 'slotHeaderDivider')}
             />
             {/* SLATS / main (scroller)
             ---------------------------------------------------------------------------------------*/}
@@ -600,7 +589,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             classNames.borderlessBottom,
                             classNames.liquid,
                           )}
-                          data-fc-part={getPartAttr(options, 'filler')}
                         />
                       )}
                     </>

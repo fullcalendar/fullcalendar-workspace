@@ -11,6 +11,7 @@ import {
   getSlotHeaderDates, getSlotHeaderRows, getSlotLanes, getTimeAxisEdges, getTimeScroller,
 } from '../lib/models/timeline-layout'
 import { DST_TIMELINE_OPTIONS, FALL_BACK_DAY, SPRING_FORWARD_DAY, expectCloseTo } from '../lib/dst'
+import { getParts } from '@fullcalendar-tests/standard/src/lib/parts'
 
 describe('timeline time slots', () => {
   describe('slot headers', () => {
@@ -61,7 +62,7 @@ describe('timeline time slots', () => {
       expect(slotHeaderDidMount).toHaveBeenCalledTimes(count * strictModeFactor)
       const info = slotHeaderDidMount.mock.calls[0][0]
       expect(info.date.toISOString()).toBe(firstDate)
-      expect(info.el.getAttribute('data-fc-part')).toContain('slotHeader')
+      expect(getParts(info.el)).toContain('slotHeader')
       expect(info.view.type).toBe(initialView)
     })
 

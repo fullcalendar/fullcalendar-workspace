@@ -3,7 +3,7 @@ import { BaseComponent } from '../../vdom-util'
 import { buildDateStr } from '../../common/nav-link'
 import type { DateMarker, DateRange } from '@full-ui/headless-calendar'
 import type { EventRangeProps } from '../../component-util/event-rendering'
-import { generateClassName, getPartAttr } from '../../content-inject/ContentContainer'
+import { generateClassName } from '../../content-inject/ContentContainer'
 import { getDateMeta } from '../../component-util/date-rendering'
 import { getEventRangeMeta } from '../../component-util/event-rendering'
 import { memoize } from '../../util/memoize'
@@ -62,7 +62,6 @@ export class ListDay extends BaseComponent<ListDayProps> {
         role='listitem'
         aria-label={fullDateStr}
         className={generateClassName(options.listDayClass, listDayData)}
-        data-fc-part={getPartAttr(options, 'listDay')}
       >
         <ListDayHeader
           dayDate={props.dayDate}
@@ -76,7 +75,6 @@ export class ListDay extends BaseComponent<ListDayProps> {
             generateClassName(options.listDayBodyClass, listDayEventsData),
             classNames.flexCol,
           )}
-          data-fc-part={getPartAttr(options, 'listDayBody')}
         >
           {segs.map((seg, index) => {
             const key = seg.eventRange.instance.instanceId

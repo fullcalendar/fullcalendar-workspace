@@ -337,8 +337,8 @@ describe('resource timeline resource area', () => {
 
       const lanes = getResourceLanes(calendar.el)
       expect(lanes).toHaveLength(20)
-      const areaBodyEl = getResourceCells(calendar.el, 'r0')[0].closest('[data-fc-part~="tableBody"]') as HTMLElement
-      const laneBodyEl = lanes[0].closest('[data-fc-part~="tableBody"]') as HTMLElement
+      const areaBodyEl = getResourceCells(calendar.el, 'r0')[0].closest('.test-part-tableBody') as HTMLElement
+      const laneBodyEl = lanes[0].closest('.test-part-tableBody') as HTMLElement
       expect(areaBodyEl.offsetHeight).toBeGreaterThan(20 * 30)
       expect(Math.abs(areaBodyEl.offsetHeight - laneBodyEl.offsetHeight)).toBeLessThan(20) // disregarding a scrollbar
     })

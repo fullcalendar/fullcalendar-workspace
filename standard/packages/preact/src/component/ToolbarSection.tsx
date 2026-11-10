@@ -2,7 +2,7 @@ import { createElement, type ReactNode, type ReactElement } from 'react'
 import { BaseComponent } from '../vdom-util'
 import { ToolbarWidget, ButtonInfo, ButtonGroupInfo } from '../toolbar-struct'
 import { joinClassNames } from '../util/html'
-import { ContentContainer, generateClassName, getPartAttr } from '../content-inject/ContentContainer'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer'
 import { ButtonIcon } from './ButtonIcon'
 import classNames from '../styles.module.css'
 
@@ -30,7 +30,6 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     return createElement(
       'div', {
         className: generateClassName(options.toolbarSectionClass, { name: props.name }),
-        'data-fc-part': getPartAttr(options, 'toolbarSection'),
       },
       ...children, // spread, so no React key errors
     )
@@ -68,7 +67,6 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             aria-level={options.headingLevel}
             id={props.titleId}
             className={joinClassNames(options.toolbarTitleClass)}
-            data-fc-part={getPartAttr(options, 'toolbarTitle')}
           >{props.title}</div>,
         )
       } else if (customElement) {
@@ -143,7 +141,6 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
                 classNames.focusZ2, // to ensure focus-ring is raised
               ),
             )}
-            part={getPartAttr(options, 'button')}
             renderProps={renderProps}
             generatorName={undefined}
             classNameGenerator={widget.buttonClass}
@@ -170,7 +167,6 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           generateClassName(options.buttonGroupClass, { hasSelection: isOnlyView }),
           classNames.isolate,
         ),
-        'data-fc-part': getPartAttr(options, 'buttonGroup'),
       }, ...children)
     }
 

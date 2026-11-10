@@ -1,13 +1,14 @@
 import { getElEventRange } from 'fullcalendar/protected-api'
 import classNames from 'fullcalendar/protected-styles'
+import { getParts, partSelector } from '../parts'
 import { Point } from '../pointer'
 
 export function queryParts(root: ParentNode, part: string): HTMLElement[] {
-  return Array.from(root.querySelectorAll<HTMLElement>(`[data-fc-part~="${part}"]`))
+  return Array.from(root.querySelectorAll<HTMLElement>(partSelector(part)))
 }
 
 export function queryPart(root: ParentNode, part: string): HTMLElement | null {
-  return root.querySelector<HTMLElement>(`[data-fc-part~="${part}"]`)
+  return root.querySelector<HTMLElement>(partSelector(part))
 }
 
 /*
@@ -44,7 +45,7 @@ presses), so selection gestures must start on empty space.
 export function assertNotOnEvent(point: Point, what: string): void {
   const hitEl = document.elementFromPoint(point.x, point.y)
 
-  if (hitEl && hitEl.closest('[data-fc-part~="event"]')) {
+  if (hitEl && hitEl.closest('.test-part-event')) {
     throw new Error(`Point for ${what} is on an event, where a selection can't start`)
   }
 }
@@ -87,6 +88,6 @@ function describeEl(el: Element | null): string {
   if (!el) {
     return 'nothing'
   }
-  const part = el.getAttribute('data-fc-part')
-  return `<${el.tagName.toLowerCase()}${part ? ` data-fc-part="${part}"` : ''}>`
+  const parts = getParts(el)
+  return `<${el.tagName.toLowerCase()}${parts.length ? ` parts="${parts.join(' ')}"` : ''}>`
 }

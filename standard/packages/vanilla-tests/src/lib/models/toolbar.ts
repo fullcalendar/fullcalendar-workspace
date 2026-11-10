@@ -1,6 +1,7 @@
 import { userEvent } from 'vitest/browser'
 import { waitForSettle } from '../settle'
 import { queryPart, queryParts } from './events'
+import { getParts } from '../parts'
 
 export type ToolbarItem =
   | { type: 'title' }
@@ -78,7 +79,7 @@ export function getButtonLabel(el: HTMLElement): string {
 
 function getChildItems(parentEl: HTMLElement): ToolbarItem[] {
   return Array.from(parentEl.children).map((childEl): ToolbarItem => {
-    const parts = (childEl.getAttribute('data-fc-part') || '').split(' ')
+    const parts = getParts(childEl)
 
     if (parts.includes('toolbarTitle')) {
       return { type: 'title' }
