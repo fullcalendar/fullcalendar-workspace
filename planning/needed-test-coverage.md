@@ -2,23 +2,6 @@
 
 Library bugs found during the test revamp that no test covers yet: there is no `it.fails` test or other marker in the suites. Each one needs a test, either along with its fix or as an `it.fails` until it's fixed.
 
-## ⚠️ Virtualized resource timeline re-renders every frame, forever
-
-```js
-new Calendar(el, { initialView: 'resourceTimelineDay', initialDate: '2015-08-07', virtualization: true,
-  scrollTime: '00:00', resources: [] }).render()
-```
-
-A MutationObserver on the calendar counts about 2,640 mutations per 500ms, measured a full second after render, and it never stops. With `scrollTime: '01:00'` the count is 0.
-
-It also happens with 1 resource, and with 26 resources fetched late: a loop that starts while the timeline is empty keeps going after they arrive. With 26 static resources that overflow vertically, or the default `scrollTime`, it goes quiet. Karma never noticed because its tests slept a fixed time; `waitForSettle()` never resolves here.
-
-This burns CPU for real users. `src/resource-data/timeline.ts` ("keeps the scroll position when virtualized") uses `scrollTime: '01:00'` to sidestep it.
-
-**Diagnosis (Sol, verified against the code):** slot-header measurement feeds back into horizontal virtualization. Slot width comes from the widest *mounted* header label (`TimelineHeaderRow.handleInnerWidths()` → `computeSlotWidth()`). At a 28px slot width, the overscan mounts the `12pm` label (55.6px wide), which pushes the slot width to 29px. At 29px, virtualization unmounts `12pm`, the widest label is now 54.5px, the slot width drops back to 28px, and `12pm` mounts again, forever. `scrollTime` and resource count only matter because they decide whether `12pm` sits at the edge of the virtualized window. The quiet case with 26 overflowing resources didn't reproduce in headless Chromium, where scrollbars take no space; a real vertical scrollbar narrows the viewport enough to keep `12pm` out at both widths.
-
-**Proposed fix:** `postponed-fixes/virtualized-timeline-loop.md` (diagnosis and full patch), postponed until the test revamp is merged. `TimelineHeaderRow` keeps the last measured width of headers that have been virtualized away, as long as they're still in the full row (`props.cells`), and fresh measurements take precedence. It adds a regression test (0/1 resources × LTR/RTL, which must settle with zero mutations over 5 frames), and moves the "keeps the scroll position when virtualized" test back to the default `scrollTime`. Sol reports all 676 related scheduler tests pass in both renderers. One caveat: a cached width can be stale if a label's content changes while it's virtualized away (e.g. a `locale` change), leaving slots too wide until that header scrolls back into view.
-
 ## Bottom strip of a timeGrid all-day cell isn't an all-day drop target
 
 Found while dragging a timed event up into the all-day row of `timeGridWeek`. The day cell spans 122–158px. Results by drop point:

@@ -45,9 +45,7 @@ Activating a nav link (e.g. a day number) with the keyboard changes the view, wh
 
 ## Apply the postponed fixes
 
-Once the test revamp is merged to main, apply the fixes in `postponed-fixes/`. Each file has the diagnosis, the full patch, its tests, and how to apply it:
-- `virtualized-timeline-loop.md`: a virtualized resource timeline re-renders every frame (ready to apply).
-- `all-day-drop-gap.md`: the bottom strip of a timeGrid all-day cell isn't a drop target (needs a decision first: generalize the rule, and/or build the leeway design for the divider blink).
+Once the test revamp is merged to main, apply the fix in `postponed-fixes/all-day-drop-gap.md`: the bottom strip of a timeGrid all-day cell isn't a drop target. The file has the diagnosis, the full patch, its tests, and how to apply it. It needs a decision first: generalize the rule, and/or build the leeway design for the divider blink. (The other postponed fix, for the virtualized timeline's render loop, landed on main as `6376c8d91`; its test was ported in `7a67c2e8a`.)
 
 ## Close #2955
 
