@@ -125,13 +125,13 @@ describe('selecting dates in timeGrid', () => {
   })
 
   /*
-  TimeGrid is a wall-clock view: DST days still render 48 half-hour slots, and selection edges keep
-  their wall-clock order.
+  TimeGrid is a wall-clock view: DST days still render 48 half-hour slots. A selection edge in the
+  spring-forward gap resolves forward to a time that exists, in its Date and its string alike.
   */
   describe('across DST', () => {
     const dstOptions = { ...options, timeZone: 'America/New_York', initialView: 'timeGridDay' }
 
-    it('keeps wall-clock edge order across the spring-forward gap', async () => {
+    it('gives selection edges in the spring-forward gap the instants of their Dates', async () => {
       const select = vi.fn()
       const calendar = initCalendar({ ...dstOptions, initialDate: '2024-03-10', select })
       await waitForSettle()
@@ -140,9 +140,10 @@ describe('selecting dates in timeGrid', () => {
       expect(timeGrid.getSlotLanes()).toHaveLength(48)
       await timeGrid.selectRange('2024-03-10T02:30', '2024-03-10T03:30')
 
+      // 02:30 doesn't exist, and resolves forward to 03:30 EDT
       const info = select.mock.calls[0][0]
-      expect(info.startStr).toContain('2024-03-10T02:30:00')
-      expect(info.endStr).toContain('2024-03-10T03:30:00')
+      expect([info.startStr, info.endStr]).toEqual(['2024-03-10T03:30:00-04:00', '2024-03-10T03:30:00-04:00'])
+      expect([info.start.toISOString(), info.end.toISOString()]).toEqual(['2024-03-10T07:30:00.000Z', '2024-03-10T07:30:00.000Z'])
     })
 
     it('resolves an ambiguous fall-back edge to the first occurrence', async () => {
