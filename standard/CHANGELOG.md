@@ -1,7 +1,6 @@
 
 ## v7.1.5
 
-- FIX: `event.setDates()` without the `allDay` option cleared the event's `allDay` flag, turning an all-day event into a timed one
 - FIX: TypeScript: `calendar.off()` required a handler, though calling it without one removes all of that name's handlers
 - FIX: TypeScript: an event source function's success callback (or promise) only accepted `EventInput[]`, though any response can be given for `eventSourceSuccess` or the source's `success` to transform
 - FIX: `resource.toPlainObject()` left out the resource's `eventColor`

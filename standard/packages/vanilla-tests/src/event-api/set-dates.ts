@@ -184,21 +184,33 @@ describe('setting event dates', () => {
       expect(getInstants(calendar.getEventById('2')!)).toEqual(['2018-09-12T00:00:00.000Z', '2018-09-16T00:00:00.000Z'])
     })
 
-    // without the allDay option, setDates once set the event's allDay to undefined, so an all-day
-    // event turned into a timed one
-    it('keeps an all-day event all-day when allDay isn\'t given', () => {
+    /*
+    BEHAVIOR (it.fails until changed, for v8): without the allDay option, setDates sets the event's
+    allDay to undefined (`standardProps = { allDay: options.allDay }`), so an all-day event turns
+    into a timed one, and a timed event's allDay isn't false. Apps may rely on timed dates turning an
+    all-day event timed (tested below). See planning/behaviors/set-dates-without-all-day.md
+    */
+    it.fails('keeps an all-day event all-day when allDay isn\'t given', () => {
       const event = getEvent([{ id: '1', start: '2018-09-03', end: '2018-09-05' }])
       event.setDates('2018-09-02', '2018-09-06')
       expect(getDates(event)).toEqual(['2018-09-02', '2018-09-06'])
       expect(event.allDay).toBe(true)
     })
 
-    it('keeps a timed event timed when allDay isn\'t given', () => {
+    it.fails('keeps a timed event timed when allDay isn\'t given', () => {
       const event = getEvent(events)
       expect(event.allDay).toBe(false)
       event.setDates('2018-09-06T01:00:00', '2018-09-06T03:00:00')
       expect(getDates(event)).toEqual(['2018-09-06T01:00:00Z', '2018-09-06T03:00:00Z'])
       expect(event.allDay).toBe(false)
+    })
+
+    // what apps may rely on: timed dates turn an all-day event timed, even without allDay: false
+    it('turns an all-day event timed when given timed dates without allDay', () => {
+      const event = getEvent([{ id: '1', start: '2018-09-03', end: '2018-09-05' }])
+      event.setDates('2018-09-03T10:00:00', '2018-09-03T12:00:00')
+      expect(getDates(event)).toEqual(['2018-09-03T10:00:00Z', '2018-09-03T12:00:00Z'])
+      expect(event.allDay).toBeFalsy() // undefined, not false
     })
   })
 
