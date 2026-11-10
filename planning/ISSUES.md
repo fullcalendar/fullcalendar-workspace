@@ -53,6 +53,7 @@ None yet.
 
 | Item | Status | Test | Issues |
 |---|---|---|---|
+| [A public dev-parts plugin that marks render-hook parts with `data-fc-part`](ideas/dev-parts-plugin.md) | open |  |  |
 | [Dragging into the bottom strip of a timeGrid all-day cell misses it](ideas/all-day-drop-gap.md) | open |  |  |
 | [Keyboard focus after activating a nav link](ideas/nav-link-keyboard-focus.md) | open |  | [#6524](https://github.com/fullcalendar/fullcalendar/issues/6524) (closed, related) |
 | [Pass native events to callbacks under React](ideas/react-native-js-events.md) | open | `more-link/click.ts` |  |
