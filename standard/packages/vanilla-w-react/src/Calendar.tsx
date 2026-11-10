@@ -34,6 +34,7 @@ export class Calendar extends CalendarApiImpl {
   private isRendered = false
   private customContentRenderId = 0
   private currentClassName = ''
+  private currentPart: string | undefined
   private currentColorScheme = ''
 
   constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
@@ -176,11 +177,16 @@ export class Calendar extends CalendarApiImpl {
     }
   }
 
+  // only removes a part it set, leaving any data-fc-part the app put on the element
   private setPart(part: string | undefined) {
-    if (part) {
-      this.el.dataset.fcPart = part
-    } else {
-      delete this.el.dataset.fcPart
+    if (part !== this.currentPart) {
+      if (part) {
+        this.el.dataset.fcPart = part
+      } else {
+        delete this.el.dataset.fcPart
+      }
+
+      this.currentPart = part
     }
   }
 

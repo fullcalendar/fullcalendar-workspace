@@ -1,9 +1,21 @@
 import { describe, expect, it, onTestFinished } from 'vitest'
-import { initCalendar } from '../lib/calendar'
+import { createCalendarElement, initCalendar } from '../lib/calendar'
 import { isForceReact } from '../lib/env'
 import { waitForSettle } from '../lib/settle'
 
 describe('destroy', () => {
+  // without the dev-parts plugin's option, the calendar sets no part, so it removes none
+  it('leaves a data-fc-part the app put on the root element', () => {
+    const el = createCalendarElement()
+    el.dataset.fcPart = 'mine'
+    const calendar = initCalendar({ devParts: false }, el)
+    expect(el.dataset.fcPart).toBe('mine')
+
+    calendar.destroy()
+
+    expect(el.dataset.fcPart).toBe('mine')
+  })
+
   it.each(['ltr', 'rtl'] as const)('restores the root element (%s)', (direction) => {
     const calendar = initCalendar({ direction })
     expect(calendar.el.getAttribute('data-fc-part')).toBe('root')
