@@ -27,7 +27,6 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | [In resource views, an event source's `color` beats a resource's `eventColor`](bugs/resource-view-color-precedence.md) | confirmed | `resource-data/event-styling.ts` | [#5743](https://github.com/fullcalendar/fullcalendar/issues/5743) (related) |
 | [multiMonth selection and resizing can't cross months](bugs/multimonth-cross-month-interaction.md) | confirmed | `date-select/multimonth.ts`, `event-resize/multimonth.ts` | [#7183](https://github.com/fullcalendar/fullcalendar/issues/7183), [#7201](https://github.com/fullcalendar/fullcalendar/issues/7201) (closed) |
 | [`ResourceApi.setProp()` drops event-styling props](bugs/resource-set-prop-event-styling.md) | confirmed | `resource-data/crud.ts` | [#6468](https://github.com/fullcalendar/fullcalendar/issues/6468) (related) |
-| [Scrolling to a re-added resource stops short in a virtualized timeline, under React](bugs/virtualized-scroll-to-resource-stops-short.md) | confirmed | `resource-data/timeline.ts` |  |
 | [Timeline `next()` moves backwards when `dateIncrement` is smaller than the duration](bugs/timeline-next-with-short-date-increment.md) | confirmed | `visible-range/scheduler-views.ts` | [#4678](https://github.com/fullcalendar/fullcalendar/issues/4678) (closed), [#5319](https://github.com/fullcalendar/fullcalendar/issues/5319) (closed) |
 | [Timeline weeks given in days don't align to `firstDay`](bugs/timeline-weeks-in-days-first-day.md) | confirmed | `visible-range/timeline.ts` | [#7026](https://github.com/fullcalendar/fullcalendar/issues/7026) (closed) |
 | [timelineYear with month header intervals and day slots renders month slots](bugs/timeline-year-month-headers-day-slots.md) | confirmed | `visible-range/timeline.ts` | [#4937](https://github.com/fullcalendar/fullcalendar/issues/4937) |
@@ -35,6 +34,7 @@ Bugs, features, ideas and behaviors in FullCalendar itself, found during the tes
 | [`EventApi.getResources()` returns `null` entries](bugs/event-get-resources-nulls.md) | fixed | `resource-data/event-association.ts` | [#7300](https://github.com/fullcalendar/fullcalendar/issues/7300) |
 | [Prev, next and today are announced as toggle buttons](bugs/toolbar-buttons-aria-pressed.md) | fixed | `accessibility/aria.ts` | [#8042](https://github.com/fullcalendar/fullcalendar/issues/8042), [#6521](https://github.com/fullcalendar/fullcalendar/issues/6521) (closed, related) |
 | [`ResourceApi.toPlainObject()` never outputs `eventColor`](bugs/resource-to-plain-object-event-color.md) | fixed | `resource-data/crud.ts` |  |
+| [Scrolling to a re-added resource stops short in a virtualized timeline, under React](bugs/virtualized-scroll-to-resource-stops-short.md) | fixed | `resource-data/timeline.ts` |  |
 | [`startStr`/`endStr` of a nonexistent (spring-forward) time name a different instant than `start`/`end`](bugs/nonexistent-time-start-str.md) | fixed | `event-render/timeline.ts` | [#3887](https://github.com/fullcalendar/fullcalendar/issues/3887) (closed, related) |
 
 ## Features

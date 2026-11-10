@@ -144,6 +144,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private scrollSlack = 0
 
   private queuedEntityScroll = false
+  private cutShortEntityScrollY: number | undefined // see applyEntityScroll
 
   // the assumed height of rows that haven't been measured yet
   private estimatedRowHeight = defaultOwnCellHeight
@@ -1404,13 +1405,25 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // (for bodyScroller only, NOT window)
   private handleEntityScrollStart = () => {
     this.isScrolling = true
-    this.scroll.entityId = undefined
-    this.scroll.fromBottom = undefined
+  }
+
+  private isCutShortEntityScroll(y: number): boolean {
+    return this.cutShortEntityScrollY !== undefined &&
+      Math.abs(y - this.cutShortEntityScrollY) < 1
   }
 
   // DURING verical scroll
   // (for bodyScroller only, NOT window)
-  private handleEntityScroll = (_isDevice: boolean, scroll: number) => {
+  private handleEntityScroll = (isDevice: boolean, scroll: number) => {
+    // The layout's own scroll to a cut-short position keeps its anchor (see applyEntityScroll). Any
+    // other scroll drops it. Decided here, with the moving scroller's position: at scroll start, the
+    // syncer hasn't picked that scroller yet
+    if (isDevice || !this.isCutShortEntityScroll(scroll)) {
+      this.cutShortEntityScrollY = undefined
+      this.scroll.entityId = undefined
+      this.scroll.fromBottom = undefined
+    }
+
     if (!getIsHeightAuto(this.context.options)) {
       this.handleAnyEntityScroll(scroll)
 
@@ -1435,7 +1448,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
       const y = this.bodyScroller.y
 
-      if (!y) {
+      if (this.isCutShortEntityScroll(y)) {
+        // keep the anchor, and apply it again now that rows measured during the scroll have heights
+        this.queuedEntityScroll = true
+      } else if (!y) {
         // If already at top, keep at top. Anchoring to the first row would hide any rows that are
         // later inserted above it
         scroll.entityId = undefined
@@ -1475,15 +1491,32 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   // returns whether applied
   private applyEntityScroll(): boolean {
-    const scrollTop = this.computeEntityScroll()
-    if (scrollTop !== undefined) {
+    const requestedScrollTop = this.computeRequestedEntityScroll()
+    if (requestedScrollTop !== undefined) {
+      const scrollTop = Math.min(this.maxVScroll, requestedScrollTop)
+
+      // maxVScroll comes from the row heights known at render, which estimate rows not measured yet,
+      // such as rows just added. If it cuts the scroll short, the scroll events this causes are the
+      // layout's own: keep the anchor through them, and apply it again once more rows are measured.
+      // See handleEntityScrollStart and handleEntityScrollEnd
+      this.cutShortEntityScrollY = scrollTop < requestedScrollTop ? scrollTop : undefined
       this.bodyScroller.scrollTo({ y: scrollTop })
       return true
     }
+    this.cutShortEntityScrollY = undefined
     return false
   }
 
   private computeEntityScroll(): number | undefined {
+    const requestedScrollTop = this.computeRequestedEntityScroll()
+
+    if (requestedScrollTop !== undefined) {
+      return Math.min(this.maxVScroll, requestedScrollTop)
+    }
+  }
+
+  // where the anchor wants the scroll, before clamping to maxVScroll
+  private computeRequestedEntityScroll(): number | undefined {
     const { bodyTops, bodyHeights, scroll } = this
     const { entityId, fromBottom } = scroll
 
@@ -1493,13 +1526,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
       if (top != null) {
         const bottom = top + height
-        const requestedScrollTop =
-          fromBottom != null ?
-            bottom - fromBottom : // pixels from bottom edge
-            top + // just use top edge
-              (top ? 1 : 0) // overcome top border
-
-        return Math.min(this.maxVScroll, requestedScrollTop)
+        return fromBottom != null ?
+          bottom - fromBottom : // pixels from bottom edge
+          top + // just use top edge
+            (top ? 1 : 0) // overcome top border
       }
     }
   }
@@ -1524,6 +1554,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     */
     this.scroll.entityId = undefined
     this.scroll.fromBottom = undefined
+    this.cutShortEntityScrollY = undefined
   }
 
   queryHit(isRtl: boolean, positionLeft: number, positionTop: number): Hit {
