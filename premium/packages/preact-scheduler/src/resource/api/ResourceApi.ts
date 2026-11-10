@@ -158,8 +158,8 @@ export class ResourceApi {
       res.title = internal.title
     }
 
-    if (ui.contrastColor) {
-      res.eventContrastColor = ui.contrastColor
+    if (ui.color) {
+      res.eventColor = ui.color
     }
 
     if (ui.contrastColor) {

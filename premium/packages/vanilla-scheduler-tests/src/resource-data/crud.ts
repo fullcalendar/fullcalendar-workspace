@@ -341,9 +341,7 @@ describe('resource CRUD', () => {
       })
     })
 
-    // KNOWN BUG (`it.fails` until fixed): toPlainObject writes eventContrastColor twice and never writes eventColor
-    // (premium/packages/preact-scheduler/src/resource/api/ResourceApi.ts). See planning/archive/agent-notes/scheduler-misc.md
-    it.fails('includes eventColor', () => {
+    it('includes eventColor', () => {
       const calendar = initCalendar({ ...options, resources: [{ id: 'a', eventColor: 'red' }] })
 
       expect(calendar.getResourceById('a')!.toPlainObject()).toEqual({ id: 'a', eventColor: 'red' })
