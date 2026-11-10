@@ -56,6 +56,7 @@ None yet.
 | [Keyboard focus after activating a nav link](ideas/nav-link-keyboard-focus.md) | open |  | [#6524](https://github.com/fullcalendar/fullcalendar/issues/6524) (closed, related) |
 | [Pass native events to callbacks under React](ideas/react-native-js-events.md) | open | `more-link/click.ts` |  |
 | [The today button's accessible name doesn't contain its visible text](ideas/today-button-accessible-name.md) | open |  |  |
+| [Type an event source function's response by its transform](ideas/event-source-success-type.md) | open |  | [#5182](https://github.com/fullcalendar/fullcalendar/issues/5182) (closed), [#5534](https://github.com/fullcalendar/fullcalendar/issues/5534) (related) |
 
 ## Behaviors
 
@@ -64,6 +65,7 @@ None yet.
 | Item | Status | Test | Issues |
 |---|---|---|---|
 | [`calendar.select()` checks nothing before firing `select`](behaviors/select-method-no-checks.md) | arguable | `date-select/select-method.ts` | [#4150](https://github.com/fullcalendar/fullcalendar/issues/4150) |
+| [`event.setDates()` without the `allDay` option clears the event's `allDay`](behaviors/set-dates-without-all-day.md) | arguable | `event-api/set-dates.ts` |  |
 | [How event settings combine across calendar, source, resource and event](behaviors/event-settings-precedence.md) | arguable | `constraints/resources.ts`, `resource-data/event-styling.ts` | [#5743](https://github.com/fullcalendar/fullcalendar/issues/5743) (related) |
 | [Options explicitly set to `undefined` aren't treated as unset](behaviors/options-explicitly-undefined.md) | arguable |  | [#3298](https://github.com/fullcalendar/fullcalendar/issues/3298) (closed, related) |
 | [What `eventOrder` and `resourceOrder` functions receive](behaviors/order-function-arguments.md) | arguable | `resource-data/resource-order.ts` | [#3950](https://github.com/fullcalendar/fullcalendar/issues/3950) (closed, related) |
