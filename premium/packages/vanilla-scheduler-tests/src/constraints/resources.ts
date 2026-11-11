@@ -276,3 +276,78 @@ describe('resource-level eventConstraint, eventOverlap and eventAllow', () => {
     })
   })
 })
+
+/*
+KNOWN BUG (`it.fails` until fixed): per the docs, a resource's event settings beat its event source's.
+Resource views and validation rank the source above the resource instead (only views without resources
+render them as documented), so a source's setting overrides its resource's here.
+*/
+describe('a resource\'s settings over its event source\'s', () => {
+  const day = '2016-09-05'
+
+  async function dragEvent(
+    initialView: string,
+    resource: object,
+    source: object,
+    otherEvents: EventInput[] = [],
+    calendarOptions: CalendarOptions = {},
+  ) {
+    const eventDragStart = vi.fn()
+    const eventDrop = vi.fn()
+    const calendar = initCalendar({
+      initialView,
+      initialDate: day,
+      scrollTime: '00:00',
+      editable: true,
+      dragScroll: false,
+      resources: [{ id: 'a', title: 'Resource A', ...resource }],
+      eventSources: [
+        { ...source, events: [{ id: '1', start: `${day}T01:00:00`, end: `${day}T03:00:00`, resourceId: 'a' }] },
+        { events: otherEvents },
+      ],
+      eventDragStart,
+      eventDrop,
+      ...calendarOptions,
+    })
+    await waitForSettle()
+
+    const resourceId = initialView === 'resourceTimeGridDay' ? 'a' : undefined
+    await new TimeGridModel(calendar.el).dragEvent(
+      '1',
+      { date: `${day}T01:00`, resourceId },
+      { date: `${day}T04:00`, resourceId },
+    )
+
+    return { eventDragStart, eventDrop, startStr: calendar.getEventById('1')!.startStr }
+  }
+
+  // Flipping compileEventUi's order alone doesn't fix this one: drag mutation compiles the event's UI without
+  // the resource's (EventDragging, applyMutationToEventStore), so the source's startEditable:false still keeps
+  // the event's time
+  it.fails('in a resource view, the resource\'s eventStartEditable:true lets an event drag', async () => {
+    const { eventDragStart, eventDrop, startStr } = await dragEvent(
+      'resourceTimeGridDay',
+      { eventStartEditable: true },
+      { startEditable: false },
+      [],
+      { eventResourceEditable: false }, // or the event drags anyway, to change resources
+    )
+
+    expect(eventDragStart).toHaveBeenCalledOnce()
+    expect(eventDrop).toHaveBeenCalledOnce()
+    expect(startStr).toBe(`${day}T04:00:00Z`)
+  })
+
+  it.fails.each(['resourceTimeGridDay', 'timeGridDay'])('in %s, the resource\'s eventOverlap:true allows a drop onto another event', async (initialView) => {
+    const { eventDragStart, eventDrop, startStr } = await dragEvent(
+      initialView,
+      { eventOverlap: true },
+      { overlap: false },
+      [{ id: '2', start: `${day}T04:00:00`, end: `${day}T06:00:00`, resourceId: 'a' }],
+    )
+
+    expect(eventDragStart).toHaveBeenCalledOnce()
+    expect(eventDrop).toHaveBeenCalledOnce()
+    expect(startStr).toBe(`${day}T04:00:00Z`)
+  })
+})
