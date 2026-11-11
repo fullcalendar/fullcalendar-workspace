@@ -117,7 +117,7 @@ export function buildTimelineSegPlacements(
     eventOrderStrict,
     /* eventSlicing = */ false,
     eventMaxStack,
-    /* moreLinkLevelTax = */ 0,
+    /* moreLinkTakesLevel = */ false,
     sliceHeights,
   )
 
