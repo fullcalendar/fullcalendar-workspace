@@ -4,6 +4,7 @@ export {
   type SiblingDimConfig,
   parseDimConfig,
   parseSiblingDimConfig,
+  toSiblingDimConfig,
   ensureDimConfigsGrow,
   pixelizeDimConfigs,
   flexifyDimConfigs,

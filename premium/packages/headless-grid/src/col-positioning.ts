@@ -40,10 +40,19 @@ export function parseSiblingDimConfig(
   grow: number | undefined, // TODO: use (and sanitize)
   minDim: number | undefined,
 ): SiblingDimConfig {
-  const partialDimConfig = parseDimConfig(input, minDim)
+  return toSiblingDimConfig(parseDimConfig(input, minDim), grow, minDim)
+}
 
-  return partialDimConfig
-    ? { ...partialDimConfig, grow: grow || 0 }
+/*
+A sibling without a parsed width grows to fill the space
+*/
+export function toSiblingDimConfig(
+  dimConfig: DimConfig | undefined,
+  grow: number | undefined,
+  minDim: number | undefined,
+): SiblingDimConfig {
+  return dimConfig
+    ? { ...dimConfig, grow: grow || 0 }
     : { pixels: 0, frac: 0, grow: grow || 1, min: minDim }
 }
 

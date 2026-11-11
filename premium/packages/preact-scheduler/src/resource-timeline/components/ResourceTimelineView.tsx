@@ -6,7 +6,6 @@ import {
   isArraysEqual,
   memoize,
   NowTimer,
-  warn,
   watchWidth
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -21,7 +20,7 @@ import { TimelineLaneSlicer } from '../../timeline/TimelineLaneSlicer'
 import { DimConfig, parseDimConfig, pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '@full-ui/headless-grid'
 import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal'
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint'
-import { processColOptions } from '../col-options'
+import { parseDimOption, processColOptions } from '../col-options'
 import type { CssDimValue } from '@fullcalendar/preact/public-api'
 import { ResourceExpander } from './spreadsheet/ResourceExpander'
 
@@ -303,18 +302,13 @@ function computeHasNesting(resourceHierarchy: GenericNode[]): boolean {
 }
 
 /*
-Only a number, px or % parses. Anything else warns and gets the default, instead of failing to render.
+An invalid value gets the default, instead of failing to render
 */
 function parseResourceColumnsWidth(input: CssDimValue): DimConfig {
-  const dimConfig = parseDimConfig(input, MIN_RESOURCE_AREA_WIDTH)
-
-  if (dimConfig) {
-    return dimConfig
-  }
-
-  warn(
-    `Invalid option \`resourceColumnsWidth\`: ${JSON.stringify(input)}. Expected a number, or a string in px or %. ` +
+  return parseDimOption(
+    input,
+    MIN_RESOURCE_AREA_WIDTH,
+    'option `resourceColumnsWidth`',
     `Using ${DEFAULT_RESOURCE_COLUMNS_WIDTH}.`,
-  )
-  return parseDimConfig(DEFAULT_RESOURCE_COLUMNS_WIDTH, MIN_RESOURCE_AREA_WIDTH)!
+  ) ?? parseDimConfig(DEFAULT_RESOURCE_COLUMNS_WIDTH, MIN_RESOURCE_AREA_WIDTH)!
 }
