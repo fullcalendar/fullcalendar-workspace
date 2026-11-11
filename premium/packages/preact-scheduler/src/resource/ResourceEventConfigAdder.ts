@@ -28,16 +28,24 @@ function buildResourceEventUis(resourceStore: ResourceHash) {
   return mapHash(resourceStore, (resource) => resource.ui)
 }
 
+/*
+Goes by the events, not by eventUiBases' entries, since an event without a source has no entry
+*/
 function injectResourceEventUis(eventUiBases: EventUiHash, eventDefs: EventDefHash, resourceEventUis: EventUiHash) {
-  return mapHash(eventUiBases, (eventUi, defId) => {
-    if (defId) { // not the '' key
-      return injectResourceEventUi(eventUi, eventDefs[defId], resourceEventUis)
+  let newEventUiBases: EventUiHash = { ...eventUiBases }
+
+  for (let defId in eventDefs) {
+    let eventDef = eventDefs[defId]
+
+    if (eventDef.resourceIds.length) {
+      newEventUiBases[defId] = injectResourceEventUi(eventUiBases[defId], eventDef, resourceEventUis)
     }
-    return eventUi
-  })
+  }
+
+  return newEventUiBases
 }
 
-function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourceEventUis: EventUiHash) {
+function injectResourceEventUi(origEventUi: EventUi | undefined, eventDef: EventDef, resourceEventUis: EventUiHash) {
   let parts = []
 
   // first resource takes precedence, which fights with the ordering of combineEventUis, thus the unshifts
@@ -47,7 +55,9 @@ function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourc
     }
   }
 
-  parts.unshift(origEventUi)
+  if (origEventUi) {
+    parts.unshift(origEventUi)
+  }
 
   return combineEventUis(parts)
 }

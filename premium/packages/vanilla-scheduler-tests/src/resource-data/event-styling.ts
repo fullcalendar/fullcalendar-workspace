@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
 import { getEventEls } from '@fullcalendar-tests/standard/src/lib/models/events'
+import { waitForSettle } from '@fullcalendar-tests/standard/src/lib/settle'
 
 /*
 A resource's eventColor/eventContrastColor/eventClass style the events assigned to it.
@@ -56,6 +57,19 @@ describe('event styling from resources', () => {
   describe('in a view without resources', () => {
     it('styles an event by its resourceId', () => {
       expect(getStyling('timeGridWeek', { resourceId: 'a' })).toEqual([
+        { backgroundColor: RED, classes: ['re1'] },
+      ])
+    })
+
+    it('styles an event added without a source by its resourceId', async () => {
+      const calendar = initCalendar({ ...options, initialView: 'timeGridWeek' })
+      calendar.addEvent({ id: '1', title: 'event 1', start: '2016-02-14T01:00:00', resourceId: 'a' })
+      await waitForSettle()
+
+      expect(getEventEls(calendar.el, '1').map((el) => ({
+        backgroundColor: getComputedStyle(el).backgroundColor,
+        classes: getResourceClasses(el),
+      }))).toEqual([
         { backgroundColor: RED, classes: ['re1'] },
       ])
     })
