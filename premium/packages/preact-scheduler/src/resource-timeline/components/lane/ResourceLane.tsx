@@ -1,5 +1,5 @@
 import { joinClassNames } from '@fullcalendar/preact/public-api'
-import { BaseComponent, memoize, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
+import { BaseComponent, memoize, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, DateProfile, DateMarker, DateRange, EventStore, EventUiBases, DateSpan, EventInteractionState } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
 import { type Ref } from 'react'
 import { Resource } from '../../../resource/structs/resource'
@@ -23,7 +23,7 @@ export interface ResourceLaneProps extends AriaCellInput {
 
   // content
   eventStore: EventStore | null
-  eventUiBases: EventUiHash
+  eventUiBases: EventUiBases
   businessHours: EventStore | null
   dateSelection: DateSpan | null
   eventDrag: EventInteractionState | null

@@ -17,7 +17,6 @@ export function isPropsValidWithResources(combinedProps: SplittableProps, contex
       props = {
         ...props,
         eventStore: mergeEventStores(sets[''].eventStore, props.eventStore),
-        eventUiBases: { ...sets[''].eventUiBases, ...props.eventUiBases },
       }
     }
 

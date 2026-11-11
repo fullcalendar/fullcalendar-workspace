@@ -1,22 +1,24 @@
 import {
   ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
-  EventUi, isPropsEqualShallow, EventUiHash, EventDefHash, EventDef, combineEventUis,
+  EventUi, isPropsEqualShallow, EventUiBases, EventUiHash, EventDef, combineEventUis,
 } from '@fullcalendar/preact/protected-api'
 import { ResourceHash } from './structs/resource'
 
-// for when non-resource view should be given EventUi info (for event coloring/constraints based off of resource data)
-
+/*
+For views without resources: each event gets its resources' UI (coloring, constraints, etc.).
+Views with resources get a resource's UI per section instead, from the splitter.
+*/
 export class ResourceEventConfigAdder implements ViewPropsTransformer {
   buildResourceEventUis = memoize(buildResourceEventUis, isPropsEqualShallow)
-  injectResourceEventUis = memoize(injectResourceEventUis)
+  buildGetResourcesEventUi = memoize(buildGetResourcesEventUi) // changes only when a resource's UI does
+  addGetExtraUi = memoize(addGetExtraUi)
 
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
     if (!calendarProps.viewSpec.optionDefaults.needsResourceData) {
       return {
-        eventUiBases: this.injectResourceEventUis(
+        eventUiBases: this.addGetExtraUi(
           viewProps.eventUiBases,
-          viewProps.eventStore.defs,
-          this.buildResourceEventUis(calendarProps.resourceStore),
+          this.buildGetResourcesEventUi(this.buildResourceEventUis(calendarProps.resourceStore)),
         ),
       }
     }
@@ -24,40 +26,34 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
   }
 }
 
-function buildResourceEventUis(resourceStore: ResourceHash) {
+function buildResourceEventUis(resourceStore: ResourceHash): EventUiHash {
   return mapHash(resourceStore, (resource) => resource.ui)
 }
 
-/*
-Goes by the events, not by eventUiBases' entries, since an event without a source has no entry
-*/
-function injectResourceEventUis(eventUiBases: EventUiHash, eventDefs: EventDefHash, resourceEventUis: EventUiHash) {
-  let newEventUiBases: EventUiHash = { ...eventUiBases }
+function buildGetResourcesEventUi(resourceEventUis: EventUiHash) {
+  return (eventDef: EventDef): EventUi | undefined => {
+    let { resourceIds } = eventDef
 
-  for (let defId in eventDefs) {
-    let eventDef = eventDefs[defId]
-
-    if (eventDef.resourceIds.length) {
-      newEventUiBases[defId] = injectResourceEventUi(eventUiBases[defId], eventDef, resourceEventUis)
+    if (resourceIds.length === 1) {
+      return resourceEventUis[resourceIds[0]]
     }
-  }
 
-  return newEventUiBases
+    let parts: EventUi[] = []
+
+    // first resource takes precedence, which fights with the ordering of combineEventUis, thus the unshifts
+    for (let resourceId of resourceIds) {
+      if (resourceEventUis[resourceId]) {
+        parts.unshift(resourceEventUis[resourceId])
+      }
+    }
+
+    return parts.length ? combineEventUis(parts) : undefined
+  }
 }
 
-function injectResourceEventUi(origEventUi: EventUi | undefined, eventDef: EventDef, resourceEventUis: EventUiHash) {
-  let parts = []
-
-  // first resource takes precedence, which fights with the ordering of combineEventUis, thus the unshifts
-  for (let resourceId of eventDef.resourceIds) {
-    if (resourceEventUis[resourceId]) {
-      parts.unshift(resourceEventUis[resourceId])
-    }
-  }
-
-  if (origEventUi) {
-    parts.unshift(origEventUi)
-  }
-
-  return combineEventUis(parts)
+function addGetExtraUi(
+  eventUiBases: EventUiBases,
+  getExtraUi: (eventDef: EventDef) => EventUi | undefined,
+): EventUiBases {
+  return { ...eventUiBases, getExtraUi }
 }
