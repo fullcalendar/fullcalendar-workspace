@@ -6,6 +6,7 @@ import {
   isArraysEqual,
   memoize,
   NowTimer,
+  warn,
   watchWidth
 } from '@fullcalendar/preact/protected-api'
 import classNames from '@fullcalendar/preact/protected-styles'
@@ -21,6 +22,7 @@ import { DimConfig, parseDimConfig, pixelizeDimConfigs, resizeSiblingDimConfig, 
 import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal'
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint'
 import { processColOptions } from '../col-options'
+import type { CssDimValue } from '@fullcalendar/preact/public-api'
 import { ResourceExpander } from './spreadsheet/ResourceExpander'
 
 interface ResourceTimelineViewState {
@@ -32,6 +34,7 @@ interface ResourceTimelineViewState {
 }
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
+export const DEFAULT_RESOURCE_COLUMNS_WIDTH = '30%'
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
   state = {} as ResourceTimelineViewState
@@ -40,6 +43,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private filterResourceStore = memoize(filterResourceStore)
   private processColOptions = memoize(processColOptions)
+  private parseResourceColumnsWidth = memoize(parseResourceColumnsWidth)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private computeSlotWidth = memoize(computeSlotWidth)
   private computeHasNesting = memoize(computeHasNesting)
@@ -85,7 +89,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     } = this.processColOptions(context.options)
 
     const spreadsheetWidthConfig = this.spreadsheetResizedWidthConfigRef.current ??
-      parseDimConfig(options.resourceColumnsWidth, MIN_RESOURCE_AREA_WIDTH)!
+      this.parseResourceColumnsWidth(options.resourceColumnsWidth)
 
     /* spreadsheet col widths */
 
@@ -296,4 +300,21 @@ function computeHasNesting(resourceHierarchy: GenericNode[]): boolean {
   }
 
   return false
+}
+
+/*
+Only a number, px or % parses. Anything else warns and gets the default, instead of failing to render.
+*/
+function parseResourceColumnsWidth(input: CssDimValue): DimConfig {
+  const dimConfig = parseDimConfig(input, MIN_RESOURCE_AREA_WIDTH)
+
+  if (dimConfig) {
+    return dimConfig
+  }
+
+  warn(
+    `Invalid option \`resourceColumnsWidth\`: ${JSON.stringify(input)}. Expected a number, or a string in px or %. ` +
+    `Using ${DEFAULT_RESOURCE_COLUMNS_WIDTH}.`,
+  )
+  return parseDimConfig(DEFAULT_RESOURCE_COLUMNS_WIDTH, MIN_RESOURCE_AREA_WIDTH)!
 }

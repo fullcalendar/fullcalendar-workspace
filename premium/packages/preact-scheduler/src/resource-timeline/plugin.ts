@@ -2,7 +2,7 @@ import { PluginInput } from '@fullcalendar/preact/public-api'
 import premiumCommonPlugin from '../common/plugin'
 import timelinePlugin from '../timeline'
 import resourcePlugin from '../resource'
-import { ResourceTimelineView } from './components/ResourceTimelineView'
+import { DEFAULT_RESOURCE_COLUMNS_WIDTH, ResourceTimelineView } from './components/ResourceTimelineView'
 
 export default {
   name: 'resource-timeline',
@@ -18,7 +18,7 @@ export default {
       type: 'timeline', // inherit configuration
       component: ResourceTimelineView,
       needsResourceData: true,
-      resourceColumnsWidth: '30%',
+      resourceColumnsWidth: DEFAULT_RESOURCE_COLUMNS_WIDTH,
       resourcesInitiallyExpanded: true,
       eventResizableFromStart: true, // TODO: not DRY with this same setting in the main timeline config
     },

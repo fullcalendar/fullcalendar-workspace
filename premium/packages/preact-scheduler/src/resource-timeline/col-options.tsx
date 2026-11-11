@@ -1,6 +1,6 @@
-import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined } from '@fullcalendar/preact/protected-api'
+import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined, warn } from '@fullcalendar/preact/protected-api'
 import { DEFAULT_RESOURCE_ORDER } from '../resource/resources-crud'
-import { ensureDimConfigsGrow, parseSiblingDimConfig } from '@full-ui/headless-grid'
+import { ensureDimConfigsGrow, parseDimConfig, parseSiblingDimConfig } from '@full-ui/headless-grid'
 import { GroupSpec, ColSpec } from './structs'
 
 const SPREADSHEET_COL_MIN_WIDTH = 50
@@ -96,13 +96,20 @@ export function processColOptions(options: ViewOptionsRefined) {
 
   const colSpecs = groupColSpecs.concat(resourceColSpecs)
 
-  const colWidthConfigs = colSpecs.map((colSpec) => (
-    parseSiblingDimConfig(
+  const colWidthConfigs = colSpecs.map((colSpec) => {
+    // only a number, px or % parses. anything else warns, and the column grows as if it had no width
+    if (colSpec.width != null && !parseDimConfig(colSpec.width)) {
+      warn(
+        `Invalid resource column \`width\`: ${JSON.stringify(colSpec.width)}. Expected a number, or a string in px or %. ` +
+        'The column grows to fill the space instead.',
+      )
+    }
+    return parseSiblingDimConfig(
       colSpec.width,
       /* grow = */ undefined,
       SPREADSHEET_COL_MIN_WIDTH,
     )
-  ))
+  })
 
   ensureDimConfigsGrow(colWidthConfigs)
 

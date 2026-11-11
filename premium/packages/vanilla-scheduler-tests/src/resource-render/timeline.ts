@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { CalendarOptions } from 'fullcalendar'
 import { strictModeFactor } from 'fullcalendar/protected-api'
 import { initCalendar } from '@fullcalendar-tests/standard/src/lib/calendar'
@@ -41,6 +41,22 @@ describe('resource timeline resource area', () => {
       calendar.setOption('resourceColumnsWidth', 300)
       await waitForSettle()
       expect(Math.abs(getResourceAreaWidth(calendar.el) - 300)).toBeLessThan(2)
+    })
+
+    it.each(['9.5rem', 'max(35%, 240px)'])('warns about resourceColumnsWidth %s and uses the default', async (width) => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const calendar = initCalendar({ initialView: 'resourceTimelineDay' })
+      await waitForSettle()
+      const defaultWidth = getResourceAreaWidth(calendar.el)
+
+      calendar.setOption('resourceColumnsWidth', width)
+      await waitForSettle()
+
+      expect(warn).toHaveBeenCalledWith(
+        'FullCalendar:',
+        `Invalid option \`resourceColumnsWidth\`: "${width}". Expected a number, or a string in px or %. Using 30%.`,
+      )
+      expect(Math.abs(getResourceAreaWidth(calendar.el) - defaultWidth)).toBeLessThan(2)
     })
   })
 
@@ -99,6 +115,27 @@ describe('resource timeline resource area', () => {
       const newWidths = expectColumnWidthsInSync(calendar.el)
       expect(newWidths[0]).toBeGreaterThan(origWidths[0]) // proportions follow the widths
       expect(newWidths[1]).toBeLessThan(origWidths[1])
+    })
+
+    it('warns about a column width it can\'t parse, and grows that column', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const calendar = initCalendar({
+        ...options,
+        resourceColumns: [
+          { headerContent: 'Room', field: 'title', width: '6rem' },
+          { headerContent: 'Occupancy', field: 'occupancy', width: 50 },
+        ],
+      })
+      await waitForSettle()
+
+      expect(warn).toHaveBeenCalledWith(
+        'FullCalendar:',
+        'Invalid resource column `width`: "6rem". Expected a number, or a string in px or %. ' +
+        'The column grows to fill the space instead.',
+      )
+      const widths = expectColumnWidthsInSync(calendar.el)
+      expect(widths[1]).toBeLessThan(52)
+      expect(widths[0]).toBeGreaterThan(170) // the rest of the 230px area
     })
   })
 
