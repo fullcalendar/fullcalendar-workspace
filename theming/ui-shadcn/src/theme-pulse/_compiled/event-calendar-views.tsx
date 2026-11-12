@@ -313,7 +313,7 @@ export function EventCalendarViews({
         /* Popover
         ----------------------------------------------------------------------------------------- */
 
-        popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-55'
+        popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground [--fc-popover-z:50] pointer-events-auto min-w-55'
         popoverCloseClass="group absolute top-1.5 end-1.5 p-0.5 rounded-sm hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
 
         /* Lane

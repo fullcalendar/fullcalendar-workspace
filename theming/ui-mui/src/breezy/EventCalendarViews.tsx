@@ -406,7 +406,7 @@ export default function EventCalendarViews({
       /* Popover
       ----------------------------------------------------------------------------------------- */
 
-      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 root-reset"
+      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 [--fc-popover-z:var(--mui-zIndex-modal)] min-w-55 root-reset"
       popoverCloseClass={`group absolute top-2 end-2 p-0.5 rounded-sm ${mutedHoverButtonClass} button-reset`}
       popoverCloseContent={() => <EventCalendarCloseIcon />}
 

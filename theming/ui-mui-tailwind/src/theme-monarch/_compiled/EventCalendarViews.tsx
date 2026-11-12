@@ -349,7 +349,7 @@ export default function EventCalendarViews({
       ------------------------------------------------------------------------------------------- */
 
       popoverFormat={{ day: 'numeric', weekday: 'short' }}
-      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-60"
+      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 [--fc-popover-z:var(--mui-zIndex-modal)] min-w-60"
       popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       popoverCloseContent={() => (
         <CloseIcon

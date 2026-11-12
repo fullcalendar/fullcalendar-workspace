@@ -99,7 +99,7 @@ export const params: ThemeOptionParams = {
   faintHoverPressableClass: `${faintBgHoverClass} ${faintBgFocusClass}`,
 
   // popover
-  popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
+  popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground [--fc-popover-z:50] pointer-events-auto',
   popoverHeaderClass: `border-b ${mutedBgClass}`,
 
   // primary

@@ -355,7 +355,7 @@ export default function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       popoverFormat={{ day: 'numeric', weekday: 'long' }}
-      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55 root-reset"
+      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 [--fc-popover-z:var(--mui-zIndex-modal)] min-w-55 root-reset"
       popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`}
       popoverCloseContent={() => <EventCalendarCloseIcon />}
       dayLaneClass={(info) => joinClassNames(

@@ -22,7 +22,7 @@ const relativeImportReplacements: Record<string, string> = {
 }
 
 const rootItems: any[] = []
-await mkdir(joinPaths(pkgDir, 'registry-dist'))
+await mkdir(joinPaths(pkgDir, 'registry-dist'), { recursive: true })
 
 for (const theme of themes) {
   // await mkdir(joinPaths(pkgDir, 'registry-dist', theme), { recursive: true })

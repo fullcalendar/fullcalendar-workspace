@@ -298,7 +298,7 @@ export function EventCalendarViews({
       ----------------------------------------------------------------------------------------- */
 
       popoverFormat={{ day: 'numeric', weekday: 'short' }}
-      popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-60'
+      popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground [--fc-popover-z:50] pointer-events-auto min-w-60'
       popoverCloseClass="group absolute top-2 end-2 size-8 rounded-full items-center justify-center hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
 
       /* Lane

@@ -380,7 +380,7 @@ export default function EventCalendarViews({
       /* Popover
       ------------------------------------------------------------------------------------------- */
 
-      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55"
+      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 [--fc-popover-z:var(--mui-zIndex-modal)] min-w-55"
       popoverCloseClass={`group absolute top-1.5 end-1.5 p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       popoverCloseContent={() => (
         <CloseIcon

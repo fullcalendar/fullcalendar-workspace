@@ -468,6 +468,10 @@
   background-color: var(--mui-palette-primary-main)
 }
 
+.\[--fc-popover-z\:var\(--mui-zIndex-modal\)\] {
+  --fc-popover-z: var(--mui-zIndex-modal)
+}
+
 @media not print {
   @supports (color:color-mix(in lab, red, red)) {
     .not-print\:bg-\[color-mix\(in_oklab\,var\(--fc-event-color\)_15\%\,transparent\)\] {

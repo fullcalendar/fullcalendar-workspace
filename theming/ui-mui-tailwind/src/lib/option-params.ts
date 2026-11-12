@@ -128,7 +128,7 @@ export const params: ThemeOptionParams = {
   faintHoverPressableClass,
 
   // popover
-  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
+  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 [--fc-popover-z:var(--mui-zIndex-modal)]',
   popoverHeaderClass: 'border-b border-(--mui-palette-divider)',
 
   // primary
